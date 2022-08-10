@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AppColorsDark {
+  static final AppColorsDark _appColorsDark = AppColorsDark._internal();
+
+  factory AppColorsDark() => _appColorsDark;
+
   static const Color primaryAccent = Color(0xFF56CCF2); //Light & Dark - color is same
 
   static const Color background = Color(0xFF000000);
@@ -54,4 +58,6 @@ class AppColorsDark {
   static const Color orange = Color(0xffFF902D);
 
   static const Color reviews = Color(0xffEFB55F);
+
+  AppColorsDark._internal();
 }

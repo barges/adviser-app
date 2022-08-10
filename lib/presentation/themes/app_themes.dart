@@ -4,8 +4,11 @@ import 'package:shared_advisor_interface/presentation/themes/app_colors_light.da
 import 'package:shared_advisor_interface/presentation/themes/app_colors_dark.dart';
 
 class AppThemes {
-  static ThemeData themeLight(BuildContext context) {
+  static final AppThemes _appColorsDark = AppThemes._internal();
 
+  factory AppThemes() => _appColorsDark;
+
+  static ThemeData themeLight(BuildContext context) {
     final Map<int, Color> color = {
       50: const Color.fromRGBO(77, 176, 91, .1),
       100: const Color.fromRGBO(77, 176, 91, .2),
@@ -31,19 +34,18 @@ class AppThemes {
       splashColor: Colors.red.shade50,
       hintColor: Colors.grey.shade400,
       textTheme: GoogleFonts.redHatDisplayTextTheme(
-          Theme.of(context).textTheme,
+        Theme.of(context).textTheme,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-              textStyle: TextStyle(fontWeight: FontWeight.bold))),
+              textStyle: const TextStyle(fontWeight: FontWeight.bold))),
       textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
-              textStyle: TextStyle(fontWeight: FontWeight.w500))),
+              textStyle: const TextStyle(fontWeight: FontWeight.w500))),
     );
   }
 
   static ThemeData themeDark(BuildContext context) {
-
     final Map<int, Color> color = {
       50: const Color.fromRGBO(106, 204, 101, .1),
       100: const Color.fromRGBO(106, 204, 101, .2),
@@ -67,16 +69,17 @@ class AppThemes {
       canvasColor: Colors.black,
       disabledColor: Colors.grey,
       hoverColor: AppColorsDark.ui,
-      textTheme: GoogleFonts.redHatDisplayTextTheme(
-          Theme.of(context).textTheme.apply(
-            bodyColor: Colors.white,
-            displayColor: Colors.white,
-          )
-      ),
+      textTheme:
+          GoogleFonts.redHatDisplayTextTheme(Theme.of(context).textTheme.apply(
+                bodyColor: Colors.white,
+                displayColor: Colors.white,
+              )),
       textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
               primary: Colors.white,
-              textStyle: TextStyle(fontWeight: FontWeight.bold))),
+              textStyle: const TextStyle(fontWeight: FontWeight.bold))),
     );
   }
+
+  AppThemes._internal();
 }

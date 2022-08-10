@@ -1,4 +1,11 @@
 {
   "hello": "Hello",
-  "sellYourServicesDuringAChatReading": "Sell your services during a chat reading"
+  "sellYourServicesDuringAChatReading": "Sell your services during a chat reading",
+  "login": "Log in",
+  "signIn": "Sign in",
+  "forgetYourPassword": "Forget your password",
+  "email": "Email",
+  "password": "Password",
+  "confirmYourPassword": "Confirm your password",
+  "requestNewPassword": "Request a new password"
 }

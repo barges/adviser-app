@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/screens/login_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/Login/login_screen.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_themes.dart';
 
 final logger = Logger(printer: SimplePrinter());
@@ -16,7 +16,7 @@ class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {

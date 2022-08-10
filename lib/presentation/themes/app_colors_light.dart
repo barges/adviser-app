@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AppColorsLight {
+  static final AppColorsLight _appColorsLight = AppColorsLight._internal();
 
-  static const Color primaryAccent = Color(0xFF56CCF2); //Light & Dark - color is same
+  factory AppColorsLight() => _appColorsLight;
+
+  static const Color primaryAccent =
+      Color(0xFF56CCF2); //Light & Dark - color is same
 
   static const Color background = Color(0xFFF2F2F7);
 
@@ -55,4 +59,6 @@ class AppColorsLight {
   static const Color orange = Color(0xffFF902D);
 
   static const Color reviews = Color(0xffEFB55F);
+
+  AppColorsLight._internal();
 }
