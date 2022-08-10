@@ -59,6 +59,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Sell your services during a chat reading`
+  String get sellYourServicesDuringAChatReading {
+    return Intl.message(
+      'Sell your services during a chat reading',
+      name: 'sellYourServicesDuringAChatReading',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

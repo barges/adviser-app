@@ -14,7 +14,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(title: Text(S.of(context).hello),),
       body: Center(
-        child: Text(S.of(context).hello),
+        child: Text(S.of(context).sellYourServicesDuringAChatReading),
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
+import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors_dark.dart';
 
 class AppThemes {
@@ -25,7 +25,6 @@ class AppThemes {
       primaryColor: AppColorsLight.primary,
       disabledColor: Colors.grey,
       hoverColor: AppColorsLight.ui,
-      primaryColorBrightness: Brightness.light,
       brightness: Brightness.light,
       primaryColorDark: Colors.black,
       indicatorColor: Colors.black,
@@ -61,7 +60,6 @@ class AppThemes {
       scaffoldBackgroundColor: AppColorsDark.background,
       primarySwatch: MaterialColor(0xFF6ACC65, color),
       primaryColor: AppColorsDark.primary,
-      primaryColorBrightness: Brightness.dark,
       primaryColorLight: Colors.black,
       brightness: Brightness.dark,
       primaryColorDark: Colors.black,
