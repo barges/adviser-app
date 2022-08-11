@@ -4,9 +4,6 @@ import 'package:shared_advisor_interface/presentation/themes/app_colors_light.da
 import 'package:shared_advisor_interface/presentation/themes/app_colors_dark.dart';
 
 class AppThemes {
-  static final AppThemes _appColorsDark = AppThemes._internal();
-
-  factory AppThemes() => _appColorsDark;
 
   static ThemeData themeLight(BuildContext context) {
     final Map<int, Color> color = {

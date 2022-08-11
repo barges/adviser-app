@@ -4,9 +4,6 @@ import 'package:shared_advisor_interface/presentation/screens/Login/login_screen
 import 'package:shared_advisor_interface/utils/routes.dart';
 
 class AppRouter {
-  static final AppRouter _appRoutes = AppRouter._internal();
-
-  factory AppRouter() => _appRoutes;
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -26,5 +23,4 @@ class AppRouter {
     }
   }
 
-  AppRouter._internal();
 }

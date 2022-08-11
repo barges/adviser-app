@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
 class AppColorsDark {
-  static final AppColorsDark _appColorsDark = AppColorsDark._internal();
-
-  factory AppColorsDark() => _appColorsDark;
 
   static const Color primaryAccent = Color(0xFF56CCF2); //Light & Dark - color is same
 
@@ -66,6 +63,4 @@ class AppColorsDark {
   static const Color secondary = Color(0xff721C70);
 
   /// ======
-
-  AppColorsDark._internal();
 }
