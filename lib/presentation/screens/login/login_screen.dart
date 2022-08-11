@@ -3,12 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
+import 'package:shared_advisor_interface/presentation/resources/routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/Login/login_mixin.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/custom_text_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/password_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
-import 'package:shared_advisor_interface/utils/routes.dart';
 
 class LoginScreen extends StatelessWidget with LoginMixin {
   LoginScreen({Key? key}) : super(key: key);

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 class AppColorsDark {
 
-  static const Color primaryAccent = Color(0xFF56CCF2); //Light & Dark - color is same
-
   static const Color background = Color(0xFF000000);
 
   static const Color primary = Color(0xFF6ACC65);
@@ -58,9 +56,12 @@ class AppColorsDark {
 
   /// ======= new colors
 
+
+  static const Color primaryAccent = Color(0xFF0EBBB3);
+  static const Color secondary = Color(0xff721C70);
+
   static const Color highlight = Color(0xffEADDEA);
   static const Color darkBlue = Color(0xff26264E);
-  static const Color secondary = Color(0xff721C70);
 
   /// ======
 }

@@ -3,9 +3,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/resources/routes.dart';
+import 'package:shared_advisor_interface/presentation/screens/Login/forget_password_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/Login/login_screen.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_themes.dart';
-import 'package:shared_advisor_interface/utils/app_router.dart';
 
 final logger = Logger(printer: SimplePrinter());
 
@@ -21,14 +22,19 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final List<GetPage> getPages = [
+    GetPage(name: Routes.logIn, page: () => LoginScreen()),
+    GetPage(name: Routes.forgetPassword, page: () => ForgetPasswordScreen()),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppThemes.themeLight(context),
       darkTheme: AppThemes.themeDark(context),
-      initialRoute: LoginScreen().toString(),
-      onGenerateRoute: AppRouter.generateRoute,
+      initialRoute: Routes.logIn,
+      getPages: getPages,
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,

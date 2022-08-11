@@ -71,8 +71,6 @@ class AppThemes {
               textStyle: const TextStyle(fontWeight: FontWeight.bold))),
     );
   }
-
-  AppThemes._internal();
 }
 
 TextTheme _textLightTheme() {
