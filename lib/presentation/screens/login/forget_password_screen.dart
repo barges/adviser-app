@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
 import 'package:shared_advisor_interface/presentation/screens/Login/login_mixin.dart';
-import 'package:shared_advisor_interface/presentation/widgets/appbar/simple_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/widgets/custom_text_field_widget.dart';
-import 'package:shared_advisor_interface/presentation/widgets/password_field_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/custom_text_field_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/password_field_widget.dart';
 
 class ForgetPasswordScreen extends StatelessWidget with LoginMixin {
   ForgetPasswordScreen({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class ForgetPasswordScreen extends StatelessWidget with LoginMixin {
     final FocusNode confirmPasswordNode = FocusNode();
 
     return Scaffold(
-        backgroundColor: const Color(0xffE5E5E5),
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: SimpleAppBar(title: S.of(context).forgetYourPassword),
         body: SafeArea(
           child: GestureDetector(
@@ -33,8 +34,7 @@ class ForgetPasswordScreen extends StatelessWidget with LoginMixin {
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: SvgPicture.asset(
-                          'assets/vectors/forget_password_logo.svg',
+                      child: SvgPicture.asset(AppIcons.forgetPasswordLogo,
                           alignment: Alignment.topCenter),
                     ),
                     Padding(
@@ -90,8 +90,10 @@ class ForgetPasswordScreen extends StatelessWidget with LoginMixin {
                               borderRadius: BorderRadius.circular(8.0),
                             ))),
                         child: Text(S.of(context).requestNewPassword,
-                            style: const TextStyle(
-                                fontSize: 17.0, fontWeight: FontWeight.w600)),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline1
+                                ?.copyWith(fontWeight: FontWeight.w600)),
                       ),
                     ),
                   ]),

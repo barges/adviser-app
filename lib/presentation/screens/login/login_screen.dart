@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/screens/Login/forget_password_screen.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
 import 'package:shared_advisor_interface/presentation/screens/Login/login_mixin.dart';
-import 'package:shared_advisor_interface/presentation/widgets/appbar/simple_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/widgets/custom_text_field_widget.dart';
-import 'package:shared_advisor_interface/presentation/widgets/password_field_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/custom_text_field_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/password_field_widget.dart';
+import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
+import 'package:shared_advisor_interface/utils/routes.dart';
 
 class LoginScreen extends StatelessWidget with LoginMixin {
   LoginScreen({Key? key}) : super(key: key);
@@ -19,7 +21,7 @@ class LoginScreen extends StatelessWidget with LoginMixin {
     final FocusNode passwordNode = FocusNode();
 
     return Scaffold(
-        backgroundColor: const Color(0xffE5E5E5),
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: SimpleAppBar(title: S.of(context).login),
         body: SafeArea(
           child: GestureDetector(
@@ -34,7 +36,7 @@ class LoginScreen extends StatelessWidget with LoginMixin {
                       padding: const EdgeInsets.symmetric(horizontal: 44.0),
                       child: SizedBox.square(
                         dimension: 300,
-                        child: SvgPicture.asset('assets/vectors/login_logo.svg',
+                        child: SvgPicture.asset(AppIcons.logInLogo,
                             alignment: Alignment.topCenter),
                       ),
                     ),
@@ -75,20 +77,22 @@ class LoginScreen extends StatelessWidget with LoginMixin {
                               borderRadius: BorderRadius.circular(8.0),
                             ))),
                         child: Text(S.of(context).signIn,
-                            style: const TextStyle(
-                                fontSize: 17.0, fontWeight: FontWeight.w600)),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline1
+                                ?.copyWith(fontWeight: FontWeight.w600)),
                       ),
                     ),
                     TextButton(
                       onPressed: () {
-                        Get.toNamed((ForgetPasswordScreen).toString());
+                        Get.toNamed(Routes.forgetPassword);
                       },
                       child: Text(
                         "${S.of(context).forgetYourPassword}?".toLowerCase(),
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w400),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: AppColorsLight.secondary),
                       ),
                     )
                   ]),

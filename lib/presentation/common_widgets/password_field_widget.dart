@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
 
 class PasswordFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final TextInputAction? textInputAction;
-  final TextInputType? textInputType;
   final bool showErrorText;
   final String? errorText;
   final ValueChanged<String>? onSubmitted;
@@ -14,7 +14,6 @@ class PasswordFieldWidget extends StatelessWidget {
       {Key? key,
       required this.controller,
       this.textInputAction,
-      this.textInputType,
       this.label,
       this.showErrorText = false,
       this.onSubmitted,
@@ -32,24 +31,25 @@ class PasswordFieldWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 4.0),
             child: Text(label ?? '',
-                style: const TextStyle(fontWeight: FontWeight.w500)),
+                style: Theme.of(context).textTheme.titleMedium),
           ),
         Ink(
           height: 48,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: Colors.white,
+            color: AppColorsLight.uinegative,
           ),
           child: ValueListenableBuilder<bool>(
               valueListenable: hiddenPassword,
               builder: (_, isHidden, __) {
                 return TextField(
-                  focusNode: focusNode,
+                    focusNode: focusNode,
                     obscureText: isHidden,
                     controller: controller,
                     keyboardType: TextInputType.text,
                     textInputAction: textInputAction,
                     onSubmitted: onSubmitted,
+                    style: Theme.of(context).textTheme.bodyMedium,
                     showCursor: false,
                     maxLines: 1,
                     decoration: InputDecoration(
@@ -62,16 +62,13 @@ class PasswordFieldWidget extends StatelessWidget {
                                 : Icons.visibility)),
                         border: const OutlineInputBorder(
                             borderSide: BorderSide(
-                                width: 1, color: Color(0xffEADDEA)))));
+                                width: 1, color: AppColorsLight.highlight))));
               }),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 4.0),
           child: Text(showErrorText && errorText != null ? errorText! : '',
-              style: const TextStyle(
-                  color: Colors.red,
-                  fontSize: 13.0,
-                  fontWeight: FontWeight.w400)),
+              style: Theme.of(context).textTheme.bodySmall),
         )
       ],
     );

@@ -59,5 +59,13 @@ class AppColorsDark {
 
   static const Color reviews = Color(0xffEFB55F);
 
+  /// ======= new colors
+
+  static const Color highlight = Color(0xffEADDEA);
+  static const Color darkBlue = Color(0xff26264E);
+  static const Color secondary = Color(0xff721C70);
+
+  /// ======
+
   AppColorsDark._internal();
 }

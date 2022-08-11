@@ -1,18 +1,18 @@
-
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/presentation/screens/Login/forget_password_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/Login/login_screen.dart';
+import 'package:shared_advisor_interface/utils/routes.dart';
 
-class AppRoutes {
-  static final AppRoutes _appRoutes = AppRoutes._internal();
+class AppRouter {
+  static final AppRouter _appRoutes = AppRouter._internal();
 
-  factory AppRoutes() => _appRoutes;
+  factory AppRouter() => _appRoutes;
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case 'LoginScreen':
+      case Routes.logIn:
         return MaterialPageRoute(builder: (_) => LoginScreen());
-      case 'ForgetPasswordScreen':
+      case Routes.forgetPassword:
         return MaterialPageRoute(builder: (_) => ForgetPasswordScreen());
 
       default:
@@ -25,5 +25,6 @@ class AppRoutes {
         );
     }
   }
-  AppRoutes._internal();
+
+  AppRouter._internal();
 }

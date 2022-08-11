@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
 
 class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -13,8 +15,7 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      titleTextStyle: const TextStyle(
-          color: Colors.black, fontSize: 17.0, fontWeight: FontWeight.w400),
+      titleTextStyle: Theme.of(context).textTheme.headline1,
       leading: Navigator.canPop(context)
           ? InkResponse(
               onTap: () {
@@ -29,9 +30,8 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
                         color: Theme.of(context).colorScheme.secondary,
                         size: 16.0),
                     Text(
-                      'Back',
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary),
+                      S.of(context).back,
+                      style: Theme.of(context).textTheme.labelMedium,
                     )
                   ],
                 ),
@@ -44,7 +44,7 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
           statusBarColor: Colors.transparent),
       elevation: 0.0,
       title: Text(title),
-      backgroundColor: Colors.white,
+      backgroundColor: AppColorsLight.uinegative,
     );
   }
 }
