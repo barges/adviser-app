@@ -6,7 +6,8 @@ class CustomTextFieldWidget extends StatelessWidget {
   final TextInputType? textInputType;
   final bool showErrorText;
   final String? errorText;
-
+  final ValueChanged<String>? onSubmitted;
+  final FocusNode? focusNode;
   final String? label;
 
   const CustomTextFieldWidget(
@@ -16,6 +17,8 @@ class CustomTextFieldWidget extends StatelessWidget {
       this.textInputType,
       this.label,
       this.showErrorText = false,
+      this.onSubmitted,
+      this.focusNode,
       this.errorText})
       : super(key: key);
 
@@ -37,9 +40,11 @@ class CustomTextFieldWidget extends StatelessWidget {
             color: Colors.white,
           ),
           child: TextField(
+              focusNode: focusNode,
               controller: controller,
               keyboardType: textInputType,
               textInputAction: textInputAction,
+              onSubmitted: onSubmitted,
               showCursor: false,
               maxLines: 1,
               decoration: const InputDecoration(

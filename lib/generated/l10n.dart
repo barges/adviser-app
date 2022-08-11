@@ -120,11 +120,11 @@ class S {
     );
   }
 
-  /// `Confirm your password`
-  String get confirmYourPassword {
+  /// `Confirm new password`
+  String get confirmNewPassword {
     return Intl.message(
-      'Confirm your password',
-      name: 'confirmYourPassword',
+      'Confirm new password',
+      name: 'confirmNewPassword',
       desc: '',
       args: [],
     );
@@ -135,6 +135,36 @@ class S {
     return Intl.message(
       'Request a new password',
       name: 'requestNewPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The user was not found`
+  String get theUserWasNotFound {
+    return Intl.message(
+      'The user was not found',
+      name: 'theUserWasNotFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The passwords must match`
+  String get thePasswordsMustMatch {
+    return Intl.message(
+      'The passwords must match',
+      name: 'thePasswordsMustMatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter at least 8 characters`
+  String get pleaseEnterAtLeast8Characters {
+    return Intl.message(
+      'Please enter at least 8 characters',
+      name: 'pleaseEnterAtLeast8Characters',
       desc: '',
       args: [],
     );

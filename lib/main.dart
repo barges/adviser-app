@@ -5,6 +5,7 @@ import 'package:logger/logger.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/screens/Login/login_screen.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_themes.dart';
+import 'package:shared_advisor_interface/utils/app_routes.dart';
 
 final logger = Logger(printer: SimplePrinter());
 
@@ -26,6 +27,8 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: AppThemes.themeLight(context),
       darkTheme: AppThemes.themeDark(context),
+      initialRoute: LoginScreen().toString(),
+      onGenerateRoute: AppRoutes.generateRoute,
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -45,7 +48,6 @@ class _MyAppState extends State<MyApp> {
         }
         return supportedLocales.first;
       },
-      home: const LoginScreen(),
     );
   }
 }

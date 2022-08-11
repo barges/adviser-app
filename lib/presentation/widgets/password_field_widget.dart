@@ -6,7 +6,8 @@ class PasswordFieldWidget extends StatelessWidget {
   final TextInputType? textInputType;
   final bool showErrorText;
   final String? errorText;
-
+  final ValueChanged<String>? onSubmitted;
+  final FocusNode? focusNode;
   final String? label;
 
   const PasswordFieldWidget(
@@ -16,6 +17,8 @@ class PasswordFieldWidget extends StatelessWidget {
       this.textInputType,
       this.label,
       this.showErrorText = false,
+      this.onSubmitted,
+      this.focusNode,
       this.errorText})
       : super(key: key);
 
@@ -40,16 +43,19 @@ class PasswordFieldWidget extends StatelessWidget {
           child: ValueListenableBuilder<bool>(
               valueListenable: hiddenPassword,
               builder: (_, isHidden, __) {
-                return TextField(obscureText: isHidden,
+                return TextField(
+                  focusNode: focusNode,
+                    obscureText: isHidden,
                     controller: controller,
                     keyboardType: TextInputType.text,
                     textInputAction: textInputAction,
+                    onSubmitted: onSubmitted,
                     showCursor: false,
                     maxLines: 1,
                     decoration: InputDecoration(
                         suffixIcon: GestureDetector(
                             onTap: () {
-                              hiddenPassword.value=!hiddenPassword.value;
+                              hiddenPassword.value = !hiddenPassword.value;
                             },
                             child: Icon(isHidden
                                 ? Icons.visibility_off

@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/screens/Login/forget_password_screen.dart';
-import 'package:shared_advisor_interface/presentation/screens/Login/widgets/custom_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/screens/Login/widgets/custom_text_field_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/Login/login_mixin.dart';
+import 'package:shared_advisor_interface/presentation/widgets/appbar/simple_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/widgets/custom_text_field_widget.dart';
+import 'package:shared_advisor_interface/presentation/widgets/password_field_widget.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatelessWidget with LoginMixin {
+  LoginScreen({Key? key}) : super(key: key);
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final FocusNode passwordNode = FocusNode();
+
     return Scaffold(
         backgroundColor: const Color(0xffE5E5E5),
-        appBar: CustomAppBar(title: S.of(context).login),
+        appBar: SimpleAppBar(title: S.of(context).login),
         body: SafeArea(
           child: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
@@ -31,22 +39,33 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     CustomTextFieldWidget(
-                        controller: TextEditingController(),
-                        label: S.of(context).email,
-                        errorText: 'The user was not found',
-                        showErrorText: true),
+                      controller: emailController,
+                      label: S.of(context).email,
+                      errorText: S.of(context).theUserWasNotFound,
+                      showErrorText: true,
+                      textInputAction: TextInputAction.next,
+                      onSubmitted: (_) {
+                        FocusScope.of(context).requestFocus(passwordNode);
+                      },
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(top: 12.0, bottom: 18.0),
-                      child: CustomTextFieldWidget(
-                          controller: TextEditingController(),
-                          label: S.of(context).password,
-                          errorText: 'Password is not correct!',
-                          showErrorText: true),
+                      child: PasswordFieldWidget(
+                        focusNode: passwordNode,
+                        controller: passwordController,
+                        label: S.of(context).password,
+                        errorText: S.of(context).pleaseEnterAtLeast8Characters,
+                        showErrorText: true,
+                        textInputAction: TextInputAction.send,
+                        onSubmitted: (_) {
+                          login();
+                        },
+                      ),
                     ),
                     SizedBox(
                       width: double.maxFinite,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: login,
                         style: ButtonStyle(
                             padding:
                                 MaterialStateProperty.all<EdgeInsetsGeometry>(
@@ -62,15 +81,10 @@ class LoginScreen extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        /*Get.to((ForgetPasswordScreen).toString());*/
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const ForgetPasswordScreen()));
+                        Get.toNamed((ForgetPasswordScreen).toString());
                       },
                       child: Text(
-                        "${S.of(context).forgetYourPassword}?",
+                        "${S.of(context).forgetYourPassword}?".toLowerCase(),
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
                             fontSize: 15.0,
@@ -81,5 +95,12 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
         ));
+  }
+
+  void login() {
+    if (isEmail(emailController.text) &&
+        !isWeakPassword(passwordController.text)) {
+      //TODO login
+    }
   }
 }
