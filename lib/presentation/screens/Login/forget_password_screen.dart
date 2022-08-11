@@ -44,7 +44,7 @@ class ForgetPasswordScreen extends StatelessWidget with LoginMixin {
                         label: S.of(context).email,
                         errorText: S.of(context).theUserWasNotFound,
                         textInputAction: TextInputAction.next,
-                        showErrorText: true,
+                        showErrorText: !isEmail(emailController.text),
                         onSubmitted: (_) {
                           FocusScope.of(context).requestFocus(passwordNode);
                         },
@@ -56,7 +56,7 @@ class ForgetPasswordScreen extends StatelessWidget with LoginMixin {
                       label: S.of(context).password,
                       errorText: S.of(context).pleaseEnterAtLeast8Characters,
                       textInputAction: TextInputAction.next,
-                      showErrorText: true,
+                      showErrorText: isWeakPassword(passwordController.text),
                       onSubmitted: (_) {
                         FocusScope.of(context)
                             .requestFocus(confirmPasswordNode);
@@ -69,7 +69,8 @@ class ForgetPasswordScreen extends StatelessWidget with LoginMixin {
                         controller: confirmPasswordController,
                         label: S.of(context).confirmNewPassword,
                         errorText: S.of(context).thePasswordsMustMatch,
-                        showErrorText: true,
+                        showErrorText: passwordController.text !=
+                            confirmPasswordController.text,
                         textInputAction: TextInputAction.send,
                         onSubmitted: (_) {
                           resetPassword();

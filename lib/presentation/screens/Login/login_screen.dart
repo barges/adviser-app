@@ -42,7 +42,7 @@ class LoginScreen extends StatelessWidget with LoginMixin {
                       controller: emailController,
                       label: S.of(context).email,
                       errorText: S.of(context).theUserWasNotFound,
-                      showErrorText: true,
+                      showErrorText: !isEmail(emailController.text),
                       textInputAction: TextInputAction.next,
                       onSubmitted: (_) {
                         FocusScope.of(context).requestFocus(passwordNode);
@@ -55,7 +55,7 @@ class LoginScreen extends StatelessWidget with LoginMixin {
                         controller: passwordController,
                         label: S.of(context).password,
                         errorText: S.of(context).pleaseEnterAtLeast8Characters,
-                        showErrorText: true,
+                        showErrorText: isWeakPassword(passwordController.text),
                         textInputAction: TextInputAction.send,
                         onSubmitted: (_) {
                           login();
