@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_colors.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_text_styles.dart';
 
 class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -15,7 +16,7 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      titleTextStyle: Theme.of(context).textTheme.headline1,
+      titleTextStyle: AppTextStyles.appBarTitleStyle,
       leading: Navigator.canPop(context)
           ? InkResponse(
               onTap: () {
@@ -26,12 +27,11 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.arrow_back_ios,
-                        color: Theme.of(context).colorScheme.secondary,
-                        size: 16.0),
+                    const Icon(Icons.arrow_back_ios,
+                        color: AppColors.secondary, size: 16.0),
                     Text(
                       S.of(context).back,
-                      style: Theme.of(context).textTheme.labelMedium,
+                      style: AppTextStyles.labelMedium,
                     )
                   ],
                 ),
@@ -44,7 +44,7 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
           statusBarColor: Colors.transparent),
       elevation: 0.0,
       title: Text(title),
-      backgroundColor: AppColorsLight.uinegative,
+      backgroundColor: Theme.of(context).canvasColor,
     );
   }
 }

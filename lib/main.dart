@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/Login/forget_password_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/Login/login_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/notifications/notifications_screen.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_themes.dart';
 
 final logger = Logger(printer: SimplePrinter());
@@ -25,6 +26,8 @@ class _MyAppState extends State<MyApp> {
   final List<GetPage> getPages = [
     GetPage(name: Routes.logIn, page: () => LoginScreen()),
     GetPage(name: Routes.forgetPassword, page: () => ForgetPasswordScreen()),
+    GetPage(
+        name: Routes.notifications, page: () => const NotificationsScreen()),
   ];
 
   @override

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors_dark.dart';
 
@@ -30,7 +29,6 @@ class AppThemes {
       indicatorColor: Colors.black,
       splashColor: Colors.red.shade50,
       hintColor: Colors.grey.shade400,
-      textTheme: _textLightTheme(),
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
               textStyle: const TextStyle(fontWeight: FontWeight.bold))),
@@ -64,51 +62,10 @@ class AppThemes {
       canvasColor: Colors.black,
       disabledColor: Colors.grey,
       hoverColor: AppColorsDark.ui,
-      textTheme: _textDarkTheme(),
       textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
               primary: Colors.white,
               textStyle: const TextStyle(fontWeight: FontWeight.bold))),
     );
   }
-}
-
-TextTheme _textLightTheme() {
-  return TextTheme(
-    headline1: GoogleFonts.redHatDisplay(
-        color: AppColorsLight.darkBlue,
-        fontSize: 17.0,
-        fontWeight: FontWeight.w400),
-    labelMedium: GoogleFonts.redHatDisplay(color: AppColorsLight.secondary),
-    titleMedium: GoogleFonts.redHatDisplay(
-        fontWeight: FontWeight.w500, color: AppColorsLight.darkBlue),
-    bodyMedium: GoogleFonts.redHatDisplay(
-        fontWeight: FontWeight.w400,
-        fontSize: 15.0,
-        color: AppColorsLight.darkBlue),
-    bodySmall: GoogleFonts.redHatDisplay(
-        color: AppColorsLight.error,
-        fontSize: 13.0,
-        fontWeight: FontWeight.w400),
-  );
-}
-
-TextTheme _textDarkTheme() {
-  return TextTheme(
-    headline1: GoogleFonts.redHatDisplay(
-        color: AppColorsDark.darkBlue,
-        fontSize: 17.0,
-        fontWeight: FontWeight.w400),
-    labelMedium: GoogleFonts.redHatDisplay(color: AppColorsDark.secondary),
-    titleMedium: GoogleFonts.redHatDisplay(
-        fontWeight: FontWeight.w500, color: AppColorsDark.darkBlue),
-    bodyMedium: GoogleFonts.redHatDisplay(
-        fontWeight: FontWeight.w400,
-        fontSize: 15.0,
-        color: AppColorsDark.darkBlue),
-    bodySmall: GoogleFonts.redHatDisplay(
-        color: AppColorsDark.error,
-        fontSize: 13.0,
-        fontWeight: FontWeight.w400),
-  );
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_text_styles.dart';
 import 'package:shared_advisor_interface/presentation/screens/Login/login_mixin.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/custom_text_field_widget.dart';
@@ -21,7 +22,7 @@ class ForgetPasswordScreen extends StatelessWidget with LoginMixin {
     final FocusNode confirmPasswordNode = FocusNode();
 
     return Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: SimpleAppBar(title: S.of(context).forgetYourPassword),
         body: SafeArea(
           child: GestureDetector(
@@ -90,10 +91,7 @@ class ForgetPasswordScreen extends StatelessWidget with LoginMixin {
                               borderRadius: BorderRadius.circular(8.0),
                             ))),
                         child: Text(S.of(context).requestNewPassword,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline1
-                                ?.copyWith(fontWeight: FontWeight.w600)),
+                            style: AppTextStyles.buttonTextStyle),
                       ),
                     ),
                   ]),

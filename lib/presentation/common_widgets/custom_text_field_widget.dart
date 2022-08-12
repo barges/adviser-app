@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_colors.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_text_styles.dart';
 
 class CustomTextFieldWidget extends StatelessWidget {
   final TextEditingController controller;
@@ -32,13 +33,13 @@ class CustomTextFieldWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 4.0),
             child: Text(label ?? '',
-                style: Theme.of(context).textTheme.titleMedium),
+                style: AppTextStyles.titleMedium),
           ),
         Ink(
           height: 48,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: AppColorsLight.uinegative,
+            color: Theme.of(context).canvasColor,
           ),
           child: TextField(
               focusNode: focusNode,
@@ -46,18 +47,18 @@ class CustomTextFieldWidget extends StatelessWidget {
               keyboardType: textInputType,
               textInputAction: textInputAction,
               onSubmitted: onSubmitted,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: AppTextStyles.bodyMedium,
               showCursor: false,
               maxLines: 1,
               decoration: const InputDecoration(
                   border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 1, color: AppColorsLight.highlight)))),
+                      borderSide:
+                          BorderSide(width: 1, color: AppColors.highlight)))),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 4.0),
           child: Text(showErrorText && errorText != null ? errorText! : '',
-              style: Theme.of(context).textTheme.bodySmall),
+              style: AppTextStyles.errorTextStyle),
         )
       ],
     );
