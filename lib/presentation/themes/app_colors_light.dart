@@ -6,7 +6,15 @@ class AppColorsLight {
 
   static const Color background = Color(0xFFE5E5E5);
 
-  static const Color primary = Color(0xFF0EBBB3);
+  static const Color primary = Color(0xff721C70);
+
+  static const Color secondary = Color(0xff26264E);
+
+  static const Color cta = Color(0xff0EBBB3);
+
+  static const Color highLight = Color(0xffEADDEA);
+
+  static const Color inactive1 = Color(0xff878787);
 
   static const Color rating = Color(0xFFF8D275); //Light & Dark - color is same
 

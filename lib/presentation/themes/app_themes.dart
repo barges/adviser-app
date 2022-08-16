@@ -3,23 +3,9 @@ import 'package:shared_advisor_interface/presentation/themes/app_colors_light.da
 import 'package:shared_advisor_interface/presentation/themes/app_colors_dark.dart';
 
 class AppThemes {
-
   static ThemeData themeLight(BuildContext context) {
-    final Map<int, Color> color = {
-      50: const Color.fromRGBO(77, 176, 91, .1),
-      100: const Color.fromRGBO(77, 176, 91, .2),
-      200: const Color.fromRGBO(77, 176, 91, .3),
-      300: const Color.fromRGBO(77, 176, 91, .4),
-      400: const Color.fromRGBO(77, 176, 91, .5),
-      500: const Color.fromRGBO(77, 176, 91, .6),
-      600: const Color.fromRGBO(77, 176, 91, .7),
-      700: const Color.fromRGBO(77, 176, 91, .8),
-      800: const Color.fromRGBO(77, 176, 91, .9),
-      900: const Color.fromRGBO(77, 176, 91, 1),
-    };
     return ThemeData(
       scaffoldBackgroundColor: AppColorsLight.background,
-      primarySwatch: MaterialColor(0xFF4DB05B, color),
       canvasColor: Colors.white,
       primaryColor: AppColorsLight.primary,
       disabledColor: Colors.grey,
@@ -29,31 +15,74 @@ class AppThemes {
       indicatorColor: Colors.black,
       splashColor: Colors.red.shade50,
       hintColor: Colors.grey.shade400,
+      errorColor: AppColorsLight.error,
+      focusColor: AppColorsLight.cta,
+      iconTheme: const IconThemeData(
+          color: AppColorsLight.inactive1,
+      ),
+      colorScheme: ThemeData().colorScheme.copyWith(
+        primary: AppColorsLight.inactive1,
+      ),
+      textTheme: const TextTheme(
+        labelMedium: TextStyle(
+          fontSize: 14.0,
+          fontWeight: FontWeight.w500,
+          color: AppColorsLight.secondary,
+        ),
+        titleMedium: TextStyle(
+            color: AppColorsLight.secondary,
+            fontSize: 17.0,
+            fontWeight: FontWeight.w600),
+        bodySmall: TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: 13.0,
+          color: AppColorsLight.secondary,
+        ),
+        bodyMedium: TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: 15.0,
+          color: AppColorsLight.secondary,
+        ),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-              textStyle: const TextStyle(fontWeight: FontWeight.bold))),
-      textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontWeight: FontWeight.w500))),
+        primary: AppColorsLight.cta,
+        textStyle: const TextStyle(
+            color: AppColorsLight.uinegative,
+            fontSize: 17.0,
+            fontWeight: FontWeight.w600),
+      )),
+      // textButtonTheme: TextButtonThemeData(
+      //     style: TextButton.styleFrom(
+      //         textStyle: const TextStyle(
+      //             color: AppColorsLight.uinegative,
+      //             fontSize: 17.0,
+      //             fontWeight: FontWeight.w600),),),
+
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColorsLight.highLight),
+            borderRadius: BorderRadius.circular(8.0)),
+        errorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColorsLight.error),
+            borderRadius: BorderRadius.circular(8.0)),
+        focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColorsLight.highLight),
+            borderRadius: BorderRadius.circular(8.0)),
+        enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColorsLight.highLight),
+            borderRadius: BorderRadius.circular(8.0)),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: AppColorsLight.highLight),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
     );
   }
 
   static ThemeData themeDark(BuildContext context) {
-    final Map<int, Color> color = {
-      50: const Color.fromRGBO(106, 204, 101, .1),
-      100: const Color.fromRGBO(106, 204, 101, .2),
-      200: const Color.fromRGBO(106, 204, 101, .3),
-      300: const Color.fromRGBO(106, 204, 101, .4),
-      400: const Color.fromRGBO(106, 204, 101, .5),
-      500: const Color.fromRGBO(106, 204, 101, .6),
-      600: const Color.fromRGBO(106, 204, 101, .7),
-      700: const Color.fromRGBO(106, 204, 101, .8),
-      800: const Color.fromRGBO(106, 204, 101, .9),
-      900: const Color.fromRGBO(106, 204, 101, 1),
-    };
     return ThemeData(
       scaffoldBackgroundColor: AppColorsDark.background,
-      primarySwatch: MaterialColor(0xFF6ACC65, color),
       primaryColor: AppColorsDark.primary,
       primaryColorLight: Colors.black,
       brightness: Brightness.dark,
@@ -62,6 +91,7 @@ class AppThemes {
       canvasColor: Colors.black,
       disabledColor: Colors.grey,
       hoverColor: AppColorsDark.ui,
+      errorColor: AppColorsDark.error,
       textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
               primary: Colors.white,

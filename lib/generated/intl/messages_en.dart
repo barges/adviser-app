@@ -26,12 +26,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirmNewPassword":
             MessageLookupByLibrary.simpleMessage("Confirm new password"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
-        "forgetYourPassword":
-            MessageLookupByLibrary.simpleMessage("Forget your password"),
+        "forgotYourPassword":
+            MessageLookupByLibrary.simpleMessage("Forgot your password"),
         "login": MessageLookupByLibrary.simpleMessage("Log in"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "pleaseEnterAtLeast8Characters": MessageLookupByLibrary.simpleMessage(
             "Please enter at least 8 characters"),
+        "pleaseInsertCorrectEmail": MessageLookupByLibrary.simpleMessage(
+            "Please, insert correct email"),
         "requestNewPassword":
             MessageLookupByLibrary.simpleMessage("Request a new password"),
         "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),

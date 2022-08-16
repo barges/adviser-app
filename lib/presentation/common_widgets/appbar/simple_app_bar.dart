@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_colors.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_text_styles.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
 
 class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -16,7 +15,7 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      titleTextStyle: AppTextStyles.appBarTitleStyle,
+      titleTextStyle: Get.textTheme.titleMedium,
       leading: Navigator.canPop(context)
           ? InkResponse(
               onTap: () {
@@ -27,21 +26,19 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.arrow_back_ios,
-                        color: AppColors.secondary, size: 16.0),
+                    Icon(AppIcons.iosBackButton,
+                        color: Get.theme.primaryColor, size: 16.0),
                     Text(
                       S.of(context).back,
-                      style: AppTextStyles.labelMedium,
+                      style: Get.textTheme.labelMedium?.copyWith(
+                        color: Get.theme.primaryColor,
+                      ),
                     )
                   ],
                 ),
               ))
           : const SizedBox(),
       leadingWidth: 70,
-      systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarBrightness: Brightness.dark,
-          statusBarIconBrightness: Brightness.dark,
-          statusBarColor: Colors.transparent),
       elevation: 0.0,
       title: Text(title),
       backgroundColor: Theme.of(context).canvasColor,

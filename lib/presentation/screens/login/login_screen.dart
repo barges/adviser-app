@@ -2,20 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_colors.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_text_styles.dart';
 import 'package:shared_advisor_interface/presentation/resources/routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/Login/login_mixin.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/custom_text_field_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/email_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/password_field_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/login/login_controller.dart';
 
-class LoginScreen extends StatelessWidget with LoginMixin {
-  LoginScreen({Key? key}) : super(key: key);
-
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+class LoginScreen extends GetWidget<LoginController> {
+ const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,59 +32,53 @@ class LoginScreen extends StatelessWidget with LoginMixin {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 44.0),
                       child: SizedBox.square(
-                        dimension: 300,
+                        dimension: 300.0,
                         child: SvgPicture.asset(AppIcons.logInLogo,
                             alignment: Alignment.topCenter),
                       ),
                     ),
-                    CustomTextFieldWidget(
-                      controller: emailController,
-                      label: S.of(context).email,
-                      errorText: S.of(context).theUserWasNotFound,
-                      showErrorText: !isEmail(emailController.text),
-                      textInputAction: TextInputAction.next,
-                      onSubmitted: (_) {
-                        FocusScope.of(context).requestFocus(passwordNode);
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12.0, bottom: 18.0),
-                      child: PasswordFieldWidget(
+                    Obx(() => EmailFieldWidget(
+                          showErrorText: !controller.emailIsValid() &&
+                              controller.email.value.isNotEmpty,
+                          nextFocusNode: passwordNode,
+                          onChanged: (text) {
+                            controller.email.value = text;
+                          },
+                        )),
+                    Obx(() {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 12.0, bottom: 18.0),
+                        child:  PasswordFieldWidget(
                         focusNode: passwordNode,
-                        controller: passwordController,
                         label: S.of(context).password,
                         errorText: S.of(context).pleaseEnterAtLeast8Characters,
-                        showErrorText: isWeakPassword(passwordController.text),
-                        textInputAction: TextInputAction.send,
-                        onSubmitted: (_) {
-                          login();
+                        textInputAction: TextInputAction.next,
+                        showErrorText: !controller.passwordIsValid() &&
+                            controller.password.value.isNotEmpty,
+                        onSubmitted:(_) => login,
+                        onChanged: (text) {
+                          controller.password.value = text;
+                        },
+                        hiddenPassword: controller.hiddenPassword.value,
+                        clickToHide: () {
+                          controller.hiddenPassword.value =
+                          !controller.hiddenPassword.value;
                         },
                       ),
-                    ),
-                    SizedBox(
-                      width: double.maxFinite,
-                      child: ElevatedButton(
-                        onPressed: login,
-                        style: ButtonStyle(
-                            padding:
-                                MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                    const EdgeInsets.symmetric(vertical: 14.0)),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ))),
-                        child: Text(S.of(context).signIn,
-                            style: AppTextStyles.buttonTextStyle),
-                      ),
+                      );
+                    }),
+                    AppElevatedButton(
+                      text: S.of(context).signIn,
+                      onPressed: login,
                     ),
                     TextButton(
                       onPressed: () {
-                        Get.toNamed(Routes.forgetPassword);
+                        Get.toNamed(Routes.forgotPassword);
                       },
                       child: Text(
-                        "${S.of(context).forgetYourPassword}?".toLowerCase(),
-                        style: AppTextStyles.bodyMedium
-                            .copyWith(color: AppColors.secondary),
+                        '${S.of(context).forgotYourPassword}?',
+                        style: Get.textTheme.bodyMedium
+                            ?.copyWith(color: Get.theme.primaryColor),
                       ),
                     )
                   ]),
@@ -98,9 +88,8 @@ class LoginScreen extends StatelessWidget with LoginMixin {
   }
 
   void login() {
-    if (isEmail(emailController.text) &&
-        !isWeakPassword(passwordController.text)) {
-      //TODO login
+    if (controller.emailIsValid() && controller.passwordIsValid()) {
+     controller.login();
     }
   }
 }

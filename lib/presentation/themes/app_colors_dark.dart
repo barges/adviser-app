@@ -8,6 +8,8 @@ class AppColorsDark {
 
   static const Color primary = Color(0xFF0EBBB3);
 
+  static const Color cta = Color(0xff0EBBB3);
+
   static const Color rating = Color(0xFFF8D275); //Light & Dark - color is same
 
   static const Color busy = Color(0xFF939DA3);

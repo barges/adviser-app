@@ -80,11 +80,11 @@ class S {
     );
   }
 
-  /// `Forget your password`
-  String get forgetYourPassword {
+  /// `Forgot your password`
+  String get forgotYourPassword {
     return Intl.message(
-      'Forget your password',
-      name: 'forgetYourPassword',
+      'Forgot your password',
+      name: 'forgotYourPassword',
       desc: '',
       args: [],
     );
@@ -155,6 +155,16 @@ class S {
     return Intl.message(
       'Please enter at least 8 characters',
       name: 'pleaseEnterAtLeast8Characters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please, insert correct email`
+  String get pleaseInsertCorrectEmail {
+    return Intl.message(
+      'Please, insert correct email',
+      name: 'pleaseInsertCorrectEmail',
       desc: '',
       args: [],
     );

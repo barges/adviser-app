@@ -1,5 +1,6 @@
 class Routes {
-  static const logIn = '/logIn';
-  static const forgetPassword = '/forgetPassword';
-  static const notifications = '/notifications';
+  static const splash = '/splash_screen';
+  static const login = '/login_screen';
+  static const forgotPassword = '/forgot_password_screen';
+  static const notifications = '/notifications_screen';
 }
