@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/di/bindings/init_binding.dart';
-import 'package:shared_advisor_interface/presentation/resources/routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/Login/login_screen.dart';
-import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_binding.dart';
-import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_screen.dart';
-import 'package:shared_advisor_interface/presentation/screens/login/login_binding.dart';
-import 'package:shared_advisor_interface/presentation/screens/notifications/notifications_screen.dart';
-import 'package:shared_advisor_interface/presentation/screens/splash/splash_screen.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_pages.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_themes.dart';
 
 final logger = Logger(printer: SimplePrinter());
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
@@ -28,36 +25,16 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final List<GetPage> getPages = [
-    GetPage(
-      name: Routes.splash,
-      page: () => const SplashScreen(),
-    ),
-    GetPage(
-      name: Routes.login,
-      page: () => const LoginScreen(),
-      binding: LoginBinding(),
-    ),
-    GetPage(
-      name: Routes.forgotPassword,
-      page: () => const ForgotPasswordScreen(),
-      binding: ForgotPasswordBinding(),
-    ),
-    GetPage(
-      name: Routes.notifications,
-      page: () => const NotificationsScreen(),
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppThemes.themeLight(context),
       darkTheme: AppThemes.themeDark(context),
-      initialRoute: Routes.splash,
+      defaultTransition: Transition.native,
+      initialRoute: AppRoutes.splash,
       initialBinding: InitBinding(),
-      getPages: getPages,
+      getPages: AppPages.getPages,
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,

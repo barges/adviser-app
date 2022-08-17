@@ -9,7 +9,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/email_field
 import 'package:shared_advisor_interface/presentation/common_widgets/password_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_controller.dart';
 
-class ForgotPasswordScreen extends GetWidget<ForgotPasswordController> {
+class ForgotPasswordScreen extends GetView<ForgotPasswordController> {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
 
   @override
@@ -38,17 +38,16 @@ class ForgotPasswordScreen extends GetWidget<ForgotPasswordController> {
                       return Padding(
                         padding: const EdgeInsets.only(top: 28.0, bottom: 16.0),
                         child: EmailFieldWidget(
+                          controller: TextEditingController(),
                           showErrorText: !controller.emailIsValid() &&
                               controller.email.value.isNotEmpty,
                           nextFocusNode: passwordNode,
-                          onChanged: (text) {
-                            controller.email.value = text;
-                          },
                         ),
                       );
                     }),
                     Obx(() {
                       return PasswordFieldWidget(
+                        controller: controller.passwordController,
                         focusNode: passwordNode,
                         label: S.of(context).password,
                         errorText: S.of(context).pleaseEnterAtLeast8Characters,
@@ -58,9 +57,6 @@ class ForgotPasswordScreen extends GetWidget<ForgotPasswordController> {
                         onSubmitted: (_) {
                           FocusScope.of(context)
                               .requestFocus(confirmPasswordNode);
-                        },
-                        onChanged: (text) {
-                          controller.password.value = text;
                         },
                         hiddenPassword: controller.hiddenPassword.value,
                         clickToHide: () {
@@ -73,6 +69,7 @@ class ForgotPasswordScreen extends GetWidget<ForgotPasswordController> {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
                         child: PasswordFieldWidget(
+                          controller: controller.confirmPasswordController,
                           focusNode: confirmPasswordNode,
                           label: S.of(context).confirmNewPassword,
                           errorText: S.of(context).thePasswordsMustMatch,
@@ -82,9 +79,6 @@ class ForgotPasswordScreen extends GetWidget<ForgotPasswordController> {
                           textInputAction: TextInputAction.send,
                           onSubmitted: (_) {
                             resetPassword();
-                          },
-                          onChanged: (text) {
-                            controller.confirmPassword.value = text;
                           },
                           hiddenPassword:
                               controller.hiddenConfirmPassword.value,

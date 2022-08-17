@@ -4,13 +4,13 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
-import 'package:shared_advisor_interface/presentation/resources/routes.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/email_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/password_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_controller.dart';
 
-class LoginScreen extends GetWidget<LoginController> {
+class LoginScreen extends GetView<LoginController> {
  const LoginScreen({Key? key}) : super(key: key);
 
   @override
@@ -41,14 +41,13 @@ class LoginScreen extends GetWidget<LoginController> {
                           showErrorText: !controller.emailIsValid() &&
                               controller.email.value.isNotEmpty,
                           nextFocusNode: passwordNode,
-                          onChanged: (text) {
-                            controller.email.value = text;
-                          },
+                      controller: controller.emailController,
                         )),
                     Obx(() {
                       return Padding(
                         padding: const EdgeInsets.only(top: 12.0, bottom: 18.0),
                         child:  PasswordFieldWidget(
+                          controller: controller.passwordController,
                         focusNode: passwordNode,
                         label: S.of(context).password,
                         errorText: S.of(context).pleaseEnterAtLeast8Characters,
@@ -56,9 +55,6 @@ class LoginScreen extends GetWidget<LoginController> {
                         showErrorText: !controller.passwordIsValid() &&
                             controller.password.value.isNotEmpty,
                         onSubmitted:(_) => login,
-                        onChanged: (text) {
-                          controller.password.value = text;
-                        },
                         hiddenPassword: controller.hiddenPassword.value,
                         clickToHide: () {
                           controller.hiddenPassword.value =
@@ -73,7 +69,7 @@ class LoginScreen extends GetWidget<LoginController> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Get.toNamed(Routes.forgotPassword);
+                        Get.toNamed(AppRoutes.forgotPassword);
                       },
                       child: Text(
                         '${S.of(context).forgotYourPassword}?',
@@ -87,9 +83,12 @@ class LoginScreen extends GetWidget<LoginController> {
         ));
   }
 
-  void login() {
+  Future<void> login() async {
     if (controller.emailIsValid() && controller.passwordIsValid()) {
-     controller.login();
+    final bool isLoggedIn = await controller.login();
+    if(isLoggedIn){
+      Get.toNamed(AppRoutes.home,);
+    }
     }
   }
 }

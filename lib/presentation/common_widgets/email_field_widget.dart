@@ -4,13 +4,13 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 import 'package:shared_advisor_interface/generated/l10n.dart';
 
 class EmailFieldWidget extends StatelessWidget {
+  final TextEditingController controller;
   final bool showErrorText;
-  final ValueChanged<String>? onChanged;
   final FocusNode? nextFocusNode;
 
   const EmailFieldWidget({
     Key? key,
-    this.onChanged,
+    required this.controller,
     this.nextFocusNode,
     this.showErrorText = false,
   }) : super(key: key);
@@ -31,12 +31,12 @@ class EmailFieldWidget extends StatelessWidget {
             color: Get.theme.canvasColor,
           ),
           child: TextField(
+            controller: controller,
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
             onSubmitted: (_) {
               FocusScope.of(context).requestFocus(nextFocusNode);
             },
-            onChanged: onChanged,
             style: Get.textTheme.bodyMedium,
             maxLines: 1,
             decoration: showErrorText ?

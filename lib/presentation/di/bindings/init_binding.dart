@@ -5,10 +5,13 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/data/cache/data_cache_manager.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
 import 'package:shared_advisor_interface/data/repositories/auth_repository_impl.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 class InitBinding extends Bindings {
   final DeviceInfoPlugin deviceInfo =
@@ -16,17 +19,20 @@ class InitBinding extends Bindings {
 
   @override
   void dependencies() async {
-    await _initDio();
-    Dio dio = Get.find<Dio>();
+    ///Cache
+    Get.lazyPut<CacheManager>(() => DataCacheManager(), fenix: true);
+
+    Dio dio = await _initDio();
+    Get.lazyPut<Dio>(() => dio, fenix: true);
 
     ///APIs
-    Get.lazyPut<AuthApi>(() => AuthApi(dio));
+    Get.lazyPut<AuthApi>(() => AuthApi(dio), fenix: true);
 
     ///Repositories
-    Get.lazyPut<AuthRepository>(() => AuthRepositoryImpl());
+    Get.lazyPut<AuthRepository>(() => AuthRepositoryImpl(), fenix: true);
   }
 
-  Future<void> _initDio() async {
+  Future<Dio> _initDio() async {
     final dio = Dio();
     dio.options.baseUrl = 'https://api-staging.fortunica-app.com';
     dio.options.headers = await _getHeaders();
@@ -38,30 +44,26 @@ class InitBinding extends Bindings {
 
     dio.interceptors.add(InterceptorsWrapper(
         onError: (dioError, handler) => _errorInterceptor(dioError)));
-    Get.lazyPut<Dio>(() => dio);
+    return dio;
   }
 
   _errorInterceptor(DioError dioError) async {
-    // if (dioError.response?.statusCode == 401 ||
-    //     dioError.response?.statusCode == 423) {
-    //   // sl.get<CacheManager>().clear();
-    //   // navigatorKey.currentState?.pushAndRemoveUntil(
-    //   //     CupertinoPageRoute(
-    //   //       builder: (_) => LoginScreen(),
-    //   //     ),
-    //   //     (settings) => false);
-    // } else {
-    return dioError;
-    // }
+    if (dioError.response?.statusCode == 401 ||
+        dioError.response?.statusCode == 423) {
+      Get.find<CacheManager>().clear();
+      Get.offNamedUntil(AppRoutes.login, (route) => false);
+    } else {
+      return dioError;
+    }
   }
 
   Future<Map<String, dynamic>> _getHeaders() async {
-    final PackageInfo packageInfo = await Get.putAsync<PackageInfo>(() => PackageInfo.fromPlatform());
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
     Map<String, dynamic> headers = {
-      'Content-Type' : 'application/json',
-      'x-adviqo-version' : packageInfo.version,
-      'x-adviqo-platform' : Platform.operatingSystem,
+      'Content-Type': 'application/json',
+      'x-adviqo-version': packageInfo.version,
+      'x-adviqo-platform': Platform.operatingSystem,
     };
 
     // if (kDebugMode) {
@@ -85,6 +87,4 @@ class InitBinding extends Bindings {
 
     return headers;
   }
-
-
 }

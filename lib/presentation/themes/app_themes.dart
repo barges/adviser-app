@@ -29,6 +29,11 @@ class AppThemes {
           fontWeight: FontWeight.w500,
           color: AppColorsLight.secondary,
         ),
+        labelSmall: TextStyle(
+          fontSize: 10.0,
+          fontWeight: FontWeight.w500,
+          color: AppColorsLight.secondary,
+        ),
         titleMedium: TextStyle(
             color: AppColorsLight.secondary,
             fontSize: 17.0,

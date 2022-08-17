@@ -2,23 +2,41 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/network/responses/login_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
-import 'package:shared_advisor_interface/main.dart';
 
 class LoginController extends GetxController {
-
   final AuthRepository _repository = Get.find<AuthRepository>();
 
   final RxString email = ''.obs;
   final RxString password = ''.obs;
   final RxBool hiddenPassword = true.obs;
 
-  void login() async {
+  final passwordController = TextEditingController();
+  final emailController = TextEditingController();
+
+  @override
+  void onInit() {
+    super.onInit();
+    emailController.addListener(() {
+      email.value = emailController.text;
+    });
+    passwordController.addListener(() {
+      password.value = passwordController.text;
+    });
+  }
+
+  @override
+  void onClose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.onClose();
+  }
+
+  Future<bool> login() async {
     Get.find<Dio>().options.headers['Authorization'] = _getAuthHeader();
-    final LoginResponse? response = await _repository.login();
-    logger.d(response?.accessToken);
+    return await _repository.login();
   }
 
   String _getAuthHeader() {
@@ -30,6 +48,4 @@ class LoginController extends GetxController {
   bool emailIsValid() => GetUtils.isEmail(email.value);
 
   bool passwordIsValid() => password.value.length >= 8;
-
-
 }

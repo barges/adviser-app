@@ -4,28 +4,28 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
 
 class PasswordFieldWidget extends StatelessWidget {
+  final TextEditingController controller;
   final TextInputAction? textInputAction;
   final bool showErrorText;
   final bool hiddenPassword;
   final String? errorText;
   final ValueChanged<String>? onSubmitted;
-  final ValueChanged<String>? onChanged;
   final VoidCallback? clickToHide;
   final FocusNode? focusNode;
   final String? label;
 
-  const PasswordFieldWidget(
-      {Key? key,
-      this.textInputAction,
-      this.label,
-      this.showErrorText = false,
-      this.hiddenPassword = true,
-      this.onSubmitted,
-        this.clickToHide,
-      this.onChanged,
-      this.focusNode,
-      this.errorText})
-      : super(key: key);
+  const PasswordFieldWidget({
+    Key? key,
+    required this.controller,
+    this.textInputAction,
+    this.label,
+    this.onSubmitted,
+    this.clickToHide,
+    this.focusNode,
+    this.errorText,
+    this.showErrorText = false,
+    this.hiddenPassword = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +44,11 @@ class PasswordFieldWidget extends StatelessWidget {
             color: Theme.of(context).canvasColor,
           ),
           child: Theme(
-            data: Get.theme.copyWith(primaryColor: Colors.redAccent,),
+            data: Get.theme.copyWith(
+              primaryColor: Colors.redAccent,
+            ),
             child: TextField(
+              controller: controller,
               focusNode: focusNode,
               obscureText: hiddenPassword,
               keyboardType: TextInputType.visiblePassword,
@@ -53,46 +56,45 @@ class PasswordFieldWidget extends StatelessWidget {
               onSubmitted: onSubmitted,
               style: Get.textTheme.bodyMedium,
               maxLines: 1,
-              onChanged: onChanged,
               decoration: showErrorText
                   ? InputDecoration(
-                border: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: Get.theme.errorColor),
-                    borderRadius: BorderRadius.circular(8.0)),
-                errorBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: Get.theme.errorColor),
-                    borderRadius: BorderRadius.circular(8.0)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: Get.theme.errorColor),
-                    borderRadius: BorderRadius.circular(8.0)),
-                enabledBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: Get.theme.errorColor),
-                    borderRadius: BorderRadius.circular(8.0)),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Get.theme.errorColor),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                suffixIcon: GestureDetector(
-                  onTap: clickToHide,
-                  child: Icon(hiddenPassword
-                      ? AppIcons.visibility
-                      : AppIcons.visibilityOff,
-                    color: Get.iconColor,),
-                ),
-              )
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Get.theme.errorColor),
+                          borderRadius: BorderRadius.circular(8.0)),
+                      errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Get.theme.errorColor),
+                          borderRadius: BorderRadius.circular(8.0)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Get.theme.errorColor),
+                          borderRadius: BorderRadius.circular(8.0)),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Get.theme.errorColor),
+                          borderRadius: BorderRadius.circular(8.0)),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Get.theme.errorColor),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      suffixIcon: GestureDetector(
+                        onTap: clickToHide,
+                        child: Icon(
+                          hiddenPassword
+                              ? AppIcons.visibility
+                              : AppIcons.visibilityOff,
+                          color: Get.iconColor,
+                        ),
+                      ),
+                    )
                   : InputDecoration(
-                suffixIcon: GestureDetector(
-                  onTap: clickToHide,
-                  child: Icon(hiddenPassword
-                      ? AppIcons.visibility
-                      : AppIcons.visibilityOff,
-                    color: Get.iconColor,),
-                ),
-              ),
+                      suffixIcon: GestureDetector(
+                        onTap: clickToHide,
+                        child: Icon(
+                          hiddenPassword
+                              ? AppIcons.visibility
+                              : AppIcons.visibilityOff,
+                          color: Get.iconColor,
+                        ),
+                      ),
+                    ),
             ),
           ),
         ),
