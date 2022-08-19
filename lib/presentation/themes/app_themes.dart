@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors_dark.dart';
 
@@ -6,57 +7,63 @@ class AppThemes {
   static ThemeData themeLight(BuildContext context) {
     return ThemeData(
       scaffoldBackgroundColor: AppColorsLight.background,
-      canvasColor: Colors.white,
+      backgroundColor: AppColorsLight.uinegative,
+      canvasColor: AppColorsLight.contrast,
       primaryColor: AppColorsLight.primary,
-      disabledColor: Colors.grey,
       hoverColor: AppColorsLight.ui,
       brightness: Brightness.light,
-      primaryColorDark: Colors.black,
-      indicatorColor: Colors.black,
-      splashColor: Colors.red.shade50,
-      hintColor: Colors.grey.shade400,
+      hintColor: AppColorsLight.shade3,
       errorColor: AppColorsLight.error,
-      focusColor: AppColorsLight.cta,
+      focusColor: AppColorsLight.accent,
       iconTheme: const IconThemeData(
-          color: AppColorsLight.inactive1,
+        color: AppColorsLight.shade3,
       ),
-      colorScheme: ThemeData().colorScheme.copyWith(
-        primary: AppColorsLight.inactive1,
-      ),
-      textTheme: const TextTheme(
-        labelMedium: TextStyle(
-          fontSize: 14.0,
-          fontWeight: FontWeight.w500,
-          color: AppColorsLight.secondary,
-        ),
-        labelSmall: TextStyle(
-          fontSize: 10.0,
-          fontWeight: FontWeight.w500,
-          color: AppColorsLight.secondary,
-        ),
-        titleMedium: TextStyle(
-            color: AppColorsLight.secondary,
-            fontSize: 17.0,
-            fontWeight: FontWeight.w600),
-        bodySmall: TextStyle(
-          fontWeight: FontWeight.w400,
-          fontSize: 13.0,
-          color: AppColorsLight.secondary,
-        ),
-        bodyMedium: TextStyle(
-          fontWeight: FontWeight.w400,
-          fontSize: 15.0,
-          color: AppColorsLight.secondary,
+      // colorScheme: ThemeData().colorScheme.copyWith(
+      //       primary: AppColorsLight.inactive1,
+      //     ),
+
+      textTheme: GoogleFonts.redHatDisplayTextTheme(
+        const TextTheme(
+          headlineLarge: TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.w900,
+            color: AppColorsLight.ui,
+          ),
+          labelMedium: TextStyle(
+            fontSize: 14.0,
+            fontWeight: FontWeight.w500,
+            color: AppColorsLight.ui,
+          ),
+          labelSmall: TextStyle(
+            fontSize: 10.0,
+            fontWeight: FontWeight.w500,
+            color: AppColorsLight.ui,
+          ),
+          titleMedium: TextStyle(
+              color: AppColorsLight.ui,
+              fontSize: 17.0,
+              fontWeight: FontWeight.w600),
+          bodySmall: TextStyle(
+            fontWeight: FontWeight.w400,
+            fontSize: 13.0,
+            color: AppColorsLight.ui,
+          ),
+          bodyMedium: TextStyle(
+            fontWeight: FontWeight.w400,
+            fontSize: 15.0,
+            color: AppColorsLight.ui,
+          ),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-        primary: AppColorsLight.cta,
-        textStyle: const TextStyle(
-            color: AppColorsLight.uinegative,
-            fontSize: 17.0,
-            fontWeight: FontWeight.w600),
-      )),
+        style: ElevatedButton.styleFrom(
+          primary: AppColorsLight.accent,
+          textStyle: const TextStyle(
+              color: AppColorsLight.uinegative,
+              fontSize: 17.0,
+              fontWeight: FontWeight.w600),
+        ),
+      ),
       // textButtonTheme: TextButtonThemeData(
       //     style: TextButton.styleFrom(
       //         textStyle: const TextStyle(
@@ -66,19 +73,19 @@ class AppThemes {
 
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
-            borderSide: const BorderSide(color: AppColorsLight.highLight),
+            borderSide: const BorderSide(color: AppColorsLight.shade1),
             borderRadius: BorderRadius.circular(8.0)),
         errorBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: AppColorsLight.error),
             borderRadius: BorderRadius.circular(8.0)),
         focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: AppColorsLight.highLight),
+            borderSide: const BorderSide(color: AppColorsLight.shade1),
             borderRadius: BorderRadius.circular(8.0)),
         enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: AppColorsLight.highLight),
+            borderSide: const BorderSide(color: AppColorsLight.shade1),
             borderRadius: BorderRadius.circular(8.0)),
         focusedErrorBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColorsLight.highLight),
+          borderSide: const BorderSide(color: AppColorsLight.shade1),
           borderRadius: BorderRadius.circular(8.0),
         ),
       ),

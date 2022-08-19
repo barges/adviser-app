@@ -169,6 +169,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Choose brand to log in`
+  String get chooseBrandToLogIn {
+    return Intl.message(
+      'Choose brand to log in',
+      name: 'chooseBrandToLogIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Coming soon!`
+  String get comingSoon {
+    return Intl.message(
+      'Coming soon!',
+      name: 'comingSoon',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

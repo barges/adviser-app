@@ -10,5 +10,7 @@
   "theUserWasNotFound": "The user was not found",
   "thePasswordsMustMatch": "The passwords must match",
   "pleaseEnterAtLeast8Characters": "Please enter at least 8 characters",
-  "pleaseInsertCorrectEmail": "Please, insert correct email"
+  "pleaseInsertCorrectEmail": "Please, insert correct email",
+  "chooseBrandToLogIn": "Choose brand to log in",
+  "comingSoon": "Coming soon!"
 }

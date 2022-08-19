@@ -4,10 +4,13 @@ import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 
 class LoginController extends GetxController {
   final AuthRepository _repository = Get.find<AuthRepository>();
+
+  final Rx<Brand> selectedBrand = Brand.fortunica.obs;
 
   final RxString email = ''.obs;
   final RxString password = ''.obs;

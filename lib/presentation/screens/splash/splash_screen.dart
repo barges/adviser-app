@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_images.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_controller.dart';
 
 class SplashScreen extends GetView<SplashController> {
@@ -12,11 +13,10 @@ class SplashScreen extends GetView<SplashController> {
     return Scaffold(
       body: SizedBox(
         height: Get.height,
-        child: const Center(
-          child: Text(
-            'HELLO!\nLET\'S GO!!!',
-            textAlign: TextAlign.center,
-          ),
+        width: Get.width,
+        child: Image.asset(
+          AppImages.splash,
+          fit: BoxFit.fill,
         ),
       ),
     );
