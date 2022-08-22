@@ -40,7 +40,6 @@ class PasswordFieldWidget extends StatelessWidget {
         Ink(
           height: AppConstants.textFieldsHeight,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
             color: Theme.of(context).canvasColor,
           ),
           child: Theme(
@@ -51,6 +50,7 @@ class PasswordFieldWidget extends StatelessWidget {
               controller: controller,
               focusNode: focusNode,
               obscureText: hiddenPassword,
+              obscuringCharacter: '*',
               keyboardType: TextInputType.visiblePassword,
               textInputAction: textInputAction,
               onSubmitted: onSubmitted,
@@ -60,19 +60,19 @@ class PasswordFieldWidget extends StatelessWidget {
                   ? InputDecoration(
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Get.theme.errorColor),
-                          borderRadius: BorderRadius.circular(8.0)),
+                          borderRadius: BorderRadius.circular(0.0)),
                       errorBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Get.theme.errorColor),
-                          borderRadius: BorderRadius.circular(8.0)),
+                          borderRadius: BorderRadius.circular(0.0)),
                       focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Get.theme.errorColor),
-                          borderRadius: BorderRadius.circular(8.0)),
+                          borderRadius: BorderRadius.circular(0.0)),
                       enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Get.theme.errorColor),
-                          borderRadius: BorderRadius.circular(8.0)),
+                          borderRadius: BorderRadius.circular(0.0)),
                       focusedErrorBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Get.theme.errorColor),
-                        borderRadius: BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(0.0),
                       ),
                       suffixIcon: GestureDetector(
                         onTap: clickToHide,

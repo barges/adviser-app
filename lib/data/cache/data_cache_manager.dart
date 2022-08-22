@@ -4,29 +4,41 @@ import 'cache_manager.dart';
 
 
 const String tokenKey = 'tokenKey';
+const String localeIndexKey = 'localeIndexKey';
 
 class DataCacheManager implements CacheManager {
 
- final GetStorage _box = GetStorage();
+ final GetStorage _userBox = GetStorage();
+ final GetStorage _localeBox = GetStorage();
 
   @override
   Future<bool> clear() async {
-    await _box.erase();
+    await _userBox.erase();
     return true;
   }
 
   @override
   String? getToken() {
-    return _box.read(tokenKey);
+    return _userBox.read(tokenKey);
+  }
+
+  @override
+  int? getLocaleIndex() {
+    return _localeBox.read(localeIndexKey);
   }
 
   @override
   Future<void> saveToken(String? token) async {
-   await _box.write(tokenKey, token);
+   await _userBox.write(tokenKey, token);
+  }
+
+  @override
+  Future<void> saveLocaleIndex(int? index) async {
+   await _localeBox.write(localeIndexKey, index);
   }
 
   @override
   bool? isLoggedIn() {
-   return _box.hasData(tokenKey);
+   return _userBox.hasData(tokenKey);
   }
 }

@@ -60,31 +60,21 @@ class S {
     );
   }
 
-  /// `Log in`
+  /// `Login`
   String get login {
     return Intl.message(
-      'Log in',
+      'Login',
       name: 'login',
       desc: '',
       args: [],
     );
   }
 
-  /// `Sign in`
-  String get signIn {
+  /// `Forgot password`
+  String get forgotPassword {
     return Intl.message(
-      'Sign in',
-      name: 'signIn',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Forgot your password`
-  String get forgotYourPassword {
-    return Intl.message(
-      'Forgot your password',
-      name: 'forgotYourPassword',
+      'Forgot password',
+      name: 'forgotPassword',
       desc: '',
       args: [],
     );
@@ -120,21 +110,11 @@ class S {
     );
   }
 
-  /// `Request a new password`
-  String get requestNewPassword {
+  /// `Change password`
+  String get changePassword {
     return Intl.message(
-      'Request a new password',
-      name: 'requestNewPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `The user was not found`
-  String get theUserWasNotFound {
-    return Intl.message(
-      'The user was not found',
-      name: 'theUserWasNotFound',
+      'Change password',
+      name: 'changePassword',
       desc: '',
       args: [],
     );
@@ -197,6 +177,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'pt'),
     ];
   }
 

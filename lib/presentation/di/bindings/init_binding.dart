@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
-import 'package:shared_advisor_interface/data/cache/data_cache_manager.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
 import 'package:shared_advisor_interface/data/repositories/auth_repository_impl.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
@@ -19,8 +18,7 @@ class InitBinding extends Bindings {
 
   @override
   void dependencies() async {
-    ///Cache
-    Get.lazyPut<CacheManager>(() => DataCacheManager(), fenix: true);
+
 
     Dio dio = await _initDio();
     Get.lazyPut<Dio>(() => dio, fenix: true);

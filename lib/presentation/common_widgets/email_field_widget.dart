@@ -20,14 +20,13 @@ class EmailFieldWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 4.0),
-          child: Text(S.of(context).email, style: Get.textTheme.labelMedium),
+        Text(S.of(context).email, style: Get.textTheme.labelMedium),
+        const SizedBox(
+          height: 4.0,
         ),
         Ink(
           height: AppConstants.textFieldsHeight,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
             color: Get.theme.canvasColor,
           ),
           child: TextField(
@@ -44,22 +43,22 @@ class EmailFieldWidget extends StatelessWidget {
                   border: OutlineInputBorder(
                       borderSide:
                       BorderSide(color: Get.theme.errorColor),
-                      borderRadius: BorderRadius.circular(8.0)),
+                      borderRadius: BorderRadius.circular(0.0)),
                   errorBorder: OutlineInputBorder(
                       borderSide:
                       BorderSide(color: Get.theme.errorColor),
-                      borderRadius: BorderRadius.circular(8.0)),
+                      borderRadius: BorderRadius.circular(0.0)),
                   focusedBorder: OutlineInputBorder(
                       borderSide:
                       BorderSide(color: Get.theme.errorColor),
-                      borderRadius: BorderRadius.circular(8.0)),
+                      borderRadius: BorderRadius.circular(0.0)),
                   enabledBorder: OutlineInputBorder(
                       borderSide:
                       BorderSide(color: Get.theme.errorColor),
-                      borderRadius: BorderRadius.circular(8.0)),
+                      borderRadius: BorderRadius.circular(0.0)),
                   focusedErrorBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Get.theme.errorColor),
-                    borderRadius: BorderRadius.circular(8.0),
+                    borderRadius: BorderRadius.circular(0.0),
                   ),
                 ) : const InputDecoration(),
           ),

@@ -5,26 +5,34 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import '../resources/app_icons.dart';
 
 class AppElevatedButton extends StatelessWidget {
-  final VoidCallback? onPressed;
-  final String? text;
+  final String text;
+  final VoidCallback onPressed;
 
-  const AppElevatedButton({Key? key, this.onPressed, this.text})
-      : super(key: key);
+  const AppElevatedButton({
+    Key? key,
+    required this.text,
+    required this.onPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.maxFinite,
+    return Container(
+      width: double.infinity,
+      height: 42.0,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            colors: [Get.theme.primaryColorLight, Get.theme.primaryColorDark]),
+        borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+      ),
       child: ElevatedButton(
         onPressed: onPressed,
-        style: ButtonStyle(
-            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                const EdgeInsets.symmetric(vertical: 14.0)),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ))),
-        child: Text(text ?? ''),
+        style: ElevatedButton.styleFrom(
+          primary: Colors.transparent,
+          shadowColor: Colors.transparent,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(12.0))),
+        ),
+        child: Text(text),
       ),
     );
   }

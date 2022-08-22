@@ -19,7 +19,7 @@ class ForgotPasswordScreen extends GetView<ForgotPasswordController> {
 
     return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        appBar: SimpleAppBar(title: S.of(context).forgotYourPassword),
+        appBar: SimpleAppBar(title: S.of(context).forgotPassword),
         body: SafeArea(
           child: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
@@ -90,7 +90,7 @@ class ForgotPasswordScreen extends GetView<ForgotPasswordController> {
                       );
                     }),
                     AppElevatedButton(
-                      text: S.of(context).requestNewPassword,
+                      text: S.of(context).changePassword,
                       onPressed: resetPassword,
                     )
                   ]),

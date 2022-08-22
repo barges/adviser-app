@@ -5,10 +5,19 @@ class Configuration {
   static const List<Brand> brands = [
     Brand.fortunica,
     Brand.zodiacTouch,
+    Brand.fortunica,
     Brand.zodiacTouch,
+    Brand.fortunica,
     Brand.zodiacTouch,
+    Brand.fortunica,
     Brand.zodiacTouch,
+    Brand.fortunica,
     Brand.zodiacTouch,
+    Brand.fortunica,
+    Brand.zodiacTouch,
+    Brand.fortunica,
+    Brand.zodiacTouch,
+    Brand.fortunica,
     Brand.zodiacTouch,
   ];
 }
@@ -39,7 +48,7 @@ extension BrandExtension on Brand {
       case Brand.fortunica:
         return true;
       case Brand.zodiacTouch:
-        return false;
+        return true;
     }
   }
 

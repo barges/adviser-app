@@ -1,5 +1,5 @@
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
-// This is a library that provides messages for a en locale. All the
+// This is a library that provides messages for a pt locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
 
@@ -18,28 +18,27 @@ final messages = new MessageLookup();
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  String get localeName => 'en';
+  String get localeName => 'pt';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "back": MessageLookupByLibrary.simpleMessage("Back"),
-        "changePassword":
-            MessageLookupByLibrary.simpleMessage("Change password"),
-        "chooseBrandToLogIn":
-            MessageLookupByLibrary.simpleMessage("Choose brand to log in"),
-        "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon!"),
+        "changePassword": MessageLookupByLibrary.simpleMessage("Mudar senha"),
+        "chooseBrandToLogIn": MessageLookupByLibrary.simpleMessage(
+            "Escolha a marca para iniciar a sessão"),
+        "comingSoon": MessageLookupByLibrary.simpleMessage("Em breve!"),
         "confirmNewPassword":
-            MessageLookupByLibrary.simpleMessage("Confirm new password"),
+            MessageLookupByLibrary.simpleMessage("Confirme a nova senha"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "forgotPassword":
-            MessageLookupByLibrary.simpleMessage("Forgot password"),
+            MessageLookupByLibrary.simpleMessage("Esqueceu a senha"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
-        "password": MessageLookupByLibrary.simpleMessage("Password"),
+        "password": MessageLookupByLibrary.simpleMessage("Senha"),
         "pleaseEnterAtLeast8Characters": MessageLookupByLibrary.simpleMessage(
-            "Please enter at least 8 characters"),
+            "Insira pelo menos 8 caracteres"),
         "pleaseInsertCorrectEmail": MessageLookupByLibrary.simpleMessage(
-            "Please, insert correct email"),
+            "Por favor, insira o email correto"),
         "thePasswordsMustMatch":
-            MessageLookupByLibrary.simpleMessage("The passwords must match")
+            MessageLookupByLibrary.simpleMessage("As senhas devem corresponder")
       };
 }

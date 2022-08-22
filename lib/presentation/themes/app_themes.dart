@@ -10,18 +10,18 @@ class AppThemes {
       backgroundColor: AppColorsLight.uinegative,
       canvasColor: AppColorsLight.contrast,
       primaryColor: AppColorsLight.primary,
+      primaryColorLight: AppColorsLight.accent,
+      primaryColorDark: AppColorsLight.importantCta,
       hoverColor: AppColorsLight.ui,
       brightness: Brightness.light,
       hintColor: AppColorsLight.shade3,
       errorColor: AppColorsLight.error,
-      focusColor: AppColorsLight.accent,
       iconTheme: const IconThemeData(
         color: AppColorsLight.shade3,
       ),
       // colorScheme: ThemeData().colorScheme.copyWith(
       //       primary: AppColorsLight.inactive1,
       //     ),
-
       textTheme: GoogleFonts.redHatDisplayTextTheme(
         const TextTheme(
           headlineLarge: TextStyle(
@@ -57,7 +57,6 @@ class AppThemes {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          primary: AppColorsLight.accent,
           textStyle: const TextStyle(
               color: AppColorsLight.uinegative,
               fontSize: 17.0,
@@ -74,19 +73,19 @@ class AppThemes {
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
             borderSide: const BorderSide(color: AppColorsLight.shade1),
-            borderRadius: BorderRadius.circular(8.0)),
+            borderRadius: BorderRadius.circular(0.0)),
         errorBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: AppColorsLight.error),
-            borderRadius: BorderRadius.circular(8.0)),
+            borderRadius: BorderRadius.circular(0.0)),
         focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: AppColorsLight.shade1),
-            borderRadius: BorderRadius.circular(8.0)),
+            borderRadius: BorderRadius.circular(0.0)),
         enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: AppColorsLight.shade1),
-            borderRadius: BorderRadius.circular(8.0)),
+            borderRadius: BorderRadius.circular(0.0)),
         focusedErrorBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: AppColorsLight.shade1),
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(0.0),
         ),
       ),
     );

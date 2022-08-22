@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppColorsDark {
 
-  static const Color accent = Color(0xFF4DB05B);
+  static const Color accent = Color(0xFFE66069);
+
+  static const Color importantCta = Color(0xFFFFA94E);
 
   static const Color background = Color(0xFF0B0A0B);
 

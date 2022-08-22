@@ -3,6 +3,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/data/cache/data_cache_manager.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/di/bindings/init_binding.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_pages.dart';
@@ -25,8 +27,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final CacheManager _cacheManager =
+      Get.put<CacheManager>(DataCacheManager(), permanent: true);
+
+
   @override
   Widget build(BuildContext context) {
+
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppThemes.themeLight(context),
@@ -43,16 +51,22 @@ class _MyAppState extends State<MyApp> {
       ],
       supportedLocales: S.delegate.supportedLocales,
       localeResolutionCallback: (locale, supportedLocales) {
-        if (locale == null) {
+        final int? localeIndex = _cacheManager.getLocaleIndex();
+
+        if(localeIndex != null) {
+         return supportedLocales.toList()[localeIndex];
+        } else {
+          if (locale == null) {
+            return supportedLocales.first;
+          }
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale.languageCode ||
+                supportedLocale.countryCode == locale.countryCode) {
+              return supportedLocale;
+            }
+          }
           return supportedLocales.first;
         }
-        for (var supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == locale.languageCode ||
-              supportedLocale.countryCode == locale.countryCode) {
-            return supportedLocale;
-          }
-        }
-        return supportedLocales.first;
       },
     );
   }
