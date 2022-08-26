@@ -10,5 +10,8 @@
   "pleaseEnterAtLeast8Characters": "Please enter at least 8 characters",
   "pleaseInsertCorrectEmail": "Please, insert correct email",
   "chooseBrandToLogIn": "Choose brand to log in",
-  "comingSoon": "Coming soon!"
+  "comingSoon": "Coming soon!",
+  "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo": "You have successfully changed your password. Check your email to confirm password change",
+  "wrongUsernameOrPassword": "Wrong username or password",
+  "openEmailApp": "Open email app"
 }

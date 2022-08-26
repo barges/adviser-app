@@ -37,64 +37,44 @@ class PasswordFieldWidget extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 4.0),
             child: Text(label ?? '', style: Get.textTheme.labelMedium),
           ),
-        Ink(
-          height: AppConstants.textFieldsHeight,
+        Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).canvasColor,
+            borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
+            color: showErrorText ? Get.theme.errorColor : Get.theme.hintColor,
           ),
-          child: Theme(
-            data: Get.theme.copyWith(
-              primaryColor: Colors.redAccent,
+          child: Container(
+            margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
+            height: AppConstants.textFieldsHeight - 3,
+            decoration: BoxDecoration(
+              color: Theme.of(context).canvasColor,
+              borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
             ),
-            child: TextField(
-              controller: controller,
-              focusNode: focusNode,
-              obscureText: hiddenPassword,
-              obscuringCharacter: '*',
-              keyboardType: TextInputType.visiblePassword,
-              textInputAction: textInputAction,
-              onSubmitted: onSubmitted,
-              style: Get.textTheme.bodyMedium,
-              maxLines: 1,
-              decoration: showErrorText
-                  ? InputDecoration(
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Get.theme.errorColor),
-                          borderRadius: BorderRadius.circular(0.0)),
-                      errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Get.theme.errorColor),
-                          borderRadius: BorderRadius.circular(0.0)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Get.theme.errorColor),
-                          borderRadius: BorderRadius.circular(0.0)),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Get.theme.errorColor),
-                          borderRadius: BorderRadius.circular(0.0)),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Get.theme.errorColor),
-                        borderRadius: BorderRadius.circular(0.0),
-                      ),
-                      suffixIcon: GestureDetector(
-                        onTap: clickToHide,
-                        child: Icon(
-                          hiddenPassword
-                              ? AppIcons.visibility
-                              : AppIcons.visibilityOff,
-                          color: Get.iconColor,
-                        ),
-                      ),
-                    )
-                  : InputDecoration(
-                      suffixIcon: GestureDetector(
-                        onTap: clickToHide,
-                        child: Icon(
-                          hiddenPassword
-                              ? AppIcons.visibility
-                              : AppIcons.visibilityOff,
-                          color: Get.iconColor,
-                        ),
-                      ),
+            child: Theme(
+              data: Get.theme.copyWith(
+                primaryColor: Colors.redAccent,
+              ),
+              child: TextField(
+                controller: controller,
+                focusNode: focusNode,
+                obscureText: hiddenPassword,
+                obscuringCharacter: '*',
+                keyboardType: TextInputType.visiblePassword,
+                textInputAction: textInputAction,
+                onSubmitted: onSubmitted,
+                style: Get.textTheme.bodyMedium,
+                maxLines: 1,
+                decoration: InputDecoration(
+                  suffixIcon: GestureDetector(
+                    onTap: clickToHide,
+                    child: Icon(
+                      hiddenPassword
+                          ? AppIcons.visibility
+                          : AppIcons.visibilityOff,
+                      color: Get.iconColor,
                     ),
+                  ),
+                ),
+              ),
             ),
           ),
         ),

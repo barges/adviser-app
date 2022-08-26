@@ -169,6 +169,36 @@ class S {
       args: [],
     );
   }
+
+  /// `You have successfully changed your password. Check your email to confirm password change`
+  String get youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo {
+    return Intl.message(
+      'You have successfully changed your password. Check your email to confirm password change',
+      name: 'youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wrong username or password`
+  String get wrongUsernameOrPassword {
+    return Intl.message(
+      'Wrong username or password',
+      name: 'wrongUsernameOrPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open email app`
+  String get openEmailApp {
+    return Intl.message(
+      'Open email app',
+      name: 'openEmailApp',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

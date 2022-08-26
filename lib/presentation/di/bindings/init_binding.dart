@@ -5,12 +5,10 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
 import 'package:shared_advisor_interface/data/repositories/auth_repository_impl.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 class InitBinding extends Bindings {
   final DeviceInfoPlugin deviceInfo =
@@ -40,19 +38,19 @@ class InitBinding extends Bindings {
     dio.interceptors.add(LogInterceptor(
         requestBody: true, responseBody: true, logPrint: logger.d));
 
-    dio.interceptors.add(InterceptorsWrapper(
-        onError: (dioError, handler) => _errorInterceptor(dioError)));
+    // dio.interceptors.add(InterceptorsWrapper(
+    //     onError: (dioError, handler) => _errorInterceptor(dioError)));
     return dio;
   }
 
   _errorInterceptor(DioError dioError) async {
-    if (dioError.response?.statusCode == 401 ||
-        dioError.response?.statusCode == 423) {
-      Get.find<CacheManager>().clear();
-      Get.offNamedUntil(AppRoutes.login, (route) => false);
-    } else {
+    // if (dioError.response?.statusCode == 401 ||
+    //     dioError.response?.statusCode == 423) {
+    //   Get.find<CacheManager>().clear();
+    //   Get.offNamedUntil(AppRoutes.login, (route) => false);
+    // } else {
       return dioError;
-    }
+    // }
   }
 
   Future<Map<String, dynamic>> _getHeaders() async {

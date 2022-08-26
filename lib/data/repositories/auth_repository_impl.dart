@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
+import 'package:shared_advisor_interface/data/network/requests/reset_password_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/login_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 
@@ -24,5 +25,11 @@ class AuthRepositoryImpl implements AuthRepository {
     }
 
     return _cacheManager.isLoggedIn() ?? false;
+  }
+
+  @override
+  Future<bool> resetPassword(ResetPasswordRequest request) async {
+    await _api.resetPassword(request);
+    return true;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors_dark.dart';
 
@@ -8,25 +9,28 @@ class AppThemes {
     return ThemeData(
       scaffoldBackgroundColor: AppColorsLight.background,
       backgroundColor: AppColorsLight.uinegative,
+      primaryColorLight: AppColorsLight.coloredBG,
       canvasColor: AppColorsLight.contrast,
       primaryColor: AppColorsLight.primary,
-      primaryColorLight: AppColorsLight.accent,
-      primaryColorDark: AppColorsLight.importantCta,
-      hoverColor: AppColorsLight.ui,
       brightness: Brightness.light,
-      hintColor: AppColorsLight.shade3,
+      hintColor: AppColorsLight.shade1,
       errorColor: AppColorsLight.error,
       iconTheme: const IconThemeData(
         color: AppColorsLight.shade3,
       ),
-      // colorScheme: ThemeData().colorScheme.copyWith(
-      //       primary: AppColorsLight.inactive1,
-      //     ),
+      appBarTheme: const AppBarTheme(
+        elevation: 0.0,
+        color: AppColorsLight.contrast,
+        // systemOverlayStyle: SystemUiOverlayStyle(
+        //     statusBarColor: AppColorsLight.ui,
+        //     statusBarBrightness: Brightness.light,
+        //     statusBarIconBrightness: Brightness.dark),
+      ),
       textTheme: GoogleFonts.redHatDisplayTextTheme(
         const TextTheme(
-          headlineLarge: TextStyle(
-            fontSize: 24.0,
-            fontWeight: FontWeight.w900,
+          headlineMedium: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.w700,
             color: AppColorsLight.ui,
           ),
           labelMedium: TextStyle(
@@ -72,20 +76,20 @@ class AppThemes {
 
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
-            borderSide: const BorderSide(color: AppColorsLight.shade1),
-            borderRadius: BorderRadius.circular(0.0)),
+            borderSide: const BorderSide(color: AppColorsLight.contrast),
+            borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
         errorBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: AppColorsLight.error),
-            borderRadius: BorderRadius.circular(0.0)),
+            borderSide: const BorderSide(color: AppColorsLight.contrast),
+            borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
         focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: AppColorsLight.shade1),
-            borderRadius: BorderRadius.circular(0.0)),
+            borderSide: const BorderSide(color: AppColorsLight.contrast),
+            borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
         enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: AppColorsLight.shade1),
-            borderRadius: BorderRadius.circular(0.0)),
+            borderSide: const BorderSide(color: AppColorsLight.contrast),
+            borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
         focusedErrorBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColorsLight.shade1),
-          borderRadius: BorderRadius.circular(0.0),
+          borderSide: const BorderSide(color: AppColorsLight.contrast),
+          borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
         ),
       ),
     );

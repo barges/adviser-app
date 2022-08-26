@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 
 class AppColorsLight {
+  static const Color background = Color(0xFFF1F4FB);
 
-  static const Color accent = Color(0xFFE66069);
+  static const Color primary = Color(0xff3975E9);
 
-  static const Color importantCta = Color(0xFFFFA94E);
+  static const Color coloredBG = Color(0xffB7DCFF);
 
-  static const Color background = Color(0xFFE5E5E5);
-
-  static const Color primary = Color(0xff3664AE);
-
-  static const Color uinegative = Color(0xFFFFFFFF); //Light & Dark - color is same
+  static const Color uinegative =
+      Color(0xFFFFFFFF); //Light & Dark - color is same
 
   static const Color contrast = Color(0xFFFFFFFF);
 
@@ -20,6 +18,5 @@ class AppColorsLight {
 
   static const Color shade3 = Color(0xFF9C93A3);
 
-  static const Color error = Color(0xffD0021B);
-
+  static const Color error = Color(0xffED4F55);
 }

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/app_back_button.dart';
 
 class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final String? backButtonText;
 
-  const SimpleAppBar({Key? key, required this.title, this.backButtonText}) : super(key: key);
+  const SimpleAppBar({Key? key, required this.title, this.backButtonText})
+      : super(key: key);
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -16,9 +17,7 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       centerTitle: true,
       titleTextStyle: Get.textTheme.titleMedium,
-      leading: AppBackButton(
-        text: backButtonText,
-      ),
+      leading: const AppBackButton(),
       leadingWidth: 70,
       elevation: 0.0,
       title: Text(title),

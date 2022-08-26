@@ -34,12 +34,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot password"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
+        "openEmailApp": MessageLookupByLibrary.simpleMessage("Open email app"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "pleaseEnterAtLeast8Characters": MessageLookupByLibrary.simpleMessage(
             "Please enter at least 8 characters"),
         "pleaseInsertCorrectEmail": MessageLookupByLibrary.simpleMessage(
             "Please, insert correct email"),
         "thePasswordsMustMatch":
-            MessageLookupByLibrary.simpleMessage("The passwords must match")
+            MessageLookupByLibrary.simpleMessage("The passwords must match"),
+        "wrongUsernameOrPassword":
+            MessageLookupByLibrary.simpleMessage("Wrong username or password"),
+        "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo":
+            MessageLookupByLibrary.simpleMessage(
+                "You have successfully changed your password. Check your email to confirm password change")
       };
 }

@@ -10,5 +10,8 @@
   "pleaseEnterAtLeast8Characters": "Insira pelo menos 8 caracteres",
   "pleaseInsertCorrectEmail": "Por favor, insira o email correto",
   "chooseBrandToLogIn": "Escolha a marca para iniciar a sessão",
-  "comingSoon": "Em breve!"
+  "comingSoon": "Em breve!",
+  "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo": "A sua senha foi mudada com sucesso. Verifique seu e-mail para confirmar a alteração da senha",
+  "wrongUsernameOrPassword": "Nome de usuário ou senha incorretos",
+  "openEmailApp": "Abra o aplicativo de e-mail"
 }
