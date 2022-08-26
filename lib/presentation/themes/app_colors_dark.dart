@@ -12,7 +12,7 @@ class AppColorsDark {
 
   static const Color contrast = Color(0xFF15171B);
 
-  static const Color ui = Color(0xFF404041);
+  static const Color ui = Color(0xFFF4F4F4);
 
   static const Color shade1 = Color(0xFF302C32);
 

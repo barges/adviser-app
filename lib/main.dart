@@ -37,8 +37,8 @@ class _MyAppState extends State<MyApp> {
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: AppThemes.themeLight(context),
-      darkTheme: AppThemes.themeDark(context),
+      theme: AppThemes.themeDark(context),
+      darkTheme: AppThemes.themeLight(context),
       defaultTransition: Transition.native,
       initialRoute: AppRoutes.splash,
       initialBinding: InitBinding(),

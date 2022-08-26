@@ -13,5 +13,6 @@
   "comingSoon": "Em breve!",
   "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo": "A sua senha foi mudada com sucesso. Verifique seu e-mail para confirmar a alteração da senha",
   "wrongUsernameOrPassword": "Nome de usuário ou senha incorretos",
-  "openEmailApp": "Abra o aplicativo de e-mail"
+  "openEmailApp": "Abra o aplicativo de e-mail",
+  "chooseEmailApp": "Escolha o aplicativo de e-mail"
 }

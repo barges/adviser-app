@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
-import '../app_back_button.dart';
+import '../buttons/app_back_button.dart';
 
 class WideAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;

@@ -199,6 +199,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Choose email app`
+  String get chooseEmailApp {
+    return Intl.message(
+      'Choose email app',
+      name: 'chooseEmailApp',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

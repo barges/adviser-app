@@ -13,5 +13,6 @@
   "comingSoon": "Coming soon!",
   "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo": "You have successfully changed your password. Check your email to confirm password change",
   "wrongUsernameOrPassword": "Wrong username or password",
-  "openEmailApp": "Open email app"
+  "openEmailApp": "Open email app",
+  "chooseEmailApp": "Choose email app"
 }

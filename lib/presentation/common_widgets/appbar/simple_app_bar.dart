@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/app_back_button.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_back_button.dart';
 
 class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;

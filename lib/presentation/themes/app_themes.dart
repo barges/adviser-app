@@ -98,19 +98,90 @@ class AppThemes {
   static ThemeData themeDark(BuildContext context) {
     return ThemeData(
       scaffoldBackgroundColor: AppColorsDark.background,
+      backgroundColor: AppColorsDark.uinegative,
+      primaryColorLight: AppColorsDark.coloredBG,
+      canvasColor: AppColorsDark.contrast,
       primaryColor: AppColorsDark.primary,
-      primaryColorLight: Colors.black,
-      brightness: Brightness.dark,
-      primaryColorDark: Colors.black,
-      indicatorColor: Colors.white,
-      canvasColor: Colors.black,
-      disabledColor: Colors.grey,
-      hoverColor: AppColorsDark.ui,
+      brightness: Brightness.light,
+      hintColor: AppColorsDark.shade1,
       errorColor: AppColorsDark.error,
-      textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-              primary: Colors.white,
-              textStyle: const TextStyle(fontWeight: FontWeight.bold))),
+      iconTheme: const IconThemeData(
+        color: AppColorsDark.shade3,
+      ),
+      appBarTheme: const AppBarTheme(
+        elevation: 0.0,
+        color: AppColorsDark.contrast,
+        // systemOverlayStyle: SystemUiOverlayStyle(
+        //     statusBarColor: AppColorsLight.ui,
+        //     statusBarBrightness: Brightness.light,
+        //     statusBarIconBrightness: Brightness.dark),
+      ),
+      textTheme: GoogleFonts.redHatDisplayTextTheme(
+        const TextTheme(
+          headlineMedium: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.w700,
+            color: AppColorsDark.ui,
+          ),
+          labelMedium: TextStyle(
+            fontSize: 14.0,
+            fontWeight: FontWeight.w500,
+            color: AppColorsDark.ui,
+          ),
+          labelSmall: TextStyle(
+            fontSize: 10.0,
+            fontWeight: FontWeight.w500,
+            color: AppColorsDark.ui,
+          ),
+          titleMedium: TextStyle(
+              color: AppColorsDark.ui,
+              fontSize: 17.0,
+              fontWeight: FontWeight.w600),
+          bodySmall: TextStyle(
+            fontWeight: FontWeight.w400,
+            fontSize: 13.0,
+            color: AppColorsDark.ui,
+          ),
+          bodyMedium: TextStyle(
+            fontWeight: FontWeight.w400,
+            fontSize: 15.0,
+            color: AppColorsDark.ui,
+          ),
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          textStyle: const TextStyle(
+              color: AppColorsDark.uinegative,
+              fontSize: 17.0,
+              fontWeight: FontWeight.w600),
+        ),
+      ),
+      // textButtonTheme: TextButtonThemeData(
+      //     style: TextButton.styleFrom(
+      //         textStyle: const TextStyle(
+      //             color: AppColorsLight.uinegative,
+      //             fontSize: 17.0,
+      //             fontWeight: FontWeight.w600),),),
+
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColorsDark.contrast),
+            borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
+        errorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColorsDark.contrast),
+            borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
+        focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColorsDark.contrast),
+            borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
+        enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColorsDark.contrast),
+            borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: AppColorsDark.contrast),
+          borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
+        ),
+      ),
     );
   }
 }

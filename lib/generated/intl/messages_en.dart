@@ -27,6 +27,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Change password"),
         "chooseBrandToLogIn":
             MessageLookupByLibrary.simpleMessage("Choose brand to log in"),
+        "chooseEmailApp":
+            MessageLookupByLibrary.simpleMessage("Choose email app"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon!"),
         "confirmNewPassword":
             MessageLookupByLibrary.simpleMessage("Confirm new password"),
