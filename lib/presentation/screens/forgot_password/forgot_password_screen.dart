@@ -100,7 +100,11 @@ class ForgotPasswordScreen extends RunnableGetView<ForgotPasswordController> {
                         }),
                         AppElevatedButton(
                           text: S.of(context).changePassword,
-                          onPressed: () => controller.resetPassword(context),
+                          onPressed: () {
+                            if(!controller.isLoading.value) {
+                              controller.resetPassword(context);
+                            }
+                          },
                         )
                       ]),
                 ),

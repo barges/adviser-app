@@ -193,7 +193,7 @@ class _BrandWidget extends GetView<LoginController> {
             decoration: BoxDecoration(
               borderRadius:
                   BorderRadius.circular(AppConstants.buttonRadius - 1),
-              color: Get.theme.backgroundColor,
+              color: Get.theme.canvasColor,
             ),
             child: Column(
               children: [
