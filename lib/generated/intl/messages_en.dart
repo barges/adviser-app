@@ -22,9 +22,32 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "hello": MessageLookupByLibrary.simpleMessage("Hello"),
-        "sellYourServicesDuringAChatReading":
+        "back": MessageLookupByLibrary.simpleMessage("Back"),
+        "changePassword":
+            MessageLookupByLibrary.simpleMessage("Change password"),
+        "chooseBrandToLogIn":
+            MessageLookupByLibrary.simpleMessage("Choose brand to log in"),
+        "chooseEmailApp":
+            MessageLookupByLibrary.simpleMessage("Choose email app"),
+        "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon!"),
+        "confirmNewPassword":
+            MessageLookupByLibrary.simpleMessage("Confirm new password"),
+        "email": MessageLookupByLibrary.simpleMessage("Email"),
+        "forgotPassword":
+            MessageLookupByLibrary.simpleMessage("Forgot password"),
+        "login": MessageLookupByLibrary.simpleMessage("Login"),
+        "openEmailApp": MessageLookupByLibrary.simpleMessage("Open email app"),
+        "password": MessageLookupByLibrary.simpleMessage("Password"),
+        "pleaseEnterAtLeast8Characters": MessageLookupByLibrary.simpleMessage(
+            "Please enter at least 8 characters"),
+        "pleaseInsertCorrectEmail": MessageLookupByLibrary.simpleMessage(
+            "Please, insert correct email"),
+        "thePasswordsMustMatch":
+            MessageLookupByLibrary.simpleMessage("The passwords must match"),
+        "wrongUsernameOrPassword":
+            MessageLookupByLibrary.simpleMessage("Wrong username or password"),
+        "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo":
             MessageLookupByLibrary.simpleMessage(
-                "Sell your services during a chat reading")
+                "You have successfully changed your password. Check your email to confirm password change")
       };
 }
