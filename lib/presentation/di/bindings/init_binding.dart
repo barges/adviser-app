@@ -9,6 +9,7 @@ import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
 import 'package:shared_advisor_interface/data/repositories/auth_repository_impl.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/presentation/screens/splash/splash_controller.dart';
 
 class InitBinding extends Bindings {
   final DeviceInfoPlugin deviceInfo =
@@ -16,7 +17,7 @@ class InitBinding extends Bindings {
 
   @override
   void dependencies() async {
-
+    Get.put<SplashController>(SplashController());
 
     Dio dio = await _initDio();
     Get.lazyPut<Dio>(() => dio, fenix: true);

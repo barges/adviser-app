@@ -46,31 +46,6 @@ class EmailFieldWidget extends StatelessWidget {
               },
               style: Get.textTheme.bodyMedium,
               maxLines: 1,
-              // decoration: showErrorText
-              //     ? InputDecoration(
-              //         border: OutlineInputBorder(
-              //             borderSide: BorderSide(color: Get.theme.errorColor),
-              //             borderRadius:
-              //                 BorderRadius.circular(AppConstants.buttonRadius)),
-              //         errorBorder: OutlineInputBorder(
-              //             borderSide: BorderSide(color: Get.theme.errorColor),
-              //             borderRadius:
-              //                 BorderRadius.circular(AppConstants.buttonRadius)),
-              //         focusedBorder: OutlineInputBorder(
-              //             borderSide: BorderSide(color: Get.theme.errorColor),
-              //             borderRadius:
-              //                 BorderRadius.circular(AppConstants.buttonRadius)),
-              //         enabledBorder: OutlineInputBorder(
-              //             borderSide: BorderSide(color: Get.theme.errorColor),
-              //             borderRadius:
-              //                 BorderRadius.circular(AppConstants.buttonRadius)),
-              //         focusedErrorBorder: OutlineInputBorder(
-              //           borderSide: BorderSide(color: Get.theme.errorColor),
-              //           borderRadius:
-              //               BorderRadius.circular(AppConstants.buttonRadius),
-              //         ),
-              //       )
-              //     : const InputDecoration(),
             ),
           ),
         ),

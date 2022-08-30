@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
@@ -21,10 +22,10 @@ class AppThemes {
       appBarTheme: const AppBarTheme(
         elevation: 0.0,
         color: AppColorsLight.contrast,
-        // systemOverlayStyle: SystemUiOverlayStyle(
-        //     statusBarColor: AppColorsLight.ui,
-        //     statusBarBrightness: Brightness.light,
-        //     statusBarIconBrightness: Brightness.dark),
+        systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarBrightness: Brightness.light,
+            statusBarIconBrightness: Brightness.dark),
       ),
       textTheme: GoogleFonts.redHatDisplayTextTheme(
         const TextTheme(
@@ -111,10 +112,10 @@ class AppThemes {
       appBarTheme: const AppBarTheme(
         elevation: 0.0,
         color: AppColorsDark.contrast,
-        // systemOverlayStyle: SystemUiOverlayStyle(
-        //     statusBarColor: AppColorsLight.ui,
-        //     statusBarBrightness: Brightness.light,
-        //     statusBarIconBrightness: Brightness.dark),
+        systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarBrightness: Brightness.dark,
+            statusBarIconBrightness: Brightness.light),
       ),
       textTheme: GoogleFonts.redHatDisplayTextTheme(
         const TextTheme(

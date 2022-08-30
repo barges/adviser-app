@@ -4,10 +4,9 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_controller.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_screen.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/history/history_screen.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/inbox/inbox_screen.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_screen.dart';
-
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/articles/articles_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/chats/chats_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard/dashboard_screen.dart';
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -35,33 +34,33 @@ class HomeScreen extends GetView<HomeController> {
             items: [
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
-                  AppIcons.inbox,
+                  AppIcons.dashboard,
                 ),
                 activeIcon: SvgPicture.asset(
-                  AppIcons.inbox,
+                  AppIcons.dashboard,
                   color: Get.theme.primaryColor,
                 ),
-                label: 'Inbox',
+                label: 'Dashboard',
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
-                  AppIcons.sessions,
+                  AppIcons.articles,
                 ),
                 activeIcon: SvgPicture.asset(
-                  AppIcons.sessions,
+                  AppIcons.articles,
                   color: Get.theme.primaryColor,
                 ),
-                label: 'Sessions',
+                label: 'Articles',
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
-                  AppIcons.history,
+                  AppIcons.chats,
                 ),
                 activeIcon: SvgPicture.asset(
-                  AppIcons.history,
+                  AppIcons.chats,
                   color: Get.theme.primaryColor,
                 ),
-                label: 'History',
+                label: 'Chats',
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
@@ -91,13 +90,13 @@ class _TabPages extends StatelessWidget {
     return <Widget>[
       Navigator(
           onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-              builder: (BuildContext context) => const InboxScreen())),
+              builder: (BuildContext context) => const DashboardScreen())),
       Navigator(
           onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-              builder: (BuildContext context) => const SessionsScreen())),
+              builder: (BuildContext context) => const ArticlesScreen())),
       Navigator(
           onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-              builder: (BuildContext context) => const HistoryScreen())),
+              builder: (BuildContext context) => const ChatsScreen())),
       Navigator(
           onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
               builder: (BuildContext context) => const AccountScreen())),

@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
 
-class HistoryScreen extends GetView {
-  const HistoryScreen({Key? key}) : super(key: key);
+class ChatsScreen extends GetView {
+  const ChatsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const SimpleAppBar(
-        title: 'History',
+        title: 'Chats',
       ),
       body: SizedBox(
         height: Get.height,
         child: const Center(
-          child: Text('History'),
+          child: Text('Chats'),
         ),
       ),
     );

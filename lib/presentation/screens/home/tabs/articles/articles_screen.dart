@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
-class InboxScreen extends GetView {
-  const InboxScreen({Key? key}) : super(key: key);
+class ArticlesScreen extends GetView {
+  const ArticlesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const SimpleAppBar(
-        title: 'Inbox',
+        title: 'Articles',
       ),
       body: SizedBox(
         height: Get.height,
         child: GestureDetector(
           onTap: () {
-            Get.toNamed(AppRoutes.notifications);
+            logger.d(Get.find<CacheManager>().getToken());
           },
           child: const Center(
-            child: Text('Inbox'),
+            child: Text('Articles'),
           ),
         ),
       ),

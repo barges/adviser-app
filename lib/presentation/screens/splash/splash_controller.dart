@@ -11,7 +11,7 @@ class SplashController extends GetxController {
 
     Future.delayed(const Duration(seconds: 2)).then((value) {
       if (_cacheManager.isLoggedIn() == true) {
-        Get.offNamed(AppRoutes.login);
+        Get.offNamed(AppRoutes.home);
       } else {
         Get.offNamed(AppRoutes.login);
       }
