@@ -10,6 +10,11 @@ class AppIcons {
   static const String articles = 'assets/vectors/articles.svg';
   static const String account = 'assets/vectors/account.svg';
   static const String back = 'assets/vectors/ic_back.svg';
+  static const String questionMark = 'assets/vectors/question_mark.svg';
+  static const String settings = 'assets/vectors/settings.svg';
+  static const String bookOpen = 'assets/vectors/book_open.svg';
+  static const String login = 'assets/vectors/login.svg';
+  static const String moreHorizontal = 'assets/vectors/more_horizontal.svg';
 
   static const IconData visibility = Icons.visibility;
   static const IconData visibilityOff = Icons.visibility_off;

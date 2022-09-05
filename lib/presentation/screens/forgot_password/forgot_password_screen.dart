@@ -9,7 +9,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide
 import 'package:shared_advisor_interface/presentation/common_widgets/email_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/password_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/runnable_screen/runnable_screen.dart';
+import 'package:shared_advisor_interface/presentation/base_screen/runnable_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_controller.dart';
 
 class ForgotPasswordScreen extends RunnableGetView<ForgotPasswordController> {
@@ -41,7 +41,7 @@ class ForgotPasswordScreen extends RunnableGetView<ForgotPasswordController> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 24.0),
                           child: _BrandLogo(
-                            brand: controller.currentBrand,
+                            brand: controller.selectedBrand,
                           ),
                         ),
                         Obx(() {

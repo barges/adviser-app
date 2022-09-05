@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_images.dart';
 
@@ -11,7 +12,7 @@ class AllBrandsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'All Our Brands',
+          S.of(context).allOurBrands,
           style: Get.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w700,
           ),
@@ -35,9 +36,7 @@ class AllBrandsScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'We pride ourselves to offer advisors'
-                    ' a safe place to serve customers and develop profesionally.'
-                    ' Doing a good job in one of our brands_icons will open doors to others',
+                    S.of(context).wePrideOurselvesToOfferAdvisorsASafePlaceTo,
                     style: Get.textTheme.bodyMedium
                         ?.copyWith(color: Get.iconColor),
                   ),

@@ -5,20 +5,6 @@ class Configuration {
   static const List<Brand> brands = [
     Brand.fortunica,
     Brand.zodiacTouch,
-    Brand.fortunica,
-    Brand.zodiacTouch,
-    Brand.fortunica,
-    Brand.zodiacTouch,
-    Brand.fortunica,
-    Brand.zodiacTouch,
-    Brand.fortunica,
-    Brand.zodiacTouch,
-    Brand.fortunica,
-    Brand.zodiacTouch,
-    Brand.fortunica,
-    Brand.zodiacTouch,
-    Brand.fortunica,
-    Brand.zodiacTouch,
   ];
 }
 
@@ -46,6 +32,15 @@ extension BrandExtension on Brand {
     }
   }
 
+  String get url {
+    switch (this) {
+      case Brand.fortunica:
+        return '';
+      case Brand.zodiacTouch:
+        return 'www.zodiacpsychics.com';
+    }
+  }
+
   String get icon {
     switch (this) {
       case Brand.fortunica:
@@ -60,7 +55,7 @@ extension BrandExtension on Brand {
       case Brand.fortunica:
         return true;
       case Brand.zodiacTouch:
-        return true;
+        return false;
     }
   }
 }
