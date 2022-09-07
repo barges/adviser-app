@@ -1,17 +1,17 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
+import 'package:shared_advisor_interface/presentation/base_screen/runnable_screen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/login_appbar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/email_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_succes_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/password_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/runnable_screen/runnable_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_controller.dart';
 
 class LoginScreen extends RunnableGetView<LoginController> {
@@ -88,9 +88,7 @@ class LoginScreen extends RunnableGetView<LoginController> {
                             height: 22.0,
                           ),
                           GestureDetector(
-                            onTap: () {
-                              Get.toNamed(AppRoutes.forgotPassword);
-                            },
+                            onTap: controller.goToForgotPassword,
                             child: Text(
                               '${S.of(context).forgotPassword}?',
                               style: Get.textTheme.titleMedium?.copyWith(
@@ -140,6 +138,7 @@ class _ChooseBrandWidget extends GetView<LoginController> {
 
   @override
   Widget build(BuildContext context) {
+    List<Brand> brands = controller.unauthorizedBrands;
     return SizedBox(
       height: 78.0,
       child: ListView.separated(
@@ -149,9 +148,9 @@ class _ChooseBrandWidget extends GetView<LoginController> {
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
           itemBuilder: (context, index) {
-            Brand brand = Configuration.brands[index];
+            Brand brand = brands[index];
             return _BrandWidget(
-              brand: Configuration.brands[index],
+              brand: brands[index],
               isSelected: brand == selectedBrand,
             );
           },
@@ -160,7 +159,7 @@ class _ChooseBrandWidget extends GetView<LoginController> {
               width: 8.0,
             );
           },
-          itemCount: Configuration.brands.length),
+          itemCount: brands.length),
     );
   }
 }
@@ -178,6 +177,12 @@ class _BrandWidget extends GetView<LoginController> {
     return Opacity(
       opacity: isEnabled ? 1.0 : 0.4,
       child: GestureDetector(
+        onLongPress: () {
+          if (kDebugMode) {
+            controller.emailController.text = 'niskov.test@gmail.com';
+            controller.passwordController.text = '00000000';
+          }
+        },
         onTap: () {
           if (isEnabled && !isSelected) {
             controller.selectedBrand.value = brand;
@@ -202,6 +207,7 @@ class _BrandWidget extends GetView<LoginController> {
                 ),
                 SvgPicture.asset(
                   brand.icon,
+                  color: Get.isDarkMode ? Get.theme.backgroundColor : null,
                 ),
                 const SizedBox(
                   height: 8.0,

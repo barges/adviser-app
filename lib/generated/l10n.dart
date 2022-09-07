@@ -209,6 +209,86 @@ class S {
       args: [],
     );
   }
+
+  /// `Workspaces`
+  String get workspaces {
+    return Intl.message(
+      'Workspaces',
+      name: 'workspaces',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Other brands`
+  String get otherBrands {
+    return Intl.message(
+      'Other brands',
+      name: 'otherBrands',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All our brands`
+  String get allOurBrands {
+    return Intl.message(
+      'All our brands',
+      name: 'allOurBrands',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get settings {
+    return Intl.message(
+      'Settings',
+      name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customer Support`
+  String get customerSupport {
+    return Intl.message(
+      'Customer Support',
+      name: 'customerSupport',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others`
+  String get wePrideOurselvesToOfferAdvisorsASafePlaceTo {
+    return Intl.message(
+      'We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others',
+      name: 'wePrideOurselvesToOfferAdvisorsASafePlaceTo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ingenio`
+  String get ingenio {
+    return Intl.message(
+      'Ingenio',
+      name: 'ingenio',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

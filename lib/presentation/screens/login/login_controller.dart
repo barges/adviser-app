@@ -5,19 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/data/network/responses/login_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/runnable_screen/runnable_screen.dart';
+import 'package:shared_advisor_interface/presentation/base_screen/runnable_controller.dart';
 
 class LoginController extends RunnableController {
   final AuthRepository _repository;
-  final CacheManager _cacheManager;
 
-  LoginController(this._repository, this._cacheManager);
+  LoginController(this._repository, CacheManager cacheManager)
+      : super(cacheManager);
 
   final Rx<Brand> selectedBrand = Brand.fortunica.obs;
+
+  late List<Brand> unauthorizedBrands;
 
   final RxString errorMessage = ''.obs;
   final RxString successMessage = ''.obs;
@@ -35,10 +38,9 @@ class LoginController extends RunnableController {
   @override
   void onInit() {
     super.onInit();
-    saveCurrentBrand(selectedBrand.value);
-    ever(selectedBrand, (brand) {
-      saveCurrentBrand(brand as Brand);
-    });
+    unauthorizedBrands = cacheManager.getUnauthorizedBrands();
+    final Brand? newSelectedBrand = Get.arguments;
+    selectedBrand.value = newSelectedBrand ?? unauthorizedBrands.first;
     ever(email, (_) {
       clearSuccessMessage();
       clearErrorMessage();
@@ -47,7 +49,7 @@ class LoginController extends RunnableController {
       clearSuccessMessage();
       clearErrorMessage();
     });
-    index = _cacheManager.getLocaleIndex() ?? 0;
+    index = cacheManager.getLocaleIndex() ?? 0;
     emailController.addListener(() {
       email.value = emailController.text;
     });
@@ -68,11 +70,16 @@ class LoginController extends RunnableController {
       Get.find<Dio>().options.headers['Authorization'] =
           'Basic ${base64.encode(utf8.encode('${email.value}:${password.value.to256}'))}';
       try {
-        final bool isLoggedIn = await run(_repository.login());
-        if (isLoggedIn) {
-          Get.offNamed(
-            AppRoutes.home,
-          );
+        // return _cacheManager.isLoggedIn() ?? false;
+
+        LoginResponse? response = await run(_repository.login());
+        String? token = response?.accessToken;
+        if (token != null && token.isNotEmpty) {
+          String jvtToken = 'JWT $token';
+          await cacheManager.saveTokenForBrand(selectedBrand.value, jvtToken);
+          Get.find<Dio>().options.headers['Authorization'] = jvtToken;
+          cacheManager.saveCurrentBrand(selectedBrand.value);
+          goToHome();
         }
       } on DioError catch (e) {
         if (e.response?.statusCode != 401) {
@@ -96,7 +103,7 @@ class LoginController extends RunnableController {
       Get.updateLocale(
           Locale(locale.languageCode, locale.languageCode.toUpperCase()));
     }
-    _cacheManager.saveLocaleIndex(index);
+    cacheManager.saveLocaleIndex(index);
   }
 
   void clearErrorMessage() {
@@ -120,8 +127,12 @@ class LoginController extends RunnableController {
     }
   }
 
-  Future<void> saveCurrentBrand(Brand brand) async {
-    _cacheManager.saveCurrentBrand(brand);
+  void goToHome() {
+    Get.offNamedUntil(AppRoutes.home, (_) => false);
+  }
+
+  void goToForgotPassword() {
+    Get.toNamed(AppRoutes.forgotPassword, arguments: selectedBrand.value);
   }
 
   bool emailIsValid() => GetUtils.isEmail(email.value);

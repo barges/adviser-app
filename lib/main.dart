@@ -12,6 +12,8 @@ import 'package:shared_advisor_interface/presentation/themes/app_themes.dart';
 
 final logger = Logger(printer: SimplePrinter());
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
@@ -39,6 +41,7 @@ class _MyAppState extends State<MyApp> {
       initialRoute: AppRoutes.splash,
       initialBinding: InitBinding(),
       getPages: AppRoutes.getPages,
+      navigatorKey: navigatorKey,
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,

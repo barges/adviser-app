@@ -22,7 +22,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "allOurBrands": MessageLookupByLibrary.simpleMessage("All our brands"),
         "back": MessageLookupByLibrary.simpleMessage("Back"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "changePassword":
             MessageLookupByLibrary.simpleMessage("Change password"),
         "chooseBrandToLogIn":
@@ -32,18 +34,27 @@ class MessageLookup extends MessageLookupByLibrary {
         "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon!"),
         "confirmNewPassword":
             MessageLookupByLibrary.simpleMessage("Confirm new password"),
+        "customerSupport":
+            MessageLookupByLibrary.simpleMessage("Customer Support"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot password"),
+        "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "openEmailApp": MessageLookupByLibrary.simpleMessage("Open email app"),
+        "otherBrands": MessageLookupByLibrary.simpleMessage("Other brands"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "pleaseEnterAtLeast8Characters": MessageLookupByLibrary.simpleMessage(
             "Please enter at least 8 characters"),
         "pleaseInsertCorrectEmail": MessageLookupByLibrary.simpleMessage(
             "Please, insert correct email"),
+        "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "thePasswordsMustMatch":
             MessageLookupByLibrary.simpleMessage("The passwords must match"),
+        "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
+            MessageLookupByLibrary.simpleMessage(
+                "We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others"),
+        "workspaces": MessageLookupByLibrary.simpleMessage("Workspaces"),
         "wrongUsernameOrPassword":
             MessageLookupByLibrary.simpleMessage("Wrong username or password"),
         "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo":

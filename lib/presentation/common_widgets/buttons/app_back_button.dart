@@ -5,7 +5,9 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
 
 class AppBackButton extends StatelessWidget {
-  const AppBackButton({Key? key}) : super(key: key);
+  final String? icon;
+
+  const AppBackButton({Key? key, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +24,10 @@ class AppBackButton extends StatelessWidget {
         ),
         child: Center(
             child: SvgPicture.asset(
-          AppIcons.back,
+          icon ?? AppIcons.back,
           color: Get.theme.primaryColor,
-          height: 10.0,
-          width: 6.0,
+          height: AppConstants.iconsSize,
+          width: AppConstants.iconsSize,
         )),
       ),
     );

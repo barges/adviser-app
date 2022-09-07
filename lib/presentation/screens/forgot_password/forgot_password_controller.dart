@@ -6,17 +6,16 @@ import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
 import 'package:shared_advisor_interface/data/network/requests/reset_password_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/presentation/runnable_screen/runnable_screen.dart';
+import 'package:shared_advisor_interface/presentation/base_screen/runnable_controller.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_controller.dart';
 
 class ForgotPasswordController extends RunnableController {
   final AuthRepository _repository;
-  final CacheManager _cacheManager;
 
-  final Brand? currentBrand;
+  ForgotPasswordController(this._repository, CacheManager cacheManager)
+      : super(cacheManager);
 
-  ForgotPasswordController(this._repository, this._cacheManager)
-      : currentBrand = _cacheManager.getCurrentBrand();
+  late Brand selectedBrand;
 
   final RxString errorMessage = ''.obs;
 
@@ -33,6 +32,7 @@ class ForgotPasswordController extends RunnableController {
   @override
   void onInit() {
     super.onInit();
+    selectedBrand = Get.arguments as Brand;
     ever(email, (_) => clearErrorMessage());
     ever(password, (_) => clearErrorMessage());
     ever(confirmPassword, (_) => clearErrorMessage());

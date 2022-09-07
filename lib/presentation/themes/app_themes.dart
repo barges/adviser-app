@@ -19,6 +19,14 @@ class AppThemes {
       iconTheme: const IconThemeData(
         color: AppColorsLight.shade3,
       ),
+      bottomSheetTheme: const BottomSheetThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(AppConstants.buttonRadius),
+            topRight: Radius.circular(AppConstants.buttonRadius),
+          ),
+        ),
+      ),
       appBarTheme: const AppBarTheme(
         elevation: 0.0,
         color: AppColorsLight.contrast,
@@ -29,6 +37,11 @@ class AppThemes {
       ),
       textTheme: GoogleFonts.redHatDisplayTextTheme(
         const TextTheme(
+          headlineLarge: TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.w700,
+            color: AppColorsLight.ui,
+          ),
           headlineMedium: TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.w700,
@@ -103,7 +116,7 @@ class AppThemes {
       primaryColorLight: AppColorsDark.coloredBG,
       canvasColor: AppColorsDark.contrast,
       primaryColor: AppColorsDark.primary,
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
       hintColor: AppColorsDark.shade1,
       errorColor: AppColorsDark.error,
       iconTheme: const IconThemeData(
@@ -119,6 +132,11 @@ class AppThemes {
       ),
       textTheme: GoogleFonts.redHatDisplayTextTheme(
         const TextTheme(
+          headlineLarge: TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.w700,
+            color: AppColorsDark.ui,
+          ),
           headlineMedium: TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.w700,

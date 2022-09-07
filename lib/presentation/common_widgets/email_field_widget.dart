@@ -31,6 +31,7 @@ class EmailFieldWidget extends StatelessWidget {
           ),
           child: Container(
             margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
+            padding: const EdgeInsets.only(bottom: 8.0),
             height: AppConstants.textFieldsHeight - 3,
             decoration: BoxDecoration(
               borderRadius:
@@ -45,7 +46,6 @@ class EmailFieldWidget extends StatelessWidget {
                 FocusScope.of(context).requestFocus(nextFocusNode);
               },
               style: Get.textTheme.bodyMedium,
-              maxLines: 1,
             ),
           ),
         ),

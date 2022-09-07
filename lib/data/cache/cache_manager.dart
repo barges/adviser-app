@@ -1,11 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 
 abstract class CacheManager {
-  Future<void> saveToken(String? token);
+  Future<void> saveTokenForBrand(Brand brand, String token);
 
   Future<void> saveLocaleIndex(int? index);
 
-  String? getToken();
+  String? getTokenByBrand(Brand brand);
+
+  List<Brand> getAuthorizedBrands();
+
+  List<Brand> getUnauthorizedBrands();
 
   Future<void> saveCurrentBrand(Brand currentBrand);
 
@@ -13,7 +18,9 @@ abstract class CacheManager {
 
   int? getLocaleIndex();
 
-  Future<bool?> clear();
+  Future<bool> clearTokenForBrand(Brand brand);
 
   bool? isLoggedIn();
+
+  void listenCurrentBrand(ValueChanged<Brand?> callback);
 }

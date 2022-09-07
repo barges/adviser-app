@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
+import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_controller.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/articles/articles_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/chats/chats_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard/dashboard_screen.dart';
+
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -14,7 +16,14 @@ class HomeScreen extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Scaffold(
+        key: controller.scaffoldKey,
+        drawer: AppDrawer(),
         body: _TabPages(
+          openDrawer: () {
+            Future.microtask(() {
+              controller.openDrawer();
+            });
+          },
           tabIndex: controller.tabPositionIndex.value,
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -81,16 +90,24 @@ class HomeScreen extends GetView<HomeController> {
 class _TabPages extends StatelessWidget {
   final int tabIndex;
   final List<Widget> _tabs;
+  final VoidCallback openDrawer;
 
   _TabPages({
     required this.tabIndex,
-  }) : _tabs = _buildTabs();
+    required this.openDrawer,
+  }) : _tabs = _buildTabs(openDrawer);
 
-  static List<Widget> _buildTabs() {
+  static List<Widget> _buildTabs(
+    VoidCallback openDrawer,
+  ) {
     return <Widget>[
       Navigator(
-          onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-              builder: (BuildContext context) => const DashboardScreen())),
+        onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
+          builder: (BuildContext context) => DashboardScreen(
+            openDrawer: openDrawer,
+          ),
+        ),
+      ),
       Navigator(
           onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
               builder: (BuildContext context) => const ArticlesScreen())),
