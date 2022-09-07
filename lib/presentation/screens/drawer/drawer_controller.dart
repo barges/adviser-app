@@ -32,10 +32,6 @@ class AppDrawerController extends RunnableController {
     // Get.toNamed(AppRoutes.allBrands);
   }
 
-  void goToAllBrands() {
-    Get.toNamed(AppRoutes.allBrands);
-  }
-
   void goToSettings() {
     Get.toNamed(AppRoutes.allBrands);
   }

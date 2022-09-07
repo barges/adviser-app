@@ -3,9 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_bottom_sheet.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+import 'package:shared_advisor_interface/presentation/screens/all_brands/all_brands_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/drawer_controller.dart';
 
 class AppDrawer extends GetView<AppDrawerController> {
@@ -63,7 +65,7 @@ class AppDrawer extends GetView<AppDrawerController> {
                             ),
                           ),
                           Divider(
-                            height: 0.0,
+                            height: 1.0,
                             color: Get.theme.hintColor,
                           ),
                           if (controller.unauthorizedBrands().isNotEmpty)
@@ -160,7 +162,8 @@ class _BrandItem extends GetView<AppDrawerController> {
                   border: Border.all(
                     color: Get.theme.hintColor,
                   ),
-                  borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
+                  borderRadius:
+                      BorderRadius.circular(AppConstants.buttonRadius),
                 ),
                 child: Center(
                   child: SvgPicture.asset(
@@ -179,8 +182,8 @@ class _BrandItem extends GetView<AppDrawerController> {
                   children: [
                     Text(
                       brand.name,
-                      style:
-                          Get.textTheme.headlineMedium?.copyWith(fontSize: 16.0),
+                      style: Get.textTheme.headlineMedium
+                          ?.copyWith(fontSize: 16.0),
                     ),
                     if (brand.url.isNotEmpty && brand.isEnabled)
                       Text(
@@ -204,10 +207,16 @@ class _BrandItem extends GetView<AppDrawerController> {
               if (brand.isEnabled && (isCurrent || !isLoggedIn))
                 GestureDetector(
                   onTap: () {
-                    Get.back();
                     if (isCurrent) {
-                      controller.logout(brand);
+                      showOkCancelBottomSheet(
+                        context: context,
+                        okButtonText: 'Log out',
+                        okOnTap: () {
+                          controller.logout(brand);
+                        },
+                      );
                     } else {
+                      Get.back();
                       Get.toNamed(AppRoutes.login, arguments: brand);
                     }
                   },
@@ -234,7 +243,7 @@ class _BottomSection extends GetView<AppDrawerController> {
     return Column(
       children: [
         Divider(
-          height: 0.0,
+          height: 1.0,
           color: Get.theme.hintColor,
         ),
         Padding(
@@ -245,9 +254,16 @@ class _BottomSection extends GetView<AppDrawerController> {
           child: Column(
             children: [
               _BottomSectionItem(
-                  icon: AppIcons.bookOpen,
-                  text: S.of(context).allOurBrands,
-                  onTap: controller.goToAllBrands),
+                icon: AppIcons.bookOpen,
+                text: S.of(context).allOurBrands,
+                onTap: () {
+                  Get.bottomSheet(
+                    const AllBrandsScreen(),
+                    ignoreSafeArea: true,
+                    isScrollControlled: true,
+                  );
+                },
+              ),
               const SizedBox(
                 height: 16.0,
               ),
@@ -289,7 +305,9 @@ class _BottomSectionItem extends StatelessWidget {
         Get.back();
         onTap();
       },
-      child: SizedBox(
+      child: Container(
+        width: Get.width,
+        color: Colors.transparent,
         child: Row(
           children: [
             SvgPicture.asset(

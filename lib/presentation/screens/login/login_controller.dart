@@ -76,8 +76,7 @@ class LoginController extends RunnableController {
         String? token = response?.accessToken;
         if (token != null && token.isNotEmpty) {
           String jvtToken = 'JWT $token';
-          await cacheManager.saveTokenForBrand(
-              selectedBrand.value, 'JWT $token');
+          await cacheManager.saveTokenForBrand(selectedBrand.value, jvtToken);
           Get.find<Dio>().options.headers['Authorization'] = jvtToken;
           cacheManager.saveCurrentBrand(selectedBrand.value);
           goToHome();

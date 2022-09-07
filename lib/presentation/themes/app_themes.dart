@@ -19,6 +19,14 @@ class AppThemes {
       iconTheme: const IconThemeData(
         color: AppColorsLight.shade3,
       ),
+      bottomSheetTheme: const BottomSheetThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(AppConstants.buttonRadius),
+            topRight: Radius.circular(AppConstants.buttonRadius),
+          ),
+        ),
+      ),
       appBarTheme: const AppBarTheme(
         elevation: 0.0,
         color: AppColorsLight.contrast,

@@ -44,6 +44,7 @@ class PasswordFieldWidget extends StatelessWidget {
           ),
           child: Container(
             margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
+            padding: const EdgeInsets.only(bottom: 8.0),
             height: AppConstants.textFieldsHeight - 3,
             decoration: BoxDecoration(
               color: Theme.of(context).canvasColor,

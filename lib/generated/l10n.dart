@@ -269,6 +269,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ingenio`
+  String get ingenio {
+    return Intl.message(
+      'Ingenio',
+      name: 'ingenio',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

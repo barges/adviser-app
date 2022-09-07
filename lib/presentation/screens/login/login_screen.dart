@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -176,6 +177,12 @@ class _BrandWidget extends GetView<LoginController> {
     return Opacity(
       opacity: isEnabled ? 1.0 : 0.4,
       child: GestureDetector(
+        onLongPress: () {
+          if (kDebugMode) {
+            controller.emailController.text = 'niskov.test@gmail.com';
+            controller.passwordController.text = '00000000';
+          }
+        },
         onTap: () {
           if (isEnabled && !isSelected) {
             controller.selectedBrand.value = brand;

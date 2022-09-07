@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "allOurBrands":
             MessageLookupByLibrary.simpleMessage("Todas as nossas marcas"),
         "back": MessageLookupByLibrary.simpleMessage("Back"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "changePassword": MessageLookupByLibrary.simpleMessage("Mudar senha"),
         "chooseBrandToLogIn": MessageLookupByLibrary.simpleMessage(
             "Escolha a marca para iniciar a sessão"),
@@ -38,6 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Esqueceu a senha"),
+        "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "openEmailApp":
             MessageLookupByLibrary.simpleMessage("Abra o aplicativo de e-mail"),
