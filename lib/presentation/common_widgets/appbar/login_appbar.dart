@@ -20,7 +20,7 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       centerTitle: false,
       titleSpacing: AppConstants.horizontalScreenPadding,
-      elevation: 2,
+      elevation: 1.0,
       toolbarHeight: 72.0,
       title: Row(
         children: [
@@ -49,4 +49,3 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 }
-

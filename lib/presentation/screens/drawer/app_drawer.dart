@@ -7,7 +7,6 @@ import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_b
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/all_brands/all_brands_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/drawer_controller.dart';
 
 class AppDrawer extends GetView<AppDrawerController> {
@@ -256,13 +255,7 @@ class _BottomSection extends GetView<AppDrawerController> {
               _BottomSectionItem(
                 icon: AppIcons.bookOpen,
                 text: S.of(context).allOurBrands,
-                onTap: () {
-                  Get.bottomSheet(
-                    const AllBrandsScreen(),
-                    ignoreSafeArea: true,
-                    isScrollControlled: true,
-                  );
-                },
+                onTap: controller.goToAllBrands,
               ),
               const SizedBox(
                 height: 16.0,

@@ -11,7 +11,6 @@ class Configuration {
 enum Brand { fortunica, zodiacTouch }
 
 extension BrandExtension on Brand {
-
   static Brand? brandFromString(String? s) {
     switch (s) {
       case 'Brand.fortunica':
@@ -60,6 +59,4 @@ extension BrandExtension on Brand {
   }
 }
 
-class BrandService extends GetxService{
-
-}
+class BrandService extends GetxService {}

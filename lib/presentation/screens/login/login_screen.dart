@@ -139,27 +139,30 @@ class _ChooseBrandWidget extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     List<Brand> brands = controller.unauthorizedBrands;
-    return SizedBox(
-      height: 78.0,
-      child: ListView.separated(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppConstants.horizontalScreenPadding,
-          ),
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            Brand brand = brands[index];
-            return _BrandWidget(
-              brand: brands[index],
-              isSelected: brand == selectedBrand,
-            );
-          },
-          separatorBuilder: (context, index) {
-            return const SizedBox(
-              width: 8.0,
-            );
-          },
-          itemCount: brands.length),
+    return Align(
+      alignment: Alignment.topLeft,
+      child: SizedBox(
+        height: 78.0,
+        child: ListView.separated(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppConstants.horizontalScreenPadding,
+            ),
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              Brand brand = brands[index];
+              return _BrandWidget(
+                brand: brands[index],
+                isSelected: brand == selectedBrand,
+              );
+            },
+            separatorBuilder: (context, index) {
+              return const SizedBox(
+                width: 8.0,
+              );
+            },
+            itemCount: brands.length),
+      ),
     );
   }
 }
