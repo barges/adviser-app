@@ -1,13 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
 import 'package:shared_advisor_interface/data/network/requests/reset_password_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/base_screen/runnable_controller.dart';
-import 'package:shared_advisor_interface/presentation/screens/login/login_controller.dart';
+import 'package:shared_advisor_interface/presentation/screens/login/login_cubit.dart';
 
 class ForgotPasswordController extends RunnableController {
   final AuthRepository _repository;
@@ -56,12 +58,13 @@ class ForgotPasswordController extends RunnableController {
             ResetPasswordRequest(
                 email: email.value, password: confirmPassword.value.to256)));
         if (success) {
-          Get.find<LoginController>()
-              .setSuccessMessage(context, showEmailButton: true);
+          context.read<LoginCubit>().setSuccessMessage(context, showEmailButton: true);
           Get.back();
         }
       } on DioError catch (e) {
         errorMessage.value = e.response?.data['status'] ?? '';
+      } catch (e) {
+        logger.d('ERROR: $e');
       }
     }
   }

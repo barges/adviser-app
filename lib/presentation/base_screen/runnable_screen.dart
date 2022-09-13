@@ -16,12 +16,7 @@ abstract class RunnableGetView<T extends RunnableController>
         body(context),
         Obx(
           () => controller.isLoading.value
-              ? Container(
-                  height: Get.height,
-                  width: Get.width,
-                  color: Get.theme.scaffoldBackgroundColor
-                      .withOpacity(Get.isDarkMode ? 0.6 : 0.2),
-                  child: const Center(child: AppLoadingIndicator()))
+              ? const AppLoadingIndicator()
               : const SizedBox.shrink(),
         )
       ],

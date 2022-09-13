@@ -5,10 +5,12 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
 import 'package:shared_advisor_interface/data/repositories/auth_repository_impl.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/presentation/base_screen/base_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_controller.dart';
 
 class InitBinding extends Bindings {
@@ -21,6 +23,9 @@ class InitBinding extends Bindings {
 
     Dio dio = await _initDio();
     Get.lazyPut<Dio>(() => dio, fenix: true);
+
+    Get.lazyPut<BaseCubit>(() => BaseCubit(Get.find<CacheManager>()),
+        fenix: true);
 
     ///APIs
     Get.lazyPut<AuthApi>(() => AuthApi(dio), fenix: true);
@@ -50,7 +55,7 @@ class InitBinding extends Bindings {
     //   Get.find<CacheManager>().clear();
     //   Get.offNamedUntil(AppRoutes.login, (route) => false);
     // } else {
-      return dioError;
+    return dioError;
     // }
   }
 

@@ -7,14 +7,22 @@ class AppLoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 48.0,
-      width: 48.0,
-      child: LoadingIndicator(
-        indicatorType: Indicator.lineSpinFadeLoader,
-        colors: [
-          Get.iconColor ?? Colors.grey,
-        ],
+    return Container(
+      height: Get.height,
+      width: Get.width,
+      color: Get.theme.scaffoldBackgroundColor
+          .withOpacity(Get.isDarkMode ? 0.6 : 0.2),
+      child: Center(
+        child: SizedBox(
+          height: 48.0,
+          width: 48.0,
+          child: LoadingIndicator(
+            indicatorType: Indicator.lineSpinFadeLoader,
+            colors: [
+              Get.iconColor ?? Colors.grey,
+            ],
+          ),
+        ),
       ),
     );
   }

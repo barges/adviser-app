@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
 
 class Configuration {
@@ -11,14 +10,14 @@ class Configuration {
 enum Brand { fortunica, zodiacTouch }
 
 extension BrandExtension on Brand {
-  static Brand? brandFromString(String? s) {
+  static Brand brandFromString(String? s) {
     switch (s) {
       case 'Brand.fortunica':
         return Brand.fortunica;
       case 'Brand.zodiacTouch':
         return Brand.zodiacTouch;
       default:
-        return null;
+        return Brand.fortunica;
     }
   }
 
@@ -54,9 +53,7 @@ extension BrandExtension on Brand {
       case Brand.fortunica:
         return true;
       case Brand.zodiacTouch:
-        return false;
+        return true;
     }
   }
 }
-
-class BrandService extends GetxService {}

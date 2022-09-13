@@ -4,7 +4,6 @@ import 'package:shared_advisor_interface/presentation/screens/forgot_password/fo
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_binding.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_screen.dart';
-import 'package:shared_advisor_interface/presentation/screens/login/login_binding.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_screen.dart';
 
@@ -23,13 +22,12 @@ class AppRoutes {
     ),
     GetPage(
       name: home,
-      page: () => HomeScreen(),
+      page: () => const HomeScreen(),
       binding: HomeBinding(),
     ),
     GetPage(
       name: login,
       page: () => const LoginScreen(),
-      binding: LoginBinding(),
     ),
     GetPage(
       name: forgotPassword,

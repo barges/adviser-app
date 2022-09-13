@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard/dashboard_controller.dart';
+import 'package:shared_advisor_interface/presentation/screens/login/login_cubit.dart';
 
 class DashboardScreen extends GetView<DashboardController> {
   final VoidCallback? openDrawer;
@@ -20,7 +22,7 @@ class DashboardScreen extends GetView<DashboardController> {
         height: Get.height,
         child: GestureDetector(
           onTap: () {
-            Get.toNamed(AppRoutes.allBrands);
+            logger.d(context.read<LoginCubit>);
           },
           child: Center(
             child: Obx(

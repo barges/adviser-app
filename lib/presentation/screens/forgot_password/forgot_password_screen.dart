@@ -19,7 +19,6 @@ class ForgotPasswordScreen extends RunnableGetView<ForgotPasswordController> {
   Widget body(BuildContext context) {
     final FocusNode passwordNode = FocusNode();
     final FocusNode confirmPasswordNode = FocusNode();
-
     return Scaffold(
         appBar: WideAppBar(
           title: S.of(context).forgotPassword,

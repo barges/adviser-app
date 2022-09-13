@@ -72,7 +72,7 @@ class DataCacheManager implements CacheManager {
   }
 
   @override
-  void listenCurrentBrand(ValueChanged<Brand?> callback) {
+  void listenCurrentBrand(ValueChanged<Brand> callback) {
     _userBox.listenKey(_brandKey, (value) {
       callback(BrandExtension.brandFromString(value));
     });

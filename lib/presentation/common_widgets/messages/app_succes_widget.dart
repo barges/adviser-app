@@ -52,7 +52,8 @@ class AppSuccessWidget extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 22.0, vertical: 8.0),
             child: GestureDetector(
                 onTap: close,
                 child: Icon(
@@ -66,4 +67,3 @@ class AppSuccessWidget extends StatelessWidget {
     );
   }
 }
-
