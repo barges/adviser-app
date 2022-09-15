@@ -5,7 +5,8 @@ part 'login_state.freezed.dart';
 
 @freezed
 class LoginState with _$LoginState {
-  const factory LoginState([
+  const factory LoginState({
+    @Default(false) bool isLoading,
     @Default('') String errorMessage,
     @Default('') String successMessage,
     @Default(false) bool showOpenEmailButton,
@@ -14,5 +15,5 @@ class LoginState with _$LoginState {
     @Default('') String email,
     @Default('') String password,
     @Default(true) bool hiddenPassword,
-  ]) = _LoginState;
+  }) = _LoginState;
 }

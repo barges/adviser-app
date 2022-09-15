@@ -40,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Esqueceu a senha"),
         "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
+        "logOut": MessageLookupByLibrary.simpleMessage("Log out"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "openEmailApp":
             MessageLookupByLibrary.simpleMessage("Abra o aplicativo de e-mail"),

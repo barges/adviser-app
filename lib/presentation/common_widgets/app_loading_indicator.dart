@@ -3,11 +3,14 @@ import 'package:get/get.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 class AppLoadingIndicator extends StatelessWidget {
-  const AppLoadingIndicator({Key? key}) : super(key: key);
+  final bool showIndicator;
+
+  const AppLoadingIndicator({Key? key, this.showIndicator = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return showIndicator ? Container(
       height: Get.height,
       width: Get.width,
       color: Get.theme.scaffoldBackgroundColor
@@ -18,12 +21,12 @@ class AppLoadingIndicator extends StatelessWidget {
           width: 48.0,
           child: LoadingIndicator(
             indicatorType: Indicator.lineSpinFadeLoader,
-            colors: [
-              Get.iconColor ?? Colors.grey,
+                  colors: [
+                    Get.iconColor ?? Colors.grey,
             ],
           ),
         ),
       ),
-    );
+    ) : const SizedBox.shrink();
   }
 }

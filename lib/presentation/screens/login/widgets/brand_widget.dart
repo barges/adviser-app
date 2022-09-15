@@ -24,7 +24,7 @@ class BrandWidget extends StatelessWidget {
         onLongPress: () {
           if (kDebugMode) {
             context.read<LoginCubit>().emailController.text =
-            'niskov.test@gmail.com';
+                'niskov.test@gmail.com';
             context.read<LoginCubit>().passwordController.text = '00000000';
           }
         },
@@ -42,7 +42,7 @@ class BrandWidget extends StatelessWidget {
             margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
             decoration: BoxDecoration(
               borderRadius:
-              BorderRadius.circular(AppConstants.buttonRadius - 1),
+                  BorderRadius.circular(AppConstants.buttonRadius - 1),
               color: Get.theme.canvasColor,
             ),
             child: Column(
@@ -66,7 +66,7 @@ class BrandWidget extends StatelessWidget {
                           ? Get.theme.primaryColor
                           : Get.textTheme.bodySmall?.color,
                       fontWeight:
-                      isSelected ? FontWeight.w700 : FontWeight.w500,
+                          isSelected ? FontWeight.w700 : FontWeight.w500,
                     ),
                   ),
                 )

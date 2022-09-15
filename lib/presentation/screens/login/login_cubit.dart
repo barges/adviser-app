@@ -31,7 +31,6 @@ class LoginCubit extends Cubit<LoginState> {
       selectedBrand: newSelectedBrand ?? unauthorizedBrands.first,
     ));
 
-
     emailController.addListener(() {
       emit(state.copyWith(
         email: emailController.text,
@@ -78,7 +77,7 @@ class LoginCubit extends Cubit<LoginState> {
       Get.find<Dio>().options.headers['Authorization'] =
           'Basic ${base64.encode(utf8.encode('${state.email}:${state.password.to256}'))}';
       try {
-        LoginResponse? response = await _repository.login();
+        LoginResponse? response = await run(_repository.login());
         String? token = response?.accessToken;
         if (token != null && token.isNotEmpty) {
           String jvtToken = 'JWT $token';
@@ -118,127 +117,20 @@ class LoginCubit extends Cubit<LoginState> {
     Get.offNamedUntil(AppRoutes.home, (_) => false);
   }
 
-  void goToForgotPassword() {
-    Get.toNamed(AppRoutes.forgotPassword, arguments: state.selectedBrand);
+  Future<void> goToForgotPassword(BuildContext context) async {
+    final dynamic showEmailMessage = (await Get.toNamed(
+        AppRoutes.forgotPassword,
+        arguments: state.selectedBrand));
+    if (showEmailMessage is bool && showEmailMessage == true) {
+      emit(state.copyWith(
+          successMessage: S
+              .of(context)
+              .youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo,
+          showOpenEmailButton: showEmailMessage));
+    }
   }
 
   bool emailIsValid() => GetUtils.isEmail(state.email);
 
   bool passwordIsValid() => state.password.length >= 8;
 }
-
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
-//
-// @injectable
-// class LoginCubit extends Cubit<LoginStateState> {
-//   final AuthRepository _authRepository;
-//
-//   late final StreamSubscription _checksAmountSubscription;
-//   late final StreamSubscription _connectivitySubscription;
-//   ConnectivityResult _connectivityStatus = ConnectivityResult.none;
-//
-//   CheckAddressCubit(this._checkAddressRepository, this._walletNetworkValidator, this._authRepository)
-//       : super(const CheckAddressState()) {
-//     _checksAmountSubscription = _checkAddressRepository.checksAmount.listen((event) {
-//       emit(state.copyWith(remainingChecks: event));
-//     });
-//     _connectivitySubscription = Connectivity().onConnectivityChanged.listen((result) {
-//       _connectivityStatus = result;
-//     });
-//   }
-//
-//   void pasteAddress() {
-//     FlutterClipboard.paste().then(_pasteAddress);
-//   }
-//
-//   void clearInputAddress() => emit(state.copyWith(hash: null, error: null));
-//
-//   void checkAddress() async {
-//     if (_connectivityStatus == ConnectivityResult.none) {
-//       return emit(state.copyWith(error: const NetworkConnectionError()));
-//     }
-//     if (state.remainingChecks == 0) {
-//       return emit(state.copyWith(error: const EmptyBalanceError()));
-//     }
-//     if (state.loading) {
-//       return;
-//     }
-//     if (state.hash != null && state.network != null) {
-//       emit(state.copyWith(loading: true, error: null));
-//       final result = await Future.wait([
-//         _checkAddressRepository.verifyAddress(state.hash!, state.network!.toAsset()),
-//         Future.delayed(AppConstants.totalProgressAnimationDuration)
-//       ]);
-//       var data = (result.first as NetworkBoundary<WalletDetails>).data;
-//       var error = (result.first as NetworkBoundary<WalletDetails>).error;
-//       if (data != null) {
-//         emit(state.copyWith(data: data));
-//       } else {
-//         emit(state.copyWith(loading: false, error: error));
-//       }
-//     } else {
-//       emit(state.copyWith(error: const AddressOrNetworkError()));
-//     }
-//   }
-//
-//   void onNetworkChanged(Network network) {
-//     emit(state.copyWith(network: network));
-//   }
-//
-//   void resetData() {
-//     emit(state.copyWith(data: null, loading: false));
-//   }
-//
-//   void onCodeScanned(String address) {
-//     _pasteAddress(address);
-//   }
-//
-//   void _pasteAddress(String value) {
-//     var trimmedValue = value.trim();
-//     if (trimmedValue.isNotEmpty) {
-//       Network? network = _walletNetworkValidator.getNetwork(trimmedValue);
-//       if (network != null) {
-//         emit(state.copyWith(hash: trimmedValue, error: null, network: network));
-//       } else {
-//         emit(state.copyWith(hash: trimmedValue, error: NotWalletAddressError(), network: null));
-//       }
-//     }
-//   }
-//
-//   @override
-//   Future<void> close() {
-//     _checksAmountSubscription.cancel();
-//     _connectivitySubscription.cancel();
-//     return super.close();
-//   }
-//
-//   Future<void> refreshChecks() async {
-//     final completer = Completer();
-//     try {
-//       await _authRepository.authorize();
-//     } finally {
-//       completer.complete();
-//     }
-//     return completer.future;
-//   }
-//
-//   void errorHandled() {
-//     emit(state.copyWith(error: null));
-//   }
-//
-//   Future<void> loadPlans(List<Plan>? plans) async {
-//     if (plans?.isNotEmpty == true) {
-//       return emit(state.copyWith(plans: plans));
-//     }
-//     if (state.plans != null) {
-//       return;
-//     }
-//     try {
-//       final result = await _checkAddressRepository.getPlans();
-//       emit(state.copyWith(plans: result));
-//     } on AppError catch (e) {
-//       emit(state.copyWith(error: e));
-//     }
-//   }
-// }
