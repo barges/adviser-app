@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_images.dart';
 
 class AllBrandsScreen extends StatelessWidget {
   const AllBrandsScreen({Key? key}) : super(key: key);
@@ -51,19 +51,23 @@ class AllBrandsScreen extends StatelessWidget {
               shrinkWrap: true,
               padding:
                   const EdgeInsets.all(AppConstants.horizontalScreenPadding),
-              itemCount: AppImages.brands.length,
+              itemCount: BrandExtension.allBrands.length,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   height: kToolbarHeight,
                   decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(AppConstants.buttonRadius),
-                      color: Get.theme.backgroundColor,
-                      border: Border.all(
-                        color: Get.theme.hintColor,
+                    borderRadius:
+                        BorderRadius.circular(AppConstants.buttonRadius),
+                    color: Get.theme.backgroundColor,
+                    border: Border.all(
+                      color: Get.theme.hintColor,
+                    ),
+                    image: DecorationImage(
+                      image: AssetImage(
+                        BrandExtension.allBrands[index],
                       ),
-                      image: DecorationImage(
-                          image: AssetImage(AppImages.brands[index]))),
+                    ),
+                  ),
                 );
               },
             )

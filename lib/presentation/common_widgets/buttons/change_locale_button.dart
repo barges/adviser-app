@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
 
 class ChangeLocaleButton extends StatefulWidget {
   const ChangeLocaleButton({Key? key}) : super(key: key);
@@ -38,8 +37,7 @@ class _ChangeLocaleButtonState extends State<ChangeLocaleButton> {
           padding: const EdgeInsets.symmetric(horizontal: 6.0),
           child: Row(
             children: [
-              SvgPicture.asset(
-                AppIcons.languages,
+              Assets.vectors.languages.svg(
                 color: Get.theme.primaryColor,
                 width: 20.0,
                 height: 20.0,

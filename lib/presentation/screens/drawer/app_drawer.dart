@@ -4,11 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cibit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_bottom_sheet.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/drawer_cubit.dart';
 
@@ -142,8 +142,7 @@ class _BrandItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DrawerCubit cubit = context.read<DrawerCubit>();
-    final Brand currentBrand =
-        context.read<MainCubit>().state.currentBrand;
+    final Brand currentBrand = context.read<MainCubit>().state.currentBrand;
     final bool isCurrent = brand == currentBrand;
     return GestureDetector(
       onTap: isLoggedIn && !isCurrent
@@ -232,7 +231,9 @@ class _BrandItem extends StatelessWidget {
                     }
                   },
                   child: SvgPicture.asset(
-                    isCurrent ? AppIcons.moreHorizontal : AppIcons.login,
+                    isCurrent
+                        ? Assets.vectors.moreHorizontal.path
+                        : Assets.vectors.login.path,
                     height: AppConstants.iconsSize,
                     width: AppConstants.iconsSize,
                     color: Get.iconColor,
@@ -266,7 +267,7 @@ class _BottomSection extends StatelessWidget {
           child: Column(
             children: [
               _BottomSectionItem(
-                icon: AppIcons.bookOpen,
+                icon: Assets.vectors.bookOpen.path,
                 text: S.of(context).allOurBrands,
                 onTap: cubit.goToAllBrands,
               ),
@@ -274,14 +275,14 @@ class _BottomSection extends StatelessWidget {
                 height: 16.0,
               ),
               _BottomSectionItem(
-                  icon: AppIcons.settings,
+                  icon: Assets.vectors.settings.path,
                   text: S.of(context).settings,
                   onTap: cubit.goToSettings),
               const SizedBox(
                 height: 16.0,
               ),
               _BottomSectionItem(
-                icon: AppIcons.questionMark,
+                icon: Assets.vectors.questionMark.path,
                 text: S.of(context).customerSupport,
                 onTap: cubit.goToCustomerSupport,
               ),

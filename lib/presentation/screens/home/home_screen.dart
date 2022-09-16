@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_screen.dart';
@@ -46,41 +45,29 @@ class HomeScreen extends StatelessWidget {
               selectedItemColor: Get.theme.primaryColor,
               items: [
                 BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    AppIcons.dashboard,
-                  ),
-                  activeIcon: SvgPicture.asset(
-                    AppIcons.dashboard,
+                  icon: Assets.vectors.dashboard.svg(),
+                  activeIcon: Assets.vectors.dashboard.svg(
                     color: Get.theme.primaryColor,
                   ),
                   label: 'Dashboard',
                 ),
                 BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    AppIcons.articles,
-                  ),
-                  activeIcon: SvgPicture.asset(
-                    AppIcons.articles,
+                  icon: Assets.vectors.articles.svg(),
+                  activeIcon: Assets.vectors.articles.svg(
                     color: Get.theme.primaryColor,
                   ),
                   label: 'Articles',
                 ),
                 BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    AppIcons.chats,
-                  ),
-                  activeIcon: SvgPicture.asset(
-                    AppIcons.chats,
+                  icon: Assets.vectors.chats.svg(),
+                  activeIcon: Assets.vectors.chats.svg(
                     color: Get.theme.primaryColor,
                   ),
                   label: 'Chats',
                 ),
                 BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    AppIcons.account,
-                  ),
-                  activeIcon: SvgPicture.asset(
-                    AppIcons.account,
+                  icon: Assets.vectors.account.svg(),
+                  activeIcon: Assets.vectors.account.svg(
                     color: Get.theme.primaryColor,
                   ),
                   label: 'Account',

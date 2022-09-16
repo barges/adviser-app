@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
 
 class AppBackButton extends StatelessWidget {
   final String? icon;
@@ -24,7 +24,7 @@ class AppBackButton extends StatelessWidget {
         ),
         child: Center(
             child: SvgPicture.asset(
-          icon ?? AppIcons.back,
+          icon ?? Assets.vectors.back.path,
           color: Get.theme.primaryColor,
           height: AppConstants.iconsSize,
           width: AppConstants.iconsSize,

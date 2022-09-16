@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class AppErrorWidget extends StatelessWidget {
@@ -37,12 +38,11 @@ class AppErrorWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 22.0),
             child: GestureDetector(
-                onTap: close,
-                child: Icon(
-                  Icons.close,
-                  color: Get.theme.backgroundColor,
-                  size: 18.0,
-                )),
+              onTap: close,
+              child: Assets.vectors.close.svg(
+                color: Get.theme.backgroundColor,
+              ),
+            ),
           )
         ],
       ),
