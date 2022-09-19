@@ -24,3 +24,4 @@ abstract class CacheManager {
 
   void listenCurrentBrand(ValueChanged<Brand> callback);
 }
+

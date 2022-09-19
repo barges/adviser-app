@@ -6,8 +6,11 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
+import 'package:shared_advisor_interface/data/network/api/sessions_api.dart';
 import 'package:shared_advisor_interface/data/repositories/auth_repository_impl.dart';
+import 'package:shared_advisor_interface/data/repositories/chats_repository_impl.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
+import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 
 class InitBinding extends Bindings {
@@ -22,9 +25,11 @@ class InitBinding extends Bindings {
 
     ///APIs
     Get.put<AuthApi>(AuthApi(dio), permanent: true);
+    Get.put<SessionsApi>(SessionsApi(dio), permanent: true);
 
     ///Repositories
     Get.put<AuthRepository>(AuthRepositoryImpl(), permanent: true);
+    Get.put<SessionsRepository>(SessionsRepositoryImpl(), permanent: true);
   }
 
   Future<Dio> _initDio() async {
@@ -42,7 +47,7 @@ class InitBinding extends Bindings {
     return dio;
   }
 
-  _errorInterceptor(DioError dioError) async {
+/*  _errorInterceptor(DioError dioError) async {
     // if (dioError.response?.statusCode == 401 ||
     //     dioError.response?.statusCode == 423) {
     //   Get.find<CacheManager>().clear();
@@ -50,7 +55,7 @@ class InitBinding extends Bindings {
     // } else {
     return dioError;
     // }
-  }
+  }*/
 
   Future<Map<String, dynamic>> _getHeaders() async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
