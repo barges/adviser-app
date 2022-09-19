@@ -24,14 +24,13 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      centerTitle: false,
       titleSpacing: AppConstants.horizontalScreenPadding,
       titleTextStyle: Get.textTheme.headlineMedium,
       actions: [
         if(openDrawer != null)
         IconButton(
             onPressed: openDrawer,
-            icon: Icon(
+            icon: const Icon(
               Icons.menu,
               color: Colors.black,
             ))

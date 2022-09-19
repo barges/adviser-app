@@ -38,7 +38,7 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
               textAlign: TextAlign.left,
             ),
           ),
-          ChangeLocaleButton(),
+          const ChangeLocaleButton(),
         ],
       ),
       backgroundColor: Get.theme.canvasColor,

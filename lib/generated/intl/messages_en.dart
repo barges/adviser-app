@@ -22,11 +22,20 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "addCoverPicture":
+            MessageLookupByLibrary.simpleMessage("Add cover picture"),
+        "addGalleryPictures":
+            MessageLookupByLibrary.simpleMessage("Add Gallery Pictures"),
+        "addMore": MessageLookupByLibrary.simpleMessage("Add more"),
+        "all": MessageLookupByLibrary.simpleMessage("All"),
         "allOurBrands": MessageLookupByLibrary.simpleMessage("All our brands"),
         "back": MessageLookupByLibrary.simpleMessage("Back"),
+        "balanceTransactions":
+            MessageLookupByLibrary.simpleMessage("Balance & Transactions"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "changePassword":
             MessageLookupByLibrary.simpleMessage("Change password"),
+        "changePhoto": MessageLookupByLibrary.simpleMessage("Change photo"),
         "chooseBrandToLogIn":
             MessageLookupByLibrary.simpleMessage("Choose brand to log in"),
         "chooseEmailApp":
@@ -36,12 +45,32 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Confirm new password"),
         "customerSupport":
             MessageLookupByLibrary.simpleMessage("Customer Support"),
+        "customersWantSeeIfYouReal": MessageLookupByLibrary.simpleMessage(
+            "Customers want to see if you are real."),
+        "editProfile": MessageLookupByLibrary.simpleMessage("Edit profile"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
+        "english": MessageLookupByLibrary.simpleMessage("English"),
+        "forMe": MessageLookupByLibrary.simpleMessage("For me"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot password"),
+        "forgotYourPassword":
+            MessageLookupByLibrary.simpleMessage("Forgot your password"),
+        "fortunica": MessageLookupByLibrary.simpleMessage("Fortunica"),
+        "imAvailableNow":
+            MessageLookupByLibrary.simpleMessage("I\'m available now"),
         "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
         "logOut": MessageLookupByLibrary.simpleMessage("Log out"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
+        "mandatory": MessageLookupByLibrary.simpleMessage("Mandatory"),
+        "market": MessageLookupByLibrary.simpleMessage("Market"),
+        "nickname": MessageLookupByLibrary.simpleMessage("Nickname"),
+        "nnew": MessageLookupByLibrary.simpleMessage("New"),
+        "notEnoughConversationsCheckOurProfileGuide":
+            MessageLookupByLibrary.simpleMessage(
+                "Not enough conversations? Check our Profile Guide."),
+        "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
+        "onlyPremiumProducts":
+            MessageLookupByLibrary.simpleMessage("Only Premium Products"),
         "openEmailApp": MessageLookupByLibrary.simpleMessage("Open email app"),
         "otherBrands": MessageLookupByLibrary.simpleMessage("Other brands"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
@@ -49,9 +78,29 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please enter at least 8 characters"),
         "pleaseInsertCorrectEmail": MessageLookupByLibrary.simpleMessage(
             "Please, insert correct email"),
+        "portuguese": MessageLookupByLibrary.simpleMessage("Portuguese"),
+        "previewAccount":
+            MessageLookupByLibrary.simpleMessage("Preview account"),
+        "privateQuestions":
+            MessageLookupByLibrary.simpleMessage("Private Questions"),
+        "profileText": MessageLookupByLibrary.simpleMessage("Profile Text"),
+        "public": MessageLookupByLibrary.simpleMessage("Public"),
+        "requestNewPassword":
+            MessageLookupByLibrary.simpleMessage("Request new password"),
+        "reviews": MessageLookupByLibrary.simpleMessage("Reviews"),
+        "save": MessageLookupByLibrary.simpleMessage("Save"),
+        "search": MessageLookupByLibrary.simpleMessage("Search"),
+        "seeMore": MessageLookupByLibrary.simpleMessage("See more"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+        "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
+        "statusText": MessageLookupByLibrary.simpleMessage("Status Text"),
+        "theMorePhotosYourselfYouAddBetter":
+            MessageLookupByLibrary.simpleMessage(
+                " The more photos of yourself you add, the better."),
         "thePasswordsMustMatch":
             MessageLookupByLibrary.simpleMessage("The passwords must match"),
+        "theUserWasNotFound":
+            MessageLookupByLibrary.simpleMessage("The user was not found"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others"),

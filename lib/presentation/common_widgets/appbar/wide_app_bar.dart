@@ -23,10 +23,9 @@ class WideAppBar extends StatelessWidget implements PreferredSizeWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const AppBackButton(),
-                topRightWidget ?? const SizedBox()
+                topRightWidget ?? const SizedBox(),
               ],
             ),
             Padding(

@@ -6,8 +6,11 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 
 class AppBackButton extends StatelessWidget {
   final String? icon;
+  final double width;
+  final EdgeInsets? padding;
 
-  const AppBackButton({Key? key, this.icon}) : super(key: key);
+  const AppBackButton({Key? key, this.icon, this.width = 32.0, this.padding})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +19,9 @@ class AppBackButton extends StatelessWidget {
         Get.back();
       },
       child: Container(
-        height: 32.0,
-        width: 32.0,
+        height: width,
+        width: width,
+        padding: padding,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
           color: Get.theme.scaffoldBackgroundColor,

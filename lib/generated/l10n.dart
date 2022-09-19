@@ -170,6 +170,176 @@ class S {
     );
   }
 
+  /// `Sign in`
+  String get signIn {
+    return Intl.message(
+      'Sign in',
+      name: 'signIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message(
+      'Save',
+      name: 'save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forgot your password`
+  String get forgotYourPassword {
+    return Intl.message(
+      'Forgot your password',
+      name: 'forgotYourPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Request new password`
+  String get requestNewPassword {
+    return Intl.message(
+      'Request new password',
+      name: 'requestNewPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The user was not found`
+  String get theUserWasNotFound {
+    return Intl.message(
+      'The user was not found',
+      name: 'theUserWasNotFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit profile`
+  String get editProfile {
+    return Intl.message(
+      'Edit profile',
+      name: 'editProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add cover picture`
+  String get addCoverPicture {
+    return Intl.message(
+      'Add cover picture',
+      name: 'addCoverPicture',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change photo`
+  String get changePhoto {
+    return Intl.message(
+      'Change photo',
+      name: 'changePhoto',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nickname`
+  String get nickname {
+    return Intl.message(
+      'Nickname',
+      name: 'nickname',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Status Text`
+  String get statusText {
+    return Intl.message(
+      'Status Text',
+      name: 'statusText',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile Text`
+  String get profileText {
+    return Intl.message(
+      'Profile Text',
+      name: 'profileText',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Gallery Pictures`
+  String get addGalleryPictures {
+    return Intl.message(
+      'Add Gallery Pictures',
+      name: 'addGalleryPictures',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customers want to see if you are real.`
+  String get customersWantSeeIfYouReal {
+    return Intl.message(
+      'Customers want to see if you are real.',
+      name: 'customersWantSeeIfYouReal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` The more photos of yourself you add, the better.`
+  String get theMorePhotosYourselfYouAddBetter {
+    return Intl.message(
+      ' The more photos of yourself you add, the better.',
+      name: 'theMorePhotosYourselfYouAddBetter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add more`
+  String get addMore {
+    return Intl.message(
+      'Add more',
+      name: 'addMore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `English`
+  String get english {
+    return Intl.message(
+      'English',
+      name: 'english',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Portuguese`
+  String get portuguese {
+    return Intl.message(
+      'Portuguese',
+      name: 'portuguese',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `You have successfully changed your password. Check your email to confirm password change`
   String get youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo {
     return Intl.message(
@@ -195,16 +365,6 @@ class S {
     return Intl.message(
       'Open email app',
       name: 'openEmailApp',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Choose email app`
-  String get chooseEmailApp {
-    return Intl.message(
-      'Choose email app',
-      name: 'chooseEmailApp',
       desc: '',
       args: [],
     );
@@ -240,16 +400,6 @@ class S {
     );
   }
 
-  /// `Settings`
-  String get settings {
-    return Intl.message(
-      'Settings',
-      name: 'settings',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Customer Support`
   String get customerSupport {
     return Intl.message(
@@ -280,6 +430,16 @@ class S {
     );
   }
 
+  /// `Log out`
+  String get logOut {
+    return Intl.message(
+      'Log out',
+      name: 'logOut',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Ingenio`
   String get ingenio {
     return Intl.message(
@@ -290,11 +450,191 @@ class S {
     );
   }
 
-  /// `Log out`
-  String get logOut {
+  /// `Choose email app`
+  String get chooseEmailApp {
     return Intl.message(
-      'Log out',
-      name: 'logOut',
+      'Choose email app',
+      name: 'chooseEmailApp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fortunica`
+  String get fortunica {
+    return Intl.message(
+      'Fortunica',
+      name: 'fortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Public`
+  String get public {
+    return Intl.message(
+      'Public',
+      name: 'public',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `For me`
+  String get forMe {
+    return Intl.message(
+      'For me',
+      name: 'forMe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search`
+  String get search {
+    return Intl.message(
+      'Search',
+      name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `I'm available now`
+  String get imAvailableNow {
+    return Intl.message(
+      'I\'m available now',
+      name: 'imAvailableNow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications`
+  String get notifications {
+    return Intl.message(
+      'Notifications',
+      name: 'notifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Preview account`
+  String get previewAccount {
+    return Intl.message(
+      'Preview account',
+      name: 'previewAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reviews`
+  String get reviews {
+    return Intl.message(
+      'Reviews',
+      name: 'reviews',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Balance & Transactions`
+  String get balanceTransactions {
+    return Intl.message(
+      'Balance & Transactions',
+      name: 'balanceTransactions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get settings {
+    return Intl.message(
+      'Settings',
+      name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not enough conversations? Check our Profile Guide.`
+  String get notEnoughConversationsCheckOurProfileGuide {
+    return Intl.message(
+      'Not enough conversations? Check our Profile Guide.',
+      name: 'notEnoughConversationsCheckOurProfileGuide',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `See more`
+  String get seeMore {
+    return Intl.message(
+      'See more',
+      name: 'seeMore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get all {
+    return Intl.message(
+      'All',
+      name: 'all',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Only Premium Products`
+  String get onlyPremiumProducts {
+    return Intl.message(
+      'Only Premium Products',
+      name: 'onlyPremiumProducts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private Questions`
+  String get privateQuestions {
+    return Intl.message(
+      'Private Questions',
+      name: 'privateQuestions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Market`
+  String get market {
+    return Intl.message(
+      'Market',
+      name: 'market',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New`
+  String get nnew {
+    return Intl.message(
+      'New',
+      name: 'nnew',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mandatory`
+  String get mandatory {
+    return Intl.message(
+      'Mandatory',
+      name: 'mandatory',
       desc: '',
       args: [],
     );
