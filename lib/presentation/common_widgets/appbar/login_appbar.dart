@@ -6,9 +6,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/buttons/cha
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final VoidCallback changeLocale;
-
-  const LoginAppBar({Key? key, required this.changeLocale}) : super(key: key);
+  const LoginAppBar({Key? key}) : super(key: key);
 
   @override
   Size get preferredSize => const Size.fromHeight(72.0);
@@ -20,7 +18,7 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       centerTitle: false,
       titleSpacing: AppConstants.horizontalScreenPadding,
-      elevation: 2,
+      elevation: 1.0,
       toolbarHeight: 72.0,
       title: Row(
         children: [
@@ -40,13 +38,10 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
               textAlign: TextAlign.left,
             ),
           ),
-          ChangeLocaleButton(
-            changeLocale: changeLocale,
-          ),
+          ChangeLocaleButton(),
         ],
       ),
       backgroundColor: Get.theme.canvasColor,
     );
   }
 }
-

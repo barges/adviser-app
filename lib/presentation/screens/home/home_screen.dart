@@ -1,89 +1,81 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/home_controller.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/articles/articles_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/chats/chats_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard/dashboard_screen.dart';
 
-class HomeScreen extends GetView<HomeController> {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return Scaffold(
-        key: controller.scaffoldKey,
-        drawer: AppDrawer(),
-        body: _TabPages(
-          openDrawer: () {
-            Future.microtask(() {
-              controller.openDrawer();
-            });
-          },
-          tabIndex: controller.tabPositionIndex.value,
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-            currentIndex: controller.tabPositionIndex.value,
-            type: BottomNavigationBarType.fixed,
-            selectedIconTheme: Get.theme.iconTheme.copyWith(
-              color: Get.theme.primaryColor,
-            ),
-            selectedLabelStyle: Get.textTheme.labelSmall,
-            unselectedLabelStyle: Get.textTheme.labelSmall,
-            unselectedItemColor: Get.iconColor,
-            showUnselectedLabels: true,
-            onTap: (index) {
-              controller.tabPositionIndex.value = index;
+    return BlocProvider(
+      create: (_) => HomeCubit(),
+      child: Builder(builder: (context) {
+        final HomeCubit cubit = context.read<HomeCubit>();
+        final int tabPositionIndex =
+            context.select((HomeCubit cubit) => cubit.state.tabPositionIndex);
+        return Scaffold(
+          key: cubit.scaffoldKey,
+          drawer: const AppDrawer(),
+          body: _TabPages(
+            openDrawer: () {
+              Future.microtask(() {
+                cubit.openDrawer();
+              });
             },
-            selectedItemColor: Get.theme.primaryColor,
-            items: [
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  AppIcons.dashboard,
-                ),
-                activeIcon: SvgPicture.asset(
-                  AppIcons.dashboard,
-                  color: Get.theme.primaryColor,
-                ),
-                label: 'Dashboard',
+            tabIndex: tabPositionIndex,
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+              currentIndex: tabPositionIndex,
+              type: BottomNavigationBarType.fixed,
+              selectedIconTheme: Get.theme.iconTheme.copyWith(
+                color: Get.theme.primaryColor,
               ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  AppIcons.articles,
+              selectedLabelStyle: Get.textTheme.labelSmall,
+              unselectedLabelStyle: Get.textTheme.labelSmall,
+              unselectedItemColor: Get.iconColor,
+              showUnselectedLabels: true,
+              onTap: cubit.changeIndex,
+              selectedItemColor: Get.theme.primaryColor,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Assets.vectors.dashboard.svg(),
+                  activeIcon: Assets.vectors.dashboard.svg(
+                    color: Get.theme.primaryColor,
+                  ),
+                  label: 'Dashboard',
                 ),
-                activeIcon: SvgPicture.asset(
-                  AppIcons.articles,
-                  color: Get.theme.primaryColor,
+                BottomNavigationBarItem(
+                  icon: Assets.vectors.articles.svg(),
+                  activeIcon: Assets.vectors.articles.svg(
+                    color: Get.theme.primaryColor,
+                  ),
+                  label: 'Articles',
                 ),
-                label: 'Articles',
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  AppIcons.chats,
+                BottomNavigationBarItem(
+                  icon: Assets.vectors.chats.svg(),
+                  activeIcon: Assets.vectors.chats.svg(
+                    color: Get.theme.primaryColor,
+                  ),
+                  label: 'Chats',
                 ),
-                activeIcon: SvgPicture.asset(
-                  AppIcons.chats,
-                  color: Get.theme.primaryColor,
+                BottomNavigationBarItem(
+                  icon: Assets.vectors.account.svg(),
+                  activeIcon: Assets.vectors.account.svg(
+                    color: Get.theme.primaryColor,
+                  ),
+                  label: 'Account',
                 ),
-                label: 'Chats',
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  AppIcons.account,
-                ),
-                activeIcon: SvgPicture.asset(
-                  AppIcons.account,
-                  color: Get.theme.primaryColor,
-                ),
-                label: 'Account',
-              ),
-            ]),
-      );
-    });
+              ]),
+        );
+      }),
+    );
   }
 }
 

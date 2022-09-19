@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
 
-class ChangeLocaleButton extends StatelessWidget {
-  final VoidCallback changeLocale;
+class ChangeLocaleButton extends StatefulWidget {
+  const ChangeLocaleButton({Key? key}) : super(key: key);
 
-  const ChangeLocaleButton({Key? key, required this.changeLocale})
-      : super(key: key);
+  @override
+  State<ChangeLocaleButton> createState() => _ChangeLocaleButtonState();
+}
+
+class _ChangeLocaleButtonState extends State<ChangeLocaleButton> {
+  int _localeIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _localeIndex = Get.find<CacheManager>().getLocaleIndex() ?? 0;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +37,7 @@ class ChangeLocaleButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 6.0),
           child: Row(
             children: [
-              SvgPicture.asset(
-                AppIcons.languages,
+              Assets.vectors.languages.svg(
                 color: Get.theme.primaryColor,
                 width: 20.0,
                 height: 20.0,
@@ -45,5 +55,20 @@ class ChangeLocaleButton extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void changeLocale() {
+    Locale locale;
+    if (_localeIndex < S.delegate.supportedLocales.length - 1) {
+      locale = S.delegate.supportedLocales[++_localeIndex];
+      Get.updateLocale(
+          Locale(locale.languageCode, locale.languageCode.toUpperCase()));
+    } else {
+      _localeIndex = 0;
+      locale = S.delegate.supportedLocales[_localeIndex];
+      Get.updateLocale(
+          Locale(locale.languageCode, locale.languageCode.toUpperCase()));
+    }
+    Get.find<CacheManager>().saveLocaleIndex(_localeIndex);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' hide Transition;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -6,6 +7,7 @@ import 'package:logger/logger.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
 import 'package:shared_advisor_interface/data/cache/data_cache_manager.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main_cibit.dart';
 import 'package:shared_advisor_interface/presentation/di/bindings/init_binding.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_themes.dart';
@@ -33,40 +35,45 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: AppThemes.themeLight(context),
-      darkTheme: AppThemes.themeDark(context),
-      defaultTransition: Transition.noTransition,
-      initialRoute: AppRoutes.splash,
-      initialBinding: InitBinding(),
-      getPages: AppRoutes.getPages,
-      navigatorKey: navigatorKey,
-      localizationsDelegates: const [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-      localeResolutionCallback: (locale, supportedLocales) {
-        final int? localeIndex = _cacheManager.getLocaleIndex();
+    return BlocProvider(
+      create: (_) => MainCubit(_cacheManager),
+      child: Builder(builder: (context) {
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: AppThemes.themeLight(context),
+          darkTheme: AppThemes.themeDark(context),
+          defaultTransition: Transition.cupertino,
+          initialRoute: AppRoutes.splash,
+          initialBinding: InitBinding(),
+          getPages: AppRoutes.getPages,
+          navigatorKey: navigatorKey,
+          localizationsDelegates: const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+          localeResolutionCallback: (locale, supportedLocales) {
+            final int? localeIndex = _cacheManager.getLocaleIndex();
 
-        if (localeIndex != null) {
-          return supportedLocales.toList()[localeIndex];
-        } else {
-          if (locale == null) {
-            return supportedLocales.first;
-          }
-          for (var supportedLocale in supportedLocales) {
-            if (supportedLocale.languageCode == locale.languageCode ||
-                supportedLocale.countryCode == locale.countryCode) {
-              return supportedLocale;
+            if (localeIndex != null) {
+              return supportedLocales.toList()[localeIndex];
+            } else {
+              if (locale == null) {
+                return supportedLocales.first;
+              }
+              for (var supportedLocale in supportedLocales) {
+                if (supportedLocale.languageCode == locale.languageCode ||
+                    supportedLocale.countryCode == locale.countryCode) {
+                  return supportedLocale;
+                }
+              }
+              return supportedLocales.first;
             }
-          }
-          return supportedLocales.first;
-        }
-      },
+          },
+        );
+      }),
     );
   }
 }

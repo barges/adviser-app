@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_icons.dart';
 
 class PasswordFieldWidget extends StatelessWidget {
   final TextEditingController controller;
@@ -44,7 +44,6 @@ class PasswordFieldWidget extends StatelessWidget {
           ),
           child: Container(
             margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
-            padding: const EdgeInsets.only(bottom: 8.0),
             height: AppConstants.textFieldsHeight - 3,
             decoration: BoxDecoration(
               color: Theme.of(context).canvasColor,
@@ -67,13 +66,15 @@ class PasswordFieldWidget extends StatelessWidget {
                 decoration: InputDecoration(
                   suffixIcon: GestureDetector(
                     onTap: clickToHide,
-                    child: Icon(
-                      hiddenPassword
-                          ? AppIcons.visibility
-                          : AppIcons.visibilityOff,
-                      color: Get.iconColor,
-                    ),
+                    child: hiddenPassword
+                        ? Assets.vectors.visibilityOff.svg(
+                            color: Get.iconColor,
+                          )
+                        : Assets.vectors.visibility.svg(
+                            color: Get.iconColor,
+                          ),
                   ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 12.0),
                 ),
               ),
             ),

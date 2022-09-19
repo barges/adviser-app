@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/open_email_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
@@ -52,18 +53,17 @@ class AppSuccessWidget extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 22.0, vertical: 8.0),
             child: GestureDetector(
-                onTap: close,
-                child: Icon(
-                  Icons.close,
-                  color: Get.theme.primaryColor,
-                  size: 20.0,
-                )),
+              onTap: close,
+              child: Assets.vectors.close.svg(
+                color: Get.theme.primaryColor,
+              ),
+            ),
           )
         ],
       ),
     );
   }
 }
-

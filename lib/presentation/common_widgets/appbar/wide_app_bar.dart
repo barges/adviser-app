@@ -16,6 +16,7 @@ class WideAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       automaticallyImplyLeading: false,
       titleSpacing: AppConstants.horizontalScreenPadding,
+      elevation: 1.0,
       toolbarHeight: 92.0,
       title: SafeArea(
         child: Column(

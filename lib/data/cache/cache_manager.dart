@@ -22,5 +22,5 @@ abstract class CacheManager {
 
   bool? isLoggedIn();
 
-  void listenCurrentBrand(ValueChanged<Brand?> callback);
+  void listenCurrentBrand(ValueChanged<Brand> callback);
 }
