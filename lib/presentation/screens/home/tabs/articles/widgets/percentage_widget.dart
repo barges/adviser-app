@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/articles/articles_cubit.dart';
 
@@ -56,27 +57,27 @@ class PercentageWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 4.0),
                 child: Text(
-                  'New mandatory article is available!',
+                  S.of(context).newMandatoryArticleIsAvailable,
                   style: Get.textTheme.labelMedium
                       ?.copyWith(fontWeight: FontWeight.w700),
                 ),
               ),
               RichText(
                 text: TextSpan(
-                  text: 'You have',
+                  text: S.of(context).youHave,
                   style: Get.textTheme.bodySmall?.copyWith(
                     color: Get.theme.shadowColor,
                     fontWeight: FontWeight.w500,
                   ),
                   children: <TextSpan>[
                     TextSpan(
-                        text: ' 7 days ',
+                        text: ' 7 ${S.of(context).days} ',
                         style: Get.textTheme.bodySmall?.copyWith(
                             color: Get.theme.errorColor,
                             fontWeight: FontWeight.w500)),
                     TextSpan(
                         text:
-                            'to read it before your account will get blocked!',
+                        S.of(context).toReadItBeforeYourAccountWillGetBlocked,
                         style: Get.textTheme.bodySmall?.copyWith(
                             color: Get.theme.shadowColor,
                             fontWeight: FontWeight.w500))
@@ -90,7 +91,7 @@ class PercentageWidget extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Text(
-                    'Take me there',
+                    S.of(context).takeMeThere,
                     style: Get.textTheme.labelMedium?.copyWith(
                         color: Get.theme.primaryColor,
                         fontWeight: FontWeight.w700,

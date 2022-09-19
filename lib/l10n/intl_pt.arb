@@ -56,5 +56,12 @@
   "privateQuestions": "Perguntas particulares",
   "market": "Mercado",
   "nnew": "Nova",
-  "mandatory": "Obrigatoriedade"
+  "mandatory": "Obrigatoriedade",
+  "articles": "Artigos",
+  "newMandatoryArticleIsAvailable": "Novo artigo obrigatório está disponível!",
+  "youHave": "Você tem",
+  "days": "dias",
+  "toReadItBeforeYourAccountWillGetBlocked": "para lê-lo antes que sua conta seja bloqueada!",
+  "takeMeThere": "Leve-me lá"
+
 }

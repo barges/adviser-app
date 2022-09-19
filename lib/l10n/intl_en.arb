@@ -57,5 +57,11 @@
   "privateQuestions": "Private Questions",
   "market": "Market",
   "nnew": "New",
-  "mandatory": "Mandatory"
+  "mandatory": "Mandatory",
+  "articles": "Articles",
+  "newMandatoryArticleIsAvailable": "New mandatory article is available!",
+  "youHave": "You have",
+  "days": "days",
+  "toReadItBeforeYourAccountWillGetBlocked": "to read it before your account will get blocked!",
+  "takeMeThere": "Take me there"
 }

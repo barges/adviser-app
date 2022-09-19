@@ -29,6 +29,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addMore": MessageLookupByLibrary.simpleMessage("Add more"),
         "all": MessageLookupByLibrary.simpleMessage("All"),
         "allOurBrands": MessageLookupByLibrary.simpleMessage("All our brands"),
+        "articles": MessageLookupByLibrary.simpleMessage("Articles"),
         "back": MessageLookupByLibrary.simpleMessage("Back"),
         "balanceTransactions":
             MessageLookupByLibrary.simpleMessage("Balance & Transactions"),
@@ -47,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Customer Support"),
         "customersWantSeeIfYouReal": MessageLookupByLibrary.simpleMessage(
             "Customers want to see if you are real."),
+        "days": MessageLookupByLibrary.simpleMessage("days"),
         "editProfile": MessageLookupByLibrary.simpleMessage("Edit profile"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
@@ -63,6 +65,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "mandatory": MessageLookupByLibrary.simpleMessage("Mandatory"),
         "market": MessageLookupByLibrary.simpleMessage("Market"),
+        "newMandatoryArticleIsAvailable": MessageLookupByLibrary.simpleMessage(
+            "New mandatory article is available!"),
         "nickname": MessageLookupByLibrary.simpleMessage("Nickname"),
         "nnew": MessageLookupByLibrary.simpleMessage("New"),
         "notEnoughConversationsCheckOurProfileGuide":
@@ -94,6 +98,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
         "statusText": MessageLookupByLibrary.simpleMessage("Status Text"),
+        "takeMeThere": MessageLookupByLibrary.simpleMessage("Take me there"),
         "theMorePhotosYourselfYouAddBetter":
             MessageLookupByLibrary.simpleMessage(
                 " The more photos of yourself you add, the better."),
@@ -101,12 +106,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("The passwords must match"),
         "theUserWasNotFound":
             MessageLookupByLibrary.simpleMessage("The user was not found"),
+        "toReadItBeforeYourAccountWillGetBlocked":
+            MessageLookupByLibrary.simpleMessage(
+                "to read it before your account will get blocked!"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others"),
         "workspaces": MessageLookupByLibrary.simpleMessage("Workspaces"),
         "wrongUsernameOrPassword":
             MessageLookupByLibrary.simpleMessage("Wrong username or password"),
+        "youHave": MessageLookupByLibrary.simpleMessage("You have"),
         "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo":
             MessageLookupByLibrary.simpleMessage(
                 "You have successfully changed your password. Check your email to confirm password change")

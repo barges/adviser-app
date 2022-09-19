@@ -29,7 +29,7 @@ class _BuildUI extends StatelessWidget {
     final ArticlesCubit articlesCubit = context.read<ArticlesCubit>();
     return Scaffold(
         appBar: SimpleAppBarWithChangeLanguageWidget(
-            title: 'Articles', iconPath: Assets.vectors.check.path),
+            title: S.of(context).articles, iconPath: Assets.vectors.check.path),
         body: Column(
           children: [
             Builder(builder: (context) {

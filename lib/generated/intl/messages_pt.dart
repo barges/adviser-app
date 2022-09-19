@@ -30,6 +30,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "all": MessageLookupByLibrary.simpleMessage("Tudo"),
         "allOurBrands":
             MessageLookupByLibrary.simpleMessage("Todas as nossas marcas"),
+        "articles": MessageLookupByLibrary.simpleMessage("Artigos"),
         "back": MessageLookupByLibrary.simpleMessage("Back"),
         "balanceTransactions":
             MessageLookupByLibrary.simpleMessage("Saldo e transações"),
@@ -47,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Suporte ao cliente"),
         "customersWantSeeIfYouReal": MessageLookupByLibrary.simpleMessage(
             "Os clientes querem ver se você é real."),
+        "days": MessageLookupByLibrary.simpleMessage("dias"),
         "editProfile": MessageLookupByLibrary.simpleMessage("Editar Perfil"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "english": MessageLookupByLibrary.simpleMessage("Inglês"),
@@ -62,6 +64,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "mandatory": MessageLookupByLibrary.simpleMessage("Obrigatoriedade"),
         "market": MessageLookupByLibrary.simpleMessage("Mercado"),
+        "newMandatoryArticleIsAvailable": MessageLookupByLibrary.simpleMessage(
+            "Novo artigo obrigatório está disponível!"),
         "nickname": MessageLookupByLibrary.simpleMessage("Apelido"),
         "nnew": MessageLookupByLibrary.simpleMessage("Nova"),
         "notEnoughConversationsCheckOurProfileGuide":
@@ -94,6 +98,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("Definições"),
         "signIn": MessageLookupByLibrary.simpleMessage("Entrar"),
         "statusText": MessageLookupByLibrary.simpleMessage("Texto de status"),
+        "takeMeThere": MessageLookupByLibrary.simpleMessage("Leve-me lá"),
         "theMorePhotosYourselfYouAddBetter":
             MessageLookupByLibrary.simpleMessage(
                 "Quanto mais fotos suas você adicionar, melhor."),
@@ -101,6 +106,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "As senhas devem corresponder"),
         "theUserWasNotFound": MessageLookupByLibrary.simpleMessage(
             "O usuário não foi encontrado"),
+        "toReadItBeforeYourAccountWillGetBlocked":
+            MessageLookupByLibrary.simpleMessage(
+                "para lê-lo antes que sua conta seja bloqueada!"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "Orgulhamo-nos de oferecer aos consultores um local seguro para servir os clientes e desenvolver-se profissionalmente. Fazer um bom trabalho em uma de nossas marcas abrirá portas para outras"),
@@ -108,6 +116,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Espaços de trabalho"),
         "wrongUsernameOrPassword": MessageLookupByLibrary.simpleMessage(
             "Nome de usuário ou senha incorretos"),
+        "youHave": MessageLookupByLibrary.simpleMessage("Você tem"),
         "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo":
             MessageLookupByLibrary.simpleMessage(
                 "A sua senha foi mudada com sucesso. Verifique seu e-mail para confirmar a alteração da senha")
