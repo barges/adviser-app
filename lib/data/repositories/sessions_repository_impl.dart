@@ -8,13 +8,13 @@ class SessionsRepositoryImpl implements SessionsRepository {
 
   SessionsRepositoryImpl() : _api = Get.find<SessionsApi>();
 
-  static const int limit = 10;
+  static const int _limit = 10;
 
   @override
   Future<QuestionsListResponse> getListOfQuestions(
       {int page = 0, required bool isPublicFilter}) async {
     return await _api.getListOfQuestions(
-        limit: limit + page,
+        limit: _limit + page,
         page: page,
         filterType: buildFilterType(isPublicFilter));
   }

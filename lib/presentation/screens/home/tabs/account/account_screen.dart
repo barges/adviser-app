@@ -23,38 +23,29 @@ class AccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => AccountCubit(),
-      child: Builder(builder: (_) => const _BuildUI()),
-    );
-  }
-}
-
-class _BuildUI extends StatelessWidget {
-  const _BuildUI({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final AccountCubit accountCubit = context.read<AccountCubit>();
-    final HomeCubit homeCubit = context.read<HomeCubit>();
-    final Brand currentBrand =
+      child: Builder(builder: (_) {
+        final AccountCubit accountCubit = context.read<AccountCubit>();
+        final HomeCubit homeCubit = context.read<HomeCubit>();
+        final Brand currentBrand =
         context.select((MainCubit cubit) => cubit.state.currentBrand);
 
-    return Scaffold(
-      key: accountCubit.scaffoldKey,
-      drawer: const AppDrawer(),
-      appBar: AppBar(
-          automaticallyImplyLeading: false,
-          toolbarHeight: 84.0,
-          flexibleSpace: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 32.0,
-                  left: AppConstants.horizontalScreenPadding,
-                  right: AppConstants.horizontalScreenPadding),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Builder(
-                      builder: (context) => InkWell(
+        return Scaffold(
+          key: accountCubit.scaffoldKey,
+          drawer: const AppDrawer(),
+          appBar: AppBar(
+              automaticallyImplyLeading: false,
+              toolbarHeight: 84.0,
+              flexibleSpace: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 32.0,
+                      left: AppConstants.horizontalScreenPadding,
+                      right: AppConstants.horizontalScreenPadding),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Builder(
+                          builder: (context) => InkWell(
                             onTap: homeCubit.openDrawer,
                             child: Row(
                               children: [
@@ -75,231 +66,233 @@ class _BuildUI extends StatelessWidget {
                               ],
                             ),
                           )),
-                  const ChangeLocaleButton()
-                ],
-              ),
-            ),
-          )),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(AppConstants.horizontalScreenPadding),
-        child: Column(children: [
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-                color: Get.theme.canvasColor),
+                      const ChangeLocaleButton()
+                    ],
+                  ),
+                ),
+              )),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(AppConstants.horizontalScreenPadding),
             child: Column(children: [
-              Padding(
-                padding:
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
+                    color: Get.theme.canvasColor),
+                child: Column(children: [
+                  Padding(
+                    padding:
                     const EdgeInsets.all(AppConstants.horizontalScreenPadding),
-                child: Row(
-                  children: [
-                    Stack(
-                      alignment: Alignment.bottomRight,
+                    child: Row(
                       children: [
-                        const UserProfileImageWidget(
-                            radius: 36.0,
-                            networkImagePath:
+                        Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            const UserProfileImageWidget(
+                                radius: 36.0,
+                                networkImagePath:
                                 'https://img.freepik.com/free-vector/cute-astronaut-dance-cartoon-vector-icon-illustration-technology-science-icon-concept-isolated-premium-vector-flat-cartoon-style_138676-3851.jpg'),
-                        Container(
-                          height: 20.0,
-                          width: 20.0,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.online,
-                              border: Border.all(
-                                  width: 4.0, color: Get.theme.canvasColor)),
-                        )
+                            Container(
+                              height: 20.0,
+                              width: 20.0,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors.online,
+                                  border: Border.all(
+                                      width: 4.0, color: Get.theme.canvasColor)),
+                            )
+                          ],
+                        ),
+                        const SizedBox(width: 16.0),
+                        Flexible(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: Get.width / 2.5,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Psychic Sherman',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Get.textTheme.titleMedium
+                                          ?.copyWith(fontWeight: FontWeight.w700),
+                                    ),
+                                    Text(
+                                        'Life Coach, Tarot, Reiki, sdfsdf, sdffsdf',
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Get.textTheme.bodyMedium?.copyWith(
+                                            color: Get.theme.shadowColor))
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.arrow_forward_ios_outlined,
+                                    color: Get.theme.primaryColor,
+                                    size: 16,
+                                  ))
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                    const SizedBox(width: 16.0),
-                    Flexible(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: Get.width / 2.5,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Psychic Sherman',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Get.textTheme.titleMedium
-                                      ?.copyWith(fontWeight: FontWeight.w700),
-                                ),
-                                Text(
-                                    'Life Coach, Tarot, Reiki, sdfsdf, sdffsdf',
-                                    overflow: TextOverflow.ellipsis,
-                                    style: Get.textTheme.bodyMedium?.copyWith(
-                                        color: Get.theme.shadowColor))
-                              ],
-                            ),
-                          ),
-                          Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.arrow_forward_ios_outlined,
-                                color: Get.theme.primaryColor,
-                                size: 16,
-                              ))
-                        ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: AppConstants.horizontalScreenPadding),
+                    child: Column(children: [
+                      const SizedBox(height: 2, child: Divider()),
+                      Builder(
+                        builder: (context) {
+                          final bool isAvailable = context.select(
+                                  (AccountCubit cubit) => cubit.state.isAvailable);
+                          return CustomTileWithCheckButtonWidget(
+                            value: isAvailable,
+                            title: S.of(context).imAvailableNow,
+                            iconSVGPath: Assets.vectors.availability.path,
+                            onChanged: accountCubit.updateIsAvailableValue,
+                          );
+                        },
                       ),
-                    ),
-                  ],
-                ),
+                      const SizedBox(height: 2, child: Divider()),
+                      Builder(
+                        builder: (context) {
+                          final bool enableNotifications = context.select(
+                                  (AccountCubit cubit) =>
+                              cubit.state.enableNotifications);
+                          return CustomTileWithCheckButtonWidget(
+                            value: enableNotifications,
+                            title: S.of(context).notifications,
+                            iconSVGPath: Assets.vectors.notification.path,
+                            onChanged: accountCubit.updateEnableNotificationsValue,
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 2, child: Divider()),
+                      CustomTileWidget(
+                        iconSVGPath: Assets.vectors.eye.path,
+                        title: S.of(context).previewAccount,
+                      )
+                    ]),
+                  )
+                ]),
               ),
-              Padding(
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 24.0),
                 padding: const EdgeInsets.only(
                     left: AppConstants.horizontalScreenPadding),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
+                    color: Get.theme.canvasColor),
                 child: Column(children: [
-                  const SizedBox(height: 2, child: Divider()),
-                  Builder(
-                    builder: (context) {
-                      final bool isAvailable = context.select(
-                          (AccountCubit cubit) => cubit.state.isAvailable);
-                      return CustomTileWithCheckButtonWidget(
-                        value: isAvailable,
-                        title: S.of(context).imAvailableNow,
-                        iconSVGPath: Assets.vectors.availability.path,
-                        onChanged: accountCubit.updateIsAvailableValue,
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 2, child: Divider()),
-                  Builder(
-                    builder: (context) {
-                      final bool enableNotifications = context.select(
-                          (AccountCubit cubit) =>
-                              cubit.state.enableNotifications);
-                      return CustomTileWithCheckButtonWidget(
-                        value: enableNotifications,
-                        title: S.of(context).notifications,
-                        iconSVGPath: Assets.vectors.notification.path,
-                        onChanged: accountCubit.updateEnableNotificationsValue,
-                      );
-                    },
+                  CustomTileWidget(
+                    title: S.of(context).reviews,
+                    iconSVGPath: Assets.vectors.starActive.path,
+                    widget: Row(children: [
+                      RatingBar(
+                        initialRating: 3,
+                        direction: Axis.horizontal,
+                        itemSize: 18,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        ratingWidget: RatingWidget(
+                          full: Assets.vectors.starFilled.svg(),
+                          half: Assets.vectors.starEmpty.svg(),
+                          empty: Assets.vectors.starEmpty.svg(),
+                        ),
+                        itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
+                        onRatingUpdate: (rating) {},
+                      ),
+                      const SizedBox(width: 9.0),
+                      Text(
+                        "999",
+                        style: Get.textTheme.bodySmall
+                            ?.copyWith(color: Get.theme.shadowColor),
+                      ),
+                      Text(
+                        " +25",
+                        style: Get.textTheme.bodySmall
+                            ?.copyWith(color: AppColors.online),
+                      ),
+                    ]),
                   ),
                   const SizedBox(height: 2, child: Divider()),
                   CustomTileWidget(
-                    iconSVGPath: Assets.vectors.eye.path,
-                    title: S.of(context).previewAccount,
+                    title: S.of(context).balanceTransactions,
+                    iconSVGPath: Assets.vectors.transactions.path,
+                    widget: Row(children: [
+                      Text(
+                        "999",
+                        style: Get.textTheme.bodySmall
+                            ?.copyWith(color: Get.theme.shadowColor),
+                      ),
+                    ]),
+                  ),
+                  const SizedBox(height: 2, child: Divider()),
+                  CustomTileWidget(
+                    title: S.of(context).settings,
+                    iconSVGPath: Assets.vectors.settings.path,
                   )
                 ]),
-              )
-            ]),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 24.0),
-            padding: const EdgeInsets.only(
-                left: AppConstants.horizontalScreenPadding),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-                color: Get.theme.canvasColor),
-            child: Column(children: [
-              CustomTileWidget(
-                title: S.of(context).reviews,
-                iconSVGPath: Assets.vectors.starActive.path,
-                widget: Row(children: [
-                  RatingBar(
-                    initialRating: 3,
-                    direction: Axis.horizontal,
-                    itemSize: 18,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    ratingWidget: RatingWidget(
-                      full: Assets.vectors.starFilled.svg(),
-                      half: Assets.vectors.starEmpty.svg(),
-                      empty: Assets.vectors.starEmpty.svg(),
-                    ),
-                    itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
-                    onRatingUpdate: (rating) {},
-                  ),
-                  const SizedBox(width: 9.0),
-                  Text(
-                    "999",
-                    style: Get.textTheme.bodySmall
-                        ?.copyWith(color: Get.theme.shadowColor),
-                  ),
-                  Text(
-                    " +25",
-                    style: Get.textTheme.bodySmall
-                        ?.copyWith(color: AppColors.online),
-                  ),
-                ]),
               ),
-              const SizedBox(height: 2, child: Divider()),
-              CustomTileWidget(
-                title: S.of(context).balanceTransactions,
-                iconSVGPath: Assets.vectors.transactions.path,
-                widget: Row(children: [
-                  Text(
-                    "999",
-                    style: Get.textTheme.bodySmall
-                        ?.copyWith(color: Get.theme.shadowColor),
-                  ),
-                ]),
-              ),
-              const SizedBox(height: 2, child: Divider()),
-              CustomTileWidget(
-                title: S.of(context).settings,
-                iconSVGPath: Assets.vectors.settings.path,
-              )
-            ]),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-                height: 96.0,
-                decoration: BoxDecoration(
-                    color: Get.theme.canvasColor,
-                    borderRadius:
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                    height: 96.0,
+                    decoration: BoxDecoration(
+                        color: Get.theme.canvasColor,
+                        borderRadius:
                         BorderRadius.circular(AppConstants.buttonRadius)),
-                child: Row(
-                  children: [
-                    Flexible(
-                        flex: 10,
-                        child: Padding(
-                          padding:
+                    child: Row(
+                      children: [
+                        Flexible(
+                            flex: 10,
+                            child: Padding(
+                              padding:
                               const EdgeInsets.fromLTRB(14.0, 12.0, 10.0, 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                S
-                                    .of(context)
-                                    .notEnoughConversationsCheckOurProfileGuide,
-                                style: Get.textTheme.bodyMedium
-                                    ?.copyWith(fontWeight: FontWeight.w500),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    S
+                                        .of(context)
+                                        .notEnoughConversationsCheckOurProfileGuide,
+                                    style: Get.textTheme.bodyMedium
+                                        ?.copyWith(fontWeight: FontWeight.w500),
+                                  ),
+                                  const SizedBox(height: 8.0),
+                                  Text(
+                                    S.of(context).seeMore,
+                                    style: Get.textTheme.bodyMedium?.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        color: Get.theme.primaryColor,
+                                        decoration: TextDecoration.underline),
+                                  )
+                                ],
                               ),
-                              const SizedBox(height: 8.0),
-                              Text(
-                                S.of(context).seeMore,
-                                style: Get.textTheme.bodyMedium?.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: Get.theme.primaryColor,
-                                    decoration: TextDecoration.underline),
-                              )
-                            ],
-                          ),
-                        )),
-                    Flexible(
-                        flex: 6,
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                              topRight:
+                            )),
+                        Flexible(
+                            flex: 6,
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                  topRight:
                                   Radius.circular(AppConstants.buttonRadius),
-                              bottomRight:
+                                  bottomRight:
                                   Radius.circular(AppConstants.buttonRadius)),
-                          child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Assets.images.conversations
-                                  .image(fit: BoxFit.fill)),
-                        ))
-                  ],
-                )),
-          )
-        ]),
-      ),
+                              child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Assets.images.conversations
+                                      .image(fit: BoxFit.fill)),
+                            ))
+                      ],
+                    )),
+              )
+            ]),
+          ),
+        );
+      }),
     );
   }
 }

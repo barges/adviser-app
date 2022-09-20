@@ -621,10 +621,10 @@ class S {
   }
 
   /// `New`
-  String get nnew {
+  String get newLabel {
     return Intl.message(
       'New',
-      name: 'nnew',
+      name: 'newLabel',
       desc: '',
       args: [],
     );

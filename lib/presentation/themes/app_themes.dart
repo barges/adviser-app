@@ -16,7 +16,6 @@ class AppThemes {
       brightness: Brightness.light,
       hoverColor: AppColorsLight.ui,
       shadowColor: AppColorsLight.shade3,
-      focusColor: AppColorsLight.shade4,
       hintColor: AppColorsLight.shade1,
       errorColor: AppColorsLight.error,
       cardColor: AppColorsLight.shade2,
@@ -134,7 +133,6 @@ class AppThemes {
       shadowColor: AppColorsDark.shade3,
       hintColor: AppColorsDark.shade1,
       cardColor: AppColorsDark.shade2,
-      focusColor: AppColorsDark.shade4,
       errorColor: AppColorsDark.error,
       iconTheme: const IconThemeData(
         color: AppColorsDark.shade3,

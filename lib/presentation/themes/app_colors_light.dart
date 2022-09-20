@@ -20,7 +20,5 @@ class AppColorsLight {
 
   static const Color shade3 = Color(0xFF9396A3);
 
-  static const Color shade4 = Color(0xFF4F5050);
-
   static const Color error = Color(0xffED4F55);
 }

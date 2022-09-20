@@ -88,7 +88,7 @@ class ArticleWidget extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           ArticleStatusWidget(
-                              title: S.of(context).nnew,
+                              title: S.of(context).newLabel,
                               backgroundColor: AppColors.promotion),
                           const SizedBox(height: 8.0),
                         ],
@@ -96,7 +96,7 @@ class ArticleWidget extends StatelessWidget {
                     if (article.isMandatoryArticle)
                       ArticleStatusWidget(
                           title: S.of(context).mandatory,
-                          gradiantColors: const [
+                          gradient: const [
                             AppColors.ctaGradient1,
                             AppColors.ctaGradient2
                           ]),
@@ -110,7 +110,6 @@ class ArticleWidget extends StatelessWidget {
           padding: const EdgeInsets.only(top: 12.0),
           child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             Expanded(
-              flex: 1,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -118,7 +117,7 @@ class ArticleWidget extends StatelessWidget {
                     article.date.parseDateTimePattern2,
                     style: Get.textTheme.displaySmall?.copyWith(
                         fontWeight: FontWeight.w500,
-                        color: Get.theme.focusColor),
+                        color: Get.theme.shadowColor),
                   ),
                   Text('#${article.category}',
                       style: Get.textTheme.displaySmall?.copyWith(
@@ -127,7 +126,7 @@ class ArticleWidget extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(flex: 1, child: SizedBox.fromSize())
+            Expanded(child: SizedBox.fromSize())
           ]),
         ),
         Padding(
@@ -145,14 +144,11 @@ class ArticleWidget extends StatelessWidget {
 class ArticleStatusWidget extends StatelessWidget {
   final String title;
   final Color? backgroundColor;
-  final List<Color>? gradiantColors;
+  final List<Color>? gradient;
 
   const ArticleStatusWidget(
-      {Key? key,
-      required this.title,
-      this.backgroundColor,
-      this.gradiantColors})
-      : assert(backgroundColor == null || gradiantColors == null),
+      {Key? key, required this.title, this.backgroundColor, this.gradient})
+      : assert(backgroundColor == null || gradient == null),
         super(key: key);
 
   @override
@@ -161,9 +157,8 @@ class ArticleStatusWidget extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(6.0, 2.0, 6.0, 3.0),
       decoration: BoxDecoration(
           color: backgroundColor,
-          gradient: gradiantColors != null
-              ? LinearGradient(colors: gradiantColors ?? [])
-              : null,
+          gradient:
+              gradient != null ? LinearGradient(colors: gradient ?? []) : null,
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
       child: Text(title.toUpperCase(),
           style: Get.textTheme.labelMedium

@@ -8,7 +8,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
 import 'package:shared_advisor_interface/data/network/api/sessions_api.dart';
 import 'package:shared_advisor_interface/data/repositories/auth_repository_impl.dart';
-import 'package:shared_advisor_interface/data/repositories/chats_repository_impl.dart';
+import 'package:shared_advisor_interface/data/repositories/sessions_repository_impl.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
 import 'package:shared_advisor_interface/main.dart';

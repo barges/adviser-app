@@ -64,10 +64,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "mandatory": MessageLookupByLibrary.simpleMessage("Obrigatoriedade"),
         "market": MessageLookupByLibrary.simpleMessage("Mercado"),
+        "newLabel": MessageLookupByLibrary.simpleMessage("Nova"),
         "newMandatoryArticleIsAvailable": MessageLookupByLibrary.simpleMessage(
             "Novo artigo obrigatório está disponível!"),
         "nickname": MessageLookupByLibrary.simpleMessage("Apelido"),
-        "nnew": MessageLookupByLibrary.simpleMessage("Nova"),
         "notEnoughConversationsCheckOurProfileGuide":
             MessageLookupByLibrary.simpleMessage(
                 "Não há conversas suficientes? Confira nosso Guia de Perfil."),

@@ -16,48 +16,42 @@ class ArticlesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) => ArticlesCubit(),
-      child: Builder(builder: (BuildContext context) => const _BuildUI()),
+      child: Builder(builder: (BuildContext context) {
+        final ArticlesCubit articlesCubit = context.read<ArticlesCubit>();
+        return Scaffold(
+            appBar: SimpleAppBarWithChangeLanguageWidget(
+                title: S.of(context).articles,
+                iconPath: Assets.vectors.check.path),
+            body: Column(
+              children: [
+                Builder(builder: (context) {
+                  final int selectedFilterIndex = context.select(
+                      (ArticlesCubit cubit) => cubit.state.selectedFilterIndex);
+                  final List<String> filters = [
+                    S.of(context).all,
+                    S.of(context).onlyPremiumProducts,
+                    S.of(context).privateQuestions,
+                  ];
+                  final List<VoidCallback> onTaps = filters
+                      .map((e) => () =>
+                          articlesCubit.updateFilterIndex(filters.indexOf(e)))
+                      .toList();
+                  return ListOfFiltersWidget(
+                    currentFilterIndex: selectedFilterIndex,
+                    filters: filters,
+                    onTaps: onTaps,
+                  );
+                }),
+                const PercentageWidget(),
+                Expanded(
+                  child: SingleChildScrollView(
+                      child: Column(
+                    children: const [SliderWidget(), ListOfArticlesWidget()],
+                  )),
+                )
+              ],
+            ));
+      }),
     );
-  }
-}
-
-class _BuildUI extends StatelessWidget {
-  const _BuildUI({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final ArticlesCubit articlesCubit = context.read<ArticlesCubit>();
-    return Scaffold(
-        appBar: SimpleAppBarWithChangeLanguageWidget(
-            title: S.of(context).articles, iconPath: Assets.vectors.check.path),
-        body: Column(
-          children: [
-            Builder(builder: (context) {
-              final int selectedFilterIndex = context.select(
-                  (ArticlesCubit cubit) => cubit.state.selectedFilterIndex);
-              final List<String> filters = [
-                S.of(context).all,
-                S.of(context).onlyPremiumProducts,
-                S.of(context).privateQuestions,
-              ];
-              final List<VoidCallback> onTaps = filters
-                  .map((e) =>
-                      () => articlesCubit.updateFilterIndex(filters.indexOf(e)))
-                  .toList();
-              return ListOfFiltersWidget(
-                currentFilterIndex: selectedFilterIndex,
-                filters: filters,
-                onTaps: onTaps,
-              );
-            }),
-            const PercentageWidget(),
-            Expanded(
-              child: SingleChildScrollView(
-                  child: Column(
-                children: const [SliderWidget(), ListOfArticlesWidget()],
-              )),
-            )
-          ],
-        ));
   }
 }
