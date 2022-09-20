@@ -14,7 +14,6 @@ class ChatListTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
       SizedBox(
           width: 44.0,
@@ -25,7 +24,10 @@ class ChatListTileWidget extends StatelessWidget {
                   getSuitableZodiacProfileImage(
                       question.clientInformation?.zodiac ?? ''),
                   width: 44.0),
-              Assets.vectors.globe.svg()
+              CircleAvatar(
+                  radius: 8,
+                  backgroundColor: Get.theme.canvasColor,
+                  child: Assets.vectors.ritual.svg())
             ],
           )),
       const SizedBox(width: 14.0),
@@ -45,7 +47,8 @@ class ChatListTileWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text((question.updatedAt ?? '').parseDateTimePattern1,
+                Text(
+                  (question.updatedAt ?? '').parseDateTimePattern1,
                   style: Get.textTheme.labelMedium?.copyWith(
                       fontWeight: FontWeight.w400,
                       color: Get.theme.shadowColor),
@@ -91,6 +94,7 @@ class ChatListTileWidget extends StatelessWidget {
       ),
     ]);
   }
+
   static String getSuitableZodiacProfileImage(String zodiac) {
     switch (zodiac) {
       case 'aquarius':

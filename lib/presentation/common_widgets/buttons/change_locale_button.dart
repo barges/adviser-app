@@ -43,7 +43,7 @@ class _ChangeLocaleButtonState extends State<ChangeLocaleButton> {
                     fontWeight: FontWeight.w500, color: Get.theme.primaryColor),
               ),
               const SizedBox(width: 4.0),
-              Assets.vectors.languages.svg(
+              Assets.vectors.globe.svg(
                 color: Get.theme.primaryColor,
                 width: 20.0,
                 height: 20.0,
