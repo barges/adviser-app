@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
-import '../buttons/app_Icon_button.dart';
+import '../buttons/app_icon_button.dart';
 
 class WideAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
