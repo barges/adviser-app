@@ -33,7 +33,7 @@ class LoginCubit extends Cubit<LoginState> {
 
     emailController.addListener(() {
       emit(state.copyWith(
-        email: emailController.text,
+        emailErrorText: '',
         errorMessage: '',
         successMessage: '',
         showOpenEmailButton: false,
@@ -41,7 +41,7 @@ class LoginCubit extends Cubit<LoginState> {
     });
     passwordController.addListener(() {
       emit(state.copyWith(
-        password: passwordController.text,
+        passwordErrorText: '',
         errorMessage: '',
         successMessage: '',
         showOpenEmailButton: false,
@@ -75,7 +75,7 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> login(BuildContext context) async {
     if (emailIsValid() && passwordIsValid()) {
       Get.find<Dio>().options.headers['Authorization'] =
-          'Basic ${base64.encode(utf8.encode('${state.email}:${state.password.to256}'))}';
+          'Basic ${base64.encode(utf8.encode('${emailController.text}:${passwordController.text.to256}'))}';
       try {
         LoginResponse? response = await run(_repository.login());
         String? token = response?.accessToken;
@@ -94,10 +94,24 @@ class LoginCubit extends Cubit<LoginState> {
             ),
           );
         } else {
-          state.copyWith(
+          emit(state.copyWith(
             errorMessage: S.of(context).wrongUsernameOrPassword,
-          );
+          ));
         }
+      }
+    } else {
+      if (!emailIsValid()) {
+        emit(
+          state.copyWith(
+              emailErrorText: S.of(context).pleaseInsertCorrectEmail),
+        );
+      }
+      if (!passwordIsValid()) {
+        emit(
+          state.copyWith(
+            passwordErrorText: S.of(context).pleaseEnterAtLeast8Characters,
+          ),
+        );
       }
     }
   }
@@ -130,7 +144,7 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  bool emailIsValid() => GetUtils.isEmail(state.email);
+  bool emailIsValid() => GetUtils.isEmail(emailController.text);
 
-  bool passwordIsValid() => state.password.length >= 8;
+  bool passwordIsValid() => passwordController.text.length >= 8;
 }

@@ -22,37 +22,69 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "addCoverPicture":
+            MessageLookupByLibrary.simpleMessage("Adicionar imagem de capa"),
+        "addGalleryPictures":
+            MessageLookupByLibrary.simpleMessage("Adicionar fotos da galeria"),
+        "addMore": MessageLookupByLibrary.simpleMessage("Adicione mais"),
         "allOurBrands":
             MessageLookupByLibrary.simpleMessage("Todas as nossas marcas"),
         "back": MessageLookupByLibrary.simpleMessage("Back"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
+        "changeCoverPicture":
+            MessageLookupByLibrary.simpleMessage("Change cover picture"),
         "changePassword": MessageLookupByLibrary.simpleMessage("Mudar senha"),
+        "changePhoto": MessageLookupByLibrary.simpleMessage("Mudar foto"),
         "chooseBrandToLogIn": MessageLookupByLibrary.simpleMessage(
             "Escolha a marca para iniciar a sessão"),
         "chooseEmailApp": MessageLookupByLibrary.simpleMessage(
             "Escolha o aplicativo de e-mail"),
+        "chooseFromGallery":
+            MessageLookupByLibrary.simpleMessage("Choose from gallery"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("Em breve!"),
         "confirmNewPassword":
             MessageLookupByLibrary.simpleMessage("Confirme a nova senha"),
         "customerSupport":
             MessageLookupByLibrary.simpleMessage("Suporte ao cliente"),
+        "customersWantSeeIfYouReal": MessageLookupByLibrary.simpleMessage(
+            "Os clientes querem ver se você é real."),
+        "editProfile": MessageLookupByLibrary.simpleMessage("Editar Perfil"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
+        "english": MessageLookupByLibrary.simpleMessage("Inglês"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Esqueceu a senha"),
+        "forgotYourPassword":
+            MessageLookupByLibrary.simpleMessage("Esqueceu sua senha"),
         "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
         "logOut": MessageLookupByLibrary.simpleMessage("Log out"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
+        "nickname": MessageLookupByLibrary.simpleMessage("Apelido"),
         "openEmailApp":
             MessageLookupByLibrary.simpleMessage("Abra o aplicativo de e-mail"),
         "otherBrands": MessageLookupByLibrary.simpleMessage("Outras marcas"),
         "password": MessageLookupByLibrary.simpleMessage("Senha"),
+        "pleaseEnterAtLeast3Characters": MessageLookupByLibrary.simpleMessage(
+            "Please enter at least 3 characters"),
         "pleaseEnterAtLeast8Characters": MessageLookupByLibrary.simpleMessage(
             "Insira pelo menos 8 caracteres"),
         "pleaseInsertCorrectEmail": MessageLookupByLibrary.simpleMessage(
             "Por favor, insira o email correto"),
+        "portuguese": MessageLookupByLibrary.simpleMessage("Português"),
+        "profileText": MessageLookupByLibrary.simpleMessage("Texto do perfil"),
+        "requestNewPassword":
+            MessageLookupByLibrary.simpleMessage("Solicite uma nova senha"),
+        "save": MessageLookupByLibrary.simpleMessage("Salvar"),
         "settings": MessageLookupByLibrary.simpleMessage("Definições"),
+        "signIn": MessageLookupByLibrary.simpleMessage("Entrar"),
+        "statusText": MessageLookupByLibrary.simpleMessage("Texto de status"),
+        "takeAPhoto": MessageLookupByLibrary.simpleMessage("Take a photo"),
+        "theMorePhotosYourselfYouAddBetter":
+            MessageLookupByLibrary.simpleMessage(
+                "Quanto mais fotos suas você adicionar, melhor."),
         "thePasswordsMustMatch": MessageLookupByLibrary.simpleMessage(
             "As senhas devem corresponder"),
+        "theUserWasNotFound": MessageLookupByLibrary.simpleMessage(
+            "O usuário não foi encontrado"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "Orgulhamo-nos de oferecer aos consultores um local seguro para servir os clientes e desenvolver-se profissionalmente. Fazer um bom trabalho em uma de nossas marcas abrirá portas para outras"),

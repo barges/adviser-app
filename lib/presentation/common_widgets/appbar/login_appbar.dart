@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_back_button.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_Icon_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/change_locale_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
@@ -24,9 +25,12 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           if (Navigator.of(context).canPop())
             Row(
-              children: const [
-                AppBackButton(),
-                SizedBox(
+              children: [
+                AppIconButton(
+                  icon: Assets.vectors.back.path,
+                  onTap: Get.back,
+                ),
+               const SizedBox(
                   width: 12.0,
                 ),
               ],
