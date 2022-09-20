@@ -12,8 +12,8 @@ class LoginState with _$LoginState {
     @Default(false) bool showOpenEmailButton,
     @Default(Brand.fortunica) Brand selectedBrand,
     @Default([]) List<Brand> unauthorizedBrands,
-    @Default('') String email,
-    @Default('') String password,
+    @Default('') String emailErrorText,
+    @Default('') String passwordErrorText,
     @Default(true) bool hiddenPassword,
   }) = _LoginState;
 }

@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/network/requests/reset_password_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_state.dart';
 
@@ -25,20 +26,20 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
 
     emailController.addListener(() {
       emit(state.copyWith(
-        email: emailController.text,
+        emailErrorText: '',
         errorMessage: '',
       ));
     });
     passwordController.addListener(() {
       emit(state.copyWith(
-        password: passwordController.text,
+        passwordErrorText: '',
         errorMessage: '',
       ));
     });
 
     confirmPasswordController.addListener(() {
       emit(state.copyWith(
-        confirmPassword: confirmPasswordController.text,
+        confirmPasswordErrorText: '',
         errorMessage: '',
       ));
     });
@@ -52,14 +53,13 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     emit(state.copyWith(hiddenConfirmPassword: !state.hiddenConfirmPassword));
   }
 
-  Future<void> resetPassword() async {
-    if (emailIsValid() &&
-        passwordIsValid() &&
-        state.password == state.confirmPassword) {
+  Future<void> resetPassword(BuildContext context) async {
+    if (emailIsValid() && passwordIsValid() && confirmPasswordIsValid()) {
       try {
         final bool success = await run(_repository.resetPassword(
             ResetPasswordRequest(
-                email: state.email, password: state.confirmPassword.to256)));
+                email: emailController.text,
+                password: passwordController.text.to256)));
         if (success) {
           Get.back(result: true);
         }
@@ -73,6 +73,27 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         ));
         logger.d('ERROR: $e');
       }
+    } else {
+      if (!emailIsValid()) {
+        emit(
+          state.copyWith(
+              emailErrorText: S.of(context).pleaseInsertCorrectEmail),
+        );
+      }
+      if (!passwordIsValid()) {
+        emit(
+          state.copyWith(
+            passwordErrorText: S.of(context).pleaseEnterAtLeast8Characters,
+          ),
+        );
+      }
+      if (!confirmPasswordIsValid()) {
+        emit(
+          state.copyWith(
+            confirmPasswordErrorText: S.of(context).thePasswordsMustMatch,
+          ),
+        );
+      }
     }
   }
 
@@ -82,9 +103,10 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     }
   }
 
-  bool emailIsValid() => GetUtils.isEmail(state.email);
+  bool emailIsValid() => GetUtils.isEmail(emailController.text);
 
-  bool passwordIsValid() => state.password.length >= 8;
+  bool passwordIsValid() => passwordController.text.length >= 8;
 
-  bool confirmPasswordIsValid() => state.password == state.confirmPassword;
+  bool confirmPasswordIsValid() =>
+      passwordController.text == confirmPasswordController.text;
 }

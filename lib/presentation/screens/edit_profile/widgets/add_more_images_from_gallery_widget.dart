@@ -24,7 +24,9 @@ class AddMoreImagesFromGalleryWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Assets.vectors.circledAdd.svg(color: Get.theme.primaryColor),
+              Assets.vectors.add.svg(
+                color: Get.theme.primaryColor,
+              ),
               const SizedBox(height: 6.0),
               Text(S.current.addMore,
                   style: Get.textTheme.titleMedium?.copyWith(

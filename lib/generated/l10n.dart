@@ -699,6 +699,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Change cover picture`
+  String get changeCoverPicture {
+    return Intl.message(
+      'Change cover picture',
+      name: 'changeCoverPicture',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter at least 3 characters`
+  String get pleaseEnterAtLeast3Characters {
+    return Intl.message(
+      'Please enter at least 3 characters',
+      name: 'pleaseEnterAtLeast3Characters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose from gallery`
+  String get chooseFromGallery {
+    return Intl.message(
+      'Choose from gallery',
+      name: 'chooseFromGallery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Take a photo`
+  String get takeAPhoto {
+    return Intl.message(
+      'Take a photo',
+      name: 'takeAPhoto',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

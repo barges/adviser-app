@@ -5,12 +5,12 @@ import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_loading_indicator.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/login_appbar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/email_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_succes_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/password_field_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/password_text_field.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/widgets/choose_brand_widget.dart';
@@ -55,12 +55,14 @@ class LoginScreen extends StatelessWidget {
                               child: Column(
                                 children: [
                                   Builder(builder: (BuildContext context) {
-                                    final String email = context.select(
-                                        (LoginCubit cubit) =>
-                                            cubit.state.email);
-                                    return EmailFieldWidget(
-                                      showErrorText: !cubit.emailIsValid() &&
-                                          email.isNotEmpty,
+                                    final String emailErrorText =
+                                        context.select((LoginCubit cubit) =>
+                                            cubit.state.emailErrorText);
+                                    return AppTextField(
+                                      errorText: emailErrorText,
+                                      label: S.of(context).email,
+                                      textInputType: TextInputType.emailAddress,
+                                      textInputAction: TextInputAction.next,
                                       nextFocusNode: cubit.passwordNode,
                                       controller: cubit.emailController,
                                     );
@@ -72,19 +74,15 @@ class LoginScreen extends StatelessWidget {
                                     final bool hiddenPassword = context.select(
                                         (LoginCubit cubit) =>
                                             cubit.state.hiddenPassword);
-                                    final String password = context.select(
-                                        (LoginCubit cubit) =>
-                                            cubit.state.password);
-                                    return PasswordFieldWidget(
+                                    final String passwordErrorText =
+                                        context.select((LoginCubit cubit) =>
+                                            cubit.state.passwordErrorText);
+                                    return PasswordTextField(
                                       controller: cubit.passwordController,
                                       focusNode: cubit.passwordNode,
                                       label: S.of(context).password,
-                                      errorText: S
-                                          .of(context)
-                                          .pleaseEnterAtLeast8Characters,
+                                      errorText: passwordErrorText,
                                       textInputAction: TextInputAction.next,
-                                      showErrorText: !cubit.passwordIsValid() &&
-                                          password.isNotEmpty,
                                       onSubmitted: (_) => cubit.login,
                                       hiddenPassword: hiddenPassword,
                                       clickToHide: cubit.showHidePassword,
