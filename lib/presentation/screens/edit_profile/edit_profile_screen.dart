@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main_cibit.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/custom_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';

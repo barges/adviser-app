@@ -6,7 +6,7 @@ import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main_cibit.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_loading_indicator.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/change_locale_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -16,20 +16,18 @@ import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_state.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/list_of_filters_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/list_of_questions_widget.dart';
-
 class SessionsScreen extends StatelessWidget {
   const SessionsScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) =>
           SessionsCubit(Get.find<SessionsRepository>()),
-      child: Builder(builder: (BuildContext context) {
+      child: Builder(builder: (BuildContext context){
         final SessionsCubit chatsCubit = context.read<SessionsCubit>();
         final HomeCubit homeCubit = context.read<HomeCubit>();
         final Brand selectedBrand =
-            context.select((MainCubit cubit) => cubit.state.currentBrand);
+        context.select((MainCubit cubit) => cubit.state.currentBrand);
         return Scaffold(
           key: chatsCubit.scaffoldKey,
           drawer: const AppDrawer(),
@@ -53,25 +51,25 @@ class SessionsScreen extends StatelessWidget {
                             onTap: homeCubit.openDrawer,
                             child: Builder(
                                 builder: (context) => Row(
-                                      children: [
-                                        Container(
-                                          height: 32.0,
-                                          width: 32.0,
-                                          padding: const EdgeInsets.all(4.0),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                                AppConstants.buttonRadius),
-                                            color: Get
-                                                .theme.scaffoldBackgroundColor,
-                                          ),
-                                          child: SvgPicture.asset(
-                                              selectedBrand.icon),
-                                        ),
-                                        const SizedBox(width: 8.0),
-                                        Text(selectedBrand.name,
-                                            style: Get.textTheme.headlineMedium)
-                                      ],
-                                    )),
+                                  children: [
+                                    Container(
+                                      height: 32.0,
+                                      width: 32.0,
+                                      padding: const EdgeInsets.all(4.0),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            AppConstants.buttonRadius),
+                                        color: Get
+                                            .theme.scaffoldBackgroundColor,
+                                      ),
+                                      child: SvgPicture.asset(
+                                          selectedBrand.icon),
+                                    ),
+                                    const SizedBox(width: 8.0),
+                                    Text(selectedBrand.name,
+                                        style: Get.textTheme.headlineMedium)
+                                  ],
+                                )),
                           ),
                           const ChangeLocaleButton()
                         ],
@@ -101,8 +99,8 @@ class SessionsScreen extends StatelessWidget {
                                 ),
                                 Builder(builder: (context) {
                                   final bool isPublic = context.select(
-                                      (SessionsCubit cubit) =>
-                                          cubit.state.isPublic);
+                                          (SessionsCubit cubit) =>
+                                      cubit.state.isPublic);
                                   return AnimatedAlign(
                                       alignment: isPublic
                                           ? Alignment.centerLeft
@@ -116,16 +114,16 @@ class SessionsScreen extends StatelessWidget {
                                           decoration: BoxDecoration(
                                               color: Get.theme.primaryColor,
                                               borderRadius:
-                                                  BorderRadius.circular(
-                                                      AppConstants
-                                                          .buttonRadius)),
+                                              BorderRadius.circular(
+                                                  AppConstants
+                                                      .buttonRadius)),
                                           child: Text(
                                             chatsCubit.buildIsPublicText(),
                                             style: Get.textTheme.titleMedium
                                                 ?.copyWith(
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Get
-                                                        .theme.backgroundColor),
+                                                fontWeight: FontWeight.w500,
+                                                color: Get
+                                                    .theme.backgroundColor),
                                           )));
                                 }),
                               ],
@@ -152,9 +150,9 @@ class SessionsScreen extends StatelessWidget {
             controller: chatsCubit.controller,
             child: Builder(builder: (context) {
               final SessionsState state =
-                  context.select((SessionsCubit cubit) => cubit.state);
+              context.select((SessionsCubit cubit) => cubit.state);
               final int selectedFilterIndex = context.select(
-                  (SessionsCubit cubit) => cubit.state.selectedFilterIndex);
+                      (SessionsCubit cubit) => cubit.state.selectedFilterIndex);
               final List<String> filters = [
                 S.of(context).all,
                 S.of(context).onlyPremiumProducts,
@@ -163,7 +161,7 @@ class SessionsScreen extends StatelessWidget {
               ];
               final List<VoidCallback> onTaps = filters
                   .map((e) =>
-                      () => chatsCubit.changeFilterIndex(filters.indexOf(e)))
+                  () => chatsCubit.changeFilterIndex(filters.indexOf(e)))
                   .toList();
               return Column(children: [
                 ListOfFiltersWidget(
@@ -172,15 +170,15 @@ class SessionsScreen extends StatelessWidget {
                     onTaps: onTaps),
                 state.isLoading
                     ? SizedBox(
-                        height: Get.height / 2,
-                        child: const Center(child: AppLoadingIndicator()))
+                    height: Get.height / 2,
+                    child: const Center(child: AppLoadingIndicator()))
                     : Padding(
-                        padding: const EdgeInsets.all(
-                            AppConstants.horizontalScreenPadding),
-                        child: ListOfQuestionsWidget(
-                            questions:
-                                state.questionsListResponse.questions ?? []),
-                      )
+                  padding: const EdgeInsets.all(
+                      AppConstants.horizontalScreenPadding),
+                  child: ListOfQuestionsWidget(
+                      questions:
+                      state.questionsListResponse.questions ?? []),
+                )
               ]);
             }),
           ),

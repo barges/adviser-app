@@ -23,11 +23,9 @@ class AccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => AccountCubit(),
-      child: Builder(builder: (_) {
+      child: Builder(builder: (context) {
         final AccountCubit accountCubit = context.read<AccountCubit>();
         final HomeCubit homeCubit = context.read<HomeCubit>();
-        final Brand currentBrand =
-        context.select((MainCubit cubit) => cubit.state.currentBrand);
 
         return Scaffold(
           key: accountCubit.scaffoldKey,
@@ -45,27 +43,31 @@ class AccountScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Builder(
-                          builder: (context) => InkWell(
-                            onTap: homeCubit.openDrawer,
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 32.0,
-                                  width: 32.0,
-                                  padding: const EdgeInsets.all(4.0),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                        AppConstants.buttonRadius),
-                                    color: Get.theme.scaffoldBackgroundColor,
+                          builder: (context) {
+                            final Brand currentBrand =
+                            context.select((MainCubit cubit) => cubit.state.currentBrand);
+                            return InkWell(
+                              onTap: homeCubit.openDrawer,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 32.0,
+                                    width: 32.0,
+                                    padding: const EdgeInsets.all(4.0),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          AppConstants.buttonRadius),
+                                      color: Get.theme.scaffoldBackgroundColor,
+                                    ),
+                                    child: SvgPicture.asset(currentBrand.icon),
                                   ),
-                                  child: SvgPicture.asset(currentBrand.icon),
-                                ),
-                                const SizedBox(width: 8.0),
-                                Text(currentBrand.name,
-                                    style: Get.textTheme.headlineMedium)
-                              ],
-                            ),
-                          )),
+                                  const SizedBox(width: 8.0),
+                                  Text(currentBrand.name,
+                                      style: Get.textTheme.headlineMedium)
+                                ],
+                              ),
+                            );
+                          }),
                       const ChangeLocaleButton()
                     ],
                   ),
