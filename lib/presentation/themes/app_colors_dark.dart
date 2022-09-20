@@ -16,9 +16,6 @@ class AppColorsDark {
 
   static const Color shade1 = Color(0xFF424242);
 
-  //TODO -- check this color
-  static const Color shade2 = Color(0xFFACACAC);
-
   static const Color shade3 = Color(0xFFABABB4);
 
   static const Color error = Color(0xffD0021B);

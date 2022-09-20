@@ -52,7 +52,7 @@ class SliderWidget extends StatelessWidget {
                                 radius: sliderIndex == index ? 6.0 : 4.0,
                                 backgroundColor: sliderIndex == index
                                     ? Get.theme.primaryColor
-                                    : Get.theme.cardColor)),
+                                    : Get.theme.hintColor)),
                       )))
         ],
       ),
