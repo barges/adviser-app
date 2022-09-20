@@ -9,7 +9,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/change_locale_button.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/user_profile_image_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
@@ -42,32 +42,31 @@ class AccountScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Builder(
-                          builder: (context) {
-                            final Brand currentBrand =
-                            context.select((MainCubit cubit) => cubit.state.currentBrand);
-                            return InkWell(
-                              onTap: homeCubit.openDrawer,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: 32.0,
-                                    width: 32.0,
-                                    padding: const EdgeInsets.all(4.0),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          AppConstants.buttonRadius),
-                                      color: Get.theme.scaffoldBackgroundColor,
-                                    ),
-                                    child: SvgPicture.asset(currentBrand.icon),
-                                  ),
-                                  const SizedBox(width: 8.0),
-                                  Text(currentBrand.name,
-                                      style: Get.textTheme.headlineMedium)
-                                ],
+                      Builder(builder: (context) {
+                        final Brand currentBrand = context.select(
+                            (MainCubit cubit) => cubit.state.currentBrand);
+                        return InkWell(
+                          onTap: homeCubit.openDrawer,
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 32.0,
+                                width: 32.0,
+                                padding: const EdgeInsets.all(4.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                      AppConstants.buttonRadius),
+                                  color: Get.theme.scaffoldBackgroundColor,
+                                ),
+                                child: SvgPicture.asset(currentBrand.icon),
                               ),
-                            );
-                          }),
+                              const SizedBox(width: 8.0),
+                              Text(currentBrand.name,
+                                  style: Get.textTheme.headlineMedium)
+                            ],
+                          ),
+                        );
+                      }),
                       const ChangeLocaleButton()
                     ],
                   ),
@@ -78,66 +77,41 @@ class AccountScreen extends StatelessWidget {
             child: Column(children: [
               Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
+                    borderRadius:
+                        BorderRadius.circular(AppConstants.buttonRadius),
                     color: Get.theme.canvasColor),
                 child: Column(children: [
                   Padding(
-                    padding:
-                    const EdgeInsets.all(AppConstants.horizontalScreenPadding),
+                    padding: const EdgeInsets.all(
+                        AppConstants.horizontalScreenPadding),
                     child: Row(
                       children: [
-                        Stack(
-                          alignment: Alignment.bottomRight,
-                          children: [
-                            const UserProfileImageWidget(
-                                radius: 36.0,
-                                networkImagePath:
-                                'https://img.freepik.com/free-vector/cute-astronaut-dance-cartoon-vector-icon-illustration-technology-science-icon-concept-isolated-premium-vector-flat-cartoon-style_138676-3851.jpg'),
-                            Container(
-                              height: 20.0,
-                              width: 20.0,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppColors.online,
-                                  border: Border.all(
-                                      width: 4.0, color: Get.theme.canvasColor)),
-                            )
-                          ],
-                        ),
+                        const UserAvatar(
+                            avatarUrl:
+                                'https://img.freepik.com/free-vector/cute-astronaut-dance-cartoon-vector-icon-illustration-technology-science-icon-concept-isolated-premium-vector-flat-cartoon-style_138676-3851.jpg',
+                            diameter: 72.0,
+                            isOnline: true),
                         const SizedBox(width: 16.0),
-                        Flexible(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
-                                width: Get.width / 2.5,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Psychic Sherman',
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Get.textTheme.titleMedium
-                                          ?.copyWith(fontWeight: FontWeight.w700),
-                                    ),
-                                    Text(
-                                        'Life Coach, Tarot, Reiki, sdfsdf, sdffsdf',
-                                        overflow: TextOverflow.ellipsis,
-                                        style: Get.textTheme.bodyMedium?.copyWith(
-                                            color: Get.theme.shadowColor))
-                                  ],
-                                ),
+                              Text(
+                                'Psychic Sherman',
+                                overflow: TextOverflow.ellipsis,
+                                style: Get.textTheme.titleMedium
+                                    ?.copyWith(fontWeight: FontWeight.w700),
                               ),
-                              Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Icon(
-                                    Icons.arrow_forward_ios_outlined,
-                                    color: Get.theme.primaryColor,
-                                    size: 16,
-                                  ))
+                              Text('Life Coach, Tarot, Reiki, sdfsdf, sdffsdf',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Get.textTheme.bodyMedium
+                                      ?.copyWith(color: Get.theme.shadowColor))
                             ],
                           ),
                         ),
+                        Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Assets.vectors.arrowLeft.svg())
                       ],
                     ),
                   ),
@@ -149,7 +123,7 @@ class AccountScreen extends StatelessWidget {
                       Builder(
                         builder: (context) {
                           final bool isAvailable = context.select(
-                                  (AccountCubit cubit) => cubit.state.isAvailable);
+                              (AccountCubit cubit) => cubit.state.isAvailable);
                           return CustomTileWithCheckButtonWidget(
                             value: isAvailable,
                             title: S.of(context).imAvailableNow,
@@ -162,13 +136,14 @@ class AccountScreen extends StatelessWidget {
                       Builder(
                         builder: (context) {
                           final bool enableNotifications = context.select(
-                                  (AccountCubit cubit) =>
-                              cubit.state.enableNotifications);
+                              (AccountCubit cubit) =>
+                                  cubit.state.enableNotifications);
                           return CustomTileWithCheckButtonWidget(
                             value: enableNotifications,
                             title: S.of(context).notifications,
                             iconSVGPath: Assets.vectors.notification.path,
-                            onChanged: accountCubit.updateEnableNotificationsValue,
+                            onChanged:
+                                accountCubit.updateEnableNotificationsValue,
                           );
                         },
                       ),
@@ -186,7 +161,8 @@ class AccountScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(
                     left: AppConstants.horizontalScreenPadding),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
+                    borderRadius:
+                        BorderRadius.circular(AppConstants.buttonRadius),
                     color: Get.theme.canvasColor),
                 child: Column(children: [
                   CustomTileWidget(
@@ -204,7 +180,8 @@ class AccountScreen extends StatelessWidget {
                           half: Assets.vectors.starEmpty.svg(),
                           empty: Assets.vectors.starEmpty.svg(),
                         ),
-                        itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
+                        itemPadding:
+                            const EdgeInsets.symmetric(horizontal: 1.0),
                         onRatingUpdate: (rating) {},
                       ),
                       const SizedBox(width: 9.0),
@@ -246,14 +223,14 @@ class AccountScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: Get.theme.canvasColor,
                         borderRadius:
-                        BorderRadius.circular(AppConstants.buttonRadius)),
+                            BorderRadius.circular(AppConstants.buttonRadius)),
                     child: Row(
                       children: [
                         Flexible(
                             flex: 10,
                             child: Padding(
-                              padding:
-                              const EdgeInsets.fromLTRB(14.0, 12.0, 10.0, 8.0),
+                              padding: const EdgeInsets.fromLTRB(
+                                  14.0, 12.0, 10.0, 8.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -261,6 +238,8 @@ class AccountScreen extends StatelessWidget {
                                     S
                                         .of(context)
                                         .notEnoughConversationsCheckOurProfileGuide,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
                                     style: Get.textTheme.bodyMedium
                                         ?.copyWith(fontWeight: FontWeight.w500),
                                   ),
@@ -279,10 +258,10 @@ class AccountScreen extends StatelessWidget {
                             flex: 6,
                             child: ClipRRect(
                               borderRadius: const BorderRadius.only(
-                                  topRight:
-                                  Radius.circular(AppConstants.buttonRadius),
-                                  bottomRight:
-                                  Radius.circular(AppConstants.buttonRadius)),
+                                  topRight: Radius.circular(
+                                      AppConstants.buttonRadius),
+                                  bottomRight: Radius.circular(
+                                      AppConstants.buttonRadius)),
                               child: Align(
                                   alignment: Alignment.centerRight,
                                   child: Assets.images.conversations
@@ -326,11 +305,7 @@ class CustomTileWidget extends StatelessWidget {
             Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: AppConstants.horizontalScreenPadding),
-                child: Icon(
-                  Icons.arrow_forward_ios_outlined,
-                  color: Get.theme.primaryColor,
-                  size: 16,
-                )),
+                child: Assets.vectors.arrowLeft.svg()),
           ],
         )
       ]),
