@@ -32,7 +32,7 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
         if (openDrawer != null)
           IconButton(
               onPressed: openDrawer,
-              icon: Icon(
+              icon: const Icon(
                 Icons.menu,
                 color: Colors.black,
               ))

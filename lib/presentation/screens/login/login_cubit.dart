@@ -136,8 +136,7 @@ class LoginCubit extends Cubit<LoginState> {
     final dynamic showEmailMessage = (await Get.toNamed(
         AppRoutes.forgotPassword,
         arguments: state.selectedBrand));
-    if (!mounted) return;
-    if (showEmailMessage is bool && showEmailMessage == true) {
+    if (mounted && showEmailMessage is bool && showEmailMessage == true) {
       emit(state.copyWith(
           successMessage: S
               .of(context)

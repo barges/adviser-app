@@ -34,6 +34,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "balanceTransactions":
             MessageLookupByLibrary.simpleMessage("Balance & Transactions"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "changeCoverPicture":
+            MessageLookupByLibrary.simpleMessage("Change cover picture"),
         "changePassword":
             MessageLookupByLibrary.simpleMessage("Change password"),
         "changePhoto": MessageLookupByLibrary.simpleMessage("Change photo"),
@@ -41,6 +43,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Choose brand to log in"),
         "chooseEmailApp":
             MessageLookupByLibrary.simpleMessage("Choose email app"),
+        "chooseFromGallery":
+            MessageLookupByLibrary.simpleMessage("Choose from gallery"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon!"),
         "confirmNewPassword":
             MessageLookupByLibrary.simpleMessage("Confirm new password"),
@@ -78,6 +82,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "openEmailApp": MessageLookupByLibrary.simpleMessage("Open email app"),
         "otherBrands": MessageLookupByLibrary.simpleMessage("Other brands"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
+        "pleaseEnterAtLeast3Characters": MessageLookupByLibrary.simpleMessage(
+            "Please enter at least 3 characters"),
         "pleaseEnterAtLeast8Characters": MessageLookupByLibrary.simpleMessage(
             "Please enter at least 8 characters"),
         "pleaseInsertCorrectEmail": MessageLookupByLibrary.simpleMessage(
@@ -98,6 +104,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
         "statusText": MessageLookupByLibrary.simpleMessage("Status Text"),
+        "takeAPhoto": MessageLookupByLibrary.simpleMessage("Take a photo"),
         "takeMeThere": MessageLookupByLibrary.simpleMessage("Take me there"),
         "theMorePhotosYourselfYouAddBetter":
             MessageLookupByLibrary.simpleMessage(

@@ -31,16 +31,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "allOurBrands":
             MessageLookupByLibrary.simpleMessage("Todas as nossas marcas"),
         "articles": MessageLookupByLibrary.simpleMessage("Artigos"),
-        "back": MessageLookupByLibrary.simpleMessage("Back"),
+        "back": MessageLookupByLibrary.simpleMessage("De volta"),
         "balanceTransactions":
             MessageLookupByLibrary.simpleMessage("Saldo e transações"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
+        "changeCoverPicture":
+            MessageLookupByLibrary.simpleMessage("Alterar imagem da capa"),
         "changePassword": MessageLookupByLibrary.simpleMessage("Mudar senha"),
         "changePhoto": MessageLookupByLibrary.simpleMessage("Mudar foto"),
         "chooseBrandToLogIn": MessageLookupByLibrary.simpleMessage(
-            "Escolha a marca para iniciar a sessão"),
+            "Escolha a marca para fazer login"),
         "chooseEmailApp": MessageLookupByLibrary.simpleMessage(
             "Escolha o aplicativo de e-mail"),
+        "chooseFromGallery":
+            MessageLookupByLibrary.simpleMessage("Escolha na galeria"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("Em breve!"),
         "confirmNewPassword":
             MessageLookupByLibrary.simpleMessage("Confirme a nova senha"),
@@ -52,16 +56,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "editProfile": MessageLookupByLibrary.simpleMessage("Editar Perfil"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "english": MessageLookupByLibrary.simpleMessage("Inglês"),
-        "forMe": MessageLookupByLibrary.simpleMessage("para mim"),
+        "forMe": MessageLookupByLibrary.simpleMessage("Para mim"),
         "forgotPassword":
-            MessageLookupByLibrary.simpleMessage("Esqueceu a senha"),
+            MessageLookupByLibrary.simpleMessage("Esqueceu a senha\n"),
         "forgotYourPassword":
             MessageLookupByLibrary.simpleMessage("Esqueceu sua senha"),
+        "fortunica": MessageLookupByLibrary.simpleMessage("Fortunica"),
         "imAvailableNow":
             MessageLookupByLibrary.simpleMessage("estou disponível agora"),
         "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
-        "logOut": MessageLookupByLibrary.simpleMessage("Log out"),
-        "login": MessageLookupByLibrary.simpleMessage("Login"),
+        "logOut": MessageLookupByLibrary.simpleMessage("Sair"),
+        "login": MessageLookupByLibrary.simpleMessage("Conecte-se"),
         "mandatory": MessageLookupByLibrary.simpleMessage("Obrigatoriedade"),
         "market": MessageLookupByLibrary.simpleMessage("Mercado"),
         "newLabel": MessageLookupByLibrary.simpleMessage("Nova"),
@@ -78,6 +83,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Abra o aplicativo de e-mail"),
         "otherBrands": MessageLookupByLibrary.simpleMessage("Outras marcas"),
         "password": MessageLookupByLibrary.simpleMessage("Senha"),
+        "pleaseEnterAtLeast3Characters": MessageLookupByLibrary.simpleMessage(
+            "Digite pelo menos 3 caracteres"),
         "pleaseEnterAtLeast8Characters": MessageLookupByLibrary.simpleMessage(
             "Insira pelo menos 8 caracteres"),
         "pleaseInsertCorrectEmail": MessageLookupByLibrary.simpleMessage(
@@ -90,7 +97,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "profileText": MessageLookupByLibrary.simpleMessage("Texto do perfil"),
         "public": MessageLookupByLibrary.simpleMessage("Pública"),
         "requestNewPassword":
-            MessageLookupByLibrary.simpleMessage("Solicite uma nova senha"),
+            MessageLookupByLibrary.simpleMessage("Requira nova senha"),
         "reviews": MessageLookupByLibrary.simpleMessage("Avaliações"),
         "save": MessageLookupByLibrary.simpleMessage("Salvar"),
         "search": MessageLookupByLibrary.simpleMessage("Procurar"),
@@ -98,10 +105,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("Definições"),
         "signIn": MessageLookupByLibrary.simpleMessage("Entrar"),
         "statusText": MessageLookupByLibrary.simpleMessage("Texto de status"),
+        "takeAPhoto": MessageLookupByLibrary.simpleMessage("Tire uma foto"),
         "takeMeThere": MessageLookupByLibrary.simpleMessage("Leve-me lá"),
         "theMorePhotosYourselfYouAddBetter":
             MessageLookupByLibrary.simpleMessage(
-                "Quanto mais fotos suas você adicionar, melhor."),
+                " Quanto mais fotos suas você adicionar, melhor."),
         "thePasswordsMustMatch": MessageLookupByLibrary.simpleMessage(
             "As senhas devem corresponder"),
         "theUserWasNotFound": MessageLookupByLibrary.simpleMessage(
