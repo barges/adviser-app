@@ -6,9 +6,9 @@ part 'forgot_password_state.freezed.dart';
 class ForgotPasswordState with _$ForgotPasswordState {
   const factory ForgotPasswordState({
     @Default('') String errorMessage,
-    @Default('') String email,
-    @Default('') String password,
-    @Default('') String confirmPassword,
+    @Default('') String emailErrorText,
+    @Default('') String passwordErrorText,
+    @Default('') String confirmPasswordErrorText,
     @Default(true) bool hiddenPassword,
     @Default(true) bool hiddenConfirmPassword,
     @Default(false) bool isLoading,

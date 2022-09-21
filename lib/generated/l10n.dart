@@ -170,6 +170,176 @@ class S {
     );
   }
 
+  /// `Sign in`
+  String get signIn {
+    return Intl.message(
+      'Sign in',
+      name: 'signIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message(
+      'Save',
+      name: 'save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forgot your password`
+  String get forgotYourPassword {
+    return Intl.message(
+      'Forgot your password',
+      name: 'forgotYourPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Request new password`
+  String get requestNewPassword {
+    return Intl.message(
+      'Request new password',
+      name: 'requestNewPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The user was not found`
+  String get theUserWasNotFound {
+    return Intl.message(
+      'The user was not found',
+      name: 'theUserWasNotFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit profile`
+  String get editProfile {
+    return Intl.message(
+      'Edit profile',
+      name: 'editProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add cover picture`
+  String get addCoverPicture {
+    return Intl.message(
+      'Add cover picture',
+      name: 'addCoverPicture',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change photo`
+  String get changePhoto {
+    return Intl.message(
+      'Change photo',
+      name: 'changePhoto',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nickname`
+  String get nickname {
+    return Intl.message(
+      'Nickname',
+      name: 'nickname',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Status Text`
+  String get statusText {
+    return Intl.message(
+      'Status Text',
+      name: 'statusText',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile Text`
+  String get profileText {
+    return Intl.message(
+      'Profile Text',
+      name: 'profileText',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Gallery Pictures`
+  String get addGalleryPictures {
+    return Intl.message(
+      'Add Gallery Pictures',
+      name: 'addGalleryPictures',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customers want to see if you are real.`
+  String get customersWantSeeIfYouReal {
+    return Intl.message(
+      'Customers want to see if you are real.',
+      name: 'customersWantSeeIfYouReal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` The more photos of yourself you add, the better.`
+  String get theMorePhotosYourselfYouAddBetter {
+    return Intl.message(
+      ' The more photos of yourself you add, the better.',
+      name: 'theMorePhotosYourselfYouAddBetter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add more`
+  String get addMore {
+    return Intl.message(
+      'Add more',
+      name: 'addMore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `English`
+  String get english {
+    return Intl.message(
+      'English',
+      name: 'english',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Portuguese`
+  String get portuguese {
+    return Intl.message(
+      'Portuguese',
+      name: 'portuguese',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `You have successfully changed your password. Check your email to confirm password change`
   String get youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo {
     return Intl.message(
@@ -295,6 +465,46 @@ class S {
     return Intl.message(
       'Log out',
       name: 'logOut',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change cover picture`
+  String get changeCoverPicture {
+    return Intl.message(
+      'Change cover picture',
+      name: 'changeCoverPicture',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter at least 3 characters`
+  String get pleaseEnterAtLeast3Characters {
+    return Intl.message(
+      'Please enter at least 3 characters',
+      name: 'pleaseEnterAtLeast3Characters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose from gallery`
+  String get chooseFromGallery {
+    return Intl.message(
+      'Choose from gallery',
+      name: 'chooseFromGallery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Take a photo`
+  String get takeAPhoto {
+    return Intl.message(
+      'Take a photo',
+      name: 'takeAPhoto',
       desc: '',
       args: [],
     );

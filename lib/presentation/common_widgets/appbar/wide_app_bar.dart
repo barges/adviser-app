@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
-import '../buttons/app_back_button.dart';
+import '../buttons/app_Icon_button.dart';
 
 class WideAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -24,8 +25,10 @@ class WideAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const AppBackButton(),
+              children: [AppIconButton(
+                icon: Assets.vectors.back.path,
+                onTap: Get.back,
+              ),
                 topRightWidget ?? const SizedBox()
               ],
             ),

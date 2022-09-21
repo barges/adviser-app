@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 class AccountScreen extends GetView {
   const AccountScreen({Key? key}) : super(key: key);
@@ -13,8 +14,12 @@ class AccountScreen extends GetView {
       ),
       body: SizedBox(
         height: Get.height,
-        child: const Center(
-          child: Text('Account'),
+        child: Center(
+          child: GestureDetector(
+              onTap: (){
+                Get.toNamed(AppRoutes.editProfile);
+              },
+              child: const Text('Account')),
         ),
       ),
     );

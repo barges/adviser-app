@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 
-class EmailFieldWidget extends StatelessWidget {
+class AppTextField extends StatelessWidget {
   final TextEditingController controller;
-  final bool showErrorText;
+  final String label;
+  final String errorText;
   final FocusNode? nextFocusNode;
+  final TextInputType? textInputType;
+  final TextInputAction? textInputAction;
+  final bool isPassword;
+  final int maxLines;
+  final double height;
+  final EdgeInsets? contentPadding;
 
-  const EmailFieldWidget({
+  const AppTextField({
     Key? key,
     required this.controller,
+    required this.label,
     this.nextFocusNode,
-    this.showErrorText = false,
+    this.textInputType,
+    this.textInputAction,
+    this.isPassword = false,
+    this.maxLines = 1,
+    this.height = AppConstants.textFieldsHeight,
+    this.errorText = '',
+    this.contentPadding,
   }) : super(key: key);
 
   @override
@@ -20,18 +33,20 @@ class EmailFieldWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(S.of(context).email, style: Get.textTheme.labelMedium),
+        Text(label, style: Get.textTheme.labelMedium),
         const SizedBox(
           height: 4.0,
         ),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-            color: showErrorText ? Get.theme.errorColor : Get.theme.hintColor,
+            color: errorText.isNotEmpty
+                ? Get.theme.errorColor
+                : Get.theme.hintColor,
           ),
           child: Container(
             margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
-            height: AppConstants.textFieldsHeight - 3,
+            height: height - 3,
             decoration: BoxDecoration(
               borderRadius:
                   BorderRadius.circular(AppConstants.buttonRadius - 1),
@@ -39,24 +54,25 @@ class EmailFieldWidget extends StatelessWidget {
             ),
             child: TextField(
               controller: controller,
-              keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.next,
+              keyboardType: textInputType,
+              textInputAction: textInputAction,
               onSubmitted: (_) {
                 FocusScope.of(context).requestFocus(nextFocusNode);
               },
-              decoration: const InputDecoration(
-                contentPadding: EdgeInsets.symmetric(horizontal: 12.0),
+              decoration: InputDecoration(
+                contentPadding: contentPadding ??
+                    const EdgeInsets.symmetric(horizontal: 12.0),
               ),
-              maxLines: 1,
+              maxLines: maxLines,
               style: Get.textTheme.bodyMedium,
             ),
           ),
         ),
-        if (showErrorText)
+        if (errorText.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(top: 4.0),
             child: Text(
-              S.of(context).pleaseInsertCorrectEmail,
+              errorText,
               style: Get.textTheme.bodySmall
                   ?.copyWith(color: Get.theme.errorColor),
             ),

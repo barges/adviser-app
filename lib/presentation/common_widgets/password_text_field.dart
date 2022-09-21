@@ -3,18 +3,17 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
-class PasswordFieldWidget extends StatelessWidget {
+class PasswordTextField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputAction? textInputAction;
-  final bool showErrorText;
   final bool hiddenPassword;
-  final String? errorText;
+  final String errorText;
   final ValueChanged<String>? onSubmitted;
   final VoidCallback? clickToHide;
   final FocusNode? focusNode;
   final String? label;
 
-  const PasswordFieldWidget({
+  const PasswordTextField({
     Key? key,
     required this.controller,
     this.textInputAction,
@@ -22,8 +21,7 @@ class PasswordFieldWidget extends StatelessWidget {
     this.onSubmitted,
     this.clickToHide,
     this.focusNode,
-    this.errorText,
-    this.showErrorText = false,
+    this.errorText = '',
     this.hiddenPassword = true,
   }) : super(key: key);
 
@@ -40,7 +38,9 @@ class PasswordFieldWidget extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-            color: showErrorText ? Get.theme.errorColor : Get.theme.hintColor,
+            color: errorText.isNotEmpty
+                ? Get.theme.errorColor
+                : Get.theme.hintColor,
           ),
           child: Container(
             margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
@@ -49,22 +49,23 @@ class PasswordFieldWidget extends StatelessWidget {
               color: Theme.of(context).canvasColor,
               borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
             ),
-            child: Theme(
-              data: Get.theme.copyWith(
-                primaryColor: Colors.redAccent,
-              ),
-              child: TextField(
-                controller: controller,
-                focusNode: focusNode,
-                obscureText: hiddenPassword,
-                obscuringCharacter: '*',
-                keyboardType: TextInputType.visiblePassword,
-                textInputAction: textInputAction,
-                onSubmitted: onSubmitted,
-                style: Get.textTheme.bodyMedium,
-                maxLines: 1,
-                decoration: InputDecoration(
-                  suffixIcon: GestureDetector(
+            child: TextField(
+              controller: controller,
+              focusNode: focusNode,
+              obscureText: hiddenPassword,
+              obscuringCharacter: '*',
+              keyboardType: TextInputType.visiblePassword,
+              textInputAction: textInputAction,
+              onSubmitted: onSubmitted,
+              style: Get.textTheme.bodyMedium,
+              maxLines: 1,
+              decoration: InputDecoration(
+                suffixIconConstraints: const BoxConstraints(
+                  minWidth: AppConstants.iconsSize,
+                ),
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.only(right: 12.0),
+                  child: GestureDetector(
                     onTap: clickToHide,
                     child: hiddenPassword
                         ? Assets.vectors.visibilityOff.svg(
@@ -74,16 +75,16 @@ class PasswordFieldWidget extends StatelessWidget {
                             color: Get.iconColor,
                           ),
                   ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 12.0),
                 ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12.0),
               ),
             ),
           ),
         ),
-        if (showErrorText)
+        if (errorText.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(top: 4.0),
-            child: Text(errorText ?? '',
+            child: Text(errorText,
                 style: Get.textTheme.bodySmall?.copyWith(
                   color: Get.theme.errorColor,
                 )),

@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
-class AppBackButton extends StatelessWidget {
-  final String? icon;
+class AppIconButton extends StatelessWidget {
+  final String icon;
+  final VoidCallback onTap;
 
-  const AppBackButton({Key? key, this.icon}) : super(key: key);
+  const AppIconButton({
+    Key? key,
+    required this.icon,
+    required this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkResponse(
-      onTap: () {
-        Get.back();
-      },
+      onTap: () => onTap(),
       child: Container(
         height: 32.0,
         width: 32.0,
@@ -24,7 +26,7 @@ class AppBackButton extends StatelessWidget {
         ),
         child: Center(
             child: SvgPicture.asset(
-          icon ?? Assets.vectors.back.path,
+          icon,
           color: Get.theme.primaryColor,
           height: AppConstants.iconsSize,
           width: AppConstants.iconsSize,
