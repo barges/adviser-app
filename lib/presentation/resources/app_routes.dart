@@ -14,6 +14,7 @@ class AppRoutes {
   static const allBrands = '/all_brands_screen';
   static const editProfile = '/edit_profile_screen';
 
+
   static final List<GetPage> getPages = [
     GetPage(
       name: splash,

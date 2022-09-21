@@ -12,7 +12,7 @@ class AppColorsLight {
 
   static const Color contrast = Color(0xFFFFFFFF);
 
-  static const Color ui = Color(0xFF404041);
+  static const Color ui = Color(0xFF28313A);
 
   static const Color shade1 = Color(0xFFEBEDEE);
 

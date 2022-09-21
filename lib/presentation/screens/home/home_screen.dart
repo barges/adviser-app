@@ -6,8 +6,8 @@ import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/articles/articles_screen.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/chats/chats_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard/dashboard_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -105,7 +105,7 @@ class _TabPages extends StatelessWidget {
               builder: (BuildContext context) => const ArticlesScreen())),
       Navigator(
           onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-              builder: (BuildContext context) => const ChatsScreen())),
+              builder: (BuildContext context) => const SessionsScreen())),
       Navigator(
           onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
               builder: (BuildContext context) => const AccountScreen())),

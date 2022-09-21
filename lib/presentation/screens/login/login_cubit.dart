@@ -131,11 +131,12 @@ class LoginCubit extends Cubit<LoginState> {
     Get.offNamedUntil(AppRoutes.home, (_) => false);
   }
 
-  Future<void> goToForgotPassword(BuildContext context) async {
+  Future<void> goToForgotPassword(BuildContext context,
+      [bool mounted = true]) async {
     final dynamic showEmailMessage = (await Get.toNamed(
         AppRoutes.forgotPassword,
         arguments: state.selectedBrand));
-    if (showEmailMessage is bool && showEmailMessage == true) {
+    if (mounted && showEmailMessage is bool && showEmailMessage == true) {
       emit(state.copyWith(
           successMessage: S
               .of(context)

@@ -27,8 +27,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "addGalleryPictures":
             MessageLookupByLibrary.simpleMessage("Add Gallery Pictures"),
         "addMore": MessageLookupByLibrary.simpleMessage("Add more"),
+        "all": MessageLookupByLibrary.simpleMessage("All"),
         "allOurBrands": MessageLookupByLibrary.simpleMessage("All our brands"),
+        "articles": MessageLookupByLibrary.simpleMessage("Articles"),
         "back": MessageLookupByLibrary.simpleMessage("Back"),
+        "balanceTransactions":
+            MessageLookupByLibrary.simpleMessage("Balance & Transactions"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "changeCoverPicture":
             MessageLookupByLibrary.simpleMessage("Change cover picture"),
@@ -48,17 +52,33 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Customer Support"),
         "customersWantSeeIfYouReal": MessageLookupByLibrary.simpleMessage(
             "Customers want to see if you are real."),
+        "days": MessageLookupByLibrary.simpleMessage("days"),
         "editProfile": MessageLookupByLibrary.simpleMessage("Edit profile"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
+        "forMe": MessageLookupByLibrary.simpleMessage("For me"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot password"),
         "forgotYourPassword":
             MessageLookupByLibrary.simpleMessage("Forgot your password"),
+        "fortunica": MessageLookupByLibrary.simpleMessage("Fortunica"),
+        "imAvailableNow":
+            MessageLookupByLibrary.simpleMessage("I\'m available now"),
         "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
         "logOut": MessageLookupByLibrary.simpleMessage("Log out"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
+        "mandatory": MessageLookupByLibrary.simpleMessage("Mandatory"),
+        "market": MessageLookupByLibrary.simpleMessage("Market"),
+        "newLabel": MessageLookupByLibrary.simpleMessage("New"),
+        "newMandatoryArticleIsAvailable": MessageLookupByLibrary.simpleMessage(
+            "New mandatory article is available!"),
         "nickname": MessageLookupByLibrary.simpleMessage("Nickname"),
+        "notEnoughConversationsCheckOurProfileGuide":
+            MessageLookupByLibrary.simpleMessage(
+                "Not enough conversations? Check our Profile Guide."),
+        "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
+        "onlyPremiumProducts":
+            MessageLookupByLibrary.simpleMessage("Only Premium Products"),
         "openEmailApp": MessageLookupByLibrary.simpleMessage("Open email app"),
         "otherBrands": MessageLookupByLibrary.simpleMessage("Other brands"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
@@ -69,14 +89,23 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseInsertCorrectEmail": MessageLookupByLibrary.simpleMessage(
             "Please, insert correct email"),
         "portuguese": MessageLookupByLibrary.simpleMessage("Portuguese"),
+        "previewAccount":
+            MessageLookupByLibrary.simpleMessage("Preview account"),
+        "privateQuestions":
+            MessageLookupByLibrary.simpleMessage("Private Questions"),
         "profileText": MessageLookupByLibrary.simpleMessage("Profile Text"),
+        "public": MessageLookupByLibrary.simpleMessage("Public"),
         "requestNewPassword":
             MessageLookupByLibrary.simpleMessage("Request new password"),
+        "reviews": MessageLookupByLibrary.simpleMessage("Reviews"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
+        "search": MessageLookupByLibrary.simpleMessage("Search"),
+        "seeMore": MessageLookupByLibrary.simpleMessage("See more"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
         "statusText": MessageLookupByLibrary.simpleMessage("Status Text"),
         "takeAPhoto": MessageLookupByLibrary.simpleMessage("Take a photo"),
+        "takeMeThere": MessageLookupByLibrary.simpleMessage("Take me there"),
         "theMorePhotosYourselfYouAddBetter":
             MessageLookupByLibrary.simpleMessage(
                 " The more photos of yourself you add, the better."),
@@ -84,12 +113,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("The passwords must match"),
         "theUserWasNotFound":
             MessageLookupByLibrary.simpleMessage("The user was not found"),
+        "toReadItBeforeYourAccountWillGetBlocked":
+            MessageLookupByLibrary.simpleMessage(
+                "to read it before your account will get blocked!"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others"),
         "workspaces": MessageLookupByLibrary.simpleMessage("Workspaces"),
         "wrongUsernameOrPassword":
             MessageLookupByLibrary.simpleMessage("Wrong username or password"),
+        "youHave": MessageLookupByLibrary.simpleMessage("You have"),
         "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo":
             MessageLookupByLibrary.simpleMessage(
                 "You have successfully changed your password. Check your email to confirm password change")

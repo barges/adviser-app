@@ -34,21 +34,19 @@ class _ChangeLocaleButtonState extends State<ChangeLocaleButton> {
             color: Get.theme.scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 6.0),
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
           child: Row(
             children: [
-              Assets.vectors.languages.svg(
-                color: Get.theme.primaryColor,
-                width: 20.0,
-                height: 20.0,
-              ),
-              const SizedBox(
-                width: 6.0,
-              ),
               Text(
                 Intl.getCurrentLocale().capitalize ?? '',
                 style: Get.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w500, color: Get.theme.primaryColor),
+              ),
+              const SizedBox(width: 4.0),
+              Assets.vectors.globe.svg(
+                color: Get.theme.primaryColor,
+                width: 20.0,
+                height: 20.0,
               )
             ],
           ),

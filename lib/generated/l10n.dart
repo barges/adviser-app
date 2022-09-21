@@ -370,16 +370,6 @@ class S {
     );
   }
 
-  /// `Choose email app`
-  String get chooseEmailApp {
-    return Intl.message(
-      'Choose email app',
-      name: 'chooseEmailApp',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Workspaces`
   String get workspaces {
     return Intl.message(
@@ -405,16 +395,6 @@ class S {
     return Intl.message(
       'All our brands',
       name: 'allOurBrands',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Settings`
-  String get settings {
-    return Intl.message(
-      'Settings',
-      name: 'settings',
       desc: '',
       args: [],
     );
@@ -450,6 +430,16 @@ class S {
     );
   }
 
+  /// `Log out`
+  String get logOut {
+    return Intl.message(
+      'Log out',
+      name: 'logOut',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Ingenio`
   String get ingenio {
     return Intl.message(
@@ -460,11 +450,251 @@ class S {
     );
   }
 
-  /// `Log out`
-  String get logOut {
+  /// `Choose email app`
+  String get chooseEmailApp {
     return Intl.message(
-      'Log out',
-      name: 'logOut',
+      'Choose email app',
+      name: 'chooseEmailApp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fortunica`
+  String get fortunica {
+    return Intl.message(
+      'Fortunica',
+      name: 'fortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Public`
+  String get public {
+    return Intl.message(
+      'Public',
+      name: 'public',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `For me`
+  String get forMe {
+    return Intl.message(
+      'For me',
+      name: 'forMe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search`
+  String get search {
+    return Intl.message(
+      'Search',
+      name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `I'm available now`
+  String get imAvailableNow {
+    return Intl.message(
+      'I\'m available now',
+      name: 'imAvailableNow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications`
+  String get notifications {
+    return Intl.message(
+      'Notifications',
+      name: 'notifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Preview account`
+  String get previewAccount {
+    return Intl.message(
+      'Preview account',
+      name: 'previewAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reviews`
+  String get reviews {
+    return Intl.message(
+      'Reviews',
+      name: 'reviews',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Balance & Transactions`
+  String get balanceTransactions {
+    return Intl.message(
+      'Balance & Transactions',
+      name: 'balanceTransactions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get settings {
+    return Intl.message(
+      'Settings',
+      name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not enough conversations? Check our Profile Guide.`
+  String get notEnoughConversationsCheckOurProfileGuide {
+    return Intl.message(
+      'Not enough conversations? Check our Profile Guide.',
+      name: 'notEnoughConversationsCheckOurProfileGuide',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `See more`
+  String get seeMore {
+    return Intl.message(
+      'See more',
+      name: 'seeMore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get all {
+    return Intl.message(
+      'All',
+      name: 'all',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Only Premium Products`
+  String get onlyPremiumProducts {
+    return Intl.message(
+      'Only Premium Products',
+      name: 'onlyPremiumProducts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private Questions`
+  String get privateQuestions {
+    return Intl.message(
+      'Private Questions',
+      name: 'privateQuestions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Market`
+  String get market {
+    return Intl.message(
+      'Market',
+      name: 'market',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New`
+  String get newLabel {
+    return Intl.message(
+      'New',
+      name: 'newLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mandatory`
+  String get mandatory {
+    return Intl.message(
+      'Mandatory',
+      name: 'mandatory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Articles`
+  String get articles {
+    return Intl.message(
+      'Articles',
+      name: 'articles',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New mandatory article is available!`
+  String get newMandatoryArticleIsAvailable {
+    return Intl.message(
+      'New mandatory article is available!',
+      name: 'newMandatoryArticleIsAvailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have`
+  String get youHave {
+    return Intl.message(
+      'You have',
+      name: 'youHave',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `days`
+  String get days {
+    return Intl.message(
+      'days',
+      name: 'days',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `to read it before your account will get blocked!`
+  String get toReadItBeforeYourAccountWillGetBlocked {
+    return Intl.message(
+      'to read it before your account will get blocked!',
+      name: 'toReadItBeforeYourAccountWillGetBlocked',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Take me there`
+  String get takeMeThere {
+    return Intl.message(
+      'Take me there',
+      name: 'takeMeThere',
       desc: '',
       args: [],
     );

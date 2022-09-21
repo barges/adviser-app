@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_Icon_button.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -32,7 +32,7 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
         if (openDrawer != null)
           IconButton(
               onPressed: openDrawer,
-              icon: Icon(
+              icon: const Icon(
                 Icons.menu,
                 color: Colors.black,
               ))
