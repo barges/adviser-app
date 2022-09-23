@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/model/question.dart';
+import 'package:shared_advisor_interface/data/models/question.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/chat_list_tile_widget.dart';
 
 class ListOfQuestionsWidget extends StatelessWidget {

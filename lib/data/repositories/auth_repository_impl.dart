@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
 import 'package:shared_advisor_interface/data/network/requests/reset_password_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/login_response.dart';
@@ -7,8 +6,7 @@ import 'package:shared_advisor_interface/domain/repositories/auth_repository.dar
 class AuthRepositoryImpl implements AuthRepository {
   final AuthApi _api;
 
-  AuthRepositoryImpl()
-      : _api = Get.find<AuthApi>();
+  AuthRepositoryImpl(this._api);
 
   @override
   Future<LoginResponse?> login() async {

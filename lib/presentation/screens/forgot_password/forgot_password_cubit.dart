@@ -45,6 +45,14 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     });
   }
 
+  @override
+  Future<void> close() async {
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    return super.close();
+  }
+
   void showHidePassword() {
     emit(state.copyWith(hiddenPassword: !state.hiddenPassword));
   }

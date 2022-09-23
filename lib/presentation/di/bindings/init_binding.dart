@@ -5,12 +5,17 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
 import 'package:shared_advisor_interface/data/network/api/sessions_api.dart';
+import 'package:shared_advisor_interface/data/network/api/user_api.dart';
 import 'package:shared_advisor_interface/data/repositories/auth_repository_impl.dart';
 import 'package:shared_advisor_interface/data/repositories/sessions_repository_impl.dart';
+import 'package:shared_advisor_interface/data/repositories/user_repository_impl.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
+import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 
 class InitBinding extends Bindings {
@@ -19,23 +24,40 @@ class InitBinding extends Bindings {
 
   @override
   void dependencies() async {
+    final CacheManager cacheManager = Get.find<CacheManager>();
 
-    Dio dio = await _initDio();
+    Dio dio = await _initDio(cacheManager);
     Get.put<Dio>(dio, permanent: true);
 
     ///APIs
-    Get.put<AuthApi>(AuthApi(dio), permanent: true);
-    Get.put<SessionsApi>(SessionsApi(dio), permanent: true);
+    final AuthApi authApi = Get.put<AuthApi>(AuthApi(dio), permanent: true);
+    final SessionsApi sessionsApi =
+        Get.put<SessionsApi>(SessionsApi(dio), permanent: true);
+    final UserApi userApi = Get.put<UserApi>(UserApi(dio), permanent: true);
 
     ///Repositories
-    Get.put<AuthRepository>(AuthRepositoryImpl(), permanent: true);
-    Get.put<SessionsRepository>(SessionsRepositoryImpl(), permanent: true);
+    Get.put<AuthRepository>(
+        AuthRepositoryImpl(
+          authApi,
+        ),
+        permanent: true);
+    Get.put<SessionsRepository>(
+        SessionsRepositoryImpl(
+          sessionsApi,
+        ),
+        permanent: true);
+    Get.put<UserRepository>(
+        UserRepositoryImpl(
+          userApi,
+          cacheManager,
+        ),
+        permanent: true);
   }
 
-  Future<Dio> _initDio() async {
+  Future<Dio> _initDio(CacheManager cacheManager) async {
     final dio = Dio();
     dio.options.baseUrl = 'https://api-staging.fortunica-app.com';
-    dio.options.headers = await _getHeaders();
+    dio.options.headers = await _getHeaders(cacheManager);
     dio.options.connectTimeout = 30000;
     dio.options.receiveTimeout = 30000;
     dio.options.sendTimeout = 30000;
@@ -57,13 +79,15 @@ class InitBinding extends Bindings {
     // }
   }*/
 
-  Future<Map<String, dynamic>> _getHeaders() async {
+  Future<Map<String, dynamic>> _getHeaders(CacheManager cacheManager) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
     Map<String, dynamic> headers = {
       'Content-Type': 'application/json',
       'x-adviqo-version': packageInfo.version,
       'x-adviqo-platform': Platform.operatingSystem,
+      'Authorization': cacheManager
+          .getTokenByBrand(cacheManager.getCurrentBrand() ?? Brand.fortunica),
     };
 
     // if (kDebugMode) {

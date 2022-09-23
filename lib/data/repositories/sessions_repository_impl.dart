@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/network/api/sessions_api.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
@@ -6,7 +5,7 @@ import 'package:shared_advisor_interface/domain/repositories/sessions_repository
 class SessionsRepositoryImpl implements SessionsRepository {
   final SessionsApi _api;
 
-  SessionsRepositoryImpl() : _api = Get.find<SessionsApi>();
+  SessionsRepositoryImpl(this._api);
 
   static const int _limit = 10;
 

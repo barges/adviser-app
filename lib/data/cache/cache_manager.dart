@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 
 abstract class CacheManager {
+  Future<void> saveUserInfo(UserInfo userInfo);
+
+  UserInfo? getUserInfo();
+
   Future<void> saveTokenForBrand(Brand brand, String token);
 
   Future<void> saveLocaleIndex(int? index);
@@ -24,4 +29,3 @@ abstract class CacheManager {
 
   void listenCurrentBrand(ValueChanged<Brand> callback);
 }
-

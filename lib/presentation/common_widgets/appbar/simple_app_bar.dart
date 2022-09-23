@@ -41,7 +41,7 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Row(
         children: [
           AppIconButton(
-            icon: backIcon ?? Assets.vectors.back.path,
+            icon: backIcon ?? Assets.vectors.arrowLeft.path,
             onTap: Get.back,
           ),
           const SizedBox(

@@ -1,4 +1,4 @@
-import 'package:shared_advisor_interface/data/model/error_model.dart';
+import 'package:shared_advisor_interface/data/models/error_model.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

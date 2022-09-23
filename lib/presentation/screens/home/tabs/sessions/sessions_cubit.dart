@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/model/error_model.dart';
+import 'package:shared_advisor_interface/data/models/error_model.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -17,6 +17,12 @@ class SessionsCubit extends Cubit<SessionsState> {
   SessionsCubit(this._repository) : super(const SessionsState()) {
     controller.addListener(addScrollControllerListener);
     getListOfQuestions();
+  }
+
+  @override
+  Future<void> close() async {
+    controller.dispose();
+    return super.close();
   }
 
   void addScrollControllerListener() {

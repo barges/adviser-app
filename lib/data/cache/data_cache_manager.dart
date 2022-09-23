@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 
 import 'cache_manager.dart';
 
 const String _tokensMapKey = 'tokensMapKey';
 const String _brandKey = 'brandKey';
+const String _userInfoKey = 'userInfoKey';
 const String _localeIndexKey = 'localeIndexKey';
 
 class DataCacheManager implements CacheManager {
@@ -42,7 +44,7 @@ class DataCacheManager implements CacheManager {
 
   @override
   String? getTokenByBrand(Brand brand) {
-    Map<String, String>? tokensMap = _userBox.read(_tokensMapKey);
+    Map<String, dynamic>? tokensMap = _userBox.read(_tokensMapKey);
     return tokensMap?[brand.toString()];
   }
 
@@ -117,5 +119,16 @@ class DataCacheManager implements CacheManager {
 
   Future<void> _saveTokensMap(Map<String, dynamic> tokensMap) async {
     await _userBox.write(_tokensMapKey, tokensMap);
+  }
+
+  @override
+  UserInfo? getUserInfo() {
+    UserInfo userMap = _userBox.read(_userInfoKey);
+    return userMap;
+  }
+
+  @override
+  Future<void> saveUserInfo(UserInfo userInfo) async {
+    await _userBox.write(_userInfoKey, userInfo);
   }
 }

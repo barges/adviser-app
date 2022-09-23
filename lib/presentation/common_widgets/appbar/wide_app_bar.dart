@@ -26,7 +26,7 @@ class WideAppBar extends StatelessWidget implements PreferredSizeWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [AppIconButton(
-                icon: Assets.vectors.back.path,
+                icon: Assets.vectors.arrowLeft.path,
                 onTap: Get.back,
               ),
                 topRightWidget ?? const SizedBox()

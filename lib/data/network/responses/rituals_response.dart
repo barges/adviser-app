@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:shared_advisor_interface/data/model/ritual.dart';
+import 'package:shared_advisor_interface/data/models/ritual.dart';
 
 part 'rituals_response.g.dart';
 

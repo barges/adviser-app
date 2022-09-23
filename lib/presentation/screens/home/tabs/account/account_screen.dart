@@ -11,6 +11,7 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/change_locale_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart';
@@ -45,7 +46,7 @@ class AccountScreen extends StatelessWidget {
                       Builder(builder: (context) {
                         final Brand currentBrand = context.select(
                             (MainCubit cubit) => cubit.state.currentBrand);
-                        return InkWell(
+                        return GestureDetector(
                           onTap: homeCubit.openDrawer,
                           child: Row(
                             children: [
@@ -109,9 +110,16 @@ class AccountScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Assets.vectors.arrowLeft.svg())
+                        GestureDetector(
+                          onTap: (){
+                            Get.toNamed(AppRoutes.editProfile);
+                          },
+                          child: Padding(
+                              padding: const EdgeInsets.only(left: 36.0),
+                              child: Assets.vectors.arrowRight.svg(
+                                color: Get.theme.primaryColor,
+                              ),),
+                        )
                       ],
                     ),
                   ),
@@ -305,7 +313,9 @@ class CustomTileWidget extends StatelessWidget {
             Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: AppConstants.horizontalScreenPadding),
-                child: Assets.vectors.arrowLeft.svg()),
+                child: Assets.vectors.arrowRight.svg(
+                  color: Get.theme.primaryColor,
+                ),),
           ],
         )
       ]),

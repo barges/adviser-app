@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -13,7 +12,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/edit_profile/widgets/add_more_images_from_gallery_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/edit_profile/widgets/gallery_images.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/widgets/profile_image_widget.dart';
 
 const double maxHeight = 104.0;
@@ -24,190 +23,179 @@ class EditProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final languages = ['English', 'Spanish'];
-
     return BlocProvider(
-      create: (_) => EditProfileCubit(),
+      create: (_) => Get.put<EditProfileCubit>(EditProfileCubit()),
       child: Builder(builder: (context) {
         final EditProfileCubit editProfileCubit =
             context.read<EditProfileCubit>();
         return Scaffold(
           key: editProfileCubit.scaffoldKey,
           drawer: const AppDrawer(),
-          body: CustomScrollView(
-            controller: editProfileCubit.scrollController,
-            slivers: [
-              Builder(builder: (context) {
-                final bool isWide = context.select(
-                    (EditProfileCubit cubit) => cubit.state.isWideAppBar);
-                return AppSliverAppBar(
-                  setIsWideValue: (value) {
-                    editProfileCubit.setIsWideAppbar(value);
-                  },
-                  isWide: isWide,
-                  actionOnClick: () => editProfileCubit.updateUser(context),
-                  openDrawer: editProfileCubit.openDrawer,
-                );
-              }),
-              SliverToBoxAdapter(
-                child: GestureDetector(
-                  onTap: () {
-                    FocusScope.of(context).unfocus();
-                  },
-                  child: Column(children: [
-                    const ProfileImageWidget(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: AppConstants.horizontalScreenPadding),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16.0),
-                            child: Builder(builder: (context) {
-                              final String nicknameErrorText = context.select(
+          body: SafeArea(
+            top: false,
+            child: CustomScrollView(
+              slivers: [
+                Builder(builder: (context) {
+                  final bool isWide = context.select(
+                      (EditProfileCubit cubit) => cubit.state.isWideAppBar);
+                  return AppSliverAppBar(
+                    setIsWideValue: (value) {
+                      editProfileCubit.setIsWideAppbar(value);
+                    },
+                    isWide: isWide,
+                    actionOnClick: () => editProfileCubit.updateUser(context),
+                    openDrawer: editProfileCubit.openDrawer,
+                  );
+                }),
+                SliverToBoxAdapter(
+                  child: GestureDetector(
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                    },
+                    child: Column(
+                      children: [
+                        const ProfileImageWidget(),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal:
+                                      AppConstants.horizontalScreenPadding),
+                              child: Builder(builder: (context) {
+                                final String nicknameErrorText = context.select(
+                                    (EditProfileCubit cubit) =>
+                                        cubit.state.nicknameErrorText);
+                                return AppTextField(
+                                  controller:
+                                      editProfileCubit.nicknameController,
+                                  label: S.of(context).nickname,
+                                  errorText: nicknameErrorText,
+                                );
+                              }),
+                            ),
+                            Builder(builder: (context) {
+                              final int chosenLanguageIndex = context.select(
                                   (EditProfileCubit cubit) =>
-                                      cubit.state.nicknameErrorText);
-                              return AppTextField(
-                                controller: editProfileCubit.nicknameController,
-                                label: S.of(context).nickname,
-                                errorText: nicknameErrorText,
+                                      cubit.state.chosenLanguageIndex);
+                              return Column(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 24.0),
+                                    height: 38.0,
+                                    child: ListView.separated(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: AppConstants
+                                              .horizontalScreenPadding),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return LanguageWidget(
+                                          languageName: editProfileCubit
+                                              .activeLanguages[index]
+                                              .languageNameByCode,
+                                          isSelected:
+                                              chosenLanguageIndex == index,
+                                          onTap: () {
+                                            editProfileCubit
+                                                .updateCurrentLanguageIndex(
+                                                    index);
+                                          },
+                                        );
+                                      },
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: editProfileCubit
+                                          .activeLanguages.length,
+                                      separatorBuilder:
+                                          (BuildContext context, int index) {
+                                        return const SizedBox(
+                                          width: 6.0,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  IndexedStack(
+                                    index: chosenLanguageIndex,
+                                    children: editProfileCubit
+                                        .textControllers.entries
+                                        .map((entry) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: AppConstants
+                                                .horizontalScreenPadding),
+                                        child: Column(
+                                          children: [
+                                            AppTextField(
+                                              controller: entry.value.first,
+                                              label: S.of(context).statusText,
+                                              textInputType:
+                                                  TextInputType.multiline,
+                                              maxLines: 10,
+                                              height: 144.0,
+                                              contentPadding:
+                                                  const EdgeInsets.all(12.0),
+                                            ),
+                                            const SizedBox(
+                                              height: 24.0,
+                                            ),
+                                            AppTextField(
+                                              controller: entry.value.last,
+                                              label: S.of(context).profileText,
+                                              textInputType:
+                                                  TextInputType.multiline,
+                                              maxLines: 10,
+                                              height: 144.0,
+                                              contentPadding:
+                                                  const EdgeInsets.all(12.0),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ],
                               );
                             }),
-                          ),
-                          //List of supported languages
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 24.0),
-                            child: Wrap(
-                                spacing: 6.0,
-                                runSpacing: 6.0,
-                                children: List.generate(
-                                    languages.length,
-                                    (index) => Builder(
-                                          builder: (context) {
-                                            final int chosenLanguageIndex =
-                                                context.select((EditProfileCubit
-                                                        cubit) =>
-                                                    cubit.state
-                                                        .chosenLanguageIndex);
-                                            return LanguageWidget(
-                                              languageName: languages[index],
-                                              isSelected:
-                                                  chosenLanguageIndex == index,
-                                              onTap: () {
-                                                editProfileCubit
-                                                    .updateCurrentLanguageIndex(
-                                                        index);
-                                              },
-                                            );
-                                          },
-                                        ))),
-                          ),
-                          AppTextField(
-                            controller: editProfileCubit.statusTextController,
-                            label: S.of(context).statusText,
-                            textInputType: TextInputType.multiline,
-                            maxLines: 10,
-                            height: 144.0,
-                            contentPadding: const EdgeInsets.all(12.0),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 24.0),
-                            child: AppTextField(
-                              controller:
-                                  editProfileCubit.profileTextController,
-                              label: S.of(context).profileText,
-                              textInputType: TextInputType.multiline,
-                              maxLines: 10,
-                              height: 144.0,
-                              contentPadding: const EdgeInsets.all(12.0),
+                            const SizedBox(
+                              height: 24.0,
                             ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(S.of(context).addGalleryPictures,
-                                  style: Get.textTheme.titleLarge),
-                              Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 8.0, bottom: 15.0),
-                                  child: Text(
-                                      '${S.of(context).customersWantSeeIfYouReal} ${S.of(context).theMorePhotosYourselfYouAddBetter}',
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal:
+                                    AppConstants.horizontalScreenPadding,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(S.of(context).addGalleryPictures,
+                                      style: Get.textTheme.titleLarge),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 8.0, bottom: 15.0),
+                                    child: Text(
+                                      '${S.of(context).customersWantSeeIfYouReal}'
+                                      ///TODO: one text
+                                          ' ${S.of(context).theMorePhotosYourselfYouAddBetter}',
                                       style: Get.textTheme.bodyMedium?.copyWith(
-                                          color: Get.theme.shadowColor))),
-                              Builder(builder: (context) {
-                                // return
-                                // Wrap(
-                                //   spacing: 8.0,
-                                //   runSpacing: 8.0,
-                                //   children: List.generate(
-                                //       imagesFromGallery.length + 1, (index) {
-                                //     if (index < imagesFromGallery.length) {
-                                //       return UploadedImageFromGallery(
-                                //         imageFilePath:
-                                //             imagesFromGallery.elementAt(index).path,
-                                //         onTap: () {
-                                //           editProfileCubit.removeGalleryImage(index);
-                                //         },
-                                //       );
-                                //     } else {
-                                return const AddMoreImagesFromGalleryWidget();
-                                //   }
-                                // },
-                                // ),
-                                // )
-                              })
-                            ],
-                          ),
-                        ],
-                      ),
+                                          color: Get.theme.shadowColor),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const GalleryImages()
+                          ],
+                        ),
+                      ],
                     ),
-                  ]),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       }),
-    );
-  }
-}
-
-class UploadedImageFromGallery extends StatelessWidget {
-  final String imageFilePath;
-  final VoidCallback? onTap;
-
-  const UploadedImageFromGallery(
-      {Key? key, required this.imageFilePath, this.onTap})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final width = Get.width * 0.29;
-    return Container(
-      height: width,
-      width: width,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-          image: DecorationImage(
-              fit: BoxFit.fill, image: FileImage(File(imageFilePath)))),
-      child: Align(
-          alignment: Alignment.topRight,
-          child: InkWell(
-            onTap: onTap,
-            child: Container(
-              height: 32.0,
-              width: 32.0,
-              margin: const EdgeInsets.all(4.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                color: Get.theme.canvasColor.withOpacity(0.7),
-              ),
-              child: Assets.vectors.close.svg(
-                color: Get.theme.primaryColor,
-              ),
-            ),
-          )),
     );
   }
 }
@@ -228,19 +216,24 @@ class LanguageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Ink(
+      child: Container(
+        height: 38.0,
         decoration: BoxDecoration(
-            color: isSelected
-                ? Get.theme.primaryColorLight
-                : Get.theme.canvasColor,
-            borderRadius: BorderRadius.circular(31)),
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 9.0),
-        child: Text(
-          languageName,
-          style: Get.textTheme.bodyMedium?.copyWith(
-            color: isSelected
-                ? Get.theme.primaryColor
-                : Get.textTheme.bodyMedium?.color,
+          color:
+              isSelected ? Get.theme.primaryColorLight : Get.theme.canvasColor,
+          borderRadius: BorderRadius.circular(
+            AppConstants.buttonRadius,
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        child: Center(
+          child: Text(
+            languageName,
+            style: Get.textTheme.bodyMedium?.copyWith(
+              color: isSelected
+                  ? Get.theme.primaryColor
+                  : Get.textTheme.bodyMedium?.color,
+            ),
           ),
         ),
       ),
@@ -296,7 +289,7 @@ class AppSliverAppBar extends StatelessWidget {
                           child: Row(
                             children: [
                               AppIconButton(
-                                icon: Assets.vectors.back.path,
+                                icon: Assets.vectors.arrowLeft.path,
                                 onTap: Get.back,
                               ),
                               Builder(builder: (context) {
@@ -369,7 +362,7 @@ class AppSliverAppBar extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           AppIconButton(
-                            icon: Assets.vectors.back.path,
+                            icon: Assets.vectors.arrowLeft.path,
                             onTap: Get.back,
                           ),
                           Column(

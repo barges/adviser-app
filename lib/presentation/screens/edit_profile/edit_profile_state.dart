@@ -8,6 +8,7 @@ part 'edit_profile_state.freezed.dart';
 class EditProfileState with _$EditProfileState {
   factory EditProfileState({
     File? backgroundImage,
+    @Default([]) List<String> coverImages,
     @Default(true) bool isWideAppBar,
     @Default(0) int chosenLanguageIndex,
     @Default('') String nicknameErrorText,
