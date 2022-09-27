@@ -13,6 +13,8 @@ import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+const double _backgroundImageSectionHeight = 140.0;
+
 class ProfileImageWidget extends StatelessWidget {
   const ProfileImageWidget({Key? key}) : super(key: key);
 
@@ -26,30 +28,20 @@ class ProfileImageWidget extends StatelessWidget {
           children: [
             Builder(
               builder: (context) {
-                final List<String> coverImages = context.select(
-                    (EditProfileCubit cubit) => cubit.state.coverImages);
+                final List<String> coverPictures = context.select(
+                    (EditProfileCubit cubit) => cubit.state.coverPictures);
 
-                final File? backgroundImage = context.select(
-                    (EditProfileCubit cubit) => cubit.state.backgroundImage);
-
-                return coverImages.isEmpty
+                return coverPictures.isEmpty
                     ? Container(
                         alignment: Alignment.center,
-                        height: 140.0,
-                        decoration: BoxDecoration(
-                            color: Get.theme.primaryColorLight,
-                            image: backgroundImage != null
-                                ? DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: FileImage(backgroundImage),
-                                  )
-                                : null),
+                        height: _backgroundImageSectionHeight,
+                        color: Get.theme.primaryColorLight,
                         child: GestureDetector(
                           onTap: () {
                             showPickImageAlert(
                                 context: context,
                                 setImage: (image) {
-                                  cubit.setBackgroundImage(image);
+                                  cubit.addPictureToGallery(image);
                                 });
                           },
                           child: Container(
@@ -77,12 +69,12 @@ class ProfileImageWidget extends StatelessWidget {
                     : Stack(
                         children: [
                           SizedBox(
-                            height: 140.0,
+                            height: _backgroundImageSectionHeight,
                             child: PageView.builder(
                               physics: const ClampingScrollPhysics(),
                               controller: cubit.pageController,
                               allowImplicitScrolling: true,
-                              itemCount: coverImages.length,
+                              itemCount: coverPictures.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return GestureDetector(
                                   onTap: () {
@@ -90,9 +82,9 @@ class ProfileImageWidget extends StatelessWidget {
                                         arguments: cubit.pageController.page);
                                   },
                                   child: SizedBox(
-                                    height: 140.0,
+                                    height: _backgroundImageSectionHeight,
                                     child: CachedNetworkImage(
-                                      imageUrl: coverImages[index],
+                                      imageUrl: coverPictures[index],
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -107,7 +99,7 @@ class ProfileImageWidget extends StatelessWidget {
                               child: Center(
                                 child: SmoothPageIndicator(
                                   controller: cubit.pageController,
-                                  count: coverImages.length,
+                                  count: coverPictures.length,
                                   effect: ScrollingDotsEffect(
                                     spacing: 12.0,
                                     maxVisibleDots: 7,

@@ -16,4 +16,12 @@ abstract class UserRepository {
   Future<List<String>> addCoverPictureToGallery(
     UpdateProfileImageRequest request,
   );
+
+  Future<List<String>> updateCoverPicture(
+    UpdateProfileImageRequest request,
+  );
+
+  Future<List<String>> deleteCoverPicture(
+    int index,
+  );
 }

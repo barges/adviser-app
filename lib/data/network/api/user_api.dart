@@ -32,10 +32,9 @@ abstract class UserApi {
     @Body() UpdateProfileImageRequest request,
   );
 
-  @PUT('/v2/users/{id}/profile/coverPictures/{index}')
+  @PUT('/v2/users/{id}/profile/coverPictures/0')
   Future<List<String>> updateCoverPicture(
     @Path('id') String id,
-    @Path('index') String index,
     @Body() UpdateProfileImageRequest request,
   );
 

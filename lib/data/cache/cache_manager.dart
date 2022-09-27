@@ -5,8 +5,11 @@ import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart
 abstract class CacheManager {
   Future<void> saveUserProfile(UserProfile? userProfile);
 
-  Future<void> updateUserProfileProfileImage(
+  Future<void> updateUserProfileImage(
       List<String>? profilePictures);
+
+  Future<void> updateUserProfileCoverPictures(
+      List<String>? coverPictures);
 
   UserProfile? getUserProfile();
 

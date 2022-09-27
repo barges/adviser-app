@@ -134,7 +134,7 @@ class DataCacheManager implements CacheManager {
   }
 
   @override
-  Future<void> updateUserProfileProfileImage(
+  Future<void> updateUserProfileImage(
       List<String>? profilePictures) async {
     UserProfile? profile = getUserProfile();
 
@@ -142,6 +142,19 @@ class DataCacheManager implements CacheManager {
       _userProfileKey,
       profile?.copyWith(
         profilePictures: profilePictures,
+      ),
+    );
+  }
+
+  @override
+  Future<void> updateUserProfileCoverPictures(
+      List<String>? coverPictures) async {
+    UserProfile? profile = getUserProfile();
+
+    await _userBox.write(
+      _userProfileKey,
+      profile?.copyWith(
+        coverPictures: coverPictures,
       ),
     );
   }

@@ -46,7 +46,8 @@ class EditProfileScreen extends StatelessWidget {
                           editProfileCubit.setIsWideAppbar(value);
                         },
                         isWide: isWide,
-                        actionOnClick: () => editProfileCubit.updateUserProfileTexts(context),
+                        actionOnClick: () =>
+                            editProfileCubit.updateUserInfo(context),
                         openDrawer: editProfileCubit.openDrawer,
                       );
                     }),
@@ -58,6 +59,9 @@ class EditProfileScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             const ProfileImageWidget(),
+                            const SizedBox(
+                              height: 16.0,
+                            ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -66,8 +70,8 @@ class EditProfileScreen extends StatelessWidget {
                                       horizontal:
                                           AppConstants.horizontalScreenPadding),
                                   child: Builder(builder: (context) {
-                                    final String nicknameErrorText = context.select(
-                                        (EditProfileCubit cubit) =>
+                                    final String nicknameErrorText = context
+                                        .select((EditProfileCubit cubit) =>
                                             cubit.state.nicknameErrorText);
                                     return AppTextField(
                                       controller:
@@ -78,8 +82,8 @@ class EditProfileScreen extends StatelessWidget {
                                   }),
                                 ),
                                 Builder(builder: (context) {
-                                  final int chosenLanguageIndex = context.select(
-                                      (EditProfileCubit cubit) =>
+                                  final int chosenLanguageIndex =
+                                      context.select((EditProfileCubit cubit) =>
                                           cubit.state.chosenLanguageIndex);
                                   return Column(
                                     children: [
@@ -91,8 +95,8 @@ class EditProfileScreen extends StatelessWidget {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: AppConstants
                                                   .horizontalScreenPadding),
-                                          itemBuilder:
-                                              (BuildContext context, int index) {
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
                                             return LanguageWidget(
                                               languageName: editProfileCubit
                                                   .activeLanguages[index]
@@ -111,7 +115,8 @@ class EditProfileScreen extends StatelessWidget {
                                           itemCount: editProfileCubit
                                               .activeLanguages.length,
                                           separatorBuilder:
-                                              (BuildContext context, int index) {
+                                              (BuildContext context,
+                                                  int index) {
                                             return const SizedBox(
                                               width: 6.0,
                                             );
@@ -131,26 +136,30 @@ class EditProfileScreen extends StatelessWidget {
                                               children: [
                                                 AppTextField(
                                                   controller: entry.value.first,
-                                                  label: S.of(context).statusText,
+                                                  label:
+                                                      S.of(context).statusText,
                                                   textInputType:
                                                       TextInputType.multiline,
                                                   maxLines: 10,
                                                   height: 144.0,
                                                   contentPadding:
-                                                      const EdgeInsets.all(12.0),
+                                                      const EdgeInsets.all(
+                                                          12.0),
                                                 ),
                                                 const SizedBox(
                                                   height: 24.0,
                                                 ),
                                                 AppTextField(
                                                   controller: entry.value.last,
-                                                  label: S.of(context).profileText,
+                                                  label:
+                                                      S.of(context).profileText,
                                                   textInputType:
                                                       TextInputType.multiline,
                                                   maxLines: 10,
                                                   height: 144.0,
                                                   contentPadding:
-                                                      const EdgeInsets.all(12.0),
+                                                      const EdgeInsets.all(
+                                                          12.0),
                                                 ),
                                               ],
                                             ),
@@ -162,28 +171,6 @@ class EditProfileScreen extends StatelessWidget {
                                 }),
                                 const SizedBox(
                                   height: 24.0,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal:
-                                        AppConstants.horizontalScreenPadding,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(S.of(context).addGalleryPictures,
-                                          style: Get.textTheme.titleLarge),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 8.0, bottom: 15.0),
-                                        child: Text(
-                                          S.of(context).customersWantSeeIfYouReal,
-                                          style: Get.textTheme.bodyMedium?.copyWith(
-                                              color: Get.theme.shadowColor),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
                                 ),
                                 const GalleryImages(),
                               ],

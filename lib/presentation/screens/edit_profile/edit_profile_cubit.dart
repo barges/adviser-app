@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart'
+    hide CacheManager;
 import 'package:get/get.dart';
 import 'package:mime/mime.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
@@ -24,6 +26,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   final UserRepository userRepository = Get.find<UserRepository>();
   final CacheManager cacheManager = Get.find<CacheManager>();
+  final DefaultCacheManager defaultCacheManager = DefaultCacheManager();
 
   late final UserProfile? userProfile;
   late final List<String> activeLanguages;
@@ -53,7 +56,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         ];
       }
     }
-    emit(state.copyWith(coverImages: userProfile?.coverPictures ?? []));
+    emit(state.copyWith(coverPictures: userProfile?.coverPictures ?? []));
 
     nicknameController.addListener(() {
       emit(state.copyWith(nicknameErrorText: ''));
@@ -76,8 +79,13 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     scaffoldKey.currentState?.openDrawer();
   }
 
+  Future<void> updateUserInfo(BuildContext context) async {
+    await updateUserProfileTexts(context);
+    await updateCoverPicture();
+    await updateUserAvatar();
+  }
+
   Future<void> updateUserProfileTexts(BuildContext context) async {
-    updateUserAvatar();
     final Map<String, dynamic> newPropertiesMap = {};
     for (MapEntry<String, List<TextEditingController>> entry
         in textControllersMap.entries) {
@@ -109,6 +117,54 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
   }
 
+  Future<void> updateCoverPicture() async {
+    final int? pictureIndex = pageController.page?.toInt();
+    if (pictureIndex != null && pictureIndex > 0) {
+      final String url = state.coverPictures[pictureIndex];
+      final File file = await defaultCacheManager.getSingleFile(url);
+      final String? mimeType = lookupMimeType(file.path);
+      final List<int> imageBytes = await file.readAsBytes();
+      final String base64Image = base64Encode(imageBytes);
+      final UpdateProfileImageRequest request = UpdateProfileImageRequest(
+        mime: mimeType,
+        image: base64Image,
+      );
+      try {
+        final List<String> coverPictures = await run(
+          userRepository.updateCoverPicture(
+            request,
+          ),
+        );
+        emit(
+          state.copyWith(
+            coverPictures: coverPictures,
+          ),
+        );
+      } catch (e) {
+        ///TODO: Handle the error
+        rethrow;
+      }
+    }
+  }
+
+  Future<void> deletePictureFromGallery(int pictureIndex) async {
+    try {
+      final List<String> coverPictures = await run(
+        userRepository.deleteCoverPicture(
+          pictureIndex,
+        ),
+      );
+      emit(
+        state.copyWith(
+          coverPictures: coverPictures,
+        ),
+      );
+    } catch (e) {
+      ///TODO: Handle the error
+      rethrow;
+    }
+  }
+
   Future<void> updateUserAvatar() async {
     if (state.avatar != null) {
       final String? mimeType = lookupMimeType(state.avatar?.path ?? '');
@@ -118,20 +174,32 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         mime: mimeType,
         image: base64Image,
       );
-      await run(userRepository.updateProfilePicture(request));
+      try {
+        await run(userRepository.updateProfilePicture(request));
+      } catch (e) {
+        ///TODO: Handle the error
+        rethrow;
+      }
     }
   }
 
-  Future<void> addPictureToGallery() async {
-    if (state.avatar != null) {
-      final String? mimeType = lookupMimeType(state.avatar?.path ?? '');
-      final List<int> imageBytes = await state.avatar!.readAsBytes();
+  Future<void> addPictureToGallery(File? image) async {
+    if (image != null) {
+      final String? mimeType = lookupMimeType(image.path);
+      final List<int> imageBytes = await image.readAsBytes();
       final String base64Image = base64Encode(imageBytes);
       final UpdateProfileImageRequest request = UpdateProfileImageRequest(
         mime: mimeType,
         image: base64Image,
       );
-      await run(userRepository.updateProfilePicture(request));
+      try {
+        List<String> coverPictures =
+            await run(userRepository.addCoverPictureToGallery(request));
+        emit(state.copyWith(coverPictures: coverPictures));
+      } catch (e) {
+        ///TODO: Handle the error
+        rethrow;
+      }
     }
   }
 
@@ -143,12 +211,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     emit(state.copyWith(avatar: avatar));
   }
 
-  void setBackgroundImage(File image) {
-    emit(state.copyWith(backgroundImage: image));
-  }
-
   void setCoverImages(List<String> images) {
-    emit(state.copyWith(coverImages: images));
+    emit(state.copyWith(coverPictures: images));
   }
 
   void updateCurrentLanguageIndex(int index) {
