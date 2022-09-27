@@ -51,7 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customerSupport":
             MessageLookupByLibrary.simpleMessage("Customer Support"),
         "customersWantSeeIfYouReal": MessageLookupByLibrary.simpleMessage(
-            "Customers want to see if you are real."),
+            "Customers want to see if you are real. The more photos of yourself you add, the better."),
         "days": MessageLookupByLibrary.simpleMessage("days"),
         "editProfile": MessageLookupByLibrary.simpleMessage("Edit profile"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
@@ -106,9 +106,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "statusText": MessageLookupByLibrary.simpleMessage("Status Text"),
         "takeAPhoto": MessageLookupByLibrary.simpleMessage("Take a photo"),
         "takeMeThere": MessageLookupByLibrary.simpleMessage("Take me there"),
-        "theMorePhotosYourselfYouAddBetter":
-            MessageLookupByLibrary.simpleMessage(
-                " The more photos of yourself you add, the better."),
         "thePasswordsMustMatch":
             MessageLookupByLibrary.simpleMessage("The passwords must match"),
         "theUserWasNotFound":

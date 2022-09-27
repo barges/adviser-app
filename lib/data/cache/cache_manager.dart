@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 
 abstract class CacheManager {
-  Future<void> saveUserInfo(UserInfo userInfo);
+  Future<void> saveUserProfile(UserProfile? userProfile);
 
-  UserInfo? getUserInfo();
+  Future<void> updateUserProfileProfileImage(
+      List<String>? profilePictures);
+
+  UserProfile? getUserProfile();
+
+  Future<void> saveUserId(String? userId);
+
+  String? getUserId();
 
   Future<void> saveTokenForBrand(Brand brand, String token);
 

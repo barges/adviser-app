@@ -6,15 +6,11 @@ part 'update_profile_request.g.dart';
 @JsonSerializable(includeIfNull: false)
 class UpdateProfileRequest {
   final String? profileName;
-  final String? mime;
-  final String? image;
   final LocalizedProperties? localizedProperties;
 
   UpdateProfileRequest({
     this.profileName,
     this.localizedProperties,
-    this.mime,
-    this.image,
   });
 
   factory UpdateProfileRequest.fromJson(Map<String, dynamic> json) =>

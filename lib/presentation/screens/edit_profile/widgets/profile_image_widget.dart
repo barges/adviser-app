@@ -149,7 +149,7 @@ class ProfileImageWidget extends StatelessWidget {
           final File? avatar =
               context.select((EditProfileCubit cubit) => cubit.state.avatar);
           final List<String> profileImages =
-              cubit.userInfo?.profile?.profilePictures ?? [];
+              cubit.userProfile?.profilePictures ?? [];
           return Positioned(
               left: 16.0,
               bottom: 0.0,

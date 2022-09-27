@@ -1,13 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 
 import 'cache_manager.dart';
 
 const String _tokensMapKey = 'tokensMapKey';
 const String _brandKey = 'brandKey';
-const String _userInfoKey = 'userInfoKey';
+const String _userProfileKey = 'userProfileKey';
+const String _userIdKey = 'userIdKey';
 const String _localeIndexKey = 'localeIndexKey';
 
 class DataCacheManager implements CacheManager {
@@ -122,13 +123,36 @@ class DataCacheManager implements CacheManager {
   }
 
   @override
-  UserInfo? getUserInfo() {
-    UserInfo userMap = _userBox.read(_userInfoKey);
-    return userMap;
+  UserProfile? getUserProfile() {
+    UserProfile userProfile = _userBox.read(_userProfileKey);
+    return userProfile;
   }
 
   @override
-  Future<void> saveUserInfo(UserInfo userInfo) async {
-    await _userBox.write(_userInfoKey, userInfo);
+  Future<void> saveUserProfile(UserProfile? userProfile) async {
+    await _userBox.write(_userProfileKey, userProfile);
+  }
+
+  @override
+  Future<void> updateUserProfileProfileImage(
+      List<String>? profilePictures) async {
+    UserProfile? profile = getUserProfile();
+
+    await _userBox.write(
+      _userProfileKey,
+      profile?.copyWith(
+        profilePictures: profilePictures,
+      ),
+    );
+  }
+
+  @override
+  String? getUserId() {
+    return _userBox.read(_userIdKey);
+  }
+
+  @override
+  Future<void> saveUserId(String? userId) async {
+    await _userBox.write(_userIdKey, userId);
   }
 }

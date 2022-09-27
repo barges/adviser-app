@@ -13,7 +13,7 @@ abstract class UserRepository {
     UpdateProfileImageRequest request,
   );
 
-  Future<List<String>> updateCoverPicture(
+  Future<List<String>> addCoverPictureToGallery(
     UpdateProfileImageRequest request,
   );
 }

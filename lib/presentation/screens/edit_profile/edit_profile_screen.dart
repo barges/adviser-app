@@ -7,6 +7,7 @@ import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/app_loading_indicator.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -28,172 +29,183 @@ class EditProfileScreen extends StatelessWidget {
       child: Builder(builder: (context) {
         final EditProfileCubit editProfileCubit =
             context.read<EditProfileCubit>();
-        return Scaffold(
-          key: editProfileCubit.scaffoldKey,
-          drawer: const AppDrawer(),
-          body: SafeArea(
-            top: false,
-            child: CustomScrollView(
-              slivers: [
-                Builder(builder: (context) {
-                  final bool isWide = context.select(
-                      (EditProfileCubit cubit) => cubit.state.isWideAppBar);
-                  return AppSliverAppBar(
-                    setIsWideValue: (value) {
-                      editProfileCubit.setIsWideAppbar(value);
-                    },
-                    isWide: isWide,
-                    actionOnClick: () => editProfileCubit.updateUser(context),
-                    openDrawer: editProfileCubit.openDrawer,
-                  );
-                }),
-                SliverToBoxAdapter(
-                  child: GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).unfocus();
-                    },
-                    child: Column(
-                      children: [
-                        const ProfileImageWidget(),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+        return Stack(
+          children: [
+            Scaffold(
+              key: editProfileCubit.scaffoldKey,
+              drawer: const AppDrawer(),
+              body: SafeArea(
+                top: false,
+                child: CustomScrollView(
+                  slivers: [
+                    Builder(builder: (context) {
+                      final bool isWide = context.select(
+                          (EditProfileCubit cubit) => cubit.state.isWideAppBar);
+                      return AppSliverAppBar(
+                        setIsWideValue: (value) {
+                          editProfileCubit.setIsWideAppbar(value);
+                        },
+                        isWide: isWide,
+                        actionOnClick: () => editProfileCubit.updateUserProfileTexts(context),
+                        openDrawer: editProfileCubit.openDrawer,
+                      );
+                    }),
+                    SliverToBoxAdapter(
+                      child: GestureDetector(
+                        onTap: () {
+                          FocusScope.of(context).unfocus();
+                        },
+                        child: Column(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal:
-                                      AppConstants.horizontalScreenPadding),
-                              child: Builder(builder: (context) {
-                                final String nicknameErrorText = context.select(
-                                    (EditProfileCubit cubit) =>
-                                        cubit.state.nicknameErrorText);
-                                return AppTextField(
-                                  controller:
-                                      editProfileCubit.nicknameController,
-                                  label: S.of(context).nickname,
-                                  errorText: nicknameErrorText,
-                                );
-                              }),
-                            ),
-                            Builder(builder: (context) {
-                              final int chosenLanguageIndex = context.select(
-                                  (EditProfileCubit cubit) =>
-                                      cubit.state.chosenLanguageIndex);
-                              return Column(
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 24.0),
-                                    height: 38.0,
-                                    child: ListView.separated(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: AppConstants
-                                              .horizontalScreenPadding),
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return LanguageWidget(
-                                          languageName: editProfileCubit
-                                              .activeLanguages[index]
-                                              .languageNameByCode,
-                                          isSelected:
-                                              chosenLanguageIndex == index,
-                                          onTap: () {
-                                            editProfileCubit
-                                                .updateCurrentLanguageIndex(
-                                                    index);
+                            const ProfileImageWidget(),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal:
+                                          AppConstants.horizontalScreenPadding),
+                                  child: Builder(builder: (context) {
+                                    final String nicknameErrorText = context.select(
+                                        (EditProfileCubit cubit) =>
+                                            cubit.state.nicknameErrorText);
+                                    return AppTextField(
+                                      controller:
+                                          editProfileCubit.nicknameController,
+                                      label: S.of(context).nickname,
+                                      errorText: nicknameErrorText,
+                                    );
+                                  }),
+                                ),
+                                Builder(builder: (context) {
+                                  final int chosenLanguageIndex = context.select(
+                                      (EditProfileCubit cubit) =>
+                                          cubit.state.chosenLanguageIndex);
+                                  return Column(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 24.0),
+                                        height: 38.0,
+                                        child: ListView.separated(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: AppConstants
+                                                  .horizontalScreenPadding),
+                                          itemBuilder:
+                                              (BuildContext context, int index) {
+                                            return LanguageWidget(
+                                              languageName: editProfileCubit
+                                                  .activeLanguages[index]
+                                                  .languageNameByCode,
+                                              isSelected:
+                                                  chosenLanguageIndex == index,
+                                              onTap: () {
+                                                editProfileCubit
+                                                    .updateCurrentLanguageIndex(
+                                                        index);
+                                              },
+                                            );
                                           },
-                                        );
-                                      },
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: editProfileCubit
-                                          .activeLanguages.length,
-                                      separatorBuilder:
-                                          (BuildContext context, int index) {
-                                        return const SizedBox(
-                                          width: 6.0,
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  IndexedStack(
-                                    index: chosenLanguageIndex,
-                                    children: editProfileCubit
-                                        .textControllers.entries
-                                        .map((entry) {
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: AppConstants
-                                                .horizontalScreenPadding),
-                                        child: Column(
-                                          children: [
-                                            AppTextField(
-                                              controller: entry.value.first,
-                                              label: S.of(context).statusText,
-                                              textInputType:
-                                                  TextInputType.multiline,
-                                              maxLines: 10,
-                                              height: 144.0,
-                                              contentPadding:
-                                                  const EdgeInsets.all(12.0),
-                                            ),
-                                            const SizedBox(
-                                              height: 24.0,
-                                            ),
-                                            AppTextField(
-                                              controller: entry.value.last,
-                                              label: S.of(context).profileText,
-                                              textInputType:
-                                                  TextInputType.multiline,
-                                              maxLines: 10,
-                                              height: 144.0,
-                                              contentPadding:
-                                                  const EdgeInsets.all(12.0),
-                                            ),
-                                          ],
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: editProfileCubit
+                                              .activeLanguages.length,
+                                          separatorBuilder:
+                                              (BuildContext context, int index) {
+                                            return const SizedBox(
+                                              width: 6.0,
+                                            );
+                                          },
                                         ),
-                                      );
-                                    }).toList(),
+                                      ),
+                                      IndexedStack(
+                                        index: chosenLanguageIndex,
+                                        children: editProfileCubit
+                                            .textControllersMap.entries
+                                            .map((entry) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: AppConstants
+                                                    .horizontalScreenPadding),
+                                            child: Column(
+                                              children: [
+                                                AppTextField(
+                                                  controller: entry.value.first,
+                                                  label: S.of(context).statusText,
+                                                  textInputType:
+                                                      TextInputType.multiline,
+                                                  maxLines: 10,
+                                                  height: 144.0,
+                                                  contentPadding:
+                                                      const EdgeInsets.all(12.0),
+                                                ),
+                                                const SizedBox(
+                                                  height: 24.0,
+                                                ),
+                                                AppTextField(
+                                                  controller: entry.value.last,
+                                                  label: S.of(context).profileText,
+                                                  textInputType:
+                                                      TextInputType.multiline,
+                                                  maxLines: 10,
+                                                  height: 144.0,
+                                                  contentPadding:
+                                                      const EdgeInsets.all(12.0),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ],
+                                  );
+                                }),
+                                const SizedBox(
+                                  height: 24.0,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal:
+                                        AppConstants.horizontalScreenPadding,
                                   ),
-                                ],
-                              );
-                            }),
-                            const SizedBox(
-                              height: 24.0,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal:
-                                    AppConstants.horizontalScreenPadding,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(S.of(context).addGalleryPictures,
-                                      style: Get.textTheme.titleLarge),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 8.0, bottom: 15.0),
-                                    child: Text(
-                                      '${S.of(context).customersWantSeeIfYouReal}'
-                                      ///TODO: one text
-                                          ' ${S.of(context).theMorePhotosYourselfYouAddBetter}',
-                                      style: Get.textTheme.bodyMedium?.copyWith(
-                                          color: Get.theme.shadowColor),
-                                    ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(S.of(context).addGalleryPictures,
+                                          style: Get.textTheme.titleLarge),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 8.0, bottom: 15.0),
+                                        child: Text(
+                                          S.of(context).customersWantSeeIfYouReal,
+                                          style: Get.textTheme.bodyMedium?.copyWith(
+                                              color: Get.theme.shadowColor),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                                const GalleryImages(),
+                              ],
                             ),
-                            const GalleryImages()
                           ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+            Builder(
+              builder: (context) {
+                final bool isLoading = context
+                    .select((EditProfileCubit cubit) => cubit.state.isLoading);
+                return AppLoadingIndicator(
+                  showIndicator: isLoading,
+                );
+              },
+            ),
+          ],
         );
       }),
     );

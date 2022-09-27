@@ -290,21 +290,11 @@ class S {
     );
   }
 
-  /// `Customers want to see if you are real.`
+  /// `Customers want to see if you are real. The more photos of yourself you add, the better.`
   String get customersWantSeeIfYouReal {
     return Intl.message(
-      'Customers want to see if you are real.',
+      'Customers want to see if you are real. The more photos of yourself you add, the better.',
       name: 'customersWantSeeIfYouReal',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ` The more photos of yourself you add, the better.`
-  String get theMorePhotosYourselfYouAddBetter {
-    return Intl.message(
-      ' The more photos of yourself you add, the better.',
-      name: 'theMorePhotosYourselfYouAddBetter',
       desc: '',
       args: [],
     );
