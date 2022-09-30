@@ -30,127 +30,128 @@ class LoginScreen extends StatelessWidget {
             children: [
               Scaffold(
                 appBar: const LoginAppBar(),
-                body: Stack(
-                  children: [
+                body:
                     SafeArea(
                       child: GestureDetector(
                         onTap: () {
                           FocusScope.of(context).unfocus();
                           cubit.clearErrorMessage();
                         },
-                        child: SingleChildScrollView(
-                          child: Column(children: [
-                            const SizedBox(
-                              height: 16.0,
+                        child: Column(
+                          children: [
+                            Builder(
+                              builder: (BuildContext context) {
+                                final String errorMessage = context.select(
+                                        (LoginCubit cubit) => cubit.state.errorMessage);
+                                return errorMessage.isNotEmpty
+                                    ? AppErrorWidget(
+                                  errorMessage: errorMessage,
+                                  close: () {
+                                    cubit.clearErrorMessage();
+                                  },
+                                )
+                                    : const SizedBox.shrink();
+                              },
                             ),
-                            const ChooseBrandWidget(),
-                            const SizedBox(
-                              height: 24.0,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal:
-                                    AppConstants.horizontalScreenPadding,
-                              ),
-                              child: Column(
-                                children: [
-                                  Builder(builder: (BuildContext context) {
-                                    final String emailErrorText =
-                                        context.select((LoginCubit cubit) =>
-                                            cubit.state.emailErrorText);
-                                    return AppTextField(
-                                      errorText: emailErrorText,
-                                      label: S.of(context).email,
-                                      textInputType: TextInputType.emailAddress,
-                                      textInputAction: TextInputAction.next,
-                                      nextFocusNode: cubit.passwordNode,
-                                      controller: cubit.emailController,
-                                    );
-                                  }),
-                                  const SizedBox(
-                                    height: 24.0,
-                                  ),
-                                  Builder(builder: (BuildContext context) {
-                                    final bool hiddenPassword = context.select(
+                            Builder(
+                              builder: (BuildContext context) {
+                                final bool showEmailButton = context.select(
                                         (LoginCubit cubit) =>
-                                            cubit.state.hiddenPassword);
-                                    final String passwordErrorText =
-                                        context.select((LoginCubit cubit) =>
-                                            cubit.state.passwordErrorText);
-                                    return PasswordTextField(
-                                      controller: cubit.passwordController,
-                                      focusNode: cubit.passwordNode,
-                                      label: S.of(context).password,
-                                      errorText: passwordErrorText,
-                                      textInputAction: TextInputAction.next,
-                                      onSubmitted: (_) => cubit.login,
-                                      hiddenPassword: hiddenPassword,
-                                      clickToHide: cubit.showHidePassword,
-                                    );
-                                  }),
-                                  const SizedBox(
-                                    height: 24.0,
+                                    cubit.state.showOpenEmailButton);
+                                final String message = context.select(
+                                        (LoginCubit cubit) => cubit.state.successMessage);
+                                return message.isNotEmpty
+                                    ? AppSuccessWidget(
+                                  message: message,
+                                  showEmailButton: showEmailButton,
+                                  close: () {
+                                    cubit.clearSuccessMessage();
+                                  },
+                                )
+                                    : const SizedBox.shrink();
+                              },
+                            ),
+                            SingleChildScrollView(
+                              child: Column(children: [
+                                const SizedBox(
+                                  height: 16.0,
+                                ),
+                                const ChooseBrandWidget(),
+                                const SizedBox(
+                                  height: 24.0,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal:
+                                        AppConstants.horizontalScreenPadding,
                                   ),
-                                  AppElevatedButton(
-                                    text: S.of(context).login,
-                                    onPressed: () => cubit.login(context),
-                                  ),
-                                  const SizedBox(
-                                    height: 22.0,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () =>
-                                        cubit.goToForgotPassword(context),
-                                    child: Text(
-                                      '${S.of(context).forgotPassword}?',
-                                      style:
-                                          Get.textTheme.titleMedium?.copyWith(
-                                        color: Get.theme.primaryColor,
-                                        fontWeight: FontWeight.w500,
+                                  child: Column(
+                                    children: [
+                                      Builder(builder: (BuildContext context) {
+                                        final String emailErrorText =
+                                            context.select((LoginCubit cubit) =>
+                                                cubit.state.emailErrorText);
+                                        return AppTextField(
+                                          errorText: emailErrorText,
+                                          label: S.of(context).email,
+                                          textInputType: TextInputType.emailAddress,
+                                          textInputAction: TextInputAction.next,
+                                          nextFocusNode: cubit.passwordNode,
+                                          controller: cubit.emailController,
+                                        );
+                                      }),
+                                      const SizedBox(
+                                        height: 24.0,
                                       ),
-                                    ),
+                                      Builder(builder: (BuildContext context) {
+                                        final bool hiddenPassword = context.select(
+                                            (LoginCubit cubit) =>
+                                                cubit.state.hiddenPassword);
+                                        final String passwordErrorText =
+                                            context.select((LoginCubit cubit) =>
+                                                cubit.state.passwordErrorText);
+                                        return PasswordTextField(
+                                          controller: cubit.passwordController,
+                                          focusNode: cubit.passwordNode,
+                                          label: S.of(context).password,
+                                          errorText: passwordErrorText,
+                                          textInputAction: TextInputAction.next,
+                                          onSubmitted: (_) => cubit.login,
+                                          hiddenPassword: hiddenPassword,
+                                          clickToHide: cubit.showHidePassword,
+                                        );
+                                      }),
+                                      const SizedBox(
+                                        height: 24.0,
+                                      ),
+                                      AppElevatedButton(
+                                        text: S.of(context).login,
+                                        onPressed: () => cubit.login(context),
+                                      ),
+                                      const SizedBox(
+                                        height: 22.0,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () =>
+                                            cubit.goToForgotPassword(context),
+                                        child: Text(
+                                          '${S.of(context).forgotPassword}?',
+                                          style:
+                                              Get.textTheme.titleMedium?.copyWith(
+                                            color: Get.theme.primaryColor,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            )
-                          ]),
+                                )
+                              ]),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    Builder(
-                      builder: (BuildContext context) {
-                        final String errorMessage = context.select(
-                            (LoginCubit cubit) => cubit.state.errorMessage);
-                        return errorMessage.isNotEmpty
-                            ? AppErrorWidget(
-                                errorMessage: errorMessage,
-                                close: () {
-                                  cubit.clearErrorMessage();
-                                },
-                              )
-                            : const SizedBox.shrink();
-                      },
-                    ),
-                    Builder(
-                      builder: (BuildContext context) {
-                        final bool showEmailButton = context.select(
-                            (LoginCubit cubit) =>
-                                cubit.state.showOpenEmailButton);
-                        final String message = context.select(
-                            (LoginCubit cubit) => cubit.state.successMessage);
-                        return message.isNotEmpty
-                            ? AppSuccessWidget(
-                                message: message,
-                                showEmailButton: showEmailButton,
-                                close: () {
-                                  cubit.clearSuccessMessage();
-                                },
-                              )
-                            : const SizedBox.shrink();
-                      },
-                    ),
-                  ],
-                ),
               ),
               Builder(
                 builder: (context) {

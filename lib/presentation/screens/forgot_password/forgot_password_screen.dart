@@ -30,23 +30,38 @@ class ForgotPasswordScreen extends StatelessWidget {
                 appBar: WideAppBar(
                   title: S.of(context).forgotPassword,
                 ),
-                body: Stack(
-                  children: [
-                    SafeArea(
-                      child: GestureDetector(
-                        onTap: () {
-                          FocusScope.of(context).unfocus();
-                          cubit.clearErrorMessage();
-                        },
-                        child: SingleChildScrollView(
+                body: SafeArea(
+                  child: GestureDetector(
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                      cubit.clearErrorMessage();
+                    },
+                    child: Column(
+                      children: [
+                        Builder(
+                          builder: (BuildContext context) {
+                            final String errorMessage = context.select(
+                                    (ForgotPasswordCubit cubit) =>
+                                cubit.state.errorMessage);
+                            return errorMessage.isNotEmpty
+                                ? AppErrorWidget(
+                              errorMessage: errorMessage,
+                              close: () {
+                                cubit.clearErrorMessage();
+                              },
+                            )
+                                : const SizedBox.shrink();
+                          },
+                        ),
+                        SingleChildScrollView(
                           padding: const EdgeInsets.symmetric(
                               horizontal: AppConstants.horizontalScreenPadding),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 24.0),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 24.0),
                                   child: _BrandLogo(
                                     brand: cubit.selectedBrand,
                                   ),
@@ -68,8 +83,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                                   height: 16.0,
                                 ),
                                 Builder(builder: (context) {
-                                  final String passwordErrorText = context
-                                      .select((ForgotPasswordCubit cubit) =>
+                                  final String passwordErrorText = context.select(
+                                      (ForgotPasswordCubit cubit) =>
                                           cubit.state.passwordErrorText);
                                   final bool hiddenPassword = context.select(
                                       (ForgotPasswordCubit cubit) =>
@@ -81,8 +96,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                                     errorText: passwordErrorText,
                                     textInputAction: TextInputAction.next,
                                     onSubmitted: (_) {
-                                      FocusScope.of(context).requestFocus(
-                                          cubit.confirmPasswordNode);
+                                      FocusScope.of(context)
+                                          .requestFocus(cubit.confirmPasswordNode);
                                     },
                                     hiddenPassword: hiddenPassword,
                                     clickToHide: cubit.showHidePassword,
@@ -90,18 +105,16 @@ class ForgotPasswordScreen extends StatelessWidget {
                                 }),
                                 Builder(builder: (context) {
                                   final String confirmPasswordErrorText =
-                                      context.select(
-                                          (ForgotPasswordCubit cubit) => cubit
-                                              .state.confirmPasswordErrorText);
-                                  final bool hiddenConfirmPassword = context
-                                      .select((ForgotPasswordCubit cubit) =>
+                                      context.select((ForgotPasswordCubit cubit) =>
+                                          cubit.state.confirmPasswordErrorText);
+                                  final bool hiddenConfirmPassword = context.select(
+                                      (ForgotPasswordCubit cubit) =>
                                           cubit.state.hiddenConfirmPassword);
                                   return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 16.0),
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 16.0),
                                     child: PasswordTextField(
-                                      controller:
-                                          cubit.confirmPasswordController,
+                                      controller: cubit.confirmPasswordController,
                                       focusNode: cubit.confirmPasswordNode,
                                       label: S.of(context).confirmNewPassword,
                                       errorText: confirmPasswordErrorText,
@@ -109,8 +122,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                                       onSubmitted: (_) =>
                                           cubit.resetPassword(context),
                                       hiddenPassword: hiddenConfirmPassword,
-                                      clickToHide:
-                                          cubit.showHideConfirmPassword,
+                                      clickToHide: cubit.showHideConfirmPassword,
                                     ),
                                   );
                                 }),
@@ -124,24 +136,9 @@ class ForgotPasswordScreen extends StatelessWidget {
                                 )
                               ]),
                         ),
-                      ),
+                      ],
                     ),
-                    Builder(
-                      builder: (BuildContext context) {
-                        final String errorMessage = context.select(
-                            (ForgotPasswordCubit cubit) =>
-                                cubit.state.errorMessage);
-                        return errorMessage.isNotEmpty
-                            ? AppErrorWidget(
-                                errorMessage: errorMessage,
-                                close: () {
-                                  cubit.clearErrorMessage();
-                                },
-                              )
-                            : const SizedBox.shrink();
-                      },
-                    ),
-                  ],
+                  ),
                 ),
               ),
               Builder(

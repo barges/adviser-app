@@ -12,7 +12,6 @@ class MainCubit extends Cubit<MainState> {
     emit(state.copyWith(
         currentBrand: cacheManager.getCurrentBrand() ?? Brand.fortunica));
     cacheManager.listenCurrentBrand((value) {
-      logger.d(value);
       logger.d(getAuthorizedBrands().firstOrNull);
       emit(state.copyWith(currentBrand: value));
     });
