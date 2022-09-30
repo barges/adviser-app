@@ -56,6 +56,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "editProfile": MessageLookupByLibrary.simpleMessage("Edit profile"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
+        "fieldIsRequired":
+            MessageLookupByLibrary.simpleMessage("Field is required"),
         "forMe": MessageLookupByLibrary.simpleMessage("For me"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot password"),

@@ -32,6 +32,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   late final List<String> activeLanguages;
   late final Map<String, dynamic> oldPropertiesMap;
   final Map<String, List<TextEditingController>> textControllersMap = {};
+  final Map<String, List<String>> errorTextsMap = {};
   final PageController pageController = PageController();
 
   EditProfileCubit() : super(EditProfileState()) {
@@ -54,6 +55,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           statusTextController,
           profileTextController
         ];
+        errorTextsMap[languageCode] = ['', ''];
       }
     }
     emit(state.copyWith(coverPictures: userProfile?.coverPictures ?? []));
@@ -61,6 +63,16 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     nicknameController.addListener(() {
       emit(state.copyWith(nicknameErrorText: ''));
     });
+    for (var entry in textControllersMap.entries) {
+      entry.value.firstOrNull?.addListener(() {
+        errorTextsMap[entry.key]?.first = '';
+        emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
+      });
+      entry.value.lastOrNull?.addListener(() {
+        errorTextsMap[entry.key]?.last = '';
+        emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
+      });
+    }
   }
 
   @override
@@ -98,8 +110,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     final LocalizedProperties newProperties =
         LocalizedProperties.fromJson(newPropertiesMap);
 
-    ///TODO: need validate all text fields
-    if (nicknameIsValid() ) {
+    if (checkNickName(context) && checkTextFields(context)) {
       final UserProfile? actualProfile = cacheManager.getUserProfile();
 
       if (nicknameController.text != actualProfile?.profileName ||
@@ -110,12 +121,36 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         );
         await run(userRepository.updateProfile(request));
       }
-    } else {
+    }
+  }
+
+  bool checkNickName(BuildContext context) {
+    bool isValid = true;
+    if (nicknameController.text.length < 3) {
+      isValid = false;
       emit(
         state.copyWith(
             nicknameErrorText: S.of(context).pleaseEnterAtLeast3Characters),
       );
     }
+    return isValid;
+  }
+
+  bool checkTextFields(BuildContext context) {
+    bool isValid = true;
+    for (var entry in textControllersMap.entries) {
+      final List<TextEditingController> controllersByLanguage = entry.value;
+      if (controllersByLanguage.firstOrNull?.text.isEmpty == true) {
+        errorTextsMap[entry.key]?.first = S.of(context).fieldIsRequired;
+        isValid = false;
+      }
+      if (controllersByLanguage.lastOrNull?.text.isEmpty == true) {
+        errorTextsMap[entry.key]?.last = S.of(context).fieldIsRequired;
+        isValid = false;
+      }
+    }
+    emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
+    return isValid;
   }
 
   Future<void> updateCoverPicture() async {
@@ -218,9 +253,5 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   void updateCurrentLanguageIndex(int index) {
     emit(state.copyWith(chosenLanguageIndex: index));
-  }
-
-  bool nicknameIsValid() {
-    return nicknameController.text.length >= 3;
   }
 }

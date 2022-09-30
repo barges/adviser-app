@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -14,6 +13,7 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/widgets/gallery_images.dart';
+import 'package:shared_advisor_interface/presentation/screens/edit_profile/widgets/languages_section_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/widgets/profile_image_widget.dart';
 
 const double maxHeight = 104.0;
@@ -81,94 +81,7 @@ class EditProfileScreen extends StatelessWidget {
                                     );
                                   }),
                                 ),
-                                Builder(builder: (context) {
-                                  final int chosenLanguageIndex =
-                                      context.select((EditProfileCubit cubit) =>
-                                          cubit.state.chosenLanguageIndex);
-                                  return Column(
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 24.0),
-                                        height: 38.0,
-                                        child: ListView.separated(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: AppConstants
-                                                  .horizontalScreenPadding),
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return LanguageWidget(
-                                              languageName: editProfileCubit
-                                                  .activeLanguages[index]
-                                                  .languageNameByCode,
-                                              isSelected:
-                                                  chosenLanguageIndex == index,
-                                              onTap: () {
-                                                editProfileCubit
-                                                    .updateCurrentLanguageIndex(
-                                                        index);
-                                              },
-                                            );
-                                          },
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: editProfileCubit
-                                              .activeLanguages.length,
-                                          separatorBuilder:
-                                              (BuildContext context,
-                                                  int index) {
-                                            return const SizedBox(
-                                              width: 6.0,
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      IndexedStack(
-                                        index: chosenLanguageIndex,
-                                        children: editProfileCubit
-                                            .textControllersMap.entries
-                                            .map((entry) {
-                                          return Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: AppConstants
-                                                    .horizontalScreenPadding),
-                                            child: Column(
-                                              children: [
-                                                AppTextField(
-                                                  controller: entry.value.first,
-                                                  label:
-                                                      S.of(context).statusText,
-                                                  textInputType:
-                                                      TextInputType.multiline,
-                                                  maxLines: 10,
-                                                  height: 144.0,
-                                                  contentPadding:
-                                                      const EdgeInsets.all(
-                                                          12.0),
-                                                ),
-                                                const SizedBox(
-                                                  height: 24.0,
-                                                ),
-                                                AppTextField(
-                                                  controller: entry.value.last,
-                                                  label:
-                                                      S.of(context).profileText,
-                                                  textInputType:
-                                                      TextInputType.multiline,
-                                                  maxLines: 10,
-                                                  height: 144.0,
-                                                  contentPadding:
-                                                      const EdgeInsets.all(
-                                                          12.0),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        }).toList(),
-                                      ),
-                                    ],
-                                  );
-                                }),
+                                const LanguageSectionWidget(),
                                 const SizedBox(
                                   height: 24.0,
                                 ),
@@ -195,47 +108,6 @@ class EditProfileScreen extends StatelessWidget {
           ],
         );
       }),
-    );
-  }
-}
-
-class LanguageWidget extends StatelessWidget {
-  final String languageName;
-  final bool isSelected;
-  final VoidCallback? onTap;
-
-  const LanguageWidget(
-      {Key? key,
-      required this.languageName,
-      this.isSelected = false,
-      this.onTap})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 38.0,
-        decoration: BoxDecoration(
-          color:
-              isSelected ? Get.theme.primaryColorLight : Get.theme.canvasColor,
-          borderRadius: BorderRadius.circular(
-            AppConstants.buttonRadius,
-          ),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Center(
-          child: Text(
-            languageName,
-            style: Get.textTheme.bodyMedium?.copyWith(
-              color: isSelected
-                  ? Get.theme.primaryColor
-                  : Get.textTheme.bodyMedium?.color,
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

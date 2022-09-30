@@ -12,6 +12,7 @@ class EditProfileState with _$EditProfileState {
     @Default(true) bool isWideAppBar,
     @Default(0) int chosenLanguageIndex,
     @Default('') String nicknameErrorText,
+    @Default(true) bool updateTextsFlag,
     File? avatar,
   }) = _EditProfileState;
 }

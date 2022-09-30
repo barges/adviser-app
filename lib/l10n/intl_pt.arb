@@ -66,5 +66,6 @@
   "changeCoverPicture": "Alterar imagem da capa",
   "pleaseEnterAtLeast3Characters": "Digite pelo menos 3 caracteres",
   "chooseFromGallery": "Escolha na galeria",
-  "takeAPhoto": "Tire uma foto"
+  "takeAPhoto": "Tire uma foto",
+  "fieldIsRequired": "Field is required"
 }

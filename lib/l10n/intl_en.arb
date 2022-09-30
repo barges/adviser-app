@@ -66,5 +66,6 @@
   "changeCoverPicture": "Change cover picture",
   "pleaseEnterAtLeast3Characters": "Please enter at least 3 characters",
   "chooseFromGallery": "Choose from gallery",
-  "takeAPhoto": "Take a photo"
+  "takeAPhoto": "Take a photo",
+  "fieldIsRequired": "Field is required"
 }
