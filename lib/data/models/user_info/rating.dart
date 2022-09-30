@@ -5,10 +5,10 @@ part 'rating.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class Rating extends Equatable {
-  final int? de;
-  final int? en;
-  final int? es;
-  final int? pt;
+  final double? de;
+  final double? en;
+  final double? es;
+  final double? pt;
 
   const Rating({
     this.de,

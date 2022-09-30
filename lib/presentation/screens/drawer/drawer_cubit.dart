@@ -9,11 +9,11 @@ import 'package:shared_advisor_interface/presentation/screens/splash/splash_stat
 class DrawerCubit extends Cubit<SplashState> {
   final CacheManager _cacheManager;
 
- late final List<Brand> authorizedBrands;
- late final List<Brand> unauthorizedBrands;
+  late final List<Brand> authorizedBrands;
+  late final List<Brand> unauthorizedBrands;
 
   DrawerCubit(this._cacheManager) : super(const SplashState()) {
-    authorizedBrands = _cacheManager.getAuthorizedBrands();
+    authorizedBrands = _cacheManager.getAuthorizedBrands().reversed.toList();
     unauthorizedBrands = _cacheManager.getUnauthorizedBrands();
   }
 
@@ -24,12 +24,10 @@ class DrawerCubit extends Cubit<SplashState> {
 
   Future<void> logout(Brand brand) async {
     final bool isOk = await _cacheManager.clearTokenForBrand(brand);
-    logger.d('isOk $isOk');
     if (isOk) {
       final List<Brand> authorizedBrands = _cacheManager.getAuthorizedBrands();
       logger.d(authorizedBrands.length);
       if (authorizedBrands.isNotEmpty) {
-        logger.d(authorizedBrands.first);
         Get.back();
         changeCurrentBrand(authorizedBrands.first);
       } else {
@@ -49,5 +47,4 @@ class DrawerCubit extends Cubit<SplashState> {
   void goToCustomerSupport() {
     Get.toNamed(AppRoutes.allBrands);
   }
-
 }

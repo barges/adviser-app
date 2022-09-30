@@ -98,7 +98,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     final LocalizedProperties newProperties =
         LocalizedProperties.fromJson(newPropertiesMap);
 
-    if (nicknameIsValid()) {
+    ///TODO: need validate all text fields
+    if (nicknameIsValid() ) {
       final UserProfile? actualProfile = cacheManager.getUserProfile();
 
       if (nicknameController.text != actualProfile?.profileName ||
@@ -219,5 +220,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     emit(state.copyWith(chosenLanguageIndex: index));
   }
 
-  bool nicknameIsValid() => nicknameController.text.length >= 3;
+  bool nicknameIsValid() {
+    return nicknameController.text.length >= 3;
+  }
 }

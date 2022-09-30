@@ -5,6 +5,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -76,94 +78,112 @@ class AccountScreen extends StatelessWidget {
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(AppConstants.horizontalScreenPadding),
             child: Column(children: [
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(AppConstants.buttonRadius),
-                    color: Get.theme.canvasColor),
-                child: Column(children: [
-                  Padding(
-                    padding: const EdgeInsets.all(
-                        AppConstants.horizontalScreenPadding),
-                    child: Row(
-                      children: [
-                        const UserAvatar(
-                            avatarUrl:
-                                'https://img.freepik.com/free-vector/cute-astronaut-dance-cartoon-vector-icon-illustration-technology-science-icon-concept-isolated-premium-vector-flat-cartoon-style_138676-3851.jpg',
-                            diameter: 72.0,
-                            isOnline: true),
-                        const SizedBox(width: 16.0),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Psychic Sherman',
-                                overflow: TextOverflow.ellipsis,
-                                style: Get.textTheme.titleMedium
-                                    ?.copyWith(fontWeight: FontWeight.w700),
-                              ),
-                              Text('Life Coach, Tarot, Reiki, sdfsdf, sdffsdf',
+              Builder(builder: (context) {
+                final UserStatus currentStatus =
+                    context.select((HomeCubit cubit) => cubit.state.userStatus);
+                return Container(
+                  decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.circular(AppConstants.buttonRadius),
+                      color: Get.theme.canvasColor),
+                  child: Column(children: [
+                    Padding(
+                      padding: const EdgeInsets.all(
+                          AppConstants.horizontalScreenPadding),
+                      child: Row(
+                        children: [
+                          Builder(builder: (context) {
+                            final String? avatarUrl = context.select(
+                                (AccountCubit cubit) => cubit.state.avatarUrl);
+                            return UserAvatar(
+                              avatarUrl: avatarUrl,
+                              diameter: 72.0,
+                              badgeColor:
+                                  currentStatus.status?.statusColorForBadge,
+                            );
+                          }),
+                          const SizedBox(width: 16.0),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Psychic Sherman',
                                   overflow: TextOverflow.ellipsis,
-                                  style: Get.textTheme.bodyMedium
-                                      ?.copyWith(color: Get.theme.shadowColor))
-                            ],
+                                  style: Get.textTheme.titleMedium
+                                      ?.copyWith(fontWeight: FontWeight.w700),
+                                ),
+                                Text(
+                                    'Life Coach, Tarot, Reiki, sdfsdf, sdffsdf',
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Get.textTheme.bodyMedium?.copyWith(
+                                        color: Get.theme.shadowColor)),
+                                Text(
+                                  currentStatus.status?.statusName ?? '',
+                                  style: Get.textTheme.bodyMedium?.copyWith(
+                                    color: currentStatus.status?.statusColor,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: (){
-                            Get.toNamed(AppRoutes.editProfile);
-                          },
-                          child: Padding(
+                          GestureDetector(
+                            onTap: () {
+                              Get.toNamed(AppRoutes.editProfile);
+                            },
+                            child: Padding(
                               padding: const EdgeInsets.only(left: 36.0),
                               child: Assets.vectors.arrowRight.svg(
                                 color: Get.theme.primaryColor,
-                              ),),
-                        )
-                      ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: AppConstants.horizontalScreenPadding),
-                    child: Column(children: [
-                      const SizedBox(height: 2, child: Divider()),
-                      Builder(
-                        builder: (context) {
-                          final bool isAvailable = context.select(
-                              (AccountCubit cubit) => cubit.state.isAvailable);
-                          return CustomTileWithCheckButtonWidget(
-                            value: isAvailable,
-                            title: S.of(context).imAvailableNow,
-                            iconSVGPath: Assets.vectors.availability.path,
-                            onChanged: accountCubit.updateIsAvailableValue,
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 2, child: Divider()),
-                      Builder(
-                        builder: (context) {
-                          final bool enableNotifications = context.select(
-                              (AccountCubit cubit) =>
-                                  cubit.state.enableNotifications);
-                          return CustomTileWithCheckButtonWidget(
-                            value: enableNotifications,
-                            title: S.of(context).notifications,
-                            iconSVGPath: Assets.vectors.notification.path,
-                            onChanged:
-                                accountCubit.updateEnableNotificationsValue,
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 2, child: Divider()),
-                      CustomTileWidget(
-                        iconSVGPath: Assets.vectors.eye.path,
-                        title: S.of(context).previewAccount,
-                      )
-                    ]),
-                  )
-                ]),
-              ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: AppConstants.horizontalScreenPadding),
+                      child: Column(children: [
+                        const SizedBox(height: 2, child: Divider()),
+                        Builder(
+                          builder: (context) {
+                            final bool isAvailable = context.select(
+                                (AccountCubit cubit) =>
+                                    cubit.state.isAvailable);
+                            return CustomTileWithCheckButtonWidget(
+                              value: isAvailable,
+                              title: S.of(context).imAvailableNow,
+                              iconSVGPath: Assets.vectors.availability.path,
+                              onChanged: accountCubit.updateIsAvailableValue,
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 2, child: Divider()),
+                        Builder(
+                          builder: (context) {
+                            final bool enableNotifications = context.select(
+                                (AccountCubit cubit) =>
+                                    cubit.state.enableNotifications);
+                            return CustomTileWithCheckButtonWidget(
+                              value: enableNotifications,
+                              title: S.of(context).notifications,
+                              iconSVGPath: Assets.vectors.notification.path,
+                              onChanged:
+                                  accountCubit.updateEnableNotificationsValue,
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 2, child: Divider()),
+                        CustomTileWidget(
+                          iconSVGPath: Assets.vectors.eye.path,
+                          title: S.of(context).previewAccount,
+                        )
+                      ]),
+                    )
+                  ]),
+                );
+              }),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 24.0),
                 padding: const EdgeInsets.only(
@@ -311,11 +331,12 @@ class CustomTileWidget extends StatelessWidget {
           children: [
             widget ?? const SizedBox(),
             Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppConstants.horizontalScreenPadding),
-                child: Assets.vectors.arrowRight.svg(
-                  color: Get.theme.primaryColor,
-                ),),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppConstants.horizontalScreenPadding),
+              child: Assets.vectors.arrowRight.svg(
+                color: Get.theme.primaryColor,
+              ),
+            ),
           ],
         )
       ]),

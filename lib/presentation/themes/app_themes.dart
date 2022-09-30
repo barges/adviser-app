@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors_dark.dart';
 
@@ -17,7 +18,7 @@ class AppThemes {
       hoverColor: AppColorsLight.ui,
       shadowColor: AppColorsLight.shade3,
       hintColor: AppColorsLight.shade1,
-      errorColor: AppColorsLight.error,
+      errorColor: AppColors.error,
       iconTheme: const IconThemeData(
         color: AppColorsLight.shade3,
       ),
@@ -131,7 +132,7 @@ class AppThemes {
       hoverColor: AppColorsDark.ui,
       shadowColor: AppColorsDark.shade3,
       hintColor: AppColorsDark.shade1,
-      errorColor: AppColorsDark.error,
+      errorColor: AppColors.error,
       iconTheme: const IconThemeData(
         color: AppColorsDark.shade3,
       ),

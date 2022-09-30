@@ -17,6 +17,7 @@ class UserRepositoryImpl implements UserRepository {
     final UserInfo info = await _api.getUserInfo();
     await _cacheManager.saveUserProfile(info.profile);
     await _cacheManager.saveUserId(info.id);
+    await _cacheManager.saveUserStatus(info.status);
     return info;
   }
 

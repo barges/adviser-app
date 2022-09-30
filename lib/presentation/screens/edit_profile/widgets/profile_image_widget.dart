@@ -148,6 +148,7 @@ class ProfileImageWidget extends StatelessWidget {
               child: UserAvatar(
                 imageFile: avatar,
                 avatarUrl: profileImages.firstOrNull,
+                withBorder: true,
               ));
         })
       ],

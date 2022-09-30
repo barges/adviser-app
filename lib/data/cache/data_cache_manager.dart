@@ -1,13 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 
 import 'cache_manager.dart';
 
 const String _tokensMapKey = 'tokensMapKey';
 const String _brandKey = 'brandKey';
 const String _userProfileKey = 'userProfileKey';
+const String _userStatusKey = 'userStatusKey';
 const String _userIdKey = 'userIdKey';
 const String _localeIndexKey = 'localeIndexKey';
 
@@ -83,15 +86,19 @@ class DataCacheManager implements CacheManager {
 
   @override
   List<Brand> getAuthorizedBrands() {
+    final Brand? currentBrand = getCurrentBrand();
+
     Map<String, dynamic>? tokensMap = _userBox.read(_tokensMapKey);
-    if (tokensMap != null) {
+    if (tokensMap != null && currentBrand != null) {
       List<Brand> authorizedBrands = [];
       for (Brand element in Configuration.brands) {
         if (tokensMap[element.toString()]?.isNotEmpty == true) {
           authorizedBrands.add(element);
         }
       }
-      return authorizedBrands;
+      return authorizedBrands
+        ..removeWhere((element) => element == currentBrand)
+        ..add(currentBrand);
     } else {
       return [];
     }
@@ -134,8 +141,7 @@ class DataCacheManager implements CacheManager {
   }
 
   @override
-  Future<void> updateUserProfileImage(
-      List<String>? profilePictures) async {
+  Future<void> updateUserProfileImage(List<String>? profilePictures) async {
     UserProfile? profile = getUserProfile();
 
     await _userBox.write(
@@ -157,6 +163,39 @@ class DataCacheManager implements CacheManager {
         coverPictures: coverPictures,
       ),
     );
+  }
+
+  @override
+  UserStatus? getUserStatus() {
+    if (_userBox.hasData(_userStatusKey)) {
+      UserStatus userStatus =
+          UserStatus.fromJson(_userBox.read(_userStatusKey));
+      return userStatus;
+    }
+    return null;
+  }
+
+  @override
+  Future<void> saveUserStatus(UserStatus? userStatus) async {
+    await _userBox.write(_userStatusKey, userStatus?.toJson());
+  }
+
+  @override
+  Future<void> updateUserStatusByStatus(FortunicaUserStatusEnum status) async {
+    UserStatus? userStatus = getUserStatus();
+    await _userBox.write(
+      _userStatusKey,
+      userStatus?.copyWith(
+        status: status,
+      ),
+    );
+  }
+
+  @override
+  VoidCallback listenCurrentUserStatus(ValueChanged<UserStatus> callback) {
+    return _userBox.listenKey(_userStatusKey, (value) {
+      callback(UserStatus.fromJson(value));
+    });
   }
 
   @override
