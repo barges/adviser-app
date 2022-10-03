@@ -1,0 +1,77 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+class SeeMoreWidget extends StatelessWidget {
+  const SeeMoreWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+          height: 96.0,
+          margin: const EdgeInsets.symmetric(
+            horizontal: AppConstants.horizontalScreenPadding,
+            vertical: 24.0,
+          ),
+          decoration: BoxDecoration(
+            color: Get.theme.canvasColor,
+            borderRadius: BorderRadius.circular(
+              AppConstants.buttonRadius,
+            ),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    14.0,
+                    12.0,
+                    10.0,
+                    8.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        S
+                            .of(context)
+                            .notEnoughConversationsCheckOurProfileGuide,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: Get.textTheme.bodyMedium
+                            ?.copyWith(fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(height: 8.0),
+                      Text(
+                        S.of(context).seeMore,
+                        style: Get.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: Get.theme.primaryColor,
+                            decoration: TextDecoration.underline),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(AppConstants.buttonRadius),
+                    bottomRight: Radius.circular(AppConstants.buttonRadius)),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Assets.images.conversations.image(
+                    fit: BoxFit.cover,
+                    height: 96.0,
+                    width: 124.0,
+                  ),
+                ),
+              )
+            ],
+          )),
+    );
+  }
+}

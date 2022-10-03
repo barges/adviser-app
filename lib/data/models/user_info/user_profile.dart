@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_advisor_interface/data/models/localized_properties/localized_properties.dart';
-import 'package:shared_advisor_interface/data/models/user_info/rating.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_rating.dart';
 
 part 'user_profile.freezed.dart';
 part 'user_profile.g.dart';
@@ -10,7 +10,7 @@ class UserProfile with _$UserProfile {
 
   @JsonSerializable(includeIfNull: false)
   const factory UserProfile({
-    Rating? rating,
+    UserRating? rating,
     List<String>? activeLanguages,
     String? readerManager,
     List<String>? profilePictures,

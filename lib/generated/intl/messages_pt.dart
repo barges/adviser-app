@@ -65,7 +65,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Esqueceu sua senha"),
         "fortunica": MessageLookupByLibrary.simpleMessage("Fortunica"),
         "imAvailableNow":
-            MessageLookupByLibrary.simpleMessage("estou disponível agora"),
+            MessageLookupByLibrary.simpleMessage("Estou disponível agora"),
         "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
         "logOut": MessageLookupByLibrary.simpleMessage("Sair"),
         "login": MessageLookupByLibrary.simpleMessage("Conecte-se"),

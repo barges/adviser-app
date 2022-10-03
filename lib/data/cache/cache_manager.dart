@@ -7,11 +7,11 @@ import 'package:shared_advisor_interface/data/models/user_info/user_status.dart'
 abstract class CacheManager {
   Future<void> saveUserProfile(UserProfile? userProfile);
 
-  Future<void> updateUserProfileImage(
-      List<String>? profilePictures);
+  VoidCallback listenUserProfile(ValueChanged<UserProfile> callback);
 
-  Future<void> updateUserProfileCoverPictures(
-      List<String>? coverPictures);
+  Future<void> updateUserProfileImage(List<String>? profilePictures);
+
+  Future<void> updateUserProfileCoverPictures(List<String>? coverPictures);
 
   UserProfile? getUserProfile();
 
@@ -19,8 +19,7 @@ abstract class CacheManager {
 
   UserStatus? getUserStatus();
 
-  Future<void> updateUserStatusByStatus(
-      FortunicaUserStatusEnum status);
+  Future<void> updateUserStatusByStatus(FortunicaUserStatusEnum status);
 
   Future<void> saveUserId(String? userId);
 
@@ -46,7 +45,7 @@ abstract class CacheManager {
 
   bool? isLoggedIn();
 
-  void listenCurrentBrand(ValueChanged<Brand> callback);
+  VoidCallback listenCurrentBrand(ValueChanged<Brand> callback);
 
   VoidCallback listenCurrentUserStatus(ValueChanged<UserStatus> callback);
 }

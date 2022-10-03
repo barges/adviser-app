@@ -25,7 +25,7 @@ class EditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => Get.put<EditProfileCubit>(EditProfileCubit()),
+      create: (_) => Get.put<EditProfileCubit>(EditProfileCubit(context)),
       child: Builder(builder: (context) {
         final EditProfileCubit editProfileCubit =
             context.read<EditProfileCubit>();
@@ -46,8 +46,7 @@ class EditProfileScreen extends StatelessWidget {
                           editProfileCubit.setIsWideAppbar(value);
                         },
                         isWide: isWide,
-                        actionOnClick: () =>
-                            editProfileCubit.updateUserInfo(context),
+                        actionOnClick: () => editProfileCubit.updateUserInfo(),
                         openDrawer: editProfileCubit.openDrawer,
                       );
                     }),

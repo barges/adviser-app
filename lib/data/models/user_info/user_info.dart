@@ -1,24 +1,21 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 
+part 'user_info.freezed.dart';
+
 part 'user_info.g.dart';
 
-@JsonSerializable(includeIfNull: false)
-class UserInfo {
-  final UserStatus? status;
-  final UserProfile? profile;
-  @JsonKey(name: '_id')
-  final String? id;
-
-  const UserInfo({
-    this.profile,
-    this.status,
-    this.id
-  });
+@freezed
+class UserInfo with _$UserInfo {
+  @JsonSerializable(includeIfNull: false)
+  const factory UserInfo({
+    UserStatus? status,
+    UserProfile? profile,
+    @JsonKey(name: '_id') String? id,
+    bool? pushNotificationsEnabled,
+  }) = _UserInfo;
 
   factory UserInfo.fromJson(Map<String, dynamic> json) =>
       _$UserInfoFromJson(json);
-
-  Map<String, dynamic> toJson() => _$UserInfoToJson(this);
 }

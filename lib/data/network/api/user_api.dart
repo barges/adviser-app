@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
+import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_image_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_request.dart';
 
@@ -13,6 +14,11 @@ abstract class UserApi {
 
   @GET('/experts')
   Future<UserInfo> getUserInfo();
+
+  @POST('/experts/setPushEnabled')
+  Future<UserInfo> setPushEnabled(
+      @Body() PushEnableRequest request,
+      );
 
   @PUT('/v2/users/{id}/profile')
   Future<UserProfile> updateProfile(

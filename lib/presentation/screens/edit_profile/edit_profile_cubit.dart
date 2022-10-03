@@ -20,6 +20,8 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'edit_profile_state.dart';
 
 class EditProfileCubit extends Cubit<EditProfileState> {
+  final BuildContext context;
+
   final TextEditingController nicknameController = TextEditingController();
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
@@ -35,44 +37,18 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final Map<String, List<String>> errorTextsMap = {};
   final PageController pageController = PageController();
 
-  EditProfileCubit() : super(EditProfileState()) {
+  EditProfileCubit(this.context) : super(EditProfileState()) {
     userProfile = cacheManager.getUserProfile();
     activeLanguages = userProfile?.activeLanguages ?? [];
     nicknameController.text = userProfile?.profileName ?? '';
 
     oldPropertiesMap = userProfile?.localizedProperties?.toJson() ?? {};
 
-    if (oldPropertiesMap.isNotEmpty) {
-      for (String languageCode in activeLanguages) {
-        final PropertyByLanguage property = oldPropertiesMap[languageCode];
-        final TextEditingController statusTextController =
-            TextEditingController();
-        final TextEditingController profileTextController =
-            TextEditingController();
-        statusTextController.text = property.statusMessage ?? '';
-        profileTextController.text = property.description ?? '';
-        textControllersMap[languageCode] = [
-          statusTextController,
-          profileTextController
-        ];
-        errorTextsMap[languageCode] = ['', ''];
-      }
-    }
+    createMapWithTextControllers();
+
     emit(state.copyWith(coverPictures: userProfile?.coverPictures ?? []));
 
-    nicknameController.addListener(() {
-      emit(state.copyWith(nicknameErrorText: ''));
-    });
-    for (var entry in textControllersMap.entries) {
-      entry.value.firstOrNull?.addListener(() {
-        errorTextsMap[entry.key]?.first = '';
-        emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
-      });
-      entry.value.lastOrNull?.addListener(() {
-        errorTextsMap[entry.key]?.last = '';
-        emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
-      });
-    }
+    addListenersToTextControllers();
   }
 
   @override
@@ -87,17 +63,59 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     return super.close();
   }
 
+  void createMapWithTextControllers() {
+    if (oldPropertiesMap.isNotEmpty) {
+      for (String languageCode in activeLanguages) {
+        final PropertyByLanguage property = oldPropertiesMap[languageCode];
+        final TextEditingController statusTextController =
+            TextEditingController();
+        final TextEditingController profileTextController =
+            TextEditingController();
+        textControllersMap[languageCode] = [
+          statusTextController..text = property.statusMessage ?? '',
+          profileTextController..text = property.description ?? '',
+        ];
+
+        errorTextsMap[languageCode] = [
+          statusTextController.text.isEmpty
+              ? S.of(context).fieldIsRequired
+              : '',
+          profileTextController.text.isEmpty
+              ? S.of(context).fieldIsRequired
+              : '',
+        ];
+      }
+    }
+  }
+
+  void addListenersToTextControllers() {
+    nicknameController.addListener(() {
+      emit(state.copyWith(nicknameErrorText: ''));
+    });
+
+    for (var entry in textControllersMap.entries) {
+      entry.value.firstOrNull?.addListener(() {
+        errorTextsMap[entry.key]?.first = '';
+        emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
+      });
+      entry.value.lastOrNull?.addListener(() {
+        errorTextsMap[entry.key]?.last = '';
+        emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
+      });
+    }
+  }
+
   void openDrawer() {
     scaffoldKey.currentState?.openDrawer();
   }
 
-  Future<void> updateUserInfo(BuildContext context) async {
-    await updateUserProfileTexts(context);
+  Future<void> updateUserInfo() async {
+    await updateUserProfileTexts();
     await updateCoverPicture();
     await updateUserAvatar();
   }
 
-  Future<void> updateUserProfileTexts(BuildContext context) async {
+  Future<void> updateUserProfileTexts() async {
     final Map<String, dynamic> newPropertiesMap = {};
     for (MapEntry<String, List<TextEditingController>> entry
         in textControllersMap.entries) {
@@ -110,7 +128,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     final LocalizedProperties newProperties =
         LocalizedProperties.fromJson(newPropertiesMap);
 
-    if (checkNickName(context) && checkTextFields(context)) {
+    if (checkNickName() && checkTextFields()) {
       final UserProfile? actualProfile = cacheManager.getUserProfile();
 
       if (nicknameController.text != actualProfile?.profileName ||
@@ -124,7 +142,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
   }
 
-  bool checkNickName(BuildContext context) {
+  bool checkNickName() {
     bool isValid = true;
     if (nicknameController.text.length < 3) {
       isValid = false;
@@ -136,7 +154,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     return isValid;
   }
 
-  bool checkTextFields(BuildContext context) {
+  bool checkTextFields() {
     bool isValid = true;
     for (var entry in textControllersMap.entries) {
       final List<TextEditingController> controllersByLanguage = entry.value;

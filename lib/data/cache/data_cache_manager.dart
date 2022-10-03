@@ -16,11 +16,12 @@ const String _localeIndexKey = 'localeIndexKey';
 
 class DataCacheManager implements CacheManager {
   final GetStorage _userBox = GetStorage();
+  final GetStorage _brandsBox = GetStorage();
   final GetStorage _localeBox = GetStorage();
 
   @override
   Future<bool> clearTokenForBrand(Brand brand) async {
-    Map<String, dynamic>? tokensMap = _userBox.read(_tokensMapKey);
+    Map<String, dynamic>? tokensMap = _brandsBox.read(_tokensMapKey);
     bool isOk = tokensMap != null;
     if (isOk) {
       if (tokensMap.length > 1) {
@@ -35,7 +36,7 @@ class DataCacheManager implements CacheManager {
 
   @override
   Future<void> saveTokenForBrand(Brand brand, String token) async {
-    final Map<String, dynamic>? tokensMap = _userBox.read(_tokensMapKey);
+    final Map<String, dynamic>? tokensMap = _brandsBox.read(_tokensMapKey);
     if (tokensMap != null) {
       tokensMap[brand.toString()] = token;
       _saveTokensMap(tokensMap);
@@ -48,7 +49,7 @@ class DataCacheManager implements CacheManager {
 
   @override
   String? getTokenByBrand(Brand brand) {
-    Map<String, dynamic>? tokensMap = _userBox.read(_tokensMapKey);
+    Map<String, dynamic>? tokensMap = _brandsBox.read(_tokensMapKey);
     return tokensMap?[brand.toString()];
   }
 
@@ -64,22 +65,22 @@ class DataCacheManager implements CacheManager {
 
   @override
   bool? isLoggedIn() {
-    return _userBox.hasData(_tokensMapKey);
+    return _brandsBox.hasData(_tokensMapKey);
   }
 
   @override
   Future<void> saveCurrentBrand(Brand currentBrand) async {
-    await _userBox.write(_brandKey, currentBrand.toString());
+    await _brandsBox.write(_brandKey, currentBrand.toString());
   }
 
   @override
   Brand? getCurrentBrand() {
-    return BrandExtension.brandFromString(_userBox.read(_brandKey));
+    return BrandExtension.brandFromString(_brandsBox.read(_brandKey));
   }
 
   @override
-  void listenCurrentBrand(ValueChanged<Brand> callback) {
-    _userBox.listenKey(_brandKey, (value) {
+  VoidCallback listenCurrentBrand(ValueChanged<Brand> callback) {
+    return _brandsBox.listenKey(_brandKey, (value) {
       callback(BrandExtension.brandFromString(value));
     });
   }
@@ -88,7 +89,7 @@ class DataCacheManager implements CacheManager {
   List<Brand> getAuthorizedBrands() {
     final Brand? currentBrand = getCurrentBrand();
 
-    Map<String, dynamic>? tokensMap = _userBox.read(_tokensMapKey);
+    Map<String, dynamic>? tokensMap = _brandsBox.read(_tokensMapKey);
     if (tokensMap != null && currentBrand != null) {
       List<Brand> authorizedBrands = [];
       for (Brand element in Configuration.brands) {
@@ -107,7 +108,7 @@ class DataCacheManager implements CacheManager {
   @override
   List<Brand> getUnauthorizedBrands() {
     List<Brand> allBrands = Configuration.brands;
-    Map<String, dynamic>? tokensMap = _userBox.read(_tokensMapKey);
+    Map<String, dynamic>? tokensMap = _brandsBox.read(_tokensMapKey);
     if (tokensMap != null) {
       List<Brand> unauthorizedBrands = [];
       for (Brand element in allBrands) {
@@ -122,11 +123,11 @@ class DataCacheManager implements CacheManager {
   }
 
   Future<void> _clearTokensMap() async {
-    await _userBox.remove(_tokensMapKey);
+    await _brandsBox.remove(_tokensMapKey);
   }
 
   Future<void> _saveTokensMap(Map<String, dynamic> tokensMap) async {
-    await _userBox.write(_tokensMapKey, tokensMap);
+    await _brandsBox.write(_tokensMapKey, tokensMap);
   }
 
   @override
@@ -138,6 +139,13 @@ class DataCacheManager implements CacheManager {
   @override
   Future<void> saveUserProfile(UserProfile? userProfile) async {
     await _userBox.write(_userProfileKey, userProfile);
+  }
+
+  @override
+  VoidCallback listenUserProfile(ValueChanged<UserProfile> callback) {
+    return _userBox.listenKey(_userProfileKey, (value) {
+      callback(value);
+    });
   }
 
   @override

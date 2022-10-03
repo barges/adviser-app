@@ -12,7 +12,7 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this.cacheManager) : super(const HomeState()) {
     emit(state.copyWith(
         userStatus: cacheManager.getUserStatus() ?? const UserStatus()));
-   disposeListen = cacheManager.listenCurrentUserStatus((value) {
+    disposeListen = cacheManager.listenCurrentUserStatus((value) {
       emit(state.copyWith(userStatus: value));
     });
   }

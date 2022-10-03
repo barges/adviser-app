@@ -49,6 +49,13 @@ class LoginCubit extends Cubit<LoginState> {
     });
   }
 
+  @override
+  Future<void> close() {
+    emailController.dispose();
+    passwordController.dispose();
+    return super.close();
+  }
+
   void setSelectedBrand(Brand brand) {
     emit(state.copyWith(selectedBrand: brand));
   }
