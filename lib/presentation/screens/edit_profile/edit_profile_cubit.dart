@@ -35,7 +35,10 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   late final Map<String, dynamic> oldPropertiesMap;
   final Map<String, List<TextEditingController>> textControllersMap = {};
   final Map<String, List<String>> errorTextsMap = {};
+  late final ScrollController languagesScrollController;
   final PageController pageController = PageController();
+
+  int? initialLanguageIndex;
 
   EditProfileCubit(this.context) : super(EditProfileState()) {
     userProfile = cacheManager.getUserProfile();
@@ -44,9 +47,19 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
     oldPropertiesMap = userProfile?.localizedProperties?.toJson() ?? {};
 
-    createMapWithTextControllers();
+    createTextControllersAndErrorsMap();
 
-    emit(state.copyWith(coverPictures: userProfile?.coverPictures ?? []));
+    languagesScrollController = ScrollController(
+      initialScrollOffset: initialLanguageIndex == activeLanguages.length - 1
+          ? Get.width / 2
+          : 0.0,
+    );
+
+    emit(
+      state.copyWith(
+          coverPictures: userProfile?.coverPictures ?? [],
+          chosenLanguageIndex: initialLanguageIndex ?? 0),
+    );
 
     addListenersToTextControllers();
   }
@@ -63,7 +76,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     return super.close();
   }
 
-  void createMapWithTextControllers() {
+  void createTextControllersAndErrorsMap() {
     if (oldPropertiesMap.isNotEmpty) {
       for (String languageCode in activeLanguages) {
         final PropertyByLanguage property = oldPropertiesMap[languageCode];
@@ -76,13 +89,20 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           profileTextController..text = property.description ?? '',
         ];
 
+        final String statusErrorMessage = statusTextController.text.isEmpty
+            ? S.of(context).fieldIsRequired
+            : '';
+        final String profileErrorMessage = profileTextController.text.isEmpty
+            ? S.of(context).fieldIsRequired
+            : '';
+
+        if (statusErrorMessage.isNotEmpty || profileErrorMessage.isNotEmpty) {
+          initialLanguageIndex ??= activeLanguages.indexOf(languageCode);
+        }
+
         errorTextsMap[languageCode] = [
-          statusTextController.text.isEmpty
-              ? S.of(context).fieldIsRequired
-              : '',
-          profileTextController.text.isEmpty
-              ? S.of(context).fieldIsRequired
-              : '',
+          statusErrorMessage,
+          profileErrorMessage,
         ];
       }
     }
@@ -110,12 +130,20 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   Future<void> updateUserInfo() async {
-    await updateUserProfileTexts();
-    await updateCoverPicture();
-    await updateUserAvatar();
+    try {
+      final bool profileUpdated = await updateUserProfileTexts();
+      final bool coverPictureUpdated = await updateCoverPicture();
+      final bool avatarUpdated = await updateUserAvatar();
+      if (profileUpdated || coverPictureUpdated || avatarUpdated) {
+        Get.back(result: true);
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
-  Future<void> updateUserProfileTexts() async {
+  Future<bool> updateUserProfileTexts() async {
+    bool isOk = false;
     final Map<String, dynamic> newPropertiesMap = {};
     for (MapEntry<String, List<TextEditingController>> entry
         in textControllersMap.entries) {
@@ -137,9 +165,18 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           localizedProperties: newProperties,
           profileName: nicknameController.text,
         );
-        await run(userRepository.updateProfile(request));
+        final UserProfile profile = await run(
+          userRepository.updateProfile(
+            request,
+          ),
+        );
+        cacheManager.saveUserProfile(
+          profile,
+        );
+        isOk = true;
       }
     }
+    return isOk;
   }
 
   bool checkNickName() {
@@ -171,7 +208,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     return isValid;
   }
 
-  Future<void> updateCoverPicture() async {
+  Future<bool> updateCoverPicture() async {
+    bool isOk = false;
     final int? pictureIndex = pageController.page?.toInt();
     if (pictureIndex != null && pictureIndex > 0) {
       final String url = state.coverPictures[pictureIndex];
@@ -194,11 +232,13 @@ class EditProfileCubit extends Cubit<EditProfileState> {
             coverPictures: coverPictures,
           ),
         );
+        isOk = true;
       } catch (e) {
         ///TODO: Handle the error
         rethrow;
       }
     }
+    return isOk;
   }
 
   Future<void> deletePictureFromGallery(int pictureIndex) async {
@@ -219,7 +259,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
   }
 
-  Future<void> updateUserAvatar() async {
+  Future<bool> updateUserAvatar() async {
+    bool isOk = false;
     if (state.avatar != null) {
       final String? mimeType = lookupMimeType(state.avatar?.path ?? '');
       final List<int> imageBytes = await state.avatar!.readAsBytes();
@@ -230,11 +271,13 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       );
       try {
         await run(userRepository.updateProfilePicture(request));
+        isOk = true;
       } catch (e) {
         ///TODO: Handle the error
         rethrow;
       }
     }
+    return isOk;
   }
 
   Future<void> addPictureToGallery(File? image) async {

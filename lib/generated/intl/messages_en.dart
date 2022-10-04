@@ -118,6 +118,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others"),
+        "willBeAvailableInAnHour": MessageLookupByLibrary.simpleMessage(
+            "Will be available in an hour"),
         "workspaces": MessageLookupByLibrary.simpleMessage("Workspaces"),
         "wrongUsernameOrPassword":
             MessageLookupByLibrary.simpleMessage("Wrong username or password"),

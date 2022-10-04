@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -10,9 +9,9 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/count_down_timer.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/tile_widget.dart';
 
 class UserInfoPartWidget extends StatelessWidget {
@@ -76,9 +75,7 @@ class UserInfoPartWidget extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    Get.toNamed(AppRoutes.editProfile);
-                  },
+                  onTap: accountCubit.goToEditProfile,
                   child: Padding(
                     padding: const EdgeInsets.only(
                       left: 36.0,
@@ -96,21 +93,30 @@ class UserInfoPartWidget extends StatelessWidget {
           padding:
               const EdgeInsets.only(left: AppConstants.horizontalScreenPadding),
           child: Column(children: [
-            const SizedBox(height: 2.0, child: Divider()),
+            const Divider(height: 1.0,),
             Builder(
               builder: (context) {
+                final int seconds =
+                    context.select((AccountCubit cubit) => cubit.state.seconds);
                 return TileWidget(
-                  isDisable:
-                      currentStatus.status != FortunicaUserStatusEnum.live,
-                  initSwitcherValue:
-                      currentStatus.status == FortunicaUserStatusEnum.live,
                   title: S.of(context).imAvailableNow,
                   iconSVGPath: Assets.vectors.availability.path,
                   onChanged: accountCubit.updateUserStatus,
+                  isDisable: currentStatus.status !=
+                          FortunicaUserStatusEnum.live &&
+                      currentStatus.status != FortunicaUserStatusEnum.offline,
+                  initSwitcherValue:
+                      currentStatus.status == FortunicaUserStatusEnum.live,
+                  timerWidget: seconds > 0
+                      ? CountDownTimer(
+                          seconds: seconds,
+                          onEnd: accountCubit.getUserinfo,
+                        )
+                      : null,
                 );
               },
             ),
-            const SizedBox(height: 2, child: Divider()),
+            const Divider(height: 1.0,),
             Builder(
               builder: (context) {
                 final bool enableNotifications = context.select(
@@ -123,7 +129,7 @@ class UserInfoPartWidget extends StatelessWidget {
                 );
               },
             ),
-            const SizedBox(height: 2, child: Divider()),
+            const Divider(height: 1.0,),
             TileWidget(
               isDisable: currentStatus.status != FortunicaUserStatusEnum.live,
               iconSVGPath: Assets.vectors.eye.path,

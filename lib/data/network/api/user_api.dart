@@ -2,9 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_image_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_request.dart';
+import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
 
 part 'user_api.g.dart';
 
@@ -17,13 +19,18 @@ abstract class UserApi {
 
   @POST('/experts/setPushEnabled')
   Future<UserInfo> setPushEnabled(
-      @Body() PushEnableRequest request,
-      );
+    @Body() PushEnableRequest request,
+  );
 
   @PUT('/v2/users/{id}/profile')
   Future<UserProfile> updateProfile(
     @Path('id') String id,
     @Body() UpdateProfileRequest request,
+  );
+
+  @PUT('/experts/status')
+  Future<UserStatus> updateUserStatus(
+    @Body() UpdateUserStatusRequest request,
   );
 
   @PUT('/v2/users/{id}/profile/profilePicture')

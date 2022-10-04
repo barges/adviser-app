@@ -739,6 +739,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Will be available in an hour`
+  String get willBeAvailableInAnHour {
+    return Intl.message(
+      'Will be available in an hour',
+      name: 'willBeAvailableInAnHour',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

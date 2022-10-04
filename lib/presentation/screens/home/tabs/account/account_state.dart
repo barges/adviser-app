@@ -9,6 +9,7 @@ class AccountState with _$AccountState {
     @Default(false) bool isLoading,
     @Default(true) bool isAvailable,
     @Default(false) bool enableNotifications,
+    @Default(0) int seconds,
     UserProfile? userProfile,
   ]) = _AccountState;
 }

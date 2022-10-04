@@ -6,8 +6,11 @@ import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status
 import 'package:shared_advisor_interface/data/models/localized_properties/property_by_language.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
+import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_state.dart';
 
 class AccountCubit extends Cubit<AccountState> {
@@ -17,18 +20,14 @@ class AccountCubit extends Cubit<AccountState> {
   final UserRepository userRepository = Get.find<UserRepository>();
 
   final CacheManager cacheManager;
-  late final VoidCallback disposeListen;
 
   AccountCubit(this.cacheManager) : super(const AccountState()) {
-    disposeListen = cacheManager.listenUserProfile((value) {
-      emit(state.copyWith(userProfile: value));
-    });
     getUserinfo();
   }
 
   Future<void> getUserinfo() async {
     try {
-      final UserInfo userInfo = await userRepository.getUserInfo();
+      final UserInfo userInfo = await run(userRepository.getUserInfo());
 
       await cacheManager.saveUserProfile(userInfo.profile);
       await cacheManager.saveUserId(userInfo.id);
@@ -40,10 +39,16 @@ class AccountCubit extends Cubit<AccountState> {
       } else {
         await cacheManager.saveUserStatus(userInfo.status);
       }
+      final DateTime profileUpdatedAt =
+          cacheManager.getUserStatus()?.profileUpdatedAt ?? DateTime.now();
+
+      final int seconds = DateTime.now().difference(profileUpdatedAt).inSeconds;
+
       emit(
         state.copyWith(
-          userProfile: userInfo.profile,
+          userProfile: cacheManager.getUserProfile(),
           enableNotifications: userInfo.pushNotificationsEnabled ?? false,
+          seconds: AppConstants.secondsInHour - seconds,
         ),
       );
     } catch (e) {
@@ -68,8 +73,14 @@ class AccountCubit extends Cubit<AccountState> {
     return false;
   }
 
-  void updateUserStatus(bool newValue) {
-    emit(state.copyWith(isAvailable: newValue));
+  Future<void> updateUserStatus(bool newValue) async {
+    final UpdateUserStatusRequest request = UpdateUserStatusRequest(
+      status: newValue
+          ? FortunicaUserStatusEnum.live
+          : FortunicaUserStatusEnum.offline,
+    );
+
+    await run(userRepository.updateUserStatus(request));
   }
 
   Future<void> updateEnableNotificationsValue(bool newValue) async {
@@ -84,6 +95,15 @@ class AccountCubit extends Cubit<AccountState> {
     } catch (e) {
       ///TODO: Handle the error
       rethrow;
+    }
+  }
+
+  Future<void> goToEditProfile() async {
+    final dynamic needUpdateInfo = await Get.toNamed(
+      AppRoutes.editProfile,
+    );
+    if (needUpdateInfo is bool && needUpdateInfo == true) {
+      getUserinfo();
     }
   }
 }

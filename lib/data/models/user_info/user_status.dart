@@ -14,6 +14,7 @@ class UserStatus with _$UserStatus {
         FortunicaUserStatusEnum? status,
     String? messaging,
     String? calling,
+    DateTime? profileUpdatedAt,
     bool? cancelDuringOffline,
   }) = _UserStatus;
 

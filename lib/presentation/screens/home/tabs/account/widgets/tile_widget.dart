@@ -9,6 +9,7 @@ class TileWidget extends StatelessWidget {
   final String iconSVGPath;
   final String title;
   final Widget? widget;
+  final Widget? timerWidget;
   final bool? initSwitcherValue;
   final ValueChanged<bool>? onChanged;
   final VoidCallback? onTap;
@@ -18,30 +19,45 @@ class TileWidget extends StatelessWidget {
     required this.title,
     required this.iconSVGPath,
     this.widget,
+    this.timerWidget,
     this.initSwitcherValue,
     this.onChanged,
     this.onTap,
     this.isDisable = false,
-  }) : super(key: key);
+  })  : assert(onTap != null || onChanged != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final bool needTimer = timerWidget != null;
     return Opacity(
       opacity: isDisable ? 0.4 : 1.0,
-      child: Container(
+      child: SizedBox(
         height: 44.0,
-        padding: EdgeInsets.symmetric(vertical: onChanged != null ? 6.0 : 10.0),
         child: Row(children: [
           Expanded(
             child: Row(
               children: [
-                SvgPicture.asset(
-                  iconSVGPath,
+                Opacity(
+                  opacity: needTimer ? 0.4 : 1.0,
+                  child: SvgPicture.asset(
+                    iconSVGPath,
+                  ),
                 ),
                 const SizedBox(width: 10.0),
-                Text(
-                  title,
-                  style: Get.textTheme.bodyMedium,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Opacity(
+                      opacity: needTimer ? 0.4 : 1.0,
+                      child: Text(
+                        title,
+                        style: Get.textTheme.bodyMedium,
+                      ),
+                    ),
+                    if (needTimer) timerWidget!,
+                  ],
                 ),
               ],
             ),
@@ -51,15 +67,18 @@ class TileWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                 horizontal: AppConstants.horizontalScreenPadding,
               ),
-              child: CupertinoSwitch(
-                value: !isDisable ? initSwitcherValue! : false,
-                onChanged: (bool value) {
-                  if (!isDisable && onChanged != null) {
-                    onChanged!(value);
-                  }
-                },
-                activeColor: Get.theme.primaryColor,
-                trackColor: Get.theme.hintColor,
+              child: Opacity(
+                opacity: needTimer ? 0.4 : 1.0,
+                child: CupertinoSwitch(
+                  value: !isDisable ? initSwitcherValue! : false,
+                  onChanged: (bool value) {
+                    if (!isDisable && !needTimer && onChanged != null) {
+                      onChanged!(value);
+                    }
+                  },
+                  activeColor: Get.theme.primaryColor,
+                  trackColor: Get.theme.hintColor,
+                ),
               ),
             ),
           if (onTap != null)
