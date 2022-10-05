@@ -91,7 +91,7 @@ class AccountScreen extends StatelessWidget {
                         : const SizedBox.shrink(),
                     Expanded(
                       child: RefreshIndicator(
-                        onRefresh: accountCubit.getUserinfo,
+                        onRefresh: accountCubit.refreshUserinfo,
                         child: CustomScrollView(
                           slivers: [
                             SliverToBoxAdapter(

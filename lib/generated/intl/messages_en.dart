@@ -29,6 +29,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "addMore": MessageLookupByLibrary.simpleMessage("Add more"),
         "all": MessageLookupByLibrary.simpleMessage("All"),
         "allOurBrands": MessageLookupByLibrary.simpleMessage("All our brands"),
+        "areYouSureThatYouWantToChangeYourStatus":
+            MessageLookupByLibrary.simpleMessage(
+                "Are you sure that you want to change your status to Offline?"),
         "articles": MessageLookupByLibrary.simpleMessage("Articles"),
         "back": MessageLookupByLibrary.simpleMessage("Back"),
         "balanceTransactions":
@@ -53,6 +56,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customersWantSeeIfYouReal": MessageLookupByLibrary.simpleMessage(
             "Customers want to see if you are real. The more photos of yourself you add, the better."),
         "days": MessageLookupByLibrary.simpleMessage("days"),
+        "done": MessageLookupByLibrary.simpleMessage("Done"),
         "editProfile": MessageLookupByLibrary.simpleMessage("Edit profile"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
@@ -66,6 +70,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "fortunica": MessageLookupByLibrary.simpleMessage("Fortunica"),
         "imAvailableNow":
             MessageLookupByLibrary.simpleMessage("I\'m available now"),
+        "informOurTeamYourPlannedReturnDate":
+            MessageLookupByLibrary.simpleMessage(
+                "Inform our team your planned return date:"),
         "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
         "logOut": MessageLookupByLibrary.simpleMessage("Log out"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
@@ -75,6 +82,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "newMandatoryArticleIsAvailable": MessageLookupByLibrary.simpleMessage(
             "New mandatory article is available!"),
         "nickname": MessageLookupByLibrary.simpleMessage("Nickname"),
+        "noIChangedMyMind":
+            MessageLookupByLibrary.simpleMessage("No, I changed my mind"),
         "notEnoughConversationsCheckOurProfileGuide":
             MessageLookupByLibrary.simpleMessage(
                 "Not enough conversations? Check our Profile Guide."),
@@ -123,6 +132,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "workspaces": MessageLookupByLibrary.simpleMessage("Workspaces"),
         "wrongUsernameOrPassword":
             MessageLookupByLibrary.simpleMessage("Wrong username or password"),
+        "yesImSure": MessageLookupByLibrary.simpleMessage("Yes, I’m sure"),
         "youHave": MessageLookupByLibrary.simpleMessage("You have"),
         "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo":
             MessageLookupByLibrary.simpleMessage(

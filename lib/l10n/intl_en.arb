@@ -68,5 +68,10 @@
   "chooseFromGallery": "Choose from gallery",
   "takeAPhoto": "Take a photo",
   "fieldIsRequired": "Field is required",
-  "willBeAvailableInAnHour": "Will be available in an hour"
+  "willBeAvailableInAnHour": "Will be available in an hour",
+  "informOurTeamYourPlannedReturnDate": "Inform our team your planned return date:",
+  "areYouSureThatYouWantToChangeYourStatus": "Are you sure that you want to change your status to Offline?",
+  "yesImSure": "Yes, I’m sure",
+  "noIChangedMyMind": "No, I changed my mind",
+  "done": "Done"
 }

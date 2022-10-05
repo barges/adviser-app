@@ -20,6 +20,7 @@ dependencies:
   intl: ^0.17.0
   retrofit: ^3.0.1+1
   dio: ^4.0.6
+  url_launcher: ^6.1.6
   logger: ^1.1.0
   json_annotation: ^4.6.0
   flutter_svg: ^1.1.3
@@ -67,7 +68,9 @@ flutter:
     - assets/vectors/
     - assets/images/
     - assets/images/brands/
+    - assets/images/logos/
     - assets/vectors/zodiac/
+
 
   uses-material-design: true
 

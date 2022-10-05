@@ -1,6 +1,5 @@
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_image_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_request.dart';
@@ -9,7 +8,7 @@ import 'package:shared_advisor_interface/data/network/requests/update_user_statu
 abstract class UserRepository {
   Future<UserInfo> getUserInfo();
 
-  Future<UserStatus> updateUserStatus(UpdateUserStatusRequest request);
+  Future<UserInfo> updateUserStatus(UpdateUserStatusRequest request);
 
   Future<UserInfo> setPushEnabled(PushEnableRequest request);
 

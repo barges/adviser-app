@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -32,66 +33,67 @@ class TileWidget extends StatelessWidget {
     final bool needTimer = timerWidget != null;
     return Opacity(
       opacity: isDisable ? 0.4 : 1.0,
-      child: SizedBox(
-        height: 44.0,
-        child: Row(children: [
-          Expanded(
-            child: Row(
-              children: [
-                Opacity(
+      child: GestureDetector(
+        onTap: () {
+          if (!isDisable && onTap != null) {
+            onTap!();
+          }
+        },
+        child: Container(
+          height: 44.0,
+          color: Colors.transparent,
+          child: Row(children: [
+            Expanded(
+              child: Row(
+                children: [
+                  Opacity(
+                    opacity: needTimer ? 0.4 : 1.0,
+                    child: SvgPicture.asset(
+                      iconSVGPath,
+                    ),
+                  ),
+                  const SizedBox(width: 10.0),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Opacity(
+                        opacity: needTimer ? 0.4 : 1.0,
+                        child: Text(
+                          title,
+                          style: Get.textTheme.bodyMedium,
+                        ),
+                      ),
+                      if (needTimer) timerWidget!,
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            if (initSwitcherValue != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppConstants.horizontalScreenPadding,
+                ),
+                child: Opacity(
                   opacity: needTimer ? 0.4 : 1.0,
-                  child: SvgPicture.asset(
-                    iconSVGPath,
+                  child: CupertinoSwitch(
+                    value: !isDisable ? initSwitcherValue! : false,
+                    onChanged: (bool value) {
+                      if (!isDisable && !needTimer && onChanged != null) {
+                        onChanged!(value);
+                      }
+                    },
+                    activeColor: Get.theme.primaryColor,
+                    trackColor: Get.theme.hintColor,
                   ),
                 ),
-                const SizedBox(width: 10.0),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Opacity(
-                      opacity: needTimer ? 0.4 : 1.0,
-                      child: Text(
-                        title,
-                        style: Get.textTheme.bodyMedium,
-                      ),
-                    ),
-                    if (needTimer) timerWidget!,
-                  ],
-                ),
-              ],
-            ),
-          ),
-          if (initSwitcherValue != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppConstants.horizontalScreenPadding,
               ),
-              child: Opacity(
-                opacity: needTimer ? 0.4 : 1.0,
-                child: CupertinoSwitch(
-                  value: !isDisable ? initSwitcherValue! : false,
-                  onChanged: (bool value) {
-                    if (!isDisable && !needTimer && onChanged != null) {
-                      onChanged!(value);
-                    }
-                  },
-                  activeColor: Get.theme.primaryColor,
-                  trackColor: Get.theme.hintColor,
-                ),
-              ),
-            ),
-          if (onTap != null)
-            Row(
-              children: [
-                widget ?? const SizedBox(),
-                GestureDetector(
-                  onTap: () {
-                    if (!isDisable && onTap != null) {
-                      onTap!();
-                    }
-                  },
-                  child: Padding(
+            if (onTap != null)
+              Row(
+                children: [
+                  widget ?? const SizedBox(),
+                  Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: AppConstants.horizontalScreenPadding,
                     ),
@@ -99,10 +101,10 @@ class TileWidget extends StatelessWidget {
                       color: Get.theme.primaryColor,
                     ),
                   ),
-                ),
-              ],
-            )
-        ]),
+                ],
+              )
+          ]),
+        ),
       ),
     );
   }

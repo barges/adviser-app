@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -6,12 +7,14 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/tile_widget.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart';
 
 class ReviewsSettingsPartWidget extends StatelessWidget {
   const ReviewsSettingsPartWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final AccountCubit accountCubit = context.read<AccountCubit>();
     return Container(
       padding:
           const EdgeInsets.only(left: AppConstants.horizontalScreenPadding),
@@ -75,7 +78,7 @@ class ReviewsSettingsPartWidget extends StatelessWidget {
             height: 1.0,
           ),
           TileWidget(
-            onTap: () {},
+            onTap: accountCubit.openSettingsUrl,
             title: S.of(context).settings,
             iconSVGPath: Assets.vectors.settings.path,
           )

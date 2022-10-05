@@ -12,22 +12,38 @@ import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_state.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AccountCubit extends Cubit<AccountState> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
-  final TextEditingController searchController = TextEditingController();
+  final TextEditingController commentController = TextEditingController();
 
   final UserRepository userRepository = Get.find<UserRepository>();
 
   final CacheManager cacheManager;
 
+  final Uri _url = Uri.parse(AppConstants.webToolUrl);
+
   AccountCubit(this.cacheManager) : super(const AccountState()) {
-    getUserinfo();
+    commentController.addListener(() {
+      emit(
+        state.copyWith(
+          commentButtonIsActive: commentController.text.isNotEmpty,
+        ),
+      );
+    });
+    refreshUserinfo();
   }
 
-  Future<void> getUserinfo() async {
+  @override
+  Future<void> close() async {
+    commentController.dispose();
+    return super.close();
+  }
+
+  Future<void> refreshUserinfo({UserInfo? info}) async {
     try {
-      final UserInfo userInfo = await run(userRepository.getUserInfo());
+      final UserInfo userInfo = info ?? await run(userRepository.getUserInfo());
 
       await cacheManager.saveUserProfile(userInfo.profile);
       await cacheManager.saveUserId(userInfo.id);
@@ -73,14 +89,22 @@ class AccountCubit extends Cubit<AccountState> {
     return false;
   }
 
-  Future<void> updateUserStatus(bool newValue) async {
+  Future<void> updateUserStatus(
+      {required FortunicaUserStatusEnum status}) async {
     final UpdateUserStatusRequest request = UpdateUserStatusRequest(
-      status: newValue
-          ? FortunicaUserStatusEnum.live
-          : FortunicaUserStatusEnum.offline,
+      status: status,
+      comment: commentController.text,
     );
-
-    await run(userRepository.updateUserStatus(request));
+    try {
+      final UserInfo userInfo =
+          await run(userRepository.updateUserStatus(request));
+      refreshUserinfo(
+        info: userInfo,
+      );
+    } catch (e) {
+      ///TODO: Handle the error
+      rethrow;
+    }
   }
 
   Future<void> updateEnableNotificationsValue(bool newValue) async {
@@ -103,7 +127,27 @@ class AccountCubit extends Cubit<AccountState> {
       AppRoutes.editProfile,
     );
     if (needUpdateInfo is bool && needUpdateInfo == true) {
-      getUserinfo();
+      refreshUserinfo();
+    }
+  }
+
+  void hideTimer() {
+    emit(
+      state.copyWith(
+        seconds: 0,
+      ),
+    );
+  }
+
+  Future<void> openSettingsUrl() async {
+    if (!await launchUrl(
+      _url,
+      mode: LaunchMode.externalApplication,
+    )) {
+      Get.showSnackbar(GetSnackBar(
+        duration: const Duration(seconds: 2),
+        message: 'Could not launch $_url',
+      ));
     }
   }
 }

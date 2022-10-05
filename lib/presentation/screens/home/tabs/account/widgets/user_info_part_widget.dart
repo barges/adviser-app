@@ -11,6 +11,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/change_status_comment_bottom_sheet.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/count_down_timer.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/tile_widget.dart';
 
@@ -40,52 +41,54 @@ class UserInfoPartWidget extends StatelessWidget {
             padding: const EdgeInsets.all(
               AppConstants.horizontalScreenPadding,
             ),
-            child: Row(
-              children: [
-                UserAvatar(
-                  avatarUrl: userProfile?.profilePictures?.firstOrNull,
-                  diameter: 72.0,
-                  badgeColor: currentStatus.status?.statusColorForBadge,
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        userProfile?.profileName ?? '',
-                        overflow: TextOverflow.ellipsis,
-                        style: Get.textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.w700),
-                      ),
-                      Text(
-                          userProfile?.rituals?.reduce((value, element) =>
-                                  '${value.capitalize}, ${element.capitalize}') ??
-                              '',
-                          overflow: TextOverflow.ellipsis,
-                          style: Get.textTheme.bodyMedium
-                              ?.copyWith(color: Get.theme.shadowColor)),
-                      Text(
-                        currentStatus.status?.statusName ?? '',
-                        style: Get.textTheme.bodyMedium?.copyWith(
-                          color: currentStatus.status?.statusColor,
-                        ),
-                      ),
-                    ],
+            child: GestureDetector(
+              onTap: accountCubit.goToEditProfile,
+              child: Row(
+                children: [
+                  UserAvatar(
+                    avatarUrl: userProfile?.profilePictures?.firstOrNull,
+                    diameter: 72.0,
+                    badgeColor: currentStatus.status?.statusColorForBadge,
                   ),
-                ),
-                GestureDetector(
-                  onTap: accountCubit.goToEditProfile,
-                  child: Padding(
+                  const SizedBox(
+                    width: 16.0,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          userProfile?.profileName ?? '',
+                          overflow: TextOverflow.ellipsis,
+                          style: Get.textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.w700),
+                        ),
+                        Text(
+                            userProfile?.rituals?.reduce((value, element) =>
+                                    '${value.capitalize}, ${element.capitalize}') ??
+                                '',
+                            overflow: TextOverflow.ellipsis,
+                            style: Get.textTheme.bodyMedium
+                                ?.copyWith(color: Get.theme.shadowColor)),
+                        Text(
+                          currentStatus.status?.statusName ?? '',
+                          style: Get.textTheme.bodyMedium?.copyWith(
+                            color: currentStatus.status?.statusColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
                     padding: const EdgeInsets.only(
                       left: 36.0,
                     ),
                     child: Assets.vectors.arrowRight.svg(
                       color: Get.theme.primaryColor,
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           );
         }),
@@ -93,7 +96,9 @@ class UserInfoPartWidget extends StatelessWidget {
           padding:
               const EdgeInsets.only(left: AppConstants.horizontalScreenPadding),
           child: Column(children: [
-            const Divider(height: 1.0,),
+            const Divider(
+              height: 1.0,
+            ),
             Builder(
               builder: (context) {
                 final int seconds =
@@ -101,7 +106,23 @@ class UserInfoPartWidget extends StatelessWidget {
                 return TileWidget(
                   title: S.of(context).imAvailableNow,
                   iconSVGPath: Assets.vectors.availability.path,
-                  onChanged: accountCubit.updateUserStatus,
+                  onChanged: (newValue) {
+                    if (newValue) {
+                      accountCubit.updateUserStatus(
+                        status: FortunicaUserStatusEnum.live,
+                      );
+                    } else {
+                      changeStatusCommentBottomSheet(
+                        context: context,
+                        commentController: accountCubit.commentController,
+                        okOnTap: () {
+                          accountCubit.updateUserStatus(
+                            status: FortunicaUserStatusEnum.offline,
+                          );
+                        },
+                      );
+                    }
+                  },
                   isDisable: currentStatus.status !=
                           FortunicaUserStatusEnum.live &&
                       currentStatus.status != FortunicaUserStatusEnum.offline,
@@ -110,13 +131,15 @@ class UserInfoPartWidget extends StatelessWidget {
                   timerWidget: seconds > 0
                       ? CountDownTimer(
                           seconds: seconds,
-                          onEnd: accountCubit.getUserinfo,
+                          onEnd: accountCubit.hideTimer,
                         )
                       : null,
                 );
               },
             ),
-            const Divider(height: 1.0,),
+            const Divider(
+              height: 1.0,
+            ),
             Builder(
               builder: (context) {
                 final bool enableNotifications = context.select(
@@ -129,7 +152,9 @@ class UserInfoPartWidget extends StatelessWidget {
                 );
               },
             ),
-            const Divider(height: 1.0,),
+            const Divider(
+              height: 1.0,
+            ),
             TileWidget(
               isDisable: currentStatus.status != FortunicaUserStatusEnum.live,
               iconSVGPath: Assets.vectors.eye.path,

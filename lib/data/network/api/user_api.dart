@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_image_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_request.dart';
@@ -29,7 +28,7 @@ abstract class UserApi {
   );
 
   @PUT('/experts/status')
-  Future<UserStatus> updateUserStatus(
+  Future<UserInfo> updateUserStatus(
     @Body() UpdateUserStatusRequest request,
   );
 

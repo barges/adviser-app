@@ -749,6 +749,56 @@ class S {
       args: [],
     );
   }
+
+  /// `Inform our team your planned return date:`
+  String get informOurTeamYourPlannedReturnDate {
+    return Intl.message(
+      'Inform our team your planned return date:',
+      name: 'informOurTeamYourPlannedReturnDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure that you want to change your status to Offline?`
+  String get areYouSureThatYouWantToChangeYourStatus {
+    return Intl.message(
+      'Are you sure that you want to change your status to Offline?',
+      name: 'areYouSureThatYouWantToChangeYourStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes, I’m sure`
+  String get yesImSure {
+    return Intl.message(
+      'Yes, I’m sure',
+      name: 'yesImSure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No, I changed my mind`
+  String get noIChangedMyMind {
+    return Intl.message(
+      'No, I changed my mind',
+      name: 'noIChangedMyMind',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Done`
+  String get done {
+    return Intl.message(
+      'Done',
+      name: 'done',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

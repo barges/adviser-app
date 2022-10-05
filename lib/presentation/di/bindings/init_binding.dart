@@ -17,6 +17,7 @@ import 'package:shared_advisor_interface/domain/repositories/auth_repository.dar
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class InitBinding extends Bindings {
   final DeviceInfoPlugin deviceInfo =
@@ -56,7 +57,7 @@ class InitBinding extends Bindings {
 
   Future<Dio> _initDio(CacheManager cacheManager) async {
     final dio = Dio();
-    dio.options.baseUrl = 'https://api-staging.fortunica-app.com';
+    dio.options.baseUrl = AppConstants.baseUrl;
     dio.options.headers = await _getHeaders(cacheManager);
     dio.options.connectTimeout = 30000;
     dio.options.receiveTimeout = 30000;

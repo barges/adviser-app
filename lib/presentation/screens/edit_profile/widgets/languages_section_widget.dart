@@ -67,9 +67,7 @@ class LanguageSectionWidget extends StatelessWidget {
                         editProfileCubit.errorTextsMap[entry.key]?.first ?? '',
                     label: S.of(context).statusText,
                     textInputType: TextInputType.multiline,
-                    maxLines: 10,
-                    height: 144.0,
-                    contentPadding: const EdgeInsets.all(12.0),
+                    isBig: true,
                   ),
                   const SizedBox(
                     height: 24.0,
@@ -80,9 +78,7 @@ class LanguageSectionWidget extends StatelessWidget {
                         editProfileCubit.errorTextsMap[entry.key]?.last ?? '',
                     label: S.of(context).profileText,
                     textInputType: TextInputType.multiline,
-                    maxLines: 10,
-                    height: 144.0,
-                    contentPadding: const EdgeInsets.all(12.0),
+                    isBig: true,
                   ),
                 ],
               ),
@@ -112,31 +108,46 @@ class _LanguageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        height: 38.0,
-        decoration: BoxDecoration(
-          color:
-              isSelected ? Get.theme.primaryColorLight : Get.theme.canvasColor,
-          borderRadius: BorderRadius.circular(
-            AppConstants.buttonRadius,
-          ),
-          border: withError
-              ? Border.all(
-                  color: Get.theme.errorColor,
-                )
-              : null,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Center(
-          child: Text(
-            languageName,
-            style: Get.textTheme.bodyMedium?.copyWith(
+      child: Stack(
+        children: [
+          Container(
+            height: 38.0,
+            decoration: BoxDecoration(
               color: isSelected
-                  ? Get.theme.primaryColor
-                  : Get.textTheme.bodyMedium?.color,
+                  ? Get.theme.primaryColorLight
+                  : Get.theme.canvasColor,
+              borderRadius: BorderRadius.circular(
+                AppConstants.buttonRadius,
+              ),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Center(
+              child: Text(
+                languageName,
+                style: Get.textTheme.bodyMedium?.copyWith(
+                  color: isSelected
+                      ? Get.theme.primaryColor
+                      : Get.textTheme.bodyMedium?.color,
+                ),
+              ),
             ),
           ),
-        ),
+          if (withError)
+            Positioned(
+              right: 0.0,
+              child: Container(
+                height: 12.0,
+                width: 12.0,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Get.theme.errorColor,
+                    border: Border.all(
+                      width: 2.0,
+                      color: Get.theme.scaffoldBackgroundColor,
+                    )),
+              ),
+            )
+        ],
       ),
     );
   }

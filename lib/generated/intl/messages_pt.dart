@@ -30,6 +30,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "all": MessageLookupByLibrary.simpleMessage("Tudo"),
         "allOurBrands":
             MessageLookupByLibrary.simpleMessage("Todas as nossas marcas"),
+        "areYouSureThatYouWantToChangeYourStatus":
+            MessageLookupByLibrary.simpleMessage(
+                "Are you sure that you want to change your status to Offline?"),
         "articles": MessageLookupByLibrary.simpleMessage("Artigos"),
         "back": MessageLookupByLibrary.simpleMessage("De volta"),
         "balanceTransactions":
@@ -53,6 +56,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customersWantSeeIfYouReal": MessageLookupByLibrary.simpleMessage(
             "Os clientes querem ver se você é real. Quanto mais fotos suas você adicionar, melhor."),
         "days": MessageLookupByLibrary.simpleMessage("dias"),
+        "done": MessageLookupByLibrary.simpleMessage("Done"),
         "editProfile": MessageLookupByLibrary.simpleMessage("Editar Perfil"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "english": MessageLookupByLibrary.simpleMessage("Inglês"),
@@ -66,6 +70,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "fortunica": MessageLookupByLibrary.simpleMessage("Fortunica"),
         "imAvailableNow":
             MessageLookupByLibrary.simpleMessage("Estou disponível agora"),
+        "informOurTeamYourPlannedReturnDate":
+            MessageLookupByLibrary.simpleMessage(
+                "Inform our team your planned return date:"),
         "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
         "logOut": MessageLookupByLibrary.simpleMessage("Sair"),
         "login": MessageLookupByLibrary.simpleMessage("Conecte-se"),
@@ -75,6 +82,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "newMandatoryArticleIsAvailable": MessageLookupByLibrary.simpleMessage(
             "Novo artigo obrigatório está disponível!"),
         "nickname": MessageLookupByLibrary.simpleMessage("Apelido"),
+        "noIChangedMyMind":
+            MessageLookupByLibrary.simpleMessage("No, I changed my mind"),
         "notEnoughConversationsCheckOurProfileGuide":
             MessageLookupByLibrary.simpleMessage(
                 "Não há conversas suficientes? Confira nosso Guia de Perfil."),
@@ -125,6 +134,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Espaços de trabalho"),
         "wrongUsernameOrPassword": MessageLookupByLibrary.simpleMessage(
             "Nome de usuário ou senha incorretos"),
+        "yesImSure": MessageLookupByLibrary.simpleMessage("Yes, I’m sure"),
         "youHave": MessageLookupByLibrary.simpleMessage("Você tem"),
         "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo":
             MessageLookupByLibrary.simpleMessage(

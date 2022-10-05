@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_loading_indicator.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_text_field.dart';
@@ -30,49 +31,51 @@ class LoginScreen extends StatelessWidget {
             children: [
               Scaffold(
                 appBar: const LoginAppBar(),
-                body:
-                    SafeArea(
-                      child: GestureDetector(
-                        onTap: () {
-                          FocusScope.of(context).unfocus();
-                          cubit.clearErrorMessage();
-                        },
-                        child: Column(
-                          children: [
-                            Builder(
-                              builder: (BuildContext context) {
-                                final String errorMessage = context.select(
-                                        (LoginCubit cubit) => cubit.state.errorMessage);
-                                return errorMessage.isNotEmpty
-                                    ? AppErrorWidget(
-                                  errorMessage: errorMessage,
-                                  close: () {
-                                    cubit.clearErrorMessage();
-                                  },
-                                )
-                                    : const SizedBox.shrink();
-                              },
-                            ),
-                            Builder(
-                              builder: (BuildContext context) {
-                                final bool showEmailButton = context.select(
-                                        (LoginCubit cubit) =>
+                body: SafeArea(
+                  child: GestureDetector(
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                      cubit.clearErrorMessage();
+                    },
+                    child: Column(
+                      children: [
+                        Builder(
+                          builder: (BuildContext context) {
+                            final String errorMessage = context.select(
+                                (LoginCubit cubit) => cubit.state.errorMessage);
+                            return errorMessage.isNotEmpty
+                                ? AppErrorWidget(
+                                    errorMessage: errorMessage,
+                                    close: () {
+                                      cubit.clearErrorMessage();
+                                    },
+                                  )
+                                : const SizedBox.shrink();
+                          },
+                        ),
+                        Builder(
+                          builder: (BuildContext context) {
+                            final bool showEmailButton = context.select(
+                                (LoginCubit cubit) =>
                                     cubit.state.showOpenEmailButton);
-                                final String message = context.select(
-                                        (LoginCubit cubit) => cubit.state.successMessage);
-                                return message.isNotEmpty
-                                    ? AppSuccessWidget(
-                                  message: message,
-                                  showEmailButton: showEmailButton,
-                                  close: () {
-                                    cubit.clearSuccessMessage();
-                                  },
-                                )
-                                    : const SizedBox.shrink();
-                              },
-                            ),
-                            SingleChildScrollView(
-                              child: Column(children: [
+                            final String message = context.select(
+                                (LoginCubit cubit) =>
+                                    cubit.state.successMessage);
+                            return message.isNotEmpty
+                                ? AppSuccessWidget(
+                                    message: message,
+                                    showEmailButton: showEmailButton,
+                                    close: () {
+                                      cubit.clearSuccessMessage();
+                                    },
+                                  )
+                                : const SizedBox.shrink();
+                          },
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
                                 const SizedBox(
                                   height: 16.0,
                                 ),
@@ -94,7 +97,8 @@ class LoginScreen extends StatelessWidget {
                                         return AppTextField(
                                           errorText: emailErrorText,
                                           label: S.of(context).email,
-                                          textInputType: TextInputType.emailAddress,
+                                          textInputType:
+                                              TextInputType.emailAddress,
                                           textInputAction: TextInputAction.next,
                                           nextFocusNode: cubit.passwordNode,
                                           controller: cubit.emailController,
@@ -104,8 +108,8 @@ class LoginScreen extends StatelessWidget {
                                         height: 24.0,
                                       ),
                                       Builder(builder: (BuildContext context) {
-                                        final bool hiddenPassword = context.select(
-                                            (LoginCubit cubit) =>
+                                        final bool hiddenPassword =
+                                            context.select((LoginCubit cubit) =>
                                                 cubit.state.hiddenPassword);
                                         final String passwordErrorText =
                                             context.select((LoginCubit cubit) =>
@@ -136,8 +140,8 @@ class LoginScreen extends StatelessWidget {
                                             cubit.goToForgotPassword(context),
                                         child: Text(
                                           '${S.of(context).forgotPassword}?',
-                                          style:
-                                              Get.textTheme.titleMedium?.copyWith(
+                                          style: Get.textTheme.titleMedium
+                                              ?.copyWith(
                                             color: Get.theme.primaryColor,
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -145,13 +149,29 @@ class LoginScreen extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                )
-                              ]),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 24.0,
+                                  ),
+                                  child: Get.isDarkMode
+                                      ? Assets.images.logos.loginLogoDark.image(
+                                          height: AppConstants.logoSize,
+                                          width: AppConstants.logoSize,
+                                        )
+                                      : Assets.images.logos.loginLogo.image(
+                                          height: AppConstants.logoSize,
+                                          width: AppConstants.logoSize,
+                                        ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
+                  ),
+                ),
               ),
               Builder(
                 builder: (context) {
