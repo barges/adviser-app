@@ -27,7 +27,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "addGalleryPictures":
             MessageLookupByLibrary.simpleMessage("Adicionar fotos da galeria"),
         "addMore": MessageLookupByLibrary.simpleMessage("Adicione mais"),
-        "all": MessageLookupByLibrary.simpleMessage("Tudo"),
         "allOurBrands":
             MessageLookupByLibrary.simpleMessage("Todas as nossas marcas"),
         "areYouSureThatYouWantToChangeYourStatus":
@@ -55,6 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Suporte ao cliente"),
         "customersWantSeeIfYouReal": MessageLookupByLibrary.simpleMessage(
             "Os clientes querem ver se você é real. Quanto mais fotos suas você adicionar, melhor."),
+        "dashboard": MessageLookupByLibrary.simpleMessage("Dashboard"),
         "days": MessageLookupByLibrary.simpleMessage("dias"),
         "done": MessageLookupByLibrary.simpleMessage("Done"),
         "editProfile": MessageLookupByLibrary.simpleMessage("Editar Perfil"),
@@ -77,7 +77,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "logOut": MessageLookupByLibrary.simpleMessage("Sair"),
         "login": MessageLookupByLibrary.simpleMessage("Conecte-se"),
         "mandatory": MessageLookupByLibrary.simpleMessage("Obrigatoriedade"),
-        "market": MessageLookupByLibrary.simpleMessage("Mercado"),
         "newLabel": MessageLookupByLibrary.simpleMessage("Nova"),
         "newMandatoryArticleIsAvailable": MessageLookupByLibrary.simpleMessage(
             "Novo artigo obrigatório está disponível!"),
@@ -88,8 +87,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Não há conversas suficientes? Confira nosso Guia de Perfil."),
         "notifications": MessageLookupByLibrary.simpleMessage("Notificações"),
-        "onlyPremiumProducts":
-            MessageLookupByLibrary.simpleMessage("Apenas produtos premium"),
         "openEmailApp":
             MessageLookupByLibrary.simpleMessage("Abra o aplicativo de e-mail"),
         "otherBrands": MessageLookupByLibrary.simpleMessage("Outras marcas"),
@@ -103,8 +100,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "portuguese": MessageLookupByLibrary.simpleMessage("Português"),
         "previewAccount":
             MessageLookupByLibrary.simpleMessage("Visualizar conta"),
-        "privateQuestions":
-            MessageLookupByLibrary.simpleMessage("Perguntas particulares"),
         "profileText": MessageLookupByLibrary.simpleMessage("Texto do perfil"),
         "public": MessageLookupByLibrary.simpleMessage("Pública"),
         "requestNewPassword":

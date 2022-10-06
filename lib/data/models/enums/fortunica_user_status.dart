@@ -66,7 +66,6 @@ extension StatusExt on FortunicaUserStatusEnum {
         return 'You’re currently not live on the platform, platform,'
             ' please make sure you fill out your profile for all languages. '
             'You can contact your Manager if you have questions.';
-
       case FortunicaUserStatusEnum.legalBlock:
         return 'Before proceeding you need to accept contracts.'
             ' To do so please open the web version of the Advisor Tool';
@@ -75,6 +74,20 @@ extension StatusExt on FortunicaUserStatusEnum {
             ' you can\'t use the full functionality and are not '
             'visible to users. You can change your status'
             ' to Live in your profile.';
+    }
+  }
+
+  String buttonText(BuildContext context) {
+    switch (this) {
+      case FortunicaUserStatusEnum.live:
+      case FortunicaUserStatusEnum.blocked:
+        return '';
+      case FortunicaUserStatusEnum.incomplete:
+        return 'Complete profile to start helping';
+      case FortunicaUserStatusEnum.legalBlock:
+        return 'Open web Advisor Tool';
+      case FortunicaUserStatusEnum.offline:
+        return 'Go to your profile';
     }
   }
 }

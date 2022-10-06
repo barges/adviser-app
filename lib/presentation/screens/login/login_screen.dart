@@ -26,7 +26,7 @@ class LoginScreen extends StatelessWidget {
           LoginCubit(Get.find<AuthRepository>(), Get.find<CacheManager>()),
       child: Builder(
         builder: (BuildContext context) {
-          final LoginCubit cubit = context.read<LoginCubit>();
+          final LoginCubit loginCubit = context.read<LoginCubit>();
           return Stack(
             children: [
               Scaffold(
@@ -35,7 +35,7 @@ class LoginScreen extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () {
                       FocusScope.of(context).unfocus();
-                      cubit.clearErrorMessage();
+                      loginCubit.clearErrorMessage();
                     },
                     child: Column(
                       children: [
@@ -47,7 +47,7 @@ class LoginScreen extends StatelessWidget {
                                 ? AppErrorWidget(
                                     errorMessage: errorMessage,
                                     close: () {
-                                      cubit.clearErrorMessage();
+                                      loginCubit.clearErrorMessage();
                                     },
                                   )
                                 : const SizedBox.shrink();
@@ -66,7 +66,7 @@ class LoginScreen extends StatelessWidget {
                                     message: message,
                                     showEmailButton: showEmailButton,
                                     close: () {
-                                      cubit.clearSuccessMessage();
+                                      loginCubit.clearSuccessMessage();
                                     },
                                   )
                                 : const SizedBox.shrink();
@@ -100,8 +100,8 @@ class LoginScreen extends StatelessWidget {
                                           textInputType:
                                               TextInputType.emailAddress,
                                           textInputAction: TextInputAction.next,
-                                          nextFocusNode: cubit.passwordNode,
-                                          controller: cubit.emailController,
+                                          nextFocusNode: loginCubit.passwordNode,
+                                          controller: loginCubit.emailController,
                                         );
                                       }),
                                       const SizedBox(
@@ -115,14 +115,14 @@ class LoginScreen extends StatelessWidget {
                                             context.select((LoginCubit cubit) =>
                                                 cubit.state.passwordErrorText);
                                         return PasswordTextField(
-                                          controller: cubit.passwordController,
-                                          focusNode: cubit.passwordNode,
+                                          controller: loginCubit.passwordController,
+                                          focusNode: loginCubit.passwordNode,
                                           label: S.of(context).password,
                                           errorText: passwordErrorText,
                                           textInputAction: TextInputAction.next,
-                                          onSubmitted: (_) => cubit.login,
+                                          onSubmitted: (_) => loginCubit.login,
                                           hiddenPassword: hiddenPassword,
-                                          clickToHide: cubit.showHidePassword,
+                                          clickToHide: loginCubit.showHidePassword,
                                         );
                                       }),
                                       const SizedBox(
@@ -130,14 +130,14 @@ class LoginScreen extends StatelessWidget {
                                       ),
                                       AppElevatedButton(
                                         text: S.of(context).login,
-                                        onPressed: () => cubit.login(context),
+                                        onPressed: loginCubit.login,
                                       ),
                                       const SizedBox(
                                         height: 22.0,
                                       ),
                                       GestureDetector(
                                         onTap: () =>
-                                            cubit.goToForgotPassword(context),
+                                            loginCubit.goToForgotPassword(context),
                                         child: Text(
                                           '${S.of(context).forgotPassword}?',
                                           style: Get.textTheme.titleMedium

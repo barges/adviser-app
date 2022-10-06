@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
@@ -18,8 +19,7 @@ class DashboardScreen extends StatelessWidget {
       create: (_) => DashboardCubit(),
       child: Scaffold(
         appBar: SimpleAppBar(
-          title: 'Dashboard',
-          openDrawer: openDrawer,
+          title: S.of(context).dashboard,
         ),
         body: SizedBox(
           height: Get.height,

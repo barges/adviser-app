@@ -8,7 +8,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_loading_indicator.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_text_field.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/password_text_field.dart';
@@ -28,7 +28,7 @@ class ForgotPasswordScreen extends StatelessWidget {
           return Stack(
             children: [
               Scaffold(
-                appBar: WideAppBar(
+                appBar: SimpleAppBar(
                   title: S.of(context).forgotPassword,
                 ),
                 body: SafeArea(
@@ -124,8 +124,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                                       label: S.of(context).confirmNewPassword,
                                       errorText: confirmPasswordErrorText,
                                       textInputAction: TextInputAction.send,
-                                      onSubmitted: (_) =>
-                                          cubit.resetPassword(context),
+                                      onSubmitted: (_) => cubit.resetPassword(),
                                       hiddenPassword: hiddenConfirmPassword,
                                       clickToHide:
                                           cubit.showHideConfirmPassword,
@@ -134,11 +133,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                                 }),
                                 AppElevatedButton(
                                   text: S.of(context).changePassword,
-                                  onPressed: () {
-                                    if (!cubit.state.isLoading) {
-                                      cubit.resetPassword(context);
-                                    }
-                                  },
+                                  onPressed: cubit.resetPassword,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(

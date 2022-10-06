@@ -4,7 +4,6 @@ import 'package:shared_advisor_interface/data/models/error_model.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_state.dart';
 
 class SessionsCubit extends Cubit<SessionsState> {
@@ -16,7 +15,7 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   SessionsCubit(this._repository) : super(const SessionsState()) {
     controller.addListener(addScrollControllerListener);
-    getListOfQuestions();
+    getListOfQuestions(state.currentOptionIndex);
   }
 
   @override
@@ -27,7 +26,7 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   void addScrollControllerListener() {
     if (controller.offset >= (controller.position.maxScrollExtent * 0.9)) {
-      getListOfQuestions();
+      getListOfQuestions(state.currentOptionIndex);
     }
   }
 
@@ -35,45 +34,46 @@ class SessionsCubit extends Cubit<SessionsState> {
     emit(state.copyWith(selectedFilterIndex: newIndex));
   }
 
-  String buildIsPublicText() {
-    if (state.isPublic) {
-      return S.current.public;
-    } else {
-      return S.current.forMe;
-    }
-  }
-
-  Future<void> getListOfQuestions() async {
+  Future<void> getListOfQuestions(int index) async {
+    resetList(index);
     if (!state.hasMore) return;
     try {
-      QuestionsListResponse result = state.questionsListResponse;
-      state.copyWith(hasMore: result.hasMore ?? true, isPublic: state.isPublic);
-      if (result.questions?.isEmpty ?? true) {
-        emit(state.copyWith(isPublic: true));
+      QuestionsListResponse result =
+          QuestionsListResponse(questions: state.questions);
+      final int page = result.questions?.length ?? 0;
+      emit(state.copyWith(hasMore: result.hasMore ?? true, page: page));
+      if (state.questions.isEmpty) {
         result = await run(_repository.getListOfQuestions(
-            page: state.page, isPublicFilter: state.isPublic));
+            page: page, isPublicFilter: state.currentOptionIndex == 0));
 
         return emit(state.copyWith(
-            questionsListResponse: result,
+            questions: result.questions ?? const [],
             hasMore: state.hasMore,
-            page: result.questions?.length ?? 0));
+            page: page));
       }
 
-      emit(state.copyWith(isPublic: !state.isPublic));
-
       result = await run(_repository.getListOfQuestions(
-          page: state.page, isPublicFilter: state.isPublic));
-      final questions =
-          List.of(state.questionsListResponse.questions ?? const [])
-            ..addAll(result.questions ?? []);
+          page: page, isPublicFilter: state.currentOptionIndex == 0));
+      final questions = List.of(state.questions)
+        ..addAll(result.questions ?? const []);
 
       emit(state.copyWith(
-        questionsListResponse: result,
+        questions: questions,
         hasMore: state.hasMore,
-        page: questions.length,
+        page: state.questions.length - page,
       ));
     } catch (e) {
       emit(state.copyWith(error: errorMessageAdapter(e)));
+    }
+  }
+
+  void resetList(int index) {
+    if (index != state.currentOptionIndex) {
+      emit(state.copyWith(
+          currentOptionIndex: index,
+          hasMore: true,
+          questions: const [],
+          page: 0));
     }
   }
 }

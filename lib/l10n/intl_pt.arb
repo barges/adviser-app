@@ -51,10 +51,6 @@
   "settings": "Definições",
   "notEnoughConversationsCheckOurProfileGuide": "Não há conversas suficientes? Confira nosso Guia de Perfil.",
   "seeMore": "Ver mais",
-  "all": "Tudo",
-  "onlyPremiumProducts": "Apenas produtos premium",
-  "privateQuestions": "Perguntas particulares",
-  "market": "Mercado",
   "newLabel": "Nova",
   "mandatory": "Obrigatoriedade",
   "articles": "Artigos",
@@ -73,5 +69,6 @@
   "areYouSureThatYouWantToChangeYourStatus": "Are you sure that you want to change your status to Offline?",
   "yesImSure": "Yes, I’m sure",
   "noIChangedMyMind": "No, I changed my mind",
-  "done": "Done"
+  "done": "Done",
+  "dashboard": "Dashboard"
 }

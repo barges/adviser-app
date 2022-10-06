@@ -61,7 +61,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     emit(state.copyWith(hiddenConfirmPassword: !state.hiddenConfirmPassword));
   }
 
-  Future<void> resetPassword(BuildContext context) async {
+  Future<void> resetPassword() async {
     if (emailIsValid() && passwordIsValid() && confirmPasswordIsValid()) {
       try {
         final bool success = await run(_repository.resetPassword(
@@ -85,20 +85,20 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
       if (!emailIsValid()) {
         emit(
           state.copyWith(
-              emailErrorText: S.of(context).pleaseInsertCorrectEmail),
+              emailErrorText: S.current.pleaseInsertCorrectEmail),
         );
       }
       if (!passwordIsValid()) {
         emit(
           state.copyWith(
-            passwordErrorText: S.of(context).pleaseEnterAtLeast8Characters,
+            passwordErrorText: S.current.pleaseEnterAtLeast8Characters,
           ),
         );
       }
       if (!confirmPasswordIsValid()) {
         emit(
           state.copyWith(
-            confirmPasswordErrorText: S.of(context).thePasswordsMustMatch,
+            confirmPasswordErrorText: S.current.thePasswordsMustMatch,
           ),
         );
       }

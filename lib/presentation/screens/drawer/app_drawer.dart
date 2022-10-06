@@ -234,8 +234,8 @@ class _BrandItem extends StatelessWidget {
                     isCurrent
                         ? Assets.vectors.moreHorizontal.path
                         : Assets.vectors.login.path,
-                    height: AppConstants.iconsSize,
-                    width: AppConstants.iconsSize,
+                    height: AppConstants.iconSize,
+                    width: AppConstants.iconSize,
                     color: Get.iconColor,
                   ),
                 ),
@@ -320,8 +320,8 @@ class _BottomSectionItem extends StatelessWidget {
           children: [
             SvgPicture.asset(
               icon,
-              height: AppConstants.iconsSize,
-              width: AppConstants.iconsSize,
+              height: AppConstants.iconSize,
+              width: AppConstants.iconSize,
               color: Get.iconColor,
             ),
             const SizedBox(

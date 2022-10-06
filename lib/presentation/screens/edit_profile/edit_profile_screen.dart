@@ -26,7 +26,7 @@ class EditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => Get.put<EditProfileCubit>(EditProfileCubit(context)),
+      create: (_) => Get.put<EditProfileCubit>(EditProfileCubit()),
       child: Builder(builder: (context) {
         final EditProfileCubit editProfileCubit =
             context.read<EditProfileCubit>();
@@ -56,6 +56,7 @@ class EditProfileScreen extends StatelessWidget {
                   body: SafeArea(
                     top: false,
                     child: CustomScrollView(
+                      physics: const ClampingScrollPhysics(),
                       slivers: [
                         Builder(builder: (context) {
                           final bool isWide = context.select(
@@ -195,8 +196,8 @@ class AppSliverAppBar extends StatelessWidget {
                                     child: Row(
                                       children: [
                                         Container(
-                                          height: AppConstants.iconsSize,
-                                          width: AppConstants.iconsSize,
+                                          height: AppConstants.iconSize,
+                                          width: AppConstants.iconSize,
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 3.0),
                                           margin: const EdgeInsets.only(
@@ -264,8 +265,8 @@ class AppSliverAppBar extends StatelessWidget {
                               Row(
                                 children: [
                                   Container(
-                                    height: AppConstants.iconsSize,
-                                    width: AppConstants.iconsSize,
+                                    height: AppConstants.iconSize,
+                                    width: AppConstants.iconSize,
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 3.0),
                                     margin: const EdgeInsets.symmetric(

@@ -28,9 +28,10 @@ class ArticlesScreen extends StatelessWidget {
                   final int selectedFilterIndex = context.select(
                       (ArticlesCubit cubit) => cubit.state.selectedFilterIndex);
                   final List<String> filters = [
-                    S.of(context).all,
-                    S.of(context).onlyPremiumProducts,
-                    S.of(context).privateQuestions,
+                    'All',
+                    'Only Premium Products',
+                    'Private Questions',
+                    'Market: '
                   ];
                   final List<VoidCallback> onTaps = filters
                       .map((e) => () =>

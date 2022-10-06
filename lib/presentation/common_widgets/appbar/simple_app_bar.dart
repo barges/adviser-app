@@ -6,16 +6,10 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 
 class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final String? backIcon;
-  final String? backButtonText;
-  final VoidCallback? openDrawer;
 
   const SimpleAppBar({
     Key? key,
     required this.title,
-    this.backButtonText,
-    this.openDrawer,
-    this.backIcon,
   }) : super(key: key);
 
   @override
@@ -27,27 +21,23 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       centerTitle: false,
       titleSpacing: AppConstants.horizontalScreenPadding,
-      titleTextStyle: Get.textTheme.headlineMedium,
-      actions: [
-        if (openDrawer != null)
-          IconButton(
-              onPressed: openDrawer,
-              icon: const Icon(
-                Icons.menu,
-                color: Colors.black,
-              ))
-      ],
-      elevation: 0.0,
+      elevation: 1.0,
       title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           AppIconButton(
-            icon: backIcon ?? Assets.vectors.arrowLeft.path,
+            icon: Assets.vectors.arrowLeft.path,
             onTap: Get.back,
           ),
-          const SizedBox(
-            width: 12.0,
+          Text(
+            title,
+            style: Get.textTheme.headlineMedium?.copyWith(
+              fontSize: 17.0,
+            ),
           ),
-          Text(title),
+          const SizedBox(
+            width: AppConstants.iconButtonSize,
+          )
         ],
       ),
       backgroundColor: Get.theme.canvasColor,

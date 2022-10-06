@@ -5,7 +5,7 @@ import 'package:shared_advisor_interface/presentation/screens/edit_profile/galle
 
 class GalleryPicturesCubit extends Cubit<GalleryPicturesState> {
   late final PageController pageController;
-
+  late final List<String> coverPictures;
   GalleryPicturesCubit() : super(GalleryPicturesState()) {
     final double initPage = Get.arguments;
     pageController = PageController(initialPage: initPage.toInt());

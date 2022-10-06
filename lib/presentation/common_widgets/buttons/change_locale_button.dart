@@ -31,7 +31,7 @@ class _ChangeLocaleButtonState extends State<ChangeLocaleButton> {
       child: InkResponse(
         onTap: () => _showDialog(),
         child: Container(
-          height: 32.0,
+          height: AppConstants.iconButtonSize,
           decoration: BoxDecoration(
             color: Get.theme.scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),

@@ -79,7 +79,7 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  Future<void> login(BuildContext context) async {
+  Future<void> login() async {
     if (emailIsValid() && passwordIsValid()) {
       Get.find<Dio>().options.headers['Authorization'] =
           'Basic ${base64.encode(utf8.encode('${emailController.text}:${passwordController.text.to256}'))}';
@@ -102,7 +102,7 @@ class LoginCubit extends Cubit<LoginState> {
           );
         } else {
           emit(state.copyWith(
-            errorMessage: S.of(context).wrongUsernameOrPassword,
+            errorMessage: S.current.wrongUsernameOrPassword,
           ));
         }
       }
@@ -110,13 +110,13 @@ class LoginCubit extends Cubit<LoginState> {
       if (!emailIsValid()) {
         emit(
           state.copyWith(
-              emailErrorText: S.of(context).pleaseInsertCorrectEmail),
+              emailErrorText: S.current.pleaseInsertCorrectEmail),
         );
       }
       if (!passwordIsValid()) {
         emit(
           state.copyWith(
-            passwordErrorText: S.of(context).pleaseEnterAtLeast8Characters,
+            passwordErrorText: S.current.pleaseEnterAtLeast8Characters,
           ),
         );
       }

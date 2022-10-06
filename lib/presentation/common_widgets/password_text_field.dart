@@ -61,7 +61,7 @@ class PasswordTextField extends StatelessWidget {
               maxLines: 1,
               decoration: InputDecoration(
                 suffixIconConstraints: const BoxConstraints(
-                  minWidth: AppConstants.iconsSize,
+                  minWidth: AppConstants.iconSize,
                 ),
                 suffixIcon: Padding(
                   padding: const EdgeInsets.only(right: 12.0),

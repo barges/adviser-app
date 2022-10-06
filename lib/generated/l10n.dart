@@ -570,46 +570,6 @@ class S {
     );
   }
 
-  /// `All`
-  String get all {
-    return Intl.message(
-      'All',
-      name: 'all',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Only Premium Products`
-  String get onlyPremiumProducts {
-    return Intl.message(
-      'Only Premium Products',
-      name: 'onlyPremiumProducts',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Private Questions`
-  String get privateQuestions {
-    return Intl.message(
-      'Private Questions',
-      name: 'privateQuestions',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Market`
-  String get market {
-    return Intl.message(
-      'Market',
-      name: 'market',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `New`
   String get newLabel {
     return Intl.message(
@@ -795,6 +755,16 @@ class S {
     return Intl.message(
       'Done',
       name: 'done',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dashboard`
+  String get dashboard {
+    return Intl.message(
+      'Dashboard',
+      name: 'dashboard',
       desc: '',
       args: [],
     );

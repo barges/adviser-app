@@ -54,8 +54,8 @@ class AccountScreen extends StatelessWidget {
                               child: Row(
                                 children: [
                                   Container(
-                                    height: 32.0,
-                                    width: 32.0,
+                                    height: AppConstants.iconButtonSize,
+                                    width: AppConstants.iconButtonSize,
                                     padding: const EdgeInsets.all(4.0),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(

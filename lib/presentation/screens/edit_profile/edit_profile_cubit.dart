@@ -20,8 +20,6 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'edit_profile_state.dart';
 
 class EditProfileCubit extends Cubit<EditProfileState> {
-  final BuildContext context;
-
   final TextEditingController nicknameController = TextEditingController();
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
@@ -40,7 +38,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   int? initialLanguageIndex;
 
-  EditProfileCubit(this.context) : super(EditProfileState()) {
+  EditProfileCubit() : super(EditProfileState()) {
     userProfile = cacheManager.getUserProfile();
     activeLanguages = userProfile?.activeLanguages ?? [];
     nicknameController.text = userProfile?.profileName ?? '';
@@ -73,6 +71,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
     nicknameController.dispose();
     pageController.dispose();
+    Get.delete<EditProfileCubit>();
     return super.close();
   }
 
@@ -89,12 +88,10 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           profileTextController..text = property.description ?? '',
         ];
 
-        final String statusErrorMessage = statusTextController.text.isEmpty
-            ? S.of(context).fieldIsRequired
-            : '';
-        final String profileErrorMessage = profileTextController.text.isEmpty
-            ? S.of(context).fieldIsRequired
-            : '';
+        final String statusErrorMessage =
+            statusTextController.text.isEmpty ? S.current.fieldIsRequired : '';
+        final String profileErrorMessage =
+            profileTextController.text.isEmpty ? S.current.fieldIsRequired : '';
 
         if (statusErrorMessage.isNotEmpty || profileErrorMessage.isNotEmpty) {
           initialLanguageIndex ??= activeLanguages.indexOf(languageCode);
@@ -185,7 +182,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       isValid = false;
       emit(
         state.copyWith(
-            nicknameErrorText: S.of(context).pleaseEnterAtLeast3Characters),
+            nicknameErrorText: S.current.pleaseEnterAtLeast3Characters),
       );
     }
     return isValid;
@@ -196,11 +193,11 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     for (var entry in textControllersMap.entries) {
       final List<TextEditingController> controllersByLanguage = entry.value;
       if (controllersByLanguage.firstOrNull?.text.isEmpty == true) {
-        errorTextsMap[entry.key]?.first = S.of(context).fieldIsRequired;
+        errorTextsMap[entry.key]?.first = S.current.fieldIsRequired;
         isValid = false;
       }
       if (controllersByLanguage.lastOrNull?.text.isEmpty == true) {
-        errorTextsMap[entry.key]?.last = S.of(context).fieldIsRequired;
+        errorTextsMap[entry.key]?.last = S.current.fieldIsRequired;
         isValid = false;
       }
     }
