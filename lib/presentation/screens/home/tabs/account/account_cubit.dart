@@ -24,7 +24,12 @@ class AccountCubit extends Cubit<AccountState> {
 
   final Uri _url = Uri.parse(AppConstants.webToolUrl);
 
+  late final VoidCallback disposeListen;
+
   AccountCubit(this.cacheManager) : super(const AccountState()) {
+    disposeListen = cacheManager.listenUserProfile((value) {
+      emit(state.copyWith(userProfile: value));
+    });
     commentController.addListener(() {
       emit(
         state.copyWith(
@@ -37,6 +42,7 @@ class AccountCubit extends Cubit<AccountState> {
 
   @override
   Future<void> close() async {
+    disposeListen.call();
     commentController.dispose();
     return super.close();
   }

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_text_field.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/error_badge.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,8 +16,7 @@ class LanguageSectionWidget extends StatelessWidget {
     final EditProfileCubit editProfileCubit = context.read<EditProfileCubit>();
     final int chosenLanguageIndex = context
         .select((EditProfileCubit cubit) => cubit.state.chosenLanguageIndex);
-    final bool updateTextsFlag =
-        context.select((EditProfileCubit cubit) => cubit.state.updateTextsFlag);
+    context.select((EditProfileCubit cubit) => cubit.state.updateTextsFlag);
     return Column(
       children: [
         Container(
@@ -133,19 +133,9 @@ class _LanguageWidget extends StatelessWidget {
             ),
           ),
           if (withError)
-            Positioned(
+            const Positioned(
               right: 0.0,
-              child: Container(
-                height: 12.0,
-                width: 12.0,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Get.theme.errorColor,
-                    border: Border.all(
-                      width: 2.0,
-                      color: Get.theme.scaffoldBackgroundColor,
-                    )),
-              ),
+              child: ErrorBadge(),
             )
         ],
       ),

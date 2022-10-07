@@ -7,6 +7,7 @@ import 'package:shared_advisor_interface/data/models/user_info/user_status.dart'
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/error_badge.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
@@ -83,8 +84,18 @@ class UserInfoPartWidget extends StatelessWidget {
                     padding: const EdgeInsets.only(
                       left: 36.0,
                     ),
-                    child: Assets.vectors.arrowRight.svg(
-                      color: Get.theme.primaryColor,
+                    child: Stack(
+                      children: [
+                        Assets.vectors.arrowRight.svg(
+                          color: Get.theme.primaryColor,
+                        ),
+                        if (currentStatus.status ==
+                            FortunicaUserStatusEnum.incomplete)
+                          const Positioned(
+                            right: 0.0,
+                            child: ErrorBadge(),
+                          ),
+                      ],
                     ),
                   )
                 ],

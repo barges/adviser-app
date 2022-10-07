@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/error_badge.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class TileWidget extends StatelessWidget {
-  final bool isDisable;
   final String iconSVGPath;
   final String title;
   final Widget? widget;
@@ -14,6 +14,8 @@ class TileWidget extends StatelessWidget {
   final bool? initSwitcherValue;
   final ValueChanged<bool>? onChanged;
   final VoidCallback? onTap;
+  final bool isDisable;
+  final bool withError;
 
   const TileWidget({
     Key? key,
@@ -25,6 +27,7 @@ class TileWidget extends StatelessWidget {
     this.onChanged,
     this.onTap,
     this.isDisable = false,
+    this.withError = false,
   })  : assert(onTap != null || onChanged != null),
         super(key: key);
 
@@ -97,8 +100,17 @@ class TileWidget extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                       horizontal: AppConstants.horizontalScreenPadding,
                     ),
-                    child: Assets.vectors.arrowRight.svg(
-                      color: Get.theme.primaryColor,
+                    child: Stack(
+                      children: [
+                        Assets.vectors.arrowRight.svg(
+                          color: Get.theme.primaryColor,
+                        ),
+                        if (withError)
+                          const Positioned(
+                            right: 0.0,
+                            child: ErrorBadge(),
+                          ),
+                      ],
                     ),
                   ),
                 ],

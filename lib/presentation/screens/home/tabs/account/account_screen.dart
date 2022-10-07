@@ -80,7 +80,7 @@ class AccountScreen extends StatelessWidget {
                 final UserStatus currentStatus =
                     context.select((HomeCubit cubit) => cubit.state.userStatus);
                 final String? statusErrorText =
-                    currentStatus.status?.errorText(context);
+                    currentStatus.status?.errorText();
                 return Column(
                   children: [
                     statusErrorText?.isNotEmpty == true

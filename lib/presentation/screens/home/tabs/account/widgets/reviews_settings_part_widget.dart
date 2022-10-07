@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/tile_widget.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart';
@@ -77,11 +80,17 @@ class ReviewsSettingsPartWidget extends StatelessWidget {
           const Divider(
             height: 1.0,
           ),
-          TileWidget(
-            onTap: accountCubit.openSettingsUrl,
-            title: S.of(context).settings,
-            iconSVGPath: Assets.vectors.settings.path,
-          )
+          Builder(builder: (context) {
+            final UserStatus currentStatus =
+                context.select((HomeCubit cubit) => cubit.state.userStatus);
+            return TileWidget(
+              onTap: accountCubit.openSettingsUrl,
+              title: S.of(context).settings,
+              iconSVGPath: Assets.vectors.settings.path,
+              withError:
+                  currentStatus.status == FortunicaUserStatusEnum.legalBlock,
+            );
+          })
         ],
       ),
     );

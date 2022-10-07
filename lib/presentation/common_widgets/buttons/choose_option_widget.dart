@@ -6,7 +6,7 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 class ChooseOptionWidget extends StatelessWidget {
   final List<String> options;
   final int currentIndex;
-  final ValueChanged<int> onChangeOptionIndex;
+  final ValueChanged<int>? onChangeOptionIndex;
 
   const ChooseOptionWidget({
     Key? key,
@@ -27,7 +27,11 @@ class ChooseOptionWidget extends StatelessWidget {
             .mapIndexed(
               (element, index) => Expanded(
                 child: GestureDetector(
-                  onTap: () => onChangeOptionIndex(index),
+                  onTap: () {
+                    if(onChangeOptionIndex != null) {
+                      onChangeOptionIndex!(index);
+                    }
+                  },
                   child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(vertical: 6.0),

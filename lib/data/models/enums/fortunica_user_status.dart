@@ -57,7 +57,7 @@ extension StatusExt on FortunicaUserStatusEnum {
     }
   }
 
-  String errorText(BuildContext context) {
+  String errorText() {
     switch (this) {
       case FortunicaUserStatusEnum.live:
       case FortunicaUserStatusEnum.blocked:
@@ -77,7 +77,7 @@ extension StatusExt on FortunicaUserStatusEnum {
     }
   }
 
-  String buttonText(BuildContext context) {
+  String buttonText() {
     switch (this) {
       case FortunicaUserStatusEnum.live:
       case FortunicaUserStatusEnum.blocked:
@@ -85,9 +85,9 @@ extension StatusExt on FortunicaUserStatusEnum {
       case FortunicaUserStatusEnum.incomplete:
         return 'Complete profile to start helping';
       case FortunicaUserStatusEnum.legalBlock:
-        return 'Open web Advisor Tool';
+        return 'Go to Account';
       case FortunicaUserStatusEnum.offline:
-        return 'Go to your profile';
+        return 'Go to Account';
     }
   }
 }
