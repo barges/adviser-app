@@ -49,6 +49,8 @@ class AccountCubit extends Cubit<AccountState> {
 
   Future<void> refreshUserinfo({UserInfo? info}) async {
     try {
+      int seconds = 0;
+
       final UserInfo userInfo = info ?? await run(userRepository.getUserInfo());
 
       await cacheManager.saveUserProfile(userInfo.profile);
@@ -61,16 +63,18 @@ class AccountCubit extends Cubit<AccountState> {
       } else {
         await cacheManager.saveUserStatus(userInfo.status);
       }
-      final DateTime profileUpdatedAt =
-          cacheManager.getUserStatus()?.profileUpdatedAt ?? DateTime.now();
+      final DateTime? profileUpdatedAt =
+          cacheManager.getUserStatus()?.profileUpdatedAt;
 
-      final int seconds = DateTime.now().difference(profileUpdatedAt).inSeconds;
+      if (profileUpdatedAt != null) {
+        seconds = DateTime.now().difference(profileUpdatedAt).inSeconds;
+      }
 
       emit(
         state.copyWith(
           userProfile: cacheManager.getUserProfile(),
           enableNotifications: userInfo.pushNotificationsEnabled ?? false,
-          seconds: AppConstants.secondsInHour - seconds,
+          seconds: seconds > 0 ? AppConstants.secondsInHour - seconds : seconds,
         ),
       );
     } catch (e) {

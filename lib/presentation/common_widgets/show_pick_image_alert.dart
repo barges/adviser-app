@@ -76,16 +76,16 @@ Future<void> showPickImageAlert(
               actions: <Widget>[
                 CupertinoActionSheetAction(
                   child: Text(
+                    S.of(context).takeAPhoto,
+                  ),
+                  onPressed: () => Get.back(result: ImageSource.camera),
+                ),
+                CupertinoActionSheetAction(
+                  child: Text(
                     S.of(context).chooseFromGallery,
                   ),
                   onPressed: () => Get.back(result: ImageSource.gallery),
                 ),
-                CupertinoActionSheetAction(
-                  child: Text(
-                    S.of(context).takeAPhoto,
-                  ),
-                  onPressed: () => Get.back(result: ImageSource.camera),
-                )
               ],
               cancelButton: CupertinoActionSheetAction(
                 isDefaultAction: true,
