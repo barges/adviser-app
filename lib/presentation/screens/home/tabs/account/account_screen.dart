@@ -28,7 +28,6 @@ class AccountScreen extends StatelessWidget {
           children: [
             Scaffold(
               key: accountCubit.scaffoldKey,
-              drawer: const AppDrawer(),
               appBar: const WideAppBar(),
               body: Builder(builder: (context) {
                 final UserStatus currentStatus =
