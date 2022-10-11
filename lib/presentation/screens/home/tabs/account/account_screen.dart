@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_loading_indicator.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/change_locale_button.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
@@ -27,55 +24,11 @@ class AccountScreen extends StatelessWidget {
       create: (_) => AccountCubit(Get.find<CacheManager>()),
       child: Builder(builder: (context) {
         final AccountCubit accountCubit = context.read<AccountCubit>();
-        final HomeCubit homeCubit = context.read<HomeCubit>();
-
         return Stack(
           children: [
             Scaffold(
               key: accountCubit.scaffoldKey,
-              drawer: const AppDrawer(),
-              appBar: AppBar(
-                  automaticallyImplyLeading: false,
-                  toolbarHeight: 84.0,
-                  flexibleSpace: SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 32.0,
-                          left: AppConstants.horizontalScreenPadding,
-                          right: AppConstants.horizontalScreenPadding),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Builder(builder: (context) {
-                            final Brand currentBrand = context.select(
-                                (MainCubit cubit) => cubit.state.currentBrand);
-                            return GestureDetector(
-                              onTap: homeCubit.openDrawer,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: AppConstants.iconButtonSize,
-                                    width: AppConstants.iconButtonSize,
-                                    padding: const EdgeInsets.all(4.0),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          AppConstants.buttonRadius),
-                                      color: Get.theme.scaffoldBackgroundColor,
-                                    ),
-                                    child: SvgPicture.asset(currentBrand.icon),
-                                  ),
-                                  const SizedBox(width: 8.0),
-                                  Text(currentBrand.name,
-                                      style: Get.textTheme.headlineMedium)
-                                ],
-                              ),
-                            );
-                          }),
-                          const ChangeLocaleButton()
-                        ],
-                      ),
-                    ),
-                  )),
+              appBar: const WideAppBar(),
               body: Builder(builder: (context) {
                 final UserStatus currentStatus =
                     context.select((HomeCubit cubit) => cubit.state.userStatus);

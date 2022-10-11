@@ -13,26 +13,28 @@ import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class WideAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
-  final Widget bottomWidget;
+  final Widget? bottomWidget;
   final String? iconPath;
   final bool withBrands;
 
   const WideAppBar({
     Key? key,
-    required this.bottomWidget,
+    this.bottomWidget,
     this.iconPath,
     this.title,
     this.withBrands = false,
   }) : super(key: key);
 
   @override
-  Size get preferredSize => const Size.fromHeight(96.0);
+  Size get preferredSize => Size.fromHeight(
+        bottomWidget != null ? 96.0 : kToolbarHeight,
+      );
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
         automaticallyImplyLeading: false,
-        toolbarHeight: 96.0,
+        toolbarHeight: bottomWidget != null ? 96.0 : kToolbarHeight,
         elevation: 0.5,
         shadowColor: Get.theme.hintColor,
         flexibleSpace: SafeArea(
@@ -70,7 +72,7 @@ class WideAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ],
                 ),
               ),
-              bottomWidget,
+              if (bottomWidget != null) bottomWidget!,
             ],
           ),
         ));
