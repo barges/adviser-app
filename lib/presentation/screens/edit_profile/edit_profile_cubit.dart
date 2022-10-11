@@ -8,8 +8,8 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart'
 import 'package:get/get.dart';
 import 'package:mime/mime.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
-import 'package:shared_advisor_interface/data/models/localized_properties/localized_properties.dart';
-import 'package:shared_advisor_interface/data/models/localized_properties/property_by_language.dart';
+import 'package:shared_advisor_interface/data/models/user_info/localized_properties/localized_properties.dart';
+import 'package:shared_advisor_interface/data/models/user_info/localized_properties/property_by_language.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_image_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_request.dart';
