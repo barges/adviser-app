@@ -10,6 +10,7 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/error_badge.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/change_status_comment_bottom_sheet.dart';
@@ -170,7 +171,9 @@ class UserInfoPartWidget extends StatelessWidget {
               isDisable: currentStatus.status != FortunicaUserStatusEnum.live,
               iconSVGPath: Assets.vectors.eye.path,
               title: S.of(context).previewAccount,
-              onTap: () {},
+              onTap: () {
+                Get.toNamed(AppRoutes.advisorPreview);
+              },
             )
           ]),
         )

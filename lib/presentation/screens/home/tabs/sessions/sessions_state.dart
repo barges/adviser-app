@@ -9,8 +9,6 @@ class SessionsState with _$SessionsState {
   const factory SessionsState([
     @Default(false) bool isLoading,
     @Default([]) List<Question> questions,
-    @Default(0) int page,
-    @Default(true) bool hasMore,
     @Default(0) int currentOptionIndex,
     @Default(0) int selectedFilterIndex,
     @Default(ErrorModel(errorType: ErrorType.connectingError)) ErrorModel error,

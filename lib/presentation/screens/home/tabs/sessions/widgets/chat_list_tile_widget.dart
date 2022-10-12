@@ -25,7 +25,7 @@ class ChatListTileWidget extends StatelessWidget {
                       question.clientInformation?.zodiac ?? ''),
                   width: 44.0),
               CircleAvatar(
-                  radius: 8,
+                  radius: 8.0,
                   backgroundColor: Get.theme.canvasColor,
                   child: Assets.vectors.ritual.svg())
             ],

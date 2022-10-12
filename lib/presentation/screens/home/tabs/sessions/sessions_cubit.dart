@@ -15,6 +15,9 @@ class SessionsCubit extends Cubit<SessionsState> {
   final ScrollController controller = ScrollController();
   late final VoidCallback disposeListen;
 
+  String? lastId;
+  bool hasMore = true;
+
   SessionsCubit(this.cacheManager) : super(const SessionsState()) {
     controller.addListener(addScrollControllerListener);
     disposeListen = cacheManager.listenCurrentUserStatus((value) {
@@ -32,9 +35,9 @@ class SessionsCubit extends Cubit<SessionsState> {
     return super.close();
   }
 
-  void addScrollControllerListener() {
-    if (controller.offset >= (controller.position.maxScrollExtent * 0.9)) {
-      getListOfQuestions(state.currentOptionIndex);
+  void addScrollControllerListener() async {
+    if (controller.position.extentAfter <= 0 && !state.isLoading) {
+      await getListOfQuestions(state.currentOptionIndex);
     }
   }
 
@@ -47,32 +50,26 @@ class SessionsCubit extends Cubit<SessionsState> {
     if ((status ?? cacheManager.getUserStatus()?.status) ==
         FortunicaUserStatusEnum.live) {
       resetList(index);
-      if (!state.hasMore) return;
+      if (!hasMore) return;
       try {
         QuestionsListResponse result =
-            QuestionsListResponse(questions: state.questions);
-        final int page = result.questions?.length ?? 0;
-        emit(state.copyWith(hasMore: result.hasMore ?? true, page: page));
+            QuestionsListResponse(questions: state.questions, lastId: lastId);
+        hasMore = result.hasMore ?? true;
+        lastId = (result.questions ?? const []).lastOrNull?.id;
         if (state.questions.isEmpty) {
           result = await run(_repository.getListOfQuestions(
-              page: page, isPublicFilter: state.currentOptionIndex == 0));
+              lastId: lastId, isPublicFilter: state.currentOptionIndex == 0));
 
-          return emit(state.copyWith(
-              questions: result.questions ?? const [],
-              hasMore: state.hasMore,
-              page: page));
+          emit(state.copyWith(questions: result.questions ?? const []));
+          return;
         }
 
         result = await run(_repository.getListOfQuestions(
-            page: page, isPublicFilter: state.currentOptionIndex == 0));
+            lastId: lastId, isPublicFilter: state.currentOptionIndex == 0));
         final questions = List.of(state.questions)
           ..addAll(result.questions ?? const []);
 
-        emit(state.copyWith(
-          questions: questions,
-          hasMore: state.hasMore,
-          page: state.questions.length - page,
-        ));
+        emit(state.copyWith(questions: questions));
       } catch (e) {
         emit(state.copyWith(error: errorMessageAdapter(e)));
       }
@@ -81,11 +78,14 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   void resetList(int index) {
     if (index != state.currentOptionIndex) {
-      emit(state.copyWith(
+      lastId = null;
+      hasMore = true;
+      emit(
+        state.copyWith(
           currentOptionIndex: index,
-          hasMore: true,
           questions: const [],
-          page: 0));
+        ),
+      );
     }
   }
 }

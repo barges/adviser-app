@@ -50,7 +50,8 @@ class AppDrawer extends StatelessWidget {
                                       height: 12.0,
                                     ),
                                     Column(
-                                      children: cubit.authorizedBrands
+                                      children: cubit.authorizedBrands.reversed
+                                          .toList()
                                           .map(
                                             (e) => Column(
                                               children: [

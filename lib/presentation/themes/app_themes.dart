@@ -83,6 +83,11 @@ class AppThemes {
               fontWeight: FontWeight.w600,
               fontSize: 16.0,
               color: AppColorsLight.ui,
+            ),
+            labelLarge: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 26.0,
+              color: AppColorsLight.ui,
             )),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -189,6 +194,11 @@ class AppThemes {
               fontWeight: FontWeight.w600,
               fontSize: 16.0,
               color: AppColorsDark.ui,
+            ),
+            labelLarge: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 26.0,
+              color: AppColorsLight.ui,
             )),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(

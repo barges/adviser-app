@@ -52,19 +52,19 @@ class WideAppBar extends StatelessWidget implements PreferredSizeWidget {
                       onTap: context.read<HomeCubit>().openDrawer,
                       child: title != null && iconPath != null
                           ? _IconAndTitleWidget(
-                              title: title!,
-                              iconPath: iconPath!,
-                            )
+                        title: title!,
+                        iconPath: iconPath!,
+                      )
                           : Builder(builder: (context) {
-                              final Brand currentBrand = context.select(
-                                  (MainCubit cubit) =>
-                                      cubit.state.currentBrand);
-                              return _IconAndTitleWidget(
-                                title: currentBrand.name,
-                                iconPath: currentBrand.icon,
-                                needIconColor: false,
-                              );
-                            }),
+                        final Brand currentBrand = context.select(
+                                (MainCubit cubit) =>
+                            cubit.state.currentBrand);
+                        return _IconAndTitleWidget(
+                          title: currentBrand.name,
+                          iconPath: currentBrand.icon,
+                          needIconColor: false,
+                        );
+                      }),
                     ),
                     withBrands
                         ? const _AuthorizedBrandsWidget()
@@ -125,10 +125,10 @@ class _AuthorizedBrandsWidget extends StatelessWidget {
         textDirection: TextDirection.rtl,
         children: brands
             .mapIndexed((element, index) => _AuthorizedBrandWidget(
-                  index: index,
-                  brandIcon: element.icon,
-                  isFirstBrand: index == brands.length - 1,
-                ))
+          index: index,
+          brandIcon: element.icon,
+          isFirstBrand: index == brands.length - 1,
+        ))
             .toList());
   }
 }
@@ -140,9 +140,9 @@ class _AuthorizedBrandWidget extends StatelessWidget {
 
   const _AuthorizedBrandWidget(
       {Key? key,
-      required this.index,
-      required this.isFirstBrand,
-      required this.brandIcon})
+        required this.index,
+        required this.isFirstBrand,
+        required this.brandIcon})
       : super(key: key);
 
   @override

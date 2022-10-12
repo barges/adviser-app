@@ -12,7 +12,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_gradient_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/filters_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/filters_list_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
@@ -28,7 +28,7 @@ class SessionsScreen extends StatelessWidget {
       create: (BuildContext context) => SessionsCubit(Get.find<CacheManager>()),
       child: Builder(builder: (BuildContext context) {
         final UserStatus userStatus =
-            context.select((HomeCubit cubit) => cubit.state.userStatus);
+        context.select((HomeCubit cubit) => cubit.state.userStatus);
         final SessionsCubit sessionsCubit = context.read<SessionsCubit>();
 
         final bool statusIsLive =
@@ -48,8 +48,8 @@ class SessionsScreen extends StatelessWidget {
                     Expanded(
                       child: Builder(builder: (context) {
                         final int currentIndex = context.select(
-                            (SessionsCubit cubit) =>
-                                cubit.state.currentOptionIndex);
+                                (SessionsCubit cubit) =>
+                            cubit.state.currentOptionIndex);
                         return ChooseOptionWidget(
                           options: [S.of(context).public, S.of(context).forMe],
                           currentIndex: currentIndex,
@@ -73,8 +73,8 @@ class SessionsScreen extends StatelessWidget {
           body: statusIsLive
               ? const _QuestionsListWidget()
               : _NotLiveStatusWidget(
-                  status: userStatus.status ?? FortunicaUserStatusEnum.offline,
-                ),
+            status: userStatus.status ?? FortunicaUserStatusEnum.offline,
+          ),
         );
       }),
     );
@@ -106,16 +106,13 @@ class _QuestionsListWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Builder(builder: (context) {
                   final int selectedFilterIndex = context.select(
-                      (SessionsCubit cubit) => cubit.state.selectedFilterIndex);
-                  return FiltersWidget(
+                          (SessionsCubit cubit) => cubit.state.selectedFilterIndex);
+                  return FiltersListWidget(
                     currentFilterIndex: selectedFilterIndex,
                     filters: filters
                         .mapIndexed((element, _) => Text(element))
                         .toList(),
                     onTap: sessionsCubit.changeFilterIndex,
-                    itemPadding: const EdgeInsets.symmetric(
-                        vertical: 6.0,
-                        horizontal: AppConstants.horizontalScreenPadding),
                   );
                 }),
               ),
@@ -127,7 +124,7 @@ class _QuestionsListWidget extends StatelessWidget {
           Builder(
             builder: (context) {
               final SessionsState state =
-                  context.select((SessionsCubit cubit) => cubit.state);
+              context.select((SessionsCubit cubit) => cubit.state);
               return Column(mainAxisSize: MainAxisSize.min, children: [
                 Padding(
                   padding: const EdgeInsets.all(
@@ -170,13 +167,13 @@ class _NotLiveStatusWidget extends StatelessWidget {
               children: [
                 Get.isDarkMode
                     ? Assets.images.logos.noConnectionLogoDark.image(
-                        height: AppConstants.logoSize,
-                        width: AppConstants.logoSize,
-                      )
+                  height: AppConstants.logoSize,
+                  width: AppConstants.logoSize,
+                )
                     : Assets.images.logos.noConnectionLogo.image(
-                        height: AppConstants.logoSize,
-                        width: AppConstants.logoSize,
-                      ),
+                  height: AppConstants.logoSize,
+                  width: AppConstants.logoSize,
+                ),
                 const SizedBox(
                   height: 24.0,
                 ),
