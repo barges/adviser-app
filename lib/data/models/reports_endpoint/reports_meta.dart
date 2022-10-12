@@ -6,12 +6,10 @@ part 'reports_meta.g.dart';
 
 @freezed
 class ReportsMeta with _$ReportsMeta {
-
   @JsonSerializable(includeIfNull: false)
   const factory ReportsMeta({
     DateTime? payoutDate,
-    @JsonKey(name: 'expert')
-    String? expertId,
+    @JsonKey(name: 'expert') String? expertId,
     String? currency,
     Map<SessionsTypes, double>? rates,
   }) = _ReportsMeta;

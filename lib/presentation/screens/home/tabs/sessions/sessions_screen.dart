@@ -2,21 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/data/models/question.dart';
 import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/app_loading_indicator.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_gradient_button.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/filters_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_state.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/list_of_questions_widget.dart';
 
 class SessionsScreen extends StatelessWidget {
@@ -126,19 +125,14 @@ class _QuestionsListWidget extends StatelessWidget {
           ),
           Builder(
             builder: (context) {
-              final SessionsState state =
-                  context.select((SessionsCubit cubit) => cubit.state);
+              final List<Question> questions = context
+                  .select((SessionsCubit cubit) => cubit.state.questions);
               return Column(mainAxisSize: MainAxisSize.min, children: [
                 Padding(
                   padding: const EdgeInsets.all(
                       AppConstants.horizontalScreenPadding),
-                  child: ListOfQuestionsWidget(questions: state.questions),
+                  child: ListOfQuestionsWidget(questions: questions),
                 ),
-                if (state.isLoading)
-                  SizedBox(
-                      height: Get.height / 2,
-                      child: const Center(
-                          child: AppLoadingIndicator(showIndicator: true)))
               ]);
             },
           )
@@ -191,9 +185,9 @@ class _NotLiveStatusWidget extends StatelessWidget {
           const SizedBox(
             height: 16.0,
           ),
-          AppGradientButton(
+          AppElevatedButton(
             title: status.buttonText(),
-            onTap: () async {
+            onPressed: () async {
               if (status != FortunicaUserStatusEnum.live) {
                 homeCubit.changeIndex(3);
               }

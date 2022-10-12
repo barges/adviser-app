@@ -72,14 +72,14 @@ class ProfileImageWidget extends StatelessWidget {
                             height: _backgroundImageSectionHeight,
                             child: PageView.builder(
                               physics: const ClampingScrollPhysics(),
-                              controller: cubit.pageController,
+                              controller: cubit.picturesPageController,
                               allowImplicitScrolling: true,
                               itemCount: coverPictures.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return GestureDetector(
                                   onTap: () {
                                     Get.toNamed(AppRoutes.galleryPictures,
-                                        arguments: cubit.pageController.page);
+                                        arguments: cubit.picturesPageController.page);
                                   },
                                   child: SizedBox(
                                     height: _backgroundImageSectionHeight,
@@ -98,7 +98,7 @@ class ProfileImageWidget extends StatelessWidget {
                               width: Get.width,
                               child: Center(
                                 child: SmoothPageIndicator(
-                                  controller: cubit.pageController,
+                                  controller: cubit.picturesPageController,
                                   count: coverPictures.length,
                                   effect: ScrollingDotsEffect(
                                     spacing: 12.0,

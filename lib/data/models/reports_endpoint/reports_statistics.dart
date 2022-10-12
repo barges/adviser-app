@@ -4,11 +4,11 @@ import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_me
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_total.dart';
 
 part 'reports_statistics.freezed.dart';
+
 part 'reports_statistics.g.dart';
 
 @freezed
 class ReportsStatistics with _$ReportsStatistics {
-
   @JsonSerializable(includeIfNull: false)
   const factory ReportsStatistics({
     ReportsMeta? meta,

@@ -7,6 +7,7 @@ import 'package:shared_advisor_interface/data/models/user_info/user_status.dart'
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/tile_widget.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
@@ -66,7 +67,9 @@ class ReviewsSettingsPartWidget extends StatelessWidget {
           TileWidget(
             title: S.of(context).balanceTransactions,
             iconSVGPath: Assets.vectors.transactions.path,
-            onTap: () {},
+            onTap: () {
+              Get.toNamed(AppRoutes.balanceAndTransactions);
+            },
             widget: Row(
               children: [
                 Text(

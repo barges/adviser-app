@@ -34,7 +34,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final Map<String, List<TextEditingController>> textControllersMap = {};
   final Map<String, List<String>> errorTextsMap = {};
   late final ScrollController languagesScrollController;
-  final PageController pageController = PageController();
+  final PageController picturesPageController = PageController();
 
   int? initialLanguageIndex;
 
@@ -70,7 +70,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       }
     }
     nicknameController.dispose();
-    pageController.dispose();
+    picturesPageController.dispose();
     Get.delete<EditProfileCubit>();
     return super.close();
   }
@@ -162,11 +162,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           localizedProperties: newProperties,
           profileName: nicknameController.text,
         );
-        final UserProfile profile = await run(
-          userRepository.updateProfile(
-            request,
-          ),
-        );
+        final UserProfile profile = await userRepository.updateProfile(request);
         cacheManager.saveUserProfile(
           profile,
         );
@@ -207,7 +203,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   Future<bool> updateCoverPicture() async {
     bool isOk = false;
-    final int? pictureIndex = pageController.page?.toInt();
+    final int? pictureIndex = picturesPageController.page?.toInt();
     if (pictureIndex != null && pictureIndex > 0) {
       final String url = state.coverPictures[pictureIndex];
       final File file = await defaultCacheManager.getSingleFile(url);
@@ -219,11 +215,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         image: base64Image,
       );
       try {
-        final List<String> coverPictures = await run(
-          userRepository.updateCoverPicture(
-            request,
-          ),
-        );
+        final List<String> coverPictures =
+            await userRepository.updateCoverPicture(request);
         emit(
           state.copyWith(
             coverPictures: coverPictures,
@@ -240,11 +233,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   Future<void> deletePictureFromGallery(int pictureIndex) async {
     try {
-      final List<String> coverPictures = await run(
-        userRepository.deleteCoverPicture(
-          pictureIndex,
-        ),
-      );
+      final List<String> coverPictures =
+          await userRepository.deleteCoverPicture(pictureIndex);
       emit(
         state.copyWith(
           coverPictures: coverPictures,
@@ -267,7 +257,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         image: base64Image,
       );
       try {
-        await run(userRepository.updateProfilePicture(request));
+        await userRepository.updateProfilePicture(request);
         isOk = true;
       } catch (e) {
         ///TODO: Handle the error
@@ -288,17 +278,13 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       );
       try {
         List<String> coverPictures =
-            await run(userRepository.addCoverPictureToGallery(request));
+            await userRepository.addCoverPictureToGallery(request);
         emit(state.copyWith(coverPictures: coverPictures));
       } catch (e) {
         ///TODO: Handle the error
         rethrow;
       }
     }
-  }
-
-  void setIsWideAppbar(bool isWide) {
-    emit(state.copyWith(isWideAppBar: isWide));
   }
 
   void setAvatar(File avatar) {

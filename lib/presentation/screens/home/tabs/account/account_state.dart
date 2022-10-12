@@ -5,12 +5,11 @@ part 'account_state.freezed.dart';
 
 @freezed
 class AccountState with _$AccountState {
-  const factory AccountState([
-    @Default(false) bool isLoading,
+  const factory AccountState({
     @Default(true) bool isAvailable,
     @Default(false) bool enableNotifications,
     @Default(false) bool commentButtonIsActive,
     @Default(0) int seconds,
     UserProfile? userProfile,
-  ]) = _AccountState;
+  }) = _AccountState;
 }

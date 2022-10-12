@@ -1,18 +1,20 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_meta.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_year.dart';
 
 part 'reports_response.g.dart';
+part 'reports_response.freezed.dart';
 
-@JsonSerializable(includeIfNull: false)
-class ReportsResponse {
-  final ReportsMeta? meta;
-  final List<ReportsYear>? dateRange;
+@freezed
+class ReportsResponse with _$ReportsResponse {
 
-  ReportsResponse(this.meta, this.dateRange);
+  @JsonSerializable(includeIfNull: false)
+  const factory ReportsResponse({
+    ReportsMeta? meta,
+    List<ReportsYear>? dateRange,
+  }) = _ReportsResponse;
 
   factory ReportsResponse.fromJson(Map<String, dynamic> json) =>
       _$ReportsResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ReportsResponseToJson(this);
 }

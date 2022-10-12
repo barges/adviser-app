@@ -6,8 +6,6 @@ part 'login_state.freezed.dart';
 @freezed
 class LoginState with _$LoginState {
   const factory LoginState({
-    @Default(false) bool isLoading,
-    @Default('') String errorMessage,
     @Default('') String successMessage,
     @Default(false) bool showOpenEmailButton,
     @Default(Brand.fortunica) Brand selectedBrand,

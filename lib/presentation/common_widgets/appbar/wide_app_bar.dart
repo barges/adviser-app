@@ -27,14 +27,18 @@ class WideAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(
-        bottomWidget != null ? 96.0 : kToolbarHeight,
+        bottomWidget != null
+            ? AppConstants.appBarHeight * 2
+            : AppConstants.appBarHeight,
       );
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
         automaticallyImplyLeading: false,
-        toolbarHeight: bottomWidget != null ? 96.0 : kToolbarHeight,
+        toolbarHeight: bottomWidget != null
+            ? AppConstants.appBarHeight * 2
+            : AppConstants.appBarHeight,
         elevation: 0.5,
         shadowColor: Get.theme.hintColor,
         flexibleSpace: SafeArea(

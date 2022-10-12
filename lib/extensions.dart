@@ -1,7 +1,6 @@
 import 'dart:convert';
+
 import 'package:crypto/crypto.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 const String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
@@ -68,23 +67,5 @@ extension IterableExtention<E> on Iterable<E> {
 
   E? get lastOrNull {
     return isEmpty ? null : last;
-  }
-}
-
-extension CubitExt on Cubit {
-  Future<T> run<T>(Future<T> future) async {
-    emit(state.copyWith(isLoading: true));
-    try {
-      final result = await future;
-      return result;
-    } on DioError catch (e) {
-      emit(state.copyWith(isLoading: false));
-      return Future.error(e);
-    } catch (e) {
-      emit(state.copyWith(isLoading: false));
-      return Future.error(e);
-    } finally {
-      emit(state.copyWith(isLoading: false));
-    }
   }
 }

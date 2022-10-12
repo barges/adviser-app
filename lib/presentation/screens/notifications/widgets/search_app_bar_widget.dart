@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
 
 class SearchAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
@@ -8,7 +9,7 @@ class SearchAppBarWidget extends StatelessWidget implements PreferredSizeWidget 
   const SearchAppBarWidget({Key? key, required this.title}) : super(key: key);
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(AppConstants.appBarHeight);
 
   @override
   Widget build(BuildContext context) {

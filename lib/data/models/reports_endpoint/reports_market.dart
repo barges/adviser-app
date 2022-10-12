@@ -7,7 +7,6 @@ part 'reports_market.g.dart';
 
 @freezed
 class ReportsMarket with _$ReportsMarket {
-
   @JsonSerializable(includeIfNull: false)
   const factory ReportsMarket({
     String? iso,

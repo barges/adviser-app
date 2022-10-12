@@ -17,13 +17,27 @@ class MainCubit extends Cubit<MainState> {
     });
   }
 
-  List<Brand> getAuthorizedBrands() {
-    return cacheManager.getAuthorizedBrands();
-  }
-
   @override
   Future<void> close() {
     disposeCallback.call();
     return super.close();
+  }
+
+  void updateIsLoading(bool isLoading) {
+    emit(state.copyWith(isLoading: isLoading));
+  }
+
+  List<Brand> getAuthorizedBrands() {
+    return cacheManager.getAuthorizedBrands();
+  }
+
+  void updateErrorMessage(String message) {
+    emit(state.copyWith(errorMessage: message));
+  }
+
+  void clearErrorMessage() {
+    if(state.errorMessage.isNotEmpty) {
+      emit(state.copyWith(errorMessage: ''));
+    }
   }
 }

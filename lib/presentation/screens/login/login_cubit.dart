@@ -10,6 +10,7 @@ import 'package:shared_advisor_interface/data/network/responses/login_response.d
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_state.dart';
 
@@ -17,8 +18,10 @@ class LoginCubit extends Cubit<LoginState> {
   final AuthRepository _repository;
   final CacheManager _cacheManager;
 
-  final passwordController = TextEditingController();
-  final emailController = TextEditingController();
+  final MainCubit _mainCubit = Get.find<MainCubit>();
+
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final FocusNode passwordNode = FocusNode();
 
   LoginCubit(this._repository, this._cacheManager) : super(const LoginState()) {
@@ -32,17 +35,17 @@ class LoginCubit extends Cubit<LoginState> {
     ));
 
     emailController.addListener(() {
+      clearErrorMessage();
       emit(state.copyWith(
         emailErrorText: '',
-        errorMessage: '',
         successMessage: '',
         showOpenEmailButton: false,
       ));
     });
     passwordController.addListener(() {
+      clearErrorMessage();
       emit(state.copyWith(
         passwordErrorText: '',
-        errorMessage: '',
         successMessage: '',
         showOpenEmailButton: false,
       ));
@@ -65,9 +68,7 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void clearErrorMessage() {
-    if (state.errorMessage.isNotEmpty) {
-      emit(state.copyWith(errorMessage: ''));
-    }
+      _mainCubit.clearErrorMessage();
   }
 
   void clearSuccessMessage() {
@@ -83,34 +84,20 @@ class LoginCubit extends Cubit<LoginState> {
     if (emailIsValid() && passwordIsValid()) {
       Get.find<Dio>().options.headers['Authorization'] =
           'Basic ${base64.encode(utf8.encode('${emailController.text}:${passwordController.text.to256}'))}';
-      try {
-        LoginResponse? response = await run(_repository.login());
-        String? token = response?.accessToken;
-        if (token != null && token.isNotEmpty) {
-          String jvtToken = 'JWT $token';
-          await _cacheManager.saveTokenForBrand(state.selectedBrand, jvtToken);
-          Get.find<Dio>().options.headers['Authorization'] = jvtToken;
-          _cacheManager.saveCurrentBrand(state.selectedBrand);
-          goToHome();
-        }
-      } on DioError catch (e) {
-        if (e.response?.statusCode != 401) {
-          emit(
-            state.copyWith(
-              errorMessage: e.response?.data['status'] ?? '',
-            ),
-          );
-        } else {
-          emit(state.copyWith(
-            errorMessage: S.current.wrongUsernameOrPassword,
-          ));
-        }
+
+      LoginResponse? response = await _repository.login();
+      String? token = response?.accessToken;
+      if (token != null && token.isNotEmpty) {
+        String jvtToken = 'JWT $token';
+        await _cacheManager.saveTokenForBrand(state.selectedBrand, jvtToken);
+        Get.find<Dio>().options.headers['Authorization'] = jvtToken;
+        _cacheManager.saveCurrentBrand(state.selectedBrand);
+        goToHome();
       }
     } else {
       if (!emailIsValid()) {
         emit(
-          state.copyWith(
-              emailErrorText: S.current.pleaseInsertCorrectEmail),
+          state.copyWith(emailErrorText: S.current.pleaseInsertCorrectEmail),
         );
       }
       if (!passwordIsValid()) {
@@ -123,31 +110,18 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  void setSuccessMessage(BuildContext context, {bool showEmailButton = false}) {
-    if (state.successMessage.isEmpty) {
-      emit(state.copyWith(
-        successMessage: S
-            .of(context)
-            .youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo,
-        showOpenEmailButton: showEmailButton,
-      ));
-    }
-  }
-
   void goToHome() {
     Get.offNamedUntil(AppRoutes.home, (_) => false);
   }
 
-  Future<void> goToForgotPassword(BuildContext context) async {
-    final dynamic showEmailMessage = await Get.toNamed(
-        AppRoutes.forgotPassword,
+  Future<void> goToForgotPassword() async {
+    final dynamic showEmailMessage = await Get.toNamed(AppRoutes.forgotPassword,
         arguments: state.selectedBrand);
     if (showEmailMessage is bool && showEmailMessage == true) {
       emit(
         state.copyWith(
-          successMessage: S
-              .of(context)
-              .youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo,
+          successMessage:
+              S.current.youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo,
           showOpenEmailButton: showEmailMessage,
         ),
       );

@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
-import 'package:shared_advisor_interface/data/models/error_model.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_state.dart';
 
 class SessionsCubit extends Cubit<SessionsState> {
@@ -48,34 +46,31 @@ class SessionsCubit extends Cubit<SessionsState> {
         FortunicaUserStatusEnum.live) {
       resetList(index);
       if (!state.hasMore) return;
-      try {
-        QuestionsListResponse result =
-            QuestionsListResponse(questions: state.questions);
-        final int page = result.questions?.length ?? 0;
-        emit(state.copyWith(hasMore: result.hasMore ?? true, page: page));
-        if (state.questions.isEmpty) {
-          result = await run(_repository.getListOfQuestions(
-              page: page, isPublicFilter: state.currentOptionIndex == 0));
 
-          return emit(state.copyWith(
-              questions: result.questions ?? const [],
-              hasMore: state.hasMore,
-              page: page));
-        }
+      QuestionsListResponse result =
+          QuestionsListResponse(questions: state.questions);
+      final int page = result.questions?.length ?? 0;
+      emit(state.copyWith(hasMore: result.hasMore ?? true, page: page));
+      if (state.questions.isEmpty) {
+        result = await _repository.getListOfQuestions(
+            page: page, isPublicFilter: state.currentOptionIndex == 0);
 
-        result = await run(_repository.getListOfQuestions(
-            page: page, isPublicFilter: state.currentOptionIndex == 0));
-        final questions = List.of(state.questions)
-          ..addAll(result.questions ?? const []);
-
-        emit(state.copyWith(
-          questions: questions,
-          hasMore: state.hasMore,
-          page: state.questions.length - page,
-        ));
-      } catch (e) {
-        emit(state.copyWith(error: errorMessageAdapter(e)));
+        return emit(state.copyWith(
+            questions: result.questions ?? const [],
+            hasMore: state.hasMore,
+            page: page));
       }
+
+      result = await _repository.getListOfQuestions(
+          page: page, isPublicFilter: state.currentOptionIndex == 0);
+      final questions = List.of(state.questions)
+        ..addAll(result.questions ?? const []);
+
+      emit(state.copyWith(
+        questions: questions,
+        hasMore: state.hasMore,
+        page: state.questions.length - page,
+      ));
     }
   }
 
