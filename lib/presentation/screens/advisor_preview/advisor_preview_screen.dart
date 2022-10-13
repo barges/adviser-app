@@ -114,7 +114,7 @@ class AdvisorPreviewScreen extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
-                                          Assets.vectors.respProfile.svg(),
+                                          Assets.vectors.responseProfile.svg(),
                                           const SizedBox(width: 4.0),
                                           Text(
                                             '≈ 2 hr',

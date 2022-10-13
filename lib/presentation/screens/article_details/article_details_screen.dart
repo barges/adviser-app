@@ -194,8 +194,8 @@ class ArticleDetailsScreen extends StatelessWidget with ShareMixin {
                                     cubit.state.isFavorite);
 
                             return isFavorite
-                                ? Assets.vectors.filledFav.svg()
-                                : Assets.vectors.fav.svg();
+                                ? Assets.vectors.filledFavourite.svg()
+                                : Assets.vectors.favourite.svg();
                           }),
                         ),
                         GestureDetector(
