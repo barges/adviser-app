@@ -118,9 +118,9 @@ class _QuestionsListWidget extends StatelessWidget {
                   );
                 }),
               ),
-              SizedBox(
-                  height: 1.0,
-                  child: Divider(color: Get.theme.hintColor, thickness: 1))
+
+
+                 const Divider(height: 1.0, thickness: 1.0,),
             ],
           ),
           Builder(

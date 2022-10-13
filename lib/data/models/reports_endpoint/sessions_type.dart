@@ -13,6 +13,7 @@ enum SessionsTypes {
   tipsLow,
   tipsMedium,
   tipsHigh,
+  tips,
 }
 
 extension SessionsTypeExt on SessionsTypes {
@@ -25,20 +26,21 @@ extension SessionsTypeExt on SessionsTypes {
       case SessionsTypes.tarot:
         return 'Tarot Sessions';
       case SessionsTypes.palmreading:
-        return 'Palm Reading Sessions';
+        return 'Palm Reading';
       case SessionsTypes.astrology:
-        return 'Astrology Sessions';
+        return 'Astrology';
       case SessionsTypes.reading360:
-        return '360° Reading Session';
+        return '360° Reading';
       case SessionsTypes.aurareading:
-        return 'Aura Reading Sessions';
+        return 'Aura Reading';
       case SessionsTypes.lovecrushreading:
-        return 'Love Crush Reading Session';
+        return 'Love Crush';
       case SessionsTypes.ritual:
         return 'Ritual Sessions';
       case SessionsTypes.tipsLow:
       case SessionsTypes.tipsMedium:
       case SessionsTypes.tipsHigh:
+      case SessionsTypes.tips:
         return 'Tips';
     }
   }
@@ -66,6 +68,7 @@ extension SessionsTypeExt on SessionsTypes {
       case SessionsTypes.tipsLow:
       case SessionsTypes.tipsMedium:
       case SessionsTypes.tipsHigh:
+      case SessionsTypes.tips:
         return Assets.vectors.sessionsTypes.tips.path;
     }
   }

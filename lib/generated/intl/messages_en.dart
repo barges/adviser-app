@@ -57,6 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dashboard": MessageLookupByLibrary.simpleMessage("Dashboard"),
         "days": MessageLookupByLibrary.simpleMessage("days"),
         "done": MessageLookupByLibrary.simpleMessage("Done"),
+        "earned": MessageLookupByLibrary.simpleMessage("Earned"),
         "editProfile": MessageLookupByLibrary.simpleMessage("Edit profile"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
@@ -119,6 +120,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "toReadItBeforeYourAccountWillGetBlocked":
             MessageLookupByLibrary.simpleMessage(
                 "to read it before your account will get blocked!"),
+        "total": MessageLookupByLibrary.simpleMessage("Total"),
+        "totalMarkets": MessageLookupByLibrary.simpleMessage("Total markets"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others"),

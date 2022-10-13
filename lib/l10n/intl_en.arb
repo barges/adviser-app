@@ -70,5 +70,8 @@
   "yesImSure": "Yes, I’m sure",
   "noIChangedMyMind": "No, I changed my mind",
   "done": "Done",
-  "dashboard": "Dashboard"
+  "dashboard": "Dashboard",
+  "earned": "Earned",
+  "total": "Total",
+  "totalMarkets": "Total markets"
 }

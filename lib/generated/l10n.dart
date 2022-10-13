@@ -769,6 +769,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Earned`
+  String get earned {
+    return Intl.message(
+      'Earned',
+      name: 'earned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total`
+  String get total {
+    return Intl.message(
+      'Total',
+      name: 'total',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total markets`
+  String get totalMarkets {
+    return Intl.message(
+      'Total markets',
+      name: 'totalMarkets',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
