@@ -36,8 +36,22 @@ class MainCubit extends Cubit<MainState> {
   }
 
   void clearErrorMessage() {
-    if(state.errorMessage.isNotEmpty) {
+    if (state.errorMessage.isNotEmpty) {
       emit(state.copyWith(errorMessage: ''));
     }
+  }
+
+  void clearSuccessMessage() {
+    if (state.successMessage.isNotEmpty) {
+      emit(
+        state.copyWith(
+          successMessage: '',
+        ),
+      );
+    }
+  }
+
+  void updateSuccessMessage(String message) {
+    emit(state.copyWith(successMessage: message));
   }
 }

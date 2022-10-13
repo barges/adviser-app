@@ -36,17 +36,17 @@ class LoginCubit extends Cubit<LoginState> {
 
     emailController.addListener(() {
       clearErrorMessage();
+      clearSuccessMessage();
       emit(state.copyWith(
         emailErrorText: '',
-        successMessage: '',
         showOpenEmailButton: false,
       ));
     });
     passwordController.addListener(() {
       clearErrorMessage();
+      clearSuccessMessage();
       emit(state.copyWith(
         passwordErrorText: '',
-        successMessage: '',
         showOpenEmailButton: false,
       ));
     });
@@ -68,16 +68,11 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void clearErrorMessage() {
-      _mainCubit.clearErrorMessage();
+    _mainCubit.clearErrorMessage();
   }
 
   void clearSuccessMessage() {
-    if (state.successMessage.isNotEmpty) {
-      emit(state.copyWith(
-        successMessage: '',
-        showOpenEmailButton: false,
-      ));
-    }
+    _mainCubit.clearSuccessMessage();
   }
 
   Future<void> login() async {
@@ -115,17 +110,12 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> goToForgotPassword() async {
-    final dynamic showEmailMessage = await Get.toNamed(AppRoutes.forgotPassword,
-        arguments: state.selectedBrand);
-    if (showEmailMessage is bool && showEmailMessage == true) {
-      emit(
-        state.copyWith(
-          successMessage:
-              S.current.youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo,
-          showOpenEmailButton: showEmailMessage,
-        ),
-      );
-    }
+    clearErrorMessage();
+    clearSuccessMessage();
+    Get.toNamed(
+      AppRoutes.forgotPassword,
+      arguments: state.selectedBrand,
+    );
   }
 
   bool emailIsValid() => GetUtils.isEmail(emailController.text);

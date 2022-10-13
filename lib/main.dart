@@ -51,7 +51,7 @@ class _MyAppState extends State<MyApp> {
           listenWhen: (prev, current) => prev.isLoading != current.isLoading,
           listener: (_, state) {
             if (state.isLoading) {
-              _showNoConnectionDialog();
+              _showLoadingIndicatorDialog();
             } else {
               Get.back();
             }
@@ -96,7 +96,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  void _showNoConnectionDialog() {
+  void _showLoadingIndicatorDialog() {
     showGeneralDialog(
       context: navigatorKey.currentContext!,
       barrierColor: Get.theme.scaffoldBackgroundColor

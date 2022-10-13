@@ -34,6 +34,7 @@ class LoginScreen extends StatelessWidget {
                 onTap: () {
                   FocusScope.of(context).unfocus();
                   loginCubit.clearErrorMessage();
+                  loginCubit.clearSuccessMessage();
                 },
                 child: Column(
                   children: [
@@ -53,15 +54,11 @@ class LoginScreen extends StatelessWidget {
                     ),
                     Builder(
                       builder: (BuildContext context) {
-                        final bool showEmailButton = context.select(
-                            (LoginCubit cubit) =>
-                                cubit.state.showOpenEmailButton);
                         final String message = context.select(
-                            (LoginCubit cubit) => cubit.state.successMessage);
+                            (MainCubit cubit) => cubit.state.successMessage);
                         return message.isNotEmpty
                             ? AppSuccessWidget(
                                 message: message,
-                                showEmailButton: showEmailButton,
                                 close: () {
                                   loginCubit.clearSuccessMessage();
                                 },

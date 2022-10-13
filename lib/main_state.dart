@@ -9,5 +9,6 @@ class MainState with _$MainState {
     @Default(false) bool isLoading,
     @Default(Brand.fortunica) Brand currentBrand,
     @Default('') String errorMessage,
+    @Default('') String successMessage,
   }) = _MainState;
 }

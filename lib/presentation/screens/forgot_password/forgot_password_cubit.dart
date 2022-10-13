@@ -70,7 +70,9 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
             password: passwordController.text.to256),
       );
       if (success) {
-        Get.back(result: true);
+        Get.back();
+        _mainCubit.updateSuccessMessage(
+            S.current.youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo);
       }
     } else {
       if (!emailIsValid()) {
