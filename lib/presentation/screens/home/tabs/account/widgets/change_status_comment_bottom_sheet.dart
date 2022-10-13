@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_text_field.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_gradient_button.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart';
 
@@ -58,13 +58,14 @@ Future<void> changeStatusCommentBottomSheet({
                 Builder(builder: (context) {
                   final bool isActive = context.select((AccountCubit cubit) =>
                       cubit.state.commentButtonIsActive);
-                  return AppGradientButton(
-                    isActive: isActive,
+                  return AppElevatedButton(
                     title: S.of(context).yesImSure,
-                    onTap: () {
-                      Get.back();
-                      okOnTap();
-                    },
+                    onPressed: isActive
+                        ? () {
+                            Get.back();
+                            okOnTap();
+                          }
+                        : null,
                   );
                 }),
                 CupertinoButton(

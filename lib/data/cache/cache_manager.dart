@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
+import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 

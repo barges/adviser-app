@@ -7,7 +7,6 @@ part 'sessions_state.freezed.dart';
 @freezed
 class SessionsState with _$SessionsState {
   const factory SessionsState([
-    @Default(false) bool isLoading,
     @Default([]) List<Question> questions,
     @Default(0) int currentOptionIndex,
     @Default(0) int selectedFilterIndex,

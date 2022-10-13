@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:shared_advisor_interface/data/models/localized_properties/localized_properties.dart';
+import 'package:shared_advisor_interface/data/models/user_info/localized_properties/localized_properties.dart';
 
 part 'update_profile_request.g.dart';
 

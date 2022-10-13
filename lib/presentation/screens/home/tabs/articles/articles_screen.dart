@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/filters_list_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/list_of_filters_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/articles/articles_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/articles/widgets/list_of_articles_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/articles/widgets/percentage_widget.dart';
@@ -25,20 +22,17 @@ class ArticlesScreen extends StatelessWidget {
               iconPath: Assets.vectors.check.path,
               bottomWidget: Builder(builder: (context) {
                 final int selectedFilterIndex = context.select(
-                    (ArticlesCubit cubit) => cubit.state.selectedFilterIndex);
+                        (ArticlesCubit cubit) => cubit.state.selectedFilterIndex);
                 final List<String> filters = [
                   'All',
                   'Only Premium Products',
                   'Private Questions',
                   'Market: '
                 ];
-                return FiltersListWidget(
+                return ListOfFiltersWidget(
                   currentFilterIndex: selectedFilterIndex,
-                  filters: filters
-                      .mapIndexed((element, _) =>
-                          Text(element))
-                      .toList(),
-                  onTap: articlesCubit.updateFilterIndex,
+                  filters: filters,
+                  onTaps: articlesCubit.updateFilterIndex,
                 );
               }),
             ),

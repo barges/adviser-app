@@ -2,20 +2,18 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
-import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
-import 'package:shared_advisor_interface/data/models/localized_properties/property_by_language.dart';
+import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
+import 'package:shared_advisor_interface/data/models/user_info/localized_properties/property_by_language.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_state.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AccountCubit extends Cubit<AccountState> {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   final TextEditingController commentController = TextEditingController();
 
   final UserRepository userRepository = Get.find<UserRepository>();
@@ -51,7 +49,7 @@ class AccountCubit extends Cubit<AccountState> {
     try {
       int seconds = 0;
 
-      final UserInfo userInfo = info ?? await run(userRepository.getUserInfo());
+      final UserInfo userInfo = info ?? await userRepository.getUserInfo();
 
       await cacheManager.saveUserProfile(userInfo.profile);
       await cacheManager.saveUserId(userInfo.id);
@@ -106,8 +104,7 @@ class AccountCubit extends Cubit<AccountState> {
       comment: commentController.text,
     );
     try {
-      final UserInfo userInfo =
-          await run(userRepository.updateUserStatus(request));
+      final UserInfo userInfo = await userRepository.updateUserStatus(request);
       refreshUserinfo(
         info: userInfo,
       );
@@ -119,8 +116,8 @@ class AccountCubit extends Cubit<AccountState> {
 
   Future<void> updateEnableNotificationsValue(bool newValue) async {
     try {
-      final UserInfo userInfo = await run(
-          userRepository.setPushEnabled(PushEnableRequest(value: newValue)));
+      final UserInfo userInfo = await userRepository
+          .setPushEnabled(PushEnableRequest(value: newValue));
       emit(
         state.copyWith(
           enableNotifications: userInfo.pushNotificationsEnabled ?? false,

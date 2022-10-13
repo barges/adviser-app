@@ -1,9 +1,11 @@
+import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_image_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
+import 'package:shared_advisor_interface/data/network/responses/reports_response.dart';
 
 abstract class UserRepository {
   Future<UserInfo> getUserInfo();
@@ -30,5 +32,12 @@ abstract class UserRepository {
 
   Future<List<String>> deleteCoverPicture(
     int index,
+  );
+
+  Future<ReportsResponse> getUserReports();
+
+  Future<ReportsStatistics> getUserReportsByMonth(
+    String startDate,
+    String endDate,
   );
 }

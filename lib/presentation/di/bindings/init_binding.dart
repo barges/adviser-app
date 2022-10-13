@@ -17,6 +17,7 @@ import 'package:shared_advisor_interface/domain/repositories/auth_repository.dar
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/presentation/di/bindings/dio_interceptors/app_interceptor.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class InitBinding extends Bindings {
@@ -63,22 +64,11 @@ class InitBinding extends Bindings {
     dio.options.receiveTimeout = 30000;
     dio.options.sendTimeout = 30000;
     dio.interceptors.add(LogInterceptor(
-        requestBody: true, responseBody: true, logPrint: logger.d));
+        requestBody: true, responseBody: true, logPrint: simpleLogger.d));
 
-    // dio.interceptors.add(InterceptorsWrapper(
-    //     onError: (dioError, handler) => _errorInterceptor(dioError)));
+    dio.interceptors.add(AppInterceptor());
     return dio;
   }
-
-/*  _errorInterceptor(DioError dioError) async {
-    // if (dioError.response?.statusCode == 401 ||
-    //     dioError.response?.statusCode == 423) {
-    //   Get.find<CacheManager>().clear();
-    //   Get.offNamedUntil(AppRoutes.login, (route) => false);
-    // } else {
-    return dioError;
-    // }
-  }*/
 
   Future<Map<String, dynamic>> _getHeaders(CacheManager cacheManager) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();

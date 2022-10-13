@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/localized_properties/localized_properties.dart';
+import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
+import 'package:shared_advisor_interface/data/models/user_info/localized_properties/localized_properties.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_rating.dart';
 
 part 'user_profile.freezed.dart';
@@ -21,7 +22,7 @@ class UserProfile with _$UserProfile {
     String? timezone,
     int? loyaltyScore,
     int? likesPercentage,
-    List<String>? rituals,
+    List<SessionsTypes>? rituals,
     bool? isTestAccount,
     LocalizedProperties? localizedProperties,
     String? profileName,

@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
-import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
+import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/app_loading_indicator.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/reviews_settings_part_widget.dart';
@@ -24,72 +22,56 @@ class AccountScreen extends StatelessWidget {
       create: (_) => AccountCubit(Get.find<CacheManager>()),
       child: Builder(builder: (context) {
         final AccountCubit accountCubit = context.read<AccountCubit>();
-        return Stack(
-          children: [
-            Scaffold(
-              key: accountCubit.scaffoldKey,
-              appBar: const WideAppBar(),
-              body: Builder(builder: (context) {
-                final UserStatus currentStatus =
-                    context.select((HomeCubit cubit) => cubit.state.userStatus);
-                final String? statusErrorText =
-                    currentStatus.status?.errorText();
-                return Column(
-                  children: [
-                    statusErrorText?.isNotEmpty == true
-                        ? AppErrorWidget(
-                            errorMessage: statusErrorText ?? '',
-                            isRequired: true,
-                          )
-                        : const SizedBox.shrink(),
-                    Expanded(
-                      child: RefreshIndicator(
-                        onRefresh: accountCubit.refreshUserinfo,
-                        child: CustomScrollView(
-                          slivers: [
-                            SliverToBoxAdapter(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal:
-                                      AppConstants.horizontalScreenPadding,
-                                ),
-                                child: Column(
-                                  children: const [
-                                    SizedBox(
-                                      height: 24.0,
-                                    ),
-                                    UserInfoPartWidget(),
-                                    SizedBox(
-                                      height: 24.0,
-                                    ),
-                                    ReviewsSettingsPartWidget(),
-                                  ],
-                                ),
-                              ),
+        return Scaffold(
+          appBar: const WideAppBar(),
+          body: Builder(builder: (context) {
+            final UserStatus currentStatus =
+                context.select((HomeCubit cubit) => cubit.state.userStatus);
+            final String? statusErrorText = currentStatus.status?.errorText();
+            return Column(
+              children: [
+                statusErrorText?.isNotEmpty == true
+                    ? AppErrorWidget(
+                        errorMessage: statusErrorText ?? '',
+                        isRequired: true,
+                      )
+                    : const SizedBox.shrink(),
+                Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: accountCubit.refreshUserinfo,
+                    child: CustomScrollView(
+                      slivers: [
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppConstants.horizontalScreenPadding,
                             ),
-                            const SliverFillRemaining(
-                              hasScrollBody: false,
-                              fillOverscroll: false,
-                              child: SeeMoreWidget(),
-                            )
-                          ],
+                            child: Column(
+                              children: const [
+                                SizedBox(
+                                  height: 24.0,
+                                ),
+                                UserInfoPartWidget(),
+                                SizedBox(
+                                  height: 24.0,
+                                ),
+                                ReviewsSettingsPartWidget(),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
+                        const SliverFillRemaining(
+                          hasScrollBody: false,
+                          fillOverscroll: false,
+                          child: SeeMoreWidget(),
+                        )
+                      ],
                     ),
-                  ],
-                );
-              }),
-            ),
-            Builder(
-              builder: (context) {
-                final bool isLoading = context
-                    .select((AccountCubit cubit) => cubit.state.isLoading);
-                return AppLoadingIndicator(
-                  showIndicator: isLoading,
-                );
-              },
-            ),
-          ],
+                  ),
+                ),
+              ],
+            );
+          }),
         );
       }),
     );

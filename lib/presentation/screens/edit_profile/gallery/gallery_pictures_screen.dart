@@ -32,7 +32,7 @@ class GalleryPicturesScreen extends StatelessWidget {
                   itemCount: coverPictures.length,
                   controller: galleryPicturesCubit.pageController,
                   onPageChanged: (page) {
-                    editProfileCubit.pageController.jumpToPage(page);
+                    editProfileCubit.picturesPageController.jumpToPage(page);
                   },
                   itemBuilder: (context, index) {
                     return InteractiveViewer(

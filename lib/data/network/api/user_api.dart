@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_image_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
+import 'package:shared_advisor_interface/data/network/responses/reports_response.dart';
 
 part 'user_api.g.dart';
 
@@ -15,6 +17,18 @@ abstract class UserApi {
 
   @GET('/experts')
   Future<UserInfo> getUserInfo();
+
+  @GET('/v2/users/{id}/reports')
+  Future<ReportsResponse> getUserReports(
+    @Path('id') String id,
+  );
+
+  @GET('/v2/users/{id}/reports')
+  Future<ReportsStatistics> getUserReportsByMonth(
+    @Path('id') String id,
+    @Query('start') String startDate,
+    @Query('end') String endDate,
+  );
 
   @POST('/experts/setPushEnabled')
   Future<UserInfo> setPushEnabled(

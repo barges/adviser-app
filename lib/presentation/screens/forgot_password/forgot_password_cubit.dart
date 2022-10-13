@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -7,11 +6,13 @@ import 'package:shared_advisor_interface/data/network/requests/reset_password_re
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_state.dart';
 
 class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   final AuthRepository _repository;
+
+  final MainCubit _mainCubit = Get.find<MainCubit>();
 
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
@@ -25,22 +26,22 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     selectedBrand = Get.arguments as Brand;
 
     emailController.addListener(() {
+      clearErrorMessage();
       emit(state.copyWith(
         emailErrorText: '',
-        errorMessage: '',
       ));
     });
     passwordController.addListener(() {
+      clearErrorMessage();
       emit(state.copyWith(
         passwordErrorText: '',
-        errorMessage: '',
       ));
     });
 
     confirmPasswordController.addListener(() {
+      clearErrorMessage();
       emit(state.copyWith(
         confirmPasswordErrorText: '',
-        errorMessage: '',
       ));
     });
   }
@@ -63,29 +64,20 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
 
   Future<void> resetPassword() async {
     if (emailIsValid() && passwordIsValid() && confirmPasswordIsValid()) {
-      try {
-        final bool success = await run(_repository.resetPassword(
-            ResetPasswordRequest(
-                email: emailController.text,
-                password: passwordController.text.to256)));
-        if (success) {
-          Get.back(result: true);
-        }
-      } on DioError catch (e) {
-        emit(state.copyWith(
-          errorMessage: e.response?.data['status'] ?? 'Unknown dio error',
-        ));
-      } catch (e) {
-        emit(state.copyWith(
-          errorMessage: 'ERROR: $e',
-        ));
-        logger.d('ERROR: $e');
+      final bool success = await _repository.resetPassword(
+        ResetPasswordRequest(
+            email: emailController.text,
+            password: passwordController.text.to256),
+      );
+      if (success) {
+        Get.back();
+        _mainCubit.updateSuccessMessage(
+            S.current.youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo);
       }
     } else {
       if (!emailIsValid()) {
         emit(
-          state.copyWith(
-              emailErrorText: S.current.pleaseInsertCorrectEmail),
+          state.copyWith(emailErrorText: S.current.pleaseInsertCorrectEmail),
         );
       }
       if (!passwordIsValid()) {
@@ -106,9 +98,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   }
 
   void clearErrorMessage() {
-    if (state.errorMessage.isNotEmpty) {
-      emit(state.copyWith(errorMessage: ''));
-    }
+    _mainCubit.clearErrorMessage();
   }
 
   bool emailIsValid() => GetUtils.isEmail(emailController.text);

@@ -5,7 +5,10 @@ part 'main_state.freezed.dart';
 
 @freezed
 class MainState with _$MainState {
-  const factory MainState([
+  const factory MainState({
+    @Default(false) bool isLoading,
     @Default(Brand.fortunica) Brand currentBrand,
-  ]) = _MainState;
+    @Default('') String errorMessage,
+    @Default('') String successMessage,
+  }) = _MainState;
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
+import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
+import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -66,8 +67,11 @@ class UserInfoPartWidget extends StatelessWidget {
                               ?.copyWith(fontWeight: FontWeight.w700),
                         ),
                         Text(
-                            userProfile?.rituals?.reduce((value, element) =>
-                                    '${value.capitalize}, ${element.capitalize}') ??
+                            userProfile?.rituals
+                                    ?.map((e) => e.sessionName)
+                                    .toList()
+                                    .reduce((value, element) =>
+                                        '$value, $element') ??
                                 '',
                             overflow: TextOverflow.ellipsis,
                             style: Get.textTheme.bodyMedium
