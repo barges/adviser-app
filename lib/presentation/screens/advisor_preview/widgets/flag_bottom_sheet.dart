@@ -12,7 +12,6 @@ import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 Future<void> changeStatusCommentBottomSheet(
     {required BuildContext context,
     required VoidCallback onApply,
-    required VoidCallback onCancel,
     required ValueChanged<int> onSelectLanguage,
     required List<String> activeLanguages}) async {
   Get.bottomSheet(
@@ -27,7 +26,7 @@ Future<void> changeStatusCommentBottomSheet(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _FlagBottomSheetHeader(onApply: onApply, onCancel: onCancel),
+              _FlagBottomSheetHeader(onApply: onApply),
               Flexible(
                 child: Builder(builder: (context) {
                   final int selectedItemIndex = context.select(
@@ -51,9 +50,8 @@ Future<void> changeStatusCommentBottomSheet(
 
 class _FlagBottomSheetHeader extends StatelessWidget {
   final VoidCallback? onApply;
-  final VoidCallback? onCancel;
 
-  const _FlagBottomSheetHeader({Key? key, this.onApply, this.onCancel})
+  const _FlagBottomSheetHeader({Key? key, this.onApply})
       : super(key: key);
 
   @override
@@ -62,7 +60,7 @@ class _FlagBottomSheetHeader extends StatelessWidget {
         EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0);
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
       GestureDetector(
-        onTap: onCancel,
+        onTap: Get.back,
         child: Padding(
           padding: padding,
           child: Text(S.of(context).cancel,

@@ -73,7 +73,6 @@ flutter:
     - assets/images/logos/
     - assets/vectors/zodiac/
     - assets/vectors/sessions_types/
-
     - assets/vectors/user_performance/
 
   uses-material-design: true

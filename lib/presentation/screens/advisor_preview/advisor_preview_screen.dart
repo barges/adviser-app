@@ -30,7 +30,7 @@ class AdvisorPreviewScreen extends StatelessWidget {
             systemOverlayStyle: const SystemUiOverlayStyle(
                 statusBarBrightness: Brightness.dark),
             leading: InkResponse(
-              onTap: advisorPreviewCubit.onCancel,
+              onTap: Get.back,
               radius: 16.0,
               child: Padding(
                 padding: const EdgeInsets.all(14.0),
@@ -41,10 +41,10 @@ class AdvisorPreviewScreen extends StatelessWidget {
             actions: [
               InkResponse(
                 onTap: () {
+                  advisorPreviewCubit.onOpen();
                   changeStatusCommentBottomSheet(
                       context: context,
                       onApply: advisorPreviewCubit.onApply,
-                      onCancel: advisorPreviewCubit.onCancel,
                       onSelectLanguage:
                           advisorPreviewCubit.updateActiveLanguagesInUI,
                       activeLanguages: advisorPreviewCubit.languages);

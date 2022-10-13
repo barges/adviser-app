@@ -4,14 +4,14 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 
 class ListOfFiltersWidget extends StatelessWidget {
   final List<String> filters;
-  final List<VoidCallback> onTaps;
+  final ValueChanged<int> onTap;
   final int currentFilterIndex;
 
   const ListOfFiltersWidget(
       {Key? key,
       required this.currentFilterIndex,
       required this.filters,
-      required this.onTaps})
+      required this.onTap})
       : super(key: key);
 
   @override
@@ -31,7 +31,7 @@ class ListOfFiltersWidget extends StatelessWidget {
               itemBuilder: (_, index) => FilterWidget(
                     title: filters[index],
                     isSelected: index == currentFilterIndex,
-                    onTap: onTaps[index],
+                    onTap: ()=>onTap(index),
                   ),
               separatorBuilder: (_, __) => const SizedBox(width: 8.0),
               itemCount: filters.length),
