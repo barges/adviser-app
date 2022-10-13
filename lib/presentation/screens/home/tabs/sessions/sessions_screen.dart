@@ -7,7 +7,7 @@ import 'package:shared_advisor_interface/data/models/user_info/user_status.dart'
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
@@ -35,7 +35,7 @@ class SessionsScreen extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: Get.theme.canvasColor,
-          appBar: WideAppBar(
+          appBar: HomeAppBar(
             bottomWidget: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: AppConstants.horizontalScreenPadding,

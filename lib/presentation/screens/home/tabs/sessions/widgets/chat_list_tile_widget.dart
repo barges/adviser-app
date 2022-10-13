@@ -21,8 +21,8 @@ class ChatListTileWidget extends StatelessWidget {
             alignment: Alignment.bottomRight,
             children: [
               SvgPicture.asset(
-                  getSuitableZodiacProfileImage(
-                      question.clientInformation?.zodiac ?? ''),
+                  (question.clientInformation?.zodiac ?? '')
+                      .getZodiacProfileImage,
                   width: 44.0),
               CircleAvatar(
                   radius: 8.0,
@@ -93,37 +93,5 @@ class ChatListTileWidget extends StatelessWidget {
         ),
       ),
     ]);
-  }
-
-  static String getSuitableZodiacProfileImage(String zodiac) {
-    switch (zodiac) {
-      case 'aquarius':
-        return Assets.vectors.zodiac.aquarius.path;
-      case 'aries':
-        return Assets.vectors.zodiac.aries.path;
-      case 'cancer':
-        return Assets.vectors.zodiac.cancer.path;
-      case 'capricorn':
-        return Assets.vectors.zodiac.capricorn.path;
-      case 'gemini':
-        return Assets.vectors.zodiac.gemini.path;
-      case 'leo':
-        return Assets.vectors.zodiac.leo.path;
-      case 'libra':
-        return Assets.vectors.zodiac.libra.path;
-      case 'pisces':
-        return Assets.vectors.zodiac.pisces.path;
-      case 'sagittarius':
-        return Assets.vectors.zodiac.sagittarius.path;
-      case 'scorpio':
-        return Assets.vectors.zodiac.scorpio.path;
-      case 'taurus':
-        return Assets.vectors.zodiac.taurus.path;
-      case 'virgo':
-        return Assets.vectors.zodiac.virgo.path;
-
-      default:
-        return '';
-    }
   }
 }

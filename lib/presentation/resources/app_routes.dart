@@ -9,6 +9,7 @@ import 'package:shared_advisor_interface/presentation/screens/forgot_password/fo
 import 'package:shared_advisor_interface/presentation/screens/home/home_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/user_profile/user_profile_screen.dart';
 
 class AppRoutes {
   static const splash = '/splash_screen';
@@ -21,6 +22,7 @@ class AppRoutes {
   static const articleDetails = '/article_details_screen';
   static const advisorPreview = '/advisor_preview_screen';
   static const balanceAndTransactions = '/balance_and_transactions_screen';
+  static const userProfile = '/user_profile_screen';
 
 
   static final List<GetPage> getPages = [
@@ -67,6 +69,10 @@ class AppRoutes {
     GetPage(
       name: advisorPreview,
       page: () => const AdvisorPreviewScreen(),
+    ),
+    GetPage(
+      name: userProfile,
+      page: () => const UserProfileScreen(),
     ),
   ];
 }

@@ -91,5 +91,20 @@
   "apply": "Aplique",
   "aboutMe": "Sobre mim",
   "quickAnswers": "Respostas rápidas",
-  "peopleHelped": "pessoas ajudaram"
+  "peopleHelped": "pessoas ajudaram",
+  "customerProfile": "Perfil do cliente",
+  "topSpender": "Maior gastador",
+  "born": "Nascer",
+  "chats": "bate-papos",
+  "calls": "chamadas",
+  "services": "serviços",
+  "zodiacSign": "Signo do zodíaco",
+  "numerology": "Numerologia",
+  "ascendant": "Ascendente",
+  "birthTown": "cidade de nascimento",
+  "questionProperties": "Propriedades da pergunta",
+  "notes": "Notas",
+  "addNew": "Adicionar novo",
+  "youDoNotHaveAnyNotesYet": "Você ainda não tem notas",
+  "AddInformationYouWantKeepInMindAboutThisClient": "Adicione as informações que você deseja ter em mente sobre este cliente"
 }

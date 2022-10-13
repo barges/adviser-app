@@ -91,5 +91,22 @@
   "apply": "Apply",
   "aboutMe": "About Me",
   "quickAnswers": "Quick Answers",
-  "peopleHelped": "people helped"
+  "peopleHelped": "people helped",
+  "customerProfile": "Customer Profile",
+  "topSpender": "Top spender",
+  "born": "Born",
+  "chats": "chats",
+  "calls": "calls",
+  "services": "services",
+  "zodiacSign": "Zodiac Sign",
+  "numerology": "Numerology",
+  "ascendant": "Ascendant",
+  "birthTown": "birth town",
+  "questionProperties": "Question properties",
+  "notes": "Notes",
+  "addNew": "Add new",
+  "youDoNotHaveAnyNotesYet": "You don’t have any notes yet",
+  "AddInformationYouWantKeepInMindAboutThisClient": "Add the information that you want to keep in mind about this client"
+
+
 }

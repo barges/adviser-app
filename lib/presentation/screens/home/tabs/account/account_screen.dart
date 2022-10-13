@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
@@ -23,7 +23,7 @@ class AccountScreen extends StatelessWidget {
       child: Builder(builder: (context) {
         final AccountCubit accountCubit = context.read<AccountCubit>();
         return Scaffold(
-          appBar: const WideAppBar(),
+          appBar: const HomeAppBar(),
           body: Builder(builder: (context) {
             final UserStatus currentStatus =
                 context.select((HomeCubit cubit) => cubit.state.userStatus);
