@@ -32,7 +32,7 @@ class CustomFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final OutlineInputBorder border = OutlineInputBorder(
         borderSide: BorderSide(
-          color: Get.theme.dividerColor,
+          color: Get.theme.hintColor,
         ),
         borderRadius: BorderRadius.zero);
     return Column(

@@ -26,7 +26,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   LoginCubit(this._repository, this._cacheManager) : super(const LoginState()) {
     final List<Brand> unauthorizedBrands =
-    _cacheManager.getUnauthorizedBrands();
+        _cacheManager.getUnauthorizedBrands();
     final Brand? newSelectedBrand = Get.arguments;
 
     emit(state.copyWith(
@@ -39,7 +39,6 @@ class LoginCubit extends Cubit<LoginState> {
       clearSuccessMessage();
       emit(state.copyWith(
         emailErrorText: '',
-        //showOpenEmailButton: false,
       ));
     });
     passwordController.addListener(() {
@@ -47,7 +46,6 @@ class LoginCubit extends Cubit<LoginState> {
       clearSuccessMessage();
       emit(state.copyWith(
         passwordErrorText: '',
-        //showOpenEmailButton: false,
       ));
     });
   }
@@ -78,7 +76,7 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> login() async {
     if (emailIsValid() && passwordIsValid()) {
       Get.find<Dio>().options.headers['Authorization'] =
-      'Basic ${base64.encode(utf8.encode('${emailController.text}:${passwordController.text.to256}'))}';
+          'Basic ${base64.encode(utf8.encode('${emailController.text}:${passwordController.text.to256}'))}';
 
       LoginResponse? response = await _repository.login();
       String? token = response?.accessToken;
@@ -122,4 +120,3 @@ class LoginCubit extends Cubit<LoginState> {
 
   bool passwordIsValid() => passwordController.text.length >= 8;
 }
-

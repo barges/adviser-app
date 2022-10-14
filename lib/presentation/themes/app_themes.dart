@@ -19,6 +19,7 @@ class AppThemes {
       shadowColor: AppColorsLight.shade3,
       hintColor: AppColorsLight.shade1,
       errorColor: AppColors.error,
+      dividerColor: AppColorsLight.shade1,
       iconTheme: const IconThemeData(
         color: AppColorsLight.shade3,
       ),
@@ -137,6 +138,7 @@ class AppThemes {
       hoverColor: AppColorsDark.ui,
       shadowColor: AppColorsDark.shade3,
       hintColor: AppColorsDark.shade1,
+      dividerColor: AppColorsDark.shade1,
       errorColor: AppColors.error,
       iconTheme: const IconThemeData(
         color: AppColorsDark.shade3,

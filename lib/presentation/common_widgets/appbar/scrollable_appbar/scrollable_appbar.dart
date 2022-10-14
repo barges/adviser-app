@@ -43,6 +43,7 @@ class ScrollableAppBar extends StatelessWidget {
           pinned: true,
           snap: true,
           floating: true,
+          scrolledUnderElevation: 0.2,
           titleSpacing: 16.0,
           flexibleSpace: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
