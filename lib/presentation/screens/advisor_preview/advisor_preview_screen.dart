@@ -10,7 +10,7 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/widgets/about_me_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/widgets/flag_bottom_sheet.dart';
+import 'package:shared_advisor_interface/presentation/screens/advisor_preview/widgets/flags_bottom_sheet.dart';
 
 class AdvisorPreviewScreen extends StatelessWidget {
   const AdvisorPreviewScreen({Key? key}) : super(key: key);
@@ -29,9 +29,8 @@ class AdvisorPreviewScreen extends StatelessWidget {
             titleTextStyle: appBarTitleStyle?.copyWith(color: white),
             systemOverlayStyle: const SystemUiOverlayStyle(
                 statusBarBrightness: Brightness.dark),
-            leading: InkResponse(
+            leading: GestureDetector(
               onTap: Get.back,
-              radius: 16.0,
               child: Padding(
                 padding: const EdgeInsets.all(14.0),
                 child: Assets.vectors.arrowLeft.svg(color: white),
@@ -39,17 +38,16 @@ class AdvisorPreviewScreen extends StatelessWidget {
             ),
             title: Text(advisorPreviewCubit.userProfile.profileName ?? ''),
             actions: [
-              InkResponse(
+              GestureDetector(
                 onTap: () {
                   advisorPreviewCubit.onOpen();
-                  changeStatusCommentBottomSheet(
+                  flagsBottomSheet(
                       context: context,
                       onApply: advisorPreviewCubit.onApply,
                       onSelectLanguage:
                           advisorPreviewCubit.updateActiveLanguagesInUI,
                       activeLanguages: advisorPreviewCubit.languages);
                 },
-                radius: 32.0,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: AppConstants.horizontalScreenPadding,
@@ -62,7 +60,8 @@ class AdvisorPreviewScreen extends StatelessWidget {
                               (AdvisorPreviewCubit cubit) =>
                                   cubit.state.currentIndex);
                           return Image.asset(
-                            (advisorPreviewCubit.languages[index]).getFlagImageByLanguageCode,
+                            (advisorPreviewCubit.languages[index])
+                                .getFlagImageByLanguageCode,
                           );
                         },
                       ),
@@ -116,10 +115,7 @@ class AdvisorPreviewScreen extends StatelessWidget {
                                         children: [
                                           Assets.vectors.responseProfile.svg(),
                                           const SizedBox(width: 4.0),
-                                          Text(
-                                            '≈ 2 hr',
-                                            style: displayLarge
-                                          ),
+                                          Text('≈ 2 hr', style: displayLarge),
                                         ],
                                       ),
                                     ),
@@ -153,18 +149,14 @@ class AdvisorPreviewScreen extends StatelessWidget {
                                 bottom: BorderSide(color: primary, width: 2.0),
                               ),
                             ),
-                            child: Text(
-                              S.of(context).aboutMe,
-                              style: displayLarge
-                            ),
+                            child: Text(S.of(context).aboutMe,
+                                style: displayLarge),
                           ),
                         ),
                         Expanded(
                           child: Center(
-                            child: Text(
-                              S.of(context).quickAnswers,
-                              style: displayLarge
-                            ),
+                            child: Text(S.of(context).quickAnswers,
+                                style: displayLarge),
                           ),
                         )
                       ],

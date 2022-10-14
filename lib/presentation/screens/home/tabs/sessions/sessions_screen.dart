@@ -4,14 +4,13 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/filters_list_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/list_of_filters_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
@@ -106,11 +105,9 @@ class _QuestionsListWidget extends StatelessWidget {
                 child: Builder(builder: (context) {
                   final int selectedFilterIndex = context.select(
                       (SessionsCubit cubit) => cubit.state.selectedFilterIndex);
-                  return FiltersListWidget(
+                  return ListOfFiltersWidget(
                     currentFilterIndex: selectedFilterIndex,
-                    filters: filters
-                        .mapIndexed((element, _) => Text(element))
-                        .toList(),
+                    filters: filters,
                     onTap: sessionsCubit.changeFilterIndex,
                   );
                 }),

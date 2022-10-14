@@ -31,7 +31,7 @@ class ListOfFiltersWidget extends StatelessWidget {
               itemBuilder: (_, index) => FilterWidget(
                     title: filters[index],
                     isSelected: index == currentFilterIndex,
-                    onTap: ()=>onTap(index),
+                    onTap: () => onTap(index),
                   ),
               separatorBuilder: (_, __) => const SizedBox(width: 8.0),
               itemCount: filters.length),

@@ -9,7 +9,7 @@ import 'package:shared_advisor_interface/presentation/screens/advisor_preview/ad
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/constants.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
-Future<void> changeStatusCommentBottomSheet(
+Future<void> flagsBottomSheet(
     {required BuildContext context,
     required VoidCallback onApply,
     required ValueChanged<int> onSelectLanguage,
