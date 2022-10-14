@@ -5,6 +5,7 @@ import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_mo
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/picker_modal_pop_up.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/balance_and_transactions_cubit.dart';
 
@@ -53,38 +54,65 @@ class MonthHeaderWidget extends StatelessWidget {
               },
             ),
           ),
-          Column(
-            children: [
-              Row(
-                children: [
-                  SizedBox(
-                    height: 18.0,
-                    child: Text(
-                      month.monthName ?? '',
-                      style: Get.textTheme.labelMedium?.copyWith(
-                        color: Get.theme.primaryColor,
-                        fontWeight: FontWeight.w700,
+          GestureDetector(
+            onTap: () {
+              if (months.length > 1) {
+                showPickerModalPopUp(
+                  context: context,
+                  setIndex: balanceAndTransactionsCubit.updateCurrentMonthIndex,
+                  currentIndex: currentMonthIndex,
+                  elements: months
+                      .map((e) => Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24.0,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(e.monthName ?? ''),
+                                Text(
+                                    e.monthsDate?.split('-').firstOrNull ?? ''),
+                              ],
+                            ),
+                          ))
+                      .toList(),
+                );
+              }
+            },
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 18.0,
+                      child: Text(
+                        month.monthName ?? '',
+                        style: Get.textTheme.labelMedium?.copyWith(
+                          color: Get.theme.primaryColor,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
-                  ),
-                  Assets.vectors.arrowDown.svg(
-                    color: Get.theme.primaryColor,
-                    height: 18.0,
-                    width: 18.0,
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 14.0,
-                child: Text(
-                  month.monthsDate?.split('-').firstOrNull ?? '',
-                  style: Get.textTheme.bodySmall?.copyWith(
-                    fontSize: 12.0,
-                    color: Get.theme.shadowColor,
-                  ),
+                    if (months.length > 1)
+                      Assets.vectors.arrowDown.svg(
+                        color: Get.theme.primaryColor,
+                        height: 18.0,
+                        width: 18.0,
+                      )
+                  ],
                 ),
-              )
-            ],
+                SizedBox(
+                  height: 14.0,
+                  child: Text(
+                    month.monthsDate?.split('-').firstOrNull ?? '',
+                    style: Get.textTheme.bodySmall?.copyWith(
+                      fontSize: 12.0,
+                      color: Get.theme.shadowColor,
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
           Opacity(
             opacity: hasNext ? 1.0 : 0.4,

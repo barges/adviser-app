@@ -20,11 +20,11 @@ extension SessionsTypeExt on SessionsTypes {
   String get sessionName {
     switch (this) {
       case SessionsTypes.public:
-        return 'Public Questions';
+        return 'Public';
       case SessionsTypes.private:
-        return 'Private Questions';
+        return 'Private';
       case SessionsTypes.tarot:
-        return 'Tarot Sessions';
+        return 'Tarot';
       case SessionsTypes.palmreading:
         return 'Palm Reading';
       case SessionsTypes.astrology:
@@ -34,14 +34,35 @@ extension SessionsTypeExt on SessionsTypes {
       case SessionsTypes.aurareading:
         return 'Aura Reading';
       case SessionsTypes.lovecrushreading:
-        return 'Love Crush';
+        return 'Love Crush Reading';
       case SessionsTypes.ritual:
-        return 'Ritual Sessions';
+        return 'Ritual';
       case SessionsTypes.tipsLow:
       case SessionsTypes.tipsMedium:
       case SessionsTypes.tipsHigh:
       case SessionsTypes.tips:
         return 'Tips';
+    }
+  }
+
+  String get sessionNameForStatistics {
+    switch (this) {
+      case SessionsTypes.public:
+      case SessionsTypes.private:
+        return '$sessionName Questions';
+      case SessionsTypes.tarot:
+      case SessionsTypes.palmreading:
+      case SessionsTypes.astrology:
+      case SessionsTypes.reading360:
+      case SessionsTypes.aurareading:
+      case SessionsTypes.lovecrushreading:
+      case SessionsTypes.ritual:
+        return '$sessionName Sessions';
+      case SessionsTypes.tipsLow:
+      case SessionsTypes.tipsMedium:
+      case SessionsTypes.tipsHigh:
+      case SessionsTypes.tips:
+        return sessionName;
     }
   }
 
