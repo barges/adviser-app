@@ -75,9 +75,10 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Clientes que voltam para você depois de comprar a primeira sessão em qualquer plataforma"),
         "customersWantSeeIfYouReal": MessageLookupByLibrary.simpleMessage(
             "Os clientes querem ver se você é real. Quanto mais fotos suas você adicionar, melhor."),
-        "dashboard": MessageLookupByLibrary.simpleMessage("Painel"),
+        "dashboard": MessageLookupByLibrary.simpleMessage("Dashboard"),
         "days": MessageLookupByLibrary.simpleMessage("dias"),
         "done": MessageLookupByLibrary.simpleMessage("Done"),
+        "earned": MessageLookupByLibrary.simpleMessage("Earned"),
         "editProfile": MessageLookupByLibrary.simpleMessage("Editar Perfil"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "english": MessageLookupByLibrary.simpleMessage("Inglês"),
@@ -166,6 +167,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "para lê-lo antes que sua conta seja bloqueada!"),
         "today": MessageLookupByLibrary.simpleMessage("Hoje"),
         "topSpender": MessageLookupByLibrary.simpleMessage("Maior gastador"),
+        "total": MessageLookupByLibrary.simpleMessage("Total"),
+        "totalMarkets": MessageLookupByLibrary.simpleMessage("Total markets"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "Orgulhamo-nos de oferecer aos consultores um local seguro para servir os clientes e desenvolver-se profissionalmente. Fazer um bom trabalho em uma de nossas marcas abrirá portas para outras"),
