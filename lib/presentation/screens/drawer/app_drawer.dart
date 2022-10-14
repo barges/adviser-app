@@ -72,7 +72,6 @@ class AppDrawer extends StatelessWidget {
                               ),
                               Divider(
                                 height: 1.0,
-                                color: Get.theme.hintColor,
                               ),
                               if (cubit.unauthorizedBrands.isNotEmpty)
                                 Padding(
@@ -258,7 +257,6 @@ class _BottomSection extends StatelessWidget {
       children: [
         Divider(
           height: 1.0,
-          color: Get.theme.hintColor,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(

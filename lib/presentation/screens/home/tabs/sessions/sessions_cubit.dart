@@ -52,7 +52,6 @@ class SessionsCubit extends Cubit<SessionsState> {
         FortunicaUserStatusEnum.live) {
       resetList(index);
       if (!hasMore) return;
-      try {
         QuestionsListResponse result =
             QuestionsListResponse(questions: state.questions, lastId: lastId);
         hasMore = result.hasMore ?? true;
@@ -73,9 +72,6 @@ class SessionsCubit extends Cubit<SessionsState> {
           ..addAll(result.questions ?? const []);
 
         emit(state.copyWith(questions: questions));
-      } catch (e) {
-        mainCubit.updateIsLoading(false);
-      }
     }
   }
 

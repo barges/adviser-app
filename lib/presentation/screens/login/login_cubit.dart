@@ -39,7 +39,6 @@ class LoginCubit extends Cubit<LoginState> {
       clearSuccessMessage();
       emit(state.copyWith(
         emailErrorText: '',
-        //showOpenEmailButton: false,
       ));
     });
     passwordController.addListener(() {
@@ -47,7 +46,6 @@ class LoginCubit extends Cubit<LoginState> {
       clearSuccessMessage();
       emit(state.copyWith(
         passwordErrorText: '',
-        //showOpenEmailButton: false,
       ));
     });
   }

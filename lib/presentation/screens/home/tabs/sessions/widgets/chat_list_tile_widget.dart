@@ -82,13 +82,14 @@ class ChatListTileWidget extends StatelessWidget {
                   )*/
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
+            const Padding(
+              padding: EdgeInsets.symmetric(
                   vertical: AppConstants.horizontalScreenPadding),
-              child: SizedBox(
-                  height: 1.0,
-                  child: Divider(color: Get.theme.hintColor, thickness: 1)),
-            )
+              child: Divider(
+                height: 1.0,
+                thickness: 1.0,
+              ),
+            ),
           ],
         ),
       ),
