@@ -25,7 +25,7 @@ class CustomFieldWidget extends StatelessWidget {
       this.errorText,
       this.showErrorText = false,
       this.height,
-      this.maxLines=1})
+      this.maxLines = 1})
       : super(key: key);
 
   @override

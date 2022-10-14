@@ -24,7 +24,7 @@ class ArticlesScreen extends StatelessWidget {
               iconPath: Assets.vectors.check.path,
               bottomWidget: Builder(builder: (context) {
                 final int selectedFilterIndex = context.select(
-                        (ArticlesCubit cubit) => cubit.state.selectedFilterIndex);
+                    (ArticlesCubit cubit) => cubit.state.selectedFilterIndex);
                 final List<String> filters = [
                   'All',
                   'Only Premium Products',

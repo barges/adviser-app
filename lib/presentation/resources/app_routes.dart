@@ -24,7 +24,6 @@ class AppRoutes {
   static const balanceAndTransactions = '/balance_and_transactions_screen';
   static const userProfile = '/user_profile_screen';
 
-
   static final List<GetPage> getPages = [
     GetPage(
       name: splash,

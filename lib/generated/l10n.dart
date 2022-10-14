@@ -1121,10 +1121,10 @@ class S {
   }
 
   /// `Add the information that you want to keep in mind about this client`
-  String get AddInformationYouWantKeepInMindAboutThisClient {
+  String get addInformationYouWantKeepInMindAboutThisClient {
     return Intl.message(
       'Add the information that you want to keep in mind about this client',
-      name: 'AddInformationYouWantKeepInMindAboutThisClient',
+      name: 'addInformationYouWantKeepInMindAboutThisClient',
       desc: '',
       args: [],
     );

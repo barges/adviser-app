@@ -62,7 +62,8 @@ class AdvisorPreviewScreen extends StatelessWidget {
                               (AdvisorPreviewCubit cubit) =>
                                   cubit.state.currentIndex);
                           return Image.asset(
-                            (advisorPreviewCubit.languages[index]).getFlagImageByLanguageCode,
+                            (advisorPreviewCubit.languages[index])
+                                .getFlagImageByLanguageCode,
                           );
                         },
                       ),
@@ -116,10 +117,7 @@ class AdvisorPreviewScreen extends StatelessWidget {
                                         children: [
                                           Assets.vectors.responseProfile.svg(),
                                           const SizedBox(width: 4.0),
-                                          Text(
-                                            '≈ 2 hr',
-                                            style: displayLarge
-                                          ),
+                                          Text('≈ 2 hr', style: displayLarge),
                                         ],
                                       ),
                                     ),
@@ -153,18 +151,14 @@ class AdvisorPreviewScreen extends StatelessWidget {
                                 bottom: BorderSide(color: primary, width: 2.0),
                               ),
                             ),
-                            child: Text(
-                              S.of(context).aboutMe,
-                              style: displayLarge
-                            ),
+                            child: Text(S.of(context).aboutMe,
+                                style: displayLarge),
                           ),
                         ),
                         Expanded(
                           child: Center(
-                            child: Text(
-                              S.of(context).quickAnswers,
-                              style: displayLarge
-                            ),
+                            child: Text(S.of(context).quickAnswers,
+                                style: displayLarge),
                           ),
                         )
                       ],

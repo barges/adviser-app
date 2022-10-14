@@ -79,7 +79,8 @@ class ProfileImageWidget extends StatelessWidget {
                                 return GestureDetector(
                                   onTap: () {
                                     Get.toNamed(AppRoutes.galleryPictures,
-                                        arguments: cubit.picturesPageController.page);
+                                        arguments:
+                                            cubit.picturesPageController.page);
                                   },
                                   child: SizedBox(
                                     height: _backgroundImageSectionHeight,

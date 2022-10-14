@@ -4,8 +4,7 @@ part 'user_rating.freezed.dart';
 part 'user_rating.g.dart';
 
 @freezed
-class UserRating with _$UserRating{
-
+class UserRating with _$UserRating {
   @JsonSerializable(includeIfNull: false)
   const factory UserRating({
     double? de,

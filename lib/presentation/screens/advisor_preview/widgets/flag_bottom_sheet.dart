@@ -51,8 +51,7 @@ Future<void> changeStatusCommentBottomSheet(
 class _FlagBottomSheetHeader extends StatelessWidget {
   final VoidCallback? onApply;
 
-  const _FlagBottomSheetHeader({Key? key, this.onApply})
-      : super(key: key);
+  const _FlagBottomSheetHeader({Key? key, this.onApply}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

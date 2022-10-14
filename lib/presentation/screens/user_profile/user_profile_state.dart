@@ -4,5 +4,6 @@ part 'user_profile_state.freezed.dart';
 
 @freezed
 class UserProfileState with _$UserProfileState {
-  factory UserProfileState({@Default(false) bool isFavorite}) = _UserProfileState;
+  factory UserProfileState({@Default(false) bool isFavorite}) =
+      _UserProfileState;
 }

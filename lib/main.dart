@@ -61,7 +61,7 @@ class _MyAppState extends State<MyApp> {
             theme: AppThemes.themeLight(context),
             darkTheme: AppThemes.themeDark(context),
             defaultTransition: Transition.cupertino,
-            initialRoute: AppRoutes.splash,
+            initialRoute: AppRoutes.userProfile,
             initialBinding: InitBinding(),
             getPages: AppRoutes.getPages,
             navigatorKey: navigatorKey,
