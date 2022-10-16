@@ -14,7 +14,6 @@ class SessionsCubit extends Cubit<SessionsState> {
   final CacheManager cacheManager;
   final ScrollController controller = ScrollController();
   late final VoidCallback disposeListen;
-  final MainCubit mainCubit = Get.find<MainCubit>();
 
   String? lastId;
   bool hasMore = true;
@@ -37,7 +36,8 @@ class SessionsCubit extends Cubit<SessionsState> {
   }
 
   void addScrollControllerListener() async {
-    if (controller.position.extentAfter <= 0 && !mainCubit.state.isLoading) {
+    if (controller.position.extentAfter <= 0 &&
+        !Get.find<MainCubit>().state.isLoading) {
       await getListOfQuestions(state.currentOptionIndex);
     }
   }
@@ -52,26 +52,22 @@ class SessionsCubit extends Cubit<SessionsState> {
         FortunicaUserStatusEnum.live) {
       resetList(index);
       if (!hasMore) return;
-        QuestionsListResponse result =
-            QuestionsListResponse(questions: state.questions, lastId: lastId);
-        hasMore = result.hasMore ?? true;
-        lastId = (result.questions ?? const []).lastOrNull?.id;
-        if (state.questions.isEmpty) {
-          mainCubit.updateIsLoading(true);
-          result = await _repository.getListOfQuestions(
-              lastId: lastId, isPublicFilter: state.currentOptionIndex == 0);
-          mainCubit.updateIsLoading(false);
-          emit(state.copyWith(questions: result.questions ?? const []));
-          return;
-        }
-        mainCubit.updateIsLoading(true);
+      QuestionsListResponse result =
+          QuestionsListResponse(questions: state.questions, lastId: lastId);
+      hasMore = result.hasMore ?? true;
+      lastId = (result.questions ?? const []).lastOrNull?.id;
+      if (state.questions.isEmpty) {
         result = await _repository.getListOfQuestions(
             lastId: lastId, isPublicFilter: state.currentOptionIndex == 0);
-        mainCubit.updateIsLoading(false);
-        final questions = List.of(state.questions)
-          ..addAll(result.questions ?? const []);
+        emit(state.copyWith(questions: result.questions ?? const []));
+        return;
+      }
+      result = await _repository.getListOfQuestions(
+          lastId: lastId, isPublicFilter: state.currentOptionIndex == 0);
+      final questions = List.of(state.questions)
+        ..addAll(result.questions ?? const []);
 
-        emit(state.copyWith(questions: questions));
+      emit(state.copyWith(questions: questions));
     }
   }
 
