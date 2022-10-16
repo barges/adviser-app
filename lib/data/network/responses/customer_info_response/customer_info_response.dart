@@ -7,21 +7,22 @@ import 'package:json_annotation/json_annotation.dart';
 part 'customer_info_response.g.dart';
 
 @JsonSerializable(includeIfNull: false)
-class CustomerInfoResponse extends Equatable{
+class CustomerInfoResponse extends Equatable {
   const CustomerInfoResponse({
-      this.questionsSubscription,
-      this.lId,
-      this.country,
-      this.birthdate,
-      this.firstName,
-      this.gender,
-      this.lastName,
-      this.zodiac,
-      this.isProfileCompleted,
-      this.id,
-      this.countryFullName,
-      this.totalMessages,
-      this.advisorMatch,});
+    this.questionsSubscription,
+    this.lId,
+    this.country,
+    this.birthdate,
+    this.firstName,
+    this.gender,
+    this.lastName,
+    this.zodiac,
+    this.isProfileCompleted,
+    this.id,
+    this.countryFullName,
+    this.totalMessages,
+    this.advisorMatch,
+  });
 
   final QuestionsSubscription? questionsSubscription;
   @JsonKey(name: '_id')
@@ -44,19 +45,19 @@ class CustomerInfoResponse extends Equatable{
   Map<String, dynamic> toJson() => _$CustomerInfoResponseToJson(this);
 
   @override
-  List<Object?> get props => [questionsSubscription,
-    lId,
-    country,
-    birthdate,
-    firstName,
-    gender,
-    lastName,
-    zodiac,
-    isProfileCompleted,
-    id,
-    countryFullName,
-    totalMessages,
-    advisorMatch];
-
-
+  List<Object?> get props => [
+        questionsSubscription,
+        lId,
+        country,
+        birthdate,
+        firstName,
+        gender,
+        lastName,
+        zodiac,
+        isProfileCompleted,
+        id,
+        countryFullName,
+        totalMessages,
+        advisorMatch,
+      ];
 }

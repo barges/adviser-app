@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:shared_advisor_interface/data/network/requests/Update_note_request.dart';
-import 'package:shared_advisor_interface/data/network/responses/Customer_info_response.dart';
+import 'package:shared_advisor_interface/data/network/requests/update_note_request.dart';
+import 'package:shared_advisor_interface/data/network/responses/customer_info_response/customer_info_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/update_note_response.dart';
 
 part 'customer_api.g.dart';

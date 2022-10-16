@@ -5,6 +5,7 @@ import 'package:shared_advisor_interface/data/models/question.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 class ChatListTileWidget extends StatelessWidget {
   final Question question;
@@ -15,21 +16,28 @@ class ChatListTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      SizedBox(
-          width: 44.0,
-          child: Stack(
-            alignment: Alignment.bottomRight,
-            children: [
-              SvgPicture.asset(
-                  (question.clientInformation?.zodiac ?? '')
-                      .getZodiacProfileImage,
-                  width: 44.0),
-              CircleAvatar(
-                  radius: 8.0,
-                  backgroundColor: Get.theme.canvasColor,
-                  child: Assets.vectors.ritual.svg())
-            ],
-          )),
+      GestureDetector(
+        onTap: () {
+          if (question.clientID != null) {
+            Get.toNamed(AppRoutes.userProfile, arguments: question.clientID);
+          }
+        },
+        child: SizedBox(
+            width: 44.0,
+            child: Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                SvgPicture.asset(
+                    (question.clientInformation?.zodiac ?? '')
+                        .getZodiacProfileImage,
+                    width: 44.0),
+                CircleAvatar(
+                    radius: 8.0,
+                    backgroundColor: Get.theme.canvasColor,
+                    child: Assets.vectors.ritual.svg())
+              ],
+            )),
+      ),
       const SizedBox(width: 14.0),
       Flexible(
         child: Column(

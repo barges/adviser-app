@@ -1,4 +1,4 @@
-import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/all_brands/all_brands_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/article_details/article_details_screen.dart';
@@ -71,7 +71,7 @@ class AppRoutes {
     ),
     GetPage(
       name: userProfile,
-      page: () => const UserProfileScreen(),
+      page: () => UserProfileScreen(customerID: Get.arguments as String),
     ),
   ];
 }

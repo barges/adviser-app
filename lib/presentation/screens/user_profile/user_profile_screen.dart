@@ -13,13 +13,16 @@ import 'package:shared_advisor_interface/presentation/screens/user_profile/user_
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class UserProfileScreen extends StatelessWidget {
-  const UserProfileScreen({Key? key}) : super(key: key);
+  final String customerID;
+
+  const UserProfileScreen({Key? key, required this.customerID})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (_) => Get.put<UserProfileCubit>(
-              UserProfileCubit(),
+              UserProfileCubit(customerID),
             ),
         child: Builder(
           builder: (context) {

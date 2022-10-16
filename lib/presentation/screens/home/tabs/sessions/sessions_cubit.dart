@@ -57,17 +57,13 @@ class SessionsCubit extends Cubit<SessionsState> {
         hasMore = result.hasMore ?? true;
         lastId = (result.questions ?? const []).lastOrNull?.id;
         if (state.questions.isEmpty) {
-          mainCubit.updateIsLoading(true);
           result = await _repository.getListOfQuestions(
               lastId: lastId, isPublicFilter: state.currentOptionIndex == 0);
-          mainCubit.updateIsLoading(false);
           emit(state.copyWith(questions: result.questions ?? const []));
           return;
         }
-        mainCubit.updateIsLoading(true);
         result = await _repository.getListOfQuestions(
             lastId: lastId, isPublicFilter: state.currentOptionIndex == 0);
-        mainCubit.updateIsLoading(false);
         final questions = List.of(state.questions)
           ..addAll(result.questions ?? const []);
 
