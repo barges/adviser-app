@@ -71,7 +71,6 @@ class AppDrawer extends StatelessWidget {
                               ),
                               Divider(
                                 height: 1.0,
-                                color: Get.theme.hintColor,
                               ),
                               if (cubit.unauthorizedBrands.isNotEmpty)
                                 Padding(
@@ -234,8 +233,8 @@ class _BrandItem extends StatelessWidget {
                     isCurrent
                         ? Assets.vectors.moreHorizontal.path
                         : Assets.vectors.login.path,
-                    height: AppConstants.iconsSize,
-                    width: AppConstants.iconsSize,
+                    height: AppConstants.iconSize,
+                    width: AppConstants.iconSize,
                     color: Get.iconColor,
                   ),
                 ),
@@ -257,7 +256,6 @@ class _BottomSection extends StatelessWidget {
       children: [
         Divider(
           height: 1.0,
-          color: Get.theme.hintColor,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(
@@ -320,8 +318,8 @@ class _BottomSectionItem extends StatelessWidget {
           children: [
             SvgPicture.asset(
               icon,
-              height: AppConstants.iconsSize,
-              width: AppConstants.iconsSize,
+              height: AppConstants.iconSize,
+              width: AppConstants.iconSize,
               color: Get.iconColor,
             ),
             const SizedBox(

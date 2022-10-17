@@ -1,6 +1,8 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:shared_advisor_interface/presentation/screens/all_brands/all_brands_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/edit_profile/gallery/gallery_pictures_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_screen.dart';
@@ -13,6 +15,9 @@ class AppRoutes {
   static const forgotPassword = '/forgot_password_screen';
   static const allBrands = '/all_brands_screen';
   static const editProfile = '/edit_profile_screen';
+  static const galleryPictures = '/gallery_pictures_screen';
+  static const balanceAndTransactions = '/balance_and_transactions_screen';
+
 
   static final List<GetPage> getPages = [
     GetPage(
@@ -38,6 +43,14 @@ class AppRoutes {
     GetPage(
       name: editProfile,
       page: () => const EditProfileScreen(),
+    ),
+    GetPage(
+      name: galleryPictures,
+      page: () => const GalleryPicturesScreen(),
+    ),
+    GetPage(
+      name: balanceAndTransactions,
+      page: () => const BalanceAndTransactionsScreen(),
     ),
   ];
 }

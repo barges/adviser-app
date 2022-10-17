@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class AllBrandsScreen extends StatelessWidget {
@@ -11,7 +11,7 @@ class AllBrandsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: WideAppBar(
+      appBar: SimpleAppBar(
         title: S.of(context).allOurBrands,
       ),
       backgroundColor: Get.theme.canvasColor,

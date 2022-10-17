@@ -4,11 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/app_loading_indicator.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_text_field.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/password_text_field.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -24,113 +25,22 @@ class ForgotPasswordScreen extends StatelessWidget {
       child: Builder(
         builder: (context) {
           final ForgotPasswordCubit cubit = context.read<ForgotPasswordCubit>();
-          return Stack(
-            children: [
-              Scaffold(
-                appBar: WideAppBar(
-                  title: S.of(context).forgotPassword,
-                ),
-                body: Stack(
+          return Scaffold(
+            appBar: SimpleAppBar(
+              title: S.of(context).forgotPassword,
+            ),
+            body: SafeArea(
+              child: GestureDetector(
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                  cubit.clearErrorMessage();
+                },
+                child: Column(
                   children: [
-                    SafeArea(
-                      child: GestureDetector(
-                        onTap: () {
-                          FocusScope.of(context).unfocus();
-                          cubit.clearErrorMessage();
-                        },
-                        child: SingleChildScrollView(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: AppConstants.horizontalScreenPadding),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 24.0),
-                                  child: _BrandLogo(
-                                    brand: cubit.selectedBrand,
-                                  ),
-                                ),
-                                Builder(builder: (context) {
-                                  final String emailErrorText = context.select(
-                                      (ForgotPasswordCubit cubit) =>
-                                          cubit.state.emailErrorText);
-                                  return AppTextField(
-                                    errorText: emailErrorText,
-                                    label: S.of(context).email,
-                                    textInputType: TextInputType.emailAddress,
-                                    textInputAction: TextInputAction.next,
-                                    nextFocusNode: cubit.passwordNode,
-                                    controller: cubit.emailController,
-                                  );
-                                }),
-                                const SizedBox(
-                                  height: 16.0,
-                                ),
-                                Builder(builder: (context) {
-                                  final String passwordErrorText = context
-                                      .select((ForgotPasswordCubit cubit) =>
-                                          cubit.state.passwordErrorText);
-                                  final bool hiddenPassword = context.select(
-                                      (ForgotPasswordCubit cubit) =>
-                                          cubit.state.hiddenPassword);
-                                  return PasswordTextField(
-                                    controller: cubit.passwordController,
-                                    focusNode: cubit.passwordNode,
-                                    label: S.of(context).password,
-                                    errorText: passwordErrorText,
-                                    textInputAction: TextInputAction.next,
-                                    onSubmitted: (_) {
-                                      FocusScope.of(context).requestFocus(
-                                          cubit.confirmPasswordNode);
-                                    },
-                                    hiddenPassword: hiddenPassword,
-                                    clickToHide: cubit.showHidePassword,
-                                  );
-                                }),
-                                Builder(builder: (context) {
-                                  final String confirmPasswordErrorText =
-                                      context.select(
-                                          (ForgotPasswordCubit cubit) => cubit
-                                              .state.confirmPasswordErrorText);
-                                  final bool hiddenConfirmPassword = context
-                                      .select((ForgotPasswordCubit cubit) =>
-                                          cubit.state.hiddenConfirmPassword);
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 16.0),
-                                    child: PasswordTextField(
-                                      controller:
-                                          cubit.confirmPasswordController,
-                                      focusNode: cubit.confirmPasswordNode,
-                                      label: S.of(context).confirmNewPassword,
-                                      errorText: confirmPasswordErrorText,
-                                      textInputAction: TextInputAction.send,
-                                      onSubmitted: (_) =>
-                                          cubit.resetPassword(context),
-                                      hiddenPassword: hiddenConfirmPassword,
-                                      clickToHide:
-                                          cubit.showHideConfirmPassword,
-                                    ),
-                                  );
-                                }),
-                                AppElevatedButton(
-                                  text: S.of(context).changePassword,
-                                  onPressed: () {
-                                    if (!cubit.state.isLoading) {
-                                      cubit.resetPassword(context);
-                                    }
-                                  },
-                                )
-                              ]),
-                        ),
-                      ),
-                    ),
                     Builder(
                       builder: (BuildContext context) {
                         final String errorMessage = context.select(
-                            (ForgotPasswordCubit cubit) =>
-                                cubit.state.errorMessage);
+                            (MainCubit cubit) => cubit.state.errorMessage);
                         return errorMessage.isNotEmpty
                             ? AppErrorWidget(
                                 errorMessage: errorMessage,
@@ -141,19 +51,107 @@ class ForgotPasswordScreen extends StatelessWidget {
                             : const SizedBox.shrink();
                       },
                     ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: AppConstants.horizontalScreenPadding),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 24.0),
+                              child: _BrandLogo(
+                                brand: cubit.selectedBrand,
+                              ),
+                            ),
+                            Builder(builder: (context) {
+                              final String emailErrorText = context.select(
+                                  (ForgotPasswordCubit cubit) =>
+                                      cubit.state.emailErrorText);
+                              return AppTextField(
+                                errorText: emailErrorText,
+                                label: S.of(context).email,
+                                textInputType: TextInputType.emailAddress,
+                                textInputAction: TextInputAction.next,
+                                nextFocusNode: cubit.passwordNode,
+                                controller: cubit.emailController,
+                              );
+                            }),
+                            const SizedBox(
+                              height: 16.0,
+                            ),
+                            Builder(builder: (context) {
+                              final String passwordErrorText = context.select(
+                                  (ForgotPasswordCubit cubit) =>
+                                      cubit.state.passwordErrorText);
+                              final bool hiddenPassword = context.select(
+                                  (ForgotPasswordCubit cubit) =>
+                                      cubit.state.hiddenPassword);
+                              return PasswordTextField(
+                                controller: cubit.passwordController,
+                                focusNode: cubit.passwordNode,
+                                label: S.of(context).password,
+                                errorText: passwordErrorText,
+                                textInputAction: TextInputAction.next,
+                                onSubmitted: (_) {
+                                  FocusScope.of(context)
+                                      .requestFocus(cubit.confirmPasswordNode);
+                                },
+                                hiddenPassword: hiddenPassword,
+                                clickToHide: cubit.showHidePassword,
+                              );
+                            }),
+                            Builder(builder: (context) {
+                              final String confirmPasswordErrorText =
+                                  context.select((ForgotPasswordCubit cubit) =>
+                                      cubit.state.confirmPasswordErrorText);
+                              final bool hiddenConfirmPassword = context.select(
+                                  (ForgotPasswordCubit cubit) =>
+                                      cubit.state.hiddenConfirmPassword);
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16.0),
+                                child: PasswordTextField(
+                                  controller: cubit.confirmPasswordController,
+                                  focusNode: cubit.confirmPasswordNode,
+                                  label: S.of(context).confirmNewPassword,
+                                  errorText: confirmPasswordErrorText,
+                                  textInputAction: TextInputAction.send,
+                                  onSubmitted: (_) => cubit.resetPassword(),
+                                  hiddenPassword: hiddenConfirmPassword,
+                                  clickToHide: cubit.showHideConfirmPassword,
+                                ),
+                              );
+                            }),
+                            AppElevatedButton(
+                              title: S.of(context).changePassword,
+                              onPressed: cubit.resetPassword,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 24.0,
+                              ),
+                              child: Get.isDarkMode
+                                  ? Assets.images.logos.forgotPasswordLogoDark
+                                      .image(
+                                      height: AppConstants.logoSize,
+                                      width: AppConstants.logoSize,
+                                    )
+                                  : Assets.images.logos.forgotPasswordLogo
+                                      .image(
+                                      height: AppConstants.logoSize,
+                                      width: AppConstants.logoSize,
+                                    ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              Builder(
-                builder: (context) {
-                  final bool isLoading = context.select(
-                      (ForgotPasswordCubit cubit) => cubit.state.isLoading);
-                  return AppLoadingIndicator(
-                    showIndicator: isLoading,
-                  );
-                },
-              ),
-            ],
+            ),
           );
         },
       ),

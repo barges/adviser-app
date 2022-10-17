@@ -7,14 +7,12 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 class AppSuccessWidget extends StatelessWidget {
   final String message;
   final VoidCallback close;
-  final bool showEmailButton;
 
-  const AppSuccessWidget(
-      {Key? key,
-      required this.message,
-      required this.close,
-      this.showEmailButton = false})
-      : super(key: key);
+  const AppSuccessWidget({
+    Key? key,
+    required this.message,
+    required this.close,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +41,10 @@ class AppSuccessWidget extends StatelessWidget {
                       color: Get.theme.primaryColor,
                     ),
                   ),
-                  if (showEmailButton)
-                    const Padding(
-                      padding: EdgeInsets.only(top: 8.0),
-                      child: OpenEmailButton(),
-                    )
+                  const Padding(
+                    padding: EdgeInsets.only(top: 8.0),
+                    child: OpenEmailButton(),
+                  )
                 ],
               ),
             ),

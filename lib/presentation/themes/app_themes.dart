@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors_dark.dart';
 
@@ -14,8 +15,11 @@ class AppThemes {
       canvasColor: AppColorsLight.contrast,
       primaryColor: AppColorsLight.primary,
       brightness: Brightness.light,
+      hoverColor: AppColorsLight.ui,
+      shadowColor: AppColorsLight.shade3,
       hintColor: AppColorsLight.shade1,
-      errorColor: AppColorsLight.error,
+      errorColor: AppColors.error,
+      dividerColor: AppColorsLight.shade1,
       iconTheme: const IconThemeData(
         color: AppColorsLight.shade3,
       ),
@@ -37,41 +41,50 @@ class AppThemes {
       ),
       textTheme: GoogleFonts.redHatDisplayTextTheme(
         const TextTheme(
-          headlineLarge: TextStyle(
-            fontSize: 24.0,
-            fontWeight: FontWeight.w700,
-            color: AppColorsLight.ui,
-          ),
-          headlineMedium: TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.w700,
-            color: AppColorsLight.ui,
-          ),
-          labelMedium: TextStyle(
-            fontSize: 14.0,
-            fontWeight: FontWeight.w500,
-            color: AppColorsLight.ui,
-          ),
-          labelSmall: TextStyle(
-            fontSize: 10.0,
-            fontWeight: FontWeight.w500,
-            color: AppColorsLight.ui,
-          ),
-          titleMedium: TextStyle(
+            headlineLarge: TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.w900,
               color: AppColorsLight.ui,
-              fontSize: 17.0,
-              fontWeight: FontWeight.w600),
-          bodySmall: TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 13.0,
-            color: AppColorsLight.ui,
-          ),
-          bodyMedium: TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 15.0,
-            color: AppColorsLight.ui,
-          ),
-        ),
+            ),
+            headlineMedium: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w700,
+              color: AppColorsLight.ui,
+            ),
+            labelMedium: TextStyle(
+              fontSize: 14.0,
+              fontWeight: FontWeight.w500,
+              color: AppColorsLight.ui,
+            ),
+            labelSmall: TextStyle(
+              fontSize: 10.0,
+              fontWeight: FontWeight.w500,
+              color: AppColorsLight.ui,
+            ),
+            titleMedium: TextStyle(
+                color: AppColorsLight.ui,
+                fontSize: 17.0,
+                fontWeight: FontWeight.w600),
+            bodySmall: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 13.0,
+              color: AppColorsLight.ui,
+            ),
+            displaySmall: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 12.0,
+              color: AppColorsLight.ui,
+            ),
+            bodyMedium: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 15.0,
+              color: AppColorsLight.ui,
+            ),
+            displayLarge: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 16.0,
+              color: AppColorsLight.ui,
+            )),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -116,9 +129,12 @@ class AppThemes {
       primaryColorLight: AppColorsDark.coloredBG,
       canvasColor: AppColorsDark.contrast,
       primaryColor: AppColorsDark.primary,
-      brightness: Brightness.dark,
+      brightness: Brightness.light,
+      hoverColor: AppColorsDark.ui,
+      shadowColor: AppColorsDark.shade3,
       hintColor: AppColorsDark.shade1,
-      errorColor: AppColorsDark.error,
+      dividerColor: AppColorsDark.shade1,
+      errorColor: AppColors.error,
       iconTheme: const IconThemeData(
         color: AppColorsDark.shade3,
       ),
@@ -132,41 +148,50 @@ class AppThemes {
       ),
       textTheme: GoogleFonts.redHatDisplayTextTheme(
         const TextTheme(
-          headlineLarge: TextStyle(
-            fontSize: 24.0,
-            fontWeight: FontWeight.w700,
-            color: AppColorsDark.ui,
-          ),
-          headlineMedium: TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.w700,
-            color: AppColorsDark.ui,
-          ),
-          labelMedium: TextStyle(
-            fontSize: 14.0,
-            fontWeight: FontWeight.w500,
-            color: AppColorsDark.ui,
-          ),
-          labelSmall: TextStyle(
-            fontSize: 10.0,
-            fontWeight: FontWeight.w500,
-            color: AppColorsDark.ui,
-          ),
-          titleMedium: TextStyle(
+            headlineLarge: TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.w900,
               color: AppColorsDark.ui,
-              fontSize: 17.0,
-              fontWeight: FontWeight.w600),
-          bodySmall: TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 13.0,
-            color: AppColorsDark.ui,
-          ),
-          bodyMedium: TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 15.0,
-            color: AppColorsDark.ui,
-          ),
-        ),
+            ),
+            headlineMedium: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w700,
+              color: AppColorsDark.ui,
+            ),
+            labelMedium: TextStyle(
+              fontSize: 14.0,
+              fontWeight: FontWeight.w500,
+              color: AppColorsDark.ui,
+            ),
+            labelSmall: TextStyle(
+              fontSize: 10.0,
+              fontWeight: FontWeight.w500,
+              color: AppColorsDark.ui,
+            ),
+            titleMedium: TextStyle(
+                color: AppColorsDark.ui,
+                fontSize: 17.0,
+                fontWeight: FontWeight.w600),
+            bodySmall: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 13.0,
+              color: AppColorsDark.ui,
+            ),
+            displaySmall: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 12.0,
+              color: AppColorsDark.ui,
+            ),
+            bodyMedium: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 15.0,
+              color: AppColorsDark.ui,
+            ),
+            displayLarge: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 16.0,
+              color: AppColorsDark.ui,
+            )),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(

@@ -6,11 +6,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 
-Future<void> showPickImageAlert({
-  required BuildContext context,
-  required ValueChanged<File> setImage,
-  VoidCallback? cancelOnTap,
-}) async {
+Future<void> showPickImageAlert(
+    {required BuildContext context,
+    required ValueChanged<File> setImage,
+    VoidCallback? cancelOnTap,
+    bool mounted = true}) async {
   ImageSource? source;
 
   if (Platform.isAndroid) {
@@ -76,16 +76,16 @@ Future<void> showPickImageAlert({
               actions: <Widget>[
                 CupertinoActionSheetAction(
                   child: Text(
+                    S.of(context).takeAPhoto,
+                  ),
+                  onPressed: () => Get.back(result: ImageSource.camera),
+                ),
+                CupertinoActionSheetAction(
+                  child: Text(
                     S.of(context).chooseFromGallery,
                   ),
                   onPressed: () => Get.back(result: ImageSource.gallery),
                 ),
-                CupertinoActionSheetAction(
-                  child: Text(
-                    S.of(context).takeAPhoto,
-                  ),
-                  onPressed: () => Get.back(result: ImageSource.camera),
-                )
               ],
               cancelButton: CupertinoActionSheetAction(
                 isDefaultAction: true,
@@ -101,12 +101,12 @@ Future<void> showPickImageAlert({
               ),
             ));
   }
-  if (source != null) {
+  if (mounted && source != null) {
     await _pickImage(context, source, setImage);
   }
 }
 
-Future _pickImage(BuildContext context, ImageSource imageSource,
+Future<void> _pickImage(BuildContext context, ImageSource imageSource,
     ValueChanged<File> setImage) async {
   await _handlePermissions(context, imageSource);
   File? image;

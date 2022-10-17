@@ -5,21 +5,23 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 
 class AppIconButton extends StatelessWidget {
   final String icon;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
+  final bool needColor;
 
   const AppIconButton({
     Key? key,
     required this.icon,
-    required this.onTap,
+    this.onTap,
+    this.needColor = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return InkResponse(
-      onTap: () => onTap(),
+    return GestureDetector(
+      onTap: onTap,
       child: Container(
-        height: 32.0,
-        width: 32.0,
+        height: AppConstants.iconButtonSize,
+        width: AppConstants.iconButtonSize,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
           color: Get.theme.scaffoldBackgroundColor,
@@ -27,9 +29,9 @@ class AppIconButton extends StatelessWidget {
         child: Center(
             child: SvgPicture.asset(
           icon,
-          color: Get.theme.primaryColor,
-          height: AppConstants.iconsSize,
-          width: AppConstants.iconsSize,
+          color: needColor ? Get.theme.primaryColor : null,
+          height: AppConstants.iconSize,
+          width: AppConstants.iconSize,
         )),
       ),
     );

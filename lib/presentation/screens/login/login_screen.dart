@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/app_loading_indicator.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/login_appbar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
@@ -25,21 +26,50 @@ class LoginScreen extends StatelessWidget {
           LoginCubit(Get.find<AuthRepository>(), Get.find<CacheManager>()),
       child: Builder(
         builder: (BuildContext context) {
-          final LoginCubit cubit = context.read<LoginCubit>();
-          return Stack(
-            children: [
-              Scaffold(
-                appBar: const LoginAppBar(),
-                body: Stack(
+          final LoginCubit loginCubit = context.read<LoginCubit>();
+          return Scaffold(
+            appBar: const LoginAppBar(),
+            body: SafeArea(
+              child: GestureDetector(
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                  loginCubit.clearErrorMessage();
+                  loginCubit.clearSuccessMessage();
+                },
+                child: Column(
                   children: [
-                    SafeArea(
-                      child: GestureDetector(
-                        onTap: () {
-                          FocusScope.of(context).unfocus();
-                          cubit.clearErrorMessage();
-                        },
-                        child: SingleChildScrollView(
-                          child: Column(children: [
+                    Builder(
+                      builder: (BuildContext context) {
+                        final String errorMessage = context.select(
+                            (MainCubit cubit) => cubit.state.errorMessage);
+                        return errorMessage.isNotEmpty
+                            ? AppErrorWidget(
+                                errorMessage: errorMessage,
+                                close: () {
+                                  loginCubit.clearErrorMessage();
+                                },
+                              )
+                            : const SizedBox.shrink();
+                      },
+                    ),
+                    Builder(
+                      builder: (BuildContext context) {
+                        final String message = context.select(
+                            (MainCubit cubit) => cubit.state.successMessage);
+                        return message.isNotEmpty
+                            ? AppSuccessWidget(
+                                message: message,
+                                close: () {
+                                  loginCubit.clearSuccessMessage();
+                                },
+                              )
+                            : const SizedBox.shrink();
+                      },
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
                             const SizedBox(
                               height: 16.0,
                             ),
@@ -63,8 +93,8 @@ class LoginScreen extends StatelessWidget {
                                       label: S.of(context).email,
                                       textInputType: TextInputType.emailAddress,
                                       textInputAction: TextInputAction.next,
-                                      nextFocusNode: cubit.passwordNode,
-                                      controller: cubit.emailController,
+                                      nextFocusNode: loginCubit.passwordNode,
+                                      controller: loginCubit.emailController,
                                     );
                                   }),
                                   const SizedBox(
@@ -78,29 +108,28 @@ class LoginScreen extends StatelessWidget {
                                         context.select((LoginCubit cubit) =>
                                             cubit.state.passwordErrorText);
                                     return PasswordTextField(
-                                      controller: cubit.passwordController,
-                                      focusNode: cubit.passwordNode,
+                                      controller: loginCubit.passwordController,
+                                      focusNode: loginCubit.passwordNode,
                                       label: S.of(context).password,
                                       errorText: passwordErrorText,
                                       textInputAction: TextInputAction.next,
-                                      onSubmitted: (_) => cubit.login,
+                                      onSubmitted: (_) => loginCubit.login,
                                       hiddenPassword: hiddenPassword,
-                                      clickToHide: cubit.showHidePassword,
+                                      clickToHide: loginCubit.showHidePassword,
                                     );
                                   }),
                                   const SizedBox(
                                     height: 24.0,
                                   ),
                                   AppElevatedButton(
-                                    text: S.of(context).login,
-                                    onPressed: () => cubit.login(context),
+                                    title: S.of(context).login,
+                                    onPressed: loginCubit.login,
                                   ),
                                   const SizedBox(
                                     height: 22.0,
                                   ),
                                   GestureDetector(
-                                    onTap: () =>
-                                        cubit.goToForgotPassword(context),
+                                    onTap: loginCubit.goToForgotPassword,
                                     child: Text(
                                       '${S.of(context).forgotPassword}?',
                                       style:
@@ -112,56 +141,29 @@ class LoginScreen extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                            )
-                          ]),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 24.0,
+                              ),
+                              child: Get.isDarkMode
+                                  ? Assets.images.logos.loginLogoDark.image(
+                                      height: AppConstants.logoSize,
+                                      width: AppConstants.logoSize,
+                                    )
+                                  : Assets.images.logos.loginLogo.image(
+                                      height: AppConstants.logoSize,
+                                      width: AppConstants.logoSize,
+                                    ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                    Builder(
-                      builder: (BuildContext context) {
-                        final String errorMessage = context.select(
-                            (LoginCubit cubit) => cubit.state.errorMessage);
-                        return errorMessage.isNotEmpty
-                            ? AppErrorWidget(
-                                errorMessage: errorMessage,
-                                close: () {
-                                  cubit.clearErrorMessage();
-                                },
-                              )
-                            : const SizedBox.shrink();
-                      },
-                    ),
-                    Builder(
-                      builder: (BuildContext context) {
-                        final bool showEmailButton = context.select(
-                            (LoginCubit cubit) =>
-                                cubit.state.showOpenEmailButton);
-                        final String message = context.select(
-                            (LoginCubit cubit) => cubit.state.successMessage);
-                        return message.isNotEmpty
-                            ? AppSuccessWidget(
-                                message: message,
-                                showEmailButton: showEmailButton,
-                                close: () {
-                                  cubit.clearSuccessMessage();
-                                },
-                              )
-                            : const SizedBox.shrink();
-                      },
                     ),
                   ],
                 ),
               ),
-              Builder(
-                builder: (context) {
-                  final bool isLoading = context
-                      .select((LoginCubit cubit) => cubit.state.isLoading);
-                  return AppLoadingIndicator(
-                    showIndicator: isLoading,
-                  );
-                },
-              ),
-            ],
+            ),
           );
         },
       ),

@@ -5,11 +5,15 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 
 class AppErrorWidget extends StatelessWidget {
   final String errorMessage;
-  final VoidCallback close;
+  final VoidCallback? close;
+  final bool isRequired;
 
-  const AppErrorWidget(
-      {Key? key, required this.errorMessage, required this.close})
-      : super(key: key);
+  const AppErrorWidget({
+    Key? key,
+    required this.errorMessage,
+    this.close,
+    this.isRequired = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +39,7 @@ class AppErrorWidget extends StatelessWidget {
               ),
             ),
           ),
+          if(!isRequired)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 22.0),
             child: GestureDetector(

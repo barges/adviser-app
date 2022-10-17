@@ -11,6 +11,5 @@ class ForgotPasswordState with _$ForgotPasswordState {
     @Default('') String confirmPasswordErrorText,
     @Default(true) bool hiddenPassword,
     @Default(true) bool hiddenConfirmPassword,
-    @Default(false) bool isLoading,
   }) = _ForgotPasswordState;
 }

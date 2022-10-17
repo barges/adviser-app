@@ -1,25 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_Icon_button.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final String? backIcon;
-  final String? backButtonText;
-  final VoidCallback? openDrawer;
 
   const SimpleAppBar({
     Key? key,
     required this.title,
-    this.backButtonText,
-    this.openDrawer,
-    this.backIcon,
   }) : super(key: key);
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(AppConstants.appBarHeight);
 
   @override
   Widget build(BuildContext context) {
@@ -27,27 +22,26 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       centerTitle: false,
       titleSpacing: AppConstants.horizontalScreenPadding,
-      titleTextStyle: Get.textTheme.headlineMedium,
-      actions: [
-        if (openDrawer != null)
-          IconButton(
-              onPressed: openDrawer,
-              icon: Icon(
-                Icons.menu,
-                color: Colors.black,
-              ))
-      ],
-      elevation: 0.0,
+      elevation: 1.0,
       title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           AppIconButton(
-            icon: backIcon ?? Assets.vectors.back.path,
-            onTap: Get.back,
+            icon: Assets.vectors.arrowLeft.path,
+            onTap: () {
+              Get.find<MainCubit>().clearErrorMessage();
+              Get.back();
+            },
+          ),
+          Text(
+            title,
+            style: Get.textTheme.headlineMedium?.copyWith(
+              fontSize: 17.0,
+            ),
           ),
           const SizedBox(
-            width: 12.0,
-          ),
-          Text(title),
+            width: AppConstants.iconButtonSize,
+          )
         ],
       ),
       backgroundColor: Get.theme.canvasColor,

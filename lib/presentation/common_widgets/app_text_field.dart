@@ -10,9 +10,7 @@ class AppTextField extends StatelessWidget {
   final TextInputType? textInputType;
   final TextInputAction? textInputAction;
   final bool isPassword;
-  final int maxLines;
-  final double height;
-  final EdgeInsets? contentPadding;
+  final bool isBig;
 
   const AppTextField({
     Key? key,
@@ -22,10 +20,8 @@ class AppTextField extends StatelessWidget {
     this.textInputType,
     this.textInputAction,
     this.isPassword = false,
-    this.maxLines = 1,
-    this.height = AppConstants.textFieldsHeight,
+    this.isBig = false,
     this.errorText = '',
-    this.contentPadding,
   }) : super(key: key);
 
   @override
@@ -46,7 +42,7 @@ class AppTextField extends StatelessWidget {
           ),
           child: Container(
             margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
-            height: height - 3,
+            height: (isBig ? 144.0 : AppConstants.textFieldsHeight) - 3,
             decoration: BoxDecoration(
               borderRadius:
                   BorderRadius.circular(AppConstants.buttonRadius - 1),
@@ -60,10 +56,11 @@ class AppTextField extends StatelessWidget {
                 FocusScope.of(context).requestFocus(nextFocusNode);
               },
               decoration: InputDecoration(
-                contentPadding: contentPadding ??
-                    const EdgeInsets.symmetric(horizontal: 12.0),
+                contentPadding: isBig
+                    ? const EdgeInsets.all(12.0)
+                    : const EdgeInsets.symmetric(horizontal: 12.0),
               ),
-              maxLines: maxLines,
+              maxLines: isBig ? 10 : 1,
               style: Get.textTheme.bodyMedium,
             ),
           ),

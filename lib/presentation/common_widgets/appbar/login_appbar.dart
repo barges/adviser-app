@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_Icon_button.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/change_locale_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
@@ -27,7 +27,7 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
             Row(
               children: [
                 AppIconButton(
-                  icon: Assets.vectors.back.path,
+                  icon: Assets.vectors.arrowLeft.path,
                   onTap: Get.back,
                 ),
                const SizedBox(
@@ -42,7 +42,7 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
               textAlign: TextAlign.left,
             ),
           ),
-          ChangeLocaleButton(),
+          const ChangeLocaleButton(),
         ],
       ),
       backgroundColor: Get.theme.canvasColor,

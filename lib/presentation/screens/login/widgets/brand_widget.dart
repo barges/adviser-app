@@ -24,8 +24,8 @@ class BrandWidget extends StatelessWidget {
         onLongPress: () {
           if (kDebugMode) {
             context.read<LoginCubit>().emailController.text =
-                'niskov.test@gmail.com';
-            context.read<LoginCubit>().passwordController.text = '00000000';
+                'primrose.test1@gmail.com';
+            context.read<LoginCubit>().passwordController.text = '1234567891';
           }
         },
         onTap: () {

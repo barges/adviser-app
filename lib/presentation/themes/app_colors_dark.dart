@@ -14,10 +14,8 @@ class AppColorsDark {
 
   static const Color ui = Color(0xFFF4F4F4);
 
-  static const Color shade1 = Color(0xFF302C32);
+  static const Color shade1 = Color(0xFF424242);
 
   static const Color shade3 = Color(0xFFABABB4);
-
-  static const Color error = Color(0xffD0021B);
 
 }
