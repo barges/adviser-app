@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class NotesWidget extends StatelessWidget {
   final List<String> texts;
-  final List<String> images;
+  final List<List<String>> images;
   final VoidCallback? addNoteTap;
 
   const NotesWidget(
@@ -66,7 +67,7 @@ class NotesWidget extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (_, index) =>
-                    _OneNoteWidget(text: texts[index], image: images[index]),
+                    _OneNoteWidget(text: texts[index], images: images[index]),
                 separatorBuilder: (_, __) => const SizedBox(height: 11.0),
                 itemCount: texts.length)
             : const _EmptyNotesWidget()
@@ -111,9 +112,9 @@ class _EmptyNotesWidget extends StatelessWidget {
 
 class _OneNoteWidget extends StatelessWidget {
   final String text;
-  final String? image;
+  final List<String> images;
 
-  const _OneNoteWidget({Key? key, required this.text, this.image})
+  const _OneNoteWidget({Key? key, required this.text, this.images = const []})
       : super(key: key);
 
   @override
@@ -141,19 +142,19 @@ class _OneNoteWidget extends StatelessWidget {
                     fontWeight: FontWeight.w400, color: Get.theme.shadowColor),
                 child: Row(
                   children: [
-                    const Text('Dec. 21, 2020'),
+                    Text('2020-01-07T00:00:00.000Z'.parseDateTimePattern2),
                     Padding(
                       padding: const EdgeInsets.only(left: 24.0, right: 4.0),
                       child: Assets.vectors.attach.svg(),
                     ),
-                    const Text('4')
+                    Text(images.length.toString())
                   ],
                 ),
               ),
             ],
           ),
         ),
-        if (image != null)
+        if (images.isNotEmpty)
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -161,7 +162,7 @@ class _OneNoteWidget extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
                 child: Image.network(
-                  image!,
+                  images[0],
                   height: 78.0,
                   width: 78.0,
                   fit: BoxFit.cover,
