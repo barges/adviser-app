@@ -37,7 +37,7 @@ class CustomerInfoResponse extends Equatable {
   final String? id;
   final String? countryFullName;
   final int? totalMessages;
-  final dynamic advisorMatch;
+  final Map<String,String>? advisorMatch;
 
   factory CustomerInfoResponse.fromJson(Map<String, dynamic> json) =>
       _$CustomerInfoResponseFromJson(json);

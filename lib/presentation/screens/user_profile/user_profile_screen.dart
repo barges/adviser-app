@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
 import 'package:shared_advisor_interface/data/network/responses/customer_info_response/customer_info_response.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -168,11 +167,10 @@ class UserProfileScreen extends StatelessWidget {
                                   const _BirthTownWidget(
                                     address: 'Preston Rd. Inglewood, Maine',
                                   ),
-                                  const _QuestionPropertiesWidget(
-                                    properties: [
-                                      SessionsTypes.astrology,
-                                      SessionsTypes.palmreading
-                                    ],
+                                  _QuestionPropertiesWidget(
+                                    properties: response.advisorMatch?.values
+                                            .toList() ??
+                                        const [],
                                   ),
                                 ],
                               ),
@@ -279,7 +277,7 @@ class _BirthTownWidget extends StatelessWidget {
 }
 
 class _QuestionPropertiesWidget extends StatelessWidget {
-  final List<SessionsTypes> properties;
+  final List<String> properties;
 
   const _QuestionPropertiesWidget({Key? key, required this.properties})
       : super(key: key);
@@ -308,9 +306,10 @@ class _QuestionPropertiesWidget extends StatelessWidget {
             shrinkWrap: true,
             padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (_, index) => _IconAndTitleWidget(
-                  iconPath: properties[index].iconPath,
-                  title: properties[index].sessionName,
+            itemBuilder: (_, index) => Text(
+                  properties[index],
+                  style: Get.textTheme.displayLarge
+                      ?.copyWith(fontWeight: FontWeight.w500),
                 ),
             separatorBuilder: (_, __) => const SizedBox(height: 12.0),
             itemCount: properties.length)
