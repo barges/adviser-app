@@ -7,6 +7,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 const String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 const String datePattern1 = 'MMM d, yyyy';
 const String datePattern2 = 'MMM. d, yyyy';
+const String datePattern3 = 'dd/MM/yyyy';
 
 const String currencyPattern = '#,##0.00';
 
@@ -128,6 +129,12 @@ extension StringExt on String {
         DateTime.parse(DateFormat(dateFormat).parse(this).toString());
 
     return DateFormat(datePattern2).format(inputDate);
+  }
+
+  String get parseDateTimePattern3 {
+    final DateTime inputDate =
+        DateTime.parse(DateFormat(dateFormat).parse(this).toString());
+    return DateFormat(datePattern3).format(inputDate);
   }
 }
 

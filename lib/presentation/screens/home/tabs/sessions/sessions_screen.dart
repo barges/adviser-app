@@ -112,9 +112,10 @@ class _QuestionsListWidget extends StatelessWidget {
                   );
                 }),
               ),
-
-
-                 const Divider(height: 1.0, thickness: 1.0,),
+              const Divider(
+                height: 1.0,
+                thickness: 1.0,
+              ),
             ],
           ),
           Builder(

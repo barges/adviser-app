@@ -5,7 +5,6 @@ part 'questions_subscription.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class QuestionsSubscription extends Equatable {
-
   final int? status;
   final bool? active;
 

@@ -3,13 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
+import 'package:shared_advisor_interface/data/network/responses/customer_info_response/customer_info_response.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/user_profile/user_profile_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/user_profile/widgets/notes_widget.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class UserProfileScreen extends StatelessWidget {
@@ -48,119 +51,153 @@ class UserProfileScreen extends StatelessWidget {
                   },
                 ),
               ),
-              body: SingleChildScrollView(
-                  child: Column(
-                children: [
-                  Ink(
-                    color: Get.theme.canvasColor,
-                    width: Get.width,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: AppConstants.horizontalScreenPadding,
-                        vertical: 24.0),
-                    child: Column(children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4.0),
-                        child: Stack(
-                          alignment: Alignment.bottomCenter,
-                          children: [
-                            SvgPicture.asset('gemini'.getZodiacProfileImage,
-                                width: 96.0),
-                            if (userProfileCubit.isTopSpender)
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 2.0, horizontal: 8.0),
-                                decoration: BoxDecoration(
-                                  color: AppColors.promotion,
-                                  borderRadius: BorderRadius.circular(
-                                    AppConstants.buttonRadius,
-                                  ),
-                                ),
-                                child: Text(
-                                  S.of(context).topSpender,
-                                  style: Get.textTheme.labelSmall?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.white,
-                                  ),
-                                ),
-                              )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: AppConstants.horizontalScreenPadding),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 12.0,
-                                ),
-                                child: Text(
-                                  'Sylvia Lorente Van Berge Henegouwen',
-                                  textAlign: TextAlign.center,
-                                  style: Get.textTheme.headlineMedium,
-                                ),
-                              ),
-                              Text(
-                                '${S.of(context).born} 23/05/1990, female, Chicago IL.',
-                                textAlign: TextAlign.center,
-                                style: Get.textTheme.bodyMedium?.copyWith(
-                                  color: Get.theme.shadowColor,
-                                ),
-                              ),
-                              Text(
-                                '3 ${S.of(context).chats}, 5 ${S.of(context).calls}, 5 ${S.of(context).services}',
-                                textAlign: TextAlign.center,
-                                style: Get.textTheme.bodyMedium?.copyWith(
-                                  color: Get.theme.shadowColor,
-                                ),
-                              ),
-                            ],
-                          )),
-                      const SizedBox(
-                          height: AppConstants.horizontalScreenPadding),
-                      Wrap(
-                        runSpacing: 8.0,
+              body: SingleChildScrollView(child: Builder(builder: (context) {
+                final bool isLoading =
+                    context.select((MainCubit cubit) => cubit.state.isLoading);
+                final String errorMessage = context
+                    .select((MainCubit cubit) => cubit.state.errorMessage);
+                final CustomerInfoResponse? response = context
+                    .select((UserProfileCubit cubit) => cubit.state.response);
+                return (isLoading || errorMessage != '' || response == null)
+                    ? const SizedBox.shrink()
+                    : Column(
                         children: [
-                          Row(
-                            children: [
-                              _InfoWidget(
-                                title: S.of(context).zodiacSign,
-                                info: SvgPicture.asset(
-                                    'aquarius'.getHoroscopeByZodiacName),
+                          Ink(
+                            color: Get.theme.canvasColor,
+                            width: Get.width,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal:
+                                    AppConstants.horizontalScreenPadding,
+                                vertical: 24.0),
+                            child: Column(children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4.0),
+                                child: Stack(
+                                  alignment: Alignment.bottomCenter,
+                                  children: [
+                                    SvgPicture.asset(
+                                        (response.zodiac ?? '')
+                                            .getZodiacProfileImage,
+                                        width: 96.0),
+                                    if (userProfileCubit.isTopSpender)
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 2.0, horizontal: 8.0),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.promotion,
+                                          borderRadius: BorderRadius.circular(
+                                            AppConstants.buttonRadius,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          S.of(context).topSpender,
+                                          style: Get.textTheme.labelSmall
+                                              ?.copyWith(
+                                            fontWeight: FontWeight.w700,
+                                            color: AppColors.white,
+                                          ),
+                                        ),
+                                      )
+                                  ],
+                                ),
                               ),
-                              const SizedBox(width: 8.0),
-                              _InfoWidget(
-                                title: S.of(context).numerology,
-                                info: Text('2',
-                                    style: Get.textTheme.headlineMedium
-                                        ?.copyWith(
-                                            color: Get.theme.primaryColor)),
+                              Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal:
+                                          AppConstants.horizontalScreenPadding),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 12.0,
+                                        ),
+                                        child: Text(
+                                          '${response.firstName ?? ''} ${response.lastName ?? ''}',
+                                          textAlign: TextAlign.center,
+                                          style: Get.textTheme.headlineMedium,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${S.of(context).born} ${(response.birthdate ?? '').parseDateTimePattern3}, ${response.gender ?? ''}, ${response.countryFullName ?? ''}',
+                                        textAlign: TextAlign.center,
+                                        style:
+                                            Get.textTheme.bodyMedium?.copyWith(
+                                          color: Get.theme.shadowColor,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${response.totalMessages ?? 0} ${S.of(context).chats}, 5 ${S.of(context).calls}, 5 ${S.of(context).services}',
+                                        textAlign: TextAlign.center,
+                                        style:
+                                            Get.textTheme.bodyMedium?.copyWith(
+                                          color: Get.theme.shadowColor,
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                              const SizedBox(
+                                  height: AppConstants.horizontalScreenPadding),
+                              Wrap(
+                                runSpacing: 8.0,
+                                children: [
+                                  Row(
+                                    children: [
+                                      _InfoWidget(
+                                        title: S.of(context).zodiacSign,
+                                        info: SvgPicture.asset(
+                                            (response.zodiac ?? '')
+                                                .getHoroscopeByZodiacName),
+                                      ),
+                                      const SizedBox(width: 8.0),
+                                      _InfoWidget(
+                                        title: S.of(context).numerology,
+                                        info: Text('2',
+                                            style: Get.textTheme.headlineMedium
+                                                ?.copyWith(
+                                                    color: Get
+                                                        .theme.primaryColor)),
+                                      ),
+                                      const SizedBox(width: 8.0),
+                                      _InfoWidget(
+                                        title: S.of(context).ascendant,
+                                        info: SvgPicture.asset(
+                                            'cancer'.getHoroscopeByZodiacName),
+                                      ),
+                                    ],
+                                  ),
+                                  const _BirthTownWidget(
+                                    address: 'Preston Rd. Inglewood, Maine',
+                                  ),
+                                  const _QuestionPropertiesWidget(
+                                    properties: [
+                                      SessionsTypes.astrology,
+                                      SessionsTypes.palmreading
+                                    ],
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 8.0),
-                              _InfoWidget(
-                                title: S.of(context).ascendant,
-                                info: SvgPicture.asset(
-                                    'cancer'.getHoroscopeByZodiacName),
-                              ),
-                            ],
+                            ]),
                           ),
-                          const _BirthTownWidget(
-                            address: 'Preston Rd. Inglewood, Maine',
-                          ),
-                          const _QuestionPropertiesWidget(
-                            properties: [
-                              SessionsTypes.astrology,
-                              SessionsTypes.palmreading
-                            ],
-                          ),
+                          Builder(builder: (context) {
+                            final String? currentNote = context.select(
+                                (UserProfileCubit cubit) =>
+                                    cubit.state.currentNote);
+                            return NotesWidget(
+                              texts: [
+                                currentNote ?? '',
+                                currentNote ?? '',
+                                currentNote ?? ''
+                              ],
+                              images: const [
+                                'https://cdn.shopify.com/s/files/1/0275/3318/0970/products/AgendaNotebook-2_800x.jpg',
+                                'https://cdn.shopify.com/s/files/1/0275/3318/0970/products/AgendaNotebook-2_800x.jpg',
+                                'https://cdn.shopify.com/s/files/1/0275/3318/0970/products/AgendaNotebook-2_800x.jpg'
+                              ],
+                            );
+                          })
                         ],
-                      ),
-                    ]),
-                  ),
-                  const _EmptyNotesWidget()
-                ],
-              )),
+                      );
+              })),
             );
           },
         ));
@@ -296,71 +333,6 @@ class _IconAndTitleWidget extends StatelessWidget {
               Get.textTheme.displayLarge?.copyWith(fontWeight: FontWeight.w500),
         ),
       ],
-    );
-  }
-}
-
-class _EmptyNotesWidget extends StatelessWidget {
-  const _EmptyNotesWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-          vertical: 24.0, horizontal: AppConstants.horizontalScreenPadding),
-      child: Column(children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              S.of(context).notes,
-              style: Get.textTheme.headlineMedium,
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Assets.vectors.plus.svg(),
-                const SizedBox(width: 9.0),
-                GestureDetector(
-                  onTap: () {
-                    //TODO
-                  },
-                  child: Text(
-                    S.of(context).addNew,
-                    style: Get.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: Get.theme.primaryColor,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 10.0, bottom: 24.0),
-          child: Get.isDarkMode
-              ? Assets.images.logos.emptyListLogoDark.image()
-              : Assets.images.logos.emptyListLogo.image(),
-        ),
-        Text(
-          S.of(context).youDoNotHaveAnyNotesYet,
-          textAlign: TextAlign.center,
-          style: Get.textTheme.headlineMedium,
-        ),
-        const SizedBox(height: 8.0),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Text(
-            S.of(context).addInformationYouWantKeepInMindAboutThisClient,
-            textAlign: TextAlign.center,
-            style: Get.textTheme.displayLarge?.copyWith(
-              fontWeight: FontWeight.w400,
-              color: Get.theme.shadowColor,
-            ),
-          ),
-        ),
-      ]),
     );
   }
 }

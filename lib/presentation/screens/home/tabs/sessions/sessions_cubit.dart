@@ -52,22 +52,22 @@ class SessionsCubit extends Cubit<SessionsState> {
         FortunicaUserStatusEnum.live) {
       resetList(index);
       if (!hasMore) return;
-        QuestionsListResponse result =
-            QuestionsListResponse(questions: state.questions, lastId: lastId);
-        hasMore = result.hasMore ?? true;
-        lastId = (result.questions ?? const []).lastOrNull?.id;
-        if (state.questions.isEmpty) {
-          result = await _repository.getListOfQuestions(
-              lastId: lastId, isPublicFilter: state.currentOptionIndex == 0);
-          emit(state.copyWith(questions: result.questions ?? const []));
-          return;
-        }
+      QuestionsListResponse result =
+          QuestionsListResponse(questions: state.questions, lastId: lastId);
+      hasMore = result.hasMore ?? true;
+      lastId = (result.questions ?? const []).lastOrNull?.id;
+      if (state.questions.isEmpty) {
         result = await _repository.getListOfQuestions(
             lastId: lastId, isPublicFilter: state.currentOptionIndex == 0);
-        final questions = List.of(state.questions)
-          ..addAll(result.questions ?? const []);
+        emit(state.copyWith(questions: result.questions ?? const []));
+        return;
+      }
+      result = await _repository.getListOfQuestions(
+          lastId: lastId, isPublicFilter: state.currentOptionIndex == 0);
+      final questions = List.of(state.questions)
+        ..addAll(result.questions ?? const []);
 
-        emit(state.copyWith(questions: questions));
+      emit(state.copyWith(questions: questions));
     }
   }
 

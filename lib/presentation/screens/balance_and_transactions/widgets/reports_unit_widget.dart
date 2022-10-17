@@ -142,9 +142,7 @@ class _ReportsUnit extends StatelessWidget {
                 height: 18.0,
                 child: Text(
                   '${isCanceled ? '' : '~ '}$currencySymbol '
-                  '${isCanceled ?
-                  reportsUnit.amountCancelled?.toStringAsFixed(2)
-                      : reportsUnit.amount?.toStringAsFixed(2)}',
+                  '${isCanceled ? reportsUnit.amountCancelled?.toStringAsFixed(2) : reportsUnit.amount?.toStringAsFixed(2)}',
                   style: Get.textTheme.bodySmall?.copyWith(
                     fontSize: 15.0,
                     fontWeight: FontWeight.w500,

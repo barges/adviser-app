@@ -39,7 +39,8 @@ class InitBinding extends Bindings {
     final SessionsApi sessionsApi =
         Get.put<SessionsApi>(SessionsApi(dio), permanent: true);
     final UserApi userApi = Get.put<UserApi>(UserApi(dio), permanent: true);
-    final CustomerApi customerApi = Get.put<CustomerApi>(CustomerApi(dio), permanent: true);
+    final CustomerApi customerApi =
+        Get.put<CustomerApi>(CustomerApi(dio), permanent: true);
 
     ///Repositories
     Get.put<AuthRepository>(
