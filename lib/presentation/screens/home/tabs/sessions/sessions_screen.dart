@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
-import 'package:shared_advisor_interface/data/models/question.dart';
 import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/filters_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/list_of_filters_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_state.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/list_of_questions_widget.dart';
 
 class SessionsScreen extends StatelessWidget {
@@ -106,15 +105,10 @@ class _QuestionsListWidget extends StatelessWidget {
                 child: Builder(builder: (context) {
                   final int selectedFilterIndex = context.select(
                       (SessionsCubit cubit) => cubit.state.selectedFilterIndex);
-                  return FiltersWidget(
+                  return ListOfFiltersWidget(
                     currentFilterIndex: selectedFilterIndex,
-                    filters: filters
-                        .mapIndexed((element, _) => Text(element))
-                        .toList(),
+                    filters: filters,
                     onTap: sessionsCubit.changeFilterIndex,
-                    itemPadding: const EdgeInsets.symmetric(
-                        vertical: 6.0,
-                        horizontal: AppConstants.horizontalScreenPadding),
                   );
                 }),
               ),
@@ -125,13 +119,13 @@ class _QuestionsListWidget extends StatelessWidget {
           ),
           Builder(
             builder: (context) {
-              final List<Question> questions = context
-                  .select((SessionsCubit cubit) => cubit.state.questions);
+              final SessionsState state =
+                  context.select((SessionsCubit cubit) => cubit.state);
               return Column(mainAxisSize: MainAxisSize.min, children: [
                 Padding(
                   padding: const EdgeInsets.all(
                       AppConstants.horizontalScreenPadding),
-                  child: ListOfQuestionsWidget(questions: questions),
+                  child: ListOfQuestionsWidget(questions: state.questions),
                 ),
               ]);
             },

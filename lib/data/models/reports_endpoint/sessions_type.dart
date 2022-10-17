@@ -26,7 +26,7 @@ extension SessionsTypeExt on SessionsTypes {
       case SessionsTypes.tarot:
         return 'Tarot';
       case SessionsTypes.palmreading:
-        return 'Palm Reading';
+        return 'Palm';
       case SessionsTypes.astrology:
         return 'Astrology';
       case SessionsTypes.reading360:

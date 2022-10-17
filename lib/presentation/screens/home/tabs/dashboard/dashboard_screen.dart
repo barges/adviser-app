@@ -1,44 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard/dashboard_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard/pages/courses_page.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard/pages/resources_page/resourses_page.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard/pages/stats_page.dart';
 
 class DashboardScreen extends StatelessWidget {
-  final VoidCallback? openDrawer;
-
-  const DashboardScreen({Key? key, required this.openDrawer}) : super(key: key);
+  const DashboardScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => DashboardCubit(),
-      child: Scaffold(
-        appBar: SimpleAppBar(
-          title: S.of(context).dashboard,
-        ),
-        body: SizedBox(
-          height: Get.height,
-          child: GestureDetector(
-            onTap: () {
-              logger.d(context.read<MainCubit>);
-            },
-            child: Center(
-              child: Builder(
-                builder: (context) {
-                  final Brand currentBrand = context
-                      .select((MainCubit cubit) => cubit.state.currentBrand);
-                  return Text(currentBrand.name);
-                },
+      child: Builder(builder: (context) {
+        final DashboardCubit dashboardCubit = context.read<DashboardCubit>();
+        return Scaffold(
+            appBar: WideAppBar(
+              withBrands: true,
+              title: S.of(context).dashboard,
+              iconPath: Assets.vectors.items.path,
+              bottomWidget: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppConstants.horizontalScreenPadding),
+                child: Builder(builder: (context) {
+                  final int dashboardPageViewIndex = context.select(
+                      (DashboardCubit cubit) =>
+                          cubit.state.dashboardPageViewIndex);
+                  return ChooseOptionWidget(
+                    options: [
+                      S.of(context).resources,
+                      S.of(context).stats,
+                      S.of(context).courses
+                    ],
+                    currentIndex: dashboardPageViewIndex,
+                    onChangeOptionIndex:
+                        dashboardCubit.updateDashboardPageViewIndex,
+                  );
+                }),
               ),
             ),
-          ),
-        ),
-      ),
+            body: PageView(
+              controller: dashboardCubit.pageController,
+              onPageChanged: dashboardCubit.updateDashboardPageViewIndex,
+              children: const [ResourcesPage(), StatsView(), CoursesPage()],
+            ));
+      }),
     );
   }
 }

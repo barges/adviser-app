@@ -5,6 +5,8 @@ import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
+import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_state.dart';
 
 class SessionsCubit extends Cubit<SessionsState> {
@@ -12,6 +14,9 @@ class SessionsCubit extends Cubit<SessionsState> {
   final CacheManager cacheManager;
   final ScrollController controller = ScrollController();
   late final VoidCallback disposeListen;
+
+  String? lastId;
+  bool hasMore = true;
 
   SessionsCubit(this.cacheManager) : super(const SessionsState()) {
     controller.addListener(addScrollControllerListener);
@@ -30,9 +35,10 @@ class SessionsCubit extends Cubit<SessionsState> {
     return super.close();
   }
 
-  void addScrollControllerListener() {
-    if (controller.offset >= (controller.position.maxScrollExtent * 0.9)) {
-      getListOfQuestions(state.currentOptionIndex);
+  void addScrollControllerListener() async {
+    if (controller.position.extentAfter <= 0 &&
+        !Get.find<MainCubit>().state.isLoading) {
+      await getListOfQuestions(state.currentOptionIndex);
     }
   }
 
@@ -45,42 +51,36 @@ class SessionsCubit extends Cubit<SessionsState> {
     if ((status ?? cacheManager.getUserStatus()?.status) ==
         FortunicaUserStatusEnum.live) {
       resetList(index);
-      if (!state.hasMore) return;
-
+      if (!hasMore) return;
       QuestionsListResponse result =
-          QuestionsListResponse(questions: state.questions);
-      final int page = result.questions?.length ?? 0;
-      emit(state.copyWith(hasMore: result.hasMore ?? true, page: page));
+          QuestionsListResponse(questions: state.questions, lastId: lastId);
+      hasMore = result.hasMore ?? true;
+      lastId = (result.questions ?? const []).lastOrNull?.id;
       if (state.questions.isEmpty) {
         result = await _repository.getListOfQuestions(
-            page: page, isPublicFilter: state.currentOptionIndex == 0);
-
-        return emit(state.copyWith(
-            questions: result.questions ?? const [],
-            hasMore: state.hasMore,
-            page: page));
+            lastId: lastId, isPublicFilter: state.currentOptionIndex == 0);
+        emit(state.copyWith(questions: result.questions ?? const []));
+        return;
       }
-
       result = await _repository.getListOfQuestions(
-          page: page, isPublicFilter: state.currentOptionIndex == 0);
+          lastId: lastId, isPublicFilter: state.currentOptionIndex == 0);
       final questions = List.of(state.questions)
         ..addAll(result.questions ?? const []);
 
-      emit(state.copyWith(
-        questions: questions,
-        hasMore: state.hasMore,
-        page: state.questions.length - page,
-      ));
+      emit(state.copyWith(questions: questions));
     }
   }
 
   void resetList(int index) {
     if (index != state.currentOptionIndex) {
-      emit(state.copyWith(
+      lastId = null;
+      hasMore = true;
+      emit(
+        state.copyWith(
           currentOptionIndex: index,
-          hasMore: true,
           questions: const [],
-          page: 0));
+        ),
+      );
     }
   }
 }

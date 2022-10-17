@@ -1,5 +1,7 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/all_brands/all_brands_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/article_details/article_details_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/gallery/gallery_pictures_screen.dart';
@@ -16,6 +18,8 @@ class AppRoutes {
   static const allBrands = '/all_brands_screen';
   static const editProfile = '/edit_profile_screen';
   static const galleryPictures = '/gallery_pictures_screen';
+  static const articleDetails = '/article_details_screen';
+  static const advisorPreview = '/advisor_preview_screen';
   static const balanceAndTransactions = '/balance_and_transactions_screen';
 
 
@@ -45,12 +49,24 @@ class AppRoutes {
       page: () => const EditProfileScreen(),
     ),
     GetPage(
+      name: editProfile,
+      page: () => const EditProfileScreen(),
+    ),
+    GetPage(
+      name: articleDetails,
+      page: () => const ArticleDetailsScreen(),
+    ),
+    GetPage(
       name: galleryPictures,
       page: () => const GalleryPicturesScreen(),
     ),
     GetPage(
       name: balanceAndTransactions,
       page: () => const BalanceAndTransactionsScreen(),
+    ),
+    GetPage(
+      name: advisorPreview,
+      page: () => const AdvisorPreviewScreen(),
     ),
   ];
 }
