@@ -181,22 +181,12 @@ class UserProfileScreen extends StatelessWidget {
                                 (UserProfileCubit cubit) =>
                                     cubit.state.currentNote);
                             return NotesWidget(
-                              texts: [
-                                currentNote ?? '',
-                                currentNote ?? '',
-                                currentNote ?? ''
-                              ],
-                              images: const [
-                                [
-                                  'https://cdn.shopify.com/s/files/1/0275/3318/0970/products/AgendaNotebook-2_800x.jpg'
-                                ],
-                                [
-                                  'https://cdn.shopify.com/s/files/1/0275/3318/0970/products/AgendaNotebook-2_800x.jpg'
-                                ],
-                                [
-                                  'https://cdn.shopify.com/s/files/1/0275/3318/0970/products/AgendaNotebook-2_800x.jpg'
-                                ],
-                              ],
+                              texts: [currentNote ?? ''],
+                              // images: const [
+                              //   [
+                              //     'https://cdn.shopify.com/s/files/1/0275/3318/0970/products/AgendaNotebook-2_800x.jpg'
+                              //   ],
+                              // ],
                             );
                           })
                         ],

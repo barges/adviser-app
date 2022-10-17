@@ -66,8 +66,9 @@ class NotesWidget extends StatelessWidget {
             ? ListView.separated(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemBuilder: (_, index) =>
-                    _OneNoteWidget(text: texts[index], images: images[index]),
+                itemBuilder: (_, index) => _OneNoteWidget(
+                    text: texts[index],
+                    images: images.isNotEmpty ? images[index] : const []),
                 separatorBuilder: (_, __) => const SizedBox(height: 11.0),
                 itemCount: texts.length)
             : const _EmptyNotesWidget()
@@ -114,7 +115,7 @@ class _OneNoteWidget extends StatelessWidget {
   final String text;
   final List<String> images;
 
-  const _OneNoteWidget({Key? key, required this.text, this.images = const []})
+  const _OneNoteWidget({Key? key, required this.text, required this.images})
       : super(key: key);
 
   @override
@@ -143,11 +144,18 @@ class _OneNoteWidget extends StatelessWidget {
                 child: Row(
                   children: [
                     Text('2020-01-07T00:00:00.000Z'.parseDateTimePattern2),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 24.0, right: 4.0),
-                      child: Assets.vectors.attach.svg(),
-                    ),
-                    Text(images.length.toString())
+                    if (images.isNotEmpty)
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 24.0, right: 4.0),
+                            child: Assets.vectors.attach.svg(),
+                          ),
+                          Text(images.length.toString()),
+                        ],
+                      )
                   ],
                 ),
               ),
