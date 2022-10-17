@@ -17,13 +17,13 @@ class ListOfFiltersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 52.0,
+      height: AppConstants.appBarHeight,
       color: Get.theme.canvasColor,
       alignment: Alignment.center,
       child: ListView.separated(
           scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.only(
-              left: AppConstants.horizontalScreenPadding),
+          padding:
+              const EdgeInsets.only(left: AppConstants.horizontalScreenPadding),
           itemBuilder: (_, index) => FilterWidget(
                 title: filters[index],
                 isSelected: index == currentFilterIndex,

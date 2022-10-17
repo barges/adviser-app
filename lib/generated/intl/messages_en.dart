@@ -158,6 +158,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Wrong username or password"),
         "yesImSure": MessageLookupByLibrary.simpleMessage("Yes, I’m sure"),
         "youHave": MessageLookupByLibrary.simpleMessage("You have"),
+        "youHaveNotCompletedAnySessionsYet":
+            MessageLookupByLibrary.simpleMessage(
+                "You have not completed any sessions yet"),
+        "youHaveNotYetCompletedThisMonthsSessions":
+            MessageLookupByLibrary.simpleMessage(
+                "You have not yet completed this month\'s sessions"),
         "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo":
             MessageLookupByLibrary.simpleMessage(
                 "You have successfully changed your password. Check your email to confirm password change")

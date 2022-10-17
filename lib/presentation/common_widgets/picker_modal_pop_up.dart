@@ -23,7 +23,7 @@ void showPickerModalPopUp({
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                height: 52.0,
+                height: AppConstants.appBarHeight,
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppConstants.horizontalScreenPadding,
                 ),
@@ -35,7 +35,7 @@ void showPickerModalPopUp({
                       onTap: Get.back,
                       child: Container(
                         alignment: Alignment.center,
-                        height: 52.0,
+                        height: AppConstants.appBarHeight,
                         color: Colors.transparent,
                         child: Text(
                           S.of(context).cancel,
@@ -52,7 +52,7 @@ void showPickerModalPopUp({
                       },
                       child: Container(
                         alignment: Alignment.center,
-                        height: 52.0,
+                        height: AppConstants.appBarHeight,
                         color: Colors.transparent,
                         child: Text(
                           S.of(context).done,

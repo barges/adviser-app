@@ -162,6 +162,12 @@ class MessageLookup extends MessageLookupByLibrary {
             "Nome de usuário ou senha incorretos"),
         "yesImSure": MessageLookupByLibrary.simpleMessage("Yes, I’m sure"),
         "youHave": MessageLookupByLibrary.simpleMessage("Você tem"),
+        "youHaveNotCompletedAnySessionsYet":
+            MessageLookupByLibrary.simpleMessage(
+                "You have not completed any sessions yet"),
+        "youHaveNotYetCompletedThisMonthsSessions":
+            MessageLookupByLibrary.simpleMessage(
+                "You have not yet completed this month\'s sessions"),
         "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo":
             MessageLookupByLibrary.simpleMessage(
                 "A sua senha foi mudada com sucesso. Verifique seu e-mail para confirmar a alteração da senha")

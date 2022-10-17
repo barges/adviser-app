@@ -94,5 +94,7 @@
   "apply": "Aplique",
   "aboutMe": "Sobre mim",
   "quickAnswers": "Respostas rápidas",
-  "peopleHelped": "pessoas ajudaram"
+  "peopleHelped": "pessoas ajudaram",
+  "youHaveNotCompletedAnySessionsYet": "You have not completed any sessions yet",
+  "youHaveNotYetCompletedThisMonthsSessions": "You have not yet completed this month's sessions"
 }
