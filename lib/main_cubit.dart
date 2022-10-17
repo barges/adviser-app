@@ -1,15 +1,26 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
 import 'package:shared_advisor_interface/main_state.dart';
+import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 class MainCubit extends Cubit<MainState> {
   final CacheManager cacheManager;
 
   late final VoidCallback disposeCallback;
+  late final StreamSubscription<bool> _connectivitySubscription;
+
+  final ConnectivityService _connectivityService = ConnectivityService();
 
   MainCubit(this.cacheManager) : super(const MainState()) {
+    _connectivitySubscription =
+        _connectivityService.connectivityStream.listen((event) {
+      emit(state.copyWith(internetConnectionIsAvailable: event));
+    });
+
     emit(state.copyWith(
         currentBrand: cacheManager.getCurrentBrand() ?? Brand.fortunica));
     disposeCallback = cacheManager.listenCurrentBrand((value) {
@@ -19,6 +30,7 @@ class MainCubit extends Cubit<MainState> {
 
   @override
   Future<void> close() {
+    _connectivitySubscription.cancel();
     disposeCallback.call();
     return super.close();
   }

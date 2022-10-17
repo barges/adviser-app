@@ -28,6 +28,13 @@ class BrandWidget extends StatelessWidget {
             context.read<LoginCubit>().passwordController.text = '1234567891';
           }
         },
+        onDoubleTap: (){
+          if (kDebugMode) {
+            context.read<LoginCubit>().emailController.text =
+            'niskov.test@gmail.com';
+            context.read<LoginCubit>().passwordController.text = '00000000';
+          }
+        },
         onTap: () {
           if (isEnabled && !isSelected) {
             context.read<LoginCubit>().setSelectedBrand(brand);

@@ -7,6 +7,7 @@ part 'main_state.freezed.dart';
 class MainState with _$MainState {
   const factory MainState({
     @Default(false) bool isLoading,
+    @Default(true) bool internetConnectionIsAvailable,
     @Default(Brand.fortunica) Brand currentBrand,
     @Default('') String errorMessage,
     @Default('') String successMessage,
