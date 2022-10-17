@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/all_brands/all_brands_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/article_details/article_details_screen.dart';
@@ -23,6 +24,7 @@ class AppRoutes {
   static const advisorPreview = '/advisor_preview_screen';
   static const balanceAndTransactions = '/balance_and_transactions_screen';
   static const userProfile = '/user_profile_screen';
+  static const addNote = '/add_note_screen';
 
   static final List<GetPage> getPages = [
     GetPage(
@@ -72,6 +74,16 @@ class AppRoutes {
     GetPage(
       name: userProfile,
       page: () => UserProfileScreen(customerID: Get.arguments as String),
+    ),
+    GetPage(
+      name: addNote,
+      page: () {
+        Map<String, String?> arguments = Get.arguments;
+        return AddNoteScreen(
+          customerID: arguments['customerID'] ?? '',
+          oldNote: arguments['oldNote'],
+        );
+      },
     ),
   ];
 }

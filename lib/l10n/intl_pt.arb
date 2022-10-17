@@ -109,5 +109,6 @@
   "notes": "Notas",
   "addNew": "Adicionar novo",
   "youDoNotHaveAnyNotesYet": "Você ainda não tem notas",
-  "addInformationYouWantKeepInMindAboutThisClient": "Adicione as informações que você deseja ter em mente sobre este cliente"
+  "addInformationYouWantKeepInMindAboutThisClient": "Adicione as informações que você deseja ter em mente sobre este cliente",
+  "addNote": "Adicionar nota"
 }

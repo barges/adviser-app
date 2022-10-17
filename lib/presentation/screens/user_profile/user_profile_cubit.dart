@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/network/responses/update_note_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 
 import 'user_profile_state.dart';
@@ -31,11 +30,7 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     emit(state.copyWith(currentNote: note));
   }
 
-  Future<void> updateNoteToCustomer(String newContent) async {
-    UpdateNoteResponse response = await _repository.updateNoteToCustomer(
-        clientID: customerID, content: newContent);
-    if (response.content == newContent) {
-      emit(state.copyWith(currentNote: newContent));
-    }
+  void updateNoteToCustomer(String newContent) {
+    emit(state.copyWith(currentNote: newContent));
   }
 }

@@ -1,20 +1,23 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 class NotesWidget extends StatelessWidget {
+  final String customerID;
   final List<String> texts;
   final List<List<String>> images;
-  final VoidCallback? addNoteTap;
 
   const NotesWidget(
       {Key? key,
+      required this.customerID,
       this.texts = const [],
-      this.images = const [],
-      this.addNoteTap})
+      this.images = const []})
       : super(key: key);
 
   @override
@@ -22,57 +25,62 @@ class NotesWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(
           vertical: 24.0, horizontal: AppConstants.horizontalScreenPadding),
-      child: Column(children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  S.of(context).notes,
-                  style: Get.textTheme.headlineMedium,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text('${texts.length}',
-                      style: Get.textTheme.displayLarge?.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: Get.theme.shadowColor)),
-                )
-              ],
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Assets.vectors.plus.svg(),
-                const SizedBox(width: 9.0),
-                GestureDetector(
-                  onTap: addNoteTap,
-                  child: Text(
-                    S.of(context).addNew,
-                    style: Get.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: Get.theme.primaryColor,
-                    ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    S.of(context).notes,
+                    style: Get.textTheme.headlineMedium,
                   ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text('${texts.length}',
+                        style: Get.textTheme.displayLarge?.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: Get.theme.shadowColor)),
+                  )
+                ],
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Assets.vectors.plus.svg(),
+                  const SizedBox(width: 9.0),
+                  GestureDetector(
+                    onTap: () => Get.toNamed(AppRoutes.addNote,
+                        arguments: {'customerID': customerID}),
+                    child: Text(
+                      S.of(context).addNew,
+                      style: Get.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: Get.theme.primaryColor,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 11.0),
+          texts.isNotEmpty
+              ? ListView.separated(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (_, index) => _OneNoteWidget(
+                      customerID: customerID,
+                      text: texts[index],
+                      images: images.isNotEmpty ? images[index] : const []),
+                  separatorBuilder: (_, __) => const SizedBox(height: 11.0),
+                  itemCount: min(texts.length, images.length),
                 )
-              ],
-            ),
-          ],
-        ),
-        const SizedBox(height: 11.0),
-        texts.isNotEmpty
-            ? ListView.separated(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (_, index) => _OneNoteWidget(
-                    text: texts[index],
-                    images: images.isNotEmpty ? images[index] : const []),
-                separatorBuilder: (_, __) => const SizedBox(height: 11.0),
-                itemCount: texts.length)
-            : const _EmptyNotesWidget()
-      ]),
+              : const _EmptyNotesWidget()
+        ],
+      ),
     );
   }
 }
@@ -112,73 +120,86 @@ class _EmptyNotesWidget extends StatelessWidget {
 }
 
 class _OneNoteWidget extends StatelessWidget {
+  final String customerID;
   final String text;
   final List<String> images;
 
-  const _OneNoteWidget({Key? key, required this.text, required this.images})
+  const _OneNoteWidget(
+      {Key? key,
+      required this.customerID,
+      required this.text,
+      required this.images})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
-        color: Get.theme.canvasColor,
-        borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-      ),
-      child: Row(children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                text,
-                style: Get.textTheme.displayLarge?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 12.0),
-              Material(
-                textStyle: Get.textTheme.displaySmall?.copyWith(
-                    fontWeight: FontWeight.w400, color: Get.theme.shadowColor),
-                child: Row(
-                  children: [
-                    Text('2020-01-07T00:00:00.000Z'.parseDateTimePattern2),
-                    if (images.isNotEmpty)
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 24.0, right: 4.0),
-                            child: Assets.vectors.attach.svg(),
-                          ),
-                          Text(images.length.toString()),
-                        ],
-                      )
-                  ],
-                ),
-              ),
-            ],
-          ),
+    return GestureDetector(
+      onTap: () {
+        Get.toNamed(AppRoutes.addNote,
+            arguments: {'customerID': customerID, 'oldNote': text});
+      },
+      child: Container(
+        padding: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          color: Get.theme.canvasColor,
+          borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
         ),
-        if (images.isNotEmpty)
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(width: AppConstants.horizontalScreenPadding),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-                child: Image.network(
-                  images[0],
-                  height: 78.0,
-                  width: 78.0,
-                  fit: BoxFit.cover,
+        child: Row(children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  text,
+                  style: Get.textTheme.displayLarge?.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-            ],
-          )
-      ]),
+                const SizedBox(height: 12.0),
+                Material(
+                  textStyle: Get.textTheme.displaySmall?.copyWith(
+                      fontWeight: FontWeight.w400,
+                      color: Get.theme.shadowColor),
+                  child: Row(
+                    children: [
+                      Text('2020-01-07T00:00:00.000Z'.parseDateTimePattern2),
+                      if (images.isNotEmpty)
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 24.0, right: 4.0),
+                              child: Assets.vectors.attach.svg(),
+                            ),
+                            Text(images.length.toString()),
+                          ],
+                        )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (images.isNotEmpty)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(width: AppConstants.horizontalScreenPadding),
+                ClipRRect(
+                  borderRadius:
+                      BorderRadius.circular(AppConstants.buttonRadius),
+                  child: Image.network(
+                    images[0],
+                    height: 78.0,
+                    width: 78.0,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ],
+            )
+        ]),
+      ),
     );
   }
 }

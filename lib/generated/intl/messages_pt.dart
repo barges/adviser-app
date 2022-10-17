@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Adicione as informações que você deseja ter em mente sobre este cliente"),
         "addMore": MessageLookupByLibrary.simpleMessage("Adicione mais"),
         "addNew": MessageLookupByLibrary.simpleMessage("Adicionar novo"),
+        "addNote": MessageLookupByLibrary.simpleMessage("Adicionar nota"),
         "advisors": MessageLookupByLibrary.simpleMessage("conselheiras"),
         "allOurBrands":
             MessageLookupByLibrary.simpleMessage("Todas as nossas marcas"),
