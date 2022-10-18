@@ -82,6 +82,7 @@ class AppRoutes {
         return AddNoteScreen(
           customerID: arguments['customerID'] ?? '',
           oldNote: arguments['oldNote'],
+          noteDate: arguments['noteDate'],
         );
       },
     ),

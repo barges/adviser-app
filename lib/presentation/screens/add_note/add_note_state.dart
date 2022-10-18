@@ -6,5 +6,6 @@ part 'add_note_state.freezed.dart';
 class AddNoteState with _$AddNoteState {
   factory AddNoteState({
     @Default('') String newNote,
+    @Default([]) List<String> imagesPaths
   }) = _AddNoteState;
 }

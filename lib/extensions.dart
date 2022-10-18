@@ -136,6 +136,10 @@ extension StringExt on String {
         DateTime.parse(DateFormat(dateFormat).parse(this).toString());
     return DateFormat(datePattern3).format(inputDate);
   }
+
+  String get removeSpacesAndNewLines{
+    return trim().replaceAll(RegExp(r'(\n){3,}'), "\n\n");
+  }
 }
 
 extension DoubleExt on double {

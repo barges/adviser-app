@@ -110,5 +110,6 @@
   "addNew": "Add new",
   "youDoNotHaveAnyNotesYet": "You don’t have any notes yet",
   "addInformationYouWantKeepInMindAboutThisClient": "Add the information that you want to keep in mind about this client",
-  "addNote": "Add Note"
+  "addNote": "Add Note",
+  "title": "Title"
 }

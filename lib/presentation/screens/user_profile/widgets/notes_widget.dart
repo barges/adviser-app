@@ -135,8 +135,10 @@ class _OneNoteWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(AppRoutes.addNote,
-            arguments: {'customerID': customerID, 'oldNote': text});
+        Get.toNamed(AppRoutes.addNote, arguments: {
+          'customerID': customerID,
+          'oldNote': text,
+        });
       },
       child: Container(
         padding: const EdgeInsets.all(10.0),

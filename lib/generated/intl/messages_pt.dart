@@ -163,6 +163,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "O usuário não foi encontrado"),
         "thisMonth": MessageLookupByLibrary.simpleMessage("Este mês"),
         "thisWeek": MessageLookupByLibrary.simpleMessage("Essa semana"),
+        "title": MessageLookupByLibrary.simpleMessage("Título"),
         "toReadItBeforeYourAccountWillGetBlocked":
             MessageLookupByLibrary.simpleMessage(
                 "para lê-lo antes que sua conta seja bloqueada!"),
