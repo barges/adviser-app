@@ -36,9 +36,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
         automaticallyImplyLeading: false,
-        toolbarHeight: bottomWidget != null
-            ? AppConstants.appBarHeight * 2
-            : AppConstants.appBarHeight,
         elevation: 0.5,
         shadowColor: Get.theme.hintColor,
         flexibleSpace: SafeArea(

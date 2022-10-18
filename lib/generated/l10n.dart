@@ -1179,6 +1179,26 @@ class S {
       args: [],
     );
   }
+
+  /// `You have not completed any sessions yet`
+  String get youHaveNotCompletedAnySessionsYet {
+    return Intl.message(
+      'You have not completed any sessions yet',
+      name: 'youHaveNotCompletedAnySessionsYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have not yet completed this month's sessions`
+  String get youHaveNotYetCompletedThisMonthsSessions {
+    return Intl.message(
+      'You have not yet completed this month\'s sessions',
+      name: 'youHaveNotYetCompletedThisMonthsSessions',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

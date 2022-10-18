@@ -20,12 +20,13 @@ class ListOfFiltersWidget extends StatelessWidget {
       height: 52.0,
       color: Get.theme.canvasColor,
       alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: ListView.separated(
           scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.only(
-            left: AppConstants.horizontalScreenPadding,
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppConstants.horizontalScreenPadding,
           ),
-          itemBuilder: (_, index) => FilterWidget(
+          itemBuilder: (_, index) => _FilterWidget(
                 title: filters[index],
                 isSelected: index == currentFilterIndex,
                 onTap: () => onTap(index),
@@ -36,12 +37,12 @@ class ListOfFiltersWidget extends StatelessWidget {
   }
 }
 
-class FilterWidget extends StatelessWidget {
+class _FilterWidget extends StatelessWidget {
   final String title;
   final bool isSelected;
   final VoidCallback? onTap;
 
-  const FilterWidget(
+  const _FilterWidget(
       {Key? key, required this.title, required this.isSelected, this.onTap})
       : super(key: key);
 
@@ -61,13 +62,8 @@ class FilterWidget extends StatelessWidget {
                 ? Get.theme.primaryColor.withOpacity(0.4)
                 : Get.theme.scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(title,
-                style: Get.textTheme.bodyMedium?.copyWith(color: textColor)),
-          ],
-        ),
+        child: Text(title,
+            style: Get.textTheme.bodyMedium?.copyWith(color: textColor)),
       ),
     );
   }

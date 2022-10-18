@@ -100,8 +100,6 @@ class _QuestionsListWidget extends StatelessWidget {
               Container(
                 height: AppConstants.appBarHeight,
                 color: Get.theme.canvasColor,
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Builder(builder: (context) {
                   final int selectedFilterIndex = context.select(
                       (SessionsCubit cubit) => cubit.state.selectedFilterIndex);
