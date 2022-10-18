@@ -4,10 +4,9 @@ import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_mo
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/balance_and_transactions_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/widgets/list_of_markets_by_month.dart';
-import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/widgets/month_header_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/widgets/empty_statistics_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/widgets/statistics_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
 
 class BalanceAndTransactionsScreen extends StatelessWidget {
@@ -25,60 +24,42 @@ class BalanceAndTransactionsScreen extends StatelessWidget {
           drawer: const AppDrawer(),
           body: SafeArea(
             top: false,
-            child: CustomScrollView(
-              slivers: [
-                Builder(builder: (context) {
-                  return ScrollableAppBar(
-                    title: S.of(context).balanceTransactions,
-                    openDrawer: balanceAndTransactionsCubit.openDrawer,
-                  );
-                }),
-                SliverToBoxAdapter(
-                  child: Builder(builder: (context) {
-                    final List<ReportsMonth> months = context.select(
-                        (BalanceAndTransactionsCubit cubit) =>
-                            cubit.state.months);
+            child: Builder(builder: (context) {
+              final List<ReportsMonth> months = context.select(
+                  (BalanceAndTransactionsCubit cubit) => cubit.state.months);
 
-                    final int currentMonthIndex = context.select(
-                        (BalanceAndTransactionsCubit cubit) =>
-                            cubit.state.currentMonthIndex);
+              final ReportsStatistics? statistics = context.select(
+                  (BalanceAndTransactionsCubit cubit) =>
+                      cubit.state.reportsStatistics);
 
-                    if (months.isNotEmpty) {
-                      return Padding(
-                        padding: const EdgeInsets.all(
-                          AppConstants.horizontalScreenPadding,
-                        ),
-                        child: Column(
-                          children: [
-                            MonthHeaderWidget(
-                              months: months,
-                              currentMonthIndex: currentMonthIndex,
-                            ),
-                            const SizedBox(
-                              height: 16.0,
-                            ),
-                            Builder(builder: (context) {
-                              final ReportsStatistics? statistics = context
-                                  .select((BalanceAndTransactionsCubit cubit) =>
-                                      cubit.state.reportsStatistics);
-                              if (statistics != null) {
-                                return ListOfMarketsByMonth(
-                                  reportsStatistics: statistics,
-                                );
-                              } else {
-                                return const SizedBox.shrink();
-                              }
-                            })
-                          ],
-                        ),
-                      );
-                    } else {
-                      return const SizedBox.shrink();
-                    }
+              final int currentMonthIndex = context.select(
+                  (BalanceAndTransactionsCubit cubit) =>
+                      cubit.state.currentMonthIndex);
+
+              final bool isEmptyStatistics =
+                  months.length == 1 && statistics?.markets?.isEmpty == true;
+              return CustomScrollView(
+                physics: isEmptyStatistics
+                    ? const NeverScrollableScrollPhysics()
+                    : null,
+                slivers: [
+                  Builder(builder: (context) {
+                    return ScrollableAppBar(
+                      title: S.of(context).balanceTransactions,
+                      openDrawer: balanceAndTransactionsCubit.openDrawer,
+                    );
                   }),
-                ),
-              ],
-            ),
+                  if (months.isNotEmpty)
+                    !isEmptyStatistics
+                        ? StatisticsWidget(
+                            months: months,
+                            currentMonthIndex: currentMonthIndex,
+                            statistics: statistics,
+                          )
+                        : const EmptyStatisticsWidget(),
+                ],
+              );
+            }),
           ),
         );
       }),

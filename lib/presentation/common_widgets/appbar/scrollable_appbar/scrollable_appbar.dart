@@ -133,7 +133,7 @@ class ScrollableAppBar extends StatelessWidget {
                     .select((MainCubit cubit) => cubit.state.currentBrand);
                 return Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    height: 52,
+                    height: AppConstants.appBarHeight,
                     child: !isWide
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

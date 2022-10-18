@@ -14,7 +14,6 @@ class SessionsCubit extends Cubit<SessionsState> {
   final CacheManager cacheManager;
   final ScrollController controller = ScrollController();
   late final VoidCallback disposeListen;
-  final MainCubit mainCubit = Get.find<MainCubit>();
 
   String? lastId;
   bool hasMore = true;
@@ -37,7 +36,8 @@ class SessionsCubit extends Cubit<SessionsState> {
   }
 
   void addScrollControllerListener() async {
-    if (controller.position.extentAfter <= 0 && !mainCubit.state.isLoading) {
+    if (controller.position.extentAfter <= 0 &&
+        !Get.find<MainCubit>().state.isLoading) {
       await getListOfQuestions(state.currentOptionIndex);
     }
   }

@@ -111,5 +111,7 @@
   "youDoNotHaveAnyNotesYet": "You don’t have any notes yet",
   "addInformationYouWantKeepInMindAboutThisClient": "Add the information that you want to keep in mind about this client",
   "addNote": "Add Note",
-  "title": "Title"
+  "title": "Title",
+  "youHaveNotCompletedAnySessionsYet": "You have not completed any sessions yet",
+  "youHaveNotYetCompletedThisMonthsSessions": "You have not yet completed this month's sessions"
 }

@@ -35,6 +35,11 @@ class DataCacheManager implements CacheManager {
   }
 
   @override
+  Future<void> logout(Brand brand) async {
+
+  }
+
+  @override
   Future<void> saveTokenForBrand(Brand brand, String token) async {
     final Map<String, dynamic>? tokensMap = _brandsBox.read(_tokensMapKey);
     if (tokensMap != null) {

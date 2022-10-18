@@ -184,6 +184,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "youDoNotHaveAnyNotesYet":
             MessageLookupByLibrary.simpleMessage("Você ainda não tem notas"),
         "youHave": MessageLookupByLibrary.simpleMessage("Você tem"),
+        "youHaveNotCompletedAnySessionsYet":
+            MessageLookupByLibrary.simpleMessage(
+                "You have not completed any sessions yet"),
+        "youHaveNotYetCompletedThisMonthsSessions":
+            MessageLookupByLibrary.simpleMessage(
+                "You have not yet completed this month\'s sessions"),
         "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo":
             MessageLookupByLibrary.simpleMessage(
                 "A sua senha foi mudada com sucesso. Verifique seu e-mail para confirmar a alteração da senha"),

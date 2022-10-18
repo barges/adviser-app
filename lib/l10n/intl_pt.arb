@@ -112,4 +112,7 @@
   "addInformationYouWantKeepInMindAboutThisClient": "Adicione as informações que você deseja ter em mente sobre este cliente",
   "addNote": "Adicionar nota",
   "title": "Título"
+  "peopleHelped": "pessoas ajudaram",
+  "youHaveNotCompletedAnySessionsYet": "You have not completed any sessions yet",
+  "youHaveNotYetCompletedThisMonthsSessions": "You have not yet completed this month's sessions"
 }

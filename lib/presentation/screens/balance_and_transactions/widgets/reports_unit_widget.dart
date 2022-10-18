@@ -107,36 +107,63 @@ class _ReportsUnit extends StatelessWidget {
                 horizontal: 8.0,
               ),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    '${reportsUnit.type?.sessionName} '
-                    '(${isCanceled ? reportsUnit.numberCancelled : reportsUnit.number})',
-                    style: Get.textTheme.bodySmall?.copyWith(
-                      fontSize: 14.0,
+                  Expanded(
+                    child: RichText(
+                      text: TextSpan(
+                          text: '${reportsUnit.type?.sessionNameForStatistics} '
+                              '(${isCanceled ? reportsUnit.numberCancelled
+                              : reportsUnit.number}) ',
+                          style: Get.textTheme.bodySmall?.copyWith(
+                            fontSize: 14.0,
+                            height: 1.2,
+                          ),
+                          children: [
+                            if (!isCanceled)
+                              TextSpan(
+                                text:
+                                    '($currencySymbol${rate.toStringAsFixed(2)})',
+                                style: Get.textTheme.bodySmall?.copyWith(
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: Get.theme.shadowColor,
+                                ),
+                              )
+                          ]),
                     ),
                   ),
-                  if (!isCanceled)
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 4.0,
-                        ),
-                        Text(
-                          '($currencySymbol ${rate.toStringAsFixed(2)})',
-                          style: Get.textTheme.bodySmall?.copyWith(
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w500,
-                            color: Get.theme.shadowColor,
-                          ),
-                        ),
-                      ],
-                    ),
+                  // Text(
+                  //   '${reportsUnit.type?.sessionNameForStatistics} '
+                  //   '(${isCanceled ? reportsUnit.numberCancelled : reportsUnit.number})',
+                  //
+                  //   style: Get.textTheme.bodySmall?.copyWith(
+                  //     fontSize: 14.0,
+                  //   ),
+                  // ),
+                  // if (!isCanceled)
+                  //   Row(
+                  //     children: [
+                  //       const SizedBox(
+                  //         width: 4.0,
+                  //       ),
+                  //       Text(
+                  //         '($currencySymbol ${rate.toStringAsFixed(2)})',
+                  //         style: Get.textTheme.bodySmall?.copyWith(
+                  //           fontSize: 12.0,
+                  //           fontWeight: FontWeight.w500,
+                  //           color: Get.theme.shadowColor,
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
                 ],
               ),
             ),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               SizedBox(
                 height: 18.0,

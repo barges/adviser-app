@@ -41,6 +41,8 @@ abstract class CacheManager {
 
   int? getLocaleIndex();
 
+  Future<void> logout(Brand brand);
+
   Future<bool> clearTokenForBrand(Brand brand);
 
   bool? isLoggedIn();

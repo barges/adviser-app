@@ -98,7 +98,7 @@ class _QuestionsListWidget extends StatelessWidget {
           Column(
             children: [
               Container(
-                height: 52.0,
+                height: AppConstants.appBarHeight,
                 color: Get.theme.canvasColor,
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(vertical: 8.0),

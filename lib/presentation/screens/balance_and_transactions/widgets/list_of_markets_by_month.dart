@@ -5,6 +5,7 @@ import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_ma
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/balance_and_transactions_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/widgets/reports_market_widget.dart';
@@ -37,50 +38,68 @@ class ListOfMarketsByMonth extends StatelessWidget {
       ),
       child: Column(
         children: [
+          if (markets.isNotEmpty)
+            Column(
+              children: markets.mapIndexed((element, index) {
+                return ReportsMarketWidget(
+                  reportsMarket: element,
+                  currencySymbol: currencySymbol,
+                  rates: reportsStatistics.meta?.rates ?? {},
+                  isNotFirst: index > 0,
+                );
+              }).toList(),
+            )
+          else
+            EmptyListWidget(
+              title: S.of(context).youHaveNotYetCompletedThisMonthsSessions,
+            ),
           Column(
-            children: markets.mapIndexed((element, index) {
-              return ReportsMarketWidget(
-                reportsMarket: element,
-                currencySymbol: currencySymbol,
-                rates: reportsStatistics.meta?.rates ?? {},
-                isNotFirst: index > 0,
-              );
-            }).toList(),
-          ),
-          Container(
-            height: 28.0,
-            margin: const EdgeInsets.only(top: 24.0),
-            width: Get.width,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '${S.of(context).totalMarkets}:',
-                  style: Get.textTheme.headlineMedium?.copyWith(
-                    color: Get.theme.primaryColor,
+            children: [
+              if (markets.isEmpty)
+                const Padding(
+                  padding: EdgeInsets.only(top: 24.0),
+                  child: Divider(
+                    height: 1.0,
                   ),
                 ),
-                Container(
-                  height: 28.0,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12.0,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Get.theme.scaffoldBackgroundColor,
-                    borderRadius: BorderRadius.circular(
-                      AppConstants.buttonRadius,
+              Container(
+                height: 28.0,
+                margin: EdgeInsets.only(
+                  top: markets.isNotEmpty ? 24.0 : 16.0,
+                ),
+                width: Get.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '${S.of(context).totalMarkets}:',
+                      style: Get.textTheme.headlineMedium?.copyWith(
+                        color: Get.theme.primaryColor,
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    '~ $currencySymbol '
-                    '${reportsStatistics.total?.marketTotal?.amount?.toStringAsFixed(2) ?? 0.0}',
-                    style: Get.textTheme.headlineMedium?.copyWith(
-                      color: Get.theme.primaryColor,
-                    ),
-                  ),
-                )
-              ],
-            ),
+                    Container(
+                      height: 28.0,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Get.theme.scaffoldBackgroundColor,
+                        borderRadius: BorderRadius.circular(
+                          AppConstants.buttonRadius,
+                        ),
+                      ),
+                      child: Text(
+                        '~ $currencySymbol '
+                        '${reportsStatistics.total?.marketTotal?.amount?.toStringAsFixed(2) ?? 0.0}',
+                        style: Get.textTheme.headlineMedium?.copyWith(
+                          color: Get.theme.primaryColor,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
           )
         ],
       ),
