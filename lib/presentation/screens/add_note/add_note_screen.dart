@@ -81,17 +81,19 @@ class AddNoteScreen extends StatelessWidget {
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
-              Builder(builder: (context) {
-                final List<String> imagesPaths = context
-                    .select((AddNoteCubit cubit) => cubit.state.imagesPaths);
-                return (imagesPaths.isNotEmpty)
-                    ? Image.file(
-                        File(imagesPaths[0]),
-                        height: Get.height / 2,
-                        fit: BoxFit.cover,
-                      )
-                    : const SizedBox.shrink();
-              })
+              Center(
+                child: Builder(builder: (context) {
+                  final List<String> imagesPaths = context
+                      .select((AddNoteCubit cubit) => cubit.state.imagesPaths);
+                  return (imagesPaths.isNotEmpty)
+                      ? Image.file(
+                          File(imagesPaths[0]),
+                          height: Get.height / 2,
+                          fit: BoxFit.cover,
+                        )
+                      : const SizedBox.shrink();
+                }),
+              )
             ]),
           ),
           floatingActionButton: GestureDetector(

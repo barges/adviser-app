@@ -28,7 +28,6 @@ class AddNoteCubit extends Cubit<AddNoteState> {
     if (response.content == controller.text) {
       emit(state.copyWith(newNote: controller.text.removeSpacesAndNewLines));
       _userProfileCubit.updateNoteToCustomer(state.newNote);
-      Get.back();
     }
   }
 
@@ -36,12 +35,10 @@ class AddNoteCubit extends Cubit<AddNoteState> {
     final ImagePicker picker = ImagePicker();
     final List<XFile>? images = await picker.pickMultiImage();
     if (images != null) {
-      print(images[0].path);
       List<String> imagesPaths = [];
       for (var element in images) {
         imagesPaths.add(element.path);
       }
-      print(imagesPaths);
       emit(state.copyWith(imagesPaths: imagesPaths));
     }
   }
