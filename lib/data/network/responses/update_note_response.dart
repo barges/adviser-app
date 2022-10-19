@@ -1,45 +1,23 @@
-import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'update_note_response.g.dart';
+part 'update_note_response.freezed.dart';
 
-@JsonSerializable(includeIfNull: false)
-class UpdateNoteResponse extends Equatable {
-  @JsonKey(name: '_id')
-  final String? id;
-  final String? content;
-  final String? expertID;
-  final String? clientID;
-  final String? searchKey;
-  final String? createdAt;
-  final String? updatedAt;
-  final int? v;
-
-  const UpdateNoteResponse({
-    this.id,
-    this.content,
-    this.expertID,
-    this.clientID,
-    this.searchKey,
-    this.createdAt,
-    this.updatedAt,
-    this.v,
-  });
+@freezed
+class UpdateNoteResponse with _$UpdateNoteResponse {
+  @JsonSerializable(includeIfNull: false)
+  const factory UpdateNoteResponse({
+    @JsonKey(name: '_id')
+     String? id,
+     String? content,
+     String? expertID,
+     String? clientID,
+     String? searchKey,
+     String? createdAt,
+     String? updatedAt,
+     int? v,
+  }) = _UpdateNoteResponse;
 
   factory UpdateNoteResponse.fromJson(Map<String, dynamic> json) =>
       _$UpdateNoteResponseFromJson(json);
-
-  Map<String, dynamic> toJson() => _$UpdateNoteResponseToJson(this);
-
-  @override
-  List<Object?> get props => [
-        id,
-        content,
-        expertID,
-        clientID,
-        searchKey,
-        createdAt,
-        updatedAt,
-        v,
-      ];
 }

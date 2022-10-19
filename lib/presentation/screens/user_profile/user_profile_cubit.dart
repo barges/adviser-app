@@ -1,14 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
-
-import 'user_profile_state.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+import 'package:shared_advisor_interface/presentation/screens/user_profile/user_profile_state.dart';
 
 class UserProfileCubit extends Cubit<UserProfileState> {
-  final String customerID;
+  late final String customerID;
   final CustomerRepository _repository = Get.find<CustomerRepository>();
 
-  UserProfileCubit(this.customerID) : super(UserProfileState()) {
+  UserProfileCubit() : super(UserProfileState()) {
+    customerID = Get.arguments as String;
     getCustomerInfo().then((_) => getCurrentNote());
   }
 
@@ -32,5 +33,18 @@ class UserProfileCubit extends Cubit<UserProfileState> {
 
   void updateNoteToCustomer(String newContent) {
     emit(state.copyWith(currentNote: newContent));
+  }
+
+  void navigateToAddNoteScreenForOldNote() {
+    Get.toNamed(AppRoutes.addNote, arguments: {
+      'customerID': customerID,
+      'oldNote': state.currentNote,
+    });
+  }
+
+  void navigateToAddNoteScreenForNewNote() {
+    Get.toNamed(AppRoutes.addNote, arguments: {
+      'customerID': customerID,
+    });
   }
 }

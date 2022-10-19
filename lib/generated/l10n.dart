@@ -1000,10 +1000,10 @@ class S {
     );
   }
 
-  /// `people helped`
+  /// `People helped`
   String get peopleHelped {
     return Intl.message(
-      'people helped',
+      'People helped',
       name: 'peopleHelped',
       desc: '',
       args: [],
@@ -1040,20 +1040,20 @@ class S {
     );
   }
 
-  /// `chats`
+  /// `Chats`
   String get chats {
     return Intl.message(
-      'chats',
+      'Chats',
       name: 'chats',
       desc: '',
       args: [],
     );
   }
 
-  /// `calls`
+  /// `Calls`
   String get calls {
     return Intl.message(
-      'calls',
+      'Calls',
       name: 'calls',
       desc: '',
       args: [],

@@ -6,19 +6,20 @@ import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 class NotesWidget extends StatelessWidget {
-  final String customerID;
   final List<String> texts;
   final List<List<String>> images;
+  final VoidCallback? onTapAddNew;
+  final VoidCallback? onTapOldNote;
 
-  const NotesWidget(
-      {Key? key,
-      required this.customerID,
-      this.texts = const [],
-      this.images = const []})
-      : super(key: key);
+  const NotesWidget({
+    Key? key,
+    this.texts = const [],
+    this.images = const [],
+    this.onTapAddNew,
+    this.onTapOldNote,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +53,7 @@ class NotesWidget extends StatelessWidget {
                   Assets.vectors.plus.svg(),
                   const SizedBox(width: 9.0),
                   GestureDetector(
-                    onTap: () => Get.toNamed(AppRoutes.addNote,
-                        arguments: {'customerID': customerID}),
+                    onTap: onTapAddNew,
                     child: Text(
                       S.of(context).addNew,
                       style: Get.textTheme.titleMedium?.copyWith(
@@ -72,7 +72,7 @@ class NotesWidget extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (_, index) => _OneNoteWidget(
-                      customerID: customerID,
+                      onTap: onTapOldNote,
                       text: texts[index],
                       images: images.isNotEmpty ? images[index] : const []),
                   separatorBuilder: (_, __) => const SizedBox(height: 11.0),
@@ -120,26 +120,18 @@ class _EmptyNotesWidget extends StatelessWidget {
 }
 
 class _OneNoteWidget extends StatelessWidget {
-  final String customerID;
   final String text;
   final List<String> images;
+  final VoidCallback? onTap;
 
   const _OneNoteWidget(
-      {Key? key,
-      required this.customerID,
-      required this.text,
-      required this.images})
+      {Key? key, required this.text, required this.images, this.onTap})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Get.toNamed(AppRoutes.addNote, arguments: {
-          'customerID': customerID,
-          'oldNote': text,
-        });
-      },
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(

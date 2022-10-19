@@ -37,7 +37,8 @@ class AboutMeWidget extends StatelessWidget {
                   const SizedBox(width: 3.0),
                   Assets.vectors.starFilled.svg(height: 14.0, width: 14.0),
                   const SizedBox(width: 9.0),
-                  Text('/  $votesNumber ${S.of(context).peopleHelped}',
+                  Text(
+                      '/  $votesNumber ${S.of(context).peopleHelped.toLowerCase()}',
                       style: displayLarge?.copyWith(color: color2))
                 ],
               ),

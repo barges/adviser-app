@@ -10,15 +10,18 @@ import 'package:shared_advisor_interface/presentation/screens/user_profile/user_
 import 'add_note_state.dart';
 
 class AddNoteCubit extends Cubit<AddNoteState> {
-  final String customerID;
-  final String? oldNote;
-  final String? noteDate;
+  late final String customerID;
+  late final String? oldNote;
+  late final String? noteDate;
   final CustomerRepository _repository = Get.find<CustomerRepository>();
   final UserProfileCubit _userProfileCubit = Get.find<UserProfileCubit>();
   late final TextEditingController controller;
 
-  AddNoteCubit(this.customerID, this.oldNote, this.noteDate)
-      : super(AddNoteState()) {
+  AddNoteCubit() : super(AddNoteState()) {
+    final Map<String, String?> arguments = Get.arguments;
+    customerID = arguments['customerID'] as String;
+    oldNote = arguments['oldNote'];
+    noteDate = arguments['noteDate'];
     controller = TextEditingController(text: oldNote ?? '');
   }
 

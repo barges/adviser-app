@@ -1,10 +1,9 @@
-import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'questions_subscription.g.dart';
 
 @JsonSerializable(includeIfNull: false)
-class QuestionsSubscription extends Equatable {
+class QuestionsSubscription{
   final int? status;
   final bool? active;
 
@@ -17,7 +16,4 @@ class QuestionsSubscription extends Equatable {
       _$QuestionsSubscriptionFromJson(json);
 
   Map<String, dynamic> toJson() => _$QuestionsSubscriptionToJson(this);
-
-  @override
-  List<Object?> get props => [status, active];
 }

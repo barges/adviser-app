@@ -49,13 +49,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "birthTown":
             MessageLookupByLibrary.simpleMessage("cidade de nascimento"),
         "born": MessageLookupByLibrary.simpleMessage("Nascer"),
-        "calls": MessageLookupByLibrary.simpleMessage("chamadas"),
+        "calls": MessageLookupByLibrary.simpleMessage("Chamadas"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "changeCoverPicture":
             MessageLookupByLibrary.simpleMessage("Alterar imagem da capa"),
         "changePassword": MessageLookupByLibrary.simpleMessage("Mudar senha"),
         "changePhoto": MessageLookupByLibrary.simpleMessage("Mudar foto"),
-        "chats": MessageLookupByLibrary.simpleMessage("bate-papos"),
+        "chats": MessageLookupByLibrary.simpleMessage("Bate-papos"),
         "chooseBrandToLogIn": MessageLookupByLibrary.simpleMessage(
             "Escolha a marca para fazer login"),
         "chooseEmailApp": MessageLookupByLibrary.simpleMessage(
@@ -120,7 +120,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "otherBrands": MessageLookupByLibrary.simpleMessage("Outras marcas"),
         "password": MessageLookupByLibrary.simpleMessage("Senha"),
         "peopleHelped":
-            MessageLookupByLibrary.simpleMessage("pessoas ajudaram"),
+            MessageLookupByLibrary.simpleMessage("Pessoas ajudaram"),
         "personalBalance":
             MessageLookupByLibrary.simpleMessage("Saldo Pessoal"),
         "placesUpFromLastMonth": MessageLookupByLibrary.simpleMessage(
@@ -148,7 +148,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "save": MessageLookupByLibrary.simpleMessage("Salvar"),
         "search": MessageLookupByLibrary.simpleMessage("Procurar"),
         "seeMore": MessageLookupByLibrary.simpleMessage("Ver mais"),
-        "services": MessageLookupByLibrary.simpleMessage("serviços"),
+        "services": MessageLookupByLibrary.simpleMessage("Serviços"),
         "settings": MessageLookupByLibrary.simpleMessage("Definições"),
         "signIn": MessageLookupByLibrary.simpleMessage("Entrar"),
         "similarArticles":

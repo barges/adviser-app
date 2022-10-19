@@ -73,18 +73,8 @@ class AppRoutes {
     ),
     GetPage(
       name: userProfile,
-      page: () => UserProfileScreen(customerID: Get.arguments as String),
+      page: () => UserProfileScreen(),
     ),
-    GetPage(
-      name: addNote,
-      page: () {
-        Map<String, String?> arguments = Get.arguments;
-        return AddNoteScreen(
-          customerID: arguments['customerID'] ?? '',
-          oldNote: arguments['oldNote'],
-          noteDate: arguments['noteDate'],
-        );
-      },
-    ),
+    GetPage(name: addNote, page: () => const AddNoteScreen()),
   ];
 }

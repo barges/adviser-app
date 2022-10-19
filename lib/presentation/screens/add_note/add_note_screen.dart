@@ -13,20 +13,15 @@ import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class AddNoteScreen extends StatelessWidget {
-  final String customerID;
-  final String? oldNote;
-  final String? noteDate;
 
   const AddNoteScreen(
-      {Key? key, required this.customerID, this.oldNote, this.noteDate})
+      {Key? key,})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => Get.put<AddNoteCubit>(
-        AddNoteCubit(customerID, oldNote, noteDate),
-      ),
+      create: (_) => AddNoteCubit(),
       child: Builder(builder: (context) {
         AddNoteCubit addNoteCubit = context.read<AddNoteCubit>();
         return Scaffold(

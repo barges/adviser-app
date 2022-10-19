@@ -15,17 +15,12 @@ import 'package:shared_advisor_interface/presentation/screens/user_profile/widge
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class UserProfileScreen extends StatelessWidget {
-  final String customerID;
-
-  const UserProfileScreen({Key? key, required this.customerID})
-      : super(key: key);
+  const UserProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => Get.put<UserProfileCubit>(
-              UserProfileCubit(customerID),
-            ),
+        create: (_) => Get.put<UserProfileCubit>(UserProfileCubit()),
         child: Builder(
           builder: (context) {
             final UserProfileCubit userProfileCubit =
@@ -125,7 +120,7 @@ class UserProfileScreen extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        '${response.totalMessages ?? 0} ${S.of(context).chats}, 5 ${S.of(context).calls}, 5 ${S.of(context).services}',
+                                        '${response.totalMessages ?? 0} ${S.of(context).chats.toLowerCase()}, 5 ${S.of(context).calls.toLowerCase()}, 5 ${S.of(context).services.toLowerCase()}',
                                         textAlign: TextAlign.center,
                                         style:
                                             Get.textTheme.bodyMedium?.copyWith(
@@ -181,7 +176,10 @@ class UserProfileScreen extends StatelessWidget {
                                 (UserProfileCubit cubit) =>
                                     cubit.state.currentNote);
                             return NotesWidget(
-                              customerID: customerID,
+                              onTapAddNew: userProfileCubit
+                                  .navigateToAddNoteScreenForNewNote,
+                              onTapOldNote: userProfileCubit
+                                  .navigateToAddNoteScreenForOldNote,
                               texts: [currentNote ?? ''],
                               images: const [
                                 [

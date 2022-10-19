@@ -47,14 +47,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "betterThan": MessageLookupByLibrary.simpleMessage("Better than"),
         "birthTown": MessageLookupByLibrary.simpleMessage("birth town"),
         "born": MessageLookupByLibrary.simpleMessage("Born"),
-        "calls": MessageLookupByLibrary.simpleMessage("calls"),
+        "calls": MessageLookupByLibrary.simpleMessage("Calls"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "changeCoverPicture":
             MessageLookupByLibrary.simpleMessage("Change cover picture"),
         "changePassword":
             MessageLookupByLibrary.simpleMessage("Change password"),
         "changePhoto": MessageLookupByLibrary.simpleMessage("Change photo"),
-        "chats": MessageLookupByLibrary.simpleMessage("chats"),
+        "chats": MessageLookupByLibrary.simpleMessage("Chats"),
         "chooseBrandToLogIn":
             MessageLookupByLibrary.simpleMessage("Choose brand to log in"),
         "chooseEmailApp":
@@ -117,7 +117,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "openEmailApp": MessageLookupByLibrary.simpleMessage("Open email app"),
         "otherBrands": MessageLookupByLibrary.simpleMessage("Other brands"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
-        "peopleHelped": MessageLookupByLibrary.simpleMessage("people helped"),
+        "peopleHelped": MessageLookupByLibrary.simpleMessage("People helped"),
         "personalBalance":
             MessageLookupByLibrary.simpleMessage("Personal Balance"),
         "placesUpFromLastMonth":
