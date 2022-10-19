@@ -24,11 +24,13 @@ class ListOfFiltersWidget extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           padding:
               const EdgeInsets.only(left: AppConstants.horizontalScreenPadding),
-          itemBuilder: (_, index) => FilterWidget(
+          itemBuilder: (_, index) {
+            return FilterWidget(
                 title: filters[index],
                 isSelected: index == currentFilterIndex,
                 onTap: () => onTap(index),
-              ),
+              );
+          },
           separatorBuilder: (_, __) => const SizedBox(width: 8.0),
           itemCount: filters.length),
     );

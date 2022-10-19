@@ -276,7 +276,7 @@ class _BottomSection extends StatelessWidget {
               _BottomSectionItem(
                   icon: Assets.vectors.settings.path,
                   text: S.of(context).settings,
-                  onTap: cubit.goToSettings),
+                  onTap: cubit.openSettingsUrl),
               const SizedBox(
                 height: 16.0,
               ),

@@ -16,6 +16,7 @@ import 'package:shared_advisor_interface/data/network/requests/update_profile_re
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 import 'edit_profile_state.dart';
 
@@ -232,7 +233,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   Future<void> deletePictureFromGallery(int pictureIndex) async {
-    try {
       final List<String> coverPictures =
           await userRepository.deleteCoverPicture(pictureIndex);
       emit(
@@ -240,10 +240,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           coverPictures: coverPictures,
         ),
       );
-    } catch (e) {
-      ///TODO: Handle the error
-      rethrow;
-    }
   }
 
   Future<bool> updateUserAvatar() async {
@@ -285,6 +281,11 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         rethrow;
       }
     }
+  }
+
+  void goToGallery(){
+    Get.toNamed(AppRoutes.galleryPictures,
+      arguments: picturesPageController.page,);
   }
 
   void setAvatar(File avatar) {

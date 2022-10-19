@@ -1029,6 +1029,16 @@ class S {
       args: [],
     );
   }
+
+  /// `You don’t have an internet connection`
+  String get youDontHaveAnInternetConnection {
+    return Intl.message(
+      'You don’t have an internet connection',
+      name: 'youDontHaveAnInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

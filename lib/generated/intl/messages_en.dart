@@ -157,6 +157,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "wrongUsernameOrPassword":
             MessageLookupByLibrary.simpleMessage("Wrong username or password"),
         "yesImSure": MessageLookupByLibrary.simpleMessage("Yes, I’m sure"),
+        "youDontHaveAnInternetConnection": MessageLookupByLibrary.simpleMessage(
+            "You don’t have an internet connection"),
         "youHave": MessageLookupByLibrary.simpleMessage("You have"),
         "youHaveNotCompletedAnySessionsYet":
             MessageLookupByLibrary.simpleMessage(
