@@ -8,7 +8,6 @@ import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_cubit.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -77,11 +76,7 @@ class ProfileImageWidget extends StatelessWidget {
                               itemCount: coverPictures.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return GestureDetector(
-                                  onTap: () {
-                                    Get.toNamed(AppRoutes.galleryPictures,
-                                        arguments:
-                                            cubit.picturesPageController.page);
-                                  },
+                                  onTap: cubit.goToGallery,
                                   child: SizedBox(
                                     height: _backgroundImageSectionHeight,
                                     child: CachedNetworkImage(

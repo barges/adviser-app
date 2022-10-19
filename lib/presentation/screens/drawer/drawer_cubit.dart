@@ -2,14 +2,18 @@ import 'package:bloc/bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_state.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DrawerCubit extends Cubit<SplashState> {
   final CacheManager _cacheManager;
 
   late final List<Brand> authorizedBrands;
   late final List<Brand> unauthorizedBrands;
+
+  final Uri _url = Uri.parse(AppConstants.webToolUrl);
 
   DrawerCubit(this._cacheManager) : super(const SplashState()) {
     authorizedBrands = _cacheManager.getAuthorizedBrands().reversed.toList();
@@ -34,11 +38,19 @@ class DrawerCubit extends Cubit<SplashState> {
     }
   }
 
-  void goToAllBrands() {
-    Get.toNamed(AppRoutes.allBrands);
+  Future<void> openSettingsUrl() async {
+    if (!await launchUrl(
+      _url,
+      mode: LaunchMode.externalApplication,
+    )) {
+      Get.showSnackbar(GetSnackBar(
+        duration: const Duration(seconds: 2),
+        message: 'Could not launch $_url',
+      ));
+    }
   }
 
-  void goToSettings() {
+  void goToAllBrands() {
     Get.toNamed(AppRoutes.allBrands);
   }
 

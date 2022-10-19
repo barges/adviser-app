@@ -11,7 +11,6 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/main_state.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_loading_indicator.dart';
 import 'package:shared_advisor_interface/presentation/di/bindings/init_binding.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_themes.dart';
 
@@ -57,52 +56,40 @@ class _MyAppState extends State<MyApp> {
               Get.back();
             }
           },
-          child: BlocListener<MainCubit, MainState>(
-            listenWhen: (prev, current) =>
-                prev.internetConnectionIsAvailable !=
-                current.internetConnectionIsAvailable,
-            listener: (_, state) {
-              if (!state.internetConnectionIsAvailable) {
-                _showNoConnectionDialog();
-              } else {
-                Get.back();
-              }
-            },
-            child: GetMaterialApp(
-              debugShowCheckedModeBanner: false,
-              theme: AppThemes.themeLight(context),
-              darkTheme: AppThemes.themeDark(context),
-              defaultTransition: Transition.cupertino,
-              initialRoute: AppRoutes.splash,
-              initialBinding: InitBinding(),
-              getPages: AppRoutes.getPages,
-              navigatorKey: navigatorKey,
-              localizationsDelegates: const [
-                S.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: S.delegate.supportedLocales,
-              localeResolutionCallback: (locale, supportedLocales) {
-                final int? localeIndex = _cacheManager.getLocaleIndex();
+          child: GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: AppThemes.themeLight(context),
+            darkTheme: AppThemes.themeDark(context),
+            defaultTransition: Transition.cupertino,
+            initialRoute: AppRoutes.splash,
+            initialBinding: InitBinding(),
+            getPages: AppRoutes.getPages,
+            navigatorKey: navigatorKey,
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
+            localeResolutionCallback: (locale, supportedLocales) {
+              final int? localeIndex = _cacheManager.getLocaleIndex();
 
-                if (localeIndex != null) {
-                  return supportedLocales.toList()[localeIndex];
-                } else {
-                  if (locale == null) {
-                    return supportedLocales.first;
-                  }
-                  for (var supportedLocale in supportedLocales) {
-                    if (supportedLocale.languageCode == locale.languageCode ||
-                        supportedLocale.countryCode == locale.countryCode) {
-                      return supportedLocale;
-                    }
-                  }
+              if (localeIndex != null) {
+                return supportedLocales.toList()[localeIndex];
+              } else {
+                if (locale == null) {
                   return supportedLocales.first;
                 }
-              },
-            ),
+                for (var supportedLocale in supportedLocales) {
+                  if (supportedLocale.languageCode == locale.languageCode ||
+                      supportedLocale.countryCode == locale.countryCode) {
+                    return supportedLocale;
+                  }
+                }
+                return supportedLocales.first;
+              }
+            },
           ),
         );
       }),
@@ -126,45 +113,6 @@ class _MyAppState extends State<MyApp> {
             return Future.value(false);
           },
           child: const AppLoadingIndicator(),
-        );
-      },
-    );
-  }
-
-  void _showNoConnectionDialog() {
-    showGeneralDialog(
-      context: navigatorKey.currentContext!,
-      barrierColor: Get.theme.scaffoldBackgroundColor
-          .withOpacity(Get.isDarkMode ? 0.6 : 0.2),
-      // Background color
-      barrierDismissible: false,
-      barrierLabel: 'LOADING',
-      transitionDuration: const Duration(milliseconds: 100),
-      // How long it takes to popup dialog after button click
-      pageBuilder: (_, __, ___) {
-        // Makes widget fullscreen
-        return WillPopScope(
-          onWillPop: () {
-            return Future.value(false);
-          },
-          child: SizedBox(
-            height: Get.height,
-            width: Get.width,
-            child: Center(
-              child: Material(
-                color: Colors.transparent,
-                child: Container(
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(AppConstants.buttonRadius),
-                    color: Get.theme.errorColor,
-                  ),
-                  child: const Text('NO INTERNET CONNECTION'),
-                ),
-              ),
-            ),
-          ),
         );
       },
     );
