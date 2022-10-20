@@ -45,8 +45,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Alterar imagem da capa"),
         "changePassword": MessageLookupByLibrary.simpleMessage("Mudar senha"),
         "changePhoto": MessageLookupByLibrary.simpleMessage("Mudar foto"),
-        "chooseBrandToLogIn": MessageLookupByLibrary.simpleMessage(
-            "Escolha a marca para fazer login"),
+        "chooseBrand": MessageLookupByLibrary.simpleMessage(
+            "Escolha a marca para iniciar a sessão"),
         "chooseEmailApp": MessageLookupByLibrary.simpleMessage(
             "Escolha o aplicativo de e-mail"),
         "chooseFromGallery":
@@ -74,7 +74,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Field is required"),
         "forMe": MessageLookupByLibrary.simpleMessage("Para mim"),
         "forgotPassword":
-            MessageLookupByLibrary.simpleMessage("Esqueceu a senha\n"),
+            MessageLookupByLibrary.simpleMessage("Esqueceu a senha"),
         "forgotYourPassword":
             MessageLookupByLibrary.simpleMessage("Esqueceu sua senha"),
         "fortunica": MessageLookupByLibrary.simpleMessage("Fortunica"),

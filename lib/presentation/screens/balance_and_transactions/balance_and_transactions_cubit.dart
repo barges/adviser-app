@@ -13,19 +13,19 @@ import 'package:shared_advisor_interface/presentation/screens/balance_and_transa
 
 class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   final UserRepository _userRepository = Get.find<UserRepository>();
+  final MainCubit mainCubit = Get.find<MainCubit>();
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
-
 
   BalanceAndTransactionsCubit() : super(const BalanceAndTransactionsState()) {
     getReports();
   }
 
   Future<void> getReports() async {
-    if(Get.find<MainCubit>().state.internetConnectionIsAvailable) {
+    if (mainCubit.state.internetConnectionIsAvailable) {
       final List<ReportsMonth> months = [];
       final ReportsResponse reportsResponse =
-      await _userRepository.getUserReports();
+          await _userRepository.getUserReports();
 
       for (ReportsYear year in reportsResponse.dateRange ?? []) {
         months.addAll(year.months ?? []);
@@ -49,7 +49,7 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
       final ReportsStatistics reportsStatistics =
           await _userRepository.getUserReportsByMonth(
         state.months[index].startDate ?? '',
-            state.months[index].endDate ?? '',
+        state.months[index].endDate ?? '',
       );
 
       emit(state.copyWith(reportsStatistics: reportsStatistics));

@@ -17,6 +17,8 @@ import 'package:url_launcher/url_launcher.dart';
 class AccountCubit extends Cubit<AccountState> {
   final TextEditingController commentController = TextEditingController();
 
+  final MainCubit mainCubit = Get.find<MainCubit>();
+
   final UserRepository userRepository = Get.find<UserRepository>();
 
   final CacheManager cacheManager;
@@ -47,7 +49,7 @@ class AccountCubit extends Cubit<AccountState> {
   }
 
   Future<void> refreshUserinfo({UserInfo? info}) async {
-    if (Get.find<MainCubit>().state.internetConnectionIsAvailable) {
+    if (mainCubit.state.internetConnectionIsAvailable) {
       int seconds = 0;
 
       final UserInfo userInfo = info ?? await userRepository.getUserInfo();
