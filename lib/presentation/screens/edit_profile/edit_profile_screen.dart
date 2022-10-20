@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/app_text_field.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
@@ -40,61 +40,64 @@ class EditProfileScreen extends StatelessWidget {
             }
           },
           child: Builder(builder: (context) {
-            return Scaffold(
-              key: editProfileCubit.scaffoldKey,
-              drawer: const AppDrawer(),
-              body: SafeArea(
-                top: false,
-                child: CustomScrollView(
-                  physics: const ClampingScrollPhysics(),
-                  slivers: [
-                    ScrollableAppBar(
-                      title: S.of(context).editProfile,
-                      actionOnClick: () => editProfileCubit.updateUserInfo(),
-                      openDrawer: editProfileCubit.openDrawer,
-                    ),
-                    SliverToBoxAdapter(
-                      child: GestureDetector(
-                        onTap: () {
-                          FocusScope.of(context).unfocus();
-                        },
-                        child: Column(
-                          children: [
-                            const ProfileImageWidget(),
-                            const SizedBox(
-                              height: 16.0,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal:
-                                          AppConstants.horizontalScreenPadding),
-                                  child: Builder(builder: (context) {
-                                    final String nicknameErrorText = context
-                                        .select((EditProfileCubit cubit) =>
-                                            cubit.state.nicknameErrorText);
-                                    return AppTextField(
-                                      controller:
-                                          editProfileCubit.nicknameController,
-                                      label: S.of(context).nickname,
-                                      errorText: nicknameErrorText,
-                                    );
-                                  }),
-                                ),
-                                const LanguageSectionWidget(),
-                                const SizedBox(
-                                  height: 24.0,
-                                ),
-                                const GalleryImages(),
-                              ],
-                            ),
-                          ],
+            return GestureDetector(
+              onTap: FocusScope.of(context).unfocus,
+              child: Scaffold(
+                key: editProfileCubit.scaffoldKey,
+                drawer: const AppDrawer(),
+                body: SafeArea(
+                  top: false,
+                  child: CustomScrollView(
+                    physics: const ClampingScrollPhysics(),
+                    slivers: [
+                      ScrollableAppBar(
+                        title: S.of(context).editProfile,
+                        actionOnClick: () => editProfileCubit.updateUserInfo(),
+                        openDrawer: editProfileCubit.openDrawer,
+                      ),
+                      SliverToBoxAdapter(
+                        child: GestureDetector(
+                          onTap: () {
+                            FocusScope.of(context).unfocus();
+                          },
+                          child: Column(
+                            children: [
+                              const ProfileImageWidget(),
+                              const SizedBox(
+                                height: 16.0,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal:
+                                            AppConstants.horizontalScreenPadding),
+                                    child: Builder(builder: (context) {
+                                      final String nicknameErrorText = context
+                                          .select((EditProfileCubit cubit) =>
+                                              cubit.state.nicknameErrorText);
+                                      return AppTextField(
+                                        controller:
+                                            editProfileCubit.nicknameController,
+                                        label: S.of(context).nickname,
+                                        errorText: nicknameErrorText,
+                                      );
+                                    }),
+                                  ),
+                                  const LanguageSectionWidget(),
+                                  const SizedBox(
+                                    height: 24.0,
+                                  ),
+                                  const GalleryImages(),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             );

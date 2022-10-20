@@ -11,10 +11,10 @@ class SessionsRepositoryImpl implements SessionsRepository {
 
   @override
   Future<QuestionsListResponse> getListOfQuestions(
-      {int page = 0, required bool isPublicFilter}) async {
-    return await _api.getListOfQuestions(
-        limit: _limit + page,
-        page: page,
+      {String? lastId, required bool isPublicFilter}) async {
+    return await _api.getQuestions(
+        limit: _limit,
+        lastId: lastId,
         filterType: buildFilterType(isPublicFilter));
   }
 

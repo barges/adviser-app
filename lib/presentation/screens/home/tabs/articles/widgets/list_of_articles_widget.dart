@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class ListOfArticlesWidget extends StatelessWidget {
@@ -69,74 +70,79 @@ class ArticleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: Get.height * 0.22,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-            child: Stack(fit: StackFit.expand, children: [
-              Image.network(article.imagePath, fit: BoxFit.cover),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (article.isNewArticle)
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ArticleStatusWidget(
-                              title: S.of(context).newLabel,
-                              backgroundColor: AppColors.promotion),
-                          const SizedBox(height: 8.0),
-                        ],
-                      ),
-                    if (article.isMandatoryArticle)
-                      ArticleStatusWidget(
-                          title: S.of(context).mandatory,
-                          gradient: const [
-                            AppColors.ctaGradient1,
-                            AppColors.ctaGradient2
-                          ]),
-                  ],
-                ),
-              )
-            ]),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 12.0),
-          child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    article.date.parseDateTimePattern2,
-                    style: Get.textTheme.displaySmall?.copyWith(
-                        fontWeight: FontWeight.w500,
-                        color: Get.theme.shadowColor),
+    return GestureDetector(
+      onTap: () {
+        Get.toNamed(AppRoutes.articleDetails);
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 184.0,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
+              child: Stack(fit: StackFit.expand, children: [
+                Image.network(article.imagePath, fit: BoxFit.cover),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (article.isNewArticle)
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ArticleStatusWidget(
+                                title: S.of(context).newLabel,
+                                backgroundColor: AppColors.promotion),
+                            const SizedBox(height: 8.0),
+                          ],
+                        ),
+                      if (article.isMandatoryArticle)
+                        ArticleStatusWidget(
+                            title: S.of(context).mandatory,
+                            gradient: const [
+                              AppColors.ctaGradient1,
+                              AppColors.ctaGradient2
+                            ]),
+                    ],
                   ),
-                  Text('#${article.category}',
+                )
+              ]),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 12.0),
+            child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      article.date.parseDateTimePattern2,
                       style: Get.textTheme.displaySmall?.copyWith(
                           fontWeight: FontWeight.w500,
-                          color: Get.theme.primaryColor)),
-                ],
+                          color: Get.theme.shadowColor),
+                    ),
+                    Text('#${article.category}',
+                        style: Get.textTheme.displaySmall?.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: Get.theme.primaryColor)),
+                  ],
+                ),
               ),
-            ),
-            Expanded(child: SizedBox.fromSize())
-          ]),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Text(article.title, style: Get.textTheme.headlineMedium),
-        ),
-        Text(article.description,
-            style: Get.textTheme.bodyMedium
-                ?.copyWith(color: Get.theme.shadowColor))
-      ],
+              Expanded(child: SizedBox.fromSize())
+            ]),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Text(article.title, style: Get.textTheme.headlineMedium),
+          ),
+          Text(article.description,
+              style: Get.textTheme.bodyMedium
+                  ?.copyWith(color: Get.theme.shadowColor))
+        ],
+      ),
     );
   }
 }

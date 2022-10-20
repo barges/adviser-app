@@ -95,12 +95,8 @@ class _TabPages extends StatelessWidget {
   ) {
     return <Widget>[
       Navigator(
-        onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-          builder: (BuildContext context) => DashboardScreen(
-            openDrawer: openDrawer,
-          ),
-        ),
-      ),
+          onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
+              builder: (BuildContext context) => const DashboardScreen())),
       Navigator(
           onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
               builder: (BuildContext context) => const ArticlesScreen())),

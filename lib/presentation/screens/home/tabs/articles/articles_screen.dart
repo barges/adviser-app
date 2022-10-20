@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/list_of_filters_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/articles/articles_cubit.dart';
@@ -17,30 +19,27 @@ class ArticlesScreen extends StatelessWidget {
       child: Builder(builder: (BuildContext context) {
         final ArticlesCubit articlesCubit = context.read<ArticlesCubit>();
         return Scaffold(
-            appBar: const WideAppBar(
-              withBrands: true,
+            appBar: WideAppBar(
+              title: S.of(context).articles,
+              iconPath: Assets.vectors.check.path,
+              bottomWidget: Builder(builder: (context) {
+                final int selectedFilterIndex = context.select(
+                        (ArticlesCubit cubit) => cubit.state.selectedFilterIndex);
+                final List<String> filters = [
+                  'All',
+                  'Only Premium Products',
+                  'Private Questions',
+                  'Market: '
+                ];
+                return ListOfFiltersWidget(
+                  currentFilterIndex: selectedFilterIndex,
+                  filters: filters,
+                  onTap: articlesCubit.updateFilterIndex,
+                );
+              }),
             ),
             body: Column(
               children: [
-                Builder(builder: (context) {
-                  final int selectedFilterIndex = context.select(
-                      (ArticlesCubit cubit) => cubit.state.selectedFilterIndex);
-                  final List<String> filters = [
-                    'All',
-                    'Only Premium Products',
-                    'Private Questions',
-                    'Market: '
-                  ];
-                  final List<VoidCallback> onTaps = filters
-                      .map((e) => () =>
-                          articlesCubit.updateFilterIndex(filters.indexOf(e)))
-                      .toList();
-                  return ListOfFiltersWidget(
-                    currentFilterIndex: selectedFilterIndex,
-                    filters: filters,
-                    onTaps: onTaps,
-                  );
-                }),
                 const PercentageWidget(),
                 Expanded(
                   child: SingleChildScrollView(

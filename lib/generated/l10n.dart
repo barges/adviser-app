@@ -150,11 +150,11 @@ class S {
     );
   }
 
-  /// `Choose brand to log in`
-  String get chooseBrandToLogIn {
+  /// `Choose brand`
+  String get chooseBrand {
     return Intl.message(
-      'Choose brand to log in',
-      name: 'chooseBrandToLogIn',
+      'Choose brand',
+      name: 'chooseBrand',
       desc: '',
       args: [],
     );
@@ -680,21 +680,181 @@ class S {
     );
   }
 
-  /// `Take a photo`
-  String get takeAPhoto {
+  /// `Resources`
+  String get resources {
     return Intl.message(
-      'Take a photo',
-      name: 'takeAPhoto',
+      'Resources',
+      name: 'resources',
       desc: '',
       args: [],
     );
   }
 
-  /// `Field is required`
-  String get fieldIsRequired {
+  /// `Stats`
+  String get stats {
     return Intl.message(
-      'Field is required',
-      name: 'fieldIsRequired',
+      'Stats',
+      name: 'stats',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Courses`
+  String get courses {
+    return Intl.message(
+      'Courses',
+      name: 'courses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today`
+  String get today {
+    return Intl.message(
+      'Today',
+      name: 'today',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This Week`
+  String get thisWeek {
+    return Intl.message(
+      'This Week',
+      name: 'thisWeek',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This Month`
+  String get thisMonth {
+    return Intl.message(
+      'This Month',
+      name: 'thisMonth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Better than`
+  String get betterThan {
+    return Intl.message(
+      'Better than',
+      name: 'betterThan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `advisors`
+  String get advisors {
+    return Intl.message(
+      'advisors',
+      name: 'advisors',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `places up from last month`
+  String get placesUpFromLastMonth {
+    return Intl.message(
+      'places up from last month',
+      name: 'placesUpFromLastMonth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Personal Balance`
+  String get personalBalance {
+    return Intl.message(
+      'Personal Balance',
+      name: 'personalBalance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New customers`
+  String get newCustomers {
+    return Intl.message(
+      'New customers',
+      name: 'newCustomers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sales`
+  String get sales {
+    return Intl.message(
+      'Sales',
+      name: 'sales',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customers`
+  String get customers {
+    return Intl.message(
+      'Customers',
+      name: 'customers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customers who come back to you after buying the first session on any platform`
+  String get customersComeBackToYouAfterBuyingFirstSessionPlatform {
+    return Intl.message(
+      'Customers who come back to you after buying the first session on any platform',
+      name: 'customersComeBackToYouAfterBuyingFirstSessionPlatform',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Users`
+  String get newUsers {
+    return Intl.message(
+      'New Users',
+      name: 'newUsers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loyal Users`
+  String get loyalUsers {
+    return Intl.message(
+      'Loyal Users',
+      name: 'loyalUsers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Similar articles`
+  String get similarArticles {
+    return Intl.message(
+      'Similar articles',
+      name: 'similarArticles',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Take a photo`
+  String get takeAPhoto {
+    return Intl.message(
+      'Take a photo',
+      name: 'takeAPhoto',
       desc: '',
       args: [],
     );
@@ -760,16 +920,6 @@ class S {
     );
   }
 
-  /// `Dashboard`
-  String get dashboard {
-    return Intl.message(
-      'Dashboard',
-      name: 'dashboard',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Earned`
   String get earned {
     return Intl.message(
@@ -795,6 +945,96 @@ class S {
     return Intl.message(
       'Total markets',
       name: 'totalMarkets',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dashboard`
+  String get dashboard {
+    return Intl.message(
+      'Dashboard',
+      name: 'dashboard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Field is required`
+  String get fieldIsRequired {
+    return Intl.message(
+      'Field is required',
+      name: 'fieldIsRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Apply`
+  String get apply {
+    return Intl.message(
+      'Apply',
+      name: 'apply',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `About Me`
+  String get aboutMe {
+    return Intl.message(
+      'About Me',
+      name: 'aboutMe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quick Answers`
+  String get quickAnswers {
+    return Intl.message(
+      'Quick Answers',
+      name: 'quickAnswers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `people helped`
+  String get peopleHelped {
+    return Intl.message(
+      'people helped',
+      name: 'peopleHelped',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have not completed any sessions yet`
+  String get youHaveNotCompletedAnySessionsYet {
+    return Intl.message(
+      'You have not completed any sessions yet',
+      name: 'youHaveNotCompletedAnySessionsYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have not yet completed this month's sessions`
+  String get youHaveNotYetCompletedThisMonthsSessions {
+    return Intl.message(
+      'You have not yet completed this month\'s sessions',
+      name: 'youHaveNotYetCompletedThisMonthsSessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You don’t have an internet connection`
+  String get youDontHaveAnInternetConnection {
+    return Intl.message(
+      'You don’t have an internet connection',
+      name: 'youDontHaveAnInternetConnection',
       desc: '',
       args: [],
     );

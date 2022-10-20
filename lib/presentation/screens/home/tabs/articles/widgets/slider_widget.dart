@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/articles/articles_cubit.dart';
@@ -14,6 +15,26 @@ class SliderWidget extends StatelessWidget {
     final int sliderIndex =
         context.select((ArticlesCubit cubit) => cubit.state.sliderIndex);
     final ArticlesCubit articlesCubit = context.read<ArticlesCubit>();
+
+    //TODO -- remove it later..
+    final List<_VirtualCourseModel> courses = [
+      const _VirtualCourseModel(
+          title: 'Online courses 1',
+          description: 'This is the description of what is this about.',
+          headlineTitle: 'Special events'),
+      const _VirtualCourseModel(
+          title: 'Online courses 2',
+          description: 'This is the description of what is this about.',
+          headlineTitle: 'Special events'),
+      const _VirtualCourseModel(
+          title: 'Online courses 3',
+          description: 'This is the description of what is this about.',
+          headlineTitle: 'Special events'),
+      const _VirtualCourseModel(
+          title: 'Online courses 4',
+          description: 'This is the description of what is this about.',
+          headlineTitle: 'Special events')
+    ];
     return Container(
       width: Get.width,
       padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 12.0),
@@ -22,11 +43,8 @@ class SliderWidget extends StatelessWidget {
         children: [
           CarouselSlider.builder(
               itemCount: 4,
-              itemBuilder: (context, index, _) => const CardWidget(
-                    title: 'Online courses',
-                    description:
-                        'This is the description of what is this about.',
-                    headlineTitle: 'Special events',
+              itemBuilder: (_, index, __) => _CardWidget(
+                    course: courses[index],
                   ),
               options: CarouselOptions(
                   height: 151,
@@ -43,9 +61,8 @@ class SliderWidget extends StatelessWidget {
           const SizedBox(height: 12.0),
           Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                  4,
-                  (index) => Padding(
+              children: courses
+                  .mapIndexed((_, index) => Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4.0),
                         child: Builder(
                             builder: (_) => CircleAvatar(
@@ -53,24 +70,18 @@ class SliderWidget extends StatelessWidget {
                                 backgroundColor: sliderIndex == index
                                     ? Get.theme.primaryColor
                                     : Get.theme.hintColor)),
-                      )))
+                      ))
+                  .toList())
         ],
       ),
     );
   }
 }
 
-class CardWidget extends StatelessWidget {
-  final String title;
-  final String description;
-  final String headlineTitle;
+class _CardWidget extends StatelessWidget {
+  final _VirtualCourseModel course;
 
-  const CardWidget(
-      {Key? key,
-      required this.title,
-      required this.description,
-      required this.headlineTitle})
-      : super(key: key);
+  const _CardWidget({Key? key, required this.course}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -86,11 +97,11 @@ class CardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  course.title,
                   style: Get.textTheme.headlineMedium
                       ?.copyWith(color: Get.theme.backgroundColor),
                 ),
-                Text(description,
+                Text(course.description,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
                     style: Get.textTheme.labelMedium
@@ -106,7 +117,7 @@ class CardWidget extends StatelessWidget {
                     vertical: 12.0,
                     horizontal: AppConstants.horizontalScreenPadding),
                 child: Text(
-                  '#$headlineTitle',
+                  '#${course.headlineTitle}',
                   style: Get.textTheme.displaySmall?.copyWith(
                       fontWeight: FontWeight.w500,
                       color: Get.theme.backgroundColor),
@@ -118,4 +129,16 @@ class CardWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+//TODO -- remove it later
+class _VirtualCourseModel {
+  final String title;
+  final String description;
+  final String headlineTitle;
+
+  const _VirtualCourseModel(
+      {required this.title,
+      required this.description,
+      required this.headlineTitle});
 }

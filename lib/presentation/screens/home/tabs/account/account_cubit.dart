@@ -8,6 +8,7 @@ import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_state.dart';
@@ -15,6 +16,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class AccountCubit extends Cubit<AccountState> {
   final TextEditingController commentController = TextEditingController();
+
+  final MainCubit mainCubit = Get.find<MainCubit>();
 
   final UserRepository userRepository = Get.find<UserRepository>();
 
@@ -46,7 +49,7 @@ class AccountCubit extends Cubit<AccountState> {
   }
 
   Future<void> refreshUserinfo({UserInfo? info}) async {
-    try {
+    if (mainCubit.state.internetConnectionIsAvailable) {
       int seconds = 0;
 
       final UserInfo userInfo = info ?? await userRepository.getUserInfo();
@@ -75,9 +78,6 @@ class AccountCubit extends Cubit<AccountState> {
           seconds: seconds > 0 ? AppConstants.secondsInHour - seconds : seconds,
         ),
       );
-    } catch (e) {
-      ///TODO: Handle the error
-      rethrow;
     }
   }
 
@@ -103,30 +103,20 @@ class AccountCubit extends Cubit<AccountState> {
       status: status,
       comment: commentController.text,
     );
-    try {
-      final UserInfo userInfo = await userRepository.updateUserStatus(request);
-      refreshUserinfo(
-        info: userInfo,
-      );
-    } catch (e) {
-      ///TODO: Handle the error
-      rethrow;
-    }
+    final UserInfo userInfo = await userRepository.updateUserStatus(request);
+    refreshUserinfo(
+      info: userInfo,
+    );
   }
 
   Future<void> updateEnableNotificationsValue(bool newValue) async {
-    try {
-      final UserInfo userInfo = await userRepository
-          .setPushEnabled(PushEnableRequest(value: newValue));
-      emit(
-        state.copyWith(
-          enableNotifications: userInfo.pushNotificationsEnabled ?? false,
-        ),
-      );
-    } catch (e) {
-      ///TODO: Handle the error
-      rethrow;
-    }
+    final UserInfo userInfo =
+        await userRepository.setPushEnabled(PushEnableRequest(value: newValue));
+    emit(
+      state.copyWith(
+        enableNotifications: userInfo.pushNotificationsEnabled ?? false,
+      ),
+    );
   }
 
   Future<void> goToEditProfile() async {

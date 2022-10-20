@@ -62,10 +62,13 @@ class GalleryImages extends StatelessWidget {
                         )
                       : AddMoreImagesFromGalleryWidget(
                           onTap: () {
-                            showPickImageAlert(
-                              context: context,
-                              setImage: cubit.addPictureToGallery,
-                            );
+                            if (cubit.mainCubit.state
+                                .internetConnectionIsAvailable) {
+                              showPickImageAlert(
+                                context: context,
+                                setImage: cubit.addPictureToGallery,
+                              );
+                            }
                           },
                         );
                 },

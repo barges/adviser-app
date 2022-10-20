@@ -4,42 +4,35 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 
 class ListOfFiltersWidget extends StatelessWidget {
   final List<String> filters;
-  final List<VoidCallback> onTaps;
+  final ValueChanged<int> onTap;
   final int currentFilterIndex;
 
   const ListOfFiltersWidget(
       {Key? key,
       required this.currentFilterIndex,
       required this.filters,
-      required this.onTaps})
+      required this.onTap})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 52.0,
-          color: Get.theme.canvasColor,
-          padding: const EdgeInsets.only(
-              top: 8.0,
-              bottom: 8.0,
-              left: AppConstants.horizontalScreenPadding),
-          alignment: Alignment.center,
-          child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (_, index) => FilterWidget(
-                    title: filters[index],
-                    isSelected: index == currentFilterIndex,
-                    onTap: onTaps[index],
-                  ),
-              separatorBuilder: (_, __) => const SizedBox(width: 8.0),
-              itemCount: filters.length),
-        ),
-        SizedBox(
-            height: 1.0,
-            child: Divider(color: Get.theme.hintColor, thickness: 1))
-      ],
+    return Container(
+      height: AppConstants.appBarHeight,
+      color: Get.theme.canvasColor,
+      alignment: Alignment.center,
+      child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          padding:
+              const EdgeInsets.only(left: AppConstants.horizontalScreenPadding),
+          itemBuilder: (_, index) {
+            return FilterWidget(
+                title: filters[index],
+                isSelected: index == currentFilterIndex,
+                onTap: () => onTap(index),
+              );
+          },
+          separatorBuilder: (_, __) => const SizedBox(width: 8.0),
+          itemCount: filters.length),
     );
   }
 }

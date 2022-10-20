@@ -50,7 +50,8 @@ class AppDrawer extends StatelessWidget {
                                       height: 12.0,
                                     ),
                                     Column(
-                                      children: cubit.authorizedBrands
+                                      children: cubit.authorizedBrands.reversed
+                                          .toList()
                                           .map(
                                             (e) => Column(
                                               children: [
@@ -275,7 +276,7 @@ class _BottomSection extends StatelessWidget {
               _BottomSectionItem(
                   icon: Assets.vectors.settings.path,
                   text: S.of(context).settings,
-                  onTap: cubit.goToSettings),
+                  onTap: cubit.openSettingsUrl),
               const SizedBox(
                 height: 16.0,
               ),

@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
-import 'package:shared_advisor_interface/data/models/question.dart';
 import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/filters_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/list_of_filters_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_state.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/list_of_questions_widget.dart';
 
 class SessionsScreen extends StatelessWidget {
@@ -26,6 +27,9 @@ class SessionsScreen extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) => SessionsCubit(Get.find<CacheManager>()),
       child: Builder(builder: (BuildContext context) {
+        final bool isOnline = context.select(
+            (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
+
         final UserStatus userStatus =
             context.select((HomeCubit cubit) => cubit.state.userStatus);
         final SessionsCubit sessionsCubit = context.read<SessionsCubit>();
@@ -34,14 +38,16 @@ class SessionsScreen extends StatelessWidget {
             userStatus.status == FortunicaUserStatusEnum.live;
 
         return Scaffold(
-          backgroundColor: Get.theme.canvasColor,
+          backgroundColor: isOnline
+              ? Get.theme.canvasColor
+              : Get.theme.scaffoldBackgroundColor,
           appBar: WideAppBar(
             bottomWidget: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: AppConstants.horizontalScreenPadding,
               ),
               child: Opacity(
-                opacity: statusIsLive ? 1.0 : 0.4,
+                opacity: isOnline && statusIsLive ? 1.0 : 0.4,
                 child: Row(
                   children: [
                     Expanded(
@@ -50,9 +56,12 @@ class SessionsScreen extends StatelessWidget {
                             (SessionsCubit cubit) =>
                                 cubit.state.currentOptionIndex);
                         return ChooseOptionWidget(
-                          options: [S.of(context).public, S.of(context).forMe],
+                          options: [
+                            S.of(context).public,
+                            S.of(context).forMe,
+                          ],
                           currentIndex: currentIndex,
-                          onChangeOptionIndex: statusIsLive
+                          onChangeOptionIndex: isOnline && statusIsLive
                               ? sessionsCubit.getListOfQuestions
                               : null,
                         );
@@ -69,11 +78,24 @@ class SessionsScreen extends StatelessWidget {
             ),
             withBrands: true,
           ),
-          body: statusIsLive
-              ? const _QuestionsListWidget()
-              : _NotLiveStatusWidget(
+          body: Builder(builder: (context) {
+            if (isOnline) {
+              if (statusIsLive) {
+                return const _QuestionsListWidget();
+              } else {
+                return _NotLiveStatusWidget(
                   status: userStatus.status ?? FortunicaUserStatusEnum.offline,
-                ),
+                );
+              }
+            } else {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  NoConnectionWidget(),
+                ],
+              );
+            }
+          }),
         );
       }),
     );
@@ -99,39 +121,35 @@ class _QuestionsListWidget extends StatelessWidget {
           Column(
             children: [
               Container(
-                height: 52.0,
+                height: AppConstants.appBarHeight,
                 color: Get.theme.canvasColor,
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Builder(builder: (context) {
                   final int selectedFilterIndex = context.select(
                       (SessionsCubit cubit) => cubit.state.selectedFilterIndex);
-                  return FiltersWidget(
+                  return ListOfFiltersWidget(
                     currentFilterIndex: selectedFilterIndex,
-                    filters: filters
-                        .mapIndexed((element, _) => Text(element))
-                        .toList(),
+                    filters: filters,
                     onTap: sessionsCubit.changeFilterIndex,
-                    itemPadding: const EdgeInsets.symmetric(
-                        vertical: 6.0,
-                        horizontal: AppConstants.horizontalScreenPadding),
                   );
                 }),
               ),
-
-
-                 const Divider(height: 1.0, thickness: 1.0,),
+              const Divider(
+                height: 1.0,
+                thickness: 1.0,
+              ),
             ],
           ),
           Builder(
             builder: (context) {
-              final List<Question> questions = context
-                  .select((SessionsCubit cubit) => cubit.state.questions);
+              final SessionsState state =
+                  context.select((SessionsCubit cubit) => cubit.state);
               return Column(mainAxisSize: MainAxisSize.min, children: [
                 Padding(
                   padding: const EdgeInsets.all(
                       AppConstants.horizontalScreenPadding),
-                  child: ListOfQuestionsWidget(questions: questions),
+                  child: ListOfQuestionsWidget(questions: state.questions),
                 ),
               ]);
             },

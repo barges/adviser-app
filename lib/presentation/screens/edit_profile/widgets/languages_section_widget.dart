@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/app_text_field.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/error_badge.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_cubit.dart';
@@ -33,6 +33,7 @@ class LanguageSectionWidget extends StatelessWidget {
                 languageName: languageCode.languageNameByCode,
                 isSelected: chosenLanguageIndex == index,
                 onTap: () {
+                  FocusScope.of(context).unfocus();
                   editProfileCubit.updateCurrentLanguageIndex(index);
                 },
                 withError: editProfileCubit

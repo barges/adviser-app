@@ -8,36 +8,36 @@ import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_ye
 import 'package:shared_advisor_interface/data/network/responses/reports_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/balance_and_transactions_state.dart';
 
 class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   final UserRepository _userRepository = Get.find<UserRepository>();
+  final MainCubit mainCubit = Get.find<MainCubit>();
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
-
-  final List<ReportsMonth> months = [];
 
   BalanceAndTransactionsCubit() : super(const BalanceAndTransactionsState()) {
     getReports();
   }
 
   Future<void> getReports() async {
-    if (months.isNotEmpty) {
-      months.clear();
-    }
-    final ReportsResponse reportsResponse =
-        await _userRepository.getUserReports();
+    if (mainCubit.state.internetConnectionIsAvailable) {
+      final List<ReportsMonth> months = [];
+      final ReportsResponse reportsResponse =
+          await _userRepository.getUserReports();
 
-    for (ReportsYear year in reportsResponse.dateRange ?? []) {
-      months.addAll(year.months ?? []);
-    }
+      for (ReportsYear year in reportsResponse.dateRange ?? []) {
+        months.addAll(year.months ?? []);
+      }
 
-    emit(
-      state.copyWith(
-        months: months,
-        reportsStatistics: months.firstOrNull?.statistics,
-      ),
-    );
+      emit(
+        state.copyWith(
+          months: months,
+          reportsStatistics: months.firstOrNull?.statistics,
+        ),
+      );
+    }
   }
 
   void openDrawer() {
@@ -48,14 +48,14 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
     if (index > 0) {
       final ReportsStatistics reportsStatistics =
           await _userRepository.getUserReportsByMonth(
-        months[index].startDate ?? '',
-        months[index].endDate ?? '',
+        state.months[index].startDate ?? '',
+        state.months[index].endDate ?? '',
       );
 
       emit(state.copyWith(reportsStatistics: reportsStatistics));
     } else {
       emit(state.copyWith(
-        reportsStatistics: months.firstOrNull?.statistics,
+        reportsStatistics: state.months.firstOrNull?.statistics,
       ));
     }
   }
