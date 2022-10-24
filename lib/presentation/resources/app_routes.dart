@@ -9,11 +9,13 @@ import 'package:shared_advisor_interface/presentation/screens/forgot_password/fo
 import 'package:shared_advisor_interface/presentation/screens/home/home_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/support/support_screen.dart';
 
 class AppRoutes {
   static const splash = '/splash_screen';
   static const login = '/login_screen';
   static const home = '/home_screen';
+  static const support = '/support_screen';
   static const forgotPassword = '/forgot_password_screen';
   static const allBrands = '/all_brands_screen';
   static const editProfile = '/edit_profile_screen';
@@ -67,6 +69,10 @@ class AppRoutes {
     GetPage(
       name: advisorPreview,
       page: () => const AdvisorPreviewScreen(),
+    ),
+    GetPage(
+      name: support,
+      page: () => const SupportScreen(),
     ),
   ];
 }

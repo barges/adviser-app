@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -18,7 +18,7 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => DrawerCubit(Get.find<CacheManager>()),
+      create: (_) => DrawerCubit(Get.find<CachingManager>()),
       child: Builder(builder: (context) {
         final DrawerCubit cubit = context.read<DrawerCubit>();
         return Container(
@@ -50,8 +50,7 @@ class AppDrawer extends StatelessWidget {
                                       height: 12.0,
                                     ),
                                     Column(
-                                      children: cubit.authorizedBrands.reversed
-                                          .toList()
+                                      children: cubit.authorizedBrands
                                           .map(
                                             (e) => Column(
                                               children: [

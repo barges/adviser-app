@@ -1,9 +1,10 @@
-import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/network/api/user_api.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
+import 'package:shared_advisor_interface/data/network/requests/restore_freshchat_id_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_image_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
@@ -11,7 +12,7 @@ import 'package:shared_advisor_interface/data/network/responses/reports_response
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
-  final CacheManager _cacheManager;
+  final CachingManager _cacheManager;
   final UserApi _api;
 
   UserRepositoryImpl(this._api, this._cacheManager);
@@ -25,6 +26,11 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<UserInfo> setPushEnabled(PushEnableRequest request) async {
     return await _api.setPushEnabled(request);
+  }
+
+  @override
+  Future<void> setFreshchatRestoreId(RestoreFreshchatIdRequest request) async {
+    return await _api.setFreshchatRestoreId(request);
   }
 
   @override

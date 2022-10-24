@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -21,7 +21,7 @@ class ChangeLocaleButton extends StatelessWidget {
         onTap: () => showPickerModalPopUp(
           context: context,
           setIndex: _changeLocale,
-          currentIndex: Get.find<CacheManager>().getLocaleIndex(),
+          currentIndex: Get.find<CachingManager>().getLocaleIndex(),
           elements: locales.mapIndexed((element, index) {
             return Center(
               child: Text(
@@ -62,6 +62,6 @@ class ChangeLocaleButton extends StatelessWidget {
     final Locale locale = S.delegate.supportedLocales[index];
     Get.updateLocale(
         Locale(locale.languageCode, locale.languageCode.toUpperCase()));
-    Get.find<CacheManager>().saveLocaleIndex(index);
+    Get.find<CachingManager>().saveLocaleIndex(index);
   }
 }

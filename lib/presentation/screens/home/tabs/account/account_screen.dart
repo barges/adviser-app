@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -22,7 +22,7 @@ class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AccountCubit(Get.find<CacheManager>()),
+      create: (_) => AccountCubit(Get.find<CachingManager>()),
       child: Builder(builder: (context) {
         final AccountCubit accountCubit = context.read<AccountCubit>();
         return BlocListener<MainCubit, MainState>(
