@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/network/responses/login_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -16,7 +16,7 @@ import 'package:shared_advisor_interface/presentation/screens/login/login_state.
 
 class LoginCubit extends Cubit<LoginState> {
   final AuthRepository _repository;
-  final CacheManager _cacheManager;
+  final CachingManager _cacheManager;
 
   final MainCubit _mainCubit = Get.find<MainCubit>();
 

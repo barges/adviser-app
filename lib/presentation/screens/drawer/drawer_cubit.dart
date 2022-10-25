@@ -1,14 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_state.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DrawerCubit extends Cubit<SplashState> {
-  final CacheManager _cacheManager;
+  final CachingManager _cacheManager;
 
   late final List<Brand> authorizedBrands;
   late final List<Brand> unauthorizedBrands;
@@ -55,6 +55,6 @@ class DrawerCubit extends Cubit<SplashState> {
   }
 
   void goToCustomerSupport() {
-    Get.toNamed(AppRoutes.allBrands);
+    Get.toNamed(AppRoutes.support);
   }
 }

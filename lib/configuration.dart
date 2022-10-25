@@ -53,7 +53,7 @@ extension BrandExtension on Brand {
       case Brand.fortunica:
         return true;
       case Brand.zodiacTouch:
-        return false;
+        return true;
     }
   }
 

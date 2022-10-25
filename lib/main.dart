@@ -4,8 +4,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:logger/logger.dart';
-import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
-import 'package:shared_advisor_interface/data/cache/data_cache_manager.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/cache/data_caching_manager.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/main_state.dart';
@@ -39,8 +39,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final CacheManager _cacheManager =
-      Get.put<CacheManager>(DataCacheManager(), permanent: true);
+  final CachingManager _cacheManager =
+      Get.put<CachingManager>(DataCachingManager(), permanent: true);
 
   @override
   Widget build(BuildContext context) {
