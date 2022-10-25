@@ -25,10 +25,8 @@ class FreshChatServiceImpl extends FreshChatService {
   static const String freshChatId = 'ad263ea2-8218-4618-88bd-220ab8d56e23';
   static const String freshChatKey = 'd77300c3-b490-46f6-86d9-226b4e79c737';
   static const String freshChatDomain = 'msdk.freshchat.com';
-   bool _wasInit = false;
-   bool _wasSetup = false;
-
-
+  bool _wasInit = false;
+  bool _wasSetup = false;
 
   // final ApiConfig _apiConfig = GetIt.I.get<ApiConfig>();
 
@@ -50,9 +48,7 @@ class FreshChatServiceImpl extends FreshChatService {
     final String userId = userInfo?.id ?? '';
     final String? restoreId = userInfo?.freshchatInfo?.restoreId;
 
-
     try {
-
       FreshchatUser freshchatUser = await Freshchat.getUser;
 
       logger.d(freshchatUser.getExternalId());
@@ -60,38 +56,34 @@ class FreshChatServiceImpl extends FreshChatService {
       logger.d(freshchatUser.getRestoreId());
       logger.d(restoreId);
 
+      FreshchatUser freshChatUser = FreshchatUser(userId, restoreId);
+      freshChatUser.setFirstName(userInfo?.profile?.profileName ?? '');
+      freshChatUser.setEmail(userInfo?.emails?.firstOrNull?.address ?? '');
+      Freshchat.identifyUser(externalId: userId, restoreId: restoreId);
+      Freshchat.setUser(freshChatUser);
 
-        FreshchatUser freshChatUser = FreshchatUser(userId, restoreId);
-        freshChatUser.setFirstName(userInfo?.profile?.profileName ?? '');
-        freshChatUser.setEmail(userInfo?.emails?.firstOrNull?.address ?? '');
-        Freshchat.identifyUser(externalId: userId, restoreId: restoreId);
-        Freshchat.setUser(freshChatUser);
+      //Additional params
+      var userPropertiesJson = {
+        'user_id': userId,
+        //"device_id": _apiConfig.deviceInfo().deviceId,
+        'app_name': appName
+      };
+      Freshchat.setUserProperties(userPropertiesJson);
 
+      logger.d(
+          'The user for Support page is - name:${freshChatUser.getFirstName()}'
+          ', email:${freshChatUser.getEmail()}');
 
-        //Additional params
-        var userPropertiesJson = {
-          'user_id': userId,
-          //"device_id": _apiConfig.deviceInfo().deviceId,
-          'app_name': appName
-        };
-        Freshchat.setUserProperties(userPropertiesJson);
-
-        logger.d(
-            'The user for Support page is - name:${freshChatUser
-                .getFirstName()}'
-                ', email:${freshChatUser.getEmail()}');
-
-        return true;
-
+      return true;
     } catch (e) {
       logger.e('ERROR: FreshChatManager.setUpFreshChat: $e');
       return false;
     }
-
   }
 
+  @override
   Stream onRestoreStream() {
-   return Freshchat.onRestoreIdGenerated;
+    return Freshchat.onRestoreIdGenerated;
   }
 
   @override
@@ -145,7 +137,6 @@ class FreshChatServiceImpl extends FreshChatService {
 
   @override
   List<String> tagsByLocale(String languageCode) {
-
     logger.d(languageCode);
     List<String> tags = [
       'foen',
