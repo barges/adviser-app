@@ -1,0 +1,27 @@
+stages:
+  - test
+  - build
+
+before_script:
+  - flutter pub get
+
+test:
+  stage: test
+  script:
+    - flutter test
+  tags:
+    - m1
+  only:
+    - branches
+
+build:
+  stage: build
+  script:
+    - flutter build apk --release
+  artifacts:
+    paths:
+      - ${CI_PROJECT_DIR}/*.apk
+  tags:
+    - m1
+  only:
+     - branches
