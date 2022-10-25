@@ -8,6 +8,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
@@ -41,7 +42,7 @@ class SessionsScreen extends StatelessWidget {
           backgroundColor: isOnline
               ? Get.theme.canvasColor
               : Get.theme.scaffoldBackgroundColor,
-          appBar: WideAppBar(
+          appBar: HomeAppBar(
             bottomWidget: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: AppConstants.horizontalScreenPadding,
@@ -123,8 +124,6 @@ class _QuestionsListWidget extends StatelessWidget {
               Container(
                 height: AppConstants.appBarHeight,
                 color: Get.theme.canvasColor,
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Builder(builder: (context) {
                   final int selectedFilterIndex = context.select(
                       (SessionsCubit cubit) => cubit.state.selectedFilterIndex);

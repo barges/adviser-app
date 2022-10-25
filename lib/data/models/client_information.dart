@@ -21,7 +21,6 @@ class ClientInformation extends Equatable {
 
   Map<String, dynamic> toJson() => _$ClientInformationToJson(this);
 
-
   @override
   List<Object?> get props => [birthdate, zodiac, gender, country];
 }

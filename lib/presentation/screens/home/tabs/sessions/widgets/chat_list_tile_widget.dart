@@ -5,6 +5,7 @@ import 'package:shared_advisor_interface/data/models/question.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 class ChatListTileWidget extends StatelessWidget {
   final Question question;
@@ -15,21 +16,28 @@ class ChatListTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      SizedBox(
-          width: 44.0,
-          child: Stack(
-            alignment: Alignment.bottomRight,
-            children: [
-              SvgPicture.asset(
-                  getSuitableZodiacProfileImage(
-                      question.clientInformation?.zodiac ?? ''),
-                  width: 44.0),
-              CircleAvatar(
-                  radius: 8.0,
-                  backgroundColor: Get.theme.canvasColor,
-                  child: Assets.vectors.ritual.svg())
-            ],
-          )),
+      GestureDetector(
+        onTap: () {
+          if (question.clientID != null) {
+            Get.toNamed(AppRoutes.userProfile, arguments: question.clientID);
+          }
+        },
+        child: SizedBox(
+            width: 44.0,
+            child: Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                SvgPicture.asset(
+                    (question.clientInformation?.zodiac ?? '')
+                        .getZodiacProfileImage,
+                    width: 44.0),
+                CircleAvatar(
+                    radius: 8.0,
+                    backgroundColor: Get.theme.canvasColor,
+                    child: Assets.vectors.ritual.svg())
+              ],
+            )),
+      ),
       const SizedBox(width: 14.0),
       Flexible(
         child: Column(
@@ -94,37 +102,5 @@ class ChatListTileWidget extends StatelessWidget {
         ),
       ),
     ]);
-  }
-
-  static String getSuitableZodiacProfileImage(String zodiac) {
-    switch (zodiac) {
-      case 'aquarius':
-        return Assets.vectors.zodiac.aquarius.path;
-      case 'aries':
-        return Assets.vectors.zodiac.aries.path;
-      case 'cancer':
-        return Assets.vectors.zodiac.cancer.path;
-      case 'capricorn':
-        return Assets.vectors.zodiac.capricorn.path;
-      case 'gemini':
-        return Assets.vectors.zodiac.gemini.path;
-      case 'leo':
-        return Assets.vectors.zodiac.leo.path;
-      case 'libra':
-        return Assets.vectors.zodiac.libra.path;
-      case 'pisces':
-        return Assets.vectors.zodiac.pisces.path;
-      case 'sagittarius':
-        return Assets.vectors.zodiac.sagittarius.path;
-      case 'scorpio':
-        return Assets.vectors.zodiac.scorpio.path;
-      case 'taurus':
-        return Assets.vectors.zodiac.taurus.path;
-      case 'virgo':
-        return Assets.vectors.zodiac.virgo.path;
-
-      default:
-        return '';
-    }
   }
 }

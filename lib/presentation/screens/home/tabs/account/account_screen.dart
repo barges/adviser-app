@@ -6,7 +6,7 @@ import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_st
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/main_state.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -27,7 +27,7 @@ class AccountScreen extends StatelessWidget {
         final AccountCubit accountCubit = context.read<AccountCubit>();
         return BlocListener<MainCubit, MainState>(
           listenWhen: (prev, current) =>
-              prev.internetConnectionIsAvailable !=
+          prev.internetConnectionIsAvailable !=
               current.internetConnectionIsAvailable,
           listener: (_, state) {
             if (state.internetConnectionIsAvailable) {
@@ -35,21 +35,21 @@ class AccountScreen extends StatelessWidget {
             }
           },
           child: Scaffold(
-            appBar: const WideAppBar(),
+            appBar: const HomeAppBar(),
             body: Builder(builder: (context) {
               final bool isOnline = context.select((MainCubit cubit) =>
               cubit.state.internetConnectionIsAvailable);
               final UserStatus currentStatus =
-                  context.select((HomeCubit cubit) => cubit.state.userStatus);
+              context.select((HomeCubit cubit) => cubit.state.userStatus);
               final String? statusErrorText = currentStatus.status?.errorText();
               if (isOnline) {
                 return Column(
                   children: [
                     statusErrorText?.isNotEmpty == true
                         ? AppErrorWidget(
-                            errorMessage: statusErrorText ?? '',
-                            isRequired: true,
-                          )
+                      errorMessage: statusErrorText ?? '',
+                      isRequired: true,
+                    )
                         : const SizedBox.shrink(),
                     Expanded(
                       child: RefreshIndicator(
@@ -60,7 +60,7 @@ class AccountScreen extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal:
-                                      AppConstants.horizontalScreenPadding,
+                                  AppConstants.horizontalScreenPadding,
                                 ),
                                 child: Column(
                                   children: const [

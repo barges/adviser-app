@@ -18,7 +18,6 @@ class PropertyByLanguage extends Equatable {
 
   Map<String, dynamic> toJson() => _$PropertyByLanguageToJson(this);
 
-
   @override
   List<Object?> get props => [statusMessage, description];
 }

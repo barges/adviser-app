@@ -7,7 +7,6 @@ part 'reports_response.freezed.dart';
 
 @freezed
 class ReportsResponse with _$ReportsResponse {
-
   @JsonSerializable(includeIfNull: false)
   const factory ReportsResponse({
     ReportsMeta? meta,
@@ -16,5 +15,4 @@ class ReportsResponse with _$ReportsResponse {
 
   factory ReportsResponse.fromJson(Map<String, dynamic> json) =>
       _$ReportsResponseFromJson(json);
-
 }

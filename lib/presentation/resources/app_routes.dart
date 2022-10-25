@@ -1,4 +1,5 @@
-import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:get/get.dart';
+import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/all_brands/all_brands_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/article_details/article_details_screen.dart';
@@ -9,6 +10,7 @@ import 'package:shared_advisor_interface/presentation/screens/forgot_password/fo
 import 'package:shared_advisor_interface/presentation/screens/home/home_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/user_profile/user_profile_screen.dart';
 
 class AppRoutes {
   static const splash = '/splash_screen';
@@ -21,7 +23,8 @@ class AppRoutes {
   static const articleDetails = '/article_details_screen';
   static const advisorPreview = '/advisor_preview_screen';
   static const balanceAndTransactions = '/balance_and_transactions_screen';
-
+  static const userProfile = '/user_profile_screen';
+  static const addNote = '/add_note_screen';
 
   static final List<GetPage> getPages = [
     GetPage(
@@ -68,5 +71,10 @@ class AppRoutes {
       name: advisorPreview,
       page: () => const AdvisorPreviewScreen(),
     ),
+    GetPage(
+      name: userProfile,
+      page: () => UserProfileScreen(),
+    ),
+    GetPage(name: addNote, page: () => const AddNoteScreen()),
   ];
 }
