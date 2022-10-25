@@ -10,12 +10,11 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
   const LoginAppBar({Key? key}) : super(key: key);
 
   @override
-  Size get preferredSize => const Size.fromHeight(72.0);
+  Size get preferredSize => const Size.fromHeight(AppConstants.appBarHeight);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      titleTextStyle: Get.textTheme.headlineMedium,
       automaticallyImplyLeading: false,
       centerTitle: false,
       titleSpacing: AppConstants.horizontalScreenPadding,
@@ -37,7 +36,8 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           Expanded(
             child: Text(
-              S.of(context).chooseBrandToLogIn,
+              S.of(context).chooseBrand,
+              style: Get.textTheme.headlineMedium,
               maxLines: 2,
               textAlign: TextAlign.left,
             ),

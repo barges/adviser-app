@@ -150,11 +150,11 @@ class S {
     );
   }
 
-  /// `Choose brand to log in`
-  String get chooseBrandToLogIn {
+  /// `Choose brand`
+  String get chooseBrand {
     return Intl.message(
-      'Choose brand to log in',
-      name: 'chooseBrandToLogIn',
+      'Choose brand',
+      name: 'chooseBrand',
       desc: '',
       args: [],
     );

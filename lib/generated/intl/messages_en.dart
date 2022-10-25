@@ -55,8 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Change password"),
         "changePhoto": MessageLookupByLibrary.simpleMessage("Change photo"),
         "chats": MessageLookupByLibrary.simpleMessage("Chats"),
-        "chooseBrandToLogIn":
-            MessageLookupByLibrary.simpleMessage("Choose brand to log in"),
+        "chooseBrand": MessageLookupByLibrary.simpleMessage("Choose brand"),
         "chooseEmailApp":
             MessageLookupByLibrary.simpleMessage("Choose email app"),
         "chooseFromGallery":

@@ -33,6 +33,7 @@ class LanguageSectionWidget extends StatelessWidget {
                 languageName: languageCode.languageNameByCode,
                 isSelected: chosenLanguageIndex == index,
                 onTap: () {
+                  FocusScope.of(context).unfocus();
                   editProfileCubit.updateCurrentLanguageIndex(index);
                 },
                 withError: editProfileCubit

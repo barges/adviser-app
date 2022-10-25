@@ -1,7 +1,7 @@
 {
   "back": "De volta",
   "login": "Conecte-se",
-  "forgotPassword": "Esqueceu a senha\n",
+  "forgotPassword": "Esqueceu a senha",
   "email": "Email",
   "password": "Senha",
   "confirmNewPassword": "Confirme a nova senha",
@@ -9,7 +9,7 @@
   "thePasswordsMustMatch": "As senhas devem corresponder",
   "pleaseEnterAtLeast8Characters": "Insira pelo menos 8 caracteres",
   "pleaseInsertCorrectEmail": "Por favor, insira o email correto",
-  "chooseBrandToLogIn": "Escolha a marca para fazer login",
+  "chooseBrand": "Escolha a marca para iniciar a sessão",
   "comingSoon": "Em breve!",
   "signIn": "Entrar",
   "save": "Salvar",

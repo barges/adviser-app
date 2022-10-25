@@ -13,6 +13,7 @@ class SessionsCubit extends Cubit<SessionsState> {
   final SessionsRepository _repository = Get.find<SessionsRepository>();
   final CacheManager cacheManager;
   final ScrollController controller = ScrollController();
+  final MainCubit mainCubit = Get.find<MainCubit>();
   late final VoidCallback disposeListen;
 
   String? lastId;
@@ -36,8 +37,7 @@ class SessionsCubit extends Cubit<SessionsState> {
   }
 
   void addScrollControllerListener() async {
-    if (controller.position.extentAfter <= 0 &&
-        !Get.find<MainCubit>().state.isLoading) {
+    if (!mainCubit.state.isLoading && controller.position.extentAfter <= 0) {
       await getListOfQuestions(state.currentOptionIndex);
     }
   }
@@ -48,8 +48,9 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   Future<void> getListOfQuestions(int index,
       {FortunicaUserStatusEnum? status}) async {
-    if ((status ?? cacheManager.getUserStatus()?.status) ==
-        FortunicaUserStatusEnum.live) {
+    if (mainCubit.state.internetConnectionIsAvailable &&
+        (status ?? cacheManager.getUserStatus()?.status) ==
+            FortunicaUserStatusEnum.live) {
       resetList(index);
       if (!hasMore) return;
       QuestionsListResponse result =

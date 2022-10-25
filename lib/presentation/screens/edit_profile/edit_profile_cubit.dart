@@ -16,11 +16,13 @@ import 'package:shared_advisor_interface/data/network/requests/update_profile_re
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 import 'edit_profile_state.dart';
 
 class EditProfileCubit extends Cubit<EditProfileState> {
+  final MainCubit mainCubit = Get.find<MainCubit>();
   final TextEditingController nicknameController = TextEditingController();
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
@@ -128,15 +130,13 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   Future<void> updateUserInfo() async {
-    try {
+    if (mainCubit.state.internetConnectionIsAvailable) {
       final bool profileUpdated = await updateUserProfileTexts();
       final bool coverPictureUpdated = await updateCoverPicture();
       final bool avatarUpdated = await updateUserAvatar();
       if (profileUpdated || coverPictureUpdated || avatarUpdated) {
         Get.back(result: true);
       }
-    } catch (e) {
-      rethrow;
     }
   }
 
@@ -215,24 +215,20 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         mime: mimeType,
         image: base64Image,
       );
-      try {
-        final List<String> coverPictures =
-            await userRepository.updateCoverPicture(request);
-        emit(
-          state.copyWith(
-            coverPictures: coverPictures,
-          ),
-        );
-        isOk = true;
-      } catch (e) {
-        ///TODO: Handle the error
-        rethrow;
-      }
+      final List<String> coverPictures =
+          await userRepository.updateCoverPicture(request);
+      emit(
+        state.copyWith(
+          coverPictures: coverPictures,
+        ),
+      );
+      isOk = true;
     }
     return isOk;
   }
 
   Future<void> deletePictureFromGallery(int pictureIndex) async {
+    if (mainCubit.state.internetConnectionIsAvailable) {
       final List<String> coverPictures =
           await userRepository.deleteCoverPicture(pictureIndex);
       emit(
@@ -240,6 +236,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           coverPictures: coverPictures,
         ),
       );
+    }
   }
 
   Future<bool> updateUserAvatar() async {
@@ -252,19 +249,14 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         mime: mimeType,
         image: base64Image,
       );
-      try {
-        await userRepository.updateProfilePicture(request);
-        isOk = true;
-      } catch (e) {
-        ///TODO: Handle the error
-        rethrow;
-      }
+      await userRepository.updateProfilePicture(request);
+      isOk = true;
     }
     return isOk;
   }
 
   Future<void> addPictureToGallery(File? image) async {
-    if (image != null) {
+    if (mainCubit.state.internetConnectionIsAvailable && image != null) {
       final String? mimeType = lookupMimeType(image.path);
       final List<int> imageBytes = await image.readAsBytes();
       final String base64Image = base64Encode(imageBytes);
@@ -272,20 +264,17 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         mime: mimeType,
         image: base64Image,
       );
-      try {
-        List<String> coverPictures =
-            await userRepository.addCoverPictureToGallery(request);
-        emit(state.copyWith(coverPictures: coverPictures));
-      } catch (e) {
-        ///TODO: Handle the error
-        rethrow;
-      }
+      List<String> coverPictures =
+          await userRepository.addCoverPictureToGallery(request);
+      emit(state.copyWith(coverPictures: coverPictures));
     }
   }
 
-  void goToGallery(){
-    Get.toNamed(AppRoutes.galleryPictures,
-      arguments: picturesPageController.page,);
+  void goToGallery() {
+    Get.toNamed(
+      AppRoutes.galleryPictures,
+      arguments: picturesPageController.page,
+    );
   }
 
   void setAvatar(File avatar) {
