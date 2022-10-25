@@ -1,5 +1,6 @@
 stages:
   #- test
+  #- analyze
   - build
 
 variables:
@@ -18,6 +19,24 @@ before_script:
 #   only:
 #     - branches
 
+# analyze:
+#   stage: analyze
+#   script:
+#     - flutter analyze
+#   tags:
+#     - macmini
+#   only:
+#     - branches
+
+build-ios:
+  stage: build
+  script:
+    - flutter build ipa --release
+  tags:
+    - macmini
+  only:
+     - branches
+
 build-android:
   stage: build
   script:
@@ -25,15 +44,6 @@ build-android:
   artifacts:
     paths:
       - build/app/outputs/flutter-apk/app-release.apk
-  tags:
-    - macmini
-  only:
-     - branches
-
-build-ios:
-  stage: build
-  script:
-    - flutter build ipa --release
   tags:
     - macmini
   only:
