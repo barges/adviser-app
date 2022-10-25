@@ -74,6 +74,7 @@ flutter:
     - assets/images/flags/
     - assets/images/logos/
     - assets/vectors/zodiac/
+    - assets/vectors/horoscopes/
     - assets/vectors/sessions_types/
     - assets/vectors/user_performance/
 

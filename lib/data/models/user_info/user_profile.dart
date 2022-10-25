@@ -8,7 +8,6 @@ part 'user_profile.g.dart';
 
 @freezed
 class UserProfile with _$UserProfile {
-
   @JsonSerializable(includeIfNull: false)
   const factory UserProfile({
     UserRating? rating,
@@ -26,7 +25,7 @@ class UserProfile with _$UserProfile {
     bool? isTestAccount,
     LocalizedProperties? localizedProperties,
     String? profileName,
-}) = _UserProfile;
+  }) = _UserProfile;
 
   factory UserProfile.fromJson(Map<String, dynamic> json) =>
       _$UserProfileFromJson(json);

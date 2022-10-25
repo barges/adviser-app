@@ -29,9 +29,10 @@ class SearchFieldWidget extends StatelessWidget {
               decoration: InputDecoration(
                   hintText: S.of(context).search,
                   hintStyle: Get.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w400, color: Get.theme.shadowColor),
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 6.0, horizontal: 4.0),
+                      fontWeight: FontWeight.w400,
+                      color: Get.theme.shadowColor),
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 6.0, horizontal: 4.0),
                   border: const OutlineInputBorder(borderSide: BorderSide.none),
                   focusedBorder:
                       const OutlineInputBorder(borderSide: BorderSide.none),

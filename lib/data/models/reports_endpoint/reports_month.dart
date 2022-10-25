@@ -8,10 +8,8 @@ part 'reports_month.g.dart';
 class ReportsMonth with _$ReportsMonth {
   @JsonSerializable(includeIfNull: false)
   const factory ReportsMonth({
-    @JsonKey(name: 'month')
-    String? monthName,
-    @JsonKey(name: 'name')
-    String? monthsDate,
+    @JsonKey(name: 'month') String? monthName,
+    @JsonKey(name: 'name') String? monthsDate,
     String? startDate,
     String? endDate,
     bool? current,

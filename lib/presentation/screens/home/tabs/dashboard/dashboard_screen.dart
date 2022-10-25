@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard/dashboard_cubit.dart';
@@ -20,7 +20,7 @@ class DashboardScreen extends StatelessWidget {
       child: Builder(builder: (context) {
         final DashboardCubit dashboardCubit = context.read<DashboardCubit>();
         return Scaffold(
-            appBar: WideAppBar(
+            appBar: HomeAppBar(
               withBrands: true,
               title: S.of(context).dashboard,
               iconPath: Assets.vectors.items.path,
