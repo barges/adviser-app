@@ -48,6 +48,9 @@ dependencies:
   flutter_cache_manager: ^3.3.0
   connectivity_plus: ^2.3.9
   internet_connection_checker: ^1.0.0+1
+  flutter_sound: ^9.2.13
+  audio_session: ^0.1.6
+  flutter_hooks: ^0.18.5+1
 
 
   cupertino_icons: ^1.0.2
