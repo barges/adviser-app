@@ -8,6 +8,10 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
+  - freshchat_sdk (0.0.1):
+    - Flutter
+    - FreshchatSDK (= 5.3.1)
+  - FreshchatSDK (5.3.1)
   - image_picker_ios (0.0.1):
     - Flutter
   - open_mail_app (0.0.1):
@@ -31,6 +35,7 @@ DEPENDENCIES:
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
+  - freshchat_sdk (from `.symlinks/plugins/freshchat_sdk/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - open_mail_app (from `.symlinks/plugins/open_mail_app/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
@@ -43,6 +48,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - FMDB
+    - FreshchatSDK
     - ReachabilitySwift
 
 EXTERNAL SOURCES:
@@ -52,6 +58,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/device_info_plus/ios"
   Flutter:
     :path: Flutter
+  freshchat_sdk:
+    :path: ".symlinks/plugins/freshchat_sdk/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   open_mail_app:
@@ -74,6 +82,8 @@ SPEC CHECKSUMS:
   device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  freshchat_sdk: c0693281fe346bb1861c0268e8cc134238778b9c
+  FreshchatSDK: 8b2680e0a19b852d2ea23dc877ac6e3557ba6dfe
   image_picker_ios: b786a5dcf033a8336a657191401bfdf12017dabb
   open_mail_app: 794172f6a22cd16319d3ddaf45e945b2f74952b0
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
