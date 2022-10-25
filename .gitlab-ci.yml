@@ -1,5 +1,5 @@
 stages:
-  - test
+  #- test
   - build
 
 variables:
@@ -8,14 +8,14 @@ variables:
 before_script:
   - flutter pub get
 
-test:
-  stage: test
-  script:
-    - flutter test
-  tags:
-    - macmini
-  only:
-    - branches
+# test:
+#   stage: test
+#   script:
+#     - flutter test
+#   tags:
+#     - macmini
+#   only:
+#     - branches
 
 build:
   stage: build
