@@ -29,3 +29,12 @@ build-android:
     - macmini
   only:
      - branches
+
+build-ios:
+  stage: build
+  script:
+    - flutter build ipa --release
+  tags:
+    - macmini
+  only:
+     - branches
