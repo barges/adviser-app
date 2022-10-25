@@ -2,6 +2,7 @@ import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_st
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
+import 'package:shared_advisor_interface/data/network/requests/restore_freshchat_id_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_image_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
@@ -13,6 +14,8 @@ abstract class UserRepository {
   Future<UserInfo> updateUserStatus(UpdateUserStatusRequest request);
 
   Future<UserInfo> setPushEnabled(PushEnableRequest request);
+
+  Future<void> setFreshchatRestoreId(RestoreFreshchatIdRequest request);
 
   Future<UserProfile> updateProfile(
     UpdateProfileRequest request,

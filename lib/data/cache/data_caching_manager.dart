@@ -2,19 +2,21 @@ import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 
-import 'cache_manager.dart';
+import 'caching_manager.dart';
 
 const String _tokensMapKey = 'tokensMapKey';
 const String _brandKey = 'brandKey';
 const String _userProfileKey = 'userProfileKey';
+const String _userInfoKey = 'userInfoKey';
 const String _userStatusKey = 'userStatusKey';
 const String _userIdKey = 'userIdKey';
 const String _localeIndexKey = 'localeIndexKey';
 
-class DataCacheManager implements CacheManager {
+class DataCachingManager implements CachingManager {
   final GetStorage _userBox = GetStorage();
   final GetStorage _brandsBox = GetStorage();
   final GetStorage _localeBox = GetStorage();
@@ -145,6 +147,18 @@ class DataCacheManager implements CacheManager {
   Future<void> saveUserProfile(UserProfile? userProfile) async {
     await _userBox.write(_userProfileKey, userProfile);
   }
+
+  @override
+  Future<void> saveUserInfo(UserInfo? userInfo) async {
+    await _userBox.write(_userInfoKey, userInfo);
+  }
+
+  @override
+  UserInfo? getUserInfo(){
+    UserInfo userInfo = _userBox.read(_userInfoKey);
+    return userInfo;
+  }
+
 
   @override
   VoidCallback listenUserProfile(ValueChanged<UserProfile> callback) {

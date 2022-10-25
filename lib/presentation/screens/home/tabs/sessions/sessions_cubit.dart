@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
@@ -11,7 +11,7 @@ import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions
 
 class SessionsCubit extends Cubit<SessionsState> {
   final SessionsRepository _repository = Get.find<SessionsRepository>();
-  final CacheManager cacheManager;
+  final CachingManager cacheManager;
   final ScrollController controller = ScrollController();
   final MainCubit mainCubit = Get.find<MainCubit>();
   late final VoidCallback disposeListen;

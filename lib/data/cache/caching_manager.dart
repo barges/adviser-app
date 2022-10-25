@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 
-abstract class CacheManager {
+abstract class CachingManager {
   Future<void> saveUserProfile(UserProfile? userProfile);
 
   VoidCallback listenUserProfile(ValueChanged<UserProfile> callback);
@@ -18,6 +19,10 @@ abstract class CacheManager {
   Future<void> saveUserStatus(UserStatus? userStatus);
 
   UserStatus? getUserStatus();
+
+  Future<void> saveUserInfo(UserInfo? userInfo);
+
+  UserInfo? getUserInfo();
 
   Future<void> updateUserStatusByStatus(FortunicaUserStatusEnum status);
 

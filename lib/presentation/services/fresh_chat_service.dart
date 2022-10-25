@@ -1,0 +1,172 @@
+import 'package:freshchat_sdk/freshchat_sdk.dart';
+import 'package:freshchat_sdk/freshchat_user.dart';
+import 'package:get/get.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
+import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/main.dart';
+
+const String appName = 'Psychic Union';
+
+abstract class FreshChatService {
+  Future<bool> setUpFreshChat(UserInfo? userInfo);
+
+  Future<void> initFreshChat();
+
+  Stream onRestoreStream();
+
+  Future<String?> getRestoreId();
+
+  List<String> categoriesByLocale(String languageCode);
+
+  List<String> tagsByLocale(String languageCode);
+}
+
+class FreshChatServiceImpl extends FreshChatService {
+  static const String freshChatId = 'ad263ea2-8218-4618-88bd-220ab8d56e23';
+  static const String freshChatKey = 'd77300c3-b490-46f6-86d9-226b4e79c737';
+  static const String freshChatDomain = 'msdk.freshchat.com';
+  bool _wasInit = false;
+  bool _wasSetup = false;
+
+  // final ApiConfig _apiConfig = GetIt.I.get<ApiConfig>();
+
+  @override
+  Future initFreshChat() async {
+    Freshchat.init(freshChatId, freshChatKey, freshChatDomain,
+        stringsBundle: 'FCCustomLocalizable',
+        themeName: !Get.isDarkMode ? 'FCDarkTheme.plist' : 'FCTheme.plist');
+    _wasInit = true;
+  }
+
+  @override
+  Future<bool> setUpFreshChat(UserInfo? userInfo) async {
+    if (!_wasInit) {
+      throw Exception([
+        'Fresh Chat Manager was not init. Pleas use initFreshChat() before setUpFreshChat.'
+      ]);
+    }
+    final String userId = userInfo?.id ?? '';
+    final String? restoreId = userInfo?.freshchatInfo?.restoreId;
+
+    try {
+      FreshchatUser freshchatUser = await Freshchat.getUser;
+
+      logger.d(freshchatUser.getExternalId());
+      logger.d(userId);
+      logger.d(freshchatUser.getRestoreId());
+      logger.d(restoreId);
+
+      FreshchatUser freshChatUser = FreshchatUser(userId, restoreId);
+      freshChatUser.setFirstName(userInfo?.profile?.profileName ?? '');
+      freshChatUser.setEmail(userInfo?.emails?.firstOrNull?.address ?? '');
+      Freshchat.identifyUser(externalId: userId, restoreId: restoreId);
+      Freshchat.setUser(freshChatUser);
+
+      //Additional params
+      var userPropertiesJson = {
+        'user_id': userId,
+        //"device_id": _apiConfig.deviceInfo().deviceId,
+        'app_name': appName
+      };
+      Freshchat.setUserProperties(userPropertiesJson);
+
+      logger.d(
+          'The user for Support page is - name:${freshChatUser.getFirstName()}'
+          ', email:${freshChatUser.getEmail()}');
+
+      return true;
+    } catch (e) {
+      logger.e('ERROR: FreshChatManager.setUpFreshChat: $e');
+      return false;
+    }
+  }
+
+  @override
+  Stream onRestoreStream() {
+    return Freshchat.onRestoreIdGenerated;
+  }
+
+  @override
+  List<String> categoriesByLocale(String languageCode) {
+    List<String> categories = [
+      'general_foen_advisor',
+      'payments_foen_advisor',
+      'offers_foen_advisor',
+      'tips_foen_advisor',
+      'techhelp_foen_advisor',
+      'performance_foen_advisor',
+      'webtool_foen_advisor',
+    ];
+    switch (languageCode) {
+      case 'de':
+        categories = [
+          'general_fode_advisor',
+          'payments_fode_advisor',
+          'offers_fode_advisor',
+          'tips_fode_advisor',
+          'techhelp_fode_advisor',
+          'performance_fode_advisor',
+        ];
+        break;
+
+      case 'es':
+        categories = [
+          'general_foes_advisor',
+          'payments_foes_advisor',
+          'webtool_foes_advisor',
+          'tips_foes_advisor',
+          'tips_foes_advisor (best practices and guides)',
+          'performance_foes_advisor',
+          'specialcases_foes_advisor',
+        ];
+        break;
+      case 'pt':
+        categories = [
+          'general_fopt_advisor',
+          'payments_fopt_advisor',
+          'offers_fopt_advisor',
+          'tips_fopt_advisor',
+          'techhelp_fopt_advisor',
+        ];
+        break;
+      case 'en':
+      default:
+    }
+    return categories;
+  }
+
+  @override
+  List<String> tagsByLocale(String languageCode) {
+    logger.d(languageCode);
+    List<String> tags = [
+      'foen',
+    ];
+    switch (languageCode) {
+      case 'de':
+        tags = [
+          'fode',
+        ];
+        break;
+
+      case 'es':
+        tags = [
+          'foes',
+        ];
+        break;
+      case 'pt':
+        tags = [
+          'fopt',
+        ];
+        break;
+      case 'en':
+      default:
+    }
+    return tags;
+  }
+
+  @override
+  Future<String?> getRestoreId() async {
+    FreshchatUser user = await Freshchat.getUser;
+    return user.getRestoreId();
+  }
+}
