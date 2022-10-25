@@ -13,7 +13,7 @@ test:
   script:
     - flutter test
   tags:
-    - mac
+    - macmini
   only:
     - branches
 
@@ -25,6 +25,6 @@ build:
     paths:
       - ${CI_PROJECT_DIR}/*.apk
   tags:
-    - mac
+    - macmini
   only:
      - branches
