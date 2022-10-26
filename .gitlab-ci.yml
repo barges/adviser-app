@@ -67,7 +67,7 @@ generate-release-notes:
     - git config --global user.name "gitlab-pipeline"
   script:
     - git checkout -B "$CI_BUILD_REF_NAME" "$CI_BUILD_REF"
-    - git remote set-url origin https://gitlab-pipeline:${COMMITTOKEN}@gitlab.com/adviqo/development/advii.git
+    - git remote set-url origin https://gitlab-pipeline:${COMMITTOKEN}@gitlab.com/adviqotech/adviser-app.git
     - git tag $CI_COMMIT_REF_SLUG-$(date +%Y%m%d%H%M%S)
     - git log --pretty="- %s (%h)" $(git tag --sort=-creatordate | head -2)...$(git tag --sort=-creatordate | head -1) > release-notes.txt
   artifacts:
@@ -101,9 +101,7 @@ tag:
     - git config --global user.name "gitlab-pipeline"
   script:
     - git checkout -B "$CI_BUILD_REF_NAME" "$CI_BUILD_REF"
-    - git remote set-url origin https://gitlab-pipeline:${COMMITTOKEN}@gitlab.com/adviqo/development/advii.git
-    - git tag --delete $(git tag)
-    - git fetch --all
+    - git remote set-url origin https://gitlab-pipeline:${COMMITTOKEN}@gitlab.com/adviqotech/adviser-app.git
     - git tag $CI_COMMIT_REF_SLUG-$(date +%Y%m%d%H%M%S)
     - git push --tags
   tags:
