@@ -102,6 +102,8 @@ tag:
   script:
     - git checkout -B "$CI_BUILD_REF_NAME" "$CI_BUILD_REF"
     - git remote set-url origin https://gitlab-pipeline:${COMMITTOKEN}@gitlab.com/adviqotech/adviser-app.git
+    - git tag --delete $(git tag)
+    - git fetch --tags
     - git tag $CI_COMMIT_REF_SLUG-$(date +%Y%m%d%H%M%S)
     - git push --tags
   tags:
