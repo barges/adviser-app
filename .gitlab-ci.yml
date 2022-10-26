@@ -2,16 +2,16 @@ stages:
   #- test
   #- analyze
   - build
+  - deploy
 
 variables:
   LANG: "en_US.UTF-8"
 
-before_script:
-  - flutter pub get
-  - flutter pub run build_runner build --delete-conflicting-outputs
-
 # test:
 #   stage: test
+#   before_script:
+#     - flutter pub get
+#     - flutter pub run build_runner build --delete-conflicting-outputs
 #   script:
 #     - flutter test
 #   tags:
@@ -21,6 +21,9 @@ before_script:
 
 # analyze:
 #   stage: analyze
+#   before_script:
+#     - flutter pub get
+#     - flutter pub run build_runner build --delete-conflicting-outputs
 #   script:
 #     - flutter analyze
 #   tags:
@@ -28,22 +31,41 @@ before_script:
 #   only:
 #     - branches
 
-build-ios:
-  stage: build
-  script:
-    - flutter build ipa --release
-  tags:
-    - macmini
-  only:
-     - branches
+# build-ios:
+#   stage: build
+#   before_script:
+#     - flutter pub get
+#     - flutter pub run build_runner build --delete-conflicting-outputs
+#   script:
+#     - flutter build ipa --release
+#   tags:
+#     - macmini
+#   only:
+#      - branches
 
 build-android:
   stage: build
+  before_script:
+    - flutter pub get
+    - flutter pub run build_runner build --delete-conflicting-outputs
   script:
     - flutter build apk --release
   artifacts:
     paths:
       - build/app/outputs/flutter-apk/app-release.apk
+  tags:
+    - macmini
+  only:
+     - branches
+
+deploy-android:
+  stage: deploy
+  needs:
+    - job: build-android
+      artifacts: true
+  script:
+    - cd build/app/outputs/flutter-apk
+    - firebase appdistribution:distribute app-release.apk --app $FIREBASE_APP_ID --token "$FIREBASE_TOKEN" --release-notes "Debug Adviser version" --groups "Testers" --debug
   tags:
     - macmini
   only:
