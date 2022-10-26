@@ -68,7 +68,7 @@ generate-release-notes:
   script:
     - git checkout -B "$CI_BUILD_REF_NAME" "$CI_BUILD_REF"
     - git remote set-url origin https://gitlab-pipeline:${COMMITTOKEN}@gitlab.com/adviqo/development/advii.git
-    - git tag $CI_COMMIT_REF_SLUG-$CI_PIPELINE_CREATED_AT
+    - git tag $CI_COMMIT_REF_SLUG-$(date +%Y%m%d%H%M%S)
     - git log --pretty="- %s (%h)" $(git tag --sort=-creatordate | head -2)...$(git tag --sort=-creatordate | head -1) > release-notes.txt
   artifacts:
     paths:
@@ -103,7 +103,7 @@ tag:
   script:
     - git checkout -B "$CI_BUILD_REF_NAME" "$CI_BUILD_REF"
     - git remote set-url origin https://gitlab-pipeline:${COMMITTOKEN}@gitlab.com/adviqo/development/advii.git
-    - git tag $CI_COMMIT_REF_SLUG-$CI_PIPELINE_CREATED_AT
+    - git tag $CI_COMMIT_REF_SLUG-$(date +%Y%m%d%H%M%S)
     - git push --tags
   tags:
     - macmini
