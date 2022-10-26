@@ -76,7 +76,7 @@ generate-release-notes:
   tags:
     - macmini
   only:
-    - branches
+    - develop
 
 deploy-android:
   stage: deploy
@@ -90,7 +90,7 @@ deploy-android:
   tags:
     - macmini
   only:
-    - branches
+    - develop
 
 tag:
   stage: tag
@@ -107,4 +107,4 @@ tag:
   tags:
     - macmini
   only:
-    - branches
+    - develop
