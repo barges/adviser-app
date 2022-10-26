@@ -3,6 +3,7 @@ stages:
   #- analyze
   - build
   - deploy
+  - tag
 
 variables:
   LANG: "en_US.UTF-8"
@@ -58,15 +59,53 @@ build-android:
   only:
      - branches
 
+
+generate-release-notes:
+  stage: deploy
+  before_script:
+    - git config --global user.email "gitlab-pipeline@adviqo.com"
+    - git config --global user.name "gitlab-pipeline"
+  script:
+    - git checkout -B "$CI_BUILD_REF_NAME" "$CI_BUILD_REF"
+    - git remote set-url origin https://gitlab-pipeline:${COMMITTOKEN}@gitlab.com/adviqo/development/advii.git
+    - git tag $CI_COMMIT_REF_SLUG-$CI_PIPELINE_CREATED_AT
+    - git log --pretty="- %s (%h)" $(git tag --sort=-creatordate | head -2)...$(git tag --sort=-creatordate | head -1) > release-notes.txt
+  artifacts:
+    paths:
+      - release-notes.txt
+  tags:
+    - macmini
+  only:
+    - branches
+
 deploy-android:
   stage: deploy
   needs:
     - job: build-android
       artifacts: true
+    - job: generate-release-notes
+      artifacts: true
   script:
     - cd build/app/outputs/flutter-apk
-    - firebase appdistribution:distribute app-release.apk --app $FIREBASE_APP_ID --token "$FIREBASE_TOKEN" --release-notes "Debug Adviser version" --groups "Testers" --debug
+    - firebase appdistribution:distribute app-release.apk --app $FIREBASE_APP_ID --token "$FIREBASE_TOKEN" --release-notes-file release-notes.txt --groups "Testers" --debug
   tags:
     - macmini
   only:
-     - branches
+    - branches
+
+tag:
+  stage: tag
+  needs:
+    - job: deploy-android
+  before_script:
+    - git config --global user.email "gitlab-pipeline@adviqo.com"
+    - git config --global user.name "gitlab-pipeline"
+  script:
+    - git checkout -B "$CI_BUILD_REF_NAME" "$CI_BUILD_REF"
+    - git remote set-url origin https://gitlab-pipeline:${COMMITTOKEN}@gitlab.com/adviqo/development/advii.git
+    - git tag $CI_COMMIT_REF_SLUG-$CI_PIPELINE_CREATED_AT
+    - git push --tags
+  tags:
+    - macmini
+  only:
+    - branches
