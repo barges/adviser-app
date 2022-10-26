@@ -8,6 +8,7 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
 
 import 'chat_cubit.dart';
+import 'widgets/chat_recorded_widget.dart';
 import 'widgets/chat_recording_widget.dart';
 import 'widgets/chat_textfield.dart';
 
@@ -40,18 +41,40 @@ class ChatScreen extends StatelessWidget {
                 children: [
                   Container(
                     color: Colors.white,
-                    height: 70,
+                    height: 90,
                   ),
                   Builder(builder: (context) {
                     final bool isRecordingAudio = context.select(
                         (ChatCubit cubit) => cubit.state.isRecordingAudio);
-                    return isRecordingAudio
-                        ? const ChatRecordingWidget()
-                        : ChatTextfieldWidget(
-                            onRecordPressed: () {
-                              chatCubit.startRecordingAudio();
-                            },
-                          );
+                    final bool isAudioFileSaved = context.select(
+                        (ChatCubit cubit) => cubit.state.isAudioFileSaved);
+                    final isPlaybackAudio = context.select(
+                        (ChatCubit cubit) => cubit.state.isPlaybackAudio);
+
+                    if (isAudioFileSaved) {
+                      return ChatRecordedWidget(
+                        isPlayback: isPlaybackAudio,
+                        playbackStream: chatCubit.state.playbackStream,
+                        onStartPlayPressed: () => chatCubit.startPlayAudio(),
+                        onPausePlayPressed: () => chatCubit.pausePlayAudio(),
+                        onDeletePressed: () => chatCubit.deletedRecordedAudio(),
+                      );
+                    }
+
+                    if (isRecordingAudio) {
+                      return ChatRecordingWidget(
+                        onClosePressed: () => chatCubit.cancelRecordingAudio(),
+                        onStopRecordPressed: () =>
+                            chatCubit.stopRecordingAudio(),
+                        recordingStream: chatCubit.state.recordingStream,
+                      );
+                    } else {
+                      return ChatTextfieldWidget(
+                        onRecordPressed: () {
+                          chatCubit.startRecordingAudio();
+                        },
+                      );
+                    }
                   }),
                 ],
               )
