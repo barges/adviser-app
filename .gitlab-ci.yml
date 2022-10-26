@@ -86,8 +86,7 @@ deploy-android:
     - job: generate-release-notes
       artifacts: true
   script:
-    - cd build/app/outputs/flutter-apk
-    - firebase appdistribution:distribute app-release.apk --app $FIREBASE_APP_ID --token "$FIREBASE_TOKEN" --release-notes-file release-notes.txt --groups "Testers" --debug
+    - firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk --app $FIREBASE_APP_ID --token "$FIREBASE_TOKEN" --release-notes-file release-notes.txt --groups "Testers" --debug
   tags:
     - macmini
   only:
