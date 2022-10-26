@@ -76,7 +76,7 @@ generate-release-notes:
   tags:
     - macmini
   only:
-    - develop
+    - branches
 
 deploy-android:
   stage: deploy
@@ -90,7 +90,7 @@ deploy-android:
   tags:
     - macmini
   only:
-    - develop
+    - branches
 
 tag:
   stage: tag
@@ -102,9 +102,11 @@ tag:
   script:
     - git checkout -B "$CI_BUILD_REF_NAME" "$CI_BUILD_REF"
     - git remote set-url origin https://gitlab-pipeline:${COMMITTOKEN}@gitlab.com/adviqo/development/advii.git
+    - git tag --delete $(git tag)
+    - git fetch --all
     - git tag $CI_COMMIT_REF_SLUG-$(date +%Y%m%d%H%M%S)
     - git push --tags
   tags:
     - macmini
   only:
-    - develop
+    - branches
