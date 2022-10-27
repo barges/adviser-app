@@ -69,7 +69,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                     withBrands
                         ? const _AuthorizedBrandsWidget()
-                        : const ChangeLocaleButton(),
+                        : ChangeLocaleButton(),
                   ],
                 ),
               ),
