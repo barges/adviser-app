@@ -30,7 +30,7 @@
 			<key>textSize</key>
 			<string>13.0f</string>
 			<key>textColor</key>
-			<string>#F4F4F4</string>
+			<string>#F28313A</string>
 		</dict>
 		<key>TeamMemberMessageTextStyle</key>
 		<dict>
@@ -41,7 +41,7 @@
 			<key>textSize</key>
 			<string>15.0f</string>
 			<key>textColor</key>
-			<string>#F4F4F4</string>
+			<string>#28313A</string>
 			<key>textAlignment</key>
 			<string></string>
 		</dict>
@@ -52,7 +52,7 @@
 			<key>textSize</key>
 			<string>11.0f</string>
 			<key>textColor</key>
-			<string>#F4F4F4</string>
+			<string>#28313A</string>
 		</dict>
 		<key>UserMessageTextStyle</key>
 		<dict>
@@ -63,7 +63,7 @@
 			<key>textSize</key>
 			<string>15.0f</string>
 			<key>textColor</key>
-			<string>#F4F4F4</string>
+			<string>#28313A</string>
 			<key>textAlignment</key>
 			<string></string>
 		</dict>
@@ -74,7 +74,7 @@
 			<key>textSize</key>
 			<string>11.0f</string>
 			<key>textColor</key>
-			<string>#F4F4F4</string>
+			<string>#28313A</string>
 		</dict>
 		<key>MessageButtonStyle</key>
 		<dict>
@@ -104,25 +104,25 @@
 			<key>textCursorColor</key>
 			<string>#FCFCFD</string>
 			<key>borderColor</key>
-			<string>#BD48A1</string>
+			<string>#366EBA</string>
 			<key>background</key>
 			<string>#404040</string>
 			<key>buttonColor</key>
-			<string>#BD48A1</string>
+			<string>#366EBA</string>
 		</dict>
 		<key>MessageReplyViewStyle</key>
 		<dict>
 			<key>background</key>
 			<string>#1B151B</string>
 			<key>dividerColor</key>
-			<string>#8D8B8B</string>
+			<string>#366EBA</string>
 		</dict>
 		<key>CustomerSurveyDialogStyle</key>
 		<dict>
 			<key>background</key>
 			<string>#FFEFD5</string>
 			<key>dividerColor</key>
-			<string>#6B6161</string>
+			<string>#366EBA</string>
 		</dict>
 		<key>CustomerSurveyRatingBarStyle</key>
 		<dict>
@@ -320,7 +320,7 @@
 			<key>background</key>
 			<string>#F8FAFA</string>
 			<key>dividerColor</key>
-			<string>#DE4147</string>
+			<string>#366EBA</string>
 		</dict>
 		<key>ChannelListItemStyle</key>
 		<dict>
@@ -383,9 +383,9 @@
 			<key>textColor</key>
 			<string>#FFFFFF</string>
 			<key>background</key>
-			<string>#BD48A1</string>
+			<string>#366EBA</string>
 			<key>borderColor</key>
-			<string>#BD48A1</string>
+			<string>#366EBA</string>
 		</dict>
 		<key>FAQDownvoteButtonStyle</key>
 		<dict>
@@ -396,14 +396,14 @@
 			<key>textColor</key>
 			<string>#FFFFFF</string>
 			<key>background</key>
-			<string>#1B151B</string>
+			<string>#15171B</string>
 			<key>borderColor</key>
-			<string>#BD48A1</string>
+			<string>#366EBA</string>
 		</dict>
 		<key>FAQVotingPromptViewStyle</key>
 		<dict>
 			<key>background</key>
-			<string>#1B151B</string>
+			<string>#0B0A0B</string>
 		</dict>
 		<key>FAQVotingPromptTextStyle</key>
 		<dict>
@@ -465,7 +465,7 @@
 			<key>textColor</key>
 			<string>#F4F4F4</string>
 			<key>background</key>
-			<string>#BD48A1</string>
+			<string>#366EBA</string>
 		</dict>
 		<key>StatusBarStyle</key>
 		<dict>
@@ -492,7 +492,7 @@
 			<key>textSize</key>
 			<string>14.0f</string>
 			<key>textColor</key>
-			<string>#BD48A1</string>
+			<string>#366EBA</string>
 		</dict>
 		<key>SearchQueryTextStyle</key>
 		<dict>
@@ -505,11 +505,11 @@
 			<key>textColorHint</key>
 			<string>#C3C1C3</string>
 			<key>borderColor</key>
-			<string>#716071</string>
+			<string>#15171B</string>
 			<key>textCursorColor</key>
 			<string>#FCFCFD</string>
 			<key>background</key>
-			<string>#716071</string>
+			<string>#15171B</string>
 		</dict>
 		<key>SearchBarStyle</key>
 		<dict>
@@ -535,7 +535,7 @@
 			<key>backgroundSelected</key>
 			<string>#734A6D</string>
 			<key>dividerColor</key>
-			<string>#734A6D</string>
+			<string>#366EBA</string>
 		</dict>
 		<key>FAQTitleTextStyle</key>
 		<dict>
@@ -599,7 +599,7 @@
 			<key>backgroundSelected</key>
 			<string>#734A6D</string>
 			<key>dividerColor</key>
-			<string>#C9C9CA</string>
+			<string>#366EBA</string>
 			<key>borderColor</key>
 			<string>#9A9B9E</string>
 		</dict>

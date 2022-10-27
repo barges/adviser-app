@@ -32,8 +32,6 @@ abstract class CachingManager {
 
   Future<void> saveTokenForBrand(Brand brand, String token);
 
-  Future<void> saveLocaleIndex(int? index);
-
   String? getTokenByBrand(Brand brand);
 
   List<Brand> getAuthorizedBrands();
@@ -43,6 +41,8 @@ abstract class CachingManager {
   Future<void> saveCurrentBrand(Brand currentBrand);
 
   Brand? getCurrentBrand();
+
+  Future<void> saveLocaleIndex(int? index);
 
   int? getLocaleIndex();
 

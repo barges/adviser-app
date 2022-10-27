@@ -19,6 +19,8 @@ abstract class FreshChatService {
   List<String> categoriesByLocale(String languageCode);
 
   List<String> tagsByLocale(String languageCode);
+
+  void changeLocaleInvite();
 }
 
 class FreshChatServiceImpl extends FreshChatService {
@@ -26,7 +28,6 @@ class FreshChatServiceImpl extends FreshChatService {
   static const String freshChatKey = 'd77300c3-b490-46f6-86d9-226b4e79c737';
   static const String freshChatDomain = 'msdk.freshchat.com';
   bool _wasInit = false;
-  bool _wasSetup = false;
 
   // final ApiConfig _apiConfig = GetIt.I.get<ApiConfig>();
 
@@ -34,7 +35,7 @@ class FreshChatServiceImpl extends FreshChatService {
   Future initFreshChat() async {
     Freshchat.init(freshChatId, freshChatKey, freshChatDomain,
         stringsBundle: 'FCCustomLocalizable',
-        themeName: !Get.isDarkMode ? 'FCDarkTheme.plist' : 'FCTheme.plist');
+        themeName: Get.isDarkMode ? 'FCDarkTheme.plist' : 'FCTheme.plist');
     _wasInit = true;
   }
 
@@ -49,12 +50,6 @@ class FreshChatServiceImpl extends FreshChatService {
     final String? restoreId = userInfo?.freshchatInfo?.restoreId;
 
     try {
-      FreshchatUser freshchatUser = await Freshchat.getUser;
-
-      logger.d(freshchatUser.getExternalId());
-      logger.d(userId);
-      logger.d(freshchatUser.getRestoreId());
-      logger.d(restoreId);
 
       FreshchatUser freshChatUser = FreshchatUser(userId, restoreId);
       freshChatUser.setFirstName(userInfo?.profile?.profileName ?? '');
@@ -84,6 +79,11 @@ class FreshChatServiceImpl extends FreshChatService {
   @override
   Stream onRestoreStream() {
     return Freshchat.onRestoreIdGenerated;
+  }
+
+  @override
+  void changeLocaleInvite() {
+    Freshchat.notifyAppLocaleChange();
   }
 
   @override

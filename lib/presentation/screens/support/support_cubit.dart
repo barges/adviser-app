@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/network/requests/restore_freshchat_id_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/screens/support/support_state.dart';
 import 'package:shared_advisor_interface/presentation/services/fresh_chat_service.dart';
 
@@ -18,10 +17,10 @@ class SupportCubit extends Cubit<SupportState> {
 
   StreamSubscription? _restoreSubscription;
 
-  late final Locale locale;
+  late final String locale;
 
   SupportCubit(this._cachingManager) : super(const SupportState()) {
-    locale = S.delegate.supportedLocales[_cachingManager.getLocaleIndex() ?? 0];
+    locale = Intl.getCurrentLocale();
     final UserInfo? userInfo = _cachingManager.getUserInfo();
     if (userInfo != null) {
       _setUpFreshChat(userInfo);
@@ -54,10 +53,10 @@ class SupportCubit extends Cubit<SupportState> {
   }
 
   List<String> getCategories() {
-    return _freshChatService.categoriesByLocale(locale.languageCode);
+    return _freshChatService.categoriesByLocale(locale);
   }
 
   List<String> getContactUsTags() {
-    return _freshChatService.tagsByLocale(locale.languageCode);
+    return _freshChatService.tagsByLocale(locale);
   }
 }

@@ -1,31 +1,35 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/picker_modal_pop_up.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 class ChangeLocaleButton extends StatelessWidget {
   const ChangeLocaleButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final List<Locale> locales = S.delegate.supportedLocales;
+    final String languageCode = Intl.getCurrentLocale();
+    final List<String> locales =
+        S.delegate.supportedLocales.map((e) => e.languageCode).toList();
+    final int currentLocaleIndex =
+        !locales.contains(languageCode) ? 0 : locales.indexOf(languageCode);
+
     return Padding(
       padding: const EdgeInsets.only(left: 16.0),
       child: InkResponse(
         onTap: () => showPickerModalPopUp(
           context: context,
-          setIndex: _changeLocale,
-          currentIndex: Get.find<CachingManager>().getLocaleIndex(),
-          elements: locales.mapIndexed((element, index) {
+          setIndex: Utils.changeLocale,
+          currentIndex: currentLocaleIndex,
+          elements: locales.map((element) {
             return Center(
               child: Text(
-                element.languageCode.languageNameByCode,
+                element.languageNameByCode,
               ),
             );
           }).toList(),
@@ -56,12 +60,5 @@ class ChangeLocaleButton extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _changeLocale(int index) {
-    final Locale locale = S.delegate.supportedLocales[index];
-    Get.updateLocale(
-        Locale(locale.languageCode, locale.languageCode.toUpperCase()));
-    Get.find<CachingManager>().saveLocaleIndex(index);
   }
 }

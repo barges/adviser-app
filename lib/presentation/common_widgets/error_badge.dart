@@ -15,7 +15,8 @@ class ErrorBadge extends StatelessWidget {
           border: Border.all(
             width: 2.0,
             color: Get.theme.scaffoldBackgroundColor,
-          )),
+          ),
+      ),
     );
   }
 }
