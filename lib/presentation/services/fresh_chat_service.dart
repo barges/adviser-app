@@ -50,12 +50,6 @@ class FreshChatServiceImpl extends FreshChatService {
     final String? restoreId = userInfo?.freshchatInfo?.restoreId;
 
     try {
-      FreshchatUser freshchatUser = await Freshchat.getUser;
-
-      logger.d(freshchatUser.getExternalId());
-      logger.d(userId);
-      logger.d(freshchatUser.getRestoreId());
-      logger.d(restoreId);
 
       FreshchatUser freshChatUser = FreshchatUser(userId, restoreId);
       freshChatUser.setFirstName(userInfo?.profile?.profileName ?? '');
