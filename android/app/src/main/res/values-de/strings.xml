@@ -136,9 +136,6 @@
     <string name="freshchat_xiaomi_auto_start_prompt_positive">@android:string/ok</string>
     <string name="freshchat_xiaomi_auto_start_prompt_negative">@android:string/cancel</string>
 
-    <!-- File Provider Authority Name of the form your_app_package_name.provider Eg: com.example.myapp.provider -->
-    <string name="freshchat_file_provider_authority" translatable="false"></string>
-
     <!-- Allow customization of date formatter used for displaying date and time for messages -->
     <string name="freshchat_chat_message_time_today">"hh:mm a"</string>
     <string name="freshchat_chat_message_time_this_year_short">"MMM dd"</string>
