@@ -43,14 +43,17 @@ class ChatScreen extends StatelessWidget {
                     return ListView.builder(
                       itemBuilder: (_, index) => Builder(builder: (context) {
                         final audioPath = messages[index].audioPath!;
+                        final isCurrent =
+                            audioPath == chatCubit.state.audioPath;
+                        final isPlayingAudio = context.select(
+                            (ChatCubit cubit) => cubit.state.isPlayingAudio);
                         final isPlayingAudioFinished = context.select(
                             (ChatCubit cubit) =>
                                 cubit.state.isPlayingAudioFinished);
                         return ChatMediaWidget(
+                          isPlaying: isCurrent && isPlayingAudio,
                           isPlayingFinished:
-                              (audioPath == chatCubit.state.audioPath)
-                                  ? isPlayingAudioFinished
-                                  : true,
+                              isCurrent ? isPlayingAudioFinished : true,
                           mediaMessage: messages[index],
                           onStartPlayPressed: () {
                             chatCubit.startPlayAudio(audioPath);
@@ -75,12 +78,13 @@ class ChatScreen extends StatelessWidget {
                         (ChatCubit cubit) => cubit.state.isRecordingAudio);
                     final bool isAudioFileSaved = context.select(
                         (ChatCubit cubit) => cubit.state.isAudioFileSaved);
-                    final isPlaybackAudio = context.select((ChatCubit cubit) =>
-                        cubit.state.isPlayingRecordedAudio);
+                    final isPlayingRecordedAudio = context.select(
+                        (ChatCubit cubit) =>
+                            cubit.state.isPlayingRecordedAudio);
 
                     if (isAudioFileSaved) {
                       return ChatRecordedWidget(
-                        isPlaying: isPlaybackAudio,
+                        isPlaying: isPlayingRecordedAudio,
                         playbackStream: chatCubit.state.playbackStream,
                         onStartPlayPressed: () =>
                             chatCubit.startPlayRecordedAudio(),

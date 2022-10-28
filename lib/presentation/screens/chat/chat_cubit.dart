@@ -138,6 +138,11 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> startPlayRecordedAudio() async {
     if (_playerRecorded != null && _playerRecorded!.isPaused) {
       _playerRecorded!.resumePlayer();
+      emit(
+        state.copyWith(
+          isPlayingRecordedAudio: true,
+        ),
+      );
       return;
     }
 
@@ -165,6 +170,11 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> pauseRecordedAudio() async {
     _playerRecorded?.pausePlayer();
+    emit(
+      state.copyWith(
+        isPlayingRecordedAudio: false,
+      ),
+    );
   }
 
   void sendMedia() async {
@@ -193,6 +203,7 @@ class ChatCubit extends Cubit<ChatState> {
       await _playerMedia?.stopPlayer();
       emit(
         state.copyWith(
+          isPlayingAudio: false,
           isPlayingAudioFinished: true,
           audioPath: audioPath,
         ),
@@ -203,6 +214,7 @@ class ChatCubit extends Cubit<ChatState> {
       _playerMedia!.resumePlayer();
       emit(
         state.copyWith(
+          isPlayingAudio: true,
           isPlayingAudioFinished: false,
         ),
       );
@@ -215,12 +227,14 @@ class ChatCubit extends Cubit<ChatState> {
       sampleRate: 44000,
       whenFinished: () => emit(
         state.copyWith(
+          isPlayingAudio: false,
           isPlayingAudioFinished: true,
         ),
       ),
     );
     emit(
       state.copyWith(
+        isPlayingAudio: true,
         isPlayingAudioFinished: false,
       ),
     );
@@ -228,6 +242,12 @@ class ChatCubit extends Cubit<ChatState> {
 
   void pauseAudio() {
     _playerMedia?.pausePlayer();
+
+    emit(
+      state.copyWith(
+        isPlayingAudio: false,
+      ),
+    );
   }
 
   Stream<PlaybackDisposition>? get onMediaProgress => _playerMedia?.onProgress;

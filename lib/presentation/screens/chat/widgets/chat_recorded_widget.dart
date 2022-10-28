@@ -22,7 +22,6 @@ class ChatRecordedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isPlayingState = isPlaying;
     return Padding(
       padding: const EdgeInsets.only(
         top: 5,
@@ -57,34 +56,29 @@ class ChatRecordedWidget extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  StatefulBuilder(builder: (_, StateSetter setState) {
-                    return GestureDetector(
-                      onTap: () {
-                        (isPlayingState
-                                ? onPausePlayPressed
-                                : onStartPlayPressed)
-                            ?.call();
-                        setState(() => isPlayingState = !isPlayingState);
-                      },
-                      child: Container(
-                        width: 34,
-                        height: 34,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF3975E9),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: isPlayingState
-                            ? Assets.vectors.pause.svg(
-                                fit: BoxFit.scaleDown,
-                                color: Colors.white,
-                              )
-                            : Assets.vectors.play.svg(
-                                fit: BoxFit.scaleDown,
-                                color: Colors.white,
-                              ),
+                  GestureDetector(
+                    onTap: () {
+                      (isPlaying ? onPausePlayPressed : onStartPlayPressed)
+                          ?.call();
+                    },
+                    child: Container(
+                      width: 34,
+                      height: 34,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF3975E9),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                    );
-                  }),
+                      child: isPlaying
+                          ? Assets.vectors.pause.svg(
+                              fit: BoxFit.scaleDown,
+                              color: Colors.white,
+                            )
+                          : Assets.vectors.play.svg(
+                              fit: BoxFit.scaleDown,
+                              color: Colors.white,
+                            ),
+                    ),
+                  ),
                   const SizedBox(
                     width: 10,
                   ),
@@ -95,15 +89,17 @@ class ChatRecordedWidget extends StatelessWidget {
                           child: StreamBuilder<PlaybackDisposition>(
                             stream: playbackStream,
                             builder: (_, snapshot) {
-                              final value = isPlayingState && snapshot.hasData
-                                  ? snapshot.data!.position.inMilliseconds /
-                                      snapshot.data!.duration.inMilliseconds
-                                  : 0.0;
-                              final time = (isPlayingState && snapshot.hasData)
-                                  ? snapshot.data!.position
-                                      .toString()
-                                      .substring(2, 7)
-                                  : "0:00";
+                              final value =
+                                  playbackStream != null && snapshot.hasData
+                                      ? snapshot.data!.position.inMilliseconds /
+                                          snapshot.data!.duration.inMilliseconds
+                                      : 0.0;
+                              final time =
+                                  playbackStream != null && snapshot.hasData
+                                      ? snapshot.data!.position
+                                          .toString()
+                                          .substring(2, 7)
+                                      : "0:00";
                               return Row(
                                 children: [
                                   Expanded(
