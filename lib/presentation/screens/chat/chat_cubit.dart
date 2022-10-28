@@ -137,7 +137,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> startPlayRecordedAudio() async {
     if (_playerRecorded != null && _playerRecorded!.isPaused) {
-      _playerRecorded!.resumePlayer();
+      await _playerRecorded!.resumePlayer();
       emit(
         state.copyWith(
           isPlayingRecordedAudio: true,
@@ -169,7 +169,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> pauseRecordedAudio() async {
-    _playerRecorded?.pausePlayer();
+    await _playerRecorded?.pausePlayer();
     emit(
       state.copyWith(
         isPlayingRecordedAudio: false,
@@ -177,7 +177,7 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  void sendMedia() async {
+  Future<void> sendMedia() async {
     if (_playerRecorded != null && _playerRecorded!.isPlaying) {
       await _playerRecorded?.stopPlayer();
     }
@@ -211,7 +211,8 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     if (_playerMedia != null && _playerMedia!.isPaused) {
-      _playerMedia!.resumePlayer();
+      await _playerMedia!.resumePlayer();
+
       emit(
         state.copyWith(
           isPlayingAudio: true,
@@ -232,6 +233,7 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       ),
     );
+
     emit(
       state.copyWith(
         isPlayingAudio: true,
@@ -240,8 +242,8 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  void pauseAudio() {
-    _playerMedia?.pausePlayer();
+  Future<void> pauseAudio() async {
+    await _playerMedia?.pausePlayer();
 
     emit(
       state.copyWith(

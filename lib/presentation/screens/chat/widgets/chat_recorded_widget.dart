@@ -56,28 +56,10 @@ class ChatRecordedWidget extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      (isPlaying ? onPausePlayPressed : onStartPlayPressed)
-                          ?.call();
-                    },
-                    child: Container(
-                      width: 34,
-                      height: 34,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF3975E9),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: isPlaying
-                          ? Assets.vectors.pause.svg(
-                              fit: BoxFit.scaleDown,
-                              color: Colors.white,
-                            )
-                          : Assets.vectors.play.svg(
-                              fit: BoxFit.scaleDown,
-                              color: Colors.white,
-                            ),
-                    ),
+                  PlayPauseBtn(
+                    isPlaying: isPlaying,
+                    onStartPlayPressed: onStartPlayPressed,
+                    onPausePlayPressed: onPausePlayPressed,
                   ),
                   const SizedBox(
                     width: 10,
@@ -99,31 +81,10 @@ class ChatRecordedWidget extends StatelessWidget {
                                       ? snapshot.data!.position
                                           .toString()
                                           .substring(2, 7)
-                                      : "0:00";
-                              return Row(
-                                children: [
-                                  Expanded(
-                                    child: LinearProgressIndicator(
-                                      value: value,
-                                      backgroundColor: const Color(0xFFB7DCFF),
-                                      color: Colors.blue,
-                                      minHeight: 2,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  SizedBox(
-                                    width: 51,
-                                    child: Text(
-                                      time,
-                                      style: const TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                      : "00:00";
+                              return PlayProgress(
+                                value: value,
+                                time: time,
                               );
                             },
                           ),
@@ -160,6 +121,83 @@ class ChatRecordedWidget extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class PlayPauseBtn extends StatelessWidget {
+  final bool isPlaying;
+  final VoidCallback? onStartPlayPressed;
+  final VoidCallback? onPausePlayPressed;
+  const PlayPauseBtn({
+    Key? key,
+    this.isPlaying = false,
+    this.onStartPlayPressed,
+    this.onPausePlayPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        (isPlaying ? onPausePlayPressed : onStartPlayPressed)?.call();
+      },
+      child: Container(
+        width: 34,
+        height: 34,
+        decoration: BoxDecoration(
+          color: const Color(0xFF3975E9),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: isPlaying
+            ? Assets.vectors.pause.svg(
+                fit: BoxFit.scaleDown,
+                color: Colors.white,
+              )
+            : Assets.vectors.play.svg(
+                fit: BoxFit.scaleDown,
+                color: Colors.white,
+              ),
+      ),
+    );
+  }
+}
+
+class PlayProgress extends StatelessWidget {
+  final double value;
+  final String time;
+  const PlayProgress({
+    Key? key,
+    required this.value,
+    required this.time,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: LinearProgressIndicator(
+            value: value,
+            backgroundColor: const Color(0xFFB7DCFF),
+            color: Colors.blue,
+            minHeight: 2,
+          ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        SizedBox(
+          width: 51,
+          child: Text(
+            time,
+            style: const TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

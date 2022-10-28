@@ -40,27 +40,10 @@ class ChatMediaWidget extends StatelessWidget {
         ),
         child: Row(
           children: [
-            GestureDetector(
-              onTap: () {
-                (isPlaying ? onPausePlayPressed : onStartPlayPressed)?.call();
-              },
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: isPlaying
-                    ? Assets.vectors.pause.svg(
-                        fit: BoxFit.scaleDown,
-                        color: const Color(0xFF3975E9),
-                      )
-                    : Assets.vectors.play.svg(
-                        fit: BoxFit.scaleDown,
-                        color: const Color(0xFF3975E9),
-                      ),
-              ),
+            PlayPauseBtn(
+              isPlaying: isPlaying,
+              onStartPlayPressed: onStartPlayPressed,
+              onPausePlayPressed: onPausePlayPressed,
             ),
             const SizedBox(
               width: 10,
@@ -69,100 +52,64 @@ class ChatMediaWidget extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: StreamBuilder<PlaybackDisposition>(
-                      stream: isPlaying && !isPlayingFinished
-                          ? playbackStream
-                          : null,
-                      builder: (_, snapshot) {
-                        final value = !isPlayingFinished && snapshot.hasData
-                            ? snapshot.data!.position.inMilliseconds /
-                                snapshot.data!.duration.inMilliseconds
-                            : 0.0;
-                        final time = !isPlayingFinished && snapshot.hasData
-                            ? snapshot.data!.position.toString().substring(2, 7)
-                            : "0:00";
-                        return Column(
+                    child: Column(
+                      children: [
+                        StreamBuilder<PlaybackDisposition>(
+                          stream: isPlaying && !isPlayingFinished
+                              ? playbackStream
+                              : null,
+                          builder: (_, snapshot) {
+                            final value = !isPlayingFinished && snapshot.hasData
+                                ? snapshot.data!.position.inMilliseconds /
+                                    snapshot.data!.duration.inMilliseconds
+                                : 0.0;
+                            final time = !isPlayingFinished && snapshot.hasData
+                                ? snapshot.data!.position
+                                    .toString()
+                                    .substring(2, 7)
+                                : "00:00";
+                            return PlayProgress(
+                              value: value,
+                              time: time,
+                            );
+                          },
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Row(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: 48,
-                                  child: Text(
-                                    time,
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                const Spacer(),
-                                SizedBox(
-                                  width: 48,
-                                  child: Text(
-                                    time,
-                                    textAlign: TextAlign.end,
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            const Spacer(),
+                            const Text(
+                              'Card riading',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFFB7DCFF),
+                              ),
                             ),
                             const SizedBox(
-                              height: 8,
+                              width: 5,
                             ),
-                            LinearProgressIndicator(
-                              value: (!value.isNaN && !value.isInfinite)
-                                  ? value
-                                  : 0.0,
-                              backgroundColor: const Color(0xFFB7DCFF),
-                              color: Colors.white,
-                              minHeight: 2,
+                            Assets.vectors.card.svg(
+                              height: 20,
+                              fit: BoxFit.fitHeight,
+                              color: const Color(0xFFB7DCFF),
                             ),
                             const SizedBox(
-                              height: 8,
+                              width: 10,
                             ),
-                            Row(
-                              children: [
-                                const Spacer(),
-                                const Text(
-                                  'Card riading',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xFFB7DCFF),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                Assets.vectors.card.svg(
-                                  height: 20,
-                                  fit: BoxFit.fitHeight,
-                                  color: const Color(0xFFB7DCFF),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  mediaMessage.duration
-                                      .toString()
-                                      .substring(2, 7),
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xFFB7DCFF),
-                                  ),
-                                ),
-                              ],
-                            )
+                            Text(
+                              mediaMessage.duration.toString().substring(2, 7),
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFFB7DCFF),
+                              ),
+                            ),
                           ],
-                        );
-                      },
+                        )
+                      ],
                     ),
                   ),
                 ],
@@ -171,6 +118,100 @@ class ChatMediaWidget extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class PlayPauseBtn extends StatelessWidget {
+  final bool isPlaying;
+  final VoidCallback? onStartPlayPressed;
+  final VoidCallback? onPausePlayPressed;
+  const PlayPauseBtn({
+    Key? key,
+    this.isPlaying = false,
+    this.onStartPlayPressed,
+    this.onPausePlayPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        (isPlaying ? onPausePlayPressed : onStartPlayPressed)?.call();
+      },
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: isPlaying
+            ? Assets.vectors.pause.svg(
+                fit: BoxFit.scaleDown,
+                color: const Color(0xFF3975E9),
+              )
+            : Assets.vectors.play.svg(
+                fit: BoxFit.scaleDown,
+                color: const Color(0xFF3975E9),
+              ),
+      ),
+    );
+  }
+}
+
+class PlayProgress extends StatelessWidget {
+  final double value;
+  final String time;
+  const PlayProgress({
+    Key? key,
+    required this.value,
+    required this.time,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 48,
+              child: Text(
+                time,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            const Spacer(),
+            SizedBox(
+              width: 48,
+              child: Text(
+                time,
+                textAlign: TextAlign.end,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        LinearProgressIndicator(
+          value: (!value.isNaN && !value.isInfinite) ? value : 0.0,
+          backgroundColor: const Color(0xFFB7DCFF),
+          color: Colors.white,
+          minHeight: 2,
+        ),
+      ],
     );
   }
 }

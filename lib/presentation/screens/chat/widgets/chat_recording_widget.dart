@@ -66,7 +66,7 @@ class ChatRecordingWidget extends StatelessWidget {
                       builder: (_, snapshot) {
                         final time = (snapshot.hasData && snapshot.data != null)
                             ? snapshot.data!.duration.toString().substring(2, 7)
-                            : "0:00";
+                            : "00:00";
                         return SizedBox(
                           width: 42,
                           child: Text(
