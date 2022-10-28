@@ -40,65 +40,73 @@ class ChatListTileWidget extends StatelessWidget {
       ),
       const SizedBox(width: 14.0),
       Flexible(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    question.clientName ?? '',
-                    overflow: TextOverflow.ellipsis,
-                    style: Get.textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w500,
+        child: GestureDetector(
+          onTap: () {
+            Get.toNamed(
+              AppRoutes.chat,
+              arguments: question,
+            );
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      question.clientName ?? '',
+                      overflow: TextOverflow.ellipsis,
+                      style: Get.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
-                ),
-                Text(
-                  (question.updatedAt ?? '').parseDateTimePattern1,
-                  style: Get.textTheme.labelMedium?.copyWith(
-                      fontWeight: FontWeight.w400,
-                      color: Get.theme.shadowColor),
-                )
-              ],
-            ),
-            const SizedBox(height: 4.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    question.content ?? '',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  Text(
+                    (question.updatedAt ?? '').parseDateTimePattern1,
                     style: Get.textTheme.labelMedium?.copyWith(
                         fontWeight: FontWeight.w400,
                         color: Get.theme.shadowColor),
-                  ),
-                ),
-                /*  if (notificationsNumber > 0)
-                  CircleAvatar(
-                    maxRadius: 10,
-                    minRadius: 9,
-                    backgroundColor: AppColors.promotion,
-                    child: Text(
-                      '$notificationsNumber',
-                      style: Get.textTheme.displaySmall
-                          ?.copyWith(color: Colors.white),
-                    ),
-                  )*/
-              ],
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: AppConstants.horizontalScreenPadding),
-              child: Divider(
-                height: 1.0,
-                thickness: 1.0,
+                  )
+                ],
               ),
-            ),
-          ],
+              const SizedBox(height: 4.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      question.content ?? '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Get.textTheme.labelMedium?.copyWith(
+                          fontWeight: FontWeight.w400,
+                          color: Get.theme.shadowColor),
+                    ),
+                  ),
+                  /*  if (notificationsNumber > 0)
+                    CircleAvatar(
+                      maxRadius: 10,
+                      minRadius: 9,
+                      backgroundColor: AppColors.promotion,
+                      child: Text(
+                        '$notificationsNumber',
+                        style: Get.textTheme.displaySmall
+                            ?.copyWith(color: Colors.white),
+                      ),
+                    )*/
+                ],
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: AppConstants.horizontalScreenPadding),
+                child: Divider(
+                  height: 1.0,
+                  thickness: 1.0,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     ]);
