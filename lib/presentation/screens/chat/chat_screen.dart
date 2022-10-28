@@ -8,6 +8,7 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
 
 import 'chat_cubit.dart';
+import 'widgets/chat_media_widget.dart';
 import 'widgets/chat_recorded_widget.dart';
 import 'widgets/chat_recording_widget.dart';
 import 'widgets/chat_textfield.dart';
@@ -34,8 +35,29 @@ class ChatScreen extends StatelessWidget {
           body: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SingleChildScrollView(
-                child: Container(),
+              Expanded(
+                child: Builder(builder: (context) {
+                  bool isFinished = true;
+                  final messages =
+                      context.select((ChatCubit cubit) => cubit.state.messages);
+                  return ListView.builder(
+                    itemBuilder: (_, index) =>
+                        StatefulBuilder(builder: (_, StateSetter setState) {
+                      return ChatMediaWidget(
+                        isFinished: isFinished,
+                        mediaMessage: messages[index],
+                        onStartPlayPressed: () {
+                          setState(() => isFinished = false);
+                          chatCubit.startPlayAudio(messages[index].audioPath!,
+                              () => setState(() => isFinished = true));
+                        },
+                        onPausePlayPressed: () => chatCubit.pauseAudio(),
+                        playbackStream: chatCubit.onMediaProgress,
+                      );
+                    }),
+                    itemCount: messages.length,
+                  );
+                }),
               ),
               Stack(
                 children: [
@@ -55,9 +77,12 @@ class ChatScreen extends StatelessWidget {
                       return ChatRecordedWidget(
                         isPlayback: isPlaybackAudio,
                         playbackStream: chatCubit.state.playbackStream,
-                        onStartPlayPressed: () => chatCubit.startPlayAudio(),
-                        onPausePlayPressed: () => chatCubit.pausePlayAudio(),
+                        onStartPlayPressed: () =>
+                            chatCubit.startPlayRecordedAudio(),
+                        onPausePlayPressed: () =>
+                            chatCubit.pauseRecordedAudio(),
                         onDeletePressed: () => chatCubit.deletedRecordedAudio(),
+                        onSendPressed: () => chatCubit.sendMedia(),
                       );
                     }
 

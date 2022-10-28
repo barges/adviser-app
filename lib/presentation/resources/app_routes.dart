@@ -3,7 +3,7 @@ import 'package:shared_advisor_interface/presentation/screens/advisor_preview/ad
 import 'package:shared_advisor_interface/presentation/screens/all_brands/all_brands_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/article_details/article_details_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/chat_conversation_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/chat_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/gallery/gallery_pictures_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_screen.dart';

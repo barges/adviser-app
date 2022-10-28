@@ -6,6 +6,7 @@ class ChatRecordedWidget extends StatelessWidget {
   final VoidCallback? onStartPlayPressed;
   final VoidCallback? onPausePlayPressed;
   final VoidCallback? onDeletePressed;
+  final VoidCallback? onSendPressed;
   final bool isPlayback;
   final Stream<PlaybackDisposition>? playbackStream;
 
@@ -14,6 +15,7 @@ class ChatRecordedWidget extends StatelessWidget {
     this.onStartPlayPressed,
     this.onPausePlayPressed,
     this.onDeletePressed,
+    this.onSendPressed,
     this.playbackStream,
     this.isPlayback = false,
   }) : super(key: key);
@@ -154,7 +156,7 @@ class ChatRecordedWidget extends StatelessWidget {
             width: 8,
           ),
           GestureDetector(
-            onTap: null,
+            onTap: onSendPressed,
             child: Assets.images.send.image(
               fit: BoxFit.fitWidth,
               width: 35,

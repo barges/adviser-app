@@ -1,29 +1,44 @@
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_advisor_interface/data/models/media_message.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
 import 'chat_state.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:audio_session/audio_session.dart';
 
 class ChatCubit extends Cubit<ChatState> {
-  final SessionsRepository _repository;
+  final SessionsRepository repository;
   final String? questionId;
   FlutterSoundRecorder? _recorder;
-  FlutterSoundPlayer? _player;
+  FlutterSoundPlayer? _playerRecorded;
+  FlutterSoundPlayer? _playerMedia;
+  Duration? _audioDuration;
+  String? _recordingPath;
+  String? _mediaPath;
 
-  ChatCubit(this._repository, this.questionId) : super(const ChatState()) {
+  ChatCubit(this.repository, this.questionId) : super(const ChatState()) {
     init();
   }
 
   Future<void> init() async {
-    _recorder = await FlutterSoundRecorder().openRecorder();
-    _player = await FlutterSoundPlayer().openPlayer();
+    const logLevel = Level.nothing;
+    _recorder = await FlutterSoundRecorder(logLevel: logLevel).openRecorder();
+    _playerRecorded = await FlutterSoundPlayer(logLevel: logLevel).openPlayer();
+    _playerMedia = await FlutterSoundPlayer(logLevel: logLevel).openPlayer();
 
     await _recorder?.setSubscriptionDuration(
       const Duration(seconds: 1),
     );
 
-    await _player?.setSubscriptionDuration(
+    await _playerRecorded?.setSubscriptionDuration(
+      const Duration(milliseconds: 100),
+    );
+
+    await _playerMedia?.setSubscriptionDuration(
       const Duration(milliseconds: 100),
     );
 
@@ -53,11 +68,15 @@ class ChatCubit extends Cubit<ChatState> {
       throw RecordingPermissionException('Microphone permission not granted');
     }
 
+    _recordingPath ??= 'audio_m_${Random().nextInt(10000000)}.mp4';
+
     await _recorder?.startRecorder(
-      toFile: state.recordingPath,
+      toFile: _recordingPath,
       codec: Codec.aacMP4,
     );
+
     _recorder?.onProgress?.listen((e) {
+      _audioDuration = e.duration;
       if (e.duration.inSeconds > 3 * 60) {
         stopRecordingAudio();
       }
@@ -65,6 +84,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     emit(
       state.copyWith(
+        recordingPath: _recordingPath!,
         isAudioFileSaved: false,
         isRecordingAudio: true,
         recordingStream: _recorder?.onProgress,
@@ -96,8 +116,8 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> deletedRecordedAudio() async {
-    if (_player != null && !_player!.isPlaying) {
-      await _player?.stopPlayer();
+    if (_playerRecorded != null && _playerRecorded!.isPlaying) {
+      await _playerRecorded?.stopPlayer();
     }
 
     emit(
@@ -109,13 +129,13 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  Future<void> startPlayAudio() async {
-    if (_player != null && _player!.isPaused) {
-      _player!.resumePlayer();
+  Future<void> startPlayRecordedAudio() async {
+    if (_playerRecorded != null && _playerRecorded!.isPaused) {
+      _playerRecorded!.resumePlayer();
       return;
     }
 
-    await _player?.startPlayer(
+    await _playerRecorded?.startPlayer(
       fromURI: state.recordingPath,
       codec: Codec.aacMP4,
       sampleRate: 44000,
@@ -129,23 +149,77 @@ class ChatCubit extends Cubit<ChatState> {
       },
     );
 
-    emit(state.copyWith(
-      isPlaybackAudio: true,
-      playbackStream: _player?.onProgress,
-    ));
+    emit(
+      state.copyWith(
+        isPlaybackAudio: true,
+        playbackStream: _playerRecorded?.onProgress,
+      ),
+    );
   }
 
-  Future<void> pausePlayAudio() async {
-    _player?.pausePlayer();
+  Future<void> pauseRecordedAudio() async {
+    _playerRecorded?.pausePlayer();
   }
+
+  void sendMedia() async {
+    if (_playerRecorded != null && _playerRecorded!.isPlaying) {
+      await _playerRecorded?.stopPlayer();
+    }
+
+    List<MediaMessage> messages = List<MediaMessage>.from(state.messages);
+    messages.add(MediaMessage(
+      audioPath: state.recordingPath,
+      duration: _audioDuration,
+    ));
+
+    _recordingPath = null;
+
+    emit(
+      state.copyWith(
+        isRecordingAudio: false,
+        isAudioFileSaved: false,
+        isPlaybackAudio: false,
+        messages: messages,
+      ),
+    );
+  }
+
+  Future<void> startPlayAudio(
+      String mediaPath, VoidCallback? whenFinished) async {
+    if (_mediaPath != mediaPath) {
+      _mediaPath = mediaPath;
+      await _playerMedia?.stopPlayer();
+    }
+
+    if (_playerMedia != null && _playerMedia!.isPaused) {
+      _playerMedia!.resumePlayer();
+      return;
+    }
+
+    await _playerMedia?.startPlayer(
+      fromURI: _mediaPath,
+      codec: Codec.aacMP4,
+      sampleRate: 44000,
+      whenFinished: whenFinished,
+    );
+  }
+
+  void pauseAudio() {
+    _playerMedia?.pausePlayer();
+  }
+
+  Stream<PlaybackDisposition>? get onMediaProgress => _playerMedia?.onProgress;
 
   @override
   Future<void> close() {
     _recorder?.closeRecorder();
     _recorder = null;
 
-    _player?.closePlayer();
-    _player = null;
+    _playerRecorded?.closePlayer();
+    _playerRecorded = null;
+
+    _playerMedia?.closePlayer();
+    _playerMedia = null;
 
     return super.close();
   }
