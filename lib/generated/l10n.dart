@@ -1000,11 +1000,181 @@ class S {
     );
   }
 
-  /// `people helped`
+  /// `People helped`
   String get peopleHelped {
     return Intl.message(
-      'people helped',
+      'People helped',
       name: 'peopleHelped',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customer Profile`
+  String get customerProfile {
+    return Intl.message(
+      'Customer Profile',
+      name: 'customerProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Top spender`
+  String get topSpender {
+    return Intl.message(
+      'Top spender',
+      name: 'topSpender',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Born`
+  String get born {
+    return Intl.message(
+      'Born',
+      name: 'born',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chats`
+  String get chats {
+    return Intl.message(
+      'Chats',
+      name: 'chats',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Calls`
+  String get calls {
+    return Intl.message(
+      'Calls',
+      name: 'calls',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `services`
+  String get services {
+    return Intl.message(
+      'services',
+      name: 'services',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Zodiac Sign`
+  String get zodiacSign {
+    return Intl.message(
+      'Zodiac Sign',
+      name: 'zodiacSign',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Numerology`
+  String get numerology {
+    return Intl.message(
+      'Numerology',
+      name: 'numerology',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ascendant`
+  String get ascendant {
+    return Intl.message(
+      'Ascendant',
+      name: 'ascendant',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `birth town`
+  String get birthTown {
+    return Intl.message(
+      'birth town',
+      name: 'birthTown',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Question properties`
+  String get questionProperties {
+    return Intl.message(
+      'Question properties',
+      name: 'questionProperties',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notes`
+  String get notes {
+    return Intl.message(
+      'Notes',
+      name: 'notes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add new`
+  String get addNew {
+    return Intl.message(
+      'Add new',
+      name: 'addNew',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You don’t have any notes yet`
+  String get youDoNotHaveAnyNotesYet {
+    return Intl.message(
+      'You don’t have any notes yet',
+      name: 'youDoNotHaveAnyNotesYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add the information that you want to keep in mind about this client`
+  String get addInformationYouWantKeepInMindAboutThisClient {
+    return Intl.message(
+      'Add the information that you want to keep in mind about this client',
+      name: 'addInformationYouWantKeepInMindAboutThisClient',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Note`
+  String get addNote {
+    return Intl.message(
+      'Add Note',
+      name: 'addNote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Title`
+  String get title {
+    return Intl.message(
+      'Title',
+      name: 'title',
       desc: '',
       args: [],
     );

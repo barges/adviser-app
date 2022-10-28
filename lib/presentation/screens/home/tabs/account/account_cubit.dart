@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/localized_properties/property_by_language.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
@@ -19,9 +19,9 @@ class AccountCubit extends Cubit<AccountState> {
 
   final MainCubit mainCubit = Get.find<MainCubit>();
 
-  final UserRepository userRepository = Get.find<UserRepository>();
+  final UserRepository _userRepository = Get.find<UserRepository>();
 
-  final CacheManager cacheManager;
+  final CachingManager cacheManager;
 
   final Uri _url = Uri.parse(AppConstants.webToolUrl);
 
@@ -52,8 +52,9 @@ class AccountCubit extends Cubit<AccountState> {
     if (mainCubit.state.internetConnectionIsAvailable) {
       int seconds = 0;
 
-      final UserInfo userInfo = info ?? await userRepository.getUserInfo();
+      final UserInfo userInfo = info ?? await _userRepository.getUserInfo();
 
+      await cacheManager.saveUserInfo(userInfo);
       await cacheManager.saveUserProfile(userInfo.profile);
       await cacheManager.saveUserId(userInfo.id);
 
@@ -103,7 +104,7 @@ class AccountCubit extends Cubit<AccountState> {
       status: status,
       comment: commentController.text,
     );
-    final UserInfo userInfo = await userRepository.updateUserStatus(request);
+    final UserInfo userInfo = await _userRepository.updateUserStatus(request);
     refreshUserinfo(
       info: userInfo,
     );
@@ -111,7 +112,7 @@ class AccountCubit extends Cubit<AccountState> {
 
   Future<void> updateEnableNotificationsValue(bool newValue) async {
     final UserInfo userInfo =
-        await userRepository.setPushEnabled(PushEnableRequest(value: newValue));
+        await _userRepository.setPushEnabled(PushEnableRequest(value: newValue));
     emit(
       state.copyWith(
         enableNotifications: userInfo.pushNotificationsEnabled ?? false,

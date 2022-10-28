@@ -11,8 +11,7 @@ class ReportsMarket with _$ReportsMarket {
   const factory ReportsMarket({
     String? iso,
     List<ReportsUnit>? units,
-    @JsonKey(name: 'market_total')
-    MarketTotal? marketTotal,
+    @JsonKey(name: 'market_total') MarketTotal? marketTotal,
   }) = _ReportsMarket;
 
   factory ReportsMarket.fromJson(Map<String, dynamic> json) =>

@@ -32,7 +32,6 @@ class PercentageWidget extends StatelessWidget {
               percent: percentageValue / 100,
               backgroundColor: Get.theme.hintColor,
               animateFromLastPercent: true,
-
               center: RichText(
                 text: TextSpan(
                   text: percentageValue.toString(),
@@ -76,8 +75,9 @@ class PercentageWidget extends StatelessWidget {
                             color: Get.theme.errorColor,
                             fontWeight: FontWeight.w500)),
                     TextSpan(
-                        text:
-                        S.of(context).toReadItBeforeYourAccountWillGetBlocked,
+                        text: S
+                            .of(context)
+                            .toReadItBeforeYourAccountWillGetBlocked,
                         style: Get.textTheme.bodySmall?.copyWith(
                             color: Get.theme.shadowColor,
                             fontWeight: FontWeight.w500))

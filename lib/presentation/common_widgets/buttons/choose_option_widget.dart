@@ -22,13 +22,14 @@ class ChooseOptionWidget extends StatelessWidget {
       decoration: BoxDecoration(
           color: Get.theme.scaffoldBackgroundColor,
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
-      child: Row(mainAxisSize: MainAxisSize.min,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: options
             .mapIndexed(
               (element, index) => Expanded(
                 child: GestureDetector(
                   onTap: () {
-                    if(onChangeOptionIndex != null) {
+                    if (onChangeOptionIndex != null) {
                       onChangeOptionIndex!(index);
                     }
                   },

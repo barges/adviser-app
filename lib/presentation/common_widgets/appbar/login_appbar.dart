@@ -29,7 +29,7 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
                   icon: Assets.vectors.arrowLeft.path,
                   onTap: Get.back,
                 ),
-               const SizedBox(
+                const SizedBox(
                   width: 12.0,
                 ),
               ],

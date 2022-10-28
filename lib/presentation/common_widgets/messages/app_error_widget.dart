@@ -39,16 +39,16 @@ class AppErrorWidget extends StatelessWidget {
               ),
             ),
           ),
-          if(!isRequired)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22.0),
-            child: GestureDetector(
-              onTap: close,
-              child: Assets.vectors.close.svg(
-                color: Get.theme.backgroundColor,
+          if (!isRequired)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 22.0),
+              child: GestureDetector(
+                onTap: close,
+                child: Assets.vectors.close.svg(
+                  color: Get.theme.backgroundColor,
+                ),
               ),
-            ),
-          )
+            )
         ],
       ),
     );

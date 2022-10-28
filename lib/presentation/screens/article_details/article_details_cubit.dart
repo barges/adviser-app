@@ -9,9 +9,9 @@ class ArticleDetailsCubit extends Cubit<ArticleDetailsState> {
   ArticleDetailsCubit() : super(const ArticleDetailsState()) {
     scrollController.addListener(addScrollControllerListener);
     WidgetsBinding.instance.addPostFrameCallback((_) => emit(state.copyWith(
-        articleReadPercentage:
-        (numberOfLines(Get.height - 200.0) /
-            numberOfLines(Get.height - scrollController.offset)).toDouble())));
+        articleReadPercentage: (numberOfLines(Get.height - 200.0) /
+                numberOfLines(Get.height - scrollController.offset))
+            .toDouble())));
   }
 
   ScrollController scrollController = ScrollController();
@@ -27,7 +27,7 @@ class ArticleDetailsCubit extends Cubit<ArticleDetailsState> {
       'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Exercitation veniam consequat sunt nostrud amet.Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.';
 
   void addScrollControllerListener() {
-    if(state.articleReadPercentage<1){
+    if (state.articleReadPercentage < 1) {
       emit(state.copyWith(
           articleReadPercentage: min(
               1.0,

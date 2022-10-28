@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
@@ -25,13 +25,14 @@ class SessionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => SessionsCubit(Get.find<CacheManager>()),
+      create: (BuildContext context) =>
+          SessionsCubit(Get.find<CachingManager>()),
       child: Builder(builder: (BuildContext context) {
         final bool isOnline = context.select(
-            (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
+                (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
 
         final UserStatus userStatus =
-            context.select((HomeCubit cubit) => cubit.state.userStatus);
+        context.select((HomeCubit cubit) => cubit.state.userStatus);
         final SessionsCubit sessionsCubit = context.read<SessionsCubit>();
 
         final bool statusIsLive =
@@ -41,7 +42,7 @@ class SessionsScreen extends StatelessWidget {
           backgroundColor: isOnline
               ? Get.theme.canvasColor
               : Get.theme.scaffoldBackgroundColor,
-          appBar: WideAppBar(
+          appBar: HomeAppBar(
             bottomWidget: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: AppConstants.horizontalScreenPadding,
@@ -53,12 +54,16 @@ class SessionsScreen extends StatelessWidget {
                     Expanded(
                       child: Builder(builder: (context) {
                         final int currentIndex = context.select(
-                            (SessionsCubit cubit) =>
-                                cubit.state.currentOptionIndex);
+                                (SessionsCubit cubit) =>
+                            cubit.state.currentOptionIndex);
                         return ChooseOptionWidget(
                           options: [
-                            S.of(context).public,
-                            S.of(context).forMe,
+                            S
+                                .of(context)
+                                .public,
+                            S
+                                .of(context)
+                                .forMe,
                           ],
                           currentIndex: currentIndex,
                           onChangeOptionIndex: isOnline && statusIsLive
@@ -123,11 +128,10 @@ class _QuestionsListWidget extends StatelessWidget {
               Container(
                 height: AppConstants.appBarHeight,
                 color: Get.theme.canvasColor,
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Builder(builder: (context) {
                   final int selectedFilterIndex = context.select(
-                      (SessionsCubit cubit) => cubit.state.selectedFilterIndex);
+                          (SessionsCubit cubit) =>
+                      cubit.state.selectedFilterIndex);
                   return ListOfFiltersWidget(
                     currentFilterIndex: selectedFilterIndex,
                     filters: filters,
@@ -144,7 +148,7 @@ class _QuestionsListWidget extends StatelessWidget {
           Builder(
             builder: (context) {
               final SessionsState state =
-                  context.select((SessionsCubit cubit) => cubit.state);
+              context.select((SessionsCubit cubit) => cubit.state);
               return Column(mainAxisSize: MainAxisSize.min, children: [
                 Padding(
                   padding: const EdgeInsets.all(
@@ -172,45 +176,55 @@ class _NotLiveStatusWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final HomeCubit homeCubit = context.read<HomeCubit>();
     return Padding(
-      padding: const EdgeInsets.all(
-        AppConstants.horizontalScreenPadding,
+      padding: const EdgeInsets.symmetric(
+       horizontal: AppConstants.horizontalScreenPadding,
       ),
-      child: Column(
-        children: [
-          Expanded(
+      child: CustomScrollView(
+        slivers: [
+          SliverFillRemaining(
+            hasScrollBody: false,
             child: Column(
               children: [
-                Get.isDarkMode
-                    ? Assets.images.logos.noConnectionLogoDark.image(
-                        height: AppConstants.logoSize,
-                        width: AppConstants.logoSize,
-                      )
-                    : Assets.images.logos.noConnectionLogo.image(
-                        height: AppConstants.logoSize,
-                        width: AppConstants.logoSize,
-                      ),
-                const SizedBox(
-                  height: 24.0,
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Column(
+                      children: [
+                        Get.isDarkMode
+                            ? Assets.images.logos.noConnectionLogoDark.image(
+                          height: AppConstants.logoSize,
+                          width: AppConstants.logoSize,
+                        )
+                            : Assets.images.logos.noConnectionLogo.image(
+                          height: AppConstants.logoSize,
+                          width: AppConstants.logoSize,
+                        ),
+                        const SizedBox(
+                          height: 24.0,
+                        ),
+                        Text(
+                          status.errorText(),
+                          style: Get.textTheme.headlineMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                Text(
-                  status.errorText(),
-                  style: Get.textTheme.headlineMedium,
-                  textAlign: TextAlign.center,
+                AppElevatedButton(
+                  title: status.buttonText(),
+                  onPressed: () async {
+                    if (status != FortunicaUserStatusEnum.live) {
+                      homeCubit.changeIndex(3);
+                    }
+                  },
+                ),
+                const SizedBox(
+                  height: 16.0,
                 ),
               ],
             ),
           ),
-          const SizedBox(
-            height: 16.0,
-          ),
-          AppElevatedButton(
-            title: status.buttonText(),
-            onPressed: () async {
-              if (status != FortunicaUserStatusEnum.live) {
-                homeCubit.changeIndex(3);
-              }
-            },
-          )
         ],
       ),
     );

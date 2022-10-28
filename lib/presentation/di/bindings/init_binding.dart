@@ -6,19 +6,23 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
+import 'package:shared_advisor_interface/data/network/api/customer_api.dart';
 import 'package:shared_advisor_interface/data/network/api/sessions_api.dart';
 import 'package:shared_advisor_interface/data/network/api/user_api.dart';
 import 'package:shared_advisor_interface/data/repositories/auth_repository_impl.dart';
+import 'package:shared_advisor_interface/data/repositories/customer_repository_impl.dart';
 import 'package:shared_advisor_interface/data/repositories/sessions_repository_impl.dart';
 import 'package:shared_advisor_interface/data/repositories/user_repository_impl.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
+import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/di/bindings/dio_interceptors/app_interceptor.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/services/fresh_chat_service.dart';
 
 class InitBinding extends Bindings {
   final DeviceInfoPlugin deviceInfo =
@@ -26,7 +30,7 @@ class InitBinding extends Bindings {
 
   @override
   void dependencies() async {
-    final CacheManager cacheManager = Get.find<CacheManager>();
+    final CachingManager cacheManager = Get.find<CachingManager>();
 
     Dio dio = await _initDio(cacheManager);
     Get.put<Dio>(dio, permanent: true);
@@ -36,6 +40,8 @@ class InitBinding extends Bindings {
     final SessionsApi sessionsApi =
         Get.put<SessionsApi>(SessionsApi(dio), permanent: true);
     final UserApi userApi = Get.put<UserApi>(UserApi(dio), permanent: true);
+    final CustomerApi customerApi =
+        Get.put<CustomerApi>(CustomerApi(dio), permanent: true);
 
     ///Repositories
     Get.put<AuthRepository>(
@@ -54,9 +60,17 @@ class InitBinding extends Bindings {
           cacheManager,
         ),
         permanent: true);
+    Get.put<CustomerRepository>(
+        CustomerRepositoryImpl(
+          customerApi,
+        ),
+        permanent: true);
+
+    ///Services
+    Get.lazyPut<FreshChatService>(() => FreshChatServiceImpl());
   }
 
-  Future<Dio> _initDio(CacheManager cacheManager) async {
+  Future<Dio> _initDio(CachingManager cacheManager) async {
     final dio = Dio();
     dio.options.baseUrl = AppConstants.baseUrl;
     dio.options.headers = await _getHeaders(cacheManager);
@@ -70,7 +84,7 @@ class InitBinding extends Bindings {
     return dio;
   }
 
-  Future<Map<String, dynamic>> _getHeaders(CacheManager cacheManager) async {
+  Future<Map<String, dynamic>> _getHeaders(CachingManager cacheManager) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
     Map<String, dynamic> headers = {

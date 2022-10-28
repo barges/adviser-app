@@ -16,14 +16,14 @@ class AuthorizedBrandsWidget extends StatelessWidget {
     final List<Brand> brands = context.read<MainCubit>().getAuthorizedBrands();
 
     return Stack(
-          textDirection: TextDirection.rtl,
-          children: brands
-              .mapIndexed((element, index) => _AuthorizedBrandWidget(
-                    index: index,
-                    brandIcon: element.icon,
-                    isFirstBrand: index == brands.length - 1,
-                  ))
-              .toList());
+        textDirection: TextDirection.rtl,
+        children: brands
+            .mapIndexed((element, index) => _AuthorizedBrandWidget(
+                  index: index,
+                  brandIcon: element.icon,
+                  isFirstBrand: index == brands.length - 1,
+                ))
+            .toList());
   }
 }
 

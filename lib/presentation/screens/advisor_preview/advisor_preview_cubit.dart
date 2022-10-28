@@ -1,13 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/cache/cache_manager.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/localized_properties/property_by_language.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_state.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/constants.dart';
 
 class AdvisorPreviewCubit extends Cubit<AdvisorPreviewState> {
-  final CacheManager cacheManager = Get.find<CacheManager>();
+  final CachingManager cacheManager = Get.find<CachingManager>();
   late final UserProfile userProfile;
   late final List<String> languages;
 

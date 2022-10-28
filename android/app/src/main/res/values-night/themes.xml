@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+    <style name="Theme.Freshchat.SelectedTheme" parent="@style/Theme.Freshchat.Light.DarkActionBar">
+        <item name="android:colorPrimary">@color/contrast</item>
+        <item name="android:colorPrimaryDark">@color/contrast</item>
+        <item name="android:colorAccent">@color/primary</item>
+        <item name="android:textColorPrimary">@color/primary</item>
+        <item name="android:textColor">@color/ui</item>
+        <item name="android:textColorHint">@color/ui</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:navigationBarColor">@color/contrast</item>
+        <!--        <item name="freshchatSearchIcon">ic_back_arrow@drawable/ic_advisors_selected</item>-->
+        <item name="freshchatFAQCategoryListStyle">@style/freshchatFAQCategoryListStyle</item>
+        <item name="freshchatFAQCategoryListItemStyle">@style/freshchatFAQCategoryListItemStyle</item>
+        <item name="freshchatFAQListItemStyle">@style/freshchatFAQListItemStyle</item>
+    </style>
+
+    <style name="freshchatFAQCategoryListStyle" parent="Widget.Freshchat.FAQCategoryList">
+        <item name="android:background">@color/background</item>
+    </style>
+
+    <style name="freshchatFAQCategoryListItemStyle" parent="Widget.Freshchat.FAQCategoryListItem">
+        <item name="android:background">@color/contrast</item>
+    </style>
+
+    <style name="freshchatFAQListItemStyle" parent="Widget.Freshchat.FAQListItem">
+        <item name="android:background">@color/contrast</item>
+    </style>
+
+</resources>
