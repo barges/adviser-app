@@ -10,9 +10,11 @@ class ChatState with _$ChatState {
     @Default(false) bool isLoadingAudio,
     @Default(false) bool isRecordingAudio,
     @Default(false) bool isAudioFileSaved,
-    @Default(false) bool isPlaybackAudio,
+    @Default(false) bool isPlayingRecordedAudio,
+    @Default(true) bool isPlayingAudioFinished,
     @Default([]) List<MediaMessage> messages,
     @Default('audio_m.mp4') String recordingPath,
+    @Default('') String audioPath,
     Stream<RecordingDisposition>? recordingStream,
     Stream<PlaybackDisposition>? playbackStream,
   }) = _ChatState;

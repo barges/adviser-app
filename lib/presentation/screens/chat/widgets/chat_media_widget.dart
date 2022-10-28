@@ -8,19 +8,19 @@ class ChatMediaWidget extends StatelessWidget {
   final VoidCallback? onStartPlayPressed;
   final VoidCallback? onPausePlayPressed;
   final Stream<PlaybackDisposition>? playbackStream;
-  final bool isFinished;
+  final bool isPlayingFinished;
   const ChatMediaWidget({
     Key? key,
     required this.mediaMessage,
     this.onStartPlayPressed,
     this.onPausePlayPressed,
     this.playbackStream,
-    this.isFinished = false,
+    this.isPlayingFinished = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    bool isPlaybackState = !isFinished;
+    bool isPlaying = !isPlayingFinished;
     return Padding(
       padding: const EdgeInsets.only(
         left: 40,
@@ -42,9 +42,8 @@ class ChatMediaWidget extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  (isPlaybackState ? onPausePlayPressed : onStartPlayPressed)
-                      ?.call();
-                  setState(() => isPlaybackState = !isPlaybackState);
+                  (isPlaying ? onPausePlayPressed : onStartPlayPressed)?.call();
+                  setState(() => isPlaying = !isPlaying);
                 },
                 child: Container(
                   width: 40,
@@ -53,7 +52,7 @@ class ChatMediaWidget extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: isPlaybackState
+                  child: isPlaying
                       ? Assets.vectors.pause.svg(
                           fit: BoxFit.scaleDown,
                           color: const Color(0xFF3975E9),
@@ -72,15 +71,15 @@ class ChatMediaWidget extends StatelessWidget {
                   children: [
                     Expanded(
                       child: StreamBuilder<PlaybackDisposition>(
-                        stream: isPlaybackState && !isFinished
+                        stream: isPlaying && !isPlayingFinished
                             ? playbackStream
                             : null,
                         builder: (_, snapshot) {
-                          final value = snapshot.hasData && !isFinished
+                          final value = snapshot.hasData && !isPlayingFinished
                               ? snapshot.data!.position.inMilliseconds /
                                   snapshot.data!.duration.inMilliseconds
                               : 0.0;
-                          final time = snapshot.hasData && !isFinished
+                          final time = snapshot.hasData && !isPlayingFinished
                               ? snapshot.data!.position
                                   .toString()
                                   .substring(2, 7)

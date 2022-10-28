@@ -14,6 +14,14 @@ abstract class SessionsApi {
       @Query("lastId") String? lastId,
       @Query('filters[type]') String? filterType});
 
+  @GET('/v2/users/{expertID}/conversations/{clientID}')
+  Future<dynamic> getQuestionsHistory({
+    @Path() required String expertID,
+    @Path() required String clientID,
+    @Query("offset") required int offset,
+    @Query("limit") required int limit,
+  });
+
   // @GET('/rituals/list')
   // Future<RitualsResponse> getListOfRituals(
   //     {@Query("limit") required int limit,

@@ -7,7 +7,7 @@ class ChatRecordedWidget extends StatelessWidget {
   final VoidCallback? onPausePlayPressed;
   final VoidCallback? onDeletePressed;
   final VoidCallback? onSendPressed;
-  final bool isPlayback;
+  final bool isPlaying;
   final Stream<PlaybackDisposition>? playbackStream;
 
   const ChatRecordedWidget({
@@ -17,12 +17,12 @@ class ChatRecordedWidget extends StatelessWidget {
     this.onDeletePressed,
     this.onSendPressed,
     this.playbackStream,
-    this.isPlayback = false,
+    this.isPlaying = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    bool isPlaybackState = isPlayback;
+    bool isPlayingState = isPlaying;
     return Padding(
       padding: const EdgeInsets.only(
         top: 5,
@@ -60,11 +60,11 @@ class ChatRecordedWidget extends StatelessWidget {
                   StatefulBuilder(builder: (_, StateSetter setState) {
                     return GestureDetector(
                       onTap: () {
-                        (isPlaybackState
+                        (isPlayingState
                                 ? onPausePlayPressed
                                 : onStartPlayPressed)
                             ?.call();
-                        setState(() => isPlaybackState = !isPlaybackState);
+                        setState(() => isPlayingState = !isPlayingState);
                       },
                       child: Container(
                         width: 34,
@@ -73,7 +73,7 @@ class ChatRecordedWidget extends StatelessWidget {
                           color: const Color(0xFF3975E9),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: isPlaybackState
+                        child: isPlayingState
                             ? Assets.vectors.pause.svg(
                                 fit: BoxFit.scaleDown,
                                 color: Colors.white,
@@ -95,11 +95,11 @@ class ChatRecordedWidget extends StatelessWidget {
                           child: StreamBuilder<PlaybackDisposition>(
                             stream: playbackStream,
                             builder: (_, snapshot) {
-                              final value = isPlaybackState && snapshot.hasData
+                              final value = isPlayingState && snapshot.hasData
                                   ? snapshot.data!.position.inMilliseconds /
                                       snapshot.data!.duration.inMilliseconds
                                   : 0.0;
-                              final time = (isPlaybackState && snapshot.hasData)
+                              final time = (isPlayingState && snapshot.hasData)
                                   ? snapshot.data!.position
                                       .toString()
                                       .substring(2, 7)

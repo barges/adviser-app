@@ -20,11 +20,11 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ChatCubit(Get.find<SessionsRepository>(), _question.id),
+      create: (_) => ChatCubit(Get.find<SessionsRepository>(), _question),
       child: Builder(builder: (context) {
+        final ChatCubit chatCubit = context.read<ChatCubit>();
         final Brand selectedBrand =
             context.select((MainCubit cubit) => cubit.state.currentBrand);
-        final ChatCubit chatCubit = context.read<ChatCubit>();
         return Scaffold(
           appBar: ChatConversationAppBar(
             title: _question.clientName ?? '',
@@ -37,26 +37,31 @@ class ChatScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: Builder(builder: (context) {
-                  bool isFinished = true;
                   final messages =
                       context.select((ChatCubit cubit) => cubit.state.messages);
-                  return ListView.builder(
-                    itemBuilder: (_, index) =>
-                        StatefulBuilder(builder: (_, StateSetter setState) {
-                      return ChatMediaWidget(
-                        isFinished: isFinished,
-                        mediaMessage: messages[index],
-                        onStartPlayPressed: () {
-                          setState(() => isFinished = false);
-                          chatCubit.startPlayAudio(messages[index].audioPath!,
-                              () => setState(() => isFinished = true));
-                        },
-                        onPausePlayPressed: () => chatCubit.pauseAudio(),
-                        playbackStream: chatCubit.onMediaProgress,
-                      );
-                    }),
-                    itemCount: messages.length,
-                  );
+                  return Builder(builder: (context) {
+                    return ListView.builder(
+                      itemBuilder: (_, index) => Builder(builder: (context) {
+                        final audioPath = messages[index].audioPath!;
+                        final isPlayingAudioFinished = context.select(
+                            (ChatCubit cubit) =>
+                                cubit.state.isPlayingAudioFinished);
+                        return ChatMediaWidget(
+                          isPlayingFinished:
+                              (audioPath == chatCubit.state.audioPath)
+                                  ? isPlayingAudioFinished
+                                  : true,
+                          mediaMessage: messages[index],
+                          onStartPlayPressed: () {
+                            chatCubit.startPlayAudio(audioPath);
+                          },
+                          onPausePlayPressed: () => chatCubit.pauseAudio(),
+                          playbackStream: chatCubit.onMediaProgress,
+                        );
+                      }),
+                      itemCount: messages.length,
+                    );
+                  });
                 }),
               ),
               Stack(
@@ -70,12 +75,12 @@ class ChatScreen extends StatelessWidget {
                         (ChatCubit cubit) => cubit.state.isRecordingAudio);
                     final bool isAudioFileSaved = context.select(
                         (ChatCubit cubit) => cubit.state.isAudioFileSaved);
-                    final isPlaybackAudio = context.select(
-                        (ChatCubit cubit) => cubit.state.isPlaybackAudio);
+                    final isPlaybackAudio = context.select((ChatCubit cubit) =>
+                        cubit.state.isPlayingRecordedAudio);
 
                     if (isAudioFileSaved) {
                       return ChatRecordedWidget(
-                        isPlayback: isPlaybackAudio,
+                        isPlaying: isPlaybackAudio,
                         playbackStream: chatCubit.state.playbackStream,
                         onStartPlayPressed: () =>
                             chatCubit.startPlayRecordedAudio(),

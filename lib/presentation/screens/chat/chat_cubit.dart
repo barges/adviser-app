@@ -1,10 +1,9 @@
 import 'dart:math';
-import 'dart:ui';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/data/models/media_message.dart';
+import 'package:shared_advisor_interface/data/models/question.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
 import 'chat_state.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -12,15 +11,13 @@ import 'package:audio_session/audio_session.dart';
 
 class ChatCubit extends Cubit<ChatState> {
   final SessionsRepository repository;
-  final String? questionId;
+  final Question question;
   FlutterSoundRecorder? _recorder;
   FlutterSoundPlayer? _playerRecorded;
   FlutterSoundPlayer? _playerMedia;
   Duration? _audioDuration;
-  String? _recordingPath;
-  String? _mediaPath;
 
-  ChatCubit(this.repository, this.questionId) : super(const ChatState()) {
+  ChatCubit(this.repository, this.question) : super(const ChatState()) {
     init();
   }
 
@@ -60,6 +57,15 @@ class ChatCubit extends Cubit<ChatState> {
       androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
       androidWillPauseWhenDucked: true,
     ));
+
+    /*dynamic result = await repository.getQuestionsHistory(
+        expertID:
+            '39726a57734b49a530639cc8115eb863e3f064fc16c2955384770462efb5e44b',
+        clientID: question.clientID!,
+        offset: 0,
+        limit: 50);
+    print('result:');
+    print(result);*/
   }
 
   Future<void> startRecordingAudio() async {
@@ -68,10 +74,10 @@ class ChatCubit extends Cubit<ChatState> {
       throw RecordingPermissionException('Microphone permission not granted');
     }
 
-    _recordingPath ??= 'audio_m_${Random().nextInt(10000000)}.mp4';
+    final recordingPath = 'audio_m_${Random().nextInt(10000000)}.mp4';
 
     await _recorder?.startRecorder(
-      toFile: _recordingPath,
+      toFile: recordingPath,
       codec: Codec.aacMP4,
     );
 
@@ -84,7 +90,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     emit(
       state.copyWith(
-        recordingPath: _recordingPath!,
+        recordingPath: recordingPath,
         isAudioFileSaved: false,
         isRecordingAudio: true,
         recordingStream: _recorder?.onProgress,
@@ -124,7 +130,7 @@ class ChatCubit extends Cubit<ChatState> {
       state.copyWith(
         isRecordingAudio: false,
         isAudioFileSaved: false,
-        isPlaybackAudio: false,
+        isPlayingRecordedAudio: false,
       ),
     );
   }
@@ -142,7 +148,7 @@ class ChatCubit extends Cubit<ChatState> {
       whenFinished: () {
         emit(
           state.copyWith(
-            isPlaybackAudio: false,
+            isPlayingRecordedAudio: false,
             playbackStream: null,
           ),
         );
@@ -151,7 +157,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     emit(
       state.copyWith(
-        isPlaybackAudio: true,
+        isPlayingRecordedAudio: true,
         playbackStream: _playerRecorded?.onProgress,
       ),
     );
@@ -172,35 +178,51 @@ class ChatCubit extends Cubit<ChatState> {
       duration: _audioDuration,
     ));
 
-    _recordingPath = null;
-
     emit(
       state.copyWith(
         isRecordingAudio: false,
         isAudioFileSaved: false,
-        isPlaybackAudio: false,
+        isPlayingRecordedAudio: false,
         messages: messages,
       ),
     );
   }
 
-  Future<void> startPlayAudio(
-      String mediaPath, VoidCallback? whenFinished) async {
-    if (_mediaPath != mediaPath) {
-      _mediaPath = mediaPath;
+  Future<void> startPlayAudio(String audioPath) async {
+    if (state.audioPath != audioPath) {
       await _playerMedia?.stopPlayer();
+      emit(
+        state.copyWith(
+          isPlayingAudioFinished: true,
+          audioPath: audioPath,
+        ),
+      );
     }
 
     if (_playerMedia != null && _playerMedia!.isPaused) {
       _playerMedia!.resumePlayer();
+      emit(
+        state.copyWith(
+          isPlayingAudioFinished: false,
+        ),
+      );
       return;
     }
 
     await _playerMedia?.startPlayer(
-      fromURI: _mediaPath,
+      fromURI: audioPath,
       codec: Codec.aacMP4,
       sampleRate: 44000,
-      whenFinished: whenFinished,
+      whenFinished: () => emit(
+        state.copyWith(
+          isPlayingAudioFinished: true,
+        ),
+      ),
+    );
+    emit(
+      state.copyWith(
+        isPlayingAudioFinished: false,
+      ),
     );
   }
 

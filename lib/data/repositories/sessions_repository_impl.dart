@@ -18,6 +18,20 @@ class SessionsRepositoryImpl implements SessionsRepository {
         filterType: buildFilterType(isPublicFilter));
   }
 
+  @override
+  Future<dynamic> getQuestionsHistory(
+      {required String expertID,
+      required String clientID,
+      required int offset,
+      required int limit}) async {
+    return await _api.getQuestionsHistory(
+      expertID: expertID,
+      clientID: clientID,
+      offset: offset,
+      limit: limit,
+    );
+  }
+
   String buildFilterType(bool isPublicFilter) {
     if (isPublicFilter) {
       return 'PUBLIC';
