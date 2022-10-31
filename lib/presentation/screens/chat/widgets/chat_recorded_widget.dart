@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
+import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class ChatRecordedWidget extends StatelessWidget {
   final VoidCallback? onStartPlayPressed;
@@ -34,8 +36,8 @@ class ChatRecordedWidget extends StatelessWidget {
             onTap: null, //onPhotoPressed,
             child: Assets.vectors.photo.svg(),
           ),
-          const Padding(
-            padding: EdgeInsets.only(
+          Padding(
+            padding: const EdgeInsets.only(
               left: 8.0,
               right: 13.0,
             ),
@@ -43,7 +45,7 @@ class ChatRecordedWidget extends StatelessWidget {
               height: 37.0,
               child: VerticalDivider(
                 thickness: 1,
-                color: Color(0xFFE7ECF4),
+                color: Get.theme.dividerColor,
               ),
             ),
           ),
@@ -51,7 +53,7 @@ class ChatRecordedWidget extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(5.0),
               decoration: BoxDecoration(
-                color: const Color(0xFFF1F4FB),
+                color: Get.theme.scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(12.0),
               ),
               child: Row(
@@ -97,11 +99,10 @@ class ChatRecordedWidget extends StatelessWidget {
                               right: 8.0,
                             ),
                             child: Assets.vectors.delete.svg(
-                              fit: BoxFit.scaleDown,
-                              color: const Color(0xFF9396A3),
-                            ),
+                                fit: BoxFit.scaleDown,
+                                color: Get.theme.shadowColor),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -146,17 +147,17 @@ class PlayPauseBtn extends StatelessWidget {
         width: 34.0,
         height: 34.0,
         decoration: BoxDecoration(
-          color: const Color(0xFF3975E9),
+          color: Get.theme.primaryColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: isPlaying
             ? Assets.vectors.pause.svg(
                 fit: BoxFit.scaleDown,
-                color: Colors.white,
+                color: Get.theme.backgroundColor,
               )
             : Assets.vectors.play.svg(
                 fit: BoxFit.scaleDown,
-                color: Colors.white,
+                color: Get.theme.backgroundColor,
               ),
       ),
     );
@@ -179,8 +180,8 @@ class PlayProgress extends StatelessWidget {
         Expanded(
           child: LinearProgressIndicator(
             value: value,
-            backgroundColor: const Color(0xFFB7DCFF),
-            color: Colors.blue,
+            backgroundColor: Get.theme.canvasColor,
+            color: Get.theme.primaryColor,
             minHeight: 2.0,
           ),
         ),

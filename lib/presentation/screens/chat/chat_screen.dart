@@ -31,7 +31,7 @@ class ChatScreen extends StatelessWidget {
             selectedBrand: selectedBrand,
             question: _question,
           ),
-          backgroundColor: const Color(0xffF1F4FB),
+          backgroundColor: Get.theme.scaffoldBackgroundColor,
           body: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -69,9 +69,11 @@ class ChatScreen extends StatelessWidget {
               ),
               Stack(
                 children: [
-                  Container(
-                    color: Colors.white,
-                    height: 90.0,
+                  Center(
+                    child: Container(
+                      color: Get.theme.canvasColor,
+                      height: 90.0,
+                    ),
                   ),
                   Builder(builder: (context) {
                     final bool isRecordingAudio = context.select(
@@ -110,6 +112,11 @@ class ChatScreen extends StatelessWidget {
                       );
                     }
                   }),
+                  Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: Get.theme.hintColor,
+                  ),
                 ],
               )
             ],

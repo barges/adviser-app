@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
+import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
@@ -48,7 +49,7 @@ class ChatRecordingWidget extends StatelessWidget {
               vertical: 2.0,
             ),
             decoration: BoxDecoration(
-              color: const Color(0xFFF1F4FB),
+              color: Get.theme.scaffoldBackgroundColor,
               borderRadius: BorderRadius.circular(17),
             ),
             child: Row(
@@ -89,12 +90,12 @@ class ChatRecordingWidget extends StatelessWidget {
               height: 34.0,
               width: 34.0,
               decoration: BoxDecoration(
-                color: const Color(0xFF3975E9),
+                color: Get.theme.primaryColor,
                 borderRadius: BorderRadius.circular(12.0),
               ),
               child: Assets.vectors.stop.svg(
                 fit: BoxFit.scaleDown,
-                color: Colors.white,
+                color: Get.theme.backgroundColor,
               ),
             ),
           ),

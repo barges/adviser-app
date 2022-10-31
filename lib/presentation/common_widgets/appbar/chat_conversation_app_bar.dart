@@ -56,9 +56,9 @@ class ChatConversationAppBar extends StatelessWidget
                   const SizedBox(width: 12),
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
-                      color: Color(0xFF28313A),
+                      color: Get.theme.hoverColor,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -66,10 +66,10 @@ class ChatConversationAppBar extends StatelessWidget
               ),
               Text(
                 "Paid Chat ${question.updatedAt?.parseDateTimeChat}",
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w200,
-                  color: Color(0xFF9396A3),
+                  color: Get.theme.shadowColor,
                 ),
               ),
             ],

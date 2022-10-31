@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
+import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/media_message.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 
@@ -35,7 +36,7 @@ class ChatMediaWidget extends StatelessWidget {
           horizontal: 14.0,
         ),
         decoration: BoxDecoration(
-          color: const Color(0xFF3975E9),
+          color: Get.theme.primaryColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -80,12 +81,12 @@ class ChatMediaWidget extends StatelessWidget {
                         Row(
                           children: [
                             const Spacer(),
-                            const Text(
+                            Text(
                               'Card riading',
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xFFB7DCFF),
+                                color: Get.theme.primaryColorLight,
                               ),
                             ),
                             const SizedBox(
@@ -94,17 +95,17 @@ class ChatMediaWidget extends StatelessWidget {
                             Assets.vectors.card.svg(
                               height: 20.0,
                               fit: BoxFit.fitHeight,
-                              color: const Color(0xFFB7DCFF),
+                              color: Get.theme.primaryColorLight,
                             ),
                             const SizedBox(
                               width: 10.0,
                             ),
                             Text(
                               mediaMessage.duration.toString().substring(2, 7),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xFFB7DCFF),
+                                color: Get.theme.primaryColorLight,
                               ),
                             ),
                           ],
@@ -143,17 +144,17 @@ class PlayPauseBtn extends StatelessWidget {
         width: 40.0,
         height: 40.0,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Get.theme.backgroundColor,
           borderRadius: BorderRadius.circular(20),
         ),
         child: isPlaying
             ? Assets.vectors.pause.svg(
                 fit: BoxFit.scaleDown,
-                color: const Color(0xFF3975E9),
+                color: Get.theme.primaryColor,
               )
             : Assets.vectors.play.svg(
                 fit: BoxFit.scaleDown,
-                color: const Color(0xFF3975E9),
+                color: Get.theme.primaryColor,
               ),
       ),
     );
@@ -180,10 +181,10 @@ class PlayProgress extends StatelessWidget {
               width: 48.0,
               child: Text(
                 time,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15.0,
                   fontWeight: FontWeight.w400,
-                  color: Colors.white,
+                  color: Get.theme.backgroundColor,
                 ),
               ),
             ),
@@ -193,10 +194,10 @@ class PlayProgress extends StatelessWidget {
               child: Text(
                 time,
                 textAlign: TextAlign.end,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15.0,
                   fontWeight: FontWeight.w400,
-                  color: Colors.white,
+                  color: Get.theme.backgroundColor,
                 ),
               ),
             ),
@@ -207,8 +208,8 @@ class PlayProgress extends StatelessWidget {
         ),
         LinearProgressIndicator(
           value: (!value.isNaN && !value.isInfinite) ? value : 0.0,
-          backgroundColor: const Color(0xFFB7DCFF),
-          color: Colors.white,
+          backgroundColor: Get.theme.primaryColorLight,
+          color: Get.theme.backgroundColor,
           minHeight: 2.0,
         ),
       ],

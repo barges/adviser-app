@@ -12,10 +12,10 @@ import 'package:audio_session/audio_session.dart';
 class ChatCubit extends Cubit<ChatState> {
   final SessionsRepository repository;
   final Question question;
+  Duration _audioDuration = const Duration();
   FlutterSoundRecorder? _recorder;
   FlutterSoundPlayer? _playerRecorded;
   FlutterSoundPlayer? _playerMedia;
-  Duration? _audioDuration;
 
   ChatCubit(this.repository, this.question) : super(const ChatState()) {
     init();
