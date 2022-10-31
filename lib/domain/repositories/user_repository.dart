@@ -3,6 +3,7 @@ import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/restore_freshchat_id_request.dart';
+import 'package:shared_advisor_interface/data/network/requests/set_push_notification_token_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_image_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
@@ -43,4 +44,6 @@ abstract class UserRepository {
     String startDate,
     String endDate,
   );
+
+  Future<void> sendPushToken(SetPushNotificationTokenRequest request);
 }

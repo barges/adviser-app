@@ -47,10 +47,10 @@ class SessionsCubit extends Cubit<SessionsState> {
   }
 
   Future<void> getListOfQuestions(int index,
-      {FortunicaUserStatusEnum? status}) async {
+      {FortunicaUserStatus? status}) async {
     if (mainCubit.state.internetConnectionIsAvailable &&
         (status ?? cacheManager.getUserStatus()?.status) ==
-            FortunicaUserStatusEnum.live) {
+            FortunicaUserStatus.live) {
       resetList(index);
       if (!hasMore) return;
       QuestionsListResponse result =

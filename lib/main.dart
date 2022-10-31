@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide Transition;
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -27,6 +28,7 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await GetStorage.init();
   runApp(const MyApp());
 }

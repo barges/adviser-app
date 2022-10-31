@@ -23,6 +23,8 @@ import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/di/bindings/dio_interceptors/app_interceptor.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/services/fresh_chat_service.dart';
+import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
+import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager_impl.dart';
 
 class InitBinding extends Bindings {
   final DeviceInfoPlugin deviceInfo =
@@ -68,6 +70,7 @@ class InitBinding extends Bindings {
 
     ///Services
     Get.lazyPut<FreshChatService>(() => FreshChatServiceImpl());
+    Get.lazyPut<PushNotificationManager>(() => PushNotificationManagerImpl());
   }
 
   Future<Dio> _initDio(CachingManager cacheManager) async {

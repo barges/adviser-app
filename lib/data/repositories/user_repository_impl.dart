@@ -5,6 +5,7 @@ import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart
 import 'package:shared_advisor_interface/data/network/api/user_api.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/restore_freshchat_id_request.dart';
+import 'package:shared_advisor_interface/data/network/requests/set_push_notification_token_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_image_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
@@ -107,5 +108,10 @@ class UserRepositoryImpl implements UserRepository {
   ) async {
     final String? userId = _cacheManager.getUserId();
     return await _api.getUserReportsByMonth(userId ?? '', startDate, endDate);
+  }
+
+  @override
+  Future<void> sendPushToken(SetPushNotificationTokenRequest request) async {
+    return _api.setPushNotificationToken(request);
   }
 }

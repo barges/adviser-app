@@ -36,7 +36,7 @@ class SessionsScreen extends StatelessWidget {
         final SessionsCubit sessionsCubit = context.read<SessionsCubit>();
 
         final bool statusIsLive =
-            userStatus.status == FortunicaUserStatusEnum.live;
+            userStatus.status == FortunicaUserStatus.live;
 
         return Scaffold(
           backgroundColor: isOnline
@@ -89,7 +89,7 @@ class SessionsScreen extends StatelessWidget {
                 return const _QuestionsListWidget();
               } else {
                 return _NotLiveStatusWidget(
-                  status: userStatus.status ?? FortunicaUserStatusEnum.offline,
+                  status: userStatus.status ?? FortunicaUserStatus.offline,
                 );
               }
             } else {
@@ -165,7 +165,7 @@ class _QuestionsListWidget extends StatelessWidget {
 }
 
 class _NotLiveStatusWidget extends StatelessWidget {
-  final FortunicaUserStatusEnum status;
+  final FortunicaUserStatus status;
 
   const _NotLiveStatusWidget({
     Key? key,
@@ -214,7 +214,7 @@ class _NotLiveStatusWidget extends StatelessWidget {
                 AppElevatedButton(
                   title: status.buttonText(),
                   onPressed: () async {
-                    if (status != FortunicaUserStatusEnum.live) {
+                    if (status != FortunicaUserStatus.live) {
                       homeCubit.changeIndex(3);
                     }
                   },

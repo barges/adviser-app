@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
-enum FortunicaUserStatusEnum {
+enum FortunicaUserStatus {
   @JsonValue("LIVE")
   live,
   @JsonValue("INCOMPLETE")
@@ -16,60 +16,60 @@ enum FortunicaUserStatusEnum {
   offline,
 }
 
-extension StatusExt on FortunicaUserStatusEnum {
+extension StatusExt on FortunicaUserStatus {
   String get statusName {
     switch (this) {
-      case FortunicaUserStatusEnum.live:
+      case FortunicaUserStatus.live:
         return 'Live';
-      case FortunicaUserStatusEnum.incomplete:
+      case FortunicaUserStatus.incomplete:
         return 'Incomplete';
-      case FortunicaUserStatusEnum.blocked:
+      case FortunicaUserStatus.blocked:
         return 'Blocked';
-      case FortunicaUserStatusEnum.legalBlock:
+      case FortunicaUserStatus.legalBlock:
         return 'Legal block';
-      case FortunicaUserStatusEnum.offline:
+      case FortunicaUserStatus.offline:
         return 'Offline';
     }
   }
 
   Color get statusColor {
     switch (this) {
-      case FortunicaUserStatusEnum.live:
+      case FortunicaUserStatus.live:
         return AppColors.online;
-      case FortunicaUserStatusEnum.incomplete:
-      case FortunicaUserStatusEnum.blocked:
-      case FortunicaUserStatusEnum.legalBlock:
+      case FortunicaUserStatus.incomplete:
+      case FortunicaUserStatus.blocked:
+      case FortunicaUserStatus.legalBlock:
         return AppColors.error;
-      case FortunicaUserStatusEnum.offline:
+      case FortunicaUserStatus.offline:
         return Get.theme.shadowColor;
     }
   }
 
   Color get statusColorForBadge {
     switch (this) {
-      case FortunicaUserStatusEnum.live:
+      case FortunicaUserStatus.live:
         return AppColors.online;
-      case FortunicaUserStatusEnum.incomplete:
-      case FortunicaUserStatusEnum.blocked:
-      case FortunicaUserStatusEnum.legalBlock:
-      case FortunicaUserStatusEnum.offline:
+      case FortunicaUserStatus.incomplete:
+      case FortunicaUserStatus.blocked:
+      case FortunicaUserStatus.legalBlock:
+      case FortunicaUserStatus.offline:
         return Get.theme.shadowColor;
     }
   }
 
   String errorText() {
     switch (this) {
-      case FortunicaUserStatusEnum.live:
-      case FortunicaUserStatusEnum.blocked:
+      case FortunicaUserStatus.live:
+      case FortunicaUserStatus.blocked:
         return '';
-      case FortunicaUserStatusEnum.incomplete:
+      case FortunicaUserStatus.incomplete:
         return 'You’re currently not live on the platform, platform,'
             ' please make sure you fill out your profile for all languages. '
             'You can contact your Manager if you have questions.';
-      case FortunicaUserStatusEnum.legalBlock:
+      case FortunicaUserStatus.legalBlock:
         return 'Before proceeding you need to accept contracts.'
             ' To do so please open the web version of the Advisor Tool';
-      case FortunicaUserStatusEnum.offline:
+      case FortunicaUserStatus.offline:
         return 'You\'re currently Offline on the platform,'
             ' you can\'t use the full functionality and are not '
             'visible to users. You can change your status'
@@ -79,14 +79,14 @@ extension StatusExt on FortunicaUserStatusEnum {
 
   String buttonText() {
     switch (this) {
-      case FortunicaUserStatusEnum.live:
-      case FortunicaUserStatusEnum.blocked:
+      case FortunicaUserStatus.live:
+      case FortunicaUserStatus.blocked:
         return '';
-      case FortunicaUserStatusEnum.incomplete:
+      case FortunicaUserStatus.incomplete:
         return 'Complete profile to start helping';
-      case FortunicaUserStatusEnum.legalBlock:
+      case FortunicaUserStatus.legalBlock:
         return 'Go to Account';
-      case FortunicaUserStatusEnum.offline:
+      case FortunicaUserStatus.offline:
         return 'Go to Account';
     }
   }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "722451065852",
+    "project_id": "advisor-shared-interface",
+    "storage_bucket": "advisor-shared-interface.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722451065852:android:9bbcba43b008facd802079",
+        "android_client_info": {
+          "package_name": "com.adviqo.shared_advisor_interface"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "722451065852-cuq0lso3clj2fc4f5tug5veunkru8v7k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcXHS3nDmBGgu66TjFgk1ZpbIhIxUSyjM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "722451065852-cuq0lso3clj2fc4f5tug5veunkru8v7k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

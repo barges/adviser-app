@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/question.dart';
+import 'package:shared_advisor_interface/data/models/chats/question.dart';
 
 part 'sessions_state.freezed.dart';
 

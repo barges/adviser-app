@@ -95,7 +95,7 @@ class UserInfoPartWidget extends StatelessWidget {
                           color: Get.theme.primaryColor,
                         ),
                         if (currentStatus.status ==
-                            FortunicaUserStatusEnum.incomplete)
+                            FortunicaUserStatus.incomplete)
                           const Positioned(
                             right: 0.0,
                             child: ErrorBadge(),
@@ -125,7 +125,7 @@ class UserInfoPartWidget extends StatelessWidget {
                   onChanged: (newValue) {
                     if (newValue) {
                       accountCubit.updateUserStatus(
-                        status: FortunicaUserStatusEnum.live,
+                        status: FortunicaUserStatus.live,
                       );
                     } else {
                       changeStatusCommentBottomSheet(
@@ -133,17 +133,17 @@ class UserInfoPartWidget extends StatelessWidget {
                         commentController: accountCubit.commentController,
                         okOnTap: () {
                           accountCubit.updateUserStatus(
-                            status: FortunicaUserStatusEnum.offline,
+                            status: FortunicaUserStatus.offline,
                           );
                         },
                       );
                     }
                   },
                   isDisable: currentStatus.status !=
-                          FortunicaUserStatusEnum.live &&
-                      currentStatus.status != FortunicaUserStatusEnum.offline,
+                          FortunicaUserStatus.live &&
+                      currentStatus.status != FortunicaUserStatus.offline,
                   initSwitcherValue:
-                      currentStatus.status == FortunicaUserStatusEnum.live,
+                      currentStatus.status == FortunicaUserStatus.live,
                   timerWidget: seconds > 0
                       ? CountDownTimer(
                           seconds: seconds,
@@ -172,7 +172,7 @@ class UserInfoPartWidget extends StatelessWidget {
               height: 1.0,
             ),
             TileWidget(
-              isDisable: currentStatus.status != FortunicaUserStatusEnum.live,
+              isDisable: currentStatus.status != FortunicaUserStatus.live,
               iconSVGPath: Assets.vectors.eye.path,
               title: S.of(context).previewAccount,
               onTap: () {
