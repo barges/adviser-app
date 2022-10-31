@@ -20,9 +20,9 @@ class ChatTextfieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        top: 8,
-        left: 25,
-        right: 25,
+        top: 8.0,
+        left: 25.0,
+        right: 25.0,
       ),
       child: Row(
         children: [
@@ -32,14 +32,14 @@ class ChatTextfieldWidget extends StatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(left: 5),
+              padding: const EdgeInsets.only(left: 5.0),
               child: TextField(
                 controller: controller,
                 decoration: const InputDecoration.collapsed(
                   hintText: 'Type message',
                   hintStyle: TextStyle(
                     color: AppColors.online,
-                    fontSize: 15,
+                    fontSize: 15.0,
                   ),
                 ),
               ),
@@ -48,8 +48,8 @@ class ChatTextfieldWidget extends StatelessWidget {
           GestureDetector(
             onTap: onRecordPressed,
             child: Assets.images.microphoneBig.image(
-              height: 32,
-              width: 32,
+              height: 32.0,
+              width: 32.0,
             ),
           ),
         ],

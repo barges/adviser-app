@@ -71,7 +71,7 @@ class ChatScreen extends StatelessWidget {
                 children: [
                   Container(
                     color: Colors.white,
-                    height: 90,
+                    height: 90.0,
                   ),
                   Builder(builder: (context) {
                     final bool isRecordingAudio = context.select(

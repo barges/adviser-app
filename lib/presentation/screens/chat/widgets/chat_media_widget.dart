@@ -24,15 +24,15 @@ class ChatMediaWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        left: 40,
-        right: 8,
-        top: 4,
-        bottom: 4,
+        left: 40.0,
+        right: 8.0,
+        top: 4.0,
+        bottom: 4.0,
       ),
       child: Container(
         padding: const EdgeInsets.symmetric(
-          vertical: 12,
-          horizontal: 14,
+          vertical: 12.0,
+          horizontal: 14.0,
         ),
         decoration: BoxDecoration(
           color: const Color(0xFF3975E9),
@@ -46,7 +46,7 @@ class ChatMediaWidget extends StatelessWidget {
               onPausePlayPressed: onPausePlayPressed,
             ),
             const SizedBox(
-              width: 10,
+              width: 10.0,
             ),
             Expanded(
               child: Row(
@@ -75,7 +75,7 @@ class ChatMediaWidget extends StatelessWidget {
                           },
                         ),
                         const SizedBox(
-                          height: 8,
+                          height: 8.0,
                         ),
                         Row(
                           children: [
@@ -89,20 +89,20 @@ class ChatMediaWidget extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(
-                              width: 5,
+                              width: 5.0,
                             ),
                             Assets.vectors.card.svg(
-                              height: 20,
+                              height: 20.0,
                               fit: BoxFit.fitHeight,
                               color: const Color(0xFFB7DCFF),
                             ),
                             const SizedBox(
-                              width: 10,
+                              width: 10.0,
                             ),
                             Text(
                               mediaMessage.duration.toString().substring(2, 7),
                               style: const TextStyle(
-                                fontSize: 15,
+                                fontSize: 15.0,
                                 fontWeight: FontWeight.w400,
                                 color: Color(0xFFB7DCFF),
                               ),
@@ -140,8 +140,8 @@ class PlayPauseBtn extends StatelessWidget {
         (isPlaying ? onPausePlayPressed : onStartPlayPressed)?.call();
       },
       child: Container(
-        width: 40,
-        height: 40,
+        width: 40.0,
+        height: 40.0,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -177,11 +177,11 @@ class PlayProgress extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              width: 48,
+              width: 48.0,
               child: Text(
                 time,
                 style: const TextStyle(
-                  fontSize: 15,
+                  fontSize: 15.0,
                   fontWeight: FontWeight.w400,
                   color: Colors.white,
                 ),
@@ -189,12 +189,12 @@ class PlayProgress extends StatelessWidget {
             ),
             const Spacer(),
             SizedBox(
-              width: 48,
+              width: 48.0,
               child: Text(
                 time,
                 textAlign: TextAlign.end,
                 style: const TextStyle(
-                  fontSize: 15,
+                  fontSize: 15.0,
                   fontWeight: FontWeight.w400,
                   color: Colors.white,
                 ),
@@ -203,13 +203,13 @@ class PlayProgress extends StatelessWidget {
           ],
         ),
         const SizedBox(
-          height: 8,
+          height: 8.0,
         ),
         LinearProgressIndicator(
           value: (!value.isNaN && !value.isInfinite) ? value : 0.0,
           backgroundColor: const Color(0xFFB7DCFF),
           color: Colors.white,
-          minHeight: 2,
+          minHeight: 2.0,
         ),
       ],
     );

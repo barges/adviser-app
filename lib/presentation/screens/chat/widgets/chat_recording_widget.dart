@@ -19,9 +19,9 @@ class ChatRecordingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        top: 8,
-        left: 25,
-        right: 25,
+        top: 8.0,
+        left: 25.0,
+        right: 25.0,
       ),
       child: Row(
         children: [
@@ -29,7 +29,7 @@ class ChatRecordingWidget extends StatelessWidget {
             onTap: onClosePressed,
             child: const Icon(
               Icons.clear,
-              size: 25,
+              size: 25.0,
             ),
           ),
           const Spacer(),
@@ -37,15 +37,15 @@ class ChatRecordingWidget extends StatelessWidget {
             "from 15 sec to 3 min",
             style: TextStyle(
               color: AppColors.online,
-              fontSize: 12,
+              fontSize: 12.0,
               fontWeight: FontWeight.w400,
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 8.0),
           Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: 6,
-              vertical: 2,
+              horizontal: 6.0,
+              vertical: 2.0,
             ),
             decoration: BoxDecoration(
               color: const Color(0xFFF1F4FB),
@@ -54,12 +54,12 @@ class ChatRecordingWidget extends StatelessWidget {
             child: Row(
               children: [
                 Assets.vectors.recording.svg(
-                  height: 12,
+                  height: 12.0,
                 ),
-                const SizedBox(width: 3),
+                const SizedBox(width: 3.0),
                 Container(
-                  width: 40,
-                  height: 22,
+                  width: 40.0,
+                  height: 22.0,
                   alignment: Alignment.center,
                   child: StreamBuilder<RecordingDisposition>(
                       stream: recordingStream,
@@ -68,11 +68,11 @@ class ChatRecordingWidget extends StatelessWidget {
                             ? snapshot.data!.duration.toString().substring(2, 7)
                             : "00:00";
                         return SizedBox(
-                          width: 42,
+                          width: 42.0,
                           child: Text(
                             time,
                             style: const TextStyle(
-                              fontSize: 13,
+                              fontSize: 13.0,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
@@ -86,11 +86,11 @@ class ChatRecordingWidget extends StatelessWidget {
           GestureDetector(
             onTap: onStopRecordPressed,
             child: Container(
-              height: 34,
-              width: 34,
+              height: 34.0,
+              width: 34.0,
               decoration: BoxDecoration(
                 color: const Color(0xFF3975E9),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.0),
               ),
               child: Assets.vectors.stop.svg(
                 fit: BoxFit.scaleDown,

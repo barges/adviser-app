@@ -24,9 +24,9 @@ class ChatRecordedWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        top: 5,
-        left: 25,
-        right: 25,
+        top: 5.0,
+        left: 25.0,
+        right: 25.0,
       ),
       child: Row(
         children: [
@@ -36,11 +36,11 @@ class ChatRecordedWidget extends StatelessWidget {
           ),
           const Padding(
             padding: EdgeInsets.only(
-              left: 8,
-              right: 13,
+              left: 8.0,
+              right: 13.0,
             ),
             child: SizedBox(
-              height: 37,
+              height: 37.0,
               child: VerticalDivider(
                 thickness: 1,
                 color: Color(0xFFE7ECF4),
@@ -49,10 +49,10 @@ class ChatRecordedWidget extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5.0),
               decoration: BoxDecoration(
                 color: const Color(0xFFF1F4FB),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.0),
               ),
               child: Row(
                 children: [
@@ -62,7 +62,7 @@ class ChatRecordedWidget extends StatelessWidget {
                     onPausePlayPressed: onPausePlayPressed,
                   ),
                   const SizedBox(
-                    width: 10,
+                    width: 10.0,
                   ),
                   Expanded(
                     child: Row(
@@ -93,8 +93,8 @@ class ChatRecordedWidget extends StatelessWidget {
                           onTap: onDeletePressed,
                           child: Padding(
                             padding: const EdgeInsets.only(
-                              left: 2,
-                              right: 8,
+                              left: 2.0,
+                              right: 8.0,
                             ),
                             child: Assets.vectors.delete.svg(
                               fit: BoxFit.scaleDown,
@@ -110,13 +110,13 @@ class ChatRecordedWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            width: 8,
+            width: 8.0,
           ),
           GestureDetector(
             onTap: onSendPressed,
             child: Assets.images.send.image(
               fit: BoxFit.fitWidth,
-              width: 35,
+              width: 35.0,
             ),
           )
         ],
@@ -143,8 +143,8 @@ class PlayPauseBtn extends StatelessWidget {
         (isPlaying ? onPausePlayPressed : onStartPlayPressed)?.call();
       },
       child: Container(
-        width: 34,
-        height: 34,
+        width: 34.0,
+        height: 34.0,
         decoration: BoxDecoration(
           color: const Color(0xFF3975E9),
           borderRadius: BorderRadius.circular(12),
@@ -181,18 +181,18 @@ class PlayProgress extends StatelessWidget {
             value: value,
             backgroundColor: const Color(0xFFB7DCFF),
             color: Colors.blue,
-            minHeight: 2,
+            minHeight: 2.0,
           ),
         ),
         const SizedBox(
-          width: 10,
+          width: 10.0,
         ),
         SizedBox(
-          width: 51,
+          width: 51.0,
           child: Text(
             time,
             style: const TextStyle(
-              fontSize: 17,
+              fontSize: 17.0,
               fontWeight: FontWeight.w400,
             ),
           ),
