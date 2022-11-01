@@ -22,22 +22,20 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   }
 
   Future<void> getReports() async {
-    if (mainCubit.state.internetConnectionIsAvailable) {
-      final List<ReportsMonth> months = [];
-      final ReportsResponse reportsResponse =
-          await _userRepository.getUserReports();
+    final List<ReportsMonth> months = [];
+    final ReportsResponse reportsResponse =
+        await _userRepository.getUserReports();
 
-      for (ReportsYear year in reportsResponse.dateRange ?? []) {
-        months.addAll(year.months ?? []);
-      }
-
-      emit(
-        state.copyWith(
-          months: months,
-          reportsStatistics: months.firstOrNull?.statistics,
-        ),
-      );
+    for (ReportsYear year in reportsResponse.dateRange ?? []) {
+      months.addAll(year.months ?? []);
     }
+
+    emit(
+      state.copyWith(
+        months: months,
+        reportsStatistics: months.firstOrNull?.statistics,
+      ),
+    );
   }
 
   void openDrawer() {
