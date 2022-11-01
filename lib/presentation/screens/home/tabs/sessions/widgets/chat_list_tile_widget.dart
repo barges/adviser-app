@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/models/question.dart';
+import 'package:shared_advisor_interface/data/models/chats/question.dart';
+import 'package:shared_advisor_interface/data/models/chats/zodiac_sign.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -28,8 +29,9 @@ class ChatListTileWidget extends StatelessWidget {
               alignment: Alignment.bottomRight,
               children: [
                 SvgPicture.asset(
-                    (question.clientInformation?.zodiac ?? '')
-                        .getZodiacProfileImage,
+                    question.clientInformation?.zodiac
+                            ?.getZodiacSignImagePath ??
+                        '',
                     width: 44.0),
                 CircleAvatar(
                     radius: 8.0,

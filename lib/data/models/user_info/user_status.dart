@@ -10,8 +10,8 @@ class UserStatus with _$UserStatus {
   @JsonSerializable(includeIfNull: false)
   const factory UserStatus({
     @JsonKey(name: 'profile')
-    @Default(FortunicaUserStatusEnum.offline)
-        FortunicaUserStatusEnum? status,
+    @Default(FortunicaUserStatus.offline)
+        FortunicaUserStatus? status,
     String? messaging,
     String? calling,
     DateTime? profileUpdatedAt,

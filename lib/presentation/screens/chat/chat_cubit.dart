@@ -2,15 +2,15 @@ import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_advisor_interface/data/models/chats/question.dart';
 import 'package:shared_advisor_interface/data/models/media_message.dart';
-import 'package:shared_advisor_interface/data/models/question.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
 import 'chat_state.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:audio_session/audio_session.dart';
 
 class ChatCubit extends Cubit<ChatState> {
-  final SessionsRepository repository;
+  final ChatsRepository repository;
   final Question question;
   Duration _audioDuration = const Duration();
   FlutterSoundRecorder? _recorder;

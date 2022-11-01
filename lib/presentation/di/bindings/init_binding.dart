@@ -9,7 +9,7 @@ import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
 import 'package:shared_advisor_interface/data/network/api/customer_api.dart';
-import 'package:shared_advisor_interface/data/network/api/sessions_api.dart';
+import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
 import 'package:shared_advisor_interface/data/network/api/user_api.dart';
 import 'package:shared_advisor_interface/data/repositories/auth_repository_impl.dart';
 import 'package:shared_advisor_interface/data/repositories/customer_repository_impl.dart';
@@ -23,6 +23,8 @@ import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/di/bindings/dio_interceptors/app_interceptor.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/services/fresh_chat_service.dart';
+import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
+import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager_impl.dart';
 
 class InitBinding extends Bindings {
   final DeviceInfoPlugin deviceInfo =
@@ -37,8 +39,8 @@ class InitBinding extends Bindings {
 
     ///APIs
     final AuthApi authApi = Get.put<AuthApi>(AuthApi(dio), permanent: true);
-    final SessionsApi sessionsApi =
-        Get.put<SessionsApi>(SessionsApi(dio), permanent: true);
+    final ChatsApi sessionsApi =
+        Get.put<ChatsApi>(ChatsApi(dio), permanent: true);
     final UserApi userApi = Get.put<UserApi>(UserApi(dio), permanent: true);
     final CustomerApi customerApi =
         Get.put<CustomerApi>(CustomerApi(dio), permanent: true);
@@ -49,8 +51,8 @@ class InitBinding extends Bindings {
           authApi,
         ),
         permanent: true);
-    Get.put<SessionsRepository>(
-        SessionsRepositoryImpl(
+    Get.put<ChatsRepository>(
+        ChatsRepositoryImpl(
           sessionsApi,
         ),
         permanent: true);
@@ -68,6 +70,7 @@ class InitBinding extends Bindings {
 
     ///Services
     Get.lazyPut<FreshChatService>(() => FreshChatServiceImpl());
+    Get.lazyPut<PushNotificationManager>(() => PushNotificationManagerImpl());
   }
 
   Future<Dio> _initDio(CachingManager cacheManager) async {

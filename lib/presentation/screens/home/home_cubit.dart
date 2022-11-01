@@ -1,13 +1,21 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
+import 'package:shared_advisor_interface/data/network/requests/set_push_notification_token_request.dart';
+import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_state.dart';
 import 'package:shared_advisor_interface/presentation/services/fresh_chat_service.dart';
+import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   final CachingManager cacheManager;
+
+  final UserRepository _userRepository = Get.find<UserRepository>();
+  final PushNotificationManager _pushNotificationManager = Get.find<PushNotificationManager>();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   late final VoidCallback disposeListen;
 
@@ -18,6 +26,8 @@ class HomeCubit extends Cubit<HomeState> {
     disposeListen = cacheManager.listenCurrentUserStatus((value) {
       emit(state.copyWith(userStatus: value));
     });
+    _pushNotificationManager.registerForPushNotifications();
+    _sendPushToken();
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
@@ -26,6 +36,17 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> close() {
     disposeListen.call();
     return super.close();
+  }
+
+  Future<void> _sendPushToken() async {
+    String? pushToken = await _firebaseMessaging.getToken();
+    if (pushToken != null) {
+      final SetPushNotificationTokenRequest request =
+          SetPushNotificationTokenRequest(
+        pushToken: pushToken,
+      );
+      _userRepository.sendPushToken(request);
+    }
   }
 
   void openDrawer() {

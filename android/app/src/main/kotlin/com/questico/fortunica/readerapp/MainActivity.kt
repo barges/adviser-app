@@ -1,4 +1,4 @@
-package com.adviqo.shared_advisor_interface
+package com.questico.fortunica.readerapp
 
 import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterActivity

@@ -5,7 +5,7 @@ part 'update_user_status_request.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class UpdateUserStatusRequest {
-  final FortunicaUserStatusEnum? status;
+  final FortunicaUserStatus? status;
   final String? comment;
 
   UpdateUserStatusRequest({this.status, this.comment});

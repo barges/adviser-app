@@ -48,11 +48,11 @@ class AccountCubit extends Cubit<AccountState> {
     return super.close();
   }
 
-  Future<void> refreshUserinfo({UserInfo? info}) async {
+  Future<void> refreshUserinfo() async {
     if (mainCubit.state.internetConnectionIsAvailable) {
       int seconds = 0;
 
-      final UserInfo userInfo = info ?? await _userRepository.getUserInfo();
+      final UserInfo userInfo = await _userRepository.getUserInfo();
 
       await cacheManager.saveUserInfo(userInfo);
       await cacheManager.saveUserProfile(userInfo.profile);
@@ -60,7 +60,7 @@ class AccountCubit extends Cubit<AccountState> {
 
       if (checkPropertiesMap(userInfo)) {
         await cacheManager.saveUserStatus(userInfo.status?.copyWith(
-          status: FortunicaUserStatusEnum.incomplete,
+          status: FortunicaUserStatus.incomplete,
         ));
       } else {
         await cacheManager.saveUserStatus(userInfo.status);
@@ -99,15 +99,13 @@ class AccountCubit extends Cubit<AccountState> {
   }
 
   Future<void> updateUserStatus(
-      {required FortunicaUserStatusEnum status}) async {
+      {required FortunicaUserStatus status}) async {
     final UpdateUserStatusRequest request = UpdateUserStatusRequest(
       status: status,
       comment: commentController.text,
     );
-    final UserInfo userInfo = await _userRepository.updateUserStatus(request);
-    refreshUserinfo(
-      info: userInfo,
-    );
+    await _userRepository.updateUserStatus(request);
+    refreshUserinfo();
   }
 
   Future<void> updateEnableNotificationsValue(bool newValue) async {
