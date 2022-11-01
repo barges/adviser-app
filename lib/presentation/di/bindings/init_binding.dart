@@ -9,7 +9,7 @@ import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
 import 'package:shared_advisor_interface/data/network/api/customer_api.dart';
-import 'package:shared_advisor_interface/data/network/api/sessions_api.dart';
+import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
 import 'package:shared_advisor_interface/data/network/api/user_api.dart';
 import 'package:shared_advisor_interface/data/repositories/auth_repository_impl.dart';
 import 'package:shared_advisor_interface/data/repositories/customer_repository_impl.dart';
@@ -39,8 +39,8 @@ class InitBinding extends Bindings {
 
     ///APIs
     final AuthApi authApi = Get.put<AuthApi>(AuthApi(dio), permanent: true);
-    final SessionsApi sessionsApi =
-        Get.put<SessionsApi>(SessionsApi(dio), permanent: true);
+    final ChatsApi sessionsApi =
+        Get.put<ChatsApi>(ChatsApi(dio), permanent: true);
     final UserApi userApi = Get.put<UserApi>(UserApi(dio), permanent: true);
     final CustomerApi customerApi =
         Get.put<CustomerApi>(CustomerApi(dio), permanent: true);
@@ -51,8 +51,8 @@ class InitBinding extends Bindings {
           authApi,
         ),
         permanent: true);
-    Get.put<SessionsRepository>(
-        SessionsRepositoryImpl(
+    Get.put<ChatsRepository>(
+        ChatsRepositoryImpl(
           sessionsApi,
         ),
         permanent: true);

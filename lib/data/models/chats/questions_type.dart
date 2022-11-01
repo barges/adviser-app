@@ -7,4 +7,6 @@ enum QuestionsType {
   history,
   @JsonValue("PUBLIC")
   public,
+  @JsonValue("RITUAL")
+  ritual,
 }

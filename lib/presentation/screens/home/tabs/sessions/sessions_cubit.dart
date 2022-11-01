@@ -10,7 +10,7 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_state.dart';
 
 class SessionsCubit extends Cubit<SessionsState> {
-  final SessionsRepository _repository = Get.find<SessionsRepository>();
+  final ChatsRepository _repository = Get.find<ChatsRepository>();
   final CachingManager cacheManager;
   final ScrollController controller = ScrollController();
   final MainCubit mainCubit = Get.find<MainCubit>();
