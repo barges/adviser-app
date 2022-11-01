@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="freshchat_file_provider_authority">com.adviqo.shared_advisor_interface.provider</string>
+    <string name="freshchat_file_provider_authority">com.questico.fortunica.readerapp.provider</string>
 
 <!--    <string name="facebook_app_id">333040180504214</string>-->
 

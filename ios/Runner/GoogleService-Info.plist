@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>722451065852-sl2ndta5bmq5bhjsoa3pmlbtifjv25e4.apps.googleusercontent.com</string>
+	<string>986930839057-2mk4d7u8un9cki4f2fg431sbk1b4kpjt.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.722451065852-sl2ndta5bmq5bhjsoa3pmlbtifjv25e4</string>
+	<string>com.googleusercontent.apps.986930839057-2mk4d7u8un9cki4f2fg431sbk1b4kpjt</string>
 	<key>API_KEY</key>
-	<string>AIzaSyC0-X5cmEkB8Z6NY4uK2sLfq4u5AHBp-ik</string>
+	<string>AIzaSyCj0OVmpL96tU3WQLYJjqgCh6Af2gEoMa0</string>
 	<key>GCM_SENDER_ID</key>
-	<string>722451065852</string>
+	<string>986930839057</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.adviqo.sharedAdvisorInterface</string>
+	<string>com.adviqo.readerapp</string>
 	<key>PROJECT_ID</key>
-	<string>advisor-shared-interface</string>
+	<string>reader-app-fortunica</string>
 	<key>STORAGE_BUCKET</key>
-	<string>advisor-shared-interface.appspot.com</string>
+	<string>reader-app-fortunica.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:722451065852:ios:de6f6f604892f83b802079</string>
+	<string>1:986930839057:ios:931a04b3aeb905de5cbbb0</string>
 </dict>
 </plist>

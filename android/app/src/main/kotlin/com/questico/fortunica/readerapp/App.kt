@@ -1,4 +1,4 @@
-package com.adviqo.shared_advisor_interface
+package com.questico.fortunica.readerapp
 
 import android.app.Application
 

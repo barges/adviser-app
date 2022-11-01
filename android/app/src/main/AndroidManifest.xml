@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.adviqo.shared_advisor_interface">
+    package="com.questico.fortunica.readerapp">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name = "android.permission.CAMERA" />
@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
    <application
-        android:label="shared_advisor_interface"
+        android:label="Advisor App"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
