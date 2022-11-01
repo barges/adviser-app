@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:blur/blur.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -12,66 +13,81 @@ class PerformanceMOMAWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppConstants.horizontalScreenPadding),
-      decoration: BoxDecoration(
-          color: Get.theme.canvasColor,
-          borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+    return Blur(
+      blur: 5.0,
+      overlay: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const _PerformanceMOMAPercentageIndicatorWidget(
-                  percentageValue: 50),
-              const SizedBox(width: 18.0),
-              Expanded(
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(S.of(context).customers,
-                            style: Get.textTheme.titleMedium
-                                ?.copyWith(fontWeight: FontWeight.w700)),
-                        AppIconButton(icon: Assets.vectors.arrowRight.path)
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 9.0, bottom: 8.0),
-                      child: Text(
-                        S
-                            .of(context)
-                            .customersComeBackToYouAfterBuyingFirstSessionPlatform,
-                        style: Get.textTheme.labelMedium?.copyWith(
-                          fontWeight: FontWeight.w400,
-                          color: Get.theme.shadowColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          const SizedBox(height: 8.0),
-          Row(
-            children: [
-              _PerformanceMOMAInfoWidget(
-                  increaseValue: 2,
-                  totalValue: 5,
-                  rectangleColor: Get.theme.primaryColor,
-                  infoTitle: S.of(context).newUsers),
-              const SizedBox(width: 8.0),
-              _PerformanceMOMAInfoWidget(
-                  increaseValue: 2,
-                  totalValue: 5,
-                  rectangleColor: Get.theme.primaryColor.withOpacity(.4),
-                  infoTitle: S.of(context).loyalUsers),
-            ],
+          Text(
+            S.of(context).comingSoon,
+            style: const TextStyle(
+                fontFamily: 'Headline Bold',
+                fontWeight: FontWeight.w700,
+                fontSize: 16.0),
           )
         ],
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(AppConstants.horizontalScreenPadding),
+        decoration: BoxDecoration(
+            color: Get.theme.canvasColor,
+            borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const _PerformanceMOMAPercentageIndicatorWidget(
+                    percentageValue: 50),
+                const SizedBox(width: 18.0),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(S.of(context).customers,
+                              style: Get.textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.w700)),
+                          AppIconButton(icon: Assets.vectors.arrowRight.path)
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 9.0, bottom: 8.0),
+                        child: Text(
+                          S
+                              .of(context)
+                              .customersComeBackToYouAfterBuyingFirstSessionPlatform,
+                          style: Get.textTheme.labelMedium?.copyWith(
+                            fontWeight: FontWeight.w400,
+                            color: Get.theme.shadowColor,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 8.0),
+            Row(
+              children: [
+                _PerformanceMOMAInfoWidget(
+                    increaseValue: 2,
+                    totalValue: 5,
+                    rectangleColor: Get.theme.primaryColor,
+                    infoTitle: S.of(context).newUsers),
+                const SizedBox(width: 8.0),
+                _PerformanceMOMAInfoWidget(
+                    increaseValue: 2,
+                    totalValue: 5,
+                    rectangleColor: Get.theme.primaryColor.withOpacity(.4),
+                    infoTitle: S.of(context).loyalUsers),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

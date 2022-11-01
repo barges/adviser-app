@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -29,8 +30,8 @@ class PerformanceDashboardWidget extends StatelessWidget {
               S.of(context).thisWeek,
               S.of(context).thisMonth
             ],
-            currentIndex: context.select(
-                (DashboardCubit cubit) => cubit.state.dashboardDateFilterIndex),
+            currentIndex:
+                2, //context.select((DashboardCubit cubit) => cubit.state.dashboardDateFilterIndex),
             onChangeOptionIndex:
                 context.read<DashboardCubit>().updateDashboardDateFilterIndex,
           ),
@@ -41,23 +42,29 @@ class PerformanceDashboardWidget extends StatelessWidget {
           ),
           Row(
             children: [
-              Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('\$ ${(587.60).parseValueToCurrencyFormat}',
-                      style: Get.textTheme.labelLarge),
-                  Row(
-                    children: [
-                      _PerformancePropertyInfo(
-                          title: S.of(context).newCustomers, info: 6),
-                      const SizedBox(width: 8.0),
-                      _PerformancePropertyInfo(
-                          title: S.of(context).sales, info: 98),
-                    ],
-                  )
-                ],
-              )),
+              Builder(builder: (context) {
+                final double monthAmount = context
+                    .select((DashboardCubit cubit) => cubit.state.monthAmount);
+                return Expanded(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('\$ ${monthAmount.parseValueToCurrencyFormat}',
+                        style: Get.textTheme.labelLarge),
+                    /**
+                        Row(
+                          children: [
+                            _PerformancePropertyInfo(
+                                title: S.of(context).newCustomers, info: 6),
+                            const SizedBox(width: 8.0),
+                            _PerformancePropertyInfo(
+                                title: S.of(context).sales, info: 98),
+                          ],
+                        )
+                      */
+                  ],
+                ));
+              }),
               AppIconButton(icon: Assets.vectors.arrowRight.path)
             ],
           ),
