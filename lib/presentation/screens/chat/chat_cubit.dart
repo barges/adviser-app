@@ -18,10 +18,12 @@ class ChatCubit extends Cubit<ChatState> {
   FlutterSoundPlayer? _playerMedia;
 
   ChatCubit(this.repository, this.question) : super(const ChatState()) {
-    init();
+    _init();
   }
 
-  Future<void> init() async {
+  Future<void> _init() async {
+    await _initAudioSession();
+
     const logLevel = Level.nothing;
     _recorder = await FlutterSoundRecorder(logLevel: logLevel).openRecorder();
     _playerRecorded = await FlutterSoundPlayer(logLevel: logLevel).openPlayer();
@@ -39,6 +41,17 @@ class ChatCubit extends Cubit<ChatState> {
       const Duration(milliseconds: 100),
     );
 
+    /*dynamic result = await repository.getQuestionsHistory(
+        expertID:
+            '39726a57734b49a530639cc8115eb863e3f064fc16c2955384770462efb5e44b',
+        clientID: question.clientID!,
+        offset: 0,
+        limit: 50);
+    print('result:');
+    print(result);*/
+  }
+
+  Future<void> _initAudioSession() async {
     final session = await AudioSession.instance;
     await session.configure(AudioSessionConfiguration(
       avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
@@ -57,15 +70,6 @@ class ChatCubit extends Cubit<ChatState> {
       androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
       androidWillPauseWhenDucked: true,
     ));
-
-    /*dynamic result = await repository.getQuestionsHistory(
-        expertID:
-            '39726a57734b49a530639cc8115eb863e3f064fc16c2955384770462efb5e44b',
-        clientID: question.clientID!,
-        offset: 0,
-        limit: 50);
-    print('result:');
-    print(result);*/
   }
 
   Future<void> startRecordingAudio() async {
