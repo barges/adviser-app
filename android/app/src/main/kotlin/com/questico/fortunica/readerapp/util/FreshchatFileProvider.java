@@ -1,4 +1,4 @@
-package com.adviqo.shared_advisor_interface.util;
+package com.questico.fortunica.readerapp.util;
 
 import androidx.core.content.FileProvider;
 

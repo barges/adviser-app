@@ -91,7 +91,7 @@ class ReviewsSettingsPartWidget extends StatelessWidget {
               title: S.of(context).settings,
               iconSVGPath: Assets.vectors.settings.path,
               withError:
-                  currentStatus.status == FortunicaUserStatusEnum.legalBlock,
+                  currentStatus.status == FortunicaUserStatus.legalBlock,
             );
           })
         ],

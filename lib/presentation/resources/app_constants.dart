@@ -9,4 +9,7 @@ class AppConstants {
   static const int secondsInHour = 3600;
   static const String webToolUrl = 'https://advisor-staging.fortunica-app.com';
   static const String baseUrl = 'https://api-staging.fortunica-app.com';
+
+  ///DEV
+  //static const String baseUrl = 'https://fortunica-backend-for-2268.fortunica.adviqodev.de';
 }

@@ -208,7 +208,7 @@ class DataCachingManager implements CachingManager {
   }
 
   @override
-  Future<void> updateUserStatusByStatus(FortunicaUserStatusEnum status) async {
+  Future<void> updateUserStatusByStatus(FortunicaUserStatus status) async {
     UserStatus? userStatus = getUserStatus();
     await _userBox.write(
       _userStatusKey,
