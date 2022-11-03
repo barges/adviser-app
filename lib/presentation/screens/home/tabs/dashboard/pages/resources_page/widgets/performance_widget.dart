@@ -25,14 +25,15 @@ class PerformanceDashboardWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          ChooseOptionWidget(
+          //TODO - Replace with ChooseOptionWidget later
+          _DisabledChooseOptionWidget(
             options: [
-              //S.of(context).today,
-              //S.of(context).thisWeek,
+              S.of(context).today,
+              S.of(context).thisWeek,
               S.of(context).thisMonth
             ],
             currentIndex:
-                0, //context.select((DashboardCubit cubit) => cubit.state.dashboardDateFilterIndex),
+                2, //context.select((DashboardCubit cubit) => cubit.state.dashboardDateFilterIndex),
             onChangeOptionIndex:
                 context.read<DashboardCubit>().updateDashboardDateFilterIndex,
           ),
@@ -115,6 +116,68 @@ class _PerformancePropertyInfo extends StatelessWidget {
           style: Get.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500),
         )
       ]),
+    );
+  }
+}
+
+//TODO - Delete this temporary widget later
+class _DisabledChooseOptionWidget extends StatelessWidget {
+  final List<String> options;
+  final int currentIndex;
+  final ValueChanged<int>? onChangeOptionIndex;
+
+  const _DisabledChooseOptionWidget({
+    Key? key,
+    required this.options,
+    required this.currentIndex,
+    required this.onChangeOptionIndex,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+          color: Get.theme.scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: options
+            .mapIndexed(
+              (element, index) => Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    if (onChangeOptionIndex != null) {
+                      onChangeOptionIndex!(index);
+                    }
+                  },
+                  child: Opacity(
+                    opacity: index == currentIndex ? 1.0 : 0.4,
+                    child: Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(vertical: 6.0),
+                      decoration: BoxDecoration(
+                          color: currentIndex == index
+                              ? Get.theme.primaryColor
+                              : Colors.transparent,
+                          borderRadius:
+                              BorderRadius.circular(AppConstants.buttonRadius)),
+                      child: Text(
+                        element,
+                        style: Get.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: currentIndex == index
+                              ? Get.theme.backgroundColor
+                              : Get.theme.primaryColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            )
+            .toList(),
+      ),
     );
   }
 }
