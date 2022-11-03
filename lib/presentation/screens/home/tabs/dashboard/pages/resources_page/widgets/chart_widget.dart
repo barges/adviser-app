@@ -85,13 +85,7 @@ class _ChartWidgetState extends State<ChartWidget> {
                     height: 68.0,
                     state: ChartState(
                       ChartData.fromList(
-                          _lst
-                              .map((e) => CandleValue<void>(
-                                  maximumValue! * 0.117,
-                                  maximumValue! * 0.117 > e.value
-                                      ? maximumValue! * 0.147
-                                      : e.value))
-                              .toList(),
+                          _lst.map((e) => BarValue<void>(e.value)).toList(),
                           axisMax: maximumValue!),
                       behaviour: ChartBehaviour(
                           isScrollable: true,
@@ -109,8 +103,6 @@ class _ChartWidgetState extends State<ChartWidget> {
                                   ? Get.theme.primaryColor
                                   : defaultColor)),
                       backgroundDecorations: [
-                        TargetLineDecoration(
-                            target: 0, targetLineColor: Get.theme.hintColor),
                         HorizontalAxisDecoration(
                           showLines: false,
                           endWithChart: false,
@@ -118,8 +110,9 @@ class _ChartWidgetState extends State<ChartWidget> {
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 8.0,
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    child: Divider(height: 1.0),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
