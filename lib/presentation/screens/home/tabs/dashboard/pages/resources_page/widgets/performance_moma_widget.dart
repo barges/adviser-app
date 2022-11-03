@@ -14,17 +14,15 @@ class PerformanceMOMAWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Blur(
-      blur: 5.0,
+      blur: 2.0,
       overlay: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             S.of(context).comingSoon,
-            style: const TextStyle(
-                fontFamily: 'Headline Bold',
-                fontWeight: FontWeight.w700,
-                fontSize: 16.0),
-          )
+            style: Get.textTheme.displayLarge
+                ?.copyWith(fontWeight: FontWeight.w800),
+          ),
         ],
       ),
       child: Container(

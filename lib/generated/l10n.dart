@@ -1209,6 +1209,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Avg Daily Earnings`
+  String get avgDailyEarnings {
+    return Intl.message(
+      'Avg Daily Earnings',
+      name: 'avgDailyEarnings',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

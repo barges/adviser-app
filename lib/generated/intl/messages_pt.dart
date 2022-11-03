@@ -42,6 +42,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Are you sure that you want to change your status to Offline?"),
         "articles": MessageLookupByLibrary.simpleMessage("Artigos"),
         "ascendant": MessageLookupByLibrary.simpleMessage("Ascendente"),
+        "avgDailyEarnings":
+            MessageLookupByLibrary.simpleMessage("Avg Daily Earnings"),
         "back": MessageLookupByLibrary.simpleMessage("De volta"),
         "balanceTransactions":
             MessageLookupByLibrary.simpleMessage("Saldo e transações"),

@@ -9,6 +9,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard/dashboard_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard/pages/resources_page/widgets/chart_widget.dart';
 
 class PerformanceDashboardWidget extends StatelessWidget {
   const PerformanceDashboardWidget({Key? key}) : super(key: key);
@@ -26,12 +27,12 @@ class PerformanceDashboardWidget extends StatelessWidget {
         children: [
           ChooseOptionWidget(
             options: [
-              S.of(context).today,
-              S.of(context).thisWeek,
+              //S.of(context).today,
+              //S.of(context).thisWeek,
               S.of(context).thisMonth
             ],
             currentIndex:
-                2, //context.select((DashboardCubit cubit) => cubit.state.dashboardDateFilterIndex),
+                0, //context.select((DashboardCubit cubit) => cubit.state.dashboardDateFilterIndex),
             onChangeOptionIndex:
                 context.read<DashboardCubit>().updateDashboardDateFilterIndex,
           ),
@@ -68,6 +69,12 @@ class PerformanceDashboardWidget extends StatelessWidget {
               AppIconButton(icon: Assets.vectors.arrowRight.path)
             ],
           ),
+          const Padding(
+            padding: EdgeInsets.symmetric(
+                vertical: AppConstants.horizontalScreenPadding),
+            child: Divider(height: 1.0),
+          ),
+          const ChartWidget()
         ],
       ),
     );
