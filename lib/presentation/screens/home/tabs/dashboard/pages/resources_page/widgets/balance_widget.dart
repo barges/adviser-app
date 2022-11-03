@@ -9,6 +9,7 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard/dashboard_cubit.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
@@ -100,7 +101,10 @@ class BalanceWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                AppIconButton(icon: Assets.vectors.arrowRight.path)
+                AppIconButton(
+                  icon: Assets.vectors.arrowRight.path,
+                  onTap: () => Get.toNamed(AppRoutes.balanceAndTransactions),
+                )
               ],
             ),
             const Padding(

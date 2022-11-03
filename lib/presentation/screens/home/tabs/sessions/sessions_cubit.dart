@@ -28,6 +28,8 @@ class SessionsCubit extends Cubit<SessionsState> {
       );
     });
     getListOfQuestions(state.currentOptionIndex);
+    emit(state.copyWith(
+        currentOptionIndex: Get.arguments['sessionScreenTab'] as int? ?? 0));
   }
 
   @override

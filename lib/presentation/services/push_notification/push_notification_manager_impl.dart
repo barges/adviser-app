@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 
 bool _isRegisteredForPushNotifications = false;
@@ -31,7 +33,7 @@ class PushNotificationManagerImpl implements PushNotificationManager {
     var initializationSettingsAndroid =
         const AndroidInitializationSettings('mipmap/ic_launcher');
     var initializationSettingsIOS = const DarwinInitializationSettings();
-    var initializationSettings =  InitializationSettings(
+    var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse: (response) async {
@@ -97,11 +99,26 @@ Future<void> _navigateToNextScreen(RemoteMessage? message) async {
     Map<String, dynamic> data = message.data;
     logger.d(data);
 
-    // String type;
-    // if (data['type'] != null) {
-    //   type = data['type'];
-    // } else {
-    //   type = data['data']['type'];
-    // }
+    String type;
+    if (data['type'] != null) {
+      type = data['type'];
+    } else {
+      type = data['data']['type'];
+    }
+
+    switch (type) {
+      case 'session':
+        Get.toNamed(AppRoutes.home, arguments: <String, int>{
+          'homeScreenTab': 2,
+          'sessionScreenTap': 0
+        });
+        break;
+      case 'private':
+        Get.toNamed(AppRoutes.home, arguments: <String, int>{
+          'homeScreenTab': 2,
+          'sessionScreenTap': 1
+        });
+        break;
+    }
   }
 }

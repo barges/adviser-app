@@ -34,6 +34,8 @@ class HomeCubit extends Cubit<HomeState> {
     });
     _pushNotificationManager.registerForPushNotifications();
     _sendPushToken();
+    emit(state.copyWith(
+        tabPositionIndex: Get.arguments['homeScreenTab'] as int? ?? 0));
   }
 
   StreamSubscription<bool>? _connectivitySubscription;

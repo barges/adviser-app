@@ -29,14 +29,13 @@ class SessionsScreen extends StatelessWidget {
           SessionsCubit(Get.find<CachingManager>()),
       child: Builder(builder: (BuildContext context) {
         final bool isOnline = context.select(
-                (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
+            (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
 
         final UserStatus userStatus =
-        context.select((HomeCubit cubit) => cubit.state.userStatus);
+            context.select((HomeCubit cubit) => cubit.state.userStatus);
         final SessionsCubit sessionsCubit = context.read<SessionsCubit>();
 
-        final bool statusIsLive =
-            userStatus.status == FortunicaUserStatus.live;
+        final bool statusIsLive = userStatus.status == FortunicaUserStatus.live;
 
         return Scaffold(
           backgroundColor: isOnline
@@ -54,16 +53,12 @@ class SessionsScreen extends StatelessWidget {
                     Expanded(
                       child: Builder(builder: (context) {
                         final int currentIndex = context.select(
-                                (SessionsCubit cubit) =>
-                            cubit.state.currentOptionIndex);
+                            (SessionsCubit cubit) =>
+                                cubit.state.currentOptionIndex);
                         return ChooseOptionWidget(
                           options: [
-                            S
-                                .of(context)
-                                .public,
-                            S
-                                .of(context)
-                                .forMe,
+                            S.of(context).public,
+                            S.of(context).forMe,
                           ],
                           currentIndex: currentIndex,
                           onChangeOptionIndex: isOnline && statusIsLive
@@ -130,8 +125,7 @@ class _QuestionsListWidget extends StatelessWidget {
                 color: Get.theme.canvasColor,
                 child: Builder(builder: (context) {
                   final int selectedFilterIndex = context.select(
-                          (SessionsCubit cubit) =>
-                      cubit.state.selectedFilterIndex);
+                      (SessionsCubit cubit) => cubit.state.selectedFilterIndex);
                   return ListOfFiltersWidget(
                     currentFilterIndex: selectedFilterIndex,
                     filters: filters,
@@ -148,7 +142,7 @@ class _QuestionsListWidget extends StatelessWidget {
           Builder(
             builder: (context) {
               final SessionsState state =
-              context.select((SessionsCubit cubit) => cubit.state);
+                  context.select((SessionsCubit cubit) => cubit.state);
               return Column(mainAxisSize: MainAxisSize.min, children: [
                 Padding(
                   padding: const EdgeInsets.all(
@@ -177,7 +171,7 @@ class _NotLiveStatusWidget extends StatelessWidget {
     final HomeCubit homeCubit = context.read<HomeCubit>();
     return Padding(
       padding: const EdgeInsets.symmetric(
-       horizontal: AppConstants.horizontalScreenPadding,
+        horizontal: AppConstants.horizontalScreenPadding,
       ),
       child: CustomScrollView(
         slivers: [
@@ -192,13 +186,13 @@ class _NotLiveStatusWidget extends StatelessWidget {
                       children: [
                         Get.isDarkMode
                             ? Assets.images.logos.noConnectionLogoDark.image(
-                          height: AppConstants.logoSize,
-                          width: AppConstants.logoSize,
-                        )
+                                height: AppConstants.logoSize,
+                                width: AppConstants.logoSize,
+                              )
                             : Assets.images.logos.noConnectionLogo.image(
-                          height: AppConstants.logoSize,
-                          width: AppConstants.logoSize,
-                        ),
+                                height: AppConstants.logoSize,
+                                width: AppConstants.logoSize,
+                              ),
                         const SizedBox(
                           height: 24.0,
                         ),
