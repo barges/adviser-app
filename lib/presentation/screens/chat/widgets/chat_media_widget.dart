@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/media_message.dart';
+import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 
 class ChatMediaWidget extends StatelessWidget {
   final MediaMessage mediaMessage;
+  final SessionsTypes sessionsType;
   final VoidCallback? onStartPlayPressed;
   final VoidCallback? onPausePlayPressed;
   final Stream<PlaybackDisposition>? playbackStream;
@@ -14,6 +20,7 @@ class ChatMediaWidget extends StatelessWidget {
   const ChatMediaWidget({
     Key? key,
     required this.mediaMessage,
+    required this.sessionsType,
     this.onStartPlayPressed,
     this.onPausePlayPressed,
     this.playbackStream,
@@ -24,30 +31,25 @@ class ChatMediaWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        left: 40.0,
-        right: 8.0,
-        top: 4.0,
-        bottom: 4.0,
-      ),
+      padding: const EdgeInsets.fromLTRB(47.0, 4.0, 12.0, 4.0),
       child: Container(
         padding: const EdgeInsets.symmetric(
-          vertical: 12.0,
-          horizontal: 14.0,
+          vertical: 10.0,
+          horizontal: 12.0,
         ),
         decoration: BoxDecoration(
           color: Get.theme.primaryColor,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
         ),
         child: Row(
           children: [
-            PlayPauseBtn(
+            _PlayPauseBtn(
               isPlaying: isPlaying,
               onStartPlayPressed: onStartPlayPressed,
               onPausePlayPressed: onPausePlayPressed,
             ),
             const SizedBox(
-              width: 10.0,
+              width: 12.0,
             ),
             Expanded(
               child: Row(
@@ -69,43 +71,42 @@ class ChatMediaWidget extends StatelessWidget {
                                     .toString()
                                     .substring(2, 7)
                                 : "00:00";
-                            return PlayProgress(
+                            return _PlayProgress(
                               value: value,
                               time: time,
                             );
                           },
                         ),
                         const SizedBox(
-                          height: 8.0,
+                          height: 9.0,
                         ),
                         Row(
                           children: [
                             const Spacer(),
                             Text(
-                              'Card riading',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w400,
+                              sessionsType.sessionName,
+                              style: Get.textTheme.bodySmall?.copyWith(
                                 color: Get.theme.primaryColorLight,
+                                fontSize: 12.0,
                               ),
                             ),
                             const SizedBox(
-                              width: 5.0,
+                              width: 6.5,
                             ),
-                            Assets.vectors.card.svg(
-                              height: 20.0,
-                              fit: BoxFit.fitHeight,
+                            SvgPicture.asset(
+                              sessionsType.iconPath,
+                              width: 16.0,
+                              height: 16.0,
                               color: Get.theme.primaryColorLight,
                             ),
                             const SizedBox(
-                              width: 10.0,
+                              width: 10.55,
                             ),
                             Text(
                               mediaMessage.duration.toString().substring(2, 7),
-                              style: TextStyle(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w400,
+                              style: Get.textTheme.bodySmall?.copyWith(
                                 color: Get.theme.primaryColorLight,
+                                fontSize: 12.0,
                               ),
                             ),
                           ],
@@ -123,11 +124,11 @@ class ChatMediaWidget extends StatelessWidget {
   }
 }
 
-class PlayPauseBtn extends StatelessWidget {
+class _PlayPauseBtn extends StatelessWidget {
   final bool isPlaying;
   final VoidCallback? onStartPlayPressed;
   final VoidCallback? onPausePlayPressed;
-  const PlayPauseBtn({
+  const _PlayPauseBtn({
     Key? key,
     this.isPlaying = false,
     this.onStartPlayPressed,
@@ -141,19 +142,19 @@ class PlayPauseBtn extends StatelessWidget {
         (isPlaying ? onPausePlayPressed : onStartPlayPressed)?.call();
       },
       child: Container(
-        width: 40.0,
-        height: 40.0,
+        width: 34.0,
+        height: 34.0,
         decoration: BoxDecoration(
           color: Get.theme.backgroundColor,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(20.0),
         ),
         child: isPlaying
             ? Assets.vectors.pause.svg(
-                fit: BoxFit.scaleDown,
+                fit: BoxFit.none,
                 color: Get.theme.primaryColor,
               )
             : Assets.vectors.play.svg(
-                fit: BoxFit.scaleDown,
+                fit: BoxFit.none,
                 color: Get.theme.primaryColor,
               ),
       ),
@@ -161,10 +162,10 @@ class PlayPauseBtn extends StatelessWidget {
   }
 }
 
-class PlayProgress extends StatelessWidget {
+class _PlayProgress extends StatelessWidget {
   final double value;
   final String time;
-  const PlayProgress({
+  const _PlayProgress({
     Key? key,
     required this.value,
     required this.time,
@@ -177,28 +178,19 @@ class PlayProgress extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              width: 48.0,
-              child: Text(
-                time,
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w400,
-                  color: Get.theme.backgroundColor,
-                ),
+            Text(
+              time,
+              style: Get.textTheme.bodySmall?.copyWith(
+                color: Get.theme.backgroundColor,
+                fontSize: 12.0,
               ),
             ),
             const Spacer(),
-            SizedBox(
-              width: 48.0,
-              child: Text(
-                time,
-                textAlign: TextAlign.end,
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w400,
-                  color: Get.theme.backgroundColor,
-                ),
+            Text(
+              time,
+              style: Get.textTheme.bodySmall?.copyWith(
+                color: Get.theme.backgroundColor,
+                fontSize: 12.0,
               ),
             ),
           ],

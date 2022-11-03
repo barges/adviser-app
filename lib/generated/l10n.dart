@@ -1209,6 +1209,26 @@ class S {
       args: [],
     );
   }
+
+  /// `from 15 sec to 3 min`
+  String get from15secto3min {
+    return Intl.message(
+      'from 15 sec to 3 min',
+      name: 'from15secto3min',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type message`
+  String get typemessage {
+    return Intl.message(
+      'Type message',
+      name: 'typemessage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

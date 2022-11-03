@@ -51,13 +51,13 @@ class ChatConversationAppBar extends StatelessWidget
                   if (selectedBrand != null)
                     SvgPicture.asset(
                       selectedBrand!.icon,
-                      height: 17,
+                      height: 17.0,
                     ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 12.0),
                   Text(
                     title,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 16.0,
                       color: Get.theme.hoverColor,
                       fontWeight: FontWeight.w700,
                     ),
@@ -67,7 +67,7 @@ class ChatConversationAppBar extends StatelessWidget
               Text(
                 "Paid Chat ${question.updatedAt?.parseDateTimeChat}",
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 12.0,
                   fontWeight: FontWeight.w200,
                   color: Get.theme.shadowColor,
                 ),

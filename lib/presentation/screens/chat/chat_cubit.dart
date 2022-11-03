@@ -21,6 +21,20 @@ class ChatCubit extends Cubit<ChatState> {
     _init();
   }
 
+  @override
+  Future<void> close() {
+    _recorder?.closeRecorder();
+    _recorder = null;
+
+    _playerRecorded?.closePlayer();
+    _playerRecorded = null;
+
+    _playerMedia?.closePlayer();
+    _playerMedia = null;
+
+    return super.close();
+  }
+
   Future<void> _init() async {
     await _initAudioSession();
 
@@ -257,18 +271,4 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Stream<PlaybackDisposition>? get onMediaProgress => _playerMedia?.onProgress;
-
-  @override
-  Future<void> close() {
-    _recorder?.closeRecorder();
-    _recorder = null;
-
-    _playerRecorded?.closePlayer();
-    _playerRecorded = null;
-
-    _playerMedia?.closePlayer();
-    _playerMedia = null;
-
-    return super.close();
-  }
 }

@@ -89,6 +89,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "forgotYourPassword":
             MessageLookupByLibrary.simpleMessage("Forgot your password"),
         "fortunica": MessageLookupByLibrary.simpleMessage("Fortunica"),
+        "from15secto3min":
+            MessageLookupByLibrary.simpleMessage("from 15 sec to 3 min"),
         "imAvailableNow":
             MessageLookupByLibrary.simpleMessage("I\'m available now"),
         "informOurTeamYourPlannedReturnDate":
@@ -166,6 +168,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "topSpender": MessageLookupByLibrary.simpleMessage("Top spender"),
         "total": MessageLookupByLibrary.simpleMessage("Total"),
         "totalMarkets": MessageLookupByLibrary.simpleMessage("Total markets"),
+        "typemessage": MessageLookupByLibrary.simpleMessage("Type message"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others"),

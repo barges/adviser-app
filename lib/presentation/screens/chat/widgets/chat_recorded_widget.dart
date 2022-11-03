@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 
 class ChatRecordedWidget extends StatelessWidget {
+  final VoidCallback? onPhotoPressed;
   final VoidCallback? onStartPlayPressed;
   final VoidCallback? onPausePlayPressed;
   final VoidCallback? onDeletePressed;
@@ -14,6 +17,7 @@ class ChatRecordedWidget extends StatelessWidget {
 
   const ChatRecordedWidget({
     Key? key,
+    this.onPhotoPressed,
     this.onStartPlayPressed,
     this.onPausePlayPressed,
     this.onDeletePressed,
@@ -25,46 +29,43 @@ class ChatRecordedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        top: 5.0,
-        left: 25.0,
-        right: 25.0,
-      ),
+      padding: const EdgeInsets.fromLTRB(24.0, 6.0, 24.0, 6.0),
       child: Row(
         children: [
           GestureDetector(
-            onTap: null, //onPhotoPressed,
-            child: Assets.vectors.photo.svg(),
+            onTap: onPhotoPressed,
+            child: Assets.vectors.photo.svg(width: AppConstants.iconSize),
+          ),
+          SizedBox(
+            height: 28.0,
+            child: VerticalDivider(
+              width: 24.0,
+              color: Get.theme.dividerColor,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(
-              left: 8.0,
-              right: 13.0,
+              left: 5.0,
+              right: 17.0,
             ),
-            child: SizedBox(
-              height: 37.0,
-              child: VerticalDivider(
-                thickness: 1,
-                color: Get.theme.dividerColor,
-              ),
-            ),
+            child: Assets.vectors.microphone.svg(width: AppConstants.iconSize),
           ),
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.all(4.0),
               decoration: BoxDecoration(
                 color: Get.theme.scaffoldBackgroundColor,
-                borderRadius: BorderRadius.circular(12.0),
+                borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
               ),
               child: Row(
                 children: [
-                  PlayPauseBtn(
+                  _PlayPauseBtn(
                     isPlaying: isPlaying,
                     onStartPlayPressed: onStartPlayPressed,
                     onPausePlayPressed: onPausePlayPressed,
                   ),
                   const SizedBox(
-                    width: 10.0,
+                    width: 8.0,
                   ),
                   Expanded(
                     child: Row(
@@ -84,7 +85,7 @@ class ChatRecordedWidget extends StatelessWidget {
                                           .toString()
                                           .substring(2, 7)
                                       : "00:00";
-                              return PlayProgress(
+                              return _PlayProgress(
                                 value: value,
                                 time: time,
                               );
@@ -95,11 +96,11 @@ class ChatRecordedWidget extends StatelessWidget {
                           onTap: onDeletePressed,
                           child: Padding(
                             padding: const EdgeInsets.only(
-                              left: 2.0,
-                              right: 8.0,
+                              left: 8.0,
+                              right: 4.0,
                             ),
                             child: Assets.vectors.delete.svg(
-                                fit: BoxFit.scaleDown,
+                                width: AppConstants.iconSize,
                                 color: Get.theme.shadowColor),
                           ),
                         ),
@@ -116,8 +117,7 @@ class ChatRecordedWidget extends StatelessWidget {
           GestureDetector(
             onTap: onSendPressed,
             child: Assets.images.send.image(
-              fit: BoxFit.fitWidth,
-              width: 35.0,
+              width: AppConstants.iconButtonSize,
             ),
           )
         ],
@@ -126,11 +126,11 @@ class ChatRecordedWidget extends StatelessWidget {
   }
 }
 
-class PlayPauseBtn extends StatelessWidget {
+class _PlayPauseBtn extends StatelessWidget {
   final bool isPlaying;
   final VoidCallback? onStartPlayPressed;
   final VoidCallback? onPausePlayPressed;
-  const PlayPauseBtn({
+  const _PlayPauseBtn({
     Key? key,
     this.isPlaying = false,
     this.onStartPlayPressed,
@@ -144,19 +144,19 @@ class PlayPauseBtn extends StatelessWidget {
         (isPlaying ? onPausePlayPressed : onStartPlayPressed)?.call();
       },
       child: Container(
-        width: 34.0,
-        height: 34.0,
+        width: AppConstants.iconButtonSize,
+        height: AppConstants.iconButtonSize,
         decoration: BoxDecoration(
           color: Get.theme.primaryColor,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
         ),
         child: isPlaying
             ? Assets.vectors.pause.svg(
-                fit: BoxFit.scaleDown,
+                fit: BoxFit.none,
                 color: Get.theme.backgroundColor,
               )
             : Assets.vectors.play.svg(
-                fit: BoxFit.scaleDown,
+                fit: BoxFit.none,
                 color: Get.theme.backgroundColor,
               ),
       ),
@@ -164,10 +164,10 @@ class PlayPauseBtn extends StatelessWidget {
   }
 }
 
-class PlayProgress extends StatelessWidget {
+class _PlayProgress extends StatelessWidget {
   final double value;
   final String time;
-  const PlayProgress({
+  const _PlayProgress({
     Key? key,
     required this.value,
     required this.time,
@@ -186,15 +186,15 @@ class PlayProgress extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          width: 10.0,
+          width: 8.0,
         ),
         SizedBox(
-          width: 51.0,
+          width: 45.0,
           child: Text(
             time,
-            style: const TextStyle(
-              fontSize: 17.0,
-              fontWeight: FontWeight.w400,
+            textAlign: TextAlign.left,
+            style: Get.textTheme.bodyMedium?.copyWith(
+              color: Get.theme.hoverColor,
             ),
           ),
         ),

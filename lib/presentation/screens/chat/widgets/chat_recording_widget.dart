@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class ChatRecordingWidget extends StatelessWidget {
@@ -19,67 +21,65 @@ class ChatRecordingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        top: 8.0,
-        left: 25.0,
-        right: 25.0,
-      ),
+      padding: const EdgeInsets.fromLTRB(24.0, 10.0, 24.0, 10.0),
       child: Row(
         children: [
           GestureDetector(
             onTap: onClosePressed,
-            child: const Icon(
-              Icons.clear,
-              size: 25.0,
+            child: Assets.vectors.close.svg(
+              color: Get.theme.shadowColor,
             ),
           ),
           const Spacer(),
-          const Text(
-            "from 15 sec to 3 min",
-            style: TextStyle(
+          Text(
+            S.of(context).from15secto3min,
+            style: Get.textTheme.bodySmall?.copyWith(
               color: AppColors.online,
               fontSize: 12.0,
-              fontWeight: FontWeight.w400,
             ),
           ),
           const SizedBox(width: 8.0),
           Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: 6.0,
-              vertical: 2.0,
+              horizontal: 8.0,
+              vertical: 4.0,
             ),
             decoration: BoxDecoration(
               color: Get.theme.scaffoldBackgroundColor,
-              borderRadius: BorderRadius.circular(17),
+              borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
             ),
             child: Row(
               children: [
-                Assets.vectors.recording.svg(
-                  height: 12.0,
-                ),
-                const SizedBox(width: 3.0),
                 Container(
-                  width: 40.0,
-                  height: 22.0,
-                  alignment: Alignment.center,
-                  child: StreamBuilder<RecordingDisposition>(
-                      stream: recordingStream,
-                      builder: (_, snapshot) {
-                        final time = (snapshot.hasData && snapshot.data != null)
-                            ? snapshot.data!.duration.toString().substring(2, 7)
-                            : "00:00";
-                        return SizedBox(
-                          width: 42.0,
-                          child: Text(
-                            time,
-                            style: const TextStyle(
-                              fontSize: 13.0,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        );
-                      }),
+                  height: 8.0,
+                  width: 8.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Get.theme.errorColor,
+                    border: Border.all(
+                      width: 1.5,
+                      color: Get.theme.scaffoldBackgroundColor,
+                    ),
+                  ),
                 ),
+                const SizedBox(width: 4.0),
+                StreamBuilder<RecordingDisposition>(
+                    stream: recordingStream,
+                    builder: (_, snapshot) {
+                      final time = (snapshot.hasData && snapshot.data != null)
+                          ? snapshot.data!.duration.toString().substring(2, 7)
+                          : "00:00";
+                      return SizedBox(
+                        width: 45.0,
+                        child: Text(
+                          time,
+                          style: Get.textTheme.bodySmall?.copyWith(
+                            color: Get.theme.hoverColor,
+                            fontSize: 15.0,
+                          ),
+                        ),
+                      );
+                    }),
               ],
             ),
           ),
@@ -87,14 +87,14 @@ class ChatRecordingWidget extends StatelessWidget {
           GestureDetector(
             onTap: onStopRecordPressed,
             child: Container(
-              height: 34.0,
-              width: 34.0,
+              height: AppConstants.iconButtonSize,
+              width: AppConstants.iconButtonSize,
               decoration: BoxDecoration(
                 color: Get.theme.primaryColor,
-                borderRadius: BorderRadius.circular(12.0),
+                borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
               ),
               child: Assets.vectors.stop.svg(
-                fit: BoxFit.scaleDown,
+                fit: BoxFit.none,
                 color: Get.theme.backgroundColor,
               ),
             ),

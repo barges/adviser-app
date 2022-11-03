@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/models/chats/question.dart';
+import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
@@ -51,10 +52,11 @@ class ChatScreen extends StatelessWidget {
                             (ChatCubit cubit) =>
                                 cubit.state.isPlayingAudioFinished);
                         return ChatMediaWidget(
+                          mediaMessage: messages[index],
+                          sessionsType: SessionsTypes.ritual,
                           isPlaying: isCurrent && isPlayingAudio,
                           isPlayingFinished:
                               isCurrent ? isPlayingAudioFinished : true,
-                          mediaMessage: messages[index],
                           onStartPlayPressed: () {
                             chatCubit.startPlayAudio(audioPath);
                           },
@@ -72,7 +74,7 @@ class ChatScreen extends StatelessWidget {
                   Center(
                     child: Container(
                       color: Get.theme.canvasColor,
-                      height: 90.0,
+                      height: 86.0,
                     ),
                   ),
                   Builder(builder: (context) {
@@ -114,7 +116,6 @@ class ChatScreen extends StatelessWidget {
                   }),
                   Divider(
                     height: 1,
-                    thickness: 1,
                     color: Get.theme.hintColor,
                   ),
                 ],
