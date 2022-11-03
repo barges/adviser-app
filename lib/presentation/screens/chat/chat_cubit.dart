@@ -1,10 +1,17 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:logger/logger.dart';
+import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/data/models/chats/question.dart';
-import 'package:shared_advisor_interface/data/models/media_message.dart';
+import 'package:shared_advisor_interface/data/models/chats/media_message.dart';
+import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
+import 'package:shared_advisor_interface/data/network/requests/attachment_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'chat_state.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:audio_session/audio_session.dart';
@@ -57,12 +64,12 @@ class ChatCubit extends Cubit<ChatState> {
 
     /*dynamic result = await repository.getQuestionsHistory(
         expertID:
-            '39726a57734b49a530639cc8115eb863e3f064fc16c2955384770462efb5e44b',
+            '0ba684917ad77d2b7578d7f8b54797ca92c329e80898ff0fb7ea480d32bcb090',
         clientID: question.clientID!,
         offset: 0,
         limit: 50);
-    print('result:');
-    print(result);*/
+    logger.i('result:');
+    logger.i(result);*/
   }
 
   Future<void> _initAudioSession() async {
@@ -92,10 +99,10 @@ class ChatCubit extends Cubit<ChatState> {
       throw RecordingPermissionException('Microphone permission not granted');
     }
 
-    final recordingPath = 'audio_m_${Random().nextInt(10000000)}.mp4';
+    final fileName = 'audio_m_${Random().nextInt(10000000)}.mp4';
 
     await _recorder?.startRecorder(
-      toFile: recordingPath,
+      toFile: fileName,
       codec: Codec.aacMP4,
     );
 
@@ -108,7 +115,6 @@ class ChatCubit extends Cubit<ChatState> {
 
     emit(
       state.copyWith(
-        recordingPath: recordingPath,
         isAudioFileSaved: false,
         isRecordingAudio: true,
         recordingStream: _recorder?.onProgress,
@@ -117,11 +123,12 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> stopRecordingAudio() async {
-    String? url = await _recorder?.stopRecorder();
-    print("recorded: $url");
+    String? recordingPath = await _recorder?.stopRecorder();
+    logger.i("recorded: $recordingPath");
 
     emit(
       state.copyWith(
+        recordingPath: recordingPath!,
         isAudioFileSaved: true,
         isRecordingAudio: false,
       ),
@@ -206,6 +213,22 @@ class ChatCubit extends Cubit<ChatState> {
       duration: _audioDuration,
     ));
 
+    final String? mime = lookupMimeType(state.recordingPath);
+    File audiofile = File(state.recordingPath);
+    final List<int> audioBytes = await audiofile.readAsBytes();
+    final String base64Audio = base64Encode(audioBytes);
+    final Metadata meta = await MetadataRetriever.fromFile(audiofile);
+    logger.i('meta: ($meta)');
+    final request = AnswerRequest(
+        questionID: '5f60b99e094749001c9b4830',
+        ritualID: 'tarot',
+        content: 'Test',
+        attachments: [
+          AttachmentRequest(mime: mime, attachment: base64Audio, meta: '')
+        ]);
+    final response = await repository.sendAnswer(request);
+    logger.i('response:$response');
+
     emit(
       state.copyWith(
         isRecordingAudio: false,
@@ -219,6 +242,7 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> startPlayAudio(String audioPath) async {
     if (state.audioPath != audioPath) {
       await _playerMedia?.stopPlayer();
+
       emit(
         state.copyWith(
           isPlayingAudio: false,

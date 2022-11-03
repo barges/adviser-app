@@ -13,7 +13,7 @@ import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
 import 'package:shared_advisor_interface/data/network/api/user_api.dart';
 import 'package:shared_advisor_interface/data/repositories/auth_repository_impl.dart';
 import 'package:shared_advisor_interface/data/repositories/customer_repository_impl.dart';
-import 'package:shared_advisor_interface/data/repositories/sessions_repository_impl.dart';
+import 'package:shared_advisor_interface/data/repositories/chats_repository_impl.dart';
 import 'package:shared_advisor_interface/data/repositories/user_repository_impl.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/media_message.dart';
+import 'package:shared_advisor_interface/data/models/chats/media_message.dart';
 
 part 'chat_state.freezed.dart';
 

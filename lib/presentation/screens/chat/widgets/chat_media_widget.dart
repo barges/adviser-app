@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/models/media_message.dart';
+import 'package:shared_advisor_interface/data/models/chats/media_message.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 
 class ChatMediaWidget extends StatelessWidget {
   final MediaMessage mediaMessage;
