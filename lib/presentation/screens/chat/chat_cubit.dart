@@ -6,11 +6,14 @@ import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:logger/logger.dart';
 import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_advisor_interface/data/models/chats/answer.dart';
+import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
+import 'package:shared_advisor_interface/data/models/chats/history.dart';
 import 'package:shared_advisor_interface/data/models/chats/question.dart';
 import 'package:shared_advisor_interface/data/models/chats/media_message.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
-import 'package:shared_advisor_interface/data/network/requests/attachment_request.dart';
-import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
+import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
+import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'chat_state.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -26,6 +29,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   ChatCubit(this.repository, this.question) : super(const ChatState()) {
     _init();
+    _getConversations();
   }
 
   @override
@@ -61,15 +65,6 @@ class ChatCubit extends Cubit<ChatState> {
     await _playerMedia?.setSubscriptionDuration(
       const Duration(milliseconds: 100),
     );
-
-    /*dynamic result = await repository.getQuestionsHistory(
-        expertID:
-            '0ba684917ad77d2b7578d7f8b54797ca92c329e80898ff0fb7ea480d32bcb090',
-        clientID: question.clientID!,
-        offset: 0,
-        limit: 50);
-    logger.i('result:');
-    logger.i(result);*/
   }
 
   Future<void> _initAudioSession() async {
@@ -90,6 +85,29 @@ class ChatCubit extends Cubit<ChatState> {
       ),
       androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
       androidWillPauseWhenDucked: true,
+    ));
+  }
+
+  Future<void> _getConversations() async {
+    ConversationsResponse conversations = await repository.getConversationsHystory(
+        expertID:
+            '0ba684917ad77d2b7578d7f8b54797ca92c329e80898ff0fb7ea480d32bcb090',
+        clientID: question.clientID!,
+        offset: 0,
+        limit: 25);
+
+    Question lastQuestion = await repository.getQuestion(
+        id: question.id!); //5f60b8ca094749001c9b481e
+    logger.i('Question: $lastQuestion');
+
+    final List<History> history = conversations.history == null
+        ? []
+        : conversations.history!.reversed.toList();
+
+    final List<dynamic> items = [lastQuestion, ...history];
+    emit(state.copyWith(
+      history: history,
+      items: items,
     ));
   }
 
@@ -213,21 +231,21 @@ class ChatCubit extends Cubit<ChatState> {
       duration: _audioDuration,
     ));
 
-    final String? mime = lookupMimeType(state.recordingPath);
+    /*final String? mime = lookupMimeType(state.recordingPath);
     File audiofile = File(state.recordingPath);
     final List<int> audioBytes = await audiofile.readAsBytes();
     final String base64Audio = base64Encode(audioBytes);
     final Metadata meta = await MetadataRetriever.fromFile(audiofile);
     logger.i('meta: ($meta)');
     final request = AnswerRequest(
-        questionID: '5f60b99e094749001c9b4830',
-        ritualID: 'tarot',
+        questionID: '5f60bacd6ae052001d4dd08c',
+        //ritualID: 'tarot',
         content: 'Test',
         attachments: [
-          AttachmentRequest(mime: mime, attachment: base64Audio, meta: '')
-        ]);
-    final response = await repository.sendAnswer(request);
-    logger.i('response:$response');
+          Attachment(mime: mime, attachment: base64Audio, meta: '')
+        ]);*/
+    //final Answer response = await repository.sendAnswer(request);
+    //logger.i('response:$response');
 
     emit(
       state.copyWith(

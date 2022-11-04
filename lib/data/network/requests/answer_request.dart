@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:shared_advisor_interface/data/network/requests/attachment_request.dart';
+import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 
 part 'answer_request.g.dart';
 
@@ -8,7 +8,7 @@ class AnswerRequest {
   String? questionID;
   String? content;
   String? ritualID;
-  List<AttachmentRequest>? attachments;
+  List<Attachment>? attachments;
 
   AnswerRequest(
       {this.questionID, this.content, this.ritualID, this.attachments});

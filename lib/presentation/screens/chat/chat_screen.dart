@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/models/chats/answer.dart';
+import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
+import 'package:shared_advisor_interface/data/models/chats/history.dart';
+import 'package:shared_advisor_interface/data/models/chats/media_type.dart';
 import 'package:shared_advisor_interface/data/models/chats/question.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
-import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
+import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_widget.dart';
 
 import 'chat_cubit.dart';
 import 'widgets/chat_media_widget.dart';
@@ -37,37 +42,109 @@ class ChatScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: Builder(builder: (context) {
-                  final messages =
-                      context.select((ChatCubit cubit) => cubit.state.messages);
-                  return Builder(builder: (context) {
-                    return ListView.builder(
-                      itemBuilder: (_, index) => Builder(builder: (context) {
-                        final audioPath = messages[index].audioPath!;
-                        final isCurrent =
-                            audioPath == chatCubit.state.audioPath;
-                        final isPlayingAudio = context.select(
-                            (ChatCubit cubit) => cubit.state.isPlayingAudio);
-                        final isPlayingAudioFinished = context.select(
-                            (ChatCubit cubit) =>
-                                cubit.state.isPlayingAudioFinished);
-                        return ChatMediaWidget(
-                          mediaMessage: messages[index],
-                          sessionsType: SessionsTypes.ritual,
-                          isPlaying: isCurrent && isPlayingAudio,
-                          isPlayingFinished:
-                              isCurrent ? isPlayingAudioFinished : true,
-                          onStartPlayPressed: () {
-                            chatCubit.startPlayAudio(audioPath);
-                          },
-                          onPausePlayPressed: () => chatCubit.pauseAudio(),
-                          playbackStream: chatCubit.onMediaProgress,
+                child: Builder(
+                  builder: (context) {
+                    //final messages = context.select((ChatCubit cubit) => cubit.state.messages);
+                    /*final List<dynamic> items = context
+                        .select((ChatCubit cubit) => cubit.state.history);*/
+                    final List<dynamic> items =
+                        context.select((ChatCubit cubit) => cubit.state.items);
+                    return Builder(
+                      builder: (context) {
+                        return ListView.builder(
+                          reverse: true,
+                          itemBuilder: (_, index) => Builder(
+                            builder: (context) {
+                              final Question question = items[index] is History
+                                  ? items[index].question!
+                                  : items[index];
+                              final Answer? answer = items[index] is History
+                                  ? items[index].answer!
+                                  : null;
+
+                              final bool isQuestionMedia =
+                                  question.attachments!.isNotEmpty;
+                              final bool isAnswerMedia = answer != null &&
+                                  answer.attachments!.isNotEmpty;
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  isQuestionMedia
+                                      ? ChatMediaWidget(
+                                          isQuestion: true,
+                                          duration: const Duration(),
+                                          type: question.type!,
+                                          ritualIdentifier:
+                                              question.ritualIdentifier,
+                                          isPlaying: false,
+                                        )
+                                      : ChatTextWidget(
+                                          isQuestion: true,
+                                          type: question.type!,
+                                          ritualIdentifier:
+                                              question.ritualIdentifier,
+                                          content: question.content,
+                                          createdAt: DateTime.tryParse(
+                                                  question.createdAt ?? '') ??
+                                              DateTime.now(),
+                                        ),
+                                  if (answer != null)
+                                    isAnswerMedia
+                                        ? ChatMediaWidget(
+                                            isQuestion: false,
+                                            duration: const Duration(),
+                                            type: question.type!,
+                                            ritualIdentifier:
+                                                question.ritualIdentifier,
+                                            isPlaying: false,
+                                          )
+                                        : ChatTextWidget(
+                                            isQuestion: false,
+                                            type: question.type!,
+                                            ritualIdentifier:
+                                                question.ritualIdentifier,
+                                            content: answer.content,
+                                            createdAt: DateTime.tryParse(
+                                                    answer.createdAt ?? '') ??
+                                                DateTime.now(),
+                                          ),
+                                ],
+                              );
+                            },
+                          ),
+                          itemCount: items.length,
                         );
-                      }),
-                      itemCount: messages.length,
+                        /*return ListView.builder(
+                          itemBuilder: (_, index) =>
+                              Builder(builder: (context) {
+                            final audioPath = messages[index].audioPath!;
+                            final isCurrent =
+                                audioPath == chatCubit.state.audioPath;
+                            final isPlayingAudio = context.select(
+                                (ChatCubit cubit) =>
+                                    cubit.state.isPlayingAudio);
+                            final isPlayingAudioFinished = context.select(
+                                (ChatCubit cubit) =>
+                                    cubit.state.isPlayingAudioFinished);
+                            return ChatMediaWidget(
+                              duration: messages[index].duration!,
+                              sessionsType: SessionsTypes.ritual,
+                              isPlaying: isCurrent && isPlayingAudio,
+                              isPlayingFinished:
+                                  isCurrent ? isPlayingAudioFinished : true,
+                              onStartPlayPressed: () {
+                                chatCubit.startPlayAudio(audioPath);
+                              },
+                              onPausePlayPressed: () => chatCubit.pauseAudio(),
+                              playbackStream: chatCubit.onMediaProgress,
+                            );
+                          }),
+                          itemCount: messages.length,
+                        );*/
+                      },
                     );
-                  });
-                }),
+                  },
+                ),
               ),
               Stack(
                 children: [

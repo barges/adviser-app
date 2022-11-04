@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:shared_advisor_interface/data/models/chats/answer.dart';
+import 'package:shared_advisor_interface/data/models/chats/question.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
+import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 
 part 'chats_api.g.dart';
@@ -16,15 +19,20 @@ abstract class ChatsApi {
       @Query('filters[type]') String? filterType});
 
   @GET('/v2/users/{expertID}/conversations/{clientID}')
-  Future<dynamic> getQuestionsHistory({
+  Future<ConversationsResponse> getConversationsHystory({
     @Path() required String expertID,
     @Path() required String clientID,
     @Query("offset") required int offset,
     @Query("limit") required int limit,
   });
 
+  @GET('questions/single/{id}')
+  Future<Question> getQuestion({
+    @Path() required String id,
+  });
+
   @POST('/answers')
-  Future<dynamic> sendAnswer(
+  Future<Answer> sendAnswer(
     @Body() AnswerRequest request,
   );
 

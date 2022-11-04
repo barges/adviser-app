@@ -189,10 +189,9 @@ class _PlayProgress extends StatelessWidget {
           width: 8.0,
         ),
         SizedBox(
-          width: 45.0,
+          width: 48.0,
           child: Text(
             time,
-            textAlign: TextAlign.left,
             style: Get.textTheme.bodyMedium?.copyWith(
               color: Get.theme.hoverColor,
             ),

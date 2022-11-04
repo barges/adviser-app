@@ -2,41 +2,51 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/models/chats/media_message.dart';
+import 'package:shared_advisor_interface/data/models/chats/questions_type.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_widget.dart';
 
-class ChatMediaWidget extends StatelessWidget {
-  final MediaMessage mediaMessage;
-  final SessionsTypes sessionsType;
+class ChatMediaWidget extends ChatWidget {
+  final Duration duration;
+  final QuestionsType type;
   final VoidCallback? onStartPlayPressed;
   final VoidCallback? onPausePlayPressed;
   final Stream<PlaybackDisposition>? playbackStream;
   final bool isPlaying;
   final bool isPlayingFinished;
+  final SessionsTypes? ritualIdentifier;
   const ChatMediaWidget({
-    Key? key,
-    required this.mediaMessage,
-    required this.sessionsType,
+    super.key,
+    required super.isQuestion,
+    required this.duration,
+    required this.type,
     this.onStartPlayPressed,
     this.onPausePlayPressed,
     this.playbackStream,
     this.isPlaying = false,
     this.isPlayingFinished = false,
-  }) : super(key: key);
+    this.ritualIdentifier,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(47.0, 4.0, 12.0, 4.0),
+      padding: getter(
+        question: const EdgeInsets.fromLTRB(12.0, 4.0, 47.0, 4.0),
+        answer: const EdgeInsets.fromLTRB(47.0, 4.0, 12.0, 4.0),
+      ),
       child: Container(
         padding: const EdgeInsets.symmetric(
           vertical: 10.0,
           horizontal: 12.0,
         ),
         decoration: BoxDecoration(
-          color: Get.theme.primaryColor,
+          color: getter(
+            question: Get.theme.canvasColor,
+            answer: Get.theme.primaryColor,
+          ),
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
         ),
         child: Row(
@@ -45,6 +55,14 @@ class ChatMediaWidget extends StatelessWidget {
               isPlaying: isPlaying,
               onStartPlayPressed: onStartPlayPressed,
               onPausePlayPressed: onPausePlayPressed,
+              color: getter(
+                question: Get.theme.primaryColor,
+                answer: Get.theme.backgroundColor,
+              ),
+              colorIcon: getter(
+                question: Get.theme.backgroundColor,
+                answer: Get.theme.primaryColor,
+              ),
             ),
             const SizedBox(
               width: 12.0,
@@ -72,6 +90,18 @@ class ChatMediaWidget extends StatelessWidget {
                             return _PlayProgress(
                               value: value,
                               time: time,
+                              textColor: getter(
+                                question: Get.theme.primaryColor,
+                                answer: Get.theme.backgroundColor,
+                              ),
+                              backgroundColor: getter(
+                                question: Get.theme.primaryColorLight,
+                                answer: Get.theme.primaryColorLight,
+                              ),
+                              color: getter(
+                                question: Get.theme.primaryColor,
+                                answer: Get.theme.backgroundColor,
+                              ),
                             );
                           },
                         ),
@@ -82,28 +112,43 @@ class ChatMediaWidget extends StatelessWidget {
                           children: [
                             const Spacer(),
                             Text(
-                              sessionsType.sessionName,
+                              type == QuestionsType.ritual &&
+                                      ritualIdentifier != null
+                                  ? ritualIdentifier!.sessionName
+                                  : type.name,
                               style: Get.textTheme.bodySmall?.copyWith(
-                                color: Get.theme.primaryColorLight,
+                                color: getter(
+                                  question: Get.theme.shadowColor,
+                                  answer: Get.theme.primaryColorLight,
+                                ),
                                 fontSize: 12.0,
                               ),
                             ),
-                            const SizedBox(
-                              width: 6.5,
-                            ),
-                            SvgPicture.asset(
-                              sessionsType.iconPath,
-                              width: 16.0,
-                              height: 16.0,
-                              color: Get.theme.primaryColorLight,
-                            ),
+                            if (type == QuestionsType.ritual)
+                              const SizedBox(
+                                width: 6.5,
+                              ),
+                            if (type == QuestionsType.ritual &&
+                                ritualIdentifier != null)
+                              SvgPicture.asset(
+                                ritualIdentifier!.iconPath,
+                                width: 16.0,
+                                height: 16.0,
+                                color: getter(
+                                  question: Get.theme.shadowColor,
+                                  answer: Get.theme.primaryColorLight,
+                                ),
+                              ),
                             const SizedBox(
                               width: 10.55,
                             ),
                             Text(
-                              mediaMessage.duration.toString().substring(2, 7),
+                              duration.toString().substring(2, 7),
                               style: Get.textTheme.bodySmall?.copyWith(
-                                color: Get.theme.primaryColorLight,
+                                color: getter(
+                                  question: Get.theme.shadowColor,
+                                  answer: Get.theme.primaryColorLight,
+                                ),
                                 fontSize: 12.0,
                               ),
                             ),
@@ -123,11 +168,15 @@ class ChatMediaWidget extends StatelessWidget {
 }
 
 class _PlayPauseBtn extends StatelessWidget {
+  final Color color;
+  final Color colorIcon;
   final bool isPlaying;
   final VoidCallback? onStartPlayPressed;
   final VoidCallback? onPausePlayPressed;
   const _PlayPauseBtn({
     Key? key,
+    required this.color,
+    required this.colorIcon,
     this.isPlaying = false,
     this.onStartPlayPressed,
     this.onPausePlayPressed,
@@ -143,17 +192,17 @@ class _PlayPauseBtn extends StatelessWidget {
         width: 34.0,
         height: 34.0,
         decoration: BoxDecoration(
-          color: Get.theme.backgroundColor,
+          color: color,
           borderRadius: BorderRadius.circular(20.0),
         ),
         child: isPlaying
             ? Assets.vectors.pause.svg(
                 fit: BoxFit.none,
-                color: Get.theme.primaryColor,
+                color: colorIcon,
               )
             : Assets.vectors.play.svg(
                 fit: BoxFit.none,
-                color: Get.theme.primaryColor,
+                color: colorIcon,
               ),
       ),
     );
@@ -163,10 +212,16 @@ class _PlayPauseBtn extends StatelessWidget {
 class _PlayProgress extends StatelessWidget {
   final double value;
   final String time;
+  final Color textColor;
+  final Color backgroundColor;
+  final Color color;
   const _PlayProgress({
     Key? key,
     required this.value,
     required this.time,
+    required this.textColor,
+    required this.backgroundColor,
+    required this.color,
   }) : super(key: key);
 
   @override
@@ -179,7 +234,7 @@ class _PlayProgress extends StatelessWidget {
             Text(
               time,
               style: Get.textTheme.bodySmall?.copyWith(
-                color: Get.theme.backgroundColor,
+                color: textColor,
                 fontSize: 12.0,
               ),
             ),
@@ -187,7 +242,7 @@ class _PlayProgress extends StatelessWidget {
             Text(
               time,
               style: Get.textTheme.bodySmall?.copyWith(
-                color: Get.theme.backgroundColor,
+                color: textColor,
                 fontSize: 12.0,
               ),
             ),
@@ -198,8 +253,8 @@ class _PlayProgress extends StatelessWidget {
         ),
         LinearProgressIndicator(
           value: (!value.isNaN && !value.isInfinite) ? value : 0.0,
-          backgroundColor: Get.theme.primaryColorLight,
-          color: Get.theme.backgroundColor,
+          backgroundColor: backgroundColor,
+          color: color,
           minHeight: 2.0,
         ),
       ],

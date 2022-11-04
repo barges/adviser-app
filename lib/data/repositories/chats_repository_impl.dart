@@ -1,7 +1,10 @@
+import 'package:shared_advisor_interface/data/models/chats/answer.dart';
+import 'package:shared_advisor_interface/data/models/chats/question.dart';
 import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
+import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
-import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
+import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 
 class ChatsRepositoryImpl implements ChatsRepository {
   final ChatsApi _api;
@@ -20,12 +23,12 @@ class ChatsRepositoryImpl implements ChatsRepository {
   }
 
   @override
-  Future<dynamic> getQuestionsHistory(
+  Future<ConversationsResponse> getConversationsHystory(
       {required String expertID,
       required String clientID,
       required int offset,
       required int limit}) async {
-    return await _api.getQuestionsHistory(
+    return await _api.getConversationsHystory(
       expertID: expertID,
       clientID: clientID,
       offset: offset,
@@ -34,7 +37,12 @@ class ChatsRepositoryImpl implements ChatsRepository {
   }
 
   @override
-  Future<dynamic> sendAnswer(AnswerRequest request) async {
+  Future<Question> getQuestion({required String id}) async {
+    return await _api.getQuestion(id: id);
+  }
+
+  @override
+  Future<Answer> sendAnswer(AnswerRequest request) async {
     return await _api.sendAnswer(request);
   }
 
