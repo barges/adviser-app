@@ -1209,6 +1209,36 @@ class S {
       args: [],
     );
   }
+
+  /// `All Type`
+  String get allType {
+    return Intl.message(
+      'All Type',
+      name: 'allType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Market:`
+  String get market {
+    return Intl.message(
+      'Market:',
+      name: 'market',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get all {
+    return Intl.message(
+      'All',
+      name: 'all',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

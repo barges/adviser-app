@@ -34,8 +34,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "addNew": MessageLookupByLibrary.simpleMessage("Adicionar novo"),
         "addNote": MessageLookupByLibrary.simpleMessage("Adicionar nota"),
         "advisors": MessageLookupByLibrary.simpleMessage("conselheiras"),
+        "all": MessageLookupByLibrary.simpleMessage("All"),
         "allOurBrands":
             MessageLookupByLibrary.simpleMessage("Todas as nossas marcas"),
+        "allType": MessageLookupByLibrary.simpleMessage("All Type"),
         "apply": MessageLookupByLibrary.simpleMessage("Aplique"),
         "areYouSureThatYouWantToChangeYourStatus":
             MessageLookupByLibrary.simpleMessage(
@@ -101,6 +103,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "login": MessageLookupByLibrary.simpleMessage("Conecte-se"),
         "loyalUsers": MessageLookupByLibrary.simpleMessage("Usuários Leais"),
         "mandatory": MessageLookupByLibrary.simpleMessage("Obrigatoriedade"),
+        "market": MessageLookupByLibrary.simpleMessage("Market:"),
         "newCustomers": MessageLookupByLibrary.simpleMessage("Novos clientes"),
         "newLabel": MessageLookupByLibrary.simpleMessage("Nova"),
         "newMandatoryArticleIsAvailable": MessageLookupByLibrary.simpleMessage(

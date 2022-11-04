@@ -2,7 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
+import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
+import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/data/models/user_info/localized_properties/property_by_language.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
@@ -58,7 +59,7 @@ class AccountCubit extends Cubit<AccountState> {
       await cacheManager.saveUserProfile(userInfo.profile);
       await cacheManager.saveUserId(userInfo.id);
 
-      if (checkPropertiesMap(userInfo)) {
+      if (checkPropertiesMapIfHasEmpty(userInfo)) {
         await cacheManager.saveUserStatus(userInfo.status?.copyWith(
           status: FortunicaUserStatus.incomplete,
         ));
@@ -82,15 +83,15 @@ class AccountCubit extends Cubit<AccountState> {
     }
   }
 
-  bool checkPropertiesMap(UserInfo userInfo) {
+  bool checkPropertiesMapIfHasEmpty(UserInfo userInfo) {
     final Map<String, dynamic> propertiesMap =
         userInfo.profile?.localizedProperties?.toJson() ?? {};
 
     if (propertiesMap.isNotEmpty) {
-      for (String languageCode in userInfo.profile?.activeLanguages ?? []) {
-        final PropertyByLanguage property = propertiesMap[languageCode];
-        if (property.statusMessage?.isEmpty == true ||
-            property.description?.isEmpty == true) {
+      for (MarketsType marketsType in userInfo.profile?.activeLanguages ?? []) {
+        final PropertyByLanguage property = propertiesMap[marketsType.name];
+        if (property.statusMessage?.trim().isEmpty == true ||
+            property.description?.trim().isEmpty == true) {
           return true;
         }
       }

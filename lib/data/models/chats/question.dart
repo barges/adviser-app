@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:shared_advisor_interface/data/models/chats/attachments.dart';
 import 'package:shared_advisor_interface/data/models/chats/client_information.dart';
-import 'package:shared_advisor_interface/data/models/chats/questions_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
 
 part 'question.freezed.dart';
 part 'question.g.dart';
@@ -17,7 +18,7 @@ class Question with _$Question {
     @JsonKey(name: '_id')
     final String? id,
     ClientInformation? clientInformation,
-    List<dynamic>? attachments,
+    List<Attachments>? attachments,
     String? clientID,
   }) = _Question;
 

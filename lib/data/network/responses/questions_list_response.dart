@@ -6,7 +6,7 @@ part 'questions_list_response.g.dart';
 
 @JsonSerializable()
 class QuestionsListResponse extends Equatable {
-  //@JsonKey(name: 'data')
+  @JsonKey(name: 'data')
   final List<Question>? questions;
   final bool? hasMore;
   final int? limit;

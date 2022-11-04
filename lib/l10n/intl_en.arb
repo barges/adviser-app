@@ -114,5 +114,8 @@
   "title": "Title",
   "youHaveNotCompletedAnySessionsYet": "You have not completed any sessions yet",
   "youHaveNotYetCompletedThisMonthsSessions": "You have not yet completed this month's sessions",
-  "youDontHaveAnInternetConnection": "You don’t have an internet connection"
+  "youDontHaveAnInternetConnection": "You don’t have an internet connection",
+  "allType": "All Type",
+  "market": "Market:",
+  "all": "All"
 }

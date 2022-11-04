@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_market.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_unit.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -45,7 +46,7 @@ class ReportsMarketWidget extends StatelessWidget {
                           BorderRadius.circular(AppConstants.buttonRadius),
                     ),
                     child: Text(
-                      reportsMarket.iso?.languageNameByCode ?? '',
+                      reportsMarket.iso?.languageName ?? '',
                       style: Get.textTheme.labelMedium,
                     ),
                   ),

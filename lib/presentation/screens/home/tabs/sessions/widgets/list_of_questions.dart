@@ -1,0 +1,165 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:shared_advisor_interface/data/models/chats/question.dart';
+import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/chat_list_tile_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/market_filter_widget.dart';
+
+class ListOfQuestions extends StatelessWidget {
+  const ListOfQuestions({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final int index =
+        context.select((SessionsCubit cubit) => cubit.state.currentOptionIndex);
+
+    return IndexedStack(
+      index: index,
+      children: const [
+        _PublicQuestionsListWidget(),
+        _PrivateQuestionsListWidget(),
+      ],
+    );
+  }
+}
+
+class _PublicQuestionsListWidget extends StatelessWidget {
+  const _PublicQuestionsListWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final SessionsCubit sessionsCubit = context.read<SessionsCubit>();
+    return Column(
+      children: [
+        Container(
+          height: AppConstants.appBarHeight,
+          color: Get.theme.canvasColor,
+          child: Builder(builder: (context) {
+            final List<MarketsType> userMarkets = context
+                .select((SessionsCubit cubit) => cubit.state.userMarkets);
+
+            final int currentMarketIndex = context.select(
+                (SessionsCubit cubit) =>
+                    cubit.state.currentMarketIndexForPublic);
+            return MarketFilterWidget(
+              userMarkets: userMarkets,
+              isExpanded: true,
+              currentMarketIndex: currentMarketIndex,
+              changeIndex: sessionsCubit.changeMarketIndexForPublic,
+            );
+          }),
+        ),
+        const Divider(
+          height: 1.0,
+          thickness: 1.0,
+        ),
+        Builder(
+          builder: (context) {
+            final List<Question> publicQuestions = context
+                .select((SessionsCubit cubit) => cubit.state.publicQuestions);
+            return Expanded(
+              child: _ListOfQuestionsWidget(
+                controller: sessionsCubit.publicQuestionsController,
+                questions: publicQuestions,
+                onRefresh: () async {
+                  sessionsCubit.getPublicQuestions(refresh: true);
+                },
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _PrivateQuestionsListWidget extends StatelessWidget {
+  const _PrivateQuestionsListWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final SessionsCubit sessionsCubit = context.read<SessionsCubit>();
+    return Column(
+      children: [
+        Container(
+          height: AppConstants.appBarHeight,
+          color: Get.theme.canvasColor,
+          child: Builder(builder: (context) {
+            final List<MarketsType> userMarkets = context
+                .select((SessionsCubit cubit) => cubit.state.userMarkets);
+
+            final int currentMarketIndex = context.select(
+                (SessionsCubit cubit) =>
+                    cubit.state.currentMarketIndexForPrivate);
+            return MarketFilterWidget(
+              userMarkets: userMarkets,
+              isExpanded: true,
+              currentMarketIndex: currentMarketIndex,
+              changeIndex: sessionsCubit.changeMarketIndexForPrivate,
+            );
+          }),
+        ),
+        const Divider(
+          height: 1.0,
+          thickness: 1.0,
+        ),
+        Builder(
+          builder: (context) {
+            final List<Question> privateQuestionsWithHistory = context.select(
+                (SessionsCubit cubit) =>
+                    cubit.state.privateQuestionsWithHistory);
+            return Expanded(
+              child: _ListOfQuestionsWidget(
+                controller: sessionsCubit.privateQuestionsController,
+                questions: privateQuestionsWithHistory,
+                onRefresh: () async {
+                  sessionsCubit.getPrivateQuestions(refresh: true);
+                },
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _ListOfQuestionsWidget extends StatelessWidget {
+  final List<Question> questions;
+  final RefreshCallback onRefresh;
+  final ScrollController controller;
+
+  const _ListOfQuestionsWidget({
+    Key? key,
+    required this.questions,
+    required this.onRefresh,
+    required this.controller,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: onRefresh,
+      child: CustomScrollView(
+        controller: controller,
+        physics: const AlwaysScrollableScrollPhysics(),
+        slivers: [
+          SliverToBoxAdapter(
+            child: ListView(
+              padding:
+                  const EdgeInsets.all(AppConstants.horizontalScreenPadding),
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              children: questions
+                  .map((e) => ChatListTileWidget(question: e))
+                  .toList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

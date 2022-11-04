@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/error_badge.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -27,14 +27,15 @@ class LanguageSectionWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
                 horizontal: AppConstants.horizontalScreenPadding),
             itemBuilder: (BuildContext context, int index) {
-              final String languageCode =
+              final MarketsType languageCode =
                   editProfileCubit.activeLanguages[index];
               return _LanguageWidget(
-                languageName: languageCode.languageNameByCode,
+                key: editProfileCubit.activeLanguagesGlobalKeys[index],
+                languageName: languageCode.languageName,
                 isSelected: chosenLanguageIndex == index,
                 onTap: () {
                   FocusScope.of(context).unfocus();
-                  editProfileCubit.updateCurrentLanguageIndex(index);
+                  editProfileCubit.changeCurrentLanguageIndex(index);
                 },
                 withError: editProfileCubit
                             .errorTextsMap[languageCode]?.first.isNotEmpty ==
