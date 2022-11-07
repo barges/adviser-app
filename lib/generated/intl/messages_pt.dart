@@ -123,6 +123,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "password": MessageLookupByLibrary.simpleMessage("Senha"),
         "peopleHelped":
             MessageLookupByLibrary.simpleMessage("Pessoas ajudaram"),
+        "perfomanceOverviewAnalytics": MessageLookupByLibrary.simpleMessage(
+            "Perfomance Overview Analytics"),
         "personalBalance":
             MessageLookupByLibrary.simpleMessage("Saldo Pessoal"),
         "placesUpFromLastMonth": MessageLookupByLibrary.simpleMessage(

@@ -18,11 +18,12 @@ class PerformanceMOMAWidget extends StatelessWidget {
       overlay: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            S.of(context).comingSoon,
-            style: Get.textTheme.displayLarge
-                ?.copyWith(fontWeight: FontWeight.w800),
-          ),
+          Text(S.of(context).comingSoon,
+              style: Get.textTheme.displayLarge
+                  ?.copyWith(fontWeight: FontWeight.w800)),
+          Text(S.of(context).perfomanceOverviewAnalytics,
+              style: Get.textTheme.labelMedium
+                  ?.copyWith(color: Get.theme.shadowColor))
         ],
       ),
       child: Container(

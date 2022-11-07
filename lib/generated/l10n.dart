@@ -1219,6 +1219,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Perfomance Overview Analytics`
+  String get perfomanceOverviewAnalytics {
+    return Intl.message(
+      'Perfomance Overview Analytics',
+      name: 'perfomanceOverviewAnalytics',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
