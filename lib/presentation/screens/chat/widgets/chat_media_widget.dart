@@ -10,24 +10,22 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_
 
 class ChatMediaWidget extends ChatWidget {
   final Duration duration;
-  final QuestionsType type;
   final VoidCallback? onStartPlayPressed;
   final VoidCallback? onPausePlayPressed;
   final Stream<PlaybackDisposition>? playbackStream;
   final bool isPlaying;
   final bool isPlayingFinished;
-  final SessionsTypes? ritualIdentifier;
   const ChatMediaWidget({
     super.key,
     required super.isQuestion,
     required this.duration,
-    required this.type,
+    required super.type,
+    super.ritualIdentifier,
     this.onStartPlayPressed,
     this.onPausePlayPressed,
     this.playbackStream,
     this.isPlaying = false,
     this.isPlayingFinished = false,
-    this.ritualIdentifier,
   });
 
   @override

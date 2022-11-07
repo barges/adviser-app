@@ -10,7 +10,7 @@ import 'package:shared_advisor_interface/data/models/chats/answer.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/history.dart';
 import 'package:shared_advisor_interface/data/models/chats/question.dart';
-import 'package:shared_advisor_interface/data/models/chats/media_message.dart';
+import 'package:shared_advisor_interface/data/models/chats/message.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
@@ -94,20 +94,29 @@ class ChatCubit extends Cubit<ChatState> {
             '0ba684917ad77d2b7578d7f8b54797ca92c329e80898ff0fb7ea480d32bcb090',
         clientID: question.clientID!,
         offset: 0,
-        limit: 25);
+        limit: 50);
 
     Question lastQuestion = await repository.getQuestion(
         id: question.id!); //5f60b8ca094749001c9b481e
     logger.i('Question: $lastQuestion');
 
-    final List<History> history = conversations.history == null
-        ? []
-        : conversations.history!.reversed.toList();
+    final messages = List.of(state.messages);
+    conversations.history!.forEach((element) {
+      messages.add(
+        Message<Answer>(
+          element.answer!,
+        ),
+      );
+      messages.add(
+        Message<Question>(
+          element.question!,
+        ),
+      );
+    });
+    messages.insert(0, Message(lastQuestion));
 
-    final List<dynamic> items = [lastQuestion, ...history];
     emit(state.copyWith(
-      history: history,
-      items: items,
+      messages: messages,
     ));
   }
 
@@ -225,11 +234,11 @@ class ChatCubit extends Cubit<ChatState> {
       await _playerRecorded?.stopPlayer();
     }
 
-    List<MediaMessage> messages = List<MediaMessage>.from(state.messages);
+    /*List<MediaMessage> messages = List<MediaMessage>.from(state.messages);
     messages.add(MediaMessage(
       audioPath: state.recordingPath,
       duration: _audioDuration,
-    ));
+    ));*/
 
     /*final String? mime = lookupMimeType(state.recordingPath);
     File audiofile = File(state.recordingPath);
@@ -252,20 +261,20 @@ class ChatCubit extends Cubit<ChatState> {
         isRecordingAudio: false,
         isAudioFileSaved: false,
         isPlayingRecordedAudio: false,
-        messages: messages,
+        // messages: messages,
       ),
     );
   }
 
-  Future<void> startPlayAudio(String audioPath) async {
-    if (state.audioPath != audioPath) {
+  Future<void> startPlayAudio(String audioUrl) async {
+    if (state.audioUrl != audioUrl) {
       await _playerMedia?.stopPlayer();
 
       emit(
         state.copyWith(
           isPlayingAudio: false,
           isPlayingAudioFinished: true,
-          audioPath: audioPath,
+          audioUrl: audioUrl,
         ),
       );
     }
@@ -283,7 +292,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     await _playerMedia?.startPlayer(
-      fromURI: audioPath,
+      fromURI: audioUrl,
       codec: Codec.aacMP4,
       sampleRate: 44000,
       whenFinished: () => emit(

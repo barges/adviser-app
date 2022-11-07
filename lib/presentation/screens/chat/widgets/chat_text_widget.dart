@@ -9,15 +9,13 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_
 class ChatTextWidget extends ChatWidget {
   final DateTime createdAt;
   final String? content;
-  final QuestionsType type;
-  final SessionsTypes? ritualIdentifier;
   const ChatTextWidget({
     super.key,
     required super.isQuestion,
     required this.createdAt,
+    required super.type,
+    super.ritualIdentifier,
     this.content = '',
-    required this.type,
-    this.ritualIdentifier,
   });
 
   @override
