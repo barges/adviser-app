@@ -117,5 +117,7 @@
   "youDontHaveAnInternetConnection": "You don’t have an internet connection",
   "allType": "All Type",
   "market": "Market:",
-  "all": "All"
+  "all": "All",
+  "privateQuestions": "Private Questions",
+  "onlyPremiumProducts": "Only Premium Products"
 }

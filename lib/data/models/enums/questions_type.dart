@@ -17,9 +17,9 @@ extension QuestionsTypeExt on QuestionsType {
   String get filterName {
     switch (this) {
       case QuestionsType.private:
-        return 'Private Questions';
+        return S.current.privateQuestions;
       case QuestionsType.ritual:
-        return 'Only Premium Products';
+        return S.current.onlyPremiumProducts;
       case QuestionsType.history:
       case QuestionsType.public:
       case QuestionsType.all:
@@ -27,7 +27,7 @@ extension QuestionsTypeExt on QuestionsType {
     }
   }
 
-  String get jsonValue {
+  String get filterTypeName {
     switch (this) {
       case QuestionsType.private:
         return 'PRIVATE';

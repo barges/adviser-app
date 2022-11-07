@@ -5,6 +5,7 @@ import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/chats/question.dart';
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -22,6 +23,11 @@ class SessionsCubit extends Cubit<SessionsState> {
   late final VoidCallback disposeUserStatusListen;
   late final VoidCallback disposeUserProfileListen;
 
+  final List<QuestionsType> filters = [
+    QuestionsType.all,
+    QuestionsType.ritual,
+    QuestionsType.private,
+  ];
   final List<Question> _publicQuestions = [];
   final List<Question> _privateQuestionsWithHistory = [];
 
@@ -94,6 +100,11 @@ class SessionsCubit extends Cubit<SessionsState> {
     emit(state.copyWith(currentOptionIndex: newIndex));
   }
 
+  void changeFilterIndex(int newIndex) {
+    emit(state.copyWith(currentFilterIndex: newIndex));
+    getPrivateQuestions(refresh: true);
+  }
+
   Future<void> getPublicQuestions(
       {FortunicaUserStatus? status, bool refresh = false}) async {
     if (refresh) {
@@ -143,9 +154,14 @@ class SessionsCubit extends Cubit<SessionsState> {
             marketsType != MarketsType.all ? marketsType.name : null;
       }
 
+      final QuestionsType questionsType = filters[state.currentFilterIndex];
+      final String? filterName =
+          questionsType != QuestionsType.all ? questionsType.filterTypeName : null;
+
       final QuestionsListResponse result =
           await _repository.getPrivateQuestions(
         filtersLanguage: filtersLanguage,
+        filtersType: filterName,
       );
 
       _privateQuestionsWithHistory.addAll(result.questions ?? const []);

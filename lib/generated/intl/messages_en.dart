@@ -116,6 +116,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "notes": MessageLookupByLibrary.simpleMessage("Notes"),
         "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
         "numerology": MessageLookupByLibrary.simpleMessage("Numerology"),
+        "onlyPremiumProducts":
+            MessageLookupByLibrary.simpleMessage("Only Premium Products"),
         "openEmailApp": MessageLookupByLibrary.simpleMessage("Open email app"),
         "otherBrands": MessageLookupByLibrary.simpleMessage("Other brands"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
@@ -133,6 +135,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "portuguese": MessageLookupByLibrary.simpleMessage("Portuguese"),
         "previewAccount":
             MessageLookupByLibrary.simpleMessage("Preview account"),
+        "privateQuestions":
+            MessageLookupByLibrary.simpleMessage("Private Questions"),
         "profileText": MessageLookupByLibrary.simpleMessage("Profile Text"),
         "public": MessageLookupByLibrary.simpleMessage("Public"),
         "questionProperties":

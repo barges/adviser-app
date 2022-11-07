@@ -118,6 +118,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "notes": MessageLookupByLibrary.simpleMessage("Notas"),
         "notifications": MessageLookupByLibrary.simpleMessage("Notificações"),
         "numerology": MessageLookupByLibrary.simpleMessage("Numerologia"),
+        "onlyPremiumProducts":
+            MessageLookupByLibrary.simpleMessage("Only Premium Products"),
         "openEmailApp":
             MessageLookupByLibrary.simpleMessage("Abra o aplicativo de e-mail"),
         "otherBrands": MessageLookupByLibrary.simpleMessage("Outras marcas"),
@@ -137,6 +139,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "portuguese": MessageLookupByLibrary.simpleMessage("Português"),
         "previewAccount":
             MessageLookupByLibrary.simpleMessage("Visualizar conta"),
+        "privateQuestions":
+            MessageLookupByLibrary.simpleMessage("Private Questions"),
         "profileText": MessageLookupByLibrary.simpleMessage("Texto do perfil"),
         "public": MessageLookupByLibrary.simpleMessage("Pública"),
         "questionProperties":

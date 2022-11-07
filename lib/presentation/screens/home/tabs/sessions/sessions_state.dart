@@ -11,6 +11,7 @@ class SessionsState with _$SessionsState {
     @Default([]) List<Question> publicQuestions,
     @Default([]) List<MarketsType> userMarkets,
     @Default(0) int currentOptionIndex,
+    @Default(0) int currentFilterIndex,
     @Default(0) int currentMarketIndexForPublic,
     @Default(0) int currentMarketIndexForPrivate,
   ]) = _SessionsState;

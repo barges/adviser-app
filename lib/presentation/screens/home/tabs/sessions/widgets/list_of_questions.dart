@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/chats/question.dart';
-import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/list_of_filters_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/chat_list_tile_widget.dart';
@@ -20,7 +20,7 @@ class ListOfQuestions extends StatelessWidget {
       index: index,
       children: const [
         _PublicQuestionsListWidget(),
-        _PrivateQuestionsListWidget(),
+       _PrivateQuestionsListWidget(),
       ],
     );
   }
@@ -34,27 +34,12 @@ class _PublicQuestionsListWidget extends StatelessWidget {
     final SessionsCubit sessionsCubit = context.read<SessionsCubit>();
     return Column(
       children: [
-        Container(
-          height: AppConstants.appBarHeight,
-          color: Get.theme.canvasColor,
-          child: Builder(builder: (context) {
-            final List<MarketsType> userMarkets = context
-                .select((SessionsCubit cubit) => cubit.state.userMarkets);
-
-            final int currentMarketIndex = context.select(
-                (SessionsCubit cubit) =>
-                    cubit.state.currentMarketIndexForPublic);
-            return MarketFilterWidget(
-              userMarkets: userMarkets,
-              isExpanded: true,
-              currentMarketIndex: currentMarketIndex,
-              changeIndex: sessionsCubit.changeMarketIndexForPublic,
-            );
-          }),
-        ),
+        MarketFilterWidget(
+            isExpanded: true,
+            changeIndex: sessionsCubit.changeMarketIndexForPublic,
+          ),
         const Divider(
           height: 1.0,
-          thickness: 1.0,
         ),
         Builder(
           builder: (context) {
@@ -84,27 +69,30 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
     final SessionsCubit sessionsCubit = context.read<SessionsCubit>();
     return Column(
       children: [
-        Container(
-          height: AppConstants.appBarHeight,
-          color: Get.theme.canvasColor,
-          child: Builder(builder: (context) {
-            final List<MarketsType> userMarkets = context
-                .select((SessionsCubit cubit) => cubit.state.userMarkets);
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              Builder(builder: (context) {
+                final int currentFilterIndex = context.select(
+                    (SessionsCubit cubit) => cubit.state.currentFilterIndex);
 
-            final int currentMarketIndex = context.select(
-                (SessionsCubit cubit) =>
-                    cubit.state.currentMarketIndexForPrivate);
-            return MarketFilterWidget(
-              userMarkets: userMarkets,
-              isExpanded: true,
-              currentMarketIndex: currentMarketIndex,
-              changeIndex: sessionsCubit.changeMarketIndexForPrivate,
-            );
-          }),
+                return ListOfFiltersWidget(
+                  withMarketFilter: true,
+                  currentFilterIndex: currentFilterIndex,
+                  onTapToFilter: sessionsCubit.changeFilterIndex,
+                  filters:
+                      sessionsCubit.filters.map((e) => e.filterName).toList(),
+                );
+              }),
+              MarketFilterWidget(
+                changeIndex: sessionsCubit.changeMarketIndexForPrivate,
+              ),
+            ],
+          ),
         ),
         const Divider(
           height: 1.0,
-          thickness: 1.0,
         ),
         Builder(
           builder: (context) {

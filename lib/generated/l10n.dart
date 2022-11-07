@@ -1239,6 +1239,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Private Questions`
+  String get privateQuestions {
+    return Intl.message(
+      'Private Questions',
+      name: 'privateQuestions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Only Premium Products`
+  String get onlyPremiumProducts {
+    return Intl.message(
+      'Only Premium Products',
+      name: 'onlyPremiumProducts',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
