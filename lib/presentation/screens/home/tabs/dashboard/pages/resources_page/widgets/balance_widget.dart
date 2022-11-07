@@ -103,7 +103,7 @@ class BalanceWidget extends StatelessWidget {
                 ),
                 AppIconButton(
                   icon: Assets.vectors.arrowRight.path,
-                  onTap: () => Get.toNamed(AppRoutes.balanceAndTransactions),
+                  onTap: () => Get.toNamed(AppRoutes.editProfile),
                 )
               ],
             ),
