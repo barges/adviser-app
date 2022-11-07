@@ -10,6 +10,7 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 class NotesWidget extends StatelessWidget {
   final List<String> texts;
   final List<List<String>> images;
+  final List<String> createdAt;
   final VoidCallback? onTapAddNew;
   final VoidCallback? onTapOldNote;
 
@@ -17,6 +18,7 @@ class NotesWidget extends StatelessWidget {
     Key? key,
     this.texts = const [],
     this.images = const [],
+    this.createdAt = const [],
     this.onTapAddNew,
     this.onTapOldNote,
   }) : super(key: key);
@@ -74,6 +76,7 @@ class NotesWidget extends StatelessWidget {
                   itemBuilder: (_, index) => _OneNoteWidget(
                       onTap: onTapOldNote,
                       text: texts[index],
+                      createdAt: createdAt[index],
                       images: images.isNotEmpty ? images[index] : const []),
                   separatorBuilder: (_, __) => const SizedBox(height: 11.0),
                   itemCount: min(texts.length, images.length),
@@ -123,9 +126,14 @@ class _OneNoteWidget extends StatelessWidget {
   final String text;
   final List<String> images;
   final VoidCallback? onTap;
+  final String createdAt;
 
   const _OneNoteWidget(
-      {Key? key, required this.text, required this.images, this.onTap})
+      {Key? key,
+      required this.text,
+      required this.images,
+      this.onTap,
+      required this.createdAt})
       : super(key: key);
 
   @override
@@ -156,7 +164,7 @@ class _OneNoteWidget extends StatelessWidget {
                       color: Get.theme.shadowColor),
                   child: Row(
                     children: [
-                      Text('2020-01-07T00:00:00.000Z'.parseDateTimePattern2),
+                      Text('2022-10-16T13:50:56.285Z'.parseDateTimePattern2),
                       if (images.isNotEmpty)
                         Row(
                           mainAxisSize: MainAxisSize.min,
