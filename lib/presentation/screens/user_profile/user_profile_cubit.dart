@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/user_profile/user_profile_state.dart';
@@ -26,9 +27,11 @@ class UserProfileCubit extends Cubit<UserProfileState> {
   }
 
   Future<void> getCurrentNote() async {
-    final String? note =
-        (await _repository.getNoteForCustomer(customerID)).content;
-    emit(state.copyWith(currentNote: note));
+    final GetNoteResponse note =
+        await _repository.getNoteForCustomer(customerID);
+
+    emit(state.copyWith(
+        currentNote: note.content, createdNoteTime: note.createdAt));
   }
 
   void updateNoteToCustomer(String newContent) {

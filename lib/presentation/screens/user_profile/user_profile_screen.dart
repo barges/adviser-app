@@ -175,12 +175,16 @@ class UserProfileScreen extends StatelessWidget {
                             final String? currentNote = context.select(
                                 (UserProfileCubit cubit) =>
                                     cubit.state.currentNote);
+                            final String? createdAt = context.select(
+                                (UserProfileCubit cubit) =>
+                                    cubit.state.createdNoteTime);
                             return NotesWidget(
                               onTapAddNew: userProfileCubit
                                   .navigateToAddNoteScreenForNewNote,
                               onTapOldNote: userProfileCubit
                                   .navigateToAddNoteScreenForOldNote,
                               texts: [currentNote ?? ''],
+                              createdAt: [createdAt ?? ''],
                               images: const [
                                 [
                                   'https://cdn.shopify.com/s/files/1/0275/3318/0970/products/AgendaNotebook-2_800x.jpg'

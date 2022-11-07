@@ -6,17 +6,18 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_cubit.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class AddNoteScreen extends StatelessWidget {
-
-  const AddNoteScreen(
-      {Key? key,})
-      : super(key: key);
+  const AddNoteScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +25,8 @@ class AddNoteScreen extends StatelessWidget {
       create: (_) => AddNoteCubit(),
       child: Builder(builder: (context) {
         AddNoteCubit addNoteCubit = context.read<AddNoteCubit>();
+        List<String> imagesPaths =
+            context.select((AddNoteCubit cubit) => cubit.state.imagesPaths);
         return Scaffold(
           appBar: WideAppBar(
             bottomWidget: Text(
@@ -51,16 +54,43 @@ class AddNoteScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 12.0),
-                child: Text(
-                  S.of(context).title,
-                  style: Get.textTheme.headlineLarge?.copyWith(
-                    fontWeight: FontWeight.w500,
-                    color: Get.theme.shadowColor,
-                  ),
-                ),
+                child: Builder(builder: (context) {
+                  bool hadTitle = context
+                      .select((AddNoteCubit cubit) => cubit.state.hadTitle);
+                  if (hadTitle) {
+                    return TextField(
+                      controller: addNoteCubit.titleController,
+                      autofocus: true,
+                      style: Get.textTheme.headlineLarge?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      scrollPadding: EdgeInsets.zero,
+                      cursorColor: Get.theme.hoverColor,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                        contentPadding: EdgeInsets.zero,
+                      ),
+                    );
+                  } else {
+                    return GestureDetector(
+                        onTap: (() {
+                          addNoteCubit.addTitle();
+                        }),
+                        child: Text(S.of(context).title,
+                            style: Get.textTheme.headlineLarge?.copyWith(
+                                fontWeight: FontWeight.w500,
+                                color: Get.theme.shadowColor)));
+                  }
+                }),
               ),
               TextField(
-                controller: addNoteCubit.controller,
+                controller: addNoteCubit.noteController,
                 style: Get.textTheme.displayLarge
                     ?.copyWith(fontWeight: FontWeight.w400),
                 keyboardType: TextInputType.multiline,
@@ -76,23 +106,41 @@ class AddNoteScreen extends StatelessWidget {
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
-              Center(
-                child: Builder(builder: (context) {
-                  final List<String> imagesPaths = context
-                      .select((AddNoteCubit cubit) => cubit.state.imagesPaths);
-                  return (imagesPaths.isNotEmpty)
-                      ? Image.file(
-                          File(imagesPaths[0]),
-                          height: Get.height / 2,
-                          fit: BoxFit.cover,
-                        )
-                      : const SizedBox.shrink();
-                }),
+              Padding(
+                padding: const EdgeInsets.only(top: 6.0),
+                child: Center(
+                  child: Builder(builder: (context) {
+                    logger.d(imagesPaths);
+                    return (imagesPaths.isNotEmpty)
+                        ? Column(
+                            children: List.generate(
+                                imagesPaths.length,
+                                (index) => Builder(builder: (context) {
+                                      final String imagesPath = context.select(
+                                          (AddNoteCubit cubit) =>
+                                              cubit.state.imagesPaths[index]);
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 6.0),
+                                        child: Image.file(
+                                          File(imagesPath),
+                                          height: Get.height / 2,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      );
+                                    })),
+                          )
+                        : const SizedBox.shrink();
+                  }),
+                ),
               )
             ]),
           ),
           floatingActionButton: GestureDetector(
-            onTap: addNoteCubit.addImagesToNote,
+            onTap: () {
+              showPickImageAlert(
+                  context: context, setImage: addNoteCubit.addPictureToGallery);
+            },
             child: Container(
               height: 48.0,
               width: 48.0,
