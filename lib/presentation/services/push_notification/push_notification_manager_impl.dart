@@ -119,6 +119,13 @@ Future<void> _navigateToNextScreen(RemoteMessage? message) async {
           'sessionScreenTap': 1
         });
         break;
+
+      default:
+        Get.toNamed(AppRoutes.home, arguments: <String, int>{
+          'homeScreenTab': 0,
+          'sessionScreenTap': 0
+        });
+        break;
     }
   }
 }
