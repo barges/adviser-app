@@ -9,6 +9,7 @@ import 'package:shared_advisor_interface/presentation/screens/edit_profile/galle
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/reviews/reviews_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/user_profile/user_profile_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/support/support_screen.dart';
@@ -27,6 +28,7 @@ class AppRoutes {
   static const balanceAndTransactions = '/balance_and_transactions_screen';
   static const userProfile = '/user_profile_screen';
   static const addNote = '/add_note_screen';
+  static const reviews = '/reviews';
 
   static final List<GetPage> getPages = [
     GetPage(
@@ -81,6 +83,13 @@ class AppRoutes {
       name: userProfile,
       page: () => UserProfileScreen(),
     ),
-    GetPage(name: addNote, page: () => const AddNoteScreen()),
+    GetPage(
+      name: addNote,
+      page: () => const AddNoteScreen(),
+    ),
+    GetPage(
+      name: reviews,
+      page: () => const ReviewsScreen(),
+    ),
   ];
 }

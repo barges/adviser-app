@@ -30,7 +30,7 @@ class ReviewsSettingsPartWidget extends StatelessWidget {
           TileWidget(
             title: S.of(context).reviews,
             iconSVGPath: Assets.vectors.starActive.path,
-            onTap: () {},
+            onTap: () => Get.toNamed(AppRoutes.reviews),
             widget: Row(
               children: [
                 RatingBar(
@@ -90,8 +90,7 @@ class ReviewsSettingsPartWidget extends StatelessWidget {
               onTap: accountCubit.openSettingsUrl,
               title: S.of(context).settings,
               iconSVGPath: Assets.vectors.settings.path,
-              withError:
-                  currentStatus.status == FortunicaUserStatus.legalBlock,
+              withError: currentStatus.status == FortunicaUserStatus.legalBlock,
             );
           })
         ],
