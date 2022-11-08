@@ -21,7 +21,7 @@ class Message<T extends ConversationItem> {
 
   Attachment? get attachment2 {
     if (isMedia && data.attachments!.length == 2) {
-      return data.attachments![0];
+      return data.attachments![1];
     }
     return null;
   }
@@ -34,9 +34,10 @@ class Message<T extends ConversationItem> {
         attachment1!.mime!.contains(FileExtension.mp4.name)) {
       return attachment1!.url;
     }
+
     if (attachment2 != null &&
-            attachment2!.mime!.contains(MediaType.audio.name) ||
-        attachment2!.mime!.contains(FileExtension.mp4.name)) {
+        (attachment2!.mime!.contains(MediaType.audio.name) ||
+            attachment2!.mime!.contains(FileExtension.mp4.name))) {
       return attachment2!.url;
     }
 
