@@ -1,7 +1,6 @@
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_advisor_interface/data/models/chats/conversation_item.dart';
-import 'package:shared_advisor_interface/data/models/chats/history.dart';
 import 'package:shared_advisor_interface/data/models/chats/message.dart';
 
 part 'chat_state.freezed.dart';

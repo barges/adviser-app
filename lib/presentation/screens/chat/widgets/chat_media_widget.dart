@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,6 +10,7 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_widget.dart';
 
 class ChatMediaWidget extends ChatWidget {
+  final String? imageUrl;
   final Duration duration;
   final VoidCallback? onStartPlayPressed;
   final VoidCallback? onPausePlayPressed;
@@ -21,6 +23,7 @@ class ChatMediaWidget extends ChatWidget {
     required this.duration,
     required super.type,
     super.ritualIdentifier,
+    this.imageUrl,
     this.onStartPlayPressed,
     this.onPausePlayPressed,
     this.playbackStream,
@@ -32,8 +35,8 @@ class ChatMediaWidget extends ChatWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: getter(
-        question: const EdgeInsets.fromLTRB(12.0, 4.0, 47.0, 4.0),
-        answer: const EdgeInsets.fromLTRB(47.0, 4.0, 12.0, 4.0),
+        question: const EdgeInsets.fromLTRB(12.0, 4.0, 48.0, 4.0),
+        answer: const EdgeInsets.fromLTRB(48.0, 4.0, 12.0, 4.0),
       ),
       child: Container(
         padding: const EdgeInsets.symmetric(
@@ -47,116 +50,135 @@ class ChatMediaWidget extends ChatWidget {
           ),
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
         ),
-        child: Row(
+        child: Column(
           children: [
-            _PlayPauseBtn(
-              isPlaying: isPlaying,
-              onStartPlayPressed: onStartPlayPressed,
-              onPausePlayPressed: onPausePlayPressed,
-              color: getter(
-                question: Get.theme.primaryColor,
-                answer: Get.theme.backgroundColor,
-              ),
-              colorIcon: getter(
-                question: Get.theme.backgroundColor,
-                answer: Get.theme.primaryColor,
-              ),
-            ),
-            const SizedBox(
-              width: 12.0,
-            ),
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        StreamBuilder<PlaybackDisposition>(
-                          stream: isPlaying && !isPlayingFinished
-                              ? playbackStream
-                              : null,
-                          builder: (_, snapshot) {
-                            final value = !isPlayingFinished && snapshot.hasData
-                                ? snapshot.data!.position.inMilliseconds /
-                                    snapshot.data!.duration.inMilliseconds
-                                : 0.0;
-                            final time = !isPlayingFinished && snapshot.hasData
-                                ? snapshot.data!.position
-                                    .toString()
-                                    .substring(2, 7)
-                                : "00:00";
-                            return _PlayProgress(
-                              value: value,
-                              time: time,
-                              textColor: getter(
-                                question: Get.theme.primaryColor,
-                                answer: Get.theme.backgroundColor,
-                              ),
-                              backgroundColor: getter(
-                                question: Get.theme.primaryColorLight,
-                                answer: Get.theme.primaryColorLight,
-                              ),
-                              color: getter(
-                                question: Get.theme.primaryColor,
-                                answer: Get.theme.backgroundColor,
-                              ),
-                            );
-                          },
-                        ),
-                        const SizedBox(
-                          height: 9.0,
-                        ),
-                        Row(
-                          children: [
-                            const Spacer(),
-                            Text(
-                              type == QuestionsType.ritual &&
-                                      ritualIdentifier != null
-                                  ? ritualIdentifier!.sessionName
-                                  : type.name,
-                              style: Get.textTheme.bodySmall?.copyWith(
-                                color: getter(
-                                  question: Get.theme.shadowColor,
-                                  answer: Get.theme.primaryColorLight,
-                                ),
-                                fontSize: 12.0,
-                              ),
-                            ),
-                            if (type == QuestionsType.ritual)
-                              const SizedBox(
-                                width: 6.5,
-                              ),
-                            if (type == QuestionsType.ritual &&
-                                ritualIdentifier != null)
-                              SvgPicture.asset(
-                                ritualIdentifier!.iconPath,
-                                width: 16.0,
-                                height: 16.0,
-                                color: getter(
-                                  question: Get.theme.shadowColor,
-                                  answer: Get.theme.primaryColorLight,
-                                ),
-                              ),
-                            const SizedBox(
-                              width: 10.55,
-                            ),
-                            Text(
-                              duration.toString().substring(2, 7),
-                              style: Get.textTheme.bodySmall?.copyWith(
-                                color: getter(
-                                  question: Get.theme.shadowColor,
-                                  answer: Get.theme.primaryColorLight,
-                                ),
-                                fontSize: 12.0,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
+            if (imageUrl != null)
+              Container(
+                height: 134.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(8.0),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(imageUrl!),
                   ),
-                ],
+                ),
               ),
+            if (imageUrl != null) const SizedBox(height: 12.0),
+            Row(
+              children: [
+                _PlayPauseBtn(
+                  isPlaying: isPlaying,
+                  onStartPlayPressed: onStartPlayPressed,
+                  onPausePlayPressed: onPausePlayPressed,
+                  color: getter(
+                    question: Get.theme.primaryColor,
+                    answer: Get.theme.backgroundColor,
+                  ),
+                  colorIcon: getter(
+                    question: Get.theme.backgroundColor,
+                    answer: Get.theme.primaryColor,
+                  ),
+                ),
+                const SizedBox(
+                  width: 12.0,
+                ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            StreamBuilder<PlaybackDisposition>(
+                              stream: isPlaying && !isPlayingFinished
+                                  ? playbackStream
+                                  : null,
+                              builder: (_, snapshot) {
+                                final value = !isPlayingFinished &&
+                                        snapshot.hasData
+                                    ? snapshot.data!.position.inMilliseconds /
+                                        snapshot.data!.duration.inMilliseconds
+                                    : 0.0;
+                                final time =
+                                    !isPlayingFinished && snapshot.hasData
+                                        ? snapshot.data!.position
+                                            .toString()
+                                            .substring(2, 7)
+                                        : "00:00";
+                                return _PlayProgress(
+                                  value: value,
+                                  time: time,
+                                  textColor: getter(
+                                    question: Get.theme.primaryColor,
+                                    answer: Get.theme.backgroundColor,
+                                  ),
+                                  backgroundColor: getter(
+                                    question: Get.theme.primaryColorLight,
+                                    answer: Get.theme.primaryColorLight,
+                                  ),
+                                  color: getter(
+                                    question: Get.theme.primaryColor,
+                                    answer: Get.theme.backgroundColor,
+                                  ),
+                                );
+                              },
+                            ),
+                            const SizedBox(
+                              height: 9.0,
+                            ),
+                            Row(
+                              children: [
+                                const Spacer(),
+                                Text(
+                                  type == QuestionsType.ritual &&
+                                          ritualIdentifier != null
+                                      ? ritualIdentifier!.sessionName
+                                      : type.name,
+                                  style: Get.textTheme.bodySmall?.copyWith(
+                                    color: getter(
+                                      question: Get.theme.shadowColor,
+                                      answer: Get.theme.primaryColorLight,
+                                    ),
+                                    fontSize: 12.0,
+                                  ),
+                                ),
+                                if (type == QuestionsType.ritual)
+                                  const SizedBox(
+                                    width: 6.5,
+                                  ),
+                                if (type == QuestionsType.ritual &&
+                                    ritualIdentifier != null)
+                                  SvgPicture.asset(
+                                    ritualIdentifier!.iconPath,
+                                    width: 16.0,
+                                    height: 16.0,
+                                    color: getter(
+                                      question: Get.theme.shadowColor,
+                                      answer: Get.theme.primaryColorLight,
+                                    ),
+                                  ),
+                                const SizedBox(
+                                  width: 10.55,
+                                ),
+                                Text(
+                                  duration.toString().substring(2, 7),
+                                  style: Get.textTheme.bodySmall?.copyWith(
+                                    color: getter(
+                                      question: Get.theme.shadowColor,
+                                      answer: Get.theme.primaryColorLight,
+                                    ),
+                                    fontSize: 12.0,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),

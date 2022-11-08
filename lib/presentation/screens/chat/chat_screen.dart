@@ -133,6 +133,7 @@ class ChatScreen extends StatelessWidget {
 
         return ChatMediaWidget(
           isQuestion: item.isQuestion,
+          imageUrl: item.imageUrl,
           duration: item.duration ?? const Duration(),
           type: item.data.type!,
           ritualIdentifier: item.data.ritualIdentifier,
@@ -168,6 +169,7 @@ class ChatScreen extends StatelessWidget {
       if (item.isAnswerMedia) {
         return ChatMediaWidget(
           isQuestion: false,
+          imageUrl: item.imageUrl,
           duration: item.duration ?? const Duration(),
           type: QuestionsType.public,
           ritualIdentifier: SessionsTypes.public,

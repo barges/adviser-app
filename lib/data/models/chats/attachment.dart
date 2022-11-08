@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:shared_advisor_interface/data/models/chats/meta.dart';
 
 part 'attachment.freezed.dart';
 part 'attachment.g.dart';
@@ -11,7 +12,7 @@ class Attachment with _$Attachment {
     String? mime,
     String? attachment,
     String? url,
-    dynamic meta,
+    Meta? meta,
   }) = _Attachment;
 
   factory Attachment.fromJson(Map<String, dynamic> json) =>

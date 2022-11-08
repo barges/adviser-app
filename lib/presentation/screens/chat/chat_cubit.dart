@@ -8,9 +8,10 @@ import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/data/models/chats/answer.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
-import 'package:shared_advisor_interface/data/models/chats/history.dart';
+import 'package:shared_advisor_interface/data/models/chats/meta.dart';
 import 'package:shared_advisor_interface/data/models/chats/question.dart';
 import 'package:shared_advisor_interface/data/models/chats/message.dart';
+import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
@@ -22,7 +23,6 @@ import 'package:audio_session/audio_session.dart';
 class ChatCubit extends Cubit<ChatState> {
   final ChatsRepository repository;
   final Question question;
-  Duration _audioDuration = const Duration();
   FlutterSoundRecorder? _recorder;
   FlutterSoundPlayer? _playerRecorded;
   FlutterSoundPlayer? _playerMedia;
@@ -96,9 +96,8 @@ class ChatCubit extends Cubit<ChatState> {
         offset: 0,
         limit: 50);
 
-    Question lastQuestion = await repository.getQuestion(
-        id: question.id!); //5f60b8ca094749001c9b481e
-    logger.i('Question: $lastQuestion');
+    Question lastQuestion = await repository.getQuestion(id: question.id!);
+    //logger.i('Question: $lastQuestion');
 
     final messages = List.of(state.messages);
     conversations.history!.forEach((element) {
@@ -113,7 +112,7 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       );
     });
-    messages.insert(0, Message(lastQuestion));
+    messages.insert(0, Message<Question>(lastQuestion));
 
     emit(state.copyWith(
       messages: messages,
@@ -134,7 +133,6 @@ class ChatCubit extends Cubit<ChatState> {
     );
 
     _recorder?.onProgress?.listen((e) {
-      _audioDuration = e.duration;
       if (e.duration.inSeconds > 3 * 60) {
         stopRecordingAudio();
       }
@@ -151,7 +149,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> stopRecordingAudio() async {
     String? recordingPath = await _recorder?.stopRecorder();
-    logger.i("recorded: $recordingPath");
+    logger.i("recorded audio: $recordingPath");
 
     emit(
       state.copyWith(
@@ -234,36 +232,40 @@ class ChatCubit extends Cubit<ChatState> {
       await _playerRecorded?.stopPlayer();
     }
 
-    /*List<MediaMessage> messages = List<MediaMessage>.from(state.messages);
-    messages.add(MediaMessage(
-      audioPath: state.recordingPath,
-      duration: _audioDuration,
-    ));*/
-
-    /*final String? mime = lookupMimeType(state.recordingPath);
+    final String? mime = lookupMimeType(state.recordingPath);
     File audiofile = File(state.recordingPath);
     final List<int> audioBytes = await audiofile.readAsBytes();
     final String base64Audio = base64Encode(audioBytes);
     final Metadata meta = await MetadataRetriever.fromFile(audiofile);
-    logger.i('meta: ($meta)');
+    logger.i('recorded audio meta: ($mime)');
+    logger.i('recorded audio meta: ($meta)');
     final request = AnswerRequest(
-        questionID: '5f60bacd6ae052001d4dd08c',
-        //ritualID: 'tarot',
+        questionID: question.id,
+        ritualID: SessionsTypes.tarot,
         content: 'Test',
         attachments: [
-          Attachment(mime: mime, attachment: base64Audio, meta: '')
-        ]);*/
-    //final Answer response = await repository.sendAnswer(request);
-    //logger.i('response:$response');
+          Attachment(
+              mime: mime,
+              attachment: base64Audio,
+              meta: Meta(duration: meta.trackDuration ?? 0))
+        ]);
+    try {
+      final Answer responseAnswer = await repository.sendAnswer(request);
+      logger.i('send response:$responseAnswer');
+      final messages = List.of(state.messages);
+      messages.insert(0, Message<Answer>(responseAnswer));
 
-    emit(
-      state.copyWith(
-        isRecordingAudio: false,
-        isAudioFileSaved: false,
-        isPlayingRecordedAudio: false,
-        // messages: messages,
-      ),
-    );
+      emit(
+        state.copyWith(
+          isRecordingAudio: false,
+          isAudioFileSaved: false,
+          isPlayingRecordedAudio: false,
+          messages: messages,
+        ),
+      );
+    } catch (e) {
+      logger.e(e);
+    }
   }
 
   Future<void> startPlayAudio(String audioUrl) async {

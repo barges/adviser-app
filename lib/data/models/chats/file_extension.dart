@@ -1,0 +1,3 @@
+enum FileExtension {
+  mp4,
+}

@@ -22,8 +22,8 @@ class ChatTextWidget extends ChatWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: getter(
-        question: const EdgeInsets.fromLTRB(12.0, 4.0, 47.0, 4.0),
-        answer: const EdgeInsets.fromLTRB(47.0, 4.0, 12.0, 4.0),
+        question: const EdgeInsets.fromLTRB(12.0, 4.0, 48.0, 4.0),
+        answer: const EdgeInsets.fromLTRB(48.0, 4.0, 12.0, 4.0),
       ),
       child: Container(
         padding: const EdgeInsets.all(12.0),
