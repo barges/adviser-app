@@ -1,32 +1,16 @@
-import 'dart:ffi';
-
-import 'package:equatable/equatable.dart';
-//import 'package:json_annotation/json_annotation.dart';
 import 'package:shared_advisor_interface/data/models/chats/answer.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/conversation_item.dart';
+import 'package:shared_advisor_interface/data/models/chats/file_extension.dart';
 import 'package:shared_advisor_interface/data/models/chats/media_type.dart';
 import 'package:shared_advisor_interface/data/models/chats/question.dart';
 
-//part 'message.g.dart';
-
-//@JsonSerializable(genericArgumentFactories: true)
-class Message<T extends ConversationItem> extends Equatable {
+class Message<T extends ConversationItem> {
   final T data;
 
   const Message(
     this.data,
   );
-
-  bool get isQuestion => data is Question;
-
-  bool get isAnswer => data is Answer;
-
-  bool get isMedia => data.attachments != null && data.attachments!.isNotEmpty;
-
-  bool get isQuestionMedia => isQuestion && isMedia;
-
-  bool get isAnswerMedia => isAnswer && isMedia;
 
   Attachment? get attachment1 {
     if (isMedia) {
@@ -46,13 +30,16 @@ class Message<T extends ConversationItem> extends Equatable {
     if (!isMedia) {
       return null;
     }
-    if (attachment1!.mime!.contains(MediaType.audio.name)) {
-      return data.attachments![0].url;
+    if (attachment1!.mime!.contains(MediaType.audio.name) ||
+        attachment1!.mime!.contains(FileExtension.mp4.name)) {
+      return attachment1!.url;
     }
     if (attachment2 != null &&
-        attachment2!.mime!.contains(MediaType.audio.name)) {
-      return data.attachments![0].url;
+            attachment2!.mime!.contains(MediaType.audio.name) ||
+        attachment2!.mime!.contains(FileExtension.mp4.name)) {
+      return attachment2!.url;
     }
+
     return null;
   }
 
@@ -70,29 +57,31 @@ class Message<T extends ConversationItem> extends Equatable {
     return null;
   }
 
-  bool get isAudio => audioUrl != null;
-
   Duration? get duration {
     if (isAudio) {
-      if (attachment1!.meta['duration'] != null) {
-        return Duration(seconds: attachment1!.meta['duration'].toInt());
+      if (attachment1!.meta!.duration != null) {
+        return Duration(seconds: attachment1!.meta!.duration!.toInt());
       }
 
-      if (attachment2 != null && attachment2!.meta['duration'] != null) {
-        return Duration(seconds: attachment2!.meta['duration'].toInt());
+      if (attachment2 != null && attachment2!.meta!.duration != null) {
+        return Duration(seconds: attachment2!.meta!.duration!.toInt());
       }
-
-      return const Duration();
     }
 
     return null;
   }
 
-  /*factory Message.fromJson(Map<String, dynamic> json) =>
-      _$MessageFromJson(json);
+  bool get isQuestionMedia => isQuestion && isMedia;
 
-  Map<String, dynamic> toJson() => _$MessageToJson(this);*/
+  bool get isAnswerMedia => isAnswer && isMedia;
 
-  @override
-  List<Object?> get props => [data];
+  bool get isQuestion => data is Question;
+
+  bool get isAnswer => data is Answer;
+
+  bool get isMedia => data.attachments != null && data.attachments!.isNotEmpty;
+
+  bool get isAudio => audioUrl != null;
+
+  bool get isImage => imageUrl != null;
 }
