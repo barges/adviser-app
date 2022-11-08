@@ -7,12 +7,11 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_widget.dart';
 
 class ChatTextWidget extends ChatWidget {
-  final DateTime createdAt;
   final String? content;
   const ChatTextWidget({
     super.key,
     required super.isQuestion,
-    required this.createdAt,
+    required super.createdAt,
     required super.type,
     super.ritualIdentifier,
     this.content = '',

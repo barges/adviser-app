@@ -240,14 +240,14 @@ class ChatCubit extends Cubit<ChatState> {
     logger.i('recorded audio meta: ($mime)');
     logger.i('recorded audio meta: ($meta)');
     final request = AnswerRequest(
-        questionID: question.id,
+        questionID: '5f60bd70b08424001c160200',
         ritualID: SessionsTypes.tarot,
         content: 'Test',
         attachments: [
           Attachment(
               mime: mime,
               attachment: base64Audio,
-              meta: Meta(duration: meta.trackDuration ?? 0))
+              meta: Meta(duration: (meta.trackDuration ?? 0) / 1000))
         ]);
     try {
       final Answer responseAnswer = await repository.sendAnswer(request);

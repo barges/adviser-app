@@ -51,7 +51,7 @@ class ChatScreen extends StatelessWidget {
                           itemBuilder: (_, index) => Builder(
                             builder: (context) {
                               return getChatWidget(
-                                  context, chatCubit, items, index);
+                                  context, chatCubit, items[index]);
                             },
                           ),
                           itemCount: items.length,
@@ -119,9 +119,8 @@ class ChatScreen extends StatelessWidget {
     );
   }
 
-  Widget getChatWidget(BuildContext context, ChatCubit chatCubit,
-      List<Message> items, int index) {
-    final Message item = items[index];
+  Widget getChatWidget(
+      BuildContext context, ChatCubit chatCubit, Message item) {
     if (item.isQuestion) {
       if (item.isQuestionMedia) {
         final audioUrl = item.audioUrl;
@@ -137,6 +136,8 @@ class ChatScreen extends StatelessWidget {
           duration: item.duration ?? const Duration(),
           type: item.data.type!,
           ritualIdentifier: item.data.ritualIdentifier,
+          createdAt:
+              DateTime.tryParse(item.data.createdAt ?? '') ?? DateTime.now(),
           isPlaying: isCurrent && isPlayingAudio,
           isPlayingFinished: isCurrent ? isPlayingAudioFinished : true,
           onStartPlayPressed: () {
@@ -173,6 +174,8 @@ class ChatScreen extends StatelessWidget {
           duration: item.duration ?? const Duration(),
           type: QuestionsType.public,
           ritualIdentifier: SessionsTypes.public,
+          createdAt:
+              DateTime.tryParse(item.data.createdAt ?? '') ?? DateTime.now(),
           isPlaying: isCurrent && isPlayingAudio,
           isPlayingFinished: isCurrent ? isPlayingAudioFinished : true,
           onStartPlayPressed: () {

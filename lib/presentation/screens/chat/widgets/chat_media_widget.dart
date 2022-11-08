@@ -20,8 +20,9 @@ class ChatMediaWidget extends ChatWidget {
   const ChatMediaWidget({
     super.key,
     required super.isQuestion,
-    required this.duration,
     required super.type,
+    required super.createdAt,
+    required this.duration,
     super.ritualIdentifier,
     this.imageUrl,
     this.onStartPlayPressed,
@@ -108,6 +109,7 @@ class ChatMediaWidget extends ChatWidget {
                                 return _PlayProgress(
                                   value: value,
                                   time: time,
+                                  duration: duration,
                                   textColor: getter(
                                     question: Get.theme.primaryColor,
                                     answer: Get.theme.backgroundColor,
@@ -161,7 +163,7 @@ class ChatMediaWidget extends ChatWidget {
                                   width: 10.55,
                                 ),
                                 Text(
-                                  duration.toString().substring(2, 7),
+                                  createdAt.toString(),
                                   style: Get.textTheme.bodySmall?.copyWith(
                                     color: getter(
                                       question: Get.theme.shadowColor,
@@ -232,6 +234,7 @@ class _PlayPauseBtn extends StatelessWidget {
 class _PlayProgress extends StatelessWidget {
   final double value;
   final String time;
+  final Duration duration;
   final Color textColor;
   final Color backgroundColor;
   final Color color;
@@ -239,6 +242,7 @@ class _PlayProgress extends StatelessWidget {
     Key? key,
     required this.value,
     required this.time,
+    required this.duration,
     required this.textColor,
     required this.backgroundColor,
     required this.color,
@@ -260,7 +264,7 @@ class _PlayProgress extends StatelessWidget {
             ),
             const Spacer(),
             Text(
-              time,
+              duration.toString().substring(2, 7),
               style: Get.textTheme.bodySmall?.copyWith(
                 color: textColor,
                 fontSize: 12.0,

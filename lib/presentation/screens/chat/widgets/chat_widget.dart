@@ -5,12 +5,14 @@ import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_t
 abstract class ChatWidget extends StatelessWidget {
   final bool isQuestion;
   final QuestionsType type;
+  final DateTime createdAt;
   final SessionsTypes? ritualIdentifier;
 
   const ChatWidget({
     super.key,
     required this.isQuestion,
     required this.type,
+    required this.createdAt,
     this.ritualIdentifier,
   });
 
