@@ -139,7 +139,9 @@ class AddNoteScreen extends StatelessWidget {
           floatingActionButton: GestureDetector(
             onTap: () {
               showPickImageAlert(
-                  context: context, setImage: addNoteCubit.addPictureToGallery);
+                  context: context,
+                  setImage: addNoteCubit.attachPicture,
+                  setMultiImage: addNoteCubit.attachMultiPictures);
             },
             child: Container(
               height: 48.0,

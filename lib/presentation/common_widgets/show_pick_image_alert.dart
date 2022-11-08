@@ -9,6 +9,7 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 Future<void> showPickImageAlert(
     {required BuildContext context,
     required ValueChanged<File> setImage,
+    ValueChanged<List<File>>? setMultiImage,
     VoidCallback? cancelOnTap,
     bool mounted = true}) async {
   ImageSource? source;
@@ -101,8 +102,14 @@ Future<void> showPickImageAlert(
               ),
             ));
   }
-  if (mounted && source != null) {
-    await _pickImage(context, source, setImage);
+  if (mounted &&
+      ((source != null && setMultiImage == null) ||
+          (source == ImageSource.camera && setMultiImage != null))) {
+    await _pickImage(context, source!, setImage);
+  } else if (mounted &&
+      source == ImageSource.gallery &&
+      setMultiImage != null) {
+    await _pickMultiImage(context, source!, setMultiImage);
   }
 }
 
@@ -117,6 +124,22 @@ Future<void> _pickImage(BuildContext context, ImageSource imageSource,
   }
   if (image != null) {
     setImage(image);
+  }
+}
+
+Future<void> _pickMultiImage(BuildContext context, ImageSource imageSource,
+    ValueChanged<List<File>> setMultiImage) async {
+  await _handlePermissions(context, imageSource);
+  List<File> images = List.empty(growable: true);
+  final ImagePicker picker = ImagePicker();
+  final List<XFile>? photoFiles = await picker.pickMultiImage();
+  if (photoFiles != null) {
+    for (XFile photoFile in photoFiles) {
+      images.add(File(photoFile.path));
+    }
+  }
+  if (images.isNotEmpty) {
+    setMultiImage(images);
   }
 }
 

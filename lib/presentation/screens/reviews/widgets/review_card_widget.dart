@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
@@ -63,7 +64,9 @@ class _ReviewCustomerInfoWidget extends StatelessWidget {
                 style: Get.textTheme.bodyMedium
                     ?.copyWith(fontWeight: FontWeight.w600)),
             Text(
-              '2022-11-26T00:00:00.000Z'.parseDateTimePattern4,
+              DateFormat(dateFormat)
+                  .format(DateTime.now())
+                  .parseDateTimePattern4,
               style: Get.textTheme.bodySmall
                   ?.copyWith(color: Get.theme.shadowColor),
             )

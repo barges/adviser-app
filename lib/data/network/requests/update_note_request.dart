@@ -6,8 +6,10 @@ part 'update_note_request.g.dart';
 class UpdateNoteRequest {
   final String? clientID;
   final String? content;
+  final String? updatedAt;
 
-  const UpdateNoteRequest({required this.clientID, required this.content});
+  const UpdateNoteRequest(
+      {required this.clientID, required this.content, required this.updatedAt});
 
   factory UpdateNoteRequest.fromJson(Map<String, dynamic> json) =>
       _$UpdateNoteRequestFromJson(json);

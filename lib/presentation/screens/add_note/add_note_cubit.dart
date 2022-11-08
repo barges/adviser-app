@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/data/network/responses/update_note_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -22,7 +23,6 @@ class AddNoteCubit extends Cubit<AddNoteState> {
   final UserProfileCubit _userProfileCubit = Get.find<UserProfileCubit>();
   late final TextEditingController noteController;
   late final TextEditingController titleController;
-  List<String> imagesPath = List.empty(growable: true);
 
   AddNoteCubit() : super(AddNoteState()) {
     final Map<String, String?> arguments = Get.arguments;
@@ -38,7 +38,9 @@ class AddNoteCubit extends Cubit<AddNoteState> {
   }
   Future<void> addNoteToCustomer() async {
     UpdateNoteResponse response = await _repository.updateNoteToCustomer(
-        clientID: customerID, content: noteController.text);
+        clientID: customerID,
+        content: noteController.text,
+        updatedAt: DateFormat(dateFormat).format(DateTime.now()));
     if (response.content == noteController.text) {
       emit(
           state.copyWith(newNote: noteController.text.removeSpacesAndNewLines));
@@ -46,11 +48,19 @@ class AddNoteCubit extends Cubit<AddNoteState> {
     }
   }
 
-  Future<void> addPictureToGallery(File? image) async {
+  Future<void> attachPicture(File? image) async {
     if (image != null) {
-      imagesPath.add(image.path);
-      emit(
-          state.copyWith(imagesPaths: [...state.imagesPaths]..add(image.path)));
+      emit(state.copyWith(imagesPaths: [...state.imagesPaths, image.path]));
+    }
+  }
+
+  void attachMultiPictures(List<File>? images) {
+    if (images != null) {
+      List<String> imagesPath = List.empty(growable: true);
+      for (File image in images) {
+        imagesPath.add(image.path);
+      }
+      emit(state.copyWith(imagesPaths: [...state.imagesPaths, ...imagesPath]));
     }
   }
 
