@@ -1,7 +1,6 @@
 import 'package:shared_advisor_interface/data/models/chats/answer.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/conversation_item.dart';
-import 'package:shared_advisor_interface/data/models/chats/file_extension.dart';
 import 'package:shared_advisor_interface/data/models/chats/media_type.dart';
 import 'package:shared_advisor_interface/data/models/chats/question.dart';
 
@@ -30,14 +29,12 @@ class Message<T extends ConversationItem> {
     if (!isMedia) {
       return null;
     }
-    if (attachment1!.mime!.contains(MediaType.audio.name) ||
-        attachment1!.mime!.contains(FileExtension.mp4.name)) {
+    if (attachment1!.mime!.contains(MediaType.audio.name)) {
       return attachment1!.url;
     }
 
     if (attachment2 != null &&
-        (attachment2!.mime!.contains(MediaType.audio.name) ||
-            attachment2!.mime!.contains(FileExtension.mp4.name))) {
+        (attachment2!.mime!.contains(MediaType.audio.name))) {
       return attachment2!.url;
     }
 
