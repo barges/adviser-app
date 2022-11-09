@@ -57,11 +57,13 @@ class Message<T extends ConversationItem> {
 
   Duration? get duration {
     if (isAudio) {
-      if (attachment1!.meta!.duration != null) {
+      if (attachment1!.meta != null && attachment1!.meta!.duration != null) {
         return Duration(seconds: attachment1!.meta!.duration!.toInt());
       }
 
-      if (attachment2 != null && attachment2!.meta!.duration != null) {
+      if (attachment2 != null &&
+          attachment2!.meta != null &&
+          attachment2!.meta!.duration != null) {
         return Duration(seconds: attachment2!.meta!.duration!.toInt());
       }
     }

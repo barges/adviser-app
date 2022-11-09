@@ -47,6 +47,7 @@ class ChatScreen extends StatelessWidget {
                     return Builder(
                       builder: (context) {
                         return ListView.builder(
+                          controller: chatCubit.controller,
                           reverse: true,
                           itemBuilder: (_, index) => Builder(
                             builder: (context) {

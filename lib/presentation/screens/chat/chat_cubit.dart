@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
+import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -16,6 +18,7 @@ import 'package:shared_advisor_interface/data/network/requests/answer_request.da
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'chat_state.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:audio_session/audio_session.dart';
@@ -23,9 +26,15 @@ import 'package:audio_session/audio_session.dart';
 class ChatCubit extends Cubit<ChatState> {
   final ChatsRepository repository;
   final Question question;
+  final ScrollController controller = ScrollController();
+  final MainCubit _mainCubit = Get.find<MainCubit>();
   FlutterSoundRecorder? _recorder;
   FlutterSoundPlayer? _playerRecorded;
   FlutterSoundPlayer? _playerMedia;
+  int offset = 0;
+  int limit = 15;
+  int? total;
+  static const codec = Codec.aacMP4;
 
   ChatCubit(this.repository, this.question) : super(const ChatState()) {
     _init();
@@ -65,6 +74,8 @@ class ChatCubit extends Cubit<ChatState> {
     await _playerMedia?.setSubscriptionDuration(
       const Duration(milliseconds: 100),
     );
+
+    controller.addListener(scrollControllerListener);
   }
 
   Future<void> _initAudioSession() async {
@@ -88,16 +99,37 @@ class ChatCubit extends Cubit<ChatState> {
     ));
   }
 
+  void scrollControllerListener() {
+    if (!_mainCubit.state.isLoading && controller.position.extentAfter <= 300) {
+      _getConversations();
+    }
+  }
+
   Future<void> _getConversations() async {
+    if (total != null) {
+      if (offset == total! || limit > total!) {
+        return;
+      }
+      if (offset + limit > total!) {
+        limit = total! - offset;
+      }
+    }
+
     ConversationsResponse conversations = await repository.getConversationsHystory(
         expertID:
             '0ba684917ad77d2b7578d7f8b54797ca92c329e80898ff0fb7ea480d32bcb090',
         clientID: question.clientID!,
-        offset: 0,
-        limit: 50);
+        offset: offset,
+        limit: limit);
 
-    Question lastQuestion = await repository.getQuestion(id: question.id!);
-    //logger.i('Question: $lastQuestion');
+    Question? lastQuestion;
+    if (total == null) {
+      lastQuestion = await repository.getQuestion(id: question.id!);
+      //logger.i('Question: $lastQuestion');
+    }
+
+    total = conversations.total;
+    offset = offset + limit;
 
     final messages = List.of(state.messages);
     conversations.history!.forEach((element) {
@@ -112,7 +144,9 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       );
     });
-    messages.insert(0, Message<Question>(lastQuestion));
+    if (lastQuestion != null) {
+      messages.insert(0, Message<Question>(lastQuestion));
+    }
 
     emit(state.copyWith(
       messages: messages,
@@ -125,11 +159,11 @@ class ChatCubit extends Cubit<ChatState> {
       throw RecordingPermissionException('Microphone permission not granted');
     }
 
-    final fileName = 'audio_m_${Random().nextInt(10000000)}.mp4';
+    final fileName = 'audio_m_${Random().nextInt(10000000)}.m4a';
 
     await _recorder?.startRecorder(
       toFile: fileName,
-      codec: Codec.aacMP4,
+      codec: codec,
     );
 
     _recorder?.onProgress?.listen((e) {
@@ -198,7 +232,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     await _playerRecorded?.startPlayer(
       fromURI: state.recordingPath,
-      codec: Codec.aacMP4,
+      codec: codec,
       sampleRate: 44000,
       whenFinished: () {
         emit(
@@ -295,7 +329,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     await _playerMedia?.startPlayer(
       fromURI: audioUrl,
-      codec: Codec.aacMP4,
+      codec: codec,
       sampleRate: 44000,
       whenFinished: () => emit(
         state.copyWith(

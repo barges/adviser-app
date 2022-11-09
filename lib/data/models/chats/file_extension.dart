@@ -1,3 +1,0 @@
-enum FileExtension {
-  mp4,
-}
