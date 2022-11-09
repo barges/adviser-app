@@ -35,42 +35,63 @@ class InitBinding extends Bindings {
     final CachingManager cacheManager = Get.find<CachingManager>();
 
     Dio dio = await _initDio(cacheManager);
-    Get.put<Dio>(dio, permanent: true);
+    Get.put<Dio>(
+      dio,
+      permanent: true,
+    );
 
     ///APIs
-    final AuthApi authApi = Get.put<AuthApi>(AuthApi(dio), permanent: true);
+    final AuthApi authApi = Get.put<AuthApi>(
+      AuthApi(dio),
+      permanent: true,
+    );
     final ChatsApi sessionsApi =
         Get.put<ChatsApi>(ChatsApi(dio), permanent: true);
-    final UserApi userApi = Get.put<UserApi>(UserApi(dio), permanent: true);
-    final CustomerApi customerApi =
-        Get.put<CustomerApi>(CustomerApi(dio), permanent: true);
+    final UserApi userApi = Get.put<UserApi>(
+      UserApi(dio),
+      permanent: true,
+    );
+    final CustomerApi customerApi = Get.put<CustomerApi>(
+      CustomerApi(dio),
+      permanent: true,
+    );
 
     ///Repositories
     Get.put<AuthRepository>(
-        AuthRepositoryImpl(
-          authApi,
-        ),
-        permanent: true);
+      AuthRepositoryImpl(
+        authApi,
+      ),
+      permanent: true,
+    );
     Get.put<ChatsRepository>(
-        ChatsRepositoryImpl(
-          sessionsApi,
-        ),
-        permanent: true);
+      ChatsRepositoryImpl(
+        sessionsApi,
+      ),
+      permanent: true,
+    );
     Get.put<UserRepository>(
-        UserRepositoryImpl(
-          userApi,
-          cacheManager,
-        ),
-        permanent: true);
+      UserRepositoryImpl(
+        userApi,
+        cacheManager,
+      ),
+      permanent: true,
+    );
     Get.put<CustomerRepository>(
-        CustomerRepositoryImpl(
-          customerApi,
-        ),
-        permanent: true);
+      CustomerRepositoryImpl(
+        customerApi,
+      ),
+      permanent: true,
+    );
 
     ///Services
-    Get.lazyPut<FreshChatService>(() => FreshChatServiceImpl());
-    Get.lazyPut<PushNotificationManager>(() => PushNotificationManagerImpl());
+    Get.put<FreshChatService>(
+      FreshChatServiceImpl(),
+      permanent: true,
+    );
+    Get.put<PushNotificationManager>(
+      PushNotificationManagerImpl(),
+      permanent: true,
+    );
   }
 
   Future<Dio> _initDio(CachingManager cacheManager) async {

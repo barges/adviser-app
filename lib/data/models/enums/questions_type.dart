@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 
-enum QuestionsType {
+enum ChatItemType {
   @JsonValue("PRIVATE")
   private,
   @JsonValue("HISTORY")
@@ -10,32 +10,36 @@ enum QuestionsType {
   public,
   @JsonValue("RITUAL")
   ritual,
+  @JsonValue("TEXT_ANSWER")
+  textAnswer,
   all
 }
 
-extension QuestionsTypeExt on QuestionsType {
+extension ChatItemTypeExt on ChatItemType {
   String get filterName {
     switch (this) {
-      case QuestionsType.private:
+      case ChatItemType.private:
         return S.current.privateQuestions;
-      case QuestionsType.ritual:
+      case ChatItemType.ritual:
         return S.current.onlyPremiumProducts;
-      case QuestionsType.history:
-      case QuestionsType.public:
-      case QuestionsType.all:
+      case ChatItemType.history:
+      case ChatItemType.public:
+      case ChatItemType.textAnswer:
+      case ChatItemType.all:
         return S.current.all;
     }
   }
 
   String get filterTypeName {
     switch (this) {
-      case QuestionsType.private:
+      case ChatItemType.private:
         return 'PRIVATE';
-      case QuestionsType.ritual:
+      case ChatItemType.ritual:
         return 'RITUAL';
-      case QuestionsType.history:
-      case QuestionsType.public:
-      case QuestionsType.all:
+      case ChatItemType.history:
+      case ChatItemType.public:
+      case ChatItemType.textAnswer:
+      case ChatItemType.all:
         return 'ALL';
     }
   }

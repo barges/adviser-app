@@ -7,7 +7,7 @@
   "confirmNewPassword": "Confirme a nova senha",
   "changePassword": "Mudar senha",
   "thePasswordsMustMatch": "As senhas devem corresponder",
-  "pleaseEnterAtLeast8Characters": "Insira pelo menos 8 caracteres",
+  "pleaseEnterAtLeast6Characters": "Insira pelo menos 6 caracteres",
   "pleaseInsertCorrectEmail": "Por favor, insira o email correto",
   "chooseBrand": "Escolha a marca para iniciar a sessão",
   "comingSoon": "Em breve!",

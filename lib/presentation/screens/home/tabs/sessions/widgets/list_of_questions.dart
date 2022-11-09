@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/chats/question.dart';
+import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/list_of_filters_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/chat_list_tile_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/chats_list_tile_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/market_filter_widget.dart';
 
 class ListOfQuestions extends StatelessWidget {
@@ -43,7 +43,7 @@ class _PublicQuestionsListWidget extends StatelessWidget {
         ),
         Builder(
           builder: (context) {
-            final List<Question> publicQuestions = context
+            final List<ChatItem> publicQuestions = context
                 .select((SessionsCubit cubit) => cubit.state.publicQuestions);
             return Expanded(
               child: _ListOfQuestionsWidget(
@@ -96,7 +96,7 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
         ),
         Builder(
           builder: (context) {
-            final List<Question> privateQuestionsWithHistory = context.select(
+            final List<ChatItem> privateQuestionsWithHistory = context.select(
                 (SessionsCubit cubit) =>
                     cubit.state.privateQuestionsWithHistory);
             return Expanded(
@@ -116,7 +116,7 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
 }
 
 class _ListOfQuestionsWidget extends StatelessWidget {
-  final List<Question> questions;
+  final List<ChatItem> questions;
   final RefreshCallback onRefresh;
   final ScrollController controller;
 
@@ -136,14 +136,19 @@ class _ListOfQuestionsWidget extends StatelessWidget {
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           SliverToBoxAdapter(
-            child: ListView(
+            child: ListView.separated(
               padding:
                   const EdgeInsets.all(AppConstants.horizontalScreenPadding),
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              children: questions
-                  .map((e) => ChatListTileWidget(question: e))
-                  .toList(),
+
+              itemBuilder: (BuildContext context, int index) {
+                return ChatsListTileWidget(question: questions[index]);
+              },
+              separatorBuilder: (BuildContext context, int index) => const SizedBox(
+                height: 12.0,
+              ),
+              itemCount: questions.length,
             ),
           ),
         ],

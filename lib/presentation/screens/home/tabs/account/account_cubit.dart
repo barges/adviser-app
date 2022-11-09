@@ -9,6 +9,7 @@ import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
@@ -51,7 +52,7 @@ class AccountCubit extends Cubit<AccountState> {
 
   Future<void> refreshUserinfo() async {
     if (mainCubit.state.internetConnectionIsAvailable) {
-      int seconds = 0;
+      int milliseconds = 0;
 
       final UserInfo userInfo = await _userRepository.getUserInfo();
 
@@ -70,14 +71,19 @@ class AccountCubit extends Cubit<AccountState> {
           cacheManager.getUserStatus()?.profileUpdatedAt;
 
       if (profileUpdatedAt != null) {
-        seconds = DateTime.now().difference(profileUpdatedAt).inSeconds;
+        milliseconds =
+            DateTime.now().difference(profileUpdatedAt).inMilliseconds;
+        logger.d(
+            'DateTime.now().difference(profileUpdatedAt).inSeconds -- ${DateTime.now().difference(profileUpdatedAt).inSeconds}');
       }
 
       emit(
         state.copyWith(
           userProfile: cacheManager.getUserProfile(),
           enableNotifications: userInfo.pushNotificationsEnabled ?? false,
-          seconds: seconds > 0 ? AppConstants.secondsInHour - seconds : seconds,
+          millisecondsForTimer: milliseconds > 0
+              ? AppConstants.millisecondsInHour - milliseconds
+              : milliseconds,
         ),
       );
     }
@@ -99,8 +105,7 @@ class AccountCubit extends Cubit<AccountState> {
     return false;
   }
 
-  Future<void> updateUserStatus(
-      {required FortunicaUserStatus status}) async {
+  Future<void> updateUserStatus({required FortunicaUserStatus status}) async {
     final UpdateUserStatusRequest request = UpdateUserStatusRequest(
       status: status,
       comment: commentController.text,
@@ -110,8 +115,8 @@ class AccountCubit extends Cubit<AccountState> {
   }
 
   Future<void> updateEnableNotificationsValue(bool newValue) async {
-    final UserInfo userInfo =
-        await _userRepository.setPushEnabled(PushEnableRequest(value: newValue));
+    final UserInfo userInfo = await _userRepository
+        .setPushEnabled(PushEnableRequest(value: newValue));
     emit(
       state.copyWith(
         enableNotifications: userInfo.pushNotificationsEnabled ?? false,
@@ -131,7 +136,7 @@ class AccountCubit extends Cubit<AccountState> {
   void hideTimer() {
     emit(
       state.copyWith(
-        seconds: 0,
+        millisecondsForTimer: 0,
       ),
     );
   }

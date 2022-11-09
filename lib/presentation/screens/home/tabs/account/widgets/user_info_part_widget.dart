@@ -117,8 +117,8 @@ class UserInfoPartWidget extends StatelessWidget {
             ),
             Builder(
               builder: (context) {
-                final int seconds =
-                    context.select((AccountCubit cubit) => cubit.state.seconds);
+                final int millisecondsForTimer = context.select(
+                    (AccountCubit cubit) => cubit.state.millisecondsForTimer);
                 return TileWidget(
                   title: S.of(context).imAvailableNow,
                   iconSVGPath: Assets.vectors.availability.path,
@@ -139,14 +139,13 @@ class UserInfoPartWidget extends StatelessWidget {
                       );
                     }
                   },
-                  isDisable: currentStatus.status !=
-                          FortunicaUserStatus.live &&
+                  isDisable: currentStatus.status != FortunicaUserStatus.live &&
                       currentStatus.status != FortunicaUserStatus.offline,
                   initSwitcherValue:
                       currentStatus.status == FortunicaUserStatus.live,
-                  timerWidget: seconds > 0
+                  timerWidget: millisecondsForTimer > 0
                       ? CountDownTimer(
-                          seconds: seconds,
+                          milliseconds: millisecondsForTimer,
                           onEnd: accountCubit.hideTimer,
                         )
                       : null,

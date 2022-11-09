@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/chats/question.dart';
+import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
@@ -12,7 +12,7 @@ import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_state.dart';
 
-const int _questionsLimit = 20;
+const int questionsLimit = 20;
 
 class SessionsCubit extends Cubit<SessionsState> {
   final ChatsRepository _repository = Get.find<ChatsRepository>();
@@ -23,13 +23,13 @@ class SessionsCubit extends Cubit<SessionsState> {
   late final VoidCallback disposeUserStatusListen;
   late final VoidCallback disposeUserProfileListen;
 
-  final List<QuestionsType> filters = [
-    QuestionsType.all,
-    QuestionsType.ritual,
-    QuestionsType.private,
+  final List<ChatItemType> filters = [
+    ChatItemType.all,
+    ChatItemType.ritual,
+    ChatItemType.private,
   ];
-  final List<Question> _publicQuestions = [];
-  final List<Question> _privateQuestionsWithHistory = [];
+  final List<ChatItem> _publicQuestions = [];
+  final List<ChatItem> _privateQuestionsWithHistory = [];
 
   String? _lastId;
   bool hasMore = true;
@@ -105,6 +105,14 @@ class SessionsCubit extends Cubit<SessionsState> {
     getPrivateQuestions(refresh: true);
   }
 
+  void openSearch() {
+    emit(state.copyWith(searchIsOpen: true));
+  }
+
+  void closeSearch() {
+    emit(state.copyWith(searchIsOpen: false));
+  }
+
   Future<void> getPublicQuestions(
       {FortunicaUserStatus? status, bool refresh = false}) async {
     if (refresh) {
@@ -125,7 +133,7 @@ class SessionsCubit extends Cubit<SessionsState> {
       }
 
       final QuestionsListResponse result = await _repository.getPublicQuestions(
-          limit: _questionsLimit,
+          limit: questionsLimit,
           lastId: _lastId,
           filtersLanguage: filtersLanguage);
       _publicHasMore = result.hasMore ?? true;
@@ -154,9 +162,10 @@ class SessionsCubit extends Cubit<SessionsState> {
             marketsType != MarketsType.all ? marketsType.name : null;
       }
 
-      final QuestionsType questionsType = filters[state.currentFilterIndex];
-      final String? filterName =
-          questionsType != QuestionsType.all ? questionsType.filterTypeName : null;
+      final ChatItemType questionsType = filters[state.currentFilterIndex];
+      final String? filterName = questionsType != ChatItemType.all
+          ? questionsType.filterTypeName
+          : null;
 
       final QuestionsListResponse result =
           await _repository.getPrivateQuestions(
@@ -188,7 +197,7 @@ class SessionsCubit extends Cubit<SessionsState> {
         (status ?? cacheManager.getUserStatus()?.status) ==
             FortunicaUserStatus.live) {
       final QuestionsListResponse result = await _repository.getHistoryList(
-        limit: _questionsLimit,
+        limit: questionsLimit,
         page: _historyPage++,
       );
 

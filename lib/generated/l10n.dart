@@ -130,11 +130,11 @@ class S {
     );
   }
 
-  /// `Please enter at least 8 characters`
-  String get pleaseEnterAtLeast8Characters {
+  /// `Please enter at least 6 characters`
+  String get pleaseEnterAtLeast6Characters {
     return Intl.message(
-      'Please enter at least 8 characters',
-      name: 'pleaseEnterAtLeast8Characters',
+      'Please enter at least 6 characters',
+      name: 'pleaseEnterAtLeast6Characters',
       desc: '',
       args: [],
     );

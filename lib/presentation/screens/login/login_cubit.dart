@@ -96,7 +96,7 @@ class LoginCubit extends Cubit<LoginState> {
       if (!passwordIsValid()) {
         emit(
           state.copyWith(
-            passwordErrorText: S.current.pleaseEnterAtLeast8Characters,
+            passwordErrorText: S.current.pleaseEnterAtLeast6Characters,
           ),
         );
       }
@@ -118,5 +118,5 @@ class LoginCubit extends Cubit<LoginState> {
 
   bool emailIsValid() => GetUtils.isEmail(emailController.text);
 
-  bool passwordIsValid() => passwordController.text.length >= 8;
+  bool passwordIsValid() => passwordController.text.length >= 6;
 }

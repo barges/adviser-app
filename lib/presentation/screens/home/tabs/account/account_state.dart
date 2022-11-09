@@ -9,7 +9,7 @@ class AccountState with _$AccountState {
     @Default(true) bool isAvailable,
     @Default(false) bool enableNotifications,
     @Default(false) bool commentButtonIsActive,
-    @Default(0) int seconds,
+    @Default(0) int millisecondsForTimer,
     UserProfile? userProfile,
   }) = _AccountState;
 }

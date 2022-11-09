@@ -83,7 +83,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
       if (!passwordIsValid()) {
         emit(
           state.copyWith(
-            passwordErrorText: S.current.pleaseEnterAtLeast8Characters,
+            passwordErrorText: S.current.pleaseEnterAtLeast6Characters,
           ),
         );
       }
@@ -103,7 +103,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
 
   bool emailIsValid() => GetUtils.isEmail(emailController.text);
 
-  bool passwordIsValid() => passwordController.text.length >= 8;
+  bool passwordIsValid() => passwordController.text.length >= 6;
 
   bool confirmPasswordIsValid() =>
       passwordController.text == confirmPasswordController.text;

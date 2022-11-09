@@ -132,8 +132,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "lugares acima do mês passado"),
         "pleaseEnterAtLeast3Characters": MessageLookupByLibrary.simpleMessage(
             "Digite pelo menos 3 caracteres"),
-        "pleaseEnterAtLeast8Characters": MessageLookupByLibrary.simpleMessage(
-            "Insira pelo menos 8 caracteres"),
+        "pleaseEnterAtLeast6Characters": MessageLookupByLibrary.simpleMessage(
+            "Insira pelo menos 6 caracteres"),
         "pleaseInsertCorrectEmail": MessageLookupByLibrary.simpleMessage(
             "Por favor, insira o email correto"),
         "portuguese": MessageLookupByLibrary.simpleMessage("Português"),
