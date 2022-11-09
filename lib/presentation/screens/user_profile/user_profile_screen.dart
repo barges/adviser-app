@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/data/network/responses/customer_info_response/customer_info_response.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -70,8 +71,7 @@ class UserProfileScreen extends StatelessWidget {
                                   alignment: Alignment.bottomCenter,
                                   children: [
                                     SvgPicture.asset(
-                                        (response.zodiac ?? '')
-                                            .getZodiacProfileImage,
+                                        response.zodiac?.imagePath ?? '',
                                         width: 96.0),
                                     if (userProfileCubit.isTopSpender)
                                       Container(
@@ -139,8 +139,7 @@ class UserProfileScreen extends StatelessWidget {
                                       _InfoWidget(
                                         title: S.of(context).zodiacSign,
                                         info: SvgPicture.asset(
-                                            (response.zodiac ?? '')
-                                                .getHoroscopeByZodiacName),
+                                            response.zodiac?.iconPath ?? ''),
                                       ),
                                       const SizedBox(width: 8.0),
                                       _InfoWidget(
@@ -155,7 +154,7 @@ class UserProfileScreen extends StatelessWidget {
                                       _InfoWidget(
                                         title: S.of(context).ascendant,
                                         info: SvgPicture.asset(
-                                            'cancer'.getHoroscopeByZodiacName),
+                                            ZodiacSign.cancer.iconPath),
                                       ),
                                     ],
                                   ),

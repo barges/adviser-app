@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/data/models/chats/question.dart';
+import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -15,7 +15,7 @@ class ChatConversationAppBar extends StatelessWidget
   final String? zodiac;
   final String? backButtonText;
   final Brand? selectedBrand;
-  final Question question;
+  final ChatItem question;
 
   const ChatConversationAppBar({
     Key? key,
@@ -75,7 +75,7 @@ class ChatConversationAppBar extends StatelessWidget
             ],
           ),
           SvgPicture.asset(
-            Assets.vectors.zodiac.aquarius.path,
+            Assets.vectors.zodiacLight.aquarius.path, //
             width: 28.0,
           ),
         ],

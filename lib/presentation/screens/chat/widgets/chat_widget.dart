@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/models/chats/questions_type.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
 
 abstract class ChatWidget extends StatelessWidget {
   final bool isQuestion;
-  final QuestionsType type;
+  final ChatItemType type;
   final DateTime createdAt;
   final SessionsTypes? ritualIdentifier;
 

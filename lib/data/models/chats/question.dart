@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/client_information.dart';
-import 'package:shared_advisor_interface/data/models/chats/questions_type.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
 import 'package:shared_advisor_interface/data/models/chats/conversation_item.dart';
 
 part 'question.freezed.dart';
@@ -13,7 +13,7 @@ class Question extends ConversationItem with _$Question {
   @JsonSerializable(includeIfNull: false)
   const factory Question({
     @JsonKey(name: '_id') final String? id,
-    QuestionsType? type,
+    ChatItemType? type,
     SessionsTypes? ritualIdentifier,
     String? clientID,
     String? clientName,

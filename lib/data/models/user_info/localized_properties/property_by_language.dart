@@ -1,23 +1,18 @@
-import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'property_by_language.freezed.dart';
 part 'property_by_language.g.dart';
 
-@JsonSerializable()
-class PropertyByLanguage extends Equatable {
-  final String? statusMessage;
-  final String? description;
 
-  const PropertyByLanguage({
-    this.statusMessage,
-    this.description,
-  });
+@freezed
+class PropertyByLanguage with _$PropertyByLanguage {
+  @JsonSerializable(includeIfNull: false)
+  const factory PropertyByLanguage({
+    String? statusMessage,
+    String? description,
+  }) = _PropertyByLanguage;
 
   factory PropertyByLanguage.fromJson(Map<String, dynamic> json) =>
       _$PropertyByLanguageFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PropertyByLanguageToJson(this);
-
-  @override
-  List<Object?> get props => [statusMessage, description];
 }

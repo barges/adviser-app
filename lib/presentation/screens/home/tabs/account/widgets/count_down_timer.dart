@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 
 class CountDownTimer extends StatelessWidget {
-  final int seconds;
+  final int milliseconds;
   final VoidCallback onEnd;
 
   const CountDownTimer({
-    required this.seconds,
+    required this.milliseconds,
     required this.onEnd,
     Key? key,
   }) : super(key: key);
@@ -16,10 +16,10 @@ class CountDownTimer extends StatelessWidget {
   Widget build(BuildContext context) {
     return TweenAnimationBuilder<Duration>(
         duration: Duration(
-          seconds: seconds,
+          milliseconds: milliseconds,
         ),
         tween: Tween(
-          begin: Duration(seconds: seconds),
+          begin: Duration(milliseconds: milliseconds),
           end: Duration.zero,
         ),
         onEnd: onEnd,
@@ -32,7 +32,7 @@ class CountDownTimer extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Get.textTheme.bodySmall?.copyWith(
               color: Get.theme.errorColor,
-              fontSize: 12,
+              fontSize: 12.0,
             ),
           );
         });

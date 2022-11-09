@@ -8,15 +8,29 @@ import 'package:shared_advisor_interface/data/network/responses/questions_list_r
 
 part 'chats_api.g.dart';
 
-@RestApi(baseUrl: 'https://fortunica-backend-for-2268.fortunica.adviqodev.de/')
+@RestApi(baseUrl: 'https://fortunica-backend-for-2268.fortunica.adviqodev.de')
 abstract class ChatsApi {
   factory ChatsApi(Dio dio) = _ChatsApi;
 
-  @GET('/questions/list')
-  Future<QuestionsListResponse> getQuestions(
-      {@Query("limit") required int limit,
-      @Query("lastId") String? lastId,
-      @Query('filters[type]') String? filterType});
+  @GET('/experts/questions/public')
+  Future<QuestionsListResponse> getPublicQuestions({
+    @Query('limit') required int limit,
+    @Query('lastId') String? lastId,
+    @Query('filters[language]') String? filterLanguage,
+  });
+
+  @GET('/experts/questions/individual')
+  Future<QuestionsListResponse> getPrivateQuestions({
+    @Query('filters[type]') String? filtersType,
+    @Query('filters[language]') String? filtersLanguage,
+  });
+
+  @GET('/experts/conversations/history')
+  Future<QuestionsListResponse> getHistoryList({
+    @Query('limit') required int limit,
+    @Query('page') required int page,
+    @Query('search') String? search,
+  });
 
   @GET('/v2/users/{expertID}/conversations/{clientID}')
   Future<ConversationsResponse> getConversationsHystory({
@@ -26,7 +40,7 @@ abstract class ChatsApi {
     @Query("limit") required int limit,
   });
 
-  @GET('questions/single/{id}')
+  @GET('/questions/single/{id}')
   Future<Question> getQuestion({
     @Path() required String id,
   });
@@ -35,10 +49,4 @@ abstract class ChatsApi {
   Future<Answer> sendAnswer(
     @Body() AnswerRequest request,
   );
-
-  // @GET('/rituals/list')
-  // Future<RitualsResponse> getListOfRituals(
-  //     {@Query("limit") required int limit,
-  //     @Query('filters[type]') String? filterType,
-  //     @Query('filters[language]') String? filterLanguage});
 }

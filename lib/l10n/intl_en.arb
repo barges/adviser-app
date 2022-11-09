@@ -7,7 +7,7 @@
   "confirmNewPassword": "Confirm new password",
   "changePassword": "Change password",
   "thePasswordsMustMatch": "The passwords must match",
-  "pleaseEnterAtLeast8Characters": "Please enter at least 8 characters",
+  "pleaseEnterAtLeast6Characters": "Please enter at least 6 characters",
   "pleaseInsertCorrectEmail": "Please, insert correct email",
   "chooseBrand": "Choose brand",
   "comingSoon": "Coming soon!",
@@ -115,6 +115,11 @@
   "youHaveNotCompletedAnySessionsYet": "You have not completed any sessions yet",
   "youHaveNotYetCompletedThisMonthsSessions": "You have not yet completed this month's sessions",
   "youDontHaveAnInternetConnection": "You don’t have an internet connection",
+  "allType": "All Type",
+  "market": "Market:",
+  "all": "All",
+  "privateQuestions": "Private Questions",
+  "onlyPremiumProducts": "Only Premium Products",
   "from15secto3min": "from 15 sec to 3 min",
   "typemessage":"Type message"
 }

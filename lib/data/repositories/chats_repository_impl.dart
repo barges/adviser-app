@@ -11,15 +11,31 @@ class ChatsRepositoryImpl implements ChatsRepository {
 
   ChatsRepositoryImpl(this._api);
 
-  static const int _limit = 10;
+  @override
+  Future<QuestionsListResponse> getPublicQuestions(
+      {required int limit, String? lastId, String? filtersLanguage}) async {
+    return await _api.getPublicQuestions(
+        limit: limit, lastId: lastId, filterLanguage: filtersLanguage);
+  }
 
   @override
-  Future<QuestionsListResponse> getListOfQuestions(
-      {String? lastId, required bool isPublicFilter}) async {
-    return await _api.getQuestions(
-        limit: _limit,
-        lastId: lastId,
-        filterType: buildFilterType(isPublicFilter));
+  Future<QuestionsListResponse> getPrivateQuestions(
+      {String? filtersType, String? filtersLanguage}) async {
+    return await _api.getPrivateQuestions(
+        filtersType: filtersType, filtersLanguage: filtersLanguage);
+  }
+
+  @override
+  Future<QuestionsListResponse> getHistoryList({
+    required int limit,
+    required int page,
+    String? search,
+  }) async {
+    return await _api.getHistoryList(
+      limit: limit,
+      page: page,
+      search: search,
+    );
   }
 
   @override

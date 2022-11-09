@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/chats/gender.dart';
-import 'package:shared_advisor_interface/data/models/chats/zodiac_sign.dart';
+import 'package:shared_advisor_interface/data/models/enums/gender.dart';
+import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 
 part 'client_information.freezed.dart';
 part 'client_information.g.dart';

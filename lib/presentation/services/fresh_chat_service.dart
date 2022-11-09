@@ -115,7 +115,6 @@ class FreshChatServiceImpl extends FreshChatService {
           'payments_foes_advisor',
           'webtool_foes_advisor',
           'tips_foes_advisor',
-          'tips_foes_advisor (best practices and guides)',
           'performance_foes_advisor',
           'specialcases_foes_advisor',
         ];

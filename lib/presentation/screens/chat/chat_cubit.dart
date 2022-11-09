@@ -10,10 +10,11 @@ import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/data/models/chats/answer.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
+import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
-import 'package:shared_advisor_interface/data/models/chats/question.dart';
 import 'package:shared_advisor_interface/data/models/chats/message.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
+import 'package:shared_advisor_interface/data/models/chats/question.dart';
+import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
@@ -25,7 +26,7 @@ import 'package:audio_session/audio_session.dart';
 
 class ChatCubit extends Cubit<ChatState> {
   final ChatsRepository repository;
-  final Question question;
+  final ChatItem question;
   final ScrollController controller = ScrollController();
   final MainCubit _mainCubit = Get.find<MainCubit>();
   final Codec _codec = Platform.isIOS ? Codec.aacMP4 : Codec.mp3;

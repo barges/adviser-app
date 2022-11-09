@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/message.dart';
 import 'package:shared_advisor_interface/data/models/chats/question.dart';
-import 'package:shared_advisor_interface/data/models/chats/questions_type.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
@@ -19,7 +20,7 @@ import 'widgets/chat_textfield.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({Key? key}) : super(key: key);
-  final Question _question = Get.arguments;
+  final ChatItem _question = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +174,7 @@ class ChatScreen extends StatelessWidget {
           isQuestion: false,
           imageUrl: item.imageUrl,
           duration: item.duration ?? const Duration(),
-          type: QuestionsType.public,
+          type: ChatItemType.public,
           ritualIdentifier: SessionsTypes.public,
           createdAt:
               DateTime.tryParse(item.data.createdAt ?? '') ?? DateTime.now(),
@@ -191,7 +192,7 @@ class ChatScreen extends StatelessWidget {
 
       return ChatTextWidget(
         isQuestion: false,
-        type: QuestionsType.public,
+        type: ChatItemType.public,
         ritualIdentifier: SessionsTypes.public,
         content: item.data.content,
         createdAt:

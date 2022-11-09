@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/models/chats/questions_type.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_widget.dart';
 
@@ -57,7 +56,7 @@ class ChatTextWidget extends ChatWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  type == QuestionsType.ritual && ritualIdentifier != null
+                  type == SessionsTypes.ritual && ritualIdentifier != null
                       ? ritualIdentifier!.sessionName
                       : type.name,
                   style: Get.textTheme.bodySmall?.copyWith(
@@ -68,11 +67,11 @@ class ChatTextWidget extends ChatWidget {
                     fontSize: 12.0,
                   ),
                 ),
-                if (type == QuestionsType.ritual)
+                if (type == SessionsTypes.ritual)
                   const SizedBox(
                     width: 6.5,
                   ),
-                if (type == QuestionsType.ritual && ritualIdentifier != null)
+                if (type == SessionsTypes.ritual && ritualIdentifier != null)
                   SvgPicture.asset(
                     ritualIdentifier!.iconPath,
                     width: 16.0,

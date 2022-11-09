@@ -130,11 +130,11 @@ class S {
     );
   }
 
-  /// `Please enter at least 8 characters`
-  String get pleaseEnterAtLeast8Characters {
+  /// `Please enter at least 6 characters`
+  String get pleaseEnterAtLeast6Characters {
     return Intl.message(
-      'Please enter at least 8 characters',
-      name: 'pleaseEnterAtLeast8Characters',
+      'Please enter at least 6 characters',
+      name: 'pleaseEnterAtLeast6Characters',
       desc: '',
       args: [],
     );
@@ -1205,6 +1205,56 @@ class S {
     return Intl.message(
       'You don’t have an internet connection',
       name: 'youDontHaveAnInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All Type`
+  String get allType {
+    return Intl.message(
+      'All Type',
+      name: 'allType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Market:`
+  String get market {
+    return Intl.message(
+      'Market:',
+      name: 'market',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get all {
+    return Intl.message(
+      'All',
+      name: 'all',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private Questions`
+  String get privateQuestions {
+    return Intl.message(
+      'Private Questions',
+      name: 'privateQuestions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Only Premium Products`
+  String get onlyPremiumProducts {
+    return Intl.message(
+      'Only Premium Products',
+      name: 'onlyPremiumProducts',
       desc: '',
       args: [],
     );

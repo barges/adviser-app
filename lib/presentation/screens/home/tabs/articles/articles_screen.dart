@@ -29,12 +29,11 @@ class ArticlesScreen extends StatelessWidget {
                   'All',
                   'Only Premium Products',
                   'Private Questions',
-                  'Market: '
                 ];
                 return ListOfFiltersWidget(
                   currentFilterIndex: selectedFilterIndex,
                   filters: filters,
-                  onTap: articlesCubit.updateFilterIndex,
+                  onTapToFilter: articlesCubit.updateFilterIndex,
                 );
               }),
             ),
