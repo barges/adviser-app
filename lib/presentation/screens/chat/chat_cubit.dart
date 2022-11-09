@@ -28,13 +28,14 @@ class ChatCubit extends Cubit<ChatState> {
   final Question question;
   final ScrollController controller = ScrollController();
   final MainCubit _mainCubit = Get.find<MainCubit>();
+  final Codec _codec = Platform.isIOS ? Codec.aacMP4 : Codec.mp3;
+  final String _recordFileExt = Platform.isIOS ? 'm4a' : 'mp3';
   FlutterSoundRecorder? _recorder;
   FlutterSoundPlayer? _playerRecorded;
   FlutterSoundPlayer? _playerMedia;
   int offset = 0;
   int limit = 15;
   int? total;
-  static const codec = Codec.aacMP4;
 
   ChatCubit(this.repository, this.question) : super(const ChatState()) {
     _init();
@@ -159,11 +160,11 @@ class ChatCubit extends Cubit<ChatState> {
       throw RecordingPermissionException('Microphone permission not granted');
     }
 
-    final fileName = 'audio_m_${Random().nextInt(10000000)}.m4a';
+    final fileName = 'audio_m_${Random().nextInt(10000000)}.$_recordFileExt';
 
     await _recorder?.startRecorder(
       toFile: fileName,
-      codec: codec,
+      codec: _codec,
     );
 
     _recorder?.onProgress?.listen((e) {
@@ -232,7 +233,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     await _playerRecorded?.startPlayer(
       fromURI: state.recordingPath,
-      codec: codec,
+      codec: _codec,
       sampleRate: 44000,
       whenFinished: () {
         emit(
@@ -329,7 +330,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     await _playerMedia?.startPlayer(
       fromURI: audioUrl,
-      codec: codec,
+      codec: _codec,
       sampleRate: 44000,
       whenFinished: () => emit(
         state.copyWith(
