@@ -11,5 +11,6 @@ class AppConstants {
   static const String baseUrl = 'https://api-staging.fortunica-app.com';
 
   ///DEV
-  //static const String baseUrl = 'https://fortunica-backend-for-2268.fortunica.adviqodev.de';
+  static const String baseUrlDev =
+      'https://fortunica-backend-for-2268.fortunica.adviqodev.de';
 }

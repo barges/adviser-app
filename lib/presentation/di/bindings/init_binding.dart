@@ -75,7 +75,7 @@ class InitBinding extends Bindings {
 
   Future<Dio> _initDio(CachingManager cacheManager) async {
     final dio = Dio();
-    dio.options.baseUrl = AppConstants.baseUrl;
+    dio.options.baseUrl = AppConstants.baseUrlDev;
     dio.options.headers = await _getHeaders(cacheManager);
     dio.options.connectTimeout = 30000;
     dio.options.receiveTimeout = 30000;
