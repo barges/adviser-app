@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:shared_advisor_interface/data/models/chats/answer.dart';
-import 'package:shared_advisor_interface/data/models/chats/question.dart';
+import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
@@ -42,12 +41,12 @@ abstract class ChatsApi {
   });
 
   @GET('/questions/single/{id}')
-  Future<Question> getQuestion({
+  Future<ChatItem> getQuestion({
     @Path() required String id,
   });
 
   @POST('/answers')
-  Future<Answer> sendAnswer(
+  Future<ChatItem> sendAnswer(
     @Body() AnswerRequest request,
   );
 }

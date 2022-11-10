@@ -1,11 +1,11 @@
-import 'package:shared_advisor_interface/data/models/chats/answer.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
+import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/conversation_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/media_type.dart';
-import 'package:shared_advisor_interface/data/models/chats/question.dart';
+import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
 
 class Message<T extends ConversationItem> {
-  final T data;
+  final ChatItem data;
 
   const Message(
     this.data,
@@ -75,9 +75,9 @@ class Message<T extends ConversationItem> {
 
   bool get isAnswerMedia => isAnswer && isMedia;
 
-  bool get isQuestion => data is Question;
+  bool get isQuestion => data.type != ChatItemType.textAnswer;
 
-  bool get isAnswer => data is Answer;
+  bool get isAnswer => data.type == ChatItemType.textAnswer;
 
   bool get isMedia => data.attachments != null && data.attachments!.isNotEmpty;
 

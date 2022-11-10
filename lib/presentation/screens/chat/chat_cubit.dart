@@ -8,12 +8,10 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_advisor_interface/data/models/chats/answer.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
 import 'package:shared_advisor_interface/data/models/chats/message.dart';
-import 'package:shared_advisor_interface/data/models/chats/question.dart';
 import 'package:shared_advisor_interface/data/models/enums/file_ext.dart';
 import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
@@ -127,7 +125,7 @@ class ChatCubit extends Cubit<ChatState> {
         offset: offset,
         limit: limit);
 
-    Question? lastQuestion;
+    ChatItem? lastQuestion;
     if (total == null) {
       lastQuestion = await repository.getQuestion(id: question.id!);
       //logger.i('Question: $lastQuestion');
@@ -139,18 +137,18 @@ class ChatCubit extends Cubit<ChatState> {
     final messages = List.of(state.messages);
     conversations.history!.forEach((element) {
       messages.add(
-        Message<Answer>(
+        Message(
           element.answer!,
         ),
       );
       messages.add(
-        Message<Question>(
+        Message(
           element.question!,
         ),
       );
     });
     if (lastQuestion != null) {
-      messages.insert(0, Message<Question>(lastQuestion));
+      messages.insert(0, Message(lastQuestion));
     }
 
     emit(state.copyWith(
@@ -289,10 +287,10 @@ class ChatCubit extends Cubit<ChatState> {
               meta: Meta(duration: (meta.trackDuration ?? 0) / 1000))
         ]);
     try {
-      final Answer responseAnswer = await repository.sendAnswer(request);
+      final ChatItem responseAnswer = await repository.sendAnswer(request);
       logger.i('send response:$responseAnswer');
       final messages = List.of(state.messages);
-      messages.insert(0, Message<Answer>(responseAnswer));
+      messages.insert(0, Message(responseAnswer));
 
       emit(
         state.copyWith(

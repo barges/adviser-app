@@ -1,5 +1,4 @@
-import 'package:shared_advisor_interface/data/models/chats/answer.dart';
-import 'package:shared_advisor_interface/data/models/chats/question.dart';
+import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
@@ -53,12 +52,12 @@ class ChatsRepositoryImpl implements ChatsRepository {
   }
 
   @override
-  Future<Question> getQuestion({required String id}) async {
+  Future<ChatItem> getQuestion({required String id}) async {
     return await _api.getQuestion(id: id);
   }
 
   @override
-  Future<Answer> sendAnswer(AnswerRequest request) async {
+  Future<ChatItem> sendAnswer(AnswerRequest request) async {
     return await _api.sendAnswer(request);
   }
 

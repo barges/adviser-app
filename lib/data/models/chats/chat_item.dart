@@ -3,6 +3,7 @@ import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/client_information.dart';
 import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
 
 part 'chat_item.freezed.dart';
 part 'chat_item.g.dart';
@@ -14,6 +15,7 @@ class ChatItem with _$ChatItem {
   @JsonSerializable(includeIfNull: false)
   const factory ChatItem({
     ChatItemType? type,
+    SessionsTypes? ritualIdentifier,
     String? clientName,
     String? createdAt,
     String? updatedAt,
@@ -29,14 +31,14 @@ class ChatItem with _$ChatItem {
 
   ChatItemContentType get contentType {
     ChatItemContentType? chatItemContentType = ChatItemContentType.text;
-    if(attachments != null && attachments!.isNotEmpty) {
-    final String content = this.content ?? '';
+    if (attachments != null && attachments!.isNotEmpty) {
+      final String content = this.content ?? '';
       if (content.isNotEmpty) {
         if (attachments!.length == 1) {
-            chatItemContentType = ChatItemContentType.mediaText;
-          } else {
-            chatItemContentType = ChatItemContentType.mediaMediaText;
-          }
+          chatItemContentType = ChatItemContentType.mediaText;
+        } else {
+          chatItemContentType = ChatItemContentType.mediaMediaText;
+        }
       } else {
         if (attachments!.length == 1) {
           chatItemContentType = ChatItemContentType.media;
