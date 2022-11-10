@@ -30,27 +30,20 @@ class ChatItem with _$ChatItem {
 
   ChatItemContentType get contentType {
     ChatItemContentType? chatItemContentType = ChatItemContentType.text;
-    final String content = this.content ?? '';
-    //print('!!!');
-    //print(attachments);
-    // print(attachments?.isEmpty == true);
-    if (content.isNotEmpty) {
-      if (attachments?.isEmpty == true) {
-        chatItemContentType = ChatItemContentType.text;
-      } else {
-        if (attachments?.length == 1) {
+    if (attachments != null && attachments!.isNotEmpty) {
+      final String content = this.content ?? '';
+      if (content.isNotEmpty) {
+        if (attachments!.length == 1) {
           chatItemContentType = ChatItemContentType.mediaText;
         } else {
-          print('!!!');
-          print(attachments);
           chatItemContentType = ChatItemContentType.mediaMediaText;
         }
-      }
-    } else {
-      if (attachments?.length == 1) {
-        chatItemContentType = ChatItemContentType.media;
       } else {
-        chatItemContentType = ChatItemContentType.mediaMedia;
+        if (attachments!.length == 1) {
+          chatItemContentType = ChatItemContentType.media;
+        } else {
+          chatItemContentType = ChatItemContentType.mediaMedia;
+        }
       }
     }
     return chatItemContentType;
