@@ -7,8 +7,7 @@ part 'user_profile_state.freezed.dart';
 @freezed
 class UserProfileState with _$UserProfileState {
   factory UserProfileState(
-      {@Default(null) String? currentNote,
-      @Default(null) String? createdNoteTime,
+      {@Default(null) GetNoteResponse? currentNote,
       @Default(null) CustomerInfoResponse? response,
       @Default(false) bool isFavorite}) = _UserProfileState;
 }

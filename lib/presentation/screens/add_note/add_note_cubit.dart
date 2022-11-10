@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/update_note_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -35,16 +35,23 @@ class AddNoteCubit extends Cubit<AddNoteState> {
     if (oldTitle != null) {
       emit(state.copyWith(hadTitle: true));
     }
+    if (oldNote != null) {
+      emit(state.copyWith(isNoteNew: false));
+    }
   }
   Future<void> addNoteToCustomer() async {
     UpdateNoteResponse response = await _repository.updateNoteToCustomer(
         clientID: customerID,
         content: noteController.text,
+        createdAt: noteDate ?? DateFormat(dateFormat).format(DateTime.now()),
         updatedAt: DateFormat(dateFormat).format(DateTime.now()));
     if (response.content == noteController.text) {
       emit(
           state.copyWith(newNote: noteController.text.removeSpacesAndNewLines));
-      _userProfileCubit.updateNoteToCustomer(state.newNote);
+
+      _userProfileCubit.updateNoteToCustomer(GetNoteResponse(
+          noteController.text,
+          noteDate ?? DateFormat(dateFormat).format(DateTime.now())));
     }
   }
 

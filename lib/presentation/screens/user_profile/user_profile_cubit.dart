@@ -30,18 +30,18 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     final GetNoteResponse note =
         await _repository.getNoteForCustomer(customerID);
 
-    emit(state.copyWith(
-        currentNote: note.content, createdNoteTime: note.createdAt));
+    emit(state.copyWith(currentNote: note));
   }
 
-  void updateNoteToCustomer(String newContent) {
+  void updateNoteToCustomer(GetNoteResponse newContent) {
     emit(state.copyWith(currentNote: newContent));
   }
 
   void navigateToAddNoteScreenForOldNote() {
     Get.toNamed(AppRoutes.addNote, arguments: {
       'customerID': customerID,
-      'oldNote': state.currentNote,
+      'oldNote': state.currentNote?.content,
+      'noteDate': state.currentNote?.updatedAt
     });
   }
 

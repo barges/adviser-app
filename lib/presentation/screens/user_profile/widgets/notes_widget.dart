@@ -2,23 +2,22 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class NotesWidget extends StatelessWidget {
-  final List<String> texts;
+  final List<GetNoteResponse> notes;
   final List<List<String>> images;
-  final List<String> createdAt;
   final VoidCallback? onTapAddNew;
   final VoidCallback? onTapOldNote;
 
   const NotesWidget({
     Key? key,
-    this.texts = const [],
+    this.notes = const [],
     this.images = const [],
-    this.createdAt = const [],
     this.onTapAddNew,
     this.onTapOldNote,
   }) : super(key: key);
@@ -37,49 +36,53 @@ class NotesWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    S.of(context).notes,
+                    'Note', //S.of(context).notes,
                     style: Get.textTheme.headlineMedium,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text('${texts.length}',
-                        style: Get.textTheme.displayLarge?.copyWith(
-                            fontWeight: FontWeight.w500,
-                            color: Get.theme.shadowColor)),
-                  )
+                  /**
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text('${texts.length}',
+                          style: Get.textTheme.displayLarge?.copyWith(
+                              fontWeight: FontWeight.w500,
+                              color: Get.theme.shadowColor)),
+                    )
+                  */
                 ],
               ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Assets.vectors.plus.svg(),
-                  const SizedBox(width: 9.0),
-                  GestureDetector(
-                    onTap: onTapAddNew,
-                    child: Text(
-                      S.of(context).addNew,
-                      style: Get.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
-                        color: Get.theme.primaryColor,
-                      ),
-                    ),
-                  )
-                ],
-              ),
+              notes.isEmpty
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Assets.vectors.plus.svg(),
+                        const SizedBox(width: 9.0),
+                        GestureDetector(
+                          onTap: onTapAddNew,
+                          child: Text(
+                            S.of(context).addNew,
+                            style: Get.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w500,
+                              color: Get.theme.primaryColor,
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  : SizedBox.shrink(),
             ],
           ),
           const SizedBox(height: 11.0),
-          texts.isNotEmpty
+          notes.isNotEmpty
               ? ListView.separated(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (_, index) => _OneNoteWidget(
                       onTap: onTapOldNote,
-                      text: texts[index],
-                      createdAt: createdAt[index],
+                      text: notes[index].content!,
+                      updatedAt: notes[index].updatedAt!,
                       images: images.isNotEmpty ? images[index] : const []),
                   separatorBuilder: (_, __) => const SizedBox(height: 11.0),
-                  itemCount: min(texts.length, images.length),
+                  itemCount: min(notes.length, images.length),
                 )
               : const _EmptyNotesWidget()
         ],
@@ -126,14 +129,14 @@ class _OneNoteWidget extends StatelessWidget {
   final String text;
   final List<String> images;
   final VoidCallback? onTap;
-  final String createdAt;
+  final String updatedAt;
 
   const _OneNoteWidget(
       {Key? key,
       required this.text,
       required this.images,
       this.onTap,
-      required this.createdAt})
+      required this.updatedAt})
       : super(key: key);
 
   @override
@@ -153,6 +156,8 @@ class _OneNoteWidget extends StatelessWidget {
               children: [
                 Text(
                   text,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: Get.textTheme.displayLarge?.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
@@ -164,7 +169,7 @@ class _OneNoteWidget extends StatelessWidget {
                       color: Get.theme.shadowColor),
                   child: Row(
                     children: [
-                      Text('2022-10-16T13:50:56.285Z'.parseDateTimePattern2),
+                      Text(updatedAt.parseDateTimePattern2),
                       if (images.isNotEmpty)
                         Row(
                           mainAxisSize: MainAxisSize.min,

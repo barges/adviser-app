@@ -7,5 +7,6 @@ class AddNoteState with _$AddNoteState {
   factory AddNoteState(
       {@Default('') String newNote,
       @Default([]) List<String> imagesPaths,
-      @Default(false) bool hadTitle}) = _AddNoteState;
+      @Default(false) bool hadTitle,
+      @Default(true) bool isNoteNew}) = _AddNoteState;
 }

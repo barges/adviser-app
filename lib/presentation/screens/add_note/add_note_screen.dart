@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
@@ -27,10 +28,12 @@ class AddNoteScreen extends StatelessWidget {
         AddNoteCubit addNoteCubit = context.read<AddNoteCubit>();
         List<String> imagesPaths =
             context.select((AddNoteCubit cubit) => cubit.state.imagesPaths);
+        bool isNoteNew =
+            context.select((AddNoteCubit cubit) => cubit.state.isNoteNew);
         return Scaffold(
           appBar: WideAppBar(
             bottomWidget: Text(
-              S.of(context).addNote,
+              isNoteNew ? S.of(context).addNote : S.of(context).editNote,
               style: Get.textTheme.headlineMedium,
             ),
             topRightWidget: AppIconButton(
@@ -45,56 +48,61 @@ class AddNoteScreen extends StatelessWidget {
             ),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(
-                DateFormat('MMM. d, yyyy').format(DateTime.now()),
-                style: Get.textTheme.displaySmall?.copyWith(
-                  fontWeight: FontWeight.w400,
-                  color: Get.theme.shadowColor,
+              isNoteNew
+                  ? SizedBox.shrink()
+                  : Text(
+                      addNoteCubit.noteDate!.parseDateTimePattern2,
+                      style: Get.textTheme.displaySmall?.copyWith(
+                        fontWeight: FontWeight.w400,
+                        color: Get.theme.shadowColor,
+                      ),
+                    ),
+              /**
+                Padding(
+                  padding: const EdgeInsets.only(top: 12.0),
+                  child: Builder(builder: (context) {
+                    bool hadTitle = context
+                        .select((AddNoteCubit cubit) => cubit.state.hadTitle);
+                    if (hadTitle) {
+                      return TextField(
+                        controller: addNoteCubit.titleController,
+                        autofocus: true,
+                        style: Get.textTheme.headlineLarge?.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        scrollPadding: EdgeInsets.zero,
+                        cursorColor: Get.theme.hoverColor,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          contentPadding: EdgeInsets.zero,
+                        ),
+                      );
+                    } else {
+                      return GestureDetector(
+                          onTap: (() {
+                            addNoteCubit.addTitle();
+                          }),
+                          child: Text(S.of(context).title,
+                              style: Get.textTheme.headlineLarge?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: Get.theme.shadowColor)));
+                    }
+                  }),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 12.0),
-                child: Builder(builder: (context) {
-                  bool hadTitle = context
-                      .select((AddNoteCubit cubit) => cubit.state.hadTitle);
-                  if (hadTitle) {
-                    return TextField(
-                      controller: addNoteCubit.titleController,
-                      autofocus: true,
-                      style: Get.textTheme.headlineLarge?.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      scrollPadding: EdgeInsets.zero,
-                      cursorColor: Get.theme.hoverColor,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                        contentPadding: EdgeInsets.zero,
-                      ),
-                    );
-                  } else {
-                    return GestureDetector(
-                        onTap: (() {
-                          addNoteCubit.addTitle();
-                        }),
-                        child: Text(S.of(context).title,
-                            style: Get.textTheme.headlineLarge?.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: Get.theme.shadowColor)));
-                  }
-                }),
-              ),
+              */
               TextField(
                 controller: addNoteCubit.noteController,
                 style: Get.textTheme.displayLarge
                     ?.copyWith(fontWeight: FontWeight.w400),
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
+                autofocus: true,
                 scrollPadding: EdgeInsets.zero,
                 cursorColor: Get.theme.hoverColor,
                 decoration: const InputDecoration(
@@ -136,24 +144,26 @@ class AddNoteScreen extends StatelessWidget {
               )
             ]),
           ),
-          floatingActionButton: GestureDetector(
-            onTap: () {
-              showPickImageAlert(
-                  context: context,
-                  setImage: addNoteCubit.attachPicture,
-                  setMultiImage: addNoteCubit.attachMultiPictures);
-            },
-            child: Container(
-              height: 48.0,
-              width: 48.0,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                    colors: [AppColors.ctaGradient1, AppColors.ctaGradient2]),
+          /**
+            floatingActionButton: GestureDetector(
+              onTap: () {
+                showPickImageAlert(
+                    context: context,
+                    setImage: addNoteCubit.attachPicture,
+                    setMultiImage: addNoteCubit.attachMultiPictures);
+              },
+              child: Container(
+                height: 48.0,
+                width: 48.0,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                      colors: [AppColors.ctaGradient1, AppColors.ctaGradient2]),
+                ),
+                child: Assets.vectors.gallery.svg(fit: BoxFit.scaleDown),
               ),
-              child: Assets.vectors.gallery.svg(fit: BoxFit.scaleDown),
             ),
-          ),
+          */
         );
       }),
     );
