@@ -5,8 +5,13 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 
 class EmptyListWidget extends StatelessWidget {
   final String title;
+  final String? label;
 
-  const EmptyListWidget({Key? key, required this.title}) : super(key: key);
+  const EmptyListWidget({
+    Key? key,
+    required this.title,
+    this.label,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +34,18 @@ class EmptyListWidget extends StatelessWidget {
           style: Get.textTheme.headlineMedium,
           textAlign: TextAlign.center,
         ),
+        const SizedBox(
+          height: 8.0,
+        ),
+        if (label != null)
+          Text(
+            label!,
+            style: Get.textTheme.bodyMedium?.copyWith(
+              fontSize: 16.0,
+              color: Get.theme.shadowColor,
+            ),
+            textAlign: TextAlign.center,
+          ),
       ],
     );
   }
