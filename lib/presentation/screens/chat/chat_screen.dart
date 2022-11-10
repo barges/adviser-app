@@ -129,43 +129,7 @@ class _ChatItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ChatCubit chatCubit = context.read<ChatCubit>();
-    if (item.isQuestion) {
-      if (item.isQuestionMedia) {
-        final audioUrl = item.audioUrl;
-        final isCurrent = audioUrl == chatCubit.state.audioUrl;
-        final isPlayingAudio =
-            context.select((ChatCubit cubit) => cubit.state.isPlayingAudio);
-        final isPlayingAudioFinished = context
-            .select((ChatCubit cubit) => cubit.state.isPlayingAudioFinished);
-
-        return ChatMediaWidget(
-          isQuestion: item.isQuestion,
-          imageUrl: item.imageUrl,
-          duration: item.duration ?? const Duration(),
-          type: item.type!,
-          ritualIdentifier: item.ritualIdentifier,
-          createdAt: DateTime.tryParse(item.createdAt ?? '') ?? DateTime.now(),
-          isPlaying: isCurrent && isPlayingAudio,
-          isPlayingFinished: isCurrent ? isPlayingAudioFinished : true,
-          onStartPlayPressed: () {
-            if (audioUrl != null) {
-              chatCubit.startPlayAudio(audioUrl);
-            }
-          },
-          onPausePlayPressed: () => chatCubit.pauseAudio(),
-          playbackStream: chatCubit.onMediaProgress,
-        );
-      }
-
-      return ChatTextWidget(
-        isQuestion: item.isQuestion,
-        type: item.type!,
-        ritualIdentifier: item.ritualIdentifier,
-        content: item.content,
-        createdAt: DateTime.tryParse(item.createdAt ?? '') ?? DateTime.now(),
-      );
-    }
-    if (item.isAnswer) {
+    if (item.isMedia) {
       final audioUrl = item.audioUrl;
       final isCurrent = audioUrl == chatCubit.state.audioUrl;
       final isPlayingAudio =
@@ -173,34 +137,31 @@ class _ChatItemWidget extends StatelessWidget {
       final isPlayingAudioFinished = context
           .select((ChatCubit cubit) => cubit.state.isPlayingAudioFinished);
 
-      if (item.isAnswerMedia) {
-        return ChatMediaWidget(
-          isQuestion: false,
-          imageUrl: item.imageUrl,
-          duration: item.duration ?? const Duration(),
-          type: ChatItemType.public,
-          ritualIdentifier: SessionsTypes.public,
-          createdAt: DateTime.tryParse(item.createdAt ?? '') ?? DateTime.now(),
-          isPlaying: isCurrent && isPlayingAudio,
-          isPlayingFinished: isCurrent ? isPlayingAudioFinished : true,
-          onStartPlayPressed: () {
-            if (audioUrl != null) {
-              chatCubit.startPlayAudio(audioUrl);
-            }
-          },
-          onPausePlayPressed: () => chatCubit.pauseAudio(),
-          playbackStream: chatCubit.onMediaProgress,
-        );
-      }
-
-      return ChatTextWidget(
-        isQuestion: false,
-        type: ChatItemType.public,
-        ritualIdentifier: SessionsTypes.public,
-        content: item.content,
+      return ChatMediaWidget(
+        isQuestion: item.isQuestion,
+        imageUrl: item.imageUrl,
+        duration: item.duration ?? const Duration(),
+        type: item.type!,
+        ritualIdentifier: item.ritualIdentifier,
         createdAt: DateTime.tryParse(item.createdAt ?? '') ?? DateTime.now(),
+        isPlaying: isCurrent && isPlayingAudio,
+        isPlayingFinished: isCurrent ? isPlayingAudioFinished : true,
+        onStartPlayPressed: () {
+          if (audioUrl != null) {
+            chatCubit.startPlayAudio(audioUrl);
+          }
+        },
+        onPausePlayPressed: () => chatCubit.pauseAudio(),
+        playbackStream: chatCubit.onMediaProgress,
       );
     }
-    return const SizedBox.shrink();
+
+    return ChatTextWidget(
+      isQuestion: item.isQuestion,
+      type: item.type!,
+      ritualIdentifier: item.ritualIdentifier,
+      content: item.content,
+      createdAt: DateTime.tryParse(item.createdAt ?? '') ?? DateTime.now(),
+    );
   }
 }
