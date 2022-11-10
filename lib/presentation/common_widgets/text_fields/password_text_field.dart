@@ -10,17 +10,17 @@ class PasswordTextField extends StatelessWidget {
   final String errorText;
   final ValueChanged<String>? onSubmitted;
   final VoidCallback? clickToHide;
-  final FocusNode? focusNode;
+  final FocusNode focusNode;
   final String? label;
 
   const PasswordTextField({
     Key? key,
     required this.controller,
+    required this.focusNode,
     this.textInputAction,
     this.label,
     this.onSubmitted,
     this.clickToHide,
-    this.focusNode,
     this.errorText = '',
     this.hiddenPassword = true,
   }) : super(key: key);
@@ -40,7 +40,9 @@ class PasswordTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
             color: errorText.isNotEmpty
                 ? Get.theme.errorColor
-                : Get.theme.hintColor,
+                : focusNode.hasPrimaryFocus
+                    ? Get.theme.primaryColor
+                    : Get.theme.hintColor,
           ),
           child: Container(
             margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),

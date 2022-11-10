@@ -25,6 +25,7 @@ import 'edit_profile_state.dart';
 class EditProfileCubit extends Cubit<EditProfileState> {
   final MainCubit mainCubit = Get.find<MainCubit>();
   final TextEditingController nicknameController = TextEditingController();
+  final FocusNode nicknameFocusNode = FocusNode();
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
@@ -36,10 +37,14 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   late final List<MarketsType> activeLanguages;
   late final List<GlobalKey> activeLanguagesGlobalKeys;
   late final Map<String, dynamic> oldPropertiesMap;
-  final Map<MarketsType, List<TextEditingController>> textControllersMap = {};
-  final Map<MarketsType, List<String>> errorTextsMap = {};
-  late final ScrollController languagesScrollController;
+
+  final ScrollController languagesScrollController = ScrollController();
   final PageController picturesPageController = PageController();
+
+  final Map<MarketsType, List<TextEditingController>> textControllersMap = {};
+  final Map<MarketsType, List<FocusNode>> focusNodesMap = {};
+  final Map<MarketsType, List<ValueNotifier>> hasFocusNotifiersMap = {};
+  final Map<MarketsType, List<String>> errorTextsMap = {};
 
   int? initialLanguageIndexIfHasError;
 
@@ -52,9 +57,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
     oldPropertiesMap = userProfile?.localizedProperties?.toJson() ?? {};
 
-    createTextControllersAndErrorsMap();
-
-    languagesScrollController = ScrollController();
+    createTextControllersNodesAndErrorsMap();
 
     if (initialLanguageIndexIfHasError != null) {
       animateLanguageWithError(initialLanguageIndexIfHasError!);
@@ -67,6 +70,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     );
 
     addListenersToTextControllers();
+    addListenersToFocusNodes();
   }
 
   @override
@@ -76,13 +80,24 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         element.dispose();
       }
     }
+    for (var entry in focusNodesMap.entries) {
+      for (var element in entry.value) {
+        element.dispose();
+      }
+    }
+    for (var entry in hasFocusNotifiersMap.entries) {
+      for (var element in entry.value) {
+        element.dispose();
+      }
+    }
     nicknameController.dispose();
+    nicknameFocusNode.dispose();
     picturesPageController.dispose();
     Get.delete<EditProfileCubit>();
     return super.close();
   }
 
-  void createTextControllersAndErrorsMap() {
+  void createTextControllersNodesAndErrorsMap() {
     if (oldPropertiesMap.isNotEmpty) {
       for (MarketsType marketType in activeLanguages) {
         final PropertyByLanguage property = oldPropertiesMap[marketType.name];
@@ -93,6 +108,14 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         textControllersMap[marketType] = [
           statusTextController..text = property.statusMessage?.trim() ?? '',
           profileTextController..text = property.description?.trim() ?? '',
+        ];
+        focusNodesMap[marketType] = [
+          FocusNode(),
+          FocusNode(),
+        ];
+        hasFocusNotifiersMap[marketType] = [
+          ValueNotifier(false),
+          ValueNotifier(false),
         ];
 
         final String statusErrorMessage =
@@ -141,6 +164,22 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       entry.value.lastOrNull?.addListener(() {
         errorTextsMap[entry.key]?.last = '';
         emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
+      });
+    }
+  }
+
+  void addListenersToFocusNodes() {
+    nicknameFocusNode.addListener(() {
+      emit(state.copyWith(nicknameHasFocus: nicknameFocusNode.hasFocus));
+    });
+
+    for (var entry in focusNodesMap.entries) {
+      entry.value.firstOrNull?.addListener(() {
+        hasFocusNotifiersMap[entry.key]?.first.value =
+            entry.value.first.hasFocus;
+      });
+      entry.value.lastOrNull?.addListener(() {
+        hasFocusNotifiersMap[entry.key]?.last.value = entry.value.last.hasFocus;
       });
     }
   }

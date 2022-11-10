@@ -9,7 +9,9 @@ class LoginState with _$LoginState {
     @Default(Brand.fortunica) Brand selectedBrand,
     @Default([]) List<Brand> unauthorizedBrands,
     @Default('') String emailErrorText,
+    @Default(false) bool emailHasFocus,
     @Default('') String passwordErrorText,
+    @Default(false) bool passwordHasFocus,
     @Default(true) bool hiddenPassword,
   }) = _LoginState;
 }

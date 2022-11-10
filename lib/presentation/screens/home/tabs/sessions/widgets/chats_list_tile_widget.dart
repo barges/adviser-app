@@ -145,19 +145,25 @@ class _ContentWidget extends StatelessWidget {
     Widget widget = const SizedBox();
     switch (contentType) {
       case ChatItemContentType.text:
-        widget = _TextContent(text: question.content!);
+        widget = _TextContent(text: question.content ?? '');
         break;
       case ChatItemContentType.media:
-        widget = _MediaContent(attachment: question.attachments!.first);
+        widget = _MediaContent(
+          attachment: question.attachments!.first,
+        );
         break;
       case ChatItemContentType.mediaText:
         widget = Row(
           children: [
-            _MediaContent(attachment: question.attachments!.first),
+            _MediaContent(
+              attachment: question.attachments!.first,
+            ),
             const SizedBox(
               width: 8.0,
             ),
-            _TextContent(text: question.content!),
+            _TextContent(
+              text: question.content ?? '',
+            ),
           ],
         );
         break;
@@ -170,7 +176,9 @@ class _ContentWidget extends StatelessWidget {
             const SizedBox(
               width: 8.0,
             ),
-            _TextContent(text: question.content!),
+            _TextContent(
+              text: question.content ?? '',
+            ),
           ],
         );
         break;

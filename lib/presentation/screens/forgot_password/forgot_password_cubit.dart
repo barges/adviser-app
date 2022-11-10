@@ -17,6 +17,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  final FocusNode emailNode = FocusNode();
   final FocusNode passwordNode = FocusNode();
   final FocusNode confirmPasswordNode = FocusNode();
 
@@ -24,6 +25,19 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
 
   ForgotPasswordCubit(this._repository) : super(const ForgotPasswordState()) {
     selectedBrand = Get.arguments as Brand;
+
+    emailNode.addListener(() {
+      emit(state.copyWith(emailHasFocus: emailNode.hasFocus));
+    });
+
+    passwordNode.addListener(() {
+      emit(state.copyWith(passwordHasFocus: passwordNode.hasFocus));
+    });
+
+    confirmPasswordNode.addListener(() {
+      emit(state.copyWith(
+          confirmPasswordHasFocus: confirmPasswordNode.hasFocus));
+    });
 
     emailController.addListener(() {
       clearErrorMessage();
@@ -49,8 +63,11 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   @override
   Future<void> close() async {
     emailController.dispose();
+    emailNode.dispose();
     passwordController.dispose();
+    passwordNode.dispose();
     confirmPasswordController.dispose();
+    confirmPasswordNode.dispose();
     return super.close();
   }
 

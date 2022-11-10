@@ -10,6 +10,7 @@ class EditProfileState with _$EditProfileState {
     @Default([]) List<String> coverPictures,
     @Default(0) int chosenLanguageIndex,
     @Default('') String nicknameErrorText,
+    @Default(false) bool nicknameHasFocus,
     @Default(true) bool updateTextsFlag,
     File? avatar,
   }) = _EditProfileState;

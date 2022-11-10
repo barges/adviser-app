@@ -47,11 +47,16 @@ Future<void> changeStatusCommentBottomSheet({
                 const SizedBox(
                   height: 24.0,
                 ),
-                AppTextField(
-                  isBig: true,
-                  label: S.of(context).informOurTeamYourPlannedReturnDate,
-                  controller: commentController,
-                ),
+                Builder(builder: (context) {
+                  context.select(
+                      (AccountCubit cubit) => cubit.state.commentHasFocus);
+                  return AppTextField(
+                    isBig: true,
+                    focusNode: context.read<AccountCubit>().commentNode,
+                    label: S.of(context).informOurTeamYourPlannedReturnDate,
+                    controller: commentController,
+                  );
+                }),
                 const SizedBox(
                   height: 24.0,
                 ),
