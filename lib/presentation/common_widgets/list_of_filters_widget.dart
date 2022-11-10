@@ -4,35 +4,44 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 
 class ListOfFiltersWidget extends StatelessWidget {
   final List<String> filters;
-  final ValueChanged<int> onTap;
+  final ValueChanged<int> onTapToFilter;
   final int currentFilterIndex;
+  final bool withMarketFilter;
 
   const ListOfFiltersWidget(
       {Key? key,
       required this.currentFilterIndex,
       required this.filters,
-      required this.onTap})
+      required this.onTapToFilter,
+      this.withMarketFilter = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 52.0,
+      height: AppConstants.appBarHeight,
       color: Get.theme.canvasColor,
       alignment: Alignment.center,
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppConstants.horizontalScreenPadding,
-          ),
-          itemBuilder: (_, index) => _FilterWidget(
-                title: filters[index],
-                isSelected: index == currentFilterIndex,
-                onTap: () => onTap(index),
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        padding: withMarketFilter
+            ? const EdgeInsets.only(
+                left: AppConstants.horizontalScreenPadding,
+                right: 8.0,
+              )
+            : const EdgeInsets.symmetric(
+                horizontal: AppConstants.horizontalScreenPadding,
               ),
-          separatorBuilder: (_, __) => const SizedBox(width: 8.0),
-          itemCount: filters.length),
+        itemBuilder: (_, index) => _FilterWidget(
+          title: filters[index],
+          isSelected: index == currentFilterIndex,
+          onTap: () => onTapToFilter(index),
+        ),
+        separatorBuilder: (_, __) => const SizedBox(width: 8.0),
+        itemCount: filters.length,
+      ),
     );
   }
 }
@@ -48,22 +57,27 @@ class _FilterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color textColor =
-        isSelected ? Get.theme.primaryColor : Get.theme.hoverColor;
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
+    return GestureDetector(
+      onTap: isSelected ? null : onTap,
       child: Container(
+        height: AppConstants.iconButtonSize,
         padding: const EdgeInsets.symmetric(
-            vertical: 6.0, horizontal: AppConstants.horizontalScreenPadding),
+            horizontal: AppConstants.horizontalScreenPadding),
         alignment: Alignment.center,
         decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
+          color: isSelected
+              ? Get.theme.primaryColorLight
+              : Get.theme.scaffoldBackgroundColor,
+        ),
+        child: Text(
+          title,
+          style: Get.textTheme.bodyMedium?.copyWith(
             color: isSelected
-                ? Get.theme.primaryColor.withOpacity(0.4)
-                : Get.theme.scaffoldBackgroundColor,
-            borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
-        child: Text(title,
-            style: Get.textTheme.bodyMedium?.copyWith(color: textColor)),
+                ? Get.theme.primaryColor
+                : Get.textTheme.bodyMedium?.color,
+          ),
+        ),
       ),
     );
   }

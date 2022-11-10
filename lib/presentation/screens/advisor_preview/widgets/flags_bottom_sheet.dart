@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -13,7 +13,7 @@ Future<void> flagsBottomSheet(
     {required BuildContext context,
     required VoidCallback onApply,
     required ValueChanged<int> onSelectLanguage,
-    required List<String> activeLanguages}) async {
+    required List<MarketsType> activeLanguages}) async {
   Get.bottomSheet(
       BlocProvider<AdvisorPreviewCubit>.value(
         value: context.read<AdvisorPreviewCubit>(),
@@ -81,7 +81,7 @@ class _FlagBottomSheetHeader extends StatelessWidget {
 }
 
 class _FlagTileWidget extends StatelessWidget {
-  final String languageCode;
+  final MarketsType languageCode;
   final bool isSelected;
   final VoidCallback? onTap;
 
@@ -108,10 +108,10 @@ class _FlagTileWidget extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(languageCode.getFlagImageByLanguageCode),
+              Image.asset(languageCode.flagImagePath),
               const SizedBox(width: 8.0),
               Text(
-                languageCode.languageNameByCode,
+                languageCode.languageName,
                 style: displayLarge?.copyWith(color: secondary),
               ),
             ],

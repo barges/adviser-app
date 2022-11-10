@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -60,8 +61,8 @@ class AdvisorPreviewScreen extends StatelessWidget {
                               (AdvisorPreviewCubit cubit) =>
                                   cubit.state.currentIndex);
                           return Image.asset(
-                            (advisorPreviewCubit.languages[index])
-                                .getFlagImageByLanguageCode,
+                            advisorPreviewCubit.languages[index]
+                                .flagImagePath,
                           );
                         },
                       ),
@@ -171,7 +172,7 @@ class AdvisorPreviewScreen extends StatelessWidget {
                           (AdvisorPreviewCubit cubit) =>
                               cubit.state.currentIndex);
 
-                      final selectedItem =
+                      final MarketsType selectedItem =
                           advisorPreviewCubit.languages[selectedIndex];
                       return AboutMeWidget(
                         rating: advisorPreviewCubit.getSelectedLanguageDetails(

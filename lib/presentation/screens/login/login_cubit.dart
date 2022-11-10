@@ -22,6 +22,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final FocusNode emailNode = FocusNode();
   final FocusNode passwordNode = FocusNode();
 
   LoginCubit(this._repository, this._cacheManager) : super(const LoginState()) {
@@ -33,6 +34,14 @@ class LoginCubit extends Cubit<LoginState> {
       unauthorizedBrands: unauthorizedBrands,
       selectedBrand: newSelectedBrand ?? unauthorizedBrands.first,
     ));
+
+    emailNode.addListener(() {
+      emit(state.copyWith(emailHasFocus: emailNode.hasFocus));
+    });
+
+    passwordNode.addListener(() {
+      emit(state.copyWith(passwordHasFocus: passwordNode.hasFocus));
+    });
 
     emailController.addListener(() {
       clearErrorMessage();
@@ -54,6 +63,8 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> close() {
     emailController.dispose();
     passwordController.dispose();
+    emailNode.dispose();
+    passwordNode.dispose();
     return super.close();
   }
 
@@ -96,7 +107,7 @@ class LoginCubit extends Cubit<LoginState> {
       if (!passwordIsValid()) {
         emit(
           state.copyWith(
-            passwordErrorText: S.current.pleaseEnterAtLeast8Characters,
+            passwordErrorText: S.current.pleaseEnterAtLeast6Characters,
           ),
         );
       }
@@ -119,5 +130,5 @@ class LoginCubit extends Cubit<LoginState> {
 
   bool emailIsValid() => GetUtils.isEmail(emailController.text);
 
-  bool passwordIsValid() => passwordController.text.length >= 8;
+  bool passwordIsValid() => passwordController.text.length >= 6;
 }

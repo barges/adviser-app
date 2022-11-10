@@ -6,7 +6,7 @@ class AppConstants {
   static const double logoSize = 242.0;
   static const double horizontalScreenPadding = 16.0;
   static const double appBarHeight = 52.0;
-  static const int secondsInHour = 3600;
+  static const int millisecondsInHour = 3600000;
   static const String webToolUrl = 'https://advisor-staging.fortunica-app.com';
   static const String baseUrl = 'https://api-staging.fortunica-app.com';
 

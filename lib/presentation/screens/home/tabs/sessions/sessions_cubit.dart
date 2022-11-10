@@ -2,88 +2,218 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
+import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
+import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
+import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_state.dart';
 
+const int questionsLimit = 20;
+
 class SessionsCubit extends Cubit<SessionsState> {
   final ChatsRepository _repository = Get.find<ChatsRepository>();
   final CachingManager cacheManager;
-  final ScrollController controller = ScrollController();
+  final ScrollController publicQuestionsController = ScrollController();
+  final ScrollController privateQuestionsController = ScrollController();
   final MainCubit mainCubit = Get.find<MainCubit>();
-  late final VoidCallback disposeListen;
+  late final VoidCallback disposeUserStatusListen;
+  late final VoidCallback disposeUserProfileListen;
 
-  String? lastId;
+  final List<ChatItemType> filters = [
+    ChatItemType.all,
+    ChatItemType.ritual,
+    ChatItemType.private,
+  ];
+  final List<ChatItem> _publicQuestions = [];
+  final List<ChatItem> _privateQuestionsWithHistory = [];
+
+  String? _lastId;
   bool hasMore = true;
+  bool _publicHasMore = true;
+  bool _historyHasMore = true;
+  int _historyPage = 1;
 
   SessionsCubit(this.cacheManager) : super(const SessionsState()) {
-    controller.addListener(addScrollControllerListener);
-    disposeListen = cacheManager.listenCurrentUserStatus((value) {
-      getListOfQuestions(
-        state.currentOptionIndex,
+    publicQuestionsController.addListener(() async {
+      if (!mainCubit.state.isLoading &&
+          publicQuestionsController.position.extentAfter <= Get.height) {
+        await getPublicQuestions();
+      }
+    });
+    privateQuestionsController.addListener(() async {
+      if (!mainCubit.state.isLoading &&
+          privateQuestionsController.position.extentAfter <= Get.height) {
+        await getHistoryList();
+      }
+    });
+    disposeUserStatusListen = cacheManager.listenCurrentUserStatus((value) {
+      getQuestions(
         status: value.status,
       );
     });
-    getListOfQuestions(state.currentOptionIndex);
-    emit(state.copyWith(
-        currentOptionIndex: Get.arguments['sessionScreenTab'] as int? ?? 0));
+    disposeUserProfileListen = cacheManager.listenUserProfile((userProfile) {
+      final List<MarketsType> userMarkets = [
+        MarketsType.all,
+        ...userProfile.activeLanguages ?? [],
+      ];
+      emit(state.copyWith(userMarkets: userMarkets));
+    });
   }
 
   @override
   Future<void> close() async {
-    controller.dispose();
+    publicQuestionsController.dispose();
+    privateQuestionsController.dispose();
+    disposeUserProfileListen.call();
+    disposeUserStatusListen.call();
     return super.close();
   }
 
-  void addScrollControllerListener() async {
-    if (!mainCubit.state.isLoading && controller.position.extentAfter <= 0) {
-      await getListOfQuestions(state.currentOptionIndex);
-    }
+  Future<void> getQuestions({
+    FortunicaUserStatus? status,
+  }) async {
+    getPublicQuestions(
+      status: status,
+      refresh: true,
+    );
+    getPrivateQuestions(
+      status: status,
+      refresh: true,
+    );
+  }
+
+  void changeMarketIndexForPublic(int newIndex) {
+    emit(state.copyWith(currentMarketIndexForPublic: newIndex));
+    getPublicQuestions(refresh: true);
+  }
+
+  void changeMarketIndexForPrivate(int newIndex) {
+    emit(state.copyWith(currentMarketIndexForPrivate: newIndex));
+    getPrivateQuestions(refresh: true);
+  }
+
+  void changeCurrentOptionIndex(int newIndex) {
+    emit(state.copyWith(currentOptionIndex: newIndex));
   }
 
   void changeFilterIndex(int newIndex) {
-    emit(state.copyWith(selectedFilterIndex: newIndex));
+    emit(state.copyWith(currentFilterIndex: newIndex));
+    getPrivateQuestions(refresh: true);
   }
 
-  Future<void> getListOfQuestions(int index,
-      {FortunicaUserStatus? status}) async {
-    if (mainCubit.state.internetConnectionIsAvailable &&
+  void openSearch() {
+    emit(state.copyWith(searchIsOpen: true));
+  }
+
+  void closeSearch() {
+    emit(state.copyWith(searchIsOpen: false));
+  }
+
+  Future<void> getPublicQuestions(
+      {FortunicaUserStatus? status, bool refresh = false}) async {
+    if (refresh) {
+      _publicHasMore = true;
+      _publicQuestions.clear();
+    }
+    if (_publicHasMore &&
+        mainCubit.state.internetConnectionIsAvailable &&
         (status ?? cacheManager.getUserStatus()?.status) ==
             FortunicaUserStatus.live) {
-      resetList(index);
-      if (!hasMore) return;
-      QuestionsListResponse result =
-          QuestionsListResponse(questions: state.questions, lastId: lastId);
-      hasMore = result.hasMore ?? true;
-      lastId = (result.questions ?? const []).lastOrNull?.id;
-      if (state.questions.isEmpty) {
-        result = await _repository.getListOfQuestions(
-            lastId: lastId, isPublicFilter: state.currentOptionIndex == 0);
-        emit(state.copyWith(questions: result.questions ?? const []));
-        return;
+      _lastId = _publicQuestions.lastOrNull?.id;
+      String? filtersLanguage;
+      if (state.userMarkets.isNotEmpty) {
+        final MarketsType marketsType =
+            state.userMarkets[state.currentMarketIndexForPublic];
+        filtersLanguage =
+            marketsType != MarketsType.all ? marketsType.name : null;
       }
-      result = await _repository.getListOfQuestions(
-          lastId: lastId, isPublicFilter: state.currentOptionIndex == 0);
-      final questions = List.of(state.questions)
-        ..addAll(result.questions ?? const []);
 
-      emit(state.copyWith(questions: questions));
+      final QuestionsListResponse result = await _repository.getPublicQuestions(
+          limit: questionsLimit,
+          lastId: _lastId,
+          filtersLanguage: filtersLanguage);
+      _publicHasMore = result.hasMore ?? true;
+
+      _publicQuestions.addAll(result.questions ?? const []);
+
+      emit(state.copyWith(publicQuestions: List.of(_publicQuestions)));
     }
   }
 
-  void resetList(int index) {
-    if (index != state.currentOptionIndex) {
-      lastId = null;
-      hasMore = true;
+  Future<void> getPrivateQuestions(
+      {FortunicaUserStatus? status, bool refresh = false}) async {
+    if (refresh) {
+      _historyHasMore = true;
+      _historyPage = 1;
+      _privateQuestionsWithHistory.clear();
+    }
+    if (mainCubit.state.internetConnectionIsAvailable &&
+        (status ?? cacheManager.getUserStatus()?.status) ==
+            FortunicaUserStatus.live) {
+      String? filtersLanguage;
+      if (state.userMarkets.isNotEmpty) {
+        final MarketsType marketsType =
+            state.userMarkets[state.currentMarketIndexForPrivate];
+        filtersLanguage =
+            marketsType != MarketsType.all ? marketsType.name : null;
+      }
+
+      final ChatItemType questionsType = filters[state.currentFilterIndex];
+      final String? filterName = questionsType != ChatItemType.all
+          ? questionsType.filterTypeName
+          : null;
+
+      final QuestionsListResponse result =
+          await _repository.getPrivateQuestions(
+        filtersLanguage: filtersLanguage,
+        filtersType: filterName,
+      );
+
+      _privateQuestionsWithHistory.addAll(result.questions ?? const []);
+
+      await getHistoryList(
+        status: status,
+        isFirstRequest: true,
+      );
+
       emit(
         state.copyWith(
-          currentOptionIndex: index,
-          questions: const [],
+          privateQuestionsWithHistory: List.of(
+            _privateQuestionsWithHistory,
+          ),
         ),
       );
+    }
+  }
+
+  Future<void> getHistoryList(
+      {FortunicaUserStatus? status, isFirstRequest = false}) async {
+    if (_historyHasMore &&
+        mainCubit.state.internetConnectionIsAvailable &&
+        (status ?? cacheManager.getUserStatus()?.status) ==
+            FortunicaUserStatus.live) {
+      final QuestionsListResponse result = await _repository.getHistoryList(
+        limit: questionsLimit,
+        page: _historyPage++,
+      );
+
+      _historyHasMore = result.hasMore ?? true;
+
+      _privateQuestionsWithHistory.addAll(result.questions ?? const []);
+
+      if (!isFirstRequest) {
+        emit(
+          state.copyWith(
+            privateQuestionsWithHistory: List.of(
+              _privateQuestionsWithHistory,
+            ),
+          ),
+        );
+      }
     }
   }
 }

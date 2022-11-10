@@ -33,7 +33,6 @@ class ArticlesScreen extends StatelessWidget {
                   'All',
                   'Only Premium Products',
                   'Private Questions',
-                  'Market: '
                 ];
                 return Opacity(
                   opacity: isOnline ? 1.0 : 0.4,

@@ -34,8 +34,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "addNew": MessageLookupByLibrary.simpleMessage("Adicionar novo"),
         "addNote": MessageLookupByLibrary.simpleMessage("Adicionar nota"),
         "advisors": MessageLookupByLibrary.simpleMessage("conselheiras"),
+        "all": MessageLookupByLibrary.simpleMessage("All"),
         "allOurBrands":
             MessageLookupByLibrary.simpleMessage("Todas as nossas marcas"),
+        "allType": MessageLookupByLibrary.simpleMessage("All Type"),
         "apply": MessageLookupByLibrary.simpleMessage("Aplique"),
         "areYouSureThatYouWantToChangeYourStatus":
             MessageLookupByLibrary.simpleMessage(
@@ -104,6 +106,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "login": MessageLookupByLibrary.simpleMessage("Conecte-se"),
         "loyalUsers": MessageLookupByLibrary.simpleMessage("Usuários Leais"),
         "mandatory": MessageLookupByLibrary.simpleMessage("Obrigatoriedade"),
+        "market": MessageLookupByLibrary.simpleMessage("Market:"),
         "newCustomers": MessageLookupByLibrary.simpleMessage("Novos clientes"),
         "newLabel": MessageLookupByLibrary.simpleMessage("Nova"),
         "newMandatoryArticleIsAvailable": MessageLookupByLibrary.simpleMessage(
@@ -118,6 +121,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "notes": MessageLookupByLibrary.simpleMessage("Notas"),
         "notifications": MessageLookupByLibrary.simpleMessage("Notificações"),
         "numerology": MessageLookupByLibrary.simpleMessage("Numerologia"),
+        "onlyPremiumProducts":
+            MessageLookupByLibrary.simpleMessage("Only Premium Products"),
         "openEmailApp":
             MessageLookupByLibrary.simpleMessage("Abra o aplicativo de e-mail"),
         "otherBrands": MessageLookupByLibrary.simpleMessage("Outras marcas"),
@@ -132,13 +137,15 @@ class MessageLookup extends MessageLookupByLibrary {
             "lugares acima do mês passado"),
         "pleaseEnterAtLeast3Characters": MessageLookupByLibrary.simpleMessage(
             "Digite pelo menos 3 caracteres"),
-        "pleaseEnterAtLeast8Characters": MessageLookupByLibrary.simpleMessage(
-            "Insira pelo menos 8 caracteres"),
+        "pleaseEnterAtLeast6Characters": MessageLookupByLibrary.simpleMessage(
+            "Insira pelo menos 6 caracteres"),
         "pleaseInsertCorrectEmail": MessageLookupByLibrary.simpleMessage(
             "Por favor, insira o email correto"),
         "portuguese": MessageLookupByLibrary.simpleMessage("Português"),
         "previewAccount":
             MessageLookupByLibrary.simpleMessage("Visualizar conta"),
+        "privateQuestions":
+            MessageLookupByLibrary.simpleMessage("Private Questions"),
         "profileText": MessageLookupByLibrary.simpleMessage("Texto do perfil"),
         "public": MessageLookupByLibrary.simpleMessage("Pública"),
         "questionProperties":

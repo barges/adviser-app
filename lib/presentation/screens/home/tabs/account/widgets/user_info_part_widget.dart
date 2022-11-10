@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
-import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
+import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -117,8 +117,8 @@ class UserInfoPartWidget extends StatelessWidget {
             ),
             Builder(
               builder: (context) {
-                final int seconds =
-                    context.select((AccountCubit cubit) => cubit.state.seconds);
+                final int millisecondsForTimer = context.select(
+                    (AccountCubit cubit) => cubit.state.millisecondsForTimer);
                 return TileWidget(
                   title: S.of(context).imAvailableNow,
                   iconSVGPath: Assets.vectors.availability.path,
@@ -139,14 +139,13 @@ class UserInfoPartWidget extends StatelessWidget {
                       );
                     }
                   },
-                  isDisable: currentStatus.status !=
-                          FortunicaUserStatus.live &&
+                  isDisable: currentStatus.status != FortunicaUserStatus.live &&
                       currentStatus.status != FortunicaUserStatus.offline,
                   initSwitcherValue:
                       currentStatus.status == FortunicaUserStatus.live,
-                  timerWidget: seconds > 0
+                  timerWidget: millisecondsForTimer > 0
                       ? CountDownTimer(
-                          seconds: seconds,
+                          milliseconds: millisecondsForTimer,
                           onEnd: accountCubit.hideTimer,
                         )
                       : null,

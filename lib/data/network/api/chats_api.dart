@@ -1,22 +1,30 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 part 'chats_api.g.dart';
 
-@RestApi()
+@RestApi(baseUrl: AppConstants.baseUrlDev)
 abstract class ChatsApi {
   factory ChatsApi(Dio dio) = _ChatsApi;
 
-  @GET('/questions/list')
-  Future<QuestionsListResponse> getQuestions(
-      {@Query("limit") required int limit,
-      @Query("lastId") String? lastId,
-      @Query('filters[type]') String? filterType});
+  @GET('/experts/questions/public')
+  Future<QuestionsListResponse> getPublicQuestions(
+      {@Query('limit') required int limit,
+      @Query('lastId') String? lastId,
+      @Query('filters[language]') String? filterLanguage,});
 
-  // @GET('/rituals/list')
-  // Future<RitualsResponse> getListOfRituals(
-  //     {@Query("limit") required int limit,
-  //     @Query('filters[type]') String? filterType,
-  //     @Query('filters[language]') String? filterLanguage});
+  @GET('/experts/questions/individual')
+  Future<QuestionsListResponse> getPrivateQuestions(
+      {@Query('filters[type]') String? filtersType,
+      @Query('filters[language]') String? filtersLanguage,});
+
+  @GET('/experts/conversations/history')
+  Future<QuestionsListResponse> getHistoryList({
+    @Query('limit') required int limit,
+    @Query('page') required int page,
+    @Query('search') String? search,
+  });
+
 }

@@ -7,7 +7,7 @@
   "confirmNewPassword": "Confirm new password",
   "changePassword": "Change password",
   "thePasswordsMustMatch": "The passwords must match",
-  "pleaseEnterAtLeast8Characters": "Please enter at least 8 characters",
+  "pleaseEnterAtLeast6Characters": "Please enter at least 6 characters",
   "pleaseInsertCorrectEmail": "Please, insert correct email",
   "chooseBrand": "Choose brand",
   "comingSoon": "Coming soon!",
@@ -117,5 +117,10 @@
   "youDontHaveAnInternetConnection": "You don’t have an internet connection",
   "avgDailyEarnings": "Avg Daily Earnings",
   "perfomanceOverviewAnalytics": "Perfomance Overview Analytics",
-  "editNote": "Edit Note"
+  "editNote": "Edit Note",
+  "allType": "All Type",
+  "market": "Market:",
+  "all": "All",
+  "privateQuestions": "Private Questions",
+  "onlyPremiumProducts": "Only Premium Products"
 }
