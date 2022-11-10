@@ -6,6 +6,7 @@ class AppTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
   final String errorText;
+  final FocusNode focusNode;
   final FocusNode? nextFocusNode;
   final TextInputType? textInputType;
   final TextInputAction? textInputAction;
@@ -16,6 +17,7 @@ class AppTextField extends StatelessWidget {
     Key? key,
     required this.controller,
     required this.label,
+    required this.focusNode,
     this.nextFocusNode,
     this.textInputType,
     this.textInputAction,
@@ -38,7 +40,9 @@ class AppTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
             color: errorText.isNotEmpty
                 ? Get.theme.errorColor
-                : Get.theme.hintColor,
+                : focusNode.hasPrimaryFocus
+                    ? Get.theme.primaryColor
+                    : Get.theme.hintColor,
           ),
           child: Container(
             margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
@@ -50,6 +54,7 @@ class AppTextField extends StatelessWidget {
             ),
             child: TextField(
               controller: controller,
+              focusNode: focusNode,
               keyboardType: textInputType,
               textInputAction: textInputAction,
               onSubmitted: (_) {

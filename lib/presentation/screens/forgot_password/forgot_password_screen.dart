@@ -7,11 +7,11 @@ import 'package:shared_advisor_interface/domain/repositories/auth_repository.dar
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/password_text_field.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_cubit.dart';
@@ -75,9 +75,13 @@ class ForgotPasswordScreen extends StatelessWidget {
                                     final String emailErrorText = context
                                         .select((ForgotPasswordCubit cubit) =>
                                             cubit.state.emailErrorText);
+                                    context.select(
+                                        (ForgotPasswordCubit cubit) =>
+                                            cubit.state.emailHasFocus);
                                     return AppTextField(
                                       errorText: emailErrorText,
                                       label: S.of(context).email,
+                                      focusNode: cubit.emailNode,
                                       textInputType: TextInputType.emailAddress,
                                       textInputAction: TextInputAction.next,
                                       nextFocusNode: cubit.passwordNode,
@@ -94,6 +98,9 @@ class ForgotPasswordScreen extends StatelessWidget {
                                     final bool hiddenPassword = context.select(
                                         (ForgotPasswordCubit cubit) =>
                                             cubit.state.hiddenPassword);
+                                    context.select(
+                                        (ForgotPasswordCubit cubit) =>
+                                            cubit.state.passwordHasFocus);
                                     return PasswordTextField(
                                       controller: cubit.passwordController,
                                       focusNode: cubit.passwordNode,
@@ -117,6 +124,9 @@ class ForgotPasswordScreen extends StatelessWidget {
                                     final bool hiddenConfirmPassword = context
                                         .select((ForgotPasswordCubit cubit) =>
                                             cubit.state.hiddenConfirmPassword);
+                                    context.select(
+                                        (ForgotPasswordCubit cubit) => cubit
+                                            .state.confirmPasswordHasFocus);
                                     return Padding(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 16.0),

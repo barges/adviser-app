@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/error_badge.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_cubit.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LanguageSectionWidget extends StatelessWidget {
   const LanguageSectionWidget({Key? key}) : super(key: key);
@@ -26,6 +26,9 @@ class LanguageSectionWidget extends StatelessWidget {
             controller: editProfileCubit.languagesScrollController,
             padding: const EdgeInsets.symmetric(
                 horizontal: AppConstants.horizontalScreenPadding),
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: editProfileCubit.activeLanguages.length,
             itemBuilder: (BuildContext context, int index) {
               final MarketsType languageCode =
                   editProfileCubit.activeLanguages[index];
@@ -45,9 +48,6 @@ class LanguageSectionWidget extends StatelessWidget {
                         true,
               );
             },
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            itemCount: editProfileCubit.activeLanguages.length,
             separatorBuilder: (BuildContext context, int index) {
               return const SizedBox(
                 width: 6.0,
@@ -63,25 +63,41 @@ class LanguageSectionWidget extends StatelessWidget {
                   horizontal: AppConstants.horizontalScreenPadding),
               child: Column(
                 children: [
-                  AppTextField(
-                    controller: entry.value.first,
-                    errorText:
-                        editProfileCubit.errorTextsMap[entry.key]?.first ?? '',
-                    label: S.of(context).statusText,
-                    textInputType: TextInputType.multiline,
-                    isBig: true,
-                  ),
+                  ValueListenableBuilder(
+                      valueListenable: editProfileCubit
+                          .hasFocusNotifiersMap[entry.key]!.first,
+                      builder: (context, value, child) {
+                        return AppTextField(
+                          controller: entry.value.first,
+                          focusNode:
+                              editProfileCubit.focusNodesMap[entry.key]!.first,
+                          errorText: editProfileCubit
+                                  .errorTextsMap[entry.key]?.first ??
+                              '',
+                          label: S.of(context).statusText,
+                          textInputType: TextInputType.multiline,
+                          isBig: true,
+                        );
+                      }),
                   const SizedBox(
                     height: 24.0,
                   ),
-                  AppTextField(
-                    controller: entry.value.last,
-                    errorText:
-                        editProfileCubit.errorTextsMap[entry.key]?.last ?? '',
-                    label: S.of(context).profileText,
-                    textInputType: TextInputType.multiline,
-                    isBig: true,
-                  ),
+                  ValueListenableBuilder(
+                      valueListenable: editProfileCubit
+                          .hasFocusNotifiersMap[entry.key]!.last,
+                      builder: (context, value, child) {
+                        return AppTextField(
+                          controller: entry.value.last,
+                          focusNode:
+                              editProfileCubit.focusNodesMap[entry.key]!.last,
+                          errorText:
+                              editProfileCubit.errorTextsMap[entry.key]?.last ??
+                                  '',
+                          label: S.of(context).profileText,
+                          textInputType: TextInputType.multiline,
+                          isBig: true,
+                        );
+                      }),
                 ],
               ),
             );

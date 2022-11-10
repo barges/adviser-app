@@ -18,6 +18,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class AccountCubit extends Cubit<AccountState> {
   final TextEditingController commentController = TextEditingController();
+  final FocusNode commentNode = FocusNode();
 
   final MainCubit mainCubit = Get.find<MainCubit>();
 
@@ -33,6 +34,11 @@ class AccountCubit extends Cubit<AccountState> {
     disposeListen = cacheManager.listenUserProfile((value) {
       emit(state.copyWith(userProfile: value));
     });
+
+    commentNode.addListener(() {
+      emit(state.copyWith(commentHasFocus: commentNode.hasFocus));
+    });
+
     commentController.addListener(() {
       emit(
         state.copyWith(
@@ -47,6 +53,7 @@ class AccountCubit extends Cubit<AccountState> {
   Future<void> close() async {
     disposeListen.call();
     commentController.dispose();
+    commentNode.dispose();
     return super.close();
   }
 

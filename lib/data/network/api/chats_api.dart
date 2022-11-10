@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 part 'chats_api.g.dart';
 
-@RestApi(baseUrl: 'https://fortunica-backend-for-2268.fortunica.adviqodev.de')
+@RestApi(baseUrl: AppConstants.baseUrlDev)
 abstract class ChatsApi {
   factory ChatsApi(Dio dio) = _ChatsApi;
 

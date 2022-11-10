@@ -95,9 +95,12 @@ class LoginScreen extends StatelessWidget {
                                           final String emailErrorText = context
                                               .select((LoginCubit cubit) =>
                                                   cubit.state.emailErrorText);
+                                          context.select((LoginCubit cubit) =>
+                                              cubit.state.emailHasFocus);
                                           return AppTextField(
                                             errorText: emailErrorText,
                                             label: S.of(context).email,
+                                            focusNode: loginCubit.emailNode,
                                             textInputType:
                                                 TextInputType.emailAddress,
                                             textInputAction:
@@ -116,6 +119,8 @@ class LoginScreen extends StatelessWidget {
                                           final bool hiddenPassword = context
                                               .select((LoginCubit cubit) =>
                                                   cubit.state.hiddenPassword);
+                                          context.select((LoginCubit cubit) =>
+                                              cubit.state.passwordHasFocus);
                                           final String passwordErrorText =
                                               context.select(
                                                   (LoginCubit cubit) => cubit
@@ -194,5 +199,3 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
-
-
