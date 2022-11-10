@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:intl/intl.dart';
+
+import 'package:flutter_sound/flutter_sound.dart';
 
 const String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 const String datePattern1 = 'MMM d, yyyy';
@@ -97,5 +100,11 @@ extension IterableExtention<E> on Iterable<E> {
 
   E? get lastOrNull {
     return isEmpty ? null : last;
+  }
+}
+
+extension CurrentCodec on Codec {
+  static Codec get current {
+    return Platform.isIOS ? Codec.aacMP4 : Codec.mp3;
   }
 }

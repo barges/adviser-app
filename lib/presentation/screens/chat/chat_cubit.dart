@@ -14,12 +14,15 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
 import 'package:shared_advisor_interface/data/models/chats/message.dart';
 import 'package:shared_advisor_interface/data/models/chats/question.dart';
+import 'package:shared_advisor_interface/data/models/enums/file_ext.dart';
 import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'chat_state.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:audio_session/audio_session.dart';
@@ -29,13 +32,13 @@ class ChatCubit extends Cubit<ChatState> {
   final ChatItem question;
   final ScrollController controller = ScrollController();
   final MainCubit _mainCubit = Get.find<MainCubit>();
-  final Codec _codec = Platform.isIOS ? Codec.aacMP4 : Codec.mp3;
-  final String _recordFileExt = Platform.isIOS ? 'm4a' : 'mp3';
+  final Codec _codec = CurrentCodec.current;
+  final FileExt _recordFileExt = CurrentFileExt.current;
   FlutterSoundRecorder? _recorder;
   FlutterSoundPlayer? _playerRecorded;
   FlutterSoundPlayer? _playerMedia;
   int offset = 0;
-  int limit = 15;
+  int limit = AppConstants.itemsPerLoadChatHistory;
   int? total;
 
   ChatCubit(this.repository, this.question) : super(const ChatState()) {
