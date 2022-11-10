@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/chats/answer.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 
 part 'history.freezed.dart';

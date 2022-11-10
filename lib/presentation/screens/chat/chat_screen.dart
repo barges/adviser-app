@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/models/chats/message.dart';
 import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
@@ -42,7 +41,7 @@ class ChatScreen extends StatelessWidget {
               Expanded(
                 child: Builder(
                   builder: (context) {
-                    final List<Message> items = context
+                    final List<ChatItem> items = context
                         .select((ChatCubit cubit) => cubit.state.messages);
                     return Builder(
                       builder: (context) {
@@ -121,7 +120,7 @@ class ChatScreen extends StatelessWidget {
   }
 
   Widget getChatWidget(
-      BuildContext context, ChatCubit chatCubit, Message item) {
+      BuildContext context, ChatCubit chatCubit, ChatItem item) {
     if (item.isQuestion) {
       if (item.isQuestionMedia) {
         final audioUrl = item.audioUrl;
@@ -135,10 +134,9 @@ class ChatScreen extends StatelessWidget {
           isQuestion: item.isQuestion,
           imageUrl: item.imageUrl,
           duration: item.duration ?? const Duration(),
-          type: item.data.type!,
-          ritualIdentifier: item.data.ritualIdentifier,
-          createdAt:
-              DateTime.tryParse(item.data.createdAt ?? '') ?? DateTime.now(),
+          type: item.type!,
+          ritualIdentifier: item.ritualIdentifier,
+          createdAt: DateTime.tryParse(item.createdAt ?? '') ?? DateTime.now(),
           isPlaying: isCurrent && isPlayingAudio,
           isPlayingFinished: isCurrent ? isPlayingAudioFinished : true,
           onStartPlayPressed: () {
@@ -153,11 +151,10 @@ class ChatScreen extends StatelessWidget {
 
       return ChatTextWidget(
         isQuestion: item.isQuestion,
-        type: item.data.type!,
-        ritualIdentifier: item.data.ritualIdentifier,
-        content: item.data.content,
-        createdAt:
-            DateTime.tryParse(item.data.createdAt ?? '') ?? DateTime.now(),
+        type: item.type!,
+        ritualIdentifier: item.ritualIdentifier,
+        content: item.content,
+        createdAt: DateTime.tryParse(item.createdAt ?? '') ?? DateTime.now(),
       );
     }
     if (item.isAnswer) {
@@ -175,8 +172,7 @@ class ChatScreen extends StatelessWidget {
           duration: item.duration ?? const Duration(),
           type: ChatItemType.public,
           ritualIdentifier: SessionsTypes.public,
-          createdAt:
-              DateTime.tryParse(item.data.createdAt ?? '') ?? DateTime.now(),
+          createdAt: DateTime.tryParse(item.createdAt ?? '') ?? DateTime.now(),
           isPlaying: isCurrent && isPlayingAudio,
           isPlayingFinished: isCurrent ? isPlayingAudioFinished : true,
           onStartPlayPressed: () {
@@ -193,9 +189,8 @@ class ChatScreen extends StatelessWidget {
         isQuestion: false,
         type: ChatItemType.public,
         ritualIdentifier: SessionsTypes.public,
-        content: item.data.content,
-        createdAt:
-            DateTime.tryParse(item.data.createdAt ?? '') ?? DateTime.now(),
+        content: item.content,
+        createdAt: DateTime.tryParse(item.createdAt ?? '') ?? DateTime.now(),
       );
     }
 

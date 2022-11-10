@@ -8,9 +8,11 @@ class AppConstants {
   static const double appBarHeight = 52.0;
   static const int millisecondsInHour = 3600000;
   static const int itemsPerLoadChatHistory = 10;
+  static const String recordFileName = 'recorded_audio_aa';
   static const String webToolUrl = 'https://advisor-staging.fortunica-app.com';
   static const String baseUrl = 'https://api-staging.fortunica-app.com';
 
   ///DEV
-  static const String baseUrlDev = 'https://fortunica-backend-for-2268.fortunica.adviqodev.de';
+  static const String baseUrlDev =
+      'https://fortunica-backend-for-2268.fortunica.adviqodev.de';
 }

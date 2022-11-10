@@ -11,7 +11,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
-import 'package:shared_advisor_interface/data/models/chats/message.dart';
 import 'package:shared_advisor_interface/data/models/enums/file_ext.dart';
 import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
@@ -137,18 +136,14 @@ class ChatCubit extends Cubit<ChatState> {
     final messages = List.of(state.messages);
     conversations.history!.forEach((element) {
       messages.add(
-        Message(
-          element.answer!,
-        ),
+        element.answer!,
       );
       messages.add(
-        Message(
-          element.question!,
-        ),
+        element.question!,
       );
     });
     if (lastQuestion != null) {
-      messages.insert(0, Message(lastQuestion));
+      messages.insert(0, lastQuestion);
     }
 
     emit(state.copyWith(
@@ -162,7 +157,7 @@ class ChatCubit extends Cubit<ChatState> {
       throw RecordingPermissionException('Microphone permission not granted');
     }
 
-    final fileName = 'audio_m_${Random().nextInt(10000000)}.$_recordFileExt';
+    final fileName = '${AppConstants.recordFileName}.${_recordFileExt.name}';
 
     await _recorder?.startRecorder(
       toFile: fileName,
@@ -290,7 +285,7 @@ class ChatCubit extends Cubit<ChatState> {
       final ChatItem responseAnswer = await repository.sendAnswer(request);
       logger.i('send response:$responseAnswer');
       final messages = List.of(state.messages);
-      messages.insert(0, Message(responseAnswer));
+      messages.insert(0, responseAnswer);
 
       emit(
         state.copyWith(
