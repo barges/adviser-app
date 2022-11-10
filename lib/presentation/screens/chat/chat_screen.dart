@@ -50,8 +50,7 @@ class ChatScreen extends StatelessWidget {
                           reverse: true,
                           itemBuilder: (_, index) => Builder(
                             builder: (context) {
-                              return getChatWidget(
-                                  context, chatCubit, items[index]);
+                              return _ChatItemWidget(items[index]);
                             },
                           ),
                           itemCount: items.length,
@@ -118,9 +117,18 @@ class ChatScreen extends StatelessWidget {
       }),
     );
   }
+}
 
-  Widget getChatWidget(
-      BuildContext context, ChatCubit chatCubit, ChatItem item) {
+class _ChatItemWidget extends StatelessWidget {
+  final ChatItem item;
+  const _ChatItemWidget(
+    this.item, {
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final ChatCubit chatCubit = context.read<ChatCubit>();
     if (item.isQuestion) {
       if (item.isQuestionMedia) {
         final audioUrl = item.audioUrl;
@@ -193,7 +201,6 @@ class ChatScreen extends StatelessWidget {
         createdAt: DateTime.tryParse(item.createdAt ?? '') ?? DateTime.now(),
       );
     }
-
     return const SizedBox.shrink();
   }
 }
