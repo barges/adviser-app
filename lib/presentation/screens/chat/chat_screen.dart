@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
@@ -130,7 +128,7 @@ class _ChatItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final ChatCubit chatCubit = context.read<ChatCubit>();
     if (item.isMedia) {
-      final audioUrl = item.audioUrl;
+      final audioUrl = item.getAudioUrl(1) ?? item.getAudioUrl(2);
       final isCurrent = audioUrl == chatCubit.state.audioUrl;
       final isPlayingAudio =
           context.select((ChatCubit cubit) => cubit.state.isPlayingAudio);
@@ -139,8 +137,9 @@ class _ChatItemWidget extends StatelessWidget {
 
       return ChatMediaWidget(
         isQuestion: item.isQuestion,
-        imageUrl: item.imageUrl,
-        duration: item.duration ?? const Duration(),
+        imageUrl: item.getImageUrl(1) ?? item.getImageUrl(2),
+        duration:
+            item.getDuration(1) ?? item.getDuration(2) ?? const Duration(),
         type: item.type!,
         ritualIdentifier: item.ritualIdentifier,
         createdAt: DateTime.tryParse(item.createdAt ?? '') ?? DateTime.now(),

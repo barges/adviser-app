@@ -51,63 +51,37 @@ class ChatItem with _$ChatItem {
     return chatItemContentType;
   }
 
-  Attachment? get attachment1 {
-    if (isMedia) {
-      return attachments![0];
+  Attachment? getAttachment(int n) {
+    if (isMedia && attachments!.length >= n) {
+      return attachments![n - 1];
     }
     return null;
   }
 
-  Attachment? get attachment2 {
-    if (isMedia && attachments!.length == 2) {
-      return attachments![1];
+  String? getAudioUrl(int n) {
+    if (isMedia &&
+        getAttachment(n) != null &&
+        getAttachment(n)!.mime!.contains(MediaType.audio.name)) {
+      return getAttachment(n)!.url;
     }
     return null;
   }
 
-  String? get audioUrl {
-    if (!isMedia) {
-      return null;
-    }
-    if (attachment1!.mime!.contains(MediaType.audio.name)) {
-      return attachment1!.url;
-    }
-
-    if (attachment2 != null &&
-        (attachment2!.mime!.contains(MediaType.audio.name))) {
-      return attachment2!.url;
-    }
-
-    return null;
-  }
-
-  String? get imageUrl {
-    if (!isMedia) {
-      return null;
-    }
-    if (attachment1!.mime!.contains(MediaType.image.name)) {
-      return attachments![0].url;
-    }
-    if (attachment2 != null &&
-        attachment2!.mime!.contains(MediaType.image.name)) {
-      return attachments![1].url;
+  String? getImageUrl(int n) {
+    if (isMedia &&
+        getAttachment(n) != null &&
+        getAttachment(n)!.mime!.contains(MediaType.image.name)) {
+      return getAttachment(n)!.url;
     }
     return null;
   }
 
-  Duration? get duration {
-    if (isAudio) {
-      if (attachment1!.meta != null && attachment1!.meta!.duration != null) {
-        return Duration(seconds: attachment1!.meta!.duration!.toInt());
-      }
-
-      if (attachment2 != null &&
-          attachment2!.meta != null &&
-          attachment2!.meta!.duration != null) {
-        return Duration(seconds: attachment2!.meta!.duration!.toInt());
-      }
+  Duration? getDuration(int n) {
+    if (getAttachment(n) != null &&
+        getAttachment(n)!.meta != null &&
+        getAttachment(n)!.meta!.duration != null) {
+      return Duration(seconds: getAttachment(n)!.meta!.duration!.toInt());
     }
-
     return null;
   }
 
@@ -120,8 +94,4 @@ class ChatItem with _$ChatItem {
   bool get isAnswer => type == ChatItemType.textAnswer;
 
   bool get isMedia => attachments != null && attachments!.isNotEmpty;
-
-  bool get isAudio => audioUrl != null;
-
-  bool get isImage => imageUrl != null;
 }
