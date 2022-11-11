@@ -115,6 +115,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "nickname": MessageLookupByLibrary.simpleMessage("Apelido"),
         "noIChangedMyMind":
             MessageLookupByLibrary.simpleMessage("No, I changed my mind"),
+        "noInternetConnection":
+            MessageLookupByLibrary.simpleMessage("No internet connection."),
+        "noQuestionsYet":
+            MessageLookupByLibrary.simpleMessage("No questions, yet."),
+        "noSessionsYet":
+            MessageLookupByLibrary.simpleMessage("No sessions, yet."),
         "notEnoughConversationsCheckOurProfileGuide":
             MessageLookupByLibrary.simpleMessage(
                 "Não há conversas suficientes? Confira nosso Guia de Perfil."),
@@ -183,9 +189,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "topSpender": MessageLookupByLibrary.simpleMessage("Maior gastador"),
         "total": MessageLookupByLibrary.simpleMessage("Total"),
         "totalMarkets": MessageLookupByLibrary.simpleMessage("Total markets"),
+        "uhohNoNetworkNcheckYourInternetConnection":
+            MessageLookupByLibrary.simpleMessage(
+                "Uh-oh, no network... \nCheck your internet connection"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "Orgulhamo-nos de oferecer aos consultores um local seguro para servir os clientes e desenvolver-se profissionalmente. Fazer um bom trabalho em uma de nossas marcas abrirá portas para outras"),
+        "whenSomeoneAsksAPublicQuestionYouWillSeeThem":
+            MessageLookupByLibrary.simpleMessage(
+                "When someone asks a public question, you will see them on the general list here"),
+        "whenYouHelpYourFirstClientYouWillSeeYour":
+            MessageLookupByLibrary.simpleMessage(
+                "When you help your first client, you will see your session history here."),
         "willBeAvailableInAnHour": MessageLookupByLibrary.simpleMessage(
             "Will be available in an hour"),
         "workspaces":
@@ -195,8 +210,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "yesImSure": MessageLookupByLibrary.simpleMessage("Yes, I’m sure"),
         "youDoNotHaveAnyNotesYet":
             MessageLookupByLibrary.simpleMessage("Você ainda não tem notas"),
-        "youDontHaveAnInternetConnection": MessageLookupByLibrary.simpleMessage(
-            "You don’t have an internet connection"),
         "youHave": MessageLookupByLibrary.simpleMessage("Você tem"),
         "youHaveNotCompletedAnySessionsYet":
             MessageLookupByLibrary.simpleMessage(

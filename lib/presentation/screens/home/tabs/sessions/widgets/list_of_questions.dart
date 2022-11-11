@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/list_of_filters_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
@@ -20,7 +22,7 @@ class ListOfQuestions extends StatelessWidget {
       index: index,
       children: const [
         _PublicQuestionsListWidget(),
-       _PrivateQuestionsListWidget(),
+        _PrivateQuestionsListWidget(),
       ],
     );
   }
@@ -35,9 +37,9 @@ class _PublicQuestionsListWidget extends StatelessWidget {
     return Column(
       children: [
         MarketFilterWidget(
-            isExpanded: true,
-            changeIndex: sessionsCubit.changeMarketIndexForPublic,
-          ),
+          isExpanded: true,
+          changeIndex: sessionsCubit.changeMarketIndexForPublic,
+        ),
         const Divider(
           height: 1.0,
         ),
@@ -52,6 +54,8 @@ class _PublicQuestionsListWidget extends StatelessWidget {
                 onRefresh: () async {
                   sessionsCubit.getPublicQuestions(refresh: true);
                 },
+                emptyListTitle: S.of(context).noQuestionsYet,
+                emptyListLabel: S.of(context).whenSomeoneAsksAPublicQuestionYouWillSeeThem,
               ),
             );
           },
@@ -106,6 +110,8 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
                 onRefresh: () async {
                   sessionsCubit.getPrivateQuestions(refresh: true);
                 },
+                emptyListTitle: S.of(context).noSessionsYet,
+                emptyListLabel: S.of(context).whenYouHelpYourFirstClientYouWillSeeYour,
               ),
             );
           },
@@ -119,12 +125,16 @@ class _ListOfQuestionsWidget extends StatelessWidget {
   final List<ChatItem> questions;
   final RefreshCallback onRefresh;
   final ScrollController controller;
+  final String emptyListTitle;
+  final String emptyListLabel;
 
   const _ListOfQuestionsWidget({
     Key? key,
     required this.questions,
     required this.onRefresh,
     required this.controller,
+    required this.emptyListTitle,
+    required this.emptyListLabel,
   }) : super(key: key);
 
   @override
@@ -135,22 +145,40 @@ class _ListOfQuestionsWidget extends StatelessWidget {
         controller: controller,
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
-          SliverToBoxAdapter(
-            child: ListView.separated(
-              padding:
-                  const EdgeInsets.all(AppConstants.horizontalScreenPadding),
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-
-              itemBuilder: (BuildContext context, int index) {
-                return ChatsListTileWidget(question: questions[index]);
-              },
-              separatorBuilder: (BuildContext context, int index) => const SizedBox(
-                height: 12.0,
-              ),
-              itemCount: questions.length,
-            ),
-          ),
+          questions.isNotEmpty
+              ? SliverToBoxAdapter(
+                  child: ListView.separated(
+                    padding: const EdgeInsets.all(
+                        AppConstants.horizontalScreenPadding),
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ChatsListTileWidget(question: questions[index]);
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const SizedBox(
+                      height: 12.0,
+                    ),
+                    itemCount: questions.length,
+                  ),
+                )
+              : SliverFillRemaining(
+                  hasScrollBody: true,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppConstants.horizontalScreenPadding,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        EmptyListWidget(
+                          title: emptyListTitle,
+                          label: emptyListLabel,
+                        ),
+                      ],
+                    ),
+                  )),
         ],
       ),
     );

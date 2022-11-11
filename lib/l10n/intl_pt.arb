@@ -114,12 +114,17 @@
   "title": "Título",
   "youHaveNotCompletedAnySessionsYet": "You have not completed any sessions yet",
   "youHaveNotYetCompletedThisMonthsSessions": "You have not yet completed this month's sessions",
-  "youDontHaveAnInternetConnection": "You don’t have an internet connection",
   "allType": "All Type",
   "market": "Market:",
   "all": "All",
   "privateQuestions": "Private Questions",
   "onlyPremiumProducts": "Only Premium Products",
+  "noQuestionsYet": "No questions, yet.",
+  "whenSomeoneAsksAPublicQuestionYouWillSeeThem": "When someone asks a public question, you will see them on the general list here",
+  "noSessionsYet": "No sessions, yet.",
+  "whenYouHelpYourFirstClientYouWillSeeYour": "When you help your first client, you will see your session history here.",
+  "uhohNoNetworkNcheckYourInternetConnection": "Uh-oh, no network... \nCheck your internet connection",
+  "noInternetConnection": "No internet connection.",
   "avgDailyEarnings": "Avg Daily Earnings"
   "perfomanceOverviewAnalytics": "Perfomance Overview Analytics",
   "editNote": "Edit Note"

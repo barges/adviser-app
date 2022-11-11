@@ -1200,16 +1200,6 @@ class S {
     );
   }
 
-  /// `You don’t have an internet connection`
-  String get youDontHaveAnInternetConnection {
-    return Intl.message(
-      'You don’t have an internet connection',
-      name: 'youDontHaveAnInternetConnection',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Avg Daily Earnings`
   String get avgDailyEarnings {
     return Intl.message(
@@ -1270,6 +1260,15 @@ class S {
     );
   }
 
+  /// `No questions, yet.`
+  String get noQuestionsYet {
+    return Intl.message(
+      'No questions, yet.',
+      name: 'noQuestionsYet',
+      desc: '',
+      args: [],
+    );
+  
   /// `Perfomance Overview Analytics`
   String get perfomanceOverviewAnalytics {
     return Intl.message(
@@ -1279,6 +1278,57 @@ class S {
       args: [],
     );
   }
+
+  /// `When someone asks a public question, you will see them on the general list here`
+  String get whenSomeoneAsksAPublicQuestionYouWillSeeThem {
+    return Intl.message(
+      'When someone asks a public question, you will see them on the general list here',
+      name: 'whenSomeoneAsksAPublicQuestionYouWillSeeThem',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No sessions, yet.`
+  String get noSessionsYet {
+    return Intl.message(
+      'No sessions, yet.',
+      name: 'noSessionsYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When you help your first client, you will see your session history here.`
+  String get whenYouHelpYourFirstClientYouWillSeeYour {
+    return Intl.message(
+      'When you help your first client, you will see your session history here.',
+      name: 'whenYouHelpYourFirstClientYouWillSeeYour',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Uh-oh, no network... \nCheck your internet connection`
+  String get uhohNoNetworkNcheckYourInternetConnection {
+    return Intl.message(
+      'Uh-oh, no network... \nCheck your internet connection',
+      name: 'uhohNoNetworkNcheckYourInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No internet connection.`
+  String get noInternetConnection {
+    return Intl.message(
+      'No internet connection.',
+      name: 'noInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
+}
 
   /// `Edit Note`
   String get editNote {

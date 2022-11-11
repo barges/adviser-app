@@ -32,7 +32,10 @@ class PasswordTextField extends StatelessWidget {
       children: [
         if (label != null)
           Padding(
-            padding: const EdgeInsets.only(bottom: 4.0),
+            padding: const EdgeInsets.only(
+              bottom: 4.0,
+              left: 12.0,
+            ),
             child: Text(label ?? '', style: Get.textTheme.labelMedium),
           ),
         Container(
@@ -85,7 +88,10 @@ class PasswordTextField extends StatelessWidget {
         ),
         if (errorText.isNotEmpty)
           Padding(
-            padding: const EdgeInsets.only(top: 4.0),
+            padding: const EdgeInsets.only(
+              top: 4.0,
+              left: 12.0,
+            ),
             child: Text(errorText,
                 style: Get.textTheme.bodySmall?.copyWith(
                   color: Get.theme.errorColor,

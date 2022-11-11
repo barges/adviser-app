@@ -34,17 +34,21 @@ class EmptyListWidget extends StatelessWidget {
           style: Get.textTheme.headlineMedium,
           textAlign: TextAlign.center,
         ),
-        const SizedBox(
-          height: 8.0,
-        ),
         if (label != null)
-          Text(
-            label!,
-            style: Get.textTheme.bodyMedium?.copyWith(
-              fontSize: 16.0,
-              color: Get.theme.shadowColor,
-            ),
-            textAlign: TextAlign.center,
+          Column(
+            children: [
+              const SizedBox(
+                height: 8.0,
+              ),
+              Text(
+                label!,
+                style: Get.textTheme.bodyMedium?.copyWith(
+                  fontSize: 16.0,
+                  color: Get.theme.shadowColor,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
       ],
     );
