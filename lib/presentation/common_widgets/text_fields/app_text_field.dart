@@ -31,7 +31,15 @@ class AppTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: Get.textTheme.labelMedium),
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 12.0,
+          ),
+          child: Text(
+            label,
+            style: Get.textTheme.labelMedium,
+          ),
+        ),
         const SizedBox(
           height: 4.0,
         ),
@@ -72,7 +80,10 @@ class AppTextField extends StatelessWidget {
         ),
         if (errorText.isNotEmpty)
           Padding(
-            padding: const EdgeInsets.only(top: 4.0),
+            padding: const EdgeInsets.only(
+              top: 4.0,
+              left: 12.0,
+            ),
             child: Text(
               errorText,
               style: Get.textTheme.bodySmall
