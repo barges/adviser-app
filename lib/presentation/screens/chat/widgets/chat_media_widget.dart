@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_bg_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_image.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/rect_circle_image.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_player.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/footer_chat_widget.dart';
 
 class ChatMediaWidget extends ChatWidget {
+  final String? audioUrl;
   final String? imageUrl;
   final Duration duration;
   final VoidCallback? onStartPlayPressed;
@@ -17,12 +18,14 @@ class ChatMediaWidget extends ChatWidget {
   final bool isPlayingFinished;
   const ChatMediaWidget({
     super.key,
+    required super.item,
     required super.isQuestion,
     required super.type,
     required super.createdAt,
     required this.duration,
     super.ritualIdentifier,
     this.imageUrl,
+    this.audioUrl,
     this.onStartPlayPressed,
     this.onPausePlayPressed,
     this.playbackStream,
@@ -45,36 +48,79 @@ class ChatMediaWidget extends ChatWidget {
         children: [
           Column(
             children: [
-              if (imageUrl != null) ChatImageWidget(imageUrl!),
-              if (imageUrl != null) const SizedBox(height: 12.0),
-              ChatItemPlayer(
-                onStartPlayPressed: onStartPlayPressed,
-                onPausePlayPressed: onPausePlayPressed,
-                isPlaying: isPlaying,
-                isPlayingFinished: isPlayingFinished,
-                duration: duration,
-                playbackStream: playbackStream,
-                textColor: getter(
-                  question: Get.theme.primaryColor,
-                  answer: Get.theme.backgroundColor,
+              if (item.getImageUrl(1) != null)
+                RectCircleImage(
+                  item.getImageUrl(1)!,
+                  height: 134.0,
                 ),
-                colorProgressIndicator: getter(
-                  question: Get.theme.primaryColor,
-                  answer: Get.theme.backgroundColor,
+              if (item.getImageUrl(1) != null) const SizedBox(height: 12.0),
+              if (item.getImageUrl(1) != null) const SizedBox(height: 12.0),
+              if (item.getImageUrl(2) != null)
+                RectCircleImage(
+                  item.getImageUrl(2)!,
+                  height: 134.0,
                 ),
-                bgColorProgressIndicator: getter(
-                  question: Get.theme.primaryColorLight,
-                  answer: Get.theme.primaryColorLight,
+              if (item.getImageUrl(2) != null) const SizedBox(height: 12.0),
+              if (item.getImageUrl(2) != null) const SizedBox(height: 12.0),
+              //
+              if (item.getAudioUrl(1) != null)
+                ChatItemPlayer(
+                  onStartPlayPressed: onStartPlayPressed,
+                  onPausePlayPressed: onPausePlayPressed,
+                  isPlaying: isPlaying,
+                  isPlayingFinished: isPlayingFinished,
+                  duration: duration,
+                  playbackStream: playbackStream,
+                  textColor: getter(
+                    question: Get.theme.primaryColor,
+                    answer: Get.theme.backgroundColor,
+                  ),
+                  colorProgressIndicator: getter(
+                    question: Get.theme.primaryColor,
+                    answer: Get.theme.backgroundColor,
+                  ),
+                  bgColorProgressIndicator: getter(
+                    question: Get.theme.primaryColorLight,
+                    answer: Get.theme.primaryColorLight,
+                  ),
+                  colorIcon: getter(
+                    question: Get.theme.backgroundColor,
+                    answer: Get.theme.primaryColor,
+                  ),
+                  colorBtn: getter(
+                    question: Get.theme.primaryColor,
+                    answer: Get.theme.backgroundColor,
+                  ),
                 ),
-                colorIcon: getter(
-                  question: Get.theme.backgroundColor,
-                  answer: Get.theme.primaryColor,
+              if (item.getAudioUrl(2) != null)
+                ChatItemPlayer(
+                  onStartPlayPressed: onStartPlayPressed,
+                  onPausePlayPressed: onPausePlayPressed,
+                  isPlaying: isPlaying,
+                  isPlayingFinished: isPlayingFinished,
+                  duration: duration,
+                  playbackStream: playbackStream,
+                  textColor: getter(
+                    question: Get.theme.primaryColor,
+                    answer: Get.theme.backgroundColor,
+                  ),
+                  colorProgressIndicator: getter(
+                    question: Get.theme.primaryColor,
+                    answer: Get.theme.backgroundColor,
+                  ),
+                  bgColorProgressIndicator: getter(
+                    question: Get.theme.primaryColorLight,
+                    answer: Get.theme.primaryColorLight,
+                  ),
+                  colorIcon: getter(
+                    question: Get.theme.backgroundColor,
+                    answer: Get.theme.primaryColor,
+                  ),
+                  colorBtn: getter(
+                    question: Get.theme.primaryColor,
+                    answer: Get.theme.backgroundColor,
+                  ),
                 ),
-                colorBtn: getter(
-                  question: Get.theme.primaryColor,
-                  answer: Get.theme.backgroundColor,
-                ),
-              ),
             ],
           ),
           Positioned(

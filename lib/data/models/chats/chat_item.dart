@@ -60,8 +60,9 @@ class ChatItem with _$ChatItem {
 
   String? getAudioUrl(int n) {
     if (isMedia &&
-        getAttachment(n) != null &&
-        getAttachment(n)!.mime!.contains(MediaType.audio.name)) {
+            getAttachment(n) != null &&
+            getAttachment(n)!.mime!.contains(MediaType.audio.name) ||
+        getAttachment(n) != null && getAttachment(n)!.mime!.contains('mp4')) {
       return getAttachment(n)!.url;
     }
     return null;

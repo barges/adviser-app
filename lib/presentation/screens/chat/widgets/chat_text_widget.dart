@@ -9,6 +9,7 @@ class ChatTextWidget extends ChatWidget {
   final String? content;
   const ChatTextWidget({
     super.key,
+    required super.item,
     required super.isQuestion,
     required super.createdAt,
     required super.type,
@@ -37,9 +38,6 @@ class ChatTextWidget extends ChatWidget {
               question: Get.theme.hoverColor,
               answer: Get.theme.backgroundColor,
             ),
-          ),
-          const SizedBox(
-            width: 5.0,
           ),
           Row(
             children: [

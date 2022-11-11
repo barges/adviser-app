@@ -1,17 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-class ChatImageWidget extends StatelessWidget {
+class RectCircleImage extends StatelessWidget {
   final String url;
-  const ChatImageWidget(
+  final double? width;
+  final double? height;
+  const RectCircleImage(
     this.url, {
+    this.width,
+    this.height,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 134.0,
+      width: width,
+      height: height,
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(8.0),

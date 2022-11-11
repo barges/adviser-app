@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_media_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_widget.dart';
 
 import 'chat_cubit.dart';
@@ -135,7 +136,19 @@ class _ChatItemWidget extends StatelessWidget {
       final isPlayingAudioFinished = context
           .select((ChatCubit cubit) => cubit.state.isPlayingAudioFinished);
 
+      if (item.content != null && item.content!.isNotEmpty) {
+        return ChatTextMediaWidget(
+          content: item.content,
+          item: item,
+          isQuestion: item.isQuestion,
+          createdAt: DateTime.tryParse(item.createdAt ?? '') ?? DateTime.now(),
+          type: item.type!,
+          ritualIdentifier: item.ritualIdentifier,
+        );
+      }
+
       return ChatMediaWidget(
+        item: item,
         isQuestion: item.isQuestion,
         imageUrl: item.getImageUrl(1) ?? item.getImageUrl(2),
         duration:
@@ -156,6 +169,7 @@ class _ChatItemWidget extends StatelessWidget {
     }
 
     return ChatTextWidget(
+      item: item,
       isQuestion: item.isQuestion,
       type: item.type!,
       ritualIdentifier: item.ritualIdentifier,
