@@ -1218,7 +1218,8 @@ class S {
       desc: '',
       args: [],
     );
-  
+  }
+
   /// `All Type`
   String get allType {
     return Intl.message(
@@ -1268,7 +1269,6 @@ class S {
       args: [],
     );
   }
-}
 
   /// `Perfomance Overview Analytics`
   String get perfomanceOverviewAnalytics {

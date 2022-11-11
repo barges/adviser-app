@@ -40,19 +40,22 @@ class AddNoteCubit extends Cubit<AddNoteState> {
     }
   }
   Future<void> addNoteToCustomer() async {
-    UpdateNoteResponse response = await _repository.updateNoteToCustomer(
-        clientID: customerID,
-        content: noteController.text,
-        createdAt: noteDate ?? DateFormat(dateFormat).format(DateTime.now()),
-        updatedAt: DateFormat(dateFormat).format(DateTime.now()));
-    if (response.content == noteController.text) {
-      emit(
-          state.copyWith(newNote: noteController.text.removeSpacesAndNewLines));
+    if (noteController.text != oldNote) {
+      UpdateNoteResponse response = await _repository.updateNoteToCustomer(
+          clientID: customerID,
+          content: noteController.text,
+          createdAt: noteDate ?? DateFormat(dateFormat).format(DateTime.now()),
+          updatedAt: DateFormat(dateFormat).format(DateTime.now()));
+      if (response.content == noteController.text) {
+        emit(state.copyWith(
+            newNote: noteController.text.removeSpacesAndNewLines));
 
-      _userProfileCubit.updateNoteToCustomer(GetNoteResponse(
-          noteController.text,
-          noteDate ?? DateFormat(dateFormat).format(DateTime.now())));
+        _userProfileCubit.updateNoteToCustomer(GetNoteResponse(
+            noteController.text,
+            DateFormat(dateFormat).format(DateTime.now())));
+      }
     }
+    Get.back();
   }
 
   Future<void> attachPicture(File? image) async {

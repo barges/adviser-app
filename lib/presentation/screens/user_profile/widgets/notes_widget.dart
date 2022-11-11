@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/data/network/responses/get_note_respons
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class NotesWidget extends StatelessWidget {
@@ -84,43 +85,14 @@ class NotesWidget extends StatelessWidget {
                   separatorBuilder: (_, __) => const SizedBox(height: 11.0),
                   itemCount: min(notes.length, images.length),
                 )
-              : const _EmptyNotesWidget()
+              : EmptyListWidget(
+                  title: S.of(context).youDoNotHaveAnyNotesYet,
+                  label: S
+                      .of(context)
+                      .addInformationYouWantKeepInMindAboutThisClient,
+                )
         ],
       ),
-    );
-  }
-}
-
-class _EmptyNotesWidget extends StatelessWidget {
-  const _EmptyNotesWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Get.isDarkMode
-            ? Assets.images.logos.emptyListLogoDark.image()
-            : Assets.images.logos.emptyListLogo.image(),
-        const SizedBox(height: 24.0),
-        Text(
-          S.of(context).youDoNotHaveAnyNotesYet,
-          textAlign: TextAlign.center,
-          style: Get.textTheme.headlineMedium,
-        ),
-        const SizedBox(height: 8.0),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Text(
-            S.of(context).addInformationYouWantKeepInMindAboutThisClient,
-            textAlign: TextAlign.center,
-            style: Get.textTheme.displayLarge?.copyWith(
-              fontWeight: FontWeight.w400,
-              color: Get.theme.shadowColor,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

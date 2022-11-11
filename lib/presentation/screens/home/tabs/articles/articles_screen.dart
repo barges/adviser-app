@@ -39,7 +39,8 @@ class ArticlesScreen extends StatelessWidget {
                   child: ListOfFiltersWidget(
                     currentFilterIndex: selectedFilterIndex,
                     filters: filters,
-                    onTap: isOnline ? articlesCubit.updateFilterIndex : (v) {},
+                    onTapToFilter:
+                        isOnline ? articlesCubit.updateFilterIndex : (v) {},
                   ),
                 );
               }),
