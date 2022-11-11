@@ -1268,7 +1268,8 @@ class S {
       desc: '',
       args: [],
     );
-  
+  }
+
   /// `Perfomance Overview Analytics`
   String get perfomanceOverviewAnalytics {
     return Intl.message(
@@ -1328,7 +1329,6 @@ class S {
       args: [],
     );
   }
-}
 
   /// `Edit Note`
   String get editNote {
