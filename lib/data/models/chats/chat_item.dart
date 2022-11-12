@@ -25,6 +25,7 @@ class ChatItem with _$ChatItem {
     ClientInformation? clientInformation,
     List<Attachment>? attachments,
     String? clientID,
+    @Default(false) bool isAnswer,
   }) = _ChatItem;
 
   factory ChatItem.fromJson(Map<String, dynamic> json) =>
@@ -77,22 +78,14 @@ class ChatItem with _$ChatItem {
     return null;
   }
 
-  Duration? getDuration(int n) {
+  Duration getDuration(int n) {
     if (getAttachment(n) != null &&
         getAttachment(n)!.meta != null &&
         getAttachment(n)!.meta!.duration != null) {
       return Duration(seconds: getAttachment(n)!.meta!.duration!.toInt());
     }
-    return null;
+    return const Duration();
   }
-
-  bool get isQuestionMedia => isQuestion && isMedia;
-
-  bool get isAnswerMedia => isAnswer && isMedia;
-
-  bool get isQuestion => type != ChatItemType.textAnswer;
-
-  bool get isAnswer => type == ChatItemType.textAnswer;
 
   bool get isMedia => attachments != null && attachments!.isNotEmpty;
 }

@@ -6,46 +6,37 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/footer_chat_widget.dart';
 
 class ChatTextWidget extends ChatWidget {
-  final String? content;
   const ChatTextWidget({
     super.key,
     required super.item,
-    required super.isQuestion,
-    required super.createdAt,
-    required super.type,
-    super.ritualIdentifier,
-    this.content = '',
   });
 
   @override
   Widget build(BuildContext context) {
     return ChatItemBg(
       border: true,
-      padding: getter(
-        question: const EdgeInsets.fromLTRB(12.0, 4.0, 48.0, 4.0),
-        answer: const EdgeInsets.fromLTRB(48.0, 4.0, 12.0, 4.0),
-      ),
-      color: getter(
-        question: Get.theme.canvasColor,
-        answer: Get.theme.primaryColor,
-      ),
+      padding: paddingItem,
+      color: colorItem,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ChatTextAreaWidget(
-            content: content,
-            color: getter(
-              question: Get.theme.hoverColor,
-              answer: Get.theme.backgroundColor,
+          Padding(
+            padding: const EdgeInsets.only(bottom: 5.0),
+            child: ChatTextAreaWidget(
+              content: item.content,
+              color: getter(
+                question: Get.theme.hoverColor,
+                answer: Get.theme.backgroundColor,
+              ),
             ),
           ),
           Row(
             children: [
               const Spacer(),
               FooterChatWidget(
-                type: type,
+                type: item.type!,
                 createdAt: createdAt,
-                ritualIdentifier: ritualIdentifier,
+                ritualIdentifier: item.ritualIdentifier,
                 color: getter(
                   question: Get.theme.shadowColor,
                   answer: Get.theme.primaryColorLight,

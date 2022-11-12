@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
@@ -136,7 +135,11 @@ class ChatCubit extends Cubit<ChatState> {
     final messages = List.of(state.messages);
     conversations.history!.forEach((element) {
       messages.add(
-        element.answer!,
+        element.answer!.copyWith(
+          isAnswer: true,
+          type: element.question!.type,
+          ritualIdentifier: element.question!.ritualIdentifier,
+        ),
       );
       messages.add(
         element.question!,

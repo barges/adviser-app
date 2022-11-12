@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_bg_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/rect_circle_image.dart';
@@ -8,42 +7,18 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/footer_chat_widget.dart';
 
 class ChatMediaWidget extends ChatWidget {
-  final String? audioUrl;
-  final String? imageUrl;
-  final Duration duration;
-  final VoidCallback? onStartPlayPressed;
-  final VoidCallback? onPausePlayPressed;
-  final Stream<PlaybackDisposition>? playbackStream;
-  final bool isPlaying;
-  final bool isPlayingFinished;
   const ChatMediaWidget({
     super.key,
     required super.item,
-    required super.isQuestion,
-    required super.type,
-    required super.createdAt,
-    required this.duration,
-    super.ritualIdentifier,
-    this.imageUrl,
-    this.audioUrl,
-    this.onStartPlayPressed,
-    this.onPausePlayPressed,
-    this.playbackStream,
-    this.isPlaying = false,
-    this.isPlayingFinished = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final String? audioUrl1 = item.getAudioUrl(1);
+    final String? audioUrl2 = item.getAudioUrl(2);
     return ChatItemBg(
-      padding: getter(
-        question: const EdgeInsets.fromLTRB(12.0, 4.0, 48.0, 4.0),
-        answer: const EdgeInsets.fromLTRB(48.0, 4.0, 12.0, 4.0),
-      ),
-      color: getter(
-        question: Get.theme.canvasColor,
-        answer: Get.theme.primaryColor,
-      ),
+      padding: paddingItem,
+      color: colorItem,
       child: Stack(
         children: [
           Column(
@@ -53,73 +28,32 @@ class ChatMediaWidget extends ChatWidget {
                   item.getImageUrl(1)!,
                   height: 134.0,
                 ),
-              if (item.getImageUrl(1) != null) const SizedBox(height: 12.0),
-              if (item.getImageUrl(1) != null) const SizedBox(height: 12.0),
               if (item.getImageUrl(2) != null)
-                RectCircleImage(
-                  item.getImageUrl(2)!,
-                  height: 134.0,
-                ),
-              if (item.getImageUrl(2) != null) const SizedBox(height: 12.0),
-              if (item.getImageUrl(2) != null) const SizedBox(height: 12.0),
-              //
-              if (item.getAudioUrl(1) != null)
-                ChatItemPlayer(
-                  onStartPlayPressed: onStartPlayPressed,
-                  onPausePlayPressed: onPausePlayPressed,
-                  isPlaying: isPlaying,
-                  isPlayingFinished: isPlayingFinished,
-                  duration: duration,
-                  playbackStream: playbackStream,
-                  textColor: getter(
-                    question: Get.theme.primaryColor,
-                    answer: Get.theme.backgroundColor,
-                  ),
-                  colorProgressIndicator: getter(
-                    question: Get.theme.primaryColor,
-                    answer: Get.theme.backgroundColor,
-                  ),
-                  bgColorProgressIndicator: getter(
-                    question: Get.theme.primaryColorLight,
-                    answer: Get.theme.primaryColorLight,
-                  ),
-                  colorIcon: getter(
-                    question: Get.theme.backgroundColor,
-                    answer: Get.theme.primaryColor,
-                  ),
-                  colorBtn: getter(
-                    question: Get.theme.primaryColor,
-                    answer: Get.theme.backgroundColor,
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: item.getImageUrl(1) != null ? 12.0 : 0.0),
+                  child: RectCircleImage(
+                    item.getImageUrl(2)!,
+                    height: 134.0,
                   ),
                 ),
-              if (item.getAudioUrl(2) != null)
+              if (audioUrl1 == null && audioUrl2 == null)
+                const SizedBox(height: 24.0),
+              if ((item.getImageUrl(1) != null ||
+                      item.getImageUrl(2) != null) &&
+                  (audioUrl1 != null || audioUrl2 != null))
+                const SizedBox(height: 12.0),
+              if (audioUrl1 != null)
                 ChatItemPlayer(
-                  onStartPlayPressed: onStartPlayPressed,
-                  onPausePlayPressed: onPausePlayPressed,
-                  isPlaying: isPlaying,
-                  isPlayingFinished: isPlayingFinished,
-                  duration: duration,
-                  playbackStream: playbackStream,
-                  textColor: getter(
-                    question: Get.theme.primaryColor,
-                    answer: Get.theme.backgroundColor,
-                  ),
-                  colorProgressIndicator: getter(
-                    question: Get.theme.primaryColor,
-                    answer: Get.theme.backgroundColor,
-                  ),
-                  bgColorProgressIndicator: getter(
-                    question: Get.theme.primaryColorLight,
-                    answer: Get.theme.primaryColorLight,
-                  ),
-                  colorIcon: getter(
-                    question: Get.theme.backgroundColor,
-                    answer: Get.theme.primaryColor,
-                  ),
-                  colorBtn: getter(
-                    question: Get.theme.primaryColor,
-                    answer: Get.theme.backgroundColor,
-                  ),
+                  isQuestion: !item.isAnswer,
+                  audioUrl: audioUrl1,
+                  duration: item.getDuration(1),
+                ),
+              if (audioUrl2 != null)
+                ChatItemPlayer(
+                  isQuestion: !item.isAnswer,
+                  audioUrl: audioUrl2,
+                  duration: item.getDuration(2),
                 ),
             ],
           ),
@@ -127,9 +61,9 @@ class ChatMediaWidget extends ChatWidget {
             right: 0.0,
             bottom: 0.0,
             child: FooterChatWidget(
-              type: type,
+              type: item.type!,
               createdAt: createdAt,
-              ritualIdentifier: ritualIdentifier,
+              ritualIdentifier: item.ritualIdentifier,
               color: getter(
                 question: Get.theme.shadowColor,
                 answer: Get.theme.primaryColorLight,
