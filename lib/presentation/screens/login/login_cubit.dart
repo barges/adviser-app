@@ -116,8 +116,7 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void goToHome() {
-    Get.offNamedUntil(AppRoutes.home, (_) => false,
-        arguments: <String, int>{'homeScreenTab': 0, 'sessionScreenTap': 0});
+    Get.offNamedUntil(AppRoutes.home, (_) => false);
   }
 
   Future<void> goToForgotPassword() async {

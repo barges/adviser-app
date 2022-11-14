@@ -20,10 +20,7 @@ class SplashScreen extends StatelessWidget {
           return BlocListener<SplashCubit, SplashState>(
             listener: (prev, current) {
               if (current.isLogged == true) {
-                Get.offNamed(AppRoutes.home, arguments: <String, int>{
-                  'homeScreenTab': 0,
-                  'sessionScreenTap': 0
-                });
+                Get.offNamed(AppRoutes.home);
               } else {
                 Get.offNamed(AppRoutes.login);
               }
