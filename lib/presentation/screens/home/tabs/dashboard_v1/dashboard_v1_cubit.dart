@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_mo
 import 'package:shared_advisor_interface/data/network/responses/reports_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/dashboard_v1_state.dart';
 
@@ -20,8 +21,8 @@ class DashboardV1Cubit extends Cubit<DashboardV1State> {
     getReports();
   }
 
-  final MainCubit mainCubit = Get.find<MainCubit>();
-  final UserRepository _userRepository = Get.find<UserRepository>();
+  final MainCubit mainCubit = getIt.get<MainCubit>();
+  final UserRepository _userRepository = getIt.get<UserRepository>();
 
   Future<void> getReports() async {
     if (mainCubit.state.internetConnectionIsAvailable) {

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -17,7 +18,7 @@ class DashboardV1Screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => DashboardV1Cubit(Get.find<CachingManager>()),
+        create: (_) => DashboardV1Cubit(getIt.get<CachingManager>()),
         child: Builder(builder: (context) {
           final DashboardV1Cubit dashboardCubit =
               context.read<DashboardV1Cubit>();

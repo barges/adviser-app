@@ -43,6 +43,7 @@ class _ChartWidgetState extends State<ChartWidget> {
   Widget build(BuildContext context) {
     return Blur(
       blur: 2.0,
+      blurColor: Get.theme.canvasColor,
       overlay: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

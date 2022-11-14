@@ -20,7 +20,7 @@ class PersonalInformationWidget extends StatelessWidget {
           padding: EdgeInsets.all(AppConstants.horizontalScreenPadding),
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-              color: Get.theme.canvasColor,
+              color: Theme.of(context).canvasColor,
               borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
           child: Column(
             children: [
@@ -37,22 +37,6 @@ class PersonalInformationWidget extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: Get.textTheme.headlineMedium?.copyWith(fontSize: 17.0),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
-                child: Divider(),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text('${S.of(context).personalBalance}:',
-                      style: Get.textTheme.bodySmall?.copyWith(
-                          fontSize: 14.0, color: Get.theme.shadowColor)),
-                  Text(r'$ 12 282,20',
-                      style: Get.textTheme.headlineMedium?.copyWith(
-                          fontSize: 17.0, color: Get.theme.primaryColor))
-                ],
-              )
             ],
           ));
     });

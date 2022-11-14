@@ -21,12 +21,13 @@ class MonthStatisticWidget extends StatelessWidget {
             color: Get.theme.canvasColor,
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
         child: Padding(
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
                 left: AppConstants.horizontalScreenPadding,
                 right: AppConstants.horizontalScreenPadding,
                 top: 12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   S.of(context).thisMonth,
@@ -34,33 +35,24 @@ class MonthStatisticWidget extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: Get.textTheme.headlineMedium?.copyWith(fontSize: 17.0),
                 ),
-                Padding(
+                const Padding(
                     padding: EdgeInsets.symmetric(
                         vertical: AppConstants.horizontalScreenPadding),
                     child: Divider(
-                      height: 1,
+                      height: 2,
                     )),
                 Text('\$ ${monthAmount.parseValueToCurrencyFormat}',
                     style: Get.textTheme.labelLarge),
-                SizedBox(
+                const SizedBox(
                   height: 8.0,
                 ),
-                Row(
-                  children: [
-                    _PerformancePropertyInfo(
-                        title: S.of(context).newCustomers, info: 6),
-                    const SizedBox(width: 8.0),
-                    _PerformancePropertyInfo(
-                        title: S.of(context).sales, info: 98),
-                  ],
-                ),
-                Padding(
+                const Padding(
                     padding: EdgeInsets.symmetric(
                         vertical: AppConstants.horizontalScreenPadding),
                     child: Divider(
                       height: 1,
                     )),
-                ChartWidget()
+                const ChartWidget()
               ],
             )),
       );
