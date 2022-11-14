@@ -26,7 +26,8 @@ import 'package:audio_session/audio_session.dart';
 class ChatCubit extends Cubit<ChatState> {
   final ChatsRepository repository;
   final ChatItem question;
-  final ScrollController controller = ScrollController();
+  final ScrollController scrollController = ScrollController();
+  final TextEditingController textEditingController = TextEditingController();
   final MainCubit _mainCubit = Get.find<MainCubit>();
   final Codec _codec = CurrentCodec.current;
   final FileExt _recordFileExt = CurrentFileExt.current;
@@ -44,6 +45,9 @@ class ChatCubit extends Cubit<ChatState> {
 
   @override
   Future<void> close() {
+    scrollController.dispose();
+    textEditingController.dispose();
+
     _recorder?.closeRecorder();
     _recorder = null;
 
@@ -76,7 +80,8 @@ class ChatCubit extends Cubit<ChatState> {
       const Duration(milliseconds: 100),
     );
 
-    controller.addListener(scrollControllerListener);
+    scrollController.addListener(scrollControllerListener);
+    textEditingController.addListener(textEditingControllerListener);
   }
 
   Future<void> _initAudioSession() async {
@@ -101,9 +106,16 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   void scrollControllerListener() {
-    if (!_mainCubit.state.isLoading && controller.position.extentAfter <= 300) {
+    if (!_mainCubit.state.isLoading &&
+        scrollController.position.extentAfter <= 300) {
       _getConversations();
     }
+  }
+
+  void textEditingControllerListener() {
+    emit(state.copyWith(
+      inputTextLength: textEditingController.text.length,
+    ));
   }
 
   Future<void> _getConversations() async {
@@ -267,6 +279,8 @@ class ChatCubit extends Cubit<ChatState> {
       await _playerRecorded?.stopPlayer();
     }
 
+    final messages = List.of(state.messages);
+
     final String? mime = lookupMimeType(state.recordingPath);
     File audiofile = File(state.recordingPath);
     final List<int> audioBytes = await audiofile.readAsBytes();
@@ -276,8 +290,7 @@ class ChatCubit extends Cubit<ChatState> {
     logger.i('recorded audio meta: ($meta)');
     final request = AnswerRequest(
         questionID: '5f60bd70b08424001c160200',
-        ritualID: SessionsTypes.tarot,
-        content: 'Test',
+        ritualID: SessionsTypes.tarot, //messages[0].ritualIdentifier,/
         attachments: [
           Attachment(
               mime: mime,
@@ -287,7 +300,6 @@ class ChatCubit extends Cubit<ChatState> {
     try {
       final ChatItem responseAnswer = await repository.sendAnswer(request);
       logger.i('send response:$responseAnswer');
-      final messages = List.of(state.messages);
       messages.insert(0, responseAnswer);
 
       emit(
@@ -295,6 +307,28 @@ class ChatCubit extends Cubit<ChatState> {
           isRecordingAudio: false,
           isAudioFileSaved: false,
           isPlayingRecordedAudio: false,
+          messages: messages,
+        ),
+      );
+    } catch (e) {
+      logger.e(e);
+    }
+  }
+
+  Future<void> sendText() async {
+    final request = AnswerRequest(
+      questionID: '5f60bd70b08424001c160200',
+      ritualID: SessionsTypes.tarot,
+      content: textEditingController.text,
+    );
+    try {
+      final ChatItem responseAnswer = await repository.sendAnswer(request);
+      logger.i('send response:$responseAnswer');
+      final messages = List.of(state.messages);
+      messages.insert(0, responseAnswer);
+
+      emit(
+        state.copyWith(
           messages: messages,
         ),
       );

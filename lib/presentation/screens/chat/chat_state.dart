@@ -7,6 +7,7 @@ part 'chat_state.freezed.dart';
 @freezed
 class ChatState with _$ChatState {
   const factory ChatState({
+    @Default(0) int inputTextLength,
     @Default(false) bool isLoadingAudio,
     @Default(false) bool isRecordingAudio,
     @Default(false) bool isAudioFileSaved,
