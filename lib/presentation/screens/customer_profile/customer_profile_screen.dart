@@ -55,7 +55,7 @@ class CustomerProfileScreen extends StatelessWidget {
                 final CustomerInfoResponse? response = context.select(
                     (CustomerProfileCubit cubit) => cubit.state.response);
                 final GetNoteResponse? currentNote = context.select(
-                    (UserProfileCubit cubit) => cubit.state.currentNote);
+                    (CustomerProfileCubit cubit) => cubit.state.currentNote);
                 return (isLoading || errorMessage != '' || response == null)
                     ? const SizedBox.shrink()
                     : Column(
@@ -174,7 +174,7 @@ class CustomerProfileScreen extends StatelessWidget {
                             ]),
                           ),
                           Builder(builder: (context) {
-                            final String? currentNote = context.select(
+                            final GetNoteResponse? currentNote = context.select(
                                 (CustomerProfileCubit cubit) =>
                                     cubit.state.currentNote);
                             return NotesWidget(

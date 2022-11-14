@@ -10,6 +10,5 @@ abstract class CustomerRepository {
   Future<UpdateNoteResponse> updateNoteToCustomer(
       {required String clientID,
       required String content,
-      required String createdAt,
       required String updatedAt});
 }

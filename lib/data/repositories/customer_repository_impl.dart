@@ -24,14 +24,10 @@ class CustomerRepositoryImpl implements CustomerRepository {
   Future<UpdateNoteResponse> updateNoteToCustomer(
       {required String clientID,
       required String content,
-      required String createdAt,
       required updatedAt}) async {
     return await _api.updateNoteToCustomer(
       UpdateNoteRequest(
-          clientID: clientID,
-          content: content,
-          createdAt: createdAt,
-          updatedAt: updatedAt),
+          clientID: clientID, content: content, updatedAt: updatedAt),
     );
   }
 }

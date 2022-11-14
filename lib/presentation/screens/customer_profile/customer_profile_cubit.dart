@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
@@ -39,16 +40,30 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
   }
 
   void navigateToAddNoteScreenForOldNote() {
-    Get.toNamed(AppRoutes.addNote, arguments: {
-      'customerID': customerID,
-      'oldNote': state.currentNote?.content,
-      'noteDate': state.currentNote?.updatedAt
-    });
+    Get.toNamed(AppRoutes.addNote,
+        arguments: AddNoteScreenArguments(
+            customerID: customerID,
+            oldNote: state.currentNote?.content,
+            updatedAt: state.currentNote?.updatedAt,
+            noteChanged: updateNoteToCustomer));
   }
 
   void navigateToAddNoteScreenForNewNote() {
-    Get.toNamed(AppRoutes.addNote, arguments: {
-      'customerID': customerID,
-    });
+    Get.toNamed(AppRoutes.addNote,
+        arguments: AddNoteScreenArguments(
+            customerID: customerID, noteChanged: updateNoteToCustomer));
   }
+}
+
+class AddNoteScreenArguments {
+  final String customerID;
+  final String? oldNote;
+  final String? updatedAt;
+  ValueChanged<GetNoteResponse> noteChanged;
+
+  AddNoteScreenArguments(
+      {required this.customerID,
+      this.oldNote,
+      this.updatedAt,
+      required this.noteChanged});
 }
