@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -29,7 +30,7 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
           AppIconButton(
             icon: Assets.vectors.arrowLeft.path,
             onTap: () {
-              Get.find<MainCubit>().clearErrorMessage();
+              getIt.get<MainCubit>().clearErrorMessage();
               Get.back();
             },
           ),

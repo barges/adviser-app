@@ -7,7 +7,9 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 class AppInterceptor extends Interceptor {
-  final MainCubit _mainCubit = Get.find<MainCubit>();
+  final MainCubit _mainCubit;
+
+  AppInterceptor(this._mainCubit);
 
   @override
   FutureOr<dynamic> onRequest(

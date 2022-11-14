@@ -1,11 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_advisor_interface/data/network/responses/update_note_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/presentation/screens/user_profile/user_profile_cubit.dart';
+import 'package:shared_advisor_interface/main.dart';
 
 import 'add_note_state.dart';
 
@@ -13,9 +14,10 @@ class AddNoteCubit extends Cubit<AddNoteState> {
   late final String customerID;
   late final String? oldNote;
   late final String? noteDate;
-  final CustomerRepository _repository = Get.find<CustomerRepository>();
-  final UserProfileCubit _userProfileCubit = Get.find<UserProfileCubit>();
+  final CustomerRepository _repository = getIt.get<CustomerRepository>();
   late final TextEditingController controller;
+
+  ///TODO: Change arguments and add callback to arguments for change note on customer profile screen
 
   AddNoteCubit() : super(AddNoteState()) {
     final Map<String, String?> arguments = Get.arguments;
@@ -30,7 +32,7 @@ class AddNoteCubit extends Cubit<AddNoteState> {
         clientID: customerID, content: controller.text);
     if (response.content == controller.text) {
       emit(state.copyWith(newNote: controller.text.removeSpacesAndNewLines));
-      _userProfileCubit.updateNoteToCustomer(state.newNote);
+      //_userProfileCubit.updateNoteToCustomer(state.newNote);
     }
   }
 

@@ -7,14 +7,14 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/search/search_list_state.dart';
 
 class SearchListCubit extends Cubit<SearchListState> {
-  final BuildContext _context;
   final ChatsRepository _repository;
-  final MainCubit _mainCubit = Get.find<MainCubit>();
+  final MainCubit _mainCubit = getIt.get<MainCubit>();
 
   final BehaviorSubject _searchStream = BehaviorSubject<String>();
 
@@ -28,11 +28,7 @@ class SearchListCubit extends Cubit<SearchListState> {
   bool _hasMore = true;
   int _historyPage = 1;
 
-  SearchListCubit(this._context, this._repository)
-      : super(const SearchListState()) {
-    searchTextController.addListener(() {
-        _searchStream.add(searchTextController.text);
-    });
+  SearchListCubit(this._repository) : super(const SearchListState()) {
     _searchSubscription = _searchStream
         .debounceTime(const Duration(milliseconds: 500))
         .listen((event) async {
@@ -40,7 +36,6 @@ class SearchListCubit extends Cubit<SearchListState> {
     });
 
     historyScrollController.addListener(() {
-      FocusScope.of(_context).unfocus();
       if (historyScrollController.position.extentAfter <= Get.height) {
         getHistoryList();
       }
@@ -57,6 +52,10 @@ class SearchListCubit extends Cubit<SearchListState> {
     historyScrollController.dispose();
 
     return super.close();
+  }
+
+  void changeText(String text) {
+    _searchStream.add(text);
   }
 
   Future<void> getHistoryList({bool refresh = false}) async {

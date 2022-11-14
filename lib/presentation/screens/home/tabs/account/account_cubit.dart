@@ -20,9 +20,9 @@ class AccountCubit extends Cubit<AccountState> {
   final TextEditingController commentController = TextEditingController();
   final FocusNode commentNode = FocusNode();
 
-  final MainCubit mainCubit = Get.find<MainCubit>();
+  final MainCubit mainCubit = getIt.get<MainCubit>();
 
-  final UserRepository _userRepository = Get.find<UserRepository>();
+  final UserRepository _userRepository = getIt.get<UserRepository>();
 
   final CachingManager cacheManager;
 
@@ -80,8 +80,6 @@ class AccountCubit extends Cubit<AccountState> {
       if (profileUpdatedAt != null) {
         milliseconds =
             DateTime.now().difference(profileUpdatedAt).inMilliseconds;
-        logger.d(
-            'DateTime.now().difference(profileUpdatedAt).inSeconds -- ${DateTime.now().difference(profileUpdatedAt).inSeconds}');
       }
 
       emit(
