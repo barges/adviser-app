@@ -5,6 +5,7 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors_dark.dart';
+import 'package:shared_advisor_interface/presentation/themes/noto_color_emoji_font.dart';
 
 class AppThemes {
   static ThemeData themeLight(BuildContext context) {
@@ -40,55 +41,72 @@ class AppThemes {
             statusBarIconBrightness: Brightness.dark),
       ),
       textTheme: GoogleFonts.redHatDisplayTextTheme(
-        const TextTheme(
+        TextTheme(
             headlineLarge: TextStyle(
               fontSize: 24.0,
               fontWeight: FontWeight.w900,
               color: AppColorsLight.ui,
+              fontFamilyFallback: [
+                ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
+                NotoColorEmojiFont.fontFamily
+              ],
             ),
             headlineMedium: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w700,
               color: AppColorsLight.ui,
+              fontFamilyFallback: [NotoColorEmojiFont.fontFamily],
             ),
             labelMedium: TextStyle(
               fontSize: 14.0,
               fontWeight: FontWeight.w500,
               color: AppColorsLight.ui,
+              fontFamilyFallback: [NotoColorEmojiFont.fontFamily],
             ),
             labelSmall: TextStyle(
               fontSize: 10.0,
               fontWeight: FontWeight.w500,
               color: AppColorsLight.ui,
+              fontFamilyFallback: [NotoColorEmojiFont.fontFamily],
             ),
             titleMedium: TextStyle(
-                color: AppColorsLight.ui,
-                fontSize: 17.0,
-                fontWeight: FontWeight.w600),
+              color: AppColorsLight.ui,
+              fontSize: 17.0,
+              fontWeight: FontWeight.w600,
+              fontFamilyFallback: [NotoColorEmojiFont.fontFamily],
+            ),
             bodySmall: TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 13.0,
               color: AppColorsLight.ui,
+              fontFamilyFallback: [NotoColorEmojiFont.fontFamily],
             ),
             displaySmall: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 12.0,
               color: AppColorsLight.ui,
+              fontFamilyFallback: [NotoColorEmojiFont.fontFamily],
             ),
             bodyMedium: TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 15.0,
               color: AppColorsLight.ui,
+              fontFamilyFallback: [
+                ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
+                NotoColorEmojiFont.fontFamily
+              ],
             ),
             displayLarge: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 16.0,
               color: AppColorsLight.ui,
+              fontFamilyFallback: [NotoColorEmojiFont.fontFamily],
             ),
             labelLarge: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 26.0,
               color: AppColorsLight.ui,
+              fontFamilyFallback: [NotoColorEmojiFont.fontFamily],
             )),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -152,55 +170,66 @@ class AppThemes {
             statusBarIconBrightness: Brightness.light),
       ),
       textTheme: GoogleFonts.redHatDisplayTextTheme(
-        const TextTheme(
+        TextTheme(
             headlineLarge: TextStyle(
               fontSize: 24.0,
               fontWeight: FontWeight.w900,
               color: AppColorsDark.ui,
+              fontFamilyFallback: [NotoColorEmojiFont.fontFamily],
             ),
             headlineMedium: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w700,
               color: AppColorsDark.ui,
+              fontFamilyFallback: [NotoColorEmojiFont.fontFamily],
             ),
             labelMedium: TextStyle(
               fontSize: 14.0,
               fontWeight: FontWeight.w500,
               color: AppColorsDark.ui,
+              fontFamilyFallback: [NotoColorEmojiFont.fontFamily],
             ),
             labelSmall: TextStyle(
               fontSize: 10.0,
               fontWeight: FontWeight.w500,
               color: AppColorsDark.ui,
+              fontFamilyFallback: [NotoColorEmojiFont.fontFamily],
             ),
             titleMedium: TextStyle(
-                color: AppColorsDark.ui,
-                fontSize: 17.0,
-                fontWeight: FontWeight.w600),
+              color: AppColorsDark.ui,
+              fontSize: 17.0,
+              fontWeight: FontWeight.w600,
+              fontFamilyFallback: [NotoColorEmojiFont.fontFamily],
+            ),
             bodySmall: TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 13.0,
               color: AppColorsDark.ui,
+              fontFamilyFallback: [NotoColorEmojiFont.fontFamily],
             ),
             displaySmall: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 12.0,
               color: AppColorsDark.ui,
+              fontFamilyFallback: [NotoColorEmojiFont.fontFamily],
             ),
             bodyMedium: TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 15.0,
               color: AppColorsDark.ui,
+              fontFamilyFallback: [NotoColorEmojiFont.fontFamily],
             ),
             displayLarge: TextStyle(
               fontWeight: FontWeight.w600,
+              fontFamilyFallback: [NotoColorEmojiFont.fontFamily],
               fontSize: 16.0,
               color: AppColorsDark.ui,
             ),
             labelLarge: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 26.0,
-              color: AppColorsLight.ui,
+              color: AppColorsDark.ui,
+              fontFamilyFallback: [NotoColorEmojiFont.fontFamily],
             )),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(

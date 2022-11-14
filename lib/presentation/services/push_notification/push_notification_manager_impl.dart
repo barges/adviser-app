@@ -97,35 +97,35 @@ class PushNotificationManagerImpl implements PushNotificationManager {
 Future<void> _navigateToNextScreen(RemoteMessage? message) async {
   if (message != null) {
     Map<String, dynamic> data = message.data;
-    logger.d(data);
 
-    String type;
-    if (data['type'] != null) {
-      type = data['type'];
-    } else {
-      type = data['data']['type'];
-    }
-
-    switch (type) {
-      case 'session':
-        Get.toNamed(AppRoutes.home, arguments: <String, int>{
-          'homeScreenTab': 2,
-          'sessionScreenTap': 0
-        });
-        break;
-      case 'private':
-        Get.toNamed(AppRoutes.home, arguments: <String, int>{
-          'homeScreenTab': 2,
-          'sessionScreenTap': 1
-        });
-        break;
-
-      default:
-        Get.toNamed(AppRoutes.home, arguments: <String, int>{
-          'homeScreenTab': 0,
-          'sessionScreenTap': 0
-        });
-        break;
-    }
+    /**
+      String type;
+      if (data['type'] != null) {
+        type = data['type'];
+      } else {
+        type = data['data']['type'];
+      }
+  
+      switch (type) {
+        case 'session':
+          Get.toNamed(AppRoutes.home, arguments: <String, int>{
+            'homeScreenTab': 2,
+            'sessionScreenTap': 0
+          });
+          break;
+        case 'private':
+          Get.toNamed(AppRoutes.home, arguments: <String, int>{
+            'homeScreenTab': 2,
+            'sessionScreenTap': 1
+          });
+          break;
+  
+        default:
+          Get.toNamed(AppRoutes.home, arguments: <String, int>{
+            'homeScreenTab': 0,
+            'sessionScreenTap': 0
+          });
+          break;
+      }*/
   }
 }

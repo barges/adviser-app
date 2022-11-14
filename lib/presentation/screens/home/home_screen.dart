@@ -8,6 +8,7 @@ import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.da
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/articles/articles_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard/dashboard_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/dashboard_v1_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -52,13 +53,15 @@ class HomeScreen extends StatelessWidget {
                   ),
                   label: 'Dashboard',
                 ),
-                BottomNavigationBarItem(
-                  icon: Assets.vectors.articles.svg(),
-                  activeIcon: Assets.vectors.articles.svg(
-                    color: Get.theme.primaryColor,
+                /**
+                  BottomNavigationBarItem(
+                    icon: Assets.vectors.articles.svg(),
+                    activeIcon: Assets.vectors.articles.svg(
+                      color: Get.theme.primaryColor,
+                    ),
+                    label: 'Articles',
                   ),
-                  label: 'Articles',
-                ),
+                */
                 BottomNavigationBarItem(
                   icon: Assets.vectors.chats.svg(),
                   activeIcon: Assets.vectors.chats.svg(
@@ -96,10 +99,12 @@ class _TabPages extends StatelessWidget {
     return <Widget>[
       Navigator(
           onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-              builder: (BuildContext context) => const DashboardScreen())),
-      Navigator(
-          onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-              builder: (BuildContext context) => const ArticlesScreen())),
+              builder: (BuildContext context) => const DashboardV1Screen())),
+      /**
+        Navigator(
+            onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
+                builder: (BuildContext context) => const ArticlesScreen())),
+      */
       Navigator(
           onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
               builder: (BuildContext context) => const SessionsScreen())),
