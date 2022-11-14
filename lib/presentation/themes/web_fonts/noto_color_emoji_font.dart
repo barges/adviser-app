@@ -4,7 +4,7 @@ import 'package:web_fonts/fonts/web_fonts_variant.dart';
 import 'package:web_fonts/web_fonts.dart';
 
 class NotoColorEmojiFont {
-  static const _fontFamily = 'NotoSansKR';
+  static const _fontFamily = 'NotoColorEmoji';
   static bool _registered = false;
 
   static String get fontFamily {
