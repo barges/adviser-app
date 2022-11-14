@@ -1,11 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_attached_pictures.dart';
 
 class ChatRecordedWidget extends StatelessWidget {
-  final VoidCallback? onPhotoPressed;
   final VoidCallback? onStartPlayPressed;
   final VoidCallback? onPausePlayPressed;
   final VoidCallback? onDeletePressed;
@@ -15,7 +20,6 @@ class ChatRecordedWidget extends StatelessWidget {
 
   const ChatRecordedWidget({
     Key? key,
-    this.onPhotoPressed,
     this.onStartPlayPressed,
     this.onPausePlayPressed,
     this.onDeletePressed,
@@ -26,98 +30,138 @@ class ChatRecordedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ChatCubit chatCubit = context.read<ChatCubit>();
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(24.0, 6.0, 24.0, 6.0),
-      child: Row(
+      child: Column(
         children: [
-          GestureDetector(
-            onTap: onPhotoPressed,
-            child: Assets.vectors.photo.svg(width: AppConstants.iconSize),
-          ),
-          SizedBox(
-            height: 28.0,
-            child: VerticalDivider(
-              width: 24.0,
-              color: Get.theme.dividerColor,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 5.0,
-              right: 17.0,
-            ),
-            child: Assets.vectors.microphone.svg(width: AppConstants.iconSize),
-          ),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(4.0),
-              decoration: BoxDecoration(
-                color: Get.theme.scaffoldBackgroundColor,
-                borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
+          Builder(builder: (context) {
+            final List<File> attachedPics =
+                context.select((ChatCubit cubit) => cubit.state.attachedPics);
+            final isAttachedPics = attachedPics.isNotEmpty;
+            return isAttachedPics
+                ? const Padding(
+                    padding: EdgeInsets.only(
+                      top: 4.0,
+                      bottom: 5.0,
+                    ),
+                    child: AttachedPictures(),
+                  )
+                : const SizedBox.shrink();
+          }),
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  if (chatCubit.state.attachedPics.length <
+                      AppConstants.maxAttachedPics) {
+                    showPickImageAlert(
+                      context: context,
+                      setImage: chatCubit.attachPicture,
+                    );
+                  }
+                },
+                child: Builder(builder: (context) {
+                  final List<File> attachedPics = context
+                      .select((ChatCubit cubit) => cubit.state.attachedPics);
+                  return Opacity(
+                      opacity:
+                          attachedPics.length < AppConstants.maxAttachedPics
+                              ? 1.0
+                              : 0.4,
+                      child: Assets.vectors.photo
+                          .svg(width: AppConstants.iconSize));
+                }),
               ),
-              child: Row(
-                children: [
-                  _PlayPauseBtn(
-                    isPlaying: isPlaying,
-                    onStartPlayPressed: onStartPlayPressed,
-                    onPausePlayPressed: onPausePlayPressed,
+              SizedBox(
+                height: 28.0,
+                child: VerticalDivider(
+                  width: 24.0,
+                  color: Get.theme.dividerColor,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 5.0,
+                  right: 17.0,
+                ),
+                child:
+                    Assets.vectors.microphone.svg(width: AppConstants.iconSize),
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(4.0),
+                  decoration: BoxDecoration(
+                    color: Get.theme.scaffoldBackgroundColor,
+                    borderRadius:
+                        BorderRadius.circular(AppConstants.buttonRadius),
                   ),
-                  const SizedBox(
-                    width: 8.0,
-                  ),
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: StreamBuilder<PlaybackDisposition>(
-                            stream: playbackStream,
-                            builder: (_, snapshot) {
-                              final value =
-                                  playbackStream != null && snapshot.hasData
+                  child: Row(
+                    children: [
+                      _PlayPauseBtn(
+                        isPlaying: isPlaying,
+                        onStartPlayPressed: onStartPlayPressed,
+                        onPausePlayPressed: onPausePlayPressed,
+                      ),
+                      const SizedBox(
+                        width: 8.0,
+                      ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: StreamBuilder<PlaybackDisposition>(
+                                stream: playbackStream,
+                                builder: (_, snapshot) {
+                                  final value = playbackStream != null &&
+                                          snapshot.hasData
                                       ? snapshot.data!.position.inMilliseconds /
                                           snapshot.data!.duration.inMilliseconds
                                       : 0.0;
-                              final time =
-                                  playbackStream != null && snapshot.hasData
-                                      ? snapshot.data!.position
-                                          .toString()
-                                          .substring(2, 7)
-                                      : "00:00";
-                              return _PlayProgress(
-                                value: value,
-                                time: time,
-                              );
-                            },
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: onDeletePressed,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              left: 8.0,
-                              right: 4.0,
+                                  final time =
+                                      playbackStream != null && snapshot.hasData
+                                          ? snapshot.data!.position
+                                              .toString()
+                                              .substring(2, 7)
+                                          : "00:00";
+                                  return _PlayProgress(
+                                    value: value,
+                                    time: time,
+                                  );
+                                },
+                              ),
                             ),
-                            child: Assets.vectors.delete.svg(
-                                width: AppConstants.iconSize,
-                                color: Get.theme.shadowColor),
-                          ),
+                            GestureDetector(
+                              onTap: onDeletePressed,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 8.0,
+                                  right: 4.0,
+                                ),
+                                child: Assets.vectors.delete.svg(
+                                    width: AppConstants.iconSize,
+                                    color: Get.theme.shadowColor),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+              const SizedBox(
+                width: 8.0,
+              ),
+              GestureDetector(
+                onTap: onSendPressed,
+                child: Assets.images.send.image(
+                  width: AppConstants.iconButtonSize,
+                ),
+              )
+            ],
           ),
-          const SizedBox(
-            width: 8.0,
-          ),
-          GestureDetector(
-            onTap: onSendPressed,
-            child: Assets.images.send.image(
-              width: AppConstants.iconButtonSize,
-            ),
-          )
         ],
       ),
     );

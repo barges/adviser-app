@@ -13,8 +13,8 @@ class FooterChatWidget extends StatelessWidget {
     super.key,
     required this.type,
     required this.createdAt,
-    required this.ritualIdentifier,
     required this.color,
+    this.ritualIdentifier,
   });
 
   @override

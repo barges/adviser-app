@@ -15,7 +15,7 @@ import 'chat_cubit.dart';
 import 'widgets/chat_media_widget.dart';
 import 'widgets/chat_recorded_widget.dart';
 import 'widgets/chat_recording_widget.dart';
-import 'widgets/chat_input_widget.dart';
+import 'widgets/chat_text_input_widget.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({Key? key}) : super(key: key);
@@ -23,102 +23,111 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const textCounterWidth = 92.0;
     return BlocProvider(
       create: (_) => ChatCubit(Get.find<ChatsRepository>(), _question),
-      child: Builder(builder: (context) {
-        final ChatCubit chatCubit = context.read<ChatCubit>();
-        final Brand selectedBrand =
-            context.select((MainCubit cubit) => cubit.state.currentBrand);
-        return Scaffold(
-          appBar: ChatConversationAppBar(
-            title: _question.clientName ?? '',
-            selectedBrand: selectedBrand,
-            question: _question,
-          ),
-          backgroundColor: Get.theme.scaffoldBackgroundColor,
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Stack(
-                  children: [
-                    Builder(
-                      builder: (context) {
-                        final List<ChatItem> items = context
-                            .select((ChatCubit cubit) => cubit.state.messages);
-                        return ListView.builder(
-                          controller: chatCubit.scrollController,
-                          reverse: true,
-                          itemBuilder: (_, index) =>
-                              _ChatItemWidget(items[index]),
-                          itemCount: items.length,
-                        );
-                      },
-                    ),
-                    const Positioned(
-                      bottom: 0.0,
-                      right: 0.0,
-                      child: _TextCounter(),
-                    ),
-                  ],
+      child: Builder(
+        builder: (context) {
+          final ChatCubit chatCubit = context.read<ChatCubit>();
+          final Brand selectedBrand =
+              context.select((MainCubit cubit) => cubit.state.currentBrand);
+          return Scaffold(
+            appBar: ChatConversationAppBar(
+              title: _question.clientName ?? '',
+              selectedBrand: selectedBrand,
+              question: _question,
+            ),
+            backgroundColor: Get.theme.scaffoldBackgroundColor,
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Stack(
+                    children: [
+                      Builder(
+                        builder: (context) {
+                          final List<ChatItem> items = context.select(
+                              (ChatCubit cubit) => cubit.state.messages);
+                          return ListView.builder(
+                            controller: chatCubit.messagesScrollController,
+                            reverse: true,
+                            itemBuilder: (_, index) =>
+                                _ChatItemWidget(items[index]),
+                            itemCount: items.length,
+                          );
+                        },
+                      ),
+                      const Positioned(
+                        bottom: 0.0,
+                        right: 0.0,
+                        child: _TextCounter(
+                          width: textCounterWidth,
+                          height: 22.0,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Stack(
-                children: [
-                  Center(
-                    child: Container(
-                      color: Get.theme.canvasColor,
-                      height: 86.0,
-                    ),
-                  ),
-                  Builder(
-                    builder: (context) {
-                      final bool isRecordingAudio = context.select(
-                          (ChatCubit cubit) => cubit.state.isRecordingAudio);
-                      final bool isAudioFileSaved = context.select(
-                          (ChatCubit cubit) => cubit.state.isAudioFileSaved);
-                      final isPlayingRecordedAudio = context.select(
-                          (ChatCubit cubit) =>
-                              cubit.state.isPlayingRecordedAudio);
+                Container(
+                  color: Get.theme.canvasColor,
+                  child: Stack(
+                    children: [
+                      Builder(
+                        builder: (context) {
+                          final bool isRecordingAudio = context.select(
+                              (ChatCubit cubit) =>
+                                  cubit.state.isRecordingAudio);
+                          final bool isAudioFileSaved = context.select(
+                              (ChatCubit cubit) =>
+                                  cubit.state.isAudioFileSaved);
+                          final isPlayingRecordedAudio = context.select(
+                              (ChatCubit cubit) =>
+                                  cubit.state.isPlayingRecordedAudio);
 
-                      if (isAudioFileSaved) {
-                        return ChatRecordedWidget(
-                          isPlaying: isPlayingRecordedAudio,
-                          playbackStream: chatCubit.state.playbackStream,
-                          onStartPlayPressed: () =>
-                              chatCubit.startPlayRecordedAudio(),
-                          onPausePlayPressed: () =>
-                              chatCubit.pauseRecordedAudio(),
-                          onDeletePressed: () =>
-                              chatCubit.deletedRecordedAudio(),
-                          onSendPressed: () => chatCubit.sendMedia(),
-                        );
-                      }
+                          if (isAudioFileSaved) {
+                            return ChatRecordedWidget(
+                              isPlaying: isPlayingRecordedAudio,
+                              playbackStream: chatCubit.state.playbackStream,
+                              onStartPlayPressed: () =>
+                                  chatCubit.startPlayRecordedAudio(),
+                              onPausePlayPressed: () =>
+                                  chatCubit.pauseRecordedAudio(),
+                              onDeletePressed: () =>
+                                  chatCubit.deletedRecordedAudio(),
+                              onSendPressed: () => chatCubit.sendMedia(),
+                            );
+                          }
 
-                      if (isRecordingAudio) {
-                        return ChatRecordingWidget(
-                          onClosePressed: () =>
-                              chatCubit.cancelRecordingAudio(),
-                          onStopRecordPressed: () =>
-                              chatCubit.stopRecordingAudio(),
-                          recordingStream: chatCubit.state.recordingStream,
-                        );
-                      } else {
-                        return const ChatInputWidget();
-                      }
-                    },
+                          if (isRecordingAudio) {
+                            return ChatRecordingWidget(
+                              onClosePressed: () =>
+                                  chatCubit.cancelRecordingAudio(),
+                              onStopRecordPressed: () =>
+                                  chatCubit.stopRecordingAudio(),
+                              recordingStream: chatCubit.state.recordingStream,
+                            );
+                          } else {
+                            return const ChatTextInputWidget();
+                          }
+                        },
+                      ),
+                      Divider(
+                        height: 1.0,
+                        endIndent: textCounterWidth,
+                        color: Get.theme.hintColor,
+                      ),
+                    ],
                   ),
-                  Divider(
-                    height: 1.0,
-                    endIndent: 68.0,
-                    color: Get.theme.hintColor,
-                  ),
-                ],
-              )
-            ],
-          ),
-        );
-      }),
+                ),
+                Container(
+                  color: Get.theme.canvasColor,
+                  height: 34.0,
+                )
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -151,8 +160,12 @@ class _ChatItemWidget extends StatelessWidget {
 }
 
 class _TextCounter extends StatelessWidget {
+  final double width;
+  final double height;
   const _TextCounter({
     Key? key,
+    required this.width,
+    required this.height,
   }) : super(key: key);
 
   @override
@@ -163,8 +176,8 @@ class _TextCounter extends StatelessWidget {
       return Stack(
         children: [
           Container(
-            width: 68.0,
-            height: 22.0,
+            width: width,
+            height: height,
             decoration: BoxDecoration(
               color: Get.theme.canvasColor,
               borderRadius:
@@ -176,9 +189,11 @@ class _TextCounter extends StatelessWidget {
                 left: BorderSide(color: Get.theme.hintColor),
               ),
             ),
-            child: Center(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(4.0, 4.0, 4.0, 4.0),
               child: Text(
-                '$inputTextLength/${AppConstants.minTextLength}',
+                textAlign: TextAlign.center,
+                '${AppConstants.maxTextLength}/$inputTextLength',
                 style: Get.textTheme.bodySmall?.copyWith(
                   color: AppColors.online,
                   fontSize: 12.0,
@@ -190,10 +205,10 @@ class _TextCounter extends StatelessWidget {
             bottom: 0.0,
             child: Container(
               color: Get.theme.canvasColor,
-              width: 68.0,
+              width: width,
               height: 1,
             ),
-          )
+          ),
         ],
       );
     });

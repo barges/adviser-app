@@ -6,8 +6,8 @@ import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/services/fresh_chat_service.dart';
 
-class Utils{
- static void changeLocale(int index) {
+class Utils {
+  static void changeLocale(int index) {
     final Locale locale = S.delegate.supportedLocales[index];
     Get.updateLocale(
         Locale(locale.languageCode, locale.languageCode.toUpperCase()));
@@ -15,5 +15,12 @@ class Utils{
       Get.find<FreshChatService>().changeLocaleInvite();
     }
     Get.find<CachingManager>().saveLocaleIndex(index);
+  }
+
+  static int getTextNumLines(String text, double maxWidth, TextStyle? style) {
+    final span = TextSpan(text: text, style: style);
+    final tp = TextPainter(text: span, textDirection: TextDirection.ltr);
+    tp.layout(maxWidth: maxWidth);
+    return tp.computeLineMetrics().length;
   }
 }

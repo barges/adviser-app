@@ -10,7 +10,8 @@ class AppConstants {
   static const int itemsPerLoadChatHistory = 10;
   static const String recordFileName = 'recorded_audio_aa';
   static const int minTextLength = 1000;
-  static const int maxTextLength = 2000;
+  static const int maxTextLength = 20000;
+  static const int maxAttachedPics = 2;
   static const String webToolUrl = 'https://advisor-staging.fortunica-app.com';
   static const String baseUrl = 'https://api-staging.fortunica-app.com';
 

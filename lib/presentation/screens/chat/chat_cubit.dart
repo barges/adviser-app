@@ -26,7 +26,8 @@ import 'package:audio_session/audio_session.dart';
 class ChatCubit extends Cubit<ChatState> {
   final ChatsRepository repository;
   final ChatItem question;
-  final ScrollController scrollController = ScrollController();
+  final ScrollController messagesScrollController = ScrollController();
+  final ScrollController textInputScrollController = ScrollController();
   final TextEditingController textEditingController = TextEditingController();
   final MainCubit _mainCubit = Get.find<MainCubit>();
   final Codec _codec = CurrentCodec.current;
@@ -45,7 +46,8 @@ class ChatCubit extends Cubit<ChatState> {
 
   @override
   Future<void> close() {
-    scrollController.dispose();
+    messagesScrollController.dispose();
+    textInputScrollController.dispose();
     textEditingController.dispose();
 
     _recorder?.closeRecorder();
@@ -80,7 +82,7 @@ class ChatCubit extends Cubit<ChatState> {
       const Duration(milliseconds: 100),
     );
 
-    scrollController.addListener(scrollControllerListener);
+    messagesScrollController.addListener(scrollControllerListener);
     textEditingController.addListener(textEditingControllerListener);
   }
 
@@ -107,7 +109,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   void scrollControllerListener() {
     if (!_mainCubit.state.isLoading &&
-        scrollController.position.extentAfter <= 300) {
+        messagesScrollController.position.extentAfter <= 300) {
       _getConversations();
     }
   }
@@ -274,6 +276,77 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
+  Future<void> startPlayAudio(String audioUrl) async {
+    if (state.audioUrl != audioUrl) {
+      await _playerMedia?.stopPlayer();
+
+      emit(
+        state.copyWith(
+          isPlayingAudio: false,
+          isPlayingAudioFinished: true,
+          audioUrl: audioUrl,
+        ),
+      );
+    }
+
+    if (_playerMedia != null && _playerMedia!.isPaused) {
+      await _playerMedia!.resumePlayer();
+
+      emit(
+        state.copyWith(
+          isPlayingAudio: true,
+          isPlayingAudioFinished: false,
+        ),
+      );
+      return;
+    }
+
+    await _playerMedia?.startPlayer(
+      fromURI: audioUrl,
+      codec: _codec,
+      sampleRate: 44000,
+      whenFinished: () => emit(
+        state.copyWith(
+          isPlayingAudio: false,
+          isPlayingAudioFinished: true,
+        ),
+      ),
+    );
+
+    emit(
+      state.copyWith(
+        isPlayingAudio: true,
+        isPlayingAudioFinished: false,
+      ),
+    );
+  }
+
+  Future<void> pauseAudio() async {
+    await _playerMedia?.pausePlayer();
+
+    emit(
+      state.copyWith(
+        isPlayingAudio: false,
+      ),
+    );
+  }
+
+  void attachPicture(File? image) {
+    final images = List.of(state.attachedPics);
+    if (_mainCubit.state.internetConnectionIsAvailable &&
+        images.length < 2 &&
+        image != null) {
+      images.add(image);
+      emit(state.copyWith(attachedPics: images));
+    }
+  }
+
+  void deletePicture(File? image) {
+    final images = List.of(state.attachedPics);
+    images.remove(image);
+    emit(state.copyWith(attachedPics: images));
+  }
+
   Future<void> sendMedia() async {
     if (_playerRecorded != null && _playerRecorded!.isPlaying) {
       await _playerRecorded?.stopPlayer();
@@ -335,61 +408,6 @@ class ChatCubit extends Cubit<ChatState> {
     } catch (e) {
       logger.e(e);
     }
-  }
-
-  Future<void> startPlayAudio(String audioUrl) async {
-    if (state.audioUrl != audioUrl) {
-      await _playerMedia?.stopPlayer();
-
-      emit(
-        state.copyWith(
-          isPlayingAudio: false,
-          isPlayingAudioFinished: true,
-          audioUrl: audioUrl,
-        ),
-      );
-    }
-
-    if (_playerMedia != null && _playerMedia!.isPaused) {
-      await _playerMedia!.resumePlayer();
-
-      emit(
-        state.copyWith(
-          isPlayingAudio: true,
-          isPlayingAudioFinished: false,
-        ),
-      );
-      return;
-    }
-
-    await _playerMedia?.startPlayer(
-      fromURI: audioUrl,
-      codec: _codec,
-      sampleRate: 44000,
-      whenFinished: () => emit(
-        state.copyWith(
-          isPlayingAudio: false,
-          isPlayingAudioFinished: true,
-        ),
-      ),
-    );
-
-    emit(
-      state.copyWith(
-        isPlayingAudio: true,
-        isPlayingAudioFinished: false,
-      ),
-    );
-  }
-
-  Future<void> pauseAudio() async {
-    await _playerMedia?.pausePlayer();
-
-    emit(
-      state.copyWith(
-        isPlayingAudio: false,
-      ),
-    );
   }
 
   Stream<PlaybackDisposition>? get onMediaProgress => _playerMedia?.onProgress;
