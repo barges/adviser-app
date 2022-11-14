@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
@@ -23,6 +24,8 @@ class AddNoteCubit extends Cubit<AddNoteState> {
   final UserProfileCubit _userProfileCubit = Get.find<UserProfileCubit>();
   late final TextEditingController noteController;
   late final TextEditingController titleController;
+
+  ///TODO: Change arguments and add callback to arguments for change note on customer profile screen
 
   AddNoteCubit() : super(AddNoteState()) {
     final Map<String, String?> arguments = Get.arguments;
@@ -50,7 +53,7 @@ class AddNoteCubit extends Cubit<AddNoteState> {
         emit(state.copyWith(
             newNote: noteController.text.removeSpacesAndNewLines));
 
-        _userProfileCubit.updateNoteToCustomer(GetNoteResponse(
+        //_userProfileCubit.updateNoteToCustomer(GetNoteResponse(
             noteController.text,
             DateFormat(dateFormat).format(DateTime.now())));
       }

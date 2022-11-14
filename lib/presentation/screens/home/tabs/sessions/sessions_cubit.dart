@@ -9,17 +9,18 @@ import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_state.dart';
 
 const int questionsLimit = 20;
 
 class SessionsCubit extends Cubit<SessionsState> {
-  final ChatsRepository _repository = Get.find<ChatsRepository>();
+  final ChatsRepository _repository = getIt.get<ChatsRepository>();
   final CachingManager cacheManager;
   final ScrollController publicQuestionsController = ScrollController();
   final ScrollController privateQuestionsController = ScrollController();
-  final MainCubit mainCubit = Get.find<MainCubit>();
+  final MainCubit mainCubit = getIt.get<MainCubit>();
   late final VoidCallback disposeUserStatusListen;
   late final VoidCallback disposeUserProfileListen;
 

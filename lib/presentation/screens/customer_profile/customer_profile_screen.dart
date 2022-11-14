@@ -12,21 +12,21 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/user_profile/user_profile_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/user_profile/widgets/notes_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/customer_profile/customer_profile_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/customer_profile/widgets/notes_widget.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
-class UserProfileScreen extends StatelessWidget {
-  const UserProfileScreen({Key? key}) : super(key: key);
+class CustomerProfileScreen extends StatelessWidget {
+  const CustomerProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => Get.put<UserProfileCubit>(UserProfileCubit()),
+        create: (_) => CustomerProfileCubit(),
         child: Builder(
           builder: (context) {
-            final UserProfileCubit userProfileCubit =
-                context.read<UserProfileCubit>();
+            final CustomerProfileCubit userProfileCubit =
+                context.read<CustomerProfileCubit>();
             return Scaffold(
               appBar: WideAppBar(
                 bottomWidget: Text(
@@ -36,7 +36,7 @@ class UserProfileScreen extends StatelessWidget {
                 topRightWidget: Builder(
                   builder: (context) {
                     final bool isFavorite = context.select(
-                      (UserProfileCubit cubit) => cubit.state.isFavorite,
+                      (CustomerProfileCubit cubit) => cubit.state.isFavorite,
                     );
                     return AppIconButton(
                       icon: isFavorite
@@ -52,8 +52,8 @@ class UserProfileScreen extends StatelessWidget {
                     context.select((MainCubit cubit) => cubit.state.isLoading);
                 final String errorMessage = context
                     .select((MainCubit cubit) => cubit.state.errorMessage);
-                final CustomerInfoResponse? response = context
-                    .select((UserProfileCubit cubit) => cubit.state.response);
+                final CustomerInfoResponse? response = context.select(
+                    (CustomerProfileCubit cubit) => cubit.state.response);
                 final GetNoteResponse? currentNote = context.select(
                     (UserProfileCubit cubit) => cubit.state.currentNote);
                 return (isLoading || errorMessage != '' || response == null)
@@ -174,6 +174,9 @@ class UserProfileScreen extends StatelessWidget {
                             ]),
                           ),
                           Builder(builder: (context) {
+                            final String? currentNote = context.select(
+                                (CustomerProfileCubit cubit) =>
+                                    cubit.state.currentNote);
                             return NotesWidget(
                               onTapAddNew: userProfileCubit
                                   .navigateToAddNoteScreenForNewNote,

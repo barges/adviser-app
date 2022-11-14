@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_bottom_sheet.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -18,7 +19,7 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => DrawerCubit(Get.find<CachingManager>()),
+      create: (_) => DrawerCubit(getIt.get<CachingManager>()),
       child: Builder(builder: (context) {
         final DrawerCubit cubit = context.read<DrawerCubit>();
         return Container(

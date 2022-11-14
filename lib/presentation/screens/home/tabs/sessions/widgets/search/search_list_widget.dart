@@ -7,6 +7,7 @@ import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/domain/repositories/sessions_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/search/search_list_cubit.dart';
@@ -23,7 +24,7 @@ class SearchListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) =>
-          SearchListCubit(context, Get.find<ChatsRepository>()),
+          SearchListCubit(getIt.get<ChatsRepository>()),
       child: Builder(builder: (context) {
         final SearchListCubit searchListCubit = context.read<SearchListCubit>();
         return SafeArea(
@@ -43,6 +44,7 @@ class SearchListWidget extends StatelessWidget {
                     Expanded(
                       child: _SearchFieldWidget(
                         controller: searchListCubit.searchTextController,
+                        onChanged: searchListCubit.changeText,
                       ),
                     ),
                     const SizedBox(
@@ -93,10 +95,9 @@ class SearchListWidget extends StatelessWidget {
                                   child: Text(
                                     question.clientName ?? '',
                                     overflow: TextOverflow.ellipsis,
-                                    style:
-                                        Get.textTheme.labelMedium?.copyWith(
-                                          fontSize: 15.0,
-                                        ),
+                                    style: Get.textTheme.labelMedium?.copyWith(
+                                      fontSize: 15.0,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -122,9 +123,13 @@ class SearchListWidget extends StatelessWidget {
 
 class _SearchFieldWidget extends StatelessWidget {
   final TextEditingController controller;
+  final ValueChanged<String> onChanged;
 
-  const _SearchFieldWidget({Key? key, required this.controller})
-      : super(key: key);
+  const _SearchFieldWidget({
+    Key? key,
+    required this.controller,
+    required this.onChanged,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -150,6 +155,7 @@ class _SearchFieldWidget extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: controller,
+              onChanged: onChanged,
               style: Get.textTheme.bodyMedium?.copyWith(
                 fontSize: 17.0,
               ),

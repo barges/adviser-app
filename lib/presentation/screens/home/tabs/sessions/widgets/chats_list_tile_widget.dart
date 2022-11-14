@@ -30,7 +30,7 @@ class ChatsListTileWidget extends StatelessWidget {
           GestureDetector(
             onTap: () {
               if (question.clientID != null) {
-                Get.toNamed(AppRoutes.userProfile,
+                Get.toNamed(AppRoutes.customerProfile,
                     arguments: question.clientID);
               }
             },

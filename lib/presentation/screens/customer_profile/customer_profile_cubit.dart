@@ -2,14 +2,15 @@ import 'package:bloc/bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/user_profile/user_profile_state.dart';
+import 'package:shared_advisor_interface/presentation/screens/customer_profile/customer_profile_state.dart';
 
-class UserProfileCubit extends Cubit<UserProfileState> {
+class CustomerProfileCubit extends Cubit<CustomerProfileState> {
   late final String customerID;
-  final CustomerRepository _repository = Get.find<CustomerRepository>();
+  final CustomerRepository _repository = getIt.get<CustomerRepository>();
 
-  UserProfileCubit() : super(UserProfileState()) {
+  CustomerProfileCubit() : super(CustomerProfileState()) {
     customerID = Get.arguments as String;
     getCustomerInfo().then((_) => getCurrentNote());
   }

@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
@@ -22,7 +23,7 @@ class ForgotPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ForgotPasswordCubit(Get.find<AuthRepository>()),
+      create: (_) => ForgotPasswordCubit(getIt.get<AuthRepository>()),
       child: Builder(
         builder: (context) {
           final ForgotPasswordCubit cubit = context.read<ForgotPasswordCubit>();

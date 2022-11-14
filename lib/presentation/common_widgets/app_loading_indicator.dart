@@ -9,7 +9,9 @@ class AppLoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      color: Get.theme.scaffoldBackgroundColor
+          .withOpacity(Get.isDarkMode ? 0.6 : 0.2),
       height: Get.height,
       width: Get.width,
       child: Center(

@@ -6,13 +6,14 @@ import 'package:shared_advisor_interface/data/network/requests/reset_password_re
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_state.dart';
 
 class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   final AuthRepository _repository;
 
-  final MainCubit _mainCubit = Get.find<MainCubit>();
+  final MainCubit _mainCubit = getIt.get<MainCubit>();
 
   final passwordController = TextEditingController();
   final emailController = TextEditingController();

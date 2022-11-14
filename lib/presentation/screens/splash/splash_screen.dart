@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_state.dart';
@@ -13,7 +14,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => SplashCubit(Get.find<CachingManager>()),
+      create: (_) => SplashCubit(getIt.get<CachingManager>()),
       child: Builder(
         builder: (context) {
           return BlocListener<SplashCubit, SplashState>(

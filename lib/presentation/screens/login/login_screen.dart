@@ -5,13 +5,14 @@ import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/login_appbar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_succes_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/password_text_field.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_cubit.dart';
@@ -24,7 +25,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) =>
-          LoginCubit(Get.find<AuthRepository>(), Get.find<CachingManager>()),
+          LoginCubit(getIt.get<AuthRepository>(), getIt.get<CachingManager>()),
       child: Builder(
         builder: (BuildContext context) {
           final LoginCubit loginCubit = context.read<LoginCubit>();

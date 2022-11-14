@@ -13,9 +13,10 @@ class MainCubit extends Cubit<MainState> {
   late final VoidCallback disposeCallback;
   late final StreamSubscription<bool> _connectivitySubscription;
 
-  final ConnectivityService _connectivityService = ConnectivityService();
+  final ConnectivityService _connectivityService;
 
-  MainCubit(this.cacheManager) : super(const MainState()) {
+  MainCubit(this.cacheManager, this._connectivityService)
+      : super(const MainState()) {
     _connectivitySubscription =
         _connectivityService.connectivityStream.listen((event) {
       emit(state.copyWith(internetConnectionIsAvailable: event));

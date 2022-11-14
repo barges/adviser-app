@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/transparrent_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/gallery/gallery_pictures_cubit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -19,8 +18,7 @@ class GalleryPicturesScreen extends StatelessWidget {
       child: Builder(builder: (context) {
         final GalleryPicturesCubit galleryPicturesCubit =
             context.read<GalleryPicturesCubit>();
-        final EditProfileCubit editProfileCubit = Get.find<EditProfileCubit>();
-        final List<String> coverPictures = editProfileCubit.state.coverPictures;
+        final List<String> coverPictures = galleryPicturesCubit.coverPictures;
         return Scaffold(
           body: Stack(
             children: [
@@ -32,7 +30,8 @@ class GalleryPicturesScreen extends StatelessWidget {
                   itemCount: coverPictures.length,
                   controller: galleryPicturesCubit.pageController,
                   onPageChanged: (page) {
-                    editProfileCubit.picturesPageController.jumpToPage(page);
+                    galleryPicturesCubit.editProfilePageController
+                        .jumpToPage(page);
                   },
                   itemBuilder: (context, index) {
                     return InteractiveViewer(
