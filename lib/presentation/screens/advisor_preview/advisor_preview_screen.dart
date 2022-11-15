@@ -19,7 +19,7 @@ class AdvisorPreviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => Get.put<AdvisorPreviewCubit>(AdvisorPreviewCubit()),
+      create: (_) => AdvisorPreviewCubit(),
       child: Builder(builder: (context) {
         final AdvisorPreviewCubit advisorPreviewCubit =
             context.read<AdvisorPreviewCubit>();
