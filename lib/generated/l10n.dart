@@ -1330,11 +1330,31 @@ class S {
     );
   }
 
+  /// `You will be able to change your status back in 1 hour`
+  String get youWillBeAbleToChangeYourStatusBackIn {
+    return Intl.message(
+      'You will be able to change your status back in 1 hour',
+      name: 'youWillBeAbleToChangeYourStatusBackIn',
+      desc: '',
+      args: [],
+    );
+  
   /// `Edit Note`
   String get editNote {
     return Intl.message(
       'Edit Note',
       name: 'editNote',
+      desc: '',
+      args: [],
+    );
+  }
+}
+
+  /// `Reset Password`
+  String get resetPassword {
+    return Intl.message(
+      'Reset Password',
+      name: 'resetPassword',
       desc: '',
       args: [],
     );
@@ -1347,6 +1367,8 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'de'),
+      Locale.fromSubtags(languageCode: 'es'),
       Locale.fromSubtags(languageCode: 'pt'),
     ];
   }

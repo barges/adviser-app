@@ -18,6 +18,7 @@ import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 import 'edit_profile_state.dart';
@@ -362,16 +363,4 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   void changeCurrentLanguageIndex(int index) {
     emit(state.copyWith(chosenLanguageIndex: index));
   }
-}
-
-class GalleryPicturesScreenArguments {
-  final List<String> pictures;
-  final PageController editProfilePageController;
-  final double initPage;
-
-  GalleryPicturesScreenArguments({
-    required this.pictures,
-    required this.editProfilePageController,
-    required this.initPage,
-  });
 }

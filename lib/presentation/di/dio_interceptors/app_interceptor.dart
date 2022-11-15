@@ -42,7 +42,11 @@ class AppInterceptor extends Interceptor {
       }
     } else {
       _mainCubit.updateErrorMessage(
-          err.response?.data['status'] ?? 'Unknown dio error');
+        err.response?.data['localizedMessage'] ??
+            err.response?.data['message'] ??
+            err.response?.data['status'] ??
+            'Unknown dio error',
+      );
       return super.onError(err, handler);
     }
   }

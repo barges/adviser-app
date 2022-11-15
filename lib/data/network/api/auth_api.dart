@@ -12,6 +12,19 @@ abstract class AuthApi {
   @POST('/experts/login/app')
   Future<LoginResponse?> login();
 
-  @POST('/reset/advisor')
-  Future<void> resetPassword(@Body() ResetPasswordRequest request);
+  @POST('/experts/reset')
+  Future<void> sendEmailForReset(
+    @Body() ResetPasswordRequest request,
+  );
+
+  @GET('/experts/reset/{token}')
+  Future<void> verifyResetToken({
+    @Query('token') required String token,
+  });
+
+  @PUT('/experts/reset/{token}')
+  Future<void> sendPasswordForReset({
+    @Query('token') required String token,
+    @Body() required ResetPasswordRequest request,
+  });
 }

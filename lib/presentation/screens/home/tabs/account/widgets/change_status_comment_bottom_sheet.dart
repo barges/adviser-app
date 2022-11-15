@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
@@ -46,7 +47,37 @@ Future<void> changeStatusCommentBottomSheet({
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(
-                  height: 24.0,
+                  height: 12.0,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(12.0),
+                  decoration: BoxDecoration(
+                    color: Get.theme.scaffoldBackgroundColor,
+                    borderRadius: BorderRadius.circular(
+                      AppConstants.buttonRadius,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Assets.vectors.info.svg(
+                        height: 18.0,
+                        width: 18.0,
+                        color: Get.theme.shadowColor,
+                      ),
+                      const SizedBox(
+                        width: 8.0,
+                      ),
+                      Text(
+                        S.of(context).youWillBeAbleToChangeYourStatusBackIn,
+                        style: Get.textTheme.bodyMedium?.copyWith(
+                          fontSize: 12.0,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 12.0,
                 ),
                 Builder(builder: (context) {
                   context.select(
