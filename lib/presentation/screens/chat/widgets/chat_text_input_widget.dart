@@ -84,7 +84,7 @@ class ChatTextInputWidget extends StatelessWidget {
                         ),
                       if (inputTextLength > 0 || isAttachedPics)
                         GestureDetector(
-                          //onTap: () => chatCubit.sendText(),
+                          onTap: () => chatCubit.sendTextMedia(),
                           child: Assets.images.send.image(
                             width: AppConstants.iconButtonSize,
                           ),

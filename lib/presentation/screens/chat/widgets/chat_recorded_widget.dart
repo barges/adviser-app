@@ -54,8 +54,7 @@ class ChatRecordedWidget extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  if (chatCubit.state.attachedPics.length <
-                      AppConstants.maxAttachedPics) {
+                  if (chatCubit.state.attachedPics.isEmpty) {
                     showPickImageAlert(
                       context: context,
                       setImage: chatCubit.attachPicture,
@@ -66,10 +65,7 @@ class ChatRecordedWidget extends StatelessWidget {
                   final List<File> attachedPics = context
                       .select((ChatCubit cubit) => cubit.state.attachedPics);
                   return Opacity(
-                      opacity:
-                          attachedPics.length < AppConstants.maxAttachedPics
-                              ? 1.0
-                              : 0.4,
+                      opacity: attachedPics.isEmpty ? 1.0 : 0.4,
                       child: Assets.vectors.photo
                           .svg(width: AppConstants.iconSize));
                 }),

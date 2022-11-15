@@ -347,33 +347,37 @@ class ChatCubit extends Cubit<ChatState> {
     emit(state.copyWith(attachedPics: images));
   }
 
+  void deleteAttachedPics() {
+    for (var image in state.attachedPics) {
+      deletePicture(image);
+    }
+  }
+
   Future<void> sendMedia() async {
     if (_playerRecorded != null && _playerRecorded!.isPlaying) {
       await _playerRecorded?.stopPlayer();
     }
 
-    final messages = List.of(state.messages);
+    final Attachment audioAttachment = await _getAudioAttachment();
+    Attachment? pictureAttachment;
+    if (state.attachedPics.isNotEmpty) {
+      pictureAttachment = await _getPictureAttachment(0);
+    }
 
-    final String? mime = lookupMimeType(state.recordingPath);
-    File audiofile = File(state.recordingPath);
-    final List<int> audioBytes = await audiofile.readAsBytes();
-    final String base64Audio = base64Encode(audioBytes);
-    final Metadata meta = await MetadataRetriever.fromFile(audiofile);
-    logger.i('recorded audio meta: ($mime)');
-    logger.i('recorded audio meta: ($meta)');
     final request = AnswerRequest(
-        questionID: '5f60bd70b08424001c160200',
-        ritualID: SessionsTypes.tarot, //messages[0].ritualIdentifier,/
-        attachments: [
-          Attachment(
-              mime: mime,
-              attachment: base64Audio,
-              meta: Meta(duration: (meta.trackDuration ?? 0) / 1000))
-        ]);
+      questionID: '5fddd475bd7774001cf0b029',
+      ritualID: SessionsTypes.tarot, //messages[0].ritualIdentifier,/
+      attachments: [
+        audioAttachment,
+        if (pictureAttachment != null) pictureAttachment,
+      ],
+    );
+
     try {
       final ChatItem responseAnswer = await repository.sendAnswer(request);
-      logger.i('send response:$responseAnswer');
-      messages.insert(0, responseAnswer);
+      logger.i('send media response:$responseAnswer');
+      final messages = List.of(state.messages);
+      messages.insert(0, responseAnswer.copyWith(isAnswer: true));
 
       emit(
         state.copyWith(
@@ -383,31 +387,72 @@ class ChatCubit extends Cubit<ChatState> {
           messages: messages,
         ),
       );
+
+      deleteAttachedPics();
     } catch (e) {
       logger.e(e);
     }
   }
 
-  Future<void> sendText() async {
+  Future<void> sendTextMedia() async {
+    Attachment? pictureAttachment1 =
+        state.attachedPics.length == 1 ? await _getPictureAttachment(0) : null;
+    Attachment? pictureAttachment2 =
+        state.attachedPics.length == 2 ? await _getPictureAttachment(1) : null;
+
     final request = AnswerRequest(
-      questionID: '5f60bd70b08424001c160200',
+      questionID: '5fddcfa7bd7774001cf0b009',
       ritualID: SessionsTypes.tarot,
-      content: textEditingController.text,
+      content: textEditingController.text.isEmpty
+          ? null
+          : textEditingController.text,
+      attachments: [
+        if (pictureAttachment1 != null) pictureAttachment1,
+        if (pictureAttachment2 != null) pictureAttachment2,
+      ],
     );
+
     try {
       final ChatItem responseAnswer = await repository.sendAnswer(request);
-      logger.i('send response:$responseAnswer');
+      logger.i('send text response:$responseAnswer');
+
+      textEditingController.clear();
+
       final messages = List.of(state.messages);
-      messages.insert(0, responseAnswer);
+      messages.insert(0, responseAnswer.copyWith(isAnswer: true));
 
       emit(
         state.copyWith(
           messages: messages,
         ),
       );
+
+      deleteAttachedPics();
     } catch (e) {
       logger.e(e);
     }
+  }
+
+  Future<Attachment> _getAudioAttachment() async {
+    final File audiofile = File(state.recordingPath);
+    final List<int> audioBytes = await audiofile.readAsBytes();
+    final String base64Audio = base64Encode(audioBytes);
+    final Metadata metaAudio = await MetadataRetriever.fromFile(audiofile);
+
+    return Attachment(
+        mime: lookupMimeType(state.recordingPath),
+        attachment: base64Audio,
+        meta: Meta(duration: (metaAudio.trackDuration ?? 0) / 1000));
+  }
+
+  Future<Attachment> _getPictureAttachment(int n) async {
+    final File imageFile = state.attachedPics[n];
+    final List<int> imageBytes = await imageFile.readAsBytes();
+    final String base64Image = base64Encode(imageBytes);
+    return Attachment(
+      mime: lookupMimeType(imageFile.path),
+      attachment: base64Image,
+    );
   }
 
   Stream<PlaybackDisposition>? get onMediaProgress => _playerMedia?.onProgress;
