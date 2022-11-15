@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/picker_modal_pop_up.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
@@ -24,7 +26,7 @@ class ChangeLocaleButton extends StatelessWidget {
       child: InkResponse(
         onTap: () => showPickerModalPopUp(
           context: context,
-          setIndex: Utils.changeLocale,
+          setIndex: getIt.get<MainCubit>().changeLocale,
           currentIndex: currentLocaleIndex,
           elements: locales.map((element) {
             return Center(
