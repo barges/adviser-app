@@ -155,6 +155,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Respostas rápidas"),
         "requestNewPassword":
             MessageLookupByLibrary.simpleMessage("Requira nova senha"),
+        "resetPassword": MessageLookupByLibrary.simpleMessage("Reset Password"),
         "resources": MessageLookupByLibrary.simpleMessage("Recursos"),
         "reviews": MessageLookupByLibrary.simpleMessage("Avaliações"),
         "sales": MessageLookupByLibrary.simpleMessage("Vendas"),
@@ -215,6 +216,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo":
             MessageLookupByLibrary.simpleMessage(
                 "A sua senha foi mudada com sucesso. Verifique seu e-mail para confirmar a alteração da senha"),
+        "youWillBeAbleToChangeYourStatusBackIn":
+            MessageLookupByLibrary.simpleMessage(
+                "You will be able to change your status back in 1 hour"),
         "zodiacSign": MessageLookupByLibrary.simpleMessage("Signo do zodíaco")
       };
 }

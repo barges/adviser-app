@@ -134,7 +134,7 @@ class AppThemes {
       primaryColorLight: AppColorsDark.coloredBG,
       canvasColor: AppColorsDark.contrast,
       primaryColor: AppColorsDark.primary,
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
       hoverColor: AppColorsDark.ui,
       shadowColor: AppColorsDark.shade3,
       hintColor: AppColorsDark.shade1,

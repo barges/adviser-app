@@ -124,5 +124,7 @@
   "noSessionsYet": "No sessions, yet.",
   "whenYouHelpYourFirstClientYouWillSeeYour": "When you help your first client, you will see your session history here.",
   "uhohNoNetworkNcheckYourInternetConnection": "Uh-oh, no network... \nCheck your internet connection",
-  "noInternetConnection": "No internet connection."
+  "noInternetConnection": "No internet connection.",
+  "youWillBeAbleToChangeYourStatusBackIn": "You will be able to change your status back in 1 hour",
+  "resetPassword": "Reset Password"
 }

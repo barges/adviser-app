@@ -78,7 +78,6 @@ class _MyAppState extends State<MyApp> {
                 supportedLocales: S.delegate.supportedLocales,
                 localeResolutionCallback: (locale, supportedLocales) {
                   final int? localeIndex = _cacheManager.getLocaleIndex();
-
                   if (localeIndex != null) {
                     return supportedLocales.toList()[localeIndex];
                   } else {
