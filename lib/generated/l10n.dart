@@ -1338,7 +1338,8 @@ class S {
       desc: '',
       args: [],
     );
-  
+  }
+
   /// `Edit Note`
   String get editNote {
     return Intl.message(
@@ -1348,7 +1349,6 @@ class S {
       args: [],
     );
   }
-}
 
   /// `Reset Password`
   String get resetPassword {
