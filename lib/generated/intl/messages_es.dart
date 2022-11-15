@@ -1,5 +1,5 @@
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
-// This is a library that provides messages for a en locale. All the
+// This is a library that provides messages for a es locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
 
@@ -17,7 +17,7 @@ final messages = new MessageLookup();
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  String get localeName => 'en';
+  String get localeName => 'es';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -36,7 +36,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "areYouSureThatYouWantToChangeYourStatus" : MessageLookupByLibrary.simpleMessage("Are you sure that you want to change your status to Offline?"),
     "articles" : MessageLookupByLibrary.simpleMessage("Articles"),
     "ascendant" : MessageLookupByLibrary.simpleMessage("Ascendant"),
-    "avgDailyEarnings" : MessageLookupByLibrary.simpleMessage("Avg Daily Earnings"),
     "back" : MessageLookupByLibrary.simpleMessage("Back"),
     "balanceTransactions" : MessageLookupByLibrary.simpleMessage("Balance & Transactions"),
     "betterThan" : MessageLookupByLibrary.simpleMessage("Better than"),
@@ -63,7 +62,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "days" : MessageLookupByLibrary.simpleMessage("days"),
     "done" : MessageLookupByLibrary.simpleMessage("Done"),
     "earned" : MessageLookupByLibrary.simpleMessage("Earned"),
-    "editNote" : MessageLookupByLibrary.simpleMessage("Edit Note"),
     "editProfile" : MessageLookupByLibrary.simpleMessage("Edit profile"),
     "email" : MessageLookupByLibrary.simpleMessage("Email"),
     "english" : MessageLookupByLibrary.simpleMessage("English"),
@@ -98,7 +96,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "otherBrands" : MessageLookupByLibrary.simpleMessage("Other brands"),
     "password" : MessageLookupByLibrary.simpleMessage("Password"),
     "peopleHelped" : MessageLookupByLibrary.simpleMessage("People helped"),
-    "perfomanceOverviewAnalytics" : MessageLookupByLibrary.simpleMessage("Perfomance Overview Analytics"),
     "personalBalance" : MessageLookupByLibrary.simpleMessage("Personal Balance"),
     "placesUpFromLastMonth" : MessageLookupByLibrary.simpleMessage("places up from last month"),
     "pleaseEnterAtLeast3Characters" : MessageLookupByLibrary.simpleMessage("Please enter at least 3 characters"),

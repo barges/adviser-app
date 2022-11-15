@@ -10,7 +10,7 @@ import 'intl/messages_all.dart';
 
 // ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
 // ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
-// ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
+// ignore_for_file: avoid_redundant_argument_values
 
 class S {
   S();
@@ -18,31 +18,28 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(_current != null, 'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
     return _current!;
   }
 
-  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
+  static const AppLocalizationDelegate delegate =
+    AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false)
-        ? locale.languageCode
-        : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name);
+    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name); 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       final instance = S();
       S._current = instance;
-
+ 
       return instance;
     });
-  }
+  } 
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(instance != null, 'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
     return instance!;
   }
 
@@ -1210,6 +1207,26 @@ class S {
     );
   }
 
+  /// `Perfomance Overview Analytics`
+  String get perfomanceOverviewAnalytics {
+    return Intl.message(
+      'Perfomance Overview Analytics',
+      name: 'perfomanceOverviewAnalytics',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Note`
+  String get editNote {
+    return Intl.message(
+      'Edit Note',
+      name: 'editNote',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `All Type`
   String get allType {
     return Intl.message(
@@ -1270,16 +1287,6 @@ class S {
     );
   }
 
-  /// `Perfomance Overview Analytics`
-  String get perfomanceOverviewAnalytics {
-    return Intl.message(
-      'Perfomance Overview Analytics',
-      name: 'perfomanceOverviewAnalytics',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `When someone asks a public question, you will see them on the general list here`
   String get whenSomeoneAsksAPublicQuestionYouWillSeeThem {
     return Intl.message(
@@ -1335,16 +1342,6 @@ class S {
     return Intl.message(
       'You will be able to change your status back in 1 hour',
       name: 'youWillBeAbleToChangeYourStatusBackIn',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Edit Note`
-  String get editNote {
-    return Intl.message(
-      'Edit Note',
-      name: 'editNote',
       desc: '',
       args: [],
     );
