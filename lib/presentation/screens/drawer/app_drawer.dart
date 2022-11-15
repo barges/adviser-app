@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
@@ -12,7 +13,10 @@ import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_b
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/drawer_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
+
+import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -170,27 +174,47 @@ class _BrandItem extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Container(
-                height: 56.0,
-                width: 56.0,
-                padding: const EdgeInsets.all(7.0),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).canvasColor,
-                  border: Border.all(
-                    color: Theme.of(context).hintColor,
+              Builder(builder: (context) {
+                final UserStatus currentStatus =
+                    context.select((HomeCubit cubit) => cubit.state.userStatus);
+                return Stack(alignment: Alignment.bottomRight, children: [
+                  Container(
+                    height: 56.0,
+                    width: 56.0,
+                    padding: const EdgeInsets.all(7.0),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).canvasColor,
+                      border: Border.all(
+                        color: Theme.of(context).hintColor,
+                      ),
+                      borderRadius:
+                          BorderRadius.circular(AppConstants.buttonRadius),
+                    ),
+                    child: Center(
+                      child: SvgPicture.asset(
+                        brand.icon,
+                        color: Utils.isDarkMode(context)
+                            ? Theme.of(context).backgroundColor
+                            : null,
+                      ),
+                    ),
                   ),
-                  borderRadius:
-                      BorderRadius.circular(AppConstants.buttonRadius),
-                ),
-                child: Center(
-                  child: SvgPicture.asset(
-                    brand.icon,
-                    color: Utils.isDarkMode(context)
-                        ? Theme.of(context).backgroundColor
-                        : null,
-                  ),
-                ),
-              ),
+                  isCurrent
+                      ? Container(
+                          height: 12.0,
+                          width: 12.0,
+                          decoration: BoxDecoration(
+                            color: currentStatus.status
+                                ?.statusColorForBadge(context),
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                width: 2.0,
+                                color: Theme.of(context).canvasColor),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ]);
+              }),
               const SizedBox(
                 width: 8.0,
               ),

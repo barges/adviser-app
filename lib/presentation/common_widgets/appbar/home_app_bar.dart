@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
@@ -10,6 +11,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/buttons/cha
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
+import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -148,37 +150,37 @@ class _AuthorizedBrandWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(right: 24.0 * index),
-      child: Stack(
-        alignment: Alignment.topRight,
-        children: [
-          Container(
-            height: AppConstants.iconButtonSize,
-            width: AppConstants.iconButtonSize,
-            padding: const EdgeInsets.all(4.0),
-            decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                border: Border.all(
-                    width: 2.0,
-                    color: isFirstBrand
-                        ? AppColors.promotion
-                        : Theme.of(context).canvasColor),
-                borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
-            child: SvgPicture.asset(brandIcon),
-          ),
-          Container(
-            height: 12.0,
-            width: 12.0,
-            decoration: BoxDecoration(
-              color: AppColors.online,
-              shape: BoxShape.circle,
-              border:
-                  Border.all(width: 2.0, color: Theme.of(context).canvasColor),
+    return Builder(builder: (context) {
+      final UserStatus currentStatus =
+          context.select((HomeCubit cubit) => cubit.state.userStatus);
+      return Container(
+        margin: EdgeInsets.only(right: 24.0 * index),
+        child: Stack(
+          alignment: Alignment.topRight,
+          children: [
+            Container(
+              height: AppConstants.iconButtonSize,
+              width: AppConstants.iconButtonSize,
+              padding: const EdgeInsets.all(4.0),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius:
+                      BorderRadius.circular(AppConstants.buttonRadius)),
+              child: SvgPicture.asset(brandIcon),
             ),
-          ),
-        ],
-      ),
-    );
+            Container(
+              height: 12.0,
+              width: 12.0,
+              decoration: BoxDecoration(
+                color: currentStatus.status?.statusColorForBadge(context),
+                shape: BoxShape.circle,
+                border: Border.all(
+                    width: 2.0, color: Theme.of(context).canvasColor),
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }
