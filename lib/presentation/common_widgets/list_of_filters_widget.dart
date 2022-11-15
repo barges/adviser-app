@@ -20,7 +20,7 @@ class ListOfFiltersWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: AppConstants.appBarHeight,
-      color: Get.theme.canvasColor,
+      color: Theme.of(context).canvasColor,
       alignment: Alignment.center,
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: ListView.separated(
@@ -67,16 +67,16 @@ class _FilterWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
           color: isSelected
-              ? Get.theme.primaryColorLight
-              : Get.theme.scaffoldBackgroundColor,
+              ? Theme.of(context).primaryColorLight
+              : Theme.of(context).scaffoldBackgroundColor,
         ),
         child: Text(
           title,
-          style: Get.textTheme.bodyMedium?.copyWith(
-            color: isSelected
-                ? Get.theme.primaryColor
-                : Get.textTheme.bodyMedium?.color,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: isSelected
+                    ? Theme.of(context).primaryColor
+                    : Theme.of(context).textTheme.bodyMedium?.color,
+              ),
         ),
       ),
     );

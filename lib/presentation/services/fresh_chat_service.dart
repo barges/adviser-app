@@ -1,16 +1,18 @@
+import 'package:flutter/material.dart';
 import 'package:freshchat_sdk/freshchat_sdk.dart';
 import 'package:freshchat_sdk/freshchat_user.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 const String appName = 'Psychic Union';
 
 abstract class FreshChatService {
   Future<bool> setUpFreshChat(UserInfo? userInfo);
 
-  Future<void> initFreshChat();
+  Future<void> initFreshChat(BuildContext context);
 
   Stream onRestoreStream();
 
@@ -32,10 +34,11 @@ class FreshChatServiceImpl extends FreshChatService {
   // final ApiConfig _apiConfig = GetIt.I.get<ApiConfig>();
 
   @override
-  Future initFreshChat() async {
+  Future initFreshChat(BuildContext context) async {
     Freshchat.init(freshChatId, freshChatKey, freshChatDomain,
         stringsBundle: 'FCCustomLocalizable',
-        themeName: Get.isDarkMode ? 'FCDarkTheme.plist' : 'FCTheme.plist');
+        themeName:
+            Utils.isDarkMode(context) ? 'FCDarkTheme.plist' : 'FCTheme.plist');
     _wasInit = true;
   }
 
@@ -50,7 +53,6 @@ class FreshChatServiceImpl extends FreshChatService {
     final String? restoreId = userInfo?.freshchatInfo?.restoreId;
 
     try {
-
       FreshchatUser freshChatUser = FreshchatUser(userId, restoreId);
       freshChatUser.setFirstName(userInfo?.profile?.profileName ?? '');
       freshChatUser.setEmail(userInfo?.emails?.firstOrNull?.address ?? '');

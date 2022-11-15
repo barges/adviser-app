@@ -37,7 +37,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
         automaticallyImplyLeading: false,
         elevation: 0.5,
-        shadowColor: Get.theme.hintColor,
+        shadowColor: Theme.of(context).hintColor,
         flexibleSpace: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,7 +108,7 @@ class _IconAndTitleWidget extends StatelessWidget {
         ),
         Text(
           title,
-          style: Get.textTheme.headlineMedium,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ],
     );
@@ -158,12 +158,12 @@ class _AuthorizedBrandWidget extends StatelessWidget {
             width: AppConstants.iconButtonSize,
             padding: const EdgeInsets.all(4.0),
             decoration: BoxDecoration(
-                color: Get.theme.scaffoldBackgroundColor,
+                color: Theme.of(context).scaffoldBackgroundColor,
                 border: Border.all(
                     width: 2.0,
                     color: isFirstBrand
                         ? AppColors.promotion
-                        : Get.theme.canvasColor),
+                        : Theme.of(context).canvasColor),
                 borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
             child: SvgPicture.asset(brandIcon),
           ),
@@ -173,7 +173,8 @@ class _AuthorizedBrandWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.online,
               shape: BoxShape.circle,
-              border: Border.all(width: 2.0, color: Get.theme.canvasColor),
+              border:
+                  Border.all(width: 2.0, color: Theme.of(context).canvasColor),
             ),
           ),
         ],

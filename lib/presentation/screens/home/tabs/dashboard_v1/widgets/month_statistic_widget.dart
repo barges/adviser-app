@@ -18,7 +18,7 @@ class MonthStatisticWidget extends StatelessWidget {
       return Container(
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-            color: Get.theme.canvasColor,
+            color: Theme.of(context).canvasColor,
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
         child: Padding(
             padding: const EdgeInsets.only(
@@ -33,7 +33,10 @@ class MonthStatisticWidget extends StatelessWidget {
                   S.of(context).thisMonth,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Get.textTheme.headlineMedium?.copyWith(fontSize: 17.0),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineMedium
+                      ?.copyWith(fontSize: 17.0),
                 ),
                 const Padding(
                     padding: EdgeInsets.symmetric(
@@ -42,7 +45,7 @@ class MonthStatisticWidget extends StatelessWidget {
                       height: 2,
                     )),
                 Text('\$ ${monthAmount.parseValueToCurrencyFormat}',
-                    style: Get.textTheme.labelLarge),
+                    style: Theme.of(context).textTheme.labelLarge),
                 const SizedBox(
                   height: 8.0,
                 ),
@@ -73,25 +76,29 @@ class _PerformancePropertyInfo extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(4.0),
       decoration: BoxDecoration(
-          color: Get.theme.scaffoldBackgroundColor,
+          color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
         Container(
           alignment: Alignment.center,
           constraints: const BoxConstraints(minWidth: 20.0, minHeight: 20.0),
           decoration: BoxDecoration(
-              color: Get.theme.primaryColor,
+              color: Theme.of(context).primaryColor,
               borderRadius: BorderRadius.circular(8.0)),
           child: Text(
             info.toString(),
-            style: Get.textTheme.bodySmall?.copyWith(
-                fontWeight: FontWeight.w500, color: Get.theme.backgroundColor),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).backgroundColor),
           ),
         ),
         const SizedBox(width: 4.0),
         Text(
           title,
-          style: Get.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500),
+          style: Theme.of(context)
+              .textTheme
+              .bodySmall
+              ?.copyWith(fontWeight: FontWeight.w500),
         )
       ]),
     );

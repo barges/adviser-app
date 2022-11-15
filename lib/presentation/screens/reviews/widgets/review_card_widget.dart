@@ -17,7 +17,7 @@ class ReviewCardWidget extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-          color: Get.theme.canvasColor),
+          color: Theme.of(context).canvasColor),
       child: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: AppConstants.horizontalScreenPadding,
@@ -39,7 +39,10 @@ class ReviewCardWidget extends StatelessWidget {
                   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fames pulvinar commodo augue.',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: Get.textTheme.bodySmall?.copyWith(fontSize: 15))
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(fontSize: 15))
             ],
           )),
     );
@@ -61,14 +64,18 @@ class _ReviewCustomerInfoWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Wade Warren',
-                style: Get.textTheme.bodyMedium
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
                     ?.copyWith(fontWeight: FontWeight.w600)),
             Text(
               DateFormat(dateFormat)
                   .format(DateTime.now())
                   .parseDateTimePattern4,
-              style: Get.textTheme.bodySmall
-                  ?.copyWith(color: Get.theme.shadowColor),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(color: Theme.of(context).shadowColor),
             )
           ],
         ),
@@ -100,8 +107,10 @@ class _ReviewRatingWidget extends StatelessWidget {
           onRatingUpdate: (rating) {},
         ),
         Text('Session was 12m',
-            style: Get.textTheme.bodySmall
-                ?.copyWith(fontSize: 12, color: Get.theme.primaryColor))
+            style: Theme.of(context)
+                .textTheme
+                .bodySmall
+                ?.copyWith(fontSize: 12, color: Theme.of(context).primaryColor))
       ],
     );
   }

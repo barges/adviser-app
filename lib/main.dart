@@ -101,7 +101,7 @@ class _MyAppState extends State<MyApp> {
                 return isLoading
                     ? const AppLoadingIndicator()
                     : const SizedBox.shrink();
-              })
+              }),
             ],
           ),
         );

@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => HomeCubit(getIt.get<CachingManager>()),
+      create: (_) => HomeCubit(getIt.get<CachingManager>(), context),
       child: Builder(builder: (context) {
         final HomeCubit cubit = context.read<HomeCubit>();
         final int tabPositionIndex =
@@ -37,20 +37,20 @@ class HomeScreen extends StatelessWidget {
           bottomNavigationBar: BottomNavigationBar(
               currentIndex: tabPositionIndex,
               type: BottomNavigationBarType.fixed,
-              selectedIconTheme: Get.theme.iconTheme.copyWith(
-                color: Get.theme.primaryColor,
-              ),
-              selectedLabelStyle: Get.textTheme.labelSmall,
-              unselectedLabelStyle: Get.textTheme.labelSmall,
-              unselectedItemColor: Get.iconColor,
+              selectedIconTheme: Theme.of(context).iconTheme.copyWith(
+                    color: Theme.of(context).primaryColor,
+                  ),
+              selectedLabelStyle: Theme.of(context).textTheme.labelSmall,
+              unselectedLabelStyle: Theme.of(context).textTheme.labelSmall,
+              unselectedItemColor: Theme.of(context).iconTheme.color,
               showUnselectedLabels: true,
               onTap: cubit.changeIndex,
-              selectedItemColor: Get.theme.primaryColor,
+              selectedItemColor: Theme.of(context).primaryColor,
               items: [
                 BottomNavigationBarItem(
                   icon: Assets.vectors.dashboard.svg(),
                   activeIcon: Assets.vectors.dashboard.svg(
-                    color: Get.theme.primaryColor,
+                    color: Theme.of(context).primaryColor,
                   ),
                   label: 'Dashboard',
                 ),
@@ -58,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                   BottomNavigationBarItem(
                     icon: Assets.vectors.articles.svg(),
                     activeIcon: Assets.vectors.articles.svg(
-                      color: Get.theme.primaryColor,
+                      color: Theme.of(context).primaryColor,
                     ),
                     label: 'Articles',
                   ),
@@ -66,14 +66,14 @@ class HomeScreen extends StatelessWidget {
                 BottomNavigationBarItem(
                   icon: Assets.vectors.chats.svg(),
                   activeIcon: Assets.vectors.chats.svg(
-                    color: Get.theme.primaryColor,
+                    color: Theme.of(context).primaryColor,
                   ),
                   label: 'Chats',
                 ),
                 BottomNavigationBarItem(
                   icon: Assets.vectors.account.svg(),
                   activeIcon: Assets.vectors.account.svg(
-                    color: Get.theme.primaryColor,
+                    color: Theme.of(context).primaryColor,
                   ),
                   label: 'Account',
                 ),

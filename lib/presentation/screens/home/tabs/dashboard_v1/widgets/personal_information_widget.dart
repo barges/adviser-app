@@ -35,7 +35,10 @@ class PersonalInformationWidget extends StatelessWidget {
                 userProfile?.profileName ?? '',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Get.textTheme.headlineMedium?.copyWith(fontSize: 17.0),
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineMedium
+                    ?.copyWith(fontSize: 17.0),
               ),
             ],
           ));

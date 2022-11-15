@@ -11,7 +11,7 @@ class TransparentAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 96.0,
-      width: Get.width,
+      width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(
         horizontal: AppConstants.horizontalScreenPadding,
         vertical: 10.0,
@@ -22,9 +22,9 @@ class TransparentAppBar extends StatelessWidget {
           end: Alignment.bottomCenter,
           tileMode: TileMode.mirror,
           colors: [
-            Get.theme.hoverColor.withOpacity(.5),
-            Get.theme.hoverColor.withOpacity(.21),
-            Get.theme.hoverColor.withOpacity(.0)
+            Theme.of(context).hoverColor.withOpacity(.5),
+            Theme.of(context).hoverColor.withOpacity(.21),
+            Theme.of(context).hoverColor.withOpacity(.0)
           ],
         ),
       ),

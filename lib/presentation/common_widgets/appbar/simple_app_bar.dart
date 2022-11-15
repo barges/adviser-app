@@ -36,16 +36,16 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           Text(
             title,
-            style: Get.textTheme.headlineMedium?.copyWith(
-              fontSize: 17.0,
-            ),
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontSize: 17.0,
+                ),
           ),
           const SizedBox(
             width: AppConstants.iconButtonSize,
           )
         ],
       ),
-      backgroundColor: Get.theme.canvasColor,
+      backgroundColor: Theme.of(context).canvasColor,
     );
   }
 }

@@ -43,24 +43,28 @@ class _ChartWidgetState extends State<ChartWidget> {
   Widget build(BuildContext context) {
     return Blur(
       blur: 2.0,
-      blurColor: Get.theme.canvasColor,
+      blurColor: Theme.of(context).canvasColor,
       overlay: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             S.of(context).comingSoon,
-            style: Get.textTheme.displayLarge
+            style: Theme.of(context)
+                .textTheme
+                .displayLarge
                 ?.copyWith(fontWeight: FontWeight.w800),
           ),
           Text(S.of(context).perfomanceOverviewAnalytics,
-              style: Get.textTheme.labelMedium
-                  ?.copyWith(color: Get.theme.shadowColor))
+              style: Theme.of(context)
+                  .textTheme
+                  .labelMedium
+                  ?.copyWith(color: Theme.of(context).shadowColor))
         ],
       ),
       child: Container(
         padding: const EdgeInsets.all(AppConstants.horizontalScreenPadding),
         decoration: BoxDecoration(
-            color: Get.theme.canvasColor,
+            color: Theme.of(context).canvasColor,
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
         child: Column(
           children: [
@@ -69,11 +73,15 @@ class _ChartWidgetState extends State<ChartWidget> {
               children: [
                 Text(
                   S.of(context).avgDailyEarnings,
-                  style: Get.textTheme.titleMedium
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
                       ?.copyWith(fontWeight: FontWeight.w800),
                 ),
                 Text('\$105',
-                    style: Get.textTheme.titleMedium
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
                         ?.copyWith(fontWeight: FontWeight.w800))
               ],
             ),
@@ -101,10 +109,10 @@ class _ChartWidgetState extends State<ChartWidget> {
                           minBarWidth: 32.0,
                           padding: const EdgeInsets.symmetric(horizontal: 12.0),
                           radius: BorderRadius.circular(4.0),
-                          color: Get.theme.primaryColorLight,
+                          color: Theme.of(context).primaryColorLight,
                           colorForValue: ((defaultColor, value, [min]) =>
                               value == maximumValue!
-                                  ? Get.theme.primaryColor
+                                  ? Theme.of(context).primaryColor
                                   : defaultColor)),
                       backgroundDecorations: [
                         HorizontalAxisDecoration(
@@ -128,7 +136,7 @@ class _ChartWidgetState extends State<ChartWidget> {
             const SizedBox(
               height: 4.0,
             ),
-            Text('Monday', style: Get.textTheme.labelMedium)
+            Text('Monday', style: Theme.of(context).textTheme.labelMedium)
           ],
         ),
       ),
@@ -145,9 +153,9 @@ class _ChartWidgetState extends State<ChartWidget> {
             child: Center(
               child: Text(value.time,
                   textAlign: TextAlign.center,
-                  style: Get.textTheme.displaySmall?.copyWith(
+                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
                       fontWeight: FontWeight.w400,
-                      color: Get.theme.shadowColor)),
+                      color: Theme.of(context).shadowColor)),
             )),
       ));
     }

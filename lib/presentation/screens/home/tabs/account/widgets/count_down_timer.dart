@@ -30,10 +30,10 @@ class CountDownTimer extends StatelessWidget {
             '${S.of(context).willBeAvailableInAnHour}'
             ' $minutes:${seconds < 10 ? '0$seconds' : seconds}',
             textAlign: TextAlign.center,
-            style: Get.textTheme.bodySmall?.copyWith(
-              color: Get.theme.errorColor,
-              fontSize: 12.0,
-            ),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).errorColor,
+                  fontSize: 12.0,
+                ),
           );
         });
   }

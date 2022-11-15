@@ -24,7 +24,7 @@ class BalanceWidget extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.all(AppConstants.horizontalScreenPadding),
         decoration: BoxDecoration(
-            color: Get.theme.canvasColor,
+            color: Theme.of(context).canvasColor,
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -38,7 +38,8 @@ class BalanceWidget extends StatelessWidget {
                       lineWidth: 5.0,
                       percent: 0.6,
                       animation: true,
-                      backgroundColor: Get.theme.scaffoldBackgroundColor,
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
                       center: UserAvatar(
                           diameter: 60.0,
                           withBorder: false,
@@ -54,12 +55,12 @@ class BalanceWidget extends StatelessWidget {
                                   vertical: 3.0, horizontal: 2.0),
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: Get.theme.primaryColor,
+                                  color: Theme.of(context).primaryColor,
                                   border: Border.all(
-                                      width: 1.0, color: Get.theme.canvasColor)),
+                                      width: 1.0, color: Theme.of(context).canvasColor)),
                               child: Text('45',
-                                  style: Get.textTheme.displaySmall
-                                      ?.copyWith(color: Get.theme.backgroundColor)),
+                                  style: Theme.of(context).textTheme.displaySmall
+                                      ?.copyWith(color: Theme.of(context).backgroundColor)),
                             ),
                           ),
                         )
@@ -75,15 +76,17 @@ class BalanceWidget extends StatelessWidget {
                         userProfile?.profileName ?? '',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: Get.textTheme.titleMedium
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
                             ?.copyWith(fontWeight: FontWeight.w700),
                       ),
                       /**
                           Text(
                             '${S.of(context).betterThan} 48% ${S.of(context).advisors}',
-                            style: Get.textTheme.labelMedium?.copyWith(
+                            style: Theme.of(context).textTheme.labelMedium?.copyWith(
                                 fontWeight: FontWeight.w400,
-                                color: Get.theme.shadowColor),
+                                color: Theme.of(context).shadowColor),
                           ),
                           Row(
                             children: [
@@ -91,7 +94,7 @@ class BalanceWidget extends StatelessWidget {
                               const SizedBox(width: 6.0),
                               Text(
                                 '3 ${S.of(context).placesUpFromLastMonth}',
-                                style: Get.textTheme.displaySmall?.copyWith(
+                                style: Theme.of(context).textTheme.displaySmall?.copyWith(
                                     fontWeight: FontWeight.w500,
                                     color: AppColors.online),
                               )
@@ -119,15 +122,15 @@ class BalanceWidget extends StatelessWidget {
                     children: [
                       Text(
                         '${S.of(context).personalBalance}:',
-                        style: Get.textTheme.labelMedium?.copyWith(
+                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
                             fontWeight: FontWeight.w400,
-                            color: Get.theme.shadowColor),
+                            color: Theme.of(context).shadowColor),
                       ),
                       Text(
                         '\$ ${(12282.20).parseValueToCurrencyFormat}',
-                        style: Get.textTheme.titleMedium?.copyWith(
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w700,
-                            color: Get.theme.primaryColor),
+                            color: Theme.of(context).primaryColor),
                       )
                     ],
                   ),

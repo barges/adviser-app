@@ -24,7 +24,7 @@ class ReviewsSettingsPartWidget extends StatelessWidget {
           const EdgeInsets.only(left: AppConstants.horizontalScreenPadding),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-          color: Get.theme.canvasColor),
+          color: Theme.of(context).canvasColor),
       child: Column(
         children: [
           TileWidget(
@@ -50,12 +50,16 @@ class ReviewsSettingsPartWidget extends StatelessWidget {
                 const SizedBox(width: 8.0),
                 Text(
                   "999",
-                  style: Get.textTheme.bodySmall
-                      ?.copyWith(color: Get.theme.shadowColor),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: Theme.of(context).shadowColor),
                 ),
                 Text(
                   " +25",
-                  style: Get.textTheme.bodySmall
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
                       ?.copyWith(color: AppColors.online),
                 ),
               ],
@@ -74,8 +78,10 @@ class ReviewsSettingsPartWidget extends StatelessWidget {
               children: [
                 Text(
                   "999",
-                  style: Get.textTheme.bodySmall
-                      ?.copyWith(color: Get.theme.shadowColor),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: Theme.of(context).shadowColor),
                 ),
               ],
             ),

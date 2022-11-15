@@ -31,7 +31,7 @@ class CustomerProfileScreen extends StatelessWidget {
               appBar: WideAppBar(
                 bottomWidget: Text(
                   S.of(context).customerProfile,
-                  style: Get.textTheme.headlineMedium,
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 topRightWidget: Builder(
                   builder: (context) {
@@ -61,8 +61,8 @@ class CustomerProfileScreen extends StatelessWidget {
                     : Column(
                         children: [
                           Ink(
-                            color: Get.theme.canvasColor,
-                            width: Get.width,
+                            color: Theme.of(context).canvasColor,
+                            width: MediaQuery.of(context).size.width,
                             padding: const EdgeInsets.symmetric(
                                 horizontal:
                                     AppConstants.horizontalScreenPadding,
@@ -74,7 +74,8 @@ class CustomerProfileScreen extends StatelessWidget {
                                   alignment: Alignment.bottomCenter,
                                   children: [
                                     SvgPicture.asset(
-                                        response.zodiac?.imagePath ?? '',
+                                        response.zodiac?.imagePath(context) ??
+                                            '',
                                         width: 96.0),
                                     if (userProfileCubit.isTopSpender)
                                       Container(
@@ -88,11 +89,13 @@ class CustomerProfileScreen extends StatelessWidget {
                                         ),
                                         child: Text(
                                           S.of(context).topSpender,
-                                          style: Get.textTheme.labelSmall
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall
                                               ?.copyWith(
-                                            fontWeight: FontWeight.w700,
-                                            color: AppColors.white,
-                                          ),
+                                                fontWeight: FontWeight.w700,
+                                                color: AppColors.white,
+                                              ),
                                         ),
                                       )
                                   ],
@@ -111,24 +114,32 @@ class CustomerProfileScreen extends StatelessWidget {
                                         child: Text(
                                           '${response.firstName ?? ''} ${response.lastName ?? ''}',
                                           textAlign: TextAlign.center,
-                                          style: Get.textTheme.headlineMedium,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineMedium,
                                         ),
                                       ),
                                       Text(
                                         '${S.of(context).born} ${(response.birthdate ?? '').parseDateTimePattern3}, ${response.gender ?? ''}, ${response.countryFullName ?? ''}',
                                         textAlign: TextAlign.center,
-                                        style:
-                                            Get.textTheme.bodyMedium?.copyWith(
-                                          color: Get.theme.shadowColor,
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color:
+                                                  Theme.of(context).shadowColor,
+                                            ),
                                       ),
                                       Text(
                                         '${response.totalMessages ?? 0} ${S.of(context).chats.toLowerCase()}, 5 ${S.of(context).calls.toLowerCase()}, 5 ${S.of(context).services.toLowerCase()}',
                                         textAlign: TextAlign.center,
-                                        style:
-                                            Get.textTheme.bodyMedium?.copyWith(
-                                          color: Get.theme.shadowColor,
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color:
+                                                  Theme.of(context).shadowColor,
+                                            ),
                                       ),
                                     ],
                                   )),
@@ -148,7 +159,9 @@ class CustomerProfileScreen extends StatelessWidget {
                                       _InfoWidget(
                                         title: S.of(context).numerology,
                                         info: Text('2',
-                                            style: Get.textTheme.headlineMedium
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headlineMedium
                                                 ?.copyWith(
                                                     color: Get
                                                         .theme.primaryColor)),
@@ -217,16 +230,16 @@ class _InfoWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
           border: Border.all(
-            color: Get.theme.hintColor,
+            color: Theme.of(context).hintColor,
           ),
         ),
         child: Column(children: [
           Text(
             title.toUpperCase(),
-            style: Get.textTheme.bodySmall?.copyWith(
-              fontWeight: FontWeight.w400,
-              color: Get.theme.shadowColor,
-            ),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.w400,
+                  color: Theme.of(context).shadowColor,
+                ),
           ),
           const SizedBox(height: 8.0),
           info
@@ -249,16 +262,16 @@ class _BirthTownWidget extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
         border: Border.all(
-          color: Get.theme.hintColor,
+          color: Theme.of(context).hintColor,
         ),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(
           S.of(context).birthTown.toUpperCase(),
-          style: Get.textTheme.bodySmall?.copyWith(
-            fontWeight: FontWeight.w400,
-            color: Get.theme.shadowColor,
-          ),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                fontWeight: FontWeight.w400,
+                color: Theme.of(context).shadowColor,
+              ),
         ),
         const SizedBox(height: 10.0),
         _IconAndTitleWidget(
@@ -284,16 +297,16 @@ class _QuestionPropertiesWidget extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
         border: Border.all(
-          color: Get.theme.hintColor,
+          color: Theme.of(context).hintColor,
         ),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(
           S.of(context).questionProperties.toUpperCase(),
-          style: Get.textTheme.bodySmall?.copyWith(
-            fontWeight: FontWeight.w400,
-            color: Get.theme.shadowColor,
-          ),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                fontWeight: FontWeight.w400,
+                color: Theme.of(context).shadowColor,
+              ),
         ),
         const SizedBox(height: 10.0),
         ListView.separated(
@@ -302,7 +315,9 @@ class _QuestionPropertiesWidget extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (_, index) => Text(
                   properties[index],
-                  style: Get.textTheme.displayLarge
+                  style: Theme.of(context)
+                      .textTheme
+                      .displayLarge
                       ?.copyWith(fontWeight: FontWeight.w500),
                 ),
             separatorBuilder: (_, __) => const SizedBox(height: 12.0),
@@ -328,8 +343,10 @@ class _IconAndTitleWidget extends StatelessWidget {
         const SizedBox(width: 4.0),
         Text(
           title,
-          style:
-              Get.textTheme.displayLarge?.copyWith(fontWeight: FontWeight.w500),
+          style: Theme.of(context)
+              .textTheme
+              .displayLarge
+              ?.copyWith(fontWeight: FontWeight.w500),
         ),
       ],
     );

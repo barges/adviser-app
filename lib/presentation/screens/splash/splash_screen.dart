@@ -27,8 +27,8 @@ class SplashScreen extends StatelessWidget {
             },
             child: Scaffold(
               body: SizedBox(
-                height: Get.height,
-                width: Get.width,
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
                 child: Assets.images.splash.image(
                   fit: BoxFit.fill,
                 ),

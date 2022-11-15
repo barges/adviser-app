@@ -37,7 +37,7 @@ class ScrollableAppBar extends StatelessWidget {
         return SliverAppBar(
           automaticallyImplyLeading: false,
           forceElevated: true,
-          backgroundColor: Get.theme.canvasColor,
+          backgroundColor: Theme.of(context).canvasColor,
           expandedHeight: 104.0,
           centerTitle: true,
           pinned: true,
@@ -63,7 +63,8 @@ class ScrollableAppBar extends StatelessWidget {
                     child: Builder(builder: (context) {
                       return isWide
                           ? ConstrainedBox(
-                              constraints: BoxConstraints(minWidth: Get.width),
+                              constraints: BoxConstraints(
+                                  minWidth: MediaQuery.of(context).size.width),
                               child: Row(
                                 children: [
                                   AppIconButton(
@@ -94,15 +95,18 @@ class ScrollableAppBar extends StatelessWidget {
                                               ),
                                             ),
                                             Text(currentBrand.name,
-                                                style: Get.textTheme.labelMedium
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelMedium
                                                     ?.copyWith(
                                                         fontWeight:
                                                             FontWeight.w500,
-                                                        color: Get.theme
+                                                        color: Theme.of(context)
                                                             .primaryColor)),
                                             const SizedBox(width: 4.0),
                                             Assets.vectors.swap.svg(
-                                              color: Get.theme.primaryColor,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
                                             ),
                                           ],
                                         ),
@@ -160,20 +164,26 @@ class ScrollableAppBar extends StatelessWidget {
                                       ),
                                       Text(
                                         title,
-                                        style: Get.textTheme.headlineMedium
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineMedium
                                             ?.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 17.0,
-                                        ),
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 17.0,
+                                            ),
                                       ),
                                     ],
                                   ),
                                   Text(
                                     currentBrand.name,
-                                    style: Get.textTheme.bodySmall?.copyWith(
-                                      fontSize: 12.0,
-                                      color: Get.iconColor,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          fontSize: 12.0,
+                                          color:
+                                              Theme.of(context).iconTheme.color,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -191,7 +201,8 @@ class ScrollableAppBar extends StatelessWidget {
                             children: [
                               Text(
                                 title,
-                                style: Get.textTheme.headlineMedium,
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
                               ),
                             ],
                           ));

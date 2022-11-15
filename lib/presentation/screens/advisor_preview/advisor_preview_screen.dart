@@ -61,8 +61,7 @@ class AdvisorPreviewScreen extends StatelessWidget {
                               (AdvisorPreviewCubit cubit) =>
                                   cubit.state.currentIndex);
                           return Image.asset(
-                            advisorPreviewCubit.languages[index]
-                                .flagImagePath,
+                            advisorPreviewCubit.languages[index].flagImagePath,
                           );
                         },
                       ),
@@ -83,7 +82,7 @@ class AdvisorPreviewScreen extends StatelessWidget {
                             .userProfile.coverPictures?.firstOrNull ??
                         '',
                     height: 150.0,
-                    width: Get.width,
+                    width: MediaQuery.of(context).size.width,
                     fit: BoxFit.cover,
                   ),
                   Container(

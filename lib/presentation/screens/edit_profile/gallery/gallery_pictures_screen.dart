@@ -23,7 +23,7 @@ class GalleryPicturesScreen extends StatelessWidget {
           body: Stack(
             children: [
               Container(
-                color: Get.theme.canvasColor,
+                color: Theme.of(context).canvasColor,
                 child: PageView.builder(
                   physics: const ClampingScrollPhysics(),
                   allowImplicitScrolling: true,
@@ -47,7 +47,7 @@ class GalleryPicturesScreen extends StatelessWidget {
               Positioned(
                 bottom: 80.0,
                 child: SizedBox(
-                  width: Get.width,
+                  width: MediaQuery.of(context).size.width,
                   child: Center(
                     child: Builder(builder: (context) {
                       return SmoothPageIndicator(
@@ -58,8 +58,9 @@ class GalleryPicturesScreen extends StatelessWidget {
                           maxVisibleDots: 7,
                           dotWidth: 8.0,
                           dotHeight: 8.0,
-                          dotColor: Get.iconColor ?? Colors.grey,
-                          activeDotColor: Get.theme.primaryColor,
+                          dotColor:
+                              Theme.of(context).iconTheme.color ?? Colors.grey,
+                          activeDotColor: Theme.of(context).primaryColor,
                         ),
                       );
                     }),

@@ -26,7 +26,7 @@ class SessionsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) =>
-          SessionsCubit(getIt.get<CachingManager>()),
+          SessionsCubit(getIt.get<CachingManager>(), context),
       child: Builder(builder: (BuildContext context) {
         final SessionsCubit sessionsCubit = context.read<SessionsCubit>();
 
@@ -43,8 +43,8 @@ class SessionsScreen extends StatelessWidget {
             Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: isOnline
-                  ? Get.theme.canvasColor
-                  : Get.theme.scaffoldBackgroundColor,
+                  ? Theme.of(context).canvasColor
+                  : Theme.of(context).scaffoldBackgroundColor,
               appBar: HomeAppBar(
                 bottomWidget: Padding(
                   padding: const EdgeInsets.symmetric(

@@ -27,7 +27,7 @@ void showPickerModalPopUp({
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppConstants.horizontalScreenPadding,
                 ),
-                color: Get.theme.scaffoldBackgroundColor,
+                color: Theme.of(context).scaffoldBackgroundColor,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -39,9 +39,10 @@ void showPickerModalPopUp({
                         color: Colors.transparent,
                         child: Text(
                           S.of(context).cancel,
-                          style: Get.textTheme.bodyMedium?.copyWith(
-                            color: Get.theme.primaryColor,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
                         ),
                       ),
                     ),
@@ -56,10 +57,11 @@ void showPickerModalPopUp({
                         color: Colors.transparent,
                         child: Text(
                           S.of(context).done,
-                          style: Get.textTheme.labelMedium?.copyWith(
-                            fontSize: 15.0,
-                            color: Get.theme.primaryColor,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.labelMedium?.copyWith(
+                                    fontSize: 15.0,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
                         ),
                       ),
                     ),
@@ -71,7 +73,7 @@ void showPickerModalPopUp({
                 margin: const EdgeInsets.symmetric(
                   horizontal: 24.0,
                 ),
-                color: Get.theme.canvasColor,
+                color: Theme.of(context).canvasColor,
                 child: SafeArea(
                   top: false,
                   child: CupertinoPicker(

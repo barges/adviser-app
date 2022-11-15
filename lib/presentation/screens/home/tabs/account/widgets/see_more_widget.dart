@@ -18,7 +18,7 @@ class SeeMoreWidget extends StatelessWidget {
             vertical: 24.0,
           ),
           decoration: BoxDecoration(
-            color: Get.theme.canvasColor,
+            color: Theme.of(context).canvasColor,
             borderRadius: BorderRadius.circular(
               AppConstants.buttonRadius,
             ),
@@ -42,15 +42,17 @@ class SeeMoreWidget extends StatelessWidget {
                             .notEnoughConversationsCheckOurProfileGuide,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: Get.textTheme.bodyMedium
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
                             ?.copyWith(fontWeight: FontWeight.w500),
                       ),
                       const SizedBox(height: 8.0),
                       Text(
                         S.of(context).seeMore,
-                        style: Get.textTheme.bodyMedium?.copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.w500,
-                            color: Get.theme.primaryColor,
+                            color: Theme.of(context).primaryColor,
                             decoration: TextDecoration.underline),
                       )
                     ],

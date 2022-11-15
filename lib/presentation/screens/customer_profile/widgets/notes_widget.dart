@@ -38,15 +38,15 @@ class NotesWidget extends StatelessWidget {
                 children: [
                   Text(
                     'Note', //S.of(context).notes,
-                    style: Get.textTheme.headlineMedium,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   /**
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text('${texts.length}',
-                          style: Get.textTheme.displayLarge?.copyWith(
+                          style: Theme.of(context).textTheme.displayLarge?.copyWith(
                               fontWeight: FontWeight.w500,
-                              color: Get.theme.shadowColor)),
+                              color: Theme.of(context).shadowColor)),
                     )
                   */
                 ],
@@ -61,10 +61,13 @@ class NotesWidget extends StatelessWidget {
                           onTap: onTapAddNew,
                           child: Text(
                             S.of(context).addNew,
-                            style: Get.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w500,
-                              color: Get.theme.primaryColor,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: Theme.of(context).primaryColor,
+                                ),
                           ),
                         )
                       ],
@@ -118,7 +121,7 @@ class _OneNoteWidget extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
-          color: Get.theme.canvasColor,
+          color: Theme.of(context).canvasColor,
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
         ),
         child: Row(children: [
@@ -130,15 +133,15 @@ class _OneNoteWidget extends StatelessWidget {
                   text,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Get.textTheme.displayLarge?.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
                 ),
                 const SizedBox(height: 12.0),
                 Material(
-                  textStyle: Get.textTheme.displaySmall?.copyWith(
+                  textStyle: Theme.of(context).textTheme.displaySmall?.copyWith(
                       fontWeight: FontWeight.w400,
-                      color: Get.theme.shadowColor),
+                      color: Theme.of(context).shadowColor),
                   child: Row(
                     children: [
                       Text(updatedAt.parseDateTimePattern2),

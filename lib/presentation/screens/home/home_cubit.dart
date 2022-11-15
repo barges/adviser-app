@@ -15,6 +15,7 @@ import 'package:shared_advisor_interface/presentation/services/push_notification
 
 class HomeCubit extends Cubit<HomeState> {
   final CachingManager cacheManager;
+  final BuildContext context;
 
   final ConnectivityService _connectivityService = ConnectivityService();
 
@@ -25,8 +26,8 @@ class HomeCubit extends Cubit<HomeState> {
 
   late final VoidCallback disposeListen;
 
-  HomeCubit(this.cacheManager) : super(const HomeState()) {
-    getIt.get<FreshChatService>().initFreshChat();
+  HomeCubit(this.cacheManager, this.context) : super(const HomeState()) {
+    getIt.get<FreshChatService>().initFreshChat(context);
     emit(state.copyWith(
         userStatus: cacheManager.getUserStatus() ?? const UserStatus()));
     disposeListen = cacheManager.listenCurrentUserStatus((value) {

@@ -7,6 +7,7 @@ import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_cubit.dart';
+import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 class BrandWidget extends StatelessWidget {
   final Brand brand;
@@ -28,10 +29,10 @@ class BrandWidget extends StatelessWidget {
             context.read<LoginCubit>().passwordController.text = '1234567891';
           }
         },
-        onDoubleTap: (){
+        onDoubleTap: () {
           if (kDebugMode) {
             context.read<LoginCubit>().emailController.text =
-            'niskov.test@gmail.com';
+                'niskov.test@gmail.com';
             context.read<LoginCubit>().passwordController.text = '00000000';
           }
         },
@@ -43,14 +44,16 @@ class BrandWidget extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-            color: isSelected ? Get.theme.primaryColor : Get.theme.hintColor,
+            color: isSelected
+                ? Theme.of(context).primaryColor
+                : Theme.of(context).hintColor,
           ),
           child: Container(
             margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
             decoration: BoxDecoration(
               borderRadius:
                   BorderRadius.circular(AppConstants.buttonRadius - 1),
-              color: Get.theme.canvasColor,
+              color: Theme.of(context).canvasColor,
             ),
             child: Column(
               children: [
@@ -59,7 +62,9 @@ class BrandWidget extends StatelessWidget {
                 ),
                 SvgPicture.asset(
                   brand.icon,
-                  color: Get.isDarkMode ? Get.theme.backgroundColor : null,
+                  color: Utils.isDarkMode(context)
+                      ? Theme.of(context).backgroundColor
+                      : null,
                 ),
                 const SizedBox(
                   height: 8.0,
@@ -68,13 +73,13 @@ class BrandWidget extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Text(
                     isEnabled ? brand.name : S.of(context).comingSoon,
-                    style: Get.textTheme.bodySmall?.copyWith(
-                      color: isSelected
-                          ? Get.theme.primaryColor
-                          : Get.textTheme.bodySmall?.color,
-                      fontWeight:
-                          isSelected ? FontWeight.w700 : FontWeight.w500,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: isSelected
+                              ? Theme.of(context).primaryColor
+                              : Theme.of(context).textTheme.bodySmall?.color,
+                          fontWeight:
+                              isSelected ? FontWeight.w700 : FontWeight.w500,
+                        ),
                   ),
                 )
               ],

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -51,12 +50,12 @@ class _AuthorizedBrandWidget extends StatelessWidget {
             width: AppConstants.iconButtonSize,
             padding: const EdgeInsets.all(4.0),
             decoration: BoxDecoration(
-                color: Get.theme.scaffoldBackgroundColor,
+                color: Theme.of(context).scaffoldBackgroundColor,
                 border: Border.all(
                     width: 2.0,
                     color: isFirstBrand
                         ? AppColors.promotion
-                        : Get.theme.canvasColor),
+                        : Theme.of(context).canvasColor),
                 borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
             child: SvgPicture.asset(brandIcon),
           ),
@@ -66,7 +65,8 @@ class _AuthorizedBrandWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.online,
               shape: BoxShape.circle,
-              border: Border.all(width: 2.0, color: Get.theme.canvasColor),
+              border:
+                  Border.all(width: 2.0, color: Theme.of(context).canvasColor),
             ),
           ),
         ],

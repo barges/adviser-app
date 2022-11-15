@@ -21,7 +21,7 @@ class PerformanceDashboardWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(
           vertical: 12.0, horizontal: AppConstants.horizontalScreenPadding),
       decoration: BoxDecoration(
-          color: Get.theme.canvasColor,
+          color: Theme.of(context).canvasColor,
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -53,7 +53,7 @@ class PerformanceDashboardWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('\$ ${monthAmount.parseValueToCurrencyFormat}',
-                        style: Get.textTheme.labelLarge),
+                        style: Theme.of(context).textTheme.labelLarge),
                     /**
                         Row(
                           children: [
@@ -99,25 +99,29 @@ class _PerformancePropertyInfo extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(4.0),
       decoration: BoxDecoration(
-          color: Get.theme.scaffoldBackgroundColor,
+          color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
         Container(
           alignment: Alignment.center,
           constraints: const BoxConstraints(minWidth: 20.0, minHeight: 20.0),
           decoration: BoxDecoration(
-              color: Get.theme.primaryColor,
+              color: Theme.of(context).primaryColor,
               borderRadius: BorderRadius.circular(8.0)),
           child: Text(
             info.toString(),
-            style: Get.textTheme.bodySmall?.copyWith(
-                fontWeight: FontWeight.w500, color: Get.theme.backgroundColor),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).backgroundColor),
           ),
         ),
         const SizedBox(width: 4.0),
         Text(
           title,
-          style: Get.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500),
+          style: Theme.of(context)
+              .textTheme
+              .bodySmall
+              ?.copyWith(fontWeight: FontWeight.w500),
         )
       ]),
     );
@@ -142,7 +146,7 @@ class _DisabledChooseOptionWidget extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
-          color: Get.theme.scaffoldBackgroundColor,
+          color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -162,18 +166,19 @@ class _DisabledChooseOptionWidget extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 6.0),
                       decoration: BoxDecoration(
                           color: currentIndex == index
-                              ? Get.theme.primaryColor
+                              ? Theme.of(context).primaryColor
                               : Colors.transparent,
                           borderRadius:
                               BorderRadius.circular(AppConstants.buttonRadius)),
                       child: Text(
                         element,
-                        style: Get.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: currentIndex == index
-                              ? Get.theme.backgroundColor
-                              : Get.theme.primaryColor,
-                        ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: currentIndex == index
+                                      ? Theme.of(context).backgroundColor
+                                      : Theme.of(context).primaryColor,
+                                ),
                       ),
                     ),
                   ),

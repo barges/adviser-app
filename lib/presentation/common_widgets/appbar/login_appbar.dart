@@ -37,7 +37,7 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
           Expanded(
             child: Text(
               S.of(context).chooseBrand,
-              style: Get.textTheme.headlineMedium,
+              style: Theme.of(context).textTheme.headlineMedium,
               maxLines: 2,
               textAlign: TextAlign.left,
             ),
@@ -45,7 +45,7 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
           const ChangeLocaleButton(),
         ],
       ),
-      backgroundColor: Get.theme.canvasColor,
+      backgroundColor: Theme.of(context).canvasColor,
     );
   }
 }

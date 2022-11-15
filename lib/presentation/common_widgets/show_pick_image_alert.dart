@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -23,13 +24,13 @@ Future<void> showPickImageAlert(
             onTap: () => Get.back(result: ImageSource.gallery),
             child: Container(
               padding: const EdgeInsets.only(top: 32.0, bottom: 16.0),
-              width: Get.width,
+              width: MediaQuery.of(context).size.width,
               child: Center(
                   child: Text(
                 S.of(context).chooseFromGallery,
-                style: Get.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
               )),
             ),
           ),
@@ -37,13 +38,13 @@ Future<void> showPickImageAlert(
             onTap: () => Get.back(result: ImageSource.camera),
             child: Container(
               padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
-              width: Get.width,
+              width: MediaQuery.of(context).size.width,
               child: Center(
                   child: Text(
                 S.of(context).takeAPhoto,
-                style: Get.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
               )),
             ),
           ),
@@ -55,20 +56,20 @@ Future<void> showPickImageAlert(
               }
             },
             child: Container(
-              width: Get.width,
+              width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.only(top: 16.0, bottom: 32.0),
               child: Center(
                 child: Text(S.of(context).cancel,
-                    style: Get.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: Get.theme.primaryColor,
-                    )),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).primaryColor,
+                        )),
               ),
             ),
           ),
         ],
       ),
-      backgroundColor: Get.theme.canvasColor,
+      backgroundColor: Theme.of(context).canvasColor,
     );
   } else {
     source = await showCupertinoModalPopup(

@@ -19,17 +19,21 @@ class PerformanceMOMAWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(S.of(context).comingSoon,
-              style: Get.textTheme.displayLarge
+              style: Theme.of(context)
+                  .textTheme
+                  .displayLarge
                   ?.copyWith(fontWeight: FontWeight.w800)),
           Text(S.of(context).perfomanceOverviewAnalytics,
-              style: Get.textTheme.labelMedium
-                  ?.copyWith(color: Get.theme.shadowColor))
+              style: Theme.of(context)
+                  .textTheme
+                  .labelMedium
+                  ?.copyWith(color: Theme.of(context).shadowColor))
         ],
       ),
       child: Container(
         padding: const EdgeInsets.all(AppConstants.horizontalScreenPadding),
         decoration: BoxDecoration(
-            color: Get.theme.canvasColor,
+            color: Theme.of(context).canvasColor,
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -47,7 +51,9 @@ class PerformanceMOMAWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(S.of(context).customers,
-                              style: Get.textTheme.titleMedium
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
                                   ?.copyWith(fontWeight: FontWeight.w700)),
                           AppIconButton(icon: Assets.vectors.arrowRight.path)
                         ],
@@ -58,10 +64,11 @@ class PerformanceMOMAWidget extends StatelessWidget {
                           S
                               .of(context)
                               .customersComeBackToYouAfterBuyingFirstSessionPlatform,
-                          style: Get.textTheme.labelMedium?.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: Get.theme.shadowColor,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.labelMedium?.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).shadowColor,
+                                  ),
                         ),
                       ),
                     ],
@@ -75,13 +82,14 @@ class PerformanceMOMAWidget extends StatelessWidget {
                 _PerformanceMOMAInfoWidget(
                     increaseValue: 2,
                     totalValue: 5,
-                    rectangleColor: Get.theme.primaryColor,
+                    rectangleColor: Theme.of(context).primaryColor,
                     infoTitle: S.of(context).newUsers),
                 const SizedBox(width: 8.0),
                 _PerformanceMOMAInfoWidget(
                     increaseValue: 2,
                     totalValue: 5,
-                    rectangleColor: Get.theme.primaryColor.withOpacity(.4),
+                    rectangleColor:
+                        Theme.of(context).primaryColor.withOpacity(.4),
                     infoTitle: S.of(context).loyalUsers),
               ],
             )
@@ -112,7 +120,7 @@ class _PerformanceMOMAInfoWidget extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.fromLTRB(12.0, 16.0, 13.0, 32.0),
         decoration: BoxDecoration(
-            border: Border.all(width: 1.0, color: Get.theme.hintColor),
+            border: Border.all(width: 1.0, color: Theme.of(context).hintColor),
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,24 +137,26 @@ class _PerformanceMOMAInfoWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
                 child: Text(
                   totalValue.toString(),
-                  style: Get.textTheme.headlineMedium,
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ),
               Text(
                 '+$increaseValue',
-                style: Get.textTheme.displayLarge?.copyWith(
-                    fontWeight: FontWeight.w700, color: Get.theme.errorColor),
+                style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: Theme.of(context).errorColor),
               ),
               Assets.vectors.upRating.svg(
-                color: Get.theme.errorColor,
+                color: Theme.of(context).errorColor,
                 width: 14.0,
               )
             ]),
             const SizedBox(height: 4.0),
             Text(
               infoTitle,
-              style: Get.textTheme.displayLarge?.copyWith(
-                  fontWeight: FontWeight.w500, color: Get.theme.shadowColor),
+              style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).shadowColor),
             )
           ],
         ),
@@ -176,7 +186,7 @@ class _PerformanceMOMAPercentageIndicatorWidget extends StatelessWidget {
             children: [
               Assets.vectors.userPerformance.userPerformance.svg(),
               Assets.vectors.userPerformance.starBorder
-                  .svg(color: Get.theme.canvasColor),
+                  .svg(color: Theme.of(context).canvasColor),
               Assets.vectors.userPerformance.star.svg(),
             ],
           )),
@@ -184,7 +194,7 @@ class _PerformanceMOMAPercentageIndicatorWidget extends StatelessWidget {
             return Stack(
               children: [
                 CustomPaint(
-                  painter: _ArcPainter(size),
+                  painter: _ArcPainter(size, context),
                 ),
                 child ?? const SizedBox()
               ],
@@ -196,8 +206,9 @@ class _PerformanceMOMAPercentageIndicatorWidget extends StatelessWidget {
 
 class _ArcPainter extends CustomPainter {
   final double percentageValue;
+  final BuildContext context;
 
-  _ArcPainter(this.percentageValue);
+  _ArcPainter(this.percentageValue, this.context);
 
   @override
   bool shouldRepaint(_ArcPainter oldDelegate) {
@@ -214,7 +225,7 @@ class _ArcPainter extends CustomPainter {
         2 * pi,
         false,
         Paint()
-          ..color = Get.theme.primaryColor.withOpacity(0.4)
+          ..color = Theme.of(context).primaryColor.withOpacity(0.4)
           ..strokeWidth = 12.0
           ..style = PaintingStyle.stroke);
 
@@ -224,7 +235,7 @@ class _ArcPainter extends CustomPainter {
         calculatePercentageCircle(percentageValue),
         false,
         Paint()
-          ..color = Get.theme.primaryColor
+          ..color = Theme.of(context).primaryColor
           ..strokeWidth = 16.0
           ..style = PaintingStyle.stroke);
   }

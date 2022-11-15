@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
@@ -20,7 +19,7 @@ class ChooseOptionWidget extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
-          color: Get.theme.scaffoldBackgroundColor,
+          color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -38,18 +37,18 @@ class ChooseOptionWidget extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 6.0),
                     decoration: BoxDecoration(
                         color: currentIndex == index
-                            ? Get.theme.primaryColor
+                            ? Theme.of(context).primaryColor
                             : Colors.transparent,
                         borderRadius:
                             BorderRadius.circular(AppConstants.buttonRadius)),
                     child: Text(
                       element,
-                      style: Get.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
-                        color: currentIndex == index
-                            ? Get.theme.backgroundColor
-                            : Get.theme.primaryColor,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: currentIndex == index
+                                ? Theme.of(context).backgroundColor
+                                : Theme.of(context).primaryColor,
+                          ),
                     ),
                   ),
                 ),

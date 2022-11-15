@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -34,7 +33,7 @@ class AddNoteScreen extends StatelessWidget {
           appBar: WideAppBar(
             bottomWidget: Text(
               isNoteNew ? S.of(context).addNote : S.of(context).editNote,
-              style: Get.textTheme.headlineMedium,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
             topRightWidget: AppIconButton(
               icon: Assets.vectors.check.path,
@@ -52,10 +51,10 @@ class AddNoteScreen extends StatelessWidget {
                   ? SizedBox.shrink()
                   : Text(
                       addNoteCubit.updatedAt!.parseDateTimePattern2,
-                      style: Get.textTheme.displaySmall?.copyWith(
-                        fontWeight: FontWeight.w400,
-                        color: Get.theme.shadowColor,
-                      ),
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                            fontWeight: FontWeight.w400,
+                            color: Theme.of(context).shadowColor,
+                          ),
                     ),
               /**
                 Padding(
@@ -67,13 +66,13 @@ class AddNoteScreen extends StatelessWidget {
                       return TextField(
                         controller: addNoteCubit.titleController,
                         autofocus: true,
-                        style: Get.textTheme.headlineLarge?.copyWith(
+                        style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                           fontWeight: FontWeight.w500,
                         ),
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
                         scrollPadding: EdgeInsets.zero,
-                        cursorColor: Get.theme.hoverColor,
+                        cursorColor: Theme.of(context).hoverColor,
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           focusedBorder: InputBorder.none,
@@ -89,22 +88,24 @@ class AddNoteScreen extends StatelessWidget {
                             addNoteCubit.addTitle();
                           }),
                           child: Text(S.of(context).title,
-                              style: Get.textTheme.headlineLarge?.copyWith(
+                              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                                   fontWeight: FontWeight.w500,
-                                  color: Get.theme.shadowColor)));
+                                  color: Theme.of(context).shadowColor)));
                     }
                   }),
                 ),
               */
               TextField(
                 controller: addNoteCubit.noteController,
-                style: Get.textTheme.displayLarge
+                style: Theme.of(context)
+                    .textTheme
+                    .displayLarge
                     ?.copyWith(fontWeight: FontWeight.w400),
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 autofocus: true,
                 scrollPadding: EdgeInsets.zero,
-                cursorColor: Get.theme.hoverColor,
+                cursorColor: Theme.of(context).hoverColor,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
@@ -132,7 +133,10 @@ class AddNoteScreen extends StatelessWidget {
                                             vertical: 6.0),
                                         child: Image.file(
                                           File(imagesPath),
-                                          height: Get.height / 2,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              2,
                                           fit: BoxFit.cover,
                                         ),
                                       );
