@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide Transition;
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -15,6 +20,7 @@ import 'package:shared_advisor_interface/presentation/di/injector.dart';
 import 'package:shared_advisor_interface/presentation/di/modules/api_module.dart';
 import 'package:shared_advisor_interface/presentation/di/modules/repository_module.dart';
 import 'package:shared_advisor_interface/presentation/di/modules/services_module.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_themes.dart';
 
@@ -33,7 +39,20 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  if (Platform.isIOS) {
+    await Firebase.initializeApp(
+        options: const FirebaseOptions(
+            apiKey: AppConstants.iosApiKey,
+            appId: AppConstants.iosAppId,
+            messagingSenderId: AppConstants.firebaseMessagingSenderId,
+            projectId: AppConstants.firebaseProjectId));
+  } else {
+    await Firebase.initializeApp();
+  }
+
+  await FirebaseCrashlytics.instance
+      .setCrashlyticsCollectionEnabled(!kDebugMode);
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   await GetStorage.init();
   await Injector.instance.inject([
     ServicesModule(),
@@ -52,6 +71,10 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final CachingManager _cacheManager = getIt.get<CachingManager>();
+
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +122,7 @@ class _MyAppState extends State<MyApp> {
                       newLocale.languageCode;
                   return newLocale;
                 },
+                navigatorObservers: <NavigatorObserver>[observer],
               ),
               Builder(builder: (context) {
                 final bool isLoading =
