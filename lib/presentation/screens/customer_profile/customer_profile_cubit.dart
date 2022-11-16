@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
@@ -27,25 +29,37 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
   }
 
   Future<void> getCurrentNote() async {
-    final String? note =
-        (await _repository.getNoteForCustomer(customerID)).content;
+    final GetNoteResponse note =
+        await _repository.getNoteForCustomer(customerID);
+
     emit(state.copyWith(currentNote: note));
   }
 
-  void updateNoteToCustomer(String newContent) {
-    emit(state.copyWith(currentNote: newContent));
-  }
-
   void navigateToAddNoteScreenForOldNote() {
-    Get.toNamed(AppRoutes.addNote, arguments: {
-      'customerID': customerID,
-      'oldNote': state.currentNote,
-    });
+    Get.toNamed(AppRoutes.addNote,
+        arguments: AddNoteScreenArguments(
+            customerID: customerID,
+            oldNote: state.currentNote?.content,
+            updatedAt: state.currentNote?.updatedAt,
+            noteChanged: getCurrentNote));
   }
 
   void navigateToAddNoteScreenForNewNote() {
-    Get.toNamed(AppRoutes.addNote, arguments: {
-      'customerID': customerID,
-    });
+    Get.toNamed(AppRoutes.addNote,
+        arguments: AddNoteScreenArguments(
+            customerID: customerID, noteChanged: getCurrentNote));
   }
+}
+
+class AddNoteScreenArguments {
+  final String customerID;
+  final String? oldNote;
+  final String? updatedAt;
+  VoidCallback noteChanged;
+
+  AddNoteScreenArguments(
+      {required this.customerID,
+      this.oldNote,
+      this.updatedAt,
+      required this.noteChanged});
 }

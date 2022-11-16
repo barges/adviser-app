@@ -23,6 +23,7 @@ class SessionsCubit extends Cubit<SessionsState> {
   final MainCubit mainCubit = getIt.get<MainCubit>();
   late final VoidCallback disposeUserStatusListen;
   late final VoidCallback disposeUserProfileListen;
+  final BuildContext context;
 
   final List<ChatItemType> filters = [
     ChatItemType.all,
@@ -38,16 +39,19 @@ class SessionsCubit extends Cubit<SessionsState> {
   bool _historyHasMore = true;
   int _historyPage = 1;
 
-  SessionsCubit(this.cacheManager) : super(const SessionsState()) {
+  SessionsCubit(this.cacheManager, this.context)
+      : super(const SessionsState()) {
     publicQuestionsController.addListener(() async {
       if (!mainCubit.state.isLoading &&
-          publicQuestionsController.position.extentAfter <= Get.height) {
+          publicQuestionsController.position.extentAfter <=
+              MediaQuery.of(context).size.height) {
         await getPublicQuestions();
       }
     });
     privateQuestionsController.addListener(() async {
       if (!mainCubit.state.isLoading &&
-          privateQuestionsController.position.extentAfter <= Get.height) {
+          privateQuestionsController.position.extentAfter <=
+              MediaQuery.of(context).size.height) {
         await getHistoryList();
       }
     });

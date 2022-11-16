@@ -17,6 +17,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/text_fields
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/widgets/choose_brand_widget.dart';
+import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -155,11 +156,14 @@ class LoginScreen extends StatelessWidget {
                                           onTap: loginCubit.goToForgotPassword,
                                           child: Text(
                                             '${S.of(context).forgotPassword}?',
-                                            style: Get.textTheme.titleMedium
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium
                                                 ?.copyWith(
-                                              color: Get.theme.primaryColor,
-                                              fontWeight: FontWeight.w500,
-                                            ),
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
                                           ),
                                         ),
                                       ],
@@ -169,7 +173,7 @@ class LoginScreen extends StatelessWidget {
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 24.0,
                                     ),
-                                    child: Get.isDarkMode
+                                    child: Utils.isDarkMode(context)
                                         ? Assets.images.logos.loginLogoDark
                                             .image(
                                             height: AppConstants.logoSize,

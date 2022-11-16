@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 
@@ -19,13 +20,13 @@ Future<void> showOkCancelBottomSheet({
             onTap: okOnTap,
             child: Container(
               padding: const EdgeInsets.only(top: 32.0, bottom: 16.0),
-              width: Get.width,
+              width: MediaQuery.of(context).size.width,
               child: Center(
                   child: Text(
                 okButtonText,
-                style: Get.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
               )),
             ),
           ),
@@ -37,20 +38,20 @@ Future<void> showOkCancelBottomSheet({
               }
             },
             child: Container(
-              width: Get.width,
+              width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.only(top: 16.0, bottom: 32.0),
               child: Center(
                 child: Text(S.of(context).cancel,
-                    style: Get.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: Get.theme.primaryColor,
-                    )),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).primaryColor,
+                        )),
               ),
             ),
           ),
         ],
       ),
-      backgroundColor: Get.theme.canvasColor,
+      backgroundColor: Theme.of(context).canvasColor,
     );
   } else {
     await showCupertinoModalPopup(

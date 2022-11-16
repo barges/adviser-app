@@ -35,7 +35,7 @@ class ArticleDetailsScreen extends StatelessWidget with ShareMixin {
               'https://img.freepik.com/free-photo/grunge-paint-background_1409-1337.jpg'),
     ];
     return BlocProvider(
-      create: (BuildContext context) => ArticleDetailsCubit(),
+      create: (BuildContext context) => ArticleDetailsCubit(context),
       child: Builder(builder: (context) {
         final ArticleDetailsCubit articleDetailsCubit =
             context.read<ArticleDetailsCubit>();
@@ -52,10 +52,10 @@ class ArticleDetailsScreen extends StatelessWidget with ShareMixin {
                         'https://img.freepik.com/free-photo/grunge-paint-background_1409-1337.jpg',
                         fit: BoxFit.cover,
                         height: 220.0,
-                        width: Get.width,
+                        width: MediaQuery.of(context).size.width,
                       ),
                       Container(
-                        color: Get.theme.canvasColor,
+                        color: Theme.of(context).canvasColor,
                         padding: const EdgeInsets.fromLTRB(
                             AppConstants.horizontalScreenPadding,
                             12.0,
@@ -66,7 +66,9 @@ class ArticleDetailsScreen extends StatelessWidget with ShareMixin {
                             children: [
                               Text(
                                   'Late Spring Solar Eclipse Ignites Creative Instincts',
-                                  style: Get.textTheme.headlineMedium),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 12.0),
@@ -85,7 +87,9 @@ class ArticleDetailsScreen extends StatelessWidget with ShareMixin {
                                         child: Column(children: [
                                           Text(
                                             'Psychic Cilla',
-                                            style: Get.textTheme.bodySmall
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall
                                                 ?.copyWith(
                                                     fontWeight:
                                                         FontWeight.w500),
@@ -93,11 +97,13 @@ class ArticleDetailsScreen extends StatelessWidget with ShareMixin {
                                           Text(
                                             '2022-09-19T10:05:38.697Z'
                                                 .parseDateTimePattern1,
-                                            style: Get.textTheme.displaySmall
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displaySmall
                                                 ?.copyWith(
                                                     fontWeight: FontWeight.w400,
-                                                    color:
-                                                        Get.theme.shadowColor),
+                                                    color: Theme.of(context)
+                                                        .shadowColor),
                                           ),
                                         ]),
                                       )
@@ -105,8 +111,11 @@ class ArticleDetailsScreen extends StatelessWidget with ShareMixin {
                               ),
                               Text(
                                 articleDetailsCubit.description,
-                                style: Get.textTheme.bodyMedium
-                                    ?.copyWith(color: Get.theme.shadowColor),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                        color: Theme.of(context).shadowColor),
                               )
                             ]),
                       ),
@@ -122,7 +131,9 @@ class ArticleDetailsScreen extends StatelessWidget with ShareMixin {
                                         AppConstants.horizontalScreenPadding),
                                 child: Text(
                                   S.of(context).similarArticles,
-                                  style: Get.textTheme.headlineMedium,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
                                 ),
                               ),
                               const SizedBox(height: 12.0),
@@ -176,7 +187,7 @@ class ArticleDetailsScreen extends StatelessWidget with ShareMixin {
                 }),
                 Container(
                   height: 62.0,
-                  color: Get.theme.canvasColor,
+                  color: Theme.of(context).canvasColor,
                   padding: const EdgeInsets.symmetric(
                       horizontal: 26.0, vertical: 14.0),
                   child: Row(
@@ -236,9 +247,9 @@ class _SimilarArticleWidget extends StatelessWidget {
             similarArticle.title,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: Get.textTheme.displaySmall?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
+            style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
           )
         ],
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -34,7 +35,7 @@ Future<void> changeStatusCommentBottomSheet({
                   height: 4.0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(21.0),
-                    color: Get.theme.hintColor,
+                    color: Theme.of(context).hintColor,
                   ),
                 ),
                 const SizedBox(
@@ -42,7 +43,7 @@ Future<void> changeStatusCommentBottomSheet({
                 ),
                 Text(
                   S.of(context).areYouSureThatYouWantToChangeYourStatus,
-                  style: Get.textTheme.headlineMedium,
+                  style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(
@@ -108,10 +109,10 @@ Future<void> changeStatusCommentBottomSheet({
                   onPressed: Get.back,
                   child: Text(
                     S.of(context).noIChangedMyMind,
-                    style: Get.textTheme.titleMedium?.copyWith(
-                      color: Get.theme.primaryColor,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.w500,
+                        ),
                   ),
                 ),
               ],
@@ -119,6 +120,6 @@ Future<void> changeStatusCommentBottomSheet({
           ),
         ),
       ),
-      backgroundColor: Get.theme.canvasColor,
+      backgroundColor: Theme.of(context).canvasColor,
       isScrollControlled: true);
 }

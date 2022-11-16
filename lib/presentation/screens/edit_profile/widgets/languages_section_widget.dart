@@ -132,8 +132,8 @@ class _LanguageWidget extends StatelessWidget {
             height: 38.0,
             decoration: BoxDecoration(
               color: isSelected
-                  ? Get.theme.primaryColorLight
-                  : Get.theme.canvasColor,
+                  ? Theme.of(context).primaryColorLight
+                  : Theme.of(context).canvasColor,
               borderRadius: BorderRadius.circular(
                 AppConstants.buttonRadius,
               ),
@@ -142,11 +142,11 @@ class _LanguageWidget extends StatelessWidget {
             child: Center(
               child: Text(
                 languageName,
-                style: Get.textTheme.bodyMedium?.copyWith(
-                  color: isSelected
-                      ? Get.theme.primaryColor
-                      : Get.textTheme.bodyMedium?.color,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: isSelected
+                          ? Theme.of(context).primaryColor
+                          : Theme.of(context).textTheme.bodyMedium?.color,
+                    ),
               ),
             ),
           ),

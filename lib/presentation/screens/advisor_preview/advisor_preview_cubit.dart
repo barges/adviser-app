@@ -34,7 +34,10 @@ class AdvisorPreviewCubit extends Cubit<AdvisorPreviewState> {
   Map<String, dynamic> getSelectedLanguageDetails(MarketsType language) {
     Map<String, dynamic> details = {};
     details[ratingKey] = userProfile.rating?[language] as double;
-    details[titleKey] = userProfile.rituals ?? const [];
+    details[titleKey] = (userProfile.localizedProperties
+                ?.toJson()[language.name] as PropertyByLanguage?)
+            ?.statusMessage ??
+        '';
     details[descriptionKey] = (userProfile.localizedProperties
                 ?.toJson()[language.name] as PropertyByLanguage?)
             ?.description ??

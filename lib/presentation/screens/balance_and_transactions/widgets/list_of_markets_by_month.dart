@@ -26,12 +26,12 @@ class ListOfMarketsByMonth extends StatelessWidget {
     final String currencySymbol = balanceAndTransactionsCubit
         .currencySymbolByName(reportsStatistics.meta?.currency ?? '');
     return Container(
-      width: Get.width,
+      width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.all(
         AppConstants.horizontalScreenPadding,
       ),
       decoration: BoxDecoration(
-        color: Get.theme.canvasColor,
+        color: Theme.of(context).canvasColor,
         borderRadius: BorderRadius.circular(
           AppConstants.buttonRadius,
         ),
@@ -67,15 +67,16 @@ class ListOfMarketsByMonth extends StatelessWidget {
                 margin: EdgeInsets.only(
                   top: markets.isNotEmpty ? 24.0 : 16.0,
                 ),
-                width: Get.width,
+                width: MediaQuery.of(context).size.width,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       '${S.of(context).totalMarkets}:',
-                      style: Get.textTheme.headlineMedium?.copyWith(
-                        color: Get.theme.primaryColor,
-                      ),
+                      style:
+                          Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                color: Theme.of(context).primaryColor,
+                              ),
                     ),
                     Container(
                       height: 28.0,
@@ -83,7 +84,7 @@ class ListOfMarketsByMonth extends StatelessWidget {
                         horizontal: 12.0,
                       ),
                       decoration: BoxDecoration(
-                        color: Get.theme.scaffoldBackgroundColor,
+                        color: Theme.of(context).scaffoldBackgroundColor,
                         borderRadius: BorderRadius.circular(
                           AppConstants.buttonRadius,
                         ),
@@ -91,9 +92,12 @@ class ListOfMarketsByMonth extends StatelessWidget {
                       child: Text(
                         '~ $currencySymbol '
                         '${reportsStatistics.total?.marketTotal?.amount?.toStringAsFixed(2) ?? 0.0}',
-                        style: Get.textTheme.headlineMedium?.copyWith(
-                          color: Get.theme.primaryColor,
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(
+                              color: Theme.of(context).primaryColor,
+                            ),
                       ),
                     )
                   ],

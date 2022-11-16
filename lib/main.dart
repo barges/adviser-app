@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -73,13 +74,15 @@ class _MyAppState extends State<MyApp> {
 
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer =
-  FirebaseAnalyticsObserver(analytics: analytics);
+      FirebaseAnalyticsObserver(analytics: analytics);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => getIt.get<MainCubit>(),
       child: Builder(builder: (context) {
+        final Locale? locale =
+            context.select((MainCubit cubit) => cubit.state.locale);
         return Directionality(
           textDirection: TextDirection.ltr,
           child: Stack(
@@ -92,6 +95,7 @@ class _MyAppState extends State<MyApp> {
                 initialRoute: AppRoutes.splash,
                 getPages: AppRoutes.getPages,
                 navigatorKey: navigatorKey,
+                locale: locale,
                 localizationsDelegates: const [
                   S.delegate,
                   GlobalMaterialLocalizations.delegate,
@@ -101,20 +105,22 @@ class _MyAppState extends State<MyApp> {
                 supportedLocales: S.delegate.supportedLocales,
                 localeResolutionCallback: (locale, supportedLocales) {
                   final int? localeIndex = _cacheManager.getLocaleIndex();
+                  Locale? newLocale;
                   if (localeIndex != null) {
-                    return supportedLocales.toList()[localeIndex];
+                    newLocale = supportedLocales.toList()[localeIndex];
                   } else {
-                    if (locale == null) {
-                      return supportedLocales.first;
-                    }
                     for (var supportedLocale in supportedLocales) {
-                      if (supportedLocale.languageCode == locale.languageCode ||
-                          supportedLocale.countryCode == locale.countryCode) {
-                        return supportedLocale;
+                      if (supportedLocale.languageCode ==
+                              locale?.languageCode ||
+                          supportedLocale.countryCode == locale?.countryCode) {
+                        newLocale = supportedLocale;
                       }
                     }
-                    return supportedLocales.first;
+                    newLocale ??= supportedLocales.first;
                   }
+                  getIt.get<Dio>().options.headers['x-adviqo-app-language'] =
+                      newLocale.languageCode;
+                  return newLocale;
                 },
                 navigatorObservers: <NavigatorObserver>[observer],
               ),
@@ -124,7 +130,7 @@ class _MyAppState extends State<MyApp> {
                 return isLoading
                     ? const AppLoadingIndicator()
                     : const SizedBox.shrink();
-              })
+              }),
             ],
           ),
         );

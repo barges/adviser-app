@@ -34,7 +34,7 @@ class ProfileImageWidget extends StatelessWidget {
                     ? Container(
                         alignment: Alignment.center,
                         height: _backgroundImageSectionHeight,
-                        color: Get.theme.primaryColorLight,
+                        color: Theme.of(context).primaryColorLight,
                         child: GestureDetector(
                           onTap: () {
                             showPickImageAlert(
@@ -46,20 +46,24 @@ class ProfileImageWidget extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(40),
-                                color: Get.theme.primaryColorLight),
+                                color: Theme.of(context).primaryColorLight),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 16.0),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Assets.vectors.add.svg(
-                                  color: Get.theme.primaryColor,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                                 const SizedBox(width: 6.0),
                                 Text(S.current.addCoverPicture,
-                                    style: Get.textTheme.titleMedium?.copyWith(
-                                        color: Get.theme.primaryColor,
-                                        fontWeight: FontWeight.w500)),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontWeight: FontWeight.w500)),
                               ],
                             ),
                           ),
@@ -91,7 +95,7 @@ class ProfileImageWidget extends StatelessWidget {
                           Positioned(
                             bottom: 16.0,
                             child: SizedBox(
-                              width: Get.width,
+                              width: MediaQuery.of(context).size.width,
                               child: Center(
                                 child: SmoothPageIndicator(
                                   controller: cubit.picturesPageController,
@@ -101,8 +105,11 @@ class ProfileImageWidget extends StatelessWidget {
                                     maxVisibleDots: 7,
                                     dotWidth: 8.0,
                                     dotHeight: 8.0,
-                                    dotColor: Get.iconColor ?? Colors.grey,
-                                    activeDotColor: Get.theme.primaryColor,
+                                    dotColor:
+                                        Theme.of(context).iconTheme.color ??
+                                            Colors.grey,
+                                    activeDotColor:
+                                        Theme.of(context).primaryColor,
                                   ),
                                 ),
                               ),
@@ -125,8 +132,8 @@ class ProfileImageWidget extends StatelessWidget {
                     vertical: 10.0, horizontal: 16.0),
                 child: Text(
                   S.current.changePhoto,
-                  style: Get.textTheme.titleMedium?.copyWith(
-                      color: Get.theme.primaryColor,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.w500),
                 ),
               ),

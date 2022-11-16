@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
@@ -28,7 +29,7 @@ class MarketFilterWidget extends StatelessWidget {
     return userMarkets.length > 2
         ? Container(
             height: AppConstants.appBarHeight,
-            color: Get.theme.canvasColor,
+            color: Theme.of(context).canvasColor,
             child: GestureDetector(
               onTap: () => showPickerModalPopUp(
                 context: context,
@@ -67,8 +68,8 @@ class MarketFilterWidget extends StatelessWidget {
                       horizontal: AppConstants.horizontalScreenPadding),
                   decoration: BoxDecoration(
                       color: isNotAllTypeMarket
-                          ? Get.theme.primaryColorLight
-                          : Get.theme.scaffoldBackgroundColor,
+                          ? Theme.of(context).primaryColorLight
+                          : Theme.of(context).scaffoldBackgroundColor,
                       borderRadius:
                           BorderRadius.circular(AppConstants.buttonRadius)),
                   child: Row(
@@ -78,19 +79,22 @@ class MarketFilterWidget extends StatelessWidget {
                     children: [
                       Text(
                         '${S.of(context).market} ${currentMarket.languageName}',
-                        style: Get.textTheme.bodyMedium?.copyWith(
-                          color: isNotAllTypeMarket
-                              ? Get.theme.primaryColor
-                              : Get.textTheme.bodyMedium?.color,
-                        ),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: isNotAllTypeMarket
+                                  ? Theme.of(context).primaryColor
+                                  : Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.color,
+                            ),
                       ),
                       const SizedBox(
                         width: 4.0,
                       ),
                       Assets.vectors.arrowDown.svg(
-                       color: isNotAllTypeMarket
-                            ? Get.theme.primaryColor
-                            : Get.theme.hoverColor,
+                        color: isNotAllTypeMarket
+                            ? Theme.of(context).primaryColor
+                            : Theme.of(context).hoverColor,
                       )
                     ],
                   ),

@@ -33,7 +33,7 @@ class UserInfoPartWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(
           AppConstants.buttonRadius,
         ),
-        color: Get.theme.canvasColor,
+        color: Theme.of(context).canvasColor,
       ),
       child: Column(children: [
         Builder(builder: (context) {
@@ -51,7 +51,8 @@ class UserInfoPartWidget extends StatelessWidget {
                   UserAvatar(
                     avatarUrl: userProfile?.profilePictures?.firstOrNull,
                     diameter: 72.0,
-                    badgeColor: currentStatus.status?.statusColorForBadge,
+                    badgeColor:
+                        currentStatus.status?.statusColorForBadge(context),
                   ),
                   const SizedBox(
                     width: 16.0,
@@ -63,7 +64,9 @@ class UserInfoPartWidget extends StatelessWidget {
                         Text(
                           userProfile?.profileName ?? '',
                           overflow: TextOverflow.ellipsis,
-                          style: Get.textTheme.titleMedium
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
                               ?.copyWith(fontWeight: FontWeight.w700),
                         ),
                         Text(
@@ -74,13 +77,20 @@ class UserInfoPartWidget extends StatelessWidget {
                                         '$value, $element') ??
                                 '',
                             overflow: TextOverflow.ellipsis,
-                            style: Get.textTheme.bodyMedium
-                                ?.copyWith(color: Get.theme.shadowColor)),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                    color: Theme.of(context).shadowColor)),
                         Text(
                           currentStatus.status?.statusName ?? '',
-                          style: Get.textTheme.bodyMedium?.copyWith(
-                            color: currentStatus.status?.statusColor,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                color:
+                                    currentStatus.status?.statusColor(context),
+                              ),
                         ),
                       ],
                     ),
@@ -92,7 +102,7 @@ class UserInfoPartWidget extends StatelessWidget {
                     child: Stack(
                       children: [
                         Assets.vectors.arrowRight.svg(
-                          color: Get.theme.primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                         if (currentStatus.status ==
                             FortunicaUserStatus.incomplete)

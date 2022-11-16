@@ -24,7 +24,7 @@ class SearchListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) =>
-          SearchListCubit(getIt.get<ChatsRepository>()),
+          SearchListCubit(getIt.get<ChatsRepository>(), context),
       child: Builder(builder: (context) {
         final SearchListCubit searchListCubit = context.read<SearchListCubit>();
         return SafeArea(
@@ -33,12 +33,12 @@ class SearchListWidget extends StatelessWidget {
             children: [
               Container(
                 alignment: Alignment.center,
-                color: Get.theme.canvasColor,
+                color: Theme.of(context).canvasColor,
                 height: AppConstants.appBarHeight,
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppConstants.horizontalScreenPadding,
                 ),
-                width: Get.width,
+                width: MediaQuery.of(context).size.width,
                 child: Row(
                   children: [
                     Expanded(
@@ -67,7 +67,7 @@ class SearchListWidget extends StatelessWidget {
 
                 return Expanded(
                   child: Container(
-                    color: Get.theme.canvasColor,
+                    color: Theme.of(context).canvasColor,
                     child: ListView.separated(
                       controller: searchListCubit.historyScrollController,
                       padding: const EdgeInsets.all(
@@ -85,7 +85,7 @@ class SearchListWidget extends StatelessWidget {
                               children: [
                                 SvgPicture.asset(
                                     question.clientInformation?.zodiac
-                                            ?.imagePath ??
+                                            ?.imagePath(context) ??
                                         '',
                                     height: 42.0),
                                 const SizedBox(
@@ -95,9 +95,12 @@ class SearchListWidget extends StatelessWidget {
                                   child: Text(
                                     question.clientName ?? '',
                                     overflow: TextOverflow.ellipsis,
-                                    style: Get.textTheme.labelMedium?.copyWith(
-                                      fontSize: 15.0,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium
+                                        ?.copyWith(
+                                          fontSize: 15.0,
+                                        ),
                                   ),
                                 ),
                               ],
@@ -136,7 +139,7 @@ class _SearchFieldWidget extends StatelessWidget {
     return Container(
       height: 32.0,
       decoration: BoxDecoration(
-        color: Get.theme.hintColor,
+        color: Theme.of(context).hintColor,
         borderRadius: BorderRadius.circular(
           AppConstants.buttonRadius,
         ),
@@ -149,22 +152,22 @@ class _SearchFieldWidget extends StatelessWidget {
               right: 8.0,
             ),
             child: Assets.vectors.search.svg(
-              color: Get.theme.shadowColor,
+              color: Theme.of(context).shadowColor,
             ),
           ),
           Expanded(
             child: TextField(
               controller: controller,
               onChanged: onChanged,
-              style: Get.textTheme.bodyMedium?.copyWith(
-                fontSize: 17.0,
-              ),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontSize: 17.0,
+                  ),
               decoration: InputDecoration(
                 hintText: S.of(context).search,
-                hintStyle: Get.textTheme.bodyMedium?.copyWith(
-                  fontSize: 17.0,
-                  color: Get.theme.shadowColor,
-                ),
+                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: 17.0,
+                      color: Theme.of(context).shadowColor,
+                    ),
                 contentPadding: const EdgeInsets.symmetric(
                   vertical: 6.0,
                   horizontal: 4.0,

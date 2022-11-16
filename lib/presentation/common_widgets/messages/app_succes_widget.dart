@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/open_email_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -17,9 +16,9 @@ class AppSuccessWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: Get.width,
+      width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-          color: Get.theme.primaryColorLight,
+          color: Theme.of(context).primaryColorLight,
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(AppConstants.buttonRadius),
             bottomRight: Radius.circular(AppConstants.buttonRadius),
@@ -36,10 +35,10 @@ class AppSuccessWidget extends StatelessWidget {
                 children: [
                   Text(
                     message,
-                    style: Get.textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: Get.theme.primaryColor,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).primaryColor,
+                        ),
                   ),
                   const Padding(
                     padding: EdgeInsets.only(top: 8.0),
@@ -55,7 +54,7 @@ class AppSuccessWidget extends StatelessWidget {
             child: GestureDetector(
               onTap: close,
               child: Assets.vectors.close.svg(
-                color: Get.theme.primaryColor,
+                color: Theme.of(context).primaryColor,
               ),
             ),
           )

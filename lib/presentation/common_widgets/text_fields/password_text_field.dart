@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
@@ -36,16 +35,17 @@ class PasswordTextField extends StatelessWidget {
               bottom: 4.0,
               left: 12.0,
             ),
-            child: Text(label ?? '', style: Get.textTheme.labelMedium),
+            child: Text(label ?? '',
+                style: Theme.of(context).textTheme.labelMedium),
           ),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
             color: errorText.isNotEmpty
-                ? Get.theme.errorColor
+                ? Theme.of(context).errorColor
                 : focusNode.hasPrimaryFocus
-                    ? Get.theme.primaryColor
-                    : Get.theme.hintColor,
+                    ? Theme.of(context).primaryColor
+                    : Theme.of(context).hintColor,
           ),
           child: Container(
             margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
@@ -62,7 +62,7 @@ class PasswordTextField extends StatelessWidget {
               keyboardType: TextInputType.visiblePassword,
               textInputAction: textInputAction,
               onSubmitted: onSubmitted,
-              style: Get.textTheme.bodyMedium,
+              style: Theme.of(context).textTheme.bodyMedium,
               maxLines: 1,
               decoration: InputDecoration(
                 suffixIconConstraints: const BoxConstraints(
@@ -74,10 +74,10 @@ class PasswordTextField extends StatelessWidget {
                     onTap: clickToHide,
                     child: hiddenPassword
                         ? Assets.vectors.visibilityOff.svg(
-                            color: Get.iconColor,
+                            color: Theme.of(context).iconTheme.color,
                           )
                         : Assets.vectors.visibility.svg(
-                            color: Get.iconColor,
+                            color: Theme.of(context).iconTheme.color,
                           ),
                   ),
                 ),
@@ -93,9 +93,9 @@ class PasswordTextField extends StatelessWidget {
               left: 12.0,
             ),
             child: Text(errorText,
-                style: Get.textTheme.bodySmall?.copyWith(
-                  color: Get.theme.errorColor,
-                )),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).errorColor,
+                    )),
           )
       ],
     );

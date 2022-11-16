@@ -1,20 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/presentation/services/fresh_chat_service.dart';
 
-class Utils{
- static void changeLocale(int index) {
-    final Locale locale = S.delegate.supportedLocales[index];
-    Get.updateLocale(
-        Locale(locale.languageCode, locale.languageCode.toUpperCase()));
-    if (Platform.isAndroid) {
-      getIt.get<FreshChatService>().changeLocaleInvite();
-    }
-    getIt.get<CachingManager>().saveLocaleIndex(index);
-  }
+class Utils {
+  static bool isDarkMode(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark;
 }

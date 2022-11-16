@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 enum ZodiacSign {
   aquarius,
@@ -17,8 +19,8 @@ enum ZodiacSign {
 }
 
 extension ZodiacSignExt on ZodiacSign {
-  String get imagePath {
-    return Get.isDarkMode ? imagePathDark : imagePathLight;
+  String imagePath(BuildContext context) {
+    return Utils.isDarkMode(context) ? imagePathDark : imagePathLight;
   }
 
   String get imagePathLight {

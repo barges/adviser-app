@@ -21,23 +21,23 @@ class AddMoreImagesFromGalleryWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(
               AppConstants.buttonRadius,
             ),
-            color: Get.theme.primaryColorLight),
+            color: Theme.of(context).primaryColorLight),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Assets.vectors.add.svg(
-              color: Get.theme.primaryColor,
+              color: Theme.of(context).primaryColor,
             ),
             const SizedBox(
               height: 4.0,
             ),
             Text(
               S.current.addMore,
-              style: Get.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-                color: Get.theme.primaryColor,
-              ),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).primaryColor,
+                  ),
               textAlign: TextAlign.center,
             )
           ],

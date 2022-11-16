@@ -14,6 +14,7 @@ import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions
 
 class SearchListCubit extends Cubit<SearchListState> {
   final ChatsRepository _repository;
+  final BuildContext context;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
 
   final BehaviorSubject _searchStream = BehaviorSubject<String>();
@@ -28,7 +29,8 @@ class SearchListCubit extends Cubit<SearchListState> {
   bool _hasMore = true;
   int _historyPage = 1;
 
-  SearchListCubit(this._repository) : super(const SearchListState()) {
+  SearchListCubit(this._repository, this.context)
+      : super(const SearchListState()) {
     _searchSubscription = _searchStream
         .debounceTime(const Duration(milliseconds: 500))
         .listen((event) async {
@@ -36,7 +38,8 @@ class SearchListCubit extends Cubit<SearchListState> {
     });
 
     historyScrollController.addListener(() {
-      if (historyScrollController.position.extentAfter <= Get.height) {
+      if (historyScrollController.position.extentAfter <=
+          MediaQuery.of(context).size.height) {
         getHistoryList();
       }
     });

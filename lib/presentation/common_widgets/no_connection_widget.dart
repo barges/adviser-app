@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 class NoConnectionWidget extends StatelessWidget {
   const NoConnectionWidget({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class NoConnectionWidget extends StatelessWidget {
         children: [
           Column(
             children: [
-              Get.isDarkMode
+              Utils.isDarkMode(context)
                   ? Assets.images.logos.noConnectionLogoDark.image(
                       height: AppConstants.logoSize,
                       width: AppConstants.logoSize,
@@ -32,7 +33,7 @@ class NoConnectionWidget extends StatelessWidget {
               ),
               Text(
                 S.of(context).noInternetConnection,
-                style: Get.textTheme.headlineMedium,
+                style: Theme.of(context).textTheme.headlineMedium,
                 textAlign: TextAlign.center,
               ),
               Column(
@@ -42,10 +43,10 @@ class NoConnectionWidget extends StatelessWidget {
                   ),
                   Text(
                     S.of(context).uhohNoNetworkNcheckYourInternetConnection,
-                    style: Get.textTheme.bodyMedium?.copyWith(
-                      fontSize: 16.0,
-                      color: Get.theme.shadowColor,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontSize: 16.0,
+                          color: Theme.of(context).shadowColor,
+                        ),
                     textAlign: TextAlign.center,
                   ),
                 ],

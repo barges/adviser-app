@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class ConnectivityService {
   ConnectivityService._internal() {

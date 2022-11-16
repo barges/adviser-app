@@ -16,6 +16,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/text_fields
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/password_text_field.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_cubit.dart';
+import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
@@ -192,7 +193,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 24.0,
                                     ),
-                                    child: Get.isDarkMode
+                                    child: Utils.isDarkMode(context)
                                         ? Assets
                                             .images.logos.forgotPasswordLogoDark
                                             .image(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:open_mail_app/open_mail_app.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 
@@ -25,11 +24,11 @@ class OpenEmailButton extends StatelessWidget {
           },
           child: Text(
             S.of(context).openEmailApp,
-            style: Get.textTheme.labelMedium?.copyWith(
-              color: Get.theme.primaryColor,
-              fontWeight: FontWeight.w700,
-              decoration: TextDecoration.underline,
-            ),
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.w700,
+                  decoration: TextDecoration.underline,
+                ),
           )),
     );
   }
