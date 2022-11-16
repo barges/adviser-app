@@ -13,7 +13,6 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/reviews_settings_part_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/see_more_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/user_info_part_widget.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -76,11 +75,11 @@ class AccountScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const SliverFillRemaining(
-                              hasScrollBody: false,
-                              fillOverscroll: false,
-                              child: SeeMoreWidget(),
-                            )
+                            // const SliverFillRemaining(
+                            //   hasScrollBody: false,
+                            //   fillOverscroll: false,
+                            //   child: SeeMoreWidget(),
+                            // )
                           ],
                         ),
                       ),

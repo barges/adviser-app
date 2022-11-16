@@ -41,6 +41,7 @@ class ConnectivityService {
       case ConnectivityResult.wifi:
       case ConnectivityResult.bluetooth:
       case ConnectivityResult.ethernet:
+      case ConnectivityResult.vpn:
         {
           return _checker.hasConnection;
         }
