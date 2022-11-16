@@ -5,7 +5,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/rect_circle
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_player.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_area_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/footer_chat_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_footer_widget.dart';
 
 class ChatTextMediaWidget extends ChatWidget {
   const ChatTextMediaWidget({
@@ -72,7 +72,7 @@ class ChatTextMediaWidget extends ChatWidget {
           Positioned(
             right: 0.0,
             bottom: 0.0,
-            child: FooterChatWidget(
+            child: ChatItemFooterWidget(
               type: item.type!,
               createdAt: createdAt,
               ritualIdentifier: item.ritualIdentifier,

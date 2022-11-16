@@ -7,15 +7,15 @@ import 'package:shared_advisor_interface/domain/repositories/chats_repository.da
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_media_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_recorded_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_recording_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_media_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
-
-import 'chat_cubit.dart';
-import 'widgets/chat_media_widget.dart';
-import 'widgets/chat_recorded_widget.dart';
-import 'widgets/chat_recording_widget.dart';
-import 'widgets/chat_text_input_widget.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({Key? key}) : super(key: key);
@@ -92,8 +92,14 @@ class ChatScreen extends StatelessWidget {
                                   chatCubit.startPlayRecordedAudio(),
                               onPausePlayPressed: () =>
                                   chatCubit.pauseRecordedAudio(),
-                              onDeletePressed: () =>
-                                  chatCubit.deletedRecordedAudio(),
+                              onDeletePressed: () async {
+                                final bool? isDelete = await showDeleteAlert(
+                                    context,
+                                    'Do you want to delete audio message?');
+                                if (isDelete!) {
+                                  chatCubit.deletedRecordedAudio();
+                                }
+                              },
                               onSendPressed: () => chatCubit.sendMedia(),
                             );
                           }

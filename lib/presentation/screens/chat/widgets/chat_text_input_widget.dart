@@ -54,12 +54,14 @@ class ChatTextInputWidget extends StatelessWidget {
                     }
                   },
                   child: Opacity(
-                      opacity:
-                          attachedPics.length < AppConstants.maxAttachedPics
-                              ? 1.0
-                              : 0.4,
-                      child: Assets.vectors.photo
-                          .svg(width: AppConstants.iconSize)),
+                    opacity: attachedPics.length < AppConstants.maxAttachedPics
+                        ? 1.0
+                        : 0.4,
+                    child: Assets.vectors.gallery.svg(
+                      width: AppConstants.iconSize,
+                      color: Get.theme.shadowColor,
+                    ),
+                  ),
                 ),
                 if (isAttachedPics) const Spacer(),
                 if (!isAttachedPics)

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_footer_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_bg_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_area_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/footer_chat_widget.dart';
 
 class ChatTextWidget extends ChatWidget {
   const ChatTextWidget({
@@ -33,7 +33,7 @@ class ChatTextWidget extends ChatWidget {
           Row(
             children: [
               const Spacer(),
-              FooterChatWidget(
+              ChatItemFooterWidget(
                 type: item.type!,
                 createdAt: createdAt,
                 ritualIdentifier: item.ritualIdentifier,

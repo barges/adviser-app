@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
 
-class FooterChatWidget extends StatelessWidget {
+class ChatItemFooterWidget extends StatelessWidget {
   final ChatItemType type;
   final DateTime createdAt;
   final SessionsTypes? ritualIdentifier;
   final Color color;
-  const FooterChatWidget({
+  const ChatItemFooterWidget({
     super.key,
     required this.type,
     required this.createdAt,

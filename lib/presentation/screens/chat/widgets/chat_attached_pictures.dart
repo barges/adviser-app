@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 
 class AttachedPictures extends StatelessWidget {
   const AttachedPictures({super.key});
@@ -22,7 +23,13 @@ class AttachedPictures extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 9.0),
                     child: _AttachedPicture(
                       file,
-                      onDeletePressed: () => chatCubit.deletePicture(file),
+                      onDeletePressed: () async {
+                        final bool? isDelete = await showDeleteAlert(
+                            context, 'Do you want to delete image?');
+                        if (isDelete!) {
+                          chatCubit.deletePicture(file);
+                        }
+                      },
                       width: 64.0,
                       height: 64.0,
                     ),

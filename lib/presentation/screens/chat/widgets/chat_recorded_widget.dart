@@ -65,9 +65,12 @@ class ChatRecordedWidget extends StatelessWidget {
                   final List<File> attachedPics = context
                       .select((ChatCubit cubit) => cubit.state.attachedPics);
                   return Opacity(
-                      opacity: attachedPics.isEmpty ? 1.0 : 0.4,
-                      child: Assets.vectors.photo
-                          .svg(width: AppConstants.iconSize));
+                    opacity: attachedPics.isEmpty ? 1.0 : 0.4,
+                    child: Assets.vectors.gallery.svg(
+                      width: AppConstants.iconSize,
+                      color: Get.theme.shadowColor,
+                    ),
+                  );
                 }),
               ),
               SizedBox(
