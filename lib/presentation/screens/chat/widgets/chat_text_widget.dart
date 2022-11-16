@@ -14,7 +14,7 @@ class ChatTextWidget extends ChatWidget {
   @override
   Widget build(BuildContext context) {
     return ChatItemBg(
-      border: true,
+      isBorder: true,
       padding: paddingItem,
       color: colorItem,
       child: Column(

@@ -18,7 +18,7 @@ class ChatTextMediaWidget extends ChatWidget {
     final String? audioUrl1 = item.getAudioUrl(1);
     final String? audioUrl2 = item.getAudioUrl(2);
     return ChatItemBg(
-      border: true,
+      isBorder: true,
       padding: paddingItem,
       color: colorItem,
       child: Stack(
