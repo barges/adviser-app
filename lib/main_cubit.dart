@@ -82,9 +82,6 @@ class MainCubit extends Cubit<MainState> {
     }
     getIt.get<CachingManager>().saveLocaleIndex(index);
 
-    getIt.get<Dio>().options.headers['x-adviqo-app-language'] =
-        locale.languageCode;
-
     emit(state.copyWith(
         locale:
             Locale(locale.languageCode, locale.languageCode.toUpperCase())));

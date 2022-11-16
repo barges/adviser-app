@@ -23,6 +23,7 @@ class HomeScreen extends StatelessWidget {
         final HomeCubit cubit = context.read<HomeCubit>();
         final int tabPositionIndex =
             context.select((HomeCubit cubit) => cubit.state.tabPositionIndex);
+        final ThemeData theme = Theme.of(context);
         return Scaffold(
           key: cubit.scaffoldKey,
           drawer: const AppDrawer(),
@@ -37,20 +38,20 @@ class HomeScreen extends StatelessWidget {
           bottomNavigationBar: BottomNavigationBar(
               currentIndex: tabPositionIndex,
               type: BottomNavigationBarType.fixed,
-              selectedIconTheme: Theme.of(context).iconTheme.copyWith(
-                    color: Theme.of(context).primaryColor,
-                  ),
-              selectedLabelStyle: Theme.of(context).textTheme.labelSmall,
-              unselectedLabelStyle: Theme.of(context).textTheme.labelSmall,
-              unselectedItemColor: Theme.of(context).iconTheme.color,
+              selectedIconTheme: theme.iconTheme.copyWith(
+                color: theme.primaryColor,
+              ),
+              selectedLabelStyle: theme.textTheme.labelSmall,
+              unselectedLabelStyle: theme.textTheme.labelSmall,
+              unselectedItemColor: theme.iconTheme.color,
               showUnselectedLabels: true,
               onTap: cubit.changeIndex,
-              selectedItemColor: Theme.of(context).primaryColor,
+              selectedItemColor: theme.primaryColor,
               items: [
                 BottomNavigationBarItem(
                   icon: Assets.vectors.dashboard.svg(),
                   activeIcon: Assets.vectors.dashboard.svg(
-                    color: Theme.of(context).primaryColor,
+                    color: theme.primaryColor,
                   ),
                   label: 'Dashboard',
                 ),
@@ -58,7 +59,7 @@ class HomeScreen extends StatelessWidget {
                   BottomNavigationBarItem(
                     icon: Assets.vectors.articles.svg(),
                     activeIcon: Assets.vectors.articles.svg(
-                      color: Theme.of(context).primaryColor,
+                      color: theme.primaryColor,
                     ),
                     label: 'Articles',
                   ),
@@ -66,14 +67,14 @@ class HomeScreen extends StatelessWidget {
                 BottomNavigationBarItem(
                   icon: Assets.vectors.chats.svg(),
                   activeIcon: Assets.vectors.chats.svg(
-                    color: Theme.of(context).primaryColor,
+                    color: theme.primaryColor,
                   ),
                   label: 'Chats',
                 ),
                 BottomNavigationBarItem(
                   icon: Assets.vectors.account.svg(),
                   activeIcon: Assets.vectors.account.svg(
-                    color: Theme.of(context).primaryColor,
+                    color: theme.primaryColor,
                   ),
                   label: 'Account',
                 ),

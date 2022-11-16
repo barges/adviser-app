@@ -17,6 +17,7 @@ class SplashScreen extends StatelessWidget {
       create: (_) => SplashCubit(getIt.get<CachingManager>()),
       child: Builder(
         builder: (context) {
+          final Size size = MediaQuery.of(context).size;
           return BlocListener<SplashCubit, SplashState>(
             listener: (prev, current) {
               if (current.isLogged == true) {
@@ -27,8 +28,8 @@ class SplashScreen extends StatelessWidget {
             },
             child: Scaffold(
               body: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
+                height: size.height,
+                width: size.width,
                 child: Assets.images.splash.image(
                   fit: BoxFit.fill,
                 ),

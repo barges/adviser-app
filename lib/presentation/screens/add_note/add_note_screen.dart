@@ -50,7 +50,7 @@ class AddNoteScreen extends StatelessWidget {
               isNoteNew
                   ? SizedBox.shrink()
                   : Text(
-                      addNoteCubit.updatedAt!.parseDateTimePattern2,
+                      addNoteCubit.arguments.updatedAt!.parseDateTimePattern2,
                       style: Theme.of(context).textTheme.displaySmall?.copyWith(
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context).shadowColor,

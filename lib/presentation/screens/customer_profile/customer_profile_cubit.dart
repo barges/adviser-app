@@ -35,23 +35,19 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
     emit(state.copyWith(currentNote: note));
   }
 
-  void updateNoteToCustomer(GetNoteResponse newContent) {
-    emit(state.copyWith(currentNote: newContent));
-  }
-
   void navigateToAddNoteScreenForOldNote() {
     Get.toNamed(AppRoutes.addNote,
         arguments: AddNoteScreenArguments(
             customerID: customerID,
             oldNote: state.currentNote?.content,
             updatedAt: state.currentNote?.updatedAt,
-            noteChanged: updateNoteToCustomer));
+            noteChanged: getCurrentNote));
   }
 
   void navigateToAddNoteScreenForNewNote() {
     Get.toNamed(AppRoutes.addNote,
         arguments: AddNoteScreenArguments(
-            customerID: customerID, noteChanged: updateNoteToCustomer));
+            customerID: customerID, noteChanged: getCurrentNote));
   }
 }
 
@@ -59,7 +55,7 @@ class AddNoteScreenArguments {
   final String customerID;
   final String? oldNote;
   final String? updatedAt;
-  ValueChanged<GetNoteResponse> noteChanged;
+  VoidCallback noteChanged;
 
   AddNoteScreenArguments(
       {required this.customerID,

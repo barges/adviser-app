@@ -86,21 +86,17 @@ class _MyAppState extends State<MyApp> {
                   if (localeIndex != null) {
                     newLocale = supportedLocales.toList()[localeIndex];
                   } else {
-                    if (locale == null) {
-                      newLocale = supportedLocales.first;
-                    } else {
-                      for (var supportedLocale in supportedLocales) {
-                        if (supportedLocale.languageCode ==
-                                locale.languageCode ||
-                            supportedLocale.countryCode == locale.countryCode) {
-                          newLocale = supportedLocale;
-                        }
+                    for (var supportedLocale in supportedLocales) {
+                      if (supportedLocale.languageCode ==
+                              locale?.languageCode ||
+                          supportedLocale.countryCode == locale?.countryCode) {
+                        newLocale = supportedLocale;
                       }
                     }
+                    newLocale ??= supportedLocales.first;
                   }
                   getIt.get<Dio>().options.headers['x-adviqo-app-language'] =
-                      newLocale?.languageCode ??
-                          supportedLocales.first.languageCode;
+                      newLocale.languageCode;
                   return newLocale;
                 },
               ),

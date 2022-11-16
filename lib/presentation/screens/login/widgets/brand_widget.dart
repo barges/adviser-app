@@ -19,6 +19,7 @@ class BrandWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isEnabled = brand.isEnabled;
+    final ThemeData theme = Theme.of(context);
     return Opacity(
       opacity: isEnabled ? 1.0 : 0.4,
       child: GestureDetector(
@@ -44,16 +45,14 @@ class BrandWidget extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-            color: isSelected
-                ? Theme.of(context).primaryColor
-                : Theme.of(context).hintColor,
+            color: isSelected ? theme.primaryColor : theme.hintColor,
           ),
           child: Container(
             margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
             decoration: BoxDecoration(
               borderRadius:
                   BorderRadius.circular(AppConstants.buttonRadius - 1),
-              color: Theme.of(context).canvasColor,
+              color: theme.canvasColor,
             ),
             child: Column(
               children: [
@@ -62,9 +61,8 @@ class BrandWidget extends StatelessWidget {
                 ),
                 SvgPicture.asset(
                   brand.icon,
-                  color: Utils.isDarkMode(context)
-                      ? Theme.of(context).backgroundColor
-                      : null,
+                  color:
+                      Utils.isDarkMode(context) ? theme.backgroundColor : null,
                 ),
                 const SizedBox(
                   height: 8.0,
@@ -73,13 +71,13 @@ class BrandWidget extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Text(
                     isEnabled ? brand.name : S.of(context).comingSoon,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: isSelected
-                              ? Theme.of(context).primaryColor
-                              : Theme.of(context).textTheme.bodySmall?.color,
-                          fontWeight:
-                              isSelected ? FontWeight.w700 : FontWeight.w500,
-                        ),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: isSelected
+                          ? theme.primaryColor
+                          : theme.textTheme.bodySmall?.color,
+                      fontWeight:
+                          isSelected ? FontWeight.w700 : FontWeight.w500,
+                    ),
                   ),
                 )
               ],

@@ -15,12 +15,8 @@ import 'package:shared_advisor_interface/presentation/screens/customer_profile/c
 import 'add_note_state.dart';
 
 class AddNoteCubit extends Cubit<AddNoteState> {
-  late final String customerID;
-  late final ValueChanged<GetNoteResponse> onNoteChanged;
-  late final String? oldNote;
-  late final String? updatedAt;
-  late final String? oldTitle;
-  late final String? newTitle;
+  late final AddNoteScreenArguments arguments;
+  final String? oldTitle = null;
   final CustomerRepository _repository = getIt.get<CustomerRepository>();
   late final TextEditingController noteController;
   late final TextEditingController titleController;
@@ -28,33 +24,26 @@ class AddNoteCubit extends Cubit<AddNoteState> {
   ///TODO: Change arguments and add callback to arguments for change note on customer profile screen
 
   AddNoteCubit() : super(AddNoteState()) {
-    final AddNoteScreenArguments arguments =
-        Get.arguments as AddNoteScreenArguments;
-    customerID = arguments.customerID;
-    oldNote = arguments.oldNote;
-    updatedAt = arguments.updatedAt;
-    onNoteChanged = arguments.noteChanged;
-    oldTitle = null;
-    noteController = TextEditingController(text: oldNote ?? '');
+    arguments = Get.arguments as AddNoteScreenArguments;
+    noteController = TextEditingController(text: arguments.oldNote ?? '');
     titleController = TextEditingController(text: oldTitle ?? '');
     if (oldTitle != null) {
       emit(state.copyWith(hadTitle: true));
     }
-    if (oldNote != null) {
+    if (arguments.oldNote != null) {
       emit(state.copyWith(isNoteNew: false));
     }
   }
   Future<void> addNoteToCustomer() async {
-    if (noteController.text != oldNote) {
+    if (noteController.text != arguments.oldNote) {
       UpdateNoteResponse response = await _repository.updateNoteToCustomer(
-          clientID: customerID,
+          clientID: arguments.customerID,
           content: noteController.text,
           updatedAt: DateFormat(dateFormat).format(DateTime.now()));
       if (response.content == noteController.text) {
         emit(state.copyWith(
             newNote: noteController.text.removeSpacesAndNewLines));
-        onNoteChanged(GetNoteResponse(noteController.text,
-            DateFormat(dateFormat).format(DateTime.now())));
+        arguments.noteChanged();
         //_userProfileCubit.updateNoteToCustomer(GetNoteResponse(
         //    noteController.text,
         //    DateFormat(dateFormat).format(DateTime.now())));
