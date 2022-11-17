@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
-import 'package:shared_advisor_interface/data/models/customer_info.dart';
 import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -75,7 +75,8 @@ class CustomerProfileScreen extends StatelessWidget {
                                   alignment: Alignment.bottomCenter,
                                   children: [
                                     SvgPicture.asset(
-                                        customerInfo.zodiac?.imagePath(context) ??
+                                        customerInfo.zodiac
+                                                ?.imagePath(context) ??
                                             '',
                                         width: 96.0),
                                     if (userProfileCubit.isTopSpender)
@@ -154,7 +155,8 @@ class CustomerProfileScreen extends StatelessWidget {
                                       _InfoWidget(
                                         title: S.of(context).zodiacSign,
                                         info: SvgPicture.asset(
-                                            customerInfo.zodiac?.iconPath ?? ''),
+                                            customerInfo.zodiac?.iconPath ??
+                                                ''),
                                       ),
                                       const SizedBox(width: 8.0),
                                       _InfoWidget(
@@ -179,7 +181,8 @@ class CustomerProfileScreen extends StatelessWidget {
                                     address: 'Preston Rd. Inglewood, Maine',
                                   ),
                                   _QuestionPropertiesWidget(
-                                    properties: customerInfo.advisorMatch?.values
+                                    properties: customerInfo
+                                            .advisorMatch?.values
                                             .toList() ??
                                         const [],
                                   ),
