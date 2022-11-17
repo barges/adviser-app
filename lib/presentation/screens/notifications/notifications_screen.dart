@@ -12,7 +12,7 @@ class NotificationsScreen extends StatelessWidget {
         title: 'Notifications',
       ),
       body: SizedBox(
-        height: Get.height,
+        height: MediaQuery.of(context).size.height,
         child: const Center(
           child: Text('Notifications'),
         ),

@@ -1,16 +1,14 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:intl/intl.dart';
-
-import 'package:flutter_sound/flutter_sound.dart';
 
 const String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 const String datePattern1 = 'MMM d, yyyy';
 const String datePattern2 = 'MMM. d, yyyy';
 const String datePattern3 = 'dd/MM/yyyy';
-const String datePattern4 = 'H:mm';
+const String datePattern4 = 'HH:mm MMM d yyyy';
+const String datePattern5 = 'H:mm';
 
 const String currencyPattern = '#,##0.00';
 
@@ -60,13 +58,19 @@ extension StringExt on String {
     return DateFormat(datePattern3).format(inputDate);
   }
 
+  String get parseDateTimePattern4 {
+    final DateTime inputData =
+        DateTime.parse(DateFormat(dateFormat).parse(this).toString());
+    return DateFormat(datePattern4).format(inputData);
+  }
+
   String get parseDateTimeChat {
     final datetime = DateTime.tryParse(this);
     if (datetime == null) {
-      return DateFormat(datePattern4).format(DateTime.now());
+      return DateFormat(datePattern5).format(DateTime.now());
     }
 
-    return DateFormat(datePattern4).format(datetime);
+    return DateFormat(datePattern5).format(datetime);
   }
 
   String get removeSpacesAndNewLines {
@@ -100,11 +104,5 @@ extension IterableExtention<E> on Iterable<E> {
 
   E? get lastOrNull {
     return isEmpty ? null : last;
-  }
-}
-
-extension CurrentCodec on Codec {
-  static Codec get current {
-    return Platform.isIOS ? Codec.aacMP4 : Codec.mp3;
   }
 }

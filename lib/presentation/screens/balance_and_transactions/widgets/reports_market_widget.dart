@@ -41,13 +41,13 @@ class ReportsMarketWidget extends StatelessWidget {
                     height: 22.0,
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     decoration: BoxDecoration(
-                      color: Get.theme.scaffoldBackgroundColor,
+                      color: Theme.of(context).scaffoldBackgroundColor,
                       borderRadius:
                           BorderRadius.circular(AppConstants.buttonRadius),
                     ),
                     child: Text(
                       reportsMarket.iso?.languageName ?? '',
-                      style: Get.textTheme.labelMedium,
+                      style: Theme.of(context).textTheme.labelMedium,
                     ),
                   ),
                 ],
@@ -78,9 +78,12 @@ class ReportsMarketWidget extends StatelessWidget {
                         children: [
                           Text(
                             '${S.of(context).total}:',
-                            style: Get.textTheme.labelMedium?.copyWith(
-                              fontSize: 16.0,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium
+                                ?.copyWith(
+                                  fontSize: 16.0,
+                                ),
                           ),
                           Container(
                             alignment: Alignment.center,
@@ -88,7 +91,7 @@ class ReportsMarketWidget extends StatelessWidget {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             decoration: BoxDecoration(
-                              color: Get.theme.primaryColorLight,
+                              color: Theme.of(context).primaryColorLight,
                               borderRadius: BorderRadius.circular(
                                 AppConstants.buttonRadius,
                               ),
@@ -96,10 +99,13 @@ class ReportsMarketWidget extends StatelessWidget {
                             child: Text(
                               '~ $currencySymbol '
                               '${reportsMarket.marketTotal?.amount?.toStringAsFixed(2)}',
-                              style: Get.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: Get.theme.primaryColor,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
                             ),
                           )
                         ],

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class AppTextField extends StatelessWidget {
@@ -31,7 +30,15 @@ class AppTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: Get.textTheme.labelMedium),
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 12.0,
+          ),
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
+        ),
         const SizedBox(
           height: 4.0,
         ),
@@ -39,10 +46,10 @@ class AppTextField extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
             color: errorText.isNotEmpty
-                ? Get.theme.errorColor
+                ? Theme.of(context).errorColor
                 : focusNode.hasPrimaryFocus
-                    ? Get.theme.primaryColor
-                    : Get.theme.hintColor,
+                    ? Theme.of(context).primaryColor
+                    : Theme.of(context).hintColor,
           ),
           child: Container(
             margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
@@ -50,7 +57,7 @@ class AppTextField extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius:
                   BorderRadius.circular(AppConstants.buttonRadius - 1),
-              color: Get.theme.canvasColor,
+              color: Theme.of(context).canvasColor,
             ),
             child: TextField(
               controller: controller,
@@ -66,17 +73,22 @@ class AppTextField extends StatelessWidget {
                     : const EdgeInsets.symmetric(horizontal: 12.0),
               ),
               maxLines: isBig ? 10 : 1,
-              style: Get.textTheme.bodyMedium,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         ),
         if (errorText.isNotEmpty)
           Padding(
-            padding: const EdgeInsets.only(top: 4.0),
+            padding: const EdgeInsets.only(
+              top: 4.0,
+              left: 12.0,
+            ),
             child: Text(
               errorText,
-              style: Get.textTheme.bodySmall
-                  ?.copyWith(color: Get.theme.errorColor),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(color: Theme.of(context).errorColor),
             ),
           )
       ],

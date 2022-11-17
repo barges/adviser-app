@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -18,14 +19,14 @@ import 'package:shared_advisor_interface/presentation/common_widgets/show_delete
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class ChatScreen extends StatelessWidget {
-  ChatScreen({Key? key}) : super(key: key);
   final ChatItem _question = Get.arguments;
+  ChatScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     const textCounterWidth = 92.0;
     return BlocProvider(
-      create: (_) => ChatCubit(Get.find<ChatsRepository>(), _question),
+      create: (_) => ChatCubit(getIt.get<ChatsRepository>(), _question),
       child: Builder(
         builder: (context) {
           final ChatCubit chatCubit = context.read<ChatCubit>();

@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
@@ -25,7 +26,7 @@ class SessionsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) =>
-          SessionsCubit(Get.find<CachingManager>()),
+          SessionsCubit(getIt.get<CachingManager>(), context),
       child: Builder(builder: (BuildContext context) {
         final SessionsCubit sessionsCubit = context.read<SessionsCubit>();
 
@@ -40,9 +41,10 @@ class SessionsScreen extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             Scaffold(
+              resizeToAvoidBottomInset: false,
               backgroundColor: isOnline
-                  ? Get.theme.canvasColor
-                  : Get.theme.scaffoldBackgroundColor,
+                  ? Theme.of(context).canvasColor
+                  : Theme.of(context).scaffoldBackgroundColor,
               appBar: HomeAppBar(
                 bottomWidget: Padding(
                   padding: const EdgeInsets.symmetric(

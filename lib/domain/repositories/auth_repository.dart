@@ -4,5 +4,16 @@ import 'package:shared_advisor_interface/data/network/responses/login_response.d
 abstract class AuthRepository {
   Future<LoginResponse?> login();
 
-  Future<bool> resetPassword(ResetPasswordRequest request);
+  Future<bool> sendEmailForReset(
+    ResetPasswordRequest request,
+  );
+
+  Future<bool> sendPasswordForReset({
+    required String token,
+    required ResetPasswordRequest request,
+  });
+
+  Future<bool> verifyToken({
+    required String token,
+  });
 }

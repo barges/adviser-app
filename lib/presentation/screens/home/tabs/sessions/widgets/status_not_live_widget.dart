@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
+import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 class NotLiveStatusWidget extends StatelessWidget {
   final FortunicaUserStatus status;
@@ -33,21 +34,21 @@ class NotLiveStatusWidget extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: Column(
                       children: [
-                        Get.isDarkMode
+                        Utils.isDarkMode(context)
                             ? Assets.images.logos.noConnectionLogoDark.image(
-                          height: AppConstants.logoSize,
-                          width: AppConstants.logoSize,
-                        )
+                                height: AppConstants.logoSize,
+                                width: AppConstants.logoSize,
+                              )
                             : Assets.images.logos.noConnectionLogo.image(
-                          height: AppConstants.logoSize,
-                          width: AppConstants.logoSize,
-                        ),
+                                height: AppConstants.logoSize,
+                                width: AppConstants.logoSize,
+                              ),
                         const SizedBox(
                           height: 24.0,
                         ),
                         Text(
                           status.errorText(),
-                          style: Get.textTheme.headlineMedium,
+                          style: Theme.of(context).textTheme.headlineMedium,
                           textAlign: TextAlign.center,
                         ),
                       ],

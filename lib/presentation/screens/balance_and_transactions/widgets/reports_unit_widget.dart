@@ -92,13 +92,15 @@ class _ReportsUnit extends StatelessWidget {
             width: AppConstants.iconButtonSize,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: isCanceled ? Get.theme.errorColor : Get.theme.primaryColor,
+              color: isCanceled
+                  ? Theme.of(context).errorColor
+                  : Theme.of(context).primaryColor,
             ),
             child: SvgPicture.asset(
               isCanceled
                   ? Assets.vectors.close.path
                   : reportsUnit.type?.iconPath ?? '',
-              color: Get.theme.backgroundColor,
+              color: Theme.of(context).backgroundColor,
             ),
           ),
           Expanded(
@@ -113,22 +115,25 @@ class _ReportsUnit extends StatelessWidget {
                     child: RichText(
                       text: TextSpan(
                           text: '${reportsUnit.type?.sessionNameForStatistics} '
-                              '(${isCanceled ? reportsUnit.numberCancelled
-                              : reportsUnit.number}) ',
-                          style: Get.textTheme.bodySmall?.copyWith(
-                            fontSize: 14.0,
-                            height: 1.2,
-                          ),
+                              '(${isCanceled ? reportsUnit.numberCancelled : reportsUnit.number}) ',
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontSize: 14.0,
+                                    height: 1.2,
+                                  ),
                           children: [
                             if (!isCanceled)
                               TextSpan(
                                 text:
                                     '($currencySymbol${rate.toStringAsFixed(2)})',
-                                style: Get.textTheme.bodySmall?.copyWith(
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w500,
-                                  color: Get.theme.shadowColor,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context).shadowColor,
+                                    ),
                               )
                           ]),
                     ),
@@ -137,7 +142,7 @@ class _ReportsUnit extends StatelessWidget {
                   //   '${reportsUnit.type?.sessionNameForStatistics} '
                   //   '(${isCanceled ? reportsUnit.numberCancelled : reportsUnit.number})',
                   //
-                  //   style: Get.textTheme.bodySmall?.copyWith(
+                  //   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   //     fontSize: 14.0,
                   //   ),
                   // ),
@@ -149,10 +154,10 @@ class _ReportsUnit extends StatelessWidget {
                   //       ),
                   //       Text(
                   //         '($currencySymbol ${rate.toStringAsFixed(2)})',
-                  //         style: Get.textTheme.bodySmall?.copyWith(
+                  //         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   //           fontSize: 12.0,
                   //           fontWeight: FontWeight.w500,
-                  //           color: Get.theme.shadowColor,
+                  //           color: Theme.of(context).shadowColor,
                   //         ),
                   //       ),
                   //     ],
@@ -170,13 +175,13 @@ class _ReportsUnit extends StatelessWidget {
                 child: Text(
                   '${isCanceled ? '' : '~ '}$currencySymbol '
                   '${isCanceled ? reportsUnit.amountCancelled?.toStringAsFixed(2) : reportsUnit.amount?.toStringAsFixed(2)}',
-                  style: Get.textTheme.bodySmall?.copyWith(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w500,
-                    color: isCanceled
-                        ? Get.theme.errorColor
-                        : Get.textTheme.bodySmall?.color,
-                  ),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w500,
+                        color: isCanceled
+                            ? Theme.of(context).errorColor
+                            : Theme.of(context).textTheme.bodySmall?.color,
+                      ),
                 ),
               ),
               if (isCanceled)
@@ -184,10 +189,10 @@ class _ReportsUnit extends StatelessWidget {
                   height: 14.0,
                   child: Text(
                     S.of(context).earned,
-                    style: Get.textTheme.bodySmall?.copyWith(
-                      fontSize: 12.0,
-                      color: Get.theme.shadowColor,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontSize: 12.0,
+                          color: Theme.of(context).shadowColor,
+                        ),
                   ),
                 )
             ],

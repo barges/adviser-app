@@ -32,7 +32,7 @@ extension StatusExt on FortunicaUserStatus {
     }
   }
 
-  Color get statusColor {
+  Color statusColor(BuildContext context) {
     switch (this) {
       case FortunicaUserStatus.live:
         return AppColors.online;
@@ -41,11 +41,11 @@ extension StatusExt on FortunicaUserStatus {
       case FortunicaUserStatus.legalBlock:
         return AppColors.error;
       case FortunicaUserStatus.offline:
-        return Get.theme.shadowColor;
+        return Theme.of(context).shadowColor;
     }
   }
 
-  Color get statusColorForBadge {
+  Color statusColorForBadge(BuildContext context) {
     switch (this) {
       case FortunicaUserStatus.live:
         return AppColors.online;
@@ -53,7 +53,7 @@ extension StatusExt on FortunicaUserStatus {
       case FortunicaUserStatus.blocked:
       case FortunicaUserStatus.legalBlock:
       case FortunicaUserStatus.offline:
-        return Get.theme.shadowColor;
+        return Theme.of(context).shadowColor;
     }
   }
 

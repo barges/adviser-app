@@ -19,7 +19,7 @@ class AdvisorPreviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => Get.put<AdvisorPreviewCubit>(AdvisorPreviewCubit()),
+      create: (_) => AdvisorPreviewCubit(),
       child: Builder(builder: (context) {
         final AdvisorPreviewCubit advisorPreviewCubit =
             context.read<AdvisorPreviewCubit>();
@@ -61,8 +61,7 @@ class AdvisorPreviewScreen extends StatelessWidget {
                               (AdvisorPreviewCubit cubit) =>
                                   cubit.state.currentIndex);
                           return Image.asset(
-                            advisorPreviewCubit.languages[index]
-                                .flagImagePath,
+                            advisorPreviewCubit.languages[index].flagImagePath,
                           );
                         },
                       ),
@@ -83,7 +82,7 @@ class AdvisorPreviewScreen extends StatelessWidget {
                             .userProfile.coverPictures?.firstOrNull ??
                         '',
                     height: 150.0,
-                    width: Get.width,
+                    width: MediaQuery.of(context).size.width,
                     fit: BoxFit.cover,
                   ),
                   Container(

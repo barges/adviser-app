@@ -30,7 +30,7 @@ class ChatsListTileWidget extends StatelessWidget {
           GestureDetector(
             onTap: () {
               if (question.clientID != null) {
-                Get.toNamed(AppRoutes.userProfile,
+                Get.toNamed(AppRoutes.customerProfile,
                     arguments: question.clientID);
               }
             },
@@ -40,14 +40,15 @@ class ChatsListTileWidget extends StatelessWidget {
                 alignment: Alignment.bottomRight,
                 children: [
                   SvgPicture.asset(
-                    question.clientInformation?.zodiac?.imagePath ?? '',
+                    question.clientInformation?.zodiac?.imagePath(context) ??
+                        '',
                     height: 48.0,
                   ),
 
                   ///TODO: need change
                   // CircleAvatar(
                   //     radius: 8.0,
-                  //     backgroundColor: Get.theme.canvasColor,
+                  //     backgroundColor: Theme.of(context).canvasColor,
                   //
                   //
                   //     child: Assets.vectors.ritual.svg())
@@ -76,17 +77,18 @@ class ChatsListTileWidget extends StatelessWidget {
                         child: Text(
                           question.clientName ?? '',
                           overflow: TextOverflow.ellipsis,
-                          style: Get.textTheme.labelMedium?.copyWith(
-                            fontSize: 15.0,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.labelMedium?.copyWith(
+                                    fontSize: 15.0,
+                                  ),
                         ),
                       ),
                       Text(
                         (question.updatedAt ?? '').parseDateTimePattern1,
-                        style: Get.textTheme.bodySmall?.copyWith(
-                          color: Get.theme.shadowColor,
-                          fontSize: 12.0,
-                        ),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Theme.of(context).shadowColor,
+                              fontSize: 12.0,
+                            ),
                       )
                     ],
                   ),
@@ -207,11 +209,11 @@ class _TextContent extends StatelessWidget {
       text,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-      style: Get.textTheme.bodyMedium?.copyWith(
-        fontWeight: FontWeight.w400,
-        fontSize: 14.0,
-        color: Get.theme.shadowColor,
-      ),
+      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w400,
+            fontSize: 14.0,
+            color: Theme.of(context).shadowColor,
+          ),
     );
   }
 }
@@ -234,7 +236,7 @@ class _MediaContent extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: isImage ? BoxShape.rectangle : BoxShape.circle,
-        color: Get.theme.primaryColorLight,
+        color: Theme.of(context).primaryColorLight,
         borderRadius: isImage ? BorderRadius.circular(4.0) : null,
       ),
       child: isImage
@@ -242,7 +244,7 @@ class _MediaContent extends StatelessWidget {
           : Assets.vectors.play.svg(
               height: AppConstants.iconSize,
               width: AppConstants.iconSize,
-              color: Get.theme.primaryColor,
+              color: Theme.of(context).primaryColor,
             ),
     );
   }

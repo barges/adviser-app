@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/network/requests/reset_password_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_state.dart';
 
 class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
+  final BuildContext _context;
   final AuthRepository _repository;
 
-  final MainCubit _mainCubit = Get.find<MainCubit>();
+  final MainCubit _mainCubit = getIt.get<MainCubit>();
 
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
@@ -21,43 +22,52 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   final FocusNode passwordNode = FocusNode();
   final FocusNode confirmPasswordNode = FocusNode();
 
-  late final Brand selectedBrand;
+  late final ForgotPasswordScreenArguments arguments;
 
-  ForgotPasswordCubit(this._repository) : super(const ForgotPasswordState()) {
-    selectedBrand = Get.arguments as Brand;
+  ForgotPasswordCubit(this._context, this._repository)
+      : super(const ForgotPasswordState()) {
+    arguments = Get.arguments as ForgotPasswordScreenArguments;
+    //ModalRoute.of(_context)?.settings.arguments
 
-    emailNode.addListener(() {
-      emit(state.copyWith(emailHasFocus: emailNode.hasFocus));
-    });
+    if(arguments.token == null) {
+      emailNode.addListener(() {
+        emit(state.copyWith(emailHasFocus: emailNode.hasFocus));
+      });
 
-    passwordNode.addListener(() {
-      emit(state.copyWith(passwordHasFocus: passwordNode.hasFocus));
-    });
+      emailController.addListener(() {
+        clearErrorMessage();
+        emit(state.copyWith(
+          emailErrorText: '',
+        ));
+      });
+    } else{
 
-    confirmPasswordNode.addListener(() {
-      emit(state.copyWith(
-          confirmPasswordHasFocus: confirmPasswordNode.hasFocus));
-    });
+      _verifyToken();
 
-    emailController.addListener(() {
-      clearErrorMessage();
-      emit(state.copyWith(
-        emailErrorText: '',
-      ));
-    });
-    passwordController.addListener(() {
-      clearErrorMessage();
-      emit(state.copyWith(
-        passwordErrorText: '',
-      ));
-    });
+      passwordNode.addListener(() {
+        emit(state.copyWith(passwordHasFocus: passwordNode.hasFocus));
+      });
 
-    confirmPasswordController.addListener(() {
-      clearErrorMessage();
-      emit(state.copyWith(
-        confirmPasswordErrorText: '',
-      ));
-    });
+      confirmPasswordNode.addListener(() {
+        emit(state.copyWith(
+            confirmPasswordHasFocus: confirmPasswordNode.hasFocus));
+      });
+
+
+      passwordController.addListener(() {
+        clearErrorMessage();
+        emit(state.copyWith(
+          passwordErrorText: '',
+        ));
+      });
+
+      confirmPasswordController.addListener(() {
+        clearErrorMessage();
+        emit(state.copyWith(
+          confirmPasswordErrorText: '',
+        ));
+      });
+    }
   }
 
   @override
@@ -80,11 +90,19 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   }
 
   Future<void> resetPassword() async {
-    if (emailIsValid() && passwordIsValid() && confirmPasswordIsValid()) {
-      final bool success = await _repository.resetPassword(
+    if(arguments.token == null){
+     await sendEmailForReset();
+    }else{
+      await changePassword();
+    }
+  }
+
+  Future<void> sendEmailForReset() async {
+    if (emailIsValid()) {
+      final bool success = await _repository.sendEmailForReset(
         ResetPasswordRequest(
-            email: emailController.text,
-            password: passwordController.text.to256),
+          email: emailController.text,
+        ),
       );
       if (success) {
         Get.back();
@@ -97,6 +115,30 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
           state.copyWith(emailErrorText: S.current.pleaseInsertCorrectEmail),
         );
       }
+    }
+  }
+
+  Future<bool> _verifyToken() async {
+    try {
+      return _repository.verifyToken(token: 'token');
+    } catch (e) {
+      logger.e(e);
+      return false;
+    }
+  }
+
+  Future<void> changePassword() async {
+    if (passwordIsValid() && confirmPasswordIsValid()) {
+      final bool success = await _repository.sendPasswordForReset(
+       request: ResetPasswordRequest(
+          password: passwordController.text,
+        ),
+        token: 'AAAAAAAAA',
+      );
+      if (success) {
+
+      }
+    } else {
       if (!passwordIsValid()) {
         emit(
           state.copyWith(

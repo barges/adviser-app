@@ -43,6 +43,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Are you sure that you want to change your status to Offline?"),
         "articles": MessageLookupByLibrary.simpleMessage("Articles"),
         "ascendant": MessageLookupByLibrary.simpleMessage("Ascendant"),
+        "avgDailyEarnings":
+            MessageLookupByLibrary.simpleMessage("Avg Daily Earnings"),
         "back": MessageLookupByLibrary.simpleMessage("Back"),
         "balanceTransactions":
             MessageLookupByLibrary.simpleMessage("Balance & Transactions"),
@@ -80,6 +82,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "days": MessageLookupByLibrary.simpleMessage("days"),
         "done": MessageLookupByLibrary.simpleMessage("Done"),
         "earned": MessageLookupByLibrary.simpleMessage("Earned"),
+        "editNote": MessageLookupByLibrary.simpleMessage("Edit Note"),
         "editProfile": MessageLookupByLibrary.simpleMessage("Edit profile"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
@@ -112,6 +115,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "nickname": MessageLookupByLibrary.simpleMessage("Nickname"),
         "noIChangedMyMind":
             MessageLookupByLibrary.simpleMessage("No, I changed my mind"),
+        "noInternetConnection":
+            MessageLookupByLibrary.simpleMessage("No internet connection."),
+        "noQuestionsYet":
+            MessageLookupByLibrary.simpleMessage("No questions, yet."),
+        "noSessionsYet":
+            MessageLookupByLibrary.simpleMessage("No sessions, yet."),
         "notEnoughConversationsCheckOurProfileGuide":
             MessageLookupByLibrary.simpleMessage(
                 "Not enough conversations? Check our Profile Guide."),
@@ -124,6 +133,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "otherBrands": MessageLookupByLibrary.simpleMessage("Other brands"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "peopleHelped": MessageLookupByLibrary.simpleMessage("People helped"),
+        "perfomanceOverviewAnalytics": MessageLookupByLibrary.simpleMessage(
+            "Perfomance Overview Analytics"),
         "personalBalance":
             MessageLookupByLibrary.simpleMessage("Personal Balance"),
         "placesUpFromLastMonth":
@@ -146,6 +157,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "quickAnswers": MessageLookupByLibrary.simpleMessage("Quick Answers"),
         "requestNewPassword":
             MessageLookupByLibrary.simpleMessage("Request new password"),
+        "resetPassword": MessageLookupByLibrary.simpleMessage("Reset Password"),
         "resources": MessageLookupByLibrary.simpleMessage("Resources"),
         "reviews": MessageLookupByLibrary.simpleMessage("Reviews"),
         "sales": MessageLookupByLibrary.simpleMessage("Sales"),
@@ -176,9 +188,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "total": MessageLookupByLibrary.simpleMessage("Total"),
         "totalMarkets": MessageLookupByLibrary.simpleMessage("Total markets"),
         "typemessage": MessageLookupByLibrary.simpleMessage("Type message"),
+        "uhohNoNetworkNcheckYourInternetConnection":
+            MessageLookupByLibrary.simpleMessage(
+                "Uh-oh, no network... \nCheck your internet connection"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others"),
+        "whenSomeoneAsksAPublicQuestionYouWillSeeThem":
+            MessageLookupByLibrary.simpleMessage(
+                "When someone asks a public question, you will see them on the general list here"),
+        "whenYouHelpYourFirstClientYouWillSeeYour":
+            MessageLookupByLibrary.simpleMessage(
+                "When you help your first client, you will see your session history here."),
         "willBeAvailableInAnHour": MessageLookupByLibrary.simpleMessage(
             "Will be available in an hour"),
         "workspaces": MessageLookupByLibrary.simpleMessage("Workspaces"),
@@ -187,8 +208,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "yesImSure": MessageLookupByLibrary.simpleMessage("Yes, I’m sure"),
         "youDoNotHaveAnyNotesYet": MessageLookupByLibrary.simpleMessage(
             "You don’t have any notes yet"),
-        "youDontHaveAnInternetConnection": MessageLookupByLibrary.simpleMessage(
-            "You don’t have an internet connection"),
         "youHave": MessageLookupByLibrary.simpleMessage("You have"),
         "youHaveNotCompletedAnySessionsYet":
             MessageLookupByLibrary.simpleMessage(
@@ -199,6 +218,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo":
             MessageLookupByLibrary.simpleMessage(
                 "You have successfully changed your password. Check your email to confirm password change"),
+        "youWillBeAbleToChangeYourStatusBackIn":
+            MessageLookupByLibrary.simpleMessage(
+                "You will be able to change your status back in 1 hour"),
         "zodiacSign": MessageLookupByLibrary.simpleMessage("Zodiac Sign")
       };
 }

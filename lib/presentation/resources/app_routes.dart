@@ -5,13 +5,14 @@ import 'package:shared_advisor_interface/presentation/screens/all_brands/all_bra
 import 'package:shared_advisor_interface/presentation/screens/article_details/article_details_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/customer_profile/customer_profile_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/gallery/gallery_pictures_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/reviews/reviews_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_screen.dart';
-import 'package:shared_advisor_interface/presentation/screens/user_profile/user_profile_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/support/support_screen.dart';
 
 class AppRoutes {
@@ -26,8 +27,9 @@ class AppRoutes {
   static const articleDetails = '/article_details_screen';
   static const advisorPreview = '/advisor_preview_screen';
   static const balanceAndTransactions = '/balance_and_transactions_screen';
-  static const userProfile = '/user_profile_screen';
+  static const customerProfile = '/customer_profile_screen';
   static const addNote = '/add_note_screen';
+  static const reviews = '/reviews';
   static const chat = '/chat_screen';
 
   static final List<GetPage> getPages = [
@@ -80,12 +82,16 @@ class AppRoutes {
       page: () => const SupportScreen(),
     ),
     GetPage(
-      name: userProfile,
-      page: () => const UserProfileScreen(),
+      name: customerProfile,
+      page: () => const CustomerProfileScreen(),
     ),
     GetPage(
       name: addNote,
       page: () => const AddNoteScreen(),
+    ),
+    GetPage(
+      name: reviews,
+      page: () => const ReviewsScreen(),
     ),
     GetPage(
       name: chat,

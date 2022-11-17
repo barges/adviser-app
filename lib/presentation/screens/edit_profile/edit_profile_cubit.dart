@@ -3,8 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart'
-    hide CacheManager;
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
 import 'package:mime/mime.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
@@ -17,20 +16,22 @@ import 'package:shared_advisor_interface/data/network/requests/update_profile_re
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 import 'edit_profile_state.dart';
 
 class EditProfileCubit extends Cubit<EditProfileState> {
-  final MainCubit mainCubit = Get.find<MainCubit>();
+  final MainCubit mainCubit = getIt.get<MainCubit>();
   final TextEditingController nicknameController = TextEditingController();
   final FocusNode nicknameFocusNode = FocusNode();
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
-  final UserRepository userRepository = Get.find<UserRepository>();
-  final CachingManager cacheManager = Get.find<CachingManager>();
+  final UserRepository userRepository = getIt.get<UserRepository>();
+  final CachingManager cacheManager = getIt.get<CachingManager>();
   final DefaultCacheManager defaultCacheManager = DefaultCacheManager();
 
   late final UserProfile? userProfile;
@@ -93,8 +94,18 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     nicknameController.dispose();
     nicknameFocusNode.dispose();
     picturesPageController.dispose();
-    Get.delete<EditProfileCubit>();
     return super.close();
+  }
+
+  void goToGallery() {
+    Get.toNamed(
+      AppRoutes.galleryPictures,
+      arguments: GalleryPicturesScreenArguments(
+        pictures: state.coverPictures,
+        editProfilePageController: picturesPageController,
+        initPage: picturesPageController.page ?? 0.0,
+      ),
+    );
   }
 
   void createTextControllersNodesAndErrorsMap() {
@@ -247,23 +258,27 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   bool checkTextFields() {
     bool isValid = true;
     int? firstLanguageWithErrorIndex;
+    FocusNode? firstLanguageWithErrorFocusNode;
     for (MapEntry<MarketsType, List<TextEditingController>> entry
         in textControllersMap.entries) {
       final List<TextEditingController> controllersByLanguage = entry.value;
       if (controllersByLanguage.firstOrNull?.text.trim().isEmpty == true) {
         errorTextsMap[entry.key]?.first = S.current.fieldIsRequired;
         firstLanguageWithErrorIndex ??= activeLanguages.indexOf(entry.key);
+        firstLanguageWithErrorFocusNode ??= focusNodesMap[entry.key]?.first;
         isValid = false;
       }
       if (controllersByLanguage.lastOrNull?.text.trim().isEmpty == true) {
         errorTextsMap[entry.key]?.last = S.current.fieldIsRequired;
         firstLanguageWithErrorIndex ??= activeLanguages.indexOf(entry.key);
+        firstLanguageWithErrorFocusNode ??= focusNodesMap[entry.key]?.last;
         isValid = false;
       }
     }
     if (firstLanguageWithErrorIndex != null) {
       changeCurrentLanguageIndex(firstLanguageWithErrorIndex);
       animateLanguageWithError(firstLanguageWithErrorIndex);
+      firstLanguageWithErrorFocusNode?.requestFocus();
     }
     emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
     return isValid;
@@ -335,13 +350,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           await userRepository.addCoverPictureToGallery(request);
       emit(state.copyWith(coverPictures: coverPictures));
     }
-  }
-
-  void goToGallery() {
-    Get.toNamed(
-      AppRoutes.galleryPictures,
-      arguments: picturesPageController.page,
-    );
   }
 
   void setAvatar(File avatar) {

@@ -1200,11 +1200,31 @@ class S {
     );
   }
 
-  /// `You don’t have an internet connection`
-  String get youDontHaveAnInternetConnection {
+  /// `Avg Daily Earnings`
+  String get avgDailyEarnings {
     return Intl.message(
-      'You don’t have an internet connection',
-      name: 'youDontHaveAnInternetConnection',
+      'Avg Daily Earnings',
+      name: 'avgDailyEarnings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Perfomance Overview Analytics`
+  String get perfomanceOverviewAnalytics {
+    return Intl.message(
+      'Perfomance Overview Analytics',
+      name: 'perfomanceOverviewAnalytics',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Note`
+  String get editNote {
+    return Intl.message(
+      'Edit Note',
+      name: 'editNote',
       desc: '',
       args: [],
     );
@@ -1260,6 +1280,86 @@ class S {
     );
   }
 
+  /// `No questions, yet.`
+  String get noQuestionsYet {
+    return Intl.message(
+      'No questions, yet.',
+      name: 'noQuestionsYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When someone asks a public question, you will see them on the general list here`
+  String get whenSomeoneAsksAPublicQuestionYouWillSeeThem {
+    return Intl.message(
+      'When someone asks a public question, you will see them on the general list here',
+      name: 'whenSomeoneAsksAPublicQuestionYouWillSeeThem',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No sessions, yet.`
+  String get noSessionsYet {
+    return Intl.message(
+      'No sessions, yet.',
+      name: 'noSessionsYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When you help your first client, you will see your session history here.`
+  String get whenYouHelpYourFirstClientYouWillSeeYour {
+    return Intl.message(
+      'When you help your first client, you will see your session history here.',
+      name: 'whenYouHelpYourFirstClientYouWillSeeYour',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Uh-oh, no network... \nCheck your internet connection`
+  String get uhohNoNetworkNcheckYourInternetConnection {
+    return Intl.message(
+      'Uh-oh, no network... \nCheck your internet connection',
+      name: 'uhohNoNetworkNcheckYourInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No internet connection.`
+  String get noInternetConnection {
+    return Intl.message(
+      'No internet connection.',
+      name: 'noInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You will be able to change your status back in 1 hour`
+  String get youWillBeAbleToChangeYourStatusBackIn {
+    return Intl.message(
+      'You will be able to change your status back in 1 hour',
+      name: 'youWillBeAbleToChangeYourStatusBackIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset Password`
+  String get resetPassword {
+    return Intl.message(
+      'Reset Password',
+      name: 'resetPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `from 15 sec to 3 min`
   String get from15secto3min {
     return Intl.message(
@@ -1287,6 +1387,8 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'de'),
+      Locale.fromSubtags(languageCode: 'es'),
       Locale.fromSubtags(languageCode: 'pt'),
     ];
   }

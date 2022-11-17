@@ -29,13 +29,15 @@ class GalleryImages extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(S.of(context).addGalleryPictures,
-                        style: Get.textTheme.titleLarge),
+                        style: Theme.of(context).textTheme.titleLarge),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0, bottom: 15.0),
                       child: Text(
                         S.of(context).customersWantSeeIfYouReal,
-                        style: Get.textTheme.bodyMedium
-                            ?.copyWith(color: Get.theme.shadowColor),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: Theme.of(context).shadowColor),
                       ),
                     ),
                   ],

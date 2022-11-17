@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
@@ -9,19 +8,21 @@ import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_state.dart';
 
 const int questionsLimit = 20;
 
 class SessionsCubit extends Cubit<SessionsState> {
-  final ChatsRepository _repository = Get.find<ChatsRepository>();
+  final ChatsRepository _repository = getIt.get<ChatsRepository>();
   final CachingManager cacheManager;
   final ScrollController publicQuestionsController = ScrollController();
   final ScrollController privateQuestionsController = ScrollController();
-  final MainCubit mainCubit = Get.find<MainCubit>();
+  final MainCubit mainCubit = getIt.get<MainCubit>();
   late final VoidCallback disposeUserStatusListen;
   late final VoidCallback disposeUserProfileListen;
+  final BuildContext context;
 
   final List<ChatItemType> filters = [
     ChatItemType.all,
@@ -37,16 +38,19 @@ class SessionsCubit extends Cubit<SessionsState> {
   bool _historyHasMore = true;
   int _historyPage = 1;
 
-  SessionsCubit(this.cacheManager) : super(const SessionsState()) {
+  SessionsCubit(this.cacheManager, this.context)
+      : super(const SessionsState()) {
     publicQuestionsController.addListener(() async {
       if (!mainCubit.state.isLoading &&
-          publicQuestionsController.position.extentAfter <= Get.height) {
+          publicQuestionsController.position.extentAfter <=
+              MediaQuery.of(context).size.height) {
         await getPublicQuestions();
       }
     });
     privateQuestionsController.addListener(() async {
       if (!mainCubit.state.isLoading &&
-          privateQuestionsController.position.extentAfter <= Get.height) {
+          privateQuestionsController.position.extentAfter <=
+              MediaQuery.of(context).size.height) {
         await getHistoryList();
       }
     });

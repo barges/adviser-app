@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
@@ -33,7 +35,7 @@ Future<void> changeStatusCommentBottomSheet({
                   height: 4.0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(21.0),
-                    color: Get.theme.hintColor,
+                    color: Theme.of(context).hintColor,
                   ),
                 ),
                 const SizedBox(
@@ -41,11 +43,41 @@ Future<void> changeStatusCommentBottomSheet({
                 ),
                 Text(
                   S.of(context).areYouSureThatYouWantToChangeYourStatus,
-                  style: Get.textTheme.headlineMedium,
+                  style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(
-                  height: 24.0,
+                  height: 12.0,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(12.0),
+                  decoration: BoxDecoration(
+                    color: Get.theme.scaffoldBackgroundColor,
+                    borderRadius: BorderRadius.circular(
+                      AppConstants.buttonRadius,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Assets.vectors.info.svg(
+                        height: 18.0,
+                        width: 18.0,
+                        color: Get.theme.shadowColor,
+                      ),
+                      const SizedBox(
+                        width: 8.0,
+                      ),
+                      Text(
+                        S.of(context).youWillBeAbleToChangeYourStatusBackIn,
+                        style: Get.textTheme.bodyMedium?.copyWith(
+                          fontSize: 12.0,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 12.0,
                 ),
                 Builder(builder: (context) {
                   context.select(
@@ -77,10 +109,10 @@ Future<void> changeStatusCommentBottomSheet({
                   onPressed: Get.back,
                   child: Text(
                     S.of(context).noIChangedMyMind,
-                    style: Get.textTheme.titleMedium?.copyWith(
-                      color: Get.theme.primaryColor,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.w500,
+                        ),
                   ),
                 ),
               ],
@@ -88,6 +120,6 @@ Future<void> changeStatusCommentBottomSheet({
           ),
         ),
       ),
-      backgroundColor: Get.theme.canvasColor,
+      backgroundColor: Theme.of(context).canvasColor,
       isScrollControlled: true);
 }

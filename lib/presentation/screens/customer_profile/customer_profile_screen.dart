@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/data/network/responses/customer_info_response/customer_info_response.dart';
+import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -11,31 +12,31 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/user_profile/user_profile_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/user_profile/widgets/notes_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/customer_profile/customer_profile_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/customer_profile/widgets/notes_widget.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
-class UserProfileScreen extends StatelessWidget {
-  const UserProfileScreen({Key? key}) : super(key: key);
+class CustomerProfileScreen extends StatelessWidget {
+  const CustomerProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => Get.put<UserProfileCubit>(UserProfileCubit()),
+        create: (_) => CustomerProfileCubit(),
         child: Builder(
           builder: (context) {
-            final UserProfileCubit userProfileCubit =
-                context.read<UserProfileCubit>();
+            final CustomerProfileCubit userProfileCubit =
+                context.read<CustomerProfileCubit>();
             return Scaffold(
               appBar: WideAppBar(
                 bottomWidget: Text(
                   S.of(context).customerProfile,
-                  style: Get.textTheme.headlineMedium,
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 topRightWidget: Builder(
                   builder: (context) {
                     final bool isFavorite = context.select(
-                      (UserProfileCubit cubit) => cubit.state.isFavorite,
+                      (CustomerProfileCubit cubit) => cubit.state.isFavorite,
                     );
                     return AppIconButton(
                       icon: isFavorite
@@ -51,15 +52,17 @@ class UserProfileScreen extends StatelessWidget {
                     context.select((MainCubit cubit) => cubit.state.isLoading);
                 final String errorMessage = context
                     .select((MainCubit cubit) => cubit.state.errorMessage);
-                final CustomerInfoResponse? response = context
-                    .select((UserProfileCubit cubit) => cubit.state.response);
+                final CustomerInfoResponse? response = context.select(
+                    (CustomerProfileCubit cubit) => cubit.state.response);
+                final GetNoteResponse? currentNote = context.select(
+                    (CustomerProfileCubit cubit) => cubit.state.currentNote);
                 return (isLoading || errorMessage != '' || response == null)
                     ? const SizedBox.shrink()
                     : Column(
                         children: [
                           Ink(
-                            color: Get.theme.canvasColor,
-                            width: Get.width,
+                            color: Theme.of(context).canvasColor,
+                            width: MediaQuery.of(context).size.width,
                             padding: const EdgeInsets.symmetric(
                                 horizontal:
                                     AppConstants.horizontalScreenPadding,
@@ -71,7 +74,8 @@ class UserProfileScreen extends StatelessWidget {
                                   alignment: Alignment.bottomCenter,
                                   children: [
                                     SvgPicture.asset(
-                                        response.zodiac?.imagePath ?? '',
+                                        response.zodiac?.imagePath(context) ??
+                                            '',
                                         width: 96.0),
                                     if (userProfileCubit.isTopSpender)
                                       Container(
@@ -85,11 +89,13 @@ class UserProfileScreen extends StatelessWidget {
                                         ),
                                         child: Text(
                                           S.of(context).topSpender,
-                                          style: Get.textTheme.labelSmall
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall
                                               ?.copyWith(
-                                            fontWeight: FontWeight.w700,
-                                            color: AppColors.white,
-                                          ),
+                                                fontWeight: FontWeight.w700,
+                                                color: AppColors.white,
+                                              ),
                                         ),
                                       )
                                   ],
@@ -108,24 +114,32 @@ class UserProfileScreen extends StatelessWidget {
                                         child: Text(
                                           '${response.firstName ?? ''} ${response.lastName ?? ''}',
                                           textAlign: TextAlign.center,
-                                          style: Get.textTheme.headlineMedium,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineMedium,
                                         ),
                                       ),
                                       Text(
                                         '${S.of(context).born} ${(response.birthdate ?? '').parseDateTimePattern3}, ${response.gender ?? ''}, ${response.countryFullName ?? ''}',
                                         textAlign: TextAlign.center,
-                                        style:
-                                            Get.textTheme.bodyMedium?.copyWith(
-                                          color: Get.theme.shadowColor,
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color:
+                                                  Theme.of(context).shadowColor,
+                                            ),
                                       ),
                                       Text(
                                         '${response.totalMessages ?? 0} ${S.of(context).chats.toLowerCase()}, 5 ${S.of(context).calls.toLowerCase()}, 5 ${S.of(context).services.toLowerCase()}',
                                         textAlign: TextAlign.center,
-                                        style:
-                                            Get.textTheme.bodyMedium?.copyWith(
-                                          color: Get.theme.shadowColor,
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color:
+                                                  Theme.of(context).shadowColor,
+                                            ),
                                       ),
                                     ],
                                   )),
@@ -145,7 +159,9 @@ class UserProfileScreen extends StatelessWidget {
                                       _InfoWidget(
                                         title: S.of(context).numerology,
                                         info: Text('2',
-                                            style: Get.textTheme.headlineMedium
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headlineMedium
                                                 ?.copyWith(
                                                     color: Get
                                                         .theme.primaryColor)),
@@ -171,18 +187,21 @@ class UserProfileScreen extends StatelessWidget {
                             ]),
                           ),
                           Builder(builder: (context) {
-                            final String? currentNote = context.select(
-                                (UserProfileCubit cubit) =>
+                            final GetNoteResponse? currentNote = context.select(
+                                (CustomerProfileCubit cubit) =>
                                     cubit.state.currentNote);
                             return NotesWidget(
                               onTapAddNew: userProfileCubit
                                   .navigateToAddNoteScreenForNewNote,
                               onTapOldNote: userProfileCubit
                                   .navigateToAddNoteScreenForOldNote,
-                              texts: [currentNote ?? ''],
+                              notes: (currentNote?.content == "" ||
+                                      currentNote == null)
+                                  ? []
+                                  : [currentNote],
                               images: const [
                                 [
-                                  'https://cdn.shopify.com/s/files/1/0275/3318/0970/products/AgendaNotebook-2_800x.jpg'
+                                  //'https://cdn.shopify.com/s/files/1/0275/3318/0970/products/AgendaNotebook-2_800x.jpg'
                                 ],
                               ],
                             );
@@ -211,16 +230,16 @@ class _InfoWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
           border: Border.all(
-            color: Get.theme.hintColor,
+            color: Theme.of(context).hintColor,
           ),
         ),
         child: Column(children: [
           Text(
             title.toUpperCase(),
-            style: Get.textTheme.bodySmall?.copyWith(
-              fontWeight: FontWeight.w400,
-              color: Get.theme.shadowColor,
-            ),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.w400,
+                  color: Theme.of(context).shadowColor,
+                ),
           ),
           const SizedBox(height: 8.0),
           info
@@ -243,16 +262,16 @@ class _BirthTownWidget extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
         border: Border.all(
-          color: Get.theme.hintColor,
+          color: Theme.of(context).hintColor,
         ),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(
           S.of(context).birthTown.toUpperCase(),
-          style: Get.textTheme.bodySmall?.copyWith(
-            fontWeight: FontWeight.w400,
-            color: Get.theme.shadowColor,
-          ),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                fontWeight: FontWeight.w400,
+                color: Theme.of(context).shadowColor,
+              ),
         ),
         const SizedBox(height: 10.0),
         _IconAndTitleWidget(
@@ -278,16 +297,16 @@ class _QuestionPropertiesWidget extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
         border: Border.all(
-          color: Get.theme.hintColor,
+          color: Theme.of(context).hintColor,
         ),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(
           S.of(context).questionProperties.toUpperCase(),
-          style: Get.textTheme.bodySmall?.copyWith(
-            fontWeight: FontWeight.w400,
-            color: Get.theme.shadowColor,
-          ),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                fontWeight: FontWeight.w400,
+                color: Theme.of(context).shadowColor,
+              ),
         ),
         const SizedBox(height: 10.0),
         ListView.separated(
@@ -296,7 +315,9 @@ class _QuestionPropertiesWidget extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (_, index) => Text(
                   properties[index],
-                  style: Get.textTheme.displayLarge
+                  style: Theme.of(context)
+                      .textTheme
+                      .displayLarge
                       ?.copyWith(fontWeight: FontWeight.w500),
                 ),
             separatorBuilder: (_, __) => const SizedBox(height: 12.0),
@@ -322,8 +343,10 @@ class _IconAndTitleWidget extends StatelessWidget {
         const SizedBox(width: 4.0),
         Text(
           title,
-          style:
-              Get.textTheme.displayLarge?.copyWith(fontWeight: FontWeight.w500),
+          style: Theme.of(context)
+              .textTheme
+              .displayLarge
+              ?.copyWith(fontWeight: FontWeight.w500),
         ),
       ],
     );

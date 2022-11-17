@@ -14,8 +14,30 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<bool> resetPassword(ResetPasswordRequest request) async {
-    await _api.resetPassword(request);
+  Future<bool> sendEmailForReset(ResetPasswordRequest request) async {
+    await _api.sendEmailForReset(request);
+    return true;
+  }
+
+  @override
+  Future<bool> sendPasswordForReset({
+    required String token,
+    required ResetPasswordRequest request,
+  }) async {
+    await _api.sendPasswordForReset(
+      request: request,
+      token: token,
+    );
+    return true;
+  }
+
+  @override
+  Future<bool> verifyToken({
+    required String token,
+  }) async {
+    await _api.verifyResetToken(
+      token: token,
+    );
     return true;
   }
 }

@@ -5,17 +5,19 @@ import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/login_appbar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_succes_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/password_text_field.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/widgets/choose_brand_widget.dart';
+import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -24,7 +26,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) =>
-          LoginCubit(Get.find<AuthRepository>(), Get.find<CachingManager>()),
+          LoginCubit(getIt.get<AuthRepository>(), getIt.get<CachingManager>()),
       child: Builder(
         builder: (BuildContext context) {
           final LoginCubit loginCubit = context.read<LoginCubit>();
@@ -154,11 +156,14 @@ class LoginScreen extends StatelessWidget {
                                           onTap: loginCubit.goToForgotPassword,
                                           child: Text(
                                             '${S.of(context).forgotPassword}?',
-                                            style: Get.textTheme.titleMedium
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium
                                                 ?.copyWith(
-                                              color: Get.theme.primaryColor,
-                                              fontWeight: FontWeight.w500,
-                                            ),
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
                                           ),
                                         ),
                                       ],
@@ -168,7 +173,7 @@ class LoginScreen extends StatelessWidget {
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 24.0,
                                     ),
-                                    child: Get.isDarkMode
+                                    child: Utils.isDarkMode(context)
                                         ? Assets.images.logos.loginLogoDark
                                             .image(
                                             height: AppConstants.logoSize,
@@ -188,6 +193,7 @@ class LoginScreen extends StatelessWidget {
                     )
                   : Column(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: const [
                         NoConnectionWidget(),
                       ],

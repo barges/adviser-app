@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_state.dart';
@@ -13,9 +14,10 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => SplashCubit(Get.find<CachingManager>()),
+      create: (_) => SplashCubit(getIt.get<CachingManager>()),
       child: Builder(
         builder: (context) {
+          final Size size = MediaQuery.of(context).size;
           return BlocListener<SplashCubit, SplashState>(
             listener: (prev, current) {
               if (current.isLogged == true) {
@@ -26,8 +28,8 @@ class SplashScreen extends StatelessWidget {
             },
             child: Scaffold(
               body: SizedBox(
-                height: Get.height,
-                width: Get.width,
+                height: size.height,
+                width: size.width,
                 child: Assets.images.splash.image(
                   fit: BoxFit.fill,
                 ),

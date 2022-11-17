@@ -10,7 +10,9 @@ import 'package:shared_advisor_interface/data/network/responses/login_response.d
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_state.dart';
 
@@ -18,7 +20,7 @@ class LoginCubit extends Cubit<LoginState> {
   final AuthRepository _repository;
   final CachingManager _cacheManager;
 
-  final MainCubit _mainCubit = Get.find<MainCubit>();
+  final MainCubit _mainCubit = getIt.get<MainCubit>();
 
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -86,7 +88,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> login() async {
     if (emailIsValid() && passwordIsValid()) {
-      Get.find<Dio>().options.headers['Authorization'] =
+      getIt.get<Dio>().options.headers['Authorization'] =
           'Basic ${base64.encode(utf8.encode('${emailController.text}:${passwordController.text.to256}'))}';
 
       LoginResponse? response = await _repository.login();
@@ -94,7 +96,7 @@ class LoginCubit extends Cubit<LoginState> {
       if (token != null && token.isNotEmpty) {
         String jvtToken = 'JWT $token';
         await _cacheManager.saveTokenForBrand(state.selectedBrand, jvtToken);
-        Get.find<Dio>().options.headers['Authorization'] = jvtToken;
+        getIt.get<Dio>().options.headers['Authorization'] = jvtToken;
         _cacheManager.saveCurrentBrand(state.selectedBrand);
         goToHome();
       }
@@ -121,9 +123,10 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> goToForgotPassword() async {
     clearErrorMessage();
     clearSuccessMessage();
+    ///TODO: get token from deep link
     Get.toNamed(
       AppRoutes.forgotPassword,
-      arguments: state.selectedBrand,
+      arguments: ForgotPasswordScreenArguments(brand: state.selectedBrand,token: 'sdfdsf'),
     );
   }
 
