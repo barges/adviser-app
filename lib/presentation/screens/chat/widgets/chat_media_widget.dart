@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_bg_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/rect_circle_image.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_player.dart';
@@ -18,7 +17,7 @@ class ChatMediaWidget extends ChatWidget {
     final String? audioUrl2 = item.getAudioUrl(2);
     return ChatItemBg(
       padding: paddingItem,
-      color: colorItem,
+      color: getColorItem(context),
       child: Stack(
         children: [
           Column(
@@ -64,9 +63,9 @@ class ChatMediaWidget extends ChatWidget {
               type: item.type!,
               createdAt: createdAt,
               ritualIdentifier: item.ritualIdentifier,
-              color: getter(
-                question: Get.theme.shadowColor,
-                answer: Get.theme.primaryColorLight,
+              color: getterType(
+                question: Theme.of(context).shadowColor,
+                answer: Theme.of(context).primaryColorLight,
               ),
             ),
           ),

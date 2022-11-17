@@ -36,6 +36,7 @@
   "customerSupport": "Suporte ao cliente",
   "wePrideOurselvesToOfferAdvisorsASafePlaceTo": "Orgulhamo-nos de oferecer aos consultores um local seguro para servir os clientes e desenvolver-se profissionalmente. Fazer um bom trabalho em uma de nossas marcas abrirá portas para outras",
   "cancel": "Cancelar",
+  "delete": "Excluir",
   "logOut": "Sair",
   "ingenio": "Ingenio",
   "chooseEmailApp": "Escolha o aplicativo de e-mail",
@@ -130,6 +131,9 @@
   "avgDailyEarnings": "Avg Daily Earnings",
   "perfomanceOverviewAnalytics": "Perfomance Overview Analytics",
   "editNote": "Edit Note",
-  "from15secto3min": "de 15 segundos a 3 minutos",
-  "typemessage":"digite mensagem"
+  "from15secTo3min": "de 15 segundos a 3 minutos",
+  "typemessage":"digite mensagem",
+  "doYouWantToDeleteAudioMessage": "Deseja excluir a mensagem de áudio?",
+  "doYouWantToDeleteImage": "Deseja excluir a imagem?",
+  "tryAgain": "Tente novamente"
 }

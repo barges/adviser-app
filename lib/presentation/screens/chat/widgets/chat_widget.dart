@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_type_getter_mixin.dart';
 
-abstract class ChatWidget extends StatelessWidget {
+abstract class ChatWidget extends StatelessWidget with ChatItemTypeGetter {
   final ChatItem item;
 
   const ChatWidget({
@@ -10,22 +10,19 @@ abstract class ChatWidget extends StatelessWidget {
     required this.item,
   });
 
-  T getter<T>({
-    required T question,
-    required T answer,
-  }) =>
-      item.isAnswer ? answer : question;
+  @override
+  bool get isAnswer => item.isAnswer;
 
   DateTime get createdAt =>
       DateTime.tryParse(item.createdAt ?? '') ?? DateTime.now();
 
-  EdgeInsetsGeometry get paddingItem => getter(
+  EdgeInsetsGeometry get paddingItem => getterType(
         question: const EdgeInsets.fromLTRB(12.0, 4.0, 48.0, 4.0),
         answer: const EdgeInsets.fromLTRB(48.0, 4.0, 12.0, 4.0),
       );
 
-  Color get colorItem => getter(
-        question: Get.theme.canvasColor,
-        answer: Get.theme.primaryColor,
+  Color getColorItem(BuildContext context) => getterType(
+        question: Theme.of(context).canvasColor,
+        answer: Theme.of(context).primaryColor,
       );
 }

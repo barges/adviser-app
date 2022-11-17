@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 
 Future<bool?> showDeleteAlert(
@@ -14,10 +14,10 @@ Future<bool?> showDeleteAlert(
         child: CupertinoActionSheet(
           title: Text(
             title,
-            style: Get.textTheme.displayLarge?.copyWith(
-              color: Get.theme.hoverColor,
-              fontSize: 17.0,
-            ),
+            style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                  color: Theme.of(context).hoverColor,
+                  fontSize: 17.0,
+                ),
           ),
           actions: [
             CupertinoActionSheetAction(
@@ -25,11 +25,11 @@ Future<bool?> showDeleteAlert(
               onPressed: () {
                 Navigator.pop(context, true);
               },
-              child: Text('Delete',
-                  style: Get.textTheme.bodyMedium?.copyWith(
-                    color: Get.theme.errorColor,
-                    fontSize: 17.0,
-                  )),
+              child: Text(S.of(context).delete,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).errorColor,
+                        fontSize: 17.0,
+                      )),
             ),
             CupertinoActionSheetAction(
               isDefaultAction: true,
@@ -38,10 +38,10 @@ Future<bool?> showDeleteAlert(
               },
               child: Text(
                 S.of(context).cancel,
-                style: Get.textTheme.displayLarge?.copyWith(
-                  color: Get.theme.primaryColor,
-                  fontSize: 17.0,
-                ),
+                style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 17.0,
+                    ),
               ),
             ),
           ],

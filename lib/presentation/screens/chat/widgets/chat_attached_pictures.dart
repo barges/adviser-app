@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
@@ -25,7 +25,7 @@ class AttachedPictures extends StatelessWidget {
                       file,
                       onDeletePressed: () async {
                         final bool? isDelete = await showDeleteAlert(
-                            context, 'Do you want to delete image?');
+                            context, S.of(context).doYouWantToDeleteImage);
                         if (isDelete!) {
                           chatCubit.deletePicture(file);
                         }
@@ -101,15 +101,15 @@ class _DeleteBtn extends StatelessWidget {
         width: 16.5,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Get.theme.hoverColor,
+          color: Theme.of(context).hoverColor,
           border: Border.all(
             width: 1.5,
-            color: Get.theme.canvasColor,
+            color: Theme.of(context).canvasColor,
           ),
         ),
         child: Assets.vectors.crossFat.svg(
           fit: BoxFit.none,
-          color: Get.theme.backgroundColor,
+          color: Theme.of(context).backgroundColor,
         ),
       ),
     );

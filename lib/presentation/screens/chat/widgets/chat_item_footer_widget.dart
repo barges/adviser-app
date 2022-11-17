@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
 
@@ -25,10 +24,10 @@ class ChatItemFooterWidget extends StatelessWidget {
           type == SessionsTypes.ritual && ritualIdentifier != null
               ? ritualIdentifier!.sessionName
               : type.name,
-          style: Get.textTheme.bodySmall?.copyWith(
-            color: color,
-            fontSize: 12.0,
-          ),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: color,
+                fontSize: 12.0,
+              ),
         ),
         if (type == SessionsTypes.ritual && ritualIdentifier != null)
           const SizedBox(
@@ -47,10 +46,10 @@ class ChatItemFooterWidget extends StatelessWidget {
         Text(
           //createdAt.toString(),
           '${createdAt.hour}:${createdAt.minute}',
-          style: Get.textTheme.bodySmall?.copyWith(
-            color: color,
-            fontSize: 12.0,
-          ),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: color,
+                fontSize: 12.0,
+              ),
         ),
       ],
     );

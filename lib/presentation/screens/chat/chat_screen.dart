@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
@@ -38,7 +39,7 @@ class ChatScreen extends StatelessWidget {
               selectedBrand: selectedBrand,
               question: _question,
             ),
-            backgroundColor: Get.theme.scaffoldBackgroundColor,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             body: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -70,7 +71,7 @@ class ChatScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  color: Get.theme.canvasColor,
+                  color: Theme.of(context).canvasColor,
                   child: Stack(
                     children: [
                       Builder(
@@ -96,7 +97,9 @@ class ChatScreen extends StatelessWidget {
                               onDeletePressed: () async {
                                 final bool? isDelete = await showDeleteAlert(
                                     context,
-                                    'Do you want to delete audio message?');
+                                    S
+                                        .of(context)
+                                        .doYouWantToDeleteAudioMessage);
                                 if (isDelete!) {
                                   chatCubit.deletedRecordedAudio();
                                 }
@@ -121,13 +124,13 @@ class ChatScreen extends StatelessWidget {
                       Divider(
                         height: 1.0,
                         endIndent: textCounterWidth,
-                        color: Get.theme.hintColor,
+                        color: Theme.of(context).hintColor,
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  color: Get.theme.canvasColor,
+                  color: Theme.of(context).canvasColor,
                   height: 34.0,
                 )
               ],
@@ -186,14 +189,14 @@ class _TextCounter extends StatelessWidget {
             width: width,
             height: height,
             decoration: BoxDecoration(
-              color: Get.theme.canvasColor,
+              color: Theme.of(context).canvasColor,
               borderRadius:
                   const BorderRadius.only(topLeft: Radius.circular(4.0)),
               border: Border(
-                top: BorderSide(color: Get.theme.hintColor),
-                right: BorderSide(color: Get.theme.hintColor),
-                bottom: BorderSide(color: Get.theme.hintColor),
-                left: BorderSide(color: Get.theme.hintColor),
+                top: BorderSide(color: Theme.of(context).hintColor),
+                right: BorderSide(color: Theme.of(context).hintColor),
+                bottom: BorderSide(color: Theme.of(context).hintColor),
+                left: BorderSide(color: Theme.of(context).hintColor),
               ),
             ),
             child: Padding(
@@ -201,17 +204,17 @@ class _TextCounter extends StatelessWidget {
               child: Text(
                 textAlign: TextAlign.center,
                 '${AppConstants.maxTextLength}/$inputTextLength',
-                style: Get.textTheme.bodySmall?.copyWith(
-                  color: AppColors.online,
-                  fontSize: 12.0,
-                ),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.online,
+                      fontSize: 12.0,
+                    ),
               ),
             ),
           ),
           Positioned(
             bottom: 0.0,
             child: Container(
-              color: Get.theme.canvasColor,
+              color: Theme.of(context).canvasColor,
               width: width,
               height: 1,
             ),

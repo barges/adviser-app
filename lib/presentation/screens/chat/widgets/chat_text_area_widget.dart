@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ChatTextAreaWidget extends StatelessWidget {
   final String? content;
@@ -14,10 +13,10 @@ class ChatTextAreaWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       content ?? '',
-      style: Get.textTheme.bodySmall?.copyWith(
-        color: color,
-        fontSize: 15.0,
-      ),
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: color,
+            fontSize: 15.0,
+          ),
     );
   }
 }

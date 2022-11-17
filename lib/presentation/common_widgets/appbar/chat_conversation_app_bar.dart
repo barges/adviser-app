@@ -58,7 +58,7 @@ class ChatConversationAppBar extends StatelessWidget
                     title,
                     style: TextStyle(
                       fontSize: 16.0,
-                      color: Get.theme.hoverColor,
+                      color: Theme.of(context).hoverColor,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -69,7 +69,7 @@ class ChatConversationAppBar extends StatelessWidget
                 style: TextStyle(
                   fontSize: 12.0,
                   fontWeight: FontWeight.w200,
-                  color: Get.theme.shadowColor,
+                  color: Theme.of(context).shadowColor,
                 ),
               ),
             ],
@@ -80,7 +80,7 @@ class ChatConversationAppBar extends StatelessWidget
           ),
         ],
       ),
-      backgroundColor: Get.theme.canvasColor,
+      backgroundColor: Theme.of(context).canvasColor,
     );
   }
 }

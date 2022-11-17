@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
@@ -59,7 +58,7 @@ class ChatTextInputWidget extends StatelessWidget {
                         : 0.4,
                     child: Assets.vectors.gallery.svg(
                       width: AppConstants.iconSize,
-                      color: Get.theme.shadowColor,
+                      color: Theme.of(context).shadowColor,
                     ),
                   ),
                 ),
@@ -111,11 +110,11 @@ class _InputTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ChatCubit chatCubit = context.read<ChatCubit>();
-    final TextStyle? style = Get.textTheme.bodySmall?.copyWith(
-      color: Get.theme.hoverColor,
-      fontSize: 15.0,
-      height: 0.97,
-    );
+    final TextStyle? style = Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: Theme.of(context).hoverColor,
+          fontSize: 15.0,
+          height: 0.97,
+        );
     return LayoutBuilder(
       builder: (context, constraints) {
         context.select((ChatCubit cubit) => cubit.state.inputTextLength);
@@ -140,10 +139,10 @@ class _InputTextField extends StatelessWidget {
                 focusedBorder: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 hintText: S.of(context).typemessage,
-                hintStyle: Get.textTheme.bodySmall?.copyWith(
-                  color: Get.theme.shadowColor,
-                  fontSize: 15.0,
-                ),
+                hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).shadowColor,
+                      fontSize: 15.0,
+                    ),
               ),
             ),
           ),

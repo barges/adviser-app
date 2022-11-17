@@ -242,7 +242,7 @@ class _BrandLogo extends StatelessWidget {
         borderRadius: BorderRadius.circular(
           AppConstants.buttonRadius,
         ),
-        color: Get.theme.canvasColor,
+        color: Theme.of(context).canvasColor,
       ),
       child: Center(
         child: SvgPicture.asset(

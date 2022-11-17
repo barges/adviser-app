@@ -36,6 +36,7 @@
   "customerSupport": "Customer Support",
   "wePrideOurselvesToOfferAdvisorsASafePlaceTo": "We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others",
   "cancel": "Cancel",
+  "delete": "Delete",
   "logOut": "Log out",
   "ingenio": "Ingenio",
   "chooseEmailApp": "Choose email app",
@@ -126,5 +127,9 @@
   "uhohNoNetworkNcheckYourInternetConnection": "Uh-oh, no network... \nCheck your internet connection",
   "noInternetConnection": "No internet connection.",
   "youWillBeAbleToChangeYourStatusBackIn": "You will be able to change your status back in 1 hour",
-  "resetPassword": "Reset Password"
+  "resetPassword": "Reset Password",
+  "from15secTo3min": "from 15 sec to 3 min",
+  "doYouWantToDeleteAudioMessage": "Do you want to delete audio message?",
+  "doYouWantToDeleteImage": "Do you want to delete image?",
+  "tryAgain": "Try again"
 }

@@ -82,6 +82,11 @@ class MessageLookup extends MessageLookupByLibrary {
             "Os clientes querem ver se você é real. Quanto mais fotos suas você adicionar, melhor."),
         "dashboard": MessageLookupByLibrary.simpleMessage("Dashboard"),
         "days": MessageLookupByLibrary.simpleMessage("dias"),
+        "delete": MessageLookupByLibrary.simpleMessage("Excluir"),
+        "doYouWantToDeleteAudioMessage": MessageLookupByLibrary.simpleMessage(
+            "Deseja excluir a mensagem de áudio?"),
+        "doYouWantToDeleteImage":
+            MessageLookupByLibrary.simpleMessage("Deseja excluir a imagem?"),
         "done": MessageLookupByLibrary.simpleMessage("Done"),
         "earned": MessageLookupByLibrary.simpleMessage("Earned"),
         "editNote": MessageLookupByLibrary.simpleMessage("Edit Note"),
@@ -96,7 +101,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "forgotYourPassword":
             MessageLookupByLibrary.simpleMessage("Esqueceu sua senha"),
         "fortunica": MessageLookupByLibrary.simpleMessage("Fortunica"),
-        "from15secto3min":
+        "from15secTo3min":
             MessageLookupByLibrary.simpleMessage("de 15 segundos a 3 minutos"),
         "imAvailableNow":
             MessageLookupByLibrary.simpleMessage("Estou disponível agora"),
@@ -192,6 +197,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "topSpender": MessageLookupByLibrary.simpleMessage("Maior gastador"),
         "total": MessageLookupByLibrary.simpleMessage("Total"),
         "totalMarkets": MessageLookupByLibrary.simpleMessage("Total markets"),
+        "tryAgain": MessageLookupByLibrary.simpleMessage("Tente novamente"),
         "typemessage": MessageLookupByLibrary.simpleMessage("digite mensagem"),
         "uhohNoNetworkNcheckYourInternetConnection":
             MessageLookupByLibrary.simpleMessage(

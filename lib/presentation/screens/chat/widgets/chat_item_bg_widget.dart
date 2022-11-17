@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class ChatItemBg extends StatelessWidget {
@@ -36,7 +36,7 @@ class ChatItemBg extends StatelessWidget {
               border: isBorder
                   ? Border.all(
                       width: 1,
-                      color: Get.theme.primaryColor,
+                      color: Theme.of(context).primaryColor,
                     )
                   : null,
             ),
@@ -64,18 +64,18 @@ class TryAgain extends StatelessWidget {
       height: 32.0,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Get.theme.canvasColor,
+        color: Theme.of(context).canvasColor,
         borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Try again',
-            style: Get.textTheme.bodySmall?.copyWith(
-              color: Get.theme.errorColor,
-              fontSize: 12.0,
-            ),
+            S.of(context).tryAgain,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).errorColor,
+                  fontSize: 12.0,
+                ),
           ),
           const SizedBox(
             width: 5.33,

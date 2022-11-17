@@ -420,6 +420,16 @@ class S {
     );
   }
 
+  /// `Delete`
+  String get delete {
+    return Intl.message(
+      'Delete',
+      name: 'delete',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Log out`
   String get logOut {
     return Intl.message(
@@ -1361,10 +1371,10 @@ class S {
   }
 
   /// `from 15 sec to 3 min`
-  String get from15secto3min {
+  String get from15secTo3min {
     return Intl.message(
       'from 15 sec to 3 min',
-      name: 'from15secto3min',
+      name: 'from15secTo3min',
       desc: '',
       args: [],
     );
@@ -1375,6 +1385,36 @@ class S {
     return Intl.message(
       'Type message',
       name: 'typemessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to delete audio message?`
+  String get doYouWantToDeleteAudioMessage {
+    return Intl.message(
+      'Do you want to delete audio message?',
+      name: 'doYouWantToDeleteAudioMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to delete image?`
+  String get doYouWantToDeleteImage {
+    return Intl.message(
+      'Do you want to delete image?',
+      name: 'doYouWantToDeleteImage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Try again`
+  String get tryAgain {
+    return Intl.message(
+      'Try again',
+      name: 'tryAgain',
       desc: '',
       args: [],
     );

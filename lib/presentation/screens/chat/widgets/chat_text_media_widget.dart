@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_bg_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/rect_circle_image.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_player.dart';
@@ -20,7 +19,7 @@ class ChatTextMediaWidget extends ChatWidget {
     return ChatItemBg(
       isBorder: true,
       padding: paddingItem,
-      color: colorItem,
+      color: getColorItem(context),
       child: Stack(
         children: [
           Column(
@@ -28,9 +27,9 @@ class ChatTextMediaWidget extends ChatWidget {
             children: [
               ChatTextAreaWidget(
                 content: item.content,
-                color: getter(
-                  question: Get.theme.hoverColor,
-                  answer: Get.theme.backgroundColor,
+                color: getterType(
+                  question: Theme.of(context).hoverColor,
+                  answer: Theme.of(context).backgroundColor,
                 ),
               ),
               if (item.getImageUrl(1) != null)
@@ -76,9 +75,9 @@ class ChatTextMediaWidget extends ChatWidget {
               type: item.type!,
               createdAt: createdAt,
               ritualIdentifier: item.ritualIdentifier,
-              color: getter(
-                question: Get.theme.shadowColor,
-                answer: Get.theme.primaryColorLight,
+              color: getterType(
+                question: Theme.of(context).shadowColor,
+                answer: Theme.of(context).primaryColorLight,
               ),
             ),
           )

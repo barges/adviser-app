@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_type_getter_mixin.dart';
 
-class ChatItemPlayer extends StatelessWidget {
+class ChatItemPlayer extends StatelessWidget with ChatItemTypeGetter {
   final bool isQuestion;
   final String audioUrl;
   final Duration duration;
@@ -15,6 +15,8 @@ class ChatItemPlayer extends StatelessWidget {
     required this.audioUrl,
     required this.duration,
   });
+  @override
+  bool get isAnswer => !isQuestion;
 
   @override
   Widget build(BuildContext context) {
@@ -33,34 +35,28 @@ class ChatItemPlayer extends StatelessWidget {
       isPlayingFinished: isCurrent ? isPlayingAudioFinished : true,
       playbackStream: chatCubit.onMediaProgress,
       duration: duration,
-      textColor: getter(
-        question: Get.theme.primaryColor,
-        answer: Get.theme.backgroundColor,
+      textColor: getterType(
+        question: Theme.of(context).primaryColor,
+        answer: Theme.of(context).backgroundColor,
       ),
-      colorProgressIndicator: getter(
-        question: Get.theme.primaryColor,
-        answer: Get.theme.backgroundColor,
+      colorProgressIndicator: getterType(
+        question: Theme.of(context).primaryColor,
+        answer: Theme.of(context).backgroundColor,
       ),
-      bgColorProgressIndicator: getter(
-        question: Get.theme.primaryColorLight,
-        answer: Get.theme.primaryColorLight,
+      bgColorProgressIndicator: getterType(
+        question: Theme.of(context).primaryColorLight,
+        answer: Theme.of(context).primaryColorLight,
       ),
-      colorIcon: getter(
-        question: Get.theme.backgroundColor,
-        answer: Get.theme.primaryColor,
+      colorIcon: getterType(
+        question: Theme.of(context).backgroundColor,
+        answer: Theme.of(context).primaryColor,
       ),
-      colorBtn: getter(
-        question: Get.theme.primaryColor,
-        answer: Get.theme.backgroundColor,
+      colorBtn: getterType(
+        question: Theme.of(context).primaryColor,
+        answer: Theme.of(context).backgroundColor,
       ),
     );
   }
-
-  T getter<T>({
-    required T question,
-    required T answer,
-  }) =>
-      isQuestion ? question : answer;
 }
 
 class _ChatItemPlayer extends StatelessWidget {
@@ -198,18 +194,18 @@ class _PlayProgress extends StatelessWidget {
           children: [
             Text(
               time,
-              style: Get.textTheme.bodySmall?.copyWith(
-                color: textColor,
-                fontSize: 12.0,
-              ),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: textColor,
+                    fontSize: 12.0,
+                  ),
             ),
             const Spacer(),
             Text(
               duration.toString().substring(2, 7),
-              style: Get.textTheme.bodySmall?.copyWith(
-                color: textColor,
-                fontSize: 12.0,
-              ),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: textColor,
+                    fontSize: 12.0,
+                  ),
             ),
           ],
         ),
