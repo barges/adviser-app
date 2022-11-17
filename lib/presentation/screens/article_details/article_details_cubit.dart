@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/screens/article_details/article_details_state.dart';
 
 class ArticleDetailsCubit extends Cubit<ArticleDetailsState> {

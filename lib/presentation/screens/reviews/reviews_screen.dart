@@ -36,8 +36,8 @@ class ReviewsScreen extends StatelessWidget {
                           child: Column(
                             children: List.generate(
                                 10,
-                                (index) => Padding(
-                                      padding: const EdgeInsets.only(
+                                (index) => const Padding(
+                                      padding: EdgeInsets.only(
                                           bottom: AppConstants
                                                   .horizontalScreenPadding /
                                               2),

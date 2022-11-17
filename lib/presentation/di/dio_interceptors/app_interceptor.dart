@@ -2,14 +2,17 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response;
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 class AppInterceptor extends Interceptor {
   final MainCubit _mainCubit;
+  final CachingManager _cachingManager;
 
-  AppInterceptor(this._mainCubit);
+  AppInterceptor(this._mainCubit, this._cachingManager);
 
   @override
   FutureOr<dynamic> onRequest(
@@ -32,14 +35,27 @@ class AppInterceptor extends Interceptor {
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioError err, ErrorInterceptorHandler handler) async {
     _mainCubit.updateIsLoading(false);
     if (err.response?.statusCode == 401) {
       if (Get.currentRoute != AppRoutes.login) {
+        _mainCubit.updateErrorMessage(
+          S.current.yourAccountHasBeenBlockedPleaseContactYourAdvisorManager,
+        );
+        _cachingManager.clearTokenForBrand(
+          _mainCubit.state.currentBrand,
+        );
         Get.offNamedUntil(AppRoutes.login, (route) => false);
       } else {
-        _mainCubit.updateErrorMessage(S.current.wrongUsernameOrPassword);
+        _mainCubit.updateErrorMessage(
+          S.current.wrongUsernameOrPassword,
+        );
       }
+    } else if (err.response?.statusCode == 451) {
+      await _cachingManager
+          .saveUserStatus(_cachingManager.getUserStatus()?.copyWith(
+                status: FortunicaUserStatus.legalBlock,
+              ));
     } else {
       _mainCubit.updateErrorMessage(
         err.response?.data['localizedMessage'] ??

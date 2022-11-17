@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_market.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_unit.dart';
-import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';

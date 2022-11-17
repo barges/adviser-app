@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
@@ -59,7 +58,7 @@ class NotLiveStatusWidget extends StatelessWidget {
                   title: status.buttonText(),
                   onPressed: () async {
                     if (status != FortunicaUserStatus.live) {
-                      homeCubit.changeIndex(3);
+                      homeCubit.goToAccount();
                     }
                   },
                 ),

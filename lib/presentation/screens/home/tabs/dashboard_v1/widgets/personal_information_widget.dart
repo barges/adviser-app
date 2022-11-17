@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/dashboard_v1_cubit.dart';
@@ -17,7 +15,7 @@ class PersonalInformationWidget extends StatelessWidget {
       final UserProfile? userProfile =
           context.select((DashboardV1Cubit cubit) => cubit.state.userProfile);
       return Container(
-          padding: EdgeInsets.all(AppConstants.horizontalScreenPadding),
+          padding: const EdgeInsets.all(AppConstants.horizontalScreenPadding),
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
               color: Theme.of(context).canvasColor,

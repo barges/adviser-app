@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_month.dart';
 import 'package:shared_advisor_interface/data/network/responses/reports_response.dart';
@@ -23,6 +22,12 @@ class DashboardV1Cubit extends Cubit<DashboardV1State> {
 
   final MainCubit mainCubit = getIt.get<MainCubit>();
   final UserRepository _userRepository = getIt.get<UserRepository>();
+
+  @override
+  Future<void> close() async {
+    disposeListen.call();
+    return super.close();
+  }
 
   Future<void> getReports() async {
     if (mainCubit.state.internetConnectionIsAvailable) {

@@ -67,12 +67,18 @@ class AccountCubit extends Cubit<AccountState> {
       await cacheManager.saveUserProfile(userInfo.profile);
       await cacheManager.saveUserId(userInfo.id);
 
-      if (checkPropertiesMapIfHasEmpty(userInfo)) {
+      if (userInfo.contracts?.updates?.isNotEmpty == true) {
         await cacheManager.saveUserStatus(userInfo.status?.copyWith(
-          status: FortunicaUserStatus.incomplete,
+          status: FortunicaUserStatus.legalBlock,
         ));
       } else {
-        await cacheManager.saveUserStatus(userInfo.status);
+        if (checkPropertiesMapIfHasEmpty(userInfo)) {
+          await cacheManager.saveUserStatus(userInfo.status?.copyWith(
+            status: FortunicaUserStatus.incomplete,
+          ));
+        } else {
+          await cacheManager.saveUserStatus(userInfo.status);
+        }
       }
       final DateTime? profileUpdatedAt =
           cacheManager.getUserStatus()?.profileUpdatedAt;
