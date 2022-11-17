@@ -12,6 +12,6 @@ class MainState with _$MainState {
     @Default(Brand.fortunica) Brand currentBrand,
     @Default('') String errorMessage,
     @Default('') String successMessage,
-    @Default(null) Locale? locale,
+    Locale? locale,
   }) = _MainState;
 }

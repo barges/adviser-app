@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -72,7 +71,7 @@ class NotesWidget extends StatelessWidget {
                         )
                       ],
                     )
-                  : SizedBox.shrink(),
+                  : const SizedBox.shrink(),
             ],
           ),
           const SizedBox(height: 11.0),

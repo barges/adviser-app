@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -27,7 +26,7 @@ class ReviewCardWidget extends StatelessWidget {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: const [
                   _ReviewCustomerInfoWidget(),
                   _ReviewRatingWidget(),
                 ],
@@ -50,13 +49,13 @@ class ReviewCardWidget extends StatelessWidget {
 }
 
 class _ReviewCustomerInfoWidget extends StatelessWidget {
-  const _ReviewCustomerInfoWidget({super.key});
+  const _ReviewCustomerInfoWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        UserAvatar(diameter: 32.0, withBorder: false, avatarUrl: ''),
+        const UserAvatar(diameter: 32.0, withBorder: false, avatarUrl: ''),
         const SizedBox(
           width: AppConstants.horizontalScreenPadding / 2,
         ),
@@ -85,7 +84,7 @@ class _ReviewCustomerInfoWidget extends StatelessWidget {
 }
 
 class _ReviewRatingWidget extends StatelessWidget {
-  const _ReviewRatingWidget({super.key});
+  const _ReviewRatingWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

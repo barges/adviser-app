@@ -129,5 +129,6 @@
   "resetPassword": "Reset Password",
   "avgDailyEarnings": "Avg Daily Earnings",
   "perfomanceOverviewAnalytics": "Perfomance Overview Analytics",
-  "editNote": "Edit Note"
+  "editNote": "Edit Note",
+  "yourAccountHasBeenBlockedPleaseContactYourAdvisorManager": "Your account has been blocked. Please contact your advisor manager."
 }

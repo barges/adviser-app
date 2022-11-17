@@ -24,6 +24,12 @@ class DashboardCubit extends Cubit<DashboardState> {
   final MainCubit mainCubit = Get.find<MainCubit>();
   final UserRepository _userRepository = Get.find<UserRepository>();
 
+  @override
+  Future<void> close() async {
+    disposeListen.call();
+    return super.close();
+  }
+
   void updateDashboardPageViewIndex(int index) {
     pageController.jumpToPage(index);
     emit(state.copyWith(dashboardPageViewIndex: index));

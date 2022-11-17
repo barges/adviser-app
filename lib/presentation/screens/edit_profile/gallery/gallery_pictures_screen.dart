@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/transparrent_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/gallery/gallery_pictures_cubit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

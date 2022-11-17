@@ -12,6 +12,7 @@ import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/di/modules/api_module.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_state.dart';
@@ -88,15 +89,15 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> login() async {
     if (emailIsValid() && passwordIsValid()) {
-      getIt.get<Dio>().options.headers['Authorization'] =
-          'Basic ${base64.encode(utf8.encode('${emailController.text}:${passwordController.text.to256}'))}';
+      getIt.get<Dio>().addAuthorizationToHeader(
+          'Basic ${base64.encode(utf8.encode('${emailController.text}:${passwordController.text.to256}'))}');
 
       LoginResponse? response = await _repository.login();
       String? token = response?.accessToken;
       if (token != null && token.isNotEmpty) {
         String jvtToken = 'JWT $token';
         await _cacheManager.saveTokenForBrand(state.selectedBrand, jvtToken);
-        getIt.get<Dio>().options.headers['Authorization'] = jvtToken;
+        getIt.get<Dio>().addAuthorizationToHeader(jvtToken);
         _cacheManager.saveCurrentBrand(state.selectedBrand);
         goToHome();
       }
@@ -123,10 +124,13 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> goToForgotPassword() async {
     clearErrorMessage();
     clearSuccessMessage();
+
     ///TODO: get token from deep link
     Get.toNamed(
       AppRoutes.forgotPassword,
-      arguments: ForgotPasswordScreenArguments(brand: state.selectedBrand,token: 'sdfdsf'),
+      arguments: ForgotPasswordScreenArguments(
+        brand: state.selectedBrand,
+      ),
     );
   }
 

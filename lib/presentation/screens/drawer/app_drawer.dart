@@ -77,7 +77,7 @@ class AppDrawer extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              Divider(
+                              const Divider(
                                 height: 1.0,
                               ),
                               if (cubit.unauthorizedBrands.isNotEmpty)
@@ -290,7 +290,7 @@ class _BottomSection extends StatelessWidget {
     final DrawerCubit cubit = context.read<DrawerCubit>();
     return Column(
       children: [
-        Divider(
+       const Divider(
           height: 1.0,
         ),
         Padding(

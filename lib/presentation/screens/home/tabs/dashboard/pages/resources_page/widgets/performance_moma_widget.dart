@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:blur/blur.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';

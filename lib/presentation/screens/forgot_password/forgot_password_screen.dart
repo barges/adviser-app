@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -234,20 +235,28 @@ class _BrandLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 96.0,
-      width: 96.0,
-      padding: const EdgeInsets.symmetric(vertical: 12.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          AppConstants.buttonRadius,
+    return GestureDetector(
+      onDoubleTap: () {
+        if (kDebugMode) {
+          context.read<ForgotPasswordCubit>().emailController.text =
+              'niskov.test@gmail.com';
+        }
+      },
+      child: Container(
+        height: 96.0,
+        width: 96.0,
+        padding: const EdgeInsets.symmetric(vertical: 12.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(
+            AppConstants.buttonRadius,
+          ),
+          color: Get.theme.canvasColor,
         ),
-        color: Get.theme.canvasColor,
-      ),
-      child: Center(
-        child: SvgPicture.asset(
-          brand?.icon ?? '',
-          height: 72.0,
+        child: Center(
+          child: SvgPicture.asset(
+            brand?.icon ?? '',
+            height: 72.0,
+          ),
         ),
       ),
     );

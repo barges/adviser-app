@@ -118,8 +118,7 @@ class _MyAppState extends State<MyApp> {
                     }
                     newLocale ??= supportedLocales.first;
                   }
-                  getIt.get<Dio>().options.headers['x-adviqo-app-language'] =
-                      newLocale.languageCode;
+                  getIt.get<Dio>().addLocaleToHeader(newLocale);
                   return newLocale;
                 },
                 navigatorObservers: <NavigatorObserver>[observer],
