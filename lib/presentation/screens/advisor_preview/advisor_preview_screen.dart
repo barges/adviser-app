@@ -47,7 +47,8 @@ class AdvisorPreviewScreen extends StatelessWidget {
                       onApply: advisorPreviewCubit.onApply,
                       onSelectLanguage:
                           advisorPreviewCubit.updateActiveLanguagesInUI,
-                      activeLanguages: advisorPreviewCubit.languages);
+                      activeLanguages: advisorPreviewCubit.languages,
+                      advisorPreviewCubit: advisorPreviewCubit);
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(

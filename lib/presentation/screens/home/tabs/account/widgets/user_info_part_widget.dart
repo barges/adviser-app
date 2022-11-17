@@ -146,6 +146,7 @@ class UserInfoPartWidget extends StatelessWidget {
                             status: FortunicaUserStatus.offline,
                           );
                         },
+                        accountCubit: accountCubit,
                       );
                     }
                   },

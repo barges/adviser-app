@@ -16,8 +16,9 @@ Future<void> showPickImageAlert(
   ImageSource? source;
 
   if (Platform.isAndroid) {
-    source = await Get.bottomSheet(
-      Column(
+    source = await showModalBottomSheet(
+      context: context,
+      builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           GestureDetector(
@@ -146,20 +147,51 @@ Future<void> _pickMultiImage(BuildContext context, ImageSource imageSource,
 
 Future<void> _handlePermissions(
     BuildContext context, ImageSource source) async {
+  String alertTitle = '';
+  PermissionStatus status;
   switch (source) {
     case ImageSource.camera:
       {
-        await Permission.camera.request();
+        status = await Permission.camera.request();
+        alertTitle = 'Allow camera';
       }
       break;
     case ImageSource.gallery:
       {
         if (Platform.isIOS) {
-          await Permission.photos.request();
+          status = await Permission.photos.request();
         } else {
-          await Permission.storage.request();
+          status = await Permission.storage.request();
         }
+        alertTitle = 'Allow gallery';
       }
       break;
+  }
+  if (status.isPermanentlyDenied) {
+    await showDialog(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+              title: Text(alertTitle,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2
+                      ?.copyWith(fontSize: 19.0)),
+              actions: [
+                CupertinoDialogAction(
+                  child: Text(S.of(context).cancel),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                CupertinoDialogAction(
+                  isDefaultAction: true,
+                  child: Text(S.of(context).settings),
+                  onPressed: () async {
+                    await openAppSettings();
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            ));
   }
 }
