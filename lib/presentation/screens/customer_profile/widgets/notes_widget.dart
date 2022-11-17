@@ -144,7 +144,7 @@ class _OneNoteWidget extends StatelessWidget {
                       color: Theme.of(context).shadowColor),
                   child: Row(
                     children: [
-                      Text(updatedAt.parseDateTimePattern2),
+                      Text(updatedAt.parseDateTimePattern5),
                       if (images.isNotEmpty)
                         Row(
                           mainAxisSize: MainAxisSize.min,
