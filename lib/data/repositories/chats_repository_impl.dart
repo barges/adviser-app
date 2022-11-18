@@ -60,12 +60,4 @@ class ChatsRepositoryImpl implements ChatsRepository {
   Future<ChatItem> sendAnswer(AnswerRequest request) async {
     return await _api.sendAnswer(request);
   }
-
-  String buildFilterType(bool isPublicFilter) {
-    if (isPublicFilter) {
-      return 'PUBLIC';
-    } else {
-      return 'PRIVATE';
-    }
-  }
 }

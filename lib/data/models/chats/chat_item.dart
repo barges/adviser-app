@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/client_information.dart';
-import 'package:shared_advisor_interface/data/models/chats/media_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
@@ -61,9 +61,8 @@ class ChatItem with _$ChatItem {
 
   String? getAudioUrl(int n) {
     if (isMedia &&
-            getAttachment(n) != null &&
-            getAttachment(n)!.mime!.contains(MediaType.audio.name) ||
-        getAttachment(n) != null && getAttachment(n)!.mime!.contains('mp4')) {
+        getAttachment(n) != null &&
+        getAttachment(n)!.mime!.contains(AttachmentType.audio.name)) {
       return getAttachment(n)!.url;
     }
     return null;
@@ -72,7 +71,7 @@ class ChatItem with _$ChatItem {
   String? getImageUrl(int n) {
     if (isMedia &&
         getAttachment(n) != null &&
-        getAttachment(n)!.mime!.contains(MediaType.image.name)) {
+        getAttachment(n)!.mime!.contains(AttachmentType.image.name)) {
       return getAttachment(n)!.url;
     }
     return null;

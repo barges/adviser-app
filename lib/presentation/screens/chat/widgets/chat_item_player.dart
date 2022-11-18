@@ -47,7 +47,7 @@ class ChatItemPlayer extends StatelessWidget with ChatItemTypeGetter {
         question: Theme.of(context).primaryColorLight,
         answer: Theme.of(context).primaryColorLight,
       ),
-      colorIcon: getterType(
+      iconColor: getterType(
         question: Theme.of(context).backgroundColor,
         answer: Theme.of(context).primaryColor,
       ),
@@ -61,7 +61,7 @@ class ChatItemPlayer extends StatelessWidget with ChatItemTypeGetter {
 
 class _ChatItemPlayer extends StatelessWidget {
   final Duration duration;
-  final Color colorIcon;
+  final Color iconColor;
   final Color colorBtn;
   final Color textColor;
   final Color colorProgressIndicator;
@@ -74,7 +74,7 @@ class _ChatItemPlayer extends StatelessWidget {
   const _ChatItemPlayer({
     Key? key,
     required this.duration,
-    required this.colorIcon,
+    required this.iconColor,
     required this.colorBtn,
     required this.textColor,
     required this.colorProgressIndicator,
@@ -93,7 +93,7 @@ class _ChatItemPlayer extends StatelessWidget {
         _PlayPauseBtn(
           isPlaying: isPlaying,
           color: colorBtn,
-          colorIcon: colorIcon,
+          iconColor: iconColor,
           onStartPlayPressed: onStartPlayPressed,
           onPausePlayPressed: onPausePlayPressed,
         ),
@@ -128,14 +128,14 @@ class _ChatItemPlayer extends StatelessWidget {
 }
 
 class _PlayPauseBtn extends StatelessWidget {
-  final Color colorIcon;
+  final Color iconColor;
   final Color color;
   final bool isPlaying;
   final VoidCallback? onStartPlayPressed;
   final VoidCallback? onPausePlayPressed;
   const _PlayPauseBtn({
     Key? key,
-    required this.colorIcon,
+    required this.iconColor,
     required this.color,
     this.isPlaying = false,
     this.onStartPlayPressed,
@@ -158,11 +158,11 @@ class _PlayPauseBtn extends StatelessWidget {
         child: isPlaying
             ? Assets.vectors.pause.svg(
                 fit: BoxFit.none,
-                color: colorIcon,
+                color: iconColor,
               )
             : Assets.vectors.play.svg(
                 fit: BoxFit.none,
-                color: colorIcon,
+                color: iconColor,
               ),
       ),
     );

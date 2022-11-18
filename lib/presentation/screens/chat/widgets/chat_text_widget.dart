@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_footer_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_bg_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_background_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_area_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_widget.dart';
 
@@ -12,7 +12,7 @@ class ChatTextWidget extends ChatWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChatItemBg(
+    return ChatItemBackground(
       isBorder: true,
       padding: paddingItem,
       color: getColorItem(context),

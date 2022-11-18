@@ -3,13 +3,13 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
-class ChatItemBg extends StatelessWidget {
+class ChatItemBackground extends StatelessWidget {
   final bool isBorder;
   final bool isTryAgain;
   final EdgeInsetsGeometry padding;
   final Color color;
   final Widget child;
-  const ChatItemBg({
+  const ChatItemBackground({
     super.key,
     this.isBorder = false,
     this.isTryAgain = false,
@@ -60,30 +60,31 @@ class TryAgain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 85.0,
-      height: 32.0,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: Theme.of(context).canvasColor,
         borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            S.of(context).tryAgain,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(context).errorColor,
-                  fontSize: 12.0,
-                ),
-          ),
-          const SizedBox(
-            width: 5.33,
-          ),
-          Assets.vectors.refresh.svg(
-            width: 13.33,
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              S.of(context).tryAgain,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).errorColor,
+                    fontSize: 12.0,
+                  ),
+            ),
+            const SizedBox(
+              width: 4,
+            ),
+            Assets.vectors.refresh.svg(
+              width: 16,
+            ),
+          ],
+        ),
       ),
     );
   }

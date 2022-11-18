@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_bg_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/rect_circle_image.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_background_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/rounded_rect_image.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_player.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_footer_widget.dart';
@@ -15,15 +15,16 @@ class ChatMediaWidget extends ChatWidget {
   Widget build(BuildContext context) {
     final String? audioUrl1 = item.getAudioUrl(1);
     final String? audioUrl2 = item.getAudioUrl(2);
-    return ChatItemBg(
+    return ChatItemBackground(
       padding: paddingItem,
       color: getColorItem(context),
       child: Stack(
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               if (item.getImageUrl(1) != null)
-                RectCircleImage(
+                RoundedRectImage(
                   item.getImageUrl(1)!,
                   height: 134.0,
                 ),
@@ -31,7 +32,7 @@ class ChatMediaWidget extends ChatWidget {
                 Padding(
                   padding: EdgeInsets.only(
                       top: item.getImageUrl(1) != null ? 12.0 : 0.0),
-                  child: RectCircleImage(
+                  child: RoundedRectImage(
                     item.getImageUrl(2)!,
                     height: 134.0,
                   ),

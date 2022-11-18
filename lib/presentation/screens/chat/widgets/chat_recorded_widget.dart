@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_attached_pictures.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/attached_pictures.dart';
 
 class ChatRecordedWidget extends StatelessWidget {
   final VoidCallback? onStartPlayPressed;
@@ -32,18 +33,18 @@ class ChatRecordedWidget extends StatelessWidget {
     final ChatCubit chatCubit = context.read<ChatCubit>();
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24.0, 6.0, 24.0, 6.0),
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 6.0),
       child: Column(
         children: [
           Builder(builder: (context) {
-            final List<File> attachedPics =
-                context.select((ChatCubit cubit) => cubit.state.attachedPics);
-            final isAttachedPics = attachedPics.isNotEmpty;
-            return isAttachedPics
+            final List<File> attachedPictures = context
+                .select((ChatCubit cubit) => cubit.state.attachedPictures);
+            final isAttachedPictures = attachedPictures.isNotEmpty;
+            return isAttachedPictures
                 ? const Padding(
                     padding: EdgeInsets.only(
                       top: 4.0,
-                      bottom: 5.0,
+                      bottom: 12.0,
                     ),
                     child: AttachedPictures(),
                   )
@@ -53,7 +54,7 @@ class ChatRecordedWidget extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  if (chatCubit.state.attachedPics.isEmpty) {
+                  if (chatCubit.state.attachedPictures.isEmpty) {
                     showPickImageAlert(
                       context: context,
                       setImage: chatCubit.attachPicture,
@@ -61,10 +62,10 @@ class ChatRecordedWidget extends StatelessWidget {
                   }
                 },
                 child: Builder(builder: (context) {
-                  final List<File> attachedPics = context
-                      .select((ChatCubit cubit) => cubit.state.attachedPics);
+                  final List<File> attachedPictures = context.select(
+                      (ChatCubit cubit) => cubit.state.attachedPictures);
                   return Opacity(
-                    opacity: attachedPics.isEmpty ? 1.0 : 0.4,
+                    opacity: attachedPictures.isEmpty ? 1.0 : 0.4,
                     child: Assets.vectors.gallery.svg(
                       width: AppConstants.iconSize,
                       color: Theme.of(context).shadowColor,
@@ -81,8 +82,7 @@ class ChatRecordedWidget extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                  left: 5.0,
-                  right: 17.0,
+                  right: 12.0,
                 ),
                 child:
                     Assets.vectors.microphone.svg(width: AppConstants.iconSize),
@@ -152,12 +152,11 @@ class ChatRecordedWidget extends StatelessWidget {
               const SizedBox(
                 width: 8.0,
               ),
-              GestureDetector(
+              AppIconGradientButton(
                 onTap: onSendPressed,
-                child: Assets.images.send.image(
-                  width: AppConstants.iconButtonSize,
-                ),
-              )
+                icon: Assets.vectors.send.path,
+                iconColor: Theme.of(context).backgroundColor,
+              ),
             ],
           ),
         ],

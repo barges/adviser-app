@@ -20,7 +20,7 @@ class ChatRecordingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24.0, 10.0, 24.0, 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
       child: Row(
         children: [
           GestureDetector(

@@ -15,10 +15,10 @@ class AttachedPictures extends StatelessWidget {
     return Builder(
       builder: (context) {
         final ChatCubit chatCubit = context.read<ChatCubit>();
-        final List<File> attachedPics =
-            context.select((ChatCubit cubit) => cubit.state.attachedPics);
+        final List<File> attachedPictures =
+            context.select((ChatCubit cubit) => cubit.state.attachedPictures);
         return Row(
-          children: attachedPics
+          children: attachedPictures
               .map((file) => Padding(
                     padding: const EdgeInsets.only(right: 9.0),
                     child: _AttachedPicture(
@@ -59,7 +59,7 @@ class _AttachedPicture extends StatelessWidget {
     return Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.all(9.0),
+          padding: const EdgeInsets.only(top: 7.0, right: 7.0),
           child: Container(
             width: width,
             height: height,
@@ -74,8 +74,7 @@ class _AttachedPicture extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 2.0,
-          right: 2.0,
+          right: 0.0,
           child: _DeleteBtn(
             onPressed: onDeletePressed,
           ),
@@ -97,8 +96,8 @@ class _DeleteBtn extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        height: 16.5,
-        width: 16.5,
+        width: 18.0,
+        height: 18.0,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Theme.of(context).hoverColor,

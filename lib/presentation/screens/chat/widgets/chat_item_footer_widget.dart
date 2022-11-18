@@ -20,29 +20,28 @@ class ChatItemFooterWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
-          type == SessionsTypes.ritual && ritualIdentifier != null
-              ? ritualIdentifier!.sessionName
-              : type.name,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: color,
-                fontSize: 12.0,
-              ),
+        Padding(
+          padding: const EdgeInsets.only(right: 4.0),
+          child: Text(
+            type == SessionsTypes.ritual && ritualIdentifier != null
+                ? ritualIdentifier!.sessionName
+                : type.name,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: color,
+                  fontSize: 12.0,
+                ),
+          ),
         ),
         if (type == SessionsTypes.ritual && ritualIdentifier != null)
-          const SizedBox(
-            width: 6.5,
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: SvgPicture.asset(
+              ritualIdentifier!.iconPath,
+              width: 16.0,
+              height: 16.0,
+              color: color,
+            ),
           ),
-        if (type == SessionsTypes.ritual && ritualIdentifier != null)
-          SvgPicture.asset(
-            ritualIdentifier!.iconPath,
-            width: 16.0,
-            height: 16.0,
-            color: color,
-          ),
-        const SizedBox(
-          width: 8,
-        ),
         Text(
           //createdAt.toString(),
           '${createdAt.hour}:${createdAt.minute}',

@@ -33,9 +33,9 @@ class ChatCubit extends Cubit<ChatState> {
   FlutterSoundRecorder? _recorder;
   FlutterSoundPlayer? _playerRecorded;
   FlutterSoundPlayer? _playerMedia;
-  int offset = 0;
-  int limit = AppConstants.itemsPerLoadChatHistory;
-  int? total;
+  int _offset = 0;
+  int _limit = 10;
+  int? _total;
 
   ChatCubit(this.repository, this.question) : super(const ChatState()) {
     _init();
@@ -119,12 +119,12 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> _getConversations() async {
-    if (total != null) {
-      if (offset == total! || limit > total!) {
+    if (_total != null) {
+      if (_offset == _total! || _limit > _total!) {
         return;
       }
-      if (offset + limit > total!) {
-        limit = total! - offset;
+      if (_offset + _limit > _total!) {
+        _limit = _total! - _offset;
       }
     }
 
@@ -132,17 +132,17 @@ class ChatCubit extends Cubit<ChatState> {
         expertID:
             '0ba684917ad77d2b7578d7f8b54797ca92c329e80898ff0fb7ea480d32bcb090',
         clientID: question.clientID!,
-        offset: offset,
-        limit: limit);
+        offset: _offset,
+        limit: _limit);
 
     ChatItem? lastQuestion;
-    if (total == null) {
+    if (_total == null) {
       lastQuestion = await repository.getQuestion(id: question.id!);
       //logger.i('Question: $lastQuestion');
     }
 
-    total = conversations.total;
-    offset = offset + limit;
+    _total = conversations.total;
+    _offset = _offset + _limit;
 
     final messages = List.of(state.messages);
     conversations.history!.forEach((element) {
@@ -180,7 +180,7 @@ class ChatCubit extends Cubit<ChatState> {
     );
 
     _recorder?.onProgress?.listen((e) {
-      if (e.duration.inSeconds > 3 * 60) {
+      if (e.duration.inSeconds > AppConstants.maxRecordDurationInSec) {
         stopRecordingAudio();
       }
     });
@@ -330,23 +330,23 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   void attachPicture(File? image) {
-    final images = List.of(state.attachedPics);
+    final images = List.of(state.attachedPictures);
     if (_mainCubit.state.internetConnectionIsAvailable &&
         images.length < 2 &&
         image != null) {
       images.add(image);
-      emit(state.copyWith(attachedPics: images));
+      emit(state.copyWith(attachedPictures: images));
     }
   }
 
   void deletePicture(File? image) {
-    final images = List.of(state.attachedPics);
+    final images = List.of(state.attachedPictures);
     images.remove(image);
-    emit(state.copyWith(attachedPics: images));
+    emit(state.copyWith(attachedPictures: images));
   }
 
-  void deleteAttachedPics() {
-    for (var image in state.attachedPics) {
+  void deleteAttachedPictures() {
+    for (var image in state.attachedPictures) {
       deletePicture(image);
     }
   }
@@ -358,7 +358,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     final Attachment audioAttachment = await _getAudioAttachment();
     Attachment? pictureAttachment;
-    if (state.attachedPics.isNotEmpty) {
+    if (state.attachedPictures.isNotEmpty) {
       pictureAttachment = await _getPictureAttachment(0);
     }
 
@@ -386,17 +386,19 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       );
 
-      deleteAttachedPics();
+      deleteAttachedPictures();
     } catch (e) {
       logger.e(e);
     }
   }
 
   Future<void> sendTextMedia() async {
-    Attachment? pictureAttachment1 =
-        state.attachedPics.length == 1 ? await _getPictureAttachment(0) : null;
-    Attachment? pictureAttachment2 =
-        state.attachedPics.length == 2 ? await _getPictureAttachment(1) : null;
+    Attachment? pictureAttachment1 = state.attachedPictures.length == 1
+        ? await _getPictureAttachment(0)
+        : null;
+    Attachment? pictureAttachment2 = state.attachedPictures.length == 2
+        ? await _getPictureAttachment(1)
+        : null;
 
     final request = AnswerRequest(
       questionID: '5fddcfa7bd7774001cf0b009',
@@ -425,7 +427,7 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       );
 
-      deleteAttachedPics();
+      deleteAttachedPictures();
     } catch (e) {
       logger.e(e);
     }
@@ -444,7 +446,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<Attachment> _getPictureAttachment(int n) async {
-    final File imageFile = state.attachedPics[n];
+    final File imageFile = state.attachedPictures[n];
     final List<int> imageBytes = await imageFile.readAsBytes();
     final String base64Image = base64Encode(imageBytes);
     return Attachment(

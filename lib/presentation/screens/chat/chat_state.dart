@@ -10,7 +10,7 @@ part 'chat_state.freezed.dart';
 class ChatState with _$ChatState {
   const factory ChatState({
     @Default([]) List<ChatItem> messages,
-    @Default([]) List<File> attachedPics,
+    @Default([]) List<File> attachedPictures,
     @Default(0) int inputTextLength,
     @Default(false) bool isLoadingAudio,
     @Default(false) bool isRecordingAudio,

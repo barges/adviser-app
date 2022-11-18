@@ -39,101 +39,102 @@ class ChatScreen extends StatelessWidget {
               selectedBrand: selectedBrand,
               question: _question,
             ),
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Stack(
-                    children: [
-                      Builder(
-                        builder: (context) {
-                          final List<ChatItem> items = context.select(
-                              (ChatCubit cubit) => cubit.state.messages);
-                          return ListView.builder(
-                            controller: chatCubit.messagesScrollController,
-                            reverse: true,
-                            itemBuilder: (_, index) =>
-                                _ChatItemWidget(items[index]),
-                            itemCount: items.length,
-                          );
-                        },
-                      ),
-                      const Positioned(
-                        bottom: 0.0,
-                        right: 0.0,
-                        child: _TextCounter(
-                          width: textCounterWidth,
-                          height: 22.0,
+            backgroundColor: Theme.of(context).canvasColor,
+            body: SafeArea(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        Builder(
+                          builder: (context) {
+                            final List<ChatItem> items = context.select(
+                                (ChatCubit cubit) => cubit.state.messages);
+                            return Container(
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              child: ListView.builder(
+                                controller: chatCubit.messagesScrollController,
+                                reverse: true,
+                                itemBuilder: (_, index) =>
+                                    _ChatItemWidget(items[index]),
+                                itemCount: items.length,
+                              ),
+                            );
+                          },
                         ),
-                      ),
-                    ],
+                        const Positioned(
+                          bottom: 0.0,
+                          right: 0.0,
+                          child: _TextCounter(
+                            width: textCounterWidth,
+                            height: 22.0,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  color: Theme.of(context).canvasColor,
-                  child: Stack(
-                    children: [
-                      Builder(
-                        builder: (context) {
-                          final bool isRecordingAudio = context.select(
-                              (ChatCubit cubit) =>
-                                  cubit.state.isRecordingAudio);
-                          final bool isAudioFileSaved = context.select(
-                              (ChatCubit cubit) =>
-                                  cubit.state.isAudioFileSaved);
-                          final isPlayingRecordedAudio = context.select(
-                              (ChatCubit cubit) =>
-                                  cubit.state.isPlayingRecordedAudio);
+                  Container(
+                    color: Theme.of(context).canvasColor,
+                    child: Stack(
+                      children: [
+                        Builder(
+                          builder: (context) {
+                            final bool isRecordingAudio = context.select(
+                                (ChatCubit cubit) =>
+                                    cubit.state.isRecordingAudio);
+                            final bool isAudioFileSaved = context.select(
+                                (ChatCubit cubit) =>
+                                    cubit.state.isAudioFileSaved);
+                            final isPlayingRecordedAudio = context.select(
+                                (ChatCubit cubit) =>
+                                    cubit.state.isPlayingRecordedAudio);
 
-                          if (isAudioFileSaved) {
-                            return ChatRecordedWidget(
-                              isPlaying: isPlayingRecordedAudio,
-                              playbackStream: chatCubit.state.playbackStream,
-                              onStartPlayPressed: () =>
-                                  chatCubit.startPlayRecordedAudio(),
-                              onPausePlayPressed: () =>
-                                  chatCubit.pauseRecordedAudio(),
-                              onDeletePressed: () async {
-                                final bool? isDelete = await showDeleteAlert(
-                                    context,
-                                    S
-                                        .of(context)
-                                        .doYouWantToDeleteAudioMessage);
-                                if (isDelete!) {
-                                  chatCubit.deletedRecordedAudio();
-                                }
-                              },
-                              onSendPressed: () => chatCubit.sendMedia(),
-                            );
-                          }
+                            if (isAudioFileSaved) {
+                              return ChatRecordedWidget(
+                                isPlaying: isPlayingRecordedAudio,
+                                playbackStream: chatCubit.state.playbackStream,
+                                onStartPlayPressed: () =>
+                                    chatCubit.startPlayRecordedAudio(),
+                                onPausePlayPressed: () =>
+                                    chatCubit.pauseRecordedAudio(),
+                                onDeletePressed: () async {
+                                  final bool? isDelete = await showDeleteAlert(
+                                      context,
+                                      S
+                                          .of(context)
+                                          .doYouWantToDeleteAudioMessage);
+                                  if (isDelete!) {
+                                    chatCubit.deletedRecordedAudio();
+                                  }
+                                },
+                                onSendPressed: () => chatCubit.sendMedia(),
+                              );
+                            }
 
-                          if (isRecordingAudio) {
-                            return ChatRecordingWidget(
-                              onClosePressed: () =>
-                                  chatCubit.cancelRecordingAudio(),
-                              onStopRecordPressed: () =>
-                                  chatCubit.stopRecordingAudio(),
-                              recordingStream: chatCubit.state.recordingStream,
-                            );
-                          } else {
-                            return const ChatTextInputWidget();
-                          }
-                        },
-                      ),
-                      Divider(
-                        height: 1.0,
-                        endIndent: textCounterWidth,
-                        color: Theme.of(context).hintColor,
-                      ),
-                    ],
+                            if (isRecordingAudio) {
+                              return ChatRecordingWidget(
+                                onClosePressed: () =>
+                                    chatCubit.cancelRecordingAudio(),
+                                onStopRecordPressed: () =>
+                                    chatCubit.stopRecordingAudio(),
+                                recordingStream:
+                                    chatCubit.state.recordingStream,
+                              );
+                            } else {
+                              return const ChatTextInputWidget();
+                            }
+                          },
+                        ),
+                        Divider(
+                          height: 1.0,
+                          endIndent: textCounterWidth,
+                          color: Theme.of(context).dividerColor,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  color: Theme.of(context).canvasColor,
-                  height: 34.0,
-                )
-              ],
+                ],
+              ),
             ),
           );
         },
@@ -200,7 +201,7 @@ class _TextCounter extends StatelessWidget {
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(4.0, 4.0, 4.0, 4.0),
+              padding: const EdgeInsets.all(4.0),
               child: Text(
                 textAlign: TextAlign.center,
                 '${AppConstants.maxTextLength}/$inputTextLength',
