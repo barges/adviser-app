@@ -130,5 +130,7 @@
   "avgDailyEarnings": "Avg Daily Earnings",
   "perfomanceOverviewAnalytics": "Perfomance Overview Analytics",
   "editNote": "Edit Note",
-  "yourAccountHasBeenBlockedPleaseContactYourAdvisorManager": "Your account has been blocked. Please contact your advisor manager."
+  "yourAccountHasBeenBlockedPleaseContactYourAdvisorManager": "Your account has been blocked. Please contact your advisor manager.",
+  "account": "Account",
+  "sessions": "Sessions"
 }

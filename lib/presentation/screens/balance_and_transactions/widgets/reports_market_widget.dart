@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_market.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_unit.dart';
 import 'package:shared_advisor_interface/extensions.dart';

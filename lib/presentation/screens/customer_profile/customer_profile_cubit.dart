@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
@@ -16,23 +15,24 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
     getCustomerInfo().then((_) => getCurrentNote());
   }
 
-  //TODO -- remove this later
-  bool isTopSpender = true;
-
   void updateIsFavorite() {
     emit(state.copyWith(isFavorite: !state.isFavorite));
   }
 
   Future<void> getCustomerInfo() async {
-    emit(state.copyWith(
-        response: await _repository.getCustomerInfo(customerID)));
+    emit(
+      state.copyWith(
+        response: await _repository.getCustomerInfo(customerID),
+      ),
+    );
   }
 
   Future<void> getCurrentNote() async {
-    final GetNoteResponse note =
-        await _repository.getNoteForCustomer(customerID);
-
-    emit(state.copyWith(currentNote: note));
+    emit(
+      state.copyWith(
+        currentNote: await _repository.getNoteForCustomer(customerID),
+      ),
+    );
   }
 
   void navigateToAddNoteScreenForOldNote() {

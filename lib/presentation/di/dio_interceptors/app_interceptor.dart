@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
 
 class AppInterceptor extends Interceptor {
   final MainCubit _mainCubit;
@@ -51,11 +52,14 @@ class AppInterceptor extends Interceptor {
           S.current.wrongUsernameOrPassword,
         );
       }
-    } else if (err.response?.statusCode == 451) {
-      await _cachingManager
-          .saveUserStatus(_cachingManager.getUserStatus()?.copyWith(
-                status: FortunicaUserStatus.legalBlock,
-              ));
+    } else if (err.response?.statusCode == 451 ||
+        err.response?.statusCode == 428) {
+      Get.offNamedUntil(
+          AppRoutes.home,
+          arguments: HomeScreenArguments(
+            initTab: TabsTypes.account,
+          ),
+          (route) => false);
     } else {
       _mainCubit.updateErrorMessage(
         err.response?.data['localizedMessage'] ??
@@ -63,8 +67,8 @@ class AppInterceptor extends Interceptor {
             err.response?.data['status'] ??
             'Unknown dio error',
       );
-      return super.onError(err, handler);
     }
+    return super.onError(err, handler);
   }
 
   @override
