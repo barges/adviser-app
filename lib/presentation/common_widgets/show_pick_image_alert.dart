@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 
 Future<void> showPickImageAlert(
     {required BuildContext context,
@@ -168,30 +169,15 @@ Future<void> _handlePermissions(
       break;
   }
   if (status.isPermanentlyDenied) {
-    await showDialog(
-        context: context,
-        builder: (context) => CupertinoAlertDialog(
-              title: Text(alertTitle,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.copyWith(fontSize: 19.0)),
-              actions: [
-                CupertinoDialogAction(
-                  child: Text(S.of(context).cancel),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                CupertinoDialogAction(
-                  isDefaultAction: true,
-                  child: Text(S.of(context).settings),
-                  onPressed: () async {
-                    await openAppSettings();
-                    Navigator.pop(context);
-                  },
-                )
-              ],
-            ));
+    VoidCallback actionOnOk = (() async {
+      await openAppSettings();
+      Navigator.pop(context);
+    });
+    await showOkCancelAlert(
+      context,
+      alertTitle,
+      S.of(context).settings,
+      actionOnOk,
+    );
   }
 }
