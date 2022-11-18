@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
         activeIcon: Assets.vectors.chats.svg(
           color: theme.primaryColor,
         ),
-        label: 'Chats',
+        label: 'Sessions',
       ),
       BottomNavigationBarItem(
         icon: Assets.vectors.account.svg(),

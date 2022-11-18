@@ -33,17 +33,6 @@ class ReviewsSettingsPartWidget extends StatelessWidget {
             onTap: () {
               Get.toNamed(AppRoutes.balanceAndTransactions);
             },
-            widget: Row(
-              children: [
-                Text(
-                  "999",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: Theme.of(context).shadowColor),
-                ),
-              ],
-            ),
           ),
           const Divider(
             height: 1.0,

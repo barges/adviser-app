@@ -22,12 +22,9 @@ class CustomerRepositoryImpl implements CustomerRepository {
 
   @override
   Future<UpdateNoteResponse> updateNoteToCustomer(
-      {required String clientID,
-      required String content,
-      required updatedAt}) async {
+      {required String clientID, required String content}) async {
     return await _api.updateNoteToCustomer(
-      UpdateNoteRequest(
-          clientID: clientID, content: content, updatedAt: updatedAt),
+      UpdateNoteRequest(clientID: clientID, content: content),
     );
   }
 }
