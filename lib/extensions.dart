@@ -9,6 +9,9 @@ const String datePattern2 = 'MMM. d, yyyy';
 const String datePattern3 = 'dd/MM/yyyy';
 const String datePattern4 = 'HH:mm MMM d yyyy';
 const String datePattern5 = 'MMM. dd, yyyy, HH:mm';
+const String datePattern6 = 'HH:mm';
+const String datePattern7 = 'MMM dd';
+const String datePattern8 = 'MMM dd, yyyy';
 
 const String currencyPattern = '#,##0.00';
 
@@ -39,35 +42,53 @@ extension StringExt on String {
   }
 
   String get parseDateTimePattern1 {
-    final DateTime inputDate =
-        DateTime.parse(DateFormat(dateFormat).parse(this).toString());
+    final DateTime inputDate = DateTime.parse(
+        DateFormat(dateFormat).parse(this, true).toLocal().toString());
 
     return DateFormat(datePattern1).format(inputDate);
   }
 
   String get parseDateTimePattern2 {
-    final DateTime inputDate =
-        DateTime.parse(DateFormat(dateFormat).parse(this).toString());
+    final DateTime inputDate = DateTime.parse(
+        DateFormat(dateFormat).parse(this, true).toLocal().toString());
 
     return DateFormat(datePattern2).format(inputDate);
   }
 
   String get parseDateTimePattern3 {
-    final DateTime inputDate =
-        DateTime.parse(DateFormat(dateFormat).parse(this).toString());
+    final DateTime inputDate = DateTime.parse(
+        DateFormat(dateFormat).parse(this, true).toLocal().toString());
     return DateFormat(datePattern3).format(inputDate);
   }
 
   String get parseDateTimePattern4 {
-    final DateTime inputData =
-        DateTime.parse(DateFormat(dateFormat).parse(this).toString());
+    final DateTime inputData = DateTime.parse(
+        DateFormat(dateFormat).parse(this, true).toLocal().toString());
     return DateFormat(datePattern4).format(inputData);
   }
 
   String get parseDateTimePattern5 {
-    final DateTime inputData =
-        DateTime.parse(DateFormat(dateFormat).parse(this).toString());
+    final DateTime inputData = DateTime.parse(
+        DateFormat(dateFormat).parse(this, true).toLocal().toString());
     return DateFormat(datePattern5).format(inputData);
+  }
+
+  String get parseDateTimePattern6 {
+    final DateTime inputData = DateTime.parse(
+        DateFormat(dateFormat).parse(this, true).toLocal().toString());
+    return DateFormat(datePattern6).format(inputData);
+  }
+
+  String get parseDateTimePattern7 {
+    final DateTime inputData = DateTime.parse(
+        DateFormat(dateFormat).parse(this, true).toLocal().toString());
+    return DateFormat(datePattern7).format(inputData);
+  }
+
+  String get parseDateTimePattern8 {
+    final DateTime inputData = DateTime.parse(
+        DateFormat(dateFormat).parse(this, true).toLocal().toString());
+    return DateFormat(datePattern8).format(inputData);
   }
 
   String get removeSpacesAndNewLines {

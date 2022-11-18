@@ -15,8 +15,8 @@ class ChatItem with _$ChatItem {
   const factory ChatItem({
     ChatItemType? type,
     String? clientName,
-    String? createdAt,
-    String? updatedAt,
+    DateTime? createdAt,
+    DateTime? updatedAt,
     String? content,
     @JsonKey(name: '_id') final String? id,
     ClientInformation? clientInformation,
@@ -29,14 +29,14 @@ class ChatItem with _$ChatItem {
 
   ChatItemContentType get contentType {
     ChatItemContentType? chatItemContentType = ChatItemContentType.text;
-    if(attachments != null && attachments!.isNotEmpty) {
-    final String content = this.content ?? '';
+    if (attachments != null && attachments!.isNotEmpty) {
+      final String content = this.content ?? '';
       if (content.isNotEmpty) {
         if (attachments!.length == 1) {
-            chatItemContentType = ChatItemContentType.mediaText;
-          } else {
-            chatItemContentType = ChatItemContentType.mediaMediaText;
-          }
+          chatItemContentType = ChatItemContentType.mediaText;
+        } else {
+          chatItemContentType = ChatItemContentType.mediaMediaText;
+        }
       } else {
         if (attachments!.length == 1) {
           chatItemContentType = ChatItemContentType.media;
