@@ -100,9 +100,7 @@ class ChatScreen extends StatelessWidget {
                                 onDeletePressed: () async {
                                   final bool? isDelete = await showDeleteAlert(
                                       context,
-                                      S
-                                          .of(context)
-                                          .doYouWantToDeleteAudioMessage);
+                                      S.of(context).doYouWantToDeleteImage);
                                   if (isDelete!) {
                                     chatCubit.deletedRecordedAudio();
                                   }

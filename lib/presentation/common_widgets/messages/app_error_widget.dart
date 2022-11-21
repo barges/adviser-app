@@ -28,7 +28,8 @@ class AppErrorWidget extends StatelessWidget {
         children: [
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 8.0, 0.0, 8.0),
+              padding:
+                  EdgeInsets.fromLTRB(16.0, 8.0, isRequired ? 16.0 : 0.0, 8.0),
               child: Text(
                 errorMessage,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(

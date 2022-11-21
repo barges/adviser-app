@@ -1370,6 +1370,36 @@ class S {
     );
   }
 
+  /// `Your account has been blocked. Please contact your advisor manager.`
+  String get yourAccountHasBeenBlockedPleaseContactYourAdvisorManager {
+    return Intl.message(
+      'Your account has been blocked. Please contact your advisor manager.',
+      name: 'yourAccountHasBeenBlockedPleaseContactYourAdvisorManager',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account`
+  String get account {
+    return Intl.message(
+      'Account',
+      name: 'account',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sessions`
+  String get sessions {
+    return Intl.message(
+      'Sessions',
+      name: 'sessions',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `from 15 sec to 3 min`
   String get from15secTo3min {
     return Intl.message(

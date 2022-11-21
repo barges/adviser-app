@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "aboutMe": MessageLookupByLibrary.simpleMessage("Sobre mim"),
+        "account": MessageLookupByLibrary.simpleMessage("Account"),
         "addCoverPicture":
             MessageLookupByLibrary.simpleMessage("Adicionar imagem de capa"),
         "addGalleryPictures":
@@ -175,6 +176,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "search": MessageLookupByLibrary.simpleMessage("Procurar"),
         "seeMore": MessageLookupByLibrary.simpleMessage("Ver mais"),
         "services": MessageLookupByLibrary.simpleMessage("Serviços"),
+        "sessions": MessageLookupByLibrary.simpleMessage("Sessions"),
         "settings": MessageLookupByLibrary.simpleMessage("Definições"),
         "signIn": MessageLookupByLibrary.simpleMessage("Entrar"),
         "similarArticles":
@@ -233,6 +235,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "youWillBeAbleToChangeYourStatusBackIn":
             MessageLookupByLibrary.simpleMessage(
                 "You will be able to change your status back in 1 hour"),
+        "yourAccountHasBeenBlockedPleaseContactYourAdvisorManager":
+            MessageLookupByLibrary.simpleMessage(
+                "Your account has been blocked. Please contact your advisor manager."),
         "zodiacSign": MessageLookupByLibrary.simpleMessage("Signo do zodíaco")
       };
 }

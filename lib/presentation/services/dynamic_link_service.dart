@@ -27,8 +27,8 @@ class DynamicLinkService {
     PendingDynamicLinkData? data =
         await FirebaseDynamicLinks.instance.getInitialLink();
     if (data != null) {
-      final String? deepLink = data.link.toString();
-      if (deepLink != null) {
+      final String deepLink = data.link.toString();
+      if (deepLink.isNotEmpty) {
         if (deepLink.contains('secret=')) {
           secret = deepLink.split('=').last;
         }

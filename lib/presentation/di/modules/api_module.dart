@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:android_id/android_id.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
@@ -43,7 +44,10 @@ class ApiModule implements Module {
     dio.interceptors.add(LogInterceptor(
         requestBody: true, responseBody: true, logPrint: simpleLogger.d));
 
-    dio.interceptors.add(AppInterceptor(getIt.get<MainCubit>()));
+    dio.interceptors.add(AppInterceptor(
+      getIt.get<MainCubit>(),
+      getIt.get<CachingManager>(),
+    ));
     return dio;
   }
 
@@ -67,5 +71,15 @@ class ApiModule implements Module {
     }
 
     return headers;
+  }
+}
+
+extension DioHeadersExt on Dio {
+  void addLocaleToHeader(Locale locale) {
+    options.headers['x-adviqo-app-language'] = locale.languageCode;
+  }
+
+  void addAuthorizationToHeader(String token) {
+    options.headers['Authorization'] = token;
   }
 }

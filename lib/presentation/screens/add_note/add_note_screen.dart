@@ -2,17 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_cubit.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class AddNoteScreen extends StatelessWidget {
   const AddNoteScreen({
@@ -57,44 +54,44 @@ class AddNoteScreen extends StatelessWidget {
                           ),
                     ),
               /**
-                Padding(
+                  Padding(
                   padding: const EdgeInsets.only(top: 12.0),
                   child: Builder(builder: (context) {
-                    bool hadTitle = context
-                        .select((AddNoteCubit cubit) => cubit.state.hadTitle);
-                    if (hadTitle) {
-                      return TextField(
-                        controller: addNoteCubit.titleController,
-                        autofocus: true,
-                        style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        scrollPadding: EdgeInsets.zero,
-                        cursorColor: Theme.of(context).hoverColor,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                          contentPadding: EdgeInsets.zero,
-                        ),
-                      );
-                    } else {
-                      return GestureDetector(
-                          onTap: (() {
-                            addNoteCubit.addTitle();
-                          }),
-                          child: Text(S.of(context).title,
-                              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: Theme.of(context).shadowColor)));
-                    }
+                  bool hadTitle = context
+                  .select((AddNoteCubit cubit) => cubit.state.hadTitle);
+                  if (hadTitle) {
+                  return TextField(
+                  controller: addNoteCubit.titleController,
+                  autofocus: true,
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  ),
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  scrollPadding: EdgeInsets.zero,
+                  cursorColor: Theme.of(context).hoverColor,
+                  decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                  contentPadding: EdgeInsets.zero,
+                  ),
+                  );
+                  } else {
+                  return GestureDetector(
+                  onTap: (() {
+                  addNoteCubit.addTitle();
                   }),
-                ),
-              */
+                  child: Text(S.of(context).title,
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).shadowColor)));
+                  }
+                  }),
+                  ),
+               */
               TextField(
                 controller: addNoteCubit.noteController,
                 style: Theme.of(context)
@@ -149,25 +146,25 @@ class AddNoteScreen extends StatelessWidget {
             ]),
           ),
           /**
-            floatingActionButton: GestureDetector(
+              floatingActionButton: GestureDetector(
               onTap: () {
-                showPickImageAlert(
-                    context: context,
-                    setImage: addNoteCubit.attachPicture,
-                    setMultiImage: addNoteCubit.attachMultiPictures);
+              showPickImageAlert(
+              context: context,
+              setImage: addNoteCubit.attachPicture,
+              setMultiImage: addNoteCubit.attachMultiPictures);
               },
               child: Container(
-                height: 48.0,
-                width: 48.0,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                      colors: [AppColors.ctaGradient1, AppColors.ctaGradient2]),
-                ),
-                child: Assets.vectors.gallery.svg(fit: BoxFit.scaleDown),
+              height: 48.0,
+              width: 48.0,
+              decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+              colors: [AppColors.ctaGradient1, AppColors.ctaGradient2]),
               ),
-            ),
-          */
+              child: Assets.vectors.gallery.svg(fit: BoxFit.scaleDown),
+              ),
+              ),
+           */
         );
       }),
     );

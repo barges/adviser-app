@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
 
 class ChatItemFooterWidget extends StatelessWidget {
   final ChatItemType type;

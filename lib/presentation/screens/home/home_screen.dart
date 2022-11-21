@@ -1,84 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_screen.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/articles/articles_screen.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard/dashboard_screen.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/dashboard_v1_screen.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return BlocProvider(
-      create: (_) => HomeCubit(getIt.get<CachingManager>(), context),
+      create: (_) => HomeCubit(
+        cacheManager: getIt.get<CachingManager>(),
+        context: context,
+      ),
       child: Builder(builder: (context) {
         final HomeCubit cubit = context.read<HomeCubit>();
         final int tabPositionIndex =
             context.select((HomeCubit cubit) => cubit.state.tabPositionIndex);
-        final ThemeData theme = Theme.of(context);
+
         return Scaffold(
           key: cubit.scaffoldKey,
           drawer: const AppDrawer(),
           body: _TabPages(
-            openDrawer: () {
-              Future.microtask(() {
-                cubit.openDrawer();
-              });
-            },
             tabIndex: tabPositionIndex,
+            tabs:
+                HomeCubit.tabsList.map((e) => e.getNavigator(context)).toList(),
           ),
           bottomNavigationBar: BottomNavigationBar(
-              currentIndex: tabPositionIndex,
-              type: BottomNavigationBarType.fixed,
-              selectedIconTheme: theme.iconTheme.copyWith(
-                color: theme.primaryColor,
-              ),
-              selectedLabelStyle: theme.textTheme.labelSmall,
-              unselectedLabelStyle: theme.textTheme.labelSmall,
-              unselectedItemColor: theme.iconTheme.color,
-              showUnselectedLabels: true,
-              onTap: cubit.changeIndex,
-              selectedItemColor: theme.primaryColor,
-              items: [
-                BottomNavigationBarItem(
-                  icon: Assets.vectors.dashboard.svg(),
-                  activeIcon: Assets.vectors.dashboard.svg(
-                    color: theme.primaryColor,
-                  ),
-                  label: 'Dashboard',
-                ),
-                /**
-                  BottomNavigationBarItem(
-                    icon: Assets.vectors.articles.svg(),
-                    activeIcon: Assets.vectors.articles.svg(
+            currentIndex: tabPositionIndex,
+            type: BottomNavigationBarType.fixed,
+            selectedIconTheme: theme.iconTheme.copyWith(
+              color: theme.primaryColor,
+            ),
+            selectedLabelStyle: theme.textTheme.labelSmall,
+            unselectedLabelStyle: theme.textTheme.labelSmall,
+            unselectedItemColor: theme.iconTheme.color,
+            showUnselectedLabels: true,
+            onTap: cubit.changeTabIndex,
+            selectedItemColor: theme.primaryColor,
+            items: HomeCubit.tabsList
+                .map(
+                  (e) => BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      e.iconPath,
+                      color: theme.shadowColor,
+                    ),
+                    activeIcon: SvgPicture.asset(
+                      e.iconPath,
                       color: theme.primaryColor,
                     ),
-                    label: 'Articles',
+                    label: e.tabName,
                   ),
-                */
-                BottomNavigationBarItem(
-                  icon: Assets.vectors.chats.svg(),
-                  activeIcon: Assets.vectors.chats.svg(
-                    color: theme.primaryColor,
-                  ),
-                  label: 'Chats',
-                ),
-                BottomNavigationBarItem(
-                  icon: Assets.vectors.account.svg(),
-                  activeIcon: Assets.vectors.account.svg(
-                    color: theme.primaryColor,
-                  ),
-                  label: 'Account',
-                ),
-              ]),
+                )
+                .toList(),
+          ),
         );
       }),
     );
@@ -87,40 +67,18 @@ class HomeScreen extends StatelessWidget {
 
 class _TabPages extends StatelessWidget {
   final int tabIndex;
-  final List<Widget> _tabs;
-  final VoidCallback openDrawer;
+  final List<Widget> tabs;
 
-  _TabPages({
+  const _TabPages({
     required this.tabIndex,
-    required this.openDrawer,
-  }) : _tabs = _buildTabs(openDrawer);
-
-  static List<Widget> _buildTabs(
-    VoidCallback openDrawer,
-  ) {
-    return <Widget>[
-      Navigator(
-          onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-              builder: (BuildContext context) => const DashboardV1Screen())),
-      /**
-        Navigator(
-            onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-                builder: (BuildContext context) => const ArticlesScreen())),
-      */
-      Navigator(
-          onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-              builder: (BuildContext context) => const SessionsScreen())),
-      Navigator(
-          onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-              builder: (BuildContext context) => const AccountScreen())),
-    ];
-  }
+    required this.tabs,
+  });
 
   @override
   Widget build(BuildContext context) {
     return IndexedStack(
       index: tabIndex,
-      children: _tabs,
+      children: tabs,
     );
   }
 }

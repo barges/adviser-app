@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/enums/sessions_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
 
 part 'reports_meta.freezed.dart';
 part 'reports_meta.g.dart';

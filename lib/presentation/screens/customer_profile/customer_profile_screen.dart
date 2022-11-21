@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/data/models/customer_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
-import 'package:shared_advisor_interface/data/network/responses/customer_info_response/customer_info_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_profile/customer_profile_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_profile/widgets/notes_widget.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class CustomerProfileScreen extends StatelessWidget {
   const CustomerProfileScreen({Key? key}) : super(key: key);
@@ -28,6 +26,7 @@ class CustomerProfileScreen extends StatelessWidget {
             final CustomerProfileCubit userProfileCubit =
                 context.read<CustomerProfileCubit>();
             return Scaffold(
+              backgroundColor: Theme.of(context).canvasColor,
               appBar: WideAppBar(
                 bottomWidget: Text(
                   S.of(context).customerProfile,
@@ -48,15 +47,9 @@ class CustomerProfileScreen extends StatelessWidget {
                 ),
               ),
               body: SingleChildScrollView(child: Builder(builder: (context) {
-                final bool isLoading =
-                    context.select((MainCubit cubit) => cubit.state.isLoading);
-                final String errorMessage = context
-                    .select((MainCubit cubit) => cubit.state.errorMessage);
-                final CustomerInfoResponse? response = context.select(
+                final CustomerInfo? customerInfo = context.select(
                     (CustomerProfileCubit cubit) => cubit.state.response);
-                final GetNoteResponse? currentNote = context.select(
-                    (CustomerProfileCubit cubit) => cubit.state.currentNote);
-                return (isLoading || errorMessage != '' || response == null)
+                return (customerInfo == null)
                     ? const SizedBox.shrink()
                     : Column(
                         children: [
@@ -74,30 +67,30 @@ class CustomerProfileScreen extends StatelessWidget {
                                   alignment: Alignment.bottomCenter,
                                   children: [
                                     SvgPicture.asset(
-                                        response.zodiac?.imagePath(context) ??
+                                        customerInfo.zodiac
+                                                ?.imagePath(context) ??
                                             '',
                                         width: 96.0),
-                                    if (userProfileCubit.isTopSpender)
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 2.0, horizontal: 8.0),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.promotion,
-                                          borderRadius: BorderRadius.circular(
-                                            AppConstants.buttonRadius,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          S.of(context).topSpender,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelSmall
-                                              ?.copyWith(
-                                                fontWeight: FontWeight.w700,
-                                                color: AppColors.white,
-                                              ),
-                                        ),
-                                      )
+                                    // Container(
+                                    //   padding: const EdgeInsets.symmetric(
+                                    //       vertical: 2.0, horizontal: 8.0),
+                                    //   decoration: BoxDecoration(
+                                    //     color: AppColors.promotion,
+                                    //     borderRadius: BorderRadius.circular(
+                                    //       AppConstants.buttonRadius,
+                                    //     ),
+                                    //   ),
+                                    //   child: Text(
+                                    //     S.of(context).topSpender,
+                                    //     style: Theme.of(context)
+                                    //         .textTheme
+                                    //         .labelSmall
+                                    //         ?.copyWith(
+                                    //           fontWeight: FontWeight.w700,
+                                    //           color: AppColors.white,
+                                    //         ),
+                                    //   ),
+                                    // )
                                   ],
                                 ),
                               ),
@@ -112,7 +105,7 @@ class CustomerProfileScreen extends StatelessWidget {
                                           vertical: 12.0,
                                         ),
                                         child: Text(
-                                          '${response.firstName ?? ''} ${response.lastName ?? ''}',
+                                          '${customerInfo.firstName ?? ''} ${customerInfo.lastName ?? ''}',
                                           textAlign: TextAlign.center,
                                           style: Theme.of(context)
                                               .textTheme
@@ -120,7 +113,7 @@ class CustomerProfileScreen extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        '${S.of(context).born} ${(response.birthdate ?? '').parseDateTimePattern3}, ${response.gender ?? ''}, ${response.countryFullName ?? ''}',
+                                        '${S.of(context).born} ${(customerInfo.birthdate ?? '').parseDateTimePattern3}, ${customerInfo.gender ?? ''}, ${customerInfo.countryFullName ?? ''}',
                                         textAlign: TextAlign.center,
                                         style: Theme.of(context)
                                             .textTheme
@@ -131,7 +124,7 @@ class CustomerProfileScreen extends StatelessWidget {
                                             ),
                                       ),
                                       Text(
-                                        '${response.totalMessages ?? 0} ${S.of(context).chats.toLowerCase()}, 5 ${S.of(context).calls.toLowerCase()}, 5 ${S.of(context).services.toLowerCase()}',
+                                        '${customerInfo.totalMessages ?? 0} ${S.of(context).chats.toLowerCase()}, 5 ${S.of(context).calls.toLowerCase()}, 5 ${S.of(context).services.toLowerCase()}',
                                         textAlign: TextAlign.center,
                                         style: Theme.of(context)
                                             .textTheme
@@ -153,7 +146,8 @@ class CustomerProfileScreen extends StatelessWidget {
                                       _InfoWidget(
                                         title: S.of(context).zodiacSign,
                                         info: SvgPicture.asset(
-                                            response.zodiac?.iconPath ?? ''),
+                                            customerInfo.zodiac?.iconPath ??
+                                                ''),
                                       ),
                                       const SizedBox(width: 8.0),
                                       _InfoWidget(
@@ -178,7 +172,8 @@ class CustomerProfileScreen extends StatelessWidget {
                                     address: 'Preston Rd. Inglewood, Maine',
                                   ),
                                   _QuestionPropertiesWidget(
-                                    properties: response.advisorMatch?.values
+                                    properties: customerInfo
+                                            .advisorMatch?.values
                                             .toList() ??
                                         const [],
                                   ),
