@@ -10,6 +10,10 @@
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		560571B1290BEC84009692A2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 560571B0290BEC84009692A2 /* GoogleService-Info.plist */; };
+		560829BD2927CC9B002401C6 /* de.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 560829B92927CC9B002401C6 /* de.lproj */; };
+		560829BE2927CC9B002401C6 /* es.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 560829BA2927CC9B002401C6 /* es.lproj */; };
+		560829C02927CC9B002401C6 /* pt-BR.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 560829BC2927CC9B002401C6 /* pt-BR.lproj */; };
+		562DE2472927C367005A8C66 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 562DE2492927C367005A8C66 /* InfoPlist.strings */; };
 		56C578DE29093B3700CA1229 /* FCCustomLocalizable.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 56C578DD29093B3700CA1229 /* FCCustomLocalizable.bundle */; };
 		56F9F2592906BA460073B56A /* FCDarkTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 56F9F2572906BA460073B56A /* FCDarkTheme.plist */; };
 		56F9F25A2906BA460073B56A /* FCTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 56F9F2582906BA460073B56A /* FCTheme.plist */; };
@@ -40,6 +44,18 @@
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		41A05637AC374F19DB69B629 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		560571B0290BEC84009692A2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		560829B92927CC9B002401C6 /* de.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = de.lproj; sourceTree = "<group>"; };
+		560829BA2927CC9B002401C6 /* es.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = es.lproj; sourceTree = "<group>"; };
+		560829BC2927CC9B002401C6 /* pt-BR.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pt-BR.lproj"; sourceTree = "<group>"; };
+		562DE24A2927C3F3005A8C66 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Main.strings"; sourceTree = "<group>"; };
+		562DE24B2927C3F3005A8C66 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		562DE24C2927C3F4005A8C66 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		562DE24D2927C45B005A8C66 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
+		562DE24E2927C45C005A8C66 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		562DE24F2927C45C005A8C66 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		562DE2502927C465005A8C66 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
+		562DE2512927C466005A8C66 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		562DE2522927C466005A8C66 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		569D02BF290BEF320053E287 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		56C578DD29093B3700CA1229 /* FCCustomLocalizable.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FCCustomLocalizable.bundle; sourceTree = "<group>"; };
 		56F9F2572906BA460073B56A /* FCDarkTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FCDarkTheme.plist; sourceTree = "<group>"; };
@@ -103,6 +119,10 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				560829B92927CC9B002401C6 /* de.lproj */,
+				560829BA2927CC9B002401C6 /* es.lproj */,
+				560829BC2927CC9B002401C6 /* pt-BR.lproj */,
+				562DE2492927C367005A8C66 /* InfoPlist.strings */,
 				569D02BF290BEF320053E287 /* Runner.entitlements */,
 				560571B0290BEC84009692A2 /* GoogleService-Info.plist */,
 				56C578DD29093B3700CA1229 /* FCCustomLocalizable.bundle */,
@@ -185,6 +205,9 @@
 			knownRegions = (
 				en,
 				Base,
+				"pt-BR",
+				de,
+				es,
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
@@ -201,6 +224,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				560829BE2927CC9B002401C6 /* es.lproj in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				560571B1290BEC84009692A2 /* GoogleService-Info.plist in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
@@ -208,6 +232,9 @@
 				56F9F25A2906BA460073B56A /* FCTheme.plist in Resources */,
 				56C578DE29093B3700CA1229 /* FCCustomLocalizable.bundle in Resources */,
 				56F9F2592906BA460073B56A /* FCDarkTheme.plist in Resources */,
+				560829C02927CC9B002401C6 /* pt-BR.lproj in Resources */,
+				562DE2472927C367005A8C66 /* InfoPlist.strings in Resources */,
+				560829BD2927CC9B002401C6 /* de.lproj in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -297,10 +324,23 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		562DE2492927C367005A8C66 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				562DE24C2927C3F4005A8C66 /* pt-BR */,
+				562DE24F2927C45C005A8C66 /* de */,
+				562DE2522927C466005A8C66 /* es */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		97C146FA1CF9000F007C117D /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				97C146FB1CF9000F007C117D /* Base */,
+				562DE24A2927C3F3005A8C66 /* pt-BR */,
+				562DE24D2927C45B005A8C66 /* de */,
+				562DE2502927C465005A8C66 /* es */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -309,6 +349,9 @@
 			isa = PBXVariantGroup;
 			children = (
 				97C147001CF9000F007C117D /* Base */,
+				562DE24B2927C3F3005A8C66 /* pt-BR */,
+				562DE24E2927C45C005A8C66 /* de */,
+				562DE2512927C466005A8C66 /* es */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -320,6 +363,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -467,6 +511,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -522,6 +567,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
