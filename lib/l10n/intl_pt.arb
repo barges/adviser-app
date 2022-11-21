@@ -134,10 +134,12 @@
   "yourAccountHasBeenBlockedPleaseContactYourAdvisorManager": "Sua conta foi bloqueada. Entre em contato com o gerente do seu consultor.",
   "account": "Conta",
   "sessions": "Sessões",
-  "from15secTo3min": "from 15 sec to 3 min",
-  "doYouWantToDeleteAudioMessage": "Do you want to delete audio message?",
-  "doYouWantToDeleteImage": "Do you want to delete image?",
-  "tryAgain": "Try again",
-  "allowCamera": "Allow camera",
+  "from15secTo3min": "de 15 segundos a 3 minutos",
+  "typemessage":"digite mensagem",
+  "doYouWantToDeleteAudioMessage": "Deseja excluir a mensagem de áudio?",
+  "doYouWantToDeleteImage": "Deseja excluir a imagem?",
+  "tryAgain": "Tente novamente",
+  "toResetPasswordEnterEmailAddressAndWellSendYou": "To reset password, enter email address and we’ll send you instructions on how to create a new password.",
+"allowCamera": "Allow camera",
   "allowGallery": "Allow gallery"
 }

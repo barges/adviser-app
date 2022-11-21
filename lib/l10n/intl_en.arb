@@ -140,5 +140,6 @@
   "doYouWantToDeleteImage": "Do you want to delete image?",
   "tryAgain": "Try again",
   "allowCamera": "Allow camera",
-  "allowGallery": "Allow gallery"
+  "allowGallery": "Allow gallery",
+  "toResetPasswordEnterEmailAddressAndWellSendYou": "To reset password, enter email address and we’ll send you instructions on how to create a new password."
 }

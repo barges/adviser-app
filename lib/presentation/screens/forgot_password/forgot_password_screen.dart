@@ -75,31 +75,57 @@ class ForgotPasswordScreen extends StatelessWidget {
                                     ),
                                   ),
                                   cubit.arguments.token == null
-                                      ? Builder(builder: (context) {
-                                          final String emailErrorText =
+                                      ? Column(
+                                          children: [
+                                            Builder(builder: (context) {
+                                              final String emailErrorText =
+                                                  context.select(
+                                                      (ForgotPasswordCubit
+                                                              cubit) =>
+                                                          cubit.state
+                                                              .emailErrorText);
                                               context.select(
                                                   (ForgotPasswordCubit cubit) =>
-                                                      cubit.state
-                                                          .emailErrorText);
-                                          context.select(
-                                              (ForgotPasswordCubit cubit) =>
-                                                  cubit.state.emailHasFocus);
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                              bottom: 24.0,
+                                                      cubit
+                                                          .state.emailHasFocus);
+                                              return Padding(
+                                                padding: EdgeInsets.only(
+                                                  bottom: emailErrorText.isEmpty
+                                                      ? 2.0
+                                                      : 8.0,
+                                                ),
+                                                child: AppTextField(
+                                                  errorText: emailErrorText,
+                                                  label: S.of(context).email,
+                                                  focusNode: cubit.emailNode,
+                                                  textInputType: TextInputType
+                                                      .emailAddress,
+                                                  textInputAction:
+                                                      TextInputAction.next,
+                                                  controller:
+                                                      cubit.emailController,
+                                                ),
+                                              );
+                                            }),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      12.0, 0.0, 12.0, 24.0),
+                                              child: Text(
+                                                S
+                                                    .of(context)
+                                                    .toResetPasswordEnterEmailAddressAndWellSendYou,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodySmall
+                                                    ?.copyWith(
+                                                      color: Theme.of(context)
+                                                          .shadowColor,
+                                                    ),
+                                              ),
                                             ),
-                                            child: AppTextField(
-                                              errorText: emailErrorText,
-                                              label: S.of(context).email,
-                                              focusNode: cubit.emailNode,
-                                              textInputType:
-                                                  TextInputType.emailAddress,
-                                              textInputAction:
-                                                  TextInputAction.next,
-                                              controller: cubit.emailController,
-                                            ),
-                                          );
-                                        })
+                                          ],
+                                        )
                                       : Column(
                                           children: [
                                             Builder(builder: (context) {
