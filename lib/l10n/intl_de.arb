@@ -132,5 +132,9 @@
   "resetPassword": "Passwort Zurücksetzen",
   "yourAccountHasBeenBlockedPleaseContactYourAdvisorManager": "Ihr Konto wurde gesperrt. Bitte wenden Sie sich an Ihren Beratermanager.",
   "account": "Konto",
-  "sessions": "Sitzungen"
+  "sessions": "Sitzungen",
+  "from15secTo3min": "from 15 sec to 3 min",
+  "doYouWantToDeleteAudioMessage": "Do you want to delete audio message?",
+  "doYouWantToDeleteImage": "Do you want to delete image?",
+  "tryAgain": "Try again"
 }

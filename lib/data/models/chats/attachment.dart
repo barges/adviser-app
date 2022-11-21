@@ -12,6 +12,7 @@ class Attachment with _$Attachment {
   @JsonSerializable(includeIfNull: false)
   const factory Attachment({
     String? mime,
+    String? attachment,
     String? url,
     Meta? meta,
   }) = _Attachment;
@@ -19,11 +20,11 @@ class Attachment with _$Attachment {
   factory Attachment.fromJson(Map<String, dynamic> json) =>
       _$AttachmentFromJson(json);
 
-  AttachmentType get type{
+  AttachmentType get type {
     String? typeName = mime?.split('/').firstOrNull;
-    if(typeName == AttachmentType.audio.name){
+    if (typeName == AttachmentType.audio.name) {
       return AttachmentType.audio;
-    } else if(typeName == AttachmentType.video.name){
+    } else if (typeName == AttachmentType.video.name) {
       return AttachmentType.video;
     } else {
       return AttachmentType.image;

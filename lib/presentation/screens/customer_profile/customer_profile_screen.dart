@@ -10,9 +10,7 @@ import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/customer_profile_appbar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_profile/customer_profile_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_profile/widgets/notes_widget.dart';
@@ -35,7 +33,7 @@ class CustomerProfileScreen extends StatelessWidget {
 
             return Scaffold(
               backgroundColor: Theme.of(context).canvasColor,
-              appBar: ChatConversationAppBar(
+              appBar: CustomerProfileAppBar(
                 title: customerInfo != null
                     ? '${customerInfo.firstName} ${customerInfo.lastName}'
                     : '',

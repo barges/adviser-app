@@ -8,10 +8,11 @@ const String datePattern1 = 'MMM d, yyyy';
 const String datePattern2 = 'MMM. d, yyyy';
 const String datePattern3 = 'dd/MM/yyyy';
 const String datePattern4 = 'HH:mm MMM d yyyy';
-const String datePattern5 = 'MMM. dd, yyyy, HH:mm';
-const String datePattern6 = 'HH:mm';
-const String datePattern7 = 'MMM dd';
-const String datePattern8 = 'MMM dd, yyyy';
+const String datePattern5 = 'H:mm';
+const String datePattern6 = 'MMM. dd, yyyy, HH:mm';
+const String datePattern7 = 'HH:mm';
+const String datePattern8 = 'MMM dd';
+const String datePattern9 = 'MMM dd, yyyy';
 
 const String currencyPattern = '#,##0.00';
 
@@ -67,10 +68,13 @@ extension StringExt on String {
     return DateFormat(datePattern4).format(inputData);
   }
 
-  String get parseDateTimePattern5 {
-    final DateTime inputData = DateTime.parse(
-        DateFormat(dateFormat).parse(this, true).toLocal().toString());
-    return DateFormat(datePattern5).format(inputData);
+  String get parseDateTimeChat {
+    final datetime = DateTime.tryParse(this);
+    if (datetime == null) {
+      return DateFormat(datePattern5).format(DateTime.now());
+    }
+
+    return DateFormat(datePattern5).format(datetime);
   }
 
   String get parseDateTimePattern6 {
@@ -89,6 +93,12 @@ extension StringExt on String {
     final DateTime inputData = DateTime.parse(
         DateFormat(dateFormat).parse(this, true).toLocal().toString());
     return DateFormat(datePattern8).format(inputData);
+  }
+
+  String get parseDateTimePattern9 {
+    final DateTime inputData = DateTime.parse(
+        DateFormat(dateFormat).parse(this, true).toLocal().toString());
+    return DateFormat(datePattern9).format(inputData);
   }
 
   String get removeSpacesAndNewLines {

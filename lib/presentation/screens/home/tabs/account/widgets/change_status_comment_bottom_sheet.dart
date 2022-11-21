@@ -54,7 +54,7 @@ Future<void> changeStatusCommentBottomSheet(
                       Container(
                         padding: const EdgeInsets.all(12.0),
                         decoration: BoxDecoration(
-                          color: Get.theme.scaffoldBackgroundColor,
+                          color: Theme.of(context).scaffoldBackgroundColor,
                           borderRadius: BorderRadius.circular(
                             AppConstants.buttonRadius,
                           ),
@@ -64,7 +64,7 @@ Future<void> changeStatusCommentBottomSheet(
                             Assets.vectors.info.svg(
                               height: 18.0,
                               width: 18.0,
-                              color: Get.theme.shadowColor,
+                              color: Theme.of(context).shadowColor,
                             ),
                             const SizedBox(
                               width: 8.0,
@@ -73,9 +73,12 @@ Future<void> changeStatusCommentBottomSheet(
                               S
                                   .of(context)
                                   .youWillBeAbleToChangeYourStatusBackIn,
-                              style: Get.textTheme.bodyMedium?.copyWith(
-                                fontSize: 12.0,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    fontSize: 12.0,
+                                  ),
                             ),
                           ],
                         ),

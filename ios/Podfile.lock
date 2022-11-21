@@ -1,4 +1,6 @@
 PODS:
+  - audio_session (0.0.1):
+    - Flutter
   - connectivity_plus (0.0.1):
     - Flutter
     - ReachabilitySwift
@@ -104,6 +106,12 @@ PODS:
   - Flutter (1.0.0)
   - flutter_local_notifications (0.0.1):
     - Flutter
+  - flutter_media_metadata (0.0.1):
+    - Flutter
+  - flutter_sound (9.2.13):
+    - Flutter
+    - flutter_sound_core (= 9.2.13)
+  - flutter_sound_core (9.2.13)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -180,6 +188,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - audio_session (from `.symlinks/plugins/audio_session/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
@@ -190,6 +199,8 @@ DEPENDENCIES:
   - firebase_remote_config (from `.symlinks/plugins/firebase_remote_config/ios`)
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
+  - flutter_media_metadata (from `.symlinks/plugins/flutter_media_metadata/ios`)
+  - flutter_sound (from `.symlinks/plugins/flutter_sound/ios`)
   - freshchat_sdk (from `.symlinks/plugins/freshchat_sdk/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - open_mail_app (from `.symlinks/plugins/open_mail_app/ios`)
@@ -212,6 +223,7 @@ SPEC REPOS:
     - FirebaseInstallations
     - FirebaseMessaging
     - FirebaseRemoteConfig
+    - flutter_sound_core
     - FMDB
     - FreshchatSDK
     - GoogleAppMeasurement
@@ -222,6 +234,8 @@ SPEC REPOS:
     - ReachabilitySwift
 
 EXTERNAL SOURCES:
+  audio_session:
+    :path: ".symlinks/plugins/audio_session/ios"
   connectivity_plus:
     :path: ".symlinks/plugins/connectivity_plus/ios"
   device_info_plus:
@@ -242,6 +256,10 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
+  flutter_media_metadata:
+    :path: ".symlinks/plugins/flutter_media_metadata/ios"
+  flutter_sound:
+    :path: ".symlinks/plugins/flutter_sound/ios"
   freshchat_sdk:
     :path: ".symlinks/plugins/freshchat_sdk/ios"
   image_picker_ios:
@@ -262,6 +280,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
+  audio_session: 4f3e461722055d21515cf3261b64c973c062f345
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
   device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
   Firebase: 444b35a9c568a516666213c2f6cccd10cb12559f
@@ -282,6 +301,9 @@ SPEC CHECKSUMS:
   FirebaseRemoteConfig: 20a413ed3ffeb84c12888bff19d02464f0faed69
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
+  flutter_media_metadata: 9db7298c789a54da26e0d2f6f808fa39bfd9bcd7
+  flutter_sound: c60effa2a350fb977885f0db2fbc4c1ad5160900
+  flutter_sound_core: 26c10e5832e76aaacfae252d8925232281c486ae
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   freshchat_sdk: c0693281fe346bb1861c0268e8cc134238778b9c
   FreshchatSDK: 8b2680e0a19b852d2ea23dc877ac6e3557ba6dfe
@@ -302,4 +324,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: e34b8d6e973612758e59eb4624491115bbc47f94
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.11.2
