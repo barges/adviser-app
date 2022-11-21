@@ -8,13 +8,11 @@ import 'package:shared_advisor_interface/data/network/responses/get_note_respons
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_profile/customer_profile_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_profile/widgets/notes_widget.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class CustomerProfileScreen extends StatelessWidget {
   const CustomerProfileScreen({Key? key}) : super(key: key);
@@ -28,6 +26,7 @@ class CustomerProfileScreen extends StatelessWidget {
             final CustomerProfileCubit userProfileCubit =
                 context.read<CustomerProfileCubit>();
             return Scaffold(
+              backgroundColor: Theme.of(context).canvasColor,
               appBar: WideAppBar(
                 bottomWidget: Text(
                   S.of(context).customerProfile,
@@ -48,16 +47,9 @@ class CustomerProfileScreen extends StatelessWidget {
                 ),
               ),
               body: SingleChildScrollView(child: Builder(builder: (context) {
-                final bool isLoading =
-                    context.select((MainCubit cubit) => cubit.state.isLoading);
-                final String errorMessage = context
-                    .select((MainCubit cubit) => cubit.state.errorMessage);
                 final CustomerInfo? customerInfo = context.select(
                     (CustomerProfileCubit cubit) => cubit.state.response);
-
-                context.select(
-                    (CustomerProfileCubit cubit) => cubit.state.currentNote);
-                return (isLoading || errorMessage != '' || customerInfo == null)
+                return (customerInfo == null)
                     ? const SizedBox.shrink()
                     : Column(
                         children: [
@@ -79,27 +71,26 @@ class CustomerProfileScreen extends StatelessWidget {
                                                 ?.imagePath(context) ??
                                             '',
                                         width: 96.0),
-                                    if (userProfileCubit.isTopSpender)
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 2.0, horizontal: 8.0),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.promotion,
-                                          borderRadius: BorderRadius.circular(
-                                            AppConstants.buttonRadius,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          S.of(context).topSpender,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelSmall
-                                              ?.copyWith(
-                                                fontWeight: FontWeight.w700,
-                                                color: AppColors.white,
-                                              ),
-                                        ),
-                                      )
+                                    // Container(
+                                    //   padding: const EdgeInsets.symmetric(
+                                    //       vertical: 2.0, horizontal: 8.0),
+                                    //   decoration: BoxDecoration(
+                                    //     color: AppColors.promotion,
+                                    //     borderRadius: BorderRadius.circular(
+                                    //       AppConstants.buttonRadius,
+                                    //     ),
+                                    //   ),
+                                    //   child: Text(
+                                    //     S.of(context).topSpender,
+                                    //     style: Theme.of(context)
+                                    //         .textTheme
+                                    //         .labelSmall
+                                    //         ?.copyWith(
+                                    //           fontWeight: FontWeight.w700,
+                                    //           color: AppColors.white,
+                                    //         ),
+                                    //   ),
+                                    // )
                                   ],
                                 ),
                               ),

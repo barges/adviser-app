@@ -5,6 +5,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 class NotLiveStatusWidget extends StatelessWidget {
@@ -58,7 +59,11 @@ class NotLiveStatusWidget extends StatelessWidget {
                   title: status.buttonText(),
                   onPressed: () async {
                     if (status != FortunicaUserStatus.live) {
-                      homeCubit.goToAccount();
+                      if (HomeCubit.tabsList.contains(TabsTypes.account)) {
+                        homeCubit.changeTabIndex(
+                          HomeCubit.tabsList.indexOf(TabsTypes.account),
+                        );
+                      }
                     }
                   },
                 ),

@@ -130,5 +130,7 @@
   "noInternetConnection": "Keine Internetverbindung.",
   "youWillBeAbleToChangeYourStatusBackIn": "Sie können Ihren Status in 1 Stunde zurücksetzen",
   "resetPassword": "Passwort Zurücksetzen",
-  "yourAccountHasBeenBlockedPleaseContactYourAdvisorManager": "Ihr Konto wurde gesperrt. Bitte wenden Sie sich an Ihren Beratermanager."
+  "yourAccountHasBeenBlockedPleaseContactYourAdvisorManager": "Ihr Konto wurde gesperrt. Bitte wenden Sie sich an Ihren Beratermanager.",
+  "account": "Account",
+  "sessions": "Sessions"
 }
