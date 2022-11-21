@@ -65,7 +65,7 @@ class ChatConversationAppBar extends StatelessWidget
                 ],
               ),
               Text(
-                "Paid Chat ${DateFormat(dateFormat).format(question.updatedAt!).parseDateTimeChat}",
+                "Paid Chat ${DateFormat(dateFormat).format(question.updatedAt ?? DateTime.now()).parseDateTimeChat}",
                 style: TextStyle(
                   fontSize: 12.0,
                   fontWeight: FontWeight.w200,

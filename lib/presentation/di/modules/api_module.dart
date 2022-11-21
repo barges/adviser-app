@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:android_id/android_id.dart';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -65,13 +66,18 @@ class ApiModule implements Module {
     if (Platform.isAndroid) {
       const AndroidId androidIdPlugin = AndroidId();
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      headers['x-adviqo-adid'] = await androidIdPlugin.getId();
+      String? id = await androidIdPlugin.getId();
+      headers['x-adviqo-adid'] = id;
+      headers['x-advico-device-id'] = id;
       headers['x-advico-device-name'] = androidInfo.model;
       headers['x-advico-device-version'] = androidInfo.version.release;
       headers['x-advico-is-physical-device'] = androidInfo.isPhysicalDevice;
     } else if (Platform.isIOS) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-      headers['x-adviqo-adid'] = iosInfo.identifierForVendor;
+      await AppTrackingTransparency.requestTrackingAuthorization();
+      String uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
+      headers['x-adviqo-adid'] = uuid;
+      headers['x-advico-device-id'] = iosInfo.identifierForVendor;
       headers['x-advico-device-name'] = iosInfo.name;
       headers['x-advico-device-version'] = iosInfo.systemVersion;
       headers['x-advico-is-physical-device'] = iosInfo.isPhysicalDevice;

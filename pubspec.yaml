@@ -41,6 +41,7 @@ dependencies:
   freshchat_sdk: ^0.9.9
   flutter_local_notifications: ^12.0.3
   web_fonts: ^1.1.1
+  app_tracking_transparency: ^2.0.3
 
   # Firebase
   firebase_core: ^2.2.0

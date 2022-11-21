@@ -134,3 +134,19 @@ extension IterableExtention<E> on Iterable<E> {
     return isEmpty ? null : last;
   }
 }
+
+extension DateTimeExt on DateTime {
+  String get chatListTime {
+    DateTime now = DateTime.now().toUtc();
+    int timeDifference = DateTime(year, month, day)
+        .difference(DateTime(now.year, now.month, now.day))
+        .inDays;
+    if (timeDifference == 0) {
+      return DateFormat(dateFormat).format(this).parseDateTimePattern7;
+    }
+    if (timeDifference < -365) {
+      return DateFormat(dateFormat).format(this).parseDateTimePattern9;
+    }
+    return DateFormat(dateFormat).format(this).parseDateTimePattern8;
+  }
+}

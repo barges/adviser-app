@@ -138,5 +138,7 @@
   "typemessage":"Type message",
   "doYouWantToDeleteAudioMessage": "Do you want to delete audio message?",
   "doYouWantToDeleteImage": "Do you want to delete image?",
-  "tryAgain": "Try again"
+  "tryAgain": "Try again",
+  "allowCamera": "Allow camera",
+  "allowGallery": "Allow gallery"
 }

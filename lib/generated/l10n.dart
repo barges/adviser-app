@@ -1446,6 +1446,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Allow camera`
+  String get allowCamera {
+    return Intl.message(
+      'Allow camera',
+      name: 'allowCamera',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Allow gallery`
+  String get allowGallery {
+    return Intl.message(
+      'Allow gallery',
+      name: 'allowGallery',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

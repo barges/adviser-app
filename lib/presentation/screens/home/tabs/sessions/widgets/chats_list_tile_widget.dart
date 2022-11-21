@@ -85,7 +85,8 @@ class ChatsListTileWidget extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        _getQuestionTime(),
+                        question.updatedAt?.chatListTime ??
+                            DateTime.now().chatListTime,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: Theme.of(context).shadowColor,
                               fontSize: 12.0,

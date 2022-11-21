@@ -154,7 +154,7 @@ Future<void> _handlePermissions(
     case ImageSource.camera:
       {
         status = await Permission.camera.request();
-        alertTitle = 'Allow camera';
+        alertTitle = S.of(context).allowCamera;
       }
       break;
     case ImageSource.gallery:
@@ -164,7 +164,7 @@ Future<void> _handlePermissions(
         } else {
           status = await Permission.storage.request();
         }
-        alertTitle = 'Allow gallery';
+        alertTitle = S.of(context).allowGallery;
       }
       break;
   }

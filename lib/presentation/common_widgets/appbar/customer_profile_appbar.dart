@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -11,22 +13,18 @@ import 'package:shared_advisor_interface/extensions.dart';
 class CustomerProfileAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   final String title;
-  final String subTitle;
+  final String? subTitle;
   final String? backIcon;
   final String? zodiac;
   final String? backButtonText;
-  final Brand? selectedBrand;
-  final ChatItem? question;
 
   const CustomerProfileAppBar({
     Key? key,
     required this.title,
-    required this.subTitle,
+    this.subTitle,
     this.backButtonText,
     this.backIcon,
-    this.selectedBrand,
     this.zodiac,
-    this.question,
   }) : super(key: key);
 
   @override
@@ -35,6 +33,7 @@ class CustomerProfileAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final Brand currentBrand = getIt.get<MainCubit>().state.currentBrand;
     return AppBar(
       automaticallyImplyLeading: false,
       centerTitle: false,
@@ -51,11 +50,10 @@ class CustomerProfileAppBar extends StatelessWidget
             children: [
               Row(
                 children: [
-                  if (selectedBrand != null)
-                    SvgPicture.asset(
-                      selectedBrand!.icon,
-                      height: 17.0,
-                    ),
+                  SvgPicture.asset(
+                    currentBrand.icon,
+                    height: 17.0,
+                  ),
                   const SizedBox(width: 12.0),
                   Text(title,
                       style: theme.textTheme.headlineMedium
@@ -63,7 +61,7 @@ class CustomerProfileAppBar extends StatelessWidget
                 ],
               ),
               Text(
-                subTitle,
+                subTitle ?? currentBrand.name,
                 style: theme.textTheme.bodySmall
                     ?.copyWith(fontSize: 12.0, color: theme.shadowColor),
               ),
