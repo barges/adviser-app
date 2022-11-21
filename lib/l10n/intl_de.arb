@@ -134,5 +134,6 @@
   "from15secTo3min": "from 15 sec to 3 min",
   "doYouWantToDeleteAudioMessage": "Do you want to delete audio message?",
   "doYouWantToDeleteImage": "Do you want to delete image?",
-  "tryAgain": "Try again"
+  "tryAgain": "Try again",
+  "toResetPasswordEnterEmailAddressAndWellSendYou": "To reset password, enter email address and we’ll send you instructions on how to create a new password."
 }

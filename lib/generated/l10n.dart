@@ -1449,6 +1449,16 @@ class S {
       args: [],
     );
   }
+
+  /// `To reset password, enter email address and we’ll send you instructions on how to create a new password.`
+  String get toResetPasswordEnterEmailAddressAndWellSendYou {
+    return Intl.message(
+      'To reset password, enter email address and we’ll send you instructions on how to create a new password.',
+      name: 'toResetPasswordEnterEmailAddressAndWellSendYou',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

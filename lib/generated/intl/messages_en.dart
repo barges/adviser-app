@@ -190,6 +190,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "toReadItBeforeYourAccountWillGetBlocked":
             MessageLookupByLibrary.simpleMessage(
                 "to read it before your account will get blocked!"),
+        "toResetPasswordEnterEmailAddressAndWellSendYou":
+            MessageLookupByLibrary.simpleMessage(
+                "To reset password, enter email address and we’ll send you instructions on how to create a new password."),
         "today": MessageLookupByLibrary.simpleMessage("Today"),
         "topSpender": MessageLookupByLibrary.simpleMessage("Top spender"),
         "total": MessageLookupByLibrary.simpleMessage("Total"),

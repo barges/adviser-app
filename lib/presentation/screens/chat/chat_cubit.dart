@@ -6,6 +6,7 @@ import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:logger/logger.dart';
 import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
@@ -22,8 +23,9 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:audio_session/audio_session.dart';
 
 class ChatCubit extends Cubit<ChatState> {
-  final ChatsRepository repository;
-  final ChatItem question;
+  final CachingManager _cachingManager;
+  final ChatsRepository _repository;
+  final ChatItem _question;
   final ScrollController messagesScrollController = ScrollController();
   final ScrollController textInputScrollController = ScrollController();
   final TextEditingController textEditingController = TextEditingController();
@@ -37,7 +39,11 @@ class ChatCubit extends Cubit<ChatState> {
   FlutterSoundPlayer? _playerRecorded;
   FlutterSoundPlayer? _playerMedia;
 
-  ChatCubit(this.repository, this.question) : super(const ChatState()) {
+  ChatCubit(
+    this._cachingManager,
+    this._repository,
+    this._question,
+  ) : super(const ChatState()) {
     _init();
     _getConversations();
   }
@@ -123,16 +129,17 @@ class ChatCubit extends Cubit<ChatState> {
       return;
     }
 
-    ConversationsResponse conversations = await repository.getConversationsHystory(
-        expertID:
-            '0ba684917ad77d2b7578d7f8b54797ca92c329e80898ff0fb7ea480d32bcb090',
-        clientID: question.clientID!,
-        offset: _offset,
-        limit: _limit);
+    ConversationsResponse conversations =
+        await _repository.getConversationsHystory(
+            expertID:
+                _cachingManager.getUserId() ?? '',
+            clientID: _question.clientID ?? '',
+            offset: _offset,
+            limit: _limit);
 
     ChatItem? lastQuestion;
     if (_total == null) {
-      lastQuestion = await repository.getQuestion(id: question.id!);
+      lastQuestion = await _repository.getQuestion(id: _question.id ?? '');
       //logger.i('Question: $lastQuestion');
     }
 
@@ -140,18 +147,18 @@ class ChatCubit extends Cubit<ChatState> {
     _offset = _offset + _limit;
 
     final messages = List.of(state.messages);
-    conversations.history!.forEach((element) {
+    for (var element in conversations.history ?? []) {
       messages.add(
-        element.answer!.copyWith(
+        element.answer?.copyWith(
           isAnswer: true,
-          type: element.question!.type,
+          type: element.question?.type,
           ritualIdentifier: element.question!.ritualIdentifier,
         ),
       );
       messages.add(
-        element.question!,
+        element.question,
       );
-    });
+    }
     if (lastQuestion != null) {
       messages.insert(0, lastQuestion);
     }
@@ -195,7 +202,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     emit(
       state.copyWith(
-        recordingPath: recordingPath!,
+        recordingPath: recordingPath ?? '',
         isAudioFileSaved: true,
         isRecordingAudio: false,
       ),
@@ -367,7 +374,7 @@ class ChatCubit extends Cubit<ChatState> {
     );
 
     try {
-      final ChatItem responseAnswer = await repository.sendAnswer(request);
+      final ChatItem responseAnswer = await _repository.sendAnswer(request);
       logger.i('send media response:$responseAnswer');
       final messages = List.of(state.messages);
       messages.insert(0, responseAnswer.copyWith(isAnswer: true));
@@ -408,7 +415,7 @@ class ChatCubit extends Cubit<ChatState> {
     );
 
     try {
-      final ChatItem responseAnswer = await repository.sendAnswer(request);
+      final ChatItem responseAnswer = await _repository.sendAnswer(request);
       logger.i('send text response:$responseAnswer');
 
       textEditingController.clear();

@@ -300,6 +300,7 @@ class _QuestionPropertiesWidget extends StatelessWidget {
           S.of(context).questionProperties.toUpperCase(),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 fontWeight: FontWeight.w400,
+                fontSize: 13.0,
                 color: Theme.of(context).shadowColor,
               ),
         ),

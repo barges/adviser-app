@@ -138,5 +138,6 @@
   "typemessage":"digite mensagem",
   "doYouWantToDeleteAudioMessage": "Deseja excluir a mensagem de áudio?",
   "doYouWantToDeleteImage": "Deseja excluir a imagem?",
-  "tryAgain": "Tente novamente"
+  "tryAgain": "Tente novamente",
+  "toResetPasswordEnterEmailAddressAndWellSendYou": "To reset password, enter email address and we’ll send you instructions on how to create a new password."
 }
