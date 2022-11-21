@@ -175,8 +175,7 @@ class _BrandItem extends StatelessWidget {
           child: Row(
             children: [
               Builder(builder: (context) {
-                final UserStatus currentStatus =
-                    context.select((HomeCubit cubit) => cubit.state.userStatus);
+                final UserStatus? currentStatus = cubit.userStatus;
                 return Stack(alignment: Alignment.bottomRight, children: [
                   Container(
                     height: 56.0,
@@ -204,8 +203,9 @@ class _BrandItem extends StatelessWidget {
                           height: 12.0,
                           width: 12.0,
                           decoration: BoxDecoration(
-                            color: currentStatus.status
-                                ?.statusColorForBadge(context),
+                            color: currentStatus?.status
+                                    ?.statusColorForBadge(context) ??
+                                Theme.of(context).shadowColor,
                             shape: BoxShape.circle,
                             border: Border.all(
                                 width: 2.0,
@@ -290,7 +290,7 @@ class _BottomSection extends StatelessWidget {
     final DrawerCubit cubit = context.read<DrawerCubit>();
     return Column(
       children: [
-       const Divider(
+        const Divider(
           height: 1.0,
         ),
         Padding(

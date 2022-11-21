@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_state.dart';
@@ -12,12 +13,14 @@ class DrawerCubit extends Cubit<SplashState> {
 
   late final List<Brand> authorizedBrands;
   late final List<Brand> unauthorizedBrands;
+  late final UserStatus? userStatus;
 
   final Uri _url = Uri.parse(AppConstants.webToolUrl);
 
   DrawerCubit(this._cacheManager) : super(const SplashState()) {
     authorizedBrands = _cacheManager.getAuthorizedBrands().reversed.toList();
     unauthorizedBrands = _cacheManager.getUnauthorizedBrands();
+    userStatus = _cacheManager.getUserStatus();
   }
 
   void changeCurrentBrand(Brand newBrand) {
