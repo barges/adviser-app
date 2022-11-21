@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/data/network/requests/set_push_notification_token_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
@@ -52,6 +53,9 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(
         userStatus: cacheManager.getUserStatus() ?? const UserStatus()));
     disposeListen = cacheManager.listenCurrentUserStatus((value) {
+      if (value.status != FortunicaUserStatus.live) {
+        changeTabIndex(tabsList.indexOf(TabsTypes.account));
+      }
       emit(state.copyWith(userStatus: value));
     });
     _pushNotificationManager.registerForPushNotifications();
