@@ -73,11 +73,10 @@ class ChatRecordedWidget extends StatelessWidget {
                   );
                 }),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 28.0,
                 child: VerticalDivider(
                   width: 24.0,
-                  color: Theme.of(context).dividerColor,
                 ),
               ),
               Padding(

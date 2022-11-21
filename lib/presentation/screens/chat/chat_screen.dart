@@ -123,10 +123,9 @@ class ChatScreen extends StatelessWidget {
                             }
                           },
                         ),
-                        Divider(
+                        const Divider(
                           height: 1.0,
                           endIndent: textCounterWidth,
-                          color: Theme.of(context).dividerColor,
                         ),
                       ],
                     ),

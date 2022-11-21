@@ -78,10 +78,10 @@ class TryAgain extends StatelessWidget {
                   ),
             ),
             const SizedBox(
-              width: 4,
+              width: 4.0,
             ),
             Assets.vectors.refresh.svg(
-              width: 16,
+              width: 16.0,
             ),
           ],
         ),

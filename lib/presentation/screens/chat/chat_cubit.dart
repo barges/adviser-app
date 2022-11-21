@@ -30,12 +30,12 @@ class ChatCubit extends Cubit<ChatState> {
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final Codec _codec = Platform.isIOS ? Codec.aacMP4 : Codec.mp3;
   final FileExt _recordFileExt = CurrentFileExt.current;
+  final int _limit = 25;
+  int _offset = 0;
+  int? _total;
   FlutterSoundRecorder? _recorder;
   FlutterSoundPlayer? _playerRecorded;
   FlutterSoundPlayer? _playerMedia;
-  int _offset = 0;
-  int _limit = 10;
-  int? _total;
 
   ChatCubit(this.repository, this.question) : super(const ChatState()) {
     _init();
@@ -119,13 +119,8 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> _getConversations() async {
-    if (_total != null) {
-      if (_offset == _total! || _limit > _total!) {
-        return;
-      }
-      if (_offset + _limit > _total!) {
-        _limit = _total! - _offset;
-      }
+    if (_total != null && _offset >= _total!) {
+      return;
     }
 
     ConversationsResponse conversations = await repository.getConversationsHystory(
