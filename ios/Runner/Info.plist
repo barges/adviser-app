@@ -51,7 +51,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This lets you choose any of your photos from Gallery and send them to the chat or update your avatar.</string>
 	<key>NSUserTrackingUsageDescription</key>
-    <string>Your data will be used to provide you a personalized app experience.</string>
+    <string>Allowing this helps us identify which marketing channel you came through, and will not be used for any other purpose. You can change this in the Settings app.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
