@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -25,30 +28,22 @@ class CustomerProfileScreen extends StatelessWidget {
           builder: (context) {
             final CustomerProfileCubit userProfileCubit =
                 context.read<CustomerProfileCubit>();
+            final CustomerInfo? customerInfo = context.select(
+                (CustomerProfileCubit cubit) => cubit.state.customerInfo);
+            final Brand selectedBrand =
+                context.select((MainCubit cubit) => cubit.state.currentBrand);
+
             return Scaffold(
               backgroundColor: Theme.of(context).canvasColor,
-              appBar: WideAppBar(
-                bottomWidget: Text(
-                  S.of(context).customerProfile,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                topRightWidget: Builder(
-                  builder: (context) {
-                    final bool isFavorite = context.select(
-                      (CustomerProfileCubit cubit) => cubit.state.isFavorite,
-                    );
-                    return AppIconButton(
-                      icon: isFavorite
-                          ? Assets.vectors.filledFavourite.path
-                          : Assets.vectors.favourite.path,
-                      onTap: userProfileCubit.updateIsFavorite,
-                    );
-                  },
-                ),
+              appBar: ChatConversationAppBar(
+                title: customerInfo != null
+                    ? '${customerInfo.firstName} ${customerInfo.lastName}'
+                    : '',
+                subTitle: selectedBrand.name,
+                zodiac: customerInfo?.zodiac?.imagePath(context),
+                selectedBrand: selectedBrand,
               ),
               body: SingleChildScrollView(child: Builder(builder: (context) {
-                final CustomerInfo? customerInfo = context.select(
-                    (CustomerProfileCubit cubit) => cubit.state.response);
                 return (customerInfo == null)
                     ? const SizedBox.shrink()
                     : Column(
