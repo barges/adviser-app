@@ -8,6 +8,7 @@ const String datePattern1 = 'MMM d, yyyy';
 const String datePattern2 = 'MMM. d, yyyy';
 const String datePattern3 = 'dd/MM/yyyy';
 const String datePattern4 = 'HH:mm MMM d yyyy';
+const String datePattern5 = 'H:mm';
 
 const String currencyPattern = '#,##0.00';
 
@@ -61,6 +62,15 @@ extension StringExt on String {
     final DateTime inputData =
         DateTime.parse(DateFormat(dateFormat).parse(this).toString());
     return DateFormat(datePattern4).format(inputData);
+  }
+
+  String get parseDateTimeChat {
+    final datetime = DateTime.tryParse(this);
+    if (datetime == null) {
+      return DateFormat(datePattern5).format(DateTime.now());
+    }
+
+    return DateFormat(datePattern5).format(datetime);
   }
 
   String get removeSpacesAndNewLines {

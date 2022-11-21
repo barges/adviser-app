@@ -60,63 +60,71 @@ class ChatsListTileWidget extends StatelessWidget {
             width: 12.0,
           ),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        question.clientName ?? '',
-                        overflow: TextOverflow.ellipsis,
-                        style:
-                            Theme.of(context).textTheme.labelMedium?.copyWith(
-                                  fontSize: 15.0,
-                                ),
-                      ),
-                    ),
-                    Text(
-                      (question.updatedAt ?? '').parseDateTimePattern1,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).shadowColor,
-                            fontSize: 12.0,
-                          ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 4.0),
-                Expanded(
-                  child: Row(
+            child: GestureDetector(
+              onTap: () {
+                Get.toNamed(
+                  AppRoutes.chat,
+                  arguments: question,
+                );
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: SizedBox(
-                          height: AppConstants.iconSize,
-                          child: _ContentWidget(
-                            question: question,
-                          ),
+                        child: Text(
+                          question.clientName ?? '',
+                          overflow: TextOverflow.ellipsis,
+                          style:
+                              Theme.of(context).textTheme.labelMedium?.copyWith(
+                                    fontSize: 15.0,
+                                  ),
                         ),
                       ),
-                      const SizedBox(
-                        width: 32.0,
-                      ),
-                      if (question.type != ChatItemType.history)
-                        Container(
-                          height: 8.0,
-                          width: 8.0,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.promotion,
-                          ),
-                        ),
+                      Text(
+                        (question.updatedAt ?? '').parseDateTimePattern1,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Theme.of(context).shadowColor,
+                              fontSize: 12.0,
+                            ),
+                      )
                     ],
                   ),
-                ),
-                const Divider(
-                  height: 1.0,
-                ),
-              ],
+                  const SizedBox(height: 4.0),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: SizedBox(
+                            height: AppConstants.iconSize,
+                            child: _ContentWidget(
+                              question: question,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 32.0,
+                        ),
+                        if (question.type != ChatItemType.history)
+                          Container(
+                            height: 8.0,
+                            width: 8.0,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.promotion,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  const Divider(
+                    height: 1.0,
+                  ),
+                ],
+              ),
             ),
           ),
         ],
