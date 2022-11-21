@@ -23,102 +23,107 @@ Future<void> changeStatusCommentBottomSheet(
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppConstants.horizontalScreenPadding,
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(
-                      height: 8.0,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 108.0,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(
+                        height: 8.0,
                       ),
-                      height: 4.0,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(21.0),
-                        color: Theme.of(context).hintColor,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 16.0,
-                    ),
-                    Text(
-                      S.of(context).areYouSureThatYouWantToChangeYourStatus,
-                      style: Theme.of(context).textTheme.headlineMedium,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(
-                      height: 12.0,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(12.0),
-                      decoration: BoxDecoration(
-                        color: Get.theme.scaffoldBackgroundColor,
-                        borderRadius: BorderRadius.circular(
-                          AppConstants.buttonRadius,
+                      Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 108.0,
+                        ),
+                        height: 4.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(21.0),
+                          color: Theme.of(context).hintColor,
                         ),
                       ),
-                      child: Row(
-                        children: [
-                          Assets.vectors.info.svg(
-                            height: 18.0,
-                            width: 18.0,
-                            color: Get.theme.shadowColor,
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                      Text(
+                        S.of(context).areYouSureThatYouWantToChangeYourStatus,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: 12.0,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(12.0),
+                        decoration: BoxDecoration(
+                          color: Get.theme.scaffoldBackgroundColor,
+                          borderRadius: BorderRadius.circular(
+                            AppConstants.buttonRadius,
                           ),
-                          const SizedBox(
-                            width: 8.0,
-                          ),
-                          Text(
-                            S.of(context).youWillBeAbleToChangeYourStatusBackIn,
-                            style: Get.textTheme.bodyMedium?.copyWith(
-                              fontSize: 12.0,
+                        ),
+                        child: Row(
+                          children: [
+                            Assets.vectors.info.svg(
+                              height: 18.0,
+                              width: 18.0,
+                              color: Get.theme.shadowColor,
                             ),
-                          )
-                        ],
+                            const SizedBox(
+                              width: 8.0,
+                            ),
+                            Text(
+                              S
+                                  .of(context)
+                                  .youWillBeAbleToChangeYourStatusBackIn,
+                              style: Get.textTheme.bodyMedium?.copyWith(
+                                fontSize: 12.0,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 12.0,
-                    ),
-                    Builder(builder: (context) {
-                      context.select(
-                          (AccountCubit cubit) => cubit.state.commentHasFocus);
-                      return AppTextField(
-                        isBig: true,
-                        focusNode: context.read<AccountCubit>().commentNode,
-                        label: S.of(context).informOurTeamYourPlannedReturnDate,
-                        controller: commentController,
-                      );
-                    }),
-                    const SizedBox(
-                      height: 24.0,
-                    ),
-                    Builder(builder: (context) {
-                      final bool isActive = context.select(
-                          (AccountCubit cubit) =>
-                              cubit.state.commentButtonIsActive);
-                      return AppElevatedButton(
-                        title: S.of(context).yesImSure,
-                        onPressed: isActive
-                            ? () {
-                                Get.back();
-                                okOnTap();
-                              }
-                            : null,
-                      );
-                    }),
-                    CupertinoButton(
-                      onPressed: Get.back,
-                      child: Text(
-                        S.of(context).noIChangedMyMind,
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                      const SizedBox(
+                        height: 12.0,
                       ),
-                    ),
-                  ],
+                      Builder(builder: (context) {
+                        context.select((AccountCubit cubit) =>
+                            cubit.state.commentHasFocus);
+                        return AppTextField(
+                          isBig: true,
+                          focusNode: context.read<AccountCubit>().commentNode,
+                          label:
+                              S.of(context).informOurTeamYourPlannedReturnDate,
+                          controller: commentController,
+                        );
+                      }),
+                      const SizedBox(
+                        height: 24.0,
+                      ),
+                      Builder(builder: (context) {
+                        final bool isActive = context.select(
+                            (AccountCubit cubit) =>
+                                cubit.state.commentButtonIsActive);
+                        return AppElevatedButton(
+                          title: S.of(context).yesImSure,
+                          onPressed: isActive
+                              ? () {
+                                  Navigator.pop(context);
+                                  okOnTap();
+                                }
+                              : null,
+                        );
+                      }),
+                      CupertinoButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(
+                          S.of(context).noIChangedMyMind,
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
