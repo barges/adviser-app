@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
@@ -60,6 +59,7 @@ Future<void> changeStatusCommentBottomSheet(
                           ),
                         ),
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Assets.vectors.info.svg(
                               height: 18.0,
@@ -69,16 +69,18 @@ Future<void> changeStatusCommentBottomSheet(
                             const SizedBox(
                               width: 8.0,
                             ),
-                            Text(
-                              S
-                                  .of(context)
-                                  .youWillBeAbleToChangeYourStatusBackIn,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                    fontSize: 12.0,
-                                  ),
+                            Expanded(
+                              child: Text(
+                                S
+                                    .of(context)
+                                    .youWillBeAbleToChangeYourStatusBackIn,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      fontSize: 12.0,
+                                    ),
+                              ),
                             ),
                           ],
                         ),
