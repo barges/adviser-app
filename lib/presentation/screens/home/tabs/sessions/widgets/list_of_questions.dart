@@ -36,10 +36,15 @@ class _PublicQuestionsListWidget extends StatelessWidget {
     final SessionsCubit sessionsCubit = context.read<SessionsCubit>();
     return Column(
       children: [
-        MarketFilterWidget(
-          isExpanded: true,
-          changeIndex: sessionsCubit.changeMarketIndexForPublic,
-        ),
+        Builder(builder: (context) {
+          final int currentMarketIndex = context.select(
+              (SessionsCubit cubit) => cubit.state.currentMarketIndexForPublic);
+          return MarketFilterWidget(
+            isExpanded: true,
+            changeIndex: sessionsCubit.changeMarketIndexForPublic,
+            currentMarketIndex: currentMarketIndex,
+          );
+        }),
         const Divider(
           height: 1.0,
         ),
@@ -55,7 +60,8 @@ class _PublicQuestionsListWidget extends StatelessWidget {
                   sessionsCubit.getPublicQuestions(refresh: true);
                 },
                 emptyListTitle: S.of(context).noQuestionsYet,
-                emptyListLabel: S.of(context).whenSomeoneAsksAPublicQuestionYouWillSeeThem,
+                emptyListLabel:
+                    S.of(context).whenSomeoneAsksAPublicQuestionYouWillSeeThem,
               ),
             );
           },
@@ -89,9 +95,16 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
                       sessionsCubit.filters.map((e) => e.filterName).toList(),
                 );
               }),
-              MarketFilterWidget(
-                changeIndex: sessionsCubit.changeMarketIndexForPrivate,
-              ),
+              Builder(builder: (context) {
+                final int currentMarketIndex = context.select(
+                    (SessionsCubit cubit) =>
+                        cubit.state.currentMarketIndexForPrivate);
+
+                return MarketFilterWidget(
+                  changeIndex: sessionsCubit.changeMarketIndexForPrivate,
+                  currentMarketIndex: currentMarketIndex,
+                );
+              }),
             ],
           ),
         ),
@@ -111,7 +124,8 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
                   sessionsCubit.getPrivateQuestions(refresh: true);
                 },
                 emptyListTitle: S.of(context).noSessionsYet,
-                emptyListLabel: S.of(context).whenYouHelpYourFirstClientYouWillSeeYour,
+                emptyListLabel:
+                    S.of(context).whenYouHelpYourFirstClientYouWillSeeYour,
               ),
             );
           },

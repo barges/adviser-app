@@ -10,10 +10,12 @@ import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions
 class MarketFilterWidget extends StatelessWidget {
   final ValueChanged<int> changeIndex;
   final bool isExpanded;
+  final int currentMarketIndex;
 
   const MarketFilterWidget({
     Key? key,
     required this.changeIndex,
+    required this.currentMarketIndex,
     this.isExpanded = false,
   }) : super(key: key);
 
@@ -22,8 +24,6 @@ class MarketFilterWidget extends StatelessWidget {
     final List<MarketsType> userMarkets =
         context.select((SessionsCubit cubit) => cubit.state.userMarkets);
 
-    final int currentMarketIndex = context.select(
-        (SessionsCubit cubit) => cubit.state.currentMarketIndexForPrivate);
     return userMarkets.length > 2
         ? Container(
             height: AppConstants.appBarHeight,
