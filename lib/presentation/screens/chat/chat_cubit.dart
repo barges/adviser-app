@@ -12,7 +12,6 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
 import 'package:shared_advisor_interface/data/models/enums/file_ext.dart';
 import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
@@ -153,14 +152,14 @@ class ChatCubit extends Cubit<ChatState> {
     final messages = List.of(state.messages);
     for (var element in conversations.history ?? []) {
       messages.add(
+        element.question,
+      );
+      messages.add(
         element.answer?.copyWith(
           isAnswer: true,
           type: element.question?.type,
           ritualIdentifier: element.question?.ritualIdentifier,
         ),
-      );
-      messages.add(
-        element.question,
       );
     }
 
@@ -369,7 +368,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     _answerRequest = AnswerRequest(
       questionID: _question.id,
-      ritualID: SessionsTypes.tarot, //messages[0].ritualIdentifier,/
+      ritualID: _question.ritualIdentifier,
       attachments: [
         audioAttachment!,
         if (pictureAttachment != null) pictureAttachment,
@@ -381,10 +380,15 @@ class ChatCubit extends Cubit<ChatState> {
     try {
       answer = await _repository.sendAnswer(_answerRequest!);
       logger.i('send media response:$answer');
-      answer = answer.copyWith(isAnswer: true);
+      answer = answer.copyWith(
+        isAnswer: true,
+        type: _question.type,
+        ritualIdentifier: _question.ritualIdentifier,
+      );
       _answerRequest = null;
     } catch (e) {
       logger.e(e);
+      //print(await ConnectivityService.checkConnection());
       if (!await ConnectivityService.checkConnection()) {
         answer = _getNotSentAnswer();
       }
@@ -415,7 +419,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     _answerRequest = AnswerRequest(
       questionID: _question.id,
-      ritualID: SessionsTypes.tarot,
+      ritualID: _question.ritualIdentifier,
       content: textEditingController.text.isEmpty
           ? null
           : textEditingController.text,
@@ -430,10 +434,15 @@ class ChatCubit extends Cubit<ChatState> {
     try {
       answer = await _repository.sendAnswer(_answerRequest!);
       logger.i('send text response:$answer');
-      answer = answer.copyWith(isAnswer: true);
+      answer = answer.copyWith(
+        isAnswer: true,
+        type: _question.type,
+        ritualIdentifier: _question.ritualIdentifier,
+      );
       _answerRequest = null;
     } catch (e) {
       logger.e(e);
+      //print(await ConnectivityService.checkConnection());
       if (!await ConnectivityService.checkConnection()) {
         answer = _getNotSentAnswer();
       }
@@ -462,7 +471,13 @@ class ChatCubit extends Cubit<ChatState> {
       _answerRequest = null;
 
       final messages = List.of(state.messages);
-      messages.replaceRange(0, 1, [answer.copyWith(isAnswer: true)]);
+      messages.replaceRange(0, 1, [
+        answer.copyWith(
+          isAnswer: true,
+          type: _question.type,
+          ritualIdentifier: _question.ritualIdentifier,
+        )
+      ]);
       emit(
         state.copyWith(
           messages: messages,
@@ -481,8 +496,8 @@ class ChatCubit extends Cubit<ChatState> {
     final ChatItem answer = ChatItem(
       isAnswer: true,
       isSent: false,
-      type: ChatItemType.public,
-      ritualIdentifier: SessionsTypes.tarot,
+      type: _question.type,
+      ritualIdentifier: _question.ritualIdentifier,
       content: _answerRequest!.content,
       attachments: [
         if (recordingPath != null)
