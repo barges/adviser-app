@@ -7,7 +7,8 @@
 // ignore_for_file:unnecessary_brace_in_string_interps, unnecessary_new
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
-// ignore_for_file:unused_import, file_names
+// ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
+// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
@@ -20,7 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'pt';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static _notInlinedMessages(_) => <String, Function>{
+  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "aboutMe": MessageLookupByLibrary.simpleMessage("Sobre mim"),
         "account": MessageLookupByLibrary.simpleMessage("Conta"),
         "addCoverPicture":
@@ -86,9 +87,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "days": MessageLookupByLibrary.simpleMessage("dias"),
         "delete": MessageLookupByLibrary.simpleMessage("Excluir"),
         "doYouWantToDeleteAudioMessage": MessageLookupByLibrary.simpleMessage(
-            "Do you want to delete audio message?"),
-        "doYouWantToDeleteImage": MessageLookupByLibrary.simpleMessage(
-            "Do you want to delete image?"),
+            "Deseja excluir a mensagem de áudio?"),
+        "doYouWantToDeleteImage":
+            MessageLookupByLibrary.simpleMessage("Deseja excluir a imagem?"),
         "done": MessageLookupByLibrary.simpleMessage("Feito"),
         "earned": MessageLookupByLibrary.simpleMessage("Merecido"),
         "editNote": MessageLookupByLibrary.simpleMessage("Editar nota"),
@@ -104,7 +105,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Esqueceu sua senha"),
         "fortunica": MessageLookupByLibrary.simpleMessage("Fortunica"),
         "from15secTo3min":
-            MessageLookupByLibrary.simpleMessage("from 15 sec to 3 min"),
+            MessageLookupByLibrary.simpleMessage("de 15 segundos a 3 minutos"),
         "imAvailableNow":
             MessageLookupByLibrary.simpleMessage("Estou disponível agora"),
         "informOurTeamYourPlannedReturnDate":
@@ -204,7 +205,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "topSpender": MessageLookupByLibrary.simpleMessage("Maior gastador"),
         "total": MessageLookupByLibrary.simpleMessage("Total"),
         "totalMarkets": MessageLookupByLibrary.simpleMessage("Mercados totais"),
-        "tryAgain": MessageLookupByLibrary.simpleMessage("Try again"),
+        "tryAgain": MessageLookupByLibrary.simpleMessage("Tente novamente"),
+        "typemessage": MessageLookupByLibrary.simpleMessage("digite mensagem"),
         "uhohNoNetworkNcheckYourInternetConnection":
             MessageLookupByLibrary.simpleMessage(
                 "Uh-oh, sem rede... \nVerifique sua conexão com a Internet"),
