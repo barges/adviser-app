@@ -29,7 +29,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     arguments = Get.arguments as ForgotPasswordScreenArguments;
     //ModalRoute.of(_context)?.settings.arguments
 
-    if(arguments.token == null) {
+    if (arguments.token == null) {
       emailNode.addListener(() {
         emit(state.copyWith(emailHasFocus: emailNode.hasFocus));
       });
@@ -38,10 +38,10 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         clearErrorMessage();
         emit(state.copyWith(
           emailErrorText: '',
+          isButtonActive: emailController.text.isNotEmpty,
         ));
       });
-    } else{
-
+    } else {
       _verifyToken();
 
       passwordNode.addListener(() {
@@ -53,11 +53,12 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
             confirmPasswordHasFocus: confirmPasswordNode.hasFocus));
       });
 
-
       passwordController.addListener(() {
         clearErrorMessage();
         emit(state.copyWith(
           passwordErrorText: '',
+          isButtonActive: passwordController.text.isNotEmpty &&
+              confirmPasswordController.text.isNotEmpty,
         ));
       });
 
@@ -65,6 +66,8 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         clearErrorMessage();
         emit(state.copyWith(
           confirmPasswordErrorText: '',
+          isButtonActive: passwordController.text.isNotEmpty &&
+              confirmPasswordController.text.isNotEmpty,
         ));
       });
     }
@@ -90,9 +93,9 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   }
 
   Future<void> resetPassword() async {
-    if(arguments.token == null){
-     await sendEmailForReset();
-    }else{
+    if (arguments.token == null) {
+      await sendEmailForReset();
+    } else {
       await changePassword();
     }
   }
@@ -130,14 +133,12 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   Future<void> changePassword() async {
     if (passwordIsValid() && confirmPasswordIsValid()) {
       final bool success = await _repository.sendPasswordForReset(
-       request: ResetPasswordRequest(
+        request: ResetPasswordRequest(
           password: passwordController.text,
         ),
         token: 'AAAAAAAAA',
       );
-      if (success) {
-
-      }
+      if (success) {}
     } else {
       if (!passwordIsValid()) {
         emit(
