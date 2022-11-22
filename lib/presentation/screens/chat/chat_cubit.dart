@@ -377,7 +377,7 @@ class ChatCubit extends Cubit<ChatState> {
     );
 
     final messages = List.of(state.messages);
-    ChatItem answer;
+    ChatItem? answer;
     try {
       answer = await _repository.sendAnswer(_answerRequest!);
       logger.i('send media response:$answer');
@@ -387,18 +387,21 @@ class ChatCubit extends Cubit<ChatState> {
       logger.e(e);
       if (!await ConnectivityService.checkConnection()) {
         answer = _getNotSentAnswer();
-        messages.insert(0, answer);
-        emit(
-          state.copyWith(
-            isRecordingAudio: false,
-            isAudioFileSaved: false,
-            isPlayingRecordedAudio: false,
-            recordingPath: null,
-            messages: messages,
-          ),
-        );
-        deleteAttachedPictures();
       }
+    }
+
+    if (answer != null) {
+      messages.insert(0, answer);
+      emit(
+        state.copyWith(
+          isRecordingAudio: false,
+          isAudioFileSaved: false,
+          isPlayingRecordedAudio: false,
+          recordingPath: null,
+          messages: messages,
+        ),
+      );
+      deleteAttachedPictures();
     }
   }
 
@@ -423,7 +426,7 @@ class ChatCubit extends Cubit<ChatState> {
     );
 
     final messages = List.of(state.messages);
-    ChatItem answer;
+    ChatItem? answer;
     try {
       answer = await _repository.sendAnswer(_answerRequest!);
       logger.i('send text response:$answer');
@@ -433,20 +436,27 @@ class ChatCubit extends Cubit<ChatState> {
       logger.e(e);
       if (!await ConnectivityService.checkConnection()) {
         answer = _getNotSentAnswer();
-        messages.insert(0, answer);
-        emit(
-          state.copyWith(
-            messages: messages,
-          ),
-        );
-        textEditingController.clear();
-        deleteAttachedPictures();
       }
+    }
+
+    if (answer != null) {
+      messages.insert(0, answer);
+      emit(
+        state.copyWith(
+          messages: messages,
+        ),
+      );
+      textEditingController.clear();
+      deleteAttachedPictures();
     }
   }
 
   sendAnswerAgain() async {
     try {
+      if (_answerRequest == null) {
+        return;
+      }
+
       final ChatItem answer = await _repository.sendAnswer(_answerRequest!);
       logger.i('send text response:$answer');
       _answerRequest = null;
