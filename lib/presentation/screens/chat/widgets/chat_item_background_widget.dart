@@ -6,13 +6,15 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 class ChatItemBackground extends StatelessWidget {
   final bool isBorder;
   final bool isTryAgain;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsets padding;
   final Color color;
   final Widget child;
+  final VoidCallback? onPressedTryAgain;
   const ChatItemBackground({
     super.key,
     this.isBorder = false,
     this.isTryAgain = false,
+    this.onPressedTryAgain,
     required this.padding,
     required this.color,
     required this.child,
@@ -21,41 +23,48 @@ class ChatItemBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: padding,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: 10.0,
-              horizontal: 12.0,
+        padding: isTryAgain
+            ? padding.copyWith(bottom: padding.bottom + 8.0)
+            : padding,
+        child: Stack(
+          children: [
+            Container(
+              margin: EdgeInsets.only(bottom: isTryAgain ? 24.0 : 0),
+              padding: const EdgeInsets.symmetric(
+                vertical: 10.0,
+                horizontal: 12.0,
+              ),
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
+                border: isBorder
+                    ? Border.all(
+                        width: 1.0,
+                        color: Theme.of(context).primaryColor,
+                      )
+                    : null,
+              ),
+              child: child,
             ),
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-              border: isBorder
-                  ? Border.all(
-                      width: 1,
-                      color: Theme.of(context).primaryColor,
-                    )
-                  : null,
-            ),
-            child: child,
-          ),
-          if (isTryAgain)
-            const Positioned(
-              right: 0.0,
-              bottom: -24.0,
-              child: TryAgain(),
-            )
-        ],
-      ),
-    );
+            if (isTryAgain)
+              Positioned(
+                right: 0.0,
+                bottom: 0.0,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: onPressedTryAgain,
+                  child: const _TryAgain(),
+                ),
+              ),
+          ],
+        ));
   }
 }
 
-class TryAgain extends StatelessWidget {
-  const TryAgain({super.key});
+class _TryAgain extends StatelessWidget {
+  const _TryAgain({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

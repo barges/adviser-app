@@ -5,15 +5,19 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_widget.dart';
 
 class ChatTextWidget extends ChatWidget {
+  final VoidCallback? onPressedTryAgain;
   const ChatTextWidget({
     super.key,
     required super.item,
+    this.onPressedTryAgain,
   });
 
   @override
   Widget build(BuildContext context) {
     return ChatItemBackground(
+      onPressedTryAgain: onPressedTryAgain,
       isBorder: true,
+      isTryAgain: !item.isSent,
       padding: paddingItem,
       color: getColorItem(context),
       child: Column(

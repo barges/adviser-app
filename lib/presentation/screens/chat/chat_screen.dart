@@ -53,10 +53,14 @@ class ChatScreen extends StatelessWidget {
                             return Container(
                               color: Theme.of(context).scaffoldBackgroundColor,
                               child: ListView.builder(
+                                padding: const EdgeInsets.only(bottom: 12),
                                 controller: chatCubit.messagesScrollController,
                                 reverse: true,
-                                itemBuilder: (_, index) =>
-                                    _ChatItemWidget(items[index]),
+                                itemBuilder: (_, index) => _ChatItemWidget(
+                                    items[index],
+                                    onPressedTryAgain: !items[index].isSent
+                                        ? chatCubit.sendAnswerAgain
+                                        : null),
                                 itemCount: items.length,
                               ),
                             );
@@ -142,9 +146,11 @@ class ChatScreen extends StatelessWidget {
 
 class _ChatItemWidget extends StatelessWidget {
   final ChatItem item;
+  final VoidCallback? onPressedTryAgain;
   const _ChatItemWidget(
     this.item, {
     Key? key,
+    this.onPressedTryAgain,
   }) : super(key: key);
 
   @override
@@ -153,16 +159,19 @@ class _ChatItemWidget extends StatelessWidget {
       if (item.content != null && item.content!.isNotEmpty) {
         return ChatTextMediaWidget(
           item: item,
+          onPressedTryAgain: onPressedTryAgain,
         );
       }
 
       return ChatMediaWidget(
         item: item,
+        onPressedTryAgain: onPressedTryAgain,
       );
     }
 
     return ChatTextWidget(
       item: item,
+      onPressedTryAgain: onPressedTryAgain,
     );
   }
 }
