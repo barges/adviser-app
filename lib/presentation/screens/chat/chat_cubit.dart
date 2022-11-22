@@ -368,7 +368,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     _answerRequest = AnswerRequest(
-      questionID: '60191acef942e6001d2e8a5c',
+      questionID: _question.id,
       ritualID: SessionsTypes.tarot, //messages[0].ritualIdentifier,/
       attachments: [
         audioAttachment!,
@@ -411,7 +411,7 @@ class ChatCubit extends Cubit<ChatState> {
         : null;
 
     _answerRequest = AnswerRequest(
-      questionID: '601919ff920bb6001df0b56a',
+      questionID: _question.id,
       ritualID: SessionsTypes.tarot,
       content: textEditingController.text.isEmpty
           ? null
