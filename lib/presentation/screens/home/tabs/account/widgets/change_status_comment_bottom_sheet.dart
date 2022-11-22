@@ -58,31 +58,36 @@ Future<void> changeStatusCommentBottomSheet(
                             AppConstants.buttonRadius,
                           ),
                         ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Assets.vectors.info.svg(
-                              height: 18.0,
-                              width: 18.0,
-                              color: Theme.of(context).shadowColor,
-                            ),
-                            const SizedBox(
-                              width: 8.0,
-                            ),
-                            Expanded(
-                              child: Text(
-                                S
-                                    .of(context)
-                                    .youWillBeAbleToChangeYourStatusBackIn,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      fontSize: 12.0,
-                                    ),
+                        child: IntrinsicHeight(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Assets.vectors.info.svg(
+                                height: 18.0,
+                                width: 18.0,
+                                color: Theme.of(context).shadowColor,
                               ),
-                            ),
-                          ],
+                              const SizedBox(
+                                width: 8.0,
+                              ),
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    S
+                                        .of(context)
+                                        .youWillBeAbleToChangeYourStatusBackIn,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          fontSize: 12.0,
+                                        ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       const SizedBox(

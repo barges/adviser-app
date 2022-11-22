@@ -38,6 +38,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         clearErrorMessage();
         emit(state.copyWith(
           emailErrorText: '',
+          isButtonActive: emailController.text.isNotEmpty,
         ));
       });
     } else {
@@ -56,6 +57,8 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         clearErrorMessage();
         emit(state.copyWith(
           passwordErrorText: '',
+          isButtonActive: passwordController.text.isNotEmpty &&
+              confirmPasswordController.text.isNotEmpty,
         ));
       });
 
@@ -63,6 +66,8 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         clearErrorMessage();
         emit(state.copyWith(
           confirmPasswordErrorText: '',
+          isButtonActive: passwordController.text.isNotEmpty &&
+              confirmPasswordController.text.isNotEmpty,
         ));
       });
     }

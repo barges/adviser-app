@@ -47,22 +47,20 @@ class LoginCubit extends Cubit<LoginState> {
     });
 
     emailController.addListener(() {
-
       clearErrorMessage();
       clearSuccessMessage();
       emit(state.copyWith(
-        emailErrorText: '',
-
-      ));
+          emailErrorText: '',
+          buttonIsActive: emailController.text.isNotEmpty &&
+              passwordController.text.isNotEmpty));
     });
     passwordController.addListener(() {
-
       clearErrorMessage();
       clearSuccessMessage();
       emit(state.copyWith(
-        passwordErrorText: '',
-
-      ));
+          passwordErrorText: '',
+          buttonIsActive: passwordController.text.isNotEmpty &&
+              emailController.text.isNotEmpty));
     });
   }
 
