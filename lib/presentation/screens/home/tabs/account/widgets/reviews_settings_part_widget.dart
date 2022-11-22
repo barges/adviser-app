@@ -28,63 +28,11 @@ class ReviewsSettingsPartWidget extends StatelessWidget {
       child: Column(
         children: [
           TileWidget(
-            title: S.of(context).reviews,
-            iconSVGPath: Assets.vectors.starActive.path,
-            onTap: () => Get.toNamed(AppRoutes.reviews),
-            widget: Row(
-              children: [
-                RatingBar(
-                  initialRating: 3,
-                  direction: Axis.horizontal,
-                  itemSize: 18,
-                  allowHalfRating: true,
-                  itemCount: 5,
-                  ratingWidget: RatingWidget(
-                    full: Assets.vectors.starFilled.svg(),
-                    half: Assets.vectors.starEmpty.svg(),
-                    empty: Assets.vectors.starEmpty.svg(),
-                  ),
-                  itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
-                  onRatingUpdate: (rating) {},
-                ),
-                const SizedBox(width: 8.0),
-                Text(
-                  "999",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: Theme.of(context).shadowColor),
-                ),
-                Text(
-                  " +25",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: AppColors.online),
-                ),
-              ],
-            ),
-          ),
-          const Divider(
-            height: 1.0,
-          ),
-          TileWidget(
             title: S.of(context).balanceTransactions,
             iconSVGPath: Assets.vectors.transactions.path,
             onTap: () {
               Get.toNamed(AppRoutes.balanceAndTransactions);
             },
-            widget: Row(
-              children: [
-                Text(
-                  "999",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: Theme.of(context).shadowColor),
-                ),
-              ],
-            ),
           ),
           const Divider(
             height: 1.0,

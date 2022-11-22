@@ -12,6 +12,7 @@ import 'package:shared_advisor_interface/presentation/screens/advisor_preview/ad
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/widgets/about_me_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/widgets/flags_bottom_sheet.dart';
+import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
 
 class AdvisorPreviewScreen extends StatelessWidget {
   const AdvisorPreviewScreen({Key? key}) : super(key: key);
@@ -24,6 +25,7 @@ class AdvisorPreviewScreen extends StatelessWidget {
         final AdvisorPreviewCubit advisorPreviewCubit =
             context.read<AdvisorPreviewCubit>();
         return Scaffold(
+          backgroundColor: AppColorsLight.background,
           appBar: AppBar(
             backgroundColor: primary,
             centerTitle: true,
@@ -47,7 +49,8 @@ class AdvisorPreviewScreen extends StatelessWidget {
                       onApply: advisorPreviewCubit.onApply,
                       onSelectLanguage:
                           advisorPreviewCubit.updateActiveLanguagesInUI,
-                      activeLanguages: advisorPreviewCubit.languages);
+                      activeLanguages: advisorPreviewCubit.languages,
+                      advisorPreviewCubit: advisorPreviewCubit);
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(

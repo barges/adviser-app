@@ -9,117 +9,128 @@ import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart';
 
-Future<void> changeStatusCommentBottomSheet({
-  required BuildContext context,
-  required TextEditingController commentController,
-  required VoidCallback okOnTap,
-}) async {
-  Get.bottomSheet(
-      BlocProvider.value(
-        value: context.read<AccountCubit>(),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppConstants.horizontalScreenPadding,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(
-                  height: 8.0,
+Future<void> changeStatusCommentBottomSheet(
+    {required BuildContext context,
+    required TextEditingController commentController,
+    required VoidCallback okOnTap,
+    required AccountCubit accountCubit}) async {
+  showModalBottomSheet(
+      context: context,
+      builder: (context) => BlocProvider.value(
+            value: accountCubit,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppConstants.horizontalScreenPadding,
                 ),
-                Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 108.0,
-                  ),
-                  height: 4.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(21.0),
-                    color: Theme.of(context).hintColor,
-                  ),
-                ),
-                const SizedBox(
-                  height: 16.0,
-                ),
-                Text(
-                  S.of(context).areYouSureThatYouWantToChangeYourStatus,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(
-                  height: 12.0,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(12.0),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius: BorderRadius.circular(
-                      AppConstants.buttonRadius,
-                    ),
-                  ),
-                  child: Row(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Assets.vectors.info.svg(
-                        height: 18.0,
-                        width: 18.0,
-                        color: Theme.of(context).shadowColor,
+                      const SizedBox(
+                        height: 8.0,
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 108.0,
+                        ),
+                        height: 4.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(21.0),
+                          color: Theme.of(context).hintColor,
+                        ),
                       ),
                       const SizedBox(
-                        width: 8.0,
+                        height: 16.0,
                       ),
                       Text(
-                        S.of(context).youWillBeAbleToChangeYourStatusBackIn,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontSize: 12.0,
+                        S.of(context).areYouSureThatYouWantToChangeYourStatus,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: 12.0,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(12.0),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          borderRadius: BorderRadius.circular(
+                            AppConstants.buttonRadius,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Assets.vectors.info.svg(
+                              height: 18.0,
+                              width: 18.0,
+                              color: Theme.of(context).shadowColor,
                             ),
-                      )
+                            const SizedBox(
+                              width: 8.0,
+                            ),
+                            Text(
+                              S
+                                  .of(context)
+                                  .youWillBeAbleToChangeYourStatusBackIn,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    fontSize: 12.0,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 12.0,
+                      ),
+                      Builder(builder: (context) {
+                        context.select((AccountCubit cubit) =>
+                            cubit.state.commentHasFocus);
+                        return AppTextField(
+                          isBig: true,
+                          focusNode: context.read<AccountCubit>().commentNode,
+                          label:
+                              S.of(context).informOurTeamYourPlannedReturnDate,
+                          controller: commentController,
+                        );
+                      }),
+                      const SizedBox(
+                        height: 24.0,
+                      ),
+                      Builder(builder: (context) {
+                        final bool isActive = context.select(
+                            (AccountCubit cubit) =>
+                                cubit.state.commentButtonIsActive);
+                        return AppElevatedButton(
+                          title: S.of(context).yesImSure,
+                          onPressed: isActive
+                              ? () {
+                                  Navigator.pop(context);
+                                  okOnTap();
+                                }
+                              : null,
+                        );
+                      }),
+                      CupertinoButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(
+                          S.of(context).noIChangedMyMind,
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 12.0,
-                ),
-                Builder(builder: (context) {
-                  context.select(
-                      (AccountCubit cubit) => cubit.state.commentHasFocus);
-                  return AppTextField(
-                    isBig: true,
-                    focusNode: context.read<AccountCubit>().commentNode,
-                    label: S.of(context).informOurTeamYourPlannedReturnDate,
-                    controller: commentController,
-                  );
-                }),
-                const SizedBox(
-                  height: 24.0,
-                ),
-                Builder(builder: (context) {
-                  final bool isActive = context.select((AccountCubit cubit) =>
-                      cubit.state.commentButtonIsActive);
-                  return AppElevatedButton(
-                    title: S.of(context).yesImSure,
-                    onPressed: isActive
-                        ? () {
-                            Get.back();
-                            okOnTap();
-                          }
-                        : null,
-                  );
-                }),
-                CupertinoButton(
-                  onPressed: Get.back,
-                  child: Text(
-                    S.of(context).noIChangedMyMind,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.w500,
-                        ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
       backgroundColor: Theme.of(context).canvasColor,
       isScrollControlled: true);
 }

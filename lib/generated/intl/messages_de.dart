@@ -22,213 +22,225 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "aboutMe": MessageLookupByLibrary.simpleMessage("About Me"),
-        "account": MessageLookupByLibrary.simpleMessage("Account"),
+        "aboutMe": MessageLookupByLibrary.simpleMessage("Über Mich"),
+        "account": MessageLookupByLibrary.simpleMessage("Konto"),
         "addCoverPicture":
-            MessageLookupByLibrary.simpleMessage("Add cover picture"),
+            MessageLookupByLibrary.simpleMessage("Titelbild hinzufügen"),
         "addGalleryPictures":
-            MessageLookupByLibrary.simpleMessage("Add Gallery Pictures"),
+            MessageLookupByLibrary.simpleMessage("Galeriebilder hinzufügen"),
         "addInformationYouWantKeepInMindAboutThisClient":
             MessageLookupByLibrary.simpleMessage(
-                "Add the information that you want to keep in mind about this client"),
-        "addMore": MessageLookupByLibrary.simpleMessage("Add more"),
-        "addNew": MessageLookupByLibrary.simpleMessage("Add new"),
-        "addNote": MessageLookupByLibrary.simpleMessage("Add Note"),
-        "advisors": MessageLookupByLibrary.simpleMessage("advisors"),
-        "all": MessageLookupByLibrary.simpleMessage("All"),
-        "allOurBrands": MessageLookupByLibrary.simpleMessage("All our brands"),
-        "allType": MessageLookupByLibrary.simpleMessage("All Type"),
-        "apply": MessageLookupByLibrary.simpleMessage("Apply"),
+                "Fügen Sie die Informationen hinzu, die Sie zu diesem Kunden im Auge behalten möchten"),
+        "addMore": MessageLookupByLibrary.simpleMessage("Fügen Sie mehr hinzu"),
+        "addNew": MessageLookupByLibrary.simpleMessage("Neue hinzufügen"),
+        "addNote": MessageLookupByLibrary.simpleMessage("Notiz Hinzufügen"),
+        "advisors": MessageLookupByLibrary.simpleMessage("Berater"),
+        "all": MessageLookupByLibrary.simpleMessage("Alle"),
+        "allOurBrands":
+            MessageLookupByLibrary.simpleMessage("Alle unsere Marken"),
+        "allType": MessageLookupByLibrary.simpleMessage("Alle Arten"),
+        "allowCamera": MessageLookupByLibrary.simpleMessage("Allow camera"),
+        "allowGallery": MessageLookupByLibrary.simpleMessage("Allow gallery"),
+        "apply": MessageLookupByLibrary.simpleMessage("Sich bewerben"),
         "areYouSureThatYouWantToChangeYourStatus":
             MessageLookupByLibrary.simpleMessage(
-                "Are you sure that you want to change your status to Offline?"),
-        "articles": MessageLookupByLibrary.simpleMessage("Articles"),
-        "ascendant": MessageLookupByLibrary.simpleMessage("Ascendant"),
-        "back": MessageLookupByLibrary.simpleMessage("Back"),
+                "Sind Sie sicher, dass Sie Ihren Status auf Offline ändern möchten?"),
+        "articles": MessageLookupByLibrary.simpleMessage("Artikel"),
+        "ascendant": MessageLookupByLibrary.simpleMessage("Aufsteigend"),
+        "avgDailyEarnings":
+            MessageLookupByLibrary.simpleMessage("Durchschn Tagesverdienst"),
+        "back": MessageLookupByLibrary.simpleMessage("Zurück"),
         "balanceTransactions":
-            MessageLookupByLibrary.simpleMessage("Balance & Transactions"),
-        "betterThan": MessageLookupByLibrary.simpleMessage("Better than"),
-        "birthTown": MessageLookupByLibrary.simpleMessage("birth town"),
-        "born": MessageLookupByLibrary.simpleMessage("Born"),
-        "calls": MessageLookupByLibrary.simpleMessage("Calls"),
-        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+            MessageLookupByLibrary.simpleMessage("Guthaben & Transaktionen"),
+        "betterThan": MessageLookupByLibrary.simpleMessage("Besser als"),
+        "birthTown": MessageLookupByLibrary.simpleMessage("Geburtsort"),
+        "born": MessageLookupByLibrary.simpleMessage("Geboren"),
+        "calls": MessageLookupByLibrary.simpleMessage("Anrufe"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Absagen"),
         "changeCoverPicture":
-            MessageLookupByLibrary.simpleMessage("Change cover picture"),
+            MessageLookupByLibrary.simpleMessage("Titelbild ändern"),
         "changePassword":
-            MessageLookupByLibrary.simpleMessage("Change password"),
-        "changePhoto": MessageLookupByLibrary.simpleMessage("Change photo"),
-        "chats": MessageLookupByLibrary.simpleMessage("Chats"),
-        "chooseBrand": MessageLookupByLibrary.simpleMessage("Choose brand"),
+            MessageLookupByLibrary.simpleMessage("Passwort ändern"),
+        "changePhoto": MessageLookupByLibrary.simpleMessage("Foto ändern"),
+        "chats": MessageLookupByLibrary.simpleMessage("Chattet"),
+        "chooseBrand": MessageLookupByLibrary.simpleMessage("Marke wählen"),
         "chooseEmailApp":
-            MessageLookupByLibrary.simpleMessage("Choose email app"),
+            MessageLookupByLibrary.simpleMessage("Wählen Sie die E-Mail-App"),
         "chooseFromGallery":
-            MessageLookupByLibrary.simpleMessage("Choose from gallery"),
-        "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon!"),
+            MessageLookupByLibrary.simpleMessage("Wählen Sie aus der Galerie"),
+        "comingSoon": MessageLookupByLibrary.simpleMessage("Demnächst!"),
         "confirmNewPassword":
-            MessageLookupByLibrary.simpleMessage("Confirm new password"),
-        "courses": MessageLookupByLibrary.simpleMessage("Courses"),
-        "customerProfile":
-            MessageLookupByLibrary.simpleMessage("Customer Profile"),
-        "customerSupport":
-            MessageLookupByLibrary.simpleMessage("Customer Support"),
-        "customers": MessageLookupByLibrary.simpleMessage("Customers"),
+            MessageLookupByLibrary.simpleMessage("Bestätige neues Passwort"),
+        "courses": MessageLookupByLibrary.simpleMessage("Kurse"),
+        "customerProfile": MessageLookupByLibrary.simpleMessage("Kundenprofil"),
+        "customerSupport": MessageLookupByLibrary.simpleMessage("Kundendienst"),
+        "customers": MessageLookupByLibrary.simpleMessage("Kunden"),
         "customersComeBackToYouAfterBuyingFirstSessionPlatform":
             MessageLookupByLibrary.simpleMessage(
-                "Customers who come back to you after buying the first session on any platform"),
+                "Kunden, die nach dem Kauf der ersten Sitzung auf einer beliebigen Plattform zu Ihnen zurückkehren"),
         "customersWantSeeIfYouReal": MessageLookupByLibrary.simpleMessage(
-            "Customers want to see if you are real. The more photos of yourself you add, the better."),
-        "dashboard": MessageLookupByLibrary.simpleMessage("Dashboard"),
-        "days": MessageLookupByLibrary.simpleMessage("days"),
-        "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+            "Kunden wollen sehen, ob Sie echt sind. Je mehr Fotos von dir du hinzufügst, desto besser."),
+        "dashboard": MessageLookupByLibrary.simpleMessage("Armaturenbrett"),
+        "days": MessageLookupByLibrary.simpleMessage("Tage"),
         "doYouWantToDeleteAudioMessage": MessageLookupByLibrary.simpleMessage(
             "Do you want to delete audio message?"),
         "doYouWantToDeleteImage": MessageLookupByLibrary.simpleMessage(
             "Do you want to delete image?"),
-        "done": MessageLookupByLibrary.simpleMessage("Done"),
-        "earned": MessageLookupByLibrary.simpleMessage("Earned"),
-        "editProfile": MessageLookupByLibrary.simpleMessage("Edit profile"),
+        "done": MessageLookupByLibrary.simpleMessage("Fertig"),
+        "earned": MessageLookupByLibrary.simpleMessage("Verdient"),
+        "editNote": MessageLookupByLibrary.simpleMessage("Notiz Bearbeiten"),
+        "editProfile":
+            MessageLookupByLibrary.simpleMessage("Profil bearbeiten"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
-        "english": MessageLookupByLibrary.simpleMessage("English"),
+        "english": MessageLookupByLibrary.simpleMessage("Englisch"),
         "fieldIsRequired":
-            MessageLookupByLibrary.simpleMessage("Field is required"),
-        "forMe": MessageLookupByLibrary.simpleMessage("For me"),
+            MessageLookupByLibrary.simpleMessage("Feld ist erforderlich"),
+        "forMe": MessageLookupByLibrary.simpleMessage("Für mich"),
         "forgotPassword":
-            MessageLookupByLibrary.simpleMessage("Forgot password"),
-        "forgotYourPassword":
-            MessageLookupByLibrary.simpleMessage("Forgot your password"),
+            MessageLookupByLibrary.simpleMessage("Passwort vergessen"),
+        "forgotYourPassword": MessageLookupByLibrary.simpleMessage(
+            "Haben Sie Ihr Passwort vergessen"),
         "fortunica": MessageLookupByLibrary.simpleMessage("Fortunica"),
         "from15secTo3min":
             MessageLookupByLibrary.simpleMessage("from 15 sec to 3 min"),
         "imAvailableNow":
-            MessageLookupByLibrary.simpleMessage("I\'m available now"),
+            MessageLookupByLibrary.simpleMessage("Ich bin jetzt verfügbar"),
         "informOurTeamYourPlannedReturnDate":
             MessageLookupByLibrary.simpleMessage(
-                "Inform our team your planned return date:"),
+                "Teilen Sie unserem Team Ihr geplantes Rückreisedatum mit:"),
         "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
-        "logOut": MessageLookupByLibrary.simpleMessage("Log out"),
-        "login": MessageLookupByLibrary.simpleMessage("Login"),
-        "loyalUsers": MessageLookupByLibrary.simpleMessage("Loyal Users"),
-        "mandatory": MessageLookupByLibrary.simpleMessage("Mandatory"),
-        "market": MessageLookupByLibrary.simpleMessage("Market:"),
-        "newCustomers": MessageLookupByLibrary.simpleMessage("New customers"),
-        "newLabel": MessageLookupByLibrary.simpleMessage("New"),
+        "logOut": MessageLookupByLibrary.simpleMessage("Ausloggen"),
+        "login": MessageLookupByLibrary.simpleMessage("Einloggen"),
+        "loyalUsers": MessageLookupByLibrary.simpleMessage("Treue Benutzer"),
+        "mandatory": MessageLookupByLibrary.simpleMessage("Obligatorisch"),
+        "market": MessageLookupByLibrary.simpleMessage("Markt:"),
+        "newCustomers": MessageLookupByLibrary.simpleMessage("Neue Kunden"),
+        "newLabel": MessageLookupByLibrary.simpleMessage("Neu"),
         "newMandatoryArticleIsAvailable": MessageLookupByLibrary.simpleMessage(
-            "New mandatory article is available!"),
-        "newUsers": MessageLookupByLibrary.simpleMessage("New Users"),
-        "nickname": MessageLookupByLibrary.simpleMessage("Nickname"),
-        "noIChangedMyMind":
-            MessageLookupByLibrary.simpleMessage("No, I changed my mind"),
+            "Neuer Pflichtartikel ist verfügbar!"),
+        "newUsers": MessageLookupByLibrary.simpleMessage("Neue Nutzer"),
+        "nickname": MessageLookupByLibrary.simpleMessage("Spitzname"),
+        "noIChangedMyMind": MessageLookupByLibrary.simpleMessage(
+            "Nein, ich habe meine Meinung geändert"),
         "noInternetConnection":
-            MessageLookupByLibrary.simpleMessage("No internet connection."),
+            MessageLookupByLibrary.simpleMessage("Keine Internetverbindung."),
         "noQuestionsYet":
-            MessageLookupByLibrary.simpleMessage("No questions, yet."),
+            MessageLookupByLibrary.simpleMessage("Noch keine Fragen."),
         "noSessionsYet":
-            MessageLookupByLibrary.simpleMessage("No sessions, yet."),
+            MessageLookupByLibrary.simpleMessage("Noch keine Sitzungen."),
         "notEnoughConversationsCheckOurProfileGuide":
             MessageLookupByLibrary.simpleMessage(
-                "Not enough conversations? Check our Profile Guide."),
-        "notes": MessageLookupByLibrary.simpleMessage("Notes"),
-        "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
-        "numerology": MessageLookupByLibrary.simpleMessage("Numerology"),
+                "Nicht genug Gespräche? Sehen Sie sich unseren Profilleitfaden an."),
+        "notes": MessageLookupByLibrary.simpleMessage("Notizen"),
+        "notifications":
+            MessageLookupByLibrary.simpleMessage("Benachrichtigungen"),
+        "numerology": MessageLookupByLibrary.simpleMessage("Numerologie"),
         "onlyPremiumProducts":
-            MessageLookupByLibrary.simpleMessage("Only Premium Products"),
-        "openEmailApp": MessageLookupByLibrary.simpleMessage("Open email app"),
-        "otherBrands": MessageLookupByLibrary.simpleMessage("Other brands"),
-        "password": MessageLookupByLibrary.simpleMessage("Password"),
-        "peopleHelped": MessageLookupByLibrary.simpleMessage("People helped"),
+            MessageLookupByLibrary.simpleMessage("Nur Premium-Produkte"),
+        "openEmailApp":
+            MessageLookupByLibrary.simpleMessage("E-Mail-App öffnen"),
+        "otherBrands": MessageLookupByLibrary.simpleMessage("Andere Marken"),
+        "password": MessageLookupByLibrary.simpleMessage("Passwort"),
+        "peopleHelped":
+            MessageLookupByLibrary.simpleMessage("Menschen haben geholfen"),
+        "perfomanceOverviewAnalytics": MessageLookupByLibrary.simpleMessage(
+            "Leistungsübersicht Analytics"),
         "personalBalance":
-            MessageLookupByLibrary.simpleMessage("Personal Balance"),
-        "placesUpFromLastMonth":
-            MessageLookupByLibrary.simpleMessage("places up from last month"),
+            MessageLookupByLibrary.simpleMessage("Persönliches Gleichgewicht"),
+        "placesUpFromLastMonth": MessageLookupByLibrary.simpleMessage(
+            "Plätze im Vergleich zum letzten Monat"),
         "pleaseEnterAtLeast3Characters": MessageLookupByLibrary.simpleMessage(
-            "Please enter at least 3 characters"),
+            "Bitte geben Sie mindestens 3 Zeichen ein"),
         "pleaseEnterAtLeast6Characters": MessageLookupByLibrary.simpleMessage(
-            "Please enter at least 6 characters"),
+            "Bitte geben Sie mindestens 6 Zeichen ein"),
         "pleaseInsertCorrectEmail": MessageLookupByLibrary.simpleMessage(
-            "Please, insert correct email"),
-        "portuguese": MessageLookupByLibrary.simpleMessage("Portuguese"),
+            "Bitte geben Sie die richtige E-Mail ein"),
+        "portuguese": MessageLookupByLibrary.simpleMessage("Portugiesisch"),
         "previewAccount":
-            MessageLookupByLibrary.simpleMessage("Preview account"),
+            MessageLookupByLibrary.simpleMessage("Konto Vorschau"),
         "privateQuestions":
-            MessageLookupByLibrary.simpleMessage("Private Questions"),
-        "profileText": MessageLookupByLibrary.simpleMessage("Profile Text"),
-        "public": MessageLookupByLibrary.simpleMessage("Public"),
+            MessageLookupByLibrary.simpleMessage("Private Fragen"),
+        "profileText": MessageLookupByLibrary.simpleMessage("Profiltext"),
+        "public": MessageLookupByLibrary.simpleMessage("Öffentlichkeit"),
         "questionProperties":
-            MessageLookupByLibrary.simpleMessage("Question properties"),
-        "quickAnswers": MessageLookupByLibrary.simpleMessage("Quick Answers"),
-        "requestNewPassword":
-            MessageLookupByLibrary.simpleMessage("Request new password"),
-        "resetPassword": MessageLookupByLibrary.simpleMessage("Reset Password"),
-        "resources": MessageLookupByLibrary.simpleMessage("Resources"),
-        "reviews": MessageLookupByLibrary.simpleMessage("Reviews"),
-        "sales": MessageLookupByLibrary.simpleMessage("Sales"),
-        "save": MessageLookupByLibrary.simpleMessage("Save"),
-        "search": MessageLookupByLibrary.simpleMessage("Search"),
-        "seeMore": MessageLookupByLibrary.simpleMessage("See more"),
-        "services": MessageLookupByLibrary.simpleMessage("services"),
-        "sessions": MessageLookupByLibrary.simpleMessage("Sessions"),
-        "settings": MessageLookupByLibrary.simpleMessage("Settings"),
-        "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
+            MessageLookupByLibrary.simpleMessage("Eigenschaften hinterfragen"),
+        "quickAnswers":
+            MessageLookupByLibrary.simpleMessage("Schnelle Antworten"),
+        "requestNewPassword": MessageLookupByLibrary.simpleMessage(
+            "Fordere ein neues Passwort an"),
+        "resetPassword":
+            MessageLookupByLibrary.simpleMessage("Passwort Zurücksetzen"),
+        "resources": MessageLookupByLibrary.simpleMessage("Ressourcen"),
+        "reviews": MessageLookupByLibrary.simpleMessage("Bewertungen"),
+        "sales": MessageLookupByLibrary.simpleMessage("Verkauf"),
+        "save": MessageLookupByLibrary.simpleMessage("Speichern"),
+        "search": MessageLookupByLibrary.simpleMessage("Suche"),
+        "seeMore": MessageLookupByLibrary.simpleMessage("Mehr sehen"),
+        "services": MessageLookupByLibrary.simpleMessage("Dienstleistungen"),
+        "sessions": MessageLookupByLibrary.simpleMessage("Sitzungen"),
+        "settings": MessageLookupByLibrary.simpleMessage("Einstellungen"),
+        "signIn": MessageLookupByLibrary.simpleMessage("Einloggen"),
         "similarArticles":
-            MessageLookupByLibrary.simpleMessage("Similar articles"),
-        "stats": MessageLookupByLibrary.simpleMessage("Stats"),
-        "statusText": MessageLookupByLibrary.simpleMessage("Status Text"),
-        "takeAPhoto": MessageLookupByLibrary.simpleMessage("Take a photo"),
-        "takeMeThere": MessageLookupByLibrary.simpleMessage("Take me there"),
-        "thePasswordsMustMatch":
-            MessageLookupByLibrary.simpleMessage("The passwords must match"),
-        "theUserWasNotFound":
-            MessageLookupByLibrary.simpleMessage("The user was not found"),
-        "thisMonth": MessageLookupByLibrary.simpleMessage("This Month"),
-        "thisWeek": MessageLookupByLibrary.simpleMessage("This Week"),
-        "title": MessageLookupByLibrary.simpleMessage("Title"),
+            MessageLookupByLibrary.simpleMessage("Ähnliche Artikel"),
+        "stats": MessageLookupByLibrary.simpleMessage("Statistiken"),
+        "statusText": MessageLookupByLibrary.simpleMessage("Statustext"),
+        "takeAPhoto": MessageLookupByLibrary.simpleMessage("Mach ein Foto"),
+        "takeMeThere": MessageLookupByLibrary.simpleMessage("Bring mich dahin"),
+        "thePasswordsMustMatch": MessageLookupByLibrary.simpleMessage(
+            "Die Passwörter müssen übereinstimmen"),
+        "theUserWasNotFound": MessageLookupByLibrary.simpleMessage(
+            "Der Benutzer wurde nicht gefunden"),
+        "thisMonth": MessageLookupByLibrary.simpleMessage("Diesen Monat"),
+        "thisWeek": MessageLookupByLibrary.simpleMessage("In dieser Woche"),
+        "title": MessageLookupByLibrary.simpleMessage("Titel"),
         "toReadItBeforeYourAccountWillGetBlocked":
             MessageLookupByLibrary.simpleMessage(
-                "to read it before your account will get blocked!"),
+                "um es zu lesen, bevor Ihr Konto gesperrt wird!"),
         "toResetPasswordEnterEmailAddressAndWellSendYou":
             MessageLookupByLibrary.simpleMessage(
                 "To reset password, enter email address and we’ll send you instructions on how to create a new password."),
-        "today": MessageLookupByLibrary.simpleMessage("Today"),
-        "topSpender": MessageLookupByLibrary.simpleMessage("Top spender"),
-        "total": MessageLookupByLibrary.simpleMessage("Total"),
-        "totalMarkets": MessageLookupByLibrary.simpleMessage("Total markets"),
+        "today": MessageLookupByLibrary.simpleMessage("Heute"),
+        "topSpender": MessageLookupByLibrary.simpleMessage("Top-Spender"),
+        "total": MessageLookupByLibrary.simpleMessage("Gesamt"),
+        "totalMarkets": MessageLookupByLibrary.simpleMessage("Gesamtmärkte"),
         "tryAgain": MessageLookupByLibrary.simpleMessage("Try again"),
         "uhohNoNetworkNcheckYourInternetConnection":
             MessageLookupByLibrary.simpleMessage(
-                "Uh-oh, no network... \nCheck your internet connection"),
+                "Uh-oh, kein Netzwerk... \nÜberprüfen Sie Ihre Internetverbindung"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
-                "We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others"),
+                "Wir sind stolz darauf, Beratern einen sicheren Ort zu bieten, an dem sie Kunden bedienen und sich beruflich weiterentwickeln können. Gute Arbeit bei einer unserer Marken zu leisten, wird Türen zu anderen öffnen"),
         "whenSomeoneAsksAPublicQuestionYouWillSeeThem":
             MessageLookupByLibrary.simpleMessage(
-                "When someone asks a public question, you will see them on the general list here"),
+                "Wenn jemand eine öffentliche Frage stellt, sehen Sie ihn hier auf der allgemeinen Liste"),
         "whenYouHelpYourFirstClientYouWillSeeYour":
             MessageLookupByLibrary.simpleMessage(
-                "When you help your first client, you will see your session history here."),
+                "Wenn Sie Ihrem ersten Kunden helfen, sehen Sie hier Ihren Sitzungsverlauf."),
         "willBeAvailableInAnHour": MessageLookupByLibrary.simpleMessage(
-            "Will be available in an hour"),
-        "workspaces": MessageLookupByLibrary.simpleMessage("Workspaces"),
-        "wrongUsernameOrPassword":
-            MessageLookupByLibrary.simpleMessage("Wrong username or password"),
-        "yesImSure": MessageLookupByLibrary.simpleMessage("Yes, I’m sure"),
+            "Wird in einer Stunde verfügbar sein"),
+        "workspaces": MessageLookupByLibrary.simpleMessage("Arbeitsbereiche"),
+        "wrongUsernameOrPassword": MessageLookupByLibrary.simpleMessage(
+            "Falscher Benutzername oder falsches Passwort"),
+        "yesImSure":
+            MessageLookupByLibrary.simpleMessage("Ja, ich bin mir sicher"),
         "youDoNotHaveAnyNotesYet": MessageLookupByLibrary.simpleMessage(
-            "You don’t have any notes yet"),
-        "youHave": MessageLookupByLibrary.simpleMessage("You have"),
+            "Sie haben noch keine Notizen"),
+        "youHave": MessageLookupByLibrary.simpleMessage("Du hast"),
         "youHaveNotCompletedAnySessionsYet":
             MessageLookupByLibrary.simpleMessage(
-                "You have not completed any sessions yet"),
+                "Sie haben noch keine Sitzungen abgeschlossen"),
         "youHaveNotYetCompletedThisMonthsSessions":
             MessageLookupByLibrary.simpleMessage(
-                "You have not yet completed this month\'s sessions"),
+                "Sie haben die Sitzungen dieses Monats noch nicht abgeschlossen"),
         "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo":
             MessageLookupByLibrary.simpleMessage(
-                "You have successfully changed your password. Check your email to confirm password change"),
+                "Sie haben Ihr Passwort erfolgreich geändert. Überprüfen Sie Ihre E-Mail, um die Passwortänderung zu bestätigen"),
         "youWillBeAbleToChangeYourStatusBackIn":
             MessageLookupByLibrary.simpleMessage(
-                "You will be able to change your status back in 1 hour"),
+                "Sie können Ihren Status in 1 Stunde zurücksetzen"),
         "yourAccountHasBeenBlockedPleaseContactYourAdvisorManager":
             MessageLookupByLibrary.simpleMessage(
-                "Your account has been blocked. Please contact your advisor manager."),
-        "zodiacSign": MessageLookupByLibrary.simpleMessage("Zodiac Sign")
+                "Ihr Konto wurde gesperrt. Bitte wenden Sie sich an Ihren Beratermanager."),
+        "zodiacSign": MessageLookupByLibrary.simpleMessage("Sternzeichen")
       };
 }

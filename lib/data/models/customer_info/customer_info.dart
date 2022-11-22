@@ -3,7 +3,6 @@ import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/data/network/responses/customer_info_response/questions_subscription.dart';
 
 part 'customer_info.g.dart';
-
 part 'customer_info.freezed.dart';
 
 @freezed

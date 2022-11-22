@@ -13,8 +13,7 @@ abstract class ChatWidget extends StatelessWidget with ChatItemTypeGetter {
   @override
   bool get isAnswer => item.isAnswer;
 
-  DateTime get createdAt =>
-      DateTime.tryParse(item.createdAt ?? '') ?? DateTime.now();
+  DateTime get createdAt => item.createdAt ?? DateTime.now();
 
   EdgeInsetsGeometry get paddingItem => getterType(
         question: const EdgeInsets.fromLTRB(12.0, 4.0, 48.0, 4.0),

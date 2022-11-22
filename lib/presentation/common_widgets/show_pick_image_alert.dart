@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 
 Future<void> showPickImageAlert(
     {required BuildContext context,
@@ -16,8 +17,9 @@ Future<void> showPickImageAlert(
   ImageSource? source;
 
   if (Platform.isAndroid) {
-    source = await Get.bottomSheet(
-      Column(
+    source = await showModalBottomSheet(
+      context: context,
+      builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           GestureDetector(
@@ -146,20 +148,36 @@ Future<void> _pickMultiImage(BuildContext context, ImageSource imageSource,
 
 Future<void> _handlePermissions(
     BuildContext context, ImageSource source) async {
+  String alertTitle = '';
+  PermissionStatus status;
   switch (source) {
     case ImageSource.camera:
       {
-        await Permission.camera.request();
+        status = await Permission.camera.request();
+        alertTitle = S.of(context).allowCamera;
       }
       break;
     case ImageSource.gallery:
       {
         if (Platform.isIOS) {
-          await Permission.photos.request();
+          status = await Permission.photos.request();
         } else {
-          await Permission.storage.request();
+          status = await Permission.storage.request();
         }
+        alertTitle = S.of(context).allowGallery;
       }
       break;
+  }
+  if (status.isPermanentlyDenied) {
+    VoidCallback actionOnOk = (() async {
+      await openAppSettings();
+      Navigator.pop(context);
+    });
+    await showOkCancelAlert(
+      context,
+      alertTitle,
+      S.of(context).settings,
+      actionOnOk,
+    );
   }
 }

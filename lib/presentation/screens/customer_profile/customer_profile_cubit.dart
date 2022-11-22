@@ -22,7 +22,7 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
   Future<void> getCustomerInfo() async {
     emit(
       state.copyWith(
-        response: await _repository.getCustomerInfo(customerID),
+        customerInfo: await _repository.getCustomerInfo(customerID),
       ),
     );
   }

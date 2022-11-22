@@ -38,6 +38,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "all": MessageLookupByLibrary.simpleMessage("All"),
         "allOurBrands": MessageLookupByLibrary.simpleMessage("All our brands"),
         "allType": MessageLookupByLibrary.simpleMessage("All Type"),
+        "allowCamera": MessageLookupByLibrary.simpleMessage("Allow camera"),
+        "allowGallery": MessageLookupByLibrary.simpleMessage("Allow gallery"),
         "apply": MessageLookupByLibrary.simpleMessage("Apply"),
         "areYouSureThatYouWantToChangeYourStatus":
             MessageLookupByLibrary.simpleMessage(

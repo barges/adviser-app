@@ -52,6 +52,7 @@ class _ChartWidgetState extends State<ChartWidget> {
                 ?.copyWith(fontWeight: FontWeight.w800),
           ),
           Text(S.of(context).perfomanceOverviewAnalytics,
+              textAlign: TextAlign.center,
               style: Theme.of(context)
                   .textTheme
                   .labelMedium
@@ -68,12 +69,15 @@ class _ChartWidgetState extends State<ChartWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  S.of(context).avgDailyEarnings,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(fontWeight: FontWeight.w800),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 2,
+                  child: Text(
+                    S.of(context).avgDailyEarnings,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w800),
+                  ),
                 ),
                 Text('\$105',
                     style: Theme.of(context)

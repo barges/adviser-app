@@ -12,8 +12,9 @@ Future<void> showOkCancelBottomSheet({
   VoidCallback? cancelOnTap,
 }) async {
   if (Platform.isAndroid) {
-    Get.bottomSheet(
-      Column(
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           GestureDetector(
