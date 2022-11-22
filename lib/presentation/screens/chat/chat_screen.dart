@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -27,7 +28,11 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     const textCounterWidth = 92.0;
     return BlocProvider(
-      create: (_) => ChatCubit(getIt.get<ChatsRepository>(), _question),
+      create: (_) => ChatCubit(
+        getIt.get<CachingManager>(),
+        getIt.get<ChatsRepository>(),
+        _question,
+      ),
       child: Builder(
         builder: (context) {
           final ChatCubit chatCubit = context.read<ChatCubit>();

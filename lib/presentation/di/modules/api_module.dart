@@ -64,10 +64,18 @@ class ApiModule implements Module {
     };
     if (Platform.isAndroid) {
       const AndroidId androidIdPlugin = AndroidId();
-      headers['x-adviqo-adid'] = await androidIdPlugin.getId();
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      String? id = await androidIdPlugin.getId();
+      headers['x-adviqo-adid'] = id;
+      headers['x-advico-device-name'] = androidInfo.model;
+      headers['x-advico-device-version'] = androidInfo.version.release;
+      headers['x-advico-is-physical-device'] = androidInfo.isPhysicalDevice;
     } else if (Platform.isIOS) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
       headers['x-adviqo-adid'] = iosInfo.identifierForVendor;
+      headers['x-advico-device-name'] = iosInfo.name;
+      headers['x-advico-device-version'] = iosInfo.systemVersion;
+      headers['x-advico-is-physical-device'] = iosInfo.isPhysicalDevice;
     }
 
     return headers;

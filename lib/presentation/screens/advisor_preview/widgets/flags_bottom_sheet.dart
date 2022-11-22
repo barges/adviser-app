@@ -13,38 +13,41 @@ Future<void> flagsBottomSheet(
     {required BuildContext context,
     required VoidCallback onApply,
     required ValueChanged<int> onSelectLanguage,
-    required List<MarketsType> activeLanguages}) async {
-  Get.bottomSheet(
-      BlocProvider<AdvisorPreviewCubit>.value(
-        value: context.read<AdvisorPreviewCubit>(),
-        child: Container(
-          decoration: const BoxDecoration(
-            color: white,
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(8.0), topLeft: Radius.circular(8.0)),
+    required List<MarketsType> activeLanguages,
+    required AdvisorPreviewCubit advisorPreviewCubit}) async {
+  showModalBottomSheet(
+      context: context,
+      builder: (context) => BlocProvider<AdvisorPreviewCubit>.value(
+            value: advisorPreviewCubit,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: white,
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(8.0),
+                    topLeft: Radius.circular(8.0)),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _FlagBottomSheetHeader(onApply: onApply),
+                  Flexible(
+                    child: Builder(builder: (context) {
+                      final int selectedItemIndex = context.select(
+                          (AdvisorPreviewCubit cubit) => cubit.state.oldIndex);
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (_, index) => _FlagTileWidget(
+                              languageCode: activeLanguages[index],
+                              isSelected: index == selectedItemIndex,
+                              onTap: () => onSelectLanguage(index)),
+                          itemCount: activeLanguages.length);
+                    }),
+                  )
+                ],
+              ),
+            ),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _FlagBottomSheetHeader(onApply: onApply),
-              Flexible(
-                child: Builder(builder: (context) {
-                  final int selectedItemIndex = context.select(
-                      (AdvisorPreviewCubit cubit) => cubit.state.oldIndex);
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (_, index) => _FlagTileWidget(
-                          languageCode: activeLanguages[index],
-                          isSelected: index == selectedItemIndex,
-                          onTap: () => onSelectLanguage(index)),
-                      itemCount: activeLanguages.length);
-                }),
-              )
-            ],
-          ),
-        ),
-      ),
       backgroundColor: white);
 }
 

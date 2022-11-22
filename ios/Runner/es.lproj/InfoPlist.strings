@@ -2,4 +2,4 @@
 "NSCameraUsageDescription" = "Puedes tomar una foto y enviarla al chat o actualizar tu avatar.";
 "NSMicrophoneUsageDescription" = "Puedes grabar tu voz y enviarla al chat.";
 "NSPhotoLibraryUsageDescription" = "Esto te permite elegir cualquiera de tus fotos de la Galería y enviarlas al chat o actualizar tu avatar.";
-"NSUserTrackingUsageDescription" = "Sus datos se utilizarán para brindarle una experiencia de aplicación personalizada.";
+"NSUserTrackingUsageDescription" = "Esto permite identificar el canal de marketing que utilizaste. La información no se usará para ningún otro propósito. Puedes cambiarlo en la app desde Configuraciones.";

@@ -80,15 +80,15 @@ class AppTextField extends StatelessWidget {
         if (errorText.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(
-              top: 4.0,
+              top: 2.0,
               left: 12.0,
             ),
             child: Text(
               errorText,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Theme.of(context).errorColor),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).errorColor,
+                    fontSize: 12.0,
+                  ),
             ),
           )
       ],

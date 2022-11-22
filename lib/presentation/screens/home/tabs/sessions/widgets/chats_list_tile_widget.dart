@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
@@ -85,7 +86,8 @@ class ChatsListTileWidget extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        (question.updatedAt ?? '').parseDateTimePattern1,
+                        question.updatedAt?.chatListTime ??
+                            DateTime.now().chatListTime,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: Theme.of(context).shadowColor,
                               fontSize: 12.0,
@@ -131,6 +133,27 @@ class ChatsListTileWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _getQuestionTime() {
+    DateTime now = DateTime.now().toUtc();
+    int timeDifference = DateTime(question.updatedAt!.year,
+            question.updatedAt!.month, question.updatedAt!.day)
+        .difference(DateTime(now.year, now.month, now.day))
+        .inDays;
+    if (timeDifference == 0) {
+      return DateFormat(dateFormat)
+          .format(question.updatedAt!)
+          .parseDateTimePattern7;
+    }
+    if (timeDifference < -365) {
+      return DateFormat(dateFormat)
+          .format(question.updatedAt!)
+          .parseDateTimePattern9;
+    }
+    return DateFormat(dateFormat)
+        .format(question.updatedAt!)
+        .parseDateTimePattern8;
   }
 }
 
