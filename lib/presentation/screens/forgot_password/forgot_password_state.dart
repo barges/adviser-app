@@ -14,5 +14,6 @@ class ForgotPasswordState with _$ForgotPasswordState {
     @Default(false) bool confirmPasswordHasFocus,
     @Default(true) bool hiddenPassword,
     @Default(true) bool hiddenConfirmPassword,
+    @Default(false) bool isButtonActive,
   }) = _ForgotPasswordState;
 }

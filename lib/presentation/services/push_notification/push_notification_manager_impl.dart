@@ -106,36 +106,17 @@ class PushNotificationManagerImpl implements PushNotificationManager {
 
 Future<void> _navigateToNextScreen(RemoteMessage? message) async {
   if (message != null) {
-    Map<String, dynamic> data = message.data;
-
     /**
-      String type;
-      if (data['type'] != null) {
-        type = data['type'];
-      } else {
-        type = data['data']['type'];
+      Map<String, dynamic> data = message.data;
+  
+      
+      Map<String, dynamic> meta = json.decode(data['meta']);
+      if (meta['entityId'] != null) {
+        ChatItem chatItem =
+            await getIt.get<ChatsRepository>().getQuestion(id: meta['entityId']);
+        Get.toNamed(AppRoutes.chat, arguments: chatItem);
       }
-  
-      switch (type) {
-        case 'session':
-          Get.toNamed(AppRoutes.home, arguments: <String, int>{
-            'homeScreenTab': 2,
-            'sessionScreenTap': 0
-          });
-          break;
-        case 'private':
-          Get.toNamed(AppRoutes.home, arguments: <String, int>{
-            'homeScreenTab': 2,
-            'sessionScreenTap': 1
-          });
-          break;
-  
-        default:
-          Get.toNamed(AppRoutes.home, arguments: <String, int>{
-            'homeScreenTab': 0,
-            'sessionScreenTap': 0
-          });
-          break;
-      }*/
+    */
+
   }
 }

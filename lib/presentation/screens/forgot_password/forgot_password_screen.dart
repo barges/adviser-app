@@ -210,12 +210,19 @@ class ForgotPasswordScreen extends StatelessWidget {
                                             }),
                                           ],
                                         ),
-                                  AppElevatedButton(
-                                    title: cubit.arguments.token == null
-                                        ? S.of(context).resetPassword
-                                        : S.of(context).changePassword,
-                                    onPressed: cubit.resetPassword,
-                                  ),
+                                  Builder(builder: (context) {
+                                    final bool isActive = context.select(
+                                      (ForgotPasswordCubit cubit) =>
+                                          cubit.state.isButtonActive,
+                                    );
+                                    return AppElevatedButton(
+                                      title: cubit.arguments.token == null
+                                          ? S.of(context).resetPassword
+                                          : S.of(context).changePassword,
+                                      onPressed:
+                                          isActive ? cubit.resetPassword : null,
+                                    );
+                                  }),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 24.0,

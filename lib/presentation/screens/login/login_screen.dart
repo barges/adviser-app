@@ -144,10 +144,18 @@ class LoginScreen extends StatelessWidget {
                                         const SizedBox(
                                           height: 24.0,
                                         ),
-                                        AppElevatedButton(
-                                          title: S.of(context).login,
-                                          onPressed: loginCubit.login,
-                                        ),
+                                        Builder(builder: (context) {
+                                          final bool isActive = context.select(
+                                            (LoginCubit cubit) =>
+                                                cubit.state.buttonIsActive,
+                                          );
+                                          return AppElevatedButton(
+                                            title: S.of(context).login,
+                                            onPressed: isActive
+                                                ? loginCubit.login
+                                                : null,
+                                          );
+                                        }),
                                         const SizedBox(
                                           height: 22.0,
                                         ),

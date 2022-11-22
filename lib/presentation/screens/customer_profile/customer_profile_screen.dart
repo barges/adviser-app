@@ -11,7 +11,10 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/customer_profile_appbar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_profile/customer_profile_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/customer_profile/widgets/birth_town_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/customer_profile/widgets/info_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_profile/widgets/notes_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/customer_profile/widgets/question_properties_widget.dart';
 
 class CustomerProfileScreen extends StatelessWidget {
   const CustomerProfileScreen({Key? key}) : super(key: key);
@@ -28,7 +31,6 @@ class CustomerProfileScreen extends StatelessWidget {
                 (CustomerProfileCubit cubit) => cubit.state.customerInfo);
 
             return Scaffold(
-              backgroundColor: Theme.of(context).canvasColor,
               appBar: CustomerProfileAppBar(
                 title: customerInfo != null
                     ? '${customerInfo.firstName} ${customerInfo.lastName}'
@@ -128,37 +130,7 @@ class CustomerProfileScreen extends StatelessWidget {
                               Wrap(
                                 runSpacing: 8.0,
                                 children: [
-                                  Row(
-                                    children: [
-                                      _InfoWidget(
-                                        title: S.of(context).zodiacSign,
-                                        info: SvgPicture.asset(
-                                            customerInfo.zodiac?.iconPath ??
-                                                ''),
-                                      ),
-                                      const SizedBox(width: 8.0),
-                                      _InfoWidget(
-                                        title: S.of(context).numerology,
-                                        info: Text('2',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headlineMedium
-                                                ?.copyWith(
-                                                    color: Get
-                                                        .theme.primaryColor)),
-                                      ),
-                                      const SizedBox(width: 8.0),
-                                      _InfoWidget(
-                                        title: S.of(context).ascendant,
-                                        info: SvgPicture.asset(
-                                            ZodiacSign.cancer.iconPath),
-                                      ),
-                                    ],
-                                  ),
-                                  const _BirthTownWidget(
-                                    address: 'Preston Rd. Inglewood, Maine',
-                                  ),
-                                  _QuestionPropertiesWidget(
+                                  QuestionPropertiesWidget(
                                     properties: customerInfo
                                             .advisorMatch?.values
                                             .toList() ??
@@ -194,144 +166,5 @@ class CustomerProfileScreen extends StatelessWidget {
             );
           },
         ));
-  }
-}
-
-class _InfoWidget extends StatelessWidget {
-  final String title;
-  final Widget info;
-
-  const _InfoWidget({Key? key, required this.title, required this.info})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-          border: Border.all(
-            color: Theme.of(context).hintColor,
-          ),
-        ),
-        child: Column(children: [
-          Text(
-            title.toUpperCase(),
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  fontWeight: FontWeight.w400,
-                  color: Theme.of(context).shadowColor,
-                ),
-          ),
-          const SizedBox(height: 8.0),
-          info
-        ]),
-      ),
-    );
-  }
-}
-
-class _BirthTownWidget extends StatelessWidget {
-  final String address;
-
-  const _BirthTownWidget({Key? key, required this.address}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-          vertical: 12.0, horizontal: AppConstants.horizontalScreenPadding),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-        border: Border.all(
-          color: Theme.of(context).hintColor,
-        ),
-      ),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(
-          S.of(context).birthTown.toUpperCase(),
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontWeight: FontWeight.w400,
-                color: Theme.of(context).shadowColor,
-              ),
-        ),
-        const SizedBox(height: 10.0),
-        _IconAndTitleWidget(
-          iconPath: Assets.vectors.location.path,
-          title: address,
-        ),
-      ]),
-    );
-  }
-}
-
-class _QuestionPropertiesWidget extends StatelessWidget {
-  final List<String> properties;
-
-  const _QuestionPropertiesWidget({Key? key, required this.properties})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-          vertical: 12.0, horizontal: AppConstants.horizontalScreenPadding),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-        border: Border.all(
-          color: Theme.of(context).hintColor,
-        ),
-      ),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(
-          S.of(context).questionProperties.toUpperCase(),
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontWeight: FontWeight.w400,
-                fontSize: 13.0,
-                color: Theme.of(context).shadowColor,
-              ),
-        ),
-        const SizedBox(height: 10.0),
-        ListView.separated(
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (_, index) => Text(
-                  properties[index],
-                  style: Theme.of(context)
-                      .textTheme
-                      .displayLarge
-                      ?.copyWith(fontWeight: FontWeight.w500),
-                ),
-            separatorBuilder: (_, __) => const SizedBox(height: 12.0),
-            itemCount: properties.length)
-      ]),
-    );
-  }
-}
-
-class _IconAndTitleWidget extends StatelessWidget {
-  final String iconPath;
-  final String title;
-
-  const _IconAndTitleWidget(
-      {Key? key, required this.iconPath, required this.title})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        SvgPicture.asset(iconPath),
-        const SizedBox(width: 4.0),
-        Text(
-          title,
-          style: Theme.of(context)
-              .textTheme
-              .displayLarge
-              ?.copyWith(fontWeight: FontWeight.w500),
-        ),
-      ],
-    );
   }
 }

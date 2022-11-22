@@ -69,8 +69,7 @@ class _ChartWidgetState extends State<ChartWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 2,
+                Expanded(
                   child: Text(
                     S.of(context).avgDailyEarnings,
                     style: Theme.of(context)
