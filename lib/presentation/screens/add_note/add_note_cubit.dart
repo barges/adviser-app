@@ -9,7 +9,7 @@ import 'package:shared_advisor_interface/data/network/responses/update_note_resp
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/presentation/screens/customer_profile/customer_profile_cubit.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 
 import 'add_note_state.dart';
 

@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_profile/customer_profile_state.dart';
 
@@ -49,17 +49,4 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
         arguments: AddNoteScreenArguments(
             customerID: customerID, noteChanged: getCurrentNote));
   }
-}
-
-class AddNoteScreenArguments {
-  final String customerID;
-  final String? oldNote;
-  final String? updatedAt;
-  VoidCallback noteChanged;
-
-  AddNoteScreenArguments(
-      {required this.customerID,
-      this.oldNote,
-      this.updatedAt,
-      required this.noteChanged});
 }
