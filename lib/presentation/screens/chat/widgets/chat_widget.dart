@@ -15,7 +15,7 @@ abstract class ChatWidget extends StatelessWidget with ChatItemTypeGetter {
 
   DateTime get createdAt => item.createdAt ?? DateTime.now();
 
-  EdgeInsetsGeometry get paddingItem => getterType(
+  EdgeInsets get paddingItem => getterType(
         question: const EdgeInsets.fromLTRB(12.0, 4.0, 48.0, 4.0),
         answer: const EdgeInsets.fromLTRB(48.0, 4.0, 12.0, 4.0),
       );

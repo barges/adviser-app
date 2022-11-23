@@ -26,6 +26,7 @@ class ChatItem with _$ChatItem {
     List<Attachment>? attachments,
     String? clientID,
     @Default(false) bool isAnswer,
+    @Default(true) bool isSent,
   }) = _ChatItem;
 
   factory ChatItem.fromJson(Map<String, dynamic> json) =>

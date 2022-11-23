@@ -62,6 +62,7 @@ class ChatsListTileWidget extends StatelessWidget {
           ),
           Expanded(
             child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
               onTap: () {
                 Get.toNamed(
                   AppRoutes.chat,

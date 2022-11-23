@@ -1,12 +1,13 @@
+import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class RoundedRectImage extends StatelessWidget {
-  final String url;
+  final Uri uri;
   final double? width;
   final double? height;
-  const RoundedRectImage(
-    this.url, {
+  const RoundedRectImage({
+    required this.uri,
     this.width,
     this.height,
     super.key,
@@ -22,7 +23,12 @@ class RoundedRectImage extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.0),
         image: DecorationImage(
           fit: BoxFit.cover,
-          image: CachedNetworkImageProvider(url),
+          image: uri.hasScheme
+              ? CachedNetworkImageProvider(uri.toString())
+                  as ImageProvider<Object>
+              : FileImage(
+                  File(uri.toFilePath()),
+                ),
         ),
       ),
     );
