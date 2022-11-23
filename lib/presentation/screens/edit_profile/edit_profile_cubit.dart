@@ -206,7 +206,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       final bool avatarUpdated = await updateUserAvatar();
       if (profileUpdated || coverPictureUpdated || avatarUpdated) {
         Get.back(result: true);
-      } else {
+      } else if (checkTextFields() && checkNickName()) {
         Get.back();
       }
     }
