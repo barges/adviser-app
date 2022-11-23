@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/see_more_widget.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class EmptyStatisticsWidget extends StatelessWidget {
   const EmptyStatisticsWidget({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class EmptyStatisticsWidget extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
+                    horizontal: AppConstants.horizontalScreenPadding,
                   ),
                   child: EmptyListWidget(
                     title: S.of(context).youHaveNotCompletedAnySessionsYet,
@@ -26,7 +26,7 @@ class EmptyStatisticsWidget extends StatelessWidget {
               ],
             ),
           ),
-          const SeeMoreWidget(),
+          //const SeeMoreWidget(),
         ],
       ),
     );

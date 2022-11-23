@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/picker_modal_pop_up.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
@@ -24,7 +26,7 @@ class ChangeLocaleButton extends StatelessWidget {
       child: InkResponse(
         onTap: () => showPickerModalPopUp(
           context: context,
-          setIndex: Utils.changeLocale,
+          setIndex: getIt.get<MainCubit>().changeLocale,
           currentIndex: currentLocaleIndex,
           elements: locales.map((element) {
             return Center(
@@ -37,7 +39,7 @@ class ChangeLocaleButton extends StatelessWidget {
         child: Container(
           height: AppConstants.iconButtonSize,
           decoration: BoxDecoration(
-            color: Get.theme.scaffoldBackgroundColor,
+            color: Theme.of(context).scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
           ),
           padding: const EdgeInsets.symmetric(
@@ -48,12 +50,13 @@ class ChangeLocaleButton extends StatelessWidget {
             children: [
               Text(
                 Intl.getCurrentLocale().capitalize ?? '',
-                style: Get.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w500, color: Get.theme.primaryColor),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).primaryColor),
               ),
               const SizedBox(width: 4.0),
               Assets.vectors.globe.svg(
-                color: Get.theme.primaryColor,
+                color: Theme.of(context).primaryColor,
               )
             ],
           ),

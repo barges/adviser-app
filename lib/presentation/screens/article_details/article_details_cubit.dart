@@ -2,16 +2,19 @@ import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/screens/article_details/article_details_state.dart';
 
 class ArticleDetailsCubit extends Cubit<ArticleDetailsState> {
-  ArticleDetailsCubit() : super(const ArticleDetailsState()) {
+  final BuildContext context;
+
+  ArticleDetailsCubit(this.context) : super(const ArticleDetailsState()) {
     scrollController.addListener(addScrollControllerListener);
     WidgetsBinding.instance.addPostFrameCallback((_) => emit(state.copyWith(
-        articleReadPercentage: (numberOfLines(Get.height - 200.0) /
-                numberOfLines(Get.height - scrollController.offset))
-            .toDouble())));
+        articleReadPercentage:
+            (numberOfLines(MediaQuery.of(context).size.height - 200.0) /
+                    numberOfLines(MediaQuery.of(context).size.height -
+                        scrollController.offset))
+                .toDouble())));
   }
 
   ScrollController scrollController = ScrollController();
@@ -31,14 +34,17 @@ class ArticleDetailsCubit extends Cubit<ArticleDetailsState> {
       emit(state.copyWith(
           articleReadPercentage: min(
               1.0,
-              numberOfLines(Get.height - 200.0) /
-                  numberOfLines(Get.height - scrollController.offset))));
+              numberOfLines(MediaQuery.of(context).size.height - 200.0) /
+                  numberOfLines(MediaQuery.of(context).size.height -
+                      scrollController.offset))));
     }
   }
 
   int numberOfLines(double value) {
     try {
-      return (description.length / (Get.width * 0.12)) ~/ (Get.height / value);
+      return (description.length /
+              (MediaQuery.of(context).size.width * 0.12)) ~/
+          (MediaQuery.of(context).size.height / value);
     } catch (_) {
       return 0;
     }

@@ -18,15 +18,20 @@ class ConnectivityService {
   static bool hasConnection = false;
 
   static final Connectivity _connectivity = Connectivity();
+  static final InternetConnectionChecker _checker = InternetConnectionChecker();
+
+  static late final StreamSubscription _connectivitySubscription;
+  static late final StreamSubscription _checkerSubscription;
 
   static final BehaviorSubject<bool> _controller = BehaviorSubject<bool>();
 
   Stream<bool> get connectivityStream => _controller.stream;
 
   static void initialise() async {
-    _connectivity.onConnectivityChanged.listen((result) {
-      _addStatus(result);
-    });
+    _connectivitySubscription =
+        _connectivity.onConnectivityChanged.listen(_addStatusFromConnectivity);
+    _checkerSubscription =
+        _checker.onStatusChange.listen(_addStatusFromChecker);
   }
 
   static Future<bool> checkConnection({ConnectivityResult? result}) async {
@@ -36,8 +41,9 @@ class ConnectivityService {
       case ConnectivityResult.wifi:
       case ConnectivityResult.bluetooth:
       case ConnectivityResult.ethernet:
+      case ConnectivityResult.vpn:
         {
-          return InternetConnectionChecker().hasConnection;
+          return _checker.hasConnection;
         }
 
       case ConnectivityResult.none:
@@ -45,13 +51,27 @@ class ConnectivityService {
     }
   }
 
-  static Future<void> _addStatus(ConnectivityResult result) async {
-    bool previousConnection = hasConnection;
+  static Future<void> _addStatusFromConnectivity(
+      ConnectivityResult result) async {
+    final bool previousConnection = hasConnection;
     hasConnection = await checkConnection(result: result);
-    if (previousConnection != hasConnection) {
+    if (hasConnection != previousConnection) {
       _controller.sink.add(hasConnection);
     }
   }
 
-  void disposeStream() => _controller.close();
+  static Future<void> _addStatusFromChecker(
+      InternetConnectionStatus status) async {
+    final bool previousConnection = hasConnection;
+    hasConnection = status == InternetConnectionStatus.connected;
+    if (hasConnection != previousConnection) {
+      _controller.sink.add(hasConnection);
+    }
+  }
+
+  void disposeStream() {
+    _controller.close();
+    _connectivitySubscription.cancel();
+    _checkerSubscription.cancel();
+  }
 }

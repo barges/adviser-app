@@ -31,10 +31,17 @@ class PushNotificationManagerImpl implements PushNotificationManager {
     var initializationSettingsAndroid =
         const AndroidInitializationSettings('mipmap/ic_launcher');
     var initializationSettingsIOS = const DarwinInitializationSettings();
-    var initializationSettings =  InitializationSettings(
+    var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse: (response) async {
+          logger.d('+++++++++++++++++++++++');
+      logger.d(response.notificationResponseType);
+      logger.d(response.payload);
+      logger.d(response.id);
+      logger.d(response.actionId);
+      logger.d(response.input);
+      logger.d('+++++++++++++++++++++++');
       final Map<String, dynamic> message = json.decode(response.payload ?? '');
       _navigateToNextScreen(RemoteMessage(data: message));
     });
@@ -50,7 +57,6 @@ class PushNotificationManagerImpl implements PushNotificationManager {
         channelDescription: 'All app notifications',
         playSound: true,
         enableVibration: true,
-        //icon: 'ic_stat_ic_notification',
         importance: Importance.max,
         priority: Priority.high,
       );
@@ -80,7 +86,13 @@ class PushNotificationManagerImpl implements PushNotificationManager {
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      logger.d('***********************');
+      logger.d(message.toMap());
       logger.d(message.data);
+      logger.d(message.data['meta']);
+      Map<String, dynamic> map = jsonDecode(message.data['meta'] ?? '');
+      logger.d(map['entityId']);
+      logger.d('***********************');
       showNotification(message);
     });
 
@@ -94,14 +106,17 @@ class PushNotificationManagerImpl implements PushNotificationManager {
 
 Future<void> _navigateToNextScreen(RemoteMessage? message) async {
   if (message != null) {
-    Map<String, dynamic> data = message.data;
-    logger.d(data);
+    /**
+      Map<String, dynamic> data = message.data;
+  
+      
+      Map<String, dynamic> meta = json.decode(data['meta']);
+      if (meta['entityId'] != null) {
+        ChatItem chatItem =
+            await getIt.get<ChatsRepository>().getQuestion(id: meta['entityId']);
+        Get.toNamed(AppRoutes.chat, arguments: chatItem);
+      }
+    */
 
-    // String type;
-    // if (data['type'] != null) {
-    //   type = data['type'];
-    // } else {
-    //   type = data['data']['type'];
-    // }
   }
 }

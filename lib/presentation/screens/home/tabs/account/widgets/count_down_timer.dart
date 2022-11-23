@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 
 class CountDownTimer extends StatelessWidget {
-  final int seconds;
+  final int milliseconds;
   final VoidCallback onEnd;
 
   const CountDownTimer({
-    required this.seconds,
+    required this.milliseconds,
     required this.onEnd,
     Key? key,
   }) : super(key: key);
@@ -16,10 +15,10 @@ class CountDownTimer extends StatelessWidget {
   Widget build(BuildContext context) {
     return TweenAnimationBuilder<Duration>(
         duration: Duration(
-          seconds: seconds,
+          milliseconds: milliseconds,
         ),
         tween: Tween(
-          begin: Duration(seconds: seconds),
+          begin: Duration(milliseconds: milliseconds),
           end: Duration.zero,
         ),
         onEnd: onEnd,
@@ -30,10 +29,10 @@ class CountDownTimer extends StatelessWidget {
             '${S.of(context).willBeAvailableInAnHour}'
             ' $minutes:${seconds < 10 ? '0$seconds' : seconds}',
             textAlign: TextAlign.center,
-            style: Get.textTheme.bodySmall?.copyWith(
-              color: Get.theme.errorColor,
-              fontSize: 12,
-            ),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).errorColor,
+                  fontSize: 12.0,
+                ),
           );
         });
   }

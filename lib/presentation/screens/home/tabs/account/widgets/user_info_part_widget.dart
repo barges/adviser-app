@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
-import 'package:shared_advisor_interface/data/models/user_info/fortunica_user_status.dart';
+import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
+import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -33,7 +33,7 @@ class UserInfoPartWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(
           AppConstants.buttonRadius,
         ),
-        color: Get.theme.canvasColor,
+        color: Theme.of(context).canvasColor,
       ),
       child: Column(children: [
         Builder(builder: (context) {
@@ -51,7 +51,8 @@ class UserInfoPartWidget extends StatelessWidget {
                   UserAvatar(
                     avatarUrl: userProfile?.profilePictures?.firstOrNull,
                     diameter: 72.0,
-                    badgeColor: currentStatus.status?.statusColorForBadge,
+                    badgeColor:
+                        currentStatus.status?.statusColorForBadge(context),
                   ),
                   const SizedBox(
                     width: 16.0,
@@ -63,7 +64,9 @@ class UserInfoPartWidget extends StatelessWidget {
                         Text(
                           userProfile?.profileName ?? '',
                           overflow: TextOverflow.ellipsis,
-                          style: Get.textTheme.titleMedium
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
                               ?.copyWith(fontWeight: FontWeight.w700),
                         ),
                         Text(
@@ -74,13 +77,20 @@ class UserInfoPartWidget extends StatelessWidget {
                                         '$value, $element') ??
                                 '',
                             overflow: TextOverflow.ellipsis,
-                            style: Get.textTheme.bodyMedium
-                                ?.copyWith(color: Get.theme.shadowColor)),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                    color: Theme.of(context).shadowColor)),
                         Text(
                           currentStatus.status?.statusName ?? '',
-                          style: Get.textTheme.bodyMedium?.copyWith(
-                            color: currentStatus.status?.statusColor,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                color:
+                                    currentStatus.status?.statusColor(context),
+                              ),
                         ),
                       ],
                     ),
@@ -92,7 +102,7 @@ class UserInfoPartWidget extends StatelessWidget {
                     child: Stack(
                       children: [
                         Assets.vectors.arrowRight.svg(
-                          color: Get.theme.primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                         if (currentStatus.status ==
                             FortunicaUserStatus.incomplete)
@@ -117,8 +127,8 @@ class UserInfoPartWidget extends StatelessWidget {
             ),
             Builder(
               builder: (context) {
-                final int seconds =
-                    context.select((AccountCubit cubit) => cubit.state.seconds);
+                final int millisecondsForTimer = context.select(
+                    (AccountCubit cubit) => cubit.state.millisecondsForTimer);
                 return TileWidget(
                   title: S.of(context).imAvailableNow,
                   iconSVGPath: Assets.vectors.availability.path,
@@ -136,17 +146,17 @@ class UserInfoPartWidget extends StatelessWidget {
                             status: FortunicaUserStatus.offline,
                           );
                         },
+                        accountCubit: accountCubit,
                       );
                     }
                   },
-                  isDisable: currentStatus.status !=
-                          FortunicaUserStatus.live &&
+                  isDisable: currentStatus.status != FortunicaUserStatus.live &&
                       currentStatus.status != FortunicaUserStatus.offline,
                   initSwitcherValue:
                       currentStatus.status == FortunicaUserStatus.live,
-                  timerWidget: seconds > 0
+                  timerWidget: millisecondsForTimer > 0
                       ? CountDownTimer(
-                          seconds: seconds,
+                          milliseconds: millisecondsForTimer,
                           onEnd: accountCubit.hideTimer,
                         )
                       : null,

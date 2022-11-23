@@ -1,34 +1,38 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 
 Future<void> showPickImageAlert(
     {required BuildContext context,
     required ValueChanged<File> setImage,
+    ValueChanged<List<File>>? setMultiImage,
     VoidCallback? cancelOnTap,
     bool mounted = true}) async {
   ImageSource? source;
 
   if (Platform.isAndroid) {
-    source = await Get.bottomSheet(
-      Column(
+    source = await showModalBottomSheet(
+      context: context,
+      builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           GestureDetector(
             onTap: () => Get.back(result: ImageSource.gallery),
             child: Container(
               padding: const EdgeInsets.only(top: 32.0, bottom: 16.0),
-              width: Get.width,
+              width: MediaQuery.of(context).size.width,
               child: Center(
                   child: Text(
                 S.of(context).chooseFromGallery,
-                style: Get.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
               )),
             ),
           ),
@@ -36,13 +40,13 @@ Future<void> showPickImageAlert(
             onTap: () => Get.back(result: ImageSource.camera),
             child: Container(
               padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
-              width: Get.width,
+              width: MediaQuery.of(context).size.width,
               child: Center(
                   child: Text(
                 S.of(context).takeAPhoto,
-                style: Get.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
               )),
             ),
           ),
@@ -54,20 +58,20 @@ Future<void> showPickImageAlert(
               }
             },
             child: Container(
-              width: Get.width,
+              width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.only(top: 16.0, bottom: 32.0),
               child: Center(
                 child: Text(S.of(context).cancel,
-                    style: Get.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: Get.theme.primaryColor,
-                    )),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).primaryColor,
+                        )),
               ),
             ),
           ),
         ],
       ),
-      backgroundColor: Get.theme.canvasColor,
+      backgroundColor: Theme.of(context).canvasColor,
     );
   } else {
     source = await showCupertinoModalPopup(
@@ -101,8 +105,14 @@ Future<void> showPickImageAlert(
               ),
             ));
   }
-  if (mounted && source != null) {
-    await _pickImage(context, source, setImage);
+  if (mounted &&
+      ((source != null && setMultiImage == null) ||
+          (source == ImageSource.camera && setMultiImage != null))) {
+    await _pickImage(context, source!, setImage);
+  } else if (mounted &&
+      source == ImageSource.gallery &&
+      setMultiImage != null) {
+    await _pickMultiImage(context, source!, setMultiImage);
   }
 }
 
@@ -120,22 +130,54 @@ Future<void> _pickImage(BuildContext context, ImageSource imageSource,
   }
 }
 
+Future<void> _pickMultiImage(BuildContext context, ImageSource imageSource,
+    ValueChanged<List<File>> setMultiImage) async {
+  await _handlePermissions(context, imageSource);
+  List<File> images = List.empty(growable: true);
+  final ImagePicker picker = ImagePicker();
+  final List<XFile>? photoFiles = await picker.pickMultiImage();
+  if (photoFiles != null) {
+    for (XFile photoFile in photoFiles) {
+      images.add(File(photoFile.path));
+    }
+  }
+  if (images.isNotEmpty) {
+    setMultiImage(images);
+  }
+}
+
 Future<void> _handlePermissions(
     BuildContext context, ImageSource source) async {
+  String alertTitle = '';
+  PermissionStatus status;
   switch (source) {
     case ImageSource.camera:
       {
-        await Permission.camera.request();
+        status = await Permission.camera.request();
+        alertTitle = S.of(context).allowCamera;
       }
       break;
     case ImageSource.gallery:
       {
         if (Platform.isIOS) {
-          await Permission.photos.request();
+          status = await Permission.photos.request();
         } else {
-          await Permission.storage.request();
+          status = await Permission.storage.request();
         }
+        alertTitle = S.of(context).allowGallery;
       }
       break;
+  }
+  if (status.isPermanentlyDenied) {
+    VoidCallback actionOnOk = (() async {
+      await openAppSettings();
+      Navigator.pop(context);
+    });
+    await showOkCancelAlert(
+      context,
+      alertTitle,
+      S.of(context).settings,
+      actionOnOk,
+    );
   }
 }

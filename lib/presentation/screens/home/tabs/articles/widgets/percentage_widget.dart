@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -16,7 +15,7 @@ class PercentageWidget extends StatelessWidget {
           vertical: 8.0, horizontal: AppConstants.horizontalScreenPadding),
       margin: const EdgeInsets.only(bottom: 10.0),
       decoration: BoxDecoration(
-          color: Get.theme.canvasColor,
+          color: Theme.of(context).canvasColor,
           borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(AppConstants.buttonRadius),
               bottomRight: Radius.circular(AppConstants.buttonRadius))),
@@ -30,23 +29,27 @@ class PercentageWidget extends StatelessWidget {
               animation: true,
               animationDuration: 3000,
               percent: percentageValue / 100,
-              backgroundColor: Get.theme.hintColor,
+              backgroundColor: Theme.of(context).hintColor,
               animateFromLastPercent: true,
               center: RichText(
                 text: TextSpan(
                   text: percentageValue.toString(),
-                  style: Get.textTheme.displayLarge
-                      ?.copyWith(color: Get.theme.errorColor),
+                  style: Theme.of(context)
+                      .textTheme
+                      .displayLarge
+                      ?.copyWith(color: Theme.of(context).errorColor),
                   children: <TextSpan>[
                     TextSpan(
                         text: '%',
-                        style: Get.textTheme.labelSmall
-                            ?.copyWith(color: Get.theme.errorColor)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelSmall
+                            ?.copyWith(color: Theme.of(context).errorColor)),
                   ],
                 ),
               ),
               circularStrokeCap: CircularStrokeCap.round,
-              progressColor: Get.theme.errorColor);
+              progressColor: Theme.of(context).errorColor);
         }),
         const SizedBox(width: 8.0),
         Flexible(
@@ -57,29 +60,31 @@ class PercentageWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 4.0),
                 child: Text(
                   S.of(context).newMandatoryArticleIsAvailable,
-                  style: Get.textTheme.labelMedium
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelMedium
                       ?.copyWith(fontWeight: FontWeight.w700),
                 ),
               ),
               RichText(
                 text: TextSpan(
                   text: S.of(context).youHave,
-                  style: Get.textTheme.bodySmall?.copyWith(
-                    color: Get.theme.shadowColor,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).shadowColor,
+                        fontWeight: FontWeight.w500,
+                      ),
                   children: <TextSpan>[
                     TextSpan(
                         text: ' 7 ${S.of(context).days} ',
-                        style: Get.textTheme.bodySmall?.copyWith(
-                            color: Get.theme.errorColor,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context).errorColor,
                             fontWeight: FontWeight.w500)),
                     TextSpan(
                         text: S
                             .of(context)
                             .toReadItBeforeYourAccountWillGetBlocked,
-                        style: Get.textTheme.bodySmall?.copyWith(
-                            color: Get.theme.shadowColor,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context).shadowColor,
                             fontWeight: FontWeight.w500))
                   ],
                 ),
@@ -92,8 +97,8 @@ class PercentageWidget extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Text(
                     S.of(context).takeMeThere,
-                    style: Get.textTheme.labelMedium?.copyWith(
-                        color: Get.theme.primaryColor,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.w700,
                         decoration: TextDecoration.underline),
                   ),

@@ -3,13 +3,12 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_cubit.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 const double _backgroundImageSectionHeight = 140.0;
@@ -34,7 +33,7 @@ class ProfileImageWidget extends StatelessWidget {
                     ? Container(
                         alignment: Alignment.center,
                         height: _backgroundImageSectionHeight,
-                        color: Get.theme.primaryColorLight,
+                        color: Theme.of(context).primaryColorLight,
                         child: GestureDetector(
                           onTap: () {
                             showPickImageAlert(
@@ -46,20 +45,24 @@ class ProfileImageWidget extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(40),
-                                color: Get.theme.primaryColorLight),
+                                color: Theme.of(context).primaryColorLight),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 16.0),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Assets.vectors.add.svg(
-                                  color: Get.theme.primaryColor,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                                 const SizedBox(width: 6.0),
                                 Text(S.current.addCoverPicture,
-                                    style: Get.textTheme.titleMedium?.copyWith(
-                                        color: Get.theme.primaryColor,
-                                        fontWeight: FontWeight.w500)),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontWeight: FontWeight.w500)),
                               ],
                             ),
                           ),
@@ -91,7 +94,7 @@ class ProfileImageWidget extends StatelessWidget {
                           Positioned(
                             bottom: 16.0,
                             child: SizedBox(
-                              width: Get.width,
+                              width: MediaQuery.of(context).size.width,
                               child: Center(
                                 child: SmoothPageIndicator(
                                   controller: cubit.picturesPageController,
@@ -101,8 +104,11 @@ class ProfileImageWidget extends StatelessWidget {
                                     maxVisibleDots: 7,
                                     dotWidth: 8.0,
                                     dotHeight: 8.0,
-                                    dotColor: Get.iconColor ?? Colors.grey,
-                                    activeDotColor: Get.theme.primaryColor,
+                                    dotColor:
+                                        Theme.of(context).iconTheme.color ??
+                                            Colors.grey,
+                                    activeDotColor:
+                                        Theme.of(context).primaryColor,
                                   ),
                                 ),
                               ),
@@ -125,8 +131,8 @@ class ProfileImageWidget extends StatelessWidget {
                     vertical: 10.0, horizontal: 16.0),
                 child: Text(
                   S.current.changePhoto,
-                  style: Get.textTheme.titleMedium?.copyWith(
-                      color: Get.theme.primaryColor,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.w500),
                 ),
               ),

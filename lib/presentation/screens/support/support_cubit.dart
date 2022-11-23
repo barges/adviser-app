@@ -1,19 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/network/requests/restore_freshchat_id_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/screens/support/support_state.dart';
 import 'package:shared_advisor_interface/presentation/services/fresh_chat_service.dart';
 
 class SupportCubit extends Cubit<SupportState> {
   final CachingManager _cachingManager;
-  final FreshChatService _freshChatService = Get.find<FreshChatService>();
-  final UserRepository _userRepository = Get.find<UserRepository>();
+  final FreshChatService _freshChatService = getIt.get<FreshChatService>();
+  final UserRepository _userRepository = getIt.get<UserRepository>();
 
   StreamSubscription? _restoreSubscription;
 

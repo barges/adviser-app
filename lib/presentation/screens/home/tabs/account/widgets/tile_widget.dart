@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/error_badge.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -64,7 +63,7 @@ class TileWidget extends StatelessWidget {
                         opacity: needTimer ? 0.4 : 1.0,
                         child: Text(
                           title,
-                          style: Get.textTheme.bodyMedium,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
                       if (needTimer) timerWidget!,
@@ -87,8 +86,8 @@ class TileWidget extends StatelessWidget {
                         onChanged!(value);
                       }
                     },
-                    activeColor: Get.theme.primaryColor,
-                    trackColor: Get.theme.hintColor,
+                    activeColor: Theme.of(context).primaryColor,
+                    trackColor: Theme.of(context).hintColor,
                   ),
                 ),
               ),
@@ -103,7 +102,7 @@ class TileWidget extends StatelessWidget {
                     child: Stack(
                       children: [
                         Assets.vectors.arrowRight.svg(
-                          color: Get.theme.primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                         if (withError)
                           const Positioned(

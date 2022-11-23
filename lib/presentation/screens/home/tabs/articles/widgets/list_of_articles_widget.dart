@@ -120,14 +120,17 @@ class ArticleWidget extends StatelessWidget {
                   children: [
                     Text(
                       article.date.parseDateTimePattern2,
-                      style: Get.textTheme.displaySmall?.copyWith(
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
                           fontWeight: FontWeight.w500,
-                          color: Get.theme.shadowColor),
+                          color: Theme.of(context).shadowColor),
                     ),
                     Text('#${article.category}',
-                        style: Get.textTheme.displaySmall?.copyWith(
-                            fontWeight: FontWeight.w500,
-                            color: Get.theme.primaryColor)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .displaySmall
+                            ?.copyWith(
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).primaryColor)),
                   ],
                 ),
               ),
@@ -136,11 +139,14 @@ class ArticleWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text(article.title, style: Get.textTheme.headlineMedium),
+            child: Text(article.title,
+                style: Theme.of(context).textTheme.headlineMedium),
           ),
           Text(article.description,
-              style: Get.textTheme.bodyMedium
-                  ?.copyWith(color: Get.theme.shadowColor))
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(color: Theme.of(context).shadowColor))
         ],
       ),
     );
@@ -167,8 +173,10 @@ class ArticleStatusWidget extends StatelessWidget {
               gradient != null ? LinearGradient(colors: gradient ?? []) : null,
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
       child: Text(title.toUpperCase(),
-          style: Get.textTheme.labelMedium
-              ?.copyWith(color: Get.theme.canvasColor)),
+          style: Theme.of(context)
+              .textTheme
+              .labelMedium
+              ?.copyWith(color: Theme.of(context).canvasColor)),
     );
   }
 }

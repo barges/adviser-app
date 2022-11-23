@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
@@ -29,13 +28,15 @@ class GalleryImages extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(S.of(context).addGalleryPictures,
-                        style: Get.textTheme.titleLarge),
+                        style: Theme.of(context).textTheme.titleLarge),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0, bottom: 15.0),
                       child: Text(
                         S.of(context).customersWantSeeIfYouReal,
-                        style: Get.textTheme.bodyMedium
-                            ?.copyWith(color: Get.theme.shadowColor),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: Theme.of(context).shadowColor),
                       ),
                     ),
                   ],
@@ -60,7 +61,7 @@ class GalleryImages extends StatelessWidget {
                             cubit.deletePictureFromGallery(index);
                           },
                         )
-                      : AddMoreImagesFromGalleryWidget(
+                      : coverPictures.length < 6 ? AddMoreImagesFromGalleryWidget(
                           onTap: () {
                             if (cubit.mainCubit.state
                                 .internetConnectionIsAvailable) {
@@ -70,7 +71,7 @@ class GalleryImages extends StatelessWidget {
                               );
                             }
                           },
-                        );
+                        ) : const SizedBox.shrink();
                 },
               ),
             ],

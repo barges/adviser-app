@@ -6,10 +6,21 @@ class AppConstants {
   static const double logoSize = 242.0;
   static const double horizontalScreenPadding = 16.0;
   static const double appBarHeight = 52.0;
-  static const int secondsInHour = 3600;
+  static const int millisecondsInHour = 3600000;
+  static const String recordFileName = 'recorded_audio_aa';
+  static const int minTextLength = 1000;
+  static const int maxTextLength = 20000;
+  static const int maxAttachedPictures = 2;
+  static const int maxRecordDurationInSec = 3 * 60;
   static const String webToolUrl = 'https://advisor-staging.fortunica-app.com';
   static const String baseUrl = 'https://api-staging.fortunica-app.com';
 
+  static const String firebaseProjectId = 'reader-app-fortunica';
+  static const String iosApiKey = 'AIzaSyCj0OVmpL96tU3WQLYJjqgCh6Af2gEoMa0';
+  static const String firebaseMessagingSenderId = '986930839057';
+  static const String iosAppId = '1:986930839057:ios:931a04b3aeb905de5cbbb0';
+
   ///DEV
-  //static const String baseUrl = 'https://fortunica-backend-for-2268.fortunica.adviqodev.de';
+  static const String baseUrlDev =
+      'https://fortunica-backend-for-2268.fortunica.adviqodev.de';
 }

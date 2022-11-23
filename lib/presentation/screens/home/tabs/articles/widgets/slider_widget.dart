@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -36,9 +35,9 @@ class SliderWidget extends StatelessWidget {
           headlineTitle: 'Special events')
     ];
     return Container(
-      width: Get.width,
+      width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 12.0),
-      color: Get.theme.canvasColor,
+      color: Theme.of(context).canvasColor,
       child: Column(
         children: [
           CarouselSlider.builder(
@@ -68,8 +67,8 @@ class SliderWidget extends StatelessWidget {
                             builder: (_) => CircleAvatar(
                                 radius: sliderIndex == index ? 6.0 : 4.0,
                                 backgroundColor: sliderIndex == index
-                                    ? Get.theme.primaryColor
-                                    : Get.theme.hintColor)),
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context).hintColor)),
                       ))
                   .toList())
         ],
@@ -98,14 +97,18 @@ class _CardWidget extends StatelessWidget {
               children: [
                 Text(
                   course.title,
-                  style: Get.textTheme.headlineMedium
-                      ?.copyWith(color: Get.theme.backgroundColor),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineMedium
+                      ?.copyWith(color: Theme.of(context).backgroundColor),
                 ),
                 Text(course.description,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
-                    style: Get.textTheme.labelMedium
-                        ?.copyWith(color: Get.theme.backgroundColor)),
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelMedium
+                        ?.copyWith(color: Theme.of(context).backgroundColor)),
               ],
             ),
           ),
@@ -118,9 +121,9 @@ class _CardWidget extends StatelessWidget {
                     horizontal: AppConstants.horizontalScreenPadding),
                 child: Text(
                   '#${course.headlineTitle}',
-                  style: Get.textTheme.displaySmall?.copyWith(
+                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
                       fontWeight: FontWeight.w500,
-                      color: Get.theme.backgroundColor),
+                      color: Theme.of(context).backgroundColor),
                 ),
               ),
             ),

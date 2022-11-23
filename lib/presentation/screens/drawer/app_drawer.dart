@@ -4,13 +4,19 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_bottom_sheet.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/drawer_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
+import 'package:shared_advisor_interface/presentation/utils/utils.dart';
+
+import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -18,12 +24,12 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => DrawerCubit(Get.find<CachingManager>()),
+      create: (_) => DrawerCubit(getIt.get<CachingManager>()),
       child: Builder(builder: (context) {
         final DrawerCubit cubit = context.read<DrawerCubit>();
         return Container(
-            width: Get.width * 0.75,
-            color: Get.theme.canvasColor,
+            width: MediaQuery.of(context).size.width * 0.75,
+            color: Theme.of(context).canvasColor,
             child: SafeArea(
               child: CustomScrollView(
                 physics: const ClampingScrollPhysics(),
@@ -44,7 +50,9 @@ class AppDrawer extends StatelessWidget {
                                   children: [
                                     Text(
                                       S.of(context).workspaces,
-                                      style: Get.textTheme.headlineLarge,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge,
                                     ),
                                     const SizedBox(
                                       height: 12.0,
@@ -69,7 +77,7 @@ class AppDrawer extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              Divider(
+                              const Divider(
                                 height: 1.0,
                               ),
                               if (cubit.unauthorizedBrands.isNotEmpty)
@@ -82,11 +90,15 @@ class AppDrawer extends StatelessWidget {
                                     children: <Widget>[
                                       Text(
                                         S.of(context).otherBrands.toUpperCase(),
-                                        style:
-                                            Get.textTheme.labelSmall?.copyWith(
-                                          fontSize: 11.0,
-                                          color: Get.iconColor,
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall
+                                            ?.copyWith(
+                                              fontSize: 11.0,
+                                              color: Theme.of(context)
+                                                  .iconTheme
+                                                  .color,
+                                            ),
                                       ),
                                       const SizedBox(
                                         height: 12.0,
@@ -156,31 +168,53 @@ class _BrandItem extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(4.0, 4.0, 12.0, 4.0),
           decoration: BoxDecoration(
             color: isCurrent
-                ? Get.theme.scaffoldBackgroundColor
-                : Get.theme.canvasColor,
+                ? Theme.of(context).scaffoldBackgroundColor
+                : Theme.of(context).canvasColor,
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
           ),
           child: Row(
             children: [
-              Container(
-                height: 56.0,
-                width: 56.0,
-                padding: const EdgeInsets.all(7.0),
-                decoration: BoxDecoration(
-                  color: Get.theme.canvasColor,
-                  border: Border.all(
-                    color: Get.theme.hintColor,
+              Builder(builder: (context) {
+                final UserStatus? currentStatus = cubit.userStatus;
+                return Stack(alignment: Alignment.bottomRight, children: [
+                  Container(
+                    height: 56.0,
+                    width: 56.0,
+                    padding: const EdgeInsets.all(7.0),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).canvasColor,
+                      border: Border.all(
+                        color: Theme.of(context).hintColor,
+                      ),
+                      borderRadius:
+                          BorderRadius.circular(AppConstants.buttonRadius),
+                    ),
+                    child: Center(
+                      child: SvgPicture.asset(
+                        brand.icon,
+                        color: Utils.isDarkMode(context)
+                            ? Theme.of(context).backgroundColor
+                            : null,
+                      ),
+                    ),
                   ),
-                  borderRadius:
-                      BorderRadius.circular(AppConstants.buttonRadius),
-                ),
-                child: Center(
-                  child: SvgPicture.asset(
-                    brand.icon,
-                    color: Get.isDarkMode ? Get.theme.backgroundColor : null,
-                  ),
-                ),
-              ),
+                  isCurrent
+                      ? Container(
+                          height: 12.0,
+                          width: 12.0,
+                          decoration: BoxDecoration(
+                            color: currentStatus?.status
+                                    ?.statusColorForBadge(context) ??
+                                Theme.of(context).shadowColor,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                width: 2.0,
+                                color: Theme.of(context).canvasColor),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ]);
+              }),
               const SizedBox(
                 width: 8.0,
               ),
@@ -191,24 +225,26 @@ class _BrandItem extends StatelessWidget {
                   children: [
                     Text(
                       brand.name,
-                      style: Get.textTheme.headlineMedium
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineMedium
                           ?.copyWith(fontSize: 16.0),
                     ),
                     if (brand.url.isNotEmpty && brand.isEnabled)
                       Text(
                         brand.url,
-                        style: Get.textTheme.bodySmall?.copyWith(
-                          fontSize: 12.0,
-                          color: Get.iconColor,
-                        ),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              fontSize: 12.0,
+                              color: Theme.of(context).iconTheme.color,
+                            ),
                       ),
                     if (!brand.isEnabled)
                       Text(
                         S.of(context).comingSoon,
-                        style: Get.textTheme.bodySmall?.copyWith(
-                          fontSize: 12.0,
-                          color: Get.iconColor,
-                        ),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              fontSize: 12.0,
+                              color: Theme.of(context).iconTheme.color,
+                            ),
                       ),
                   ],
                 ),
@@ -235,7 +271,7 @@ class _BrandItem extends StatelessWidget {
                         : Assets.vectors.login.path,
                     height: AppConstants.iconSize,
                     width: AppConstants.iconSize,
-                    color: Get.iconColor,
+                    color: Theme.of(context).iconTheme.color,
                   ),
                 ),
             ],
@@ -254,7 +290,7 @@ class _BottomSection extends StatelessWidget {
     final DrawerCubit cubit = context.read<DrawerCubit>();
     return Column(
       children: [
-        Divider(
+        const Divider(
           height: 1.0,
         ),
         Padding(
@@ -312,7 +348,7 @@ class _BottomSectionItem extends StatelessWidget {
         onTap();
       },
       child: Container(
-        width: Get.width,
+        width: MediaQuery.of(context).size.width,
         color: Colors.transparent,
         child: Row(
           children: [
@@ -320,16 +356,16 @@ class _BottomSectionItem extends StatelessWidget {
               icon,
               height: AppConstants.iconSize,
               width: AppConstants.iconSize,
-              color: Get.iconColor,
+              color: Theme.of(context).iconTheme.color,
             ),
             const SizedBox(
               width: 12.0,
             ),
             Text(
               text,
-              style: Get.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
           ],
         ),

@@ -1,15 +1,17 @@
 import 'package:bloc/bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/data/models/user_info/localized_properties/property_by_language.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_state.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/constants.dart';
 
 class AdvisorPreviewCubit extends Cubit<AdvisorPreviewState> {
-  final CachingManager cacheManager = Get.find<CachingManager>();
+  final CachingManager cacheManager = getIt.get<CachingManager>();
   late final UserProfile userProfile;
-  late final List<String> languages;
+  late final List<MarketsType> languages;
 
   AdvisorPreviewCubit() : super(AdvisorPreviewState()) {
     userProfile = cacheManager.getUserProfile() ?? const UserProfile();
@@ -29,12 +31,15 @@ class AdvisorPreviewCubit extends Cubit<AdvisorPreviewState> {
     emit(state.copyWith(oldIndex: state.currentIndex));
   }
 
-  Map<String, dynamic> getSelectedLanguageDetails(String language) {
+  Map<String, dynamic> getSelectedLanguageDetails(MarketsType language) {
     Map<String, dynamic> details = {};
-    details[ratingKey] = userProfile.rating?.toJson()[language] as double;
-    details[titleKey] = userProfile.rituals ?? const [];
+    details[ratingKey] = userProfile.rating?[language] as double;
+    details[titleKey] = (userProfile.localizedProperties
+                ?.toJson()[language.name] as PropertyByLanguage?)
+            ?.statusMessage ??
+        '';
     details[descriptionKey] = (userProfile.localizedProperties
-                ?.toJson()[language] as PropertyByLanguage?)
+                ?.toJson()[language.name] as PropertyByLanguage?)
             ?.description ??
         '';
     return details;

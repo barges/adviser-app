@@ -1,11 +1,16 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_state.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+import 'package:shared_advisor_interface/presentation/services/fresh_chat_service.dart';
 
 class MainCubit extends Cubit<MainState> {
   final CachingManager cacheManager;
@@ -13,9 +18,10 @@ class MainCubit extends Cubit<MainState> {
   late final VoidCallback disposeCallback;
   late final StreamSubscription<bool> _connectivitySubscription;
 
-  final ConnectivityService _connectivityService = ConnectivityService();
+  final ConnectivityService _connectivityService;
 
-  MainCubit(this.cacheManager) : super(const MainState()) {
+  MainCubit(this.cacheManager, this._connectivityService)
+      : super(const MainState()) {
     _connectivitySubscription =
         _connectivityService.connectivityStream.listen((event) {
       emit(state.copyWith(internetConnectionIsAvailable: event));
@@ -66,5 +72,18 @@ class MainCubit extends Cubit<MainState> {
 
   void updateSuccessMessage(String message) {
     emit(state.copyWith(successMessage: message));
+  }
+
+  void changeLocale(int index) {
+    final Locale locale = S.delegate.supportedLocales[index];
+
+    if (Platform.isAndroid) {
+      getIt.get<FreshChatService>().changeLocaleInvite();
+    }
+    getIt.get<CachingManager>().saveLocaleIndex(index);
+
+    emit(state.copyWith(
+        locale:
+            Locale(locale.languageCode, locale.languageCode.toUpperCase())));
   }
 }

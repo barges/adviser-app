@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/sessions_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/constants.dart';
@@ -7,7 +6,7 @@ import 'package:shared_advisor_interface/presentation/screens/advisor_preview/co
 class AboutMeWidget extends StatelessWidget {
   final double rating;
   final String votesNumber;
-  final List<SessionsTypes> title;
+  final String title;
   final String description;
 
   const AboutMeWidget(
@@ -42,12 +41,7 @@ class AboutMeWidget extends StatelessWidget {
                       style: displayLarge?.copyWith(color: color2))
                 ],
               ),
-              Text(
-                  title
-                      .map((e) => e.sessionName)
-                      .toList()
-                      .reduce((value, element) => '$value, $element'),
-                  style: bodySmall),
+              Text(title, style: bodySmall),
               const Divider(),
               Text(description, style: displayLarge?.copyWith(color: color2))
             ]));

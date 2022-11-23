@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
@@ -14,7 +13,7 @@ class AllBrandsScreen extends StatelessWidget {
       appBar: SimpleAppBar(
         title: S.of(context).allOurBrands,
       ),
-      backgroundColor: Get.theme.canvasColor,
+      backgroundColor: Theme.of(context).canvasColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -27,15 +26,17 @@ class AllBrandsScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 16.0, bottom: 12.0),
                     child: Text(
                       S.of(context).ingenio,
-                      style: Get.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
                     ),
                   ),
                   Text(
                     S.of(context).wePrideOurselvesToOfferAdvisorsASafePlaceTo,
-                    style: Get.textTheme.bodyMedium
-                        ?.copyWith(color: Get.iconColor),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: Theme.of(context).iconTheme.color),
                   ),
                 ],
               ),
@@ -58,9 +59,9 @@ class AllBrandsScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius:
                         BorderRadius.circular(AppConstants.buttonRadius),
-                    color: Get.theme.backgroundColor,
+                    color: Theme.of(context).backgroundColor,
                     border: Border.all(
-                      color: Get.theme.hintColor,
+                      color: Theme.of(context).hintColor,
                     ),
                     image: DecorationImage(
                       image: AssetImage(

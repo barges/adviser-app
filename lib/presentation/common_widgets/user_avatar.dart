@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 
 class UserAvatar extends StatelessWidget {
@@ -30,17 +28,17 @@ class UserAvatar extends StatelessWidget {
           height: diameter,
           width: diameter,
           decoration: BoxDecoration(
-            color: Get.theme.canvasColor,
+            color: Theme.of(context).canvasColor,
             shape: BoxShape.circle,
             border: withBorder
-                ? Border.all(width: 2.0, color: Get.theme.canvasColor)
+                ? Border.all(width: 2.0, color: Theme.of(context).canvasColor)
                 : null,
           ),
           child: imageFile == null
               ? avatarUrl == null || avatarUrl!.isEmpty
                   ? Container(
                       child: Assets.vectors.placeholderProfileImage
-                          .svg(color: Get.theme.hintColor),
+                          .svg(color: Theme.of(context).hintColor),
                     )
                   : Container(
                       decoration: BoxDecoration(
@@ -56,7 +54,7 @@ class UserAvatar extends StatelessWidget {
                     shape: BoxShape.circle,
                     border: Border.all(
                       width: 2.0,
-                      color: Get.theme.scaffoldBackgroundColor,
+                      color: Theme.of(context).scaffoldBackgroundColor,
                     ),
                     image: DecorationImage(
                       fit: BoxFit.cover,
@@ -77,7 +75,7 @@ class UserAvatar extends StatelessWidget {
                   color: badgeColor,
                   border: Border.all(
                     width: 3.0,
-                    color: Get.theme.canvasColor,
+                    color: Theme.of(context).canvasColor,
                   ),
                 ),
               ),

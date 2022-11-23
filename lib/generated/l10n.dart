@@ -130,11 +130,11 @@ class S {
     );
   }
 
-  /// `Please enter at least 8 characters`
-  String get pleaseEnterAtLeast8Characters {
+  /// `Please enter at least 6 characters`
+  String get pleaseEnterAtLeast6Characters {
     return Intl.message(
-      'Please enter at least 8 characters',
-      name: 'pleaseEnterAtLeast8Characters',
+      'Please enter at least 6 characters',
+      name: 'pleaseEnterAtLeast6Characters',
       desc: '',
       args: [],
     );
@@ -415,6 +415,16 @@ class S {
     return Intl.message(
       'Cancel',
       name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message(
+      'Delete',
+      name: 'delete',
       desc: '',
       args: [],
     );
@@ -1200,11 +1210,271 @@ class S {
     );
   }
 
-  /// `You don’t have an internet connection`
-  String get youDontHaveAnInternetConnection {
+  /// `Avg Daily Earnings`
+  String get avgDailyEarnings {
     return Intl.message(
-      'You don’t have an internet connection',
-      name: 'youDontHaveAnInternetConnection',
+      'Avg Daily Earnings',
+      name: 'avgDailyEarnings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Perfomance Overview Analytics`
+  String get perfomanceOverviewAnalytics {
+    return Intl.message(
+      'Perfomance Overview Analytics',
+      name: 'perfomanceOverviewAnalytics',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Note`
+  String get editNote {
+    return Intl.message(
+      'Edit Note',
+      name: 'editNote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All Type`
+  String get allType {
+    return Intl.message(
+      'All Type',
+      name: 'allType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Market:`
+  String get market {
+    return Intl.message(
+      'Market:',
+      name: 'market',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get all {
+    return Intl.message(
+      'All',
+      name: 'all',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private Questions`
+  String get privateQuestions {
+    return Intl.message(
+      'Private Questions',
+      name: 'privateQuestions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Only Premium Products`
+  String get onlyPremiumProducts {
+    return Intl.message(
+      'Only Premium Products',
+      name: 'onlyPremiumProducts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No questions, yet.`
+  String get noQuestionsYet {
+    return Intl.message(
+      'No questions, yet.',
+      name: 'noQuestionsYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When someone asks a public question, you will see them on the general list here`
+  String get whenSomeoneAsksAPublicQuestionYouWillSeeThem {
+    return Intl.message(
+      'When someone asks a public question, you will see them on the general list here',
+      name: 'whenSomeoneAsksAPublicQuestionYouWillSeeThem',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No sessions, yet.`
+  String get noSessionsYet {
+    return Intl.message(
+      'No sessions, yet.',
+      name: 'noSessionsYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When you help your first client, you will see your session history here.`
+  String get whenYouHelpYourFirstClientYouWillSeeYour {
+    return Intl.message(
+      'When you help your first client, you will see your session history here.',
+      name: 'whenYouHelpYourFirstClientYouWillSeeYour',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Uh-oh, no network... \nCheck your internet connection`
+  String get uhohNoNetworkNcheckYourInternetConnection {
+    return Intl.message(
+      'Uh-oh, no network... \nCheck your internet connection',
+      name: 'uhohNoNetworkNcheckYourInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No internet connection.`
+  String get noInternetConnection {
+    return Intl.message(
+      'No internet connection.',
+      name: 'noInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You will be able to change your status back in 1 hour`
+  String get youWillBeAbleToChangeYourStatusBackIn {
+    return Intl.message(
+      'You will be able to change your status back in 1 hour',
+      name: 'youWillBeAbleToChangeYourStatusBackIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset Password`
+  String get resetPassword {
+    return Intl.message(
+      'Reset Password',
+      name: 'resetPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your account has been blocked. Please contact your advisor manager.`
+  String get yourAccountHasBeenBlockedPleaseContactYourAdvisorManager {
+    return Intl.message(
+      'Your account has been blocked. Please contact your advisor manager.',
+      name: 'yourAccountHasBeenBlockedPleaseContactYourAdvisorManager',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account`
+  String get account {
+    return Intl.message(
+      'Account',
+      name: 'account',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sessions`
+  String get sessions {
+    return Intl.message(
+      'Sessions',
+      name: 'sessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `from 15 sec to 3 min`
+  String get from15secTo3min {
+    return Intl.message(
+      'from 15 sec to 3 min',
+      name: 'from15secTo3min',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type message`
+  String get typemessage {
+    return Intl.message(
+      'Type message',
+      name: 'typemessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to delete audio message?`
+  String get doYouWantToDeleteAudioMessage {
+    return Intl.message(
+      'Do you want to delete audio message?',
+      name: 'doYouWantToDeleteAudioMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to delete image?`
+  String get doYouWantToDeleteImage {
+    return Intl.message(
+      'Do you want to delete image?',
+      name: 'doYouWantToDeleteImage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Try again`
+  String get tryAgain {
+    return Intl.message(
+      'Try again',
+      name: 'tryAgain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Allow camera`
+  String get allowCamera {
+    return Intl.message(
+      'Allow camera',
+      name: 'allowCamera',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Allow gallery`
+  String get allowGallery {
+    return Intl.message(
+      'Allow gallery',
+      name: 'allowGallery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To reset password, enter email address and we’ll send you instructions on how to create a new password.`
+  String get toResetPasswordEnterEmailAddressAndWellSendYou {
+    return Intl.message(
+      'To reset password, enter email address and we’ll send you instructions on how to create a new password.',
+      name: 'toResetPasswordEnterEmailAddressAndWellSendYou',
       desc: '',
       args: [],
     );
@@ -1217,6 +1487,8 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'de'),
+      Locale.fromSubtags(languageCode: 'es'),
       Locale.fromSubtags(languageCode: 'pt'),
     ];
   }

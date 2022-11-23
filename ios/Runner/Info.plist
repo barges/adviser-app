@@ -24,6 +24,12 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>CFBundleLocalizations</key>
+    <array>
+        <string>es</string>
+        <string>de</string>
+        <string>pt</string>
+    </array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>googlegmail</string>
@@ -39,11 +45,13 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>This app requires access to the camera.</string>
+	<string>You can take a picture and send it to the chat or update your avatar.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>This app requires access to the microphone.</string>
+	<string>You can record your voice and send it to the chat.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app requires access to the photo library.</string>
+	<string>This lets you choose any of your photos from Gallery and send them to the chat or update your avatar.</string>
+	<key>NSUserTrackingUsageDescription</key>
+    <string>Allowing this helps us identify which marketing channel you came through, and will not be used for any other purpose. You can change this in the Settings app.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

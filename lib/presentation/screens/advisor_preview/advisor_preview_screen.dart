@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -11,6 +12,7 @@ import 'package:shared_advisor_interface/presentation/screens/advisor_preview/ad
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/widgets/about_me_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/widgets/flags_bottom_sheet.dart';
+import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
 
 class AdvisorPreviewScreen extends StatelessWidget {
   const AdvisorPreviewScreen({Key? key}) : super(key: key);
@@ -18,11 +20,12 @@ class AdvisorPreviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => Get.put<AdvisorPreviewCubit>(AdvisorPreviewCubit()),
+      create: (_) => AdvisorPreviewCubit(),
       child: Builder(builder: (context) {
         final AdvisorPreviewCubit advisorPreviewCubit =
             context.read<AdvisorPreviewCubit>();
         return Scaffold(
+          backgroundColor: AppColorsLight.background,
           appBar: AppBar(
             backgroundColor: primary,
             centerTitle: true,
@@ -46,7 +49,8 @@ class AdvisorPreviewScreen extends StatelessWidget {
                       onApply: advisorPreviewCubit.onApply,
                       onSelectLanguage:
                           advisorPreviewCubit.updateActiveLanguagesInUI,
-                      activeLanguages: advisorPreviewCubit.languages);
+                      activeLanguages: advisorPreviewCubit.languages,
+                      advisorPreviewCubit: advisorPreviewCubit);
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -60,8 +64,7 @@ class AdvisorPreviewScreen extends StatelessWidget {
                               (AdvisorPreviewCubit cubit) =>
                                   cubit.state.currentIndex);
                           return Image.asset(
-                            (advisorPreviewCubit.languages[index])
-                                .getFlagImageByLanguageCode,
+                            advisorPreviewCubit.languages[index].flagImagePath,
                           );
                         },
                       ),
@@ -82,7 +85,7 @@ class AdvisorPreviewScreen extends StatelessWidget {
                             .userProfile.coverPictures?.firstOrNull ??
                         '',
                     height: 150.0,
-                    width: Get.width,
+                    width: MediaQuery.of(context).size.width,
                     fit: BoxFit.cover,
                   ),
                   Container(
@@ -171,7 +174,7 @@ class AdvisorPreviewScreen extends StatelessWidget {
                           (AdvisorPreviewCubit cubit) =>
                               cubit.state.currentIndex);
 
-                      final selectedItem =
+                      final MarketsType selectedItem =
                           advisorPreviewCubit.languages[selectedIndex];
                       return AboutMeWidget(
                         rating: advisorPreviewCubit.getSelectedLanguageDetails(

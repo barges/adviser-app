@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_month.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -37,7 +36,7 @@ class MonthHeaderWidget extends StatelessWidget {
       height: 48.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-        color: Get.theme.canvasColor,
+        color: Theme.of(context).canvasColor,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,15 +86,16 @@ class MonthHeaderWidget extends StatelessWidget {
                       height: 18.0,
                       child: Text(
                         month.monthName ?? '',
-                        style: Get.textTheme.labelMedium?.copyWith(
-                          color: Get.theme.primaryColor,
-                          fontWeight: FontWeight.w700,
-                        ),
+                        style:
+                            Theme.of(context).textTheme.labelMedium?.copyWith(
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.w700,
+                                ),
                       ),
                     ),
                     if (months.length > 1)
                       Assets.vectors.arrowDown.svg(
-                        color: Get.theme.primaryColor,
+                        color: Theme.of(context).primaryColor,
                         height: 18.0,
                         width: 18.0,
                       )
@@ -105,10 +105,10 @@ class MonthHeaderWidget extends StatelessWidget {
                   height: 14.0,
                   child: Text(
                     month.monthsDate?.split('-').firstOrNull ?? '',
-                    style: Get.textTheme.bodySmall?.copyWith(
-                      fontSize: 12.0,
-                      color: Get.theme.shadowColor,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontSize: 12.0,
+                          color: Theme.of(context).shadowColor,
+                        ),
                   ),
                 )
               ],

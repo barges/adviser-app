@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
@@ -18,9 +17,9 @@ class AppErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: Get.width,
+      width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-          color: Get.theme.errorColor,
+          color: Theme.of(context).errorColor,
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(AppConstants.buttonRadius),
             bottomRight: Radius.circular(AppConstants.buttonRadius),
@@ -29,13 +28,14 @@ class AppErrorWidget extends StatelessWidget {
         children: [
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 8.0, 0.0, 8.0),
+              padding:
+                  EdgeInsets.fromLTRB(16.0, 8.0, isRequired ? 16.0 : 0.0, 8.0),
               child: Text(
                 errorMessage,
-                style: Get.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: Get.theme.backgroundColor,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).backgroundColor,
+                    ),
               ),
             ),
           ),
@@ -45,7 +45,7 @@ class AppErrorWidget extends StatelessWidget {
               child: GestureDetector(
                 onTap: close,
                 child: Assets.vectors.close.svg(
-                  color: Get.theme.backgroundColor,
+                  color: Theme.of(context).backgroundColor,
                 ),
               ),
             )

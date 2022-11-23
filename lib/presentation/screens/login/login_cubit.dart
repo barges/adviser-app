@@ -10,7 +10,10 @@ import 'package:shared_advisor_interface/data/network/responses/login_response.d
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/di/modules/api_module.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_state.dart';
 
@@ -18,10 +21,11 @@ class LoginCubit extends Cubit<LoginState> {
   final AuthRepository _repository;
   final CachingManager _cacheManager;
 
-  final MainCubit _mainCubit = Get.find<MainCubit>();
+  final MainCubit _mainCubit = getIt.get<MainCubit>();
 
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final FocusNode emailNode = FocusNode();
   final FocusNode passwordNode = FocusNode();
 
   LoginCubit(this._repository, this._cacheManager) : super(const LoginState()) {
@@ -34,19 +38,29 @@ class LoginCubit extends Cubit<LoginState> {
       selectedBrand: newSelectedBrand ?? unauthorizedBrands.first,
     ));
 
+    emailNode.addListener(() {
+      emit(state.copyWith(emailHasFocus: emailNode.hasFocus));
+    });
+
+    passwordNode.addListener(() {
+      emit(state.copyWith(passwordHasFocus: passwordNode.hasFocus));
+    });
+
     emailController.addListener(() {
       clearErrorMessage();
       clearSuccessMessage();
       emit(state.copyWith(
-        emailErrorText: '',
-      ));
+          emailErrorText: '',
+          buttonIsActive: emailController.text.isNotEmpty &&
+              passwordController.text.isNotEmpty));
     });
     passwordController.addListener(() {
       clearErrorMessage();
       clearSuccessMessage();
       emit(state.copyWith(
-        passwordErrorText: '',
-      ));
+          passwordErrorText: '',
+          buttonIsActive: passwordController.text.isNotEmpty &&
+              emailController.text.isNotEmpty));
     });
   }
 
@@ -54,6 +68,8 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> close() {
     emailController.dispose();
     passwordController.dispose();
+    emailNode.dispose();
+    passwordNode.dispose();
     return super.close();
   }
 
@@ -75,15 +91,15 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> login() async {
     if (emailIsValid() && passwordIsValid()) {
-      Get.find<Dio>().options.headers['Authorization'] =
-          'Basic ${base64.encode(utf8.encode('${emailController.text}:${passwordController.text.to256}'))}';
+      getIt.get<Dio>().addAuthorizationToHeader(
+          'Basic ${base64.encode(utf8.encode('${emailController.text}:${passwordController.text.to256}'))}');
 
       LoginResponse? response = await _repository.login();
       String? token = response?.accessToken;
       if (token != null && token.isNotEmpty) {
         String jvtToken = 'JWT $token';
         await _cacheManager.saveTokenForBrand(state.selectedBrand, jvtToken);
-        Get.find<Dio>().options.headers['Authorization'] = jvtToken;
+        getIt.get<Dio>().addAuthorizationToHeader(jvtToken);
         _cacheManager.saveCurrentBrand(state.selectedBrand);
         goToHome();
       }
@@ -96,7 +112,7 @@ class LoginCubit extends Cubit<LoginState> {
       if (!passwordIsValid()) {
         emit(
           state.copyWith(
-            passwordErrorText: S.current.pleaseEnterAtLeast8Characters,
+            passwordErrorText: S.current.pleaseEnterAtLeast6Characters,
           ),
         );
       }
@@ -110,13 +126,17 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> goToForgotPassword() async {
     clearErrorMessage();
     clearSuccessMessage();
+
+    ///TODO: get token from deep link
     Get.toNamed(
       AppRoutes.forgotPassword,
-      arguments: state.selectedBrand,
+      arguments: ForgotPasswordScreenArguments(
+        brand: state.selectedBrand,
+      ),
     );
   }
 
   bool emailIsValid() => GetUtils.isEmail(emailController.text);
 
-  bool passwordIsValid() => passwordController.text.length >= 8;
+  bool passwordIsValid() => passwordController.text.length >= 6;
 }

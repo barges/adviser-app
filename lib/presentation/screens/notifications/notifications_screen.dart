@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
 
 class NotificationsScreen extends StatelessWidget {
@@ -12,7 +11,7 @@ class NotificationsScreen extends StatelessWidget {
         title: 'Notifications',
       ),
       body: SizedBox(
-        height: Get.height,
+        height: MediaQuery.of(context).size.height,
         child: const Center(
           child: Text('Notifications'),
         ),

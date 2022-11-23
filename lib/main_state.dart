@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 
@@ -11,5 +12,6 @@ class MainState with _$MainState {
     @Default(Brand.fortunica) Brand currentBrand,
     @Default('') String errorMessage,
     @Default('') String successMessage,
+    Locale? locale,
   }) = _MainState;
 }

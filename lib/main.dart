@@ -1,19 +1,30 @@
+import 'dart:io';
+
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide Transition;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/cache/data_caching_manager.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/main_state.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_loading_indicator.dart';
-import 'package:shared_advisor_interface/presentation/di/bindings/init_binding.dart';
+import 'package:shared_advisor_interface/presentation/di/injector.dart';
+import 'package:shared_advisor_interface/presentation/di/modules/api_module.dart';
+import 'package:shared_advisor_interface/presentation/di/modules/repository_module.dart';
+import 'package:shared_advisor_interface/presentation/di/modules/services_module.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_themes.dart';
+
+final GetIt getIt = GetIt.instance;
 
 final Logger simpleLogger = Logger(printer: SimplePrinter());
 
@@ -28,8 +39,26 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  if (Platform.isIOS) {
+    await Firebase.initializeApp(
+        options: const FirebaseOptions(
+            apiKey: AppConstants.iosApiKey,
+            appId: AppConstants.iosAppId,
+            messagingSenderId: AppConstants.firebaseMessagingSenderId,
+            projectId: AppConstants.firebaseProjectId));
+  } else {
+    await Firebase.initializeApp();
+  }
+
+  await FirebaseCrashlytics.instance
+      .setCrashlyticsCollectionEnabled(!kDebugMode);
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   await GetStorage.init();
+  await Injector.instance.inject([
+    ServicesModule(),
+    ApiModule(),
+    RepositoryModule(),
+  ]);
   runApp(const MyApp());
 }
 
@@ -41,82 +70,70 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final CachingManager _cacheManager =
-      Get.put<CachingManager>(DataCachingManager(), permanent: true);
+  final CachingManager _cacheManager = getIt.get<CachingManager>();
+
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => Get.put<MainCubit>(MainCubit(_cacheManager)),
+      create: (_) => getIt.get<MainCubit>(),
       child: Builder(builder: (context) {
-        return BlocListener<MainCubit, MainState>(
-          listenWhen: (prev, current) => prev.isLoading != current.isLoading,
-          listener: (_, state) {
-            if (state.isLoading) {
-              _showLoadingIndicatorDialog();
-            } else {
-              Get.back();
-            }
-          },
-          child: GetMaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: AppThemes.themeLight(context),
-            darkTheme: AppThemes.themeDark(context),
-            defaultTransition: Transition.cupertino,
-            initialRoute: AppRoutes.splash,
-            initialBinding: InitBinding(),
-            getPages: AppRoutes.getPages,
-            navigatorKey: navigatorKey,
-            localizationsDelegates: const [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: S.delegate.supportedLocales,
-            localeResolutionCallback: (locale, supportedLocales) {
-              final int? localeIndex = _cacheManager.getLocaleIndex();
-
-              if (localeIndex != null) {
-                return supportedLocales.toList()[localeIndex];
-              } else {
-                if (locale == null) {
-                  return supportedLocales.first;
-                }
-                for (var supportedLocale in supportedLocales) {
-                  if (supportedLocale.languageCode == locale.languageCode ||
-                      supportedLocale.countryCode == locale.countryCode) {
-                    return supportedLocale;
+        final Locale? locale =
+            context.select((MainCubit cubit) => cubit.state.locale);
+        return Directionality(
+          textDirection: TextDirection.ltr,
+          child: Stack(
+            children: [
+              GetMaterialApp(
+                debugShowCheckedModeBanner: false,
+                theme: AppThemes.themeLight(context),
+                darkTheme: AppThemes.themeDark(context),
+                defaultTransition: Transition.cupertino,
+                initialRoute: AppRoutes.splash,
+                getPages: AppRoutes.getPages,
+                navigatorKey: navigatorKey,
+                locale: locale,
+                localizationsDelegates: const [
+                  S.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: S.delegate.supportedLocales,
+                localeResolutionCallback: (locale, supportedLocales) {
+                  final int? localeIndex = _cacheManager.getLocaleIndex();
+                  Locale? newLocale;
+                  if (localeIndex != null) {
+                    newLocale = supportedLocales.toList()[localeIndex];
+                  } else {
+                    for (var supportedLocale in supportedLocales) {
+                      if (supportedLocale.languageCode ==
+                              locale?.languageCode ||
+                          supportedLocale.countryCode == locale?.countryCode) {
+                        newLocale = supportedLocale;
+                      }
+                    }
+                    newLocale ??= supportedLocales.first;
                   }
-                }
-                return supportedLocales.first;
-              }
-            },
+                  getIt.get<Dio>().addLocaleToHeader(newLocale);
+                  return newLocale;
+                },
+                navigatorObservers: <NavigatorObserver>[observer],
+              ),
+              Builder(builder: (context) {
+                final bool isLoading =
+                    context.select((MainCubit cubit) => cubit.state.isLoading);
+                return isLoading
+                    ? const AppLoadingIndicator()
+                    : const SizedBox.shrink();
+              }),
+            ],
           ),
         );
       }),
-    );
-  }
-
-  void _showLoadingIndicatorDialog() {
-    showGeneralDialog(
-      context: navigatorKey.currentContext!,
-      barrierColor: Get.theme.scaffoldBackgroundColor
-          .withOpacity(Get.isDarkMode ? 0.6 : 0.2),
-      // Background color
-      barrierDismissible: false,
-      barrierLabel: 'LOADING',
-      transitionDuration: const Duration(milliseconds: 100),
-      // How long it takes to popup dialog after button click
-      pageBuilder: (_, __, ___) {
-        // Makes widget fullscreen
-        return WillPopScope(
-          onWillPop: () {
-            return Future.value(false);
-          },
-          child: const AppLoadingIndicator(),
-        );
-      },
     );
   }
 }
