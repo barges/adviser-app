@@ -61,7 +61,7 @@ class GalleryImages extends StatelessWidget {
                             cubit.deletePictureFromGallery(index);
                           },
                         )
-                      : AddMoreImagesFromGalleryWidget(
+                      : coverPictures.length < 6 ? AddMoreImagesFromGalleryWidget(
                           onTap: () {
                             if (cubit.mainCubit.state
                                 .internetConnectionIsAvailable) {
@@ -71,7 +71,7 @@ class GalleryImages extends StatelessWidget {
                               );
                             }
                           },
-                        );
+                        ) : const SizedBox.shrink();
                 },
               ),
             ],
