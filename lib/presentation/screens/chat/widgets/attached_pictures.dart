@@ -108,7 +108,7 @@ class _DeleteBtn extends StatelessWidget {
         ),
         child: Assets.vectors.crossFat.svg(
           fit: BoxFit.none,
-          color: Theme.of(context).backgroundColor,
+          color: Theme.of(context).canvasColor,
         ),
       ),
     );

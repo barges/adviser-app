@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
+import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 
 part 'chat_state.freezed.dart';
 
@@ -18,8 +19,8 @@ class ChatState with _$ChatState {
     @Default(false) bool isPlayingRecordedAudio,
     @Default(false) bool isPlayingAudio,
     @Default(true) bool isPlayingAudioFinished,
-    @Default('') String recordingPath,
     @Default('') String audioUrl,
+    String? recordingPath,
     Stream<RecordingDisposition>? recordingStream,
     Stream<PlaybackDisposition>? playbackStream,
   }) = _ChatState;

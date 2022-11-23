@@ -11,24 +11,25 @@ import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
 import 'package:shared_advisor_interface/data/models/enums/file_ext.dart';
-import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
+import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'chat_state.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:audio_session/audio_session.dart';
 
 class ChatCubit extends Cubit<ChatState> {
-  final CachingManager _cachingManager;
-  final ChatsRepository _repository;
-  final ChatItem _question;
   final ScrollController messagesScrollController = ScrollController();
   final ScrollController textInputScrollController = ScrollController();
   final TextEditingController textEditingController = TextEditingController();
+  final CachingManager _cachingManager;
+  final ChatsRepository _repository;
+  final ChatItem _question;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final Codec _codec = Platform.isIOS ? Codec.aacMP4 : Codec.mp3;
   final FileExt _recordFileExt = CurrentFileExt.current;
@@ -38,6 +39,7 @@ class ChatCubit extends Cubit<ChatState> {
   FlutterSoundRecorder? _recorder;
   FlutterSoundPlayer? _playerRecorded;
   FlutterSoundPlayer? _playerMedia;
+  AnswerRequest? _answerRequest;
 
   ChatCubit(
     this._cachingManager,
@@ -62,6 +64,8 @@ class ChatCubit extends Cubit<ChatState> {
 
     _playerMedia?.closePlayer();
     _playerMedia = null;
+
+    _answerRequest = null;
 
     return super.close();
   }
@@ -131,8 +135,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     ConversationsResponse conversations =
         await _repository.getConversationsHystory(
-            expertID:
-                _cachingManager.getUserId() ?? '',
+            expertID: _cachingManager.getUserId() ?? '',
             clientID: _question.clientID ?? '',
             offset: _offset,
             limit: _limit);
@@ -149,16 +152,17 @@ class ChatCubit extends Cubit<ChatState> {
     final messages = List.of(state.messages);
     for (var element in conversations.history ?? []) {
       messages.add(
+        element.question,
+      );
+      messages.add(
         element.answer?.copyWith(
           isAnswer: true,
           type: element.question?.type,
-          ritualIdentifier: element.question!.ritualIdentifier,
+          ritualIdentifier: element.question?.ritualIdentifier,
         ),
       );
-      messages.add(
-        element.question,
-      );
     }
+
     if (lastQuestion != null) {
       messages.insert(0, lastQuestion);
     }
@@ -333,9 +337,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   void attachPicture(File? image) {
     final images = List.of(state.attachedPictures);
-    if (_mainCubit.state.internetConnectionIsAvailable &&
-        images.length < 2 &&
-        image != null) {
+    if (image != null && images.length < 2) {
       images.add(image);
       emit(state.copyWith(attachedPictures: images));
     }
@@ -358,53 +360,66 @@ class ChatCubit extends Cubit<ChatState> {
       await _playerRecorded?.stopPlayer();
     }
 
-    final Attachment audioAttachment = await _getAudioAttachment();
+    final Attachment? audioAttachment = await _getAudioAttachment();
     Attachment? pictureAttachment;
     if (state.attachedPictures.isNotEmpty) {
       pictureAttachment = await _getPictureAttachment(0);
     }
 
-    final request = AnswerRequest(
-      questionID: '5fddd475bd7774001cf0b029',
-      ritualID: SessionsTypes.tarot, //messages[0].ritualIdentifier,/
+    _answerRequest = AnswerRequest(
+      questionID: _question.id,
+      ritualID: _question.ritualIdentifier,
       attachments: [
-        audioAttachment,
+        audioAttachment!,
         if (pictureAttachment != null) pictureAttachment,
       ],
     );
 
+    final messages = List.of(state.messages);
+    ChatItem? answer;
     try {
-      final ChatItem responseAnswer = await _repository.sendAnswer(request);
-      logger.i('send media response:$responseAnswer');
-      final messages = List.of(state.messages);
-      messages.insert(0, responseAnswer.copyWith(isAnswer: true));
+      answer = await _repository.sendAnswer(_answerRequest!);
+      logger.i('send media response:$answer');
+      answer = answer.copyWith(
+        isAnswer: true,
+        type: _question.type,
+        ritualIdentifier: _question.ritualIdentifier,
+      );
+      _answerRequest = null;
+    } catch (e) {
+      logger.e(e);
+      //print(await ConnectivityService.checkConnection());
+      if (!await ConnectivityService.checkConnection()) {
+        answer = _getNotSentAnswer();
+      }
+    }
 
+    if (answer != null) {
+      messages.insert(0, answer);
       emit(
         state.copyWith(
           isRecordingAudio: false,
           isAudioFileSaved: false,
           isPlayingRecordedAudio: false,
+          recordingPath: null,
           messages: messages,
         ),
       );
-
       deleteAttachedPictures();
-    } catch (e) {
-      logger.e(e);
     }
   }
 
   Future<void> sendTextMedia() async {
-    Attachment? pictureAttachment1 = state.attachedPictures.length == 1
+    Attachment? pictureAttachment1 = state.attachedPictures.isNotEmpty
         ? await _getPictureAttachment(0)
         : null;
     Attachment? pictureAttachment2 = state.attachedPictures.length == 2
         ? await _getPictureAttachment(1)
         : null;
 
-    final request = AnswerRequest(
-      questionID: '5fddcfa7bd7774001cf0b009',
-      ritualID: SessionsTypes.tarot,
+    _answerRequest = AnswerRequest(
+      questionID: _question.id,
+      ritualID: _question.ritualIdentifier,
       content: textEditingController.text.isEmpty
           ? null
           : textEditingController.text,
@@ -414,35 +429,115 @@ class ChatCubit extends Cubit<ChatState> {
       ],
     );
 
+    final messages = List.of(state.messages);
+    ChatItem? answer;
     try {
-      final ChatItem responseAnswer = await _repository.sendAnswer(request);
-      logger.i('send text response:$responseAnswer');
+      answer = await _repository.sendAnswer(_answerRequest!);
+      logger.i('send text response:$answer');
+      answer = answer.copyWith(
+        isAnswer: true,
+        type: _question.type,
+        ritualIdentifier: _question.ritualIdentifier,
+      );
+      _answerRequest = null;
+    } catch (e) {
+      logger.e(e);
+      //print(await ConnectivityService.checkConnection());
+      if (!await ConnectivityService.checkConnection()) {
+        answer = _getNotSentAnswer();
+      }
+    }
 
-      textEditingController.clear();
-
-      final messages = List.of(state.messages);
-      messages.insert(0, responseAnswer.copyWith(isAnswer: true));
-
+    if (answer != null) {
+      messages.insert(0, answer);
       emit(
         state.copyWith(
           messages: messages,
         ),
       );
-
+      textEditingController.clear();
       deleteAttachedPictures();
+    }
+  }
+
+  sendAnswerAgain() async {
+    try {
+      if (_answerRequest == null) {
+        return;
+      }
+
+      final ChatItem answer = await _repository.sendAnswer(_answerRequest!);
+      logger.i('send text response:$answer');
+      _answerRequest = null;
+
+      final messages = List.of(state.messages);
+      messages.replaceRange(0, 1, [
+        answer.copyWith(
+          isAnswer: true,
+          type: _question.type,
+          ritualIdentifier: _question.ritualIdentifier,
+        )
+      ]);
+      emit(
+        state.copyWith(
+          messages: messages,
+        ),
+      );
     } catch (e) {
       logger.e(e);
     }
   }
 
-  Future<Attachment> _getAudioAttachment() async {
-    final File audiofile = File(state.recordingPath);
+  ChatItem _getNotSentAnswer() {
+    String? picturePath1 = _getAttachedPicturePath(0);
+    String? picturePath2 = _getAttachedPicturePath(1);
+    String? recordingPath = state.recordingPath;
+
+    final ChatItem answer = ChatItem(
+      isAnswer: true,
+      isSent: false,
+      type: _question.type,
+      ritualIdentifier: _question.ritualIdentifier,
+      content: _answerRequest!.content,
+      attachments: [
+        if (recordingPath != null)
+          _answerRequest!.attachments![0].copyWith(
+            url: recordingPath,
+            attachment: null,
+          ),
+        if (picturePath1 != null)
+          _answerRequest!.attachments![recordingPath == null ? 0 : 1].copyWith(
+            url: picturePath1,
+            attachment: null,
+          ),
+        if (picturePath2 != null)
+          _answerRequest!.attachments![1].copyWith(
+            url: picturePath2,
+            attachment: null,
+          ),
+      ],
+    );
+    return answer;
+  }
+
+  String? _getAttachedPicturePath(int n) {
+    return state.attachedPictures.length >= n + 1
+        ? state.attachedPictures[n].path
+        : null;
+  }
+
+  Future<Attachment?> _getAudioAttachment() async {
+    if (state.recordingPath == null) {
+      return null;
+    }
+
+    final File audiofile = File(state.recordingPath!);
     final List<int> audioBytes = await audiofile.readAsBytes();
     final String base64Audio = base64Encode(audioBytes);
     final Metadata metaAudio = await MetadataRetriever.fromFile(audiofile);
 
     return Attachment(
-        mime: lookupMimeType(state.recordingPath),
+        mime: lookupMimeType(state.recordingPath!),
         attachment: base64Audio,
         meta: Meta(duration: (metaAudio.trackDuration ?? 0) / 1000));
   }

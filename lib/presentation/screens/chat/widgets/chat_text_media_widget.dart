@@ -7,17 +7,24 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_footer_widget.dart';
 
 class ChatTextMediaWidget extends ChatWidget {
+  final VoidCallback? onPressedTryAgain;
   const ChatTextMediaWidget({
     super.key,
     required super.item,
+    this.onPressedTryAgain,
   });
 
   @override
   Widget build(BuildContext context) {
     final String? audioUrl1 = item.getAudioUrl(1);
     final String? audioUrl2 = item.getAudioUrl(2);
+    final bool isImage1 = item.getImageUrl(1) != null;
+    final bool isImage2 = item.getImageUrl(2) != null;
+
     return ChatItemBackground(
+      onPressedTryAgain: onPressedTryAgain,
       isBorder: true,
+      isTryAgain: !item.isSent,
       padding: paddingItem,
       color: getColorItem(context),
       child: Stack(
@@ -32,26 +39,25 @@ class ChatTextMediaWidget extends ChatWidget {
                   answer: Theme.of(context).backgroundColor,
                 ),
               ),
-              if (item.getImageUrl(1) != null)
+              if (isImage1)
                 Padding(
                   padding: const EdgeInsets.only(top: 12.0),
                   child: RoundedRectImage(
-                    item.getImageUrl(1)!,
+                    uri: Uri.parse(item.getImageUrl(1)!),
                     height: 134.0,
                   ),
                 ),
-              if (item.getImageUrl(2) != null)
+              if (isImage2)
                 Padding(
                   padding: const EdgeInsets.only(top: 12.0),
                   child: RoundedRectImage(
-                    item.getImageUrl(2)!,
+                    uri: Uri.parse(item.getImageUrl(2)!),
                     height: 134.0,
                   ),
                 ),
               if (audioUrl1 == null && audioUrl2 == null)
                 const SizedBox(height: 24.0),
-              if ((item.getImageUrl(1) != null ||
-                      item.getImageUrl(2) != null) &&
+              if ((isImage1 || isImage2) &&
                   (audioUrl1 != null || audioUrl2 != null))
                 const SizedBox(height: 12.0),
               if (audioUrl1 != null)
