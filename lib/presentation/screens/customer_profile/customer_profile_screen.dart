@@ -5,7 +5,7 @@ import 'package:shared_advisor_interface/data/models/customer_info/customer_info
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
 import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/customer_profile_appbar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/narrow_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_profile/customer_profile_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_profile/widgets/notes_widget.dart';
@@ -27,7 +27,7 @@ class CustomerProfileScreen extends StatelessWidget {
                 (CustomerProfileCubit cubit) => cubit.state.customerInfo);
             final ThemeData theme = Theme.of(context);
             return Scaffold(
-              appBar: CustomerProfileAppBar(
+              appBar: NarrowAppBar(
                 title: customerInfo != null
                     ? '${customerInfo.firstName} ${customerInfo.lastName}'
                     : '',
@@ -134,22 +134,27 @@ class CustomerProfileScreen extends StatelessWidget {
                                       ),
                                     ],
                                   )),
-                              const SizedBox(
-                                  height: AppConstants.horizontalScreenPadding),
                               Builder(builder: (context) {
                                 final List<String>? questionProperties =
                                     customerInfo.advisorMatch?.values.toList();
-                                return Wrap(
-                                  runSpacing: 8.0,
-                                  children: [
-                                    (questionProperties != null &&
-                                            questionProperties.isNotEmpty)
-                                        ? QuestionPropertiesWidget(
-                                            properties: questionProperties,
+                                return (questionProperties != null &&
+                                        questionProperties.isNotEmpty)
+                                    ? Column(
+                                        children: [
+                                          const SizedBox(
+                                              height: AppConstants
+                                                  .horizontalScreenPadding),
+                                          Wrap(
+                                            runSpacing: 8.0,
+                                            children: [
+                                              QuestionPropertiesWidget(
+                                                properties: questionProperties,
+                                              )
+                                            ],
                                           )
-                                        : const SizedBox.shrink(),
-                                  ],
-                                );
+                                        ],
+                                      )
+                                    : const SizedBox.shrink();
                               }),
                             ]),
                           ),
