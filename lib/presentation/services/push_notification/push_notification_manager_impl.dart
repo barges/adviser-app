@@ -108,8 +108,8 @@ Future<void> _navigateToNextScreen(RemoteMessage? message) async {
   if (message != null) {
     /**
       Map<String, dynamic> data = message.data;
-  
-      
+
+
       Map<String, dynamic> meta = json.decode(data['meta']);
       if (meta['entityId'] != null) {
         ChatItem chatItem =

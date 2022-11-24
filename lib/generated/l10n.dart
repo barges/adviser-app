@@ -1479,6 +1479,16 @@ class S {
       args: [],
     );
   }
+
+  /// `You can not help users since you have an active public question.`
+  String get youCanNotHelpUsersSinceYouHaveAnActive {
+    return Intl.message(
+      'You can not help users since you have an active public question.',
+      name: 'youCanNotHelpUsersSinceYouHaveAnActive',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

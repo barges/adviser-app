@@ -55,6 +55,9 @@ class SessionsScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Builder(builder: (context) {
+                            final List<int> disabledIndexes = context.select(
+                                (SessionsCubit cubit) =>
+                                    cubit.state.disabledIndexes);
                             final int currentIndex = context.select(
                                 (SessionsCubit cubit) =>
                                     cubit.state.currentOptionIndex);
@@ -64,6 +67,7 @@ class SessionsScreen extends StatelessWidget {
                                 S.of(context).forMe,
                               ],
                               currentIndex: currentIndex,
+                              disabledIndexes: disabledIndexes,
                               onChangeOptionIndex: isOnline && statusIsLive
                                   ? sessionsCubit.changeCurrentOptionIndex
                                   : null,

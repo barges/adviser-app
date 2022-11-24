@@ -31,3 +31,27 @@ class ForgotPasswordScreenArguments {
     this.token,
   });
 }
+
+class AddNoteScreenArguments {
+  final String customerID;
+  final String? oldNote;
+  final String? updatedAt;
+  final VoidCallback noteChanged;
+
+  AddNoteScreenArguments({
+    required this.customerID,
+    required this.noteChanged,
+    this.oldNote,
+    this.updatedAt,
+  });
+}
+
+class ChatScreenArguments {
+  final String? questionId;
+  final String? clientId;
+
+  ChatScreenArguments({
+    this.questionId,
+    this.clientId,
+  });
+}

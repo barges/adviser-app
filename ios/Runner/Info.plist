@@ -45,11 +45,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>You can take a picture and send it to the chat or update your avatar.</string>
+	<string>This app requires access to the camera so you can take photos and upload them to the app.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>You can record your voice and send it to the chat.</string>
+	<string>This app requires access to the microphone so you can record audio messages.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This lets you choose any of your photos from Gallery and send them to the chat or update your avatar.</string>
+	<string>This app requires access to the gallery so you can share photos in the app.</string>
 	<key>NSUserTrackingUsageDescription</key>
     <string>Allowing this helps us identify which marketing channel you came through, and will not be used for any other purpose. You can change this in the Settings app.</string>
 	<key>UIBackgroundModes</key>

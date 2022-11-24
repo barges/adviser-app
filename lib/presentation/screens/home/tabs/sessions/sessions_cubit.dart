@@ -1,15 +1,21 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
+import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
+import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_state.dart';
 
 const int questionsLimit = 20;
@@ -19,7 +25,7 @@ class SessionsCubit extends Cubit<SessionsState> {
   final CachingManager cacheManager;
   final ScrollController publicQuestionsController = ScrollController();
   final ScrollController privateQuestionsController = ScrollController();
-  final MainCubit mainCubit = getIt.get<MainCubit>();
+  final MainCubit _mainCubit = getIt.get<MainCubit>();
   late final VoidCallback disposeUserStatusListen;
   late final VoidCallback disposeUserProfileListen;
   final BuildContext context;
@@ -41,14 +47,14 @@ class SessionsCubit extends Cubit<SessionsState> {
   SessionsCubit(this.cacheManager, this.context)
       : super(const SessionsState()) {
     publicQuestionsController.addListener(() async {
-      if (!mainCubit.state.isLoading &&
+      if (!_mainCubit.state.isLoading &&
           publicQuestionsController.position.extentAfter <=
               MediaQuery.of(context).size.height) {
         await getPublicQuestions();
       }
     });
     privateQuestionsController.addListener(() async {
-      if (!mainCubit.state.isLoading &&
+      if (!_mainCubit.state.isLoading &&
           privateQuestionsController.position.extentAfter <=
               MediaQuery.of(context).size.height) {
         await getHistoryList();
@@ -117,6 +123,23 @@ class SessionsCubit extends Cubit<SessionsState> {
     emit(state.copyWith(searchIsOpen: false));
   }
 
+  void takeQuestion(String questionId) {
+    _repository.takeQuestion(AnswerRequest(questionID: questionId));
+  }
+
+  void goToCustomerProfile(String? clientId) {
+    if (clientId != null) {
+      Get.toNamed(AppRoutes.customerProfile, arguments: clientId);
+    }
+  }
+
+  void goToChat(ChatItem? question) {
+    if (question != null) {
+      Get.toNamed(AppRoutes.chat,
+          arguments: question);
+    }
+  }
+
   Future<void> getPublicQuestions(
       {FortunicaUserStatus? status, bool refresh = false}) async {
     if (refresh) {
@@ -124,7 +147,7 @@ class SessionsCubit extends Cubit<SessionsState> {
       _publicQuestions.clear();
     }
     if (_publicHasMore &&
-        mainCubit.state.internetConnectionIsAvailable &&
+        _mainCubit.state.internetConnectionIsAvailable &&
         (status ?? cacheManager.getUserStatus()?.status) ==
             FortunicaUserStatus.live) {
       _lastId = _publicQuestions.lastOrNull?.id;
@@ -144,7 +167,19 @@ class SessionsCubit extends Cubit<SessionsState> {
 
       _publicQuestions.addAll(result.questions ?? const []);
 
-      emit(state.copyWith(publicQuestions: List.of(_publicQuestions)));
+      if (_publicQuestions.firstOrNull?.status == ChatItemStatusType.taken) {
+        _mainCubit.updateSuccessMessage(
+            S.current.youCanNotHelpUsersSinceYouHaveAnActive);
+        emit(state.copyWith(
+          publicQuestions: List.of(_publicQuestions),
+          disabledIndexes: [1],
+        ));
+      } else {
+        emit(state.copyWith(
+          publicQuestions: List.of(_publicQuestions),
+          disabledIndexes: [],
+        ));
+      }
     }
   }
 
@@ -155,7 +190,7 @@ class SessionsCubit extends Cubit<SessionsState> {
       _historyPage = 1;
       _privateQuestionsWithHistory.clear();
     }
-    if (mainCubit.state.internetConnectionIsAvailable &&
+    if (_mainCubit.state.internetConnectionIsAvailable &&
         (status ?? cacheManager.getUserStatus()?.status) ==
             FortunicaUserStatus.live) {
       String? filtersLanguage;
@@ -197,7 +232,7 @@ class SessionsCubit extends Cubit<SessionsState> {
   Future<void> getHistoryList(
       {FortunicaUserStatus? status, isFirstRequest = false}) async {
     if (_historyHasMore &&
-        mainCubit.state.internetConnectionIsAvailable &&
+        _mainCubit.state.internetConnectionIsAvailable &&
         (status ?? cacheManager.getUserStatus()?.status) ==
             FortunicaUserStatus.live) {
       final QuestionsListResponse result = await _repository.getHistoryList(
