@@ -30,15 +30,15 @@ extension StringExt on String {
   String get languageNameByCode {
     switch (this) {
       case 'de':
-        return 'German';
+        return 'Deutsch';
       case 'en':
         return 'English';
       case 'es':
-        return 'Spanish';
+        return 'Español';
       case 'pt':
-        return 'Portuguese';
+        return 'Português';
       default:
-        return 'Unknown language';
+        return 'Other';
     }
   }
 
