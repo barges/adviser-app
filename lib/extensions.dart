@@ -36,9 +36,9 @@ extension StringExt on String {
       case 'es':
         return 'Español';
       case 'pt':
-        return 'Portuguese';
+        return 'Português';
       default:
-        return 'Unknown language';
+        return 'Other';
     }
   }
 

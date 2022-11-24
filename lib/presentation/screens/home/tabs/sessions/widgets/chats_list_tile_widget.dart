@@ -1,133 +1,174 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class ChatsListTileWidget extends StatelessWidget {
   final ChatItem question;
+  final bool needCheckStatus;
 
-  const ChatsListTileWidget({Key? key, required this.question})
-      : super(key: key);
+  const ChatsListTileWidget({
+    Key? key,
+    required this.question,
+    this.needCheckStatus = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 62.0,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onTap: () {
-              if (question.clientID != null) {
-                Get.toNamed(AppRoutes.customerProfile,
-                    arguments: question.clientID);
-              }
-            },
-            child: SizedBox(
-              width: 48.0,
-              child: Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  SvgPicture.asset(
-                    question.clientInformation?.zodiac?.imagePath(context) ??
-                        '',
-                    height: 48.0,
-                  ),
-                  question.type == ChatItemType.public
-                      ? CircleAvatar(
-                          radius: 8.0,
-                          backgroundColor: Theme.of(context).canvasColor,
-                          child: Assets.vectors.sessionsTypes.public.svg())
-                      : const SizedBox.shrink()
-                ],
+    final SessionsCubit sessionsCubit = context.read<SessionsCubit>();
+    final bool isTaken =
+        needCheckStatus && question.status == ChatItemStatusType.taken;
+    return Opacity(
+      opacity: needCheckStatus
+          ? isTaken
+              ? 1.0
+              : 0.4
+          : 1.0,
+      child: SizedBox(
+        height: 62.0,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: () {
+                if (needCheckStatus) {
+                  if (isTaken) {
+                    sessionsCubit.goToCustomerProfile(question.clientID);
+                  }
+                } else {
+                  sessionsCubit.goToCustomerProfile(question.clientID);
+                }
+              },
+              child: SizedBox(
+                width: 48.0,
+                child: Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    SvgPicture.asset(
+                      question.clientInformation?.zodiac?.imagePath(context) ??
+                          '',
+                      height: 48.0,
+                    ),
+                    question.type == ChatItemType.public
+                        ? CircleAvatar(
+                            radius: 8.0,
+                            backgroundColor: Theme.of(context).canvasColor,
+                            child: Assets.vectors.sessionsTypes.public.svg())
+                        : const SizedBox.shrink()
+                  ],
+                ),
               ),
             ),
-          ),
-          const SizedBox(
-            width: 12.0,
-          ),
-          Expanded(
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () {
-                Get.toNamed(
-                  AppRoutes.chat,
-                  arguments: question,
-                );
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          question.clientName ?? '',
-                          overflow: TextOverflow.ellipsis,
-                          style:
-                              Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    fontSize: 15.0,
-                                  ),
-                        ),
-                      ),
-                      Text(
-                        question.createdAt?.chatListTime ??
-                            DateTime.now().chatListTime,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Theme.of(context).shadowColor,
-                              fontSize: 12.0,
-                            ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 4.0),
-                  Expanded(
-                    child: Row(
+            const SizedBox(
+              width: 12.0,
+            ),
+            Expanded(
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  if (needCheckStatus) {
+                    if (isTaken) {
+                      sessionsCubit.goToChat(question);
+                    }
+                  } else {
+                    sessionsCubit.goToChat(question);
+                  }
+                },
+                onLongPress: () {
+                  if (question.type == ChatItemType.public) {
+                    sessionsCubit.takeQuestion(question.id ?? '');
+                  }
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: SizedBox(
-                            height: AppConstants.iconSize,
-                            child: _ContentWidget(
-                              question: question,
-                            ),
+                          child: Text(
+                            question.clientName ?? '',
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium
+                                ?.copyWith(
+                                  fontSize: 15.0,
+                                ),
                           ),
                         ),
-                        const SizedBox(
-                          width: 32.0,
-                        ),
-                        if (question.type != ChatItemType.history)
-                          Container(
-                            height: 8.0,
-                            width: 8.0,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.promotion,
-                            ),
-                          ),
+                        Text(
+                          question.createdAt?.chatListTime ??
+                              DateTime.now().chatListTime,
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Theme.of(context).shadowColor,
+                                    fontSize: 12.0,
+                                  ),
+                        )
                       ],
                     ),
-                  ),
-                  const Divider(
-                    height: 1.0,
-                  ),
-                ],
+                    const SizedBox(height: 4.0),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: AppConstants.iconSize,
+                              child: _ContentWidget(
+                                question: question,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 32.0,
+                          ),
+                          needCheckStatus
+                              ? isTaken
+                                  ? const SizedBox.shrink()
+                                  : const _Badge()
+                              : const _Badge(),
+                        ],
+                      ),
+                    ),
+                    const Divider(
+                      height: 1.0,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Badge extends StatelessWidget {
+  const _Badge({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 8.0,
+      width: 8.0,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        color: AppColors.promotion,
       ),
     );
   }

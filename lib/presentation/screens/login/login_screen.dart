@@ -66,9 +66,7 @@ class LoginScreen extends StatelessWidget {
                               return message.isNotEmpty
                                   ? AppSuccessWidget(
                                       message: message,
-                                      close: () {
-                                        loginCubit.clearSuccessMessage();
-                                      },
+                                      needEmailButton: true,
                                     )
                                   : const SizedBox.shrink();
                             },

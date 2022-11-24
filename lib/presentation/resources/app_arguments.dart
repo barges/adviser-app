@@ -36,13 +36,14 @@ class AddNoteScreenArguments {
   final String customerID;
   final String? oldNote;
   final String? updatedAt;
-  VoidCallback noteChanged;
+  final VoidCallback noteChanged;
 
-  AddNoteScreenArguments(
-      {required this.customerID,
-      this.oldNote,
-      this.updatedAt,
-      required this.noteChanged});
+  AddNoteScreenArguments({
+    required this.customerID,
+    required this.noteChanged,
+    this.oldNote,
+    this.updatedAt,
+  });
 }
 
 class ChatScreenArguments {

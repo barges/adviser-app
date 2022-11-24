@@ -10,7 +10,7 @@ part 'reports_market.g.dart';
 class ReportsMarket with _$ReportsMarket {
   @JsonSerializable(includeIfNull: false)
   const factory ReportsMarket({
-    MarketsType? iso,
+    String? iso,
     List<ReportsUnit>? units,
     @JsonKey(name: 'market_total') MarketTotal? marketTotal,
   }) = _ReportsMarket;

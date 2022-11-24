@@ -109,23 +109,21 @@ class PushNotificationManagerImpl implements PushNotificationManager {
 
 Future<void> _navigateToNextScreen(RemoteMessage? message) async {
   if (message != null) {
-    /**
-      Map<String, dynamic> data = message.data;
-  
-      Map<String, dynamic> meta = json.decode(data['meta']);
-      String? entityId = meta['entityId'];
-      String? type = meta['type'];
-  
-      if (entityId != null && type != null) {
-        if (type == PushType.private.name || type == PushType.session.name) {
-          Get.toNamed(AppRoutes.chat,
-              arguments: ChatScreenArguments(questionId: entityId));
-        } else if (type == PushType.tips.name) {
-          Get.toNamed(AppRoutes.chat,
-              arguments: ChatScreenArguments(clientId: entityId));
-        }
-      }
-    */
+    // Map<String, dynamic> data = message.data;
+
+    // Map<String, dynamic> meta = json.decode(data['meta']);
+    // String? entityId = meta['entityId'];
+    // String? type = meta['type'];
+
+    // if (entityId != null && type != null) {
+    //   if (type == PushType.private.name || type == PushType.session.name) {
+    //     Get.toNamed(AppRoutes.chat,
+    //         arguments: ChatScreenArguments(questionId: entityId));
+    //   } else if (type == PushType.tips.name) {
+    //     Get.toNamed(AppRoutes.chat,
+    //         arguments: ChatScreenArguments(clientId: entityId));
+    //   }
+    // }
   }
 }
 
