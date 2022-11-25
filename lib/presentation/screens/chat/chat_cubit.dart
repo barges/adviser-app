@@ -18,6 +18,7 @@ import 'package:shared_advisor_interface/data/network/responses/conversations_re
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'chat_state.dart';
@@ -31,6 +32,7 @@ class ChatCubit extends Cubit<ChatState> {
   final CachingManager _cachingManager;
   final ChatsRepository _repository;
   final ChatItem _question;
+  final BuildContext _context;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final Codec _codec = Platform.isIOS ? Codec.aacMP4 : Codec.mp3;
   final FileExt _recordFileExt = CurrentFileExt.current;
@@ -46,6 +48,7 @@ class ChatCubit extends Cubit<ChatState> {
     this._cachingManager,
     this._repository,
     this._question,
+    this._context,
   ) : super(const ChatState()) {
     _init();
     _getConversations();
@@ -145,8 +148,19 @@ class ChatCubit extends Cubit<ChatState> {
     try {
       lastQuestion = await _repository.getQuestion(id: _question.id ?? '');
     } on DioError catch (e) {
-      if(e.response?.statusCode == 404){
-        ///TODO: open pop-up
+      if (e.response?.statusCode == 404) {
+        Map<String, dynamic>? data = e.response?.data;
+        await showOkCancelAlert(
+          context: _context,
+          title: data?['status'] ?? '',
+          okText: 'OK',
+          actionOnOK: () {
+            Get.back();
+            Get.back();
+          },
+          allowBarrierClock: false,
+          isCancelEnabled: false,
+        );
       }
       logger.d(e);
     }
@@ -178,8 +192,26 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> takeQuestion() async {
-
-    _repository.takeQuestion(AnswerRequest(questionID: _question.id));
+    try {
+      await _repository.takeQuestion(AnswerRequest(questionID: _question.id));
+    } on DioError catch (e) {
+      logger.d(e);
+      if (e.response?.statusCode == 409) {
+        Map<String, dynamic>? data = e.response?.data;
+        await showOkCancelAlert(
+          context: _context,
+          title: data?['status'] ?? '',
+          okText: 'OK',
+          actionOnOK: () {
+            Get.back();
+            Get.back();
+          },
+          allowBarrierClock: false,
+          isCancelEnabled: false,
+        );
+      }
+      logger.d(e);
+    }
   }
 
   Future<void> startRecordingAudio() async {
@@ -426,6 +458,19 @@ class ChatCubit extends Cubit<ChatState> {
         ? await _getPictureAttachment(1)
         : null;
 
+    if (pictureAttachment1 == null) {
+      if (textEditingController.text.length < 251) {
+        emit(state.copyWith(errorMessage: 'Minimum number of 250 symbols'));
+        return;
+      }
+      if (textEditingController.text.length > 2000) {
+        emit(state.copyWith(
+            errorMessage:
+                'Maximum number of 2000 symbols for public and private questions'));
+        return;
+      }
+    }
+
     _answerRequest = AnswerRequest(
       questionID: _question.id,
       ritualID: _question.ritualIdentifier,
@@ -559,6 +604,10 @@ class ChatCubit extends Cubit<ChatState> {
       mime: lookupMimeType(imageFile.path),
       attachment: base64Image,
     );
+  }
+
+  void closeErrorMessage() {
+    emit(state.copyWith(errorMessage: null));
   }
 
   Stream<PlaybackDisposition>? get onMediaProgress => _playerMedia?.onProgress;

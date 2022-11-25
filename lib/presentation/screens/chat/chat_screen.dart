@@ -9,6 +9,8 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_media_widget.dart';
@@ -32,6 +34,7 @@ class ChatScreen extends StatelessWidget {
         getIt.get<CachingManager>(),
         getIt.get<ChatsRepository>(),
         _question,
+        context,
       ),
       child: Builder(
         builder: (context) {
@@ -48,6 +51,16 @@ class ChatScreen extends StatelessWidget {
             body: SafeArea(
               child: Column(
                 children: [
+                  Builder(builder: (context) {
+                    String? errorText = context
+                        .select((ChatCubit cubit) => cubit.state.errorMessage);
+                    return errorText != null
+                        ? AppErrorWidget(
+                            errorMessage: errorText,
+                            close: chatCubit.closeErrorMessage,
+                          )
+                        : const SizedBox.shrink();
+                  }),
                   Expanded(
                     child: Stack(
                       children: [
