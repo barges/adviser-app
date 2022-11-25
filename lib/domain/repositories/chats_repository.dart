@@ -29,6 +29,8 @@ abstract class ChatsRepository {
 
   Future<ChatItem> getQuestion({required String id});
 
+  Future<ChatItem> takeQuestion(AnswerRequest request);
+
   Future<ChatItem> sendAnswer(
     AnswerRequest request,
   );

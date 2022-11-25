@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
+import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -11,13 +13,16 @@ import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
 import 'package:shared_advisor_interface/data/models/enums/file_ext.dart';
-import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'chat_state.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -30,6 +35,7 @@ class ChatCubit extends Cubit<ChatState> {
   final CachingManager _cachingManager;
   final ChatsRepository _repository;
   final ChatItem _question;
+  final BuildContext _context;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final Codec _codec = Platform.isIOS ? Codec.aacMP4 : Codec.mp3;
   final FileExt _recordFileExt = CurrentFileExt.current;
@@ -45,6 +51,7 @@ class ChatCubit extends Cubit<ChatState> {
     this._cachingManager,
     this._repository,
     this._question,
+    this._context,
   ) : super(const ChatState()) {
     _init();
     _getConversations();
@@ -139,11 +146,23 @@ class ChatCubit extends Cubit<ChatState> {
             clientID: _question.clientID ?? '',
             offset: _offset,
             limit: _limit);
-
     ChatItem? lastQuestion;
-    if (_total == null) {
+
+    try {
       lastQuestion = await _repository.getQuestion(id: _question.id ?? '');
-      //logger.i('Question: $lastQuestion');
+    } on DioError catch (e) {
+      await showOkCancelAlert(
+        context: _context,
+        title: _mainCubit.state.errorMessage,
+        okText: 'OK',
+        actionOnOK: () {
+          Get.offNamed(AppRoutes.home,
+              arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
+        },
+        allowBarrierClock: false,
+        isCancelEnabled: false,
+      );
+      logger.d(e);
     }
 
     _total = conversations.total;
@@ -170,6 +189,25 @@ class ChatCubit extends Cubit<ChatState> {
     emit(state.copyWith(
       messages: messages,
     ));
+  }
+
+  Future<void> takeQuestion() async {
+    try {
+      await _repository.takeQuestion(AnswerRequest(questionID: _question.id));
+    } on DioError catch (e) {
+      await showOkCancelAlert(
+        context: _context,
+        title: _mainCubit.state.errorMessage,
+        okText: 'OK',
+        actionOnOK: () {
+          Get.offNamed(AppRoutes.home,
+              arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
+        },
+        allowBarrierClock: false,
+        isCancelEnabled: false,
+      );
+      logger.d(e);
+    }
   }
 
   Future<void> startRecordingAudio() async {
@@ -379,7 +417,7 @@ class ChatCubit extends Cubit<ChatState> {
     ChatItem? answer;
     try {
       answer = await _repository.sendAnswer(_answerRequest!);
-      logger.i('send media response:$answer');
+      logger.d('send media response:$answer');
       answer = answer.copyWith(
         isAnswer: true,
         type: _question.type,
@@ -388,7 +426,6 @@ class ChatCubit extends Cubit<ChatState> {
       _answerRequest = null;
     } catch (e) {
       logger.e(e);
-      //print(await ConnectivityService.checkConnection());
       if (!await ConnectivityService.checkConnection()) {
         answer = _getNotSentAnswer();
       }

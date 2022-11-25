@@ -227,6 +227,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "Nome de usuário ou senha incorretos"),
         "yesImSure":
             MessageLookupByLibrary.simpleMessage("Sim eu tenho certeza"),
+        "youCanNotHelpUsersSinceYouHaveAnActive":
+            MessageLookupByLibrary.simpleMessage(
+                "You can not help users since you have an active public question."),
         "youDoNotHaveAnyNotesYet":
             MessageLookupByLibrary.simpleMessage("Você ainda não tem notas"),
         "youHave": MessageLookupByLibrary.simpleMessage("Você tem"),

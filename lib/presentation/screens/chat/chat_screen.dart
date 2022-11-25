@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_media_widget.dart';
@@ -17,11 +16,11 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_media_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class ChatScreen extends StatelessWidget {
   final ChatItem _question = Get.arguments;
+
   ChatScreen({Key? key}) : super(key: key);
 
   @override
@@ -32,17 +31,16 @@ class ChatScreen extends StatelessWidget {
         getIt.get<CachingManager>(),
         getIt.get<ChatsRepository>(),
         _question,
+        context,
       ),
       child: Builder(
         builder: (context) {
           final ChatCubit chatCubit = context.read<ChatCubit>();
-          final Brand selectedBrand =
-              context.select((MainCubit cubit) => cubit.state.currentBrand);
+
           return Scaffold(
             appBar: ChatConversationAppBar(
               title: _question.clientName ?? '',
-              selectedBrand: selectedBrand,
-              question: _question,
+              zodiacSign: _question.clientInformation?.zodiac,
             ),
             backgroundColor: Theme.of(context).canvasColor,
             body: SafeArea(
@@ -152,6 +150,7 @@ class ChatScreen extends StatelessWidget {
 class _ChatItemWidget extends StatelessWidget {
   final ChatItem item;
   final VoidCallback? onPressedTryAgain;
+
   const _ChatItemWidget(
     this.item, {
     Key? key,
@@ -184,6 +183,7 @@ class _ChatItemWidget extends StatelessWidget {
 class _TextCounter extends StatelessWidget {
   final double width;
   final double height;
+
   const _TextCounter({
     Key? key,
     required this.width,

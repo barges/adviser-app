@@ -201,13 +201,15 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   Future<void> updateUserInfo() async {
     if (mainCubit.state.internetConnectionIsAvailable) {
-      final bool profileUpdated = await updateUserProfileTexts();
-      final bool coverPictureUpdated = await updateCoverPicture();
-      final bool avatarUpdated = await updateUserAvatar();
-      if (profileUpdated || coverPictureUpdated || avatarUpdated) {
-        Get.back(result: true);
-      } else {
-        Get.back();
+      if (checkNickName() & checkTextFields()) {
+        final bool profileUpdated = await updateUserProfileTexts();
+        final bool coverPictureUpdated = await updateCoverPicture();
+        final bool avatarUpdated = await updateUserAvatar();
+        if (profileUpdated || coverPictureUpdated || avatarUpdated) {
+          Get.back(result: true);
+        } else {
+          Get.back();
+        }
       }
     }
   }
@@ -226,21 +228,19 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     final LocalizedProperties newProperties =
         LocalizedProperties.fromJson(newPropertiesMap);
 
-    if (checkNickName() && checkTextFields()) {
-      final UserProfile? actualProfile = cacheManager.getUserProfile();
+    final UserProfile? actualProfile = cacheManager.getUserProfile();
 
-      if (nicknameController.text != actualProfile?.profileName ||
-          actualProfile?.localizedProperties != newProperties) {
-        final UpdateProfileRequest request = UpdateProfileRequest(
-          localizedProperties: newProperties,
-          profileName: nicknameController.text,
-        );
-        final UserProfile profile = await userRepository.updateProfile(request);
-        cacheManager.saveUserProfile(
-          profile,
-        );
-        isOk = true;
-      }
+    if (nicknameController.text != actualProfile?.profileName ||
+        actualProfile?.localizedProperties != newProperties) {
+      final UpdateProfileRequest request = UpdateProfileRequest(
+        localizedProperties: newProperties,
+        profileName: nicknameController.text,
+      );
+      final UserProfile profile = await userRepository.updateProfile(request);
+      cacheManager.saveUserProfile(
+        profile,
+      );
+      isOk = true;
     }
     return isOk;
   }
@@ -288,25 +288,27 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   Future<bool> updateCoverPicture() async {
     bool isOk = false;
-    final int? pictureIndex = picturesPageController.page?.toInt();
-    if (pictureIndex != null && pictureIndex > 0) {
-      final String url = state.coverPictures[pictureIndex];
-      final File file = await defaultCacheManager.getSingleFile(url);
-      final String? mimeType = lookupMimeType(file.path);
-      final List<int> imageBytes = await file.readAsBytes();
-      final String base64Image = base64Encode(imageBytes);
-      final UpdateProfileImageRequest request = UpdateProfileImageRequest(
-        mime: mimeType,
-        image: base64Image,
-      );
-      final List<String> coverPictures =
-          await userRepository.updateCoverPicture(request);
-      emit(
-        state.copyWith(
-          coverPictures: coverPictures,
-        ),
-      );
-      isOk = true;
+    if (state.coverPictures.isNotEmpty) {
+      final int? pictureIndex = picturesPageController.page?.toInt();
+      if (pictureIndex != null && pictureIndex > 0) {
+        final String url = state.coverPictures[pictureIndex];
+        final File file = await defaultCacheManager.getSingleFile(url);
+        final String? mimeType = lookupMimeType(file.path);
+        final List<int> imageBytes = await file.readAsBytes();
+        final String base64Image = base64Encode(imageBytes);
+        final UpdateProfileImageRequest request = UpdateProfileImageRequest(
+          mime: mimeType,
+          image: base64Image,
+        );
+        final List<String> coverPictures =
+            await userRepository.updateCoverPicture(request);
+        emit(
+          state.copyWith(
+            coverPictures: coverPictures,
+          ),
+        );
+        isOk = true;
+      }
     }
     return isOk;
   }

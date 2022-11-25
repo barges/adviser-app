@@ -1,17 +1,16 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_state.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/customer_profile/customer_profile_state.dart';
 
 class CustomerProfileCubit extends Cubit<CustomerProfileState> {
-  late final String customerID;
+  final String customerID;
   final CustomerRepository _repository = getIt.get<CustomerRepository>();
 
-  CustomerProfileCubit() : super(CustomerProfileState()) {
-    customerID = Get.arguments as String;
+  CustomerProfileCubit(this.customerID) : super(CustomerProfileState()) {
     getCustomerInfo().then((_) => getCurrentNote());
   }
 
@@ -49,17 +48,4 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
         arguments: AddNoteScreenArguments(
             customerID: customerID, noteChanged: getCurrentNote));
   }
-}
-
-class AddNoteScreenArguments {
-  final String customerID;
-  final String? oldNote;
-  final String? updatedAt;
-  VoidCallback noteChanged;
-
-  AddNoteScreenArguments(
-      {required this.customerID,
-      this.oldNote,
-      this.updatedAt,
-      required this.noteChanged});
 }

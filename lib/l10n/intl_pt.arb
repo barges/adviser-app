@@ -141,5 +141,6 @@
   "tryAgain": "Tente novamente",
   "toResetPasswordEnterEmailAddressAndWellSendYou": "To reset password, enter email address and we’ll send you instructions on how to create a new password.",
 "allowCamera": "Allow camera",
-  "allowGallery": "Allow gallery"
+  "allowGallery": "Allow gallery",
+  "youCanNotHelpUsersSinceYouHaveAnActive": "You can not help users since you have an active public question."
 }

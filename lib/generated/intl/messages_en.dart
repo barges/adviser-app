@@ -219,6 +219,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "wrongUsernameOrPassword":
             MessageLookupByLibrary.simpleMessage("Wrong username or password"),
         "yesImSure": MessageLookupByLibrary.simpleMessage("Yes, I’m sure"),
+        "youCanNotHelpUsersSinceYouHaveAnActive":
+            MessageLookupByLibrary.simpleMessage(
+                "You can not help users since you have an active public question."),
         "youDoNotHaveAnyNotesYet": MessageLookupByLibrary.simpleMessage(
             "You don’t have any notes yet"),
         "youHave": MessageLookupByLibrary.simpleMessage("You have"),
