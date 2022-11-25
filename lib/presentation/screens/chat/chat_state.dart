@@ -23,6 +23,5 @@ class ChatState with _$ChatState {
     String? recordingPath,
     Stream<RecordingDisposition>? recordingStream,
     Stream<PlaybackDisposition>? playbackStream,
-    String? errorMessage,
   }) = _ChatState;
 }

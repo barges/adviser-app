@@ -458,19 +458,6 @@ class ChatCubit extends Cubit<ChatState> {
         ? await _getPictureAttachment(1)
         : null;
 
-    if (pictureAttachment1 == null) {
-      if (textEditingController.text.length < 251) {
-        emit(state.copyWith(errorMessage: 'Minimum number of 250 symbols'));
-        return;
-      }
-      if (textEditingController.text.length > 2000) {
-        emit(state.copyWith(
-            errorMessage:
-                'Maximum number of 2000 symbols for public and private questions'));
-        return;
-      }
-    }
-
     _answerRequest = AnswerRequest(
       questionID: _question.id,
       ritualID: _question.ritualIdentifier,
@@ -604,10 +591,6 @@ class ChatCubit extends Cubit<ChatState> {
       mime: lookupMimeType(imageFile.path),
       attachment: base64Image,
     );
-  }
-
-  void closeErrorMessage() {
-    emit(state.copyWith(errorMessage: null));
   }
 
   Stream<PlaybackDisposition>? get onMediaProgress => _playerMedia?.onProgress;

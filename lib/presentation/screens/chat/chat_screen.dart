@@ -51,16 +51,6 @@ class ChatScreen extends StatelessWidget {
             body: SafeArea(
               child: Column(
                 children: [
-                  Builder(builder: (context) {
-                    String? errorText = context
-                        .select((ChatCubit cubit) => cubit.state.errorMessage);
-                    return errorText != null
-                        ? AppErrorWidget(
-                            errorMessage: errorText,
-                            close: chatCubit.closeErrorMessage,
-                          )
-                        : const SizedBox.shrink();
-                  }),
                   Expanded(
                     child: Stack(
                       children: [
