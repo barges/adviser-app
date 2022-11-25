@@ -47,9 +47,9 @@ Future showOkCancelAlert({
                   child: Padding(
                     padding: const EdgeInsets.only(
                       top: 24.0,
-                      left: AppConstants.horizontalScreenPadding,
-                      right: AppConstants.horizontalScreenPadding,
-                      bottom: AppConstants.horizontalScreenPadding,
+                      left: 16.0,
+                      right: 16.0,
+                      bottom: 16.0,
                     ),
                     child: Column(
                         mainAxisSize: MainAxisSize.min,
