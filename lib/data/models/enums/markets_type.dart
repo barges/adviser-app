@@ -1,6 +1,6 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 enum MarketsType {
   de,
@@ -8,8 +8,6 @@ enum MarketsType {
   es,
   pt,
   all,
-  // @JsonValue("en-US")
-  // enUs,
 }
 
 extension MarketsTypeExt on MarketsType {
@@ -31,13 +29,13 @@ extension MarketsTypeExt on MarketsType {
   String get languageName {
     switch (this) {
       case MarketsType.de:
-        return 'Deutsch';
+        return AppConstants.deBrandName;
       case MarketsType.en:
-        return 'English';
+        return AppConstants.enBrandName;
       case MarketsType.es:
-        return 'Español';
+        return AppConstants.esBrandName;
       case MarketsType.pt:
-        return 'Português';
+        return AppConstants.ptBrandName;
       case MarketsType.all:
         return S.current.allType;
     }

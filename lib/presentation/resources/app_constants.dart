@@ -12,6 +12,12 @@ class AppConstants {
   static const int maxTextLength = 20000;
   static const int maxAttachedPictures = 2;
   static const int maxRecordDurationInSec = 3 * 60;
+
+  static const String enBrandName = 'English';
+  static const String esBrandName = 'Español';
+  static const String ptBrandName = 'Português';
+  static const String deBrandName = 'Deutsch';
+
   static const String webToolUrl = 'https://advisor-staging.fortunica-app.com';
   static const String baseUrl = 'https://api-staging.fortunica-app.com';
 

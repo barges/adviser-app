@@ -45,10 +45,10 @@ class ChatsListTileWidget extends StatelessWidget {
               onTap: () {
                 if (needCheckStatus) {
                   if (isTaken) {
-                    sessionsCubit.goToCustomerProfile(question.clientID);
+                    sessionsCubit.goToCustomerProfile(question);
                   }
                 } else {
-                  sessionsCubit.goToCustomerProfile(question.clientID);
+                  sessionsCubit.goToCustomerProfile(question);
                 }
               },
               child: SizedBox(

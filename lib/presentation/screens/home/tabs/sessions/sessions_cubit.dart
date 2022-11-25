@@ -127,16 +127,22 @@ class SessionsCubit extends Cubit<SessionsState> {
     _repository.takeQuestion(AnswerRequest(questionID: questionId));
   }
 
-  void goToCustomerProfile(String? clientId) {
-    if (clientId != null) {
-      Get.toNamed(AppRoutes.customerProfile, arguments: clientId);
+  void goToCustomerProfile(ChatItem question) {
+    if (question.clientID != null && question.clientName != null) {
+      Get.toNamed(
+        AppRoutes.customerProfile,
+        arguments: CustomerProfileScreenArguments(
+          customerID: question.clientID!,
+          clientName: question.clientName!,
+          zodiacSign: question.clientInformation?.zodiac,
+        ),
+      );
     }
   }
 
   void goToChat(ChatItem? question) {
     if (question != null) {
-      Get.toNamed(AppRoutes.chat,
-          arguments: question);
+      Get.toNamed(AppRoutes.chat, arguments: question);
     }
   }
 
