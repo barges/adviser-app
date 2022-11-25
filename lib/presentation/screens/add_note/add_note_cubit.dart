@@ -20,8 +20,6 @@ class AddNoteCubit extends Cubit<AddNoteState> {
   late final TextEditingController noteController;
   late final TextEditingController titleController;
 
-  ///TODO: Change arguments and add callback to arguments for change note on customer profile screen
-
   AddNoteCubit() : super(AddNoteState()) {
     arguments = Get.arguments as AddNoteScreenArguments;
     noteController = TextEditingController(text: arguments.oldNote ?? '');
