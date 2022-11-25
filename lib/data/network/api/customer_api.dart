@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_note_request.dart';
-import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
+import 'package:shared_advisor_interface/data/models/customer_info/note.dart';
 import 'package:shared_advisor_interface/data/network/responses/update_note_response.dart';
 
 part 'customer_api.g.dart';
@@ -15,7 +15,7 @@ abstract class CustomerApi {
   Future<CustomerInfo> getCustomerInfo(@Path() String customerID);
 
   @GET('/notes')
-  Future<GetNoteResponse> getNoteForCustomer(
+  Future<Note> getNoteForCustomer(
       @Query('clientID') String customerID);
 
   @POST('/notes')

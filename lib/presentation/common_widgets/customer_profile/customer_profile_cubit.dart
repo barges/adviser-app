@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/data/models/customer_info/note.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_state.dart';
@@ -11,7 +12,7 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
   final CustomerRepository _repository = getIt.get<CustomerRepository>();
 
   CustomerProfileCubit(this.customerID) : super(CustomerProfileState()) {
-    getCustomerInfo().then((_) => getCurrentNote());
+    getCustomerInfo().then((_) => getNotes());
   }
 
   void updateIsFavorite() {
@@ -26,26 +27,34 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
     );
   }
 
-  Future<void> getCurrentNote() async {
+  Future<void> getNotes() async {
+    final Note note = await _repository.getNoteForCustomer(customerID);
     emit(
       state.copyWith(
-        currentNote: await _repository.getNoteForCustomer(customerID),
+        notes: note.content?.isNotEmpty == true ? [note] : [],
       ),
     );
   }
 
-  void navigateToAddNoteScreenForOldNote() {
-    Get.toNamed(AppRoutes.addNote,
-        arguments: AddNoteScreenArguments(
-            customerID: customerID,
-            oldNote: state.currentNote?.content,
-            updatedAt: state.currentNote?.updatedAt,
-            noteChanged: getCurrentNote));
+  void updateNote(Note note) {
+    Get.toNamed(
+      AppRoutes.addNote,
+      arguments: AddNoteScreenArguments(
+        customerID: customerID,
+        oldNote: note.content,
+        updatedAt: note.updatedAt,
+        noteChanged: getNotes,
+      ),
+    );
   }
 
-  void navigateToAddNoteScreenForNewNote() {
-    Get.toNamed(AppRoutes.addNote,
-        arguments: AddNoteScreenArguments(
-            customerID: customerID, noteChanged: getCurrentNote));
+  void createNewNote() {
+    Get.toNamed(
+      AppRoutes.addNote,
+      arguments: AddNoteScreenArguments(
+        customerID: customerID,
+        noteChanged: getNotes,
+      ),
+    );
   }
 }
