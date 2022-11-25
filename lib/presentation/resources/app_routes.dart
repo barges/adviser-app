@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/presentation/screens/article_details/ar
 import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_profile/customer_profile_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/gallery/gallery_pictures_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_screen.dart';
@@ -31,6 +32,7 @@ class AppRoutes {
   static const addNote = '/add_note_screen';
   static const reviews = '/reviews';
   static const chat = '/chat_screen';
+  static const customerSessions = '/customer_sessions';
 
   static final List<GetPage> getPages = [
     GetPage(
@@ -97,5 +99,9 @@ class AppRoutes {
       name: chat,
       page: () => ChatScreen(),
     ),
+    GetPage(
+      name: customerSessions,
+      page: () => const CustomerSessionsScreen(),
+    )
   ];
 }

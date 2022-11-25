@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
 import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/customer_profile_appbar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/narrow_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_profile/customer_profile_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/customer_profile/widgets/birth_town_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/customer_profile/widgets/info_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_profile/widgets/notes_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_profile/widgets/question_properties_widget.dart';
+import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 
 class CustomerProfileScreen extends StatelessWidget {
   const CustomerProfileScreen({Key? key}) : super(key: key);
@@ -29,9 +25,9 @@ class CustomerProfileScreen extends StatelessWidget {
                 context.read<CustomerProfileCubit>();
             final CustomerInfo? customerInfo = context.select(
                 (CustomerProfileCubit cubit) => cubit.state.customerInfo);
-
+            final ThemeData theme = Theme.of(context);
             return Scaffold(
-              appBar: CustomerProfileAppBar(
+              appBar: NarrowAppBar(
                 title: customerInfo != null
                     ? '${customerInfo.firstName} ${customerInfo.lastName}'
                     : '',
@@ -43,7 +39,7 @@ class CustomerProfileScreen extends StatelessWidget {
                     : Column(
                         children: [
                           Ink(
-                            color: Theme.of(context).canvasColor,
+                            color: theme.canvasColor,
                             width: MediaQuery.of(context).size.width,
                             padding: const EdgeInsets.symmetric(
                                 horizontal:
@@ -71,7 +67,7 @@ class CustomerProfileScreen extends StatelessWidget {
                                     //   ),
                                     //   child: Text(
                                     //     S.of(context).topSpender,
-                                    //     style: Theme.of(context)
+                                    //     style: theme
                                     //         .textTheme
                                     //         .labelSmall
                                     //         ?.copyWith(
@@ -96,48 +92,70 @@ class CustomerProfileScreen extends StatelessWidget {
                                         child: Text(
                                           '${customerInfo.firstName ?? ''} ${customerInfo.lastName ?? ''}',
                                           textAlign: TextAlign.center,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headlineMedium,
+                                          style: theme.textTheme.headlineMedium,
                                         ),
                                       ),
-                                      Text(
-                                        '${S.of(context).born} ${(customerInfo.birthdate ?? '').parseDateTimePattern3}, ${customerInfo.gender ?? ''}, ${customerInfo.countryFullName ?? ''}',
-                                        textAlign: TextAlign.center,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium
-                                            ?.copyWith(
-                                              color:
-                                                  Theme.of(context).shadowColor,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            (customerInfo.birthdate ?? '')
+                                                .parseDateTimePattern9,
+                                            style: theme.textTheme.bodyMedium
+                                                ?.copyWith(
+                                              color: theme.shadowColor,
                                             ),
-                                      ),
-                                      Text(
-                                        '${customerInfo.totalMessages ?? 0} ${S.of(context).chats.toLowerCase()}, 5 ${S.of(context).calls.toLowerCase()}, 5 ${S.of(context).services.toLowerCase()}',
-                                        textAlign: TextAlign.center,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium
-                                            ?.copyWith(
-                                              color:
-                                                  Theme.of(context).shadowColor,
+                                          ),
+                                          const SizedBox(
+                                            width: 8.0,
+                                          ),
+                                          Container(
+                                            width: 4.0,
+                                            height: 4.0,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(90.0),
+                                                color: theme.hintColor),
+                                          ),
+                                          const SizedBox(
+                                            width: 8.0,
+                                          ),
+                                          Text(
+                                            toBeginningOfSentenceCase(
+                                                    customerInfo.gender) ??
+                                                '',
+                                            style: theme.textTheme.bodyMedium
+                                                ?.copyWith(
+                                              color: theme.shadowColor,
                                             ),
+                                          )
+                                        ],
                                       ),
                                     ],
                                   )),
-                              const SizedBox(
-                                  height: AppConstants.horizontalScreenPadding),
-                              Wrap(
-                                runSpacing: 8.0,
-                                children: [
-                                  QuestionPropertiesWidget(
-                                    properties: customerInfo
-                                            .advisorMatch?.values
-                                            .toList() ??
-                                        const [],
-                                  ),
-                                ],
-                              ),
+                              Builder(builder: (context) {
+                                final List<String>? questionProperties =
+                                    customerInfo.advisorMatch?.values.toList();
+                                return (questionProperties != null &&
+                                        questionProperties.isNotEmpty)
+                                    ? Column(
+                                        children: [
+                                          const SizedBox(
+                                              height: AppConstants
+                                                  .horizontalScreenPadding),
+                                          Wrap(
+                                            runSpacing: 8.0,
+                                            children: [
+                                              QuestionPropertiesWidget(
+                                                properties: questionProperties,
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      )
+                                    : const SizedBox.shrink();
+                              }),
                             ]),
                           ),
                           Builder(builder: (context) {

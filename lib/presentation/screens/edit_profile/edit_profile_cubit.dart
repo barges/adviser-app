@@ -216,32 +216,32 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   Future<bool> updateUserProfileTexts() async {
     bool isOk = false;
-      final Map<String, dynamic> newPropertiesMap = {};
-      for (MapEntry<MarketsType, List<TextEditingController>> entry
-      in textControllersMap.entries) {
-        newPropertiesMap[entry.key.name] = PropertyByLanguage(
-            statusMessage: entry.value.firstOrNull?.text,
-            description: entry.value.lastOrNull?.text)
-            .toJson();
-      }
+    final Map<String, dynamic> newPropertiesMap = {};
+    for (MapEntry<MarketsType, List<TextEditingController>> entry
+        in textControllersMap.entries) {
+      newPropertiesMap[entry.key.name] = PropertyByLanguage(
+              statusMessage: entry.value.firstOrNull?.text,
+              description: entry.value.lastOrNull?.text)
+          .toJson();
+    }
 
-      final LocalizedProperties newProperties =
-      LocalizedProperties.fromJson(newPropertiesMap);
+    final LocalizedProperties newProperties =
+        LocalizedProperties.fromJson(newPropertiesMap);
 
-      final UserProfile? actualProfile = cacheManager.getUserProfile();
+    final UserProfile? actualProfile = cacheManager.getUserProfile();
 
-      if (nicknameController.text != actualProfile?.profileName ||
-          actualProfile?.localizedProperties != newProperties) {
-        final UpdateProfileRequest request = UpdateProfileRequest(
-          localizedProperties: newProperties,
-          profileName: nicknameController.text,
-        );
-        final UserProfile profile = await userRepository.updateProfile(request);
-        cacheManager.saveUserProfile(
-          profile,
-        );
-        isOk = true;
-      }
+    if (nicknameController.text != actualProfile?.profileName ||
+        actualProfile?.localizedProperties != newProperties) {
+      final UpdateProfileRequest request = UpdateProfileRequest(
+        localizedProperties: newProperties,
+        profileName: nicknameController.text,
+      );
+      final UserProfile profile = await userRepository.updateProfile(request);
+      cacheManager.saveUserProfile(
+        profile,
+      );
+      isOk = true;
+    }
     return isOk;
   }
 
@@ -288,7 +288,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   Future<bool> updateCoverPicture() async {
     bool isOk = false;
-    if(state.coverPictures.isNotEmpty) {
+    if (state.coverPictures.isNotEmpty) {
       final int? pictureIndex = picturesPageController.page?.toInt();
       if (pictureIndex != null && pictureIndex > 0) {
         final String url = state.coverPictures[pictureIndex];
@@ -301,7 +301,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           image: base64Image,
         );
         final List<String> coverPictures =
-        await userRepository.updateCoverPicture(request);
+            await userRepository.updateCoverPicture(request);
         emit(
           state.copyWith(
             coverPictures: coverPictures,

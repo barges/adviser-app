@@ -61,14 +61,12 @@ class ChatsListTileWidget extends StatelessWidget {
                           '',
                       height: 48.0,
                     ),
-
-                    ///TODO: need change
-                    // CircleAvatar(
-                    //     radius: 8.0,
-                    //     backgroundColor: Theme.of(context).canvasColor,
-                    //
-                    //
-                    //     child: Assets.vectors.ritual.svg())
+                    question.type == ChatItemType.public
+                        ? CircleAvatar(
+                            radius: 8.0,
+                            backgroundColor: Theme.of(context).canvasColor,
+                            child: Assets.vectors.sessionsTypes.public.svg())
+                        : const SizedBox.shrink()
                   ],
                 ),
               ),

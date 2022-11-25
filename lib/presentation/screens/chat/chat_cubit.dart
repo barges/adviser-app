@@ -18,7 +18,11 @@ import 'package:shared_advisor_interface/data/network/responses/conversations_re
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'chat_state.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -31,6 +35,7 @@ class ChatCubit extends Cubit<ChatState> {
   final CachingManager _cachingManager;
   final ChatsRepository _repository;
   final ChatItem _question;
+  final BuildContext _context;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final Codec _codec = Platform.isIOS ? Codec.aacMP4 : Codec.mp3;
   final FileExt _recordFileExt = CurrentFileExt.current;
@@ -46,6 +51,7 @@ class ChatCubit extends Cubit<ChatState> {
     this._cachingManager,
     this._repository,
     this._question,
+    this._context,
   ) : super(const ChatState()) {
     _init();
     _getConversations();
@@ -145,9 +151,17 @@ class ChatCubit extends Cubit<ChatState> {
     try {
       lastQuestion = await _repository.getQuestion(id: _question.id ?? '');
     } on DioError catch (e) {
-      if(e.response?.statusCode == 404){
-        ///TODO: open pop-up
-      }
+      await showOkCancelAlert(
+        context: _context,
+        title: _mainCubit.state.errorMessage,
+        okText: 'OK',
+        actionOnOK: () {
+          Get.offNamed(AppRoutes.home,
+              arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
+        },
+        allowBarrierClock: false,
+        isCancelEnabled: false,
+      );
       logger.d(e);
     }
 
@@ -178,8 +192,22 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> takeQuestion() async {
-
-    _repository.takeQuestion(AnswerRequest(questionID: _question.id));
+    try {
+      await _repository.takeQuestion(AnswerRequest(questionID: _question.id));
+    } on DioError catch (e) {
+      await showOkCancelAlert(
+        context: _context,
+        title: _mainCubit.state.errorMessage,
+        okText: 'OK',
+        actionOnOK: () {
+          Get.offNamed(AppRoutes.home,
+              arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
+        },
+        allowBarrierClock: false,
+        isCancelEnabled: false,
+      );
+      logger.d(e);
+    }
   }
 
   Future<void> startRecordingAudio() async {
