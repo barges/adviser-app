@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -80,14 +81,26 @@ class AdvisorPreviewScreen extends StatelessWidget {
               color: white,
               child: Stack(
                 children: [
-                  Image.network(
-                    advisorPreviewCubit
-                            .userProfile.coverPictures?.firstOrNull ??
-                        '',
-                    height: 150.0,
-                    width: MediaQuery.of(context).size.width,
-                    fit: BoxFit.cover,
-                  ),
+                  (advisorPreviewCubit.userProfile.coverPictures != null &&
+                          advisorPreviewCubit
+                              .userProfile.coverPictures!.isNotEmpty)
+                      ? Image.network(
+                          advisorPreviewCubit
+                                  .userProfile.coverPictures?.firstOrNull ??
+                              '',
+                          height: 150.0,
+                          width: MediaQuery.of(context).size.width,
+                          fit: BoxFit.cover,
+                        )
+                      : Container(
+                          height: 150.0,
+                          width: MediaQuery.of(context).size.width,
+                          color: AppColorsLight.background,
+                          child: Center(
+                            child: SvgPicture.asset(
+                                Assets.vectors.placeholderCoverImage.path),
+                          ),
+                        ),
                   Container(
                     margin: const EdgeInsets.only(top: 110.0),
                     child: Column(
