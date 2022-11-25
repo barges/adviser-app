@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 const String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 const String datePattern1 = 'MMM d, yyyy';
@@ -30,13 +31,13 @@ extension StringExt on String {
   String get languageNameByCode {
     switch (this) {
       case 'de':
-        return 'Deutsch';
+        return AppConstants.deBrandName;
       case 'en':
-        return 'English';
+        return AppConstants.enBrandName;
       case 'es':
-        return 'Español';
+        return AppConstants.esBrandName;
       case 'pt':
-        return 'Português';
+        return AppConstants.ptBrandName;
       default:
         return 'Other';
     }
