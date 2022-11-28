@@ -142,5 +142,10 @@
   "allowCamera": "Allow camera",
   "allowGallery": "Allow gallery",
   "toResetPasswordEnterEmailAddressAndWellSendYou": "To reset password, enter email address and we’ll send you instructions on how to create a new password.",
-  "youCanNotHelpUsersSinceYouHaveAnActive": "You can not help users since you have an active public question."
+  "activeChat": "Active chat",
+  "history": "History",
+  "profile":"Profile",
+  "youCanNotHelpUsersSinceYouHaveAnActive": "You can not help users since you have an active public question.",
+  "personalDetails": "PERSONAL DETAILS",
+  "takeQuestion": "Take question"
 }

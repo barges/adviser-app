@@ -24,6 +24,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "aboutMe": MessageLookupByLibrary.simpleMessage("Sobre mim"),
         "account": MessageLookupByLibrary.simpleMessage("Conta"),
+        "activeChat": MessageLookupByLibrary.simpleMessage("Chat ativo"),
         "addCoverPicture":
             MessageLookupByLibrary.simpleMessage("Adicionar imagem de capa"),
         "addGalleryPictures":
@@ -106,6 +107,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "fortunica": MessageLookupByLibrary.simpleMessage("Fortunica"),
         "from15secTo3min":
             MessageLookupByLibrary.simpleMessage("de 15 segundos a 3 minutos"),
+        "history": MessageLookupByLibrary.simpleMessage("História"),
         "imAvailableNow":
             MessageLookupByLibrary.simpleMessage("Estou disponível agora"),
         "informOurTeamYourPlannedReturnDate":
@@ -149,6 +151,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Análise de visão geral de desempenho"),
         "personalBalance":
             MessageLookupByLibrary.simpleMessage("Saldo Pessoal"),
+        "personalDetails":
+            MessageLookupByLibrary.simpleMessage("PDETALHES PESSOAIS"),
         "placesUpFromLastMonth": MessageLookupByLibrary.simpleMessage(
             "lugares acima do mês passado"),
         "pleaseEnterAtLeast3Characters": MessageLookupByLibrary.simpleMessage(
@@ -162,6 +166,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Visualizar conta"),
         "privateQuestions":
             MessageLookupByLibrary.simpleMessage("Perguntas particulares"),
+        "profile": MessageLookupByLibrary.simpleMessage("Perfil"),
         "profileText": MessageLookupByLibrary.simpleMessage("Texto do perfil"),
         "public": MessageLookupByLibrary.simpleMessage("Pública"),
         "questionProperties":
@@ -188,6 +193,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "statusText": MessageLookupByLibrary.simpleMessage("Texto de status"),
         "takeAPhoto": MessageLookupByLibrary.simpleMessage("Tire uma foto"),
         "takeMeThere": MessageLookupByLibrary.simpleMessage("Leve-me lá"),
+        "takeQuestion": MessageLookupByLibrary.simpleMessage("Tirar dúvidas"),
         "thePasswordsMustMatch": MessageLookupByLibrary.simpleMessage(
             "As senhas devem corresponder"),
         "theUserWasNotFound": MessageLookupByLibrary.simpleMessage(

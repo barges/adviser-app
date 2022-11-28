@@ -23,7 +23,6 @@ class ChatTextMediaWidget extends ChatWidget {
 
     return ChatItemBackground(
       onPressedTryAgain: onPressedTryAgain,
-      isBorder: true,
       isTryAgain: !item.isSent,
       padding: paddingItem,
       color: getColorItem(context),

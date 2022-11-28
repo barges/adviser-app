@@ -24,6 +24,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "aboutMe": MessageLookupByLibrary.simpleMessage("Sobre mí"),
         "account": MessageLookupByLibrary.simpleMessage("Cuenta"),
+        "activeChat": MessageLookupByLibrary.simpleMessage("Active chat"),
         "addCoverPicture":
             MessageLookupByLibrary.simpleMessage("Agregar imagen de portada"),
         "addGalleryPictures": MessageLookupByLibrary.simpleMessage(
@@ -107,6 +108,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "fortunica": MessageLookupByLibrary.simpleMessage("Fortunica"),
         "from15secTo3min":
             MessageLookupByLibrary.simpleMessage("from 15 sec to 3 min"),
+        "history": MessageLookupByLibrary.simpleMessage("History"),
         "imAvailableNow":
             MessageLookupByLibrary.simpleMessage("Estoy disponible ahora"),
         "informOurTeamYourPlannedReturnDate":
@@ -149,6 +151,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Descripción general del rendimiento Análisis"),
         "personalBalance":
             MessageLookupByLibrary.simpleMessage("Saldo personal"),
+        "personalDetails":
+            MessageLookupByLibrary.simpleMessage("PERSONAL DETAILS"),
         "placesUpFromLastMonth": MessageLookupByLibrary.simpleMessage(
             "posiciones desde el mes pasado"),
         "pleaseEnterAtLeast3Characters": MessageLookupByLibrary.simpleMessage(
@@ -162,6 +166,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Vista previa de la cuenta"),
         "privateQuestions":
             MessageLookupByLibrary.simpleMessage("Preguntas privadas"),
+        "profile": MessageLookupByLibrary.simpleMessage("Profile"),
         "profileText": MessageLookupByLibrary.simpleMessage("Texto de perfil"),
         "public": MessageLookupByLibrary.simpleMessage("Público"),
         "questionProperties":
@@ -188,6 +193,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "statusText": MessageLookupByLibrary.simpleMessage("Texto de estado"),
         "takeAPhoto": MessageLookupByLibrary.simpleMessage("Toma una foto"),
         "takeMeThere": MessageLookupByLibrary.simpleMessage("Llévame allí"),
+        "takeQuestion": MessageLookupByLibrary.simpleMessage("Take question"),
         "thePasswordsMustMatch": MessageLookupByLibrary.simpleMessage(
             "Las contraseñas deben coincidir"),
         "theUserWasNotFound": MessageLookupByLibrary.simpleMessage(

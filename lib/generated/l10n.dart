@@ -1480,11 +1480,61 @@ class S {
     );
   }
 
+  /// `Active chat`
+  String get activeChat {
+    return Intl.message(
+      'Active chat',
+      name: 'activeChat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `History`
+  String get history {
+    return Intl.message(
+      'History',
+      name: 'history',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message(
+      'Profile',
+      name: 'profile',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `You can not help users since you have an active public question.`
   String get youCanNotHelpUsersSinceYouHaveAnActive {
     return Intl.message(
       'You can not help users since you have an active public question.',
       name: 'youCanNotHelpUsersSinceYouHaveAnActive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `PERSONAL DETAILS`
+  String get personalDetails {
+    return Intl.message(
+      'PERSONAL DETAILS',
+      name: 'personalDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Take question`
+  String get takeQuestion {
+    return Intl.message(
+      'Take question',
+      name: 'takeQuestion',
       desc: '',
       args: [],
     );
