@@ -14,7 +14,10 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => SplashCubit(getIt.get<CachingManager>()),
+      create: (_) {
+
+        return SplashCubit(getIt.get<CachingManager>(), context);
+      },
       child: Builder(
         builder: (context) {
           final Size size = MediaQuery.of(context).size;

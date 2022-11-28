@@ -16,5 +16,6 @@ class SessionsState with _$SessionsState {
     @Default(0) int currentFilterIndex,
     @Default(0) int currentMarketIndexForPublic,
     @Default(0) int currentMarketIndexForPrivate,
+    @Default('') String successMessage,
   ]) = _SessionsState;
 }

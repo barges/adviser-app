@@ -1,17 +1,15 @@
-import 'package:flutter/material.dart';
 import 'package:freshchat_sdk/freshchat_sdk.dart';
 import 'package:freshchat_sdk/freshchat_user.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 const String appName = 'Psychic Union';
 
 abstract class FreshChatService {
   Future<bool> setUpFreshChat(UserInfo? userInfo);
 
-  Future<void> initFreshChat(BuildContext context);
+  Future<void> initFreshChat(bool isDarkMode);
 
   Stream onRestoreStream();
 
@@ -33,11 +31,10 @@ class FreshChatServiceImpl extends FreshChatService {
   // final ApiConfig _apiConfig = GetIt.I.get<ApiConfig>();
 
   @override
-  Future initFreshChat(BuildContext context) async {
+  Future initFreshChat(bool isDarkMode) async {
     Freshchat.init(freshChatId, freshChatKey, freshChatDomain,
         stringsBundle: 'FCCustomLocalizable',
-        themeName:
-            Utils.isDarkMode(context) ? 'FCDarkTheme.plist' : 'FCTheme.plist');
+        themeName: isDarkMode ? 'FCDarkTheme.plist' : 'FCTheme.plist');
     _wasInit = true;
   }
 

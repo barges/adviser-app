@@ -14,5 +14,6 @@ class LoginState with _$LoginState {
     @Default(false) bool passwordHasFocus,
     @Default(true) bool hiddenPassword,
     @Default(false) bool buttonIsActive,
+    @Default('') String successMessage,
   }) = _LoginState;
 }

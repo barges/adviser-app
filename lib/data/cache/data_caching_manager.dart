@@ -37,8 +37,12 @@ class DataCachingManager implements CachingManager {
   }
 
   @override
-  Future<void> logout(Brand brand) async {
-
+  Future<bool> logout(Brand brand) async {
+    final bool isOk = await clearTokenForBrand(brand);
+    if (isOk) {
+      _userBox.erase();
+    }
+    return isOk;
   }
 
   @override
@@ -154,11 +158,10 @@ class DataCachingManager implements CachingManager {
   }
 
   @override
-  UserInfo? getUserInfo(){
+  UserInfo? getUserInfo() {
     UserInfo userInfo = _userBox.read(_userInfoKey);
     return userInfo;
   }
-
 
   @override
   VoidCallback listenUserProfile(ValueChanged<UserProfile> callback) {
@@ -171,8 +174,7 @@ class DataCachingManager implements CachingManager {
   Future<void> updateUserProfileImage(List<String>? profilePictures) async {
     UserProfile? profile = getUserProfile();
 
-    await _userBox.write(
-      _userProfileKey,
+    await saveUserProfile(
       profile?.copyWith(
         profilePictures: profilePictures,
       ),
@@ -184,8 +186,7 @@ class DataCachingManager implements CachingManager {
       List<String>? coverPictures) async {
     UserProfile? profile = getUserProfile();
 
-    await _userBox.write(
-      _userProfileKey,
+    await saveUserProfile(
       profile?.copyWith(
         coverPictures: coverPictures,
       ),

@@ -108,9 +108,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         ),
       );
       if (success) {
-        Get.back();
-        _mainCubit.updateSuccessMessage(
-            S.current.youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo);
+        Get.back(result: true);
       }
     } else {
       if (!emailIsValid()) {
