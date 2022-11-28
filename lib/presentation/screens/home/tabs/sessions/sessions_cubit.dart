@@ -174,18 +174,28 @@ class SessionsCubit extends Cubit<SessionsState> {
       _publicQuestions.addAll(result.questions ?? const []);
 
       if (_publicQuestions.firstOrNull?.status == ChatItemStatusType.taken) {
-        _mainCubit.updateSuccessMessage(
-            S.current.youCanNotHelpUsersSinceYouHaveAnActive);
         emit(state.copyWith(
           publicQuestions: List.of(_publicQuestions),
           disabledIndexes: [1],
+          successMessage: S.current.youCanNotHelpUsersSinceYouHaveAnActive,
         ));
       } else {
         emit(state.copyWith(
           publicQuestions: List.of(_publicQuestions),
           disabledIndexes: [],
+          successMessage: '',
         ));
       }
+    }
+  }
+
+  void clearSuccessMessage() {
+    if (state.successMessage.isNotEmpty) {
+      emit(
+        state.copyWith(
+          successMessage: '',
+        ),
+      );
     }
   }
 

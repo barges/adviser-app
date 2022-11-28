@@ -19,9 +19,6 @@ class AppInterceptor extends Interceptor {
   FutureOr<dynamic> onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     _mainCubit.clearErrorMessage();
-    if (Get.currentRoute != AppRoutes.home) {
-      _mainCubit.clearSuccessMessage();
-    }
     _mainCubit.updateIsLoading(true);
     // if (options.headers.containsKey("requiresToken")) {
     //   //remove the auxiliary header

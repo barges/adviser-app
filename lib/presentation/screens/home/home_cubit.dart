@@ -14,7 +14,6 @@ import 'package:shared_advisor_interface/presentation/resources/app_arguments.da
 import 'package:shared_advisor_interface/presentation/screens/home/home_state.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
-import 'package:shared_advisor_interface/presentation/services/fresh_chat_service.dart';
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -41,8 +40,6 @@ class HomeCubit extends Cubit<HomeState> {
     required this.cacheManager,
     required this.context,
   }) : super(const HomeState()) {
-    getIt.get<FreshChatService>().initFreshChat(context);
-
     final HomeScreenArguments? arguments = Get.arguments;
     if (arguments?.initTab != null && tabsList.contains(arguments!.initTab)) {
       changeTabIndex(

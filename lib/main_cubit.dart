@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
@@ -58,20 +57,6 @@ class MainCubit extends Cubit<MainState> {
     if (state.errorMessage.isNotEmpty) {
       emit(state.copyWith(errorMessage: ''));
     }
-  }
-
-  void clearSuccessMessage() {
-    if (state.successMessage.isNotEmpty) {
-      emit(
-        state.copyWith(
-          successMessage: '',
-        ),
-      );
-    }
-  }
-
-  void updateSuccessMessage(String message) {
-    emit(state.copyWith(successMessage: message));
   }
 
   void changeLocale(int index) {

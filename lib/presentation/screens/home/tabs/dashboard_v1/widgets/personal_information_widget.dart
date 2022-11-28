@@ -22,10 +22,14 @@ class PersonalInformationWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
           child: Column(
             children: [
-              UserAvatar(
-                  diameter: 60.0,
-                  withBorder: false,
-                  avatarUrl: userProfile?.profilePictures?.firstOrNull),
+              GestureDetector(
+                onTap: context.read<DashboardV1Cubit>().getReports,
+                child
+                    : UserAvatar(
+                    diameter: 60.0,
+                    withBorder: false,
+                    avatarUrl: userProfile?.profilePictures?.firstOrNull),
+              ),
               const SizedBox(
                 height: 8.0,
               ),

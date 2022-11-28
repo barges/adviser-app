@@ -29,7 +29,7 @@ class DrawerCubit extends Cubit<SplashState> {
   }
 
   Future<void> logout(Brand brand) async {
-    final bool isOk = await _cacheManager.clearTokenForBrand(brand);
+    final bool isOk = await _cacheManager.logout(brand);
     if (isOk) {
       final List<Brand> authorizedBrands = _cacheManager.getAuthorizedBrands();
       if (authorizedBrands.isNotEmpty) {

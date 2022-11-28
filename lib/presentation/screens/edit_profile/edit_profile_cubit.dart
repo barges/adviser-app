@@ -30,9 +30,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
-  final UserRepository userRepository = getIt.get<UserRepository>();
-  final CachingManager cacheManager = getIt.get<CachingManager>();
-  final DefaultCacheManager defaultCacheManager = DefaultCacheManager();
+  final UserRepository _userRepository = getIt.get<UserRepository>();
+  final CachingManager _cacheManager = getIt.get<CachingManager>();
+  final DefaultCacheManager _defaultCacheManager = DefaultCacheManager();
 
   late final UserProfile? userProfile;
   late final List<MarketsType> activeLanguages;
@@ -50,7 +50,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   int? initialLanguageIndexIfHasError;
 
   EditProfileCubit() : super(EditProfileState()) {
-    userProfile = cacheManager.getUserProfile();
+    userProfile = _cacheManager.getUserProfile();
     activeLanguages = userProfile?.activeLanguages ?? [];
     activeLanguagesGlobalKeys =
         activeLanguages.map((e) => GlobalKey()).toList();
@@ -228,7 +228,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     final LocalizedProperties newProperties =
         LocalizedProperties.fromJson(newPropertiesMap);
 
-    final UserProfile? actualProfile = cacheManager.getUserProfile();
+    final UserProfile? actualProfile = _cacheManager.getUserProfile();
 
     if (nicknameController.text != actualProfile?.profileName ||
         actualProfile?.localizedProperties != newProperties) {
@@ -236,8 +236,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         localizedProperties: newProperties,
         profileName: nicknameController.text,
       );
-      final UserProfile profile = await userRepository.updateProfile(request);
-      cacheManager.saveUserProfile(
+      final UserProfile profile = await _userRepository.updateProfile(request);
+      _cacheManager.saveUserProfile(
         profile,
       );
       isOk = true;
@@ -292,7 +292,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       final int? pictureIndex = picturesPageController.page?.toInt();
       if (pictureIndex != null && pictureIndex > 0) {
         final String url = state.coverPictures[pictureIndex];
-        final File file = await defaultCacheManager.getSingleFile(url);
+        final File file = await _defaultCacheManager.getSingleFile(url);
         final String? mimeType = lookupMimeType(file.path);
         final List<int> imageBytes = await file.readAsBytes();
         final String base64Image = base64Encode(imageBytes);
@@ -301,7 +301,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           image: base64Image,
         );
         final List<String> coverPictures =
-            await userRepository.updateCoverPicture(request);
+            await _userRepository.updateCoverPicture(request);
+        _cacheManager.updateUserProfileCoverPictures(coverPictures);
         emit(
           state.copyWith(
             coverPictures: coverPictures,
@@ -316,7 +317,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   Future<void> deletePictureFromGallery(int pictureIndex) async {
     if (mainCubit.state.internetConnectionIsAvailable) {
       final List<String> coverPictures =
-          await userRepository.deleteCoverPicture(pictureIndex);
+          await _userRepository.deleteCoverPicture(pictureIndex);
       emit(
         state.copyWith(
           coverPictures: coverPictures,
@@ -335,7 +336,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         mime: mimeType,
         image: base64Image,
       );
-      await userRepository.updateProfilePicture(request);
+      await _userRepository.updateProfilePicture(request);
       isOk = true;
     }
     return isOk;
@@ -351,7 +352,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         image: base64Image,
       );
       List<String> coverPictures =
-          await userRepository.addCoverPictureToGallery(request);
+          await _userRepository.addCoverPictureToGallery(request);
       emit(state.copyWith(coverPictures: coverPictures));
     }
   }
