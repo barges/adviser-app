@@ -12,7 +12,7 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
   final CustomerRepository _repository = getIt.get<CustomerRepository>();
 
   CustomerProfileCubit(this.customerID) : super(CustomerProfileState()) {
-    getCustomerInfo();
+    getCustomerInfo().then((_) => getNotes());
   }
 
   void updateIsFavorite() {
@@ -20,11 +20,9 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
   }
 
   Future<void> getCustomerInfo() async {
-    final Note note = await _repository.getNoteForCustomer(customerID);
     emit(
       state.copyWith(
         customerInfo: await _repository.getCustomerInfo(customerID),
-        notes: note.content?.isNotEmpty == true ? [note] : [],
       ),
     );
   }
