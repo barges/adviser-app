@@ -144,5 +144,6 @@
   "allowGallery": "Allow gallery",
   "youCanNotHelpUsersSinceYouHaveAnActive": "You can not help users since you have an active public question.",
   "ok": "OK",
-  "youDontHaveInternetConnection": "You don’t have internet connection"
+  "youDontHaveInternetConnection": "You don’t have internet connection",
+  "note": "Note"
 }

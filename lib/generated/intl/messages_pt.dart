@@ -97,6 +97,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noQuestionsYet" : MessageLookupByLibrary.simpleMessage("Sem perguntas, ainda."),
     "noSessionsYet" : MessageLookupByLibrary.simpleMessage("Ainda não há sessões."),
     "notEnoughConversationsCheckOurProfileGuide" : MessageLookupByLibrary.simpleMessage("Não há conversas suficientes? Confira nosso Guia de Perfil."),
+    "note" : MessageLookupByLibrary.simpleMessage("Note"),
     "notes" : MessageLookupByLibrary.simpleMessage("Notas"),
     "notifications" : MessageLookupByLibrary.simpleMessage("Notificações"),
     "numerology" : MessageLookupByLibrary.simpleMessage("Numerologia"),

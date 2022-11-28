@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
-import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
+import 'package:shared_advisor_interface/data/models/customer_info/note.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/widgets/notes_widget.dart';
@@ -25,12 +25,11 @@ class CustomerProfileWidget extends StatelessWidget {
       create: (_) => CustomerProfileCubit(customerId),
       child: Builder(
         builder: (context) {
-          final CustomerProfileCubit userProfileCubit =
-              context.read<CustomerProfileCubit>();
           final CustomerInfo? customerInfo = context
               .select((CustomerProfileCubit cubit) => cubit.state.customerInfo);
           final ThemeData theme = Theme.of(context);
           return SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
             child: Builder(
               builder: (context) {
                 return (customerInfo == null)
@@ -158,18 +157,11 @@ class CustomerProfileWidget extends StatelessWidget {
                             ]),
                           ),
                           Builder(builder: (context) {
-                            final GetNoteResponse? currentNote = context.select(
+                            final List<Note>? notes = context.select(
                                 (CustomerProfileCubit cubit) =>
-                                    cubit.state.currentNote);
+                                    cubit.state.notes);
                             return NotesWidget(
-                              onTapAddNew: userProfileCubit
-                                  .navigateToAddNoteScreenForNewNote,
-                              onTapOldNote: userProfileCubit
-                                  .navigateToAddNoteScreenForOldNote,
-                              notes: (currentNote?.content == "" ||
-                                      currentNote == null)
-                                  ? []
-                                  : [currentNote],
+                              notes: notes,
                               images: const [
                                 [
                                   //'https://cdn.shopify.com/s/files/1/0275/3318/0970/products/AgendaNotebook-2_800x.jpg'

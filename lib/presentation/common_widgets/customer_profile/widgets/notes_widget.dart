@@ -1,29 +1,29 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/data/models/customer_info/note.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class NotesWidget extends StatelessWidget {
-  final List<GetNoteResponse> notes;
+  final List<Note>? notes;
   final List<List<String>> images;
-  final VoidCallback? onTapAddNew;
-  final VoidCallback? onTapOldNote;
 
   const NotesWidget({
     Key? key,
-    this.notes = const [],
+    this.notes,
     this.images = const [],
-    this.onTapAddNew,
-    this.onTapOldNote,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final CustomerProfileCubit customerProfileCubit =
+        context.read<CustomerProfileCubit>();
     return Container(
       padding: const EdgeInsets.symmetric(
           vertical: 24.0, horizontal: AppConstants.horizontalScreenPadding),
@@ -36,28 +36,28 @@ class NotesWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Note', //S.of(context).notes,
+                    S.of(context).note,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   /**
-                    Padding(
+                      Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text('${texts.length}',
-                          style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context).shadowColor)),
-                    )
-                  */
+                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).shadowColor)),
+                      )
+                   */
                 ],
               ),
-              notes.isEmpty
+              notes?.isEmpty == true
                   ? Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Assets.vectors.plus.svg(),
-                        const SizedBox(width: 9.0),
+                        const SizedBox(width: 4.0),
                         GestureDetector(
-                          onTap: onTapAddNew,
+                          onTap: customerProfileCubit.createNewNote,
                           child: Text(
                             S.of(context).addNew,
                             style: Theme.of(context)
@@ -74,25 +74,33 @@ class NotesWidget extends StatelessWidget {
                   : const SizedBox.shrink(),
             ],
           ),
-          const SizedBox(height: 11.0),
-          notes.isNotEmpty
-              ? ListView.separated(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (_, index) => _OneNoteWidget(
-                      onTap: onTapOldNote,
-                      text: notes[index].content!,
-                      updatedAt: notes[index].updatedAt!,
-                      images: images.isNotEmpty ? images[index] : const []),
-                  separatorBuilder: (_, __) => const SizedBox(height: 11.0),
-                  itemCount: min(notes.length, images.length),
-                )
-              : EmptyListWidget(
-                  title: S.of(context).youDoNotHaveAnyNotesYet,
-                  label: S
-                      .of(context)
-                      .addInformationYouWantKeepInMindAboutThisClient,
-                )
+          const SizedBox(
+            height: 10.0,
+          ),
+          notes != null
+              ? notes!.isNotEmpty
+                  ? ListView.separated(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (_, index) {
+                        final Note note = notes![index];
+                        return _OneNoteWidget(
+                            onTap: () => customerProfileCubit.updateNote(note),
+                            text: note.content ?? '',
+                            updatedAt: note.updatedAt ?? '',
+                            images:
+                                images.isNotEmpty ? images[index] : const []);
+                      },
+                      separatorBuilder: (_, __) => const SizedBox(height: 10.0),
+                      itemCount: min(notes!.length, images.length),
+                    )
+                  : EmptyListWidget(
+                      title: S.of(context).youDoNotHaveAnyNotesYet,
+                      label: S
+                          .of(context)
+                          .addInformationYouWantKeepInMindAboutThisClient,
+                    )
+              : const SizedBox.shrink(),
         ],
       ),
     );
