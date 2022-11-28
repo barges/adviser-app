@@ -75,9 +75,6 @@ class UserRepositoryImpl implements UserRepository {
 
     List<String> coverPictures =
         await _api.updateCoverPicture(userId ?? '', request);
-
-    _cacheManager.updateUserProfileCoverPictures(coverPictures);
-
     return coverPictures;
   }
 

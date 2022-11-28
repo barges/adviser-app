@@ -133,10 +133,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "notEnoughConversationsCheckOurProfileGuide":
             MessageLookupByLibrary.simpleMessage(
                 "Nicht genug Gespräche? Sehen Sie sich unseren Profilleitfaden an."),
+        "note": MessageLookupByLibrary.simpleMessage("Note"),
         "notes": MessageLookupByLibrary.simpleMessage("Notizen"),
         "notifications":
             MessageLookupByLibrary.simpleMessage("Benachrichtigungen"),
         "numerology": MessageLookupByLibrary.simpleMessage("Numerologie"),
+        "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "onlyPremiumProducts":
             MessageLookupByLibrary.simpleMessage("Nur Premium-Produkte"),
         "openEmailApp":
@@ -234,6 +236,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "You can not help users since you have an active public question."),
         "youDoNotHaveAnyNotesYet": MessageLookupByLibrary.simpleMessage(
             "Sie haben noch keine Notizen"),
+        "youDontHaveInternetConnection": MessageLookupByLibrary.simpleMessage(
+            "You don’t have internet connection"),
         "youHave": MessageLookupByLibrary.simpleMessage("Du hast"),
         "youHaveNotCompletedAnySessionsYet":
             MessageLookupByLibrary.simpleMessage(

@@ -4,7 +4,6 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_succes_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -50,11 +49,12 @@ class _PublicQuestionsListWidget extends StatelessWidget {
           height: 1.0,
         ),
         Builder(builder: (context) {
-          final String successMessage =
-              context.select((MainCubit cubit) => cubit.state.successMessage);
+          final String successMessage = context
+              .select((SessionsCubit cubit) => cubit.state.successMessage);
           return successMessage.isNotEmpty
               ? AppSuccessWidget(
                   message: successMessage,
+                  onClose: sessionsCubit.clearSuccessMessage,
                 )
               : const SizedBox.shrink();
         }),

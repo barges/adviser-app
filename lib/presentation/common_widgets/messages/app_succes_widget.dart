@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/open_email_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class AppSuccessWidget extends StatelessWidget {
   final String message;
   final bool needEmailButton;
+  final VoidCallback onClose;
 
   const AppSuccessWidget({
     Key? key,
     required this.message,
+    required this.onClose,
     this.needEmailButton = false,
   }) : super(key: key);
 
@@ -41,11 +41,11 @@ class AppSuccessWidget extends StatelessWidget {
                           color: Theme.of(context).primaryColor,
                         ),
                   ),
-                  if(needEmailButton)
-                  const Padding(
-                    padding: EdgeInsets.only(top: 8.0),
-                    child: OpenEmailButton(),
-                  )
+                  if (needEmailButton)
+                    const Padding(
+                      padding: EdgeInsets.only(top: 8.0),
+                      child: OpenEmailButton(),
+                    )
                 ],
               ),
             ),
@@ -54,7 +54,7 @@ class AppSuccessWidget extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(horizontal: 22.0, vertical: 8.0),
             child: GestureDetector(
-              onTap: getIt.get<MainCubit>().clearSuccessMessage,
+              onTap: onClose,
               child: Assets.vectors.close.svg(
                 color: Theme.of(context).primaryColor,
               ),

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/narrow_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/list_of_filters_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_cubit.dart';
@@ -22,9 +22,9 @@ class CustomerSessionsScreen extends StatelessWidget {
           return Scaffold(
 
               ///TODO - Replace hardcode!(appbar values)
-              appBar: NarrowAppBar(
+              appBar: const ChatConversationAppBar(
                 title: 'Annette Black',
-                zodiac: ZodiacSign.capricorn.imagePath(context),
+                zodiacSign: ZodiacSign.capricorn,
               ),
               body: Column(
                 children: [

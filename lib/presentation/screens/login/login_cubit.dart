@@ -86,7 +86,13 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void clearSuccessMessage() {
-    _mainCubit.clearSuccessMessage();
+    if (state.successMessage.isNotEmpty) {
+      emit(
+        state.copyWith(
+          successMessage: '',
+        ),
+      );
+    }
   }
 
   Future<void> login() async {
@@ -128,12 +134,20 @@ class LoginCubit extends Cubit<LoginState> {
     clearSuccessMessage();
 
     ///TODO: get token from deep link
-    Get.toNamed(
+    final dynamic needShowSuccessMessage = await Get.toNamed(
       AppRoutes.forgotPassword,
       arguments: ForgotPasswordScreenArguments(
         brand: state.selectedBrand,
       ),
-    );
+    ) as bool;
+    if (needShowSuccessMessage == true) {
+      emit(
+        state.copyWith(
+          successMessage:
+              S.current.youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo,
+        ),
+      );
+    }
   }
 
   bool emailIsValid() => GetUtils.isEmail(emailController.text);

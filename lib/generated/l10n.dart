@@ -1480,6 +1480,36 @@ class S {
     );
   }
 
+  /// `OK`
+  String get ok {
+    return Intl.message(
+      'OK',
+      name: 'ok',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You don’t have internet connection`
+  String get youDontHaveInternetConnection {
+    return Intl.message(
+      'You don’t have internet connection',
+      name: 'youDontHaveInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Note`
+  String get note {
+    return Intl.message(
+      'Note',
+      name: 'note',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Active chat`
   String get activeChat {
     return Intl.message(

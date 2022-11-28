@@ -9,6 +9,7 @@ class DashboardV1State with _$DashboardV1State {
     @Default(0) int dashboardPageViewIndex,
     @Default(0) int dashboardDateFilterIndex,
     @Default(0.0) double monthAmount,
+    @Default('€') String currencySymbol,
     UserProfile? userProfile,
   ]) = _DashboardV1State;
 }
