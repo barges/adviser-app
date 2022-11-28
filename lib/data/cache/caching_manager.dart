@@ -55,4 +55,6 @@ abstract class CachingManager {
   VoidCallback listenCurrentBrand(ValueChanged<Brand> callback);
 
   VoidCallback listenCurrentUserStatus(ValueChanged<UserStatus> callback);
+
+  VoidCallback listenUserId(ValueChanged<String?> callback);
 }

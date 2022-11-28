@@ -142,5 +142,8 @@
   "allowCamera": "Allow camera",
   "allowGallery": "Allow gallery",
   "toResetPasswordEnterEmailAddressAndWellSendYou": "To reset password, enter email address and we’ll send you instructions on how to create a new password.",
-  "youCanNotHelpUsersSinceYouHaveAnActive": "You can not help users since you have an active public question."
+  "youCanNotHelpUsersSinceYouHaveAnActive": "You can not help users since you have an active public question.",
+  "ok": "OK",
+  "youDontHaveInternetConnection": "You don’t have internet connection",
+  "note": "Note"
 }
