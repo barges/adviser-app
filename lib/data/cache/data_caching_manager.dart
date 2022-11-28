@@ -235,4 +235,11 @@ class DataCachingManager implements CachingManager {
   Future<void> saveUserId(String? userId) async {
     await _userBox.write(_userIdKey, userId);
   }
+
+  @override
+  VoidCallback listenUserId(ValueChanged<String?> callback) {
+    return _userBox.listenKey(_userIdKey, (value) {
+      callback(value);
+    });
+  }
 }

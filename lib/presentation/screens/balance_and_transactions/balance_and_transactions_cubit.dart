@@ -62,9 +62,4 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
     emit(state.copyWith(currentMonthIndex: index));
     updateStatisticsByMonth(index);
   }
-
-  String currencySymbolByName(String currencyName) {
-    final NumberFormat format = NumberFormat.simpleCurrency(name: currencyName);
-    return format.currencySymbol;
-  }
 }
