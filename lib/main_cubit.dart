@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -16,6 +17,8 @@ class MainCubit extends Cubit<MainState> {
 
   late final VoidCallback disposeCallback;
   late final StreamSubscription<bool> _connectivitySubscription;
+
+  final PublishSubject<bool> sessionsUpdateTrigger = PublishSubject();
 
   final ConnectivityService _connectivityService;
 
@@ -57,6 +60,10 @@ class MainCubit extends Cubit<MainState> {
     if (state.errorMessage.isNotEmpty) {
       emit(state.copyWith(errorMessage: ''));
     }
+  }
+
+  void updateSessions() {
+    sessionsUpdateTrigger.add(true);
   }
 
   void changeLocale(int index) {

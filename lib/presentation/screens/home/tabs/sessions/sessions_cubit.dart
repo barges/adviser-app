@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,6 +9,7 @@ import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
@@ -26,6 +29,7 @@ class SessionsCubit extends Cubit<SessionsState> {
   final ScrollController publicQuestionsController = ScrollController();
   final ScrollController privateQuestionsController = ScrollController();
   final MainCubit _mainCubit = getIt.get<MainCubit>();
+  late final StreamSubscription<bool> _updateSessionsSubscription;
   late final VoidCallback disposeUserStatusListen;
   late final VoidCallback disposeUserProfileListen;
   final BuildContext context;
@@ -37,6 +41,8 @@ class SessionsCubit extends Cubit<SessionsState> {
   ];
   final List<ChatItem> _publicQuestions = [];
   final List<ChatItem> _privateQuestionsWithHistory = [];
+
+  UserStatus? previousStatus;
 
   String? _lastId;
   bool hasMore = true;
@@ -61,9 +67,12 @@ class SessionsCubit extends Cubit<SessionsState> {
       }
     });
     disposeUserStatusListen = cacheManager.listenCurrentUserStatus((value) {
-      getQuestions(
-        status: value.status,
-      );
+      if (previousStatus != value) {
+        previousStatus = value;
+        getQuestions(
+          status: value.status,
+        );
+      }
     });
     disposeUserProfileListen = cacheManager.listenUserProfile((userProfile) {
       final List<MarketsType> userMarkets = [
@@ -72,12 +81,19 @@ class SessionsCubit extends Cubit<SessionsState> {
       ];
       emit(state.copyWith(userMarkets: userMarkets));
     });
+
+    _updateSessionsSubscription = _mainCubit.sessionsUpdateTrigger.listen(
+      (value) {
+        getQuestions();
+      },
+    );
   }
 
   @override
   Future<void> close() async {
     publicQuestionsController.dispose();
     privateQuestionsController.dispose();
+    _updateSessionsSubscription.cancel();
     disposeUserProfileListen.call();
     disposeUserStatusListen.call();
     return super.close();
@@ -144,7 +160,7 @@ class SessionsCubit extends Cubit<SessionsState> {
     if (question != null) {
       final dynamic needUpdate =
           await Get.toNamed(AppRoutes.chat, arguments: question) as bool;
-      if(needUpdate == true){
+      if (needUpdate == true) {
         getQuestions();
       }
     }
