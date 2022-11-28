@@ -16,7 +16,7 @@ class InfoCard extends StatelessWidget {
         context.select((ChatCubit cubit) => cubit.state.activeMessages);
     ChatItem? question;
     if (items.isNotEmpty) {
-      question = items.last;
+      question = items.first;
     }
 
     if (question == null) {

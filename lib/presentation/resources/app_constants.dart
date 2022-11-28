@@ -8,8 +8,8 @@ class AppConstants {
   static const double appBarHeight = 52.0;
   static const int millisecondsInHour = 3600000;
   static const String recordFileName = 'recorded_audio_aa';
-  static const int minTextLength = 1000;
-  static const int maxTextLength = 20000;
+  static const int minTextLength = 250;
+  static const int maxTextLength = 2000;
   static const int maxAttachedPictures = 2;
   static const int maxRecordDurationInSec = 3 * 60;
 

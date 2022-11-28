@@ -222,8 +222,8 @@ class ChatCubit extends Cubit<ChatState> {
     try {
       final ChatItem question = await _repository
           .takeQuestion(AnswerRequest(questionID: _question.id));
-      //print('!!!!!! question:$question');
-      _setQuestionStatus(ChatItemStatusType.taken);
+      _setQuestionStatus(question.status ?? ChatItemStatusType.open);
+      _mainCubit.updateSessions();
     } on DioError catch (e) {
       await showOkCancelAlert(
         context: _context,
@@ -466,7 +466,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     if (answer != null) {
-      messages.insert(0, answer);
+      messages.add(answer);
       emit(
         state.copyWith(
           isRecordingAudio: false,
@@ -477,6 +477,12 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       );
       deleteAttachedPictures();
+
+      if (answer.isSent) {
+        _mainCubit.updateSessions();
+        Get.offNamed(AppRoutes.home,
+            arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
+      }
     }
   }
 
@@ -513,14 +519,13 @@ class ChatCubit extends Cubit<ChatState> {
       _answerRequest = null;
     } catch (e) {
       logger.e(e);
-      //print(await ConnectivityService.checkConnection());
       if (!await ConnectivityService.checkConnection()) {
         answer = _getNotSentAnswer();
       }
     }
 
     if (answer != null) {
-      messages.insert(0, answer);
+      messages.add(answer);
       emit(
         state.copyWith(
           activeMessages: messages,
@@ -528,6 +533,12 @@ class ChatCubit extends Cubit<ChatState> {
       );
       textEditingController.clear();
       deleteAttachedPictures();
+
+      if (answer.isSent) {
+        _mainCubit.updateSessions();
+        Get.offNamed(AppRoutes.home,
+            arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
+      }
     }
   }
 
@@ -542,7 +553,7 @@ class ChatCubit extends Cubit<ChatState> {
       _answerRequest = null;
 
       final messages = List.of(state.activeMessages);
-      messages.replaceRange(0, 1, [
+      messages.replaceRange(messages.length - 1, messages.length, [
         answer.copyWith(
           isAnswer: true,
           type: _question.type,
@@ -554,6 +565,10 @@ class ChatCubit extends Cubit<ChatState> {
           activeMessages: messages,
         ),
       );
+
+      _mainCubit.updateSessions();
+      Get.offNamed(AppRoutes.home,
+          arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
     } catch (e) {
       logger.e(e);
     }
