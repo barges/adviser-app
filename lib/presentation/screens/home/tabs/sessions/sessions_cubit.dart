@@ -140,9 +140,13 @@ class SessionsCubit extends Cubit<SessionsState> {
     }
   }
 
-  void goToChat(ChatItem? question) {
+  Future<void> goToChat(ChatItem? question) async {
     if (question != null) {
-      Get.toNamed(AppRoutes.chat, arguments: question);
+      final dynamic needUpdate =
+          await Get.toNamed(AppRoutes.chat, arguments: question) as bool;
+      if(needUpdate == true){
+        getQuestions();
+      }
     }
   }
 
