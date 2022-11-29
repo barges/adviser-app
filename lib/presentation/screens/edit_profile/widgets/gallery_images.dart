@@ -52,7 +52,9 @@ class GalleryImages extends StatelessWidget {
                 shrinkWrap: true,
                 padding:
                     const EdgeInsets.all(AppConstants.horizontalScreenPadding),
-                itemCount: coverPictures.length + 1,
+                itemCount: coverPictures.length < 6
+                    ? coverPictures.length + 1
+                    : coverPictures.length,
                 itemBuilder: (BuildContext context, int index) {
                   return index < coverPictures.length
                       ? GalleryImageItem(
@@ -61,17 +63,19 @@ class GalleryImages extends StatelessWidget {
                             cubit.deletePictureFromGallery(index);
                           },
                         )
-                      : coverPictures.length < 6 ? AddMoreImagesFromGalleryWidget(
-                          onTap: () {
-                            if (cubit.mainCubit.state
-                                .internetConnectionIsAvailable) {
-                              showPickImageAlert(
-                                context: context,
-                                setImage: cubit.addPictureToGallery,
-                              );
-                            }
-                          },
-                        ) : const SizedBox.shrink();
+                      : coverPictures.length < 6
+                          ? AddMoreImagesFromGalleryWidget(
+                              onTap: () {
+                                if (cubit.mainCubit.state
+                                    .internetConnectionIsAvailable) {
+                                  showPickImageAlert(
+                                    context: context,
+                                    setImage: cubit.addPictureToGallery,
+                                  );
+                                }
+                              },
+                            )
+                          : const SizedBox.shrink();
                 },
               ),
             ],

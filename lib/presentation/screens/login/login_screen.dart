@@ -61,14 +61,13 @@ class LoginScreen extends StatelessWidget {
                           Builder(
                             builder: (BuildContext context) {
                               final String message = context.select(
-                                  (MainCubit cubit) =>
+                                  (LoginCubit cubit) =>
                                       cubit.state.successMessage);
                               return message.isNotEmpty
                                   ? AppSuccessWidget(
                                       message: message,
-                                      close: () {
-                                        loginCubit.clearSuccessMessage();
-                                      },
+                                      needEmailButton: true,
+                                      onClose: loginCubit.clearSuccessMessage,
                                     )
                                   : const SizedBox.shrink();
                             },

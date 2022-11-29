@@ -24,6 +24,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "aboutMe": MessageLookupByLibrary.simpleMessage("Sobre mí"),
         "account": MessageLookupByLibrary.simpleMessage("Cuenta"),
+        "activeChat": MessageLookupByLibrary.simpleMessage("Active chat"),
         "addCoverPicture":
             MessageLookupByLibrary.simpleMessage("Agregar imagen de portada"),
         "addGalleryPictures": MessageLookupByLibrary.simpleMessage(
@@ -107,6 +108,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "fortunica": MessageLookupByLibrary.simpleMessage("Fortunica"),
         "from15secTo3min":
             MessageLookupByLibrary.simpleMessage("from 15 sec to 3 min"),
+        "history": MessageLookupByLibrary.simpleMessage("History"),
         "imAvailableNow":
             MessageLookupByLibrary.simpleMessage("Estoy disponible ahora"),
         "informOurTeamYourPlannedReturnDate":
@@ -135,9 +137,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "notEnoughConversationsCheckOurProfileGuide":
             MessageLookupByLibrary.simpleMessage(
                 "¿No hay suficientes conversaciones? Consulte nuestra Guía de perfiles."),
+        "note": MessageLookupByLibrary.simpleMessage("Note"),
         "notes": MessageLookupByLibrary.simpleMessage("Notas"),
         "notifications": MessageLookupByLibrary.simpleMessage("Notificaciones"),
         "numerology": MessageLookupByLibrary.simpleMessage("Numerología"),
+        "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "onlyPremiumProducts":
             MessageLookupByLibrary.simpleMessage("Solo Productos Premium"),
         "openEmailApp": MessageLookupByLibrary.simpleMessage(
@@ -149,6 +153,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Descripción general del rendimiento Análisis"),
         "personalBalance":
             MessageLookupByLibrary.simpleMessage("Saldo personal"),
+        "personalDetails":
+            MessageLookupByLibrary.simpleMessage("PERSONAL DETAILS"),
         "placesUpFromLastMonth": MessageLookupByLibrary.simpleMessage(
             "posiciones desde el mes pasado"),
         "pleaseEnterAtLeast3Characters": MessageLookupByLibrary.simpleMessage(
@@ -162,6 +168,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Vista previa de la cuenta"),
         "privateQuestions":
             MessageLookupByLibrary.simpleMessage("Preguntas privadas"),
+        "profile": MessageLookupByLibrary.simpleMessage("Profile"),
         "profileText": MessageLookupByLibrary.simpleMessage("Texto de perfil"),
         "public": MessageLookupByLibrary.simpleMessage("Público"),
         "questionProperties":
@@ -188,6 +195,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "statusText": MessageLookupByLibrary.simpleMessage("Texto de estado"),
         "takeAPhoto": MessageLookupByLibrary.simpleMessage("Toma una foto"),
         "takeMeThere": MessageLookupByLibrary.simpleMessage("Llévame allí"),
+        "takeQuestion": MessageLookupByLibrary.simpleMessage("Take question"),
         "thePasswordsMustMatch": MessageLookupByLibrary.simpleMessage(
             "Las contraseñas deben coincidir"),
         "theUserWasNotFound": MessageLookupByLibrary.simpleMessage(
@@ -226,8 +234,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "wrongUsernameOrPassword": MessageLookupByLibrary.simpleMessage(
             "Nombre de usuario o contraseña incorrectos"),
         "yesImSure": MessageLookupByLibrary.simpleMessage("Si estoy seguro"),
+        "youCanNotHelpUsersSinceYouHaveAnActive":
+            MessageLookupByLibrary.simpleMessage(
+                "You can not help users since you have an active public question."),
         "youDoNotHaveAnyNotesYet":
             MessageLookupByLibrary.simpleMessage("Aún no tienes ninguna nota."),
+        "youDontHaveInternetConnection": MessageLookupByLibrary.simpleMessage(
+            "You don’t have internet connection"),
         "youHave": MessageLookupByLibrary.simpleMessage("Tú tienes"),
         "youHaveNotCompletedAnySessionsYet":
             MessageLookupByLibrary.simpleMessage(

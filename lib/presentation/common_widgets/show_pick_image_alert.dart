@@ -174,10 +174,11 @@ Future<void> _handlePermissions(
       Navigator.pop(context);
     });
     await showOkCancelAlert(
-      context,
-      alertTitle,
-      S.of(context).settings,
-      actionOnOk,
-    );
+        context: context,
+        title: alertTitle,
+        okText: S.of(context).settings,
+        actionOnOK: actionOnOk,
+        allowBarrierClock: true,
+        isCancelEnabled: true);
   }
 }

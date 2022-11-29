@@ -11,9 +11,11 @@ class SessionsState with _$SessionsState {
     @Default([]) List<ChatItem> privateQuestionsWithHistory,
     @Default([]) List<ChatItem> publicQuestions,
     @Default([]) List<MarketsType> userMarkets,
+    @Default([]) List<int> disabledIndexes,
     @Default(0) int currentOptionIndex,
     @Default(0) int currentFilterIndex,
     @Default(0) int currentMarketIndexForPublic,
     @Default(0) int currentMarketIndexForPrivate,
+    @Default('') String successMessage,
   ]) = _SessionsState;
 }

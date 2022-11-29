@@ -46,7 +46,7 @@ abstract class CachingManager {
 
   int? getLocaleIndex();
 
-  Future<void> logout(Brand brand);
+  Future<bool> logout(Brand brand);
 
   Future<bool> clearTokenForBrand(Brand brand);
 
@@ -55,4 +55,6 @@ abstract class CachingManager {
   VoidCallback listenCurrentBrand(ValueChanged<Brand> callback);
 
   VoidCallback listenCurrentUserStatus(ValueChanged<UserStatus> callback);
+
+  VoidCallback listenUserId(ValueChanged<String?> callback);
 }

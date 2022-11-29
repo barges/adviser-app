@@ -11,7 +11,6 @@ class MainState with _$MainState {
     @Default(false) bool internetConnectionIsAvailable,
     @Default(Brand.fortunica) Brand currentBrand,
     @Default('') String errorMessage,
-    @Default('') String successMessage,
     Locale? locale,
   }) = _MainState;
 }

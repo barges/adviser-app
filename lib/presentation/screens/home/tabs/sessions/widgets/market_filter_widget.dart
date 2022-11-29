@@ -9,14 +9,12 @@ import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions
 
 class MarketFilterWidget extends StatelessWidget {
   final ValueChanged<int> changeIndex;
-  final bool isExpanded;
   final int currentMarketIndex;
 
   const MarketFilterWidget({
     Key? key,
     required this.changeIndex,
     required this.currentMarketIndex,
-    this.isExpanded = false,
   }) : super(key: key);
 
   @override
@@ -51,16 +49,10 @@ class MarketFilterWidget extends StatelessWidget {
                     currentMarket != MarketsType.all;
                 return Container(
                   height: AppConstants.iconButtonSize,
-                  margin: isExpanded
-                      ? const EdgeInsets.symmetric(
-                          vertical: 10.0,
-                          horizontal: AppConstants.horizontalScreenPadding,
-                        )
-                      : const EdgeInsets.only(
-                          top: 10.0,
-                          bottom: 10.0,
-                          right: AppConstants.horizontalScreenPadding,
-                        ),
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 10.0,
+                    horizontal: AppConstants.horizontalScreenPadding,
+                  ),
                   padding: const EdgeInsets.symmetric(
                       vertical: 6.0,
                       horizontal: AppConstants.horizontalScreenPadding),
@@ -71,8 +63,7 @@ class MarketFilterWidget extends StatelessWidget {
                       borderRadius:
                           BorderRadius.circular(AppConstants.buttonRadius)),
                   child: Row(
-                    mainAxisSize:
-                        isExpanded ? MainAxisSize.max : MainAxisSize.min,
+                    mainAxisSize:MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(

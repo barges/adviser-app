@@ -1,7 +1,7 @@
 import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
 import 'package:shared_advisor_interface/data/network/api/customer_api.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_note_request.dart';
-import 'package:shared_advisor_interface/data/network/responses/get_note_response.dart';
+import 'package:shared_advisor_interface/data/models/customer_info/note.dart';
 import 'package:shared_advisor_interface/data/network/responses/update_note_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 
@@ -16,7 +16,7 @@ class CustomerRepositoryImpl implements CustomerRepository {
   }
 
   @override
-  Future<GetNoteResponse> getNoteForCustomer(String customerID) async {
+  Future<Note> getNoteForCustomer(String customerID) async {
     return await _api.getNoteForCustomer(customerID);
   }
 

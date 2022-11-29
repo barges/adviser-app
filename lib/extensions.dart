@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 const String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 const String datePattern1 = 'MMM d, yyyy';
@@ -30,15 +31,15 @@ extension StringExt on String {
   String get languageNameByCode {
     switch (this) {
       case 'de':
-        return 'German';
+        return AppConstants.deBrandName;
       case 'en':
-        return 'English';
+        return AppConstants.enBrandName;
       case 'es':
-        return 'Spanish';
+        return AppConstants.esBrandName;
       case 'pt':
-        return 'Portuguese';
+        return AppConstants.ptBrandName;
       default:
-        return 'Unknown language';
+        return 'Other';
     }
   }
 
@@ -104,6 +105,11 @@ extension StringExt on String {
   String get removeSpacesAndNewLines {
     return trim().replaceAll(RegExp(r'(\n){3,}'), "\n\n");
   }
+
+  String get currencySymbolByName {
+    final NumberFormat format = NumberFormat.simpleCurrency(name: this);
+    return format.currencySymbol;
+  }
 }
 
 extension DoubleExt on double {
@@ -137,10 +143,12 @@ extension IterableExtention<E> on Iterable<E> {
 
 extension DateTimeExt on DateTime {
   String get chatListTime {
-    DateTime now = DateTime.now().toUtc();
-    int timeDifference = DateTime(year, month, day)
-        .difference(DateTime(now.year, now.month, now.day))
-        .inDays;
+    DateTime now = DateTime.now();
+    DateTime localTime = toLocal();
+    int timeDifference =
+        DateTime(localTime.year, localTime.month, localTime.day)
+            .difference(DateTime(now.year, now.month, now.day))
+            .inDays;
     if (timeDifference == 0) {
       return DateFormat(dateFormat).format(this).parseDateTimePattern7;
     }

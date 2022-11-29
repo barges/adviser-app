@@ -5,12 +5,14 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 
 class AppSuccessWidget extends StatelessWidget {
   final String message;
-  final VoidCallback close;
+  final bool needEmailButton;
+  final VoidCallback onClose;
 
   const AppSuccessWidget({
     Key? key,
     required this.message,
-    required this.close,
+    required this.onClose,
+    this.needEmailButton = false,
   }) : super(key: key);
 
   @override
@@ -24,7 +26,6 @@ class AppSuccessWidget extends StatelessWidget {
             bottomRight: Radius.circular(AppConstants.buttonRadius),
           )),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: Padding(
@@ -40,10 +41,11 @@ class AppSuccessWidget extends StatelessWidget {
                           color: Theme.of(context).primaryColor,
                         ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 8.0),
-                    child: OpenEmailButton(),
-                  )
+                  if (needEmailButton)
+                    const Padding(
+                      padding: EdgeInsets.only(top: 8.0),
+                      child: OpenEmailButton(),
+                    )
                 ],
               ),
             ),
@@ -52,7 +54,7 @@ class AppSuccessWidget extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(horizontal: 22.0, vertical: 8.0),
             child: GestureDetector(
-              onTap: close,
+              onTap: onClose,
               child: Assets.vectors.close.svg(
                 color: Theme.of(context).primaryColor,
               ),

@@ -24,6 +24,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "aboutMe": MessageLookupByLibrary.simpleMessage("About Me"),
         "account": MessageLookupByLibrary.simpleMessage("Account"),
+        "activeChat": MessageLookupByLibrary.simpleMessage("Active chat"),
         "addCoverPicture":
             MessageLookupByLibrary.simpleMessage("Add cover picture"),
         "addGalleryPictures":
@@ -104,6 +105,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "fortunica": MessageLookupByLibrary.simpleMessage("Fortunica"),
         "from15secTo3min":
             MessageLookupByLibrary.simpleMessage("from 15 sec to 3 min"),
+        "history": MessageLookupByLibrary.simpleMessage("History"),
         "imAvailableNow":
             MessageLookupByLibrary.simpleMessage("I\'m available now"),
         "informOurTeamYourPlannedReturnDate":
@@ -132,9 +134,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "notEnoughConversationsCheckOurProfileGuide":
             MessageLookupByLibrary.simpleMessage(
                 "Not enough conversations? Check our Profile Guide."),
+        "note": MessageLookupByLibrary.simpleMessage("Note"),
         "notes": MessageLookupByLibrary.simpleMessage("Notes"),
         "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
         "numerology": MessageLookupByLibrary.simpleMessage("Numerology"),
+        "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "onlyPremiumProducts":
             MessageLookupByLibrary.simpleMessage("Only Premium Products"),
         "openEmailApp": MessageLookupByLibrary.simpleMessage("Open email app"),
@@ -145,6 +149,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Perfomance Overview Analytics"),
         "personalBalance":
             MessageLookupByLibrary.simpleMessage("Personal Balance"),
+        "personalDetails":
+            MessageLookupByLibrary.simpleMessage("PERSONAL DETAILS"),
         "placesUpFromLastMonth":
             MessageLookupByLibrary.simpleMessage("places up from last month"),
         "pleaseEnterAtLeast3Characters": MessageLookupByLibrary.simpleMessage(
@@ -158,6 +164,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Preview account"),
         "privateQuestions":
             MessageLookupByLibrary.simpleMessage("Private Questions"),
+        "profile": MessageLookupByLibrary.simpleMessage("Profile"),
         "profileText": MessageLookupByLibrary.simpleMessage("Profile Text"),
         "public": MessageLookupByLibrary.simpleMessage("Public"),
         "questionProperties":
@@ -182,6 +189,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "statusText": MessageLookupByLibrary.simpleMessage("Status Text"),
         "takeAPhoto": MessageLookupByLibrary.simpleMessage("Take a photo"),
         "takeMeThere": MessageLookupByLibrary.simpleMessage("Take me there"),
+        "takeQuestion": MessageLookupByLibrary.simpleMessage("Take question"),
         "thePasswordsMustMatch":
             MessageLookupByLibrary.simpleMessage("The passwords must match"),
         "theUserWasNotFound":
@@ -219,8 +227,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "wrongUsernameOrPassword":
             MessageLookupByLibrary.simpleMessage("Wrong username or password"),
         "yesImSure": MessageLookupByLibrary.simpleMessage("Yes, I’m sure"),
+        "youCanNotHelpUsersSinceYouHaveAnActive":
+            MessageLookupByLibrary.simpleMessage(
+                "You can not help users since you have an active public question."),
         "youDoNotHaveAnyNotesYet": MessageLookupByLibrary.simpleMessage(
             "You don’t have any notes yet"),
+        "youDontHaveInternetConnection": MessageLookupByLibrary.simpleMessage(
+            "You don’t have internet connection"),
         "youHave": MessageLookupByLibrary.simpleMessage("You have"),
         "youHaveNotCompletedAnySessionsYet":
             MessageLookupByLibrary.simpleMessage(

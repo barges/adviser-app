@@ -18,12 +18,8 @@ class ListOfMarketsByMonth extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<ReportsMarket> markets = reportsStatistics.markets ?? [];
-
-    final BalanceAndTransactionsCubit balanceAndTransactionsCubit =
-        context.read<BalanceAndTransactionsCubit>();
-
-    final String currencySymbol = balanceAndTransactionsCubit
-        .currencySymbolByName(reportsStatistics.meta?.currency ?? '');
+    final String currencySymbol =
+        reportsStatistics.meta?.currency?.currencySymbolByName ?? '';
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.all(

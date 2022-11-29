@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
+import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -10,26 +12,34 @@ import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
+import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/file_ext.dart';
-import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'chat_state.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:audio_session/audio_session.dart';
 
 class ChatCubit extends Cubit<ChatState> {
-  final ScrollController messagesScrollController = ScrollController();
+  final ScrollController activeMessagesScrollController = ScrollController();
+  final ScrollController hystoryMessagesScrollController = ScrollController();
   final ScrollController textInputScrollController = ScrollController();
   final TextEditingController textEditingController = TextEditingController();
   final CachingManager _cachingManager;
   final ChatsRepository _repository;
   final ChatItem _question;
+  final BuildContext _context;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final Codec _codec = Platform.isIOS ? Codec.aacMP4 : Codec.mp3;
   final FileExt _recordFileExt = CurrentFileExt.current;
@@ -45,14 +55,18 @@ class ChatCubit extends Cubit<ChatState> {
     this._cachingManager,
     this._repository,
     this._question,
+    this._context,
   ) : super(const ChatState()) {
     _init();
-    _getConversations();
+    _getData();
+    _setQuestionStatus(_question.status ?? ChatItemStatusType.open);
   }
 
   @override
   Future<void> close() {
-    messagesScrollController.dispose();
+    activeMessagesScrollController.dispose();
+    hystoryMessagesScrollController.dispose();
+
     textInputScrollController.dispose();
     textEditingController.dispose();
 
@@ -90,8 +104,24 @@ class ChatCubit extends Cubit<ChatState> {
       const Duration(milliseconds: 100),
     );
 
-    messagesScrollController.addListener(scrollControllerListener);
+    //activeMessagesScrollController.addListener(scrollControllerListener);
+    hystoryMessagesScrollController.addListener(scrollControllerListener);
+
     textEditingController.addListener(textEditingControllerListener);
+  }
+
+  _getData() async {
+    if (await _getQuestion()) {
+      _getConversations();
+    }
+  }
+
+  _setQuestionStatus(ChatItemStatusType status) {
+    emit(
+      state.copyWith(
+        questionStatus: status,
+      ),
+    );
   }
 
   Future<void> _initAudioSession() async {
@@ -117,12 +147,13 @@ class ChatCubit extends Cubit<ChatState> {
 
   void scrollControllerListener() {
     if (!_mainCubit.state.isLoading &&
-        messagesScrollController.position.extentAfter <= 300) {
+        hystoryMessagesScrollController.position.extentAfter <= 300) {
       _getConversations();
     }
   }
 
   void textEditingControllerListener() {
+    //startAnswer(_question.id ?? '');
     emit(state.copyWith(
       inputTextLength: textEditingController.text.length,
     ));
@@ -140,20 +171,11 @@ class ChatCubit extends Cubit<ChatState> {
             offset: _offset,
             limit: _limit);
 
-    ChatItem? lastQuestion;
-    if (_total == null) {
-      lastQuestion = await _repository.getQuestion(id: _question.id ?? '');
-      //logger.i('Question: $lastQuestion');
-    }
-
     _total = conversations.total;
     _offset = _offset + _limit;
 
-    final messages = List.of(state.messages);
+    final messages = List.of(state.hystoryMessages);
     for (var element in conversations.history ?? []) {
-      messages.add(
-        element.question,
-      );
       messages.add(
         element.answer?.copyWith(
           isAnswer: true,
@@ -161,15 +183,62 @@ class ChatCubit extends Cubit<ChatState> {
           ritualIdentifier: element.question?.ritualIdentifier,
         ),
       );
-    }
-
-    if (lastQuestion != null) {
-      messages.insert(0, lastQuestion);
+      messages.add(
+        element.question,
+      );
     }
 
     emit(state.copyWith(
-      messages: messages,
+      hystoryMessages: messages,
     ));
+  }
+
+  Future<bool> _getQuestion() async {
+    try {
+      final question = await _repository.getQuestion(id: _question.id ?? '');
+      final messages = List.of(state.activeMessages);
+      messages.insert(0, question);
+      emit(state.copyWith(
+        activeMessages: messages,
+      ));
+      return true;
+    } on DioError catch (e) {
+      await showOkCancelAlert(
+        context: _context,
+        title: _mainCubit.state.errorMessage,
+        okText: S.of(_context).ok,
+        actionOnOK: () {
+          Get.offNamed(AppRoutes.home,
+              arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
+        },
+        allowBarrierClock: false,
+        isCancelEnabled: false,
+      );
+      logger.d(e);
+      return false;
+    }
+  }
+
+  Future<void> takeQuestion() async {
+    try {
+      final ChatItem question = await _repository
+          .takeQuestion(AnswerRequest(questionID: _question.id));
+      _setQuestionStatus(question.status ?? ChatItemStatusType.open);
+      _mainCubit.updateSessions();
+    } on DioError catch (e) {
+      await showOkCancelAlert(
+        context: _context,
+        title: _mainCubit.state.errorMessage,
+        okText: S.of(_context).ok,
+        actionOnOK: () {
+          Get.offNamed(AppRoutes.home,
+              arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
+        },
+        allowBarrierClock: false,
+        isCancelEnabled: false,
+      );
+      logger.d(e);
+    }
   }
 
   Future<void> startRecordingAudio() async {
@@ -355,6 +424,10 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
+  startAnswer(String questionId) async {
+    await _repository.startAnswer(AnswerRequest(questionID: questionId));
+  }
+
   Future<void> sendMedia() async {
     if (_playerRecorded != null && _playerRecorded!.isPlaying) {
       await _playerRecorded?.stopPlayer();
@@ -375,11 +448,14 @@ class ChatCubit extends Cubit<ChatState> {
       ],
     );
 
-    final messages = List.of(state.messages);
+    final messages = List.of(state.activeMessages);
     ChatItem? answer;
     try {
       answer = await _repository.sendAnswer(_answerRequest!);
-      logger.i('send media response:$answer');
+      logger.d('send media response:$answer');
+      if(answer.type == ChatItemType.textAnswer){
+        _setQuestionStatus(ChatItemStatusType.answered);
+      }
       answer = answer.copyWith(
         isAnswer: true,
         type: _question.type,
@@ -388,24 +464,27 @@ class ChatCubit extends Cubit<ChatState> {
       _answerRequest = null;
     } catch (e) {
       logger.e(e);
-      //print(await ConnectivityService.checkConnection());
       if (!await ConnectivityService.checkConnection()) {
         answer = _getNotSentAnswer();
       }
     }
 
     if (answer != null) {
-      messages.insert(0, answer);
+      messages.add(answer);
       emit(
         state.copyWith(
           isRecordingAudio: false,
           isAudioFileSaved: false,
           isPlayingRecordedAudio: false,
           recordingPath: null,
-          messages: messages,
+          activeMessages: messages,
         ),
       );
       deleteAttachedPictures();
+
+      if (answer.isSent) {
+        _mainCubit.updateSessions();
+      }
     }
   }
 
@@ -429,11 +508,14 @@ class ChatCubit extends Cubit<ChatState> {
       ],
     );
 
-    final messages = List.of(state.messages);
+    final messages = List.of(state.activeMessages);
     ChatItem? answer;
     try {
       answer = await _repository.sendAnswer(_answerRequest!);
       logger.i('send text response:$answer');
+      if(answer.type == ChatItemType.textAnswer){
+        _setQuestionStatus(ChatItemStatusType.answered);
+      }
       answer = answer.copyWith(
         isAnswer: true,
         type: _question.type,
@@ -442,21 +524,24 @@ class ChatCubit extends Cubit<ChatState> {
       _answerRequest = null;
     } catch (e) {
       logger.e(e);
-      //print(await ConnectivityService.checkConnection());
       if (!await ConnectivityService.checkConnection()) {
         answer = _getNotSentAnswer();
       }
     }
 
     if (answer != null) {
-      messages.insert(0, answer);
+      messages.add(answer);
       emit(
         state.copyWith(
-          messages: messages,
+          activeMessages: messages,
         ),
       );
       textEditingController.clear();
       deleteAttachedPictures();
+
+      if (answer.isSent) {
+        _mainCubit.updateSessions();
+      }
     }
   }
 
@@ -470,8 +555,8 @@ class ChatCubit extends Cubit<ChatState> {
       logger.i('send text response:$answer');
       _answerRequest = null;
 
-      final messages = List.of(state.messages);
-      messages.replaceRange(0, 1, [
+      final messages = List.of(state.activeMessages);
+      messages.replaceRange(messages.length - 1, messages.length, [
         answer.copyWith(
           isAnswer: true,
           type: _question.type,
@@ -480,12 +565,18 @@ class ChatCubit extends Cubit<ChatState> {
       ]);
       emit(
         state.copyWith(
-          messages: messages,
+          activeMessages: messages,
         ),
       );
+
+      _mainCubit.updateSessions();
     } catch (e) {
       logger.e(e);
     }
+  }
+
+  void changeCurrentTabIndex(int newIndex) {
+    emit(state.copyWith(currentTabIndex: newIndex));
   }
 
   ChatItem _getNotSentAnswer() {

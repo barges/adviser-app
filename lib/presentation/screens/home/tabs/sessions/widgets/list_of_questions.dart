@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/models/enums/questions_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/list_of_filters_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_succes_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/chats_list_tile_widget.dart';
@@ -40,7 +41,6 @@ class _PublicQuestionsListWidget extends StatelessWidget {
           final int currentMarketIndex = context.select(
               (SessionsCubit cubit) => cubit.state.currentMarketIndexForPublic);
           return MarketFilterWidget(
-            isExpanded: true,
             changeIndex: sessionsCubit.changeMarketIndexForPublic,
             currentMarketIndex: currentMarketIndex,
           );
@@ -48,6 +48,16 @@ class _PublicQuestionsListWidget extends StatelessWidget {
         const Divider(
           height: 1.0,
         ),
+        Builder(builder: (context) {
+          final String successMessage = context
+              .select((SessionsCubit cubit) => cubit.state.successMessage);
+          return successMessage.isNotEmpty
+              ? AppSuccessWidget(
+                  message: successMessage,
+                  onClose: sessionsCubit.clearSuccessMessage,
+                )
+              : const SizedBox.shrink();
+        }),
         Builder(
           builder: (context) {
             final List<ChatItem> publicQuestions = context
@@ -79,35 +89,14 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
     final SessionsCubit sessionsCubit = context.read<SessionsCubit>();
     return Column(
       children: [
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              Builder(builder: (context) {
-                final int currentFilterIndex = context.select(
-                    (SessionsCubit cubit) => cubit.state.currentFilterIndex);
-
-                return ListOfFiltersWidget(
-                  withMarketFilter: true,
-                  currentFilterIndex: currentFilterIndex,
-                  onTapToFilter: sessionsCubit.changeFilterIndex,
-                  filters:
-                      sessionsCubit.filters.map((e) => e.filterName).toList(),
-                );
-              }),
-              Builder(builder: (context) {
-                final int currentMarketIndex = context.select(
-                    (SessionsCubit cubit) =>
-                        cubit.state.currentMarketIndexForPrivate);
-
-                return MarketFilterWidget(
-                  changeIndex: sessionsCubit.changeMarketIndexForPrivate,
-                  currentMarketIndex: currentMarketIndex,
-                );
-              }),
-            ],
-          ),
-        ),
+        Builder(builder: (context) {
+          final int currentMarketIndex = context.select((SessionsCubit cubit) =>
+              cubit.state.currentMarketIndexForPrivate);
+          return MarketFilterWidget(
+            changeIndex: sessionsCubit.changeMarketIndexForPrivate,
+            currentMarketIndex: currentMarketIndex,
+          );
+        }),
         const Divider(
           height: 1.0,
         ),
@@ -153,6 +142,9 @@ class _ListOfQuestionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool hasTaken =
+        questions.firstOrNull?.status == ChatItemStatusType.taken;
+
     return RefreshIndicator(
       onRefresh: onRefresh,
       child: CustomScrollView(
@@ -167,7 +159,10 @@ class _ListOfQuestionsWidget extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
-                      return ChatsListTileWidget(question: questions[index]);
+                      return ChatsListTileWidget(
+                        question: questions[index],
+                        needCheckStatus: hasTaken,
+                      );
                     },
                     separatorBuilder: (BuildContext context, int index) =>
                         const SizedBox(
