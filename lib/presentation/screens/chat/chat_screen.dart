@@ -114,63 +114,70 @@ class _ActiveChat extends StatelessWidget {
                 builder: (context) {
                   final List<ChatItem> items = context
                       .select((ChatCubit cubit) => cubit.state.activeMessages);
-                  return Container(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    child: ListView.builder(
-                      padding: const EdgeInsets.only(bottom: 12.0),
-                      controller: chatCubit.activeMessagesScrollController,
-                      itemBuilder: (_, index) {
-                        if (index == 0) {
-                          return const InfoCard();
-                        }
-                        final itemIndex = index - 1;
-                        return _ChatItemWidget(items[itemIndex],
-                            onPressedTryAgain: !items[itemIndex].isSent
-                                ? chatCubit.sendAnswerAgain
-                                : null);
-                      },
-                      itemCount: items.length + 1,
-                    ),
-                  );
+
+                  return items.isNotEmpty
+                      ? Container(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          child: ListView.builder(
+                            padding: const EdgeInsets.only(bottom: 12.0),
+                            controller:
+                                chatCubit.activeMessagesScrollController,
+                            itemBuilder: (_, index) {
+                              if (index == 0) {
+                                final ChatItem question = items[0];
+                                return InfoCard(
+                                  question: question,
+                                );
+                              } else {
+                                final itemIndex = index - 1;
+                                return _ChatItemWidget(items[itemIndex],
+                                    onPressedTryAgain: !items[itemIndex].isSent
+                                        ? chatCubit.sendAnswerAgain
+                                        : null);
+                              }
+                            },
+                            itemCount: items.length + 1,
+                          ),
+                        )
+                      : const SizedBox.shrink();
                 },
               ),
               Builder(
                 builder: (context) {
                   final ChatItemStatusType? questionStatus = context
                       .select((ChatCubit cubit) => cubit.state.questionStatus);
-                  if (questionStatus != null &&
-                      questionStatus == ChatItemStatusType.open) {
-                    return const SizedBox.shrink();
+                  if (questionStatus == ChatItemStatusType.taken) {
+                    return const Positioned(
+                      bottom: 0.0,
+                      right: 0.0,
+                      child: _TextCounter(
+                        width: _textCounterWidth,
+                        height: 22.0,
+                      ),
+                    );
                   }
-                  return const Positioned(
-                    bottom: 0.0,
-                    right: 0.0,
-                    child: _TextCounter(
-                      width: _textCounterWidth,
-                      height: 22.0,
-                    ),
-                  );
+                  return const SizedBox.shrink();
                 },
               ),
               Builder(builder: (context) {
                 final ChatItemStatusType? questionStatus = context
                     .select((ChatCubit cubit) => cubit.state.questionStatus);
-                if (questionStatus == null ||
-                    questionStatus == ChatItemStatusType.taken) {
+                if (questionStatus == ChatItemStatusType.open) {
+                  return Positioned(
+                    right: AppConstants.horizontalScreenPadding,
+                    bottom: 24.0,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width -
+                          AppConstants.horizontalScreenPadding * 2,
+                      child: AppElevatedButton(
+                        title: S.of(context).takeQuestion,
+                        onPressed: chatCubit.takeQuestion,
+                      ),
+                    ),
+                  );
+                } else {
                   return const SizedBox.shrink();
                 }
-                return Positioned(
-                  right: AppConstants.horizontalScreenPadding,
-                  bottom: 6.0,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width -
-                        AppConstants.horizontalScreenPadding * 2,
-                    child: AppElevatedButton(
-                      title: S.of(context).takeQuestion,
-                      onPressed: () => chatCubit.takeQuestion(),
-                    ),
-                  ),
-                );
               }),
             ],
           ),
@@ -218,11 +225,11 @@ class _ActiveChat extends StatelessWidget {
                         final ChatItemStatusType? questionStatus =
                             context.select((ChatCubit cubit) =>
                                 cubit.state.questionStatus);
-                        if (questionStatus != null &&
-                            questionStatus == ChatItemStatusType.open) {
+                        if (questionStatus == ChatItemStatusType.taken) {
+                          return const ChatTextInputWidget();
+                        } else {
                           return const SizedBox.shrink();
                         }
-                        return const ChatTextInputWidget();
                       },
                     );
                   }

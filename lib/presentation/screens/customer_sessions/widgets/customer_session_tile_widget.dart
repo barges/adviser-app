@@ -24,11 +24,12 @@ class CustomerSessionListTileWidget extends StatelessWidget {
             width: 48.0,
             height: 48.0,
             decoration: BoxDecoration(
-                border: Border.all(
-                  color: Theme.of(context).primaryColor,
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(90.0)),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Theme.of(context).primaryColor,
+                width: 2.0,
+              ),
+            ),
             child: SvgPicture.asset(
               item.ritualIdentifier?.iconPath ?? '',
               height: AppConstants.iconSize,

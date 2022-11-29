@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="tools_label_duration">Duration</string>
+    <string name="tools_label_duration">Duração</string>
 
-    <string name="freshchat_default_agent_name">Support</string>
+    <string name="freshchat_default_agent_name">Suporte</string>
 
-    <string name="freshchat_view_text">View</string>
+    <string name="freshchat_view_text">Ver</string>
 
     <string name="freshchat_chat_deeplink">@string/freshchat_view_text</string>
-    <string name="freshchat_chat_deeplink_faq">View FAQ</string>
-    <string name="freshchat_chat_message_composer_hint">Type a message</string>
-    <string name="freshchat_chat_capture_from_camera">Take a picture</string>
+    <string name="freshchat_chat_deeplink_faq">Ver FAQ</string>
+    <string name="freshchat_chat_message_composer_hint">Escreva uma mensagem</string>
+    <string name="freshchat_chat_capture_from_camera">Tire uma foto</string>
     <string name="freshchat_chat_select_from_gallery">Upload image from gallery</string>
     <string name="freshchat_chat_select_file">Select a file (&lt;20 MB)</string>
 
