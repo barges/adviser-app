@@ -3,6 +3,7 @@ import 'package:retrofit/retrofit.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
+import 'package:shared_advisor_interface/data/network/responses/conversations_story_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
@@ -40,10 +41,25 @@ abstract class ChatsApi {
     @Query("limit") required int limit,
   });
 
+  @GET('/stories')
+  Future<ConversationsStoryResponse> getConversationsStory({
+    @Query("storyID") required String storyID,
+  });
+
   @GET('/questions/single/{id}')
   Future<ChatItem> getQuestion({
     @Path() required String id,
   });
+
+  @GET('/v1/rituals/single/{id}')
+  Future<ChatItem> getRitualQuestion({
+    @Path() required String id,
+  });
+
+  @POST('/questions/answer/start')
+  Future<dynamic> startAnswer(
+    @Body() AnswerRequest request,
+  );
 
   @POST('/answers')
   Future<ChatItem> sendAnswer(

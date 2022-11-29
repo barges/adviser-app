@@ -16,7 +16,6 @@ class ChatTextWidget extends ChatWidget {
   Widget build(BuildContext context) {
     return ChatItemBackground(
       onPressedTryAgain: onPressedTryAgain,
-      isBorder: true,
       isTryAgain: !item.isSent,
       padding: paddingItem,
       color: getColorItem(context),
