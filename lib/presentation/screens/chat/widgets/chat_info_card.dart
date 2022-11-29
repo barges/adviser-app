@@ -15,8 +15,14 @@ class InfoCard extends StatelessWidget {
     final List<ChatItem> items =
         context.select((ChatCubit cubit) => cubit.state.activeMessages);
     ChatItem? question;
+    bool isBirthdate = false;
+    bool isGender = false;
     if (items.isNotEmpty) {
       question = items.first;
+      isBirthdate = question.clientInformation != null &&
+          question.clientInformation!.birthdate != null;
+      isGender = question.clientInformation != null &&
+          question.clientInformation!.gender != null;
     }
 
     if (question == null) {
@@ -60,8 +66,7 @@ class InfoCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (question.clientInformation != null &&
-                      question.clientInformation!.birthdate != null)
+                  if (isBirthdate)
                     Text(
                       DateFormat(datePattern1)
                           .format(question.clientInformation!.birthdate!),
@@ -69,8 +74,7 @@ class InfoCard extends StatelessWidget {
                             color: Theme.of(context).shadowColor,
                           ),
                     ),
-                  if (question.clientInformation != null &&
-                      question.clientInformation!.gender != null)
+                  if (isGender)
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Container(
@@ -82,8 +86,7 @@ class InfoCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                  if (question.clientInformation != null &&
-                      question.clientInformation!.gender != null)
+                  if (isGender)
                     Text(
                       toBeginningOfSentenceCase(
                           question.clientInformation!.gender!.name)!,

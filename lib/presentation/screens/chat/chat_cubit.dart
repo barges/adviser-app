@@ -205,7 +205,7 @@ class ChatCubit extends Cubit<ChatState> {
       await showOkCancelAlert(
         context: _context,
         title: _mainCubit.state.errorMessage,
-        okText: 'OK',
+        okText: S.of(_context).ok,
         actionOnOK: () {
           Get.offNamed(AppRoutes.home,
               arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
@@ -480,8 +480,7 @@ class ChatCubit extends Cubit<ChatState> {
 
       if (answer.isSent) {
         _mainCubit.updateSessions();
-        Get.offNamed(AppRoutes.home,
-            arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
+        Get.back();
       }
     }
   }
@@ -536,8 +535,7 @@ class ChatCubit extends Cubit<ChatState> {
 
       if (answer.isSent) {
         _mainCubit.updateSessions();
-        Get.offNamed(AppRoutes.home,
-            arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
+        Get.back();
       }
     }
   }
@@ -567,8 +565,7 @@ class ChatCubit extends Cubit<ChatState> {
       );
 
       _mainCubit.updateSessions();
-      Get.offNamed(AppRoutes.home,
-          arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
+      Get.back();
     } catch (e) {
       logger.e(e);
     }

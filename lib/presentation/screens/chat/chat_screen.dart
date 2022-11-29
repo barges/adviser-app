@@ -24,6 +24,8 @@ import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 import 'widgets/chat_info_card.dart';
 
+const _textCounterWidth = 92.0;
+
 class ChatScreen extends StatelessWidget {
   final ChatItem _question = Get.arguments;
 
@@ -49,20 +51,20 @@ class ChatScreen extends StatelessWidget {
             ),
             backgroundColor: Theme.of(context).canvasColor,
             body: SafeArea(
-              child: Column(
-                children: [
-                  const Divider(
-                    height: 1.0,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10.0,
-                      horizontal: 16.0,
+              child: Builder(builder: (context) {
+                final int currentIndex = context
+                    .select((ChatCubit cubit) => cubit.state.currentTabIndex);
+                return Column(
+                  children: [
+                    const Divider(
+                      height: 1.0,
                     ),
-                    child: Builder(builder: (context) {
-                      final int currentIndex = context.select(
-                          (ChatCubit cubit) => cubit.state.currentTabIndex);
-                      return ChooseOptionWidget(
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10.0,
+                        horizontal: 16.0,
+                      ),
+                      child: ChooseOptionWidget(
                         options: [
                           S.of(context).activeChat,
                           S.of(context).history,
@@ -70,14 +72,10 @@ class ChatScreen extends StatelessWidget {
                         ],
                         currentIndex: currentIndex,
                         onChangeOptionIndex: chatCubit.changeCurrentTabIndex,
-                      );
-                    }),
-                  ),
-                  Expanded(
-                    child: Builder(builder: (context) {
-                      final int currentIndex = context.select(
-                          (ChatCubit cubit) => cubit.state.currentTabIndex);
-                      return IndexedStack(
+                      ),
+                    ),
+                    Expanded(
+                      child: IndexedStack(
                         index: currentIndex,
                         children: [
                           const _ActiveChat(),
@@ -86,11 +84,11 @@ class ChatScreen extends StatelessWidget {
                             customerId: _question.clientID ?? '',
                           ),
                         ],
-                      );
-                    }),
-                  ),
-                ],
-              ),
+                      ),
+                    ),
+                  ],
+                );
+              }),
             ),
           );
         },
@@ -107,7 +105,6 @@ class _ActiveChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ChatCubit chatCubit = context.read<ChatCubit>();
-    const textCounterWidth = 92.0;
     return Column(
       children: [
         Expanded(
@@ -149,7 +146,7 @@ class _ActiveChat extends StatelessWidget {
                     bottom: 0.0,
                     right: 0.0,
                     child: _TextCounter(
-                      width: textCounterWidth,
+                      width: _textCounterWidth,
                       height: 22.0,
                     ),
                   );
@@ -233,7 +230,7 @@ class _ActiveChat extends StatelessWidget {
               ),
               const Divider(
                 height: 1.0,
-                endIndent: textCounterWidth,
+                endIndent: _textCounterWidth,
               ),
             ],
           ),
@@ -328,23 +325,26 @@ class _TextCounter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Builder(builder: (context) {
       final int inputTextLength =
           context.select((ChatCubit cubit) => cubit.state.inputTextLength);
+      final isEnabled = inputTextLength >= AppConstants.minTextLength &&
+          inputTextLength <= AppConstants.maxTextLength;
       return Stack(
         children: [
           Container(
             width: width,
             height: height,
             decoration: BoxDecoration(
-              color: Theme.of(context).canvasColor,
+              color: theme.canvasColor,
               borderRadius:
                   const BorderRadius.only(topLeft: Radius.circular(4.0)),
               border: Border(
-                top: BorderSide(color: Theme.of(context).hintColor),
-                right: BorderSide(color: Theme.of(context).hintColor),
-                bottom: BorderSide(color: Theme.of(context).hintColor),
-                left: BorderSide(color: Theme.of(context).hintColor),
+                top: BorderSide(color: theme.hintColor),
+                right: BorderSide(color: theme.hintColor),
+                bottom: BorderSide(color: theme.hintColor),
+                left: BorderSide(color: theme.hintColor),
               ),
             ),
             child: Padding(
@@ -352,17 +352,17 @@ class _TextCounter extends StatelessWidget {
               child: Text(
                 textAlign: TextAlign.center,
                 '${AppConstants.maxTextLength}/$inputTextLength',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.online,
-                      fontSize: 12.0,
-                    ),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: isEnabled ? AppColors.online : theme.errorColor,
+                  fontSize: 12.0,
+                ),
               ),
             ),
           ),
           Positioned(
             bottom: 0.0,
             child: Container(
-              color: Theme.of(context).canvasColor,
+              color: theme.canvasColor,
               width: width,
               height: 1.0,
             ),
