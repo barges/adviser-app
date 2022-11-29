@@ -13,6 +13,7 @@ import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/file_ext.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
@@ -452,6 +453,9 @@ class ChatCubit extends Cubit<ChatState> {
     try {
       answer = await _repository.sendAnswer(_answerRequest!);
       logger.d('send media response:$answer');
+      if(answer.type == ChatItemType.textAnswer){
+        _setQuestionStatus(ChatItemStatusType.answered);
+      }
       answer = answer.copyWith(
         isAnswer: true,
         type: _question.type,
@@ -480,7 +484,6 @@ class ChatCubit extends Cubit<ChatState> {
 
       if (answer.isSent) {
         _mainCubit.updateSessions();
-        Get.back();
       }
     }
   }
@@ -510,6 +513,9 @@ class ChatCubit extends Cubit<ChatState> {
     try {
       answer = await _repository.sendAnswer(_answerRequest!);
       logger.i('send text response:$answer');
+      if(answer.type == ChatItemType.textAnswer){
+        _setQuestionStatus(ChatItemStatusType.answered);
+      }
       answer = answer.copyWith(
         isAnswer: true,
         type: _question.type,
@@ -535,7 +541,6 @@ class ChatCubit extends Cubit<ChatState> {
 
       if (answer.isSent) {
         _mainCubit.updateSessions();
-        Get.back();
       }
     }
   }
@@ -565,7 +570,6 @@ class ChatCubit extends Cubit<ChatState> {
       );
 
       _mainCubit.updateSessions();
-      Get.back();
     } catch (e) {
       logger.e(e);
     }

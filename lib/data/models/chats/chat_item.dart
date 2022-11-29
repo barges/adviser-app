@@ -17,6 +17,7 @@ class ChatItem with _$ChatItem {
   @JsonSerializable(includeIfNull: false)
   const factory ChatItem({
     ChatItemType? type,
+    ChatItemType? questionType,
     SessionsTypes? ritualIdentifier,
     ChatItemStatusType? status,
     String? clientName,
