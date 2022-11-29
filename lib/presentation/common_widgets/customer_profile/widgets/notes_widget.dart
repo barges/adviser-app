@@ -36,7 +36,7 @@ class NotesWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Note', //S.of(context).notes,
+                    S.of(context).note,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   /**
@@ -138,7 +138,7 @@ class _OneNoteWidget extends StatelessWidget {
               children: [
                 Text(
                   text,
-                  maxLines: 1,
+                  maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.displayLarge?.copyWith(
                         fontWeight: FontWeight.w500,

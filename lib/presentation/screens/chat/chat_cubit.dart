@@ -16,6 +16,7 @@ import 'package:shared_advisor_interface/data/models/enums/file_ext.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
@@ -154,7 +155,7 @@ class ChatCubit extends Cubit<ChatState> {
       await showOkCancelAlert(
         context: _context,
         title: _mainCubit.state.errorMessage,
-        okText: 'OK',
+        okText: S.of(_context).ok,
         actionOnOK: () {
           Get.offNamed(AppRoutes.home,
               arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
@@ -198,7 +199,7 @@ class ChatCubit extends Cubit<ChatState> {
       await showOkCancelAlert(
         context: _context,
         title: _mainCubit.state.errorMessage,
-        okText: 'OK',
+        okText: S.of(_context).ok,
         actionOnOK: () {
           Get.offNamed(AppRoutes.home,
               arguments: HomeScreenArguments(initTab: TabsTypes.sessions));

@@ -105,6 +105,11 @@ extension StringExt on String {
   String get removeSpacesAndNewLines {
     return trim().replaceAll(RegExp(r'(\n){3,}'), "\n\n");
   }
+
+  String get currencySymbolByName {
+    final NumberFormat format = NumberFormat.simpleCurrency(name: this);
+    return format.currencySymbol;
+  }
 }
 
 extension DoubleExt on double {

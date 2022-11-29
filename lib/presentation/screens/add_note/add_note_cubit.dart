@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/data/network/responses/update_note_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -19,8 +18,6 @@ class AddNoteCubit extends Cubit<AddNoteState> {
   final CustomerRepository _repository = getIt.get<CustomerRepository>();
   late final TextEditingController noteController;
   late final TextEditingController titleController;
-
-  ///TODO: Change arguments and add callback to arguments for change note on customer profile screen
 
   AddNoteCubit() : super(AddNoteState()) {
     arguments = Get.arguments as AddNoteScreenArguments;

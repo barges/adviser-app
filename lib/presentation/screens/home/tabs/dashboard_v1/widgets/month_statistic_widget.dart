@@ -14,6 +14,8 @@ class MonthStatisticWidget extends StatelessWidget {
     return Builder(builder: (context) {
       final double monthAmount =
           context.select((DashboardV1Cubit cubit) => cubit.state.monthAmount);
+      final String currencySymbol = context
+          .select((DashboardV1Cubit cubit) => cubit.state.currencySymbol);
       return Container(
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
@@ -43,7 +45,8 @@ class MonthStatisticWidget extends StatelessWidget {
                     child: Divider(
                       height: 2,
                     )),
-                Text('\$ ${monthAmount.parseValueToCurrencyFormat}',
+                Text(
+                    '$currencySymbol ${monthAmount.parseValueToCurrencyFormat}',
                     style: Theme.of(context).textTheme.labelLarge),
                 const SizedBox(
                   height: 8.0,
