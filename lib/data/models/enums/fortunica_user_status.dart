@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 enum FortunicaUserStatus {
@@ -17,18 +18,18 @@ enum FortunicaUserStatus {
 }
 
 extension StatusExt on FortunicaUserStatus {
-  String get statusName {
+  String statusName(BuildContext context) {
     switch (this) {
       case FortunicaUserStatus.live:
-        return 'Live';
+        return S.of(context).live;
       case FortunicaUserStatus.incomplete:
-        return 'Incomplete';
+        return S.of(context).incomplete;
       case FortunicaUserStatus.blocked:
-        return 'Blocked';
+        return S.of(context).blocked;
       case FortunicaUserStatus.legalBlock:
-        return 'Legal block';
+        return S.of(context).legalBlock;
       case FortunicaUserStatus.offline:
-        return 'Offline';
+        return S.of(context).offline;
     }
   }
 
@@ -57,37 +58,30 @@ extension StatusExt on FortunicaUserStatus {
     }
   }
 
-  String errorText() {
+  String errorText(BuildContext context) {
     switch (this) {
       case FortunicaUserStatus.live:
       case FortunicaUserStatus.blocked:
         return '';
       case FortunicaUserStatus.incomplete:
-        return 'You’re currently not live on the platform, platform,'
-            ' please make sure you fill out your profile for all languages. '
-            'You can contact your Manager if you have questions.';
+        return S.of(context).youReCurrentlyNotLiveOnThePlatform;
       case FortunicaUserStatus.legalBlock:
-        return 'Before proceeding you need to accept contracts.'
-            ' To do so please open the web version of the Advisor Tool';
+        return S.of(context).beforeProceedingYouNeedToAcceptContracts;
       case FortunicaUserStatus.offline:
-        return 'You\'re currently Offline on the platform,'
-            ' you can\'t use the full functionality and are not '
-            'visible to users. You can change your status'
-            ' to Live in your profile.';
+        return S.of(context).youReCurrentlyOfflineOnThePlatform;
     }
   }
 
-  String buttonText() {
+  String buttonText(BuildContext context) {
     switch (this) {
       case FortunicaUserStatus.live:
       case FortunicaUserStatus.blocked:
         return '';
       case FortunicaUserStatus.incomplete:
-        return 'Complete profile to start helping';
+        return S.of(context).completeProfileToStartHelping;
       case FortunicaUserStatus.legalBlock:
-        return 'Go to Account';
       case FortunicaUserStatus.offline:
-        return 'Go to Account';
+        return S.of(context).goToAccount;
     }
   }
 }

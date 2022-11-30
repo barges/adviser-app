@@ -1516,6 +1516,106 @@ class S {
       args: [],
     );
   }
+
+  /// `Live`
+  String get live {
+    return Intl.message(
+      'Live',
+      name: 'live',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incomplete`
+  String get incomplete {
+    return Intl.message(
+      'Incomplete',
+      name: 'incomplete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Blocked`
+  String get blocked {
+    return Intl.message(
+      'Blocked',
+      name: 'blocked',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Legal block`
+  String get legalBlock {
+    return Intl.message(
+      'Legal block',
+      name: 'legalBlock',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Offline`
+  String get offline {
+    return Intl.message(
+      'Offline',
+      name: 'offline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You’re currently not live on the platform, please make sure you fill out your profile for all languages. You can contact your Manager if you have questions.`
+  String get youReCurrentlyNotLiveOnThePlatform {
+    return Intl.message(
+      'You’re currently not live on the platform, please make sure you fill out your profile for all languages. You can contact your Manager if you have questions.',
+      name: 'youReCurrentlyNotLiveOnThePlatform',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Before proceeding you need to accept contracts. To do so please open the web version of the Advisor Tool`
+  String get beforeProceedingYouNeedToAcceptContracts {
+    return Intl.message(
+      'Before proceeding you need to accept contracts. To do so please open the web version of the Advisor Tool',
+      name: 'beforeProceedingYouNeedToAcceptContracts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You’re currently Offline on the platform, you can’t use the full functionality and are not visible to users. You can change your status to Live in your profile.`
+  String get youReCurrentlyOfflineOnThePlatform {
+    return Intl.message(
+      'You’re currently Offline on the platform, you can’t use the full functionality and are not visible to users. You can change your status to Live in your profile.',
+      name: 'youReCurrentlyOfflineOnThePlatform',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Complete profile to start helping`
+  String get completeProfileToStartHelping {
+    return Intl.message(
+      'Complete profile to start helping',
+      name: 'completeProfileToStartHelping',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Go to Account`
+  String get goToAccount {
+    return Intl.message(
+      'Go to Account',
+      name: 'goToAccount',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
