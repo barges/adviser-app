@@ -49,7 +49,6 @@ class ChatScreen extends StatelessWidget {
               title: _question.clientName ?? '',
               zodiacSign: _question.clientInformation?.zodiac,
             ),
-            backgroundColor: Theme.of(context).canvasColor,
             body: SafeArea(
               child: Builder(builder: (context) {
                 final int currentIndex = context
@@ -64,6 +63,7 @@ class ChatScreen extends StatelessWidget {
                         vertical: 10.0,
                         horizontal: 16.0,
                       ),
+                      color: Theme.of(context).canvasColor,
                       child: ChooseOptionWidget(
                         options: [
                           S.of(context).activeChat,
