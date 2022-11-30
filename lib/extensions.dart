@@ -144,17 +144,17 @@ extension IterableExtention<E> on Iterable<E> {
 extension DateTimeExt on DateTime {
   String get chatListTime {
     DateTime now = DateTime.now();
-    DateTime localTime = toLocal();
+    DateTime localTime = now.isUtc ? toLocal() : this;
     int timeDifference =
         DateTime(localTime.year, localTime.month, localTime.day)
             .difference(DateTime(now.year, now.month, now.day))
             .inDays;
     if (timeDifference == 0) {
-      return DateFormat(dateFormat).format(this).parseDateTimePattern7;
+      return DateFormat(dateFormat).format(localTime).parseDateTimePattern7;
     }
     if (timeDifference < -365) {
-      return DateFormat(dateFormat).format(this).parseDateTimePattern9;
+      return DateFormat(dateFormat).format(localTime).parseDateTimePattern9;
     }
-    return DateFormat(dateFormat).format(this).parseDateTimePattern8;
+    return DateFormat(dateFormat).format(localTime).parseDateTimePattern8;
   }
 }
