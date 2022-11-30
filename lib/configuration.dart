@@ -7,9 +7,10 @@ class Configuration {
   ];
 }
 
-enum Brand { fortunica, zodiacTouch }
+enum Brand {
+  fortunica,
+  zodiacTouch;
 
-extension BrandExtension on Brand {
   static Brand brandFromString(String? s) {
     switch (s) {
       case 'Brand.fortunica':

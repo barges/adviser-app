@@ -13,10 +13,8 @@ enum FortunicaUserStatus {
   @JsonValue("LEGALBLOCK")
   legalBlock,
   @JsonValue("OFFLINE")
-  offline,
-}
+  offline;
 
-extension StatusExt on FortunicaUserStatus {
   String statusName(BuildContext context) {
     switch (this) {
       case FortunicaUserStatus.live:

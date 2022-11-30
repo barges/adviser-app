@@ -42,7 +42,7 @@ class ChatCubit extends Cubit<ChatState> {
   final BuildContext _context;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final Codec _codec = Platform.isIOS ? Codec.aacMP4 : Codec.mp3;
-  final FileExt _recordFileExt = CurrentFileExt.current;
+  final FileExt _recordFileExt = FileExt.current;
   final int _limit = 25;
   int _offset = 0;
   int? _total;
@@ -453,7 +453,7 @@ class ChatCubit extends Cubit<ChatState> {
     try {
       answer = await _repository.sendAnswer(_answerRequest!);
       logger.d('send media response:$answer');
-      if(answer.type == ChatItemType.textAnswer){
+      if (answer.type == ChatItemType.textAnswer) {
         _setQuestionStatus(ChatItemStatusType.answered);
       }
       answer = answer.copyWith(
@@ -513,7 +513,7 @@ class ChatCubit extends Cubit<ChatState> {
     try {
       answer = await _repository.sendAnswer(_answerRequest!);
       logger.i('send text response:$answer');
-      if(answer.type == ChatItemType.textAnswer){
+      if (answer.type == ChatItemType.textAnswer) {
         _setQuestionStatus(ChatItemStatusType.answered);
       }
       answer = answer.copyWith(

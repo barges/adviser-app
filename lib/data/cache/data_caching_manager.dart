@@ -86,13 +86,13 @@ class DataCachingManager implements CachingManager {
 
   @override
   Brand? getCurrentBrand() {
-    return BrandExtension.brandFromString(_brandsBox.read(_brandKey));
+    return Brand.brandFromString(_brandsBox.read(_brandKey));
   }
 
   @override
   VoidCallback listenCurrentBrand(ValueChanged<Brand> callback) {
     return _brandsBox.listenKey(_brandKey, (value) {
-      callback(BrandExtension.brandFromString(value));
+      callback(Brand.brandFromString(value));
     });
   }
 

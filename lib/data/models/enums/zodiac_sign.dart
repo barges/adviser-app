@@ -14,10 +14,8 @@ enum ZodiacSign {
   sagittarius,
   scorpio,
   taurus,
-  virgo
-}
+  virgo;
 
-extension ZodiacSignExt on ZodiacSign {
   String imagePath(BuildContext context) {
     return Utils.isDarkMode(context) ? imagePathDark : imagePathLight;
   }
