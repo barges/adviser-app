@@ -24,6 +24,7 @@ class ChatTextInputWidget extends StatelessWidget {
     final List<File> attachedPictures =
         context.select((ChatCubit cubit) => cubit.state.attachedPictures);
     final isAttachedPictures = chatCubit.isAttachedPictures;
+    final isAudio = chatCubit.currentQuestion.isAudio;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
@@ -82,13 +83,15 @@ class ChatTextInputWidget extends StatelessWidget {
 
                   return Row(
                     children: [
-                      if (inputTextLength == 0 && !isAttachedPictures)
+                      if (inputTextLength == 0 &&
+                          !isAttachedPictures &&
+                          isAudio)
                         AppIconGradientButton(
                           onTap: () => chatCubit.startRecordingAudio(),
                           icon: Assets.vectors.microphone.path,
                           iconColor: Theme.of(context).backgroundColor,
                         ),
-                      if (inputTextLength > 0 || isAttachedPictures)
+                      if (inputTextLength > 0 || isAttachedPictures || !isAudio)
                         Opacity(
                           opacity: isSendTextEnabled ? 1.0 : 0.4,
                           child: AppIconGradientButton(

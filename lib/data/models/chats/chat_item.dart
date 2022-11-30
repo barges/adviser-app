@@ -91,4 +91,6 @@ class ChatItem with _$ChatItem {
   }
 
   bool get isMedia => attachments != null && attachments!.isNotEmpty;
+
+  bool get isAudio => getAudioUrl(1) != null || getAudioUrl(2) != null;
 }

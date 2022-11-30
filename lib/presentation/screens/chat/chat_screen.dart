@@ -35,9 +35,9 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ChatCubit(
+        _question,
         getIt.get<CachingManager>(),
         getIt.get<ChatsRepository>(),
-        _question,
         context,
       ),
       child: Builder(
