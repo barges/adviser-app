@@ -209,7 +209,7 @@ class _ActiveChat extends StatelessWidget {
                           chatCubit.deletedRecordedAudio();
                         }
                       },
-                      onSendPressed: () => chatCubit.sendMedia(),
+                      onSendPressed: chatCubit.sendMediaAnswer,
                     );
                   }
 

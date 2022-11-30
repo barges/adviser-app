@@ -430,46 +430,14 @@ class ChatCubit extends Cubit<ChatState> {
     await _repository.startAnswer(AnswerRequest(questionID: questionId));
   }
 
-  Future<void> sendMedia() async {
+  Future<void> sendMediaAnswer() async {
     if (_playerRecorded != null && _playerRecorded!.isPlaying) {
-      await _playerRecorded?.stopPlayer();
+      await _playerRecorded!.stopPlayer();
     }
 
-    final Attachment? audioAttachment = await _getAudioAttachment();
-    Attachment? pictureAttachment;
-    if (isAttachedPictures) {
-      pictureAttachment = await _getPictureAttachment(0);
-    }
-
-    _answerRequest = AnswerRequest(
-      questionID: _question.id,
-      ritualID: _question.ritualIdentifier,
-      attachments: [
-        audioAttachment!,
-        if (pictureAttachment != null) pictureAttachment,
-      ],
-    );
-
+    _answerRequest = await _createMediaAnswerRequest();
+    final ChatItem? answer = await _sendAnswer();
     final messages = List.of(state.activeMessages);
-    ChatItem? answer;
-    try {
-      answer = await _repository.sendAnswer(_answerRequest!);
-      logger.d('send media response:$answer');
-      if (answer.type == ChatItemType.textAnswer) {
-        _setQuestionStatus(ChatItemStatusType.answered);
-      }
-      answer = answer.copyWith(
-        isAnswer: true,
-        type: _question.type,
-        ritualIdentifier: _question.ritualIdentifier,
-      );
-      _answerRequest = null;
-    } catch (e) {
-      logger.e(e);
-      if (!await ConnectivityService.checkConnection()) {
-        answer = _getNotSentAnswer();
-      }
-    }
 
     if (answer != null) {
       messages.add(answer);
@@ -490,45 +458,10 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Future<void> sendTextMedia() async {
-    Attachment? pictureAttachment1 =
-        isAttachedPictures ? await _getPictureAttachment(0) : null;
-    Attachment? pictureAttachment2 = state.attachedPictures.length == 2
-        ? await _getPictureAttachment(1)
-        : null;
-
-    _answerRequest = AnswerRequest(
-      questionID: _question.id,
-      ritualID: _question.ritualIdentifier,
-      content: textEditingController.text.isEmpty
-          ? null
-          : textEditingController.text,
-      attachments: [
-        if (pictureAttachment1 != null) pictureAttachment1,
-        if (pictureAttachment2 != null) pictureAttachment2,
-      ],
-    );
-
+  Future<void> sendTextMediaAnswer() async {
+    _answerRequest = await _createTextMediaAnswerRequest();
+    final ChatItem? answer = await _sendAnswer();
     final messages = List.of(state.activeMessages);
-    ChatItem? answer;
-    try {
-      answer = await _repository.sendAnswer(_answerRequest!);
-      logger.i('send text response:$answer');
-      if (answer.type == ChatItemType.textAnswer) {
-        _setQuestionStatus(ChatItemStatusType.answered);
-      }
-      answer = answer.copyWith(
-        isAnswer: true,
-        type: _question.type,
-        ritualIdentifier: _question.ritualIdentifier,
-      );
-      _answerRequest = null;
-    } catch (e) {
-      logger.e(e);
-      if (!await ConnectivityService.checkConnection()) {
-        answer = _getNotSentAnswer();
-      }
-    }
 
     if (answer != null) {
       messages.add(answer);
@@ -578,6 +511,70 @@ class ChatCubit extends Cubit<ChatState> {
 
   void changeCurrentTabIndex(int newIndex) {
     emit(state.copyWith(currentTabIndex: newIndex));
+  }
+
+  Future<AnswerRequest> _createMediaAnswerRequest() async {
+    final Attachment? audioAttachment = await _getAudioAttachment();
+    Attachment? pictureAttachment;
+    if (isAttachedPictures) {
+      pictureAttachment = await _getPictureAttachment(0);
+    }
+
+    final answerRequest = AnswerRequest(
+      questionID: _question.id,
+      ritualID: _question.ritualIdentifier,
+      attachments: [
+        audioAttachment!,
+        if (pictureAttachment != null) pictureAttachment,
+      ],
+    );
+
+    return answerRequest;
+  }
+
+  Future<AnswerRequest> _createTextMediaAnswerRequest() async {
+    Attachment? pictureAttachment1 =
+        isAttachedPictures ? await _getPictureAttachment(0) : null;
+    Attachment? pictureAttachment2 = state.attachedPictures.length == 2
+        ? await _getPictureAttachment(1)
+        : null;
+
+    final answerRequest = AnswerRequest(
+      questionID: _question.id,
+      ritualID: _question.ritualIdentifier,
+      content: textEditingController.text.isEmpty
+          ? null
+          : textEditingController.text,
+      attachments: [
+        if (pictureAttachment1 != null) pictureAttachment1,
+        if (pictureAttachment2 != null) pictureAttachment2,
+      ],
+    );
+
+    return answerRequest;
+  }
+
+  Future<ChatItem?> _sendAnswer() async {
+    ChatItem? answer;
+    try {
+      answer = await _repository.sendAnswer(_answerRequest!);
+      logger.d('send answer response: $answer');
+      if (answer.type == ChatItemType.textAnswer) {
+        _setQuestionStatus(ChatItemStatusType.answered);
+      }
+      answer = answer.copyWith(
+        isAnswer: true,
+        type: _question.type,
+        ritualIdentifier: _question.ritualIdentifier,
+      );
+      _answerRequest = null;
+    } catch (e) {
+      logger.e(e);
+      if (!await ConnectivityService.checkConnection()) {
+        answer = _getNotSentAnswer();
+      }
+    }
+    return answer;
   }
 
   ChatItem _getNotSentAnswer() {
