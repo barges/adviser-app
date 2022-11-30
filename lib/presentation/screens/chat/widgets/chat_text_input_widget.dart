@@ -11,6 +11,8 @@ import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.da
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/attached_pictures.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
+const _maxTextNumLines = 6;
+
 class ChatTextInputWidget extends StatelessWidget {
   const ChatTextInputWidget({
     Key? key,
@@ -21,7 +23,7 @@ class ChatTextInputWidget extends StatelessWidget {
     final ChatCubit chatCubit = context.read<ChatCubit>();
     final List<File> attachedPictures =
         context.select((ChatCubit cubit) => cubit.state.attachedPictures);
-    final isAttachedPictures = attachedPictures.isNotEmpty;
+    final isAttachedPictures = chatCubit.isAttachedPictures;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
@@ -74,12 +76,9 @@ class ChatTextInputWidget extends StatelessWidget {
                     ),
                   ),
                 Builder(builder: (context) {
-                  final int inputTextLength = context
-                      .select((ChatCubit cubit) => cubit.state.inputTextLength);
-                  final bool isSendTextEnabled =
-                      (inputTextLength >= AppConstants.minTextLength &&
-                              inputTextLength <= AppConstants.maxTextLength) ||
-                          attachedPictures.isNotEmpty;
+                  final isSendTextEnabled = context.select(
+                          (ChatCubit cubit) => cubit.state.isSendTextEnabled) ||
+                      isAttachedPictures;
 
                   return Row(
                     children: [
@@ -93,8 +92,8 @@ class ChatTextInputWidget extends StatelessWidget {
                         Opacity(
                           opacity: isSendTextEnabled ? 1.0 : 0.4,
                           child: AppIconGradientButton(
-                            onTap: () => isSendTextEnabled
-                                ? chatCubit.sendTextMedia()
+                            onTap: isSendTextEnabled
+                                ? chatCubit.sendTextMedia
                                 : null,
                             icon: Assets.vectors.send.path,
                             iconColor: Theme.of(context).backgroundColor,
@@ -134,16 +133,18 @@ class _InputTextField extends StatelessWidget {
           style,
         );
         return Scrollbar(
+          thickness: 4.0,
           controller: chatCubit.textInputScrollController,
           thumbVisibility: true,
           interactive: true,
           child: TextField(
             scrollController: chatCubit.textInputScrollController,
             controller: chatCubit.textEditingController,
-            maxLines: textNumLines > 10 ? 10 : null,
+            maxLines: textNumLines > _maxTextNumLines ? _maxTextNumLines : null,
             style: style,
             decoration: InputDecoration(
-              contentPadding: EdgeInsets.only(right: textNumLines > 10 ? 4 : 0),
+              contentPadding: EdgeInsets.only(
+                  right: textNumLines > _maxTextNumLines ? 4.0 : 0.0),
               isCollapsed: true,
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,

@@ -332,12 +332,13 @@ class _TextCounter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ChatCubit chatCubit = context.read<ChatCubit>();
     final theme = Theme.of(context);
     return Builder(builder: (context) {
       final int inputTextLength =
           context.select((ChatCubit cubit) => cubit.state.inputTextLength);
-      final isEnabled = inputTextLength >= AppConstants.minTextLength &&
-          inputTextLength <= AppConstants.maxTextLength;
+      final isEnabled =
+          context.select((ChatCubit cubit) => cubit.state.isSendTextEnabled);
       return Stack(
         children: [
           Container(
@@ -358,7 +359,7 @@ class _TextCounter extends StatelessWidget {
               padding: const EdgeInsets.all(4.0),
               child: Text(
                 textAlign: TextAlign.center,
-                '${AppConstants.maxTextLength}/$inputTextLength',
+                '$inputTextLength/${chatCubit.minTextLength}',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: isEnabled ? AppColors.online : theme.errorColor,
                   fontSize: 12.0,

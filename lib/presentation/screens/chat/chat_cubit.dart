@@ -154,9 +154,11 @@ class ChatCubit extends Cubit<ChatState> {
 
   void textEditingControllerListener() {
     //startAnswer(_question.id ?? '');
+    final textLength = textEditingController.text.length;
     emit(state.copyWith(
-      inputTextLength: textEditingController.text.length,
-    ));
+        inputTextLength: textEditingController.text.length,
+        isSendTextEnabled:
+            textLength >= minTextLength && textLength <= maxTextLength));
   }
 
   Future<void> _getConversations() async {
@@ -435,7 +437,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     final Attachment? audioAttachment = await _getAudioAttachment();
     Attachment? pictureAttachment;
-    if (state.attachedPictures.isNotEmpty) {
+    if (isAttachedPictures) {
       pictureAttachment = await _getPictureAttachment(0);
     }
 
@@ -453,7 +455,7 @@ class ChatCubit extends Cubit<ChatState> {
     try {
       answer = await _repository.sendAnswer(_answerRequest!);
       logger.d('send media response:$answer');
-      if(answer.type == ChatItemType.textAnswer){
+      if (answer.type == ChatItemType.textAnswer) {
         _setQuestionStatus(ChatItemStatusType.answered);
       }
       answer = answer.copyWith(
@@ -489,9 +491,8 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> sendTextMedia() async {
-    Attachment? pictureAttachment1 = state.attachedPictures.isNotEmpty
-        ? await _getPictureAttachment(0)
-        : null;
+    Attachment? pictureAttachment1 =
+        isAttachedPictures ? await _getPictureAttachment(0) : null;
     Attachment? pictureAttachment2 = state.attachedPictures.length == 2
         ? await _getPictureAttachment(1)
         : null;
@@ -513,7 +514,7 @@ class ChatCubit extends Cubit<ChatState> {
     try {
       answer = await _repository.sendAnswer(_answerRequest!);
       logger.i('send text response:$answer');
-      if(answer.type == ChatItemType.textAnswer){
+      if (answer.type == ChatItemType.textAnswer) {
         _setQuestionStatus(ChatItemStatusType.answered);
       }
       answer = answer.copyWith(
@@ -642,6 +643,16 @@ class ChatCubit extends Cubit<ChatState> {
       attachment: base64Image,
     );
   }
+
+  bool get isAttachedPictures => state.attachedPictures.isNotEmpty;
+
+  int get minTextLength => _question.type == ChatItemType.ritual
+      ? AppConstants.minTextLengthRirual
+      : AppConstants.minTextLengthPublic;
+
+  int get maxTextLength => _question.type == ChatItemType.ritual
+      ? AppConstants.maxTextLengthRitual
+      : AppConstants.maxTextLengthPublic;
 
   Stream<PlaybackDisposition>? get onMediaProgress => _playerMedia?.onProgress;
 }
