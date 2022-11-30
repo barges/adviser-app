@@ -154,5 +154,11 @@
   "beforeProceedingYouNeedToAcceptContracts": "Antes de continuar, debe aceptar los contratos. Para hacerlo, abra la versión web de Advisor Tool",
   "youReCurrentlyOfflineOnThePlatform": "Actualmente está sin conexión en la plataforma, no puede usar la funcionalidad completa y no es visible para los usuarios. Puede cambiar su estado a Vivo en su perfil.",
   "completeProfileToStartHelping": "Perfil completo para empezar a ayudar",
+  "activeChat": "Сharla activa",
+  "history": "Historia",
+  "profile":"Perfil",
+  "youCanNotHelpUsersSinceYouHaveAnActive": "No puedes ayudar a los usuarios ya que tienes una pregunta pública activa.",
+  "personalDetails": "DETALLES PERSONALES",
+  "takeQuestion": "Tomar pregunta",
   "goToAccount": "Ir a Cuenta"
 }

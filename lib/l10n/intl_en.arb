@@ -142,7 +142,6 @@
   "allowCamera": "Allow camera",
   "allowGallery": "Allow gallery",
   "toResetPasswordEnterEmailAddressAndWellSendYou": "To reset password, enter email address and we’ll send you instructions on how to create a new password.",
-  "youCanNotHelpUsersSinceYouHaveAnActive": "You can not help users since you have an active public question.",
   "ok": "OK",
   "youDontHaveInternetConnection": "You don’t have internet connection",
   "note": "Note",
@@ -155,5 +154,11 @@
   "beforeProceedingYouNeedToAcceptContracts": "Before proceeding you need to accept contracts. To do so please open the web version of the Advisor Tool",
   "youReCurrentlyOfflineOnThePlatform": "You’re currently Offline on the platform, you can’t use the full functionality and are not visible to users. You can change your status to Live in your profile.",
   "completeProfileToStartHelping": "Complete profile to start helping",
-  "goToAccount": "Go to Account"
+  "goToAccount": "Go to Account",
+  "activeChat": "Active chat",
+  "history": "History",
+  "profile":"Profile",
+  "youCanNotHelpUsersSinceYouHaveAnActive": "You can not help users since you have an active public question.",
+  "personalDetails": "PERSONAL DETAILS",
+  "takeQuestion": "Take question"
 }

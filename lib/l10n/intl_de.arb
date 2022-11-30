@@ -153,5 +153,11 @@
   "beforeProceedingYouNeedToAcceptContracts": "Bevor Sie fortfahren, müssen Sie Verträge akzeptieren. Öffnen Sie dazu bitte die Webversion des Advisor Tools",
   "youReCurrentlyOfflineOnThePlatform": "Sie sind derzeit auf der Plattform offline, können nicht die volle Funktionalität nutzen und sind für Benutzer nicht sichtbar. Sie können Ihren Status in Ihrem Profil auf Live ändern.",
   "completeProfileToStartHelping": "Vervollständigen Sie das Profil, um zu helfen",
+  "activeChat": "Aktiver Chat",
+  "history": "Geschichte",
+  "profile":"Profil",
+  "youCanNotHelpUsersSinceYouHaveAnActive": "Sie können Benutzern nicht helfen, da Sie eine aktive öffentliche Frage haben.",
+  "personalDetails": "PERSÖNLICHE DATEN",
+  "takeQuestion": "Frage stellen",
   "goToAccount": "Gehen Sie zu Konto"
 }

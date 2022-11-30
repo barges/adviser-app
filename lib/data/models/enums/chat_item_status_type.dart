@@ -5,4 +5,6 @@ enum ChatItemStatusType {
   taken,
   @JsonValue("OPEN")
   open,
+  @JsonValue("ANSWERED")
+  answered,
 }

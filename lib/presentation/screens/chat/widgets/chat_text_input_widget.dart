@@ -76,6 +76,11 @@ class ChatTextInputWidget extends StatelessWidget {
                 Builder(builder: (context) {
                   final int inputTextLength = context
                       .select((ChatCubit cubit) => cubit.state.inputTextLength);
+                  final bool isSendTextEnabled =
+                      (inputTextLength >= AppConstants.minTextLength &&
+                              inputTextLength <= AppConstants.maxTextLength) ||
+                          attachedPictures.isNotEmpty;
+
                   return Row(
                     children: [
                       if (inputTextLength == 0 && !isAttachedPictures)
@@ -85,10 +90,15 @@ class ChatTextInputWidget extends StatelessWidget {
                           iconColor: Theme.of(context).backgroundColor,
                         ),
                       if (inputTextLength > 0 || isAttachedPictures)
-                        AppIconGradientButton(
-                          onTap: () => chatCubit.sendTextMedia(),
-                          icon: Assets.vectors.send.path,
-                          iconColor: Theme.of(context).backgroundColor,
+                        Opacity(
+                          opacity: isSendTextEnabled ? 1.0 : 0.4,
+                          child: AppIconGradientButton(
+                            onTap: () => isSendTextEnabled
+                                ? chatCubit.sendTextMedia()
+                                : null,
+                            icon: Assets.vectors.send.path,
+                            iconColor: Theme.of(context).backgroundColor,
+                          ),
                         ),
                     ],
                   );
