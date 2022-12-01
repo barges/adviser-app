@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/network/requests/reset_password_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -140,7 +141,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
       if (passwordIsValid() && confirmPasswordIsValid()) {
         final bool success = await _repository.sendPasswordForReset(
           request: ResetPasswordRequest(
-            password: passwordController.text,
+            password: passwordController.text.to256,
           ),
           token: arguments.resetToken ?? '',
         );

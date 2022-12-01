@@ -17,14 +17,14 @@ abstract class AuthApi {
     @Body() ResetPasswordRequest request,
   );
 
-  @GET('/experts/reset')
+  @GET('/experts/reset/{token}')
   Future<void> verifyResetToken({
-    @Query('token') required String token,
+    @Path('token') required String token,
   });
 
-  @PUT('/experts/reset')
+  @PUT('/experts/reset/{token}')
   Future<void> sendPasswordForReset({
-    @Query('token') required String token,
+    @Path('token') required String token,
     @Body() required ResetPasswordRequest request,
   });
 }
