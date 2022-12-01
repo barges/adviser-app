@@ -22,10 +22,7 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'chat_state.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -208,8 +205,8 @@ class ChatCubit extends Cubit<ChatState> {
         title: _mainCubit.state.errorMessage,
         okText: S.of(_context).ok,
         actionOnOK: () {
-          Get.offNamed(AppRoutes.home,
-              arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
+          Get.back();
+          Get.back(result: true);
         },
         allowBarrierClock: false,
         isCancelEnabled: false,
@@ -231,8 +228,8 @@ class ChatCubit extends Cubit<ChatState> {
         title: _mainCubit.state.errorMessage,
         okText: S.of(_context).ok,
         actionOnOK: () {
-          Get.offNamed(AppRoutes.home,
-              arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
+          Get.back();
+          Get.back(result: true);
         },
         allowBarrierClock: false,
         isCancelEnabled: false,
