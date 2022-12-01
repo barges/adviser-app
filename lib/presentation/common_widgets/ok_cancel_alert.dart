@@ -22,9 +22,10 @@ Future showOkCancelAlert({
           onWillPop: () => Future.value(allowBarrierClock),
           child: Platform.isIOS
               ? CupertinoAlertDialog(
-                  title: Text(title,
-                      style:
-                          theme.textTheme.bodyText2?.copyWith(fontSize: 19.0)),
+                  title: Text(
+                    title,
+                    style: theme.textTheme.bodyText2?.copyWith(fontSize: 19.0),
+                  ),
                   actions: [
                     if (isCancelEnabled)
                       CupertinoDialogAction(
@@ -42,6 +43,7 @@ Future showOkCancelAlert({
                 )
               : Dialog(
                   backgroundColor: Theme.of(context).canvasColor,
+                  elevation: 0.0,
                   insetPadding: const EdgeInsets.symmetric(
                       horizontal: AppConstants.horizontalScreenPadding),
                   child: Padding(
@@ -67,7 +69,8 @@ Future showOkCancelAlert({
                             children: [
                               if (isCancelEnabled)
                                 TextButton(
-                                  child: Text(S.of(context).cancel,
+                                  child: Text(
+                                      S.of(context).cancel.toUpperCase(),
                                       style: theme.textTheme.displayLarge
                                           ?.copyWith(
                                         fontSize: 14.0,
@@ -79,7 +82,7 @@ Future showOkCancelAlert({
                                 ),
                               TextButton(
                                 onPressed: actionOnOK,
-                                child: Text(okText,
+                                child: Text(okText.toUpperCase(),
                                     style:
                                         theme.textTheme.displayLarge?.copyWith(
                                       fontSize: 14.0,
