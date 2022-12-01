@@ -80,16 +80,24 @@ class ChatTextInputWidget extends StatelessWidget {
                   final isSendTextEnabled = context.select(
                           (ChatCubit cubit) => cubit.state.isSendTextEnabled) ||
                       isAttachedPictures;
+                  final isMicrophoneButtonEnabled = context.select(
+                      (ChatCubit cubit) =>
+                          cubit.state.isMicrophoneButtonEnabled);
 
                   return Row(
                     children: [
                       if (inputTextLength == 0 &&
                           !isAttachedPictures &&
                           isAudio)
-                        AppIconGradientButton(
-                          onTap: () => chatCubit.startRecordingAudio(),
-                          icon: Assets.vectors.microphone.path,
-                          iconColor: Theme.of(context).backgroundColor,
+                        Opacity(
+                          opacity: isMicrophoneButtonEnabled ? 1.0 : 0.4,
+                          child: AppIconGradientButton(
+                            onTap: isMicrophoneButtonEnabled
+                                ? chatCubit.startRecordingAudio
+                                : null,
+                            icon: Assets.vectors.microphone.path,
+                            iconColor: Theme.of(context).backgroundColor,
+                          ),
                         ),
                       if (inputTextLength > 0 || isAttachedPictures || !isAudio)
                         Opacity(

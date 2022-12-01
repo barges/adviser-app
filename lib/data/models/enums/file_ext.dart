@@ -7,6 +7,6 @@ enum FileExt {
 
 extension CurrentFileExt on FileExt {
   static FileExt get current {
-    return Platform.isIOS ? FileExt.m4a : FileExt.mp3;
+    return FileExt.m4a; //Platform.isIOS ? FileExt.m4a : FileExt.mp3;
   }
 }

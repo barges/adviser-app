@@ -41,7 +41,8 @@ class ChatCubit extends Cubit<ChatState> {
   final ChatItem currentQuestion;
   final BuildContext _context;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
-  final Codec _codec = Platform.isIOS ? Codec.aacMP4 : Codec.mp3;
+  final Codec _codec =
+      Codec.aacMP4; //Platform.isIOS ? Codec.aacMP4 : Codec.mp3;
   final FileExt _recordFileExt = CurrentFileExt.current;
   final int _limit = 25;
   int _offset = 0;
@@ -244,13 +245,23 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> startRecordingAudio() async {
-    PermissionStatus status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) {
-      throw RecordingPermissionException('Microphone permission not granted');
+    if (await Permission.microphone.isPermanentlyDenied) {
+      openAppSettings();
+    } else {
+      await Permission.microphone.request();
+    }
+
+    final isRecordGranted = await Permission.microphone.isGranted;
+    emit(
+      state.copyWith(
+        isMicrophoneButtonEnabled: isRecordGranted,
+      ),
+    );
+    if (!isRecordGranted) {
+      return;
     }
 
     final fileName = '${AppConstants.recordFileName}.${_recordFileExt.name}';
-
     await _recorder?.startRecorder(
       toFile: fileName,
       codec: _codec,
