@@ -568,9 +568,12 @@ class ChatCubit extends Cubit<ChatState> {
         ritualIdentifier: currentQuestion.ritualIdentifier,
       );
       _answerRequest = null;
-    } catch (e) {
+    } on DioError catch (e) {
       logger.e(e);
-      if (!await ConnectivityService.checkConnection()) {
+      if (!await ConnectivityService.checkConnection() ||
+          e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.sendTimeout ||
+          e.type == DioErrorType.receiveTimeout) {
         answer = _getNotSentAnswer();
       }
     }
