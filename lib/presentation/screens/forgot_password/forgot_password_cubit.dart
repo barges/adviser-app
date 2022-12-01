@@ -1,8 +1,12 @@
+import 'dart:async';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/network/requests/reset_password_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -26,48 +30,49 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   ForgotPasswordCubit(this._repository) : super(const ForgotPasswordState()) {
     arguments = Get.arguments as ForgotPasswordScreenArguments;
 
-    if (arguments.token == null) {
-      emailNode.addListener(() {
-        emit(state.copyWith(emailHasFocus: emailNode.hasFocus));
-      });
-
-      emailController.addListener(() {
-        clearErrorMessage();
-        emit(state.copyWith(
-          emailErrorText: '',
-          isButtonActive: emailController.text.isNotEmpty,
-        ));
-      });
-    } else {
+    if (arguments.resetToken != null) {
+      updateResetToken(arguments.resetToken);
       _verifyToken();
-
-      passwordNode.addListener(() {
-        emit(state.copyWith(passwordHasFocus: passwordNode.hasFocus));
-      });
-
-      confirmPasswordNode.addListener(() {
-        emit(state.copyWith(
-            confirmPasswordHasFocus: confirmPasswordNode.hasFocus));
-      });
-
-      passwordController.addListener(() {
-        clearErrorMessage();
-        emit(state.copyWith(
-          passwordErrorText: '',
-          isButtonActive: passwordController.text.isNotEmpty &&
-              confirmPasswordController.text.isNotEmpty,
-        ));
-      });
-
-      confirmPasswordController.addListener(() {
-        clearErrorMessage();
-        emit(state.copyWith(
-          confirmPasswordErrorText: '',
-          isButtonActive: passwordController.text.isNotEmpty &&
-              confirmPasswordController.text.isNotEmpty,
-        ));
-      });
     }
+
+    emailNode.addListener(() {
+      emit(state.copyWith(emailHasFocus: emailNode.hasFocus));
+    });
+
+    emailController.addListener(() {
+      clearErrorMessage();
+      emit(state.copyWith(
+        emailErrorText: '',
+        isButtonActive: emailController.text.isNotEmpty,
+      ));
+    });
+
+    passwordNode.addListener(() {
+      emit(state.copyWith(passwordHasFocus: passwordNode.hasFocus));
+    });
+
+    confirmPasswordNode.addListener(() {
+      emit(state.copyWith(
+          confirmPasswordHasFocus: confirmPasswordNode.hasFocus));
+    });
+
+    passwordController.addListener(() {
+      clearErrorMessage();
+      emit(state.copyWith(
+        passwordErrorText: '',
+        isButtonActive: passwordController.text.isNotEmpty &&
+            confirmPasswordController.text.isNotEmpty,
+      ));
+    });
+
+    confirmPasswordController.addListener(() {
+      clearErrorMessage();
+      emit(state.copyWith(
+        confirmPasswordErrorText: '',
+        isButtonActive: passwordController.text.isNotEmpty &&
+            confirmPasswordController.text.isNotEmpty,
+      ));
+    });
   }
 
   @override
@@ -89,8 +94,12 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     emit(state.copyWith(hiddenConfirmPassword: !state.hiddenConfirmPassword));
   }
 
-  Future<void> resetPassword() async {
-    if (arguments.token == null) {
+  void updateResetToken(String? token) {
+    emit(state.copyWith(resetToken: token));
+  }
+
+  Future<void> resetPassword(String? resetToken) async {
+    if (resetToken == null) {
       await sendEmailForReset();
     } else {
       await changePassword();
@@ -116,38 +125,46 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     }
   }
 
-  Future<bool> _verifyToken() async {
+  Future<void> _verifyToken() async {
     try {
-      return _repository.verifyToken(token: 'token');
-    } catch (e) {
-      logger.e(e);
-      return false;
+      logger.d(arguments.resetToken);
+      await _repository.verifyToken(token: arguments.resetToken ?? '');
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 400 || e.response?.statusCode == 404) {
+        updateResetToken(null);
+      }
     }
   }
 
   Future<void> changePassword() async {
-    if (passwordIsValid() && confirmPasswordIsValid()) {
-      final bool success = await _repository.sendPasswordForReset(
-        request: ResetPasswordRequest(
-          password: passwordController.text,
-        ),
-        token: 'AAAAAAAAA',
-      );
-      if (success) {}
-    } else {
-      if (!passwordIsValid()) {
-        emit(
-          state.copyWith(
-            passwordErrorText: S.current.pleaseEnterAtLeast6Characters,
+    try {
+      if (passwordIsValid() && confirmPasswordIsValid()) {
+        final bool success = await _repository.sendPasswordForReset(
+          request: ResetPasswordRequest(
+            password: passwordController.text.to256,
           ),
+          token: arguments.resetToken ?? '',
         );
+        if (success) {}
+      } else {
+        if (!passwordIsValid()) {
+          emit(
+            state.copyWith(
+              passwordErrorText: S.current.pleaseEnterAtLeast6Characters,
+            ),
+          );
+        }
+        if (!confirmPasswordIsValid()) {
+          emit(
+            state.copyWith(
+              confirmPasswordErrorText: S.current.thePasswordsMustMatch,
+            ),
+          );
+        }
       }
-      if (!confirmPasswordIsValid()) {
-        emit(
-          state.copyWith(
-            confirmPasswordErrorText: S.current.thePasswordsMustMatch,
-          ),
-        );
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 400) {
+        updateResetToken(null);
       }
     }
   }

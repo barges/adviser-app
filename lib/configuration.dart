@@ -22,6 +22,17 @@ enum Brand {
     }
   }
 
+  static Brand brandFromName(String? s) {
+    switch (s) {
+      case 'fortunica':
+        return Brand.fortunica;
+      case 'zodiacTouch':
+        return Brand.zodiacTouch;
+      default:
+        return Brand.fortunica;
+    }
+  }
+
   String get name {
     switch (this) {
       case Brand.fortunica:
