@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -16,25 +17,29 @@ import 'package:shared_advisor_interface/presentation/di/modules/api_module.dart
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_state.dart';
+import 'package:shared_advisor_interface/presentation/services/dynamic_link_service.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   final AuthRepository _repository;
   final CachingManager _cacheManager;
 
   final MainCubit _mainCubit = getIt.get<MainCubit>();
+  final DynamicLinkService _dynamicLinkService =
+      getIt.get<DynamicLinkService>();
 
+  late final List<Brand> unauthorizedBrands;
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final FocusNode emailNode = FocusNode();
   final FocusNode passwordNode = FocusNode();
 
   LoginCubit(this._repository, this._cacheManager) : super(const LoginState()) {
-    final List<Brand> unauthorizedBrands =
-        _cacheManager.getUnauthorizedBrands();
+    _dynamicLinkService.checkLinkForResetPassword();
+
+    unauthorizedBrands = _cacheManager.getUnauthorizedBrands();
     final Brand? newSelectedBrand = Get.arguments;
 
     emit(state.copyWith(
-      unauthorizedBrands: unauthorizedBrands,
       selectedBrand: newSelectedBrand ?? unauthorizedBrands.first,
     ));
 
@@ -129,17 +134,17 @@ class LoginCubit extends Cubit<LoginState> {
     Get.offNamedUntil(AppRoutes.home, (_) => false);
   }
 
-  Future<void> goToForgotPassword() async {
+  Future<void> goToForgotPassword({Brand? brand, String? token}) async {
     clearErrorMessage();
     clearSuccessMessage();
 
-    ///TODO: get token from deep link
     final dynamic needShowSuccessMessage = await Get.toNamed(
       AppRoutes.forgotPassword,
       arguments: ForgotPasswordScreenArguments(
         brand: state.selectedBrand,
       ),
-    ) as bool;
+    );
+
     if (needShowSuccessMessage == true) {
       emit(
         state.copyWith(

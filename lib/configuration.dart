@@ -7,14 +7,26 @@ class Configuration {
   ];
 }
 
-enum Brand { fortunica, zodiacTouch }
+enum Brand {
+  fortunica,
+  zodiacTouch;
 
-extension BrandExtension on Brand {
   static Brand brandFromString(String? s) {
     switch (s) {
       case 'Brand.fortunica':
         return Brand.fortunica;
       case 'Brand.zodiacTouch':
+        return Brand.zodiacTouch;
+      default:
+        return Brand.fortunica;
+    }
+  }
+
+  static Brand brandFromName(String? s) {
+    switch (s) {
+      case 'fortunica':
+        return Brand.fortunica;
+      case 'zodiacTouch':
         return Brand.zodiacTouch;
       default:
         return Brand.fortunica;

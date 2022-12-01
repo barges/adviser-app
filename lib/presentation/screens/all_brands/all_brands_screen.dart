@@ -52,7 +52,7 @@ class AllBrandsScreen extends StatelessWidget {
               shrinkWrap: true,
               padding:
                   const EdgeInsets.all(AppConstants.horizontalScreenPadding),
-              itemCount: BrandExtension.allBrands.length,
+              itemCount: Brand.allBrands.length,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   height: kToolbarHeight,
@@ -65,7 +65,7 @@ class AllBrandsScreen extends StatelessWidget {
                     ),
                     image: DecorationImage(
                       image: AssetImage(
-                        BrandExtension.allBrands[index],
+                        Brand.allBrands[index],
                       ),
                     ),
                   ),
