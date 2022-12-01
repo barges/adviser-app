@@ -30,6 +30,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "addMore" : MessageLookupByLibrary.simpleMessage("Add more"),
     "addNew" : MessageLookupByLibrary.simpleMessage("Add new"),
     "addNote" : MessageLookupByLibrary.simpleMessage("Add Note"),
+    "addPhoto" : MessageLookupByLibrary.simpleMessage("Add photo"),
     "advisors" : MessageLookupByLibrary.simpleMessage("advisors"),
     "all" : MessageLookupByLibrary.simpleMessage("All"),
     "allOurBrands" : MessageLookupByLibrary.simpleMessage("All our brands"),
@@ -120,6 +121,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "perfomanceOverviewAnalytics" : MessageLookupByLibrary.simpleMessage("Perfomance Overview Analytics"),
     "personalBalance" : MessageLookupByLibrary.simpleMessage("Personal Balance"),
     "personalDetails" : MessageLookupByLibrary.simpleMessage("PERSONAL DETAILS"),
+    "photoIsRequired" : MessageLookupByLibrary.simpleMessage("Photo is required"),
     "placesUpFromLastMonth" : MessageLookupByLibrary.simpleMessage("places up from last month"),
     "pleaseEnterAtLeast3Characters" : MessageLookupByLibrary.simpleMessage("Please enter at least 3 characters"),
     "pleaseEnterAtLeast6Characters" : MessageLookupByLibrary.simpleMessage("Please enter at least 6 characters"),
@@ -182,6 +184,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "youReCurrentlyOfflineOnThePlatform" : MessageLookupByLibrary.simpleMessage("You’re currently Offline on the platform, you can’t use the full functionality and are not visible to users. You can change your status to Live in your profile."),
     "youWillBeAbleToChangeYourStatusBackIn" : MessageLookupByLibrary.simpleMessage("You will be able to change your status back in 1 hour"),
     "yourAccountHasBeenBlockedPleaseContactYourAdvisorManager" : MessageLookupByLibrary.simpleMessage("Your account has been blocked. Please contact your advisor manager."),
+    "yourUsername" : MessageLookupByLibrary.simpleMessage("Your Username"),
     "zodiacSign" : MessageLookupByLibrary.simpleMessage("Zodiac Sign")
   };
 }

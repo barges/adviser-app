@@ -85,6 +85,8 @@ class EditProfileScreen extends StatelessWidget {
                                             (EditProfileCubit cubit) =>
                                                 cubit.state.nicknameHasFocus);
                                         return AppTextField(
+                                          key:
+                                              editProfileCubit.nicknameFieldKey,
                                           controller: editProfileCubit
                                               .nicknameController,
                                           focusNode: editProfileCubit

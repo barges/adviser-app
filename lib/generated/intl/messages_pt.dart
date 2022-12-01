@@ -30,6 +30,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "addMore" : MessageLookupByLibrary.simpleMessage("Adicione mais"),
     "addNew" : MessageLookupByLibrary.simpleMessage("Adicionar novo"),
     "addNote" : MessageLookupByLibrary.simpleMessage("Adicionar nota"),
+    "addPhoto" : MessageLookupByLibrary.simpleMessage("Adicionar foto"),
     "advisors" : MessageLookupByLibrary.simpleMessage("conselheiras"),
     "all" : MessageLookupByLibrary.simpleMessage("Tudo"),
     "allOurBrands" : MessageLookupByLibrary.simpleMessage("Todas as nossas marcas"),
@@ -120,6 +121,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "perfomanceOverviewAnalytics" : MessageLookupByLibrary.simpleMessage("Análise de visão geral de desempenho"),
     "personalBalance" : MessageLookupByLibrary.simpleMessage("Saldo Pessoal"),
     "personalDetails" : MessageLookupByLibrary.simpleMessage("PDETALHES PESSOAIS"),
+    "photoIsRequired" : MessageLookupByLibrary.simpleMessage("A foto é necessária"),
     "placesUpFromLastMonth" : MessageLookupByLibrary.simpleMessage("lugares acima do mês passado"),
     "pleaseEnterAtLeast3Characters" : MessageLookupByLibrary.simpleMessage("Digite pelo menos 3 caracteres"),
     "pleaseEnterAtLeast6Characters" : MessageLookupByLibrary.simpleMessage("Insira pelo menos 6 caracteres"),
@@ -182,6 +184,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "youReCurrentlyOfflineOnThePlatform" : MessageLookupByLibrary.simpleMessage("No momento, você está offline na plataforma, não pode usar todas as funcionalidades e não está visível para os usuários. Você pode alterar seu status para Ao vivo em seu perfil."),
     "youWillBeAbleToChangeYourStatusBackIn" : MessageLookupByLibrary.simpleMessage("Você poderá alterar seu status de volta em 1 hora"),
     "yourAccountHasBeenBlockedPleaseContactYourAdvisorManager" : MessageLookupByLibrary.simpleMessage("Sua conta foi bloqueada. Entre em contato com o gerente do seu consultor."),
+    "yourUsername" : MessageLookupByLibrary.simpleMessage("Seu nome de usuário"),
     "zodiacSign" : MessageLookupByLibrary.simpleMessage("Signo do zodíaco")
   };
 }

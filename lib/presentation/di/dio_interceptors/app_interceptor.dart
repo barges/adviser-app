@@ -53,12 +53,12 @@ class AppInterceptor extends Interceptor {
       }
     } else if (err.response?.statusCode == 451 ||
         err.response?.statusCode == 428) {
-      Get.offNamedUntil(
-          AppRoutes.home,
-          arguments: HomeScreenArguments(
-            initTab: TabsTypes.account,
-          ),
-          (route) => false);
+      // Get.offNamedUntil(
+      //     AppRoutes.home,
+      //     arguments: HomeScreenArguments(
+      //       initTab: TabsTypes.account,
+      //     ),
+      //     (route) => false);
     } else {
       _mainCubit.updateErrorMessage(
         err.response?.data['localizedMessage'] ??

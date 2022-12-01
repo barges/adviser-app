@@ -160,5 +160,8 @@
   "profile":"Profile",
   "youCanNotHelpUsersSinceYouHaveAnActive": "You can not help users since you have an active public question.",
   "personalDetails": "PERSONAL DETAILS",
-  "takeQuestion": "Take question"
+  "takeQuestion": "Take question",
+  "addPhoto": "Add photo",
+  "photoIsRequired": "Photo is required",
+  "yourUsername": "Your Username"
 }

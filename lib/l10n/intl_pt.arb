@@ -161,5 +161,8 @@
   "personalDetails": "PDETALHES PESSOAIS",
   "takeQuestion": "Tirar dúvidas",
   "completeProfileToStartHelping": "Preencha o perfil para começar a ajudar",
-  "goToAccount": "Ir para Conta"
+  "goToAccount": "Ir para Conta",
+  "addPhoto": "Adicionar foto",
+  "photoIsRequired": "A foto é necessária",
+  "yourUsername": "Seu nome de usuário"
 }

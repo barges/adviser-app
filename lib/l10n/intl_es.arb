@@ -160,5 +160,8 @@
   "youCanNotHelpUsersSinceYouHaveAnActive": "No puedes ayudar a los usuarios ya que tienes una pregunta pública activa.",
   "personalDetails": "DETALLES PERSONALES",
   "takeQuestion": "Tomar pregunta",
-  "goToAccount": "Ir a Cuenta"
+  "goToAccount": "Ir a Cuenta",
+  "addPhoto": "Añadir foto",
+  "photoIsRequired": "Se requiere foto",
+  "yourUsername": "Su nombre de usuario"
 }

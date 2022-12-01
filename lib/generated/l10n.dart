@@ -1666,6 +1666,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Add photo`
+  String get addPhoto {
+    return Intl.message(
+      'Add photo',
+      name: 'addPhoto',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Photo is required`
+  String get photoIsRequired {
+    return Intl.message(
+      'Photo is required',
+      name: 'photoIsRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your Username`
+  String get yourUsername {
+    return Intl.message(
+      'Your Username',
+      name: 'yourUsername',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

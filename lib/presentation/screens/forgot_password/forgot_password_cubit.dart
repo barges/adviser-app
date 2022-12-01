@@ -10,7 +10,6 @@ import 'package:shared_advisor_interface/presentation/resources/app_arguments.da
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_state.dart';
 
 class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
-  final BuildContext _context;
   final AuthRepository _repository;
 
   final MainCubit _mainCubit = getIt.get<MainCubit>();
@@ -24,10 +23,8 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
 
   late final ForgotPasswordScreenArguments arguments;
 
-  ForgotPasswordCubit(this._context, this._repository)
-      : super(const ForgotPasswordState()) {
+  ForgotPasswordCubit(this._repository) : super(const ForgotPasswordState()) {
     arguments = Get.arguments as ForgotPasswordScreenArguments;
-    //ModalRoute.of(_context)?.settings.arguments
 
     if (arguments.token == null) {
       emailNode.addListener(() {
