@@ -126,9 +126,10 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
 
   Future<void> _verifyToken() async {
     try {
+      logger.d(arguments.resetToken);
       await _repository.verifyToken(token: arguments.resetToken ?? '');
     } on DioError catch (e) {
-      if (e.response?.statusCode == 400) {
+      if (e.response?.statusCode == 400 || e.response?.statusCode == 404) {
         updateResetToken(null);
       }
     }
@@ -143,7 +144,9 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
           ),
           token: arguments.resetToken ?? '',
         );
-        if (success) {}
+        if (success) {
+
+        }
       } else {
         if (!passwordIsValid()) {
           emit(

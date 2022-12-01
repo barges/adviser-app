@@ -17,6 +17,7 @@ class DynamicLinkService {
     FirebaseDynamicLinks.instance.onLink.listen(
       (PendingDynamicLinkData dynamicLink) async {
         final String link = dynamicLink.link.toString();
+        logger.d(link);
         if (Get.currentRoute == AppRoutes.login) {
           checkLinkForResetPassword(link: link);
         } else if (Get.currentRoute == AppRoutes.forgotPassword) {
