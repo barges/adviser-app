@@ -12,8 +12,7 @@ class ChooseBrandWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Brand> brands =
-        context.select((LoginCubit cubit) => cubit.state.unauthorizedBrands);
+    final List<Brand> brands = context.read<LoginCubit>().unauthorizedBrands;
     final Brand selectedBrand =
         context.select((LoginCubit cubit) => cubit.state.selectedBrand);
     return Align(

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:shared_advisor_interface/presentation/themes/app_colors_dark.dart';
+import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
+import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 class AppLoadingIndicator extends StatelessWidget {
   const AppLoadingIndicator({Key? key}) : super(key: key);
@@ -7,7 +10,9 @@ class AppLoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.2),
+      color: Utils.isDarkMode(context)
+          ? AppColorsDark.overlay
+          : AppColorsLight.overlay,
       height: WidgetsBinding.instance.window.physicalSize.height,
       width: WidgetsBinding.instance.window.physicalSize.width,
       child: Center(

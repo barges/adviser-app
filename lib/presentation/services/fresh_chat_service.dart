@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:freshchat_sdk/freshchat_sdk.dart';
 import 'package:freshchat_sdk/freshchat_user.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
@@ -86,6 +88,7 @@ class FreshChatServiceImpl extends FreshChatService {
 
   @override
   List<String> categoriesByLocale(String languageCode) {
+    logger.d(Platform.localeName);
     List<String> categories = [
       'general_foen_advisor',
       'payments_foen_advisor',

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
@@ -28,15 +27,12 @@ import 'widgets/chat_info_card.dart';
 const _textCounterWidth = 92.0;
 
 class ChatScreen extends StatelessWidget {
-  final ChatItem _question = Get.arguments;
-
-  ChatScreen({Key? key}) : super(key: key);
+  const ChatScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ChatCubit(
-        _question,
         getIt.get<CachingManager>(),
         getIt.get<ChatsRepository>(),
         context,
@@ -47,10 +43,11 @@ class ChatScreen extends StatelessWidget {
 
           return Scaffold(
             appBar: ChatConversationAppBar(
-              title: _question.clientName ?? '',
-              zodiacSign: _question.clientInformation?.zodiac,
+              title: chatCubit.questionFromArguments?.clientName ?? '',
+              zodiacSign:
+                  chatCubit.questionFromArguments?.clientInformation?.zodiac,
             ),
-            backgroundColor: Theme.of(context).canvasColor,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             body: SafeArea(
               child: Builder(builder: (context) {
                 final int currentIndex = context
@@ -61,6 +58,7 @@ class ChatScreen extends StatelessWidget {
                       height: 1.0,
                     ),
                     Container(
+                      color: Theme.of(context).canvasColor,
                       padding: const EdgeInsets.symmetric(
                         vertical: 10.0,
                         horizontal: 16.0,
@@ -94,7 +92,8 @@ class ChatScreen extends StatelessWidget {
                           const _ActiveChat(),
                           const _HistoryChat(),
                           CustomerProfileWidget(
-                            customerId: _question.clientID ?? '',
+                            customerId:
+                                chatCubit.questionFromArguments?.clientID ?? '',
                           ),
                         ],
                       ),
@@ -128,31 +127,50 @@ class _ActiveChat extends StatelessWidget {
                   final List<ChatItem> items = context
                       .select((ChatCubit cubit) => cubit.state.activeMessages);
 
-                  return items.isNotEmpty
-                      ? Container(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          child: ListView.builder(
-                            padding: const EdgeInsets.only(bottom: 12.0),
-                            controller:
-                                chatCubit.activeMessagesScrollController,
-                            itemBuilder: (_, index) {
-                              if (index == 0) {
-                                final ChatItem question = items[0];
-                                return InfoCard(
-                                  question: question,
-                                );
-                              } else {
-                                final itemIndex = index - 1;
-                                return _ChatItemWidget(items[itemIndex],
-                                    onPressedTryAgain: !items[itemIndex].isSent
-                                        ? chatCubit.sendAnswerAgain
-                                        : null);
-                              }
-                            },
-                            itemCount: items.length + 1,
+                  if (chatCubit.questionFromArguments != null &&
+                      items.isEmpty) {
+                    return Container(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      child: ListView(
+                        padding: const EdgeInsets.only(bottom: 12.0),
+                        controller: chatCubit.activeMessagesScrollController,
+                        children: [
+                          InfoCard(
+                            question:
+                                chatCubit.questionFromArguments ?? items[0],
                           ),
-                        )
-                      : const SizedBox.shrink();
+                          _ChatItemWidget(
+                              chatCubit.questionFromArguments ?? items[0]),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return items.isNotEmpty
+                        ? Container(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            child: ListView.builder(
+                              padding: const EdgeInsets.only(bottom: 12.0),
+                              controller:
+                                  chatCubit.activeMessagesScrollController,
+                              itemBuilder: (_, index) {
+                                if (index == 0) {
+                                  return InfoCard(
+                                    question: items[0],
+                                  );
+                                } else {
+                                  final ChatItem question = items[index - 1];
+
+                                  return _ChatItemWidget(question,
+                                      onPressedTryAgain: !question.isSent
+                                          ? chatCubit.sendAnswerAgain
+                                          : null);
+                                }
+                              },
+                              itemCount: items.length + 1,
+                            ),
+                          )
+                        : const SizedBox.shrink();
+                  }
                 },
               ),
               Builder(
@@ -285,7 +303,7 @@ class _HistoryChat extends StatelessWidget {
                     color: Theme.of(context).scaffoldBackgroundColor,
                     child: ListView.builder(
                       padding: const EdgeInsets.only(bottom: 12.0),
-                      controller: chatCubit.hystoryMessagesScrollController,
+                      controller: chatCubit.historyMessagesScrollController,
                       reverse: true,
                       itemBuilder: (_, index) => _ChatItemWidget(items[index],
                           onPressedTryAgain: !items[index].isSent
@@ -322,18 +340,18 @@ class _ChatItemWidget extends StatelessWidget {
           item: item,
           onPressedTryAgain: onPressedTryAgain,
         );
+      } else {
+        return ChatMediaWidget(
+          item: item,
+          onPressedTryAgain: onPressedTryAgain,
+        );
       }
-
-      return ChatMediaWidget(
+    } else {
+      return ChatTextWidget(
         item: item,
         onPressedTryAgain: onPressedTryAgain,
       );
     }
-
-    return ChatTextWidget(
-      item: item,
-      onPressedTryAgain: onPressedTryAgain,
-    );
   }
 }
 

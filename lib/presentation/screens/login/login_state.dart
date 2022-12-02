@@ -7,7 +7,6 @@ part 'login_state.freezed.dart';
 class LoginState with _$LoginState {
   const factory LoginState({
     @Default(Brand.fortunica) Brand selectedBrand,
-    @Default([]) List<Brand> unauthorizedBrands,
     @Default('') String emailErrorText,
     @Default(false) bool emailHasFocus,
     @Default('') String passwordErrorText,

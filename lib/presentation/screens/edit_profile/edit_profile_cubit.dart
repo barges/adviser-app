@@ -61,7 +61,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     createTextControllersNodesAndErrorsMap();
 
     if (initialLanguageIndexIfHasError != null) {
-      animateLanguageWithError(initialLanguageIndexIfHasError!);
+      animateWithError(
+          activeLanguagesGlobalKeys[initialLanguageIndexIfHasError!]);
     }
 
     emit(
@@ -151,10 +152,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
   }
 
-  void animateLanguageWithError(int index) {
+  void animateWithError(GlobalKey key) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final BuildContext? context =
-          activeLanguagesGlobalKeys[index].currentContext;
+      final BuildContext? context = key.currentContext;
       if (context != null) {
         Scrollable.ensureVisible(context,
             duration: const Duration(milliseconds: 500));
@@ -279,7 +279,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
     if (firstLanguageWithErrorIndex != null) {
       changeCurrentLanguageIndex(firstLanguageWithErrorIndex);
-      animateLanguageWithError(firstLanguageWithErrorIndex);
+      animateWithError(activeLanguagesGlobalKeys[firstLanguageWithErrorIndex]);
       firstLanguageWithErrorFocusNode?.requestFocus();
     }
     emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
