@@ -119,8 +119,7 @@ class CustomerProfileWidget extends StatelessWidget {
                                             width: 8.0,
                                           ),
                                           Text(
-                                            customerInfo.gender?.capitalize ??
-                                                '',
+                                            customerInfo.gender?.name ?? '',
                                             style: theme.textTheme.bodyMedium
                                                 ?.copyWith(
                                               color: theme.shadowColor,

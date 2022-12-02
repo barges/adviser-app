@@ -14,7 +14,7 @@ class AppColorsLight {
 
   static const Color ui = Color(0xFF28313A);
 
-  static const Color shade1 = Color(0xFFEBEDEE);
+  static const Color shade1 = Color(0xFFE7ECF4);
 
   static const Color shade3 = Color(0xFF9396A3);
 }
