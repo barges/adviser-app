@@ -17,4 +17,6 @@ class AppColorsLight {
   static const Color shade1 = Color(0xFFE7ECF4);
 
   static const Color shade3 = Color(0xFF9396A3);
+
+  static const Color overlay = Color.fromRGBO(40, 49, 58, 0.3);
 }

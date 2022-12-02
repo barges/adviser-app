@@ -17,4 +17,7 @@ class AppColorsDark {
   static const Color shade1 = Color(0xFF424242);
 
   static const Color shade3 = Color(0xFFABABB4);
+
+  static const Color overlay = Color.fromRGBO(40, 49, 58, 0.8);
+
 }
