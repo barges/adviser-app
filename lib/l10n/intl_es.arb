@@ -164,5 +164,7 @@
   "photoIsRequired": "Se requiere foto",
   "yourUsername": "Su nombre de usuario",
   "nowYouCanLoginWithANewPassword": "Ahora puedes iniciar sesión con una nueva contraseña",
-  "weVeSentYouALinkToEmailToChangeYourPassword": "Le hemos enviado un enlace a {email} para cambiar su contraseña"
+  "weVeSentYouALinkToEmailToChangeYourPassword": "Le hemos enviado un enlace a {email} para cambiar su contraseña",
+  "male": "Masculino",
+  "female": "Femenina"
 }
