@@ -150,5 +150,7 @@
   "profile":"Profile",
   "youCanNotHelpUsersSinceYouHaveAnActive": "You can not help users since you have an active public question.",
   "personalDetails": "PERSONAL DETAILS",
-  "takeQuestion": "Take question"
+  "takeQuestion": "Take question",
+  "youCantSendThisMessageBecauseItsLessThan15Seconds": "You can’t send this message because it’s less than 15 seconds",
+  "recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min": "Recording stopped because audio file is reached the limit of 3min"
 }

@@ -77,8 +77,9 @@ class ChatTextInputWidget extends StatelessWidget {
                     ),
                   ),
                 Builder(builder: (context) {
-                  final isSendTextEnabled = context.select(
-                          (ChatCubit cubit) => cubit.state.isSendTextEnabled) ||
+                  final isSendButtonEnabled = context.select(
+                          (ChatCubit cubit) =>
+                              cubit.state.isSendButtonEnabled) ||
                       isAttachedPictures;
                   final isMicrophoneButtonEnabled = context.select(
                       (ChatCubit cubit) =>
@@ -101,9 +102,9 @@ class ChatTextInputWidget extends StatelessWidget {
                         ),
                       if (inputTextLength > 0 || isAttachedPictures || !isAudio)
                         Opacity(
-                          opacity: isSendTextEnabled ? 1.0 : 0.4,
+                          opacity: isSendButtonEnabled ? 1.0 : 0.4,
                           child: AppIconGradientButton(
-                            onTap: isSendTextEnabled
+                            onTap: isSendButtonEnabled
                                 ? chatCubit.sendTextMediaAnswer
                                 : null,
                             icon: Assets.vectors.send.path,

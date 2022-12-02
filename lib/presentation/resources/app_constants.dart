@@ -13,6 +13,7 @@ class AppConstants {
   static const int minTextLengthRirual = 1000;
   static const int maxTextLengthRitual = 2000;
   static const int maxAttachedPictures = 2;
+  static const int minRecordDurationInSec = 15;
   static const int maxRecordDurationInSec = 180;
 
   static const String enBrandName = 'English';

@@ -1569,6 +1569,26 @@ class S {
       args: [],
     );
   }
+
+  /// `You can’t send this message because it’s less than 15 seconds`
+  String get youCantSendThisMessageBecauseItsLessThan15Seconds {
+    return Intl.message(
+      'You can’t send this message because it’s less than 15 seconds',
+      name: 'youCantSendThisMessageBecauseItsLessThan15Seconds',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recording stopped because audio file is reached the limit of 3min`
+  String get recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min {
+    return Intl.message(
+      'Recording stopped because audio file is reached the limit of 3min',
+      name: 'recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

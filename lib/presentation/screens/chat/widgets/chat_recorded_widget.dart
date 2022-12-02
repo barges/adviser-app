@@ -149,10 +149,13 @@ class ChatRecordedWidget extends StatelessWidget {
               const SizedBox(
                 width: 8.0,
               ),
-              AppIconGradientButton(
-                onTap: onSendPressed,
-                icon: Assets.vectors.send.path,
-                iconColor: Theme.of(context).backgroundColor,
+              Opacity(
+                opacity: onSendPressed == null ? 0.4 : 1.0,
+                child: AppIconGradientButton(
+                  onTap: onSendPressed,
+                  icon: Assets.vectors.send.path,
+                  iconColor: Theme.of(context).backgroundColor,
+                ),
               ),
             ],
           ),

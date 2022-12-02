@@ -170,6 +170,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "questionProperties":
             MessageLookupByLibrary.simpleMessage("Question properties"),
         "quickAnswers": MessageLookupByLibrary.simpleMessage("Quick Answers"),
+        "recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min":
+            MessageLookupByLibrary.simpleMessage(
+                "Recording stopped because audio file is reached the limit of 3min"),
         "requestNewPassword":
             MessageLookupByLibrary.simpleMessage("Request new password"),
         "resetPassword": MessageLookupByLibrary.simpleMessage("Reset Password"),
@@ -230,6 +233,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "youCanNotHelpUsersSinceYouHaveAnActive":
             MessageLookupByLibrary.simpleMessage(
                 "You can not help users since you have an active public question."),
+        "youCantSendThisMessageBecauseItsLessThan15Seconds":
+            MessageLookupByLibrary.simpleMessage(
+                "You can’t send this message because it’s less than 15 seconds"),
         "youDoNotHaveAnyNotesYet": MessageLookupByLibrary.simpleMessage(
             "You don’t have any notes yet"),
         "youDontHaveInternetConnection": MessageLookupByLibrary.simpleMessage(

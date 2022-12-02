@@ -11,6 +11,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
@@ -73,6 +74,18 @@ class ChatScreen extends StatelessWidget {
                         currentIndex: currentIndex,
                         onChangeOptionIndex: chatCubit.changeCurrentTabIndex,
                       ),
+                    ),
+                    Builder(
+                      builder: (context) {
+                        final String errorMessage = context.select(
+                            (ChatCubit cubit) => cubit.state.errorMessage);
+                        return errorMessage.isNotEmpty
+                            ? AppErrorWidget(
+                                errorMessage: errorMessage,
+                                close: chatCubit.clearErrorMessage,
+                              )
+                            : const SizedBox.shrink();
+                      },
                     ),
                     Expanded(
                       child: IndexedStack(
@@ -194,6 +207,8 @@ class _ActiveChat extends StatelessWidget {
                       (ChatCubit cubit) => cubit.state.isAudioFileSaved);
                   final isPlayingRecordedAudio = context.select(
                       (ChatCubit cubit) => cubit.state.isPlayingRecordedAudio);
+                  final isSendButtonEnabled = context.select(
+                      (ChatCubit cubit) => cubit.state.isSendButtonEnabled);
 
                   if (isAudioFileSaved) {
                     return ChatRecordedWidget(
@@ -203,13 +218,15 @@ class _ActiveChat extends StatelessWidget {
                           chatCubit.startPlayRecordedAudio(),
                       onPausePlayPressed: () => chatCubit.pauseRecordedAudio(),
                       onDeletePressed: () async {
-                        final bool? isDelete = await showDeleteAlert(
-                            context, S.of(context).doYouWantToDeleteImage);
+                        final bool? isDelete = await showDeleteAlert(context,
+                            S.of(context).doYouWantToDeleteAudioMessage);
                         if (isDelete!) {
                           chatCubit.deletedRecordedAudio();
                         }
                       },
-                      onSendPressed: chatCubit.sendMediaAnswer,
+                      onSendPressed: isSendButtonEnabled
+                          ? chatCubit.sendMediaAnswer
+                          : null,
                     );
                   }
 
@@ -338,7 +355,7 @@ class _TextCounter extends StatelessWidget {
       final int inputTextLength =
           context.select((ChatCubit cubit) => cubit.state.inputTextLength);
       final isEnabled =
-          context.select((ChatCubit cubit) => cubit.state.isSendTextEnabled);
+          context.select((ChatCubit cubit) => cubit.state.isSendButtonEnabled);
       return Stack(
         children: [
           Container(
