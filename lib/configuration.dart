@@ -38,7 +38,7 @@ enum Brand {
       case Brand.fortunica:
         return 'Fortunica';
       case Brand.zodiacTouch:
-        return 'Zodiac Touch';
+        return 'Zodiac Psychics';
     }
   }
 
