@@ -12,7 +12,7 @@ Future<bool?> showDeleteAlert(
   final ThemeData theme = Theme.of(context);
   return showDialog<bool>(
     context: context,
-    builder: (context) => Platform.isAndroid
+    builder: (context) => Platform.isIOS
         ? CupertinoAlertDialog(
             title: Text(
               title,
