@@ -19,6 +19,8 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
+  static m0(email) => "We’ve sent you a link to ${email} to change your password";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "aboutMe" : MessageLookupByLibrary.simpleMessage("About Me"),
@@ -110,6 +112,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "note" : MessageLookupByLibrary.simpleMessage("Note"),
     "notes" : MessageLookupByLibrary.simpleMessage("Notes"),
     "notifications" : MessageLookupByLibrary.simpleMessage("Notifications"),
+    "nowYouCanLoginWithANewPassword" : MessageLookupByLibrary.simpleMessage("Now you can login with a new password"),
     "numerology" : MessageLookupByLibrary.simpleMessage("Numerology"),
     "offline" : MessageLookupByLibrary.simpleMessage("Offline"),
     "ok" : MessageLookupByLibrary.simpleMessage("OK"),
@@ -167,6 +170,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "typemessage" : MessageLookupByLibrary.simpleMessage("Type message"),
     "uhohNoNetworkNcheckYourInternetConnection" : MessageLookupByLibrary.simpleMessage("Uh-oh, no network... \nCheck your internet connection"),
     "wePrideOurselvesToOfferAdvisorsASafePlaceTo" : MessageLookupByLibrary.simpleMessage("We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others"),
+    "weVeSentYouALinkToEmailToChangeYourPassword" : m0,
     "whenSomeoneAsksAPublicQuestionYouWillSeeThem" : MessageLookupByLibrary.simpleMessage("When someone asks a public question, you will see them on the general list here"),
     "whenYouHelpYourFirstClientYouWillSeeYour" : MessageLookupByLibrary.simpleMessage("When you help your first client, you will see your session history here."),
     "willBeAvailableInAnHour" : MessageLookupByLibrary.simpleMessage("Will be available in an hour"),
@@ -179,7 +183,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "youHave" : MessageLookupByLibrary.simpleMessage("You have"),
     "youHaveNotCompletedAnySessionsYet" : MessageLookupByLibrary.simpleMessage("You have not completed any sessions yet"),
     "youHaveNotYetCompletedThisMonthsSessions" : MessageLookupByLibrary.simpleMessage("You have not yet completed this month\'s sessions"),
-    "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo" : MessageLookupByLibrary.simpleMessage("You have successfully changed your password. Check your email to confirm password change"),
     "youReCurrentlyNotLiveOnThePlatform" : MessageLookupByLibrary.simpleMessage("You’re currently not live on the platform, please make sure you fill out your profile for all languages. You can contact your Manager if you have questions."),
     "youReCurrentlyOfflineOnThePlatform" : MessageLookupByLibrary.simpleMessage("You’re currently Offline on the platform, you can’t use the full functionality and are not visible to users. You can change your status to Live in your profile."),
     "youWillBeAbleToChangeYourStatusBackIn" : MessageLookupByLibrary.simpleMessage("You will be able to change your status back in 1 hour"),

@@ -19,6 +19,8 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'de';
 
+  static m0(email) => "Wir haben Ihnen einen Link an ${email} gesendet, um Ihr Passwort zu ändern";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "aboutMe" : MessageLookupByLibrary.simpleMessage("Über Mich"),
@@ -109,6 +111,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "note" : MessageLookupByLibrary.simpleMessage("Notiz"),
     "notes" : MessageLookupByLibrary.simpleMessage("Notizen"),
     "notifications" : MessageLookupByLibrary.simpleMessage("Benachrichtigungen"),
+    "nowYouCanLoginWithANewPassword" : MessageLookupByLibrary.simpleMessage("Jetzt können Sie sich mit einem neuen Passwort anmelden"),
     "numerology" : MessageLookupByLibrary.simpleMessage("Numerologie"),
     "offline" : MessageLookupByLibrary.simpleMessage("Offline"),
     "ok" : MessageLookupByLibrary.simpleMessage("OK"),
@@ -165,6 +168,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tryAgain" : MessageLookupByLibrary.simpleMessage("Versuchen Sie es nochmal"),
     "uhohNoNetworkNcheckYourInternetConnection" : MessageLookupByLibrary.simpleMessage("Uh-oh, kein Netzwerk... \nÜberprüfen Sie Ihre Internetverbindung"),
     "wePrideOurselvesToOfferAdvisorsASafePlaceTo" : MessageLookupByLibrary.simpleMessage("Wir sind stolz darauf, Beratern einen sicheren Ort zu bieten, an dem sie Kunden bedienen und sich beruflich weiterentwickeln können. Gute Arbeit bei einer unserer Marken zu leisten, wird Türen zu anderen öffnen"),
+    "weVeSentYouALinkToEmailToChangeYourPassword" : m0,
     "whenSomeoneAsksAPublicQuestionYouWillSeeThem" : MessageLookupByLibrary.simpleMessage("Wenn jemand eine öffentliche Frage stellt, sehen Sie ihn hier auf der allgemeinen Liste"),
     "whenYouHelpYourFirstClientYouWillSeeYour" : MessageLookupByLibrary.simpleMessage("Wenn Sie Ihrem ersten Kunden helfen, sehen Sie hier Ihren Sitzungsverlauf."),
     "willBeAvailableInAnHour" : MessageLookupByLibrary.simpleMessage("Wird in einer Stunde verfügbar sein"),
@@ -177,7 +181,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "youHave" : MessageLookupByLibrary.simpleMessage("Du hast"),
     "youHaveNotCompletedAnySessionsYet" : MessageLookupByLibrary.simpleMessage("Sie haben noch keine Sitzungen abgeschlossen"),
     "youHaveNotYetCompletedThisMonthsSessions" : MessageLookupByLibrary.simpleMessage("Sie haben die Sitzungen dieses Monats noch nicht abgeschlossen"),
-    "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo" : MessageLookupByLibrary.simpleMessage("Sie haben Ihr Passwort erfolgreich geändert. Überprüfen Sie Ihre E-Mail, um die Passwortänderung zu bestätigen"),
     "youReCurrentlyNotLiveOnThePlatform" : MessageLookupByLibrary.simpleMessage("Sie sind derzeit nicht live auf der Plattform, bitte stellen Sie sicher, dass Sie Ihr Profil für alle Sprachen ausfüllen. Bei Fragen können Sie sich an Ihren Manager wenden."),
     "youReCurrentlyOfflineOnThePlatform" : MessageLookupByLibrary.simpleMessage("Sie sind derzeit auf der Plattform offline, können nicht die volle Funktionalität nutzen und sind für Benutzer nicht sichtbar. Sie können Ihren Status in Ihrem Profil auf Live ändern."),
     "youWillBeAbleToChangeYourStatusBackIn" : MessageLookupByLibrary.simpleMessage("Sie können Ihren Status in 1 Stunde zurücksetzen"),

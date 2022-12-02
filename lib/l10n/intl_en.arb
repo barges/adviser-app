@@ -27,7 +27,6 @@
   "addMore": "Add more",
   "english": "English",
   "portuguese": "Portuguese",
-  "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo": "You have successfully changed your password. Check your email to confirm password change",
   "wrongUsernameOrPassword": "Wrong username or password",
   "openEmailApp": "Open email app",
   "workspaces": "Workspaces",
@@ -163,5 +162,7 @@
   "takeQuestion": "Take question",
   "addPhoto": "Add photo",
   "photoIsRequired": "Photo is required",
-  "yourUsername": "Your Username"
+  "yourUsername": "Your Username",
+  "nowYouCanLoginWithANewPassword": "Now you can login with a new password",
+  "weVeSentYouALinkToEmailToChangeYourPassword": "We’ve sent you a link to {email} to change your password"
 }

@@ -138,18 +138,18 @@ class LoginCubit extends Cubit<LoginState> {
     clearErrorMessage();
     clearSuccessMessage();
 
-    final dynamic needShowSuccessMessage = await Get.toNamed(
+    final dynamic email = await Get.toNamed(
       AppRoutes.forgotPassword,
       arguments: ForgotPasswordScreenArguments(
         brand: state.selectedBrand,
       ),
-    );
+    ) as String;
 
-    if (needShowSuccessMessage == true) {
+    if (email != null) {
       emit(
         state.copyWith(
           successMessage:
-              S.current.youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo,
+              S.current.weVeSentYouALinkToEmailToChangeYourPassword(email),
         ),
       );
     }

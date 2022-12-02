@@ -327,16 +327,6 @@ class S {
     );
   }
 
-  /// `You have successfully changed your password. Check your email to confirm password change`
-  String get youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo {
-    return Intl.message(
-      'You have successfully changed your password. Check your email to confirm password change',
-      name: 'youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Wrong username or password`
   String get wrongUsernameOrPassword {
     return Intl.message(
@@ -1694,6 +1684,26 @@ class S {
       name: 'yourUsername',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Now you can login with a new password`
+  String get nowYouCanLoginWithANewPassword {
+    return Intl.message(
+      'Now you can login with a new password',
+      name: 'nowYouCanLoginWithANewPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We’ve sent you a link to {email} to change your password`
+  String weVeSentYouALinkToEmailToChangeYourPassword(Object email) {
+    return Intl.message(
+      'We’ve sent you a link to $email to change your password',
+      name: 'weVeSentYouALinkToEmailToChangeYourPassword',
+      desc: '',
+      args: [email],
     );
   }
 }

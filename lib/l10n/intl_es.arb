@@ -27,7 +27,6 @@
   "addMore": "Añadir más",
   "english": "Inglés",
   "portuguese": "Portugués",
-  "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo": "Has cambiado satisfactoriamente tu contraseña. Revisa tu correo electrónico para confirmar el cambio de contraseña",
   "wrongUsernameOrPassword": "Nombre de usuario o contraseña incorrectos",
   "openEmailApp": "Abrir aplicación de correo electrónico",
   "workspaces": "Espacios de trabajo",
@@ -163,5 +162,7 @@
   "goToAccount": "Ir a Cuenta",
   "addPhoto": "Añadir foto",
   "photoIsRequired": "Se requiere foto",
-  "yourUsername": "Su nombre de usuario"
+  "yourUsername": "Su nombre de usuario",
+  "nowYouCanLoginWithANewPassword": "Ahora puedes iniciar sesión con una nueva contraseña",
+  "weVeSentYouALinkToEmailToChangeYourPassword": "Le hemos enviado un enlace a {email} para cambiar su contraseña"
 }

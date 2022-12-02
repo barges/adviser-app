@@ -12,6 +12,7 @@ import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_state.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   final AuthRepository _repository;
@@ -114,7 +115,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         ),
       );
       if (success) {
-        Get.back(result: true);
+        Get.back(result: emailController.text);
       }
     } else {
       if (!emailIsValid()) {
@@ -145,7 +146,9 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
           ),
           token: arguments.resetToken ?? '',
         );
-        if (success) {}
+        if (success) {
+          emit(state.copyWith(isResetSuccess: true));
+        }
       } else {
         if (!passwordIsValid()) {
           emit(
@@ -171,6 +174,14 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
 
   void clearErrorMessage() {
     _mainCubit.clearErrorMessage();
+  }
+
+  void goToLogin() {
+    if (Get.previousRoute == AppRoutes.login) {
+      Get.back();
+    } else {
+      Get.offNamed(AppRoutes.login);
+    }
   }
 
   bool emailIsValid() => GetUtils.isEmail(emailController.text);
