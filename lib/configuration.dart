@@ -3,20 +3,20 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 class Configuration {
   static const List<Brand> brands = [
     Brand.fortunica,
-    Brand.zodiacTouch,
+    Brand.zodiacPsychics,
   ];
 }
 
 enum Brand {
   fortunica,
-  zodiacTouch;
+  zodiacPsychics;
 
   static Brand brandFromString(String? s) {
     switch (s) {
       case 'Brand.fortunica':
         return Brand.fortunica;
-      case 'Brand.zodiacTouch':
-        return Brand.zodiacTouch;
+      case 'Brand.zodiacPsychics':
+        return Brand.zodiacPsychics;
       default:
         return Brand.fortunica;
     }
@@ -26,8 +26,8 @@ enum Brand {
     switch (s) {
       case 'fortunica':
         return Brand.fortunica;
-      case 'zodiacTouch':
-        return Brand.zodiacTouch;
+      case 'zodiacPsychics':
+        return Brand.zodiacPsychics;
       default:
         return Brand.fortunica;
     }
@@ -37,8 +37,8 @@ enum Brand {
     switch (this) {
       case Brand.fortunica:
         return 'Fortunica';
-      case Brand.zodiacTouch:
-        return 'Zodiac Touch';
+      case Brand.zodiacPsychics:
+        return 'Zodiac Psychics';
     }
   }
 
@@ -46,7 +46,7 @@ enum Brand {
     switch (this) {
       case Brand.fortunica:
         return '';
-      case Brand.zodiacTouch:
+      case Brand.zodiacPsychics:
         return 'www.zodiacpsychics.com';
     }
   }
@@ -55,7 +55,7 @@ enum Brand {
     switch (this) {
       case Brand.fortunica:
         return Assets.vectors.fortunica.path;
-      case Brand.zodiacTouch:
+      case Brand.zodiacPsychics:
         return Assets.vectors.zodiacTouch.path;
     }
   }
@@ -64,7 +64,7 @@ enum Brand {
     switch (this) {
       case Brand.fortunica:
         return true;
-      case Brand.zodiacTouch:
+      case Brand.zodiacPsychics:
         return false;
     }
   }
