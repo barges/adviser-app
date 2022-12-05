@@ -254,9 +254,12 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       if (checkUserAvatar()) {
         nicknameFocusNode.requestFocus();
       }
+
       emit(
         state.copyWith(
-            nicknameErrorText: S.current.pleaseEnterAtLeast3Characters),
+            nicknameErrorText: nicknameController.text.isEmpty
+                ? S.current.fieldIsRequired
+                : S.current.pleaseEnterAtLeast3Characters),
       );
     }
     return isValid;
