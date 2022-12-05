@@ -45,12 +45,7 @@ Future showOkCancelAlert({
                   insetPadding: const EdgeInsets.symmetric(
                       horizontal: AppConstants.horizontalScreenPadding),
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 24.0,
-                      left: 16.0,
-                      right: 16.0,
-                      bottom: 16.0,
-                    ),
+                    padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 16.0),
                     child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,

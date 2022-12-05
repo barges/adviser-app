@@ -1,0 +1,5 @@
+
+"NSCameraUsageDescription" = "Este app requer acesso à câmera para que você possa tirar fotos e carregá-las no app.";
+"NSMicrophoneUsageDescription" = "Este app requer acesso ao microfone para que você possa gravar mensagens de áudio.";
+"NSPhotoLibraryUsageDescription" = "Este app requer acesso à galeria para que você possa compartilhar fotos no app.";
+"NSUserTrackingUsageDescription" = "Isso permite identificar que canal de marketing você utilizou. Essa informação não será usada para nenhum outro propósito. Você pode alterá-la no app em Configurações.";

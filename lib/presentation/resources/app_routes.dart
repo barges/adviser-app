@@ -97,7 +97,7 @@ class AppRoutes {
     ),
     GetPage(
       name: chat,
-      page: () => ChatScreen(),
+      page: () => const ChatScreen(),
     ),
     GetPage(
       name: customerSessions,
