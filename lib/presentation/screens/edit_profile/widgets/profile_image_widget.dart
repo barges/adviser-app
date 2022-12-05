@@ -104,9 +104,7 @@ class ProfileImageWidget extends StatelessWidget {
                                     maxVisibleDots: 7,
                                     dotWidth: 8.0,
                                     dotHeight: 8.0,
-                                    dotColor:
-                                        Theme.of(context).iconTheme.color ??
-                                            Colors.grey,
+                                    dotColor: Theme.of(context).hintColor,
                                     activeDotColor:
                                         Theme.of(context).primaryColor,
                                   ),
