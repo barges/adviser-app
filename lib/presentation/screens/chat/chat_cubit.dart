@@ -22,10 +22,7 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'chat_state.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -42,7 +39,7 @@ class ChatCubit extends Cubit<ChatState> {
   final BuildContext _context;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final Codec _codec = Platform.isIOS ? Codec.aacMP4 : Codec.mp3;
-  final FileExt _recordFileExt = CurrentFileExt.current;
+  final FileExt _recordFileExt = FileExt.current;
   final int _limit = 25;
   int _offset = 0;
   int? _total;
@@ -210,8 +207,8 @@ class ChatCubit extends Cubit<ChatState> {
         title: _mainCubit.state.errorMessage,
         okText: S.of(_context).ok,
         actionOnOK: () {
-          Get.offNamed(AppRoutes.home,
-              arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
+          Get.back();
+          Get.back();
         },
         allowBarrierClock: false,
         isCancelEnabled: false,
@@ -233,8 +230,8 @@ class ChatCubit extends Cubit<ChatState> {
         title: _mainCubit.state.errorMessage,
         okText: S.of(_context).ok,
         actionOnOK: () {
-          Get.offNamed(AppRoutes.home,
-              arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
+          Get.back();
+          Get.back();
         },
         allowBarrierClock: false,
         isCancelEnabled: false,

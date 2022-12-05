@@ -15,6 +15,7 @@ class ForgotPasswordState with _$ForgotPasswordState {
     @Default(true) bool hiddenPassword,
     @Default(true) bool hiddenConfirmPassword,
     @Default(false) bool isButtonActive,
+    @Default(false) bool isResetSuccess,
     String? resetToken,
   }) = _ForgotPasswordState;
 }

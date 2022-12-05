@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_month.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
 import 'package:shared_advisor_interface/data/network/responses/reports_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
@@ -42,7 +41,6 @@ class DashboardV1Cubit extends Cubit<DashboardV1State> {
           await _userRepository.getUserReports();
       ReportsStatistics? statistics = reportsResponse
           .dateRange?.firstOrNull?.months?.firstOrNull?.statistics;
-      logger.d('CURRENCY${statistics?.meta?.currency?.currencySymbolByName}');
       emit(
         state.copyWith(
             monthAmount: statistics?.total?.marketTotal?.amount ?? 0.0,

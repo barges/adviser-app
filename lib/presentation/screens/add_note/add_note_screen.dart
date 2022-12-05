@@ -32,6 +32,7 @@ class AddNoteScreen extends StatelessWidget {
             (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
 
         return Scaffold(
+          backgroundColor: Theme.of(context).canvasColor,
           appBar: WideAppBar(
             bottomWidget: Text(
               isNoteNew ? S.of(context).addNote : S.of(context).editNote,

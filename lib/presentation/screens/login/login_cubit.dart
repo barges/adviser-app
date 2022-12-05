@@ -33,6 +33,8 @@ class LoginCubit extends Cubit<LoginState> {
   final FocusNode emailNode = FocusNode();
   final FocusNode passwordNode = FocusNode();
 
+  String forgotPasswordEmail = '';
+
   LoginCubit(this._repository, this._cacheManager) : super(const LoginState()) {
     _dynamicLinkService.checkLinkForResetPassword();
 
@@ -91,10 +93,10 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void clearSuccessMessage() {
-    if (state.successMessage.isNotEmpty) {
+    if (state.showSuccessMessage) {
       emit(
         state.copyWith(
-          successMessage: '',
+          showSuccessMessage: false,
         ),
       );
     }
@@ -138,18 +140,19 @@ class LoginCubit extends Cubit<LoginState> {
     clearErrorMessage();
     clearSuccessMessage();
 
-    final dynamic needShowSuccessMessage = await Get.toNamed(
+    final dynamic email = await Get.toNamed(
       AppRoutes.forgotPassword,
       arguments: ForgotPasswordScreenArguments(
         brand: state.selectedBrand,
       ),
-    );
+    ) as String;
 
-    if (needShowSuccessMessage == true) {
+    forgotPasswordEmail = email;
+
+    if (email != null) {
       emit(
         state.copyWith(
-          successMessage:
-              S.current.youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo,
+          showSuccessMessage: true,
         ),
       );
     }

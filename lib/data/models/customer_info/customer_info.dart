@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:shared_advisor_interface/data/models/enums/gender.dart';
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/data/network/responses/customer_info_response/questions_subscription.dart';
 
@@ -14,7 +15,7 @@ class CustomerInfo with _$CustomerInfo {
     String? country,
     String? birthdate,
     String? firstName,
-    String? gender,
+    Gender? gender,
     String? lastName,
     ZodiacSign? zodiac,
     bool? isProfileCompleted,
