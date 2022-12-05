@@ -152,5 +152,6 @@
   "personalDetails": "PDETALHES PESSOAIS",
   "takeQuestion": "Tirar dúvidas",
   "youCantSendThisMessageBecauseItsLessThan15Seconds": "Você não pode enviar esta mensagem porque tem menos de 15 segundos",
-  "recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min": "A gravação parou porque o arquivo de áudio atingiu o limite de 3min"
+  "recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min": "A gravação parou porque o arquivo de áudio atingiu o limite de 3min",
+  "theMaximumImageSizeIs20Mb" : "O tamanho máximo da imagem é de 20Mb."
 }

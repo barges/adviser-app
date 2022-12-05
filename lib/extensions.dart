@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:intl/intl.dart';
@@ -157,4 +158,8 @@ extension DateTimeExt on DateTime {
     }
     return DateFormat(dateFormat).format(this).parseDateTimePattern8;
   }
+}
+
+extension FileUtils on File {
+  double get sizeInMb => lengthSync() / (1024 * 1024);
 }

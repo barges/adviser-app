@@ -46,6 +46,7 @@ class ChatScreen extends StatelessWidget {
               title: chatCubit.questionFromArguments?.clientName ?? '',
               zodiacSign:
                   chatCubit.questionFromArguments?.clientInformation?.zodiac,
+              returnInQueueButtonOnTap: () => print('returnInQueueButtonOnTap'),
             ),
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             body: SafeArea(

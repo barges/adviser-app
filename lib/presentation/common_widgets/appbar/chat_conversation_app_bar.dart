@@ -16,6 +16,7 @@ class ChatConversationAppBar extends StatelessWidget
   final String? backIcon;
   final String? backButtonText;
   final VoidCallback? backButtonOnTap;
+  final VoidCallback? returnInQueueButtonOnTap;
 
   const ChatConversationAppBar({
     Key? key,
@@ -24,6 +25,7 @@ class ChatConversationAppBar extends StatelessWidget
     this.backButtonText,
     this.backIcon,
     this.backButtonOnTap,
+    this.returnInQueueButtonOnTap,
   }) : super(key: key);
 
   @override
@@ -39,10 +41,18 @@ class ChatConversationAppBar extends StatelessWidget
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AppIconButton(
-            icon: backIcon ?? Assets.vectors.arrowLeft.path,
-            onTap: backButtonOnTap ?? Get.back,
-          ),
+          if (returnInQueueButtonOnTap == null)
+            AppIconButton(
+              icon: backIcon ?? Assets.vectors.arrowLeft.path,
+              onTap: backButtonOnTap ?? Get.back,
+            ),
+          if (returnInQueueButtonOnTap != null)
+            Padding(
+              padding: const EdgeInsets.only(right: 14.0),
+              child: _ReturnInQueue(
+                onTap: returnInQueueButtonOnTap,
+              ),
+            ),
           Builder(builder: (context) {
             final Brand selectedBrand =
                 context.select((MainCubit cubit) => cubit.state.currentBrand);
@@ -76,6 +86,7 @@ class ChatConversationAppBar extends StatelessWidget
               ],
             );
           }),
+          if (returnInQueueButtonOnTap != null) const Spacer(),
           if (zodiacSign != null)
             SvgPicture.asset(
               zodiacSign!.imagePath(context),
@@ -84,6 +95,37 @@ class ChatConversationAppBar extends StatelessWidget
         ],
       ),
       backgroundColor: Theme.of(context).canvasColor,
+    );
+  }
+}
+
+class _ReturnInQueue extends StatelessWidget {
+  final VoidCallback? onTap;
+
+  const _ReturnInQueue({
+    Key? key,
+    this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        AppIconButton(
+          icon: Assets.vectors.close.path,
+          onTap: onTap,
+        ),
+        const SizedBox(
+          width: 8.0,
+        ),
+        Text(
+          'RETURN\nIN QUEUE',
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: Theme.of(context).primaryColor,
+                fontSize: 12.0,
+              ),
+        ),
+      ],
     );
   }
 }

@@ -1589,6 +1589,16 @@ class S {
       args: [],
     );
   }
+
+  /// `The maximum image size is 20Mb.`
+  String get theMaximumImageSizeIs20Mb {
+    return Intl.message(
+      'The maximum image size is 20Mb.',
+      name: 'theMaximumImageSizeIs20Mb',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

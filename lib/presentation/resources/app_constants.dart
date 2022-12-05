@@ -15,6 +15,7 @@ class AppConstants {
   static const int maxAttachedPictures = 2;
   static const int minRecordDurationInSec = 15;
   static const int maxRecordDurationInSec = 180;
+  static const num maxFileSizeInMb = 20;
 
   static const String enBrandName = 'English';
   static const String esBrandName = 'Español';

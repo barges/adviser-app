@@ -199,6 +199,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "takeAPhoto": MessageLookupByLibrary.simpleMessage("Tire uma foto"),
         "takeMeThere": MessageLookupByLibrary.simpleMessage("Leve-me lá"),
         "takeQuestion": MessageLookupByLibrary.simpleMessage("Tirar dúvidas"),
+        "theMaximumImageSizeIs20Mb": MessageLookupByLibrary.simpleMessage(
+            "O tamanho máximo da imagem é de 20Mb."),
         "thePasswordsMustMatch": MessageLookupByLibrary.simpleMessage(
             "As senhas devem corresponder"),
         "theUserWasNotFound": MessageLookupByLibrary.simpleMessage(

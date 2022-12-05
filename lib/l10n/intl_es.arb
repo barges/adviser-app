@@ -151,5 +151,6 @@
   "personalDetails": "PERSONAL DETAILS",
   "takeQuestion": "Take question",
   "youCantSendThisMessageBecauseItsLessThan15Seconds": "You can’t send this message because it’s less than 15 seconds",
-  "recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min": "Recording stopped because audio file is reached the limit of 3min"
+  "recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min": "Recording stopped because audio file is reached the limit of 3min",
+  "theMaximumImageSizeIs20Mb" : "The maximum image size is 20Mb."
 }

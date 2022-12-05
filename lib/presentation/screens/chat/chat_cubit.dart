@@ -19,6 +19,7 @@ import 'package:shared_advisor_interface/data/models/enums/file_ext.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -42,8 +43,7 @@ class ChatCubit extends Cubit<ChatState> {
   late final ChatItem? questionFromArguments;
   final BuildContext _context;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
-  final Codec _codec =
-      Codec.aacMP4; //Platform.isIOS ? Codec.aacMP4 : Codec.mp3;
+  final Codec _codec = Codec.aacMP4;
   final FileExt _recordFileExt = CurrentFileExt.current;
   final int _limit = 25;
   int _offset = 0;
@@ -305,13 +305,16 @@ class ChatCubit extends Cubit<ChatState> {
     if (recordingPath != null && recordingPath.isNotEmpty) {
       final File audiofile = File(recordingPath);
       final Metadata metaAudio = await MetadataRetriever.fromFile(audiofile);
-      _recordAudioDuration = (metaAudio.trackDuration ?? 0) / 1000;
 
+      _recordAudioDuration = (metaAudio.trackDuration ?? 0) / 1000;
       if (_recordAudioDuration! < AppConstants.minRecordDurationInSec) {
         updateErrorMessage(s.youCantSendThisMessageBecauseItsLessThan15Seconds);
       } else if (_recordAudioDuration! > AppConstants.maxRecordDurationInSec) {
         updateErrorMessage(
             s.recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min);
+        isSendButtonEnabled = true;
+      } else if (audiofile.sizeInMb > AppConstants.maxFileSizeInMb) {
+        updateErrorMessage(s.theMaximumImageSizeIs20Mb);
       } else {
         isSendButtonEnabled = true;
       }
@@ -335,8 +338,9 @@ class ChatCubit extends Cubit<ChatState> {
 
     emit(
       state.copyWith(
-        isAudioFileSaved: false,
+        recordingPath: null,
         isRecordingAudio: false,
+        isAudioFileSaved: false,
       ),
     );
   }
@@ -348,6 +352,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     emit(
       state.copyWith(
+        recordingPath: null,
         isRecordingAudio: false,
         isAudioFileSaved: false,
         isPlayingRecordedAudio: false,
@@ -455,8 +460,15 @@ class ChatCubit extends Cubit<ChatState> {
   void attachPicture(File? image) {
     final images = List.of(state.attachedPictures);
     if (image != null && images.length < 2) {
+      if (image.sizeInMb > AppConstants.maxFileSizeInMb) {
+        updateErrorMessage(S.of(_context).theMaximumImageSizeIs20Mb);
+        return;
+      }
+
       images.add(image);
-      emit(state.copyWith(attachedPictures: images));
+      emit(state.copyWith(
+        attachedPictures: images,
+      ));
     }
   }
 
@@ -630,6 +642,7 @@ class ChatCubit extends Cubit<ChatState> {
           e.type == DioErrorType.connectTimeout ||
           e.type == DioErrorType.sendTimeout ||
           e.type == DioErrorType.receiveTimeout) {
+        updateErrorMessage('Check your internet connection');
         answer = _getNotSentAnswer();
       }
     }
