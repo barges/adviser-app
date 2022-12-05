@@ -8,7 +8,6 @@ import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/picker_modal_pop_up.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 class ChangeLocaleButton extends StatelessWidget {
   const ChangeLocaleButton({Key? key}) : super(key: key);

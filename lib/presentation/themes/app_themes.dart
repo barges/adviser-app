@@ -140,6 +140,15 @@ class AppThemes {
               fontWeight: FontWeight.w600),
         ),
       ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          textStyle: const TextStyle(
+              color: AppColorsLight.ui,
+              fontSize: 15.0,
+              fontWeight: FontWeight.w400),
+        ),
+      ),
+
       // textButtonTheme: TextButtonThemeData(
       //     style: TextButton.styleFrom(
       //         textStyle: const TextStyle(
@@ -290,6 +299,14 @@ class AppThemes {
               color: AppColorsDark.uinegative,
               fontSize: 17.0,
               fontWeight: FontWeight.w600),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          textStyle: const TextStyle(
+              color: AppColorsDark.ui,
+              fontSize: 15.0,
+              fontWeight: FontWeight.w400),
         ),
       ),
       // textButtonTheme: TextButtonThemeData(

@@ -25,11 +25,11 @@ class GalleryPicturesScreenArguments {
 
 class ForgotPasswordScreenArguments {
   final Brand brand;
-  final String? token;
+  final String? resetToken;
 
   ForgotPasswordScreenArguments({
     required this.brand,
-    this.token,
+    this.resetToken,
   });
 }
 

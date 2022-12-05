@@ -12,10 +12,8 @@ enum ChatItemType {
   ritual,
   @JsonValue("TEXT_ANSWER")
   textAnswer,
-  all
-}
+  all;
 
-extension ChatItemTypeExt on ChatItemType {
   String get filterName {
     switch (this) {
       case ChatItemType.private:

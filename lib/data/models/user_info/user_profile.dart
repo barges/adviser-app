@@ -11,7 +11,7 @@ part 'user_profile.g.dart';
 class UserProfile with _$UserProfile {
   @JsonSerializable(includeIfNull: false)
   const factory UserProfile({
-    Map<MarketsType, double>? rating,
+    Map<MarketsType, double?>? rating,
     List<MarketsType>? activeLanguages,
     String? readerManager,
     List<String>? profilePictures,

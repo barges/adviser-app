@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:shared_advisor_interface/configuration.dart';
 
 part 'forgot_password_state.freezed.dart';
 
@@ -15,5 +16,8 @@ class ForgotPasswordState with _$ForgotPasswordState {
     @Default(true) bool hiddenPassword,
     @Default(true) bool hiddenConfirmPassword,
     @Default(false) bool isButtonActive,
+    @Default(false) bool isResetSuccess,
+    @Default(Brand.fortunica) Brand selectedBrand,
+    String? resetToken,
   }) = _ForgotPasswordState;
 }

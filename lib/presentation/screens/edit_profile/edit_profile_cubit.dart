@@ -29,6 +29,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final FocusNode nicknameFocusNode = FocusNode();
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+  final GlobalKey profileAvatarKey = GlobalKey();
+  final GlobalKey nicknameFieldKey = GlobalKey();
 
   final UserRepository _userRepository = getIt.get<UserRepository>();
   final CachingManager _cacheManager = getIt.get<CachingManager>();
@@ -60,14 +62,14 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
     createTextControllersNodesAndErrorsMap();
 
-    if (initialLanguageIndexIfHasError != null) {
-      animateLanguageWithError(initialLanguageIndexIfHasError!);
-    }
+    checkEmptyFields();
 
     emit(
       state.copyWith(
           coverPictures: userProfile?.coverPictures ?? [],
-          chosenLanguageIndex: initialLanguageIndexIfHasError ?? 0),
+          chosenLanguageIndex: initialLanguageIndexIfHasError ?? 0,
+          nicknameErrorText:
+              nicknameController.text.isEmpty ? S.current.fieldIsRequired : ''),
     );
 
     addListenersToTextControllers();
@@ -151,10 +153,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
   }
 
-  void animateLanguageWithError(int index) {
+  void animateWithError(GlobalKey key) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final BuildContext? context =
-          activeLanguagesGlobalKeys[index].currentContext;
+      final BuildContext? context = key.currentContext;
       if (context != null) {
         Scrollable.ensureVisible(context,
             duration: const Duration(milliseconds: 500));
@@ -201,7 +202,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   Future<void> updateUserInfo() async {
     if (mainCubit.state.internetConnectionIsAvailable) {
-      if (checkNickName() & checkTextFields()) {
+      if (checkTextFields() & checkNickName() & checkUserAvatar()) {
         final bool profileUpdated = await updateUserProfileTexts();
         final bool coverPictureUpdated = await updateCoverPicture();
         final bool avatarUpdated = await updateUserAvatar();
@@ -249,9 +250,16 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     bool isValid = true;
     if (nicknameController.text.length < 3) {
       isValid = false;
+      animateWithError(nicknameFieldKey);
+      if (checkUserAvatar()) {
+        nicknameFocusNode.requestFocus();
+      }
+
       emit(
         state.copyWith(
-            nicknameErrorText: S.current.pleaseEnterAtLeast3Characters),
+            nicknameErrorText: nicknameController.text.isEmpty
+                ? S.current.fieldIsRequired
+                : S.current.pleaseEnterAtLeast3Characters),
       );
     }
     return isValid;
@@ -279,8 +287,10 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
     if (firstLanguageWithErrorIndex != null) {
       changeCurrentLanguageIndex(firstLanguageWithErrorIndex);
-      animateLanguageWithError(firstLanguageWithErrorIndex);
-      firstLanguageWithErrorFocusNode?.requestFocus();
+      animateWithError(activeLanguagesGlobalKeys[firstLanguageWithErrorIndex]);
+      if (checkUserAvatar()) {
+        firstLanguageWithErrorFocusNode?.requestFocus();
+      }
     }
     emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
     return isValid;
@@ -367,5 +377,26 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   void changeCurrentLanguageIndex(int index) {
     emit(state.copyWith(chosenLanguageIndex: index));
+  }
+
+  void checkEmptyFields() {
+    if (userProfile?.profilePictures?.isNotEmpty != true) {
+      animateWithError(profileAvatarKey);
+    } else if (nicknameController.text.isEmpty) {
+      animateWithError(nicknameFieldKey);
+    } else if (initialLanguageIndexIfHasError != null) {
+      animateWithError(
+          activeLanguagesGlobalKeys[initialLanguageIndexIfHasError!]);
+    }
+  }
+
+  bool checkUserAvatar() {
+    bool isValid = true;
+    if (userProfile?.profilePictures?.isNotEmpty != true &&
+        state.avatar == null) {
+      animateWithError(profileAvatarKey);
+      isValid = false;
+    }
+    return isValid;
   }
 }

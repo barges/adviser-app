@@ -49,11 +49,11 @@ class _PublicQuestionsListWidget extends StatelessWidget {
           height: 1.0,
         ),
         Builder(builder: (context) {
-          final String successMessage = context
-              .select((SessionsCubit cubit) => cubit.state.successMessage);
-          return successMessage.isNotEmpty
+          final bool showSuccessMessage = context
+              .select((SessionsCubit cubit) => cubit.state.showSuccessMessage);
+          return showSuccessMessage
               ? AppSuccessWidget(
-                  message: successMessage,
+                  message: S.of(context).youCanNotHelpUsersSinceYouHaveAnActive,
                   onClose: sessionsCubit.clearSuccessMessage,
                 )
               : const SizedBox.shrink();

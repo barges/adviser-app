@@ -192,7 +192,7 @@ class AdvisorPreviewScreen extends StatelessWidget {
                       return AboutMeWidget(
                         rating: advisorPreviewCubit.getSelectedLanguageDetails(
                                 selectedItem)[ratingKey] ??
-                            '',
+                            0.0,
                         description:
                             advisorPreviewCubit.getSelectedLanguageDetails(
                                     selectedItem)[descriptionKey] ??

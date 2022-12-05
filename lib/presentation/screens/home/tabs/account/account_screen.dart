@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -40,7 +39,7 @@ class AccountScreen extends StatelessWidget {
                   cubit.state.internetConnectionIsAvailable);
               final UserStatus currentStatus =
                   context.select((HomeCubit cubit) => cubit.state.userStatus);
-              final String? statusErrorText = currentStatus.status?.errorText();
+              final String? statusErrorText = currentStatus.status?.errorText;
               if (isOnline) {
                 return Column(
                   children: [

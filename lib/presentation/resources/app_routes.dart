@@ -60,10 +60,6 @@ class AppRoutes {
       page: () => const EditProfileScreen(),
     ),
     GetPage(
-      name: editProfile,
-      page: () => const EditProfileScreen(),
-    ),
-    GetPage(
       name: articleDetails,
       page: () => const ArticleDetailsScreen(),
     ),
@@ -97,7 +93,7 @@ class AppRoutes {
     ),
     GetPage(
       name: chat,
-      page: () => ChatScreen(),
+      page: () => const ChatScreen(),
     ),
     GetPage(
       name: customerSessions,

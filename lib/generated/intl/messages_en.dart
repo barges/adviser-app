@@ -20,6 +20,9 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
+  static String m0(email) =>
+      "We’ve sent you a link to ${email} to change your password";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "aboutMe": MessageLookupByLibrary.simpleMessage("About Me"),
@@ -35,6 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addMore": MessageLookupByLibrary.simpleMessage("Add more"),
         "addNew": MessageLookupByLibrary.simpleMessage("Add new"),
         "addNote": MessageLookupByLibrary.simpleMessage("Add Note"),
+        "addPhoto": MessageLookupByLibrary.simpleMessage("Add photo"),
         "advisors": MessageLookupByLibrary.simpleMessage("advisors"),
         "all": MessageLookupByLibrary.simpleMessage("All"),
         "allOurBrands": MessageLookupByLibrary.simpleMessage("All our brands"),
@@ -52,8 +56,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "back": MessageLookupByLibrary.simpleMessage("Back"),
         "balanceTransactions":
             MessageLookupByLibrary.simpleMessage("Balance & Transactions"),
+        "beforeProceedingYouNeedToAcceptContracts":
+            MessageLookupByLibrary.simpleMessage(
+                "Before proceeding you need to accept contracts. To do so please open the web version of the Advisor Tool"),
         "betterThan": MessageLookupByLibrary.simpleMessage("Better than"),
         "birthTown": MessageLookupByLibrary.simpleMessage("birth town"),
+        "blocked": MessageLookupByLibrary.simpleMessage("Blocked"),
         "born": MessageLookupByLibrary.simpleMessage("Born"),
         "calls": MessageLookupByLibrary.simpleMessage("Calls"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
@@ -69,6 +77,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "chooseFromGallery":
             MessageLookupByLibrary.simpleMessage("Choose from gallery"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon!"),
+        "completeProfileToStartHelping": MessageLookupByLibrary.simpleMessage(
+            "Complete profile to start helping"),
         "confirmNewPassword":
             MessageLookupByLibrary.simpleMessage("Confirm new password"),
         "courses": MessageLookupByLibrary.simpleMessage("Courses"),
@@ -95,6 +105,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "editProfile": MessageLookupByLibrary.simpleMessage("Edit profile"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
+        "female": MessageLookupByLibrary.simpleMessage("Female"),
         "fieldIsRequired":
             MessageLookupByLibrary.simpleMessage("Field is required"),
         "forMe": MessageLookupByLibrary.simpleMessage("For me"),
@@ -105,16 +116,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "fortunica": MessageLookupByLibrary.simpleMessage("Fortunica"),
         "from15secTo3min":
             MessageLookupByLibrary.simpleMessage("from 15 sec to 3 min"),
+        "goToAccount": MessageLookupByLibrary.simpleMessage("Go to Account"),
         "history": MessageLookupByLibrary.simpleMessage("History"),
         "imAvailableNow":
             MessageLookupByLibrary.simpleMessage("I\'m available now"),
+        "incomplete": MessageLookupByLibrary.simpleMessage("Incomplete"),
         "informOurTeamYourPlannedReturnDate":
             MessageLookupByLibrary.simpleMessage(
                 "Inform our team your planned return date:"),
         "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
+        "legalBlock": MessageLookupByLibrary.simpleMessage("Legal block"),
+        "live": MessageLookupByLibrary.simpleMessage("Live"),
         "logOut": MessageLookupByLibrary.simpleMessage("Log out"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "loyalUsers": MessageLookupByLibrary.simpleMessage("Loyal Users"),
+        "male": MessageLookupByLibrary.simpleMessage("Male"),
         "mandatory": MessageLookupByLibrary.simpleMessage("Mandatory"),
         "market": MessageLookupByLibrary.simpleMessage("Market:"),
         "newCustomers": MessageLookupByLibrary.simpleMessage("New customers"),
@@ -131,13 +147,17 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("No questions, yet."),
         "noSessionsYet":
             MessageLookupByLibrary.simpleMessage("No sessions, yet."),
+        "nonBinary": MessageLookupByLibrary.simpleMessage("Non-binary"),
         "notEnoughConversationsCheckOurProfileGuide":
             MessageLookupByLibrary.simpleMessage(
                 "Not enough conversations? Check our Profile Guide."),
         "note": MessageLookupByLibrary.simpleMessage("Note"),
         "notes": MessageLookupByLibrary.simpleMessage("Notes"),
         "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
+        "nowYouCanLoginWithANewPassword": MessageLookupByLibrary.simpleMessage(
+            "Now you can login with a new password"),
         "numerology": MessageLookupByLibrary.simpleMessage("Numerology"),
+        "offline": MessageLookupByLibrary.simpleMessage("Offline"),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "onlyPremiumProducts":
             MessageLookupByLibrary.simpleMessage("Only Premium Products"),
@@ -151,6 +171,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Personal Balance"),
         "personalDetails":
             MessageLookupByLibrary.simpleMessage("PERSONAL DETAILS"),
+        "photoIsRequired":
+            MessageLookupByLibrary.simpleMessage("Photo is required"),
         "placesUpFromLastMonth":
             MessageLookupByLibrary.simpleMessage("places up from last month"),
         "pleaseEnterAtLeast3Characters": MessageLookupByLibrary.simpleMessage(
@@ -160,6 +182,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseInsertCorrectEmail": MessageLookupByLibrary.simpleMessage(
             "Please, insert correct email"),
         "portuguese": MessageLookupByLibrary.simpleMessage("Portuguese"),
+        "preferNotToAnswer":
+            MessageLookupByLibrary.simpleMessage("Prefer not to answer"),
         "previewAccount":
             MessageLookupByLibrary.simpleMessage("Preview account"),
         "privateQuestions":
@@ -215,6 +239,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others"),
+        "weVeSentYouALinkToEmailToChangeYourPassword": m0,
         "whenSomeoneAsksAPublicQuestionYouWillSeeThem":
             MessageLookupByLibrary.simpleMessage(
                 "When someone asks a public question, you will see them on the general list here"),
@@ -241,15 +266,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "youHaveNotYetCompletedThisMonthsSessions":
             MessageLookupByLibrary.simpleMessage(
                 "You have not yet completed this month\'s sessions"),
-        "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo":
-            MessageLookupByLibrary.simpleMessage(
-                "You have successfully changed your password. Check your email to confirm password change"),
+        "youReCurrentlyNotLiveOnThePlatform": MessageLookupByLibrary.simpleMessage(
+            "You’re currently not live on the platform, please make sure you fill out your profile for all languages. You can contact your Manager if you have questions."),
+        "youReCurrentlyOfflineOnThePlatform": MessageLookupByLibrary.simpleMessage(
+            "You’re currently Offline on the platform, you can’t use the full functionality and are not visible to users. You can change your status to Live in your profile."),
         "youWillBeAbleToChangeYourStatusBackIn":
             MessageLookupByLibrary.simpleMessage(
                 "You will be able to change your status back in 1 hour"),
         "yourAccountHasBeenBlockedPleaseContactYourAdvisorManager":
             MessageLookupByLibrary.simpleMessage(
                 "Your account has been blocked. Please contact your advisor manager."),
+        "yourUsername": MessageLookupByLibrary.simpleMessage("Your Username"),
         "zodiacSign": MessageLookupByLibrary.simpleMessage("Zodiac Sign")
       };
 }

@@ -60,12 +60,16 @@ class LoginScreen extends StatelessWidget {
                           ),
                           Builder(
                             builder: (BuildContext context) {
-                              final String message = context.select(
+                              final String emailForReset = context.select(
                                   (LoginCubit cubit) =>
-                                      cubit.state.successMessage);
-                              return message.isNotEmpty
+                                      cubit.state.emailForResetPassword);
+
+                              return emailForReset.isNotEmpty
                                   ? AppSuccessWidget(
-                                      message: message,
+                                      message: S
+                                          .of(context)
+                                          .weVeSentYouALinkToEmailToChangeYourPassword(
+                                              emailForReset),
                                       needEmailButton: true,
                                       onClose: loginCubit.clearSuccessMessage,
                                     )

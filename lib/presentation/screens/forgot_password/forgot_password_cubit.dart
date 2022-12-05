@@ -1,19 +1,29 @@
+import 'dart:async';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/network/requests/reset_password_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_state.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+import 'package:shared_advisor_interface/presentation/services/dynamic_link_service.dart';
 
 class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
-  final BuildContext _context;
   final AuthRepository _repository;
 
+  final DynamicLinkService _dynamicLinkService =
+      getIt.get<DynamicLinkService>();
   final MainCubit _mainCubit = getIt.get<MainCubit>();
+
+  late final StreamSubscription<DynamicLinkData> _linkSubscription;
 
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
@@ -24,57 +34,71 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
 
   late final ForgotPasswordScreenArguments arguments;
 
-  ForgotPasswordCubit(this._context, this._repository)
-      : super(const ForgotPasswordState()) {
+  ForgotPasswordCubit(this._repository) : super(const ForgotPasswordState()) {
     arguments = Get.arguments as ForgotPasswordScreenArguments;
-    //ModalRoute.of(_context)?.settings.arguments
 
-    if (arguments.token == null) {
-      emailNode.addListener(() {
-        emit(state.copyWith(emailHasFocus: emailNode.hasFocus));
-      });
-
-      emailController.addListener(() {
-        clearErrorMessage();
-        emit(state.copyWith(
-          emailErrorText: '',
-          isButtonActive: emailController.text.isNotEmpty,
-        ));
-      });
-    } else {
-      _verifyToken();
-
-      passwordNode.addListener(() {
-        emit(state.copyWith(passwordHasFocus: passwordNode.hasFocus));
-      });
-
-      confirmPasswordNode.addListener(() {
-        emit(state.copyWith(
-            confirmPasswordHasFocus: confirmPasswordNode.hasFocus));
-      });
-
-      passwordController.addListener(() {
-        clearErrorMessage();
-        emit(state.copyWith(
-          passwordErrorText: '',
-          isButtonActive: passwordController.text.isNotEmpty &&
-              confirmPasswordController.text.isNotEmpty,
-        ));
-      });
-
-      confirmPasswordController.addListener(() {
-        clearErrorMessage();
-        emit(state.copyWith(
-          confirmPasswordErrorText: '',
-          isButtonActive: passwordController.text.isNotEmpty &&
-              confirmPasswordController.text.isNotEmpty,
-        ));
-      });
+    if (arguments.resetToken != null) {
+      updateResetTokenAndBrand(
+        brand: arguments.brand,
+        token: arguments.resetToken,
+      );
+      _verifyToken(arguments.resetToken);
     }
+
+    _linkSubscription =
+        _dynamicLinkService.dynamicLinksStream.listen((dynamicLinkData) {
+      if (dynamicLinkData.token != null) {
+        updateResetTokenAndBrand(
+          brand: dynamicLinkData.brand,
+          token: dynamicLinkData.token,
+        );
+        _verifyToken(dynamicLinkData.token);
+      }
+    });
+
+    emailNode.addListener(() {
+      emit(state.copyWith(emailHasFocus: emailNode.hasFocus));
+    });
+
+    emailController.addListener(() {
+      clearErrorMessage();
+      emit(state.copyWith(
+        emailErrorText: '',
+        isButtonActive: emailController.text.isNotEmpty,
+      ));
+    });
+
+    passwordNode.addListener(() {
+      emit(state.copyWith(passwordHasFocus: passwordNode.hasFocus));
+    });
+
+    confirmPasswordNode.addListener(() {
+      emit(state.copyWith(
+          confirmPasswordHasFocus: confirmPasswordNode.hasFocus));
+    });
+
+    passwordController.addListener(() {
+      clearErrorMessage();
+      emit(state.copyWith(
+        passwordErrorText: '',
+        isButtonActive: passwordController.text.isNotEmpty &&
+            confirmPasswordController.text.isNotEmpty,
+      ));
+    });
+
+    confirmPasswordController.addListener(() {
+      clearErrorMessage();
+      emit(state.copyWith(
+        confirmPasswordErrorText: '',
+        isButtonActive: passwordController.text.isNotEmpty &&
+            confirmPasswordController.text.isNotEmpty,
+      ));
+    });
   }
 
   @override
   Future<void> close() async {
+    _linkSubscription.cancel();
     emailController.dispose();
     emailNode.dispose();
     passwordController.dispose();
@@ -92,8 +116,17 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     emit(state.copyWith(hiddenConfirmPassword: !state.hiddenConfirmPassword));
   }
 
-  Future<void> resetPassword() async {
-    if (arguments.token == null) {
+  void updateResetTokenAndBrand({required Brand brand, String? token}) {
+    emit(
+      state.copyWith(
+        selectedBrand: brand,
+        resetToken: token,
+      ),
+    );
+  }
+
+  Future<void> resetPassword(String? resetToken) async {
+    if (resetToken == null) {
       await sendEmailForReset();
     } else {
       await changePassword();
@@ -108,7 +141,8 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         ),
       );
       if (success) {
-        Get.back(result: true);
+        logger.d(Get.previousRoute);
+        Get.back(result: emailController.text);
       }
     } else {
       if (!emailIsValid()) {
@@ -119,44 +153,69 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     }
   }
 
-  Future<bool> _verifyToken() async {
+  Future<void> _verifyToken(String? token) async {
     try {
-      return _repository.verifyToken(token: 'token');
-    } catch (e) {
-      logger.e(e);
-      return false;
+      logger.d(token);
+      await _repository.verifyToken(token: token ?? '');
+    } on DioError catch (e) {
+      _checkErrorForReset(e);
     }
   }
 
   Future<void> changePassword() async {
-    if (passwordIsValid() && confirmPasswordIsValid()) {
-      final bool success = await _repository.sendPasswordForReset(
-        request: ResetPasswordRequest(
-          password: passwordController.text,
-        ),
-        token: 'AAAAAAAAA',
+    try {
+      if (passwordIsValid() && confirmPasswordIsValid()) {
+        final bool success = await _repository.sendPasswordForReset(
+          request: ResetPasswordRequest(
+            password: passwordController.text.to256,
+          ),
+          token: state.resetToken ?? '',
+        );
+        if (success) {
+          emit(state.copyWith(isResetSuccess: true));
+        }
+      } else {
+        if (!passwordIsValid()) {
+          emit(
+            state.copyWith(
+              passwordErrorText: S.current.pleaseEnterAtLeast6Characters,
+            ),
+          );
+        }
+        if (!confirmPasswordIsValid()) {
+          emit(
+            state.copyWith(
+              confirmPasswordErrorText: S.current.thePasswordsMustMatch,
+            ),
+          );
+        }
+      }
+    } on DioError catch (e) {
+      _checkErrorForReset(e);
+    }
+  }
+
+  void _checkErrorForReset(DioError error) {
+    if (error.response?.statusCode == 400 ||
+        error.response?.statusCode == 404 ||
+        error.response?.statusCode == 403) {
+      updateResetTokenAndBrand(
+        brand: state.selectedBrand,
+        token: null,
       );
-      if (success) {}
-    } else {
-      if (!passwordIsValid()) {
-        emit(
-          state.copyWith(
-            passwordErrorText: S.current.pleaseEnterAtLeast6Characters,
-          ),
-        );
-      }
-      if (!confirmPasswordIsValid()) {
-        emit(
-          state.copyWith(
-            confirmPasswordErrorText: S.current.thePasswordsMustMatch,
-          ),
-        );
-      }
     }
   }
 
   void clearErrorMessage() {
     _mainCubit.clearErrorMessage();
+  }
+
+  void goToLogin() {
+    if (Get.previousRoute == AppRoutes.login) {
+      Get.back();
+    } else {
+      Get.offNamed(AppRoutes.login);
+    }
   }
 
   bool emailIsValid() => GetUtils.isEmail(emailController.text);

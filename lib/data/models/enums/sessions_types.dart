@@ -13,10 +13,8 @@ enum SessionsTypes {
   tipsLow,
   tipsMedium,
   tipsHigh,
-  tips,
-}
+  tips;
 
-extension SessionsTypeExt on SessionsTypes {
   String get sessionName {
     switch (this) {
       case SessionsTypes.public:
