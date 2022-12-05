@@ -26,7 +26,7 @@ import 'widgets/chat_info_card.dart';
 const _textCounterWidth = 92.0;
 
 class ChatScreen extends StatelessWidget {
-  ChatScreen({Key? key}) : super(key: key);
+  const ChatScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
