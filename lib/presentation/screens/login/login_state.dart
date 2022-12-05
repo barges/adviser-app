@@ -13,6 +13,6 @@ class LoginState with _$LoginState {
     @Default(false) bool passwordHasFocus,
     @Default(true) bool hiddenPassword,
     @Default(false) bool buttonIsActive,
-    @Default(false) bool showSuccessMessage,
+    @Default('') String emailForResetPassword,
   }) = _LoginState;
 }

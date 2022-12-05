@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_cubit.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 class SuccessResetWidget extends StatelessWidget {
@@ -11,6 +12,8 @@ class SuccessResetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ForgotPasswordCubit forgotPasswordCubit =
+        context.read<ForgotPasswordCubit>();
     return Padding(
       padding: const EdgeInsets.symmetric(
           horizontal: AppConstants.horizontalScreenPadding),
@@ -39,7 +42,7 @@ class SuccessResetWidget extends StatelessWidget {
           ),
           AppElevatedButton(
             title: S.of(context).login,
-            onPressed: () => Get.back(),
+            onPressed: forgotPasswordCubit.goToLogin,
           )
         ],
       ),

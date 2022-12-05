@@ -75,12 +75,10 @@ class ForgotPasswordScreen extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(
                                                 vertical: 24.0),
-                                            child: _BrandLogo(
-                                              brand: cubit.arguments.brand,
-                                            ),
+                                            child: _BrandLogo(),
                                           ),
                                           Builder(builder: (context) {
                                             final String? resetToken = context
@@ -335,12 +333,14 @@ class ForgotPasswordScreen extends StatelessWidget {
 }
 
 class _BrandLogo extends StatelessWidget {
-  final Brand? brand;
-
-  const _BrandLogo({Key? key, required this.brand}) : super(key: key);
+  const _BrandLogo({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Brand brand = context
+        .select((ForgotPasswordCubit cubit) => cubit.state.selectedBrand);
     return GestureDetector(
       onDoubleTap: () {
         if (kDebugMode) {
@@ -360,7 +360,7 @@ class _BrandLogo extends StatelessWidget {
         ),
         child: Center(
           child: SvgPicture.asset(
-            brand?.icon ?? '',
+            brand.icon,
             height: 72.0,
           ),
         ),

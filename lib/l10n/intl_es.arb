@@ -156,7 +156,6 @@
   "activeChat": "Сharla activa",
   "history": "Historia",
   "profile":"Perfil",
-  "youCanNotHelpUsersSinceYouHaveAnActive": "No puedes ayudar a los usuarios ya que tienes una pregunta pública activa.",
   "personalDetails": "DETALLES PERSONALES",
   "takeQuestion": "Tomar pregunta",
   "goToAccount": "Ir a Cuenta",
@@ -166,5 +165,7 @@
   "nowYouCanLoginWithANewPassword": "Ahora puedes iniciar sesión con una nueva contraseña",
   "weVeSentYouALinkToEmailToChangeYourPassword": "Le hemos enviado un enlace a {email} para cambiar su contraseña",
   "male": "Masculino",
-  "female": "Femenina"
+  "female": "Femenina",
+  "nonBinary": "No binario",
+  "preferNotToAnswer": "Prefiero no responder"
 }
