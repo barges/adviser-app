@@ -47,7 +47,7 @@ class NotLiveStatusWidget extends StatelessWidget {
                           height: 24.0,
                         ),
                         Text(
-                          status.errorText(context),
+                          status.errorText,
                           style: Theme.of(context).textTheme.headlineMedium,
                           textAlign: TextAlign.center,
                         ),
@@ -56,7 +56,7 @@ class NotLiveStatusWidget extends StatelessWidget {
                   ),
                 ),
                 AppElevatedButton(
-                  title: status.buttonText(context),
+                  title: status.buttonText,
                   onPressed: () async {
                     if (status != FortunicaUserStatus.live) {
                       if (HomeCubit.tabsList.contains(TabsTypes.account)) {

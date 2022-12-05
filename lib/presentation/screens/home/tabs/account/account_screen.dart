@@ -39,8 +39,7 @@ class AccountScreen extends StatelessWidget {
                   cubit.state.internetConnectionIsAvailable);
               final UserStatus currentStatus =
                   context.select((HomeCubit cubit) => cubit.state.userStatus);
-              final String? statusErrorText =
-                  currentStatus.status?.errorText(context);
+              final String? statusErrorText = currentStatus.status?.errorText;
               if (isOnline) {
                 return Column(
                   children: [

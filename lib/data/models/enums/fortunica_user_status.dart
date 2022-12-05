@@ -15,18 +15,18 @@ enum FortunicaUserStatus {
   @JsonValue("OFFLINE")
   offline;
 
-  String statusName(BuildContext context) {
+  String get statusName {
     switch (this) {
       case FortunicaUserStatus.live:
-        return S.of(context).live;
+        return S.current.live;
       case FortunicaUserStatus.incomplete:
-        return S.of(context).incomplete;
+        return S.current.incomplete;
       case FortunicaUserStatus.blocked:
-        return S.of(context).blocked;
+        return S.current.blocked;
       case FortunicaUserStatus.legalBlock:
-        return S.of(context).legalBlock;
+        return S.current.legalBlock;
       case FortunicaUserStatus.offline:
-        return S.of(context).offline;
+        return S.current.offline;
     }
   }
 
@@ -55,30 +55,30 @@ enum FortunicaUserStatus {
     }
   }
 
-  String errorText(BuildContext context) {
+  String get errorText {
     switch (this) {
       case FortunicaUserStatus.live:
       case FortunicaUserStatus.blocked:
         return '';
       case FortunicaUserStatus.incomplete:
-        return S.of(context).youReCurrentlyNotLiveOnThePlatform;
+        return S.current.youReCurrentlyNotLiveOnThePlatform;
       case FortunicaUserStatus.legalBlock:
-        return S.of(context).beforeProceedingYouNeedToAcceptContracts;
+        return S.current.beforeProceedingYouNeedToAcceptContracts;
       case FortunicaUserStatus.offline:
-        return S.of(context).youReCurrentlyOfflineOnThePlatform;
+        return S.current.youReCurrentlyOfflineOnThePlatform;
     }
   }
 
-  String buttonText(BuildContext context) {
+  String get buttonText {
     switch (this) {
       case FortunicaUserStatus.live:
       case FortunicaUserStatus.blocked:
         return '';
       case FortunicaUserStatus.incomplete:
-        return S.of(context).completeProfileToStartHelping;
+        return S.current.completeProfileToStartHelping;
       case FortunicaUserStatus.legalBlock:
       case FortunicaUserStatus.offline:
-        return S.of(context).goToAccount;
+        return S.current.goToAccount;
     }
   }
 }

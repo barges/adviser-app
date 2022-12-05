@@ -208,7 +208,7 @@ class ChatCubit extends Cubit<ChatState> {
         okText: S.of(_context).ok,
         actionOnOK: () {
           Get.back();
-          Get.back(result: true);
+          Get.back();
         },
         allowBarrierClock: false,
         isCancelEnabled: false,
@@ -231,7 +231,7 @@ class ChatCubit extends Cubit<ChatState> {
         okText: S.of(_context).ok,
         actionOnOK: () {
           Get.back();
-          Get.back(result: true);
+          Get.back();
         },
         allowBarrierClock: false,
         isCancelEnabled: false,

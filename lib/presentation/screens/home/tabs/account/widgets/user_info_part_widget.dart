@@ -83,7 +83,7 @@ class UserInfoPartWidget extends StatelessWidget {
                                 ?.copyWith(
                                     color: Theme.of(context).shadowColor)),
                         Text(
-                          currentStatus.status?.statusName(context) ?? '',
+                          currentStatus.status?.statusName ?? '',
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium

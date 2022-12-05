@@ -191,23 +191,23 @@ class SessionsCubit extends Cubit<SessionsState> {
         emit(state.copyWith(
           publicQuestions: List.of(_publicQuestions),
           disabledIndexes: [1],
-          successMessage: S.current.youCanNotHelpUsersSinceYouHaveAnActive,
+          showSuccessMessage: true,
         ));
       } else {
         emit(state.copyWith(
           publicQuestions: List.of(_publicQuestions),
           disabledIndexes: [],
-          successMessage: '',
+          showSuccessMessage: false,
         ));
       }
     }
   }
 
   void clearSuccessMessage() {
-    if (state.successMessage.isNotEmpty) {
+    if (state.showSuccessMessage) {
       emit(
         state.copyWith(
-          successMessage: '',
+          showSuccessMessage: false,
         ),
       );
     }

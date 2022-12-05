@@ -379,13 +379,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   void checkEmptyFields() {
     if (userProfile?.profilePictures?.isNotEmpty != true) {
       animateWithError(profileAvatarKey);
-    }
-
-    if (nicknameController.text.isEmpty) {
+    } else if (nicknameController.text.isEmpty) {
       animateWithError(nicknameFieldKey);
-    }
-
-    if (initialLanguageIndexIfHasError != null) {
+    } else if (initialLanguageIndexIfHasError != null) {
       animateWithError(
           activeLanguagesGlobalKeys[initialLanguageIndexIfHasError!]);
     }
