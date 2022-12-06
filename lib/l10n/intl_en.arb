@@ -166,5 +166,7 @@
   "nowYouCanLoginWithANewPassword": "Now you can login with a new password",
   "weVeSentYouALinkToEmailToChangeYourPassword": "We’ve sent you a link to {email} to change your password",
   "male": "Male",
-  "female": "Female"
+  "female": "Female",
+  "nonBinary": "Non-binary",
+  "preferNotToAnswer": "Prefer not to answer"
 }

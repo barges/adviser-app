@@ -12,7 +12,7 @@ class SuccessResetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ForgotPasswordCubit editProfileCubit =
+    final ForgotPasswordCubit forgotPasswordCubit =
         context.read<ForgotPasswordCubit>();
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -42,7 +42,7 @@ class SuccessResetWidget extends StatelessWidget {
           ),
           AppElevatedButton(
             title: S.of(context).login,
-            onPressed: editProfileCubit.goToLogin,
+            onPressed: forgotPasswordCubit.goToLogin,
           )
         ],
       ),

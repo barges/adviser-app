@@ -156,7 +156,6 @@
   "activeChat": "Chat ativo",
   "history": "História",
   "profile":"Perfil",
-  "youCanNotHelpUsersSinceYouHaveAnActive": "You can not help users since you have an active public question.",
   "personalDetails": "PDETALHES PESSOAIS",
   "takeQuestion": "Tirar dúvidas",
   "completeProfileToStartHelping": "Preencha o perfil para começar a ajudar",
@@ -167,5 +166,7 @@
   "nowYouCanLoginWithANewPassword": "Agora você pode entrar com uma nova senha",
   "weVeSentYouALinkToEmailToChangeYourPassword": "Enviamos um link para {email} para alterar sua senha",
   "male": "Macho",
-  "female": "Fêmea"
+  "female": "Fêmea",
+  "nonBinary": "Não binário",
+  "preferNotToAnswer": "Prefiro não responder"
 }
