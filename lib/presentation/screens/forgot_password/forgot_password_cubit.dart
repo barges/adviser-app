@@ -18,6 +18,7 @@ import 'package:shared_advisor_interface/presentation/services/dynamic_link_serv
 
 class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   final AuthRepository _repository;
+  final BuildContext _context;
 
   final DynamicLinkService _dynamicLinkService =
       getIt.get<DynamicLinkService>();
@@ -34,7 +35,8 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
 
   late final ForgotPasswordScreenArguments arguments;
 
-  ForgotPasswordCubit(this._repository) : super(const ForgotPasswordState()) {
+  ForgotPasswordCubit(this._repository, this._context)
+      : super(const ForgotPasswordState()) {
     arguments = Get.arguments as ForgotPasswordScreenArguments;
 
     if (arguments.resetToken != null) {
@@ -147,7 +149,8 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     } else {
       if (!emailIsValid()) {
         emit(
-          state.copyWith(emailErrorText: S.current.pleaseInsertCorrectEmail),
+          state.copyWith(
+              emailErrorText: S.of(_context).pleaseInsertCorrectEmail),
         );
       }
     }
@@ -178,14 +181,14 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         if (!passwordIsValid()) {
           emit(
             state.copyWith(
-              passwordErrorText: S.current.pleaseEnterAtLeast6Characters,
+              passwordErrorText: S.of(_context).pleaseEnterAtLeast6Characters,
             ),
           );
         }
         if (!confirmPasswordIsValid()) {
           emit(
             state.copyWith(
-              confirmPasswordErrorText: S.current.thePasswordsMustMatch,
+              confirmPasswordErrorText: S.of(_context).thePasswordsMustMatch,
             ),
           );
         }

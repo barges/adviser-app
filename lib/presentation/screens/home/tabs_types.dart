@@ -12,16 +12,16 @@ enum TabsTypes {
   sessions,
   account;
 
-  String get tabName {
+  String tabName(BuildContext context) {
     switch (this) {
       case TabsTypes.dashboard:
-        return S.current.dashboard;
+        return S.of(context).dashboard;
       case TabsTypes.articles:
-        return S.current.articles;
+        return S.of(context).articles;
       case TabsTypes.sessions:
-        return S.current.sessions;
+        return S.of(context).sessions;
       case TabsTypes.account:
-        return S.current.account;
+        return S.of(context).account;
     }
   }
 

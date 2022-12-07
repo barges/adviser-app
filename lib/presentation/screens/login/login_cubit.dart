@@ -22,6 +22,7 @@ import 'package:shared_advisor_interface/presentation/services/dynamic_link_serv
 class LoginCubit extends Cubit<LoginState> {
   final AuthRepository _repository;
   final CachingManager _cacheManager;
+  final BuildContext _context;
 
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final DynamicLinkService _dynamicLinkService =
@@ -33,7 +34,8 @@ class LoginCubit extends Cubit<LoginState> {
   final FocusNode emailNode = FocusNode();
   final FocusNode passwordNode = FocusNode();
 
-  LoginCubit(this._repository, this._cacheManager) : super(const LoginState()) {
+  LoginCubit(this._repository, this._cacheManager, this._context)
+      : super(const LoginState()) {
     _dynamicLinkService.checkLinkForResetPassword();
 
     unauthorizedBrands = _cacheManager.getUnauthorizedBrands();
@@ -117,13 +119,14 @@ class LoginCubit extends Cubit<LoginState> {
     } else {
       if (!emailIsValid()) {
         emit(
-          state.copyWith(emailErrorText: S.current.pleaseInsertCorrectEmail),
+          state.copyWith(
+              emailErrorText: S.of(_context).pleaseInsertCorrectEmail),
         );
       }
       if (!passwordIsValid()) {
         emit(
           state.copyWith(
-            passwordErrorText: S.current.pleaseEnterAtLeast6Characters,
+            passwordErrorText: S.of(_context).pleaseEnterAtLeast6Characters,
           ),
         );
       }

@@ -26,7 +26,7 @@ class ForgotPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ForgotPasswordCubit(getIt.get<AuthRepository>()),
+      create: (_) => ForgotPasswordCubit(getIt.get<AuthRepository>(), context),
       child: Builder(
         builder: (context) {
           final ForgotPasswordCubit cubit = context.read<ForgotPasswordCubit>();

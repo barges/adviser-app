@@ -17,7 +17,7 @@ class EditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => EditProfileCubit(),
+      create: (_) => EditProfileCubit(context),
       child: Builder(builder: (context) {
         final EditProfileCubit editProfileCubit =
             context.read<EditProfileCubit>();
