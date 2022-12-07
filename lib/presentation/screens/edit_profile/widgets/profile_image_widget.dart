@@ -128,7 +128,7 @@ class ProfileImageWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     vertical: 10.0, horizontal: 16.0),
                 child: Builder(builder: (context) {
-                  final File? avatar = context
+                  context
                       .select((EditProfileCubit cubit) => cubit.state.avatar);
                   final List<String> profileImages =
                       cubit.userProfile?.profilePictures ?? [];
