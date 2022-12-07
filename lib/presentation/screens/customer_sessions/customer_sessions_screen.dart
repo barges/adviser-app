@@ -22,15 +22,15 @@ class CustomerSessionsScreen extends StatelessWidget {
         child: Builder(builder: (context) {
           final CustomerSessionsCubit customerSessionsCubit =
               context.read<CustomerSessionsCubit>();
-          final CustomerInfo? customerInfo = context.select(
-              (CustomerSessionsCubit cubit) => cubit.state.customerInfo);
+          final String? clientName = context
+              .select((CustomerSessionsCubit cubit) => cubit.state.clientName);
+          final ZodiacSign? zodiacSign = context
+              .select((CustomerSessionsCubit cubit) => cubit.state.zodiacSign);
           return Scaffold(
               backgroundColor: Theme.of(context).canvasColor,
               appBar: ChatConversationAppBar(
-                title: customerInfo != null
-                    ? '${customerInfo.firstName} ${customerInfo.lastName}'
-                    : '',
-                zodiacSign: customerInfo?.zodiac,
+                title: clientName ?? '',
+                zodiacSign: zodiacSign,
               ),
               body: Column(
                 children: [

@@ -144,11 +144,12 @@ class SessionsCubit extends Cubit<SessionsState> {
   }
 
   void goToCustomerProfile(ChatItem question) {
-    if (question.clientID != null && question.clientName != null) {
+    if ((question.clientID != null || question.id != null) &&
+        question.clientName != null) {
       Get.toNamed(
         AppRoutes.customerProfile,
         arguments: CustomerProfileScreenArguments(
-          customerID: question.clientID!,
+          customerID: question.clientID ?? question.id!,
           clientName: question.clientName!,
           zodiacSign: question.clientInformation?.zodiac,
         ),
@@ -158,6 +159,15 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   Future<void> goToChat(ChatItem question) async {
     Get.toNamed(AppRoutes.chat, arguments: question);
+  }
+
+  void goToCustomerSessions(ChatItem question) {
+    Get.toNamed(AppRoutes.customerSessions,
+        arguments: CustomerSessionsScreenArguments(
+          clientName: question.clientName ?? '',
+          clientInformation: question.clientInformation,
+          clientId: question.id,
+        ));
   }
 
   void clearSuccessMessage() {

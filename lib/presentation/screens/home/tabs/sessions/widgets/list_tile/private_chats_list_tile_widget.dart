@@ -46,7 +46,7 @@ class PrivateChatsListTileWidget extends StatelessWidget {
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
-                sessionsCubit.goToChat(question);
+                sessionsCubit.goToCustomerSessions(question);
               },
               child: Column(
                 mainAxisSize: MainAxisSize.min,

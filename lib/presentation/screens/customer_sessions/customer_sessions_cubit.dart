@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
+import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
@@ -11,6 +12,7 @@ import 'package:shared_advisor_interface/domain/repositories/customer_repository
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_state.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
 
@@ -39,8 +41,13 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
       : super(const CustomerSessionsState()) {
     arguments = Get.arguments as CustomerSessionsScreenArguments;
 
+    emit(state.copyWith(
+        clientName: arguments.clientName,
+        zodiacSign: arguments.clientInformation?.zodiac));
     getCustomerInfo();
-    getSessionsQuestions();
+    if (arguments.clientId != null) {
+      getSessionsQuestions();
+    }
 
     questionsController.addListener(() async {
       if (!_mainCubit.state.isLoading &&
@@ -95,11 +102,23 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   }
 
   Future<void> getCustomerInfo() async {
-    emit(
-      state.copyWith(
-        customerInfo:
-            await _customerRepository.getCustomerInfo(arguments.clientId ?? ''),
-      ),
-    );
+    if (arguments.clientId != null) {
+      CustomerInfo customerInfo =
+          await _customerRepository.getCustomerInfo(arguments.clientId ?? '');
+      emit(
+        state.copyWith(
+            clientName: '${customerInfo.firstName} ${customerInfo.lastName}',
+            zodiacSign: customerInfo.zodiac),
+      );
+    }
+  }
+
+  void goToChat(ChatItem question) {
+    Get.toNamed(AppRoutes.chat,
+        arguments: question.copyWith(
+          clientID: arguments.clientId,
+          clientName: arguments.clientName,
+          clientInformation: arguments.clientInformation,
+        ));
   }
 }
