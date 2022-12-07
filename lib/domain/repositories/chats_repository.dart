@@ -31,6 +31,13 @@ abstract class ChatsRepository {
   Future<ConversationsStoryResponse> getConversationsStory(
       {required String storyID});
 
+  Future<QuestionsListResponse> getSessionQuestions({
+    required String id,
+    required int limit,
+    String? lastItem,
+    String? filterType,
+  });
+
   Future<ChatItem> takeQuestion(AnswerRequest request);
 
   Future<ChatItem> getQuestion({required String id});

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
+import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/list_of_filters_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -15,17 +17,20 @@ class CustomerSessionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => CustomerSessionsCubit(),
+        create: (context) =>
+            CustomerSessionsCubit(getIt.get<CachingManager>(), context),
         child: Builder(builder: (context) {
           final CustomerSessionsCubit customerSessionsCubit =
               context.read<CustomerSessionsCubit>();
+          final CustomerInfo? customerInfo = context.select(
+              (CustomerSessionsCubit cubit) => cubit.state.customerInfo);
           return Scaffold(
               backgroundColor: Theme.of(context).canvasColor,
-
-              ///TODO - Replace hardcode!(appbar values)
-              appBar: const ChatConversationAppBar(
-                title: 'Annette Black',
-                zodiacSign: ZodiacSign.capricorn,
+              appBar: ChatConversationAppBar(
+                title: customerInfo != null
+                    ? '${customerInfo.firstName} ${customerInfo.lastName}'
+                    : '',
+                zodiacSign: customerInfo?.zodiac,
               ),
               body: Column(
                 children: [
@@ -48,10 +53,12 @@ class CustomerSessionsScreen extends StatelessWidget {
                     height: 1,
                   ),
                   Builder(builder: (context) {
-                    List<ChatItem> items = customerSessionsCubit.items;
+                    final List<ChatItem> questions = context.select(
+                        (CustomerSessionsCubit cubit) =>
+                            cubit.state.sessionsQuestions);
                     return Expanded(
                       child: CustomScrollView(
-                          controller: ScrollController(),
+                          controller: customerSessionsCubit.questionsController,
                           physics: const AlwaysScrollableScrollPhysics(),
                           slivers: [
                             SliverToBoxAdapter(
@@ -62,7 +69,7 @@ class CustomerSessionsScreen extends StatelessWidget {
                                 shrinkWrap: true,
                                 itemBuilder: (BuildContext context, int index) {
                                   return CustomerSessionListTileWidget(
-                                      question: items[index]);
+                                      question: questions[index]);
                                 },
                                 separatorBuilder:
                                     (BuildContext context, int index) => Column(
@@ -78,7 +85,7 @@ class CustomerSessionsScreen extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                itemCount: items.length,
+                                itemCount: questions.length,
                               ),
                             )
                           ]),

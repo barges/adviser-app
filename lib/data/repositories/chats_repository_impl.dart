@@ -85,4 +85,14 @@ class ChatsRepositoryImpl implements ChatsRepository {
   Future<ChatItem> sendAnswer(AnswerRequest request) async {
     return await _api.sendAnswer(request);
   }
+
+  @override
+  Future<QuestionsListResponse> getSessionQuestions(
+      {required String id,
+      required int limit,
+      String? lastItem,
+      String? filterType}) async {
+    return await _api.getSessionQuestions(
+        id: id, limit: limit, lastItem: lastItem, filterType: filterType);
+  }
 }

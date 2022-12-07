@@ -33,6 +33,14 @@ abstract class ChatsApi {
     @Query('search') String? search,
   });
 
+  @GET('/experts/stories')
+  Future<QuestionsListResponse> getSessionQuestions({
+    @Query('clientId') required String id,
+    @Query('limit') required int limit,
+    @Query('lastItem') String? lastItem,
+    @Query('filters[type]') String? filterType,
+  });
+
   @GET('/v2/users/{expertID}/conversations/{clientID}')
   Future<ConversationsResponse> getConversationsHystory({
     @Path() required String expertID,

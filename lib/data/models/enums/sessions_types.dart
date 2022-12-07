@@ -18,23 +18,23 @@ enum SessionsTypes {
   String get sessionName {
     switch (this) {
       case SessionsTypes.public:
-        return 'Public';
+        return 'Public question';
       case SessionsTypes.private:
-        return 'Private';
+        return 'Private question';
       case SessionsTypes.tarot:
         return 'Tarot';
       case SessionsTypes.palmreading:
-        return 'Palm';
+        return 'Palm reading';
       case SessionsTypes.astrology:
         return 'Astrology';
       case SessionsTypes.reading360:
-        return '360° Reading';
+        return '360° reading';
       case SessionsTypes.aurareading:
-        return 'Aura Reading';
+        return 'Aura reading';
       case SessionsTypes.lovecrushreading:
-        return 'Love Crush Reading';
+        return 'Love crush reading';
       case SessionsTypes.ritual:
-        return 'Ritual';
+        return 'Ritual session';
       case SessionsTypes.tipsLow:
       case SessionsTypes.tipsMedium:
       case SessionsTypes.tipsHigh:

@@ -28,6 +28,9 @@ class ChatItem with _$ChatItem {
     ClientInformation? clientInformation,
     List<Attachment>? attachments,
     String? clientID,
+    bool? hasUnanswered,
+    String? ritualId,
+    String? lastQuestionId,
     @Default(false) bool isAnswer,
     @Default(true) bool isSent,
   }) = _ChatItem;

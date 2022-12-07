@@ -68,3 +68,11 @@ class ChatScreenArguments {
     this.clientId,
   });
 }
+
+class CustomerSessionsScreenArguments {
+  final String? clientId;
+
+  CustomerSessionsScreenArguments({
+    this.clientId,
+  });
+}

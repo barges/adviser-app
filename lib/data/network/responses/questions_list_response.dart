@@ -11,9 +11,10 @@ class QuestionsListResponse extends Equatable {
   final bool? hasMore;
   final int? limit;
   final String? lastId;
+  final String? lastItem;
 
   const QuestionsListResponse(
-      {this.questions, this.hasMore, this.limit, this.lastId});
+      {this.questions, this.hasMore, this.limit, this.lastId, this.lastItem});
 
   factory QuestionsListResponse.fromJson(Map<String, dynamic> json) =>
       _$QuestionsListResponseFromJson(json);

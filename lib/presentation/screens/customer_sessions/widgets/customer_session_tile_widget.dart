@@ -4,9 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -36,7 +34,9 @@ class CustomerSessionListTileWidget extends StatelessWidget {
               ),
             ),
             child: SvgPicture.asset(
-              question.ritualIdentifier?.iconPath ?? '',
+              question.ritualIdentifier?.iconPath ??
+                  question.type?.iconPath ??
+                  '',
               height: AppConstants.iconSize,
               width: AppConstants.iconSize,
               fit: BoxFit.scaleDown,
@@ -54,7 +54,9 @@ class CustomerSessionListTileWidget extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        question.ritualIdentifier?.sessionName ?? '',
+                        question.ritualIdentifier?.sessionName ??
+                            question.type?.typeName ??
+                            '',
                         overflow: TextOverflow.ellipsis,
                         style:
                             Theme.of(context).textTheme.labelMedium?.copyWith(
@@ -63,7 +65,7 @@ class CustomerSessionListTileWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      question.createdAt?.chatListTime ??
+                      question.updatedAt?.chatListTime ??
                           DateTime.now().toUtc().chatListTime,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: Theme.of(context).shadowColor,
@@ -88,7 +90,7 @@ class CustomerSessionListTileWidget extends StatelessWidget {
                       const SizedBox(
                         width: 32.0,
                       ),
-                      if (question.type != ChatItemType.history)
+                      if (question.hasUnanswered ?? false)
                         Container(
                           height: 8.0,
                           width: 8.0,
@@ -125,7 +127,7 @@ class _ContentWidget extends StatelessWidget {
       case ChatItemContentType.text:
         widget = _TextContent(
           text: question.content ?? '',
-          questionType: question.type ?? ChatItemType.history,
+          hasUnanswered: question.hasUnanswered ?? false,
         );
         break;
       case ChatItemContentType.media:
@@ -144,7 +146,7 @@ class _ContentWidget extends StatelessWidget {
             ),
             _TextContent(
               text: question.content ?? '',
-              questionType: question.type ?? ChatItemType.history,
+              hasUnanswered: question.hasUnanswered ?? false,
             ),
           ],
         );
@@ -160,7 +162,7 @@ class _ContentWidget extends StatelessWidget {
             ),
             _TextContent(
               text: question.content ?? '',
-              questionType: question.type ?? ChatItemType.history,
+              hasUnanswered: question.hasUnanswered ?? false,
             ),
           ],
         );
@@ -178,13 +180,11 @@ class _ContentWidget extends StatelessWidget {
 
 class _TextContent extends StatelessWidget {
   final String text;
-  final ChatItemType questionType;
+  final bool hasUnanswered;
 
-  const _TextContent({
-    Key? key,
-    required this.text,
-    required this.questionType,
-  }) : super(key: key);
+  const _TextContent(
+      {Key? key, required this.text, required this.hasUnanswered})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -195,9 +195,9 @@ class _TextContent extends StatelessWidget {
       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w400,
             fontSize: 14.0,
-            color: questionType == ChatItemType.history
-                ? Theme.of(context).shadowColor
-                : AppColors.promotion,
+            color: hasUnanswered
+                ? AppColors.promotion
+                : Theme.of(context).shadowColor,
           ),
     );
   }
