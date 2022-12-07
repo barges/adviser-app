@@ -155,7 +155,7 @@ class SessionsCubit extends Cubit<SessionsState> {
         arguments: CustomerSessionsScreenArguments(
           clientName: question.clientName ?? '',
           clientInformation: question.clientInformation,
-          clientId: question.id,
+          clientId: question.clientID,
         ));
   }
 
