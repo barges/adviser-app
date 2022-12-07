@@ -14,7 +14,7 @@ const String _userProfileKey = 'userProfileKey';
 const String _userInfoKey = 'userInfoKey';
 const String _userStatusKey = 'userStatusKey';
 const String _userIdKey = 'userIdKey';
-const String _localeIndexKey = 'localeIndexKey';
+const String _localeKey = 'localeKey';
 
 class DataCachingManager implements CachingManager {
   final GetStorage _userBox = GetStorage();
@@ -65,13 +65,20 @@ class DataCachingManager implements CachingManager {
   }
 
   @override
-  int? getLocaleIndex() {
-    return _localeBox.read(_localeIndexKey);
+  String? getLanguageCode() {
+    return _localeBox.read(_localeKey);
   }
 
   @override
-  Future<void> saveLocaleIndex(int? index) async {
-    await _localeBox.write(_localeIndexKey, index);
+  Future<void> saveLanguageCode(String? languageCode) async {
+    await _localeBox.write(_localeKey, languageCode);
+  }
+
+  @override
+  VoidCallback listenLanguageCode(ValueChanged<String> callback) {
+    return _localeBox.listenKey(_localeKey, (value) {
+      callback(value);
+    });
   }
 
   @override

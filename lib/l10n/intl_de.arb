@@ -166,5 +166,7 @@
   "male": "Männlich",
   "female": "Weiblich",
   "nonBinary": "Non-binär",
-  "preferNotToAnswer": "Keine Angabe"
+  "preferNotToAnswer": "Keine Angabe",
+  "youHaveAnActiveSession": "Sie haben eine aktive Sitzung",
+  "audioMessage": "Audio-Nachricht"
 }

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:android_id/android_id.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
@@ -83,8 +82,8 @@ class ApiModule implements Module {
 }
 
 extension DioHeadersExt on Dio {
-  void addLocaleToHeader(Locale locale) {
-    options.headers['x-adviqo-app-language'] = locale.languageCode;
+  void addLocaleToHeader(String languageCode) {
+    options.headers['x-adviqo-app-language'] = languageCode;
   }
 
   void addAuthorizationToHeader(String token) {

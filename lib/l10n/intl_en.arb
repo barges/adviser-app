@@ -168,5 +168,8 @@
   "male": "Male",
   "female": "Female",
   "nonBinary": "Non-binary",
-  "preferNotToAnswer": "Prefer not to answer"
+  "preferNotToAnswer": "Prefer not to answer",
+  "youHaveAnActiveSession": "You have an active session",
+  "audioMessage": "Audio message",
+  "justSentYouAMessage": "Just sent you a message"
 }

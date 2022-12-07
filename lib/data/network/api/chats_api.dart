@@ -20,10 +20,12 @@ abstract class ChatsApi {
     @Query('filters[language]') String? filterLanguage,
   });
 
-  @GET('/experts/questions/individual')
-  Future<QuestionsListResponse> getPrivateQuestions({
-    @Query('filters[type]') String? filtersType,
+  @GET('/experts/conversations')
+  Future<QuestionsListResponse> getConversationsList({
+    @Query('limit') required int limit,
     @Query('filters[language]') String? filtersLanguage,
+    @Query('lastItem') String? lastItem,
+    @Query('search') String? search,
   });
 
   @GET('/experts/conversations/history')

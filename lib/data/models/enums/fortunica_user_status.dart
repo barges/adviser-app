@@ -55,30 +55,30 @@ enum FortunicaUserStatus {
     }
   }
 
-  String get errorText {
+  String errorText(BuildContext context) {
     switch (this) {
       case FortunicaUserStatus.live:
       case FortunicaUserStatus.blocked:
         return '';
       case FortunicaUserStatus.incomplete:
-        return S.current.youReCurrentlyNotLiveOnThePlatform;
+        return S.of(context).youReCurrentlyNotLiveOnThePlatform;
       case FortunicaUserStatus.legalBlock:
-        return S.current.beforeProceedingYouNeedToAcceptContracts;
+        return S.of(context).beforeProceedingYouNeedToAcceptContracts;
       case FortunicaUserStatus.offline:
-        return S.current.youReCurrentlyOfflineOnThePlatform;
+        return S.of(context).youReCurrentlyOfflineOnThePlatform;
     }
   }
 
-  String get buttonText {
+  String buttonText(BuildContext context) {
     switch (this) {
       case FortunicaUserStatus.live:
       case FortunicaUserStatus.blocked:
         return '';
       case FortunicaUserStatus.incomplete:
-        return S.current.completeProfileToStartHelping;
+        return S.of(context).completeProfileToStartHelping;
       case FortunicaUserStatus.legalBlock:
       case FortunicaUserStatus.offline:
-        return S.current.goToAccount;
+        return S.of(context).goToAccount;
     }
   }
 }

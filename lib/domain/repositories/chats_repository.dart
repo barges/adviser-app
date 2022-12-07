@@ -11,9 +11,11 @@ abstract class ChatsRepository {
     String? filtersLanguage,
   });
 
-  Future<QuestionsListResponse> getPrivateQuestions({
-    String? filtersType,
+  Future<QuestionsListResponse> getConversationsList({
+    required int limit,
     String? filtersLanguage,
+    String? lastItem,
+    String? search,
   });
 
   Future<QuestionsListResponse> getHistoryList({
@@ -22,7 +24,7 @@ abstract class ChatsRepository {
     String? search,
   });
 
-  Future<ConversationsResponse> getConversationsHystory(
+  Future<ConversationsResponse> getConversationsHistory(
       {required String expertID,
       required String clientID,
       required int offset,

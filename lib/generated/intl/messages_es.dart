@@ -53,6 +53,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "¿Está seguro de que desea cambiar su estado a Desconectado?"),
         "articles": MessageLookupByLibrary.simpleMessage("Artículos"),
         "ascendant": MessageLookupByLibrary.simpleMessage("Ascendente"),
+        "audioMessage":
+            MessageLookupByLibrary.simpleMessage("mensaje de audio"),
         "avgDailyEarnings":
             MessageLookupByLibrary.simpleMessage("Ganancias diarias promedio"),
         "back": MessageLookupByLibrary.simpleMessage("Atrás"),
@@ -268,6 +270,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "youDontHaveInternetConnection": MessageLookupByLibrary.simpleMessage(
             "No tienes conexion a internet"),
         "youHave": MessageLookupByLibrary.simpleMessage("Tú tienes"),
+        "youHaveAnActiveSession":
+            MessageLookupByLibrary.simpleMessage("Tienes una sesión activa"),
         "youHaveNotCompletedAnySessionsYet":
             MessageLookupByLibrary.simpleMessage(
                 "Aún no has completado ninguna sesión"),
