@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -15,17 +16,17 @@ enum ChatItemType {
   textAnswer,
   all;
 
-  String get filterName {
+  String filterName(BuildContext context) {
     switch (this) {
       case ChatItemType.private:
-        return S.current.privateQuestions;
+        return S.of(context).privateQuestions;
       case ChatItemType.ritual:
-        return S.current.onlyPremiumProducts;
+        return S.of(context).onlyPremiumProducts;
       case ChatItemType.history:
       case ChatItemType.public:
       case ChatItemType.textAnswer:
       case ChatItemType.all:
-        return S.current.all;
+        return S.of(context).all;
     }
   }
 

@@ -45,7 +45,7 @@ class CustomerSessionsScreen extends StatelessWidget {
                       currentFilterIndex: currentFilterIndex,
                       onTapToFilter: customerSessionsCubit.changeFilterIndex,
                       filters: customerSessionsCubit.filters
-                          .map((e) => e.filterName)
+                          .map((e) => e.filterName(context))
                           .toList(),
                     );
                   }),

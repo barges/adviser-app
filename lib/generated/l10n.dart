@@ -1749,6 +1749,36 @@ class S {
       args: [],
     );
   }
+
+  /// `You have an active session`
+  String get youHaveAnActiveSession {
+    return Intl.message(
+      'You have an active session',
+      name: 'youHaveAnActiveSession',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Audio message`
+  String get audioMessage {
+    return Intl.message(
+      'Audio message',
+      name: 'audioMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Just sent you a message`
+  String get justSentYouAMessage {
+    return Intl.message(
+      'Just sent you a message',
+      name: 'justSentYouAMessage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

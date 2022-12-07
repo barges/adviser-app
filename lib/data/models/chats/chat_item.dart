@@ -27,10 +27,12 @@ class ChatItem with _$ChatItem {
     @JsonKey(name: '_id') final String? id,
     ClientInformation? clientInformation,
     List<Attachment>? attachments,
+    List<ChatItemType>? unansweredTypes,
     String? clientID,
     bool? hasUnanswered,
     String? ritualId,
     String? lastQuestionId,
+    int? unansweredCount,
     @Default(false) bool isAnswer,
     @Default(true) bool isSent,
   }) = _ChatItem;

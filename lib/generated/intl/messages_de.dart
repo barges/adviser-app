@@ -53,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Sind Sie sicher, dass Sie Ihren Status auf Offline ändern möchten?"),
         "articles": MessageLookupByLibrary.simpleMessage("Artikel"),
         "ascendant": MessageLookupByLibrary.simpleMessage("Aufsteigend"),
+        "audioMessage": MessageLookupByLibrary.simpleMessage("Audio-Nachricht"),
         "avgDailyEarnings":
             MessageLookupByLibrary.simpleMessage("Durchschn Tagesverdienst"),
         "back": MessageLookupByLibrary.simpleMessage("Zurück"),
@@ -268,6 +269,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "youDontHaveInternetConnection": MessageLookupByLibrary.simpleMessage(
             "Sie haben keine Internetverbindung"),
         "youHave": MessageLookupByLibrary.simpleMessage("Du hast"),
+        "youHaveAnActiveSession": MessageLookupByLibrary.simpleMessage(
+            "Sie haben eine aktive Sitzung"),
         "youHaveNotCompletedAnySessionsYet":
             MessageLookupByLibrary.simpleMessage(
                 "Sie haben noch keine Sitzungen abgeschlossen"),

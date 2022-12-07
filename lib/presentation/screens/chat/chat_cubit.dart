@@ -163,7 +163,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     ConversationsResponse conversations =
-        await _repository.getConversationsHystory(
+        await _repository.getConversationsHistory(
             expertID: _cachingManager.getUserId() ?? '',
             clientID: questionFromArguments?.clientID ?? '',
             offset: _offset,

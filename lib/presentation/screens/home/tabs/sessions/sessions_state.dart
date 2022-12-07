@@ -8,7 +8,7 @@ part 'sessions_state.freezed.dart';
 class SessionsState with _$SessionsState {
   const factory SessionsState([
     @Default(false) bool searchIsOpen,
-    @Default([]) List<ChatItem> privateQuestionsWithHistory,
+    @Default([]) List<ChatItem> conversationsList,
     @Default([]) List<ChatItem> publicQuestions,
     @Default([]) List<MarketsType> userMarkets,
     @Default([]) List<int> disabledIndexes,

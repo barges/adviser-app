@@ -19,10 +19,18 @@ class ChatsRepositoryImpl implements ChatsRepository {
   }
 
   @override
-  Future<QuestionsListResponse> getPrivateQuestions(
-      {String? filtersType, String? filtersLanguage}) async {
-    return await _api.getPrivateQuestions(
-        filtersType: filtersType, filtersLanguage: filtersLanguage);
+  Future<QuestionsListResponse> getConversationsList({
+    required int limit,
+    String? filtersLanguage,
+    String? lastItem,
+    String? search,
+  }) async {
+    return await _api.getConversationsList(
+      limit: limit,
+      filtersLanguage: filtersLanguage,
+      lastItem: lastItem,
+      search: search,
+    );
   }
 
   @override
@@ -39,7 +47,7 @@ class ChatsRepositoryImpl implements ChatsRepository {
   }
 
   @override
-  Future<ConversationsResponse> getConversationsHystory(
+  Future<ConversationsResponse> getConversationsHistory(
       {required String expertID,
       required String clientID,
       required int offset,

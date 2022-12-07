@@ -10,11 +10,16 @@ class QuestionsListResponse extends Equatable {
   final List<ChatItem>? questions;
   final bool? hasMore;
   final int? limit;
-  final String? lastId;
   final String? lastItem;
+  final String? lastId;
 
-  const QuestionsListResponse(
-      {this.questions, this.hasMore, this.limit, this.lastId, this.lastItem});
+  const QuestionsListResponse({
+    this.questions,
+    this.hasMore,
+    this.limit,
+    this.lastItem,
+    this.lastId,
+  });
 
   factory QuestionsListResponse.fromJson(Map<String, dynamic> json) =>
       _$QuestionsListResponseFromJson(json);
@@ -22,5 +27,11 @@ class QuestionsListResponse extends Equatable {
   Map<String, dynamic> toJson() => _$QuestionsListResponseToJson(this);
 
   @override
-  List<Object?> get props => [questions, hasMore, limit, lastId];
+  List<Object?> get props => [
+        questions,
+        hasMore,
+        limit,
+        lastItem,
+        lastId,
+      ];
 }

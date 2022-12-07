@@ -51,6 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Are you sure that you want to change your status to Offline?"),
         "articles": MessageLookupByLibrary.simpleMessage("Articles"),
         "ascendant": MessageLookupByLibrary.simpleMessage("Ascendant"),
+        "audioMessage": MessageLookupByLibrary.simpleMessage("Audio message"),
         "avgDailyEarnings":
             MessageLookupByLibrary.simpleMessage("Avg Daily Earnings"),
         "back": MessageLookupByLibrary.simpleMessage("Back"),
@@ -125,6 +126,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Inform our team your planned return date:"),
         "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
+        "justSentYouAMessage":
+            MessageLookupByLibrary.simpleMessage("Just sent you a message"),
         "legalBlock": MessageLookupByLibrary.simpleMessage("Legal block"),
         "live": MessageLookupByLibrary.simpleMessage("Live"),
         "logOut": MessageLookupByLibrary.simpleMessage("Log out"),
@@ -260,6 +263,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "youDontHaveInternetConnection": MessageLookupByLibrary.simpleMessage(
             "You don’t have internet connection"),
         "youHave": MessageLookupByLibrary.simpleMessage("You have"),
+        "youHaveAnActiveSession":
+            MessageLookupByLibrary.simpleMessage("You have an active session"),
         "youHaveNotCompletedAnySessionsYet":
             MessageLookupByLibrary.simpleMessage(
                 "You have not completed any sessions yet"),
