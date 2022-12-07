@@ -9,8 +9,6 @@ import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/add_note/widgets/pictures_part_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/add_note/widgets/title_part_widget.dart';
 
 class AddNoteScreen extends StatelessWidget {
   const AddNoteScreen({
@@ -30,6 +28,7 @@ class AddNoteScreen extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: Theme.of(context).canvasColor,
+          resizeToAvoidBottomInset: false,
           appBar: WideAppBar(
             bottomWidget: Text(
               isNoteNew ? S.of(context).addNote : S.of(context).editNote,

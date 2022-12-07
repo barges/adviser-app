@@ -18,6 +18,7 @@ class AddNoteCubit extends Cubit<AddNoteState> {
   final CustomerRepository _repository = getIt.get<CustomerRepository>();
   late final TextEditingController noteController;
   late final TextEditingController titleController;
+  final ScrollController noteScrollController = ScrollController();
 
   AddNoteCubit() : super(AddNoteState()) {
     arguments = Get.arguments as AddNoteScreenArguments;
