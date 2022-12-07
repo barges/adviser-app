@@ -9,7 +9,7 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 
 part 'chats_api.g.dart';
 
-@RestApi(baseUrl: AppConstants.baseUrlDev)
+@RestApi(baseUrl: AppConstants.baseUrl)
 abstract class ChatsApi {
   factory ChatsApi(Dio dio) = _ChatsApi;
 

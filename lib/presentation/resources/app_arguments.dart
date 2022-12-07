@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/models/chats/client_information.dart';
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
 
@@ -70,9 +71,13 @@ class ChatScreenArguments {
 }
 
 class CustomerSessionsScreenArguments {
+  final String clientName;
   final String? clientId;
+  final ClientInformation? clientInformation;
 
   CustomerSessionsScreenArguments({
+    required this.clientName,
+    this.clientInformation,
     this.clientId,
   });
 }
