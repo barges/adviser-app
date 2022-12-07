@@ -81,7 +81,7 @@ class AppRoutes {
     ),
     GetPage(
       name: customerProfile,
-      page: () => const CustomerProfileScreen(),
+      page: () => CustomerProfileScreen(),
     ),
     GetPage(
       name: addNote,
