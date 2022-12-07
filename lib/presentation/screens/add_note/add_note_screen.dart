@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
@@ -21,6 +24,8 @@ class AddNoteScreen extends StatelessWidget {
       create: (_) => AddNoteCubit(),
       child: Builder(builder: (context) {
         AddNoteCubit addNoteCubit = context.read<AddNoteCubit>();
+        List<String> imagesPaths =
+            context.select((AddNoteCubit cubit) => cubit.state.imagesPaths);
         bool isNoteNew =
             context.select((AddNoteCubit cubit) => cubit.state.isNoteNew);
         final bool isOnline = context.select(
@@ -28,7 +33,6 @@ class AddNoteScreen extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: Theme.of(context).canvasColor,
-          resizeToAvoidBottomInset: false,
           appBar: WideAppBar(
             bottomWidget: Text(
               isNoteNew ? S.of(context).addNote : S.of(context).editNote,
@@ -50,58 +54,93 @@ class AddNoteScreen extends StatelessWidget {
                       errorMessage: S.of(context).youDontHaveInternetConnection,
                       isRequired: true,
                     ),
-              SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12.0,
-                  horizontal: AppConstants.horizontalScreenPadding,
-                ),
+              Expanded(
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       isNoteNew
                           ? const SizedBox.shrink()
-                          : Column(
-                              children: [
-                                Text(
-                                  addNoteCubit.arguments.updatedAt!
-                                      .parseDateTimePattern6,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displaySmall
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w400,
-                                        color: Theme.of(context).shadowColor,
-                                      ),
-                                ),
-                                const SizedBox(
-                                  height: 12.0,
-                                )
-                              ],
+                          : Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal:
+                                    AppConstants.horizontalScreenPadding,
+                                vertical: 12.0,
+                              ),
+                              child: Text(
+                                addNoteCubit
+                                    .arguments.updatedAt!.parseDateTimePattern2,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displaySmall
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w400,
+                                      color: Theme.of(context).shadowColor,
+                                    ),
+                              ),
                             ),
-
-                      //const TitlePartWidget(),
-
-                      TextField(
-                        controller: addNoteCubit.noteController,
-                        style: Theme.of(context)
-                            .textTheme
-                            .displayLarge
-                            ?.copyWith(fontWeight: FontWeight.w400),
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        autofocus: true,
-                        scrollPadding: EdgeInsets.zero,
-                        cursorColor: Theme.of(context).hoverColor,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                          contentPadding: EdgeInsets.zero,
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: TextField(
+                            controller: addNoteCubit.noteController,
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayLarge
+                                ?.copyWith(fontWeight: FontWeight.w400),
+                            keyboardType: TextInputType.multiline,
+                            minLines: null,
+                            maxLines: null,
+                            autofocus: true,
+                            scrollPadding: EdgeInsets.zero,
+                            cursorColor: Theme.of(context).hoverColor,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              contentPadding: EdgeInsets.only(
+                                left: AppConstants.horizontalScreenPadding,
+                                right: AppConstants.horizontalScreenPadding,
+                                bottom: 12.0,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                      //const PicturesPartWidget()
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6.0),
+                        child: Center(
+                          child: Builder(builder: (context) {
+                            logger.d(imagesPaths);
+                            return (imagesPaths.isNotEmpty)
+                                ? Column(
+                                    children: List.generate(
+                                        imagesPaths.length,
+                                        (index) => Builder(builder: (context) {
+                                              final String imagesPath =
+                                                  context.select((AddNoteCubit
+                                                          cubit) =>
+                                                      cubit.state
+                                                          .imagesPaths[index]);
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 6.0),
+                                                child: Image.file(
+                                                  File(imagesPath),
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      2,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              );
+                                            })),
+                                  )
+                                : const SizedBox.shrink();
+                          }),
+                        ),
+                      )
                     ]),
               ),
             ],
