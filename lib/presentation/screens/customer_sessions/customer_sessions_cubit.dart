@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
@@ -9,8 +10,10 @@ import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_state.dart';
@@ -71,33 +74,49 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
 
   Future<void> getSessionsQuestions(
       {FortunicaUserStatus? status, bool refresh = false}) async {
-    if (refresh) {
-      _hasMore = true;
-      _sessionsQuestions.clear();
-    }
-    if (_hasMore &&
-        _mainCubit.state.internetConnectionIsAvailable &&
-        (status ?? cacheManager.getUserStatus()?.status) ==
-            FortunicaUserStatus.live) {
-      final ChatItemType questionsType = filters[state.currentFilterIndex];
-      final String? filterType = questionsType != ChatItemType.all
-          ? questionsType.filterTypeName
-          : null;
+    try {
+      if (refresh) {
+        _hasMore = true;
+        _sessionsQuestions.clear();
+      }
+      if (_hasMore &&
+          _mainCubit.state.internetConnectionIsAvailable &&
+          (status ?? cacheManager.getUserStatus()?.status) ==
+              FortunicaUserStatus.live) {
+        final ChatItemType questionsType = filters[state.currentFilterIndex];
+        final String? filterType = questionsType != ChatItemType.all
+            ? questionsType.filterTypeName
+            : null;
 
-      final QuestionsListResponse result =
-          await _chatsRepository.getSessionQuestions(
-              id: arguments.clientId ?? '',
-              limit: questionsLimit,
-              lastItem: _lastItem,
-              filterType: filterType);
-      _hasMore = result.hasMore ?? true;
-      _lastItem = result.lastItem;
+        final QuestionsListResponse result =
+            await _chatsRepository.getSessionQuestions(
+                id: arguments.clientId ?? '',
+                limit: questionsLimit,
+                lastItem: _lastItem,
+                filterType: filterType);
+        _hasMore = result.hasMore ?? true;
+        _lastItem = result.lastItem;
 
-      _sessionsQuestions.addAll(result.questions ?? const []);
-      logger.d(_sessionsQuestions);
-      emit(state.copyWith(
-        sessionsQuestions: List.of(_sessionsQuestions),
-      ));
+        _sessionsQuestions.addAll(result.questions ?? const []);
+        logger.d(_sessionsQuestions);
+        emit(state.copyWith(
+          sessionsQuestions: List.of(_sessionsQuestions),
+        ));
+      }
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 409) {
+        await showOkCancelAlert(
+          context: context,
+          title: _mainCubit.state.errorMessage,
+          okText: S.of(context).ok,
+          actionOnOK: () {
+            Get.close(2);
+          },
+          allowBarrierClock: false,
+          isCancelEnabled: false,
+        );
+        logger.d(e);
+      }
     }
   }
 

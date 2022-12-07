@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/list_of_filters_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_cubit.dart';
@@ -53,43 +54,76 @@ class CustomerSessionsScreen extends StatelessWidget {
                     height: 1,
                   ),
                   Builder(builder: (context) {
-                    final List<ChatItem> questions = context.select(
+                    final List<ChatItem>? questions = context.select(
                         (CustomerSessionsCubit cubit) =>
                             cubit.state.sessionsQuestions);
-                    return Expanded(
-                      child: CustomScrollView(
-                          controller: customerSessionsCubit.questionsController,
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          slivers: [
-                            SliverToBoxAdapter(
-                              child: ListView.separated(
-                                padding: const EdgeInsets.all(
-                                    AppConstants.horizontalScreenPadding),
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return CustomerSessionListTileWidget(
-                                      question: questions[index]);
-                                },
-                                separatorBuilder:
-                                    (BuildContext context, int index) => Column(
-                                  children: const [
-                                    SizedBox(
-                                      height: 16.0,
-                                    ),
-                                    Divider(
-                                      height: 1.0,
-                                    ),
-                                    SizedBox(
-                                      height: 16.0,
-                                    ),
-                                  ],
-                                ),
-                                itemCount: questions.length,
-                              ),
-                            )
-                          ]),
-                    );
+                    logger.d(questions);
+                    return questions == null
+                        ? const SizedBox.shrink()
+                        : Expanded(
+                            child: CustomScrollView(
+                                controller:
+                                    customerSessionsCubit.questionsController,
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                slivers: [
+                                  questions.isNotEmpty
+                                      ? SliverToBoxAdapter(
+                                          child: ListView.separated(
+                                            padding: const EdgeInsets.all(
+                                                AppConstants
+                                                    .horizontalScreenPadding),
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return CustomerSessionListTileWidget(
+                                                  question: questions[index]);
+                                            },
+                                            separatorBuilder:
+                                                (BuildContext context,
+                                                        int index) =>
+                                                    Column(
+                                              children: const [
+                                                SizedBox(
+                                                  height: 16.0,
+                                                ),
+                                                Divider(
+                                                  height: 1.0,
+                                                ),
+                                                SizedBox(
+                                                  height: 16.0,
+                                                ),
+                                              ],
+                                            ),
+                                            itemCount: questions.length,
+                                          ),
+                                        )
+                                      : SliverFillRemaining(
+                                          hasScrollBody: true,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: AppConstants
+                                                  .horizontalScreenPadding,
+                                            ),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                EmptyListWidget(
+                                                  title: S
+                                                      .of(context)
+                                                      .weDidntFindAnything,
+                                                  label: S
+                                                      .of(context)
+                                                      .thisFilteringOptionDoesntContainAnySessions,
+                                                ),
+                                              ],
+                                            ),
+                                          ))
+                                ]),
+                          );
                   }),
                 ],
               ));
