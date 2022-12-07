@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
+import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
@@ -14,36 +15,40 @@ import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions
 class SearchListCubit extends Cubit<SearchListState> {
   final ChatsRepository _repository;
   final BuildContext context;
+  final MarketsType marketsType;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
 
   final BehaviorSubject _searchStream = BehaviorSubject<String>();
 
   final TextEditingController searchTextController = TextEditingController();
-  final ScrollController historyScrollController = ScrollController();
+  final ScrollController conversationsScrollController = ScrollController();
 
-  final List<ChatItem> _historyQuestionsList = [];
+  final List<ChatItem> _conversationsList = [];
 
   late final StreamSubscription _searchSubscription;
 
-  bool _hasMore = true;
-  int _historyPage = 1;
+  String? _conversationsLastItem;
+  bool _conversationsHasMore = true;
 
-  SearchListCubit(this._repository, this.context)
-      : super(const SearchListState()) {
+  SearchListCubit(
+    this._repository,
+    this.context,
+    this.marketsType,
+  ) : super(const SearchListState()) {
     _searchSubscription = _searchStream
         .debounceTime(const Duration(milliseconds: 500))
         .listen((event) async {
-      getHistoryList(refresh: true);
+      getConversations(refresh: true);
     });
 
-    historyScrollController.addListener(() {
-      if (historyScrollController.position.extentAfter <=
+    conversationsScrollController.addListener(() {
+      if (conversationsScrollController.position.extentAfter <=
           MediaQuery.of(context).size.height) {
-        getHistoryList();
+        getConversations();
       }
     });
 
-    getHistoryList();
+    getConversations();
   }
 
   @override
@@ -51,7 +56,7 @@ class SearchListCubit extends Cubit<SearchListState> {
     _searchStream.close();
     _searchSubscription.cancel();
     searchTextController.dispose();
-    historyScrollController.dispose();
+    conversationsScrollController.dispose();
 
     return super.close();
   }
@@ -60,28 +65,35 @@ class SearchListCubit extends Cubit<SearchListState> {
     _searchStream.add(text);
   }
 
-  Future<void> getHistoryList({bool refresh = false}) async {
+  Future<void> getConversations({bool refresh = false}) async {
     if (refresh) {
-      _hasMore = true;
-      _historyPage = 1;
-      _historyQuestionsList.clear();
+      _conversationsHasMore = true;
+      _conversationsLastItem = null;
+      _conversationsList.clear();
     }
-    if (_hasMore && _mainCubit.state.internetConnectionIsAvailable) {
-      final QuestionsListResponse result = await _repository.getHistoryList(
+    if (_conversationsHasMore &&
+        _mainCubit.state.internetConnectionIsAvailable) {
+      final QuestionsListResponse result =
+          await _repository.getConversationsList(
         limit: questionsLimit,
-        page: _historyPage++,
+        filtersLanguage:
+            marketsType != MarketsType.all ? marketsType.name : null,
+        lastItem: _conversationsLastItem,
         search: searchTextController.text.isNotEmpty
             ? searchTextController.text
             : null,
       );
 
-      _hasMore = result.hasMore ?? true;
+      _conversationsHasMore = result.hasMore ?? true;
+      _conversationsLastItem = result.lastItem;
 
-      _historyQuestionsList.addAll(result.questions ?? const []);
+      _conversationsList.addAll(result.questions ?? const []);
 
       emit(
         state.copyWith(
-          historyQuestionsList: List.of(_historyQuestionsList),
+          conversationsList: List.of(
+            _conversationsList,
+          ),
         ),
       );
     }

@@ -19,6 +19,8 @@ class AddNoteCubit extends Cubit<AddNoteState> {
   late final TextEditingController noteController;
   late final TextEditingController titleController;
 
+  final ScrollController textFieldScrollController = ScrollController();
+
   AddNoteCubit() : super(AddNoteState()) {
     arguments = Get.arguments as AddNoteScreenArguments;
     noteController = TextEditingController(text: arguments.oldNote ?? '');
@@ -30,6 +32,7 @@ class AddNoteCubit extends Cubit<AddNoteState> {
       emit(state.copyWith(isNoteNew: false));
     }
   }
+
   Future<void> addNoteToCustomer() async {
     if (noteController.text != arguments.oldNote) {
       UpdateNoteResponse response = await _repository.updateNoteToCustomer(

@@ -51,17 +51,17 @@ class SessionsScreen extends StatelessWidget {
                   ),
                   child: Opacity(
                     opacity: isOnline && statusIsLive ? 1.0 : 0.4,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Builder(builder: (context) {
-                            final List<int> disabledIndexes = context.select(
-                                (SessionsCubit cubit) =>
-                                    cubit.state.disabledIndexes);
-                            final int currentIndex = context.select(
-                                (SessionsCubit cubit) =>
-                                    cubit.state.currentOptionIndex);
-                            return ChooseOptionWidget(
+                    child: Builder(builder: (context) {
+                      final List<int> disabledIndexes = context.select(
+                          (SessionsCubit cubit) => cubit.state.disabledIndexes);
+                      final int currentIndex = context.select(
+                          (SessionsCubit cubit) =>
+                              cubit.state.currentOptionIndex);
+
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: ChooseOptionWidget(
                               options: [
                                 S.of(context).public,
                                 S.of(context).forMe,
@@ -71,16 +71,21 @@ class SessionsScreen extends StatelessWidget {
                               onChangeOptionIndex: isOnline && statusIsLive
                                   ? sessionsCubit.changeCurrentOptionIndex
                                   : null,
-                            );
-                          }),
-                        ),
-                        const SizedBox(width: 8.0),
-                        AppIconButton(
-                          icon: Assets.vectors.search.path,
-                          onTap: statusIsLive ? sessionsCubit.openSearch : null,
-                        ),
-                      ],
-                    ),
+                            ),
+                          ),
+                          const SizedBox(width: 8.0),
+                          Opacity(
+                            opacity: currentIndex > 0 ? 1.0 : 0.4,
+                            child: AppIconButton(
+                              icon: Assets.vectors.search.path,
+                              onTap: statusIsLive && currentIndex > 0
+                                  ? sessionsCubit.openSearch
+                                  : null,
+                            ),
+                          ),
+                        ],
+                      );
+                    }),
                   ),
                 ),
                 withBrands: true,
@@ -107,9 +112,11 @@ class SessionsScreen extends StatelessWidget {
             Builder(builder: (context) {
               final bool searchIsOpen = context
                   .select((SessionsCubit cubit) => cubit.state.searchIsOpen);
-              return searchIsOpen
+              return isOnline && searchIsOpen
                   ? SearchListWidget(
                       closeOnTap: sessionsCubit.closeSearch,
+                      marketsType: sessionsCubit.state.userMarkets[
+                          sessionsCubit.state.currentMarketIndexForPrivate],
                     )
                   : const SizedBox.shrink();
             }),

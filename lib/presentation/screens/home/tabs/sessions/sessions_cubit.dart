@@ -8,7 +8,6 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
@@ -33,19 +32,14 @@ class SessionsCubit extends Cubit<SessionsState> {
   late final VoidCallback disposeUserProfileListen;
   final BuildContext context;
 
-  final List<ChatItemType> filters = [
-    ChatItemType.all,
-    ChatItemType.ritual,
-    ChatItemType.private,
-  ];
   final List<ChatItem> _publicQuestions = [];
   final List<ChatItem> _conversationsList = [];
 
   UserStatus? previousStatus;
 
   String? _lastId;
-  String? _conversationsLastItem;
   bool _publicHasMore = true;
+  String? _conversationsLastItem;
   bool _conversationsHasMore = true;
 
   SessionsCubit(this.cacheManager, this.context)
@@ -125,11 +119,6 @@ class SessionsCubit extends Cubit<SessionsState> {
   void changeCurrentOptionIndex(int newIndex) {
     emit(state.copyWith(currentOptionIndex: newIndex));
   }
-
-  // void changeFilterIndex(int newIndex) {
-  //   emit(state.copyWith(currentFilterIndex: newIndex));
-  //   getConversations(refresh: true);
-  // }
 
   void openSearch() {
     emit(state.copyWith(searchIsOpen: true));
@@ -231,11 +220,6 @@ class SessionsCubit extends Cubit<SessionsState> {
         filtersLanguage =
             marketsType != MarketsType.all ? marketsType.name : null;
       }
-
-      // final ChatItemType questionsType = filters[state.currentFilterIndex];
-      // final String? filterName = questionsType != ChatItemType.all
-      //     ? questionsType.filterTypeName
-      //     : null;
 
       final QuestionsListResponse result =
           await _repository.getConversationsList(
