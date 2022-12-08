@@ -24,8 +24,11 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-          LoginCubit(getIt.get<AuthRepository>(), getIt.get<CachingManager>()),
+      create: (_) => LoginCubit(
+        getIt.get<AuthRepository>(),
+        getIt.get<CachingManager>(),
+        context,
+      ),
       child: Builder(
         builder: (BuildContext context) {
           final LoginCubit loginCubit = context.read<LoginCubit>();

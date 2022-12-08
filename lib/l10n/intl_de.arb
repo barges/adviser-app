@@ -168,5 +168,6 @@
   "nonBinary": "Non-binär",
   "preferNotToAnswer": "Keine Angabe",
   "youHaveAnActiveSession": "Sie haben eine aktive Sitzung",
-  "audioMessage": "Audio-Nachricht"
+  "audioMessage": "Audio-Nachricht",
+  "other": "Sonstiges"
 }

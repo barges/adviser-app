@@ -171,5 +171,6 @@
   "preferNotToAnswer": "Prefer not to answer",
   "youHaveAnActiveSession": "You have an active session",
   "audioMessage": "Audio message",
-  "justSentYouAMessage": "Just sent you a message"
+  "justSentYouAMessage": "Just sent you a message",
+  "other": "Other"
 }

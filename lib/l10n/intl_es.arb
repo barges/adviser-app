@@ -169,5 +169,6 @@
   "nonBinary": "No binario",
   "preferNotToAnswer": "Prefiero no responder",
   "youHaveAnActiveSession": "Tienes una sesión activa",
-  "audioMessage": "mensaje de audio"
+  "audioMessage": "mensaje de audio",
+  "other": "Otro"
 }
