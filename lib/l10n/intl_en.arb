@@ -173,5 +173,6 @@
   "audioMessage": "Audio message",
   "justSentYouAMessage": "Just sent you a message",
   "weDidntFindAnything": "We didn’t find anything",
-  "thisFilteringOptionDoesntContainAnySessions": "This filtering option doesn’t contain any sessions"
+  "thisFilteringOptionDoesntContainAnySessions": "This filtering option doesn’t contain any sessions",
+  "other": "Other"
 }

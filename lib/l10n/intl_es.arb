@@ -170,6 +170,7 @@
   "preferNotToAnswer": "Prefiero no responder",
   "youHaveAnActiveSession": "Tienes una sesión activa",
   "audioMessage": "mensaje de audio",
+  "other": "Otro",
   "weDidntFindAnything": "Nosotros no encontramos nada",
   "thisFilteringOptionDoesntContainAnySessions": "Esta opción de filtrado no contiene ninguna sesión."
 }

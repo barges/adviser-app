@@ -44,7 +44,7 @@ class ReportsMarketWidget extends StatelessWidget {
                           BorderRadius.circular(AppConstants.buttonRadius),
                     ),
                     child: Text(
-                      reportsMarket.iso?.languageNameByCode ?? '',
+                      reportsMarket.iso?.languageNameByCode(context) ?? '',
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
                   ),

@@ -32,7 +32,7 @@ class ChangeLocaleButton extends StatelessWidget {
           elements: locales.map((element) {
             return Center(
               child: Text(
-                element.languageNameByCode,
+                element.languageNameByCode(context),
               ),
             );
           }).toList(),

@@ -10,7 +10,6 @@ import 'package:shared_advisor_interface/presentation/common_widgets/list_tile_c
 import 'package:shared_advisor_interface/presentation/common_widgets/small_list_tile_badge.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class PublicChatsListTileWidget extends StatelessWidget {
   final ChatItem question;

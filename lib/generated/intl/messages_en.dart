@@ -123,6 +123,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "ok" : MessageLookupByLibrary.simpleMessage("OK"),
     "onlyPremiumProducts" : MessageLookupByLibrary.simpleMessage("Only Premium Products"),
     "openEmailApp" : MessageLookupByLibrary.simpleMessage("Open email app"),
+    "other" : MessageLookupByLibrary.simpleMessage("Other"),
     "otherBrands" : MessageLookupByLibrary.simpleMessage("Other brands"),
     "password" : MessageLookupByLibrary.simpleMessage("Password"),
     "peopleHelped" : MessageLookupByLibrary.simpleMessage("People helped"),
