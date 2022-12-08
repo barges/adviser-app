@@ -80,7 +80,7 @@
   "loyalUsers": "Loyal Users",
   "similarArticles": "Similar articles",
   "takeAPhoto": "Take a photo",
-  "willBeAvailableInAnHour": "Will be available in an hour",
+  "willBeAvailableIn": "Will be available in",
   "informOurTeamYourPlannedReturnDate": "Inform our team your planned return date:",
   "areYouSureThatYouWantToChangeYourStatus": "Are you sure that you want to change your status to Offline?",
   "yesImSure": "Yes, I’m sure",
@@ -185,7 +185,6 @@
   "ritual": "Ritual",
   "tips": "Tips",
   "questions": "Questions",
-  "sessions": "Sessions",
   "question": "Question",
   "session": "Session"
 }

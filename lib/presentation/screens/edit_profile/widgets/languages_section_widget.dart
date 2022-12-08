@@ -40,10 +40,11 @@ class LanguageSectionWidget extends StatelessWidget {
                   FocusScope.of(context).unfocus();
                   editProfileCubit.changeCurrentLanguageIndex(index);
                 },
-                withError: editProfileCubit
-                            .errorTextsMap[languageCode]?.first !=
-                        null ||
-                    editProfileCubit.errorTextsMap[languageCode]?.last != null,
+                withError:
+                    editProfileCubit.errorTextsMap[languageCode]?.first !=
+                            ValidationErrorType.empty ||
+                        editProfileCubit.errorTextsMap[languageCode]?.last !=
+                            ValidationErrorType.empty,
               );
             },
             separatorBuilder: (BuildContext context, int index) {

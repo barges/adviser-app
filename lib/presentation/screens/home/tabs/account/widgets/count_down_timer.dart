@@ -26,7 +26,7 @@ class CountDownTimer extends StatelessWidget {
           final minutes = value.inMinutes;
           final seconds = value.inSeconds % 60;
           return Text(
-            '${S.of(context).willBeAvailableInAnHour}'
+            '${S.of(context).willBeAvailableIn}'
             ' $minutes:${seconds < 10 ? '0$seconds' : seconds}',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
