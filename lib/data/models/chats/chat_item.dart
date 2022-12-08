@@ -21,6 +21,7 @@ class ChatItem with _$ChatItem {
     SessionsTypes? ritualIdentifier,
     ChatItemStatusType? status,
     String? clientName,
+    DateTime? takenDate,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? content,

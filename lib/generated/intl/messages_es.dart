@@ -65,6 +65,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Cambia la contraseña"),
         "changePhoto": MessageLookupByLibrary.simpleMessage("Cambiar foto"),
         "chats": MessageLookupByLibrary.simpleMessage("Charlas"),
+        "checkYourInternetConnection": MessageLookupByLibrary.simpleMessage(
+            "Check your internet connection"),
         "chooseBrand": MessageLookupByLibrary.simpleMessage("Elegir marca"),
         "chooseEmailApp": MessageLookupByLibrary.simpleMessage(
             "Elija la aplicación de correo electrónico"),
@@ -115,6 +117,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Informa a nuestro equipo de tu fecha prevista de regreso:"),
         "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
+        "itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain":
+            MessageLookupByLibrary.simpleMessage(
+                "It will go back into the general queue and you will not be able to take it again"),
         "logOut": MessageLookupByLibrary.simpleMessage("Cerrar sesión"),
         "login": MessageLookupByLibrary.simpleMessage("Acceso"),
         "loyalUsers": MessageLookupByLibrary.simpleMessage("Usuarios leales"),
@@ -183,6 +188,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "resetPassword":
             MessageLookupByLibrary.simpleMessage("Restablecer la contraseña"),
         "resources": MessageLookupByLibrary.simpleMessage("Recursos"),
+        "return_": MessageLookupByLibrary.simpleMessage("Return"),
         "reviews": MessageLookupByLibrary.simpleMessage("Reseñas"),
         "sales": MessageLookupByLibrary.simpleMessage("Ventas"),
         "save": MessageLookupByLibrary.simpleMessage("Ahorrar"),
@@ -199,6 +205,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "takeAPhoto": MessageLookupByLibrary.simpleMessage("Toma una foto"),
         "takeMeThere": MessageLookupByLibrary.simpleMessage("Llévame allí"),
         "takeQuestion": MessageLookupByLibrary.simpleMessage("Take question"),
+        "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m":
+            MessageLookupByLibrary.simpleMessage(
+                "The answer is not possible, this question will be returned to the general list in ~ 1m"),
         "theMaximumImageSizeIs20Mb": MessageLookupByLibrary.simpleMessage(
             "The maximum image size is 20Mb."),
         "thePasswordsMustMatch": MessageLookupByLibrary.simpleMessage(
@@ -206,6 +215,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "theUserWasNotFound": MessageLookupByLibrary.simpleMessage(
             "El usuario no fue encontrado"),
         "thisMonth": MessageLookupByLibrary.simpleMessage("Este mes"),
+        "thisQuestionWillBeReturnedToTheGeneralListAfterCounter":
+            MessageLookupByLibrary.simpleMessage(
+                "This question will be returned to the general list after"),
         "thisWeek": MessageLookupByLibrary.simpleMessage("Esta semana"),
         "title": MessageLookupByLibrary.simpleMessage("Título"),
         "toReadItBeforeYourAccountWillGetBlocked":
@@ -259,6 +271,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo":
             MessageLookupByLibrary.simpleMessage(
                 "Has cambiado satisfactoriamente tu contraseña. Revisa tu correo electrónico para confirmar el cambio de contraseña"),
+        "youRefuseToAnswerThisQuestion": MessageLookupByLibrary.simpleMessage(
+            "You refuse to answer this question"),
         "youWillBeAbleToChangeYourStatusBackIn":
             MessageLookupByLibrary.simpleMessage(
                 "Podrás volver a cambiar tu estado en 1 hora"),

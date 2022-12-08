@@ -67,6 +67,11 @@ class ChatsRepositoryImpl implements ChatsRepository {
   }
 
   @override
+  Future<ChatItem> returnQuestion(AnswerRequest request) async {
+    return await _api.returnQuestion(request);
+  }
+
+  @override
   Future<ChatItem> getQuestion({required String id}) async {
     return await _api.getQuestion(id: id);
   }

@@ -143,6 +143,7 @@
   "allowCamera": "Allow camera",
   "allowGallery": "Allow gallery",
   "ok": "OK",
+  "return_": "Retornar",
   "youDontHaveInternetConnection": "You don’t have internet connection",
   "note": "Note",
   "activeChat": "Chat ativo",
@@ -151,7 +152,12 @@
   "youCanNotHelpUsersSinceYouHaveAnActive": "You can not help users since you have an active public question.",
   "personalDetails": "PDETALHES PESSOAIS",
   "takeQuestion": "Tirar dúvidas",
+  "checkYourInternetConnection": "Verifique a sua conexão com a internet",
   "youCantSendThisMessageBecauseItsLessThan15Seconds": "Você não pode enviar esta mensagem porque tem menos de 15 segundos",
   "recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min": "A gravação parou porque o arquivo de áudio atingiu o limite de 3min",
-  "theMaximumImageSizeIs20Mb" : "O tamanho máximo da imagem é de 20Mb."
+  "theMaximumImageSizeIs20Mb" : "O tamanho máximo da imagem é de 20Mb.",
+  "youRefuseToAnswerThisQuestion": "Você se recusa a responder a esta pergunta",
+  "itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain": "Ele voltará para a fila geral e você não poderá pegá-lo novamente",
+  "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": "Esta questão será devolvida à lista geral após",
+  "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m":"A resposta não é possível, esta questão retornará à lista geral em ~ 1m"
 }

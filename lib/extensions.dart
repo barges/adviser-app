@@ -160,6 +160,14 @@ extension DateTimeExt on DateTime {
   }
 }
 
-extension FileUtils on File {
+extension FileExt on File {
   double get sizeInMb => lengthSync() / (1024 * 1024);
+}
+
+extension DurationExt on Duration {
+  String get formatMMSS {
+    final minutes = inMinutes.remainder(60);
+    final seconds = inSeconds.remainder(60);
+    return "${minutes < 10 ? '0$minutes' : '$minutes'}:${seconds < 10 ? '0$seconds' : '$seconds'}";
+  }
 }

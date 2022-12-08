@@ -1,12 +1,12 @@
 import 'dart:io';
 
-enum FileExt {
+enum FileExtantion {
   m4a,
   mp3,
 }
 
-extension CurrentFileExt on FileExt {
-  static FileExt get current {
-    return FileExt.m4a; //Platform.isIOS ? FileExt.m4a : FileExt.mp3;
+extension CurrentFileExt on FileExtantion {
+  static FileExtantion get current {
+    return FileExtantion.m4a; //Platform.isIOS ? FileExt.m4a : FileExt.mp3;
   }
 }

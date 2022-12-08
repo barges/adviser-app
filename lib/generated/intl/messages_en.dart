@@ -63,6 +63,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Change password"),
         "changePhoto": MessageLookupByLibrary.simpleMessage("Change photo"),
         "chats": MessageLookupByLibrary.simpleMessage("Chats"),
+        "checkYourInternetConnection": MessageLookupByLibrary.simpleMessage(
+            "Check your internet connection"),
         "chooseBrand": MessageLookupByLibrary.simpleMessage("Choose brand"),
         "chooseEmailApp":
             MessageLookupByLibrary.simpleMessage("Choose email app"),
@@ -112,6 +114,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Inform our team your planned return date:"),
         "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
+        "itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain":
+            MessageLookupByLibrary.simpleMessage(
+                "It will go back into the general queue and you will not be able to take it again"),
         "logOut": MessageLookupByLibrary.simpleMessage("Log out"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "loyalUsers": MessageLookupByLibrary.simpleMessage("Loyal Users"),
@@ -177,6 +182,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Request new password"),
         "resetPassword": MessageLookupByLibrary.simpleMessage("Reset Password"),
         "resources": MessageLookupByLibrary.simpleMessage("Resources"),
+        "return_": MessageLookupByLibrary.simpleMessage("Return"),
         "reviews": MessageLookupByLibrary.simpleMessage("Reviews"),
         "sales": MessageLookupByLibrary.simpleMessage("Sales"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
@@ -193,6 +199,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "takeAPhoto": MessageLookupByLibrary.simpleMessage("Take a photo"),
         "takeMeThere": MessageLookupByLibrary.simpleMessage("Take me there"),
         "takeQuestion": MessageLookupByLibrary.simpleMessage("Take question"),
+        "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m":
+            MessageLookupByLibrary.simpleMessage(
+                "The answer is not possible, this question will be returned to the general list in ~ 1m"),
         "theMaximumImageSizeIs20Mb": MessageLookupByLibrary.simpleMessage(
             "The maximum image size is 20Mb."),
         "thePasswordsMustMatch":
@@ -200,6 +209,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "theUserWasNotFound":
             MessageLookupByLibrary.simpleMessage("The user was not found"),
         "thisMonth": MessageLookupByLibrary.simpleMessage("This Month"),
+        "thisQuestionWillBeReturnedToTheGeneralListAfterCounter":
+            MessageLookupByLibrary.simpleMessage(
+                "This question will be returned to the general list after"),
         "thisWeek": MessageLookupByLibrary.simpleMessage("This Week"),
         "title": MessageLookupByLibrary.simpleMessage("Title"),
         "toReadItBeforeYourAccountWillGetBlocked":
@@ -252,6 +264,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo":
             MessageLookupByLibrary.simpleMessage(
                 "You have successfully changed your password. Check your email to confirm password change"),
+        "youRefuseToAnswerThisQuestion": MessageLookupByLibrary.simpleMessage(
+            "You refuse to answer this question"),
         "youWillBeAbleToChangeYourStatusBackIn":
             MessageLookupByLibrary.simpleMessage(
                 "You will be able to change your status back in 1 hour"),

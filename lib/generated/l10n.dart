@@ -1490,6 +1490,16 @@ class S {
     );
   }
 
+  /// `Return`
+  String get return_ {
+    return Intl.message(
+      'Return',
+      name: 'return_',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `You don’t have internet connection`
   String get youDontHaveInternetConnection {
     return Intl.message(
@@ -1570,6 +1580,16 @@ class S {
     );
   }
 
+  /// `Check your internet connection`
+  String get checkYourInternetConnection {
+    return Intl.message(
+      'Check your internet connection',
+      name: 'checkYourInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `You can’t send this message because it’s less than 15 seconds`
   String get youCantSendThisMessageBecauseItsLessThan15Seconds {
     return Intl.message(
@@ -1595,6 +1615,48 @@ class S {
     return Intl.message(
       'The maximum image size is 20Mb.',
       name: 'theMaximumImageSizeIs20Mb',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You refuse to answer this question`
+  String get youRefuseToAnswerThisQuestion {
+    return Intl.message(
+      'You refuse to answer this question',
+      name: 'youRefuseToAnswerThisQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It will go back into the general queue and you will not be able to take it again`
+  String get itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain {
+    return Intl.message(
+      'It will go back into the general queue and you will not be able to take it again',
+      name: 'itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This question will be returned to the general list after`
+  String get thisQuestionWillBeReturnedToTheGeneralListAfterCounter {
+    return Intl.message(
+      'This question will be returned to the general list after',
+      name: 'thisQuestionWillBeReturnedToTheGeneralListAfterCounter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The answer is not possible, this question will be returned to the general list in ~ 1m`
+  String
+      get theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m {
+    return Intl.message(
+      'The answer is not possible, this question will be returned to the general list in ~ 1m',
+      name:
+          'theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m',
       desc: '',
       args: [],
     );

@@ -21,10 +21,7 @@ Future<bool?> showDeleteAlert(
           ),
           actions: [
             CupertinoActionSheetAction(
-              isDefaultAction: true,
-              onPressed: () {
-                Navigator.pop(context, true);
-              },
+              onPressed: () => Navigator.pop(context, true),
               child: Text(S.of(context).delete,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).errorColor,
@@ -32,10 +29,7 @@ Future<bool?> showDeleteAlert(
                       )),
             ),
             CupertinoActionSheetAction(
-              isDefaultAction: true,
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
+              onPressed: () => Navigator.pop(context, false),
               child: Text(
                 S.of(context).cancel,
                 style: Theme.of(context).textTheme.displayLarge?.copyWith(

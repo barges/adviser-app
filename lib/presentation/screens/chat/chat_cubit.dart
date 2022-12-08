@@ -44,7 +44,9 @@ class ChatCubit extends Cubit<ChatState> {
   final BuildContext _context;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final Codec _codec = Codec.aacMP4;
-  final FileExt _recordFileExt = CurrentFileExt.current;
+  final FileExtantion _recordFileExt = CurrentFileExt.current;
+  final int _tillShowMessagesInSec = 25 * 60;
+  final int _afterShowMessagesInSec = 5 * 60;
   final int _limit = 25;
   int _offset = 0;
   int? _total;
@@ -54,6 +56,9 @@ class ChatCubit extends Cubit<ChatState> {
   FlutterSoundPlayer? _playerMedia;
   AnswerRequest? _answerRequest;
   StreamSubscription<RecordingDisposition>? _recordingProgressSubscription;
+  Timer? _answerTimer;
+  DateTime? _takenDate;
+  bool _counterMessageCleared = false;
 
   ChatCubit(
     this._cachingManager,
@@ -62,7 +67,7 @@ class ChatCubit extends Cubit<ChatState> {
   ) : super(const ChatState()) {
     questionFromArguments = Get.arguments;
     _init();
-    _getData();
+    _getData().whenComplete(_checkTiming);
     _setQuestionStatus(
         questionFromArguments?.status ?? ChatItemStatusType.open);
   }
@@ -86,6 +91,9 @@ class ChatCubit extends Cubit<ChatState> {
 
     _recordingProgressSubscription?.cancel();
     _recordingProgressSubscription = null;
+
+    _answerTimer?.cancel();
+    _answerTimer = null;
 
     _answerRequest = null;
 
@@ -118,7 +126,7 @@ class ChatCubit extends Cubit<ChatState> {
     textEditingController.addListener(textEditingControllerListener);
   }
 
-  _getData() async {
+  Future<void> _getData() async {
     if (await _getQuestion()) {
       _getConversations();
     }
@@ -205,16 +213,15 @@ class ChatCubit extends Cubit<ChatState> {
     ));
   }
 
-  Future<bool> _getQuestion() async {
+  Future<void> takeQuestion() async {
     try {
-      final ChatItem question =
-          await _repository.getQuestion(id: questionFromArguments?.id ?? '');
-      final List<ChatItem> messages = List.of(state.activeMessages);
-      messages.insert(0, question);
-      emit(state.copyWith(
-        activeMessages: messages,
-      ));
-      return true;
+      final ChatItem question = await _repository
+          .takeQuestion(AnswerRequest(questionID: questionFromArguments?.id));
+      _setQuestionStatus(question.status ?? ChatItemStatusType.open);
+      _mainCubit.updateSessions();
+      if (question.status == ChatItemStatusType.taken) {
+        _startTimer(_tillShowMessagesInSec, _afterShowMessagesInSec);
+      }
     } on DioError catch (e) {
       await showOkCancelAlert(
         context: _context,
@@ -228,28 +235,19 @@ class ChatCubit extends Cubit<ChatState> {
         isCancelEnabled: false,
       );
       logger.d(e);
-      return false;
     }
   }
 
-  Future<void> takeQuestion() async {
+  Future<void> returnQuestion() async {
     try {
       final ChatItem question = await _repository
-          .takeQuestion(AnswerRequest(questionID: questionFromArguments?.id));
+          .returnQuestion(AnswerRequest(questionID: questionFromArguments?.id));
       _setQuestionStatus(question.status ?? ChatItemStatusType.open);
       _mainCubit.updateSessions();
-    } on DioError catch (e) {
-      await showOkCancelAlert(
-        context: _context,
-        title: _mainCubit.state.errorMessage,
-        okText: S.of(_context).ok,
-        actionOnOK: () {
-          Get.offNamed(AppRoutes.home,
-              arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
-        },
-        allowBarrierClock: false,
-        isCancelEnabled: false,
-      );
+
+      _answerTimer?.cancel();
+      _answerTimer = null;
+    } catch (e) {
       logger.d(e);
     }
   }
@@ -575,10 +573,117 @@ class ChatCubit extends Cubit<ChatState> {
     emit(state.copyWith(errorMessage: message));
   }
 
+  void updateSuccessMessage(String message) {
+    emit(state.copyWith(successMessage: message));
+  }
+
   void clearErrorMessage() {
     if (state.errorMessage.isNotEmpty) {
       emit(state.copyWith(errorMessage: ''));
     }
+  }
+
+  void clearSuccessMessage() {
+    if (state.successMessage.isNotEmpty) {
+      _counterMessageCleared = state.successMessage.contains(S
+          .of(_context)
+          .thisQuestionWillBeReturnedToTheGeneralListAfterCounter);
+      emit(state.copyWith(successMessage: ''));
+    }
+  }
+
+  Future<bool> _getQuestion() async {
+    try {
+      final ChatItem question =
+          await _repository.getQuestion(id: questionFromArguments?.id ?? '');
+      _takenDate = question.takenDate;
+      final List<ChatItem> messages = List.of(state.activeMessages);
+      messages.insert(0, question);
+      emit(state.copyWith(
+        activeMessages: messages,
+      ));
+      return true;
+    } on DioError catch (e) {
+      await showOkCancelAlert(
+        context: _context,
+        title: _mainCubit.state.errorMessage,
+        okText: S.of(_context).ok,
+        actionOnOK: () {
+          Get.offNamed(AppRoutes.home,
+              arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
+        },
+        allowBarrierClock: false,
+        isCancelEnabled: false,
+      );
+      logger.d(e);
+      return false;
+    }
+  }
+
+  void _checkTiming() {
+    if (_takenDate != null &&
+        state.questionStatus == ChatItemStatusType.taken) {
+      int afterTakenInSec =
+          DateTime.now().toUtc().difference(_takenDate!).inSeconds;
+      if (afterTakenInSec < _tillShowMessagesInSec + _afterShowMessagesInSec) {
+        int tillShowMessagesInSec = _tillShowMessagesInSec;
+        int afterShowMessagesInSec = _afterShowMessagesInSec;
+
+        if (afterTakenInSec < _tillShowMessagesInSec) {
+          tillShowMessagesInSec = _tillShowMessagesInSec - afterTakenInSec;
+        } else if (afterTakenInSec <
+            _tillShowMessagesInSec + _afterShowMessagesInSec) {
+          tillShowMessagesInSec = 0;
+          afterShowMessagesInSec = _afterShowMessagesInSec - afterTakenInSec;
+        }
+
+        if (afterShowMessagesInSec < 60) {
+          _setAnswerIsNotPossible();
+        }
+
+        _startTimer(tillShowMessagesInSec, afterShowMessagesInSec);
+      } else {
+        returnQuestion();
+      }
+    }
+  }
+
+  _startTimer(int tillShowMessagesInSec, int afterShowMessagesInSec) async {
+    final s = S.of(_context);
+    _answerTimer = Timer(Duration(seconds: tillShowMessagesInSec), () {
+      if (state.questionStatus == ChatItemStatusType.taken) {
+        const minuteInSec = 60;
+        const tick = Duration(seconds: 1);
+        Duration tillEnd = Duration(seconds: afterShowMessagesInSec);
+
+        _answerTimer = Timer.periodic(tick, (_) {
+          tillEnd = tillEnd - tick;
+          if (tillEnd.inSeconds > minuteInSec) {
+            if (!_counterMessageCleared) {
+              updateSuccessMessage(
+                  "${s.thisQuestionWillBeReturnedToTheGeneralListAfterCounter} ${tillEnd.formatMMSS}");
+            }
+          } else if (tillEnd.inSeconds == minuteInSec) {
+            _setAnswerIsNotPossible();
+          }
+          if (tillEnd.inSeconds == 0) {
+            returnQuestion();
+            clearSuccessMessage();
+          }
+        });
+      } else {
+        _answerTimer = null;
+      }
+    });
+  }
+
+  _setAnswerIsNotPossible() {
+    updateSuccessMessage(S
+        .of(_context)
+        .theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m);
+    emit(state.copyWith(
+      isInputField: false,
+    ));
   }
 
   Future<AnswerRequest> _createMediaAnswerRequest() async {
@@ -623,6 +728,10 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<ChatItem?> _sendAnswer() async {
+    _answerTimer?.cancel();
+    _answerTimer = null;
+
+    final s = S.of(_context);
     ChatItem? answer;
     try {
       answer = await _repository.sendAnswer(_answerRequest!);
@@ -642,7 +751,7 @@ class ChatCubit extends Cubit<ChatState> {
           e.type == DioErrorType.connectTimeout ||
           e.type == DioErrorType.sendTimeout ||
           e.type == DioErrorType.receiveTimeout) {
-        updateErrorMessage('Check your internet connection');
+        updateErrorMessage(s.checkYourInternetConnection);
         answer = _getNotSentAnswer();
       }
     }
