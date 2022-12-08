@@ -78,6 +78,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
     try {
       if (refresh) {
         _hasMore = true;
+        _lastItem = null;
         _customerSessions.clear();
       }
       if (_hasMore && _mainCubit.state.internetConnectionIsAvailable) {
