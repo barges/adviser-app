@@ -239,8 +239,13 @@ class _ActiveChat extends StatelessWidget {
         Builder(builder: (context) {
           final bool isInputField =
               context.select((ChatCubit cubit) => cubit.state.isInputField);
+          final ChatItemStatusType? questionStatus =
+              context.select((ChatCubit cubit) => cubit.state.questionStatus);
 
           if (!isInputField) {
+            return const SizedBox.shrink();
+          }
+          if (questionStatus != ChatItemStatusType.taken) {
             return const SizedBox.shrink();
           }
           return Container(
@@ -287,18 +292,7 @@ class _ActiveChat extends StatelessWidget {
                         recordingStream: chatCubit.state.recordingStream,
                       );
                     } else {
-                      return Builder(
-                        builder: (context) {
-                          final ChatItemStatusType? questionStatus =
-                              context.select((ChatCubit cubit) =>
-                                  cubit.state.questionStatus);
-                          if (questionStatus == ChatItemStatusType.taken) {
-                            return const ChatTextInputWidget();
-                          } else {
-                            return const SizedBox.shrink();
-                          }
-                        },
-                      );
+                      return const ChatTextInputWidget();
                     }
                   },
                 ),

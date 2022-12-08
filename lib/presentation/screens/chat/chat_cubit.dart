@@ -243,6 +243,11 @@ class ChatCubit extends Cubit<ChatState> {
       final ChatItem question = await _repository
           .returnQuestion(AnswerRequest(questionID: questionFromArguments?.id));
       _setQuestionStatus(question.status ?? ChatItemStatusType.open);
+      emit(
+        state.copyWith(
+          isInputField: true,
+        ),
+      );
       _mainCubit.updateSessions();
 
       _answerTimer?.cancel();
@@ -681,9 +686,11 @@ class ChatCubit extends Cubit<ChatState> {
     updateSuccessMessage(S
         .of(_context)
         .theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m);
-    emit(state.copyWith(
-      isInputField: false,
-    ));
+    emit(
+      state.copyWith(
+        isInputField: false,
+      ),
+    );
   }
 
   Future<AnswerRequest> _createMediaAnswerRequest() async {
