@@ -10,9 +10,8 @@ import 'package:shared_advisor_interface/data/network/responses/questions_list_r
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/search/search_list_state.dart';
 
 class SearchListCubit extends Cubit<SearchListState> {
@@ -78,7 +77,7 @@ class SearchListCubit extends Cubit<SearchListState> {
         _mainCubit.state.internetConnectionIsAvailable) {
       final QuestionsListResponse result =
           await _repository.getConversationsList(
-        limit: questionsLimit,
+        limit: AppConstants.questionsLimit,
         filtersLanguage:
             marketsType != MarketsType.all ? marketsType.name : null,
         lastItem: _conversationsLastItem,
@@ -103,11 +102,9 @@ class SearchListCubit extends Cubit<SearchListState> {
   }
 
   void goToCustomerSessions(ChatItem question) {
-    Get.toNamed(AppRoutes.customerSessions,
-        arguments: CustomerSessionsScreenArguments(
-          clientName: question.clientName ?? '',
-          clientInformation: question.clientInformation,
-          clientId: question.clientID,
-        ));
+    Get.toNamed(
+      AppRoutes.customerSessions,
+      arguments: question,
+    );
   }
 }

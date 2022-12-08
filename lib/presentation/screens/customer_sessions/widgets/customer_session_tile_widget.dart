@@ -58,7 +58,7 @@ class CustomerSessionListTileWidget extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          question.ritualIdentifier?.sessionName ??
+                          question.ritualIdentifier?.sessionListName ??
                               question.type?.typeName ??
                               '',
                           overflow: TextOverflow.ellipsis,

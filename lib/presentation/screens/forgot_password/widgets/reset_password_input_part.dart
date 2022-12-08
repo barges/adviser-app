@@ -4,8 +4,8 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/password_text_field.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_cubit.dart';
 
-class PasswordPart extends StatelessWidget {
-  const PasswordPart({Key? key}) : super(key: key);
+class ResetPasswordInputPart extends StatelessWidget {
+  const ResetPasswordInputPart({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

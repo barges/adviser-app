@@ -14,10 +14,9 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_state.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
 
 class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   final CachingManager cacheManager;
@@ -35,20 +34,20 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   final CustomerRepository _customerRepository =
       getIt.get<CustomerRepository>();
   final ScrollController questionsController = ScrollController();
-  late final CustomerSessionsScreenArguments arguments;
+  late final ChatItem argumentsQuestion;
 
   bool _hasMore = true;
   String? _lastItem;
 
   CustomerSessionsCubit(this.cacheManager, this.context)
       : super(const CustomerSessionsState()) {
-    arguments = Get.arguments as CustomerSessionsScreenArguments;
+    argumentsQuestion = Get.arguments as ChatItem;
 
     emit(state.copyWith(
-        clientName: arguments.clientName,
-        zodiacSign: arguments.clientInformation?.zodiac));
+        clientName: argumentsQuestion.clientName,
+        zodiacSign: argumentsQuestion.clientInformation?.zodiac));
     getCustomerInfo();
-    if (arguments.clientId != null) {
+    if (argumentsQuestion.clientID != null) {
       getSessionsQuestions();
     }
 
@@ -90,8 +89,8 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
 
         final QuestionsListResponse result =
             await _chatsRepository.getSessionQuestions(
-                id: arguments.clientId ?? '',
-                limit: questionsLimit,
+                id: argumentsQuestion.clientID ?? '',
+                limit: AppConstants.questionsLimit,
                 lastItem: _lastItem,
                 filterType: filterType);
         _hasMore = result.hasMore ?? true;
@@ -121,9 +120,9 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   }
 
   Future<void> getCustomerInfo() async {
-    if (arguments.clientId != null) {
-      CustomerInfo customerInfo =
-          await _customerRepository.getCustomerInfo(arguments.clientId ?? '');
+    if (argumentsQuestion.clientID != null) {
+      CustomerInfo customerInfo = await _customerRepository
+          .getCustomerInfo(argumentsQuestion.clientID ?? '');
       emit(
         state.copyWith(
             clientName: '${customerInfo.firstName} ${customerInfo.lastName}',
@@ -135,9 +134,9 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   void goToChat(ChatItem question) {
     Get.toNamed(AppRoutes.chat,
         arguments: question.copyWith(
-          clientID: arguments.clientId,
-          clientName: arguments.clientName,
-          clientInformation: arguments.clientInformation,
+          clientID: argumentsQuestion.clientID,
+          clientName: argumentsQuestion.clientName,
+          clientInformation: argumentsQuestion.clientInformation,
         ));
   }
 }

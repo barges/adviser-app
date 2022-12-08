@@ -16,7 +16,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/no_connecti
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/widgets/email_part_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/forgot_password/widgets/password_pat_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/forgot_password/widgets/reset_password_input_part.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/widgets/success_reset.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
@@ -89,7 +89,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                                               children: [
                                                 resetToken == null
                                                     ? const EmailPart()
-                                                    : const PasswordPart(),
+                                                    : const ResetPasswordInputPart(),
                                                 Builder(builder: (context) {
                                                   final bool isActive =
                                                       context.select(

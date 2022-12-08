@@ -16,10 +16,9 @@ import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_state.dart';
-
-const int questionsLimit = 20;
 
 class SessionsCubit extends Cubit<SessionsState> {
   final ChatsRepository _repository = getIt.get<ChatsRepository>();
@@ -151,12 +150,10 @@ class SessionsCubit extends Cubit<SessionsState> {
   }
 
   void goToCustomerSessions(ChatItem question) {
-    Get.toNamed(AppRoutes.customerSessions,
-        arguments: CustomerSessionsScreenArguments(
-          clientName: question.clientName ?? '',
-          clientInformation: question.clientInformation,
-          clientId: question.clientID,
-        ));
+    Get.toNamed(
+      AppRoutes.customerSessions,
+      arguments: question,
+    );
   }
 
   void clearSuccessMessage() {
@@ -189,7 +186,7 @@ class SessionsCubit extends Cubit<SessionsState> {
       }
 
       final QuestionsListResponse result = await _repository.getPublicQuestions(
-          limit: questionsLimit,
+          limit: AppConstants.questionsLimit,
           lastId: _lastId,
           filtersLanguage: filtersLanguage);
       _publicHasMore = result.hasMore ?? true;
@@ -233,7 +230,7 @@ class SessionsCubit extends Cubit<SessionsState> {
 
       final QuestionsListResponse result =
           await _repository.getConversationsList(
-        limit: questionsLimit,
+        limit: AppConstants.questionsLimit,
         filtersLanguage: filtersLanguage,
         lastItem: _conversationsLastItem,
       );
