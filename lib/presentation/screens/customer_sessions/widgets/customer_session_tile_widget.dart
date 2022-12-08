@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/list_tile_content_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/small_list_tile_badge.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_cubit.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
@@ -23,7 +24,7 @@ class CustomerSessionListTileWidget extends StatelessWidget {
         customerSessionsCubit.goToChat(question);
       },
       child: SizedBox(
-        height: 44.0,
+        height: 62.0,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -51,6 +52,7 @@ class CustomerSessionListTileWidget extends StatelessWidget {
             ),
             Expanded(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
@@ -95,16 +97,12 @@ class CustomerSessionListTileWidget extends StatelessWidget {
                           width: 32.0,
                         ),
                         if (question.hasUnanswered ?? false)
-                          Container(
-                            height: 8.0,
-                            width: 8.0,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.promotion,
-                            ),
-                          ),
+                          const SmallListTileBadge(),
                       ],
                     ),
+                  ),
+                  const Divider(
+                    height: 1.0,
                   ),
                 ],
               ),

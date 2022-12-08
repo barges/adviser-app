@@ -7,6 +7,7 @@ import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/list_tile_content_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/small_list_tile_badge.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
@@ -136,8 +137,8 @@ class PublicChatsListTileWidget extends StatelessWidget {
                           needCheckTakenStatus
                               ? isTaken
                                   ? const SizedBox.shrink()
-                                  : const _PublicBadge()
-                              : const _PublicBadge(),
+                                  : const SmallListTileBadge()
+                              : const SmallListTileBadge(),
                         ],
                       ),
                     ),
@@ -150,26 +151,6 @@ class PublicChatsListTileWidget extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _PublicBadge extends StatelessWidget {
-  const _PublicBadge({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    const double diameter = 8.0;
-    return Container(
-      alignment: Alignment.center,
-      height: diameter,
-      width: diameter,
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        color: AppColors.promotion,
       ),
     );
   }

@@ -33,7 +33,7 @@ abstract class ChatsRepository {
   Future<ConversationsStoryResponse> getConversationsStory(
       {required String storyID});
 
-  Future<QuestionsListResponse> getSessionQuestions({
+  Future<QuestionsListResponse> getCustomerSessions({
     required String id,
     required int limit,
     String? lastItem,

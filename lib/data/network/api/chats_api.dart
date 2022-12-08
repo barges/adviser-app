@@ -35,7 +35,7 @@ abstract class ChatsApi {
   });
 
   @GET('/experts/stories')
-  Future<QuestionsListResponse> getSessionQuestions({
+  Future<QuestionsListResponse> getCustomerSessions({
     @Query('clientId') required String id,
     @Query('limit') required int limit,
     @Query('lastItem') String? lastItem,
