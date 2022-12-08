@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_cubit.dart';
@@ -13,16 +14,16 @@ class EmailPart extends StatelessWidget {
       children: [
         Builder(builder: (context) {
           final ForgotPasswordCubit cubit = context.read<ForgotPasswordCubit>();
-          final String emailErrorText = context.select(
-              (ForgotPasswordCubit cubit) => cubit.state.emailErrorText);
+          final ValidationErrorType emailErrorType = context.select(
+              (ForgotPasswordCubit cubit) => cubit.state.emailErrorType);
           context
               .select((ForgotPasswordCubit cubit) => cubit.state.emailHasFocus);
           return Padding(
             padding: EdgeInsets.only(
-              bottom: emailErrorText.isEmpty ? 2.0 : 8.0,
+              bottom: emailErrorType == ValidationErrorType.empty ? 2.0 : 8.0,
             ),
             child: AppTextField(
-              errorText: emailErrorText,
+              errorType: emailErrorType,
               label: S.of(context).email,
               focusNode: cubit.emailNode,
               textInputType: TextInputType.emailAddress,

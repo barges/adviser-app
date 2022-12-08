@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/password_text_field.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_cubit.dart';
@@ -13,8 +14,8 @@ class ResetPasswordInputPart extends StatelessWidget {
     return Column(
       children: [
         Builder(builder: (context) {
-          final String passwordErrorText = context.select(
-              (ForgotPasswordCubit cubit) => cubit.state.passwordErrorText);
+          final ValidationErrorType passwordErrorType = context.select(
+              (ForgotPasswordCubit cubit) => cubit.state.passwordErrorType);
           final bool hiddenPassword = context.select(
               (ForgotPasswordCubit cubit) => cubit.state.hiddenPassword);
           context.select(
@@ -23,7 +24,7 @@ class ResetPasswordInputPart extends StatelessWidget {
             controller: cubit.passwordController,
             focusNode: cubit.passwordNode,
             label: S.of(context).password,
-            errorText: passwordErrorText,
+            errorType: passwordErrorType,
             textInputAction: TextInputAction.next,
             onSubmitted: (_) {
               FocusScope.of(context).requestFocus(cubit.confirmPasswordNode);
@@ -33,9 +34,9 @@ class ResetPasswordInputPart extends StatelessWidget {
           );
         }),
         Builder(builder: (context) {
-          final String confirmPasswordErrorText = context.select(
+          final ValidationErrorType confirmPasswordErrorType = context.select(
               (ForgotPasswordCubit cubit) =>
-                  cubit.state.confirmPasswordErrorText);
+                  cubit.state.confirmPasswordErrorType);
           final bool hiddenConfirmPassword = context.select(
               (ForgotPasswordCubit cubit) => cubit.state.hiddenConfirmPassword);
           context.select((ForgotPasswordCubit cubit) =>
@@ -46,7 +47,7 @@ class ResetPasswordInputPart extends StatelessWidget {
               controller: cubit.confirmPasswordController,
               focusNode: cubit.confirmPasswordNode,
               label: S.of(context).confirmNewPassword,
-              errorText: confirmPasswordErrorText,
+              errorType: confirmPasswordErrorType,
               textInputAction: TextInputAction.send,
               hiddenPassword: hiddenConfirmPassword,
               clickToHide: cubit.showHideConfirmPassword,

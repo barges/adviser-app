@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/data/network/requests/reset_password_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
@@ -18,7 +18,6 @@ import 'package:shared_advisor_interface/presentation/services/dynamic_link_serv
 
 class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   final AuthRepository _repository;
-  final BuildContext _context;
 
   final DynamicLinkService _dynamicLinkService =
       getIt.get<DynamicLinkService>();
@@ -35,8 +34,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
 
   late final ForgotPasswordScreenArguments arguments;
 
-  ForgotPasswordCubit(this._repository, this._context)
-      : super(const ForgotPasswordState()) {
+  ForgotPasswordCubit(this._repository) : super(const ForgotPasswordState()) {
     arguments = Get.arguments as ForgotPasswordScreenArguments;
 
     if (arguments.resetToken != null) {
@@ -65,7 +63,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     emailController.addListener(() {
       clearErrorMessage();
       emit(state.copyWith(
-        emailErrorText: '',
+        emailErrorType: ValidationErrorType.empty,
         isButtonActive: emailController.text.isNotEmpty,
       ));
     });
@@ -82,7 +80,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     passwordController.addListener(() {
       clearErrorMessage();
       emit(state.copyWith(
-        passwordErrorText: '',
+        passwordErrorType: ValidationErrorType.empty,
         isButtonActive: passwordController.text.isNotEmpty &&
             confirmPasswordController.text.isNotEmpty,
       ));
@@ -91,7 +89,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     confirmPasswordController.addListener(() {
       clearErrorMessage();
       emit(state.copyWith(
-        confirmPasswordErrorText: '',
+        confirmPasswordErrorType: ValidationErrorType.empty,
         isButtonActive: passwordController.text.isNotEmpty &&
             confirmPasswordController.text.isNotEmpty,
       ));
@@ -150,7 +148,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
       if (!emailIsValid()) {
         emit(
           state.copyWith(
-              emailErrorText: S.of(_context).pleaseInsertCorrectEmail),
+              emailErrorType: ValidationErrorType.pleaseInsertCorrectEmail),
         );
       }
     }
@@ -181,14 +179,16 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         if (!passwordIsValid()) {
           emit(
             state.copyWith(
-              passwordErrorText: S.of(_context).pleaseEnterAtLeast6Characters,
+              passwordErrorType:
+                  ValidationErrorType.pleaseEnterAtLeast6Characters,
             ),
           );
         }
         if (!confirmPasswordIsValid()) {
           emit(
             state.copyWith(
-              confirmPasswordErrorText: S.of(_context).thePasswordsMustMatch,
+              confirmPasswordErrorType:
+                  ValidationErrorType.thePasswordsMustMatch,
             ),
           );
         }

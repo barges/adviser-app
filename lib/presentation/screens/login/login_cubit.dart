@@ -7,10 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/data/network/responses/login_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/di/modules/api_module.dart';
@@ -22,7 +22,6 @@ import 'package:shared_advisor_interface/presentation/services/dynamic_link_serv
 class LoginCubit extends Cubit<LoginState> {
   final AuthRepository _repository;
   final CachingManager _cacheManager;
-  final BuildContext _context;
 
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final DynamicLinkService _dynamicLinkService =
@@ -34,8 +33,7 @@ class LoginCubit extends Cubit<LoginState> {
   final FocusNode emailNode = FocusNode();
   final FocusNode passwordNode = FocusNode();
 
-  LoginCubit(this._repository, this._cacheManager, this._context)
-      : super(const LoginState()) {
+  LoginCubit(this._repository, this._cacheManager) : super(const LoginState()) {
     _dynamicLinkService.checkLinkForResetPassword();
 
     unauthorizedBrands = _cacheManager.getUnauthorizedBrands();
@@ -57,7 +55,7 @@ class LoginCubit extends Cubit<LoginState> {
       clearErrorMessage();
       clearSuccessMessage();
       emit(state.copyWith(
-          emailErrorText: '',
+          emailErrorType: ValidationErrorType.empty,
           buttonIsActive: emailController.text.isNotEmpty &&
               passwordController.text.isNotEmpty));
     });
@@ -65,7 +63,7 @@ class LoginCubit extends Cubit<LoginState> {
       clearErrorMessage();
       clearSuccessMessage();
       emit(state.copyWith(
-          passwordErrorText: '',
+          passwordErrorType: ValidationErrorType.empty,
           buttonIsActive: passwordController.text.isNotEmpty &&
               emailController.text.isNotEmpty));
     });
@@ -120,13 +118,14 @@ class LoginCubit extends Cubit<LoginState> {
       if (!emailIsValid()) {
         emit(
           state.copyWith(
-              emailErrorText: S.of(_context).pleaseInsertCorrectEmail),
+              emailErrorType: ValidationErrorType.pleaseInsertCorrectEmail),
         );
       }
       if (!passwordIsValid()) {
         emit(
           state.copyWith(
-            passwordErrorText: S.of(_context).pleaseEnterAtLeast6Characters,
+            passwordErrorType:
+                ValidationErrorType.pleaseEnterAtLeast6Characters,
           ),
         );
       }

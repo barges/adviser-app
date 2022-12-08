@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class AppTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
-  final String errorText;
+  final ValidationErrorType errorType;
   final FocusNode focusNode;
   final FocusNode? nextFocusNode;
   final TextInputType? textInputType;
@@ -22,7 +23,7 @@ class AppTextField extends StatelessWidget {
     this.textInputAction,
     this.isPassword = false,
     this.isBig = false,
-    this.errorText = '',
+    this.errorType = ValidationErrorType.empty,
   }) : super(key: key);
 
   @override
@@ -45,7 +46,7 @@ class AppTextField extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-            color: errorText.isNotEmpty
+            color: errorType != ValidationErrorType.empty
                 ? Theme.of(context).errorColor
                 : focusNode.hasPrimaryFocus
                     ? Theme.of(context).primaryColor
@@ -77,14 +78,14 @@ class AppTextField extends StatelessWidget {
             ),
           ),
         ),
-        if (errorText.isNotEmpty)
+        if (errorType != ValidationErrorType.empty)
           Padding(
             padding: const EdgeInsets.only(
               top: 2.0,
               left: 12.0,
             ),
             child: Text(
-              errorText,
+              errorType.text(context),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).errorColor,
                     fontSize: 12.0,

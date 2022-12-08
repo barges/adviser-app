@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
@@ -17,7 +18,7 @@ class EditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => EditProfileCubit(context),
+      create: (_) => EditProfileCubit(),
       child: Builder(builder: (context) {
         final EditProfileCubit editProfileCubit =
             context.read<EditProfileCubit>();
@@ -78,9 +79,11 @@ class EditProfileScreen extends StatelessWidget {
                                           horizontal: AppConstants
                                               .horizontalScreenPadding),
                                       child: Builder(builder: (context) {
-                                        final String nicknameErrorText = context
-                                            .select((EditProfileCubit cubit) =>
-                                                cubit.state.nicknameErrorText);
+                                        final ValidationErrorType
+                                            nicknameErrorType = context.select(
+                                                (EditProfileCubit cubit) =>
+                                                    cubit.state
+                                                        .nicknameErrorType);
                                         context.select(
                                             (EditProfileCubit cubit) =>
                                                 cubit.state.nicknameHasFocus);
@@ -92,7 +95,7 @@ class EditProfileScreen extends StatelessWidget {
                                           focusNode: editProfileCubit
                                               .nicknameFocusNode,
                                           label: S.of(context).nickname,
-                                          errorText: nicknameErrorText,
+                                          errorType: nicknameErrorType,
                                         );
                                       }),
                                     ),

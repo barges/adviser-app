@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -27,7 +28,6 @@ class LoginScreen extends StatelessWidget {
       create: (_) => LoginCubit(
         getIt.get<AuthRepository>(),
         getIt.get<CachingManager>(),
-        context,
       ),
       child: Builder(
         builder: (BuildContext context) {
@@ -99,13 +99,14 @@ class LoginScreen extends StatelessWidget {
                                       children: [
                                         Builder(
                                             builder: (BuildContext context) {
-                                          final String emailErrorText = context
-                                              .select((LoginCubit cubit) =>
-                                                  cubit.state.emailErrorText);
+                                          final ValidationErrorType
+                                              emailErrorType = context.select(
+                                                  (LoginCubit cubit) => cubit
+                                                      .state.emailErrorType);
                                           context.select((LoginCubit cubit) =>
                                               cubit.state.emailHasFocus);
                                           return AppTextField(
-                                            errorText: emailErrorText,
+                                            errorType: emailErrorType,
                                             label: S.of(context).email,
                                             focusNode: loginCubit.emailNode,
                                             textInputType:
@@ -128,16 +129,17 @@ class LoginScreen extends StatelessWidget {
                                                   cubit.state.hiddenPassword);
                                           context.select((LoginCubit cubit) =>
                                               cubit.state.passwordHasFocus);
-                                          final String passwordErrorText =
+                                          final ValidationErrorType
+                                              passwordErrorType =
                                               context.select(
                                                   (LoginCubit cubit) => cubit
-                                                      .state.passwordErrorText);
+                                                      .state.passwordErrorType);
                                           return PasswordTextField(
                                             controller:
                                                 loginCubit.passwordController,
                                             focusNode: loginCubit.passwordNode,
                                             label: S.of(context).password,
-                                            errorText: passwordErrorText,
+                                            errorType: passwordErrorType,
                                             textInputAction:
                                                 TextInputAction.next,
                                             onSubmitted: (_) =>
