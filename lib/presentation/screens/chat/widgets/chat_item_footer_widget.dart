@@ -25,7 +25,7 @@ class ChatItemFooterWidget extends StatelessWidget {
           padding: const EdgeInsets.only(right: 4.0),
           child: Text(
             type == ChatItemType.ritual && ritualIdentifier != null
-                ? ritualIdentifier!.sessionName
+                ? ritualIdentifier!.sessionName(context)
                 : toBeginningOfSentenceCase(type.name)!,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: color,

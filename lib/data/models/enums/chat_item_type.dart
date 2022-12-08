@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 
 enum ChatItemType {
@@ -40,6 +41,30 @@ enum ChatItemType {
       case ChatItemType.textAnswer:
       case ChatItemType.all:
         return 'ALL';
+    }
+  }
+
+  String get iconPath {
+    switch (this) {
+      case ChatItemType.public:
+        return Assets.vectors.sessionsTypes.public.path;
+      case ChatItemType.private:
+        return Assets.vectors.sessionsTypes.private.path;
+      default:
+        return '';
+    }
+  }
+
+  String typeName(context) {
+    switch (this) {
+      case ChatItemType.private:
+        return '${S.of(context).private} ${S.of(context).question}';
+      case ChatItemType.ritual:
+        return '${S.of(context).ritual} ${S.of(context).session}';
+      case ChatItemType.public:
+        return '${S.of(context).public} ${S.of(context).question}';
+      default:
+        return '';
     }
   }
 }

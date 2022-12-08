@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
@@ -6,7 +7,7 @@ class PasswordTextField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputAction? textInputAction;
   final bool hiddenPassword;
-  final String errorText;
+  final ValidationErrorType errorType;
   final ValueChanged<String>? onSubmitted;
   final VoidCallback? clickToHide;
   final FocusNode focusNode;
@@ -20,7 +21,7 @@ class PasswordTextField extends StatelessWidget {
     this.label,
     this.onSubmitted,
     this.clickToHide,
-    this.errorText = '',
+    this.errorType = ValidationErrorType.empty,
     this.hiddenPassword = true,
   }) : super(key: key);
 
@@ -41,7 +42,7 @@ class PasswordTextField extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-            color: errorText.isNotEmpty
+            color: errorType != ValidationErrorType.empty
                 ? Theme.of(context).errorColor
                 : focusNode.hasPrimaryFocus
                     ? Theme.of(context).primaryColor
@@ -86,14 +87,14 @@ class PasswordTextField extends StatelessWidget {
             ),
           ),
         ),
-        if (errorText.isNotEmpty)
+        if (errorType != ValidationErrorType.empty)
           Padding(
             padding: const EdgeInsets.only(
               top: 2.0,
               left: 12.0,
             ),
             child: Text(
-              errorText,
+              errorType.text(context),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).errorColor,
                     fontSize: 12.0,

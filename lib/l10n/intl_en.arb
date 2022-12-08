@@ -172,5 +172,20 @@
   "youHaveAnActiveSession": "You have an active session",
   "audioMessage": "Audio message",
   "justSentYouAMessage": "Just sent you a message",
-  "other": "Other"
+  "weDidntFindAnything": "We didn’t find anything",
+  "thisFilteringOptionDoesntContainAnySessions": "This filtering option doesn’t contain any sessions",
+  "other": "Other",
+  "private": "Private",
+  "tarot": "Tarot",
+  "palmReading": "Palm Reading",
+  "astrology": "Astrology",
+  "reading360": "360° Reading",
+  "auraReading": "Aura Reading",
+  "loveCrushReading": "Love Crush Reading",
+  "ritual": "Ritual",
+  "tips": "Tips",
+  "questions": "Questions",
+  "sessions": "Sessions",
+  "question": "Question",
+  "session": "Session"
 }

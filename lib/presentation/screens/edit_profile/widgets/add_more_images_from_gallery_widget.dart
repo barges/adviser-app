@@ -32,7 +32,7 @@ class AddMoreImagesFromGalleryWidget extends StatelessWidget {
               height: 4.0,
             ),
             Text(
-              S.current.addMore,
+              S.of(context).addMore,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w500,
                     color: Theme.of(context).primaryColor,

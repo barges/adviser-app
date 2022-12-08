@@ -15,18 +15,18 @@ enum FortunicaUserStatus {
   @JsonValue("OFFLINE")
   offline;
 
-  String get statusName {
+  String statusName(BuildContext context) {
     switch (this) {
       case FortunicaUserStatus.live:
-        return S.current.live;
+        return S.of(context).live;
       case FortunicaUserStatus.incomplete:
-        return S.current.incomplete;
+        return S.of(context).incomplete;
       case FortunicaUserStatus.blocked:
-        return S.current.blocked;
+        return S.of(context).blocked;
       case FortunicaUserStatus.legalBlock:
-        return S.current.legalBlock;
+        return S.of(context).legalBlock;
       case FortunicaUserStatus.offline:
-        return S.current.offline;
+        return S.of(context).offline;
     }
   }
 

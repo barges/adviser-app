@@ -71,7 +71,10 @@ class InfoCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    question.clientInformation?.gender?.name.capitalize ?? '',
+                    question.clientInformation?.gender
+                            ?.name(context)
+                            .capitalize ??
+                        '',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).shadowColor,
                         ),

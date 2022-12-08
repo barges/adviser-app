@@ -10,7 +10,7 @@ import 'intl/messages_all.dart';
 
 // ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
 // ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
-// ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
+// ignore_for_file: avoid_redundant_argument_values
 
 class S {
   S();
@@ -18,31 +18,28 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(_current != null, 'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
     return _current!;
   }
 
-  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
+  static const AppLocalizationDelegate delegate =
+    AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false)
-        ? locale.languageCode
-        : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name);
+    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name); 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       final instance = S();
       S._current = instance;
-
+ 
       return instance;
     });
-  }
+  } 
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(instance != null, 'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
     return instance!;
   }
 
@@ -1780,11 +1777,151 @@ class S {
     );
   }
 
+  /// `We didn’t find anything`
+  String get weDidntFindAnything {
+    return Intl.message(
+      'We didn’t find anything',
+      name: 'weDidntFindAnything',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This filtering option doesn’t contain any sessions`
+  String get thisFilteringOptionDoesntContainAnySessions {
+    return Intl.message(
+      'This filtering option doesn’t contain any sessions',
+      name: 'thisFilteringOptionDoesntContainAnySessions',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Other`
   String get other {
     return Intl.message(
       'Other',
       name: 'other',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private`
+  String get private {
+    return Intl.message(
+      'Private',
+      name: 'private',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tarot`
+  String get tarot {
+    return Intl.message(
+      'Tarot',
+      name: 'tarot',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Palm Reading`
+  String get palmReading {
+    return Intl.message(
+      'Palm Reading',
+      name: 'palmReading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Astrology`
+  String get astrology {
+    return Intl.message(
+      'Astrology',
+      name: 'astrology',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `360° Reading`
+  String get reading360 {
+    return Intl.message(
+      '360° Reading',
+      name: 'reading360',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Aura Reading`
+  String get auraReading {
+    return Intl.message(
+      'Aura Reading',
+      name: 'auraReading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Love Crush Reading`
+  String get loveCrushReading {
+    return Intl.message(
+      'Love Crush Reading',
+      name: 'loveCrushReading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ritual`
+  String get ritual {
+    return Intl.message(
+      'Ritual',
+      name: 'ritual',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tips`
+  String get tips {
+    return Intl.message(
+      'Tips',
+      name: 'tips',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Questions`
+  String get questions {
+    return Intl.message(
+      'Questions',
+      name: 'questions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Question`
+  String get question {
+    return Intl.message(
+      'Question',
+      name: 'question',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Session`
+  String get session {
+    return Intl.message(
+      'Session',
+      name: 'session',
       desc: '',
       args: [],
     );

@@ -8,6 +8,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/customer_pr
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/widgets/notes_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/widgets/question_properties_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:get/get.dart';
 
 class CustomerProfileWidget extends StatelessWidget {
   final String customerId;
@@ -96,8 +97,11 @@ class CustomerProfileWidget extends StatelessWidget {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            (customerInfo.birthdate ?? '')
-                                                .parseDateTimePattern9,
+                                            customerInfo
+                                                    .birthdate
+                                                    ?.parseDateTimePattern9
+                                                    .capitalize ??
+                                                '',
                                             style: theme.textTheme.bodyMedium
                                                 ?.copyWith(
                                               color: theme.shadowColor,
@@ -118,7 +122,9 @@ class CustomerProfileWidget extends StatelessWidget {
                                             width: 8.0,
                                           ),
                                           Text(
-                                            customerInfo.gender?.name ?? '',
+                                            customerInfo.gender
+                                                    ?.name(context) ??
+                                                '',
                                             style: theme.textTheme.bodyMedium
                                                 ?.copyWith(
                                               color: theme.shadowColor,

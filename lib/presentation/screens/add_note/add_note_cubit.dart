@@ -19,8 +19,6 @@ class AddNoteCubit extends Cubit<AddNoteState> {
   late final TextEditingController noteController;
   late final TextEditingController titleController;
 
-  final ScrollController textFieldScrollController = ScrollController();
-
   AddNoteCubit() : super(AddNoteState()) {
     arguments = Get.arguments as AddNoteScreenArguments;
     noteController = TextEditingController(text: arguments.oldNote ?? '');
@@ -41,9 +39,6 @@ class AddNoteCubit extends Cubit<AddNoteState> {
         emit(state.copyWith(
             newNote: noteController.text.removeSpacesAndNewLines));
         arguments.noteChanged();
-        //_userProfileCubit.updateNoteToCustomer(GetNoteResponse(
-        //    noteController.text,
-        //    DateFormat(dateFormat).format(DateTime.now())));
       }
     }
     Get.back();

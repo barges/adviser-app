@@ -169,5 +169,20 @@
   "preferNotToAnswer": "Keine Angabe",
   "youHaveAnActiveSession": "Sie haben eine aktive Sitzung",
   "audioMessage": "Audio-Nachricht",
-  "other": "Sonstiges"
+  "other": "Sonstiges",
+  "weDidntFindAnything": "Wir haben nichts gefunden",
+  "thisFilteringOptionDoesntContainAnySessions": "Diese Filteroption enthält keine Sitzungen",
+  "private": "Privatgelände",
+  "tarot": "Tarot",
+  "palmReading": "Handlesen",
+  "astrology": "Astrologie",
+  "reading360": "360°-Lesen",
+  "auraReading": "Aura-Lesen",
+  "loveCrushReading": "Liebes-Crush-Lesen",
+  "ritual": "Ritual",
+  "tips": "Tipps",
+  "questions": "Fragen",
+  "sessions": "Sitzungen",
+  "question": "Frage",
+  "session": "Sitzung"
 }
