@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 
 enum SessionsTypes {
   public,
@@ -15,67 +17,39 @@ enum SessionsTypes {
   tipsHigh,
   tips;
 
-  String get sessionListName {
+  String sessionName(BuildContext context) {
     switch (this) {
       case SessionsTypes.public:
-        return 'Public question';
+        return S.of(context).public;
       case SessionsTypes.private:
-        return 'Private question';
+        return S.of(context).private;
       case SessionsTypes.tarot:
-        return 'Tarot';
+        return S.of(context).tarot;
       case SessionsTypes.palmreading:
-        return 'Palm reading';
+        return S.of(context).palmReading;
       case SessionsTypes.astrology:
-        return 'Astrology';
+        return S.of(context).astrology;
       case SessionsTypes.reading360:
-        return '360° reading';
+        return S.of(context).reading360;
       case SessionsTypes.aurareading:
-        return 'Aura reading';
+        return S.of(context).auraReading;
       case SessionsTypes.lovecrushreading:
-        return 'Love crush reading';
+        return S.of(context).loveCrushReading;
       case SessionsTypes.ritual:
-        return 'Ritual session';
+        return S.of(context).ritual;
       case SessionsTypes.tipsLow:
       case SessionsTypes.tipsMedium:
       case SessionsTypes.tipsHigh:
       case SessionsTypes.tips:
-        return 'Tips';
+        return S.of(context).tips;
     }
   }
 
-  String get sessionName {
-    switch (this) {
-      case SessionsTypes.public:
-        return 'Public';
-      case SessionsTypes.private:
-        return 'Private';
-      case SessionsTypes.tarot:
-        return 'Tarot';
-      case SessionsTypes.palmreading:
-        return 'Palm';
-      case SessionsTypes.astrology:
-        return 'Astrology';
-      case SessionsTypes.reading360:
-        return '360° Reading';
-      case SessionsTypes.aurareading:
-        return 'Aura Reading';
-      case SessionsTypes.lovecrushreading:
-        return 'Love Crush Reading';
-      case SessionsTypes.ritual:
-        return 'Ritual';
-      case SessionsTypes.tipsLow:
-      case SessionsTypes.tipsMedium:
-      case SessionsTypes.tipsHigh:
-      case SessionsTypes.tips:
-        return 'Tips';
-    }
-  }
-
-  String get sessionNameForStatistics {
+  String sessionNameForStatistics(context) {
     switch (this) {
       case SessionsTypes.public:
       case SessionsTypes.private:
-        return '$sessionName Questions';
+        return '${sessionName(context)} ${S.of(context).questions}';
       case SessionsTypes.tarot:
       case SessionsTypes.palmreading:
       case SessionsTypes.astrology:
@@ -83,12 +57,12 @@ enum SessionsTypes {
       case SessionsTypes.aurareading:
       case SessionsTypes.lovecrushreading:
       case SessionsTypes.ritual:
-        return '$sessionName Sessions';
+        return '${sessionName(context)} ${S.of(context).sessions}';
       case SessionsTypes.tipsLow:
       case SessionsTypes.tipsMedium:
       case SessionsTypes.tipsHigh:
       case SessionsTypes.tips:
-        return sessionName;
+        return sessionName(context);
     }
   }
 

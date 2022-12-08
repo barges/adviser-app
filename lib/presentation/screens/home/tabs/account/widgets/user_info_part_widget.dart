@@ -71,7 +71,7 @@ class UserInfoPartWidget extends StatelessWidget {
                         ),
                         Text(
                             userProfile?.rituals
-                                    ?.map((e) => e.sessionName)
+                                    ?.map((e) => e.sessionName(context))
                                     .toList()
                                     .reduce((value, element) =>
                                         '$value, $element') ??

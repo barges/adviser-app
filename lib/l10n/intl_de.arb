@@ -171,5 +171,18 @@
   "audioMessage": "Audio-Nachricht",
   "other": "Sonstiges",
   "weDidntFindAnything": "Wir haben nichts gefunden",
-  "thisFilteringOptionDoesntContainAnySessions": "Diese Filteroption enthält keine Sitzungen"
+  "thisFilteringOptionDoesntContainAnySessions": "Diese Filteroption enthält keine Sitzungen",
+  "private": "Privatgelände",
+  "tarot": "Tarot",
+  "palmReading": "Handlesen",
+  "astrology": "Astrologie",
+  "reading360": "360°-Lesen",
+  "auraReading": "Aura-Lesen",
+  "loveCrushReading": "Liebes-Crush-Lesen",
+  "ritual": "Ritual",
+  "tips": "Tipps",
+  "questions": "Fragen",
+  "sessions": "Sitzungen",
+  "question": "Frage",
+  "session": "Sitzung"
 }

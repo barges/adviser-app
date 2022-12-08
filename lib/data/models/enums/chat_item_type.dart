@@ -55,14 +55,14 @@ enum ChatItemType {
     }
   }
 
-  String get typeName {
+  String typeName(context) {
     switch (this) {
       case ChatItemType.private:
-        return 'Private question';
+        return '${S.of(context).private} ${S.of(context).question}';
       case ChatItemType.ritual:
-        return 'Ritual session';
+        return '${S.of(context).ritual} ${S.of(context).session}';
       case ChatItemType.public:
-        return 'Public question';
+        return '${S.of(context).public} ${S.of(context).question}';
       default:
         return '';
     }
