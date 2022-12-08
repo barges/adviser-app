@@ -6,15 +6,22 @@ class AppConstants {
   static const double logoSize = 242.0;
   static const double horizontalScreenPadding = 16.0;
   static const double appBarHeight = 52.0;
-  static const int millisecondsInHour = 3600000;
   static const String recordFileName = 'recorded_audio_aa';
+
+  static const int minRecordDurationInSec = 15;
+  static const int maxRecordDurationInSec = 180;
+
   static const int minTextLengthPublic = 250;
   static const int maxTextLengthPublic = 1000;
   static const int minTextLengthRirual = 1000;
   static const int maxTextLengthRitual = 2000;
+
+  static const int tillShowMessagesInSec = 25 * 60;
+  static const int afterShowMessagesInSec = 5 * 60;
+
+  static const int millisecondsInHour = 3600000;
   static const int maxAttachedPictures = 2;
-  static const int minRecordDurationInSec = 15;
-  static const int maxRecordDurationInSec = 180;
+
   static const num maxFileSizeInMb = 20;
 
   static const String enBrandName = 'English';

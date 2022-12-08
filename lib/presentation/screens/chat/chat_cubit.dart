@@ -45,8 +45,8 @@ class ChatCubit extends Cubit<ChatState> {
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final Codec _codec = Codec.aacMP4;
   final FileExtantion _recordFileExt = CurrentFileExt.current;
-  final int _tillShowMessagesInSec = 25 * 60;
-  final int _afterShowMessagesInSec = 5 * 60;
+  final int _tillShowMessagesInSec = AppConstants.tillShowMessagesInSec;
+  final int _afterShowMessagesInSec = AppConstants.afterShowMessagesInSec;
   final int _limit = 25;
   int _offset = 0;
   int? _total;
