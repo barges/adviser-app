@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/list_of_filters_widget.dart';
@@ -20,6 +19,7 @@ class CustomerSessionsScreen extends StatelessWidget {
           final CustomerSessionsCubit customerSessionsCubit =
               context.read<CustomerSessionsCubit>();
           return Scaffold(
+              backgroundColor: Theme.of(context).canvasColor,
 
               ///TODO - Replace hardcode!(appbar values)
               appBar: const ChatConversationAppBar(
@@ -28,6 +28,9 @@ class CustomerSessionsScreen extends StatelessWidget {
               ),
               body: Column(
                 children: [
+                  const Divider(
+                    height: 1,
+                  ),
                   Builder(builder: (context) {
                     final int currentFilterIndex = context.select(
                         (CustomerSessionsCubit cubit) =>
@@ -36,10 +39,13 @@ class CustomerSessionsScreen extends StatelessWidget {
                       currentFilterIndex: currentFilterIndex,
                       onTapToFilter: customerSessionsCubit.changeFilterIndex,
                       filters: customerSessionsCubit.filters
-                          .map((e) => e.filterName)
+                          .map((e) => e.filterName(context))
                           .toList(),
                     );
                   }),
+                  const Divider(
+                    height: 1,
+                  ),
                   Builder(builder: (context) {
                     List<ChatItem> items = customerSessionsCubit.items;
                     return Expanded(
@@ -55,12 +61,21 @@ class CustomerSessionsScreen extends StatelessWidget {
                                 shrinkWrap: true,
                                 itemBuilder: (BuildContext context, int index) {
                                   return CustomerSessionListTileWidget(
-                                      item: items[index]);
+                                      question: items[index]);
                                 },
                                 separatorBuilder:
-                                    (BuildContext context, int index) =>
-                                        const SizedBox(
-                                  height: 12.0,
+                                    (BuildContext context, int index) => Column(
+                                  children: const [
+                                    SizedBox(
+                                      height: 16.0,
+                                    ),
+                                    Divider(
+                                      height: 1.0,
+                                    ),
+                                    SizedBox(
+                                      height: 16.0,
+                                    ),
+                                  ],
                                 ),
                                 itemCount: items.length,
                               ),

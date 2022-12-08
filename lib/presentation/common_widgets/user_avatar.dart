@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 
 class UserAvatar extends StatelessWidget {
   final String? avatarUrl;
@@ -10,6 +11,7 @@ class UserAvatar extends StatelessWidget {
   final double diameter;
   final Color? badgeColor;
   final bool withBorder;
+  final bool withError;
 
   const UserAvatar(
       {Key? key,
@@ -17,7 +19,8 @@ class UserAvatar extends StatelessWidget {
       this.imageFile,
       this.badgeColor,
       this.diameter = 86.0,
-      this.withBorder = false})
+      this.withBorder = false,
+      this.withError = false})
       : super(key: key);
 
   @override
@@ -28,17 +31,21 @@ class UserAvatar extends StatelessWidget {
           height: diameter,
           width: diameter,
           decoration: BoxDecoration(
-            color: Theme.of(context).canvasColor,
+            color: Theme.of(context).hintColor,
             shape: BoxShape.circle,
             border: withBorder
-                ? Border.all(width: 2.0, color: Theme.of(context).canvasColor)
+                ? Border.all(
+                    width: 2.0,
+                    color: withError
+                        ? Theme.of(context).errorColor
+                        : Theme.of(context).canvasColor)
                 : null,
           ),
           child: imageFile == null
               ? avatarUrl == null || avatarUrl!.isEmpty
                   ? Container(
                       child: Assets.vectors.placeholderProfileImage
-                          .svg(color: Theme.of(context).hintColor),
+                          .svg(color: Theme.of(context).canvasColor),
                     )
                   : Container(
                       decoration: BoxDecoration(
@@ -80,7 +87,17 @@ class UserAvatar extends StatelessWidget {
                 ),
               ),
             ),
-          )
+          ),
+        if (withError)
+          Positioned.fill(
+              child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    S.current.photoIsRequired,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        fontSize: 12.0, color: Theme.of(context).errorColor),
+                  ))),
       ],
     );
   }

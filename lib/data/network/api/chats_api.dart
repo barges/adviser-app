@@ -5,11 +5,10 @@ import 'package:shared_advisor_interface/data/network/requests/answer_request.da
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_story_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 part 'chats_api.g.dart';
 
-@RestApi(baseUrl: AppConstants.baseUrlDev)
+@RestApi()
 abstract class ChatsApi {
   factory ChatsApi(Dio dio) = _ChatsApi;
 
@@ -20,10 +19,12 @@ abstract class ChatsApi {
     @Query('filters[language]') String? filterLanguage,
   });
 
-  @GET('/experts/questions/individual')
-  Future<QuestionsListResponse> getPrivateQuestions({
-    @Query('filters[type]') String? filtersType,
+  @GET('/experts/conversations')
+  Future<QuestionsListResponse> getConversationsList({
+    @Query('limit') required int limit,
     @Query('filters[language]') String? filtersLanguage,
+    @Query('lastItem') String? lastItem,
+    @Query('search') String? search,
   });
 
   @GET('/experts/conversations/history')

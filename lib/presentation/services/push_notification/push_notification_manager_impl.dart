@@ -2,10 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 
 bool _isRegisteredForPushNotifications = false;

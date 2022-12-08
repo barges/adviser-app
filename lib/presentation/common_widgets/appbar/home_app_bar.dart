@@ -9,7 +9,6 @@ import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/change_locale_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
-import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -69,7 +68,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                     withBrands
                         ? const _AuthorizedBrandsWidget()
-                        : ChangeLocaleButton(),
+                        : const ChangeLocaleButton(),
                   ],
                 ),
               ),

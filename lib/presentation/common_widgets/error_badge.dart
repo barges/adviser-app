@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ErrorBadge extends StatelessWidget {
   const ErrorBadge({Key? key}) : super(key: key);

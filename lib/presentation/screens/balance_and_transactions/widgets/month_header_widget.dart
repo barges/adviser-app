@@ -68,9 +68,8 @@ class MonthHeaderWidget extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(e.monthName ?? ''),
-                                Text(
-                                    e.monthsDate?.split('-').firstOrNull ?? ''),
+                                Text(e.nameFromDate),
+                                Text(e.monthDate?.split('-').firstOrNull ?? ''),
                               ],
                             ),
                           ))
@@ -85,7 +84,7 @@ class MonthHeaderWidget extends StatelessWidget {
                     SizedBox(
                       height: 18.0,
                       child: Text(
-                        month.monthName ?? '',
+                        month.nameFromDate,
                         style:
                             Theme.of(context).textTheme.labelMedium?.copyWith(
                                   color: Theme.of(context).primaryColor,
@@ -104,7 +103,7 @@ class MonthHeaderWidget extends StatelessWidget {
                 SizedBox(
                   height: 14.0,
                   child: Text(
-                    month.monthsDate?.split('-').firstOrNull ?? '',
+                    month.monthDate?.split('-').firstOrNull ?? '',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontSize: 12.0,
                           color: Theme.of(context).shadowColor,

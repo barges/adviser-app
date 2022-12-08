@@ -330,16 +330,6 @@ class S {
     );
   }
 
-  /// `You have successfully changed your password. Check your email to confirm password change`
-  String get youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo {
-    return Intl.message(
-      'You have successfully changed your password. Check your email to confirm password change',
-      name: 'youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Wrong username or password`
   String get wrongUsernameOrPassword {
     return Intl.message(
@@ -1520,6 +1510,106 @@ class S {
     );
   }
 
+  /// `Live`
+  String get live {
+    return Intl.message(
+      'Live',
+      name: 'live',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incomplete`
+  String get incomplete {
+    return Intl.message(
+      'Incomplete',
+      name: 'incomplete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Blocked`
+  String get blocked {
+    return Intl.message(
+      'Blocked',
+      name: 'blocked',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Legal block`
+  String get legalBlock {
+    return Intl.message(
+      'Legal block',
+      name: 'legalBlock',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Offline`
+  String get offline {
+    return Intl.message(
+      'Offline',
+      name: 'offline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You’re currently not live on the platform, please make sure you fill out your profile for all languages. You can contact your Manager if you have questions.`
+  String get youReCurrentlyNotLiveOnThePlatform {
+    return Intl.message(
+      'You’re currently not live on the platform, please make sure you fill out your profile for all languages. You can contact your Manager if you have questions.',
+      name: 'youReCurrentlyNotLiveOnThePlatform',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Before proceeding you need to accept contracts. To do so please open the web version of the Advisor Tool`
+  String get beforeProceedingYouNeedToAcceptContracts {
+    return Intl.message(
+      'Before proceeding you need to accept contracts. To do so please open the web version of the Advisor Tool',
+      name: 'beforeProceedingYouNeedToAcceptContracts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You’re currently Offline on the platform, you can’t use the full functionality and are not visible to users. You can change your status to Live in your profile.`
+  String get youReCurrentlyOfflineOnThePlatform {
+    return Intl.message(
+      'You’re currently Offline on the platform, you can’t use the full functionality and are not visible to users. You can change your status to Live in your profile.',
+      name: 'youReCurrentlyOfflineOnThePlatform',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Complete profile to start helping`
+  String get completeProfileToStartHelping {
+    return Intl.message(
+      'Complete profile to start helping',
+      name: 'completeProfileToStartHelping',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Go to Account`
+  String get goToAccount {
+    return Intl.message(
+      'Go to Account',
+      name: 'goToAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Active chat`
   String get activeChat {
     return Intl.message(
@@ -1575,6 +1665,136 @@ class S {
     return Intl.message(
       'Take question',
       name: 'takeQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add photo`
+  String get addPhoto {
+    return Intl.message(
+      'Add photo',
+      name: 'addPhoto',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Photo is required`
+  String get photoIsRequired {
+    return Intl.message(
+      'Photo is required',
+      name: 'photoIsRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your Username`
+  String get yourUsername {
+    return Intl.message(
+      'Your Username',
+      name: 'yourUsername',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Now you can login with a new password`
+  String get nowYouCanLoginWithANewPassword {
+    return Intl.message(
+      'Now you can login with a new password',
+      name: 'nowYouCanLoginWithANewPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We’ve sent you a link to {email} to change your password`
+  String weVeSentYouALinkToEmailToChangeYourPassword(Object email) {
+    return Intl.message(
+      'We’ve sent you a link to $email to change your password',
+      name: 'weVeSentYouALinkToEmailToChangeYourPassword',
+      desc: '',
+      args: [email],
+    );
+  }
+
+  /// `Male`
+  String get male {
+    return Intl.message(
+      'Male',
+      name: 'male',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Female`
+  String get female {
+    return Intl.message(
+      'Female',
+      name: 'female',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Non-binary`
+  String get nonBinary {
+    return Intl.message(
+      'Non-binary',
+      name: 'nonBinary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Prefer not to answer`
+  String get preferNotToAnswer {
+    return Intl.message(
+      'Prefer not to answer',
+      name: 'preferNotToAnswer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have an active session`
+  String get youHaveAnActiveSession {
+    return Intl.message(
+      'You have an active session',
+      name: 'youHaveAnActiveSession',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Audio message`
+  String get audioMessage {
+    return Intl.message(
+      'Audio message',
+      name: 'audioMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Just sent you a message`
+  String get justSentYouAMessage {
+    return Intl.message(
+      'Just sent you a message',
+      name: 'justSentYouAMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Other`
+  String get other {
+    return Intl.message(
+      'Other',
+      name: 'other',
       desc: '',
       args: [],
     );

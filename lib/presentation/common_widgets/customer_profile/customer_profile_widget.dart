@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
-import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/note.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/widgets/notes_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/widgets/question_properties_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 
 class CustomerProfileWidget extends StatelessWidget {
   final String customerId;
@@ -120,9 +118,7 @@ class CustomerProfileWidget extends StatelessWidget {
                                             width: 8.0,
                                           ),
                                           Text(
-                                            toBeginningOfSentenceCase(
-                                                    customerInfo.gender) ??
-                                                '',
+                                            customerInfo.gender?.name ?? '',
                                             style: theme.textTheme.bodyMedium
                                                 ?.copyWith(
                                               color: theme.shadowColor,

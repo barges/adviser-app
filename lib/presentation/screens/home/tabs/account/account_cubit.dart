@@ -72,7 +72,9 @@ class AccountCubit extends Cubit<AccountState> {
           status: FortunicaUserStatus.legalBlock,
         ));
       } else {
-        if (checkPropertiesMapIfHasEmpty(userInfo)) {
+        if (checkPropertiesMapIfHasEmpty(userInfo) ||
+            userInfo.profile?.profileName?.isNotEmpty != true ||
+            userInfo.profile?.profilePictures?.isNotEmpty != true) {
           await cacheManager.saveUserStatus(userInfo.status?.copyWith(
             status: FortunicaUserStatus.incomplete,
           ));

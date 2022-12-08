@@ -38,6 +38,6 @@ class AppConstants {
   static const String iosAppId = '1:986930839057:ios:931a04b3aeb905de5cbbb0';
 
   ///DEV
-  static const String baseUrlDev =
-      'https://fortunica-backend-for-2268.fortunica.adviqodev.de';
+  // static const String baseUrlDev =
+  //     'https://fortunica-backend-for-2268.fortunica.adviqodev.de';
 }

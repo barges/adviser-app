@@ -60,10 +60,6 @@ class AppRoutes {
       page: () => const EditProfileScreen(),
     ),
     GetPage(
-      name: editProfile,
-      page: () => const EditProfileScreen(),
-    ),
-    GetPage(
       name: articleDetails,
       page: () => const ArticleDetailsScreen(),
     ),
@@ -85,7 +81,7 @@ class AppRoutes {
     ),
     GetPage(
       name: customerProfile,
-      page: () => const CustomerProfileScreen(),
+      page: () => CustomerProfileScreen(),
     ),
     GetPage(
       name: addNote,

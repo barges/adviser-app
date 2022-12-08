@@ -22,6 +22,7 @@ import 'package:shared_advisor_interface/presentation/services/dynamic_link_serv
 class LoginCubit extends Cubit<LoginState> {
   final AuthRepository _repository;
   final CachingManager _cacheManager;
+  final BuildContext context;
 
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final DynamicLinkService _dynamicLinkService =
@@ -33,7 +34,11 @@ class LoginCubit extends Cubit<LoginState> {
   final FocusNode emailNode = FocusNode();
   final FocusNode passwordNode = FocusNode();
 
-  LoginCubit(this._repository, this._cacheManager) : super(const LoginState()) {
+  LoginCubit(
+    this._repository,
+    this._cacheManager,
+    this.context,
+  ) : super(const LoginState()) {
     _dynamicLinkService.checkLinkForResetPassword();
 
     unauthorizedBrands = _cacheManager.getUnauthorizedBrands();
@@ -91,10 +96,10 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void clearSuccessMessage() {
-    if (state.successMessage.isNotEmpty) {
+    if (state.emailForResetPassword.isNotEmpty) {
       emit(
         state.copyWith(
-          successMessage: '',
+          emailForResetPassword: '',
         ),
       );
     }
@@ -117,13 +122,14 @@ class LoginCubit extends Cubit<LoginState> {
     } else {
       if (!emailIsValid()) {
         emit(
-          state.copyWith(emailErrorText: S.current.pleaseInsertCorrectEmail),
+          state.copyWith(
+              emailErrorText: S.of(context).pleaseInsertCorrectEmail,),
         );
       }
       if (!passwordIsValid()) {
         emit(
           state.copyWith(
-            passwordErrorText: S.current.pleaseEnterAtLeast6Characters,
+            passwordErrorText: S.of(context).pleaseEnterAtLeast6Characters,
           ),
         );
       }
@@ -138,18 +144,17 @@ class LoginCubit extends Cubit<LoginState> {
     clearErrorMessage();
     clearSuccessMessage();
 
-    final dynamic needShowSuccessMessage = await Get.toNamed(
+    final dynamic email = await Get.toNamed(
       AppRoutes.forgotPassword,
       arguments: ForgotPasswordScreenArguments(
         brand: state.selectedBrand,
       ),
     );
 
-    if (needShowSuccessMessage == true) {
+    if (email != null) {
       emit(
         state.copyWith(
-          successMessage:
-              S.current.youHaveSuccessfullyChangedYourPasswordCheckYourEmailTo,
+          emailForResetPassword: email as String,
         ),
       );
     }

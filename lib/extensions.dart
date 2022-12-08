@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:crypto/crypto.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 const String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
@@ -29,8 +31,9 @@ extension StringExt on String {
     return hash.toString();
   }
 
-  String get languageNameByCode {
-    switch (this) {
+  String languageNameByCode(BuildContext context) {
+    final String languageCode = substring(0, 2);
+    switch (languageCode) {
       case 'de':
         return AppConstants.deBrandName;
       case 'en':
@@ -40,7 +43,7 @@ extension StringExt on String {
       case 'pt':
         return AppConstants.ptBrandName;
       default:
-        return 'Other';
+        return S.of(context).other;
     }
   }
 
@@ -145,18 +148,18 @@ extension IterableExtention<E> on Iterable<E> {
 extension DateTimeExt on DateTime {
   String get chatListTime {
     DateTime now = DateTime.now();
-    DateTime localTime = toLocal();
+    DateTime localTime = now.isUtc ? toLocal() : this;
     int timeDifference =
         DateTime(localTime.year, localTime.month, localTime.day)
             .difference(DateTime(now.year, now.month, now.day))
             .inDays;
     if (timeDifference == 0) {
-      return DateFormat(dateFormat).format(this).parseDateTimePattern7;
+      return DateFormat(dateFormat).format(localTime).parseDateTimePattern7;
     }
     if (timeDifference < -365) {
-      return DateFormat(dateFormat).format(this).parseDateTimePattern9;
+      return DateFormat(dateFormat).format(localTime).parseDateTimePattern9;
     }
-    return DateFormat(dateFormat).format(this).parseDateTimePattern8;
+    return DateFormat(dateFormat).format(localTime).parseDateTimePattern8;
   }
 }
 

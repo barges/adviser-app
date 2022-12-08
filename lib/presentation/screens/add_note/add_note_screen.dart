@@ -32,6 +32,7 @@ class AddNoteScreen extends StatelessWidget {
             (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
 
         return Scaffold(
+          backgroundColor: Theme.of(context).canvasColor,
           appBar: WideAppBar(
             bottomWidget: Text(
               isNoteNew ? S.of(context).addNote : S.of(context).editNote,
@@ -53,84 +54,59 @@ class AddNoteScreen extends StatelessWidget {
                       errorMessage: S.of(context).youDontHaveInternetConnection,
                       isRequired: true,
                     ),
-              SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12.0,
-                  horizontal: AppConstants.horizontalScreenPadding,
-                ),
+              Expanded(
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       isNoteNew
                           ? const SizedBox.shrink()
-                          : Text(
-                              addNoteCubit
-                                  .arguments.updatedAt!.parseDateTimePattern2,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displaySmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w400,
-                                    color: Theme.of(context).shadowColor,
-                                  ),
+                          : Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal:
+                                    AppConstants.horizontalScreenPadding,
+                                vertical: 12.0,
+                              ),
+                              child: Text(
+                                addNoteCubit
+                                    .arguments.updatedAt!.parseDateTimePattern2,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displaySmall
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w400,
+                                      color: Theme.of(context).shadowColor,
+                                    ),
+                              ),
                             ),
-
-                      // Padding(
-                      // padding: const EdgeInsets.only(top: 12.0),
-                      // child: Builder(builder: (context) {
-                      // bool hadTitle = context
-                      // .select((AddNoteCubit cubit) => cubit.state.hadTitle);
-                      // if (hadTitle) {
-                      // return TextField(
-                      // controller: addNoteCubit.titleController,
-                      // autofocus: true,
-                      // style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      // fontWeight: FontWeight.w500,
-                      // ),
-                      // keyboardType: TextInputType.multiline,
-                      // maxLines: null,
-                      // scrollPadding: EdgeInsets.zero,
-                      // cursorColor: Theme.of(context).hoverColor,
-                      // decoration: const InputDecoration(
-                      // border: InputBorder.none,
-                      // focusedBorder: InputBorder.none,
-                      // enabledBorder: InputBorder.none,
-                      // errorBorder: InputBorder.none,
-                      // disabledBorder: InputBorder.none,
-                      // contentPadding: EdgeInsets.zero,
-                      // ),
-                      // );
-                      // } else {
-                      // return GestureDetector(
-                      // onTap: (() {
-                      // addNoteCubit.addTitle();
-                      // }),
-                      // child: Text(S.of(context).title,
-                      // style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      // fontWeight: FontWeight.w500,
-                      // color: Theme.of(context).shadowColor)));
-                      // }
-                      // }),
-                      // ),
-
-                      TextField(
-                        controller: addNoteCubit.noteController,
-                        style: Theme.of(context)
-                            .textTheme
-                            .displayLarge
-                            ?.copyWith(fontWeight: FontWeight.w400),
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        autofocus: true,
-                        scrollPadding: EdgeInsets.zero,
-                        cursorColor: Theme.of(context).hoverColor,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                          contentPadding: EdgeInsets.zero,
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: TextField(
+                            controller: addNoteCubit.noteController,
+                            scrollController:
+                                addNoteCubit.textFieldScrollController,
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayLarge
+                                ?.copyWith(fontWeight: FontWeight.w400),
+                            keyboardType: TextInputType.multiline,
+                            minLines: null,
+                            maxLines: null,
+                            autofocus: true,
+                            scrollPadding: EdgeInsets.zero,
+                            cursorColor: Theme.of(context).hoverColor,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              contentPadding: EdgeInsets.only(
+                                left: AppConstants.horizontalScreenPadding,
+                                right: AppConstants.horizontalScreenPadding,
+                                bottom: 12.0,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                       Padding(

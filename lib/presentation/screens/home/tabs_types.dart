@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -7,14 +6,12 @@ import 'package:shared_advisor_interface/presentation/screens/home/tabs/articles
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/dashboard_v1_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_screen.dart';
 
-enum TabsTypes{
+enum TabsTypes {
   dashboard,
   articles,
   sessions,
-  account
-}
+  account;
 
-extension TabsTypesExt on TabsTypes {
   String get tabName {
     switch (this) {
       case TabsTypes.dashboard:
@@ -48,7 +45,7 @@ extension TabsTypesExt on TabsTypes {
             onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
                 builder: (BuildContext context) => const DashboardV1Screen()));
       case TabsTypes.articles:
-        return  Navigator(
+        return Navigator(
             onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
                 builder: (BuildContext context) => const ArticlesScreen()));
       case TabsTypes.sessions:

@@ -104,9 +104,7 @@ class ProfileImageWidget extends StatelessWidget {
                                     maxVisibleDots: 7,
                                     dotWidth: 8.0,
                                     dotHeight: 8.0,
-                                    dotColor:
-                                        Theme.of(context).iconTheme.color ??
-                                            Colors.grey,
+                                    dotColor: Theme.of(context).hintColor,
                                     activeDotColor:
                                         Theme.of(context).primaryColor,
                                   ),
@@ -129,12 +127,20 @@ class ProfileImageWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: 10.0, horizontal: 16.0),
-                child: Text(
-                  S.current.changePhoto,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.w500),
-                ),
+                child: Builder(builder: (context) {
+                  context
+                      .select((EditProfileCubit cubit) => cubit.state.avatar);
+                  final List<String> profileImages =
+                      cubit.userProfile?.profilePictures ?? [];
+                  return Text(
+                    profileImages.isNotEmpty
+                        ? S.current.changePhoto
+                        : S.current.addPhoto,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.w500),
+                  );
+                }),
               ),
             )
           ],
@@ -148,9 +154,11 @@ class ProfileImageWidget extends StatelessWidget {
               left: 16.0,
               bottom: 0.0,
               child: UserAvatar(
+                key: cubit.profileAvatarKey,
                 imageFile: avatar,
                 avatarUrl: profileImages.firstOrNull,
                 withBorder: true,
+                withError: profileImages.isEmpty && avatar == null,
               ));
         })
       ],

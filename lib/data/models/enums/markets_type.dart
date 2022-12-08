@@ -7,10 +7,8 @@ enum MarketsType {
   en,
   es,
   pt,
-  all,
-}
+  all;
 
-extension MarketsTypeExt on MarketsType {
   String get flagImagePath {
     switch (this) {
       case MarketsType.de:

@@ -27,6 +27,7 @@ Future<void> showOkCancelBottomSheet({
                 okButtonText,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w500,
+                      color: Theme.of(context).errorColor,
                     ),
               )),
             ),
