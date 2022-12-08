@@ -37,7 +37,7 @@ class MarketFilterWidget extends StatelessWidget {
                     children: [
                       if (element.flagImagePath.isNotEmpty)
                         Image.asset(element.flagImagePath),
-                      Text(element.languageName),
+                      Text(element.languageName(context)),
                     ],
                   );
                 }).toList(),
@@ -63,11 +63,11 @@ class MarketFilterWidget extends StatelessWidget {
                       borderRadius:
                           BorderRadius.circular(AppConstants.buttonRadius)),
                   child: Row(
-                    mainAxisSize:MainAxisSize.max,
+                    mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '${S.of(context).market} ${currentMarket.languageName}',
+                        '${S.of(context).market} ${currentMarket.languageName(context)}',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: isNotAllTypeMarket
                                   ? Theme.of(context).primaryColor

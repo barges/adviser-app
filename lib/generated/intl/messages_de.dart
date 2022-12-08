@@ -53,7 +53,9 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Sind Sie sicher, dass Sie Ihren Status auf Offline ändern möchten?"),
         "articles": MessageLookupByLibrary.simpleMessage("Artikel"),
         "ascendant": MessageLookupByLibrary.simpleMessage("Aufsteigend"),
+        "astrology": MessageLookupByLibrary.simpleMessage("Astrologie"),
         "audioMessage": MessageLookupByLibrary.simpleMessage("Audio-Nachricht"),
+        "auraReading": MessageLookupByLibrary.simpleMessage("Aura-Lesen"),
         "avgDailyEarnings":
             MessageLookupByLibrary.simpleMessage("Durchschn Tagesverdienst"),
         "back": MessageLookupByLibrary.simpleMessage("Zurück"),
@@ -137,6 +139,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "live": MessageLookupByLibrary.simpleMessage("Live"),
         "logOut": MessageLookupByLibrary.simpleMessage("Ausloggen"),
         "login": MessageLookupByLibrary.simpleMessage("Einloggen"),
+        "loveCrushReading":
+            MessageLookupByLibrary.simpleMessage("Liebes-Crush-Lesen"),
         "loyalUsers": MessageLookupByLibrary.simpleMessage("Treue Benutzer"),
         "male": MessageLookupByLibrary.simpleMessage("Männlich"),
         "mandatory": MessageLookupByLibrary.simpleMessage("Obligatorisch"),
@@ -174,6 +178,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("E-Mail-App öffnen"),
         "other": MessageLookupByLibrary.simpleMessage("Sonstiges"),
         "otherBrands": MessageLookupByLibrary.simpleMessage("Andere Marken"),
+        "palmReading": MessageLookupByLibrary.simpleMessage("Handlesen"),
         "password": MessageLookupByLibrary.simpleMessage("Passwort"),
         "peopleHelped":
             MessageLookupByLibrary.simpleMessage("Menschen haben geholfen"),
@@ -198,15 +203,19 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Keine Angabe"),
         "previewAccount":
             MessageLookupByLibrary.simpleMessage("Konto Vorschau"),
+        "private": MessageLookupByLibrary.simpleMessage("Privatgelände"),
         "privateQuestions":
             MessageLookupByLibrary.simpleMessage("Private Fragen"),
         "profile": MessageLookupByLibrary.simpleMessage("Profil"),
         "profileText": MessageLookupByLibrary.simpleMessage("Profiltext"),
         "public": MessageLookupByLibrary.simpleMessage("Öffentlichkeit"),
+        "question": MessageLookupByLibrary.simpleMessage("Frage"),
         "questionProperties":
             MessageLookupByLibrary.simpleMessage("Eigenschaften hinterfragen"),
+        "questions": MessageLookupByLibrary.simpleMessage("Fragen"),
         "quickAnswers":
             MessageLookupByLibrary.simpleMessage("Schnelle Antworten"),
+        "reading360": MessageLookupByLibrary.simpleMessage("360°-Lesen"),
         "recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min":
             MessageLookupByLibrary.simpleMessage(
                 "Recording stopped because audio file is reached the limit of 3min"),
@@ -217,11 +226,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "resources": MessageLookupByLibrary.simpleMessage("Ressourcen"),
         "return_": MessageLookupByLibrary.simpleMessage("Return"),
         "reviews": MessageLookupByLibrary.simpleMessage("Bewertungen"),
+        "ritual": MessageLookupByLibrary.simpleMessage("Ritual"),
         "sales": MessageLookupByLibrary.simpleMessage("Verkauf"),
         "save": MessageLookupByLibrary.simpleMessage("Speichern"),
         "search": MessageLookupByLibrary.simpleMessage("Suche"),
         "seeMore": MessageLookupByLibrary.simpleMessage("Mehr sehen"),
         "services": MessageLookupByLibrary.simpleMessage("Dienstleistungen"),
+        "session": MessageLookupByLibrary.simpleMessage("Sitzung"),
         "sessions": MessageLookupByLibrary.simpleMessage("Sitzungen"),
         "settings": MessageLookupByLibrary.simpleMessage("Einstellungen"),
         "signIn": MessageLookupByLibrary.simpleMessage("Einloggen"),
@@ -232,6 +243,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "takeAPhoto": MessageLookupByLibrary.simpleMessage("Mach ein Foto"),
         "takeMeThere": MessageLookupByLibrary.simpleMessage("Bring mich dahin"),
         "takeQuestion": MessageLookupByLibrary.simpleMessage("Frage stellen"),
+        "tarot": MessageLookupByLibrary.simpleMessage("Tarot"),
         "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m":
             MessageLookupByLibrary.simpleMessage(
                 "The answer is not possible, this question will be returned to the general list in ~ 1m"),
@@ -241,11 +253,15 @@ class MessageLookup extends MessageLookupByLibrary {
             "Die Passwörter müssen übereinstimmen"),
         "theUserWasNotFound": MessageLookupByLibrary.simpleMessage(
             "Der Benutzer wurde nicht gefunden"),
+        "thisFilteringOptionDoesntContainAnySessions":
+            MessageLookupByLibrary.simpleMessage(
+                "Diese Filteroption enthält keine Sitzungen"),
         "thisMonth": MessageLookupByLibrary.simpleMessage("Diesen Monat"),
         "thisQuestionWillBeReturnedToTheGeneralListAfterCounter":
             MessageLookupByLibrary.simpleMessage(
                 "This question will be returned to the general list after"),
         "thisWeek": MessageLookupByLibrary.simpleMessage("In dieser Woche"),
+        "tips": MessageLookupByLibrary.simpleMessage("Tipps"),
         "title": MessageLookupByLibrary.simpleMessage("Titel"),
         "toReadItBeforeYourAccountWillGetBlocked":
             MessageLookupByLibrary.simpleMessage(
@@ -262,6 +278,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "uhohNoNetworkNcheckYourInternetConnection":
             MessageLookupByLibrary.simpleMessage(
                 "Uh-oh, kein Netzwerk... \nÜberprüfen Sie Ihre Internetverbindung"),
+        "weDidntFindAnything":
+            MessageLookupByLibrary.simpleMessage("Wir haben nichts gefunden"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "Wir sind stolz darauf, Beratern einen sicheren Ort zu bieten, an dem sie Kunden bedienen und sich beruflich weiterentwickeln können. Gute Arbeit bei einer unserer Marken zu leisten, wird Türen zu anderen öffnen"),
@@ -272,8 +290,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "whenYouHelpYourFirstClientYouWillSeeYour":
             MessageLookupByLibrary.simpleMessage(
                 "Wenn Sie Ihrem ersten Kunden helfen, sehen Sie hier Ihren Sitzungsverlauf."),
-        "willBeAvailableInAnHour": MessageLookupByLibrary.simpleMessage(
-            "Wird in einer Stunde verfügbar sein"),
+        "willBeAvailableIn":
+            MessageLookupByLibrary.simpleMessage("Wird verfügbar sein in"),
         "workspaces": MessageLookupByLibrary.simpleMessage("Arbeitsbereiche"),
         "wrongUsernameOrPassword": MessageLookupByLibrary.simpleMessage(
             "Falscher Benutzername oder falsches Passwort"),

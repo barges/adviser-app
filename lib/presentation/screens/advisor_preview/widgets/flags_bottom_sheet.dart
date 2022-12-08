@@ -114,7 +114,7 @@ class _FlagTileWidget extends StatelessWidget {
               Image.asset(languageCode.flagImagePath),
               const SizedBox(width: 8.0),
               Text(
-                languageCode.languageName,
+                languageCode.languageName(context),
                 style: displayLarge?.copyWith(color: secondary),
               ),
             ],

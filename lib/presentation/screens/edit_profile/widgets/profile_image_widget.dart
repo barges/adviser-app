@@ -55,7 +55,7 @@ class ProfileImageWidget extends StatelessWidget {
                                   color: Theme.of(context).primaryColor,
                                 ),
                                 const SizedBox(width: 6.0),
-                                Text(S.current.addCoverPicture,
+                                Text(S.of(context).addCoverPicture,
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleMedium
@@ -134,8 +134,8 @@ class ProfileImageWidget extends StatelessWidget {
                       cubit.userProfile?.profilePictures ?? [];
                   return Text(
                     profileImages.isNotEmpty
-                        ? S.current.changePhoto
-                        : S.current.addPhoto,
+                        ? S.of(context).changePhoto
+                        : S.of(context).addPhoto,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.w500),

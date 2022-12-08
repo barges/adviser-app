@@ -12,7 +12,6 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/drawer_cubit.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
-import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 
 class BrandItem extends StatelessWidget {
   final Brand brand;

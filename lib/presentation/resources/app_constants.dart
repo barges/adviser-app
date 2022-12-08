@@ -10,6 +10,7 @@ class AppConstants {
 
   static const int minRecordDurationInSec = 15;
   static const int maxRecordDurationInSec = 180;
+  static const int questionsLimit = 20;
 
   static const int minTextLengthPublic = 250;
   static const int maxTextLengthPublic = 1000;

@@ -82,8 +82,6 @@ class AddNoteScreen extends StatelessWidget {
                         child: SingleChildScrollView(
                           child: TextField(
                             controller: addNoteCubit.noteController,
-                            scrollController:
-                                addNoteCubit.textFieldScrollController,
                             style: Theme.of(context)
                                 .textTheme
                                 .displayLarge

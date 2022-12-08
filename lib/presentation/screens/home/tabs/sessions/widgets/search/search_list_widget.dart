@@ -38,7 +38,8 @@ class SearchListWidget extends StatelessWidget {
           }
         },
         child: Builder(builder: (context) {
-          final SearchListCubit searchListCubit = context.read<SearchListCubit>();
+          final SearchListCubit searchListCubit =
+              context.read<SearchListCubit>();
           return SafeArea(
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -80,7 +81,8 @@ class SearchListWidget extends StatelessWidget {
                     child: Container(
                       color: Theme.of(context).canvasColor,
                       child: ListView.separated(
-                        controller: searchListCubit.conversationsScrollController,
+                        controller:
+                            searchListCubit.conversationsScrollController,
                         padding: const EdgeInsets.all(
                           AppConstants.horizontalScreenPadding,
                         ),
@@ -89,6 +91,8 @@ class SearchListWidget extends StatelessWidget {
                           return GestureDetector(
                             onTap: () {
                               FocusScope.of(context).unfocus();
+                              searchListCubit.goToCustomerSessions(
+                                  conversationsList[index]);
                             },
                             child: SizedBox(
                               height: 42.0,

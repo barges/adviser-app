@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -24,7 +25,7 @@ enum MarketsType {
     }
   }
 
-  String get languageName {
+  String languageName(BuildContext context) {
     switch (this) {
       case MarketsType.de:
         return AppConstants.deBrandName;
@@ -35,7 +36,7 @@ enum MarketsType {
       case MarketsType.pt:
         return AppConstants.ptBrandName;
       case MarketsType.all:
-        return S.current.allType;
+        return S.of(context).allType;
     }
   }
 }

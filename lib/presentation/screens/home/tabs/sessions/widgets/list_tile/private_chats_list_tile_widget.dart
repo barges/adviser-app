@@ -4,9 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/list_tile_content_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/list_tile/list_tile_content_widget.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class PrivateChatsListTileWidget extends StatelessWidget {
@@ -46,7 +46,7 @@ class PrivateChatsListTileWidget extends StatelessWidget {
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
-                sessionsCubit.goToChat(question);
+                sessionsCubit.goToCustomerSessions(question);
               },
               child: Column(
                 mainAxisSize: MainAxisSize.min,

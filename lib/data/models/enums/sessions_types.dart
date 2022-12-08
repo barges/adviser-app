@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 
 enum SessionsTypes {
   public,
@@ -15,39 +17,39 @@ enum SessionsTypes {
   tipsHigh,
   tips;
 
-  String get sessionName {
+  String sessionName(BuildContext context) {
     switch (this) {
       case SessionsTypes.public:
-        return 'Public';
+        return S.of(context).public;
       case SessionsTypes.private:
-        return 'Private';
+        return S.of(context).private;
       case SessionsTypes.tarot:
-        return 'Tarot';
+        return S.of(context).tarot;
       case SessionsTypes.palmreading:
-        return 'Palm';
+        return S.of(context).palmReading;
       case SessionsTypes.astrology:
-        return 'Astrology';
+        return S.of(context).astrology;
       case SessionsTypes.reading360:
-        return '360° Reading';
+        return S.of(context).reading360;
       case SessionsTypes.aurareading:
-        return 'Aura Reading';
+        return S.of(context).auraReading;
       case SessionsTypes.lovecrushreading:
-        return 'Love Crush Reading';
+        return S.of(context).loveCrushReading;
       case SessionsTypes.ritual:
-        return 'Ritual';
+        return S.of(context).ritual;
       case SessionsTypes.tipsLow:
       case SessionsTypes.tipsMedium:
       case SessionsTypes.tipsHigh:
       case SessionsTypes.tips:
-        return 'Tips';
+        return S.of(context).tips;
     }
   }
 
-  String get sessionNameForStatistics {
+  String sessionNameForStatistics(context) {
     switch (this) {
       case SessionsTypes.public:
       case SessionsTypes.private:
-        return '$sessionName Questions';
+        return '${sessionName(context)} ${S.of(context).questions}';
       case SessionsTypes.tarot:
       case SessionsTypes.palmreading:
       case SessionsTypes.astrology:
@@ -55,12 +57,12 @@ enum SessionsTypes {
       case SessionsTypes.aurareading:
       case SessionsTypes.lovecrushreading:
       case SessionsTypes.ritual:
-        return '$sessionName Sessions';
+        return '${sessionName(context)} ${S.of(context).sessions}';
       case SessionsTypes.tipsLow:
       case SessionsTypes.tipsMedium:
       case SessionsTypes.tipsHigh:
       case SessionsTypes.tips:
-        return sessionName;
+        return sessionName(context);
     }
   }
 

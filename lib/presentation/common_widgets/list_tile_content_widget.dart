@@ -23,11 +23,15 @@ class ListTileContentWidget extends StatelessWidget {
     Widget widget = const SizedBox();
     switch (contentType) {
       case ChatItemContentType.text:
-        widget = _TextContent(text: question.content ?? '');
+        widget = _TextContent(
+          text: question.content ?? '',
+          hasUnanswered: question.hasUnanswered,
+        );
         break;
       case ChatItemContentType.media:
         widget = _MediaContent(
           attachment: question.attachments!.first,
+          hasUnanswered: question.hasUnanswered,
         );
         break;
       case ChatItemContentType.mediaText:
@@ -35,12 +39,16 @@ class ListTileContentWidget extends StatelessWidget {
           children: [
             _MediaContent(
               attachment: question.attachments!.first,
+              hasUnanswered: question.hasUnanswered,
             ),
             const SizedBox(
               width: 8.0,
             ),
-            _TextContent(
-              text: question.content ?? '',
+            Expanded(
+              child: _TextContent(
+                text: question.content ?? '',
+                hasUnanswered: question.hasUnanswered,
+              ),
             ),
           ],
         );
@@ -56,6 +64,7 @@ class ListTileContentWidget extends StatelessWidget {
             ),
             _TextContent(
               text: question.content ?? '',
+              hasUnanswered: question.hasUnanswered,
             ),
           ],
         );
@@ -73,10 +82,12 @@ class ListTileContentWidget extends StatelessWidget {
 
 class _TextContent extends StatelessWidget {
   final String text;
+  final bool? hasUnanswered;
 
   const _TextContent({
     Key? key,
     required this.text,
+    this.hasUnanswered,
   }) : super(key: key);
 
   @override
@@ -88,7 +99,9 @@ class _TextContent extends StatelessWidget {
       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w400,
             fontSize: 14.0,
-            color: Theme.of(context).shadowColor,
+            color: (hasUnanswered != null && hasUnanswered!)
+                ? AppColors.promotion
+                : Theme.of(context).shadowColor,
           ),
     );
   }
@@ -96,10 +109,12 @@ class _TextContent extends StatelessWidget {
 
 class _MediaContent extends StatelessWidget {
   final Attachment attachment;
+  final bool? hasUnanswered;
 
   const _MediaContent({
     Key? key,
     required this.attachment,
+    this.hasUnanswered,
   }) : super(key: key);
 
   @override
@@ -134,7 +149,9 @@ class _MediaContent extends StatelessWidget {
             S.of(context).audioMessage,
             style: theme.textTheme.bodyMedium?.copyWith(
               fontSize: 14.0,
-              color: AppColors.promotion,
+              color: (hasUnanswered != null && hasUnanswered!)
+                  ? AppColors.promotion
+                  : Theme.of(context).shadowColor,
             ),
           )
       ],

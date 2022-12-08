@@ -860,11 +860,11 @@ class S {
     );
   }
 
-  /// `Will be available in an hour`
-  String get willBeAvailableInAnHour {
+  /// `Will be available in`
+  String get willBeAvailableIn {
     return Intl.message(
-      'Will be available in an hour',
-      name: 'willBeAvailableInAnHour',
+      'Will be available in',
+      name: 'willBeAvailableIn',
       desc: '',
       args: [],
     );
@@ -1790,11 +1790,151 @@ class S {
     );
   }
 
+  /// `We didn’t find anything`
+  String get weDidntFindAnything {
+    return Intl.message(
+      'We didn’t find anything',
+      name: 'weDidntFindAnything',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This filtering option doesn’t contain any sessions`
+  String get thisFilteringOptionDoesntContainAnySessions {
+    return Intl.message(
+      'This filtering option doesn’t contain any sessions',
+      name: 'thisFilteringOptionDoesntContainAnySessions',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Other`
   String get other {
     return Intl.message(
       'Other',
       name: 'other',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private`
+  String get private {
+    return Intl.message(
+      'Private',
+      name: 'private',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tarot`
+  String get tarot {
+    return Intl.message(
+      'Tarot',
+      name: 'tarot',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Palm Reading`
+  String get palmReading {
+    return Intl.message(
+      'Palm Reading',
+      name: 'palmReading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Astrology`
+  String get astrology {
+    return Intl.message(
+      'Astrology',
+      name: 'astrology',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `360° Reading`
+  String get reading360 {
+    return Intl.message(
+      '360° Reading',
+      name: 'reading360',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Aura Reading`
+  String get auraReading {
+    return Intl.message(
+      'Aura Reading',
+      name: 'auraReading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Love Crush Reading`
+  String get loveCrushReading {
+    return Intl.message(
+      'Love Crush Reading',
+      name: 'loveCrushReading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ritual`
+  String get ritual {
+    return Intl.message(
+      'Ritual',
+      name: 'ritual',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tips`
+  String get tips {
+    return Intl.message(
+      'Tips',
+      name: 'tips',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Questions`
+  String get questions {
+    return Intl.message(
+      'Questions',
+      name: 'questions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Question`
+  String get question {
+    return Intl.message(
+      'Question',
+      name: 'question',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Session`
+  String get session {
+    return Intl.message(
+      'Session',
+      name: 'session',
       desc: '',
       args: [],
     );
