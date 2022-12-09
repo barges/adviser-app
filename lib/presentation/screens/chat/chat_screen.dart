@@ -242,10 +242,7 @@ class _ActiveChat extends StatelessWidget {
           final ChatItemStatusType? questionStatus =
               context.select((ChatCubit cubit) => cubit.state.questionStatus);
 
-          if (!isInputField) {
-            return const SizedBox.shrink();
-          }
-          if (questionStatus != ChatItemStatusType.taken) {
+          if (!isInputField || questionStatus != ChatItemStatusType.taken) {
             return const SizedBox.shrink();
           }
           return Container(

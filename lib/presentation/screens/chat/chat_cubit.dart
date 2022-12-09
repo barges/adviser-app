@@ -42,8 +42,10 @@ class ChatCubit extends Cubit<ChatState> {
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final Codec _codec = Codec.aacMP4;
   final FileExtantion _recordFileExt = CurrentFileExt.current;
-  final int _tillShowMessagesInSec = AppConstants.tillShowMessagesInSec;
-  final int _afterShowMessagesInSec = AppConstants.afterShowMessagesInSec;
+  final int _tillShowMessagesInSec =
+      AppConstants.tillShowAnswerTimingMessagesInSec;
+  final int _afterShowMessagesInSec =
+      AppConstants.afterShowAnswerTimingMessagesInSec;
   final int _limit = 25;
   int _offset = 0;
   int? _total;
@@ -64,9 +66,9 @@ class ChatCubit extends Cubit<ChatState> {
   ) : super(const ChatState()) {
     questionFromArguments = Get.arguments;
     _init();
-    _getData().whenComplete(_checkTiming);
     _setQuestionStatus(
         questionFromArguments?.status ?? ChatItemStatusType.open);
+    _getData().whenComplete(_checkTiming);
   }
 
   @override
