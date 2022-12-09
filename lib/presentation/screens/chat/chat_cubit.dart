@@ -15,7 +15,6 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/file_ext.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
@@ -29,6 +28,8 @@ import 'chat_state.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:audio_session/audio_session.dart';
 
+const _recordFileExt = 'm4a';
+
 class ChatCubit extends Cubit<ChatState> {
   final ScrollController activeMessagesScrollController = ScrollController();
   final ScrollController historyMessagesScrollController = ScrollController();
@@ -41,7 +42,6 @@ class ChatCubit extends Cubit<ChatState> {
   final BuildContext _context;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final Codec _codec = Codec.aacMP4;
-  final FileExtantion _recordFileExt = CurrentFileExt.current;
   final int _tillShowMessagesInSec =
       AppConstants.tillShowAnswerTimingMessagesInSec;
   final int _afterShowMessagesInSec =
@@ -264,7 +264,7 @@ class ChatCubit extends Cubit<ChatState> {
       return;
     }
 
-    final fileName = '${AppConstants.recordFileName}.${_recordFileExt.name}';
+    const fileName = '${AppConstants.recordFileName}.$_recordFileExt';
     await _recorder?.startRecorder(
       toFile: fileName,
       codec: _codec,

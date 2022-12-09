@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -15,18 +16,12 @@ class ChatConversationAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   final String title;
   final ZodiacSign? zodiacSign;
-  final String? backIcon;
-  final String? backButtonText;
-  final VoidCallback? backButtonOnTap;
   final VoidCallback? returnInQueueButtonOnTap;
 
   const ChatConversationAppBar({
     Key? key,
     required this.title,
     this.zodiacSign,
-    this.backButtonText,
-    this.backIcon,
-    this.backButtonOnTap,
     this.returnInQueueButtonOnTap,
   }) : super(key: key);
 
@@ -58,8 +53,8 @@ class ChatConversationAppBar extends StatelessWidget
               ),
             if (questionStatus != ChatItemStatusType.taken)
               AppIconButton(
-                icon: backIcon ?? Assets.vectors.arrowLeft.path,
-                onTap: backButtonOnTap ?? Get.back,
+                icon: Assets.vectors.arrowLeft.path,
+                onTap: Get.back,
               ),
             Builder(builder: (context) {
               final Brand selectedBrand =
@@ -128,7 +123,7 @@ class _ReturnInQueue extends StatelessWidget {
           width: 8.0,
         ),
         Text(
-          'RETURN\nIN QUEUE',
+          S.of(context).returnInQueue,
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
                 color: Theme.of(context).primaryColor,
                 fontSize: 12.0,

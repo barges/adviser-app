@@ -16,7 +16,6 @@ import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_a
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_succes_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/show_return_in_queue_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_media_widget.dart';
@@ -45,6 +44,7 @@ class ChatScreen extends StatelessWidget {
       ),
       child: Builder(
         builder: (context) {
+          final s = S.of(context);
           final ChatCubit chatCubit = context.read<ChatCubit>();
 
           return Scaffold(
@@ -53,7 +53,16 @@ class ChatScreen extends StatelessWidget {
                 zodiacSign:
                     chatCubit.questionFromArguments?.clientInformation?.zodiac,
                 returnInQueueButtonOnTap: () async {
-                  if ((await showReturnInQueueAlert(context))!) {
+                  if ((await showOkCancelAlert(
+                    context: context,
+                    title: s.youRefuseToAnswerThisQuestion,
+                    description: s
+                        .itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain,
+                    okText: s.ok,
+                    actionOnOK: () => Navigator.pop(context, true),
+                    allowBarrierClock: false,
+                    isCancelEnabled: true,
+                  ))!) {
                     await chatCubit.returnQuestion();
                     Get.back();
                   }

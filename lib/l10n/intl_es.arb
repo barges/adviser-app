@@ -186,6 +186,7 @@
   "question": "Pregunta",
   "session": "Sesión",
   "return_": "Return",
+  "returnInQueue": "RETURN\nIN QUEUE",
   "checkYourInternetConnection": "Check your internet connection",
   "youCantSendThisMessageBecauseItsLessThan15Seconds": "You can’t send this message because it’s less than 15 seconds",
   "recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min": "Recording stopped because audio file is reached the limit of 3min",

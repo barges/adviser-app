@@ -1490,6 +1490,16 @@ class S {
     );
   }
 
+  /// `RETURN\nIN QUEUE`
+  String get returnInQueue {
+    return Intl.message(
+      'RETURN\nIN QUEUE',
+      name: 'returnInQueue',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `You don’t have internet connection`
   String get youDontHaveInternetConnection {
     return Intl.message(

@@ -19,6 +19,7 @@ class CustomerSessionListTileWidget extends StatelessWidget {
     final CustomerSessionsCubit customerSessionsCubit =
         context.read<CustomerSessionsCubit>();
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () {
         customerSessionsCubit.goToChat(question);
       },
