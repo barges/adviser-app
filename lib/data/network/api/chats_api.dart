@@ -79,4 +79,9 @@ abstract class ChatsApi {
   Future<ChatItem> takeQuestion(
     @Body() AnswerRequest request,
   );
+
+  @POST('/questions/return')
+  Future<ChatItem> returnQuestion(
+    @Body() AnswerRequest request,
+  );
 }

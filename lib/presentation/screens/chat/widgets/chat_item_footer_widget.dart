@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
 import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
+import 'package:shared_advisor_interface/extensions.dart';
 
 class ChatItemFooterWidget extends StatelessWidget {
   final ChatItemType type;
@@ -44,7 +45,7 @@ class ChatItemFooterWidget extends StatelessWidget {
             ),
           ),
         Text(
-          '${createdAt.hour}:${createdAt.minute}',
+          createdAt.chatListTime.toString(),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: color,
                 fontSize: 12.0,

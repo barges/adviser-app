@@ -13,6 +13,8 @@ import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_succes_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
@@ -37,18 +39,34 @@ class ChatScreen extends StatelessWidget {
       create: (_) => ChatCubit(
         getIt.get<CachingManager>(),
         getIt.get<ChatsRepository>(),
-          () => showAlert(context),
+        () => showAlert(context),
+        context,
       ),
       child: Builder(
         builder: (context) {
+          final s = S.of(context);
           final ChatCubit chatCubit = context.read<ChatCubit>();
 
           return Scaffold(
             appBar: ChatConversationAppBar(
-              title: chatCubit.questionFromArguments?.clientName ?? '',
-              zodiacSign:
-                  chatCubit.questionFromArguments?.clientInformation?.zodiac,
-            ),
+                title: chatCubit.questionFromArguments?.clientName ?? '',
+                zodiacSign:
+                    chatCubit.questionFromArguments?.clientInformation?.zodiac,
+                returnInQueueButtonOnTap: () async {
+                  if ((await showOkCancelAlert(
+                    context: context,
+                    title: s.youRefuseToAnswerThisQuestion,
+                    description: s
+                        .itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain,
+                    okText: s.ok,
+                    actionOnOK: () => Navigator.pop(context, true),
+                    allowBarrierClock: false,
+                    isCancelEnabled: true,
+                  ))!) {
+                    await chatCubit.returnQuestion();
+                    Get.back();
+                  }
+                }),
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             body: SafeArea(
               child: Builder(builder: (context) {
@@ -75,6 +93,30 @@ class ChatScreen extends StatelessWidget {
                         onChangeOptionIndex: chatCubit.changeCurrentTabIndex,
                       ),
                     ),
+                    Builder(
+                      builder: (BuildContext context) {
+                        final String message = context.select(
+                            (ChatCubit cubit) => cubit.state.successMessage);
+                        return message.isNotEmpty
+                            ? AppSuccessWidget(
+                                message: message,
+                                onClose: chatCubit.clearSuccessMessage,
+                              )
+                            : const SizedBox.shrink();
+                      },
+                    ),
+                    Builder(
+                      builder: (context) {
+                        final String errorMessage = context.select(
+                            (ChatCubit cubit) => cubit.state.errorMessage);
+                        return errorMessage.isNotEmpty
+                            ? AppErrorWidget(
+                                errorMessage: errorMessage,
+                                close: chatCubit.clearErrorMessage,
+                              )
+                            : const SizedBox.shrink();
+                      },
+                    ),
                     Expanded(
                       child: IndexedStack(
                         index: currentIndex,
@@ -98,17 +140,16 @@ class ChatScreen extends StatelessWidget {
     );
   }
 
-
   showAlert(BuildContext context) async {
     await showOkCancelAlert(
-        context: context,
-        title: getIt.get<MainCubit>().state.errorMessage,
-        okText: S.of(context).ok,
-    actionOnOK: () {
-    Get.close(2);
-    },
-    allowBarrierClock: false,
-    isCancelEnabled: false,
+      context: context,
+      title: getIt.get<MainCubit>().state.errorMessage,
+      okText: S.of(context).ok,
+      actionOnOK: () {
+        Get.close(2);
+      },
+      allowBarrierClock: false,
+      isCancelEnabled: false,
     );
   }
 }
@@ -179,9 +220,12 @@ class _ActiveChat extends StatelessWidget {
               ),
               Builder(
                 builder: (context) {
+                  final bool isInputField = context
+                      .select((ChatCubit cubit) => cubit.state.isInputField);
                   final ChatItemStatusType? questionStatus = context
                       .select((ChatCubit cubit) => cubit.state.questionStatus);
-                  if (questionStatus == ChatItemStatusType.taken) {
+                  if (isInputField &&
+                      questionStatus == ChatItemStatusType.taken) {
                     return const Positioned(
                       bottom: 0.0,
                       right: 0.0,
@@ -217,66 +261,71 @@ class _ActiveChat extends StatelessWidget {
             ],
           ),
         ),
-        Container(
-          color: Theme.of(context).canvasColor,
-          child: Stack(
-            children: [
-              Builder(
-                builder: (context) {
-                  final bool isRecordingAudio = context.select(
-                      (ChatCubit cubit) => cubit.state.isRecordingAudio);
-                  final bool isAudioFileSaved = context.select(
-                      (ChatCubit cubit) => cubit.state.isAudioFileSaved);
-                  final isPlayingRecordedAudio = context.select(
-                      (ChatCubit cubit) => cubit.state.isPlayingRecordedAudio);
+        Builder(builder: (context) {
+          final bool isInputField =
+              context.select((ChatCubit cubit) => cubit.state.isInputField);
+          final ChatItemStatusType? questionStatus =
+              context.select((ChatCubit cubit) => cubit.state.questionStatus);
 
-                  if (isAudioFileSaved) {
-                    return ChatRecordedWidget(
-                      isPlaying: isPlayingRecordedAudio,
-                      playbackStream: chatCubit.state.playbackStream,
-                      onStartPlayPressed: () =>
-                          chatCubit.startPlayRecordedAudio(),
-                      onPausePlayPressed: () => chatCubit.pauseRecordedAudio(),
-                      onDeletePressed: () async {
-                        final bool? isDelete = await showDeleteAlert(
-                            context, S.of(context).doYouWantToDeleteImage);
-                        if (isDelete!) {
-                          chatCubit.deletedRecordedAudio();
-                        }
-                      },
-                      onSendPressed: () => chatCubit.sendMedia(),
-                    );
-                  }
+          if (!isInputField || questionStatus != ChatItemStatusType.taken) {
+            return const SizedBox.shrink();
+          }
+          return Container(
+            color: Theme.of(context).canvasColor,
+            child: Stack(
+              children: [
+                Builder(
+                  builder: (context) {
+                    final bool isRecordingAudio = context.select(
+                        (ChatCubit cubit) => cubit.state.isRecordingAudio);
+                    final bool isAudioFileSaved = context.select(
+                        (ChatCubit cubit) => cubit.state.isAudioFileSaved);
+                    final isPlayingRecordedAudio = context.select(
+                        (ChatCubit cubit) =>
+                            cubit.state.isPlayingRecordedAudio);
+                    final isSendButtonEnabled = context.select(
+                        (ChatCubit cubit) => cubit.state.isSendButtonEnabled);
 
-                  if (isRecordingAudio) {
-                    return ChatRecordingWidget(
-                      onClosePressed: () => chatCubit.cancelRecordingAudio(),
-                      onStopRecordPressed: () => chatCubit.stopRecordingAudio(),
-                      recordingStream: chatCubit.state.recordingStream,
-                    );
-                  } else {
-                    return Builder(
-                      builder: (context) {
-                        final ChatItemStatusType? questionStatus =
-                            context.select((ChatCubit cubit) =>
-                                cubit.state.questionStatus);
-                        if (questionStatus == ChatItemStatusType.taken) {
-                          return const ChatTextInputWidget();
-                        } else {
-                          return const SizedBox.shrink();
-                        }
-                      },
-                    );
-                  }
-                },
-              ),
-              const Divider(
-                height: 1.0,
-                endIndent: _textCounterWidth,
-              ),
-            ],
-          ),
-        ),
+                    if (isAudioFileSaved) {
+                      return ChatRecordedWidget(
+                        isPlaying: isPlayingRecordedAudio,
+                        playbackStream: chatCubit.state.playbackStream,
+                        onStartPlayPressed: () =>
+                            chatCubit.startPlayRecordedAudio(),
+                        onPausePlayPressed: () =>
+                            chatCubit.pauseRecordedAudio(),
+                        onDeletePressed: () async {
+                          if ((await showDeleteAlert(context,
+                              S.of(context).doYouWantToDeleteAudioMessage))!) {
+                            chatCubit.deletedRecordedAudio();
+                          }
+                        },
+                        onSendPressed: isSendButtonEnabled
+                            ? chatCubit.sendMediaAnswer
+                            : null,
+                      );
+                    }
+
+                    if (isRecordingAudio) {
+                      return ChatRecordingWidget(
+                        onClosePressed: () => chatCubit.cancelRecordingAudio(),
+                        onStopRecordPressed: () =>
+                            chatCubit.stopRecordingAudio(),
+                        recordingStream: chatCubit.state.recordingStream,
+                      );
+                    } else {
+                      return const ChatTextInputWidget();
+                    }
+                  },
+                ),
+                const Divider(
+                  height: 1.0,
+                  endIndent: _textCounterWidth,
+                ),
+              ],
+            ),
+          );
+        }),
       ],
     );
   }
@@ -367,12 +416,13 @@ class _TextCounter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ChatCubit chatCubit = context.read<ChatCubit>();
     final theme = Theme.of(context);
     return Builder(builder: (context) {
       final int inputTextLength =
           context.select((ChatCubit cubit) => cubit.state.inputTextLength);
-      final isEnabled = inputTextLength >= AppConstants.minTextLength &&
-          inputTextLength <= AppConstants.maxTextLength;
+      final isEnabled =
+          context.select((ChatCubit cubit) => cubit.state.isSendButtonEnabled);
       return Stack(
         children: [
           Container(
@@ -393,7 +443,7 @@ class _TextCounter extends StatelessWidget {
               padding: const EdgeInsets.all(4.0),
               child: Text(
                 textAlign: TextAlign.center,
-                '${AppConstants.maxTextLength}/$inputTextLength',
+                '$inputTextLength/${chatCubit.minTextLength}',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: isEnabled ? AppColors.online : theme.errorColor,
                   fontSize: 12.0,

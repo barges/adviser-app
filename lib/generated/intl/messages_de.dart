@@ -76,6 +76,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Passwort ändern"),
         "changePhoto": MessageLookupByLibrary.simpleMessage("Foto ändern"),
         "chats": MessageLookupByLibrary.simpleMessage("Chattet"),
+        "checkYourInternetConnection": MessageLookupByLibrary.simpleMessage(
+            "Check your internet connection"),
         "chooseBrand": MessageLookupByLibrary.simpleMessage("Marke wählen"),
         "chooseEmailApp":
             MessageLookupByLibrary.simpleMessage("Wählen Sie die E-Mail-App"),
@@ -129,6 +131,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Teilen Sie unserem Team Ihr geplantes Rückreisedatum mit:"),
         "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
+        "itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain":
+            MessageLookupByLibrary.simpleMessage(
+                "It will go back into the general queue and you will not be able to take it again"),
         "legalBlock":
             MessageLookupByLibrary.simpleMessage("Gesetzliche Sperre"),
         "live": MessageLookupByLibrary.simpleMessage("Live"),
@@ -211,11 +216,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "quickAnswers":
             MessageLookupByLibrary.simpleMessage("Schnelle Antworten"),
         "reading360": MessageLookupByLibrary.simpleMessage("360°-Lesen"),
+        "recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min":
+            MessageLookupByLibrary.simpleMessage(
+                "Recording stopped because audio file is reached the limit of 3min"),
         "requestNewPassword": MessageLookupByLibrary.simpleMessage(
             "Fordere ein neues Passwort an"),
         "resetPassword":
             MessageLookupByLibrary.simpleMessage("Passwort Zurücksetzen"),
         "resources": MessageLookupByLibrary.simpleMessage("Ressourcen"),
+        "returnInQueue":
+            MessageLookupByLibrary.simpleMessage("RETURN\nIN QUEUE"),
+        "return_": MessageLookupByLibrary.simpleMessage("Return"),
         "reviews": MessageLookupByLibrary.simpleMessage("Bewertungen"),
         "ritual": MessageLookupByLibrary.simpleMessage("Ritual"),
         "sales": MessageLookupByLibrary.simpleMessage("Verkauf"),
@@ -235,6 +246,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "takeMeThere": MessageLookupByLibrary.simpleMessage("Bring mich dahin"),
         "takeQuestion": MessageLookupByLibrary.simpleMessage("Frage stellen"),
         "tarot": MessageLookupByLibrary.simpleMessage("Tarot"),
+        "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m":
+            MessageLookupByLibrary.simpleMessage(
+                "The answer is not possible, this question will be returned to the general list in ~ 1m"),
+        "theMaximumImageSizeIs20Mb": MessageLookupByLibrary.simpleMessage(
+            "The maximum image size is 20Mb."),
         "thePasswordsMustMatch": MessageLookupByLibrary.simpleMessage(
             "Die Passwörter müssen übereinstimmen"),
         "theUserWasNotFound": MessageLookupByLibrary.simpleMessage(
@@ -243,6 +259,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Diese Filteroption enthält keine Sitzungen"),
         "thisMonth": MessageLookupByLibrary.simpleMessage("Diesen Monat"),
+        "thisQuestionWillBeReturnedToTheGeneralListAfterCounter":
+            MessageLookupByLibrary.simpleMessage(
+                "This question will be returned to the general list after"),
         "thisWeek": MessageLookupByLibrary.simpleMessage("In dieser Woche"),
         "tips": MessageLookupByLibrary.simpleMessage("Tipps"),
         "title": MessageLookupByLibrary.simpleMessage("Titel"),
@@ -283,6 +302,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "youCanNotHelpUsersSinceYouHaveAnActive":
             MessageLookupByLibrary.simpleMessage(
                 "Sie können Benutzern nicht helfen, da Sie eine aktive öffentliche Frage haben."),
+        "youCantSendThisMessageBecauseItsLessThan15Seconds":
+            MessageLookupByLibrary.simpleMessage(
+                "You can’t send this message because it’s less than 15 seconds"),
         "youDoNotHaveAnyNotesYet": MessageLookupByLibrary.simpleMessage(
             "Sie haben noch keine Notizen"),
         "youDontHaveInternetConnection": MessageLookupByLibrary.simpleMessage(
@@ -300,6 +322,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Sie sind derzeit nicht live auf der Plattform, bitte stellen Sie sicher, dass Sie Ihr Profil für alle Sprachen ausfüllen. Bei Fragen können Sie sich an Ihren Manager wenden."),
         "youReCurrentlyOfflineOnThePlatform": MessageLookupByLibrary.simpleMessage(
             "Sie sind derzeit auf der Plattform offline, können nicht die volle Funktionalität nutzen und sind für Benutzer nicht sichtbar. Sie können Ihren Status in Ihrem Profil auf Live ändern."),
+        "youRefuseToAnswerThisQuestion": MessageLookupByLibrary.simpleMessage(
+            "You refuse to answer this question"),
         "youWillBeAbleToChangeYourStatusBackIn":
             MessageLookupByLibrary.simpleMessage(
                 "Sie können Ihren Status in 1 Stunde zurücksetzen"),

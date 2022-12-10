@@ -37,10 +37,8 @@ class ChatRecordedWidget extends StatelessWidget {
       child: Column(
         children: [
           Builder(builder: (context) {
-            final List<File> attachedPictures = context
-                .select((ChatCubit cubit) => cubit.state.attachedPictures);
-            final isAttachedPictures = attachedPictures.isNotEmpty;
-            return isAttachedPictures
+            context.select((ChatCubit cubit) => cubit.state.attachedPictures);
+            return chatCubit.isAttachedPictures
                 ? const Padding(
                     padding: EdgeInsets.only(
                       top: 4.0,
@@ -151,10 +149,13 @@ class ChatRecordedWidget extends StatelessWidget {
               const SizedBox(
                 width: 8.0,
               ),
-              AppIconGradientButton(
-                onTap: onSendPressed,
-                icon: Assets.vectors.send.path,
-                iconColor: Theme.of(context).backgroundColor,
+              Opacity(
+                opacity: onSendPressed == null ? 0.4 : 1.0,
+                child: AppIconGradientButton(
+                  onTap: onSendPressed,
+                  icon: Assets.vectors.send.path,
+                  iconColor: Theme.of(context).backgroundColor,
+                ),
               ),
             ],
           ),

@@ -184,5 +184,15 @@
   "tips": "Puntas",
   "questions": "Preguntas",
   "question": "Pregunta",
-  "session": "Sesión"
+  "session": "Sesión",
+  "return_": "Return",
+  "returnInQueue": "RETURN\nIN QUEUE",
+  "checkYourInternetConnection": "Check your internet connection",
+  "youCantSendThisMessageBecauseItsLessThan15Seconds": "You can’t send this message because it’s less than 15 seconds",
+  "recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min": "Recording stopped because audio file is reached the limit of 3min",
+  "theMaximumImageSizeIs20Mb" : "The maximum image size is 20Mb.",
+  "youRefuseToAnswerThisQuestion": "You refuse to answer this question",
+  "itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain": "It will go back into the general queue and you will not be able to take it again",
+  "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": "This question will be returned to the general list after",
+  "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m":"The answer is not possible, this question will be returned to the general list in ~ 1m"
 }

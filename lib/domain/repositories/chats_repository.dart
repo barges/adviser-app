@@ -42,6 +42,8 @@ abstract class ChatsRepository {
 
   Future<ChatItem> takeQuestion(AnswerRequest request);
 
+  Future<ChatItem> returnQuestion(AnswerRequest request);
+
   Future<ChatItem> getQuestion({required String id});
 
   Future<ChatItem> getRitualQuestion({required String id});
