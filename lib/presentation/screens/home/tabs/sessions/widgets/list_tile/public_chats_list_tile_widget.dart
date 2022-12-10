@@ -82,10 +82,10 @@ class PublicChatsListTileWidget extends StatelessWidget {
                 onTap: () {
                   if (needCheckTakenStatus) {
                     if (isTaken) {
-                      sessionsCubit.goToChat(question);
+                      sessionsCubit.goToChatForPublic(question);
                     }
                   } else {
-                    sessionsCubit.goToChat(question);
+                    sessionsCubit.goToChatForPublic(question);
                   }
                 },
                 child: Column(

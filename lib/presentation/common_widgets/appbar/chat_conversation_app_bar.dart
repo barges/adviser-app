@@ -123,7 +123,7 @@ class _ReturnInQueue extends StatelessWidget {
           width: 8.0,
         ),
         Text(
-          S.of(context).returnInQueue,
+          S.of(context).returnInQueue.toUpperCase(),
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
                 color: Theme.of(context).primaryColor,
                 fontSize: 12.0,

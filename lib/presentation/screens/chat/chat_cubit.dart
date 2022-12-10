@@ -22,6 +22,7 @@ import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'chat_state.dart';
@@ -37,7 +38,7 @@ class ChatCubit extends Cubit<ChatState> {
   final TextEditingController textEditingController = TextEditingController();
   final CachingManager _cachingManager;
   final ChatsRepository _repository;
-  late final ChatItem? questionFromArguments;
+  late final ChatScreenArguments chatScreenArguments;
   final VoidCallback _showErrorAlert;
   final BuildContext _context;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
@@ -56,7 +57,6 @@ class ChatCubit extends Cubit<ChatState> {
   AnswerRequest? _answerRequest;
   StreamSubscription<RecordingDisposition>? _recordingProgressSubscription;
   Timer? _answerTimer;
-  DateTime? _takenDate;
   bool _counterMessageCleared = false;
 
   ChatCubit(
@@ -65,10 +65,18 @@ class ChatCubit extends Cubit<ChatState> {
     this._showErrorAlert,
     this._context,
   ) : super(const ChatState()) {
-    questionFromArguments = Get.arguments;
+    chatScreenArguments = Get.arguments;
     _init();
-    _setQuestionStatus(
-        questionFromArguments?.status ?? ChatItemStatusType.open);
+    if (chatScreenArguments.question != null) {
+      emit(
+        state.copyWith(
+          questionFromDB: chatScreenArguments.question,
+          questionStatus:
+              chatScreenArguments.question?.status ?? ChatItemStatusType.open,
+          activeMessages: [chatScreenArguments.question!],
+        ),
+      );
+    }
     _getData().whenComplete(_checkTiming);
   }
 
@@ -127,21 +135,12 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> _getData() async {
-    if (await _getQuestion()) {
-      _getConversations();
-    }
-  }
-
-  _setQuestionStatus(ChatItemStatusType status) {
-    emit(
-      state.copyWith(
-        questionStatus: status,
-      ),
-    );
+    await _getPublicOrPrivateQuestion();
+   await _getConversations();
   }
 
   Future<void> _initAudioSession() async {
-    final session = await AudioSession.instance;
+    final AudioSession session = await AudioSession.instance;
     await session.configure(AudioSessionConfiguration(
       avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
       avAudioSessionCategoryOptions:
@@ -179,6 +178,34 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
+  Future<bool> _getPublicOrPrivateQuestion() async {
+    try {
+      ChatItem? question;
+      if (chatScreenArguments.publicQuestionId != null) {
+        question = await _repository.getQuestion(
+            id: chatScreenArguments.publicQuestionId ?? '');
+      } else if (chatScreenArguments.privateQuestionId != null) {
+        question = await _repository.getQuestion(
+            id: chatScreenArguments.privateQuestionId ?? '');
+      }
+      if (question != null) {
+        emit(
+          state.copyWith(
+            questionFromDB: question,
+            questionStatus: question.status,
+            activeMessages: [question],
+          ),
+        );
+        return true;
+      }
+      return false;
+    } on DioError catch (e) {
+      _showErrorAlert();
+      logger.d(e);
+      return false;
+    }
+  }
+
   Future<void> _getConversations() async {
     if (_total != null && _offset >= _total!) {
       return;
@@ -187,7 +214,7 @@ class ChatCubit extends Cubit<ChatState> {
     ConversationsResponse conversations =
         await _repository.getConversationsHistory(
             expertID: _cachingManager.getUserId() ?? '',
-            clientID: questionFromArguments?.clientID ?? '',
+            clientID: chatScreenArguments.clientId,
             offset: _offset,
             limit: _limit);
 
@@ -215,9 +242,16 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> takeQuestion() async {
     try {
-      final ChatItem question = await _repository
-          .takeQuestion(AnswerRequest(questionID: questionFromArguments?.id));
-      _setQuestionStatus(question.status ?? ChatItemStatusType.open);
+      final ChatItem question = await _repository.takeQuestion(
+        AnswerRequest(
+          questionID: chatScreenArguments.publicQuestionId,
+        ),
+      );
+      emit(
+        state.copyWith(
+          questionStatus: question.status ?? ChatItemStatusType.open,
+        ),
+      );
       _mainCubit.updateSessions();
       if (question.status == ChatItemStatusType.taken) {
         _startTimer(_tillShowMessagesInSec, _afterShowMessagesInSec);
@@ -230,14 +264,20 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> returnQuestion() async {
     try {
-      final ChatItem question = await _repository
-          .returnQuestion(AnswerRequest(questionID: questionFromArguments?.id));
-      _setQuestionStatus(question.status ?? ChatItemStatusType.open);
+      final ChatItem question = await _repository.returnQuestion(
+        AnswerRequest(
+          questionID: chatScreenArguments.publicQuestionId,
+        ),
+      );
       emit(
         state.copyWith(
+          questionStatus: question.status ?? ChatItemStatusType.open,
           isInputField: true,
         ),
       );
+
+      ///TODO: Why we need emit???
+
       _mainCubit.updateSessions();
 
       _answerTimer?.cancel();
@@ -541,11 +581,22 @@ class ChatCubit extends Cubit<ChatState> {
       _answerRequest = null;
 
       final messages = List.of(state.activeMessages);
+
+      ///TODO: Maybe we need get data from backend for all sendMessage methods ("storyID":"62e37a673b6d20001df860ef")
+      ///{"expertInformation":{"profile":{"profilePictures":["https://fortunica-data.s3.eu-central-1.amazonaws.com/experts/b1c895e92b88b543979ba987bb8236e3.jpg"],
+      ///"profileName":"Niskov Max"},"_id":"39726a57734b49a530639cc8115eb863e3f064fc16c2955384770462efb5e44b"},
+      ///"deleted":false,"answerTime":11614090070,"_id":"6394b1f1cd073b001d0055ac",
+      ///"content":"","attachments":[{"_id":"6394b1f1cd073b001d0055ad","mime":"image/jpeg",
+      ///"url":"https://fortunica-data.s3.eu-central-1.amazonaws.com/attachments/9639bf2d33857e9c636292defca140f6.jpg","meta":null}],
+      ///"storyID":"62e37a673b6d20001df860ef","type":"TEXT_ANSWER",
+      ///"clientID":"5f5224f45a1f7c001c99763c","expertID":"39726a57734b49a530639cc8115eb863e3f064fc16c2955384770462efb5e44b",
+      ///"questionID":"62e37a673b6d20001df860f1","questionType":"PUBLIC","likes":[],
+      ///"createdAt":"2022-12-10T16:21:05.895Z","updatedAt":"2022-12-10T16:21:05.895Z","__v":0}
       messages.replaceRange(messages.length - 1, messages.length, [
         answer.copyWith(
           isAnswer: true,
-          type: questionFromArguments?.type,
-          ritualIdentifier: questionFromArguments?.ritualIdentifier,
+          type: state.questionFromDB?.type,
+          ritualIdentifier: state.questionFromDB?.ritualIdentifier,
         )
       ]);
       emit(
@@ -587,29 +638,14 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Future<bool> _getQuestion() async {
-    try {
-      final ChatItem question =
-          await _repository.getQuestion(id: questionFromArguments?.id ?? '');
-      _takenDate = question.takenDate;
-      final List<ChatItem> messages = List.of(state.activeMessages);
-      messages.insert(0, question);
-      emit(state.copyWith(
-        activeMessages: messages,
-      ));
-      return true;
-    } on DioError catch (e) {
-      _showErrorAlert();
-      logger.d(e);
-      return false;
-    }
-  }
-
   void _checkTiming() {
-    if (_takenDate != null &&
-        state.questionStatus == ChatItemStatusType.taken) {
-      int afterTakenInSec =
-          DateTime.now().toUtc().difference(_takenDate!).inSeconds;
+    final ChatItem? publicQuestion = state.activeMessages.firstOrNull;
+    if (publicQuestion?.status == ChatItemStatusType.taken &&
+        publicQuestion?.takenDate != null) {
+      int afterTakenInSec = DateTime.now()
+          .toUtc()
+          .difference(publicQuestion!.takenDate!)
+          .inSeconds;
       if (afterTakenInSec < _tillShowMessagesInSec + _afterShowMessagesInSec) {
         int tillShowMessagesInSec = _tillShowMessagesInSec;
         int afterShowMessagesInSec = _afterShowMessagesInSec;
@@ -681,8 +717,8 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     final answerRequest = AnswerRequest(
-      questionID: questionFromArguments?.id,
-      ritualID: questionFromArguments?.ritualIdentifier,
+      questionID: state.questionFromDB?.id,
+      ritualID: state.questionFromDB?.ritualIdentifier,
       attachments: [
         audioAttachment!,
         if (pictureAttachment != null) pictureAttachment,
@@ -700,8 +736,8 @@ class ChatCubit extends Cubit<ChatState> {
         : null;
 
     final answerRequest = AnswerRequest(
-      questionID: questionFromArguments?.id,
-      ritualID: questionFromArguments?.ritualIdentifier,
+      questionID: state.questionFromDB?.id,
+      ritualID: state.questionFromDB?.ritualIdentifier,
       content: textEditingController.text.isEmpty
           ? null
           : textEditingController.text,
@@ -724,12 +760,12 @@ class ChatCubit extends Cubit<ChatState> {
       answer = await _repository.sendAnswer(_answerRequest!);
       logger.d('send answer response: $answer');
       if (answer.type == ChatItemType.textAnswer) {
-        _setQuestionStatus(ChatItemStatusType.answered);
+        emit(state.copyWith(questionStatus: ChatItemStatusType.answered));
       }
       answer = answer.copyWith(
         isAnswer: true,
-        type: questionFromArguments?.type,
-        ritualIdentifier: questionFromArguments?.ritualIdentifier,
+        type: state.questionFromDB?.type,
+        ritualIdentifier: state.questionFromDB?.ritualIdentifier,
       );
       _answerRequest = null;
     } on DioError catch (e) {
@@ -753,8 +789,8 @@ class ChatCubit extends Cubit<ChatState> {
     final ChatItem answer = ChatItem(
       isAnswer: true,
       isSent: false,
-      type: questionFromArguments?.type,
-      ritualIdentifier: questionFromArguments?.ritualIdentifier,
+      type: state.questionFromDB?.type,
+      ritualIdentifier: state.questionFromDB?.ritualIdentifier,
       content: _answerRequest!.content,
       attachments: [
         if (recordingPath != null)
@@ -808,13 +844,13 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  ChatItem? get question => questionFromArguments;
 
-  int get minTextLength => questionFromArguments?.type == ChatItemType.ritual
+
+  int get minTextLength => state.questionFromDB?.type == ChatItemType.ritual
       ? AppConstants.minTextLengthRirual
       : AppConstants.minTextLengthPublic;
 
-  int get maxTextLength => questionFromArguments?.type == ChatItemType.ritual
+  int get maxTextLength => state.questionFromDB?.type == ChatItemType.ritual
       ? AppConstants.maxTextLengthRitual
       : AppConstants.maxTextLengthPublic;
 

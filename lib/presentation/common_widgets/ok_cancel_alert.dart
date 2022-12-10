@@ -25,24 +25,28 @@ Future<bool?> showOkCancelAlert({
             ? CupertinoAlertDialog(
                 title: Text(
                   title,
-                  style: theme.textTheme.bodyText2?.copyWith(fontSize: 19.0),
+                  style: theme.textTheme.titleMedium,
                 ),
-                content: Text(
-                  description ?? '',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.hoverColor,
-                  ),
-                ),
+                content: description != null
+                    ? Text(
+                        description,
+                        style: theme.textTheme.bodySmall,
+                      )
+                    : null,
                 actions: [
                   if (isCancelEnabled)
                     CupertinoDialogAction(
-                      child: Text(S.of(context).cancel),
+                      child: Text(
+                        S.of(context).cancel,
+                      ),
                       onPressed: () => Navigator.pop(context, false),
                     ),
                   CupertinoDialogAction(
                     isDefaultAction: true,
                     onPressed: actionOnOK,
-                    child: Text(okText),
+                    child: Text(
+                      okText,
+                    ),
                   )
                 ],
               )
@@ -57,10 +61,20 @@ Future<bool?> showOkCancelAlert({
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(title,
-                            style: theme.textTheme.headlineMedium?.copyWith(
-                              fontSize: 17.0,
-                            )),
+                        Text(
+                          title,
+                          style: theme.textTheme.titleMedium,
+                        ),
+                        if (description != null)
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 12.0,
+                            ),
+                            child: Text(
+                              description,
+                              style: theme.textTheme.bodySmall,
+                            ),
+                          ),
                         const SizedBox(
                           height: 24.0,
                         ),

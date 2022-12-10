@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
@@ -17,7 +16,6 @@ import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions
 class SearchListCubit extends Cubit<SearchListState> {
   final ChatsRepository _repository;
   final BuildContext context;
-  final MarketsType marketsType;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
 
   final BehaviorSubject _searchStream = BehaviorSubject<String>();
@@ -35,7 +33,6 @@ class SearchListCubit extends Cubit<SearchListState> {
   SearchListCubit(
     this._repository,
     this.context,
-    this.marketsType,
   ) : super(const SearchListState()) {
     _searchSubscription = _searchStream
         .debounceTime(const Duration(milliseconds: 500))
@@ -78,8 +75,6 @@ class SearchListCubit extends Cubit<SearchListState> {
       final QuestionsListResponse result =
           await _repository.getConversationsList(
         limit: AppConstants.questionsLimit,
-        filtersLanguage:
-            marketsType != MarketsType.all ? marketsType.name : null,
         lastItem: _conversationsLastItem,
         search: searchTextController.text.isNotEmpty
             ? searchTextController.text

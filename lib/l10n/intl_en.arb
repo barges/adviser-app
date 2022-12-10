@@ -143,7 +143,7 @@
   "toResetPasswordEnterEmailAddressAndWellSendYou": "To reset password, enter email address and we’ll send you instructions on how to create a new password.",
   "ok": "OK",
   "return_": "Return",
-  "returnInQueue": "RETURN\nIN QUEUE",
+  "returnInQueue": "Return\nin queue",
   "youDontHaveInternetConnection": "You don’t have internet connection",
   "note": "Note",
   "live": "Live",
