@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/client_information.dart';
@@ -6,6 +7,8 @@ import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type
 import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 
 part 'chat_item.freezed.dart';
 part 'chat_item.g.dart';
@@ -93,6 +96,17 @@ class ChatItem with _$ChatItem {
       return Duration(seconds: getAttachment(n)!.meta!.duration!.toInt());
     }
     return const Duration();
+  }
+
+  String getUnansweredMessage(BuildContext context) {
+    String? resultMessage;
+    if (unansweredCount != null && unansweredCount! > 1) {
+      resultMessage = S.of(context).youHaveAFewActiveSessions;
+    } else {
+      resultMessage = unansweredTypes?.firstOrNull?.unAnsweredMessage(context);
+    }
+    resultMessage ??= '';
+    return resultMessage;
   }
 
   bool get isMedia => attachments != null && attachments!.isNotEmpty;

@@ -167,7 +167,6 @@
   "female": "Weiblich",
   "nonBinary": "Non-binär",
   "preferNotToAnswer": "Keine Angabe",
-  "youHaveAnActiveSession": "Sie haben eine aktive Sitzung",
   "audioMessage": "Audio-Nachricht",
   "other": "Sonstiges",
   "weDidntFindAnything": "Wir haben nichts gefunden",
@@ -184,5 +183,9 @@
   "questions": "Fragen",
   "sessions": "Sitzungen",
   "question": "Frage",
-  "session": "Sitzung"
+  "session": "Sitzung",
+  "youHaveARitualRequest": "Sie haben eine rituelle Bitte",
+  "youHaveAPrivateMessage": "Du hast eine private Nachricht",
+  "youHaveAFewActiveSessions": "Sie haben einige aktive Sitzungen",
+  "unknownError": "Unbekannter Fehler"
 }

@@ -1747,16 +1747,6 @@ class S {
     );
   }
 
-  /// `You have an active session`
-  String get youHaveAnActiveSession {
-    return Intl.message(
-      'You have an active session',
-      name: 'youHaveAnActiveSession',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Audio message`
   String get audioMessage {
     return Intl.message(
@@ -1922,6 +1912,46 @@ class S {
     return Intl.message(
       'Session',
       name: 'session',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have a ritual request`
+  String get youHaveARitualRequest {
+    return Intl.message(
+      'You have a ritual request',
+      name: 'youHaveARitualRequest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have a private message`
+  String get youHaveAPrivateMessage {
+    return Intl.message(
+      'You have a private message',
+      name: 'youHaveAPrivateMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have a few active sessions`
+  String get youHaveAFewActiveSessions {
+    return Intl.message(
+      'You have a few active sessions',
+      name: 'youHaveAFewActiveSessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknown error`
+  String get unknownError {
+    return Intl.message(
+      'Unknown error',
+      name: 'unknownError',
       desc: '',
       args: [],
     );

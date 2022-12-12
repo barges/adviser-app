@@ -169,7 +169,6 @@
   "female": "Female",
   "nonBinary": "Non-binary",
   "preferNotToAnswer": "Prefer not to answer",
-  "youHaveAnActiveSession": "You have an active session",
   "audioMessage": "Audio message",
   "justSentYouAMessage": "Just sent you a message",
   "weDidntFindAnything": "We didn’t find anything",
@@ -187,5 +186,9 @@
   "questions": "Questions",
   "sessions": "Sessions",
   "question": "Question",
-  "session": "Session"
+  "session": "Session",
+  "youHaveARitualRequest": "You have a ritual request",
+  "youHaveAPrivateMessage": "You have a private message",
+  "youHaveAFewActiveSessions": "You have a few active sessions",
+  "unknownError": "Unknown error"
 }
