@@ -48,17 +48,12 @@ class DashboardV1Screen extends StatelessWidget {
                             ),
                           )
                         : SliverFillRemaining(
-                            hasScrollBody: true,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal:
-                                      AppConstants.horizontalScreenPadding),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  NoConnectionWidget(),
-                                ],
-                              ),
+                            hasScrollBody: false,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                NoConnectionWidget(),
+                              ],
                             ),
                           ),
                   ]));

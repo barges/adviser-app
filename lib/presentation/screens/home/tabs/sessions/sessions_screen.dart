@@ -100,10 +100,18 @@ class SessionsScreen extends StatelessWidget {
                     );
                   }
                 } else {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      NoConnectionWidget(),
+                  return CustomScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    slivers: [
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            NoConnectionWidget(),
+                          ],
+                        ),
+                      ),
                     ],
                   );
                 }
