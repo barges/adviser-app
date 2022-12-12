@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
+import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -49,11 +51,11 @@ class _PublicQuestionsListWidget extends StatelessWidget {
           height: 1.0,
         ),
         Builder(builder: (context) {
-          final bool showSuccessMessage = context
-              .select((SessionsCubit cubit) => cubit.state.showSuccessMessage);
-          return showSuccessMessage
+          final AppSuccess appSuccess =
+              context.select((SessionsCubit cubit) => cubit.state.appSuccess);
+          return appSuccess is! EmptySuccess
               ? AppSuccessWidget(
-                  message: S.of(context).youCanNotHelpUsersSinceYouHaveAnActive,
+                  message: appSuccess.getMessage(context),
                   onClose: sessionsCubit.clearSuccessMessage,
                 )
               : const SizedBox.shrink();
@@ -110,7 +112,7 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
                 questions: conversationsList,
                 isPublic: false,
                 onRefresh: () async {
-                   sessionsCubit.getConversations(refresh: true);
+                  sessionsCubit.getConversations(refresh: true);
                 },
                 emptyListTitle: S.of(context).noSessionsYet,
                 emptyListLabel:
@@ -144,8 +146,8 @@ class _ListOfQuestionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool hasTaken = isPublic &&
-        questions.firstOrNull?.status == ChatItemStatusType.taken;
+    final bool hasTaken =
+        isPublic && questions.firstOrNull?.status == ChatItemStatusType.taken;
 
     return RefreshIndicator(
       onRefresh: onRefresh,

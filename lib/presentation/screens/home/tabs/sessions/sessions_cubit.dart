@@ -4,6 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
+import 'package:shared_advisor_interface/data/models/app_success/ui_success.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
@@ -166,10 +168,10 @@ class SessionsCubit extends Cubit<SessionsState> {
   }
 
   void clearSuccessMessage() {
-    if (state.showSuccessMessage) {
+    if (state.appSuccess is! EmptySuccess) {
       emit(
         state.copyWith(
-          showSuccessMessage: false,
+          appSuccess: const EmptySuccess(),
         ),
       );
     }
@@ -206,13 +208,14 @@ class SessionsCubit extends Cubit<SessionsState> {
         emit(state.copyWith(
           publicQuestions: List.of(_publicQuestions),
           disabledIndexes: [1],
-          showSuccessMessage: true,
+          appSuccess:
+              UISuccess(UISuccessType.youCanNotHelpUsersSinceYouHaveAnActive),
         ));
       } else {
         emit(state.copyWith(
           publicQuestions: List.of(_publicQuestions),
           disabledIndexes: [],
-          showSuccessMessage: false,
+          appSuccess: const EmptySuccess(),
         ));
       }
     }

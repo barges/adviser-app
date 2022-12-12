@@ -193,7 +193,7 @@
   "theMaximumImageSizeIs20Mb" : "O tamanho máximo da imagem é de 20Mb.",
   "youRefuseToAnswerThisQuestion": "Você se recusa a responder a esta pergunta",
   "itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain": "Ele voltará para a fila geral e você não poderá pegá-lo novamente",
-  "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": "Esta questão será devolvida à lista geral após",
+  "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": "Esta questão será devolvida à lista geral após {counter}",
   "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m":"A resposta não é possível, esta questão retornará à lista geral em ~ 1m",
   "youHaveARitualRequest": "Você tem um pedido ritual",
   "youHaveAPrivateMessage": "Você tem uma mensagem privada",

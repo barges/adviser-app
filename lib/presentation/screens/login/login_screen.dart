@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/empty_error.dart';
+import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
+import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
 import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -65,16 +67,12 @@ class LoginScreen extends StatelessWidget {
                           ),
                           Builder(
                             builder: (BuildContext context) {
-                              final String emailForReset = context.select(
-                                  (LoginCubit cubit) =>
-                                      cubit.state.emailForResetPassword);
+                              final AppSuccess appSuccess = context.select(
+                                  (LoginCubit cubit) => cubit.state.appSuccess);
 
-                              return emailForReset.isNotEmpty
+                              return appSuccess is! EmptySuccess
                                   ? AppSuccessWidget(
-                                      message: S
-                                          .of(context)
-                                          .weVeSentYouALinkToEmailToChangeYourPassword(
-                                              emailForReset),
+                                      message: appSuccess.getMessage(context),
                                       needEmailButton: true,
                                       onClose: loginCubit.clearSuccessMessage,
                                     )

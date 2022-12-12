@@ -4,7 +4,11 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 
 enum UIErrorType {
   blocked,
-  wrongUsernameOrPassword;
+  wrongUsernameOrPassword,
+  youCantSendThisMessageBecauseItsLessThan15Seconds,
+  recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min,
+  theMaximumImageSizeIs20Mb,
+  checkYourInternetConnection;
 
   String getErrorMessage(BuildContext context) {
     switch (this) {
@@ -14,6 +18,16 @@ enum UIErrorType {
             .yourAccountHasBeenBlockedPleaseContactYourAdvisorManager;
       case UIErrorType.wrongUsernameOrPassword:
         return S.of(context).wrongUsernameOrPassword;
+      case UIErrorType.youCantSendThisMessageBecauseItsLessThan15Seconds:
+        return S.of(context).youCantSendThisMessageBecauseItsLessThan15Seconds;
+      case UIErrorType.recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min:
+        return S
+            .of(context)
+            .recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min;
+      case UIErrorType.theMaximumImageSizeIs20Mb:
+        return S.of(context).theMaximumImageSizeIs20Mb;
+      case UIErrorType.checkYourInternetConnection:
+        return S.of(context).checkYourInternetConnection;
     }
   }
 }
