@@ -1,0 +1,50 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_sound/public/flutter_sound_player.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/models/chats/history.dart';
+import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
+import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/widgets/question_and_answer_pair_widget.dart';
+
+class HistoryTab extends StatelessWidget {
+  final String clientId;
+  final FlutterSoundPlayer playerMedia;
+  final String? storyId;
+  const HistoryTab({
+    Key? key,
+    required this.clientId,
+    required this.playerMedia,
+    this.storyId,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => HistoryCubit(
+        getIt.get<CachingManager>(),
+        getIt.get<ChatsRepository>(),
+        clientId,
+        playerMedia,
+        storyId,
+      ),
+      child: Builder(builder: (context) {
+        final HistoryCubit historyCubit = context.read<HistoryCubit>();
+        final List<History> historyList =
+            context.select((HistoryCubit cubit) => cubit.state.historyMessages);
+        return Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: ListView.separated(
+              padding: const EdgeInsets.only(bottom: 12.0),
+              shrinkWrap: true,
+              controller: historyCubit.historyMessagesScrollController,
+              itemBuilder: (_, index) =>
+                  QuestionAndAnswerPairWidget(historyItem: historyList[index]),
+              itemCount: historyList.length,
+              separatorBuilder: (context, index) => SizedBox(height: 20.0),
+            ));
+      }),
+    );
+  }
+}

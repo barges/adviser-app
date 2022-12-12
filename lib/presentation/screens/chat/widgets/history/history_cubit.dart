@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:audio_session/audio_session.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:logger/logger.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
+import 'package:shared_advisor_interface/data/models/chats/history.dart';
+import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -17,19 +17,25 @@ class HistoryCubit extends Cubit<HistoryState> {
   final CachingManager _cachingManager;
   final ChatsRepository _repository;
   final String _clientId;
+  final String? _storyId;
+  FlutterSoundPlayer? _playerMedia;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final Codec _codec = Codec.aacMP4;
+
+  final List<History> _historyList = [];
   final int _limit = 25;
-  int _offset = 0;
-  int? _total;
-  FlutterSoundPlayer? _playerMedia;
+  bool _hasMore = true;
+  String? _lastItem;
+  bool _hasBefore = false;
+  String? _firstItem;
 
   HistoryCubit(
     this._cachingManager,
     this._repository,
-      this._clientId,
+    this._clientId,
+    this._playerMedia,
+    this._storyId,
   ) : super(const HistoryState()) {
-    _init();
     _getData();
   }
 
@@ -41,83 +47,46 @@ class HistoryCubit extends Cubit<HistoryState> {
     return super.close();
   }
 
-  Future<void> _init() async {
-    await _initAudioSession();
-
-    const logLevel = Level.nothing;
-    _playerMedia = await FlutterSoundPlayer(logLevel: logLevel).openPlayer();
-
-    await _playerMedia?.setSubscriptionDuration(
-      const Duration(milliseconds: 100),
-    );
-
-    historyMessagesScrollController.addListener(scrollControllerListener);
-  }
-
   Future<void> _getData() async {
-    _getConversations();
-  }
-
-  Future<void> _initAudioSession() async {
-    final session = await AudioSession.instance;
-    await session.configure(AudioSessionConfiguration(
-      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
-      avAudioSessionCategoryOptions:
-          AVAudioSessionCategoryOptions.allowBluetooth |
-              AVAudioSessionCategoryOptions.defaultToSpeaker,
-      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
-      avAudioSessionRouteSharingPolicy:
-          AVAudioSessionRouteSharingPolicy.defaultPolicy,
-      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-      androidAudioAttributes: const AndroidAudioAttributes(
-        contentType: AndroidAudioContentType.speech,
-        flags: AndroidAudioFlags.none,
-        usage: AndroidAudioUsage.voiceCommunication,
-      ),
-      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
-      androidWillPauseWhenDucked: true,
-    ));
+    _getHistoryList();
   }
 
   void scrollControllerListener() {
     if (!_mainCubit.state.isLoading &&
         historyMessagesScrollController.position.extentAfter <= 300) {
-      _getConversations();
+      _getHistoryList(refresh: true);
     }
   }
 
-  Future<void> _getConversations() async {
-    if (_total != null && _offset >= _total!) {
-      return;
+  Future<void> _getHistoryList({bool refresh = false}) async {
+    try {
+      if (refresh) {
+        _hasMore = true;
+        _lastItem = null;
+        _historyList.clear();
+      }
+      if (_hasMore && _mainCubit.state.internetConnectionIsAvailable) {
+        final HistoryResponse result = await _repository.getHistoryList(
+          clientId: _clientId,
+          limit: _limit,
+          lastItem: _lastItem,
+          storyId: _storyId,
+          firstItem: _firstItem,
+        );
+        _hasMore = result.hasMore ?? true;
+        _lastItem = result.lastItem;
+        _hasBefore = result.hasBefore ?? false;
+        _firstItem = result.firstItem;
+
+        _historyList.addAll(result.history ?? const []);
+        logger.d(_historyList);
+        emit(state.copyWith(
+          historyMessages: List.of(_historyList),
+        ));
+      }
+    } on DioError catch (e) {
+      logger.d(e);
     }
-
-    ConversationsResponse conversations =
-        await _repository.getConversationsHistory(
-            expertID: _cachingManager.getUserId() ?? '',
-            clientID: _clientId,
-            offset: _offset,
-            limit: _limit);
-
-    _total = conversations.total;
-    _offset = _offset + _limit;
-
-    final messages = List.of(state.historyMessages);
-    for (var element in conversations.history ?? []) {
-      messages.add(
-        element.answer?.copyWith(
-          isAnswer: true,
-          type: element.question?.type,
-          ritualIdentifier: element.question?.ritualIdentifier,
-        ),
-      );
-      messages.add(
-        element.question,
-      );
-    }
-
-    emit(state.copyWith(
-      historyMessages: messages,
-    ));
   }
 
   Future<void> startPlayAudio(String audioUrl) async {
