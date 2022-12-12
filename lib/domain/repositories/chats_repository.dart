@@ -30,8 +30,11 @@ abstract class ChatsRepository {
       required int offset,
       required int limit});
 
-  Future<ConversationsStoryResponse> getConversationsStory(
-      {required String storyID});
+  Future<ConversationsStoryResponse> getStory({
+    required String storyID,
+    int? limit,
+    String? lastQuestionId,
+  });
 
   Future<QuestionsListResponse> getCustomerSessions({
     required String id,

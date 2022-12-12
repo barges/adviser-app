@@ -51,8 +51,10 @@ abstract class ChatsApi {
   });
 
   @GET('/stories')
-  Future<ConversationsStoryResponse> getConversationsStory({
+  Future<ConversationsStoryResponse> getStory({
     @Query("storyID") required String storyID,
+    @Query('limit') int? limit,
+    @Query('lastItem') String? lastQuestionId,
   });
 
   @GET('/questions/single/{id}')

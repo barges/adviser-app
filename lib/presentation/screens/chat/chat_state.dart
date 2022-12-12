@@ -21,7 +21,7 @@ class ChatState with _$ChatState {
     @Default(false) bool isPlayingRecordedAudio,
     @Default(false) bool isPlayingAudio,
     @Default(true) bool isPlayingAudioFinished,
-    @Default(true) bool isInputField,
+    @Default(true) bool showInputFieldIfPublic,
     @Default(false) bool isSendButtonEnabled,
     @Default(true) bool isMicrophoneButtonEnabled,
     @Default('') String audioUrl,

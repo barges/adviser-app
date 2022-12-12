@@ -36,7 +36,7 @@ class ChatTextWidget extends ChatWidget {
             children: [
               const Spacer(),
               ChatItemFooterWidget(
-                type: item.type!,
+                type: item.type,
                 createdAt: createdAt,
                 ritualIdentifier: item.ritualIdentifier,
                 color: getterType(

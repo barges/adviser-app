@@ -66,7 +66,7 @@ class ChatMediaWidget extends ChatWidget {
             right: 0.0,
             bottom: 0.0,
             child: ChatItemFooterWidget(
-              type: item.type!,
+              type: item.type,
               createdAt: createdAt,
               ritualIdentifier: item.ritualIdentifier,
               color: getterType(
