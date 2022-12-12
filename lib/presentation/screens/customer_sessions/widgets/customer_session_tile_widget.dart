@@ -18,6 +18,7 @@ class CustomerSessionListTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final CustomerSessionsCubit customerSessionsCubit =
         context.read<CustomerSessionsCubit>();
+    final ThemeData theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
         customerSessionsCubit.goToChat(question);
@@ -33,7 +34,7 @@ class CustomerSessionListTileWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: Theme.of(context).primaryColor,
+                  color: theme.primaryColor,
                   width: 2.0,
                 ),
               ),
@@ -63,36 +64,40 @@ class CustomerSessionListTileWidget extends StatelessWidget {
                               question.type?.typeName(context) ??
                               '',
                           overflow: TextOverflow.ellipsis,
-                          style:
-                              Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    fontSize: 15.0,
-                                  ),
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            fontSize: 15.0,
+                          ),
                         ),
                       ),
                       Text(
                         question.updatedAt?.chatListTime ??
                             DateTime.now().toUtc().chatListTime,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Theme.of(context).shadowColor,
-                              fontSize: 12.0,
-                            ),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.shadowColor,
+                          fontSize: 12.0,
+                        ),
                       )
                     ],
                   ),
                   const SizedBox(height: 4.0),
                   Expanded(
                     child: Row(
+                      crossAxisAlignment: question.attachments?.isEmpty == true
+                          ? CrossAxisAlignment.center
+                          : CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: SizedBox(
+                          child: Container(
+                            color: theme.canvasColor,
                             height: AppConstants.iconSize,
                             child: ListTileContentWidget(
                               question: question,
                             ),
                           ),
                         ),
-                        const SizedBox(
+                        Container(
+                          color: theme.canvasColor,
                           width: 32.0,
                         ),
                         if (question.hasUnanswered ?? false)
