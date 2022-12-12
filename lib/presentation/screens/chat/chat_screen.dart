@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
@@ -19,6 +22,7 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_media_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_screen.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 import 'widgets/chat_info_card.dart';
@@ -34,7 +38,7 @@ class ChatScreen extends StatelessWidget {
       create: (_) => ChatCubit(
         getIt.get<CachingManager>(),
         getIt.get<ChatsRepository>(),
-        context,
+        () => showErrorAlert(context),
       ),
       child: Builder(
         builder: (context) {
@@ -94,6 +98,19 @@ class ChatScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+showAlert(BuildContext context) async {
+  await showOkCancelAlert(
+    context: context,
+    title: getIt.get<MainCubit>().state.appError.getMessage(context),
+    okText: S.of(context).ok,
+    actionOnOK: () {
+      Get.close(2);
+    },
+    allowBarrierClock: false,
+    isCancelEnabled: false,
+  );
 }
 
 class _ActiveChat extends StatelessWidget {

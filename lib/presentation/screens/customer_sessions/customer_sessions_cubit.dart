@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -6,23 +8,19 @@ import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_state.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
 
 class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   final CachingManager cacheManager;
-  final BuildContext context;
+  final double _screenHeight;
+  final VoidCallback _showErrorAlert;
 
   final List<ChatItemType> filters = [
     ChatItemType.all,
@@ -37,12 +35,16 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
       getIt.get<CustomerRepository>();
   final ScrollController questionsController = ScrollController();
   late final ChatItem argumentsQuestion;
+  late final StreamSubscription<bool> _updateSessionsSubscription;
 
   bool _hasMore = true;
   String? _lastItem;
 
-  CustomerSessionsCubit(this.cacheManager, this.context)
-      : super(const CustomerSessionsState()) {
+  CustomerSessionsCubit(
+    this.cacheManager,
+    this._screenHeight,
+    this._showErrorAlert,
+  ) : super(const CustomerSessionsState()) {
     argumentsQuestion = Get.arguments as ChatItem;
 
     emit(state.copyWith(
@@ -50,34 +52,40 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
         zodiacSign: argumentsQuestion.clientInformation?.zodiac));
     getCustomerInfo();
     if (argumentsQuestion.clientID != null) {
-      getSessionsQuestions();
+      getCustomerSessions();
     }
 
     questionsController.addListener(() async {
       if (!_mainCubit.state.isLoading &&
-          questionsController.position.extentAfter <=
-              MediaQuery.of(context).size.height) {
-        await getSessionsQuestions();
+          questionsController.position.extentAfter <= _screenHeight) {
+        await getCustomerSessions();
       }
     });
+
+    _updateSessionsSubscription = _mainCubit.sessionsUpdateTrigger.listen(
+      (value) async {
+        await refreshCustomerSessions();
+      },
+    );
   }
 
   @override
   Future<void> close() async {
     questionsController.dispose();
+    _updateSessionsSubscription.cancel();
     return super.close();
   }
 
   void changeFilterIndex(int newIndex) {
     emit(state.copyWith(currentFilterIndex: newIndex));
-    getSessionsQuestions(refresh: true);
+    refreshCustomerSessions();
   }
 
-  Future<void> getSessionsQuestions(
-      {FortunicaUserStatus? status, bool refresh = false}) async {
+  Future<void> getCustomerSessions({bool refresh = false}) async {
     try {
       if (refresh) {
         _hasMore = true;
+        _lastItem = null;
         _customerSessions.clear();
       }
       if (_hasMore && _mainCubit.state.internetConnectionIsAvailable) {
@@ -102,21 +110,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
       }
     } on DioError catch (e) {
       if (e.response?.statusCode == 409) {
-        await showOkCancelAlert(
-          context: context,
-          title: _mainCubit.state.errorMessage,
-          okText: S.of(context).ok,
-          actionOnOK: () {
-            Get.offNamedUntil(
-                AppRoutes.home,
-                arguments: HomeScreenArguments(
-                  initTab: TabsTypes.sessions,
-                ),
-                (route) => false);
-          },
-          allowBarrierClock: false,
-          isCancelEnabled: false,
-        );
+        _showErrorAlert();
         logger.d(e);
       }
     }
@@ -141,5 +135,9 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
           clientName: argumentsQuestion.clientName,
           clientInformation: argumentsQuestion.clientInformation,
         ));
+  }
+
+  Future<void> refreshCustomerSessions() async {
+    await getCustomerSessions(refresh: true);
   }
 }

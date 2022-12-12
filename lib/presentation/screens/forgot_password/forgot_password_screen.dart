@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/empty_error.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -53,12 +55,13 @@ class ForgotPasswordScreen extends StatelessWidget {
                                 children: [
                                   Builder(
                                     builder: (BuildContext context) {
-                                      final String errorMessage =
-                                          context.select((MainCubit cubit) =>
-                                              cubit.state.errorMessage);
-                                      return errorMessage.isNotEmpty
+                                      final AppError appError = context.select(
+                                          (MainCubit cubit) =>
+                                              cubit.state.appError);
+                                      return appError is! EmptyError
                                           ? AppErrorWidget(
-                                              errorMessage: errorMessage,
+                                              errorMessage:
+                                                  appError.getMessage(context),
                                               close: () {
                                                 cubit.clearErrorMessage();
                                               },

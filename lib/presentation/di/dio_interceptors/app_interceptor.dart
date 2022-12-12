@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/network_error.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/ui_error.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
@@ -40,7 +41,7 @@ class AppInterceptor extends Interceptor {
     if (err.response?.statusCode == 401) {
       if (Get.currentRoute != AppRoutes.login) {
         _mainCubit.updateErrorMessage(
-          S.current.yourAccountHasBeenBlockedPleaseContactYourAdvisorManager,
+          UIError(uiErrorType: UIErrorType.blocked),
         );
         _cachingManager.clearTokenForBrand(
           _mainCubit.state.currentBrand,
@@ -48,7 +49,7 @@ class AppInterceptor extends Interceptor {
         Get.offNamedUntil(AppRoutes.login, (route) => false);
       } else {
         _mainCubit.updateErrorMessage(
-          S.current.wrongUsernameOrPassword,
+          UIError(uiErrorType: UIErrorType.wrongUsernameOrPassword),
         );
       }
     } else if (err.response?.statusCode == 451 ||
@@ -61,10 +62,9 @@ class AppInterceptor extends Interceptor {
           (route) => false);
     } else {
       _mainCubit.updateErrorMessage(
-        err.response?.data['localizedMessage'] ??
+        NetworkError(err.response?.data['localizedMessage'] ??
             err.response?.data['message'] ??
-            err.response?.data['status'] ??
-            'Unknown dio error',
+            err.response?.data['status']),
       );
     }
     return super.onError(err, handler);

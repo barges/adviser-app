@@ -18,10 +18,8 @@ import 'package:shared_advisor_interface/data/models/enums/file_ext.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'chat_state.dart';
@@ -33,10 +31,12 @@ class ChatCubit extends Cubit<ChatState> {
   final ScrollController historyMessagesScrollController = ScrollController();
   final ScrollController textInputScrollController = ScrollController();
   final TextEditingController textEditingController = TextEditingController();
+
   final CachingManager _cachingManager;
   final ChatsRepository _repository;
+  final VoidCallback _showErrorAlert;
+
   late final ChatItem? questionFromArguments;
-  final BuildContext _context;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final Codec _codec = Platform.isIOS ? Codec.aacMP4 : Codec.mp3;
   final FileExt _recordFileExt = FileExt.current;
@@ -48,11 +48,8 @@ class ChatCubit extends Cubit<ChatState> {
   FlutterSoundPlayer? _playerMedia;
   AnswerRequest? _answerRequest;
 
-  ChatCubit(
-    this._cachingManager,
-    this._repository,
-    this._context,
-  ) : super(const ChatState()) {
+  ChatCubit(this._cachingManager, this._repository, this._showErrorAlert)
+      : super(const ChatState()) {
     questionFromArguments = Get.arguments;
     _init();
     _getData();
@@ -202,16 +199,8 @@ class ChatCubit extends Cubit<ChatState> {
       ));
       return true;
     } on DioError catch (e) {
-      await showOkCancelAlert(
-        context: _context,
-        title: _mainCubit.state.errorMessage,
-        okText: S.of(_context).ok,
-        actionOnOK: () {
-          Get.close(2);
-        },
-        allowBarrierClock: false,
-        isCancelEnabled: false,
-      );
+      _mainCubit.updateSessions();
+      _showErrorAlert();
       logger.d(e);
       return false;
     }
@@ -224,16 +213,8 @@ class ChatCubit extends Cubit<ChatState> {
       _setQuestionStatus(question.status ?? ChatItemStatusType.open);
       _mainCubit.updateSessions();
     } on DioError catch (e) {
-      await showOkCancelAlert(
-        context: _context,
-        title: _mainCubit.state.errorMessage,
-        okText: S.of(_context).ok,
-        actionOnOK: () {
-          Get.close(2);
-        },
-        allowBarrierClock: false,
-        isCancelEnabled: false,
-      );
+      _mainCubit.updateSessions();
+      _showErrorAlert();
       logger.d(e);
     }
   }
