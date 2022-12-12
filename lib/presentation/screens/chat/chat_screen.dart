@@ -49,12 +49,12 @@ class ChatScreen extends StatelessWidget {
           final ChatCubit chatCubit = context.read<ChatCubit>();
 
           return Builder(builder: (context) {
-            final ChatItem? questionForAppBar =
+            final ChatItem? questionFromDB =
                 context.select((ChatCubit cubit) => cubit.state.questionFromDB);
             return Scaffold(
               appBar: ChatConversationAppBar(
-                  title: questionForAppBar?.clientName ?? '',
-                  zodiacSign: questionForAppBar?.clientInformation?.zodiac,
+                  title: questionFromDB?.clientName ?? '',
+                  zodiacSign: questionFromDB?.clientInformation?.zodiac,
                   returnInQueueButtonOnTap: () async {
                     final dynamic needReturn = await showOkCancelAlert(
                       context: context,
@@ -128,10 +128,11 @@ class ChatScreen extends StatelessWidget {
                           children: [
                             const _ActiveChat(),
                             const _HistoryChat(),
-                            CustomerProfileWidget(
-                              customerId:
-                                  chatCubit.chatScreenArguments.clientId,
-                            ),
+                            questionFromDB?.clientID != null
+                                ? CustomerProfileWidget(
+                                    customerId: questionFromDB!.clientID!,
+                                  )
+                                : const SizedBox.shrink(),
                           ],
                         ),
                       ),

@@ -135,7 +135,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> _getData() async {
-    await _getPublicOrPrivateQuestion();
+    await _getPublicQuestion();
    await _getConversations();
   }
 
@@ -178,16 +178,14 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  Future<bool> _getPublicOrPrivateQuestion() async {
+  Future<bool> _getPublicQuestion() async {
     try {
       ChatItem? question;
       if (chatScreenArguments.publicQuestionId != null) {
         question = await _repository.getQuestion(
-            id: chatScreenArguments.publicQuestionId ?? '');
-      } else if (chatScreenArguments.privateQuestionId != null) {
-        question = await _repository.getQuestion(
-            id: chatScreenArguments.privateQuestionId ?? '');
+            id: chatScreenArguments.publicQuestionId!);
       }
+
       if (question != null) {
         emit(
           state.copyWith(
@@ -207,14 +205,14 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> _getConversations() async {
-    if (_total != null && _offset >= _total!) {
+
       return;
-    }
+
 
     ConversationsResponse conversations =
         await _repository.getConversationsHistory(
             expertID: _cachingManager.getUserId() ?? '',
-            clientID: chatScreenArguments.clientId,
+            clientID: chatScreenArguments.clientId ?? '',
             offset: _offset,
             limit: _limit);
 
