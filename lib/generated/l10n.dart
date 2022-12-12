@@ -10,7 +10,7 @@ import 'intl/messages_all.dart';
 
 // ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
 // ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
-// ignore_for_file: avoid_redundant_argument_values
+// ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
 
 class S {
   S();
@@ -18,28 +18,31 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null, 'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(_current != null,
+        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
     return _current!;
   }
 
-  static const AppLocalizationDelegate delegate =
-    AppLocalizationDelegate();
+  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name); 
+    final name = (locale.countryCode?.isEmpty ?? false)
+        ? locale.languageCode
+        : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       final instance = S();
       S._current = instance;
- 
+
       return instance;
     });
-  } 
+  }
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null, 'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(instance != null,
+        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
     return instance!;
   }
 
@@ -857,11 +860,11 @@ class S {
     );
   }
 
-  /// `Will be available in an hour`
-  String get willBeAvailableInAnHour {
+  /// `Will be available in`
+  String get willBeAvailableIn {
     return Intl.message(
-      'Will be available in an hour',
-      name: 'willBeAvailableInAnHour',
+      'Will be available in',
+      name: 'willBeAvailableIn',
       desc: '',
       args: [],
     );
@@ -1477,6 +1480,26 @@ class S {
     );
   }
 
+  /// `Return`
+  String get return_ {
+    return Intl.message(
+      'Return',
+      name: 'return_',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Return\nin queue`
+  String get returnInQueue {
+    return Intl.message(
+      'Return\nin queue',
+      name: 'returnInQueue',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `You don’t have internet connection`
   String get youDontHaveInternetConnection {
     return Intl.message(
@@ -1912,6 +1935,88 @@ class S {
     return Intl.message(
       'Session',
       name: 'session',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check your internet connection`
+  String get checkYourInternetConnection {
+    return Intl.message(
+      'Check your internet connection',
+      name: 'checkYourInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can’t send this message because it’s less than 15 seconds`
+  String get youCantSendThisMessageBecauseItsLessThan15Seconds {
+    return Intl.message(
+      'You can’t send this message because it’s less than 15 seconds',
+      name: 'youCantSendThisMessageBecauseItsLessThan15Seconds',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recording stopped because audio file is reached the limit of 3min`
+  String get recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min {
+    return Intl.message(
+      'Recording stopped because audio file is reached the limit of 3min',
+      name: 'recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The maximum image size is 20Mb.`
+  String get theMaximumImageSizeIs20Mb {
+    return Intl.message(
+      'The maximum image size is 20Mb.',
+      name: 'theMaximumImageSizeIs20Mb',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You refuse to answer this question`
+  String get youRefuseToAnswerThisQuestion {
+    return Intl.message(
+      'You refuse to answer this question',
+      name: 'youRefuseToAnswerThisQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It will go back into the general queue and you will not be able to take it again`
+  String get itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain {
+    return Intl.message(
+      'It will go back into the general queue and you will not be able to take it again',
+      name: 'itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This question will be returned to the general list after`
+  String get thisQuestionWillBeReturnedToTheGeneralListAfterCounter {
+    return Intl.message(
+      'This question will be returned to the general list after',
+      name: 'thisQuestionWillBeReturnedToTheGeneralListAfterCounter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The answer is not possible, this question will be returned to the general list in ~ 1m`
+  String
+      get theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m {
+    return Intl.message(
+      'The answer is not possible, this question will be returned to the general list in ~ 1m',
+      name:
+          'theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m',
       desc: '',
       args: [],
     );

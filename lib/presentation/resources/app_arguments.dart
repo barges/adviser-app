@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
 
@@ -60,11 +61,21 @@ class AddNoteScreenArguments {
 }
 
 class ChatScreenArguments {
-  final String? questionId;
-  final String? clientId;
+  final String clientId;
+  final ChatItem? question;
+  final String? publicQuestionId;
+  final String? privateQuestionId;
+  final String? ritualId;
+  final String? storyId;
+  final String? storyIdForHistory;
 
   ChatScreenArguments({
-    this.questionId,
-    this.clientId,
+    required this.clientId,
+    this.question,
+    this.publicQuestionId,
+    this.privateQuestionId,
+    this.ritualId,
+    this.storyId,
+    this.storyIdForHistory,
   });
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
@@ -159,5 +160,17 @@ extension DateTimeExt on DateTime {
       return DateFormat(dateFormat).format(localTime).parseDateTimePattern9;
     }
     return DateFormat(dateFormat).format(localTime).parseDateTimePattern8;
+  }
+}
+
+extension FileExt on File {
+  double get sizeInMb => lengthSync() / (1024 * 1024);
+}
+
+extension DurationExt on Duration {
+  String get formatMMSS {
+    final minutes = inMinutes.remainder(60);
+    final seconds = inSeconds.remainder(60);
+    return "${minutes < 10 ? '0$minutes' : '$minutes'}:${seconds < 10 ? '0$seconds' : '$seconds'}";
   }
 }

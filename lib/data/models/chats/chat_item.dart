@@ -24,6 +24,7 @@ class ChatItem with _$ChatItem {
     SessionsTypes? ritualIdentifier,
     ChatItemStatusType? status,
     String? clientName,
+    DateTime? takenDate,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? content,
@@ -110,4 +111,6 @@ class ChatItem with _$ChatItem {
   }
 
   bool get isMedia => attachments != null && attachments!.isNotEmpty;
+
+  bool get isAudio => getAudioUrl(1) != null || getAudioUrl(2) != null;
 }

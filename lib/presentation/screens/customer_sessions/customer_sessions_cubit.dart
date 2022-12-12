@@ -13,6 +13,7 @@ import 'package:shared_advisor_interface/domain/repositories/chats_repository.da
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_state.dart';
@@ -129,12 +130,20 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   }
 
   void goToChat(ChatItem question) {
-    Get.toNamed(AppRoutes.chat,
-        arguments: question.copyWith(
-          clientID: argumentsQuestion.clientID,
-          clientName: argumentsQuestion.clientName,
-          clientInformation: argumentsQuestion.clientInformation,
-        ));
+    if (argumentsQuestion.clientID != null) {
+      Get.toNamed(
+        AppRoutes.chat,
+        arguments: ChatScreenArguments(
+          clientId: argumentsQuestion.clientID!,
+          storyId: question.id,
+          question: question.copyWith(
+            clientID: argumentsQuestion.clientID,
+            clientName: argumentsQuestion.clientName,
+            clientInformation: argumentsQuestion.clientInformation,
+          ),
+        ),
+      );
+    }
   }
 
   Future<void> refreshCustomerSessions() async {
