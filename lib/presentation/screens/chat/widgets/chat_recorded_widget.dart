@@ -15,7 +15,6 @@ class ChatRecordedWidget extends StatelessWidget {
   final VoidCallback? onPausePlayPressed;
   final VoidCallback? onDeletePressed;
   final VoidCallback? onSendPressed;
-  final bool isPlaying;
   final Stream<PlaybackDisposition>? playbackStream;
 
   const ChatRecordedWidget({
@@ -25,15 +24,16 @@ class ChatRecordedWidget extends StatelessWidget {
     this.onDeletePressed,
     this.onSendPressed,
     this.playbackStream,
-    this.isPlaying = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ChatCubit chatCubit = context.read<ChatCubit>();
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 6.0),
+    return Container(
+      padding:
+      const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
+      color: Theme.of(context).canvasColor,
       child: Column(
         children: [
           Builder(builder: (context) {
@@ -95,7 +95,6 @@ class ChatRecordedWidget extends StatelessWidget {
                   child: Row(
                     children: [
                       _PlayPauseBtn(
-                        isPlaying: isPlaying,
                         onStartPlayPressed: onStartPlayPressed,
                         onPausePlayPressed: onPausePlayPressed,
                       ),
@@ -149,14 +148,18 @@ class ChatRecordedWidget extends StatelessWidget {
               const SizedBox(
                 width: 8.0,
               ),
-              Opacity(
-                opacity: onSendPressed == null ? 0.4 : 1.0,
-                child: AppIconGradientButton(
-                  onTap: onSendPressed,
-                  icon: Assets.vectors.send.path,
-                  iconColor: Theme.of(context).backgroundColor,
-                ),
-              ),
+              Builder(builder: (context) {
+                final bool isSendButtonEnabled = context.select(
+                    (ChatCubit cubit) => cubit.state.isSendButtonEnabled);
+                return Opacity(
+                  opacity: isSendButtonEnabled ? 1.0 : 0.4,
+                  child: AppIconGradientButton(
+                    onTap: isSendButtonEnabled ? onSendPressed : null,
+                    icon: Assets.vectors.send.path,
+                    iconColor: Theme.of(context).backgroundColor,
+                  ),
+                );
+              }),
             ],
           ),
         ],
@@ -166,21 +169,23 @@ class ChatRecordedWidget extends StatelessWidget {
 }
 
 class _PlayPauseBtn extends StatelessWidget {
-  final bool isPlaying;
   final VoidCallback? onStartPlayPressed;
   final VoidCallback? onPausePlayPressed;
+
   const _PlayPauseBtn({
     Key? key,
-    this.isPlaying = false,
     this.onStartPlayPressed,
     this.onPausePlayPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final isPlayingRecordedAudio =
+        context.select((ChatCubit cubit) => cubit.state.isPlayingRecordedAudio);
     return GestureDetector(
       onTap: () {
-        (isPlaying ? onPausePlayPressed : onStartPlayPressed)?.call();
+        (isPlayingRecordedAudio ? onPausePlayPressed : onStartPlayPressed)
+            ?.call();
       },
       child: Container(
         width: AppConstants.iconButtonSize,
@@ -189,7 +194,7 @@ class _PlayPauseBtn extends StatelessWidget {
           color: Theme.of(context).primaryColor,
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
         ),
-        child: isPlaying
+        child: isPlayingRecordedAudio
             ? Assets.vectors.pause.svg(
                 fit: BoxFit.none,
                 color: Theme.of(context).backgroundColor,
@@ -206,6 +211,7 @@ class _PlayPauseBtn extends StatelessWidget {
 class _PlayProgress extends StatelessWidget {
   final double value;
   final String time;
+
   const _PlayProgress({
     Key? key,
     required this.value,

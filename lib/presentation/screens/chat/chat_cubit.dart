@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:audio_session/audio_session.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:mime/mime.dart';
@@ -16,7 +19,7 @@ import 'package:shared_advisor_interface/data/models/chats/meta.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
-import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
+import 'package:shared_advisor_interface/data/network/responses/conversations_story_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -25,15 +28,14 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
-import 'chat_state.dart';
-import 'package:flutter_sound/flutter_sound.dart';
-import 'package:audio_session/audio_session.dart';
 
-const _recordFileExt = 'm4a';
+import 'chat_state.dart';
+
+const String _recordFileExt = 'm4a';
+const int _storyLimit = 20;
 
 class ChatCubit extends Cubit<ChatState> {
   final ScrollController activeMessagesScrollController = ScrollController();
-  final ScrollController historyMessagesScrollController = ScrollController();
   final ScrollController textInputScrollController = ScrollController();
   final TextEditingController textEditingController = TextEditingController();
   final CachingManager _cachingManager;
@@ -47,9 +49,6 @@ class ChatCubit extends Cubit<ChatState> {
       AppConstants.tillShowAnswerTimingMessagesInSec;
   final int _afterShowMessagesInSec =
       AppConstants.afterShowAnswerTimingMessagesInSec;
-  final int _limit = 25;
-  int _offset = 0;
-  int? _total;
   num? _recordAudioDuration;
   FlutterSoundRecorder? _recorder;
   FlutterSoundPlayer? _playerRecorded;
@@ -58,6 +57,9 @@ class ChatCubit extends Cubit<ChatState> {
   StreamSubscription<RecordingDisposition>? _recordingProgressSubscription;
   Timer? _answerTimer;
   bool _counterMessageCleared = false;
+
+  final List<ChatItem> _storyQuestionsList = [];
+  String? _lastQuestionIdForStory;
 
   ChatCubit(
     this._cachingManager,
@@ -77,13 +79,16 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       );
     }
-    _getData().whenComplete(_checkTiming);
+    _getData().whenComplete(() {
+      if (chatScreenArguments.publicQuestionId != null) {
+        _checkTiming();
+      }
+    });
   }
 
   @override
   Future<void> close() {
     activeMessagesScrollController.dispose();
-    historyMessagesScrollController.dispose();
 
     textInputScrollController.dispose();
     textEditingController.dispose();
@@ -129,14 +134,16 @@ class ChatCubit extends Cubit<ChatState> {
     );
 
     //activeMessagesScrollController.addListener(scrollControllerListener);
-    historyMessagesScrollController.addListener(scrollControllerListener);
 
     textEditingController.addListener(textEditingControllerListener);
   }
 
   Future<void> _getData() async {
-    await _getPublicQuestion();
-   await _getConversations();
+    if (chatScreenArguments.publicQuestionId != null) {
+      await _getPublicQuestion();
+    } else if (chatScreenArguments.storyId != null) {
+      _getStory();
+    }
   }
 
   Future<void> _initAudioSession() async {
@@ -160,13 +167,6 @@ class ChatCubit extends Cubit<ChatState> {
     ));
   }
 
-  void scrollControllerListener() {
-    if (!_mainCubit.state.isLoading &&
-        historyMessagesScrollController.position.extentAfter <= 300) {
-      _getConversations();
-    }
-  }
-
   void textEditingControllerListener() {
     final textLength = textEditingController.text.length;
     emit(
@@ -178,15 +178,12 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  Future<bool> _getPublicQuestion() async {
+  Future<void> _getPublicQuestion() async {
     try {
-      ChatItem? question;
       if (chatScreenArguments.publicQuestionId != null) {
-        question = await _repository.getQuestion(
+        final ChatItem question = await _repository.getQuestion(
             id: chatScreenArguments.publicQuestionId!);
-      }
 
-      if (question != null) {
         emit(
           state.copyWith(
             questionFromDB: question,
@@ -194,48 +191,55 @@ class ChatCubit extends Cubit<ChatState> {
             activeMessages: [question],
           ),
         );
-        return true;
       }
-      return false;
     } on DioError catch (e) {
       _showErrorAlert();
       logger.d(e);
-      return false;
     }
   }
 
-  Future<void> _getConversations() async {
+  Future<void> _getStory() async {
+    try {
+      if (chatScreenArguments.storyId != null) {
+        final ConversationsStoryResponse storyResponse =
+            await _repository.getStory(
+          storyID: chatScreenArguments.storyId!,
+          limit: _storyLimit,
+          lastQuestionId: _lastQuestionIdForStory,
+        );
+        final List<ChatItem>? questions = storyResponse.questions;
+        final List<ChatItem>? answers = storyResponse.answers;
 
-      return;
+        if (questions != null && questions.isNotEmpty && answers != null) {
+          // _lastQuestionIdForStory
+          for (int i = 0; i < questions.length; i++) {
+            if (i < answers.length) {
+              _storyQuestionsList.add(answers[i].copyWith(
+                isAnswer: true,
+                type: questions[i].type,
+                ritualId: questions[i].ritualId,
+              ));
+            }
+            _storyQuestionsList.add(questions[i]);
+          }
 
+          final ChatItem lastQuestion = questions.last;
 
-    ConversationsResponse conversations =
-        await _repository.getConversationsHistory(
-            expertID: _cachingManager.getUserId() ?? '',
-            clientID: chatScreenArguments.clientId ?? '',
-            offset: _offset,
-            limit: _limit);
-
-    _total = conversations.total;
-    _offset = _offset + _limit;
-
-    final messages = List.of(state.hystoryMessages);
-    for (var element in conversations.history ?? []) {
-      messages.add(
-        element.answer?.copyWith(
-          isAnswer: true,
-          type: element.question?.type,
-          ritualIdentifier: element.question?.ritualIdentifier,
-        ),
-      );
-      messages.add(
-        element.question,
-      );
+          emit(
+            state.copyWith(
+              questionFromDB: lastQuestion.copyWith(
+                clientID: storyResponse.clientID,
+              ),
+              questionStatus: lastQuestion.status,
+              activeMessages: _storyQuestionsList,
+            ),
+          );
+        }
+      }
+    } on DioError catch (e) {
+      _showErrorAlert();
+      logger.d(e);
     }
-
-    emit(state.copyWith(
-      hystoryMessages: messages,
-    ));
   }
 
   Future<void> takeQuestion() async {
@@ -262,25 +266,21 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> returnQuestion() async {
     try {
-      final ChatItem question = await _repository.returnQuestion(
+      await _repository.returnQuestion(
         AnswerRequest(
           questionID: chatScreenArguments.publicQuestionId,
         ),
       );
-      emit(
-        state.copyWith(
-          questionStatus: question.status ?? ChatItemStatusType.open,
-          isInputField: true,
-        ),
-      );
-
-      ///TODO: Why we need emit???
 
       _mainCubit.updateSessions();
-
+      Get.back();
       _answerTimer?.cancel();
       _answerTimer = null;
     } catch (e) {
+      _mainCubit.updateSessions();
+      Get.back();
+      _answerTimer?.cancel();
+      _answerTimer = null;
       logger.d(e);
     }
   }
@@ -526,10 +526,19 @@ class ChatCubit extends Cubit<ChatState> {
 
     _answerRequest = await _createMediaAnswerRequest();
     final ChatItem? answer = await _sendAnswer();
-    final messages = List.of(state.activeMessages);
 
     if (answer != null) {
-      messages.add(answer);
+      List<ChatItem>? messages;
+      if (chatScreenArguments.publicQuestionId != null) {
+        messages = List.of(state.activeMessages);
+        messages.add(answer);
+      } else {
+        messages = [
+          answer,
+          ...state.activeMessages,
+        ];
+      }
+
       emit(
         state.copyWith(
           isRecordingAudio: false,
@@ -637,7 +646,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   void _checkTiming() {
-    final ChatItem? publicQuestion = state.activeMessages.firstOrNull;
+    final ChatItem? publicQuestion = state.questionFromDB;
     if (publicQuestion?.status == ChatItemStatusType.taken &&
         publicQuestion?.takenDate != null) {
       int afterTakenInSec = DateTime.now()
@@ -702,7 +711,7 @@ class ChatCubit extends Cubit<ChatState> {
         .theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m);
     emit(
       state.copyWith(
-        isInputField: false,
+        showInputFieldIfPublic: false,
       ),
     );
   }
@@ -841,8 +850,6 @@ class ChatCubit extends Cubit<ChatState> {
       attachment: base64Image,
     );
   }
-
-
 
   int get minTextLength => state.questionFromDB?.type == ChatItemType.ritual
       ? AppConstants.minTextLengthRirual
