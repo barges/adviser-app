@@ -29,7 +29,6 @@ class SearchListWidget extends StatelessWidget {
       create: (BuildContext context) => SearchListCubit(
         getIt.get<ChatsRepository>(),
         context,
-        marketsType,
       ),
       child: BlocListener<MainCubit, MainState>(
         listener: (_, state) {

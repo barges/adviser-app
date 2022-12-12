@@ -30,6 +30,7 @@ class ChatState with _$ChatState {
     String? recordingPath,
     Stream<RecordingDisposition>? recordingStream,
     Stream<PlaybackDisposition>? playbackStream,
+    ChatItem? questionFromDB,
     ChatItemStatusType? questionStatus,
   }) = _ChatState;
 }

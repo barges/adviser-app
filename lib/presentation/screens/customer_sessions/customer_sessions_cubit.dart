@@ -136,11 +136,20 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   }
 
   void goToChat(ChatItem question) {
-    Get.toNamed(AppRoutes.chat,
-        arguments: question.copyWith(
-          clientID: argumentsQuestion.clientID,
-          clientName: argumentsQuestion.clientName,
-          clientInformation: argumentsQuestion.clientInformation,
-        ));
+    if (argumentsQuestion.clientID != null) {
+      Get.toNamed(
+        AppRoutes.chat,
+
+        arguments: ChatScreenArguments(
+          clientId: argumentsQuestion.clientID!,
+          storyId: question.id,
+          question: question.copyWith(
+            clientID: argumentsQuestion.clientID,
+            clientName: argumentsQuestion.clientName,
+            clientInformation: argumentsQuestion.clientInformation,
+          ),
+        ),
+      );
+    }
   }
 }

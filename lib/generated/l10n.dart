@@ -1490,10 +1490,10 @@ class S {
     );
   }
 
-  /// `RETURN\nIN QUEUE`
+  /// `Return\nin queue`
   String get returnInQueue {
     return Intl.message(
-      'RETURN\nIN QUEUE',
+      'Return\nin queue',
       name: 'returnInQueue',
       desc: '',
       args: [],

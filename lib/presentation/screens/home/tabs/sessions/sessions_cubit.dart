@@ -145,8 +145,16 @@ class SessionsCubit extends Cubit<SessionsState> {
     }
   }
 
-  Future<void> goToChat(ChatItem question) async {
-    Get.toNamed(AppRoutes.chat, arguments: question);
+  Future<void> goToChatForPublic(ChatItem question) async {
+    if (question.clientID != null) {
+      Get.toNamed(
+        AppRoutes.chat,
+        arguments: ChatScreenArguments(
+
+          publicQuestionId: question.id,
+        ),
+      );
+    }
   }
 
   void goToCustomerSessions(ChatItem question) {
