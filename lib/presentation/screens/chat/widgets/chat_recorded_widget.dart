@@ -30,140 +30,150 @@ class ChatRecordedWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final ChatCubit chatCubit = context.read<ChatCubit>();
 
-    return Container(
-      padding:
-      const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
-      color: Theme.of(context).canvasColor,
-      child: Column(
-        children: [
-          Builder(builder: (context) {
-            context.select((ChatCubit cubit) => cubit.state.attachedPictures);
-            return chatCubit.isAttachedPictures
-                ? const Padding(
-                    padding: EdgeInsets.only(
-                      top: 4.0,
-                      bottom: 12.0,
-                    ),
-                    child: AttachedPictures(),
-                  )
-                : const SizedBox.shrink();
-          }),
-          Row(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Divider(
+          height: 1.0,
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
+          color: Theme.of(context).canvasColor,
+          child: Column(
             children: [
-              GestureDetector(
-                onTap: () {
-                  if (chatCubit.state.attachedPictures.isEmpty) {
-                    showPickImageAlert(
-                      context: context,
-                      setImage: chatCubit.attachPicture,
-                    );
-                  }
-                },
-                child: Builder(builder: (context) {
-                  final List<File> attachedPictures = context.select(
-                      (ChatCubit cubit) => cubit.state.attachedPictures);
-                  return Opacity(
-                    opacity: attachedPictures.isEmpty ? 1.0 : 0.4,
-                    child: Assets.vectors.gallery.svg(
-                      width: AppConstants.iconSize,
-                      color: Theme.of(context).shadowColor,
-                    ),
-                  );
-                }),
-              ),
-              const SizedBox(
-                height: 28.0,
-                child: VerticalDivider(
-                  width: 24.0,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  right: 12.0,
-                ),
-                child:
-                    Assets.vectors.microphone.svg(width: AppConstants.iconSize),
-              ),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(4.0),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius:
-                        BorderRadius.circular(AppConstants.buttonRadius),
+              Builder(builder: (context) {
+                context
+                    .select((ChatCubit cubit) => cubit.state.attachedPictures);
+                return chatCubit.isAttachedPictures
+                    ? const Padding(
+                        padding: EdgeInsets.only(
+                          top: 4.0,
+                          bottom: 12.0,
+                        ),
+                        child: AttachedPictures(),
+                      )
+                    : const SizedBox.shrink();
+              }),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      if (chatCubit.state.attachedPictures.isEmpty) {
+                        showPickImageAlert(
+                          context: context,
+                          setImage: chatCubit.attachPicture,
+                        );
+                      }
+                    },
+                    child: Builder(builder: (context) {
+                      final List<File> attachedPictures = context.select(
+                          (ChatCubit cubit) => cubit.state.attachedPictures);
+                      return Opacity(
+                        opacity: attachedPictures.isEmpty ? 1.0 : 0.4,
+                        child: Assets.vectors.gallery.svg(
+                          width: AppConstants.iconSize,
+                          color: Theme.of(context).shadowColor,
+                        ),
+                      );
+                    }),
                   ),
-                  child: Row(
-                    children: [
-                      _PlayPauseBtn(
-                        onStartPlayPressed: onStartPlayPressed,
-                        onPausePlayPressed: onPausePlayPressed,
+                  const SizedBox(
+                    height: 28.0,
+                    child: VerticalDivider(
+                      width: 24.0,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      right: 12.0,
+                    ),
+                    child: Assets.vectors.microphone
+                        .svg(width: AppConstants.iconSize),
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.all(4.0),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        borderRadius:
+                            BorderRadius.circular(AppConstants.buttonRadius),
                       ),
-                      const SizedBox(
-                        width: 8.0,
-                      ),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: StreamBuilder<PlaybackDisposition>(
-                                stream: playbackStream,
-                                builder: (_, snapshot) {
-                                  final value = playbackStream != null &&
-                                          snapshot.hasData
-                                      ? snapshot.data!.position.inMilliseconds /
-                                          snapshot.data!.duration.inMilliseconds
-                                      : 0.0;
-                                  final time =
-                                      playbackStream != null && snapshot.hasData
+                      child: Row(
+                        children: [
+                          _PlayPauseBtn(
+                            onStartPlayPressed: onStartPlayPressed,
+                            onPausePlayPressed: onPausePlayPressed,
+                          ),
+                          const SizedBox(
+                            width: 8.0,
+                          ),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: StreamBuilder<PlaybackDisposition>(
+                                    stream: playbackStream,
+                                    builder: (_, snapshot) {
+                                      final value = playbackStream != null &&
+                                              snapshot.hasData
+                                          ? snapshot.data!.position
+                                                  .inMilliseconds /
+                                              snapshot
+                                                  .data!.duration.inMilliseconds
+                                          : 0.0;
+                                      final time = playbackStream != null &&
+                                              snapshot.hasData
                                           ? snapshot.data!.position
                                               .toString()
                                               .substring(2, 7)
                                           : "00:00";
-                                  return _PlayProgress(
-                                    value: value,
-                                    time: time,
-                                  );
-                                },
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: onDeletePressed,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 8.0,
-                                  right: 4.0,
+                                      return _PlayProgress(
+                                        value: value,
+                                        time: time,
+                                      );
+                                    },
+                                  ),
                                 ),
-                                child: Assets.vectors.delete.svg(
-                                    width: AppConstants.iconSize,
-                                    color: Theme.of(context).shadowColor),
-                              ),
+                                GestureDetector(
+                                  onTap: onDeletePressed,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 8.0,
+                                      right: 4.0,
+                                    ),
+                                    child: Assets.vectors.delete.svg(
+                                        width: AppConstants.iconSize,
+                                        color: Theme.of(context).shadowColor),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(
-                width: 8.0,
-              ),
-              Builder(builder: (context) {
-                final bool isSendButtonEnabled = context.select(
-                    (ChatCubit cubit) => cubit.state.isSendButtonEnabled);
-                return Opacity(
-                  opacity: isSendButtonEnabled ? 1.0 : 0.4,
-                  child: AppIconGradientButton(
-                    onTap: isSendButtonEnabled ? onSendPressed : null,
-                    icon: Assets.vectors.send.path,
-                    iconColor: Theme.of(context).backgroundColor,
+                  const SizedBox(
+                    width: 8.0,
                   ),
-                );
-              }),
+                  Builder(builder: (context) {
+                    final bool isSendButtonEnabled = context.select(
+                        (ChatCubit cubit) => cubit.state.isSendButtonEnabled);
+                    return Opacity(
+                      opacity: isSendButtonEnabled ? 1.0 : 0.4,
+                      child: AppIconGradientButton(
+                        onTap: isSendButtonEnabled ? onSendPressed : null,
+                        icon: Assets.vectors.send.path,
+                        iconColor: Theme.of(context).backgroundColor,
+                      ),
+                    );
+                  }),
+                ],
+              ),
             ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

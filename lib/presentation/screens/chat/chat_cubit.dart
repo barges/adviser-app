@@ -143,6 +143,8 @@ class ChatCubit extends Cubit<ChatState> {
       await _getPublicQuestion();
     } else if (chatScreenArguments.storyId != null) {
       _getStory();
+    } else if (chatScreenArguments.ritualId != null) {
+      _getRitualQuestion();
     }
   }
 
@@ -183,6 +185,26 @@ class ChatCubit extends Cubit<ChatState> {
       if (chatScreenArguments.publicQuestionId != null) {
         final ChatItem question = await _repository.getQuestion(
             id: chatScreenArguments.publicQuestionId!);
+
+        emit(
+          state.copyWith(
+            questionFromDB: question,
+            questionStatus: question.status,
+            activeMessages: [question],
+          ),
+        );
+      }
+    } on DioError catch (e) {
+      _showErrorAlert();
+      logger.d(e);
+    }
+  }
+
+  Future<void> _getRitualQuestion() async {
+    try {
+      if (chatScreenArguments.ritualId != null) {
+        final ChatItem question = await _repository.getRitualQuestion(
+            id: chatScreenArguments.ritualId!);
 
         emit(
           state.copyWith(
@@ -271,18 +293,14 @@ class ChatCubit extends Cubit<ChatState> {
           questionID: chatScreenArguments.publicQuestionId,
         ),
       );
-
-      _mainCubit.updateSessions();
-      Get.back();
-      _answerTimer?.cancel();
-      _answerTimer = null;
     } catch (e) {
-      _mainCubit.updateSessions();
-      Get.back();
-      _answerTimer?.cancel();
-      _answerTimer = null;
       logger.d(e);
     }
+
+    _mainCubit.updateSessions();
+    Get.back();
+    _answerTimer?.cancel();
+    _answerTimer = null;
   }
 
   Future<void> startRecordingAudio() async {
