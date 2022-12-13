@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/empty_error.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_state.dart';
 import 'package:shared_advisor_interface/presentation/di/modules/api_module.dart';
@@ -59,13 +61,13 @@ class MainCubit extends Cubit<MainState> {
     return cacheManager.getAuthorizedBrands();
   }
 
-  void updateErrorMessage(String message) {
-    emit(state.copyWith(errorMessage: message));
+  void updateErrorMessage(AppError appError) {
+    emit(state.copyWith(appError: appError));
   }
 
   void clearErrorMessage() {
-    if (state.errorMessage.isNotEmpty) {
-      emit(state.copyWith(errorMessage: ''));
+    if (state.appError is! EmptyError) {
+      emit(state.copyWith(appError: const EmptyError()));
     }
   }
 

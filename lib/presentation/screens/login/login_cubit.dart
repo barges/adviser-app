@@ -7,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
+import 'package:shared_advisor_interface/data/models/app_success/ui_success.dart';
 import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/data/network/responses/login_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
@@ -91,10 +93,10 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void clearSuccessMessage() {
-    if (state.emailForResetPassword.isNotEmpty) {
+    if (state.appSuccess is! EmptySuccess) {
       emit(
         state.copyWith(
-          emailForResetPassword: '',
+          appSuccess: const EmptySuccess(),
         ),
       );
     }
@@ -150,7 +152,9 @@ class LoginCubit extends Cubit<LoginState> {
     if (email != null) {
       emit(
         state.copyWith(
-          emailForResetPassword: email as String,
+          appSuccess: UISuccess.withArguments(
+              UISuccessType.weVeSentYouALinkToEmailToChangeYourPassword,
+              email as String),
         ),
       );
     }

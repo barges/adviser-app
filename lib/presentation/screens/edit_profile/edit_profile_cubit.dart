@@ -20,6 +20,7 @@ import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 import 'edit_profile_state.dart';
 
@@ -35,6 +36,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final UserRepository _userRepository = getIt.get<UserRepository>();
   final CachingManager _cacheManager = getIt.get<CachingManager>();
   final DefaultCacheManager _defaultCacheManager = DefaultCacheManager();
+  final ConnectivityService _connectivityService = ConnectivityService();
 
   late final UserProfile? userProfile;
   late final List<MarketsType> activeLanguages;
@@ -201,7 +203,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   Future<void> updateUserInfo() async {
-    if (mainCubit.state.internetConnectionIsAvailable) {
+    if (await _connectivityService.checkConnection()) {
       if (checkTextFields() & checkNickName() & checkUserAvatar()) {
         final bool profileUpdated = await updateUserProfileTexts();
         final bool coverPictureUpdated = await updateCoverPicture();
@@ -325,7 +327,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   Future<void> deletePictureFromGallery(int pictureIndex) async {
-    if (mainCubit.state.internetConnectionIsAvailable) {
+    if (await _connectivityService.checkConnection()) {
       final List<String> coverPictures =
           await _userRepository.deleteCoverPicture(pictureIndex);
       emit(
@@ -353,7 +355,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   Future<void> addPictureToGallery(File? image) async {
-    if (mainCubit.state.internetConnectionIsAvailable && image != null) {
+    if (await _connectivityService.checkConnection() && image != null) {
       final String? mimeType = lookupMimeType(image.path);
       final List<int> imageBytes = await image.readAsBytes();
       final String base64Image = base64Encode(imageBytes);

@@ -10,7 +10,7 @@ import 'intl/messages_all.dart';
 
 // ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
 // ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
-// ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
+// ignore_for_file: avoid_redundant_argument_values
 
 class S {
   S();
@@ -18,31 +18,28 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(_current != null, 'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
     return _current!;
   }
 
-  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
+  static const AppLocalizationDelegate delegate =
+    AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false)
-        ? locale.languageCode
-        : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name);
+    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name); 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       final instance = S();
       S._current = instance;
-
+ 
       return instance;
     });
-  }
+  } 
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(instance != null, 'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
     return instance!;
   }
 
@@ -1770,16 +1767,6 @@ class S {
     );
   }
 
-  /// `You have an active session`
-  String get youHaveAnActiveSession {
-    return Intl.message(
-      'You have an active session',
-      name: 'youHaveAnActiveSession',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Audio message`
   String get audioMessage {
     return Intl.message(
@@ -2010,23 +1997,61 @@ class S {
     );
   }
 
-  /// `This question will be returned to the general list after`
-  String get thisQuestionWillBeReturnedToTheGeneralListAfterCounter {
+  /// `This question will be returned to the general list after {counter}`
+  String thisQuestionWillBeReturnedToTheGeneralListAfterCounter(Object counter) {
     return Intl.message(
-      'This question will be returned to the general list after',
+      'This question will be returned to the general list after $counter',
       name: 'thisQuestionWillBeReturnedToTheGeneralListAfterCounter',
+      desc: '',
+      args: [counter],
+    );
+  }
+
+  /// `The answer is not possible, this question will be returned to the general list in ~ 1m`
+  String get theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m {
+    return Intl.message(
+      'The answer is not possible, this question will be returned to the general list in ~ 1m',
+      name: 'theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m',
       desc: '',
       args: [],
     );
   }
 
-  /// `The answer is not possible, this question will be returned to the general list in ~ 1m`
-  String
-      get theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m {
+  /// `You have a ritual request`
+  String get youHaveARitualRequest {
     return Intl.message(
-      'The answer is not possible, this question will be returned to the general list in ~ 1m',
-      name:
-          'theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m',
+      'You have a ritual request',
+      name: 'youHaveARitualRequest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have a private message`
+  String get youHaveAPrivateMessage {
+    return Intl.message(
+      'You have a private message',
+      name: 'youHaveAPrivateMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have a few active sessions`
+  String get youHaveAFewActiveSessions {
+    return Intl.message(
+      'You have a few active sessions',
+      name: 'youHaveAFewActiveSessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknown error`
+  String get unknownError {
+    return Intl.message(
+      'Unknown error',
+      name: 'unknownError',
       desc: '',
       args: [],
     );

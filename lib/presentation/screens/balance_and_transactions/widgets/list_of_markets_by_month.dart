@@ -47,6 +47,7 @@ class ListOfMarketsByMonth extends StatelessWidget {
               title: S.of(context).youHaveNotYetCompletedThisMonthsSessions,
             ),
           Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               if (markets.isEmpty)
                 const Padding(
@@ -56,7 +57,6 @@ class ListOfMarketsByMonth extends StatelessWidget {
                   ),
                 ),
               Container(
-                height: 28.0,
                 margin: EdgeInsets.only(
                   top: markets.isNotEmpty ? 24.0 : 16.0,
                 ),
@@ -64,12 +64,16 @@ class ListOfMarketsByMonth extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      '${S.of(context).totalMarkets}:',
-                      style:
-                          Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                color: Theme.of(context).primaryColor,
-                              ),
+                    Expanded(
+                      child: Text(
+                        '${S.of(context).totalMarkets}:',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(
+                              color: Theme.of(context).primaryColor,
+                            ),
+                      ),
                     ),
                     Container(
                       height: 28.0,

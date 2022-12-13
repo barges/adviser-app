@@ -6,10 +6,15 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_
 
 class ChatTextWidget extends ChatWidget {
   final VoidCallback? onPressedTryAgain;
+  final bool isHistoryQuestion;
+  final bool isHistoryAnswer;
+
   const ChatTextWidget({
     super.key,
     required super.item,
     this.onPressedTryAgain,
+    this.isHistoryQuestion = false,
+    this.isHistoryAnswer = false,
   });
 
   @override
@@ -43,6 +48,8 @@ class ChatTextWidget extends ChatWidget {
                   question: Theme.of(context).shadowColor,
                   answer: Theme.of(context).primaryColorLight,
                 ),
+                isHistoryQuestion: isHistoryQuestion,
+                isHistoryAnswer: isHistoryAnswer,
               ),
             ],
           ),

@@ -3,6 +3,7 @@ import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_story_response.dart';
+import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 
@@ -34,15 +35,19 @@ class ChatsRepositoryImpl implements ChatsRepository {
   }
 
   @override
-  Future<QuestionsListResponse> getHistoryList({
+  Future<HistoryResponse> getHistoryList({
+    required String clientId,
     required int limit,
-    required int page,
-    String? search,
+    String? lastItem,
+    String? storyId,
+    String? firstItem,
   }) async {
     return await _api.getHistoryList(
+      clientId: clientId,
       limit: limit,
-      page: page,
-      search: search,
+      lastItem: lastItem,
+      storyId: storyId,
+      firstItem: firstItem,
     );
   }
 

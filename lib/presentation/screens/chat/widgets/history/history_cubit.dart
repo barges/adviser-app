@@ -1,36 +1,49 @@
 import 'dart:async';
 
-import 'package:audio_session/audio_session.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:logger/logger.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
+import 'package:shared_advisor_interface/data/models/chats/history.dart';
+import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_state.dart';
+import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+
+enum HistoryScrollDirection {
+  up,
+  down,
+}
 
 class HistoryCubit extends Cubit<HistoryState> {
   final ScrollController historyMessagesScrollController = ScrollController();
-  final CachingManager _cachingManager;
+  final ConnectivityService _connectivityService = ConnectivityService();
   final ChatsRepository _repository;
   final String _clientId;
+  final String? _storyId;
+  FlutterSoundPlayer? _playerMedia;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final Codec _codec = Codec.aacMP4;
-  final int _limit = 25;
-  int _offset = 0;
-  int? _total;
-  FlutterSoundPlayer? _playerMedia;
+
+  final List<History> _historyList = [];
+  final int _limit = 15;
+  bool _hasMore = true;
+  String? _lastItem;
+  bool _hasBefore = false;
+  String? _firstItem;
+  bool _isLoading = false;
 
   HistoryCubit(
-    this._cachingManager,
     this._repository,
-      this._clientId,
+    this._clientId,
+    this._playerMedia,
+    this._storyId,
   ) : super(const HistoryState()) {
-    _init();
-    _getData();
+    _getHistoryList(firstRequest: true);
+    historyMessagesScrollController.addListener(scrollControllerListener);
   }
 
   @override
@@ -41,83 +54,85 @@ class HistoryCubit extends Cubit<HistoryState> {
     return super.close();
   }
 
-  Future<void> _init() async {
-    await _initAudioSession();
-
-    const logLevel = Level.nothing;
-    _playerMedia = await FlutterSoundPlayer(logLevel: logLevel).openPlayer();
-
-    await _playerMedia?.setSubscriptionDuration(
-      const Duration(milliseconds: 100),
-    );
-
-    historyMessagesScrollController.addListener(scrollControllerListener);
-  }
-
-  Future<void> _getData() async {
-    _getConversations();
-  }
-
-  Future<void> _initAudioSession() async {
-    final session = await AudioSession.instance;
-    await session.configure(AudioSessionConfiguration(
-      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
-      avAudioSessionCategoryOptions:
-          AVAudioSessionCategoryOptions.allowBluetooth |
-              AVAudioSessionCategoryOptions.defaultToSpeaker,
-      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
-      avAudioSessionRouteSharingPolicy:
-          AVAudioSessionRouteSharingPolicy.defaultPolicy,
-      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-      androidAudioAttributes: const AndroidAudioAttributes(
-        contentType: AndroidAudioContentType.speech,
-        flags: AndroidAudioFlags.none,
-        usage: AndroidAudioUsage.voiceCommunication,
-      ),
-      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
-      androidWillPauseWhenDucked: true,
-    ));
-  }
-
   void scrollControllerListener() {
     if (!_mainCubit.state.isLoading &&
         historyMessagesScrollController.position.extentAfter <= 300) {
-      _getConversations();
+      _getHistoryList(
+        scrollDirection: HistoryScrollDirection.down,
+      );
+    }
+    if (!_mainCubit.state.isLoading &&
+        historyMessagesScrollController.position.extentBefore <= 300) {
+      _getHistoryList(
+        scrollDirection: HistoryScrollDirection.up,
+      );
     }
   }
 
-  Future<void> _getConversations() async {
-    if (_total != null && _offset >= _total!) {
-      return;
+  Future<void> _getHistoryList({
+    bool firstRequest = false,
+    HistoryScrollDirection? scrollDirection,
+  }) async {
+    if (!_isLoading) {
+      _isLoading = true;
+      try {
+        if (firstRequest && await _connectivityService.checkConnection()) {
+          final HistoryResponse result = await _repository.getHistoryList(
+            clientId: _clientId,
+            limit: _limit,
+            storyId: _storyId,
+          );
+          _hasMore = result.hasMore ?? true;
+          _hasBefore = result.hasBefore ?? true;
+          _lastItem = result.history?.lastOrNull?.id;
+          _firstItem = result.firstItem;
+
+          _historyList.addAll(result.history ?? const []);
+          emit(state.copyWith(
+            historyMessages: List.of(_historyList),
+          ));
+          _isLoading = false;
+          _getHistoryList(scrollDirection: HistoryScrollDirection.up);
+        } else {
+          if (_hasMore &&
+              await _connectivityService.checkConnection() &&
+              scrollDirection == HistoryScrollDirection.down) {
+            final HistoryResponse result = await _repository.getHistoryList(
+              clientId: _clientId,
+              limit: _limit,
+              lastItem: _lastItem,
+            );
+
+            _hasMore = result.hasMore ?? false;
+            _lastItem = result.lastItem;
+
+            _historyList.addAll(result.history ?? const []);
+
+            emit(state.copyWith(
+              historyMessages: List.of(_historyList),
+            ));
+          } else if (_hasBefore &&
+              await _connectivityService.checkConnection() &&
+              scrollDirection == HistoryScrollDirection.up) {
+            final HistoryResponse result = await _repository.getHistoryList(
+              clientId: _clientId,
+              limit: _limit,
+              firstItem: _firstItem,
+            );
+            _hasBefore = result.hasBefore ?? false;
+            _firstItem = result.firstItem;
+
+            _historyList.insertAll(0, result.history ?? const []);
+            emit(state.copyWith(
+              historyMessages: List.of(_historyList),
+            ));
+          }
+        }
+      } on DioError catch (e) {
+        logger.d(e);
+      }
+      _isLoading = false;
     }
-
-    ConversationsResponse conversations =
-        await _repository.getConversationsHistory(
-            expertID: _cachingManager.getUserId() ?? '',
-            clientID: _clientId,
-            offset: _offset,
-            limit: _limit);
-
-    _total = conversations.total;
-    _offset = _offset + _limit;
-
-    final messages = List.of(state.historyMessages);
-    for (var element in conversations.history ?? []) {
-      messages.add(
-        element.answer?.copyWith(
-          isAnswer: true,
-          type: element.question?.type,
-          ritualIdentifier: element.question?.ritualIdentifier,
-        ),
-      );
-      messages.add(
-        element.question,
-      );
-    }
-
-    emit(state.copyWith(
-      historyMessages: messages,
-    ));
   }
 
   Future<void> startPlayAudio(String audioUrl) async {

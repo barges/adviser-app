@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_story_response.dart';
+import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 
 part 'chats_api.g.dart';
@@ -28,10 +29,12 @@ abstract class ChatsApi {
   });
 
   @GET('/experts/conversations/history')
-  Future<QuestionsListResponse> getHistoryList({
+  Future<HistoryResponse> getHistoryList({
+    @Query('clientId') required String clientId,
     @Query('limit') required int limit,
-    @Query('page') required int page,
-    @Query('search') String? search,
+    @Query('lastItem') String? lastItem,
+    @Query('storyId') String? storyId,
+    @Query('firstItem') String? firstItem,
   });
 
   @GET('/experts/stories')

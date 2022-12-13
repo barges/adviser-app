@@ -2,6 +2,10 @@ import 'dart:io';
 
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/empty_error.dart';
+import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
+import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 
@@ -25,8 +29,8 @@ class ChatState with _$ChatState {
     @Default(false) bool isSendButtonEnabled,
     @Default(true) bool isMicrophoneButtonEnabled,
     @Default('') String audioUrl,
-    @Default('') String errorMessage,
-    @Default('') String successMessage,
+    @Default(EmptyError()) AppError appError,
+    @Default(EmptySuccess()) AppSuccess appSuccess,
     String? recordingPath,
     Stream<RecordingDisposition>? recordingStream,
     Stream<PlaybackDisposition>? playbackStream,

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/empty_error.dart';
+import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
+import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
@@ -19,12 +23,13 @@ import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_a
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_media_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_recorded_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_recording_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_media_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_screen.dart';
+import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 import 'widgets/chat_info_card.dart';
 
@@ -37,8 +42,7 @@ class ChatScreen extends StatelessWidget {
       create: (_) => ChatCubit(
         getIt.get<CachingManager>(),
         getIt.get<ChatsRepository>(),
-        () => showAlert(context),
-        context,
+        () => showErrorAlert(context),
       ),
       child: Builder(
         builder: (context) {
@@ -96,11 +100,11 @@ class ChatScreen extends StatelessWidget {
                       ),
                       Builder(
                         builder: (BuildContext context) {
-                          final String message = context.select(
-                              (ChatCubit cubit) => cubit.state.successMessage);
-                          return message.isNotEmpty
+                          final AppSuccess appSuccess = context.select(
+                              (ChatCubit cubit) => cubit.state.appSuccess);
+                          return appSuccess is! EmptySuccess
                               ? AppSuccessWidget(
-                                  message: message,
+                                  message: appSuccess.getMessage(context),
                                   onClose: chatCubit.clearSuccessMessage,
                                 )
                               : const SizedBox.shrink();
@@ -108,11 +112,11 @@ class ChatScreen extends StatelessWidget {
                       ),
                       Builder(
                         builder: (context) {
-                          final String errorMessage = context.select(
-                              (ChatCubit cubit) => cubit.state.errorMessage);
-                          return errorMessage.isNotEmpty
+                          final AppError appError = context.select(
+                              (ChatCubit cubit) => cubit.state.appError);
+                          return appError is! EmptyError
                               ? AppErrorWidget(
-                                  errorMessage: errorMessage,
+                                  errorMessage: appError.getMessage(context),
                                   close: chatCubit.clearErrorMessage,
                                 )
                               : const SizedBox.shrink();
@@ -123,7 +127,15 @@ class ChatScreen extends StatelessWidget {
                           index: currentIndex,
                           children: [
                             const _ActiveChat(),
-                            const _HistoryChat(),
+                            questionFromDB?.clientID != null &&
+                                    chatCubit.playerMedia != null
+                                ? HistoryTab(
+                                    clientId: questionFromDB!.clientID!,
+                                    playerMedia: chatCubit.playerMedia!,
+                                    storyId: chatCubit
+                                        .chatScreenArguments.storyIdForHistory,
+                                  )
+                                : const SizedBox.shrink(),
                             questionFromDB?.clientID != null
                                 ? CustomerProfileWidget(
                                     customerId: questionFromDB!.clientID!,
@@ -253,19 +265,19 @@ class ChatScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  showAlert(BuildContext context) async {
-    await showOkCancelAlert(
-      context: context,
-      title: getIt.get<MainCubit>().state.errorMessage,
-      okText: S.of(context).ok,
-      actionOnOK: () {
-        Get.close(2);
-      },
-      allowBarrierClock: false,
-      isCancelEnabled: false,
-    );
-  }
+showAlert(BuildContext context) async {
+  await showOkCancelAlert(
+    context: context,
+    title: getIt.get<MainCubit>().state.appError.getMessage(context),
+    okText: S.of(context).ok,
+    actionOnOK: () {
+      Get.close(2);
+    },
+    allowBarrierClock: false,
+    isCancelEnabled: false,
+  );
 }
 
 class _ActiveChat extends StatelessWidget {
@@ -304,7 +316,7 @@ class _ActiveChat extends StatelessWidget {
                             if (index < activeMessages.length) {
                               final ChatItem question = activeMessages[index];
 
-                              return _ChatItemWidget(question,
+                              return ChatItemWidget(question,
                                   onPressedTryAgain: !question.isSent
                                       ? chatCubit.sendAnswerAgain
                                       : null);
@@ -316,7 +328,7 @@ class _ActiveChat extends StatelessWidget {
                           } else {
                             final ChatItem question = activeMessages[index];
 
-                            return _ChatItemWidget(question,
+                            return ChatItemWidget(question,
                                 onPressedTryAgain: !question.isSent
                                     ? chatCubit.sendAnswerAgain
                                     : null);
@@ -381,67 +393,5 @@ class _ActiveChat extends StatelessWidget {
           ),
       ],
     );
-  }
-}
-
-class _HistoryChat extends StatelessWidget {
-  const _HistoryChat({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final ChatCubit chatCubit = context.read<ChatCubit>();
-    return Builder(
-      builder: (context) {
-        final List<ChatItem> items =
-            context.select((ChatCubit cubit) => cubit.state.hystoryMessages);
-        return Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          child: ListView.builder(
-            padding: const EdgeInsets.only(bottom: 12.0),
-            shrinkWrap: true,
-            reverse: true,
-            itemBuilder: (_, index) => _ChatItemWidget(items[index],
-                onPressedTryAgain:
-                    !items[index].isSent ? chatCubit.sendAnswerAgain : null),
-            itemCount: items.length,
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _ChatItemWidget extends StatelessWidget {
-  final ChatItem item;
-  final VoidCallback? onPressedTryAgain;
-
-  const _ChatItemWidget(
-    this.item, {
-    Key? key,
-    this.onPressedTryAgain,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    if (item.isMedia) {
-      if (item.content != null && item.content!.isNotEmpty) {
-        return ChatTextMediaWidget(
-          item: item,
-          onPressedTryAgain: onPressedTryAgain,
-        );
-      } else {
-        return ChatMediaWidget(
-          item: item,
-          onPressedTryAgain: onPressedTryAgain,
-        );
-      }
-    } else {
-      return ChatTextWidget(
-        item: item,
-        onPressedTryAgain: onPressedTryAgain,
-      );
-    }
   }
 }
