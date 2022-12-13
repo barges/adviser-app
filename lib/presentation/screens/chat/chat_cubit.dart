@@ -141,10 +141,10 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> _getData() async {
     if (chatScreenArguments.publicQuestionId != null) {
       await _getPublicQuestion();
-    } else if (chatScreenArguments.storyId != null) {
-      _getStory();
     } else if (chatScreenArguments.ritualId != null) {
       _getRitualQuestion();
+    } else if (chatScreenArguments.storyId != null) {
+      _getStory();
     }
   }
 
@@ -546,16 +546,8 @@ class ChatCubit extends Cubit<ChatState> {
     final ChatItem? answer = await _sendAnswer();
 
     if (answer != null) {
-      List<ChatItem>? messages;
-      if (chatScreenArguments.publicQuestionId != null) {
-        messages = List.of(state.activeMessages);
+     final List<ChatItem> messages = List.of(state.activeMessages);
         messages.add(answer);
-      } else {
-        messages = [
-          answer,
-          ...state.activeMessages,
-        ];
-      }
 
       emit(
         state.copyWith(
@@ -577,9 +569,9 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> sendTextMediaAnswer() async {
     _answerRequest = await _createTextMediaAnswerRequest();
     final ChatItem? answer = await _sendAnswer();
-    final messages = List.of(state.activeMessages);
 
     if (answer != null) {
+      final messages = List.of(state.activeMessages);
       messages.add(answer);
       emit(
         state.copyWith(
@@ -606,17 +598,6 @@ class ChatCubit extends Cubit<ChatState> {
       _answerRequest = null;
 
       final messages = List.of(state.activeMessages);
-
-      ///TODO: Maybe we need get data from backend for all sendMessage methods ("storyID":"62e37a673b6d20001df860ef")
-      ///{"expertInformation":{"profile":{"profilePictures":["https://fortunica-data.s3.eu-central-1.amazonaws.com/experts/b1c895e92b88b543979ba987bb8236e3.jpg"],
-      ///"profileName":"Niskov Max"},"_id":"39726a57734b49a530639cc8115eb863e3f064fc16c2955384770462efb5e44b"},
-      ///"deleted":false,"answerTime":11614090070,"_id":"6394b1f1cd073b001d0055ac",
-      ///"content":"","attachments":[{"_id":"6394b1f1cd073b001d0055ad","mime":"image/jpeg",
-      ///"url":"https://fortunica-data.s3.eu-central-1.amazonaws.com/attachments/9639bf2d33857e9c636292defca140f6.jpg","meta":null}],
-      ///"storyID":"62e37a673b6d20001df860ef","type":"TEXT_ANSWER",
-      ///"clientID":"5f5224f45a1f7c001c99763c","expertID":"39726a57734b49a530639cc8115eb863e3f064fc16c2955384770462efb5e44b",
-      ///"questionID":"62e37a673b6d20001df860f1","questionType":"PUBLIC","likes":[],
-      ///"createdAt":"2022-12-10T16:21:05.895Z","updatedAt":"2022-12-10T16:21:05.895Z","__v":0}
       messages.replaceRange(messages.length - 1, messages.length, [
         answer.copyWith(
           isAnswer: true,

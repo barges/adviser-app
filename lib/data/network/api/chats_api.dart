@@ -62,7 +62,7 @@ abstract class ChatsApi {
     @Path() required String id,
   });
 
-  @GET('/v1/rituals/single/{id}')
+  @GET('/rituals/single/{id}')
   Future<ChatItem> getRitualQuestion({
     @Path() required String id,
   });

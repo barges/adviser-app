@@ -140,7 +140,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
         AppRoutes.chat,
         arguments: ChatScreenArguments(
           clientId: argumentsQuestion.clientID,
-          storyId: question.id,
+          storyId: question.ritualId != null ? null : question.id,
           ritualId: question.ritualId,
           question: question.copyWith(
             clientID: argumentsQuestion.clientID,
