@@ -42,6 +42,8 @@ class ChatCubit extends Cubit<ChatState> {
   final ScrollController textInputScrollController = ScrollController();
   final TextEditingController textEditingController = TextEditingController();
 
+  final ConnectivityService _connectivityService = ConnectivityService();
+
   final CachingManager _cachingManager;
   final ChatsRepository _repository;
   late final ChatScreenArguments chatScreenArguments;
@@ -63,6 +65,7 @@ class ChatCubit extends Cubit<ChatState> {
   StreamSubscription<RecordingDisposition>? _recordingProgressSubscription;
   Timer? _answerTimer;
   bool _counterMessageCleared = false;
+  bool _isConversationLoading = false;
 
   ChatCubit(
     this._cachingManager,
@@ -214,34 +217,37 @@ class ChatCubit extends Cubit<ChatState> {
     if (_total != null && _offset >= _total!) {
       return;
     }
+    if (!_isConversationLoading) {
+      _isConversationLoading = true;
+      ConversationsResponse conversations =
+          await _repository.getConversationsHistory(
+              expertID: _cachingManager.getUserId() ?? '',
+              clientID: chatScreenArguments.clientId,
+              offset: _offset,
+              limit: _limit);
 
-    ConversationsResponse conversations =
-        await _repository.getConversationsHistory(
-            expertID: _cachingManager.getUserId() ?? '',
-            clientID: chatScreenArguments.clientId,
-            offset: _offset,
-            limit: _limit);
+      _total = conversations.total;
+      _offset = _offset + _limit;
 
-    _total = conversations.total;
-    _offset = _offset + _limit;
+      final messages = List.of(state.hystoryMessages);
+      for (var element in conversations.history ?? []) {
+        messages.add(
+          element.answer?.copyWith(
+            isAnswer: true,
+            type: element.question?.type,
+            ritualIdentifier: element.question?.ritualIdentifier,
+          ),
+        );
+        messages.add(
+          element.question,
+        );
+      }
 
-    final messages = List.of(state.hystoryMessages);
-    for (var element in conversations.history ?? []) {
-      messages.add(
-        element.answer?.copyWith(
-          isAnswer: true,
-          type: element.question?.type,
-          ritualIdentifier: element.question?.ritualIdentifier,
-        ),
-      );
-      messages.add(
-        element.question,
-      );
+      emit(state.copyWith(
+        hystoryMessages: messages,
+      ));
+      _isConversationLoading = false;
     }
-
-    emit(state.copyWith(
-      hystoryMessages: messages,
-    ));
   }
 
   Future<void> takeQuestion() async {
@@ -776,7 +782,7 @@ class ChatCubit extends Cubit<ChatState> {
       _answerRequest = null;
     } on DioError catch (e) {
       logger.e(e);
-      if (!await ConnectivityService.checkConnection() ||
+      if (!await _connectivityService.checkConnection() ||
           e.type == DioErrorType.connectTimeout ||
           e.type == DioErrorType.sendTimeout ||
           e.type == DioErrorType.receiveTimeout) {

@@ -14,6 +14,7 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_state.dart';
+import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AccountCubit extends Cubit<AccountState> {
@@ -23,6 +24,7 @@ class AccountCubit extends Cubit<AccountState> {
   final MainCubit mainCubit = getIt.get<MainCubit>();
 
   final UserRepository _userRepository = getIt.get<UserRepository>();
+  final ConnectivityService _connectivityService = ConnectivityService();
 
   final CachingManager cacheManager;
 
@@ -58,7 +60,7 @@ class AccountCubit extends Cubit<AccountState> {
   }
 
   Future<void> refreshUserinfo() async {
-    if (mainCubit.state.internetConnectionIsAvailable) {
+    if (await _connectivityService.checkConnection()) {
       int milliseconds = 0;
 
       final UserInfo userInfo = await _userRepository.getUserInfo();

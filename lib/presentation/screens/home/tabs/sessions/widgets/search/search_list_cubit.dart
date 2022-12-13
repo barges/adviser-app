@@ -12,11 +12,13 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/search/search_list_state.dart';
+import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 class SearchListCubit extends Cubit<SearchListState> {
   final ChatsRepository _repository;
   final BuildContext context;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
+  final ConnectivityService _connectivityService = ConnectivityService();
 
   final BehaviorSubject _searchStream = BehaviorSubject<String>();
 
@@ -70,8 +72,7 @@ class SearchListCubit extends Cubit<SearchListState> {
       _conversationsLastItem = null;
       _conversationsList.clear();
     }
-    if (_conversationsHasMore &&
-        _mainCubit.state.internetConnectionIsAvailable) {
+    if (_conversationsHasMore && await _connectivityService.checkConnection()) {
       final QuestionsListResponse result =
           await _repository.getConversationsList(
         limit: AppConstants.questionsLimit,

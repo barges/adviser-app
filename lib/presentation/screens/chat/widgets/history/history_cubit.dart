@@ -11,6 +11,7 @@ import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_state.dart';
 import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 enum HistoryScrollDirection {
   up,
@@ -19,6 +20,7 @@ enum HistoryScrollDirection {
 
 class HistoryCubit extends Cubit<HistoryState> {
   final ScrollController historyMessagesScrollController = ScrollController();
+  final ConnectivityService _connectivityService = ConnectivityService();
   final ChatsRepository _repository;
   final String _clientId;
   final String? _storyId;
@@ -32,7 +34,7 @@ class HistoryCubit extends Cubit<HistoryState> {
   String? _lastItem;
   bool _hasBefore = false;
   String? _firstItem;
-  bool isLoading = false;
+  bool _isLoading = false;
 
   HistoryCubit(
     this._repository,
@@ -71,10 +73,10 @@ class HistoryCubit extends Cubit<HistoryState> {
     bool firstRequest = false,
     HistoryScrollDirection? scrollDirection,
   }) async {
-    if (!isLoading) {
-      isLoading = true;
+    if (!_isLoading) {
+      _isLoading = true;
       try {
-        if (firstRequest && _mainCubit.state.internetConnectionIsAvailable) {
+        if (firstRequest && await _connectivityService.checkConnection()) {
           final HistoryResponse result = await _repository.getHistoryList(
             clientId: _clientId,
             limit: _limit,
@@ -89,11 +91,11 @@ class HistoryCubit extends Cubit<HistoryState> {
           emit(state.copyWith(
             historyMessages: List.of(_historyList),
           ));
-          isLoading = false;
+          _isLoading = false;
           _getHistoryList(scrollDirection: HistoryScrollDirection.up);
         } else {
           if (_hasMore &&
-              _mainCubit.state.internetConnectionIsAvailable &&
+              await _connectivityService.checkConnection() &&
               scrollDirection == HistoryScrollDirection.down) {
             final HistoryResponse result = await _repository.getHistoryList(
               clientId: _clientId,
@@ -110,7 +112,7 @@ class HistoryCubit extends Cubit<HistoryState> {
               historyMessages: List.of(_historyList),
             ));
           } else if (_hasBefore &&
-              _mainCubit.state.internetConnectionIsAvailable &&
+              await _connectivityService.checkConnection() &&
               scrollDirection == HistoryScrollDirection.up) {
             final HistoryResponse result = await _repository.getHistoryList(
               clientId: _clientId,
@@ -129,7 +131,7 @@ class HistoryCubit extends Cubit<HistoryState> {
       } on DioError catch (e) {
         logger.d(e);
       }
-      isLoading = false;
+      _isLoading = false;
     }
   }
 
