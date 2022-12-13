@@ -6,7 +6,7 @@ import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 import 'package:shared_advisor_interface/extensions.dart';
 
 class ChatItemFooterWidget extends StatelessWidget {
-  final ChatItemType type;
+  final ChatItemType? type;
   final DateTime createdAt;
   final SessionsTypes? ritualIdentifier;
   final Color color;
@@ -24,14 +24,16 @@ class ChatItemFooterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isRitual =
+        type == ChatItemType.ritual && ritualIdentifier != null;
     return Row(
       children: [
         Padding(
           padding: const EdgeInsets.only(right: 4.0),
           child: Text(
-            type == ChatItemType.ritual && ritualIdentifier != null
-                ? ritualIdentifier!.sessionName(context)
-                : toBeginningOfSentenceCase(type.typeName(context))!,
+            isRitual
+                ? ritualIdentifier?.sessionName(context) ?? ''
+                : toBeginningOfSentenceCase(type?.typeName(context)) ?? '',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: color,
                   fontSize: 12.0,
@@ -41,9 +43,7 @@ class ChatItemFooterWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 8.0),
           child: SvgPicture.asset(
-            ritualIdentifier != null
-                ? ritualIdentifier!.iconPath
-                : type.iconPath,
+            isRitual ? ritualIdentifier!.iconPath : type?.iconPath ?? '',
             width: 16.0,
             height: 16.0,
             color: color,

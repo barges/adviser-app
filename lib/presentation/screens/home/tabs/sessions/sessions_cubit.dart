@@ -158,8 +158,7 @@ class SessionsCubit extends Cubit<SessionsState> {
       Get.toNamed(
         AppRoutes.chat,
         arguments: ChatScreenArguments(
-          clientId: question.clientID!,
-          question: question,
+
           publicQuestionId: question.id,
         ),
       );

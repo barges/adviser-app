@@ -7,7 +7,7 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class InfoCard extends StatelessWidget {
-  final ChatItem question;
+  final ChatItem? question;
 
   const InfoCard({super.key, required this.question});
 
@@ -41,7 +41,7 @@ class InfoCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Text(
-                  question.clientName ?? '',
+                  question?.clientName ?? '',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         color: Theme.of(context).hoverColor,
@@ -54,7 +54,7 @@ class InfoCard extends StatelessWidget {
                 children: [
                   Text(
                     DateFormat(datePattern1).format(
-                        question.clientInformation?.birthdate ??
+                        question?.clientInformation?.birthdate ??
                             DateTime.now()),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).shadowColor,
@@ -72,7 +72,7 @@ class InfoCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    question.clientInformation?.gender
+                    question?.clientInformation?.gender
                             ?.name(context)
                             .capitalize ??
                         '',

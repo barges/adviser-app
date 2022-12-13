@@ -66,11 +66,12 @@ class ChatsRepositoryImpl implements ChatsRepository {
   }
 
   @override
-  Future<ConversationsStoryResponse> getConversationsStory({
-    required String storyID,
-  }) async {
-    return await _api.getConversationsStory(
+  Future<ConversationsStoryResponse> getStory(
+      {required String storyID, int? limit, String? lastQuestionId}) async {
+    return await _api.getStory(
       storyID: storyID,
+      limit: limit,
+      lastQuestionId: lastQuestionId,
     );
   }
 

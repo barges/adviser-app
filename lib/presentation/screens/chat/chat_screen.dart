@@ -33,8 +33,6 @@ import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 import 'widgets/chat_info_card.dart';
 
-const _textCounterWidth = 92.0;
-
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);
 
@@ -72,7 +70,6 @@ class ChatScreen extends StatelessWidget {
 
                     if (needReturn == true) {
                       await chatCubit.returnQuestion();
-                      Get.back();
                     }
                   }),
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -155,82 +152,110 @@ class ChatScreen extends StatelessWidget {
                 builder: (context) {
                   final int currentIndex = context
                       .select((ChatCubit cubit) => cubit.state.currentTabIndex);
-                  final bool isInputField = context
-                      .select((ChatCubit cubit) => cubit.state.isInputField);
                   final ChatItemStatusType? questionStatus = context
                       .select((ChatCubit cubit) => cubit.state.questionStatus);
 
-                  if (currentIndex != 0 ||
-                      !isInputField ||
-                      questionStatus != ChatItemStatusType.taken) {
-                    ///TODO: Need investigate!!!
-                    return const SizedBox.shrink();
+                  if (currentIndex == 0) {
+                    if (chatCubit.chatScreenArguments.publicQuestionId !=
+                        null) {
+                      final bool showInputFieldIfPublic = context.select(
+                          (ChatCubit cubit) =>
+                              cubit.state.showInputFieldIfPublic);
+                      if (!showInputFieldIfPublic ||
+                          questionStatus != ChatItemStatusType.taken) {
+                        return const SizedBox.shrink();
+                      } else {
+                        return Builder(
+                          builder: (context) {
+                            final bool isRecordingAudio = context.select(
+                                (ChatCubit cubit) =>
+                                    cubit.state.isRecordingAudio);
+                            final bool isAudioFileSaved = context.select(
+                                (ChatCubit cubit) =>
+                                    cubit.state.isAudioFileSaved);
+
+                            if (isAudioFileSaved) {
+                              return ChatRecordedWidget(
+                                playbackStream: chatCubit.state.playbackStream,
+                                onStartPlayPressed: () =>
+                                    chatCubit.startPlayRecordedAudio(),
+                                onPausePlayPressed: () =>
+                                    chatCubit.pauseRecordedAudio(),
+                                onDeletePressed: () async {
+                                  if ((await showDeleteAlert(
+                                      context,
+                                      S
+                                          .of(context)
+                                          .doYouWantToDeleteAudioMessage))!) {
+                                    chatCubit.deletedRecordedAudio();
+                                  }
+                                },
+                                onSendPressed: chatCubit.sendMediaAnswer,
+                              );
+                            } else if (isRecordingAudio) {
+                              return ChatRecordingWidget(
+                                onClosePressed: () =>
+                                    chatCubit.cancelRecordingAudio(),
+                                onStopRecordPressed: () =>
+                                    chatCubit.stopRecordingAudio(),
+                                recordingStream:
+                                    chatCubit.state.recordingStream,
+                              );
+                            } else {
+                              return const ChatTextInputWidget();
+                            }
+                          },
+                        );
+                      }
+                    } else {
+                      if (questionStatus != ChatItemStatusType.answered) {
+                        return Builder(
+                          builder: (context) {
+                            final bool isRecordingAudio = context.select(
+                                (ChatCubit cubit) =>
+                                    cubit.state.isRecordingAudio);
+                            final bool isAudioFileSaved = context.select(
+                                (ChatCubit cubit) =>
+                                    cubit.state.isAudioFileSaved);
+
+                            if (isAudioFileSaved) {
+                              return ChatRecordedWidget(
+                                playbackStream: chatCubit.state.playbackStream,
+                                onStartPlayPressed: () =>
+                                    chatCubit.startPlayRecordedAudio(),
+                                onPausePlayPressed: () =>
+                                    chatCubit.pauseRecordedAudio(),
+                                onDeletePressed: () async {
+                                  if ((await showDeleteAlert(
+                                      context,
+                                      S
+                                          .of(context)
+                                          .doYouWantToDeleteAudioMessage))!) {
+                                    chatCubit.deletedRecordedAudio();
+                                  }
+                                },
+                                onSendPressed: chatCubit.sendMediaAnswer,
+                              );
+                            } else if (isRecordingAudio) {
+                              return ChatRecordingWidget(
+                                onClosePressed: () =>
+                                    chatCubit.cancelRecordingAudio(),
+                                onStopRecordPressed: () =>
+                                    chatCubit.stopRecordingAudio(),
+                                recordingStream:
+                                    chatCubit.state.recordingStream,
+                              );
+                            } else {
+                              return const ChatTextInputWidget();
+                            }
+                          },
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    }
                   } else {
-                    return Container(
-                      color: Theme.of(context).canvasColor,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Builder(
-                            builder: (context) {
-                              final bool isRecordingAudio = context.select(
-                                  (ChatCubit cubit) =>
-                                      cubit.state.isRecordingAudio);
-                              final bool isAudioFileSaved = context.select(
-                                  (ChatCubit cubit) =>
-                                      cubit.state.isAudioFileSaved);
-                              final isPlayingRecordedAudio = context.select(
-                                  (ChatCubit cubit) =>
-                                      cubit.state.isPlayingRecordedAudio);
-                              final isSendButtonEnabled = context.select(
-                                  (ChatCubit cubit) =>
-                                      cubit.state.isSendButtonEnabled);
-
-                              if (isAudioFileSaved) {
-                                return ChatRecordedWidget(
-                                  isPlaying: isPlayingRecordedAudio,
-                                  playbackStream:
-                                      chatCubit.state.playbackStream,
-                                  onStartPlayPressed: () =>
-                                      chatCubit.startPlayRecordedAudio(),
-                                  onPausePlayPressed: () =>
-                                      chatCubit.pauseRecordedAudio(),
-                                  onDeletePressed: () async {
-                                    if ((await showDeleteAlert(
-                                        context,
-                                        S
-                                            .of(context)
-                                            .doYouWantToDeleteAudioMessage))!) {
-                                      chatCubit.deletedRecordedAudio();
-                                    }
-                                  },
-                                  onSendPressed: isSendButtonEnabled
-                                      ? chatCubit.sendMediaAnswer
-                                      : null,
-                                );
-                              }
-
-                              if (isRecordingAudio) {
-                                return ChatRecordingWidget(
-                                  onClosePressed: () =>
-                                      chatCubit.cancelRecordingAudio(),
-                                  onStopRecordPressed: () =>
-                                      chatCubit.stopRecordingAudio(),
-                                  recordingStream:
-                                      chatCubit.state.recordingStream,
-                                );
-                              } else {
-                                return const ChatTextInputWidget();
-                              }
-                            },
-                          ),
-                          const Divider(
-                            height: 1.0,
-                            endIndent: _textCounterWidth,
-                          ),
-                        ],
-                      ),
-                    );
+                    return const SizedBox.shrink();
                   }
                 },
               ),
@@ -276,23 +301,29 @@ class _ActiveChat extends StatelessWidget {
                   Expanded(
                     child: Container(
                       color: Theme.of(context).scaffoldBackgroundColor,
-                      child: ListView.builder(
+                      child: ListView.separated(
+                        padding:
+                            const EdgeInsets.fromLTRB(12.0, 16.0, 12.0, 24.0),
+                        reverse:
+                            chatCubit.chatScreenArguments.publicQuestionId !=
+                                    null
+                                ? false
+                                : true,
                         shrinkWrap: true,
                         itemBuilder: (_, index) {
                           if (activeMessages.first.type ==
                               ChatItemType.ritual) {
-                            if (index == 0) {
-                              return InfoCard(
-                                question: activeMessages[0],
-                              );
-                            } else {
-                              final ChatItem question =
-                                  activeMessages[index - 1];
+                            if (index < activeMessages.length) {
+                              final ChatItem question = activeMessages[index];
 
                               return ChatItemWidget(question,
                                   onPressedTryAgain: !question.isSent
                                       ? chatCubit.sendAnswerAgain
                                       : null);
+                            } else {
+                              return InfoCard(
+                                question: chatCubit.state.questionFromDB,
+                              );
                             }
                           } else {
                             final ChatItem question = activeMessages[index];
@@ -307,9 +338,29 @@ class _ActiveChat extends StatelessWidget {
                             activeMessages.first.type == ChatItemType.ritual
                                 ? activeMessages.length + 1
                                 : activeMessages.length,
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const SizedBox(
+                            height: 8.0,
+                          );
+                        },
                       ),
                     ),
                   ),
+                  if (chatCubit.chatScreenArguments.publicQuestionId != null)
+                    Builder(
+                      builder: (context) {
+                        final ChatItemStatusType? questionStatus =
+                            context.select((ChatCubit cubit) =>
+                                cubit.state.questionStatus);
+                        if (questionStatus == ChatItemStatusType.open) {
+                          return const SizedBox(
+                            height: 72.0,
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      },
+                    ),
                 ],
               );
             } else {
@@ -317,109 +368,30 @@ class _ActiveChat extends StatelessWidget {
             }
           },
         ),
-        Builder(
-          builder: (context) {
-            final bool isInputField =
-                context.select((ChatCubit cubit) => cubit.state.isInputField);
-            final ChatItemStatusType? questionStatus =
-                context.select((ChatCubit cubit) => cubit.state.questionStatus);
-            if (isInputField && questionStatus == ChatItemStatusType.taken) {
-              return const Positioned(
-                bottom: 0.0,
-                right: 0.0,
-                child: _TextCounter(
-                  width: _textCounterWidth,
-                  height: 22.0,
-                ),
-              );
-            }
-            return const SizedBox.shrink();
-          },
-        ),
-        Builder(
-          builder: (context) {
-            final ChatItemStatusType? questionStatus =
-                context.select((ChatCubit cubit) => cubit.state.questionStatus);
-            if (questionStatus == ChatItemStatusType.open) {
-              return Positioned(
-                right: AppConstants.horizontalScreenPadding,
-                bottom: 24.0,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width -
-                      AppConstants.horizontalScreenPadding * 2,
-                  child: AppElevatedButton(
-                    title: S.of(context).takeQuestion,
-                    onPressed: chatCubit.takeQuestion,
+        if (chatCubit.chatScreenArguments.publicQuestionId != null)
+          Builder(
+            builder: (context) {
+              final ChatItemStatusType? questionStatus = context
+                  .select((ChatCubit cubit) => cubit.state.questionStatus);
+              if (questionStatus == ChatItemStatusType.open) {
+                return Positioned(
+                  right: AppConstants.horizontalScreenPadding,
+                  bottom: 24.0,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width -
+                        AppConstants.horizontalScreenPadding * 2,
+                    child: AppElevatedButton(
+                      title: S.of(context).takeQuestion,
+                      onPressed: chatCubit.takeQuestion,
+                    ),
                   ),
-                ),
-              );
-            } else {
-              return const SizedBox.shrink();
-            }
-          },
-        ),
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
+          ),
       ],
     );
-  }
-}
-
-class _TextCounter extends StatelessWidget {
-  final double width;
-  final double height;
-
-  const _TextCounter({
-    Key? key,
-    required this.width,
-    required this.height,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final ChatCubit chatCubit = context.read<ChatCubit>();
-    final theme = Theme.of(context);
-    return Builder(builder: (context) {
-      final int inputTextLength =
-          context.select((ChatCubit cubit) => cubit.state.inputTextLength);
-      final isEnabled =
-          context.select((ChatCubit cubit) => cubit.state.isSendButtonEnabled);
-      return Stack(
-        children: [
-          Container(
-            width: width,
-            height: height,
-            decoration: BoxDecoration(
-              color: theme.canvasColor,
-              borderRadius:
-                  const BorderRadius.only(topLeft: Radius.circular(4.0)),
-              border: Border(
-                top: BorderSide(color: theme.hintColor),
-                right: BorderSide(color: theme.hintColor),
-                bottom: BorderSide(color: theme.hintColor),
-                left: BorderSide(color: theme.hintColor),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Text(
-                textAlign: TextAlign.center,
-                '$inputTextLength/${chatCubit.minTextLength}',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: isEnabled ? AppColors.online : theme.errorColor,
-                  fontSize: 12.0,
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0.0,
-            child: Container(
-              color: theme.canvasColor,
-              width: width,
-              height: 1.0,
-            ),
-          ),
-        ],
-      );
-    });
   }
 }
