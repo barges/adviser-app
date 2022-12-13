@@ -22,7 +22,6 @@ class WideAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
         automaticallyImplyLeading: false,
-        toolbarHeight: 96.0,
         elevation: 0.5,
         shadowColor: Theme.of(context).hintColor,
         flexibleSpace: SafeArea(

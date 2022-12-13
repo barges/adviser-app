@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/error_badge.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
@@ -33,18 +34,17 @@ class LanguageSectionWidget extends StatelessWidget {
                   editProfileCubit.activeLanguages[index];
               return _LanguageWidget(
                 key: editProfileCubit.activeLanguagesGlobalKeys[index],
-                languageName: languageCode.languageName,
+                languageName: languageCode.languageName(context),
                 isSelected: chosenLanguageIndex == index,
                 onTap: () {
                   FocusScope.of(context).unfocus();
                   editProfileCubit.changeCurrentLanguageIndex(index);
                 },
-                withError: editProfileCubit
-                            .errorTextsMap[languageCode]?.first.isNotEmpty ==
-                        true ||
-                    editProfileCubit
-                            .errorTextsMap[languageCode]?.last.isNotEmpty ==
-                        true,
+                withError:
+                    editProfileCubit.errorTextsMap[languageCode]?.first !=
+                            ValidationErrorType.empty ||
+                        editProfileCubit.errorTextsMap[languageCode]?.last !=
+                            ValidationErrorType.empty,
               );
             },
             separatorBuilder: (BuildContext context, int index) {
@@ -70,9 +70,9 @@ class LanguageSectionWidget extends StatelessWidget {
                           controller: entry.value.first,
                           focusNode:
                               editProfileCubit.focusNodesMap[entry.key]!.first,
-                          errorText: editProfileCubit
+                          errorType: editProfileCubit
                                   .errorTextsMap[entry.key]?.first ??
-                              '',
+                              ValidationErrorType.empty,
                           label: S.of(context).statusText,
                           textInputType: TextInputType.multiline,
                           isBig: true,
@@ -89,9 +89,9 @@ class LanguageSectionWidget extends StatelessWidget {
                           controller: entry.value.last,
                           focusNode:
                               editProfileCubit.focusNodesMap[entry.key]!.last,
-                          errorText:
+                          errorType:
                               editProfileCubit.errorTextsMap[entry.key]?.last ??
-                                  '',
+                                  ValidationErrorType.empty,
                           label: S.of(context).profileText,
                           textInputType: TextInputType.multiline,
                           isBig: true,

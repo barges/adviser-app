@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/empty_error.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -13,10 +15,10 @@ import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simp
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/password_text_field.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/forgot_password/widgets/email_part_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/forgot_password/widgets/reset_password_input_part.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/widgets/success_reset.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
@@ -53,12 +55,13 @@ class ForgotPasswordScreen extends StatelessWidget {
                                 children: [
                                   Builder(
                                     builder: (BuildContext context) {
-                                      final String errorMessage =
-                                          context.select((MainCubit cubit) =>
-                                              cubit.state.errorMessage);
-                                      return errorMessage.isNotEmpty
+                                      final AppError appError = context.select(
+                                          (MainCubit cubit) =>
+                                              cubit.state.appError);
+                                      return appError is! EmptyError
                                           ? AppErrorWidget(
-                                              errorMessage: errorMessage,
+                                              errorMessage:
+                                                  appError.getMessage(context),
                                               close: () {
                                                 cubit.clearErrorMessage();
                                               },
@@ -88,180 +91,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                                             return Column(
                                               children: [
                                                 resetToken == null
-                                                    ? Column(
-                                                        children: [
-                                                          Builder(builder:
-                                                              (context) {
-                                                            final String
-                                                                emailErrorText =
-                                                                context.select(
-                                                                    (ForgotPasswordCubit
-                                                                            cubit) =>
-                                                                        cubit
-                                                                            .state
-                                                                            .emailErrorText);
-                                                            context.select(
-                                                                (ForgotPasswordCubit
-                                                                        cubit) =>
-                                                                    cubit.state
-                                                                        .emailHasFocus);
-                                                            return Padding(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .only(
-                                                                bottom: emailErrorText
-                                                                        .isEmpty
-                                                                    ? 2.0
-                                                                    : 8.0,
-                                                              ),
-                                                              child:
-                                                                  AppTextField(
-                                                                errorText:
-                                                                    emailErrorText,
-                                                                label: S
-                                                                    .of(context)
-                                                                    .email,
-                                                                focusNode: cubit
-                                                                    .emailNode,
-                                                                textInputType:
-                                                                    TextInputType
-                                                                        .emailAddress,
-                                                                textInputAction:
-                                                                    TextInputAction
-                                                                        .next,
-                                                                controller: cubit
-                                                                    .emailController,
-                                                              ),
-                                                            );
-                                                          }),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .fromLTRB(
-                                                                    12.0,
-                                                                    0.0,
-                                                                    12.0,
-                                                                    24.0),
-                                                            child: Text(
-                                                              S
-                                                                  .of(context)
-                                                                  .toResetPasswordEnterEmailAddressAndWellSendYou,
-                                                              style: Theme.of(
-                                                                      context)
-                                                                  .textTheme
-                                                                  .bodySmall
-                                                                  ?.copyWith(
-                                                                    color: Theme.of(
-                                                                            context)
-                                                                        .shadowColor,
-                                                                  ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      )
-                                                    : Column(
-                                                        children: [
-                                                          Builder(builder:
-                                                              (context) {
-                                                            final String
-                                                                passwordErrorText =
-                                                                context.select(
-                                                                    (ForgotPasswordCubit
-                                                                            cubit) =>
-                                                                        cubit
-                                                                            .state
-                                                                            .passwordErrorText);
-                                                            final bool
-                                                                hiddenPassword =
-                                                                context.select(
-                                                                    (ForgotPasswordCubit
-                                                                            cubit) =>
-                                                                        cubit
-                                                                            .state
-                                                                            .hiddenPassword);
-                                                            context.select(
-                                                                (ForgotPasswordCubit
-                                                                        cubit) =>
-                                                                    cubit.state
-                                                                        .passwordHasFocus);
-                                                            return PasswordTextField(
-                                                              controller: cubit
-                                                                  .passwordController,
-                                                              focusNode: cubit
-                                                                  .passwordNode,
-                                                              label: S
-                                                                  .of(context)
-                                                                  .password,
-                                                              errorText:
-                                                                  passwordErrorText,
-                                                              textInputAction:
-                                                                  TextInputAction
-                                                                      .next,
-                                                              onSubmitted: (_) {
-                                                                FocusScope.of(
-                                                                        context)
-                                                                    .requestFocus(
-                                                                        cubit
-                                                                            .confirmPasswordNode);
-                                                              },
-                                                              hiddenPassword:
-                                                                  hiddenPassword,
-                                                              clickToHide: cubit
-                                                                  .showHidePassword,
-                                                            );
-                                                          }),
-                                                          Builder(builder:
-                                                              (context) {
-                                                            final String
-                                                                confirmPasswordErrorText =
-                                                                context.select(
-                                                                    (ForgotPasswordCubit
-                                                                            cubit) =>
-                                                                        cubit
-                                                                            .state
-                                                                            .confirmPasswordErrorText);
-                                                            final bool
-                                                                hiddenConfirmPassword =
-                                                                context.select(
-                                                                    (ForgotPasswordCubit
-                                                                            cubit) =>
-                                                                        cubit
-                                                                            .state
-                                                                            .hiddenConfirmPassword);
-                                                            context.select(
-                                                                (ForgotPasswordCubit
-                                                                        cubit) =>
-                                                                    cubit.state
-                                                                        .confirmPasswordHasFocus);
-                                                            return Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .symmetric(
-                                                                      vertical:
-                                                                          24.0),
-                                                              child:
-                                                                  PasswordTextField(
-                                                                controller: cubit
-                                                                    .confirmPasswordController,
-                                                                focusNode: cubit
-                                                                    .confirmPasswordNode,
-                                                                label: S
-                                                                    .of(context)
-                                                                    .confirmNewPassword,
-                                                                errorText:
-                                                                    confirmPasswordErrorText,
-                                                                textInputAction:
-                                                                    TextInputAction
-                                                                        .send,
-                                                                hiddenPassword:
-                                                                    hiddenConfirmPassword,
-                                                                clickToHide: cubit
-                                                                    .showHideConfirmPassword,
-                                                              ),
-                                                            );
-                                                          }),
-                                                        ],
-                                                      ),
+                                                    ? const EmailPart()
+                                                    : const ResetPasswordInputPart(),
                                                 Builder(builder: (context) {
                                                   final bool isActive =
                                                       context.select(

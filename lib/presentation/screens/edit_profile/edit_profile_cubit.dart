@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:mime/mime.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/data/models/user_info/localized_properties/localized_properties.dart';
 import 'package:shared_advisor_interface/data/models/user_info/localized_properties/property_by_language.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
@@ -15,11 +16,11 @@ import 'package:shared_advisor_interface/data/network/requests/update_profile_im
 import 'package:shared_advisor_interface/data/network/requests/update_profile_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 import 'edit_profile_state.dart';
 
@@ -35,6 +36,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final UserRepository _userRepository = getIt.get<UserRepository>();
   final CachingManager _cacheManager = getIt.get<CachingManager>();
   final DefaultCacheManager _defaultCacheManager = DefaultCacheManager();
+  final ConnectivityService _connectivityService = ConnectivityService();
 
   late final UserProfile? userProfile;
   late final List<MarketsType> activeLanguages;
@@ -47,7 +49,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final Map<MarketsType, List<TextEditingController>> textControllersMap = {};
   final Map<MarketsType, List<FocusNode>> focusNodesMap = {};
   final Map<MarketsType, List<ValueNotifier>> hasFocusNotifiersMap = {};
-  final Map<MarketsType, List<String>> errorTextsMap = {};
+  final Map<MarketsType, List<ValidationErrorType>> errorTextsMap = {};
 
   int? initialLanguageIndexIfHasError;
 
@@ -66,10 +68,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
     emit(
       state.copyWith(
-          coverPictures: userProfile?.coverPictures ?? [],
-          chosenLanguageIndex: initialLanguageIndexIfHasError ?? 0,
-          nicknameErrorText:
-              nicknameController.text.isEmpty ? S.current.fieldIsRequired : ''),
+        coverPictures: userProfile?.coverPictures ?? [],
+        chosenLanguageIndex: initialLanguageIndexIfHasError ?? 0,
+      ),
     );
 
     addListenersToTextControllers();
@@ -131,16 +132,17 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           ValueNotifier(false),
         ];
 
-        final String statusErrorMessage =
+        final ValidationErrorType statusErrorMessage =
             statusTextController.text.trim().isEmpty
-                ? S.current.fieldIsRequired
-                : '';
-        final String profileErrorMessage =
+                ? ValidationErrorType.fieldIsRequired
+                : ValidationErrorType.empty;
+        final ValidationErrorType profileErrorMessage =
             profileTextController.text.trim().isEmpty
-                ? S.current.fieldIsRequired
-                : '';
+                ? ValidationErrorType.fieldIsRequired
+                : ValidationErrorType.empty;
 
-        if (statusErrorMessage.isNotEmpty || profileErrorMessage.isNotEmpty) {
+        if (statusErrorMessage != ValidationErrorType.empty ||
+            profileErrorMessage != ValidationErrorType.empty) {
           initialLanguageIndexIfHasError ??=
               activeLanguages.indexOf(marketType);
         }
@@ -165,16 +167,16 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   void addListenersToTextControllers() {
     nicknameController.addListener(() {
-      emit(state.copyWith(nicknameErrorText: ''));
+      emit(state.copyWith(nicknameErrorType: ValidationErrorType.empty));
     });
 
     for (var entry in textControllersMap.entries) {
       entry.value.firstOrNull?.addListener(() {
-        errorTextsMap[entry.key]?.first = '';
+        errorTextsMap[entry.key]?.first = ValidationErrorType.empty;
         emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
       });
       entry.value.lastOrNull?.addListener(() {
-        errorTextsMap[entry.key]?.last = '';
+        errorTextsMap[entry.key]?.last = ValidationErrorType.empty;
         emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
       });
     }
@@ -201,7 +203,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   Future<void> updateUserInfo() async {
-    if (mainCubit.state.internetConnectionIsAvailable) {
+    if (await _connectivityService.checkConnection()) {
       if (checkTextFields() & checkNickName() & checkUserAvatar()) {
         final bool profileUpdated = await updateUserProfileTexts();
         final bool coverPictureUpdated = await updateCoverPicture();
@@ -257,9 +259,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
       emit(
         state.copyWith(
-            nicknameErrorText: nicknameController.text.isEmpty
-                ? S.current.fieldIsRequired
-                : S.current.pleaseEnterAtLeast3Characters),
+            nicknameErrorType: nicknameController.text.isEmpty
+                ? ValidationErrorType.fieldIsRequired
+                : ValidationErrorType.pleaseEnterAtLeast3Characters),
       );
     }
     return isValid;
@@ -273,13 +275,13 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         in textControllersMap.entries) {
       final List<TextEditingController> controllersByLanguage = entry.value;
       if (controllersByLanguage.firstOrNull?.text.trim().isEmpty == true) {
-        errorTextsMap[entry.key]?.first = S.current.fieldIsRequired;
+        errorTextsMap[entry.key]?.first = ValidationErrorType.fieldIsRequired;
         firstLanguageWithErrorIndex ??= activeLanguages.indexOf(entry.key);
         firstLanguageWithErrorFocusNode ??= focusNodesMap[entry.key]?.first;
         isValid = false;
       }
       if (controllersByLanguage.lastOrNull?.text.trim().isEmpty == true) {
-        errorTextsMap[entry.key]?.last = S.current.fieldIsRequired;
+        errorTextsMap[entry.key]?.last = ValidationErrorType.fieldIsRequired;
         firstLanguageWithErrorIndex ??= activeLanguages.indexOf(entry.key);
         firstLanguageWithErrorFocusNode ??= focusNodesMap[entry.key]?.last;
         isValid = false;
@@ -325,7 +327,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   Future<void> deletePictureFromGallery(int pictureIndex) async {
-    if (mainCubit.state.internetConnectionIsAvailable) {
+    if (await _connectivityService.checkConnection()) {
       final List<String> coverPictures =
           await _userRepository.deleteCoverPicture(pictureIndex);
       emit(
@@ -353,7 +355,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   Future<void> addPictureToGallery(File? image) async {
-    if (mainCubit.state.internetConnectionIsAvailable && image != null) {
+    if (await _connectivityService.checkConnection() && image != null) {
       final String? mimeType = lookupMimeType(image.path);
       final List<int> imageBytes = await image.readAsBytes();
       final String base64Image = base64Encode(imageBytes);

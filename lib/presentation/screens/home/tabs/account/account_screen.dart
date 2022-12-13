@@ -37,9 +37,12 @@ class AccountScreen extends StatelessWidget {
             body: Builder(builder: (context) {
               final bool isOnline = context.select((MainCubit cubit) =>
                   cubit.state.internetConnectionIsAvailable);
+
               final UserStatus currentStatus =
                   context.select((HomeCubit cubit) => cubit.state.userStatus);
-              final String? statusErrorText = currentStatus.status?.errorText;
+              final String? statusErrorText =
+                  currentStatus.status?.errorText(context);
+
               if (isOnline) {
                 return Column(
                   children: [
@@ -86,10 +89,18 @@ class AccountScreen extends StatelessWidget {
                   ],
                 );
               } else {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    NoConnectionWidget(),
+                return CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  slivers: [
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          NoConnectionWidget(),
+                        ],
+                      ),
+                    ),
                   ],
                 );
               }

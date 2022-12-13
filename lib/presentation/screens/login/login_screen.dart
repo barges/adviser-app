@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/empty_error.dart';
+import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
+import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
+import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -24,8 +29,10 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-          LoginCubit(getIt.get<AuthRepository>(), getIt.get<CachingManager>()),
+      create: (_) => LoginCubit(
+        getIt.get<AuthRepository>(),
+        getIt.get<CachingManager>(),
+      ),
       child: Builder(
         builder: (BuildContext context) {
           final LoginCubit loginCubit = context.read<LoginCubit>();
@@ -45,12 +52,12 @@ class LoginScreen extends StatelessWidget {
                         children: [
                           Builder(
                             builder: (BuildContext context) {
-                              final String errorMessage = context.select(
-                                  (MainCubit cubit) =>
-                                      cubit.state.errorMessage);
-                              return errorMessage.isNotEmpty
+                              final AppError appError = context.select(
+                                  (MainCubit cubit) => cubit.state.appError);
+                              return appError is! EmptyError
                                   ? AppErrorWidget(
-                                      errorMessage: errorMessage,
+                                      errorMessage:
+                                          appError.getMessage(context),
                                       close: () {
                                         loginCubit.clearErrorMessage();
                                       },
@@ -60,16 +67,12 @@ class LoginScreen extends StatelessWidget {
                           ),
                           Builder(
                             builder: (BuildContext context) {
-                              final String emailForReset = context.select(
-                                  (LoginCubit cubit) =>
-                                      cubit.state.emailForResetPassword);
+                              final AppSuccess appSuccess = context.select(
+                                  (LoginCubit cubit) => cubit.state.appSuccess);
 
-                              return emailForReset.isNotEmpty
+                              return appSuccess is! EmptySuccess
                                   ? AppSuccessWidget(
-                                      message: S
-                                          .of(context)
-                                          .weVeSentYouALinkToEmailToChangeYourPassword(
-                                              emailForReset),
+                                      message: appSuccess.getMessage(context),
                                       needEmailButton: true,
                                       onClose: loginCubit.clearSuccessMessage,
                                     )
@@ -96,13 +99,14 @@ class LoginScreen extends StatelessWidget {
                                       children: [
                                         Builder(
                                             builder: (BuildContext context) {
-                                          final String emailErrorText = context
-                                              .select((LoginCubit cubit) =>
-                                                  cubit.state.emailErrorText);
+                                          final ValidationErrorType
+                                              emailErrorType = context.select(
+                                                  (LoginCubit cubit) => cubit
+                                                      .state.emailErrorType);
                                           context.select((LoginCubit cubit) =>
                                               cubit.state.emailHasFocus);
                                           return AppTextField(
-                                            errorText: emailErrorText,
+                                            errorType: emailErrorType,
                                             label: S.of(context).email,
                                             focusNode: loginCubit.emailNode,
                                             textInputType:
@@ -125,16 +129,17 @@ class LoginScreen extends StatelessWidget {
                                                   cubit.state.hiddenPassword);
                                           context.select((LoginCubit cubit) =>
                                               cubit.state.passwordHasFocus);
-                                          final String passwordErrorText =
+                                          final ValidationErrorType
+                                              passwordErrorType =
                                               context.select(
                                                   (LoginCubit cubit) => cubit
-                                                      .state.passwordErrorText);
+                                                      .state.passwordErrorType);
                                           return PasswordTextField(
                                             controller:
                                                 loginCubit.passwordController,
                                             focusNode: loginCubit.passwordNode,
                                             label: S.of(context).password,
-                                            errorText: passwordErrorText,
+                                            errorType: passwordErrorType,
                                             textInputAction:
                                                 TextInputAction.next,
                                             onSubmitted: (_) =>

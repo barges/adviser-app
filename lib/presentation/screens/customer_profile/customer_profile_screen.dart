@@ -5,11 +5,10 @@ import 'package:shared_advisor_interface/presentation/common_widgets/customer_pr
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 
 class CustomerProfileScreen extends StatelessWidget {
-  const CustomerProfileScreen({Key? key}) : super(key: key);
-
+   CustomerProfileScreen({Key? key}) : super(key: key);
+  final CustomerProfileScreenArguments arguments = Get.arguments;
   @override
   Widget build(BuildContext context) {
-    final CustomerProfileScreenArguments arguments = Get.arguments;
     return Scaffold(
       appBar: ChatConversationAppBar(
         title: arguments.clientName,

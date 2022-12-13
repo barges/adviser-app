@@ -42,9 +42,11 @@ abstract class CachingManager {
 
   Brand? getCurrentBrand();
 
-  Future<void> saveLocaleIndex(int? index);
+  Future<void> saveLanguageCode(String? languageCode);
 
-  int? getLocaleIndex();
+  String? getLanguageCode();
+
+  VoidCallback listenLanguageCode(ValueChanged<String> callback);
 
   Future<bool> logout(Brand brand);
 

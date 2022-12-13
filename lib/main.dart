@@ -104,24 +104,23 @@ class _MyAppState extends State<MyApp> {
                 ],
                 supportedLocales: S.delegate.supportedLocales,
                 localeResolutionCallback: (locale, supportedLocales) {
-                  final int? localeIndex = _cacheManager.getLocaleIndex();
-                  Locale? newLocale;
-                  if (localeIndex != null) {
-                    newLocale = supportedLocales.toList()[localeIndex];
-                  } else {
-                    for (var supportedLocale in supportedLocales) {
-                      if (supportedLocale.languageCode ==
-                              locale?.languageCode ||
-                          supportedLocale.countryCode == locale?.countryCode) {
-                        newLocale = supportedLocale;
-                      }
-                    }
-                    newLocale ??= supportedLocales.first;
-                  }
-                  getIt.get<Dio>().addLocaleToHeader(newLocale);
+                  final String? languageCode = _cacheManager.getLanguageCode();
+
+                  Locale? newLocale =
+                      supportedLocales.toList().firstWhereOrNull(
+                            (element) =>
+                                element.languageCode ==
+                                (languageCode ?? locale?.languageCode),
+                          );
+                  newLocale ??= supportedLocales.first;
+
+                  getIt.get<Dio>().addLocaleToHeader(newLocale.languageCode);
                   return newLocale;
                 },
-                navigatorObservers: <NavigatorObserver>[observer],
+                navigatorObservers: <NavigatorObserver>[
+                  observer,
+                  _AppNavigatorObserver(),
+                ],
               ),
               Builder(builder: (context) {
                 final bool isLoading =
@@ -135,5 +134,35 @@ class _MyAppState extends State<MyApp> {
         );
       }),
     );
+  }
+}
+
+class _AppNavigatorObserver extends NavigatorObserver {
+  @override
+  void didPush(Route route, Route? previousRoute) {
+    if (route is PageRoute) {
+      _clearErrorMessage();
+    }
+  }
+
+  @override
+  void didReplace({Route? newRoute, Route? oldRoute}) {
+    _clearErrorMessage();
+  }
+
+  @override
+  void didRemove(Route route, Route? previousRoute) {
+    _clearErrorMessage();
+  }
+
+  @override
+  void didPop(Route route, Route? previousRoute) {
+    if (route is PageRoute) {
+      _clearErrorMessage();
+    }
+  }
+
+  void _clearErrorMessage() {
+    getIt.get<MainCubit>().clearErrorMessage();
   }
 }

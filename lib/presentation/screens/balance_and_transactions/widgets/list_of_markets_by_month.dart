@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_market.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/balance_and_transactions_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/widgets/reports_market_widget.dart';
 
 class ListOfMarketsByMonth extends StatelessWidget {
@@ -49,6 +47,7 @@ class ListOfMarketsByMonth extends StatelessWidget {
               title: S.of(context).youHaveNotYetCompletedThisMonthsSessions,
             ),
           Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               if (markets.isEmpty)
                 const Padding(
@@ -58,7 +57,6 @@ class ListOfMarketsByMonth extends StatelessWidget {
                   ),
                 ),
               Container(
-                height: 28.0,
                 margin: EdgeInsets.only(
                   top: markets.isNotEmpty ? 24.0 : 16.0,
                 ),
@@ -66,12 +64,16 @@ class ListOfMarketsByMonth extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      '${S.of(context).totalMarkets}:',
-                      style:
-                          Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                color: Theme.of(context).primaryColor,
-                              ),
+                    Expanded(
+                      child: Text(
+                        '${S.of(context).totalMarkets}:',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(
+                              color: Theme.of(context).primaryColor,
+                            ),
+                      ),
                     ),
                     Container(
                       height: 28.0,

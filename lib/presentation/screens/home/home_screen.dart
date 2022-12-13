@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
                       e.iconPath,
                       color: theme.primaryColor,
                     ),
-                    label: e.tabName,
+                    label: e.tabName(context),
                   ),
                 )
                 .toList(),

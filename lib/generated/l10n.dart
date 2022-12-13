@@ -860,11 +860,11 @@ class S {
     );
   }
 
-  /// `Will be available in an hour`
-  String get willBeAvailableInAnHour {
+  /// `Will be available in`
+  String get willBeAvailableIn {
     return Intl.message(
-      'Will be available in an hour',
-      name: 'willBeAvailableInAnHour',
+      'Will be available in',
+      name: 'willBeAvailableIn',
       desc: '',
       args: [],
     );
@@ -1480,6 +1480,26 @@ class S {
     );
   }
 
+  /// `Return`
+  String get return_ {
+    return Intl.message(
+      'Return',
+      name: 'return_',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Return\nin queue`
+  String get returnInQueue {
+    return Intl.message(
+      'Return\nin queue',
+      name: 'returnInQueue',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `You don’t have internet connection`
   String get youDontHaveInternetConnection {
     return Intl.message(
@@ -1745,6 +1765,299 @@ class S {
     return Intl.message(
       'Prefer not to answer',
       name: 'preferNotToAnswer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Audio message`
+  String get audioMessage {
+    return Intl.message(
+      'Audio message',
+      name: 'audioMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Just sent you a message`
+  String get justSentYouAMessage {
+    return Intl.message(
+      'Just sent you a message',
+      name: 'justSentYouAMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We didn’t find anything`
+  String get weDidntFindAnything {
+    return Intl.message(
+      'We didn’t find anything',
+      name: 'weDidntFindAnything',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This filtering option doesn’t contain any sessions`
+  String get thisFilteringOptionDoesntContainAnySessions {
+    return Intl.message(
+      'This filtering option doesn’t contain any sessions',
+      name: 'thisFilteringOptionDoesntContainAnySessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Other`
+  String get other {
+    return Intl.message(
+      'Other',
+      name: 'other',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private`
+  String get private {
+    return Intl.message(
+      'Private',
+      name: 'private',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tarot`
+  String get tarot {
+    return Intl.message(
+      'Tarot',
+      name: 'tarot',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Palm Reading`
+  String get palmReading {
+    return Intl.message(
+      'Palm Reading',
+      name: 'palmReading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Astrology`
+  String get astrology {
+    return Intl.message(
+      'Astrology',
+      name: 'astrology',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `360° Reading`
+  String get reading360 {
+    return Intl.message(
+      '360° Reading',
+      name: 'reading360',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Aura Reading`
+  String get auraReading {
+    return Intl.message(
+      'Aura Reading',
+      name: 'auraReading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Love Crush Reading`
+  String get loveCrushReading {
+    return Intl.message(
+      'Love Crush Reading',
+      name: 'loveCrushReading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ritual`
+  String get ritual {
+    return Intl.message(
+      'Ritual',
+      name: 'ritual',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tips`
+  String get tips {
+    return Intl.message(
+      'Tips',
+      name: 'tips',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Questions`
+  String get questions {
+    return Intl.message(
+      'Questions',
+      name: 'questions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Question`
+  String get question {
+    return Intl.message(
+      'Question',
+      name: 'question',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Session`
+  String get session {
+    return Intl.message(
+      'Session',
+      name: 'session',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check your internet connection`
+  String get checkYourInternetConnection {
+    return Intl.message(
+      'Check your internet connection',
+      name: 'checkYourInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can’t send this message because it’s less than 15 seconds`
+  String get youCantSendThisMessageBecauseItsLessThan15Seconds {
+    return Intl.message(
+      'You can’t send this message because it’s less than 15 seconds',
+      name: 'youCantSendThisMessageBecauseItsLessThan15Seconds',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recording stopped because audio file is reached the limit of 3min`
+  String get recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min {
+    return Intl.message(
+      'Recording stopped because audio file is reached the limit of 3min',
+      name: 'recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The maximum image size is 20Mb.`
+  String get theMaximumImageSizeIs20Mb {
+    return Intl.message(
+      'The maximum image size is 20Mb.',
+      name: 'theMaximumImageSizeIs20Mb',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You refuse to answer this question`
+  String get youRefuseToAnswerThisQuestion {
+    return Intl.message(
+      'You refuse to answer this question',
+      name: 'youRefuseToAnswerThisQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It will go back into the general queue and you will not be able to take it again`
+  String get itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain {
+    return Intl.message(
+      'It will go back into the general queue and you will not be able to take it again',
+      name: 'itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This question will be returned to the general list after {counter}`
+  String thisQuestionWillBeReturnedToTheGeneralListAfterCounter(
+      Object counter) {
+    return Intl.message(
+      'This question will be returned to the general list after $counter',
+      name: 'thisQuestionWillBeReturnedToTheGeneralListAfterCounter',
+      desc: '',
+      args: [counter],
+    );
+  }
+
+  /// `The answer is not possible, this question will be returned to the general list in ~ 1m`
+  String
+      get theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m {
+    return Intl.message(
+      'The answer is not possible, this question will be returned to the general list in ~ 1m',
+      name:
+          'theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have a ritual request`
+  String get youHaveARitualRequest {
+    return Intl.message(
+      'You have a ritual request',
+      name: 'youHaveARitualRequest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have a private message`
+  String get youHaveAPrivateMessage {
+    return Intl.message(
+      'You have a private message',
+      name: 'youHaveAPrivateMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have a few active sessions`
+  String get youHaveAFewActiveSessions {
+    return Intl.message(
+      'You have a few active sessions',
+      name: 'youHaveAFewActiveSessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknown error`
+  String get unknownError {
+    return Intl.message(
+      'Unknown error',
+      name: 'unknownError',
       desc: '',
       args: [],
     );

@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 
 enum ChatItemType {
@@ -14,17 +16,17 @@ enum ChatItemType {
   textAnswer,
   all;
 
-  String get filterName {
+  String filterName(BuildContext context) {
     switch (this) {
       case ChatItemType.private:
-        return S.current.privateQuestions;
+        return S.of(context).privateQuestions;
       case ChatItemType.ritual:
-        return S.current.onlyPremiumProducts;
+        return S.of(context).onlyPremiumProducts;
       case ChatItemType.history:
       case ChatItemType.public:
       case ChatItemType.textAnswer:
       case ChatItemType.all:
-        return S.current.all;
+        return S.of(context).all;
     }
   }
 
@@ -39,6 +41,41 @@ enum ChatItemType {
       case ChatItemType.textAnswer:
       case ChatItemType.all:
         return 'ALL';
+    }
+  }
+
+  String get iconPath {
+    switch (this) {
+      case ChatItemType.public:
+        return Assets.vectors.sessionsTypes.public.path;
+      case ChatItemType.private:
+        return Assets.vectors.sessionsTypes.private.path;
+      default:
+        return '';
+    }
+  }
+
+  String typeName(BuildContext context) {
+    switch (this) {
+      case ChatItemType.private:
+        return '${S.of(context).private} ${S.of(context).question}';
+      case ChatItemType.ritual:
+        return '${S.of(context).ritual} ${S.of(context).session}';
+      case ChatItemType.public:
+        return '${S.of(context).public} ${S.of(context).question}';
+      default:
+        return '';
+    }
+  }
+
+  String unAnsweredMessage(BuildContext context) {
+    switch (this) {
+      case ChatItemType.private:
+        return S.of(context).youHaveAPrivateMessage;
+      case ChatItemType.ritual:
+        return S.of(context).youHaveARitualRequest;
+      default:
+        return '';
     }
   }
 }

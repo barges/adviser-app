@@ -3,6 +3,7 @@ import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_story_response.dart';
+import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 
@@ -19,27 +20,39 @@ class ChatsRepositoryImpl implements ChatsRepository {
   }
 
   @override
-  Future<QuestionsListResponse> getPrivateQuestions(
-      {String? filtersType, String? filtersLanguage}) async {
-    return await _api.getPrivateQuestions(
-        filtersType: filtersType, filtersLanguage: filtersLanguage);
-  }
-
-  @override
-  Future<QuestionsListResponse> getHistoryList({
+  Future<QuestionsListResponse> getConversationsList({
     required int limit,
-    required int page,
+    String? filtersLanguage,
+    String? lastItem,
     String? search,
   }) async {
-    return await _api.getHistoryList(
+    return await _api.getConversationsList(
       limit: limit,
-      page: page,
+      filtersLanguage: filtersLanguage,
+      lastItem: lastItem,
       search: search,
     );
   }
 
   @override
-  Future<ConversationsResponse> getConversationsHystory(
+  Future<HistoryResponse> getHistoryList({
+    required String clientId,
+    required int limit,
+    String? lastItem,
+    String? storyId,
+    String? firstItem,
+  }) async {
+    return await _api.getHistoryList(
+      clientId: clientId,
+      limit: limit,
+      lastItem: lastItem,
+      storyId: storyId,
+      firstItem: firstItem,
+    );
+  }
+
+  @override
+  Future<ConversationsResponse> getConversationsHistory(
       {required String expertID,
       required String clientID,
       required int offset,
@@ -53,17 +66,23 @@ class ChatsRepositoryImpl implements ChatsRepository {
   }
 
   @override
-  Future<ConversationsStoryResponse> getConversationsStory({
-    required String storyID,
-  }) async {
-    return await _api.getConversationsStory(
+  Future<ConversationsStoryResponse> getStory(
+      {required String storyID, int? limit, String? lastQuestionId}) async {
+    return await _api.getStory(
       storyID: storyID,
+      limit: limit,
+      lastQuestionId: lastQuestionId,
     );
   }
 
   @override
   Future<ChatItem> takeQuestion(AnswerRequest request) async {
     return await _api.takeQuestion(request);
+  }
+
+  @override
+  Future<ChatItem> returnQuestion(AnswerRequest request) async {
+    return await _api.returnQuestion(request);
   }
 
   @override
@@ -84,5 +103,15 @@ class ChatsRepositoryImpl implements ChatsRepository {
   @override
   Future<ChatItem> sendAnswer(AnswerRequest request) async {
     return await _api.sendAnswer(request);
+  }
+
+  @override
+  Future<QuestionsListResponse> getCustomerSessions(
+      {required String id,
+      required int limit,
+      String? lastItem,
+      String? filterType}) async {
+    return await _api.getCustomerSessions(
+        id: id, limit: limit, lastItem: lastItem, filterType: filterType);
   }
 }

@@ -14,38 +14,46 @@ class SuccessResetWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final ForgotPasswordCubit forgotPasswordCubit =
         context.read<ForgotPasswordCubit>();
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: AppConstants.horizontalScreenPadding),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Utils.isDarkMode(context)
-              ? Assets.images.logos.successResetPasswordLogoDark.image(
-                  height: AppConstants.logoSize,
-                  width: AppConstants.logoSize,
-                )
-              : Assets.images.logos.successResetPasswordLogo.image(
-                  height: AppConstants.logoSize,
-                  width: AppConstants.logoSize,
+    return CustomScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      slivers: [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppConstants.horizontalScreenPadding),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Utils.isDarkMode(context)
+                    ? Assets.images.logos.successResetPasswordLogoDark.image(
+                        height: AppConstants.logoSize,
+                        width: AppConstants.logoSize,
+                      )
+                    : Assets.images.logos.successResetPasswordLogo.image(
+                        height: AppConstants.logoSize,
+                        width: AppConstants.logoSize,
+                      ),
+                const SizedBox(
+                  height: 24.0,
                 ),
-          const SizedBox(
-            height: 24.0,
+                Text(
+                  S.of(context).nowYouCanLoginWithANewPassword,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 24.0,
+                ),
+                AppElevatedButton(
+                  title: S.of(context).login,
+                  onPressed: forgotPasswordCubit.goToLogin,
+                )
+              ],
+            ),
           ),
-          Text(
-            S.of(context).nowYouCanLoginWithANewPassword,
-            style: Theme.of(context).textTheme.headlineMedium,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(
-            height: 24.0,
-          ),
-          AppElevatedButton(
-            title: S.of(context).login,
-            onPressed: forgotPasswordCubit.goToLogin,
-          )
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

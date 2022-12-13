@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/market_total.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_unit.dart';
-import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 
 part 'reports_market.freezed.dart';
 part 'reports_market.g.dart';

@@ -24,9 +24,7 @@ Future<bool?> showDeleteAlert(
             actions: [
               CupertinoDialogAction(
                 isDefaultAction: true,
-                onPressed: () {
-                  Navigator.pop(context, true);
-                },
+                onPressed: () => Navigator.pop(context, true),
                 child: Text(S.of(context).delete,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.errorColor,
@@ -36,9 +34,7 @@ Future<bool?> showDeleteAlert(
               const SizedBox.shrink(),
               CupertinoDialogAction(
                 isDefaultAction: true,
-                onPressed: () {
-                  Navigator.pop(context, false);
-                },
+                onPressed: () => Navigator.pop(context, false),
                 child: Text(
                   S.of(context).cancel,
                   style: theme.textTheme.displayLarge?.copyWith(
@@ -81,9 +77,7 @@ Future<bool?> showDeleteAlert(
                                 fontSize: 14.0,
                                 color: theme.primaryColor,
                               )),
-                          onPressed: () {
-                            Navigator.pop(context, false);
-                          },
+                          onPressed: () => Navigator.pop(context, false),
                         ),
                         TextButton(
                           child: Text(S.of(context).delete.toUpperCase(),
@@ -91,9 +85,7 @@ Future<bool?> showDeleteAlert(
                                 fontSize: 14.0,
                                 color: theme.errorColor,
                               )),
-                          onPressed: () {
-                            Navigator.pop(context, true);
-                          },
+                          onPressed: () => Navigator.pop(context, true),
                         )
                       ],
                     )

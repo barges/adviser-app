@@ -36,9 +36,10 @@ class AppThemes {
         elevation: 0.0,
         color: AppColorsLight.contrast,
         systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarBrightness: Brightness.light,
-            statusBarIconBrightness: Brightness.dark),
+          statusBarColor: Colors.transparent,
+          statusBarBrightness: Brightness.light,
+          statusBarIconBrightness: Brightness.dark,
+        ),
       ),
       textTheme: TextTheme(
           headlineLarge: GoogleFonts.redHatDisplay(

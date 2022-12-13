@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
+import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -8,7 +10,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_succes_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/chats_list_tile_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/list_tile/chats_list_tile_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/market_filter_widget.dart';
 
 class ListOfQuestions extends StatelessWidget {
@@ -49,11 +51,11 @@ class _PublicQuestionsListWidget extends StatelessWidget {
           height: 1.0,
         ),
         Builder(builder: (context) {
-          final bool showSuccessMessage = context
-              .select((SessionsCubit cubit) => cubit.state.showSuccessMessage);
-          return showSuccessMessage
+          final AppSuccess appSuccess =
+              context.select((SessionsCubit cubit) => cubit.state.appSuccess);
+          return appSuccess is! EmptySuccess
               ? AppSuccessWidget(
-                  message: S.of(context).youCanNotHelpUsersSinceYouHaveAnActive,
+                  message: appSuccess.getMessage(context),
                   onClose: sessionsCubit.clearSuccessMessage,
                 )
               : const SizedBox.shrink();
@@ -102,15 +104,15 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
         ),
         Builder(
           builder: (context) {
-            final List<ChatItem> privateQuestionsWithHistory = context.select(
-                (SessionsCubit cubit) =>
-                    cubit.state.privateQuestionsWithHistory);
+            final List<ChatItem> conversationsList = context
+                .select((SessionsCubit cubit) => cubit.state.conversationsList);
             return Expanded(
               child: _ListOfQuestionsWidget(
-                controller: sessionsCubit.privateQuestionsController,
-                questions: privateQuestionsWithHistory,
+                controller: sessionsCubit.conversationsController,
+                questions: conversationsList,
+                isPublic: false,
                 onRefresh: () async {
-                  sessionsCubit.getPrivateQuestions(refresh: true);
+                  sessionsCubit.getConversations(refresh: true);
                 },
                 emptyListTitle: S.of(context).noSessionsYet,
                 emptyListLabel:
@@ -130,6 +132,7 @@ class _ListOfQuestionsWidget extends StatelessWidget {
   final ScrollController controller;
   final String emptyListTitle;
   final String emptyListLabel;
+  final bool isPublic;
 
   const _ListOfQuestionsWidget({
     Key? key,
@@ -138,12 +141,13 @@ class _ListOfQuestionsWidget extends StatelessWidget {
     required this.controller,
     required this.emptyListTitle,
     required this.emptyListLabel,
+    this.isPublic = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final bool hasTaken =
-        questions.firstOrNull?.status == ChatItemStatusType.taken;
+        isPublic && questions.firstOrNull?.status == ChatItemStatusType.taken;
 
     return RefreshIndicator(
       onRefresh: onRefresh,
@@ -161,7 +165,8 @@ class _ListOfQuestionsWidget extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       return ChatsListTileWidget(
                         question: questions[index],
-                        needCheckStatus: hasTaken,
+                        needCheckTakenStatus: hasTaken,
+                        isPublic: isPublic,
                       );
                     },
                     separatorBuilder: (BuildContext context, int index) =>

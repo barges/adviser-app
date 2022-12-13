@@ -51,17 +51,17 @@ class SessionsScreen extends StatelessWidget {
                   ),
                   child: Opacity(
                     opacity: isOnline && statusIsLive ? 1.0 : 0.4,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Builder(builder: (context) {
-                            final List<int> disabledIndexes = context.select(
-                                (SessionsCubit cubit) =>
-                                    cubit.state.disabledIndexes);
-                            final int currentIndex = context.select(
-                                (SessionsCubit cubit) =>
-                                    cubit.state.currentOptionIndex);
-                            return ChooseOptionWidget(
+                    child: Builder(builder: (context) {
+                      final List<int> disabledIndexes = context.select(
+                          (SessionsCubit cubit) => cubit.state.disabledIndexes);
+                      final int currentIndex = context.select(
+                          (SessionsCubit cubit) =>
+                              cubit.state.currentOptionIndex);
+
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: ChooseOptionWidget(
                               options: [
                                 S.of(context).public,
                                 S.of(context).forMe,
@@ -71,16 +71,18 @@ class SessionsScreen extends StatelessWidget {
                               onChangeOptionIndex: isOnline && statusIsLive
                                   ? sessionsCubit.changeCurrentOptionIndex
                                   : null,
-                            );
-                          }),
-                        ),
-                        const SizedBox(width: 8.0),
-                        AppIconButton(
-                          icon: Assets.vectors.search.path,
-                          onTap: statusIsLive ? sessionsCubit.openSearch : null,
-                        ),
-                      ],
-                    ),
+                            ),
+                          ),
+                          const SizedBox(width: 8.0),
+                          AppIconButton(
+                            icon: Assets.vectors.search.path,
+                            onTap: isOnline && statusIsLive
+                                ? sessionsCubit.openSearch
+                                : null,
+                          ),
+                        ],
+                      );
+                    }),
                   ),
                 ),
                 withBrands: true,
@@ -95,10 +97,18 @@ class SessionsScreen extends StatelessWidget {
                     );
                   }
                 } else {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      NoConnectionWidget(),
+                  return CustomScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    slivers: [
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            NoConnectionWidget(),
+                          ],
+                        ),
+                      ),
                     ],
                   );
                 }
@@ -107,9 +117,11 @@ class SessionsScreen extends StatelessWidget {
             Builder(builder: (context) {
               final bool searchIsOpen = context
                   .select((SessionsCubit cubit) => cubit.state.searchIsOpen);
-              return searchIsOpen
+              return isOnline && searchIsOpen
                   ? SearchListWidget(
                       closeOnTap: sessionsCubit.closeSearch,
+                      marketsType: sessionsCubit.state.userMarkets[
+                          sessionsCubit.state.currentMarketIndexForPrivate],
                     )
                   : const SizedBox.shrink();
             }),

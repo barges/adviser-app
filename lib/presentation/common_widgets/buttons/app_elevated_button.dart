@@ -30,10 +30,17 @@ class AppElevatedButton extends StatelessWidget {
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                    Radius.circular(AppConstants.buttonRadius))),
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  AppConstants.buttonRadius,
+                ),
+              ),
+            ),
           ),
-          child: Text(title),
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );

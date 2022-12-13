@@ -8,6 +8,7 @@ part 'history.g.dart';
 class History with _$History {
   @JsonSerializable(includeIfNull: false)
   const factory History({
+    @JsonKey(name: '_id') String? id,
     ChatItem? question,
     ChatItem? answer,
   }) = _History;

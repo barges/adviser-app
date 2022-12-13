@@ -7,10 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
+import 'package:shared_advisor_interface/data/models/app_success/ui_success.dart';
+import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/data/network/responses/login_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/di/modules/api_module.dart';
@@ -55,7 +57,7 @@ class LoginCubit extends Cubit<LoginState> {
       clearErrorMessage();
       clearSuccessMessage();
       emit(state.copyWith(
-          emailErrorText: '',
+          emailErrorType: ValidationErrorType.empty,
           buttonIsActive: emailController.text.isNotEmpty &&
               passwordController.text.isNotEmpty));
     });
@@ -63,7 +65,7 @@ class LoginCubit extends Cubit<LoginState> {
       clearErrorMessage();
       clearSuccessMessage();
       emit(state.copyWith(
-          passwordErrorText: '',
+          passwordErrorType: ValidationErrorType.empty,
           buttonIsActive: passwordController.text.isNotEmpty &&
               emailController.text.isNotEmpty));
     });
@@ -91,10 +93,10 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void clearSuccessMessage() {
-    if (state.emailForResetPassword.isNotEmpty) {
+    if (state.appSuccess is! EmptySuccess) {
       emit(
         state.copyWith(
-          emailForResetPassword: '',
+          appSuccess: const EmptySuccess(),
         ),
       );
     }
@@ -117,13 +119,15 @@ class LoginCubit extends Cubit<LoginState> {
     } else {
       if (!emailIsValid()) {
         emit(
-          state.copyWith(emailErrorText: S.current.pleaseInsertCorrectEmail),
+          state.copyWith(
+              emailErrorType: ValidationErrorType.pleaseInsertCorrectEmail),
         );
       }
       if (!passwordIsValid()) {
         emit(
           state.copyWith(
-            passwordErrorText: S.current.pleaseEnterAtLeast6Characters,
+            passwordErrorType:
+                ValidationErrorType.pleaseEnterAtLeast6Characters,
           ),
         );
       }
@@ -148,7 +152,9 @@ class LoginCubit extends Cubit<LoginState> {
     if (email != null) {
       emit(
         state.copyWith(
-          emailForResetPassword: email as String,
+          appSuccess: UISuccess.withArguments(
+              UISuccessType.weVeSentYouALinkToEmailToChangeYourPassword,
+              email as String),
         ),
       );
     }

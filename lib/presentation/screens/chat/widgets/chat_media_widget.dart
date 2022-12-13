@@ -7,10 +7,15 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_
 
 class ChatMediaWidget extends ChatWidget {
   final VoidCallback? onPressedTryAgain;
+  final bool isHistoryQuestion;
+  final bool isHistoryAnswer;
+
   const ChatMediaWidget({
     super.key,
     required super.item,
     this.onPressedTryAgain,
+    this.isHistoryQuestion = false,
+    this.isHistoryAnswer = false,
   });
 
   @override
@@ -66,13 +71,15 @@ class ChatMediaWidget extends ChatWidget {
             right: 0.0,
             bottom: 0.0,
             child: ChatItemFooterWidget(
-              type: item.type!,
+              type: item.type,
               createdAt: createdAt,
               ritualIdentifier: item.ritualIdentifier,
               color: getterType(
                 question: Theme.of(context).shadowColor,
                 answer: Theme.of(context).primaryColorLight,
               ),
+              isHistoryQuestion: isHistoryQuestion,
+              isHistoryAnswer: isHistoryAnswer,
             ),
           ),
         ],

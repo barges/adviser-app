@@ -3,48 +3,58 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
 import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
+import 'package:shared_advisor_interface/extensions.dart';
 
 class ChatItemFooterWidget extends StatelessWidget {
-  final ChatItemType type;
+  final ChatItemType? type;
   final DateTime createdAt;
   final SessionsTypes? ritualIdentifier;
   final Color color;
+  final bool isHistoryQuestion;
+  final bool isHistoryAnswer;
   const ChatItemFooterWidget({
     super.key,
     required this.type,
     required this.createdAt,
     required this.color,
     this.ritualIdentifier,
+    this.isHistoryQuestion = false,
+    this.isHistoryAnswer = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final bool isRitual =
+        type == ChatItemType.ritual && ritualIdentifier != null;
     return Row(
       children: [
         Padding(
           padding: const EdgeInsets.only(right: 4.0),
           child: Text(
-            type == ChatItemType.ritual && ritualIdentifier != null
-                ? ritualIdentifier!.sessionName
-                : toBeginningOfSentenceCase(type.name)!,
+            isRitual
+                ? ritualIdentifier?.sessionName(context) ?? ''
+                : toBeginningOfSentenceCase(type?.typeName(context)) ?? '',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: color,
                   fontSize: 12.0,
                 ),
           ),
         ),
-        if (type == ChatItemType.ritual && ritualIdentifier != null)
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: SvgPicture.asset(
-              ritualIdentifier!.iconPath,
-              width: 16.0,
-              height: 16.0,
-              color: color,
-            ),
+        Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: SvgPicture.asset(
+            isRitual ? ritualIdentifier!.iconPath : type?.iconPath ?? '',
+            width: 16.0,
+            height: 16.0,
+            color: color,
           ),
+        ),
         Text(
-          '${createdAt.hour}:${createdAt.minute}',
+          isHistoryQuestion
+              ? createdAt.historyCardQuestionTime
+              : isHistoryAnswer
+                  ? createdAt.historyCardAnswerTime
+                  : createdAt.chatListTime.toString(),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: color,
                 fontSize: 12.0,

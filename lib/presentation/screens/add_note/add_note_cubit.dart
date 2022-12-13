@@ -30,6 +30,7 @@ class AddNoteCubit extends Cubit<AddNoteState> {
       emit(state.copyWith(isNoteNew: false));
     }
   }
+
   Future<void> addNoteToCustomer() async {
     if (noteController.text != arguments.oldNote) {
       UpdateNoteResponse response = await _repository.updateNoteToCustomer(
@@ -38,9 +39,6 @@ class AddNoteCubit extends Cubit<AddNoteState> {
         emit(state.copyWith(
             newNote: noteController.text.removeSpacesAndNewLines));
         arguments.noteChanged();
-        //_userProfileCubit.updateNoteToCustomer(GetNoteResponse(
-        //    noteController.text,
-        //    DateFormat(dateFormat).format(DateTime.now())));
       }
     }
     Get.back();

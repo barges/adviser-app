@@ -4,51 +4,50 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
+import 'package:shared_advisor_interface/data/models/app_success/ui_success.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_state.dart';
-
-const int questionsLimit = 20;
+import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 class SessionsCubit extends Cubit<SessionsState> {
-  final ChatsRepository _repository = getIt.get<ChatsRepository>();
   final CachingManager cacheManager;
+
   final ScrollController publicQuestionsController = ScrollController();
-  final ScrollController privateQuestionsController = ScrollController();
+  final ScrollController conversationsController = ScrollController();
   final MainCubit _mainCubit = getIt.get<MainCubit>();
+  final ChatsRepository _repository = getIt.get<ChatsRepository>();
+  final ConnectivityService _connectivityService = ConnectivityService();
+
   late final StreamSubscription<bool> _updateSessionsSubscription;
   late final VoidCallback disposeUserStatusListen;
   late final VoidCallback disposeUserProfileListen;
   final BuildContext context;
 
-  final List<ChatItemType> filters = [
-    ChatItemType.all,
-    ChatItemType.ritual,
-    ChatItemType.private,
-  ];
   final List<ChatItem> _publicQuestions = [];
-  final List<ChatItem> _privateQuestionsWithHistory = [];
+  final List<ChatItem> _conversationsList = [];
 
   UserStatus? previousStatus;
 
   String? _lastId;
-  bool hasMore = true;
   bool _publicHasMore = true;
-  bool _historyHasMore = true;
-  int _historyPage = 1;
+  String? _conversationsLastItem;
+  bool _conversationsHasMore = true;
+  bool _isPublicLoading = false;
+  bool _isConversationsLoading = false;
 
   SessionsCubit(this.cacheManager, this.context)
       : super(const SessionsState()) {
@@ -59,11 +58,11 @@ class SessionsCubit extends Cubit<SessionsState> {
         await getPublicQuestions();
       }
     });
-    privateQuestionsController.addListener(() async {
+    conversationsController.addListener(() async {
       if (!_mainCubit.state.isLoading &&
-          privateQuestionsController.position.extentAfter <=
+          conversationsController.position.extentAfter <=
               MediaQuery.of(context).size.height) {
-        await getHistoryList();
+        await getConversations();
       }
     });
     disposeUserStatusListen = cacheManager.listenCurrentUserStatus((value) {
@@ -92,7 +91,7 @@ class SessionsCubit extends Cubit<SessionsState> {
   @override
   Future<void> close() async {
     publicQuestionsController.dispose();
-    privateQuestionsController.dispose();
+    conversationsController.dispose();
     _updateSessionsSubscription.cancel();
     disposeUserProfileListen.call();
     disposeUserStatusListen.call();
@@ -102,14 +101,16 @@ class SessionsCubit extends Cubit<SessionsState> {
   Future<void> getQuestions({
     FortunicaUserStatus? status,
   }) async {
-    getPublicQuestions(
+    await getPublicQuestions(
       status: status,
       refresh: true,
     );
-    getPrivateQuestions(
-      status: status,
-      refresh: true,
-    );
+    if (state.disabledIndexes.isEmpty) {
+      getConversations(
+        status: status,
+        refresh: true,
+      );
+    }
   }
 
   void changeMarketIndexForPublic(int newIndex) {
@@ -119,16 +120,11 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   void changeMarketIndexForPrivate(int newIndex) {
     emit(state.copyWith(currentMarketIndexForPrivate: newIndex));
-    getPrivateQuestions(refresh: true);
+    getConversations(refresh: true);
   }
 
   void changeCurrentOptionIndex(int newIndex) {
     emit(state.copyWith(currentOptionIndex: newIndex));
-  }
-
-  void changeFilterIndex(int newIndex) {
-    emit(state.copyWith(currentFilterIndex: newIndex));
-    getPrivateQuestions(refresh: true);
   }
 
   void openSearch() {
@@ -144,11 +140,12 @@ class SessionsCubit extends Cubit<SessionsState> {
   }
 
   void goToCustomerProfile(ChatItem question) {
-    if (question.clientID != null && question.clientName != null) {
+    if ((question.clientID != null || question.id != null) &&
+        question.clientName != null) {
       Get.toNamed(
         AppRoutes.customerProfile,
         arguments: CustomerProfileScreenArguments(
-          customerID: question.clientID!,
+          customerID: question.clientID ?? question.id!,
           clientName: question.clientName!,
           zodiacSign: question.clientInformation?.zodiac,
         ),
@@ -156,133 +153,153 @@ class SessionsCubit extends Cubit<SessionsState> {
     }
   }
 
-  Future<void> goToChat(ChatItem question) async {
-    Get.toNamed(AppRoutes.chat, arguments: question);
+  Future<void> goToChatForPublic(ChatItem question) async {
+    if (question.clientID != null) {
+      Get.toNamed(
+        AppRoutes.chat,
+        arguments: ChatScreenArguments(
+          question: question,
+          publicQuestionId: question.id,
+        ),
+      );
+    }
+  }
+
+  void goToCustomerSessions(ChatItem question) {
+    Get.toNamed(
+      AppRoutes.customerSessions,
+      arguments: question,
+    );
+  }
+
+  void clearSuccessMessage() {
+    if (state.appSuccess is! EmptySuccess) {
+      emit(
+        state.copyWith(
+          appSuccess: const EmptySuccess(),
+        ),
+      );
+    }
   }
 
   Future<void> getPublicQuestions(
       {FortunicaUserStatus? status, bool refresh = false}) async {
-    if (refresh) {
-      _publicHasMore = true;
-      _publicQuestions.clear();
-    }
-    if (_publicHasMore &&
-        _mainCubit.state.internetConnectionIsAvailable &&
-        (status ?? cacheManager.getUserStatus()?.status) ==
-            FortunicaUserStatus.live) {
-      _lastId = _publicQuestions.lastOrNull?.id;
-      String? filtersLanguage;
-      if (state.userMarkets.isNotEmpty) {
-        final MarketsType marketsType =
-            state.userMarkets[state.currentMarketIndexForPublic];
-        filtersLanguage =
-            marketsType != MarketsType.all ? marketsType.name : null;
+    if (!_isPublicLoading) {
+      _isPublicLoading = true;
+      if (refresh) {
+        _publicHasMore = true;
+        _publicQuestions.clear();
       }
+      if (_publicHasMore &&
+          await _connectivityService.checkConnection() &&
+          (status ?? cacheManager.getUserStatus()?.status) ==
+              FortunicaUserStatus.live) {
+        _lastId = _publicQuestions.lastOrNull?.id;
+        String? filtersLanguage;
+        if (state.userMarkets.isNotEmpty) {
+          final MarketsType marketsType =
+              state.userMarkets[state.currentMarketIndexForPublic];
+          filtersLanguage =
+              marketsType != MarketsType.all ? marketsType.name : null;
+        }
 
-      final QuestionsListResponse result = await _repository.getPublicQuestions(
-          limit: questionsLimit,
-          lastId: _lastId,
-          filtersLanguage: filtersLanguage);
-      _publicHasMore = result.hasMore ?? true;
+        final QuestionsListResponse result =
+            await _repository.getPublicQuestions(
+                limit: AppConstants.questionsLimit,
+                lastId: _lastId,
+                filtersLanguage: filtersLanguage);
+        _publicHasMore = result.hasMore ?? true;
 
-      _publicQuestions.addAll(result.questions ?? const []);
+        _publicQuestions.addAll(result.questions ?? const []);
 
-      if (_publicQuestions.firstOrNull?.status == ChatItemStatusType.taken) {
-        emit(state.copyWith(
-          publicQuestions: List.of(_publicQuestions),
-          disabledIndexes: [1],
-          showSuccessMessage: true,
-        ));
-      } else {
-        emit(state.copyWith(
-          publicQuestions: List.of(_publicQuestions),
-          disabledIndexes: [],
-          showSuccessMessage: false,
-        ));
+        if (_publicQuestions.firstOrNull?.status == ChatItemStatusType.taken) {
+          emit(state.copyWith(
+            publicQuestions: List.of(_publicQuestions),
+            disabledIndexes: [1],
+            appSuccess:
+                UISuccess(UISuccessType.youCanNotHelpUsersSinceYouHaveAnActive),
+          ));
+        } else {
+          emit(state.copyWith(
+            publicQuestions: List.of(_publicQuestions),
+            disabledIndexes: [],
+            appSuccess: const EmptySuccess(),
+          ));
+        }
       }
+      _isPublicLoading = false;
     }
   }
 
-  void clearSuccessMessage() {
-    if (state.showSuccessMessage) {
-      emit(
-        state.copyWith(
-          showSuccessMessage: false,
-        ),
-      );
-    }
-  }
-
-  Future<void> getPrivateQuestions(
+  Future<void> getConversations(
       {FortunicaUserStatus? status, bool refresh = false}) async {
-    if (refresh) {
-      _historyHasMore = true;
-      _historyPage = 1;
-      _privateQuestionsWithHistory.clear();
-    }
-    if (_mainCubit.state.internetConnectionIsAvailable &&
-        (status ?? cacheManager.getUserStatus()?.status) ==
-            FortunicaUserStatus.live) {
-      String? filtersLanguage;
-      if (state.userMarkets.isNotEmpty) {
-        final MarketsType marketsType =
-            state.userMarkets[state.currentMarketIndexForPrivate];
-        filtersLanguage =
-            marketsType != MarketsType.all ? marketsType.name : null;
+    if (!_isConversationsLoading) {
+      _isConversationsLoading = true;
+      if (refresh) {
+        _conversationsHasMore = true;
+        _conversationsLastItem = null;
+        _conversationsList.clear();
       }
+      if (_conversationsHasMore &&
+          await _connectivityService.checkConnection() &&
+          (status ?? cacheManager.getUserStatus()?.status) ==
+              FortunicaUserStatus.live) {
+        String? filtersLanguage;
+        if (state.userMarkets.isNotEmpty) {
+          final MarketsType marketsType =
+              state.userMarkets[state.currentMarketIndexForPrivate];
+          filtersLanguage =
+              marketsType != MarketsType.all ? marketsType.name : null;
+        }
 
-      final ChatItemType questionsType = filters[state.currentFilterIndex];
-      final String? filterName = questionsType != ChatItemType.all
-          ? questionsType.filterTypeName
-          : null;
+        final QuestionsListResponse result =
+            await _repository.getConversationsList(
+          limit: AppConstants.questionsLimit,
+          filtersLanguage: filtersLanguage,
+          lastItem: _conversationsLastItem,
+        );
 
-      final QuestionsListResponse result =
-          await _repository.getPrivateQuestions(
-        filtersLanguage: filtersLanguage,
-        filtersType: filterName,
-      );
+        _conversationsHasMore = result.hasMore ?? true;
+        _conversationsLastItem = result.lastItem;
 
-      _privateQuestionsWithHistory.addAll(result.questions ?? const []);
+        _conversationsList.addAll(result.questions ?? const []);
 
-      await getHistoryList(
-        status: status,
-        isFirstRequest: true,
-      );
-
-      emit(
-        state.copyWith(
-          privateQuestionsWithHistory: List.of(
-            _privateQuestionsWithHistory,
-          ),
-        ),
-      );
-    }
-  }
-
-  Future<void> getHistoryList(
-      {FortunicaUserStatus? status, isFirstRequest = false}) async {
-    if (_historyHasMore &&
-        _mainCubit.state.internetConnectionIsAvailable &&
-        (status ?? cacheManager.getUserStatus()?.status) ==
-            FortunicaUserStatus.live) {
-      final QuestionsListResponse result = await _repository.getHistoryList(
-        limit: questionsLimit,
-        page: _historyPage++,
-      );
-
-      _historyHasMore = result.hasMore ?? true;
-
-      _privateQuestionsWithHistory.addAll(result.questions ?? const []);
-
-      if (!isFirstRequest) {
         emit(
           state.copyWith(
-            privateQuestionsWithHistory: List.of(
-              _privateQuestionsWithHistory,
+            conversationsList: List.of(
+              _conversationsList,
             ),
           ),
         );
       }
+      _isConversationsLoading = false;
     }
   }
+
+// Future<void> getHistoryList(
+//     {FortunicaUserStatus? status, isFirstRequest = false}) async {
+//   if (_historyHasMore &&
+//       await _connectivityService.checkConnection() &&
+//       (status ?? cacheManager.getUserStatus()?.status) ==
+//           FortunicaUserStatus.live) {
+//     final QuestionsListResponse result = await _repository.getHistoryList(
+//       limit: questionsLimit,
+//       page: _historyPage++,
+//     );
+//
+//     _historyHasMore = result.hasMore ?? true;
+//
+//     _privateQuestionsWithHistory.addAll(result.questions ?? const []);
+//
+//     if (!isFirstRequest) {
+//       emit(
+//         state.copyWith(
+//           privateQuestionsWithHistory: List.of(
+//             _privateQuestionsWithHistory,
+//           ),
+//         ),
+//       );
+//     }
+//   }
+// }
 }

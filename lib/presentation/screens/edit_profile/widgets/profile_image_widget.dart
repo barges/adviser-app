@@ -55,7 +55,7 @@ class ProfileImageWidget extends StatelessWidget {
                                   color: Theme.of(context).primaryColor,
                                 ),
                                 const SizedBox(width: 6.0),
-                                Text(S.current.addCoverPicture,
+                                Text(S.of(context).addCoverPicture,
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleMedium
@@ -128,14 +128,14 @@ class ProfileImageWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     vertical: 10.0, horizontal: 16.0),
                 child: Builder(builder: (context) {
-                  final File? avatar = context
+                  context
                       .select((EditProfileCubit cubit) => cubit.state.avatar);
                   final List<String> profileImages =
                       cubit.userProfile?.profilePictures ?? [];
                   return Text(
                     profileImages.isNotEmpty
-                        ? S.current.changePhoto
-                        : S.current.addPhoto,
+                        ? S.of(context).changePhoto
+                        : S.of(context).addPhoto,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.w500),

@@ -27,30 +27,36 @@ class DashboardV1Screen extends StatelessWidget {
                   withBrands: true,
                   title: S.of(context).dashboard,
                   iconPath: Assets.vectors.items.path),
-              body: Builder(builder: (context) {
-                if (isOnline) {
-                  return SingleChildScrollView(
-                    padding: const EdgeInsets.all(
-                        AppConstants.horizontalScreenPadding),
-                    child: Column(
-                      children: const [
-                        PersonalInformationWidget(),
-                        SizedBox(
-                          height: AppConstants.horizontalScreenPadding,
-                        ),
-                        MonthStatisticWidget()
-                      ],
-                    ),
-                  );
-                } else {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      NoConnectionWidget(),
-                    ],
-                  );
-                }
-              }));
+              body: CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  slivers: [
+                    isOnline
+                        ? SliverToBoxAdapter(
+                            child: Padding(
+                              padding: const EdgeInsets.all(
+                                  AppConstants.horizontalScreenPadding),
+                              child: Column(
+                                children: const [
+                                  PersonalInformationWidget(),
+                                  SizedBox(
+                                    height:
+                                        AppConstants.horizontalScreenPadding,
+                                  ),
+                                  MonthStatisticWidget()
+                                ],
+                              ),
+                            ),
+                          )
+                        : SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                NoConnectionWidget(),
+                              ],
+                            ),
+                          ),
+                  ]));
         }));
   }
 }
