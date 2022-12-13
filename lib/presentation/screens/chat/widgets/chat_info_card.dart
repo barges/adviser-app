@@ -42,6 +42,7 @@ class InfoCard extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Text(
                   question.clientName ?? '',
+                  textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         color: Theme.of(context).hoverColor,
                         fontSize: 17.0,
