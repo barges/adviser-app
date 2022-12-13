@@ -7,8 +7,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/search/search_list_state.dart';
@@ -17,7 +15,7 @@ import 'package:shared_advisor_interface/presentation/services/connectivity_serv
 class SearchListCubit extends Cubit<SearchListState> {
   final ChatsRepository _repository;
   final BuildContext context;
-  final MainCubit _mainCubit = getIt.get<MainCubit>();
+  final VoidCallback closeSearch;
   final ConnectivityService _connectivityService = ConnectivityService();
 
   final BehaviorSubject _searchStream = BehaviorSubject<String>();
@@ -35,6 +33,7 @@ class SearchListCubit extends Cubit<SearchListState> {
   SearchListCubit(
     this._repository,
     this.context,
+    this.closeSearch,
   ) : super(const SearchListState()) {
     _searchSubscription = _searchStream
         .debounceTime(const Duration(milliseconds: 500))
@@ -43,6 +42,7 @@ class SearchListCubit extends Cubit<SearchListState> {
     });
 
     conversationsScrollController.addListener(() {
+      ///TODO: Remove context
       if (conversationsScrollController.position.extentAfter <=
           MediaQuery.of(context).size.height) {
         getConversations();
@@ -98,6 +98,7 @@ class SearchListCubit extends Cubit<SearchListState> {
   }
 
   void goToCustomerSessions(ChatItem question) {
+    closeSearch();
     Get.toNamed(
       AppRoutes.customerSessions,
       arguments: question,

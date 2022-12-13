@@ -75,7 +75,6 @@ class CustomerSessionsScreen extends StatelessWidget {
                       final List<ChatItem>? questions = context.select(
                           (CustomerSessionsCubit cubit) =>
                               cubit.state.customerSessions);
-                      logger.d(questions);
                       return questions == null
                           ? const SizedBox.shrink()
                           : Expanded(
