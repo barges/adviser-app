@@ -10,12 +10,16 @@ class ChatItemFooterWidget extends StatelessWidget {
   final DateTime createdAt;
   final SessionsTypes? ritualIdentifier;
   final Color color;
+  final bool isHistoryQuestion;
+  final bool isHistoryAnswer;
   const ChatItemFooterWidget({
     super.key,
     required this.type,
     required this.createdAt,
     required this.color,
     this.ritualIdentifier,
+    this.isHistoryQuestion = false,
+    this.isHistoryAnswer = false,
   });
 
   @override
@@ -46,7 +50,11 @@ class ChatItemFooterWidget extends StatelessWidget {
           ),
         ),
         Text(
-          createdAt.chatListTime.toString(),
+          isHistoryQuestion
+              ? createdAt.historyCardQuestionTime
+              : isHistoryAnswer
+                  ? createdAt.historyCardAnswerTime
+                  : createdAt.chatListTime.toString(),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: color,
                 fontSize: 12.0,

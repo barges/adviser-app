@@ -131,18 +131,33 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
 
   void goToChat(ChatItem question) {
     if (argumentsQuestion.clientID != null) {
-      Get.toNamed(
-        AppRoutes.chat,
-        arguments: ChatScreenArguments(
-          clientId: argumentsQuestion.clientID!,
-          storyId: question.id,
-          question: question.copyWith(
-            clientID: argumentsQuestion.clientID,
-            clientName: argumentsQuestion.clientName,
-            clientInformation: argumentsQuestion.clientInformation,
+      if (question.hasUnanswered != null && !question.hasUnanswered!) {
+        Get.toNamed(
+          AppRoutes.chat,
+          arguments: ChatScreenArguments(
+            clientId: argumentsQuestion.clientID!,
+            storyIdForHistory: question.id,
+            question: question.copyWith(
+              clientID: argumentsQuestion.clientID,
+              clientName: argumentsQuestion.clientName,
+              clientInformation: argumentsQuestion.clientInformation,
+            ),
           ),
-        ),
-      );
+        );
+      } else if (question.hasUnanswered != null && question.hasUnanswered!) {
+        Get.toNamed(
+          AppRoutes.chat,
+          arguments: ChatScreenArguments(
+            clientId: argumentsQuestion.clientID!,
+            storyId: question.id,
+            question: question.copyWith(
+              clientID: argumentsQuestion.clientID,
+              clientName: argumentsQuestion.clientName,
+              clientInformation: argumentsQuestion.clientInformation,
+            ),
+          ),
+        );
+      }
     }
   }
 

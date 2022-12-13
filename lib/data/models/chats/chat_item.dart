@@ -37,6 +37,7 @@ class ChatItem with _$ChatItem {
     String? ritualId,
     String? lastQuestionId,
     int? unansweredCount,
+    String? storyID,
     @Default(false) bool isAnswer,
     @Default(true) bool isSent,
   }) = _ChatItem;

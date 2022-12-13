@@ -13,12 +13,20 @@ class QuestionAndAnswerPairWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if (historyItem.question != null) ChatItemWidget(historyItem.question!),
+        if (historyItem.question != null)
+          ChatItemWidget(
+            historyItem.question!,
+            isHistoryQuestion: true,
+          ),
         if (historyItem.answer != null)
-          ChatItemWidget(historyItem.answer!.copyWith(
+          ChatItemWidget(
+            historyItem.answer!.copyWith(
               isAnswer: true,
               ritualIdentifier: historyItem.question?.ritualIdentifier,
-              type: historyItem.question?.type)),
+              type: historyItem.question?.type,
+            ),
+            isHistoryAnswer: true,
+          ),
       ],
     );
   }

@@ -135,6 +135,8 @@ class ChatScreen extends StatelessWidget {
                                 ? HistoryTab(
                                     clientId: questionFromDB!.clientID!,
                                     playerMedia: chatCubit.playerMedia!,
+                                    storyId: chatCubit
+                                        .chatScreenArguments.storyIdForHistory,
                                   )
                                 : const SizedBox.shrink(),
                             questionFromDB?.clientID != null
@@ -357,36 +359,6 @@ class _ActiveChat extends StatelessWidget {
           },
         ),
       ],
-    );
-  }
-}
-
-class _HistoryChat extends StatelessWidget {
-  const _HistoryChat({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final ChatCubit chatCubit = context.read<ChatCubit>();
-    return Builder(
-      builder: (context) {
-        final List<ChatItem> items =
-            context.select((ChatCubit cubit) => cubit.state.hystoryMessages);
-        return Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          child: ListView.builder(
-            padding: const EdgeInsets.only(bottom: 12.0),
-            shrinkWrap: true,
-            controller: chatCubit.historyMessagesScrollController,
-            reverse: true,
-            itemBuilder: (_, index) => ChatItemWidget(items[index],
-                onPressedTryAgain:
-                    !items[index].isSent ? chatCubit.sendAnswerAgain : null),
-            itemCount: items.length,
-          ),
-        );
-      },
     );
   }
 }
