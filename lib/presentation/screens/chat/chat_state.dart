@@ -8,7 +8,7 @@ import 'package:shared_advisor_interface/data/models/app_success/app_success.dar
 import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
 
 part 'chat_state.freezed.dart';
 
@@ -38,7 +38,6 @@ class ChatState with _$ChatState {
     ChatItem? questionFromDB,
     ChatItemStatusType? questionStatus,
     FlutterSoundPlayer? flutterSoundPlayer,
-    String? clientName,
-    ZodiacSign? zodiacSign,
+    AppBarUpdateArguments? appBarUpdateArguments,
   }) = _ChatState;
 }

@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 
 class CustomerProfileWidget extends StatelessWidget {
   final String customerId;
-  final Function(String?, ZodiacSign?)? updateClientInformation;
+  final Function(AppBarUpdateArguments?)? updateClientInformation;
 
   const CustomerProfileWidget({
     Key? key,
@@ -186,4 +186,14 @@ class CustomerProfileWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+class AppBarUpdateArguments {
+  String? clientName;
+  ZodiacSign? zodiacSign;
+
+  AppBarUpdateArguments({
+    this.clientName,
+    this.zodiacSign,
+  });
 }

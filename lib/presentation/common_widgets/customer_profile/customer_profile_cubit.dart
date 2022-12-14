@@ -6,12 +6,13 @@ import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_state.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 class CustomerProfileCubit extends Cubit<CustomerProfileState> {
   final String customerID;
-  final Function(String?, ZodiacSign?)? updateClientInformation;
+  final Function(AppBarUpdateArguments?)? updateClientInformation;
   final CustomerRepository _repository = getIt.get<CustomerRepository>();
 
   CustomerProfileCubit(this.customerID, this.updateClientInformation)
@@ -32,8 +33,11 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
     );
     if (updateClientInformation != null) {
       updateClientInformation!(
-          '${customerInfo.firstName} ${customerInfo.lastName}',
-          customerInfo.zodiac);
+        AppBarUpdateArguments(
+          clientName: '${customerInfo.firstName} ${customerInfo.lastName}',
+          zodiacSign: customerInfo.zodiac,
+        ),
+      );
     }
   }
 
