@@ -222,8 +222,7 @@ class ChatCubit extends Cubit<ChatState> {
             state.copyWith(
               questionFromDB: lastQuestion.copyWith(
                 clientID: ritualsResponse.clientID,
-                clientName:
-                    '${clientInformation?.firstName ?? ''} ${clientInformation?.lastName ?? ''}',
+                clientName: '',
               ),
               questionStatus: lastQuestion.status,
               activeMessages: _storyQuestionsList,

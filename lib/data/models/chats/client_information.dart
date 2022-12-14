@@ -13,8 +13,6 @@ class ClientInformation with _$ClientInformation {
     ZodiacSign? zodiac,
     Gender? gender,
     String? country,
-    String? firstName,
-    String? lastName,
   }) = _ClientInformation;
 
   factory ClientInformation.fromJson(Map<String, dynamic> json) =>
