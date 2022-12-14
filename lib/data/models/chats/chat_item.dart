@@ -24,6 +24,7 @@ class ChatItem with _$ChatItem {
     DateTime? takenDate,
     DateTime? createdAt,
     DateTime? updatedAt,
+    DateTime? startAnswerDate,
     String? content,
     @JsonKey(name: '_id') final String? id,
     ClientInformation? clientInformation,
