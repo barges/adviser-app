@@ -12,7 +12,6 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/empty_error.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/ui_error.dart';
@@ -24,6 +23,7 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_story_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
@@ -46,7 +46,6 @@ class ChatCubit extends Cubit<ChatState> {
 
   final ConnectivityService _connectivityService = ConnectivityService();
 
-  final CachingManager _cachingManager;
   final ChatsRepository _repository;
   late final ChatScreenArguments chatScreenArguments;
   final VoidCallback _showErrorAlert;
@@ -71,7 +70,6 @@ class ChatCubit extends Cubit<ChatState> {
   bool _isStoryLoading = false;
 
   ChatCubit(
-    this._cachingManager,
     this._repository,
     this._showErrorAlert,
   ) : super(const ChatState()) {
@@ -87,7 +85,7 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       );
     }
-    if(chatScreenArguments.storyIdForHistory == null) {
+    if (chatScreenArguments.storyIdForHistory == null) {
       _getData().whenComplete(() {
         if (chatScreenArguments.publicQuestionId != null) {
           _checkTiming();
@@ -189,6 +187,13 @@ class ChatCubit extends Cubit<ChatState> {
             textLength >= minTextLength && textLength <= maxTextLength,
       ),
     );
+  }
+
+  void updateClientInformation(String? clientName, ZodiacSign? zodiacSign) {
+    emit(state.copyWith(
+      clientName: clientName,
+      zodiacSign: zodiacSign,
+    ));
   }
 
   Future<void> _getPublicQuestion() async {

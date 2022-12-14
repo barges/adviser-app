@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/empty_error.dart';
 import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
@@ -10,7 +9,9 @@ import 'package:shared_advisor_interface/data/models/app_success/empty_success.d
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
+import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -40,7 +41,6 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ChatCubit(
-        getIt.get<CachingManager>(),
         getIt.get<ChatsRepository>(),
         () => showErrorAlert(context),
       ),
@@ -51,11 +51,16 @@ class ChatScreen extends StatelessWidget {
 
           final ChatItem? questionFromDB =
               context.select((ChatCubit cubit) => cubit.state.questionFromDB);
+          final String? clientName =
+              context.select((ChatCubit cubit) => cubit.state.clientName);
+          final ZodiacSign? zodiacSign =
+              context.select((ChatCubit cubit) => cubit.state.zodiacSign);
 
           return Scaffold(
             appBar: ChatConversationAppBar(
-                title: questionFromDB?.clientName ?? '',
-                zodiacSign: questionFromDB?.clientInformation?.zodiac,
+                title: clientName ?? questionFromDB?.clientName ?? '',
+                zodiacSign:
+                    zodiacSign ?? questionFromDB?.clientInformation?.zodiac,
                 returnInQueueButtonOnTap: () async {
                   final dynamic needReturn = await showOkCancelAlert(
                     context: context,
@@ -154,6 +159,8 @@ class ChatScreen extends StatelessWidget {
                         questionFromDB?.clientID != null
                             ? CustomerProfileWidget(
                                 customerId: questionFromDB!.clientID!,
+                                updateClientInformation:
+                                    chatCubit.updateClientInformation,
                               )
                             : const SizedBox.shrink(),
                       ]);

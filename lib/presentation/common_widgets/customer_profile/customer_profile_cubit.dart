@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/note.dart';
+import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_state.dart';
@@ -9,9 +11,11 @@ import 'package:shared_advisor_interface/presentation/resources/app_routes.dart'
 
 class CustomerProfileCubit extends Cubit<CustomerProfileState> {
   final String customerID;
+  final Function(String?, ZodiacSign?)? updateClientInformation;
   final CustomerRepository _repository = getIt.get<CustomerRepository>();
 
-  CustomerProfileCubit(this.customerID) : super(CustomerProfileState()) {
+  CustomerProfileCubit(this.customerID, this.updateClientInformation)
+      : super(CustomerProfileState()) {
     getCustomerInfo().then((_) => getNotes());
   }
 
@@ -20,11 +24,17 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
   }
 
   Future<void> getCustomerInfo() async {
+    CustomerInfo customerInfo = await _repository.getCustomerInfo(customerID);
     emit(
       state.copyWith(
-        customerInfo: await _repository.getCustomerInfo(customerID),
+        customerInfo: customerInfo,
       ),
     );
+    if (updateClientInformation != null) {
+      updateClientInformation!(
+          '${customerInfo.firstName} ${customerInfo.lastName}',
+          customerInfo.zodiac);
+    }
   }
 
   Future<void> getNotes() async {

@@ -17,6 +17,7 @@ Future<void> flagsBottomSheet(
     required AdvisorPreviewCubit advisorPreviewCubit}) async {
   showModalBottomSheet(
       context: context,
+      barrierColor: Colors.transparent,
       builder: (context) => BlocProvider<AdvisorPreviewCubit>.value(
             value: advisorPreviewCubit,
             child: Container(
@@ -34,14 +35,16 @@ Future<void> flagsBottomSheet(
                     child: Builder(builder: (context) {
                       final int selectedItemIndex = context.select(
                           (AdvisorPreviewCubit cubit) => cubit.state.oldIndex);
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (_, index) => _FlagTileWidget(
-                              languageCode: activeLanguages[index],
-                              isSelected: index == selectedItemIndex,
-                              onTap: () => onSelectLanguage(index)),
-                          itemCount: activeLanguages.length);
+                      return SingleChildScrollView(
+                          physics: const ClampingScrollPhysics(),
+                          child: Column(
+                            children: List.of(activeLanguages.map(
+                              (e) => _FlagTileWidget(
+                                  languageCode: e,
+                                  isSelected: e.index == selectedItemIndex,
+                                  onTap: () => onSelectLanguage(e.index)),
+                            )),
+                          ));
                     }),
                   )
                 ],
@@ -74,7 +77,7 @@ class _FlagBottomSheetHeader extends StatelessWidget {
         onTap: onApply,
         child: Padding(
           padding: padding,
-          child: Text(S.of(context).apply,
+          child: Text(S.of(context).done,
               style: appBarTitleStyle?.copyWith(
                   fontWeight: FontWeight.w500, color: primary)),
         ),
