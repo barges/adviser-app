@@ -44,75 +44,73 @@ class ChatConversationAppBar extends StatelessWidget
         return SizedBox(
           height: AppConstants.appBarHeight,
           width: MediaQuery.of(context).size.width,
-          child: Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                if (questionStatus == ChatItemStatusType.taken)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: _ReturnInQueue(
-                      onTap: returnInQueueButtonOnTap,
-                    ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              if (questionStatus == ChatItemStatusType.taken)
+                Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: _ReturnInQueue(
+                    onTap: returnInQueueButtonOnTap,
                   ),
-                if (questionStatus != ChatItemStatusType.taken)
-                  AppIconButton(
-                    icon: Assets.vectors.arrowLeft.path,
-                    onTap: Get.back,
-                  ),
-                Builder(builder: (context) {
-                  final Brand selectedBrand = context
-                      .select((MainCubit cubit) => cubit.state.currentBrand);
-                  return Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        IntrinsicWidth(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                selectedBrand.icon,
-                                height: 17.0,
-                              ),
-                              const SizedBox(width: 12.0),
-                              Expanded(
-                                child: Text(
-                                  title,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    color: Theme.of(context).hoverColor,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                ),
+              if (questionStatus != ChatItemStatusType.taken)
+                AppIconButton(
+                  icon: Assets.vectors.arrowLeft.path,
+                  onTap: Get.back,
+                ),
+              Builder(builder: (context) {
+                final Brand selectedBrand = context
+                    .select((MainCubit cubit) => cubit.state.currentBrand);
+                return Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      IntrinsicWidth(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              selectedBrand.icon,
+                              height: 17.0,
+                            ),
+                            const SizedBox(width: 12.0),
+                            Expanded(
+                              child: Text(
+                                title,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Theme.of(context).hoverColor,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          selectedBrand.name,
-                          style: TextStyle(
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w200,
-                            color: Theme.of(context).shadowColor,
-                          ),
+                      ),
+                      Text(
+                        selectedBrand.name,
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w200,
+                          color: Theme.of(context).shadowColor,
                         ),
-                      ],
-                    ),
-                  );
-                }),
-                if (questionStatus == ChatItemStatusType.taken) const Spacer(),
-                if (zodiacSign != null)
-                  SvgPicture.asset(
-                    zodiacSign!.imagePath(context),
-                    width: 28.0,
+                      ),
+                    ],
                   ),
-              ],
-            ),
+                );
+              }),
+              if (questionStatus == ChatItemStatusType.taken) const Spacer(),
+              if (zodiacSign != null)
+                SvgPicture.asset(
+                  zodiacSign!.imagePath(context),
+                  width: 28.0,
+                ),
+            ],
           ),
         );
       }),
