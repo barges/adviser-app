@@ -61,7 +61,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
     }
 
     questionsController.addListener(() async {
-      if (!_mainCubit.state.isLoading &&
+      if (!_isLoading &&
           questionsController.position.extentAfter <= _screenHeight) {
         await getCustomerSessions();
       }
@@ -87,42 +87,40 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   }
 
   Future<void> getCustomerSessions({bool refresh = false}) async {
-    if (!_isLoading) {
-      _isLoading = true;
-      try {
-        if (refresh) {
-          _hasMore = true;
-          _lastItem = null;
-          _customerSessions.clear();
-        }
-        if (_hasMore && await _connectivityService.checkConnection()) {
-          final ChatItemType questionsType = filters[state.currentFilterIndex];
-          final String? filterType = questionsType != ChatItemType.all
-              ? questionsType.filterTypeName
-              : null;
-
-          final QuestionsListResponse result =
-              await _chatsRepository.getCustomerSessions(
-                  id: argumentsQuestion.clientID ?? '',
-                  limit: AppConstants.questionsLimit,
-                  lastItem: _lastItem,
-                  filterType: filterType);
-          _hasMore = result.hasMore ?? true;
-          _lastItem = result.lastItem;
-
-          _customerSessions.addAll(result.questions ?? const []);
-          emit(state.copyWith(
-            customerSessions: List.of(_customerSessions),
-          ));
-        }
-      } on DioError catch (e) {
-        if (e.response?.statusCode == 409) {
-          _showErrorAlert();
-          logger.d(e);
-        }
+    _isLoading = true;
+    try {
+      if (refresh) {
+        _hasMore = true;
+        _lastItem = null;
+        _customerSessions.clear();
       }
-      _isLoading = false;
+      if (_hasMore && await _connectivityService.checkConnection()) {
+        final ChatItemType questionsType = filters[state.currentFilterIndex];
+        final String? filterType = questionsType != ChatItemType.all
+            ? questionsType.filterTypeName
+            : null;
+
+        final QuestionsListResponse result =
+            await _chatsRepository.getCustomerSessions(
+                id: argumentsQuestion.clientID ?? '',
+                limit: AppConstants.questionsLimit,
+                lastItem: _lastItem,
+                filterType: filterType);
+        _hasMore = result.hasMore ?? true;
+        _lastItem = result.lastItem;
+
+        _customerSessions.addAll(result.questions ?? const []);
+        emit(state.copyWith(
+          customerSessions: List.of(_customerSessions),
+        ));
+      }
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 409) {
+        _showErrorAlert();
+        logger.d(e);
+      }
     }
+    _isLoading = false;
   }
 
   Future<void> getCustomerInfo() async {
