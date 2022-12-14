@@ -53,7 +53,6 @@ class HistoryCubit extends Cubit<HistoryState> {
   }
 
   void scrollControllerListener() {
-
     if (!_isLoading &&
         historyMessagesScrollController.position.extentAfter <= 300) {
       _getHistoryList(
@@ -72,64 +71,63 @@ class HistoryCubit extends Cubit<HistoryState> {
     bool firstRequest = false,
     HistoryScrollDirection? scrollDirection,
   }) async {
+    _isLoading = true;
+    try {
+      if (firstRequest && await _connectivityService.checkConnection()) {
+        final HistoryResponse result = await _repository.getHistoryList(
+          clientId: _clientId,
+          limit: _limit,
+          storyId: _storyId,
+        );
+        _hasMore = result.hasMore ?? false;
+        _hasBefore = result.hasBefore ?? false;
+        _lastItem = result.history?.lastOrNull?.id;
+        _firstItem = result.firstItem;
 
-   _isLoading = true;
-      try {
-        if (firstRequest && await _connectivityService.checkConnection()) {
+        _historyList.addAll(result.history ?? const []);
+        emit(state.copyWith(
+          historyMessages: List.of(_historyList),
+        ));
+        _getHistoryList(scrollDirection: HistoryScrollDirection.up);
+      } else {
+        if (_hasMore &&
+            await _connectivityService.checkConnection() &&
+            scrollDirection == HistoryScrollDirection.down) {
           final HistoryResponse result = await _repository.getHistoryList(
             clientId: _clientId,
             limit: _limit,
-            storyId: _storyId,
+            lastItem: _lastItem,
           );
+
           _hasMore = result.hasMore ?? false;
-          _hasBefore = result.hasBefore ?? false;
-          _lastItem = result.history?.lastOrNull?.id;
-          _firstItem = result.firstItem;
+          _lastItem = result.lastItem;
 
           _historyList.addAll(result.history ?? const []);
+
           emit(state.copyWith(
             historyMessages: List.of(_historyList),
           ));
-          _getHistoryList(scrollDirection: HistoryScrollDirection.up);
-        } else {
-          if (_hasMore &&
-              await _connectivityService.checkConnection() &&
-              scrollDirection == HistoryScrollDirection.down) {
-            final HistoryResponse result = await _repository.getHistoryList(
-              clientId: _clientId,
-              limit: _limit,
-              lastItem: _lastItem,
-            );
+        } else if (_hasBefore &&
+            await _connectivityService.checkConnection() &&
+            scrollDirection == HistoryScrollDirection.up) {
+          final HistoryResponse result = await _repository.getHistoryList(
+            clientId: _clientId,
+            limit: _limit,
+            firstItem: _firstItem,
+          );
+          _hasBefore = result.hasBefore ?? false;
+          _firstItem = result.firstItem;
 
-            _hasMore = result.hasMore ?? false;
-            _lastItem = result.lastItem;
-
-            _historyList.addAll(result.history ?? const []);
-
-            emit(state.copyWith(
-              historyMessages: List.of(_historyList),
-            ));
-          } else if (_hasBefore &&
-              await _connectivityService.checkConnection() &&
-              scrollDirection == HistoryScrollDirection.up) {
-            final HistoryResponse result = await _repository.getHistoryList(
-              clientId: _clientId,
-              limit: _limit,
-              firstItem: _firstItem,
-            );
-            _hasBefore = result.hasBefore ?? false;
-            _firstItem = result.firstItem;
-
-            _historyList.insertAll(0, result.history ?? const []);
-            emit(state.copyWith(
-              historyMessages: List.of(_historyList),
-            ));
-          }
+          _historyList.insertAll(0, result.history ?? const []);
+          emit(state.copyWith(
+            historyMessages: List.of(_historyList),
+          ));
         }
-      } on DioError catch (e) {
-        logger.d(e);
       }
-      _isLoading = false;
+    } on DioError catch (e) {
+      logger.d(e);
+    }
+    _isLoading = false;
   }
 
   Future<void> startPlayAudio(String audioUrl) async {
