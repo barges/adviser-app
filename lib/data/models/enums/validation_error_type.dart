@@ -6,6 +6,7 @@ enum ValidationErrorType {
   fieldIsRequired,
   pleaseEnterAtLeast3Characters,
   thePasswordsMustMatch,
+  statusTextMayNotExceed300Characters,
   empty;
 
   String text(context) {
@@ -20,6 +21,8 @@ enum ValidationErrorType {
         return S.of(context).pleaseEnterAtLeast3Characters;
       case ValidationErrorType.thePasswordsMustMatch:
         return S.of(context).thePasswordsMustMatch;
+      case ValidationErrorType.statusTextMayNotExceed300Characters:
+        return S.of(context).statusTextMayNotExceed300Characters;
       case ValidationErrorType.empty:
         return '';
     }

@@ -279,7 +279,15 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         firstLanguageWithErrorIndex ??= activeLanguages.indexOf(entry.key);
         firstLanguageWithErrorFocusNode ??= focusNodesMap[entry.key]?.first;
         isValid = false;
+      } else if (controllersByLanguage.firstOrNull != null &&
+          controllersByLanguage.firstOrNull!.text.length > 300) {
+        errorTextsMap[entry.key]?.first =
+            ValidationErrorType.statusTextMayNotExceed300Characters;
+        firstLanguageWithErrorIndex ??= activeLanguages.indexOf(entry.key);
+        firstLanguageWithErrorFocusNode ??= focusNodesMap[entry.key]?.first;
+        isValid = false;
       }
+
       if (controllersByLanguage.lastOrNull?.text.trim().isEmpty == true) {
         errorTextsMap[entry.key]?.last = ValidationErrorType.fieldIsRequired;
         firstLanguageWithErrorIndex ??= activeLanguages.indexOf(entry.key);
