@@ -36,5 +36,6 @@ class ChatState with _$ChatState {
     Stream<PlaybackDisposition>? playbackStream,
     ChatItem? questionFromDB,
     ChatItemStatusType? questionStatus,
+    FlutterSoundPlayer? flutterSoundPlayer,
   }) = _ChatState;
 }

@@ -7,10 +7,9 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:shared_advisor_interface/data/models/chats/history.dart';
 import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_state.dart';
 import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_state.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 enum HistoryScrollDirection {
@@ -25,7 +24,6 @@ class HistoryCubit extends Cubit<HistoryState> {
   final String _clientId;
   final String? _storyId;
   FlutterSoundPlayer? _playerMedia;
-  final MainCubit _mainCubit = getIt.get<MainCubit>();
   final Codec _codec = Codec.aacMP4;
 
   final List<History> _historyList = [];
@@ -55,13 +53,14 @@ class HistoryCubit extends Cubit<HistoryState> {
   }
 
   void scrollControllerListener() {
-    if (!_mainCubit.state.isLoading &&
+
+    if (!_isLoading &&
         historyMessagesScrollController.position.extentAfter <= 300) {
       _getHistoryList(
         scrollDirection: HistoryScrollDirection.down,
       );
     }
-    if (!_mainCubit.state.isLoading &&
+    if (!_isLoading &&
         historyMessagesScrollController.position.extentBefore <= 300) {
       _getHistoryList(
         scrollDirection: HistoryScrollDirection.up,
@@ -73,8 +72,8 @@ class HistoryCubit extends Cubit<HistoryState> {
     bool firstRequest = false,
     HistoryScrollDirection? scrollDirection,
   }) async {
-    if (!_isLoading) {
-      _isLoading = true;
+
+   _isLoading = true;
       try {
         if (firstRequest && await _connectivityService.checkConnection()) {
           final HistoryResponse result = await _repository.getHistoryList(
@@ -82,8 +81,8 @@ class HistoryCubit extends Cubit<HistoryState> {
             limit: _limit,
             storyId: _storyId,
           );
-          _hasMore = result.hasMore ?? true;
-          _hasBefore = result.hasBefore ?? true;
+          _hasMore = result.hasMore ?? false;
+          _hasBefore = result.hasBefore ?? false;
           _lastItem = result.history?.lastOrNull?.id;
           _firstItem = result.firstItem;
 
@@ -91,7 +90,6 @@ class HistoryCubit extends Cubit<HistoryState> {
           emit(state.copyWith(
             historyMessages: List.of(_historyList),
           ));
-          _isLoading = false;
           _getHistoryList(scrollDirection: HistoryScrollDirection.up);
         } else {
           if (_hasMore &&
@@ -132,7 +130,6 @@ class HistoryCubit extends Cubit<HistoryState> {
         logger.d(e);
       }
       _isLoading = false;
-    }
   }
 
   Future<void> startPlayAudio(String audioUrl) async {

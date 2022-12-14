@@ -87,11 +87,13 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       );
     }
-    _getData().whenComplete(() {
-      if (chatScreenArguments.publicQuestionId != null) {
-        _checkTiming();
-      }
-    });
+    if(chatScreenArguments.storyIdForHistory == null) {
+      _getData().whenComplete(() {
+        if (chatScreenArguments.publicQuestionId != null) {
+          _checkTiming();
+        }
+      });
+    }
   }
 
   @override
@@ -127,7 +129,10 @@ class ChatCubit extends Cubit<ChatState> {
     const logLevel = Level.nothing;
     _recorder = await FlutterSoundRecorder(logLevel: logLevel).openRecorder();
     _playerRecorded = await FlutterSoundPlayer(logLevel: logLevel).openPlayer();
+
     playerMedia = await FlutterSoundPlayer(logLevel: logLevel).openPlayer();
+
+    emit(state.copyWith(flutterSoundPlayer: playerMedia));
 
     await _recorder?.setSubscriptionDuration(
       const Duration(seconds: 1),

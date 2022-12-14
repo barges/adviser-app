@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
@@ -29,7 +30,6 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_screen.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 import 'widgets/chat_info_card.dart';
 
@@ -49,218 +49,240 @@ class ChatScreen extends StatelessWidget {
           final S s = S.of(context);
           final ChatCubit chatCubit = context.read<ChatCubit>();
 
-          return Builder(builder: (context) {
-            final ChatItem? questionFromDB =
-                context.select((ChatCubit cubit) => cubit.state.questionFromDB);
-            return Scaffold(
-              appBar: ChatConversationAppBar(
-                  title: questionFromDB?.clientName ?? '',
-                  zodiacSign: questionFromDB?.clientInformation?.zodiac,
-                  returnInQueueButtonOnTap: () async {
-                    final dynamic needReturn = await showOkCancelAlert(
-                      context: context,
-                      title: s.youRefuseToAnswerThisQuestion,
-                      description: s
-                          .itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain,
-                      okText: s.ok,
-                      actionOnOK: () => Navigator.pop(context, true),
-                      allowBarrierClock: false,
-                      isCancelEnabled: true,
-                    );
+          final ChatItem? questionFromDB =
+              context.select((ChatCubit cubit) => cubit.state.questionFromDB);
 
-                    if (needReturn == true) {
-                      await chatCubit.returnQuestion();
-                    }
-                  }),
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              body: SafeArea(
-                child: Builder(builder: (context) {
-                  final int currentIndex = context
-                      .select((ChatCubit cubit) => cubit.state.currentTabIndex);
-                  return Column(
-                    children: [
-                      const Divider(
-                        height: 1.0,
+          return Scaffold(
+            appBar: ChatConversationAppBar(
+                title: questionFromDB?.clientName ?? '',
+                zodiacSign: questionFromDB?.clientInformation?.zodiac,
+                returnInQueueButtonOnTap: () async {
+                  final dynamic needReturn = await showOkCancelAlert(
+                    context: context,
+                    title: s.youRefuseToAnswerThisQuestion,
+                    description: s
+                        .itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain,
+                    okText: s.ok,
+                    actionOnOK: () => Navigator.pop(context, true),
+                    allowBarrierClock: false,
+                    isCancelEnabled: true,
+                  );
+
+                  if (needReturn == true) {
+                    await chatCubit.returnQuestion();
+                  }
+                }),
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            body: SafeArea(
+              child: Builder(builder: (context) {
+                final List<String> tabsTitles = [];
+                if (chatCubit.chatScreenArguments.storyIdForHistory == null) {
+                  tabsTitles.add(S.of(context).activeChat);
+                }
+                tabsTitles.addAll([
+                  S.of(context).history,
+                  S.of(context).profile,
+                ]);
+
+                return Column(
+                  children: [
+                    const Divider(
+                      height: 1.0,
+                    ),
+                    Container(
+                      color: Theme.of(context).canvasColor,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10.0,
+                        horizontal: 16.0,
                       ),
-                      Container(
-                        color: Theme.of(context).canvasColor,
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10.0,
-                          horizontal: 16.0,
-                        ),
-                        child: ChooseOptionWidget(
-                          options: [
-                            S.of(context).activeChat,
-                            S.of(context).history,
-                            S.of(context).profile,
-                          ],
+                      child: Builder(builder: (context) {
+                        final int currentIndex = context.select(
+                            (ChatCubit cubit) => cubit.state.currentTabIndex);
+                        return ChooseOptionWidget(
+                          options: tabsTitles,
                           currentIndex: currentIndex,
                           onChangeOptionIndex: chatCubit.changeCurrentTabIndex,
-                        ),
-                      ),
-                      Builder(
-                        builder: (BuildContext context) {
-                          final AppSuccess appSuccess = context.select(
-                              (ChatCubit cubit) => cubit.state.appSuccess);
-                          return appSuccess is! EmptySuccess
-                              ? AppSuccessWidget(
-                                  message: appSuccess.getMessage(context),
-                                  onClose: chatCubit.clearSuccessMessage,
-                                )
-                              : const SizedBox.shrink();
-                        },
-                      ),
-                      Builder(
-                        builder: (context) {
-                          final AppError appError = context.select(
-                              (ChatCubit cubit) => cubit.state.appError);
-                          return appError is! EmptyError
-                              ? AppErrorWidget(
-                                  errorMessage: appError.getMessage(context),
-                                  close: chatCubit.clearErrorMessage,
-                                )
-                              : const SizedBox.shrink();
-                        },
-                      ),
-                      Expanded(
-                        child: IndexedStack(
-                          index: currentIndex,
-                          children: [
-                            const _ActiveChat(),
-                            questionFromDB?.clientID != null &&
-                                    chatCubit.playerMedia != null
-                                ? HistoryTab(
-                                    clientId: questionFromDB!.clientID!,
-                                    playerMedia: chatCubit.playerMedia!,
-                                    storyId: chatCubit
-                                        .chatScreenArguments.storyIdForHistory,
-                                  )
-                                : const SizedBox.shrink(),
-                            questionFromDB?.clientID != null
-                                ? CustomerProfileWidget(
-                                    customerId: questionFromDB!.clientID!,
-                                  )
-                                : const SizedBox.shrink(),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                }),
-              ),
-              bottomNavigationBar: Builder(
-                builder: (context) {
-                  final int currentIndex = context
-                      .select((ChatCubit cubit) => cubit.state.currentTabIndex);
-                  final ChatItemStatusType? questionStatus = context
-                      .select((ChatCubit cubit) => cubit.state.questionStatus);
-
-                  if (currentIndex == 0) {
-                    if (chatCubit.chatScreenArguments.publicQuestionId !=
-                        null) {
-                      final bool showInputFieldIfPublic = context.select(
-                          (ChatCubit cubit) =>
-                              cubit.state.showInputFieldIfPublic);
-                      if (!showInputFieldIfPublic ||
-                          questionStatus != ChatItemStatusType.taken) {
-                        return const SizedBox.shrink();
-                      } else {
-                        return Builder(
-                          builder: (context) {
-                            final bool isRecordingAudio = context.select(
-                                (ChatCubit cubit) =>
-                                    cubit.state.isRecordingAudio);
-                            final bool isAudioFileSaved = context.select(
-                                (ChatCubit cubit) =>
-                                    cubit.state.isAudioFileSaved);
-
-                            if (isAudioFileSaved) {
-                              return ChatRecordedWidget(
-                                playbackStream: chatCubit.state.playbackStream,
-                                onStartPlayPressed: () =>
-                                    chatCubit.startPlayRecordedAudio(),
-                                onPausePlayPressed: () =>
-                                    chatCubit.pauseRecordedAudio(),
-                                onDeletePressed: () async {
-                                  if ((await showDeleteAlert(
-                                      context,
-                                      S
-                                          .of(context)
-                                          .doYouWantToDeleteAudioMessage))!) {
-                                    chatCubit.deletedRecordedAudio();
-                                  }
-                                },
-                                onSendPressed: chatCubit.sendMediaAnswer,
-                              );
-                            } else if (isRecordingAudio) {
-                              return ChatRecordingWidget(
-                                onClosePressed: () =>
-                                    chatCubit.cancelRecordingAudio(),
-                                onStopRecordPressed: () =>
-                                    chatCubit.stopRecordingAudio(),
-                                recordingStream:
-                                    chatCubit.state.recordingStream,
-                              );
-                            } else {
-                              return const ChatTextInputWidget();
-                            }
-                          },
                         );
+                      }),
+                    ),
+                    Builder(
+                      builder: (BuildContext context) {
+                        final AppSuccess appSuccess = context.select(
+                            (ChatCubit cubit) => cubit.state.appSuccess);
+                        return appSuccess is! EmptySuccess
+                            ? AppSuccessWidget(
+                                message: appSuccess.getMessage(context),
+                                onClose: chatCubit.clearSuccessMessage,
+                              )
+                            : const SizedBox.shrink();
+                      },
+                    ),
+                    Builder(
+                      builder: (context) {
+                        final AppError appError = context
+                            .select((ChatCubit cubit) => cubit.state.appError);
+                        return appError is! EmptyError
+                            ? AppErrorWidget(
+                                errorMessage: appError.getMessage(context),
+                                close: chatCubit.clearErrorMessage,
+                              )
+                            : const SizedBox.shrink();
+                      },
+                    ),
+                    Builder(builder: (context) {
+                      final List<Widget> tabs = [];
+                      if (chatCubit.chatScreenArguments.storyIdForHistory ==
+                          null) {
+                        tabs.add(const _ActiveChat());
                       }
+                      tabs.addAll([
+                        Builder(builder: (context) {
+                          final FlutterSoundPlayer? flutterSoundPlayer =
+                              context.select((ChatCubit cubit) =>
+                                  cubit.state.flutterSoundPlayer);
+
+                          return questionFromDB?.clientID != null &&
+                                  flutterSoundPlayer != null
+                              ? HistoryTab(
+                                  clientId: questionFromDB!.clientID!,
+                                  playerMedia: chatCubit.playerMedia!,
+                                  storyId: chatCubit
+                                      .chatScreenArguments.storyIdForHistory,
+                                )
+                              : const SizedBox.shrink();
+                        }),
+                        questionFromDB?.clientID != null
+                            ? CustomerProfileWidget(
+                                customerId: questionFromDB!.clientID!,
+                              )
+                            : const SizedBox.shrink(),
+                      ]);
+
+                      return Builder(builder: (context) {
+                        final int currentIndex = context.select(
+                            (ChatCubit cubit) => cubit.state.currentTabIndex);
+                        return Expanded(
+                          child: IndexedStack(
+                            index: currentIndex,
+                            children: tabs,
+                          ),
+                        );
+                      });
+                    }),
+                  ],
+                );
+              }),
+            ),
+            bottomNavigationBar: Builder(
+              builder: (context) {
+                final int currentIndex = context
+                    .select((ChatCubit cubit) => cubit.state.currentTabIndex);
+                final ChatItemStatusType? questionStatus = context
+                    .select((ChatCubit cubit) => cubit.state.questionStatus);
+
+                if (chatCubit.chatScreenArguments.storyIdForHistory == null &&
+                    currentIndex == 0) {
+                  if (chatCubit.chatScreenArguments.publicQuestionId != null) {
+                    final bool showInputFieldIfPublic = context.select(
+                        (ChatCubit cubit) =>
+                            cubit.state.showInputFieldIfPublic);
+                    if (!showInputFieldIfPublic ||
+                        questionStatus != ChatItemStatusType.taken) {
+                      return const SizedBox.shrink();
                     } else {
-                      if (questionStatus != ChatItemStatusType.answered) {
-                        return Builder(
-                          builder: (context) {
-                            final bool isRecordingAudio = context.select(
-                                (ChatCubit cubit) =>
-                                    cubit.state.isRecordingAudio);
-                            final bool isAudioFileSaved = context.select(
-                                (ChatCubit cubit) =>
-                                    cubit.state.isAudioFileSaved);
+                      return Builder(
+                        builder: (context) {
+                          final bool isRecordingAudio = context.select(
+                              (ChatCubit cubit) =>
+                                  cubit.state.isRecordingAudio);
+                          final bool isAudioFileSaved = context.select(
+                              (ChatCubit cubit) =>
+                                  cubit.state.isAudioFileSaved);
 
-                            if (isAudioFileSaved) {
-                              return ChatRecordedWidget(
-                                playbackStream: chatCubit.state.playbackStream,
-                                onStartPlayPressed: () =>
-                                    chatCubit.startPlayRecordedAudio(),
-                                onPausePlayPressed: () =>
-                                    chatCubit.pauseRecordedAudio(),
-                                onDeletePressed: () async {
-                                  if ((await showDeleteAlert(
-                                      context,
-                                      S
-                                          .of(context)
-                                          .doYouWantToDeleteAudioMessage))!) {
-                                    chatCubit.deletedRecordedAudio();
-                                  }
-                                },
-                                onSendPressed: chatCubit.sendMediaAnswer,
-                              );
-                            } else if (isRecordingAudio) {
-                              return ChatRecordingWidget(
-                                onClosePressed: () =>
-                                    chatCubit.cancelRecordingAudio(),
-                                onStopRecordPressed: () =>
-                                    chatCubit.stopRecordingAudio(),
-                                recordingStream:
-                                    chatCubit.state.recordingStream,
-                              );
-                            } else {
-                              return const ChatTextInputWidget();
-                            }
-                          },
-                        );
-                      } else {
-                        return const SizedBox.shrink();
-                      }
+                          if (isAudioFileSaved) {
+                            return ChatRecordedWidget(
+                              playbackStream: chatCubit.state.playbackStream,
+                              onStartPlayPressed: () =>
+                                  chatCubit.startPlayRecordedAudio(),
+                              onPausePlayPressed: () =>
+                                  chatCubit.pauseRecordedAudio(),
+                              onDeletePressed: () async {
+                                if ((await showDeleteAlert(
+                                    context,
+                                    S
+                                        .of(context)
+                                        .doYouWantToDeleteAudioMessage))!) {
+                                  chatCubit.deletedRecordedAudio();
+                                }
+                              },
+                              onSendPressed: chatCubit.sendMediaAnswer,
+                            );
+                          } else if (isRecordingAudio) {
+                            return ChatRecordingWidget(
+                              onClosePressed: () =>
+                                  chatCubit.cancelRecordingAudio(),
+                              onStopRecordPressed: () =>
+                                  chatCubit.stopRecordingAudio(),
+                              recordingStream: chatCubit.state.recordingStream,
+                            );
+                          } else {
+                            return const ChatTextInputWidget();
+                          }
+                        },
+                      );
                     }
                   } else {
-                    return const SizedBox.shrink();
+                    if (questionStatus != ChatItemStatusType.answered) {
+                      return Builder(
+                        builder: (context) {
+                          final bool isRecordingAudio = context.select(
+                              (ChatCubit cubit) =>
+                                  cubit.state.isRecordingAudio);
+                          final bool isAudioFileSaved = context.select(
+                              (ChatCubit cubit) =>
+                                  cubit.state.isAudioFileSaved);
+
+                          if (isAudioFileSaved) {
+                            return ChatRecordedWidget(
+                              playbackStream: chatCubit.state.playbackStream,
+                              onStartPlayPressed: () =>
+                                  chatCubit.startPlayRecordedAudio(),
+                              onPausePlayPressed: () =>
+                                  chatCubit.pauseRecordedAudio(),
+                              onDeletePressed: () async {
+                                if ((await showDeleteAlert(
+                                    context,
+                                    S
+                                        .of(context)
+                                        .doYouWantToDeleteAudioMessage))!) {
+                                  chatCubit.deletedRecordedAudio();
+                                }
+                              },
+                              onSendPressed: chatCubit.sendMediaAnswer,
+                            );
+                          } else if (isRecordingAudio) {
+                            return ChatRecordingWidget(
+                              onClosePressed: () =>
+                                  chatCubit.cancelRecordingAudio(),
+                              onStopRecordPressed: () =>
+                                  chatCubit.stopRecordingAudio(),
+                              recordingStream: chatCubit.state.recordingStream,
+                            );
+                          } else {
+                            return const ChatTextInputWidget();
+                          }
+                        },
+                      );
+                    } else {
+                      return const SizedBox.shrink();
+                    }
                   }
-                },
-              ),
-            );
-          });
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
+            ),
+          );
         },
       ),
     );
