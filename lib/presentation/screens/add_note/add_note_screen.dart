@@ -67,8 +67,9 @@ class AddNoteScreen extends StatelessWidget {
                                 vertical: 12.0,
                               ),
                               child: Text(
-                                addNoteCubit
-                                    .arguments.updatedAt!.parseDateTimePattern2,
+                                addNoteCubit.arguments.updatedAt
+                                        ?.parseDateTimePattern12 ??
+                                    '',
                                 style: Theme.of(context)
                                     .textTheme
                                     .displaySmall
