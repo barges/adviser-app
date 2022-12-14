@@ -33,14 +33,18 @@ class AddMoreImagesFromGalleryWidget extends StatelessWidget {
             const SizedBox(
               height: 4.0,
             ),
-            AutoSizeText(
-              S.of(context).addMore,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).primaryColor,
-                  ),
-              maxLines: 2,
-              textAlign: TextAlign.center,
+            Expanded(
+              child: SizedBox(
+                child: AutoSizeText(
+                  S.of(context).addMore,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ),
           ],
         ),
