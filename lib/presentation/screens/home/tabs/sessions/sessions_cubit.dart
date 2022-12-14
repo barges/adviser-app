@@ -30,7 +30,8 @@ class SessionsCubit extends Cubit<SessionsState> {
   final ScrollController conversationsController = ScrollController();
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final ChatsRepository _repository = getIt.get<ChatsRepository>();
-  final ConnectivityService _connectivityService = ConnectivityService();
+  final ConnectivityService _connectivityService =
+      getIt.get<ConnectivityService>();
 
   late final StreamSubscription<bool> _updateSessionsSubscription;
   late final VoidCallback disposeUserStatusListen;

@@ -36,7 +36,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final UserRepository _userRepository = getIt.get<UserRepository>();
   final CachingManager _cacheManager = getIt.get<CachingManager>();
   final DefaultCacheManager _defaultCacheManager = DefaultCacheManager();
-  final ConnectivityService _connectivityService = ConnectivityService();
+  final ConnectivityService _connectivityService =
+      getIt.get<ConnectivityService>();
 
   late final UserProfile? userProfile;
   late final List<MarketsType> activeLanguages;

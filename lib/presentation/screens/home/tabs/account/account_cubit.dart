@@ -24,7 +24,8 @@ class AccountCubit extends Cubit<AccountState> {
   final MainCubit mainCubit = getIt.get<MainCubit>();
 
   final UserRepository _userRepository = getIt.get<UserRepository>();
-  final ConnectivityService _connectivityService = ConnectivityService();
+  final ConnectivityService _connectivityService =
+      getIt.get<ConnectivityService>();
 
   final CachingManager cacheManager;
 

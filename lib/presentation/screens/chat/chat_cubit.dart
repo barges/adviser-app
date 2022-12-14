@@ -44,7 +44,8 @@ class ChatCubit extends Cubit<ChatState> {
   final ScrollController textInputScrollController = ScrollController();
   final TextEditingController textEditingController = TextEditingController();
 
-  final ConnectivityService _connectivityService = ConnectivityService();
+  final ConnectivityService _connectivityService =
+      getIt.get<ConnectivityService>();
 
   final ChatsRepository _repository;
   late final ChatScreenArguments chatScreenArguments;

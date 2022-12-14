@@ -36,7 +36,8 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   final CustomerRepository _customerRepository =
       getIt.get<CustomerRepository>();
   final ScrollController questionsController = ScrollController();
-  final ConnectivityService _connectivityService = ConnectivityService();
+  final ConnectivityService _connectivityService =
+      getIt.get<ConnectivityService>();
 
   late final ChatItem argumentsQuestion;
   late final StreamSubscription<bool> _updateSessionsSubscription;

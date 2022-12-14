@@ -19,7 +19,8 @@ enum HistoryScrollDirection {
 
 class HistoryCubit extends Cubit<HistoryState> {
   final ScrollController historyMessagesScrollController = ScrollController();
-  final ConnectivityService _connectivityService = ConnectivityService();
+  final ConnectivityService _connectivityService =
+      getIt.get<ConnectivityService>();
   final ChatsRepository _repository;
   final String _clientId;
   final String? _storyId;
