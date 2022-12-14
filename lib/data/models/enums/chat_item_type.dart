@@ -55,7 +55,7 @@ enum ChatItemType {
     }
   }
 
-  String typeName(context) {
+  String typeName(BuildContext context) {
     switch (this) {
       case ChatItemType.private:
         return '${S.of(context).private} ${S.of(context).question}';
@@ -63,6 +63,17 @@ enum ChatItemType {
         return '${S.of(context).ritual} ${S.of(context).session}';
       case ChatItemType.public:
         return '${S.of(context).public} ${S.of(context).question}';
+      default:
+        return '';
+    }
+  }
+
+  String unAnsweredMessage(BuildContext context) {
+    switch (this) {
+      case ChatItemType.private:
+        return S.of(context).youHaveAPrivateMessage;
+      case ChatItemType.ritual:
+        return S.of(context).youHaveARitualRequest;
       default:
         return '';
     }

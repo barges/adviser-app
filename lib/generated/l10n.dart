@@ -1770,16 +1770,6 @@ class S {
     );
   }
 
-  /// `You have an active session`
-  String get youHaveAnActiveSession {
-    return Intl.message(
-      'You have an active session',
-      name: 'youHaveAnActiveSession',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Audio message`
   String get audioMessage {
     return Intl.message(
@@ -2010,13 +2000,14 @@ class S {
     );
   }
 
-  /// `This question will be returned to the general list after`
-  String get thisQuestionWillBeReturnedToTheGeneralListAfterCounter {
+  /// `This question will be returned to the general list after {counter}`
+  String thisQuestionWillBeReturnedToTheGeneralListAfterCounter(
+      Object counter) {
     return Intl.message(
-      'This question will be returned to the general list after',
+      'This question will be returned to the general list after $counter',
       name: 'thisQuestionWillBeReturnedToTheGeneralListAfterCounter',
       desc: '',
-      args: [],
+      args: [counter],
     );
   }
 
@@ -2027,6 +2018,46 @@ class S {
       'The answer is not possible, this question will be returned to the general list in ~ 1m',
       name:
           'theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have a ritual request`
+  String get youHaveARitualRequest {
+    return Intl.message(
+      'You have a ritual request',
+      name: 'youHaveARitualRequest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have a private message`
+  String get youHaveAPrivateMessage {
+    return Intl.message(
+      'You have a private message',
+      name: 'youHaveAPrivateMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have a few active sessions`
+  String get youHaveAFewActiveSessions {
+    return Intl.message(
+      'You have a few active sessions',
+      name: 'youHaveAFewActiveSessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknown error`
+  String get unknownError {
+    return Intl.message(
+      'Unknown error',
+      name: 'unknownError',
       desc: '',
       args: [],
     );

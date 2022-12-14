@@ -10,13 +10,16 @@ class ChatItemFooterWidget extends StatelessWidget {
   final DateTime createdAt;
   final SessionsTypes? ritualIdentifier;
   final Color color;
-
+  final bool isHistoryQuestion;
+  final bool isHistoryAnswer;
   const ChatItemFooterWidget({
     super.key,
     required this.type,
     required this.createdAt,
     required this.color,
     this.ritualIdentifier,
+    this.isHistoryQuestion = false,
+    this.isHistoryAnswer = false,
   });
 
   @override
@@ -30,25 +33,28 @@ class ChatItemFooterWidget extends StatelessWidget {
           child: Text(
             isRitual
                 ? ritualIdentifier?.sessionName(context) ?? ''
-                : toBeginningOfSentenceCase(type?.name) ?? '',
+                : toBeginningOfSentenceCase(type?.typeName(context)) ?? '',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: color,
                   fontSize: 12.0,
                 ),
           ),
         ),
-        if (isRitual)
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: SvgPicture.asset(
-              ritualIdentifier!.iconPath,
-              width: 16.0,
-              height: 16.0,
-              color: color,
-            ),
+        Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: SvgPicture.asset(
+            isRitual ? ritualIdentifier!.iconPath : type?.iconPath ?? '',
+            width: 16.0,
+            height: 16.0,
+            color: color,
           ),
+        ),
         Text(
-          createdAt.chatListTime.toString(),
+          isHistoryQuestion
+              ? createdAt.historyCardQuestionTime
+              : isHistoryAnswer
+                  ? createdAt.historyCardAnswerTime
+                  : createdAt.chatListTime.toString(),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: color,
                 fontSize: 12.0,

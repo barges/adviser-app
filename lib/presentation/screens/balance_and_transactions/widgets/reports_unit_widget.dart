@@ -112,7 +112,8 @@ class _ReportsUnit extends StatelessWidget {
                   Expanded(
                     child: RichText(
                       text: TextSpan(
-                          text: '${reportsUnit.type?.sessionNameForStatistics} '
+                          text:
+                              '${reportsUnit.type?.sessionNameForStatistics(context)} '
                               '(${isCanceled ? reportsUnit.numberCancelled : reportsUnit.number}) ',
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(

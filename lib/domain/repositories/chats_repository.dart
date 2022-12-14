@@ -2,6 +2,7 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_story_response.dart';
+import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
 
@@ -19,10 +20,12 @@ abstract class ChatsRepository {
     String? search,
   });
 
-  Future<QuestionsListResponse> getHistoryList({
+  Future<HistoryResponse> getHistoryList({
+    required String clientId,
     required int limit,
-    required int page,
-    String? search,
+    String? lastItem,
+    String? storyId,
+    String? firstItem,
   });
 
   Future<ConversationsResponse> getConversationsHistory(

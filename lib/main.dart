@@ -106,11 +106,12 @@ class _MyAppState extends State<MyApp> {
                 localeResolutionCallback: (locale, supportedLocales) {
                   final String? languageCode = _cacheManager.getLanguageCode();
 
-                  Locale? newLocale = supportedLocales.toList().firstWhereOrNull(
-                        (element) =>
-                            element.languageCode ==
-                            (languageCode ?? locale?.languageCode),
-                      );
+                  Locale? newLocale =
+                      supportedLocales.toList().firstWhereOrNull(
+                            (element) =>
+                                element.languageCode ==
+                                (languageCode ?? locale?.languageCode),
+                          );
                   newLocale ??= supportedLocales.first;
 
                   getIt.get<Dio>().addLocaleToHeader(newLocale.languageCode);
@@ -139,7 +140,9 @@ class _MyAppState extends State<MyApp> {
 class _AppNavigatorObserver extends NavigatorObserver {
   @override
   void didPush(Route route, Route? previousRoute) {
-    _clearErrorMessage();
+    if (route is PageRoute) {
+      _clearErrorMessage();
+    }
   }
 
   @override
@@ -154,7 +157,9 @@ class _AppNavigatorObserver extends NavigatorObserver {
 
   @override
   void didPop(Route route, Route? previousRoute) {
-    _clearErrorMessage();
+    if (route is PageRoute) {
+      _clearErrorMessage();
+    }
   }
 
   void _clearErrorMessage() {

@@ -20,7 +20,10 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(email) =>
+  static String m0(counter) =>
+      "This question will be returned to the general list after ${counter}";
+
+  static String m1(email) =>
       "We’ve sent you a link to ${email} to change your password";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -254,9 +257,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "This filtering option doesn’t contain any sessions"),
         "thisMonth": MessageLookupByLibrary.simpleMessage("This Month"),
-        "thisQuestionWillBeReturnedToTheGeneralListAfterCounter":
-            MessageLookupByLibrary.simpleMessage(
-                "This question will be returned to the general list after"),
+        "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": m0,
         "thisWeek": MessageLookupByLibrary.simpleMessage("This Week"),
         "tips": MessageLookupByLibrary.simpleMessage("Tips"),
         "title": MessageLookupByLibrary.simpleMessage("Title"),
@@ -275,12 +276,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "uhohNoNetworkNcheckYourInternetConnection":
             MessageLookupByLibrary.simpleMessage(
                 "Uh-oh, no network... \nCheck your internet connection"),
+        "unknownError": MessageLookupByLibrary.simpleMessage("Unknown error"),
         "weDidntFindAnything":
             MessageLookupByLibrary.simpleMessage("We didn’t find anything"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others"),
-        "weVeSentYouALinkToEmailToChangeYourPassword": m0,
+        "weVeSentYouALinkToEmailToChangeYourPassword": m1,
         "whenSomeoneAsksAPublicQuestionYouWillSeeThem":
             MessageLookupByLibrary.simpleMessage(
                 "When someone asks a public question, you will see them on the general list here"),
@@ -304,8 +306,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "youDontHaveInternetConnection": MessageLookupByLibrary.simpleMessage(
             "You don’t have internet connection"),
         "youHave": MessageLookupByLibrary.simpleMessage("You have"),
-        "youHaveAnActiveSession":
-            MessageLookupByLibrary.simpleMessage("You have an active session"),
+        "youHaveAFewActiveSessions": MessageLookupByLibrary.simpleMessage(
+            "You have a few active sessions"),
+        "youHaveAPrivateMessage":
+            MessageLookupByLibrary.simpleMessage("You have a private message"),
+        "youHaveARitualRequest":
+            MessageLookupByLibrary.simpleMessage("You have a ritual request"),
         "youHaveNotCompletedAnySessionsYet":
             MessageLookupByLibrary.simpleMessage(
                 "You have not completed any sessions yet"),

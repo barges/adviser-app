@@ -171,7 +171,6 @@
   "female": "Female",
   "nonBinary": "Non-binary",
   "preferNotToAnswer": "Prefer not to answer",
-  "youHaveAnActiveSession": "You have an active session",
   "audioMessage": "Audio message",
   "justSentYouAMessage": "Just sent you a message",
   "weDidntFindAnything": "We didn’t find anything",
@@ -195,6 +194,10 @@
   "theMaximumImageSizeIs20Mb" : "The maximum image size is 20Mb.",
   "youRefuseToAnswerThisQuestion": "You refuse to answer this question",
   "itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain": "It will go back into the general queue and you will not be able to take it again",
-  "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": "This question will be returned to the general list after",
-  "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m":"The answer is not possible, this question will be returned to the general list in ~ 1m"
+  "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": "This question will be returned to the general list after {counter}",
+  "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m":"The answer is not possible, this question will be returned to the general list in ~ 1m",
+  "youHaveARitualRequest": "You have a ritual request",
+  "youHaveAPrivateMessage": "You have a private message",
+  "youHaveAFewActiveSessions": "You have a few active sessions",
+  "unknownError": "Unknown error"
 }

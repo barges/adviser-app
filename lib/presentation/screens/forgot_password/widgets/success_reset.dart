@@ -18,7 +18,7 @@ class SuccessResetWidget extends StatelessWidget {
       physics: const AlwaysScrollableScrollPhysics(),
       slivers: [
         SliverFillRemaining(
-          hasScrollBody: true,
+          hasScrollBody: false,
           child: Padding(
             padding: const EdgeInsets.symmetric(
                 horizontal: AppConstants.horizontalScreenPadding),
