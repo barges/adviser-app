@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,8 @@ class SplashCubit extends Cubit<SplashState> {
 
   Future<void> _checkLoggedStatus() async {
     getIt.get<FreshChatService>().initFreshChat(Utils.isDarkMode(_context));
+    logger.d(Platform.localeName);
+    logger.d(Platform.localHostname);
     await AppTrackingTransparency.requestTrackingAuthorization();
     Future.delayed(const Duration(seconds: 2)).then(
         (value) => emit(state.copyWith(isLogged: _cacheManager.isLoggedIn())));

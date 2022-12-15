@@ -74,14 +74,14 @@ class CustomerSessionsScreen extends StatelessWidget {
                     Builder(builder: (context) {
                       final List<ChatItem>? questions = context.select(
                           (CustomerSessionsCubit cubit) =>
-                              cubit.state.customerSessions);
+                              cubit.state.privateQuestionsWithHistory);
                       return questions == null
                           ? const SizedBox.shrink()
                           : Expanded(
                               child: isOnline
                                   ? RefreshIndicator(
-                                      onRefresh: customerSessionsCubit
-                                          .refreshCustomerSessions,
+                                      onRefresh: () => customerSessionsCubit
+                                          .getPrivateQuestions(refresh: true),
                                       child: CustomScrollView(
                                           controller: customerSessionsCubit
                                               .questionsController,
