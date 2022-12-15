@@ -140,9 +140,7 @@ class _MyAppState extends State<MyApp> {
 class _AppNavigatorObserver extends NavigatorObserver {
   @override
   void didPush(Route route, Route? previousRoute) {
-    if (route is PageRoute) {
-      _clearErrorMessage();
-    }
+    _clearErrorMessage();
   }
 
   @override
@@ -157,9 +155,7 @@ class _AppNavigatorObserver extends NavigatorObserver {
 
   @override
   void didPop(Route route, Route? previousRoute) {
-    if (route is PageRoute) {
-      _clearErrorMessage();
-    }
+    _clearErrorMessage();
   }
 
   void _clearErrorMessage() {
