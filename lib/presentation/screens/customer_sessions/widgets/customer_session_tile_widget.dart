@@ -101,8 +101,7 @@ class CustomerSessionListTileWidget extends StatelessWidget {
                           color: theme.canvasColor,
                           width: 32.0,
                         ),
-                        if (question.hasUnanswered ?? false)
-                          const SmallListTileBadge(),
+                        if (question.isActive) const SmallListTileBadge(),
                       ],
                     ),
                   ),

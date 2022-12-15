@@ -38,12 +38,19 @@ abstract class ChatsApi {
     @Query('firstItem') String? firstItem,
   });
 
-  @GET('/experts/stories')
-  Future<QuestionsListResponse> getCustomerSessions({
+  @GET('/experts/questions/individual')
+  Future<QuestionsListResponse> getCustomerQuestions({
+    @Query('clientID') required String id,
+    @Query('filters[type]') String? filterType,
+  });
+
+  @GET('/experts/stories/history')
+  Future<QuestionsListResponse> getCustomerHistoryStories({
     @Query('clientId') required String id,
     @Query('limit') required int limit,
     @Query('lastItem') String? lastItem,
     @Query('filters[type]') String? filterType,
+    @Query('excludeIds') String? excludeIds,
   });
 
   @GET('/v2/users/{expertID}/conversations/{clientID}')

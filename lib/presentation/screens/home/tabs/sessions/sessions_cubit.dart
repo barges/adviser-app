@@ -49,19 +49,26 @@ class SessionsCubit extends Cubit<SessionsState> {
   bool _isPublicLoading = false;
   bool _isConversationsLoading = false;
 
+  int count = 0;
+
   SessionsCubit(this.cacheManager, this.context)
       : super(const SessionsState()) {
     publicQuestionsController.addListener(() async {
       if (!_mainCubit.state.isLoading &&
           publicQuestionsController.position.extentAfter <=
               MediaQuery.of(context).size.height) {
+
         await getPublicQuestions();
       }
     });
     conversationsController.addListener(() async {
-      if (!_mainCubit.state.isLoading &&
+      if (!_isConversationsLoading &&
           conversationsController.position.extentAfter <=
               MediaQuery.of(context).size.height) {
+        _isConversationsLoading = true;
+        logger.d(count++);
+        logger.d(conversationsController.position.extentAfter);
+
         await getConversations();
       }
     });
@@ -233,8 +240,6 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   Future<void> getConversations(
       {FortunicaUserStatus? status, bool refresh = false}) async {
-    if (!_isConversationsLoading) {
-      _isConversationsLoading = true;
       if (refresh) {
         _conversationsHasMore = true;
         _conversationsLastItem = null;
@@ -273,7 +278,6 @@ class SessionsCubit extends Cubit<SessionsState> {
         );
       }
       _isConversationsLoading = false;
-    }
   }
 
 // Future<void> getHistoryList(

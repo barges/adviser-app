@@ -107,12 +107,30 @@ class ChatsRepositoryImpl implements ChatsRepository {
   }
 
   @override
-  Future<QuestionsListResponse> getCustomerSessions(
-      {required String id,
-      required int limit,
-      String? lastItem,
-      String? filterType}) async {
-    return await _api.getCustomerSessions(
-        id: id, limit: limit, lastItem: lastItem, filterType: filterType);
+  Future<QuestionsListResponse> getCustomerQuestions({
+    required String clientId,
+    String? filterType,
+  }) {
+    return _api.getCustomerQuestions(
+      id: clientId,
+      filterType: filterType,
+    );
+  }
+
+  @override
+  Future<QuestionsListResponse> getCustomerHistoryStories({
+    required String id,
+    required int limit,
+    String? lastItem,
+    String? filterType,
+    String? excludeIds,
+  }) async {
+    return _api.getCustomerHistoryStories(
+      id: id,
+      limit: limit,
+      lastItem: lastItem,
+      filterType: filterType,
+      excludeIds: excludeIds,
+    );
   }
 }

@@ -8,7 +8,7 @@ part 'customer_sessions_state.freezed.dart';
 class CustomerSessionsState with _$CustomerSessionsState {
   const factory CustomerSessionsState([
     @Default(0) int currentFilterIndex,
-    List<ChatItem>? customerSessions,
+    List<ChatItem>? privateQuestionsWithHistory,
     String? clientName,
     ZodiacSign? zodiacSign,
   ]) = _CustomerSessionsState;

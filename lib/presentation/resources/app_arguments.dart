@@ -64,16 +64,16 @@ class ChatScreenArguments {
   final String? clientId;
   final ChatItem? question;
   final String? publicQuestionId;
+  final String? privateQuestionId;
   final String? ritualId;
-  final String? storyId;
   final String? storyIdForHistory;
 
   ChatScreenArguments({
     this.clientId,
     this.question,
     this.publicQuestionId,
+    this.privateQuestionId,
     this.ritualId,
-    this.storyId,
     this.storyIdForHistory,
   });
 }

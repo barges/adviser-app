@@ -8,7 +8,8 @@ enum Gender {
   @JsonValue("non_binary")
   nonBinary,
   @JsonValue("non_gender")
-  nonGender;
+  nonGender,
+  unknown;
 
   String name(BuildContext context) {
     switch (this) {
@@ -20,6 +21,8 @@ enum Gender {
         return S.of(context).nonBinary;
       case Gender.nonGender:
         return S.of(context).preferNotToAnswer;
+      case Gender.unknown:
+        return 'Unknown';
     }
   }
 }

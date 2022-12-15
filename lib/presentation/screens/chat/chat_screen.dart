@@ -327,11 +327,6 @@ class _ActiveChat extends StatelessWidget {
                       child: ListView.separated(
                         padding:
                             const EdgeInsets.fromLTRB(12.0, 16.0, 12.0, 24.0),
-                        reverse:
-                            chatCubit.chatScreenArguments.publicQuestionId !=
-                                    null
-                                ? false
-                                : true,
                         shrinkWrap: true,
                         itemBuilder: (_, index) {
                           if (activeMessages.first.type ==

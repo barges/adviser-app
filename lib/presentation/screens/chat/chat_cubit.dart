@@ -24,7 +24,6 @@ import 'package:shared_advisor_interface/data/models/chats/meta.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
-import 'package:shared_advisor_interface/data/network/responses/conversations_story_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -37,7 +36,6 @@ import 'package:shared_advisor_interface/presentation/services/connectivity_serv
 import 'chat_state.dart';
 
 const String _recordFileExt = 'm4a';
-const int _storyLimit = 20;
 
 class ChatCubit extends Cubit<ChatState> {
   final ScrollController activeMessagesScrollController = ScrollController();
@@ -64,11 +62,6 @@ class ChatCubit extends Cubit<ChatState> {
   Timer? _answerTimer;
   bool _counterMessageCleared = false;
   bool _isStartAnswerSending = false;
-
-  final List<ChatItem> _storyQuestionsList = [];
-  String? _lastQuestionIdForStory;
-  bool _isPublicLoading = false;
-  bool _isStoryLoading = false;
 
   ChatCubit(
     this._repository,
@@ -151,12 +144,10 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> _getData() async {
-    if (chatScreenArguments.publicQuestionId != null) {
-      await _getPublicQuestion();
-    } else if (chatScreenArguments.ritualId != null) {
-      _getRituals();
-    } else if (chatScreenArguments.storyId != null) {
-      _getStory();
+    if (chatScreenArguments.ritualId != null) {
+      _getRituals(chatScreenArguments.ritualId!);
+    } else {
+      await _getPublicOrPrivateQuestion();
     }
   }
 
@@ -194,56 +185,25 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  Future<void> _getPublicQuestion() async {
-    if (!_isPublicLoading) {
-      _isPublicLoading = true;
-      try {
-        if (chatScreenArguments.publicQuestionId != null) {
-          final ChatItem question = await _repository.getQuestion(
-              id: chatScreenArguments.publicQuestionId!);
-
-          emit(
-            state.copyWith(
-              questionFromDB: question,
-              questionStatus: question.status,
-              activeMessages: [question],
-            ),
-          );
-        }
-      } on DioError catch (e) {
-        _showErrorAlert();
-        logger.d(e);
-      }
-      _isPublicLoading = false;
-    }
-  }
-
-  Future<void> _getRituals() async {
+  Future<void> _getPublicOrPrivateQuestion() async {
     try {
-      if (chatScreenArguments.ritualId != null) {
-        final RitualsResponse ritualsResponse =
-            await _repository.getRituals(id: chatScreenArguments.ritualId!);
+      ChatItem? question;
+      if (chatScreenArguments.publicQuestionId != null) {
+        question = await _repository.getQuestion(
+            id: chatScreenArguments.publicQuestionId!);
+      } else if (chatScreenArguments.privateQuestionId != null) {
+        question = await _repository.getQuestion(
+            id: chatScreenArguments.privateQuestionId!);
+      }
 
-        final List<ChatItem>? questions = ritualsResponse.story?.questions;
-        final List<ChatItem>? answers = ritualsResponse.story?.answers;
-
-        if (questions != null && questions.isNotEmpty && answers != null) {
-          _fillStoryQuestionsList(questions, answers);
-
-          final ChatItem lastQuestion = questions.last;
-
-          emit(
-            state.copyWith(
-              questionFromDB: lastQuestion.copyWith(
-                clientID: ritualsResponse.clientID,
-                clientName: '',
-              ),
-              questionStatus: lastQuestion.status,
-              activeMessages: _storyQuestionsList,
-              ritualCardInfo: ritualsResponse.ritualCardInfo,
-            ),
-          );
-        }
+      if (question != null) {
+        emit(
+          state.copyWith(
+            questionFromDB: question,
+            questionStatus: question.status,
+            activeMessages: [question],
+          ),
+        );
       }
     } on DioError catch (e) {
       _showErrorAlert();
@@ -251,56 +211,44 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Future<void> _getStory() async {
-    if (!_isStoryLoading) {
-      _isStoryLoading = true;
-      try {
-        if (chatScreenArguments.storyId != null) {
-          final ConversationsStoryResponse storyResponse =
-              await _repository.getStory(
-            storyID: chatScreenArguments.storyId!,
-            limit: _storyLimit,
-            lastQuestionId: _lastQuestionIdForStory,
-          );
-          final List<ChatItem>? questions = storyResponse.questions;
-          final List<ChatItem>? answers = storyResponse.answers;
+  Future<void> _getRituals(String ritualId) async {
+    try {
+      final RitualsResponse ritualsResponse =
+          await _repository.getRituals(id: ritualId);
 
-          if (questions != null && questions.isNotEmpty && answers != null) {
-            // _lastQuestionIdForStory
-            _fillStoryQuestionsList(questions, answers);
+      final List<ChatItem>? questions = ritualsResponse.story?.questions;
+      final List<ChatItem>? answers = ritualsResponse.story?.answers;
 
-            final ChatItem lastQuestion = questions.last;
-
-            emit(
-              state.copyWith(
-                questionFromDB: lastQuestion.copyWith(
-                  clientID: storyResponse.clientID,
-                ),
-                questionStatus: lastQuestion.status,
-                activeMessages: _storyQuestionsList,
-              ),
-            );
+      if (questions != null && questions.isNotEmpty && answers != null) {
+        final List<ChatItem> activeMessages = [];
+        for (int i = 0; i < questions.length; i++) {
+          if (i < answers.length) {
+            activeMessages.add(answers[i].copyWith(
+              isAnswer: true,
+              type: questions[i].type,
+              ritualId: questions[i].ritualId,
+            ));
           }
+          activeMessages.add(questions[i]);
         }
-      } on DioError catch (e) {
-        _showErrorAlert();
-        logger.d(e);
-      }
-      _isStoryLoading = false;
-    }
-  }
 
-  void _fillStoryQuestionsList(
-      List<ChatItem> questions, List<ChatItem> answers) {
-    for (int i = 0; i < questions.length; i++) {
-      if (i < answers.length) {
-        _storyQuestionsList.add(answers[i].copyWith(
-          isAnswer: true,
-          type: questions[i].type,
-          ritualId: questions[i].ritualId,
-        ));
+        final ChatItem lastQuestion = questions.last;
+
+        emit(
+          state.copyWith(
+            questionFromDB: lastQuestion.copyWith(
+              clientID: ritualsResponse.clientID,
+              clientName: '',
+            ),
+            questionStatus: lastQuestion.status,
+            activeMessages: activeMessages,
+            ritualCardInfo: ritualsResponse.ritualCardInfo,
+          ),
+        );
       }
-      _storyQuestionsList.add(questions[i]);
+    } on DioError catch (e) {
+      _showErrorAlert();
+      logger.d(e);
     }
   }
 
