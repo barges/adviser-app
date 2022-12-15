@@ -135,11 +135,11 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
         final ValidationErrorType statusErrorMessage =
             statusTextController.text.trim().isEmpty
-                ? ValidationErrorType.fieldIsRequired
+                ? ValidationErrorType.requiredField
                 : ValidationErrorType.empty;
         final ValidationErrorType profileErrorMessage =
             profileTextController.text.trim().isEmpty
-                ? ValidationErrorType.fieldIsRequired
+                ? ValidationErrorType.requiredField
                 : ValidationErrorType.empty;
 
         if (statusErrorMessage != ValidationErrorType.empty ||
@@ -261,7 +261,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       emit(
         state.copyWith(
             nicknameErrorType: nicknameController.text.isEmpty
-                ? ValidationErrorType.fieldIsRequired
+                ? ValidationErrorType.requiredField
                 : ValidationErrorType.pleaseEnterAtLeast3Characters),
       );
     }
@@ -276,7 +276,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         in textControllersMap.entries) {
       final List<TextEditingController> controllersByLanguage = entry.value;
       if (controllersByLanguage.firstOrNull?.text.trim().isEmpty == true) {
-        errorTextsMap[entry.key]?.first = ValidationErrorType.fieldIsRequired;
+        errorTextsMap[entry.key]?.first = ValidationErrorType.requiredField;
         firstLanguageWithErrorIndex ??= activeLanguages.indexOf(entry.key);
         firstLanguageWithErrorFocusNode ??= focusNodesMap[entry.key]?.first;
         isValid = false;
@@ -290,7 +290,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       }
 
       if (controllersByLanguage.lastOrNull?.text.trim().isEmpty == true) {
-        errorTextsMap[entry.key]?.last = ValidationErrorType.fieldIsRequired;
+        errorTextsMap[entry.key]?.last = ValidationErrorType.requiredField;
         firstLanguageWithErrorIndex ??= activeLanguages.indexOf(entry.key);
         firstLanguageWithErrorFocusNode ??= focusNodesMap[entry.key]?.last;
         isValid = false;

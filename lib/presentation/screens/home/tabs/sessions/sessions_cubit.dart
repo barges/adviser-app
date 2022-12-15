@@ -215,8 +215,8 @@ class SessionsCubit extends Cubit<SessionsState> {
         emit(state.copyWith(
           publicQuestions: List.of(_publicQuestions),
           disabledIndexes: [1],
-          appSuccess:
-              UISuccess(UISuccessType.youCanNotHelpUsersSinceYouHaveAnActive),
+          appSuccess: UISuccess(UISuccessType
+              .youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse),
         ));
       } else {
         emit(state.copyWith(

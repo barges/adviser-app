@@ -47,10 +47,22 @@ class NotLiveStatusWidget extends StatelessWidget {
                           height: 24.0,
                         ),
                         Text(
-                          status.errorText(context),
+                          status.errorTitleText(context),
                           style: Theme.of(context).textTheme.headlineMedium,
                           textAlign: TextAlign.center,
                         ),
+                        const SizedBox(
+                          height: 8.0,
+                        ),
+                        Text(
+                          status.errorBodyText(context),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    fontSize: 16.0,
+                                    color: Theme.of(context).shadowColor,
+                                  ),
+                          textAlign: TextAlign.center,
+                        )
                       ],
                     ),
                   ),

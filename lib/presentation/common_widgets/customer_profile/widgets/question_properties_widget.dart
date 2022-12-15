@@ -21,7 +21,7 @@ class QuestionPropertiesWidget extends StatelessWidget {
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(
-          S.of(context).questionProperties.toUpperCase(),
+          S.of(context).preferredTopics.toUpperCase(),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 fontWeight: FontWeight.w400,
                 fontSize: 13.0,

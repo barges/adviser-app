@@ -41,7 +41,9 @@ class NoConnectionWidget extends StatelessWidget {
                     height: 8.0,
                   ),
                   Text(
-                    S.of(context).uhohNoNetworkNcheckYourInternetConnection,
+                    S
+                        .of(context)
+                        .uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgain,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontSize: 16.0,
                           color: Theme.of(context).shadowColor,

@@ -10,7 +10,7 @@ import 'intl/messages_all.dart';
 
 // ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
 // ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
-// ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
+// ignore_for_file: avoid_redundant_argument_values
 
 class S {
   S();
@@ -18,31 +18,28 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(_current != null, 'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
     return _current!;
   }
 
-  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
+  static const AppLocalizationDelegate delegate =
+    AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false)
-        ? locale.languageCode
-        : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name);
+    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name); 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       final instance = S();
       S._current = instance;
-
+ 
       return instance;
     });
-  }
+  } 
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(instance != null, 'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
     return instance!;
   }
 
@@ -290,16 +287,6 @@ class S {
     );
   }
 
-  /// `Customers want to see if you are real. The more photos of yourself you add, the better.`
-  String get customersWantSeeIfYouReal {
-    return Intl.message(
-      'Customers want to see if you are real. The more photos of yourself you add, the better.',
-      name: 'customersWantSeeIfYouReal',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Add more`
   String get addMore {
     return Intl.message(
@@ -325,26 +312,6 @@ class S {
     return Intl.message(
       'Portuguese',
       name: 'portuguese',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Wrong username or password`
-  String get wrongUsernameOrPassword {
-    return Intl.message(
-      'Wrong username or password',
-      name: 'wrongUsernameOrPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Open email app`
-  String get openEmailApp {
-    return Intl.message(
-      'Open email app',
-      name: 'openEmailApp',
       desc: '',
       args: [],
     );
@@ -670,16 +637,6 @@ class S {
     );
   }
 
-  /// `Choose from gallery`
-  String get chooseFromGallery {
-    return Intl.message(
-      'Choose from gallery',
-      name: 'chooseFromGallery',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Resources`
   String get resources {
     return Intl.message(
@@ -870,16 +827,6 @@ class S {
     );
   }
 
-  /// `Inform our team your planned return date:`
-  String get informOurTeamYourPlannedReturnDate {
-    return Intl.message(
-      'Inform our team your planned return date:',
-      name: 'informOurTeamYourPlannedReturnDate',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Are you sure that you want to change your status to Offline?`
   String get areYouSureThatYouWantToChangeYourStatus {
     return Intl.message(
@@ -955,26 +902,6 @@ class S {
     return Intl.message(
       'Dashboard',
       name: 'dashboard',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Field is required`
-  String get fieldIsRequired {
-    return Intl.message(
-      'Field is required',
-      name: 'fieldIsRequired',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Apply`
-  String get apply {
-    return Intl.message(
-      'Apply',
-      name: 'apply',
       desc: '',
       args: [],
     );
@@ -1110,16 +1037,6 @@ class S {
     );
   }
 
-  /// `Question properties`
-  String get questionProperties {
-    return Intl.message(
-      'Question properties',
-      name: 'questionProperties',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Notes`
   String get notes {
     return Intl.message(
@@ -1145,16 +1062,6 @@ class S {
     return Intl.message(
       'You don’t have any notes yet',
       name: 'youDoNotHaveAnyNotesYet',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Add the information that you want to keep in mind about this client`
-  String get addInformationYouWantKeepInMindAboutThisClient {
-    return Intl.message(
-      'Add the information that you want to keep in mind about this client',
-      name: 'addInformationYouWantKeepInMindAboutThisClient',
       desc: '',
       args: [],
     );
@@ -1290,41 +1197,11 @@ class S {
     );
   }
 
-  /// `When someone asks a public question, you will see them on the general list here`
-  String get whenSomeoneAsksAPublicQuestionYouWillSeeThem {
-    return Intl.message(
-      'When someone asks a public question, you will see them on the general list here',
-      name: 'whenSomeoneAsksAPublicQuestionYouWillSeeThem',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `No sessions, yet.`
   String get noSessionsYet {
     return Intl.message(
       'No sessions, yet.',
       name: 'noSessionsYet',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `When you help your first client, you will see your session history here.`
-  String get whenYouHelpYourFirstClientYouWillSeeYour {
-    return Intl.message(
-      'When you help your first client, you will see your session history here.',
-      name: 'whenYouHelpYourFirstClientYouWillSeeYour',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Uh-oh, no network... \nCheck your internet connection`
-  String get uhohNoNetworkNcheckYourInternetConnection {
-    return Intl.message(
-      'Uh-oh, no network... \nCheck your internet connection',
-      name: 'uhohNoNetworkNcheckYourInternetConnection',
       desc: '',
       args: [],
     );
@@ -1350,10 +1227,10 @@ class S {
     );
   }
 
-  /// `Reset Password`
+  /// `Reset password`
   String get resetPassword {
     return Intl.message(
-      'Reset Password',
+      'Reset password',
       name: 'resetPassword',
       desc: '',
       args: [],
@@ -1410,16 +1287,6 @@ class S {
     );
   }
 
-  /// `Do you want to delete audio message?`
-  String get doYouWantToDeleteAudioMessage {
-    return Intl.message(
-      'Do you want to delete audio message?',
-      name: 'doYouWantToDeleteAudioMessage',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Do you want to delete image?`
   String get doYouWantToDeleteImage {
     return Intl.message(
@@ -1440,36 +1307,6 @@ class S {
     );
   }
 
-  /// `Allow camera`
-  String get allowCamera {
-    return Intl.message(
-      'Allow camera',
-      name: 'allowCamera',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Allow gallery`
-  String get allowGallery {
-    return Intl.message(
-      'Allow gallery',
-      name: 'allowGallery',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `To reset password, enter email address and we’ll send you instructions on how to create a new password.`
-  String get toResetPasswordEnterEmailAddressAndWellSendYou {
-    return Intl.message(
-      'To reset password, enter email address and we’ll send you instructions on how to create a new password.',
-      name: 'toResetPasswordEnterEmailAddressAndWellSendYou',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `OK`
   String get ok {
     return Intl.message(
@@ -1485,26 +1322,6 @@ class S {
     return Intl.message(
       'Return',
       name: 'return_',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Return\nin queue`
-  String get returnInQueue {
-    return Intl.message(
-      'Return\nin queue',
-      name: 'returnInQueue',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You don’t have internet connection`
-  String get youDontHaveInternetConnection {
-    return Intl.message(
-      'You don’t have internet connection',
-      name: 'youDontHaveInternetConnection',
       desc: '',
       args: [],
     );
@@ -1570,46 +1387,6 @@ class S {
     );
   }
 
-  /// `You’re currently not live on the platform, please make sure you fill out your profile for all languages. You can contact your Manager if you have questions.`
-  String get youReCurrentlyNotLiveOnThePlatform {
-    return Intl.message(
-      'You’re currently not live on the platform, please make sure you fill out your profile for all languages. You can contact your Manager if you have questions.',
-      name: 'youReCurrentlyNotLiveOnThePlatform',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Before proceeding you need to accept contracts. To do so please open the web version of the Advisor Tool`
-  String get beforeProceedingYouNeedToAcceptContracts {
-    return Intl.message(
-      'Before proceeding you need to accept contracts. To do so please open the web version of the Advisor Tool',
-      name: 'beforeProceedingYouNeedToAcceptContracts',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You’re currently Offline on the platform, you can’t use the full functionality and are not visible to users. You can change your status to Live in your profile.`
-  String get youReCurrentlyOfflineOnThePlatform {
-    return Intl.message(
-      'You’re currently Offline on the platform, you can’t use the full functionality and are not visible to users. You can change your status to Live in your profile.',
-      name: 'youReCurrentlyOfflineOnThePlatform',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Complete profile to start helping`
-  String get completeProfileToStartHelping {
-    return Intl.message(
-      'Complete profile to start helping',
-      name: 'completeProfileToStartHelping',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Go to Account`
   String get goToAccount {
     return Intl.message(
@@ -1645,16 +1422,6 @@ class S {
     return Intl.message(
       'Profile',
       name: 'profile',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You can not help users since you have an active public question.`
-  String get youCanNotHelpUsersSinceYouHaveAnActive {
-    return Intl.message(
-      'You can not help users since you have an active public question.',
-      name: 'youCanNotHelpUsersSinceYouHaveAnActive',
       desc: '',
       args: [],
     );
@@ -1707,26 +1474,6 @@ class S {
       name: 'yourUsername',
       desc: '',
       args: [],
-    );
-  }
-
-  /// `Now you can login with a new password`
-  String get nowYouCanLoginWithANewPassword {
-    return Intl.message(
-      'Now you can login with a new password',
-      name: 'nowYouCanLoginWithANewPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `We’ve sent you a link to {email} to change your password`
-  String weVeSentYouALinkToEmailToChangeYourPassword(Object email) {
-    return Intl.message(
-      'We’ve sent you a link to $email to change your password',
-      name: 'weVeSentYouALinkToEmailToChangeYourPassword',
-      desc: '',
-      args: [email],
     );
   }
 
@@ -1795,16 +1542,6 @@ class S {
     return Intl.message(
       'We didn’t find anything',
       name: 'weDidntFindAnything',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `This filtering option doesn’t contain any sessions`
-  String get thisFilteringOptionDoesntContainAnySessions {
-    return Intl.message(
-      'This filtering option doesn’t contain any sessions',
-      name: 'thisFilteringOptionDoesntContainAnySessions',
       desc: '',
       args: [],
     );
@@ -1960,16 +1697,6 @@ class S {
     );
   }
 
-  /// `Recording stopped because audio file is reached the limit of 3min`
-  String get recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min {
-    return Intl.message(
-      'Recording stopped because audio file is reached the limit of 3min',
-      name: 'recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `The maximum image size is 20Mb.`
   String get theMaximumImageSizeIs20Mb {
     return Intl.message(
@@ -1980,29 +1707,8 @@ class S {
     );
   }
 
-  /// `You refuse to answer this question`
-  String get youRefuseToAnswerThisQuestion {
-    return Intl.message(
-      'You refuse to answer this question',
-      name: 'youRefuseToAnswerThisQuestion',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `It will go back into the general queue and you will not be able to take it again`
-  String get itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain {
-    return Intl.message(
-      'It will go back into the general queue and you will not be able to take it again',
-      name: 'itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `This question will be returned to the general list after {counter}`
-  String thisQuestionWillBeReturnedToTheGeneralListAfterCounter(
-      Object counter) {
+  String thisQuestionWillBeReturnedToTheGeneralListAfterCounter(Object counter) {
     return Intl.message(
       'This question will be returned to the general list after $counter',
       name: 'thisQuestionWillBeReturnedToTheGeneralListAfterCounter',
@@ -2012,12 +1718,10 @@ class S {
   }
 
   /// `The answer is not possible, this question will be returned to the general list in ~ 1m`
-  String
-      get theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m {
+  String get theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m {
     return Intl.message(
       'The answer is not possible, this question will be returned to the general list in ~ 1m',
-      name:
-          'theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m',
+      name: 'theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m',
       desc: '',
       args: [],
     );
@@ -2058,6 +1762,336 @@ class S {
     return Intl.message(
       'Unknown error',
       name: 'unknownError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When you help your first client, you will see your session history here.`
+  String get whenYouHelpYourFirstClientYouWillSeeYourSessionHistoryHere {
+    return Intl.message(
+      'When you help your first client, you will see your session history here.',
+      name: 'whenYouHelpYourFirstClientYouWillSeeYourSessionHistoryHere',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your client session history will appear here`
+  String get yourClientSessionHistoryWillAppearHere {
+    return Intl.message(
+      'Your client session history will appear here',
+      name: 'yourClientSessionHistoryWillAppearHere',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Status Text may not exceed 300 characters`
+  String get statusTextMayNotExceed300Characters {
+    return Intl.message(
+      'Status Text may not exceed 300 characters',
+      name: 'statusTextMayNotExceed300Characters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Uh-oh. It looks like you've lost your connection. Please try again.`
+  String get uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgain {
+    return Intl.message(
+      'Uh-oh. It looks like you\'ve lost your connection. Please try again.',
+      name: 'uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Required field`
+  String get requiredField {
+    return Intl.message(
+      'Required field',
+      name: 'requiredField',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customers want to know you're a real person. The more photos you add, the more trust you can build.`
+  String get customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuild {
+    return Intl.message(
+      'Customers want to know you\'re a real person. The more photos you add, the more trust you can build.',
+      name: 'customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuild',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Complete your profile to start work`
+  String get completeYourProfileToStartWork {
+    return Intl.message(
+      'Complete your profile to start work',
+      name: 'completeYourProfileToStartWork',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You're not live on the platform`
+  String get youReNotLiveOnThePlatform {
+    return Intl.message(
+      'You\'re not live on the platform',
+      name: 'youReNotLiveOnThePlatform',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please ensure your profile is completed for all languages. Need help? Contact your manager.`
+  String get pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManager {
+    return Intl.message(
+      'Please ensure your profile is completed for all languages. Need help? Contact your manager.',
+      name: 'pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManager',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You need to accept the advisor contract`
+  String get youNeedToAcceptTheAdvisorContract {
+    return Intl.message(
+      'You need to accept the advisor contract',
+      name: 'youNeedToAcceptTheAdvisorContract',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please login to the web version of your account.`
+  String get pleaseLoginToTheWebVersionOfYourAccount {
+    return Intl.message(
+      'Please login to the web version of your account.',
+      name: 'pleaseLoginToTheWebVersionOfYourAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You're currently offline`
+  String get youReCurrentlyOffline {
+    return Intl.message(
+      'You\'re currently offline',
+      name: 'youReCurrentlyOffline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change your status in your profile to make yourself visible to users.`
+  String get changeYourStatusInYourProfileToMakeYourselfVisibleToUsers {
+    return Intl.message(
+      'Change your status in your profile to make yourself visible to users.',
+      name: 'changeYourStatusInYourProfileToMakeYourselfVisibleToUsers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tell our team when you plan to return:`
+  String get tellOurTeamWhenYouPlanToReturn {
+    return Intl.message(
+      'Tell our team when you plan to return:',
+      name: 'tellOurTeamWhenYouPlanToReturn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to delete this audio message?`
+  String get doYouWantToDeleteThisAudioMessage {
+    return Intl.message(
+      'Do you want to delete this audio message?',
+      name: 'doYouWantToDeleteThisAudioMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You don't have an internet connection`
+  String get youDontHaveAnInternetConnection {
+    return Intl.message(
+      'You don\'t have an internet connection',
+      name: 'youDontHaveAnInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add any information you want to remember about this client.`
+  String get addAnyInformationYouWantToRememberAboutThisClient {
+    return Intl.message(
+      'Add any information you want to remember about this client.',
+      name: 'addAnyInformationYouWantToRememberAboutThisClient',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You've reach the 3 minute time limit.`
+  String get youVeReachThe3MinuteTimeLimit {
+    return Intl.message(
+      'You\'ve reach the 3 minute time limit.',
+      name: 'youVeReachThe3MinuteTimeLimit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Preferred topics`
+  String get preferredTopics {
+    return Intl.message(
+      'Preferred topics',
+      name: 'preferredTopics',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Permission Needed`
+  String get permissionNeeded {
+    return Intl.message(
+      'Permission Needed',
+      name: 'permissionNeeded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We need permission to access your camera and gallery so you can send images`
+  String get weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages {
+    return Intl.message(
+      'We need permission to access your camera and gallery so you can send images',
+      name: 'weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to reject this question?`
+  String get doYouWantToRejectThisQuestion {
+    return Intl.message(
+      'Do you want to reject this question?',
+      name: 'doYouWantToRejectThisQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It will go back into the general queue. You will not be able to take it again.`
+  String get itWillGoBackIntoTheGeneralQueueYouWillNotBeAbleToTakeItAgain {
+    return Intl.message(
+      'It will go back into the general queue. You will not be able to take it again.',
+      name: 'itWillGoBackIntoTheGeneralQueueYouWillNotBeAbleToTakeItAgain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You must answer your active public question before you can help someone else.`
+  String get youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse {
+    return Intl.message(
+      'You must answer your active public question before you can help someone else.',
+      name: 'youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `RETURN\n TO QUEUE`
+  String get returnToQueue {
+    return Intl.message(
+      'RETURN\n TO QUEUE',
+      name: 'returnToQueue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No sessions found with this filter`
+  String get noSessionsFoundWithThisFilter {
+    return Intl.message(
+      'No sessions found with this filter',
+      name: 'noSessionsFoundWithThisFilter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When someone asks a public question, you'll see them on this list`
+  String get whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisList {
+    return Intl.message(
+      'When someone asks a public question, you\'ll see them on this list',
+      name: 'whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisList',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose photo from library`
+  String get choosePhotoFromLibrary {
+    return Intl.message(
+      'Choose photo from library',
+      name: 'choosePhotoFromLibrary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use your new password to login`
+  String get useYourNewPasswordToLogin {
+    return Intl.message(
+      'Use your new password to login',
+      name: 'useYourNewPasswordToLogin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open email`
+  String get openEmail {
+    return Intl.message(
+      'Open email',
+      name: 'openEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We've sent password reset instructions to {email}.`
+  String weVeSentPasswordResetInstructionsToEmail(Object email) {
+    return Intl.message(
+      'We\'ve sent password reset instructions to $email.',
+      name: 'weVeSentPasswordResetInstructionsToEmail',
+      desc: '',
+      args: [email],
+    );
+  }
+
+  /// `Enter your email address and we'll send you instructions to create a new password`
+  String get enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword {
+    return Intl.message(
+      'Enter your email address and we\'ll send you instructions to create a new password',
+      name: 'enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wrong username and/or password.`
+  String get wrongUsernameAndOrPassword {
+    return Intl.message(
+      'Wrong username and/or password.',
+      name: 'wrongUsernameAndOrPassword',
       desc: '',
       args: [],
     );

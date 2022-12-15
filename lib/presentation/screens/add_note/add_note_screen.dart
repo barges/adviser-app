@@ -51,7 +51,8 @@ class AddNoteScreen extends StatelessWidget {
               isOnline
                   ? const SizedBox.shrink()
                   : AppErrorWidget(
-                      errorMessage: S.of(context).youDontHaveInternetConnection,
+                      errorMessage:
+                          S.of(context).youDontHaveAnInternetConnection,
                       isRequired: true,
                     ),
               Expanded(

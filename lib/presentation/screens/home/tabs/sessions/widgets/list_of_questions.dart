@@ -72,8 +72,9 @@ class _PublicQuestionsListWidget extends StatelessWidget {
                   sessionsCubit.getPublicQuestions(refresh: true);
                 },
                 emptyListTitle: S.of(context).noQuestionsYet,
-                emptyListLabel:
-                    S.of(context).whenSomeoneAsksAPublicQuestionYouWillSeeThem,
+                emptyListLabel: S
+                    .of(context)
+                    .whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisList,
               ),
             );
           },
@@ -116,7 +117,7 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
                 },
                 emptyListTitle: S.of(context).noSessionsYet,
                 emptyListLabel:
-                    S.of(context).whenYouHelpYourFirstClientYouWillSeeYour,
+                    S.of(context).yourClientSessionHistoryWillAppearHere,
               ),
             );
           },

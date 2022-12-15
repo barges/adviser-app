@@ -32,7 +32,9 @@ class GalleryImages extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0, bottom: 15.0),
                       child: Text(
-                        S.of(context).customersWantSeeIfYouReal,
+                        S
+                            .of(context)
+                            .customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuild,
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium

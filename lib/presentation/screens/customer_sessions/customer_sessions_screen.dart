@@ -136,7 +136,7 @@ class CustomerSessionsScreen extends StatelessWidget {
                                                                 .weDidntFindAnything,
                                                             label: S
                                                                 .of(context)
-                                                                .thisFilteringOptionDoesntContainAnySessions,
+                                                                .noSessionsFoundWithThisFilter,
                                                           ),
                                                         ],
                                                       ),
@@ -182,7 +182,7 @@ showErrorAlert(BuildContext context) async {
           ),
           (route) => false);
     },
-    allowBarrierClock: false,
+    allowBarrierClick: false,
     isCancelEnabled: false,
   );
 }

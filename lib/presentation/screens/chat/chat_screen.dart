@@ -64,12 +64,12 @@ class ChatScreen extends StatelessWidget {
                 returnInQueueButtonOnTap: () async {
                   final dynamic needReturn = await showOkCancelAlert(
                     context: context,
-                    title: s.youRefuseToAnswerThisQuestion,
+                    title: s.doYouWantToRejectThisQuestion,
                     description: s
-                        .itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain,
-                    okText: s.ok,
+                        .itWillGoBackIntoTheGeneralQueueYouWillNotBeAbleToTakeItAgain,
+                    okText: s.return_,
                     actionOnOK: () => Navigator.pop(context, true),
-                    allowBarrierClock: false,
+                    allowBarrierClick: false,
                     isCancelEnabled: true,
                   );
 
@@ -218,7 +218,7 @@ class ChatScreen extends StatelessWidget {
                                     context,
                                     S
                                         .of(context)
-                                        .doYouWantToDeleteAudioMessage))!) {
+                                        .doYouWantToDeleteThisAudioMessage))!) {
                                   chatCubit.deletedRecordedAudio();
                                 }
                               },
@@ -261,7 +261,7 @@ class ChatScreen extends StatelessWidget {
                                     context,
                                     S
                                         .of(context)
-                                        .doYouWantToDeleteAudioMessage))!) {
+                                        .doYouWantToDeleteThisAudioMessage))!) {
                                   chatCubit.deletedRecordedAudio();
                                 }
                               },
@@ -304,7 +304,7 @@ showAlert(BuildContext context) async {
     actionOnOK: () {
       Get.close(2);
     },
-    allowBarrierClock: false,
+    allowBarrierClick: false,
     isCancelEnabled: false,
   );
 }
