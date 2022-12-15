@@ -153,19 +153,19 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
           ),
         );
       } else if (question.hasUnanswered != null && question.hasUnanswered!) {
-        // Get.toNamed(
-        //   AppRoutes.chat,
-        //   arguments: ChatScreenArguments(
-        //     clientId: argumentsQuestion.clientID,
-        //     storyId: question.id,
-        //     ritualId: question.ritualId,
-        //     question: question.copyWith(
-        //       clientID: argumentsQuestion.clientID,
-        //       clientName: argumentsQuestion.clientName,
-        //       clientInformation: argumentsQuestion.clientInformation,
-        //     ),
-        //   ),
-        // );
+        Get.toNamed(
+          AppRoutes.chat,
+          arguments: ChatScreenArguments(
+            clientId: argumentsQuestion.clientID,
+            storyId: question.id,
+            ritualId: question.ritualId,
+            question: question.copyWith(
+              clientID: argumentsQuestion.clientID,
+              clientName: argumentsQuestion.clientName,
+              clientInformation: argumentsQuestion.clientInformation,
+            ),
+          ),
+        );
       }
     }
   }

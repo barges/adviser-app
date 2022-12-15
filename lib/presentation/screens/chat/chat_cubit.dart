@@ -20,7 +20,6 @@ import 'package:shared_advisor_interface/data/models/app_success/empty_success.d
 import 'package:shared_advisor_interface/data/models/app_success/ui_success.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/models/chats/client_information.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
@@ -183,7 +182,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   void textEditingControllerListener() {
-    _tryStartAnswer();
+    _tryStartAnswerSend();
 
     final textLength = textEditingController.text.length;
     emit(
@@ -232,8 +231,6 @@ class ChatCubit extends Cubit<ChatState> {
           _fillStoryQuestionsList(questions, answers);
 
           final ChatItem lastQuestion = questions.last;
-          final ClientInformation? clientInformation =
-              ritualsResponse.clientInformation;
 
           emit(
             state.copyWith(
@@ -243,6 +240,7 @@ class ChatCubit extends Cubit<ChatState> {
               ),
               questionStatus: lastQuestion.status,
               activeMessages: _storyQuestionsList,
+              ritualCardInfo: ritualsResponse.ritualCardInfo,
             ),
           );
         }
@@ -346,7 +344,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> startRecordingAudio() async {
-    _tryStartAnswer();
+    _tryStartAnswerSend();
 
     if (await Permission.microphone.isPermanentlyDenied) {
       openAppSettings();
@@ -553,7 +551,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   void attachPicture(File? image) {
-    _tryStartAnswer();
+    _tryStartAnswerSend();
 
     final images = List.of(state.attachedPictures);
     if (image != null && images.length < 2) {
@@ -688,18 +686,19 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  void _tryStartAnswer() {
+  Future<void> _tryStartAnswerSend() async {
     if (!_isStartAnswerSending &&
         chatScreenArguments.publicQuestionId == null &&
         state.questionFromDB?.id != null &&
         state.questionFromDB?.startAnswerDate == null) {
-      _startAnswer(state.questionFromDB!.id!);
+      _isStartAnswerSending = true;
+      await _startAnswer(state.questionFromDB!.id!);
+      _isStartAnswerSending = false;
     }
   }
 
   Future<void> _startAnswer(String questionId) async {
     try {
-      _isStartAnswerSending = true;
       final ChatItem question =
           await _repository.startAnswer(AnswerRequest(questionID: questionId));
       emit(
@@ -711,8 +710,6 @@ class ChatCubit extends Cubit<ChatState> {
     } on DioError catch (e) {
       logger.e(e);
     }
-
-    _isStartAnswerSending = false;
   }
 
   void _checkTiming() {
