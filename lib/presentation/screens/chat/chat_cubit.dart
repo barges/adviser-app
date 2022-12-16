@@ -6,6 +6,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
@@ -44,6 +45,8 @@ class ChatCubit extends Cubit<ChatState> {
 
   final ConnectivityService _connectivityService = ConnectivityService();
 
+  late final StreamSubscription<bool> _keyboardSubscription;
+
   final ChatsRepository _repository;
   late final ChatScreenArguments chatScreenArguments;
   final VoidCallback _showErrorAlert;
@@ -59,6 +62,7 @@ class ChatCubit extends Cubit<ChatState> {
   FlutterSoundPlayer? playerMedia;
   AnswerRequest? _answerRequest;
   StreamSubscription<RecordingDisposition>? _recordingProgressSubscription;
+
   Timer? _answerTimer;
   bool _counterMessageCleared = false;
   bool _isStartAnswerSending = false;
@@ -86,11 +90,27 @@ class ChatCubit extends Cubit<ChatState> {
         }
       });
     }
+
+    final keyboardVisibilityController = KeyboardVisibilityController();
+
+    _keyboardSubscription =
+        keyboardVisibilityController.onChange.listen((bool visible) {
+      if (visible) {
+        logger.d(visible);
+        activeMessagesScrollController.animateTo(
+          activeMessagesScrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.fastOutSlowIn,
+        );
+      }
+    });
   }
 
   @override
   Future<void> close() {
     activeMessagesScrollController.dispose();
+
+    _keyboardSubscription;
 
     textInputScrollController.dispose();
     textEditingController.dispose();

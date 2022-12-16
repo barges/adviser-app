@@ -101,7 +101,8 @@ class ChatScreen extends StatelessWidget {
                           return ChooseOptionWidget(
                             options: tabsTitles,
                             currentIndex: currentIndex,
-                            onChangeOptionIndex: chatCubit.changeCurrentTabIndex,
+                            onChangeOptionIndex:
+                                chatCubit.changeCurrentTabIndex,
                           );
                         }),
                       ),
@@ -119,8 +120,8 @@ class ChatScreen extends StatelessWidget {
                       ),
                       Builder(
                         builder: (context) {
-                          final AppError appError = context
-                              .select((ChatCubit cubit) => cubit.state.appError);
+                          final AppError appError = context.select(
+                              (ChatCubit cubit) => cubit.state.appError);
                           return appError is! EmptyError
                               ? AppErrorWidget(
                                   errorMessage: appError.getMessage(context),
@@ -182,7 +183,8 @@ class ChatScreen extends StatelessWidget {
 
                   if (chatCubit.chatScreenArguments.storyIdForHistory == null &&
                       currentIndex == 0) {
-                    if (chatCubit.chatScreenArguments.publicQuestionId != null) {
+                    if (chatCubit.chatScreenArguments.publicQuestionId !=
+                        null) {
                       final bool showInputFieldIfPublic = context.select(
                           (ChatCubit cubit) =>
                               cubit.state.showInputFieldIfPublic);
@@ -223,7 +225,8 @@ class ChatScreen extends StatelessWidget {
                                     chatCubit.cancelRecordingAudio(),
                                 onStopRecordPressed: () =>
                                     chatCubit.stopRecordingAudio(),
-                                recordingStream: chatCubit.state.recordingStream,
+                                recordingStream:
+                                    chatCubit.state.recordingStream,
                               );
                             } else {
                               return const ChatTextInputWidget();
@@ -266,7 +269,8 @@ class ChatScreen extends StatelessWidget {
                                     chatCubit.cancelRecordingAudio(),
                                 onStopRecordPressed: () =>
                                     chatCubit.stopRecordingAudio(),
-                                recordingStream: chatCubit.state.recordingStream,
+                                recordingStream:
+                                    chatCubit.state.recordingStream,
                               );
                             } else {
                               return const ChatTextInputWidget();
@@ -312,17 +316,17 @@ class _ActiveChat extends StatelessWidget {
   Widget build(BuildContext context) {
     final ChatCubit chatCubit = context.read<ChatCubit>();
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: Stack(
         children: [
           Builder(
             builder: (context) {
-              final List<ChatItem> activeMessages =
-                  context.select((ChatCubit cubit) => cubit.state.activeMessages);
-              final RitualCardInfo? ritualCardInfo =
-                  context.select((ChatCubit cubit) => cubit.state.ritualCardInfo);
+              final List<ChatItem> activeMessages = context
+                  .select((ChatCubit cubit) => cubit.state.activeMessages);
+              final RitualCardInfo? ritualCardInfo = context
+                  .select((ChatCubit cubit) => cubit.state.ritualCardInfo);
 
               if (activeMessages.isNotEmpty) {
                 return Column(
@@ -331,11 +335,13 @@ class _ActiveChat extends StatelessWidget {
                       child: Container(
                         color: Theme.of(context).scaffoldBackgroundColor,
                         child: ListView.separated(
+                          controller: chatCubit.activeMessagesScrollController,
                           padding:
                               const EdgeInsets.fromLTRB(12.0, 16.0, 12.0, 24.0),
                           shrinkWrap: true,
                           itemBuilder: (_, index) {
-                            if (activeMessages.last.type == ChatItemType.ritual) {
+                            if (activeMessages.last.type ==
+                                ChatItemType.ritual) {
                               if (index == 0) {
                                 return ritualCardInfo != null
                                     ? Padding(
@@ -347,7 +353,8 @@ class _ActiveChat extends StatelessWidget {
                                       )
                                     : const SizedBox.shrink();
                               } else {
-                                final ChatItem question = activeMessages[index - 1];
+                                final ChatItem question =
+                                    activeMessages[index - 1];
 
                                 return ChatItemWidget(question,
                                     onPressedTryAgain: !question.isSent

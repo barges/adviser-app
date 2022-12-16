@@ -82,68 +82,63 @@ class CustomerSessionsScreen extends StatelessWidget {
                                   ? RefreshIndicator(
                                       onRefresh: () async {
                                         customerSessionsCubit
-                                          .getData(refresh: true);
+                                            .getPrivateQuestions(refresh: true);
                                       },
-                                      child: CustomScrollView(
-                                          controller: customerSessionsCubit
-                                              .questionsController,
-                                          physics:
-                                              const AlwaysScrollableScrollPhysics(),
-                                          slivers: [
-                                            questions.isNotEmpty
-                                                ? SliverToBoxAdapter(
-                                                    child: ListView.separated(
-                                                      padding: const EdgeInsets
-                                                              .all(
-                                                          AppConstants
-                                                              .horizontalScreenPadding),
-                                                      physics:
-                                                          const NeverScrollableScrollPhysics(),
-                                                      shrinkWrap: true,
-                                                      itemBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
-                                                        return CustomerSessionListTileWidget(
-                                                            question: questions[
-                                                                index]);
-                                                      },
-                                                      separatorBuilder:
-                                                          (BuildContext context,
-                                                                  int index) =>
-                                                              const SizedBox(
-                                                        height: 12.0,
-                                                      ),
-                                                      itemCount:
-                                                          questions.length,
-                                                    ),
-                                                  )
-                                                : SliverFillRemaining(
-                                                    hasScrollBody: false,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                        horizontal: AppConstants
-                                                            .horizontalScreenPadding,
-                                                      ),
-                                                      child: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          EmptyListWidget(
-                                                            title: S
-                                                                .of(context)
-                                                                .weDidntFindAnything,
-                                                            label: S
-                                                                .of(context)
-                                                                .thisFilteringOptionDoesntContainAnySessions,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ))
-                                          ]),
+                                      child: questions.isNotEmpty
+                                          ? ListView.separated(
+                                            controller: customerSessionsCubit
+                                                .questionsScrollController,
+                                            padding: const EdgeInsets.all(
+                                                AppConstants
+                                                    .horizontalScreenPadding),
+                                            physics:
+                                                const ClampingScrollPhysics(),
+                                            shrinkWrap: true,
+                                            itemBuilder:
+                                                (BuildContext context,
+                                                    int index) {
+                                              return CustomerSessionListTileWidget(
+                                                  question:
+                                                      questions[index]);
+                                            },
+                                            separatorBuilder:
+                                                (BuildContext context,
+                                                        int index) =>
+                                                    const SizedBox(
+                                              height: 12.0,
+                                            ),
+                                            itemCount: questions.length,
+                                          )
+                                          : CustomScrollView(
+                                              slivers: [
+                                                  SliverFillRemaining(
+                                                      hasScrollBody: false,
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                          horizontal: AppConstants
+                                                              .horizontalScreenPadding,
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            EmptyListWidget(
+                                                              title: S
+                                                                  .of(context)
+                                                                  .weDidntFindAnything,
+                                                              label: S
+                                                                  .of(context)
+                                                                  .thisFilteringOptionDoesntContainAnySessions,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ))
+                                                ]),
                                     )
                                   : CustomScrollView(slivers: [
                                       SliverFillRemaining(
