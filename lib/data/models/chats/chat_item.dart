@@ -34,7 +34,7 @@ class ChatItem with _$ChatItem {
     List<Attachment>? attachments,
     List<ChatItemType>? unansweredTypes,
     String? clientID,
-    String? ritualId,
+    String? ritualID,
     String? lastQuestionId,
     int? unansweredCount,
     String? storyID,

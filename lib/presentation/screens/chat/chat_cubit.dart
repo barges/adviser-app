@@ -144,8 +144,8 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> _getData() async {
-    if (chatScreenArguments.ritualId != null) {
-      _getRituals(chatScreenArguments.ritualId!);
+    if (chatScreenArguments.ritualID != null) {
+      _getRituals(chatScreenArguments.ritualID!);
     } else {
       await _getPublicOrPrivateQuestion();
     }
@@ -222,14 +222,14 @@ class ChatCubit extends Cubit<ChatState> {
       if (questions != null && questions.isNotEmpty && answers != null) {
         final List<ChatItem> activeMessages = [];
         for (int i = 0; i < questions.length; i++) {
+          activeMessages.add(questions[i]);
           if (i < answers.length) {
             activeMessages.add(answers[i].copyWith(
               isAnswer: true,
               type: questions[i].type,
-              ritualId: questions[i].ritualId,
+              ritualID: questions[i].ritualID,
             ));
           }
-          activeMessages.add(questions[i]);
         }
 
         final ChatItem lastQuestion = questions.last;
@@ -238,7 +238,7 @@ class ChatCubit extends Cubit<ChatState> {
           state.copyWith(
             questionFromDB: lastQuestion.copyWith(
               clientID: ritualsResponse.clientID,
-              clientName: '',
+              clientName: ritualsResponse.clientName,
             ),
             questionStatus: lastQuestion.status,
             activeMessages: activeMessages,

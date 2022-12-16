@@ -10,6 +10,7 @@ part 'rituals_response.g.dart';
 class RitualsResponse {
   final Story? story;
   final String? clientID;
+  final String? clientName;
   final List<dynamic>? inputFieldsData;
   @JsonKey(ignore: true)
   late final RitualCardInfo? ritualCardInfo;
@@ -17,6 +18,7 @@ class RitualsResponse {
   RitualsResponse({
     this.story,
     this.clientID,
+    this.clientName,
     this.inputFieldsData,
   }) {
     String? firstName;

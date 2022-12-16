@@ -110,11 +110,15 @@ class ChatsRepositoryImpl implements ChatsRepository {
   Future<QuestionsListResponse> getCustomerQuestions({
     required String clientId,
     String? filterType,
-  }) {
-    return _api.getCustomerQuestions(
+  }) async {
+
+    final QuestionsListResponse response =
+     await _api.getCustomerQuestions(
       id: clientId,
       filterType: filterType,
     );
+
+    return response;
   }
 
   @override
@@ -125,12 +129,13 @@ class ChatsRepositoryImpl implements ChatsRepository {
     String? filterType,
     String? excludeIds,
   }) async {
-    return _api.getCustomerHistoryStories(
+    final QuestionsListResponse response = await _api.getCustomerHistoryStories(
       id: id,
       limit: limit,
       lastItem: lastItem,
       filterType: filterType,
       excludeIds: excludeIds,
     );
+    return response;
   }
 }
