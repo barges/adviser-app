@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/gallery_pictures_screen.dart.dart';
 import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/all_brands/all_brands_screen.dart';
@@ -8,7 +9,6 @@ import 'package:shared_advisor_interface/presentation/screens/chat/chat_screen.d
 import 'package:shared_advisor_interface/presentation/screens/customer_profile/customer_profile_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_screen.dart';
-import 'package:shared_advisor_interface/presentation/screens/edit_profile/gallery/gallery_pictures_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_screen.dart';

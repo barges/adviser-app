@@ -19,8 +19,8 @@ class GalleryPicturesScreenArguments {
 
   GalleryPicturesScreenArguments({
     required this.pictures,
-    required this.editProfilePageController,
-    required this.initPage,
+    this.editProfilePageController,
+    this.initPage,
   });
 }
 
