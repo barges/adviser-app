@@ -139,20 +139,14 @@ class CustomerSessionsScreen extends StatelessWidget {
                                     )
                                   : CustomScrollView(slivers: [
                                       SliverFillRemaining(
-                                        hasScrollBody: false,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: AppConstants
-                                                  .horizontalScreenPadding),
+                                          hasScrollBody: false,
                                           child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: const [
                                               NoConnectionWidget(),
                                             ],
-                                          ),
-                                        ),
-                                      ),
+                                          )),
                                     ]),
                             );
                     }),
