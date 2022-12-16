@@ -30,7 +30,7 @@ class GalleryPicturesScreen extends StatelessWidget {
                   controller: galleryPicturesCubit.pageController,
                   onPageChanged: (page) {
                     galleryPicturesCubit.editProfilePageController
-                        .jumpToPage(page);
+                        ?.jumpToPage(page);
                   },
                   itemBuilder: (context, index) {
                     return InteractiveViewer(
@@ -43,6 +43,7 @@ class GalleryPicturesScreen extends StatelessWidget {
                   },
                 ),
               ),
+              if(galleryPicturesCubit.coverPictures.length > 1)
               Positioned(
                 bottom: 80.0,
                 child: SizedBox(

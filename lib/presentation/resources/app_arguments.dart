@@ -14,8 +14,8 @@ class HomeScreenArguments {
 
 class GalleryPicturesScreenArguments {
   final List<String> pictures;
-  final PageController editProfilePageController;
-  final double initPage;
+  final PageController? editProfilePageController;
+  final double? initPage;
 
   GalleryPicturesScreenArguments({
     required this.pictures,
