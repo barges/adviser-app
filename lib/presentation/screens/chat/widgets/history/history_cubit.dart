@@ -27,14 +27,14 @@ class HistoryCubit extends Cubit<HistoryState> {
   final Codec _codec = Codec.aacMP4;
 
   final List<History> _historyList = [];
-  final int limit = 15;
+  final int _limit = 15;
   final GlobalKey scrollItemKey = GlobalKey();
   bool _hasMore = true;
   String? _lastItem;
   bool _hasBefore = false;
   String? _firstItem;
   bool _isLoading = false;
-  bool isFirstRequest = true;
+  int offset = 0;
 
   HistoryCubit(
     this._repository,
@@ -62,7 +62,7 @@ class HistoryCubit extends Cubit<HistoryState> {
       );
     }
     if (!_isLoading &&
-        historyMessagesScrollController.position.extentBefore <= 0) {
+        historyMessagesScrollController.position.extentBefore <= 100) {
       _getHistoryList(
         scrollDirection: HistoryScrollDirection.up,
       );
@@ -78,7 +78,7 @@ class HistoryCubit extends Cubit<HistoryState> {
       if (firstRequest && await _connectivityService.checkConnection()) {
         final HistoryResponse result = await _repository.getHistoryList(
           clientId: _clientId,
-          limit: limit,
+          limit: _limit,
           storyId: storyId,
         );
         _hasMore = result.hasMore ?? false;
@@ -98,7 +98,7 @@ class HistoryCubit extends Cubit<HistoryState> {
             scrollDirection == HistoryScrollDirection.down) {
           final HistoryResponse result = await _repository.getHistoryList(
             clientId: _clientId,
-            limit: limit,
+            limit: _limit,
             lastItem: _lastItem,
           );
           _hasMore = result.hasMore ?? false;
@@ -116,15 +116,15 @@ class HistoryCubit extends Cubit<HistoryState> {
             scrollDirection == HistoryScrollDirection.up) {
           final HistoryResponse result = await _repository.getHistoryList(
             clientId: _clientId,
-            limit: limit,
+            limit: _limit,
             firstItem: _firstItem,
           );
           _hasBefore = result.hasBefore ?? false;
 
           if (_firstItem != result.firstItem) {
             _firstItem = result.firstItem;
+            offset = result.history?.length ?? 0;
             _historyList.addAll(result.history ?? const []);
-            logger.d(_historyList);
           }
 
           emit(state.copyWith(
@@ -202,8 +202,6 @@ class HistoryCubit extends Cubit<HistoryState> {
         Scrollable.ensureVisible(context);
       }
     });
-
-    isFirstRequest = false;
   }
 
   Stream<PlaybackDisposition>? get onMediaProgress => _playerMedia?.onProgress;

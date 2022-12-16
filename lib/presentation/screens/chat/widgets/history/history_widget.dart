@@ -56,18 +56,20 @@ class HistoryTab extends StatelessWidget {
                                   groupBy: (element) {
                                     return element.question?.storyID;
                                   },
-                                  groupHeaderBuilder: (History? value) =>
-                                      HistoryListGroupHeader(headerItem: value),
+                                  groupHeaderBuilder: (History value) =>
+                                      HistoryListGroupHeader(
+                                          headerItem: value,
+                                          key: historyList.indexOf(value) ==
+                                                  historyList.length -
+                                                      historyCubit.offset -
+                                                      1
+                                              ? historyCubit.scrollItemKey
+                                              : null),
                                   indexedItemBuilder:
                                       (context, element, index) =>
                                           QuestionAndAnswerPairWidget(
-                                              historyItem: element,
-                                              key: index ==
-                                                      historyList.length -
-                                                          historyCubit.limit -
-                                                          1
-                                                  ? historyCubit.scrollItemKey
-                                                  : null),
+                                    historyItem: element,
+                                  ),
                                   shrinkWrap: true,
                                 ),
                               )
