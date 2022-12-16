@@ -62,7 +62,7 @@ class HistoryCubit extends Cubit<HistoryState> {
       );
     }
     if (!_isLoading &&
-        historyMessagesScrollController.position.extentBefore <= 100) {
+        historyMessagesScrollController.position.extentBefore <= 0) {
       _getHistoryList(
         scrollDirection: HistoryScrollDirection.up,
       );

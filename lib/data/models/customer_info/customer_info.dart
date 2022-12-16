@@ -15,6 +15,7 @@ class CustomerInfo with _$CustomerInfo {
     String? country,
     String? birthdate,
     String? firstName,
+    @JsonKey(unknownEnumValue: Gender.unknown)
     Gender? gender,
     String? lastName,
     ZodiacSign? zodiac,

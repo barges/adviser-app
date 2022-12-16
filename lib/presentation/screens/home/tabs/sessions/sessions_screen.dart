@@ -74,11 +74,16 @@ class SessionsScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 8.0),
-                          AppIconButton(
-                            icon: Assets.vectors.search.path,
-                            onTap: isOnline && statusIsLive
-                                ? sessionsCubit.openSearch
-                                : null,
+                          Opacity(
+                            opacity: disabledIndexes.isEmpty ? 1.0 : 0.4,
+                            child: AppIconButton(
+                              icon: Assets.vectors.search.path,
+                              onTap: isOnline &&
+                                      statusIsLive &&
+                                      disabledIndexes.isEmpty
+                                  ? sessionsCubit.openSearch
+                                  : null,
+                            ),
                           ),
                         ],
                       );

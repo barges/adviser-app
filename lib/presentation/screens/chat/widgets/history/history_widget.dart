@@ -40,7 +40,7 @@ class HistoryTab extends StatelessWidget {
             color: Theme.of(context).scaffoldBackgroundColor,
             child: Builder(builder: (context) {
               return CustomScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   controller: historyCubit.historyMessagesScrollController,
                   slivers: [
                     historyList == null

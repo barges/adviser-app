@@ -28,7 +28,7 @@ class DashboardV1Screen extends StatelessWidget {
                   title: S.of(context).dashboard,
                   iconPath: Assets.vectors.items.path),
               body: CustomScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   slivers: [
                     isOnline
                         ? SliverToBoxAdapter(

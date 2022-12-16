@@ -74,74 +74,68 @@ class CustomerSessionsScreen extends StatelessWidget {
                     Builder(builder: (context) {
                       final List<ChatItem>? questions = context.select(
                           (CustomerSessionsCubit cubit) =>
-                              cubit.state.customerSessions);
+                              cubit.state.privateQuestionsWithHistory);
                       return questions == null
                           ? const SizedBox.shrink()
                           : Expanded(
                               child: isOnline
                                   ? RefreshIndicator(
-                                      onRefresh: customerSessionsCubit
-                                          .refreshCustomerSessions,
-                                      child: CustomScrollView(
-                                          controller: customerSessionsCubit
-                                              .questionsController,
-                                          physics:
-                                              const AlwaysScrollableScrollPhysics(),
-                                          slivers: [
-                                            questions.isNotEmpty
-                                                ? SliverToBoxAdapter(
-                                                    child: ListView.separated(
-                                                      padding: const EdgeInsets
-                                                              .all(
-                                                          AppConstants
-                                                              .horizontalScreenPadding),
-                                                      physics:
-                                                          const NeverScrollableScrollPhysics(),
-                                                      shrinkWrap: true,
-                                                      itemBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
-                                                        return CustomerSessionListTileWidget(
-                                                            question: questions[
-                                                                index]);
-                                                      },
-                                                      separatorBuilder:
-                                                          (BuildContext context,
-                                                                  int index) =>
-                                                              const SizedBox(
-                                                        height: 12.0,
-                                                      ),
-                                                      itemCount:
-                                                          questions.length,
+                                      onRefresh: () async {
+                                        customerSessionsCubit
+                                            .getPrivateQuestions(refresh: true);
+                                      },
+                                      child: questions.isNotEmpty
+                                          ? ListView.separated(
+                                              controller: customerSessionsCubit
+                                                  .questionsScrollController,
+                                              padding: const EdgeInsets.all(
+                                                  AppConstants
+                                                      .horizontalScreenPadding),
+                                              physics:
+                                                  const ClampingScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return CustomerSessionListTileWidget(
+                                                    question: questions[index]);
+                                              },
+                                              separatorBuilder:
+                                                  (BuildContext context,
+                                                          int index) =>
+                                                      const SizedBox(
+                                                height: 12.0,
+                                              ),
+                                              itemCount: questions.length,
+                                            )
+                                          : CustomScrollView(slivers: [
+                                              SliverFillRemaining(
+                                                  hasScrollBody: false,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      horizontal: AppConstants
+                                                          .horizontalScreenPadding,
                                                     ),
-                                                  )
-                                                : SliverFillRemaining(
-                                                    hasScrollBody: false,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                        horizontal: AppConstants
-                                                            .horizontalScreenPadding,
-                                                      ),
-                                                      child: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          EmptyListWidget(
-                                                            title: S
-                                                                .of(context)
-                                                                .weDidntFindAnything,
-                                                            label: S
-                                                                .of(context)
-                                                                .noSessionsFoundWithThisFilter,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ))
-                                          ]),
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        EmptyListWidget(
+                                                          title: S
+                                                              .of(context)
+                                                              .weDidntFindAnything,
+                                                          label: S
+                                                              .of(context)
+                                                              .noSessionsFoundWithThisFilter,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ))
+                                            ]),
                                     )
                                   : CustomScrollView(slivers: [
                                       SliverFillRemaining(
