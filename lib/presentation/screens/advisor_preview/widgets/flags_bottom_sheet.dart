@@ -35,16 +35,13 @@ Future<void> flagsBottomSheet(
                     child: Builder(builder: (context) {
                       final int selectedItemIndex = context.select(
                           (AdvisorPreviewCubit cubit) => cubit.state.oldIndex);
-                      return SingleChildScrollView(
-                          physics: const ClampingScrollPhysics(),
-                          child: Column(
-                            children: List.of(activeLanguages.map(
-                              (e) => _FlagTileWidget(
-                                  languageCode: e,
-                                  isSelected: e.index == selectedItemIndex,
-                                  onTap: () => onSelectLanguage(e.index)),
-                            )),
-                          ));
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: activeLanguages.length,
+                          itemBuilder: (context, index) => _FlagTileWidget(
+                              languageCode: activeLanguages[index],
+                              isSelected: index == selectedItemIndex,
+                              onTap: () => onSelectLanguage(index)));
                     }),
                   )
                 ],
