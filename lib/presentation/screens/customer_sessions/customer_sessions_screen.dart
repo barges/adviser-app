@@ -80,8 +80,10 @@ class CustomerSessionsScreen extends StatelessWidget {
                           : Expanded(
                               child: isOnline
                                   ? RefreshIndicator(
-                                      onRefresh: () => customerSessionsCubit
-                                          .getPrivateQuestions(refresh: true),
+                                      onRefresh: () async {
+                                        customerSessionsCubit
+                                          .getData(refresh: true);
+                                      },
                                       child: CustomScrollView(
                                           controller: customerSessionsCubit
                                               .questionsController,

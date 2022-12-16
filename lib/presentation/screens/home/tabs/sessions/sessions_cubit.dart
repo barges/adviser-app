@@ -49,11 +49,10 @@ class SessionsCubit extends Cubit<SessionsState> {
   bool _isPublicLoading = false;
   bool _isConversationsLoading = false;
 
-  int count = 0;
-
   SessionsCubit(this.cacheManager, this.context)
       : super(const SessionsState()) {
     publicQuestionsController.addListener(() async {
+      logger.d('SCROLL PUBLIC');
       if (!_mainCubit.state.isLoading &&
           publicQuestionsController.position.extentAfter <=
               MediaQuery.of(context).size.height) {
@@ -66,9 +65,6 @@ class SessionsCubit extends Cubit<SessionsState> {
           conversationsController.position.extentAfter <=
               MediaQuery.of(context).size.height) {
         _isConversationsLoading = true;
-        logger.d(count++);
-        logger.d(conversationsController.position.extentAfter);
-
         await getConversations();
       }
     });

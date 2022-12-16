@@ -14,8 +14,8 @@ class HomeScreenArguments {
 
 class GalleryPicturesScreenArguments {
   final List<String> pictures;
-  final PageController editProfilePageController;
-  final double initPage;
+  final PageController? editProfilePageController;
+  final double? initPage;
 
   GalleryPicturesScreenArguments({
     required this.pictures,
@@ -65,7 +65,7 @@ class ChatScreenArguments {
   final ChatItem? question;
   final String? publicQuestionId;
   final String? privateQuestionId;
-  final String? ritualId;
+  final String? ritualID;
   final String? storyIdForHistory;
 
   ChatScreenArguments({
@@ -73,7 +73,7 @@ class ChatScreenArguments {
     this.question,
     this.publicQuestionId,
     this.privateQuestionId,
-    this.ritualId,
+    this.ritualID,
     this.storyIdForHistory,
   });
 }

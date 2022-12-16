@@ -143,8 +143,8 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> _getData() async {
-    if (chatScreenArguments.ritualId != null) {
-      _getRituals(chatScreenArguments.ritualId!).then((_) async {
+    if (chatScreenArguments.ritualID != null) {
+      _getRituals(chatScreenArguments.ritualID!).then((_) async {
         await SchedulerBinding.instance.endOfFrame;
         activeMessagesScrollController
             .jumpTo(activeMessagesScrollController.position.maxScrollExtent);
@@ -224,6 +224,7 @@ class ChatCubit extends Cubit<ChatState> {
       if (questions != null && questions.isNotEmpty && answers != null) {
         final List<ChatItem> activeMessages = [];
         for (int i = 0; i < questions.length; i++) {
+          activeMessages.add(questions[i]);
           if (i < answers.length) {
             activeMessages.add(answers[i].copyWith(
               isAnswer: true,
@@ -231,7 +232,6 @@ class ChatCubit extends Cubit<ChatState> {
               ritualID: questions[i].ritualID,
             ));
           }
-          activeMessages.add(questions[i]);
         }
 
         final ChatItem lastQuestion = questions.last;
@@ -240,7 +240,7 @@ class ChatCubit extends Cubit<ChatState> {
           state.copyWith(
             questionFromDB: lastQuestion.copyWith(
               clientID: ritualsResponse.clientID,
-              clientName: '',
+              clientName: ritualsResponse.clientName,
             ),
             questionStatus: lastQuestion.status,
             activeMessages: activeMessages,
