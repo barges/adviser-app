@@ -87,10 +87,10 @@ class HistoryCubit extends Cubit<HistoryState> {
         _firstItem = result.firstItem;
 
         _historyList.addAll(result.history ?? const []);
-        logger.d(_historyList);
         emit(state.copyWith(
           historyMessages: List.of(_historyList),
         ));
+        await _getHistoryList(scrollDirection: HistoryScrollDirection.down);
         await _getHistoryList(scrollDirection: HistoryScrollDirection.up);
       } else {
         if (_hasMore &&
