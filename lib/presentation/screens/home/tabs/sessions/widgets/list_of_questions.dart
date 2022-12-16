@@ -154,8 +154,7 @@ class _ListOfQuestionsWidget extends StatelessWidget {
       onRefresh: onRefresh,
       child: CustomScrollView(
         controller: controller,
-        physics:
-        const ClampingScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           questions.isNotEmpty
               ? SliverToBoxAdapter(

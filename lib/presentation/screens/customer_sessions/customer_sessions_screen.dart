@@ -92,7 +92,7 @@ class CustomerSessionsScreen extends StatelessWidget {
                                                   AppConstants
                                                       .horizontalScreenPadding),
                                               physics:
-                                                  const ClampingScrollPhysics(),
+                                                  const AlwaysScrollableScrollPhysics(),
                                               shrinkWrap: true,
                                               itemBuilder:
                                                   (BuildContext context,
