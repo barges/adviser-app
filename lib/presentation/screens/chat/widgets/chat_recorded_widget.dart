@@ -15,7 +15,6 @@ class ChatRecordedWidget extends StatelessWidget {
   final VoidCallback? onPausePlayPressed;
   final VoidCallback? onDeletePressed;
   final VoidCallback? onSendPressed;
-  final Stream<PlaybackDisposition>? playbackStream;
 
   const ChatRecordedWidget({
     Key? key,
@@ -23,7 +22,6 @@ class ChatRecordedWidget extends StatelessWidget {
     this.onPausePlayPressed,
     this.onDeletePressed,
     this.onSendPressed,
-    this.playbackStream,
   }) : super(key: key);
 
   @override
@@ -111,28 +109,33 @@ class ChatRecordedWidget extends StatelessWidget {
                             child: Row(
                               children: [
                                 Expanded(
-                                  child: StreamBuilder<PlaybackDisposition>(
-                                    stream: playbackStream,
-                                    builder: (_, snapshot) {
-                                      final value = playbackStream != null &&
-                                              snapshot.hasData
-                                          ? snapshot.data!.position
-                                                  .inMilliseconds /
-                                              snapshot
-                                                  .data!.duration.inMilliseconds
-                                          : 0.0;
-                                      final time = playbackStream != null &&
-                                              snapshot.hasData
-                                          ? snapshot.data!.position
-                                              .toString()
-                                              .substring(2, 7)
-                                          : "00:00";
-                                      return _PlayProgress(
-                                        value: value,
-                                        time: time,
-                                      );
-                                    },
-                                  ),
+                                  child: Builder(builder: (context) {
+                                    final playbackStream = context.select(
+                                        (ChatCubit cubit) =>
+                                            cubit.state.playbackStream);
+                                    return StreamBuilder<PlaybackDisposition>(
+                                      stream: playbackStream,
+                                      builder: (_, snapshot) {
+                                        final value = playbackStream != null &&
+                                                snapshot.hasData
+                                            ? snapshot.data!.position
+                                                    .inMilliseconds /
+                                                snapshot.data!.duration
+                                                    .inMilliseconds
+                                            : 0.0;
+                                        final time = playbackStream != null &&
+                                                snapshot.hasData
+                                            ? snapshot.data!.position
+                                                .toString()
+                                                .substring(2, 7)
+                                            : "00:00";
+                                        return _PlayProgress(
+                                          value: value,
+                                          time: time,
+                                        );
+                                      },
+                                    );
+                                  }),
                                 ),
                                 GestureDetector(
                                   onTap: onDeletePressed,

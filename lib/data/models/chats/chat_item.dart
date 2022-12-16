@@ -29,21 +29,18 @@ class ChatItem with _$ChatItem {
     DateTime? updatedAt,
     DateTime? startAnswerDate,
     String? content,
-    @JsonKey(name: '_id') final String? id,
+    @JsonKey(name: '_id') String? id,
     ClientInformation? clientInformation,
     List<Attachment>? attachments,
     List<ChatItemType>? unansweredTypes,
     String? clientID,
-    String? ritualId,
+    String? ritualID,
     String? lastQuestionId,
     int? unansweredCount,
     String? storyID,
-    @JsonKey(ignore: true)
-    @Default(false) bool isActive,
-    @JsonKey(ignore: true)
-    @Default(false) bool isAnswer,
-    @JsonKey(ignore: true)
-    @Default(true) bool isSent,
+    @JsonKey(ignore: true) @Default(false) bool isActive,
+    @JsonKey(ignore: true) @Default(false) bool isAnswer,
+    @JsonKey(ignore: true) @Default(true) bool isSent,
   }) = _ChatItem;
 
   factory ChatItem.fromJson(Map<String, dynamic> json) =>

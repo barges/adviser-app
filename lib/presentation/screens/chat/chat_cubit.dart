@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:audio_session/audio_session.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -138,14 +139,16 @@ class ChatCubit extends Cubit<ChatState> {
       const Duration(milliseconds: 100),
     );
 
-    //activeMessagesScrollController.addListener(scrollControllerListener);
-
     textEditingController.addListener(textEditingControllerListener);
   }
 
   Future<void> _getData() async {
     if (chatScreenArguments.ritualId != null) {
-      _getRituals(chatScreenArguments.ritualId!);
+      _getRituals(chatScreenArguments.ritualId!).then((_) async {
+        await SchedulerBinding.instance.endOfFrame;
+        activeMessagesScrollController
+            .jumpTo(activeMessagesScrollController.position.maxScrollExtent);
+      });
     } else {
       await _getPublicOrPrivateQuestion();
     }
@@ -174,7 +177,6 @@ class ChatCubit extends Cubit<ChatState> {
 
   void textEditingControllerListener() {
     _tryStartAnswerSend();
-
     final textLength = textEditingController.text.length;
     emit(
       state.copyWith(
@@ -226,7 +228,7 @@ class ChatCubit extends Cubit<ChatState> {
             activeMessages.add(answers[i].copyWith(
               isAnswer: true,
               type: questions[i].type,
-              ritualId: questions[i].ritualId,
+              ritualID: questions[i].ritualID,
             ));
           }
           activeMessages.add(questions[i]);
@@ -249,6 +251,7 @@ class ChatCubit extends Cubit<ChatState> {
     } on DioError catch (e) {
       _showErrorAlert();
       logger.d(e);
+      rethrow;
     }
   }
 
@@ -869,11 +872,11 @@ class ChatCubit extends Cubit<ChatState> {
 
   int get minTextLength => state.questionFromDB?.type == ChatItemType.ritual
       ? AppConstants.minTextLengthRirual
-      : AppConstants.minTextLengthPublic;
+      : AppConstants.minTextLength;
 
   int get maxTextLength => state.questionFromDB?.type == ChatItemType.ritual
       ? AppConstants.maxTextLengthRitual
-      : AppConstants.maxTextLengthPublic;
+      : AppConstants.maxTextLength;
 
   bool get isAttachedPictures => state.attachedPictures.isNotEmpty;
 

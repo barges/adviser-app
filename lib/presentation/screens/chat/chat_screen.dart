@@ -200,7 +200,6 @@ class ChatScreen extends StatelessWidget {
 
                           if (isAudioFileSaved) {
                             return ChatRecordedWidget(
-                              playbackStream: chatCubit.state.playbackStream,
                               onStartPlayPressed: () =>
                                   chatCubit.startPlayRecordedAudio(),
                               onPausePlayPressed: () =>
@@ -243,7 +242,6 @@ class ChatScreen extends StatelessWidget {
 
                           if (isAudioFileSaved) {
                             return ChatRecordedWidget(
-                              playbackStream: chatCubit.state.playbackStream,
                               onStartPlayPressed: () =>
                                   chatCubit.startPlayRecordedAudio(),
                               onPausePlayPressed: () =>
@@ -325,26 +323,27 @@ class _ActiveChat extends StatelessWidget {
                     child: Container(
                       color: Theme.of(context).scaffoldBackgroundColor,
                       child: ListView.separated(
+                        controller: chatCubit.activeMessagesScrollController,
                         padding:
                             const EdgeInsets.fromLTRB(12.0, 16.0, 12.0, 24.0),
                         shrinkWrap: true,
                         itemBuilder: (_, index) {
                           if (activeMessages.first.type ==
                               ChatItemType.ritual) {
-                            if (index < activeMessages.length) {
-                              final ChatItem question = activeMessages[index];
-
-                              return ChatItemWidget(question,
-                                  onPressedTryAgain: !question.isSent
-                                      ? chatCubit.sendAnswerAgain
-                                      : null);
-                            } else if (ritualCardInfo != null) {
+                            if (index == 0 && ritualCardInfo != null) {
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 8.0),
                                 child: InfoCard(
                                   ritualCardInfo: ritualCardInfo,
                                 ),
                               );
+                            } else if (index > 0) {
+                              final ChatItem question =
+                                  activeMessages[index - 1];
+                              return ChatItemWidget(question,
+                                  onPressedTryAgain: !question.isSent
+                                      ? chatCubit.sendAnswerAgain
+                                      : null);
                             } else {
                               return const SizedBox.shrink();
                             }

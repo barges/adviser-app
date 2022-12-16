@@ -109,13 +109,13 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
           filterType: filterType,
         );
 
-       final List<ChatItem> activeQuestions = [];
+        final List<ChatItem> activeQuestions = [];
 
         for (ChatItem question in result.questions ?? []) {
           activeQuestions.add(question.copyWith(isActive: true));
           if (question.type == ChatItemType.ritual &&
-              question.ritualId != null) {
-            _excludeIds.add(question.ritualId!);
+              question.ritualID != null) {
+            _excludeIds.add(question.ritualID!);
           }
         }
 
@@ -189,7 +189,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
           arguments: ChatScreenArguments(
             clientId: argumentsQuestion.clientID,
             privateQuestionId: question.id,
-            ritualId: question.ritualId,
+            ritualId: question.ritualID,
             question: question.copyWith(
               clientID: argumentsQuestion.clientID,
               clientName: argumentsQuestion.clientName,
