@@ -28,7 +28,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   final ChatsRepository _chatsRepository = getIt.get<ChatsRepository>();
   final CustomerRepository _customerRepository =
       getIt.get<CustomerRepository>();
-  final ScrollController questionsController = ScrollController();
+  final ScrollController questionsScrollController = ScrollController();
   final ConnectivityService _connectivityService = ConnectivityService();
 
   final List<ChatItemType> filters = [
@@ -38,7 +38,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   ];
 
   final List<ChatItem> _privateQuestionsWithHistory = [];
-  List<String>? _excludeIds;
+  final List<String> _excludeIds = [];
 
   late final ChatItem argumentsQuestion;
   late final StreamSubscription<bool> _updateSessionsSubscription;
@@ -63,52 +63,46 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
 
     if (argumentsQuestion.clientID != null) {
       getCustomerInfo();
-      getData();
+      getPrivateQuestions();
     }
 
-    questionsController.addListener(() async {
+    questionsScrollController.addListener(() async {
       if (!_isLoading &&
-          questionsController.position.extentAfter <= _screenHeight) {
-        _isLoading = true;
-        if (_excludeIds != null) {
-          await getCustomerHistoryStories(
-            excludeIds: _excludeIds!,
-          );
-        }
+          questionsScrollController.position.extentAfter <= _screenHeight) {
+        await getCustomerHistoryStories(
+          excludeIds: _excludeIds,
+        );
       }
     });
 
     _updateSessionsSubscription = _mainCubit.sessionsUpdateTrigger.listen(
       (value) async {
-        getData(refresh: true);
+        getPrivateQuestions(refresh: true);
       },
     );
   }
 
   @override
   Future<void> close() async {
-    questionsController.dispose();
+    questionsScrollController.dispose();
     _updateSessionsSubscription.cancel();
     return super.close();
   }
 
   void changeFilterIndex(int newIndex) {
     emit(state.copyWith(currentFilterIndex: newIndex));
-    getData(refresh: true);
+    getPrivateQuestions(refresh: true);
   }
 
-  void getData({bool refresh = false}) async {
-   final List<String> ids = await getPrivateQuestions(refresh: refresh);
-   await getCustomerHistoryStories(excludeIds: ids);
-  }
-
-  Future<List<String>> getPrivateQuestions({bool refresh = false}) async {
+  Future<void> getPrivateQuestions({bool refresh = false}) async {
     if (refresh) {
       _privateQuestionsWithHistory.clear();
-      _excludeIds = null;
+      _excludeIds.clear();
       _hasMore = true;
       _lastItem = null;
     }
+
+    _isLoading = true;
 
     if (await _connectivityService.checkConnection()) {
       try {
@@ -134,56 +128,63 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
         }
 
         _privateQuestionsWithHistory.addAll(activeQuestions);
-        _excludeIds = excludeIds;
-        return excludeIds;
+
+        _excludeIds.addAll(excludeIds);
+        _isLoading = false;
+        await getCustomerHistoryStories(excludeIds: excludeIds);
       } on DioError catch (e) {
         if (e.response?.statusCode == 409) {
           _showErrorAlert();
         }
         logger.d(e);
       }
+    } else {
+      _isLoading = false;
     }
-    return [];
   }
 
   Future<void> getCustomerHistoryStories({
     required List<String> excludeIds,
   }) async {
-    try {
-      if (_hasMore && await _connectivityService.checkConnection()) {
-        final ChatItemType questionsType = filters[state.currentFilterIndex];
-        final String? filterType = questionsType != ChatItemType.all
-            ? questionsType.filterTypeName
-            : null;
+    if (_hasMore) {
+      _isLoading = true;
 
-        final QuestionsListResponse result =
-            await _chatsRepository.getCustomerHistoryStories(
-          id: argumentsQuestion.clientID ?? '',
-          limit: AppConstants.questionsLimit,
-          lastItem: _lastItem,
-          filterType: filterType,
-          excludeIds: excludeIds.isNotEmpty ? excludeIds.join(',') : null,
-        );
-        _hasMore = result.hasMore ?? true;
-        _lastItem = result.lastItem;
+      if (await _connectivityService.checkConnection()) {
+        try {
+          final ChatItemType questionsType = filters[state.currentFilterIndex];
+          final String? filterType = questionsType != ChatItemType.all
+              ? questionsType.filterTypeName
+              : null;
 
-        _privateQuestionsWithHistory.addAll(result.questions ?? const []);
+          final QuestionsListResponse result =
+              await _chatsRepository.getCustomerHistoryStories(
+            id: argumentsQuestion.clientID ?? '',
+            limit: AppConstants.questionsLimit,
+            lastItem: _lastItem,
+            filterType: filterType,
+            excludeIds: excludeIds.isNotEmpty ? excludeIds.join(',') : null,
+          );
+          _hasMore = result.hasMore ?? true;
+          _lastItem = result.lastItem;
 
-        emit(
-          state.copyWith(
-            privateQuestionsWithHistory: List.of(
-              _privateQuestionsWithHistory,
+          _privateQuestionsWithHistory.addAll(result.questions ?? const []);
+
+          emit(
+            state.copyWith(
+              privateQuestionsWithHistory: List.of(
+                _privateQuestionsWithHistory,
+              ),
             ),
-          ),
-        );
+          );
+        } on DioError catch (e) {
+          if (e.response?.statusCode == 409) {
+            _showErrorAlert();
+          }
+          logger.d(e);
+        }
       }
-    } on DioError catch (e) {
-      if (e.response?.statusCode == 409) {
-        _showErrorAlert();
-      }
-      logger.d(e);
+      _isLoading = false;
     }
-    _isLoading = false;
   }
 
   Future<void> getCustomerInfo() async {

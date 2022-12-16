@@ -52,11 +52,9 @@ class SessionsCubit extends Cubit<SessionsState> {
   SessionsCubit(this.cacheManager, this.context)
       : super(const SessionsState()) {
     publicQuestionsController.addListener(() async {
-      logger.d('SCROLL PUBLIC');
-      if (!_mainCubit.state.isLoading &&
+      if (!_isPublicLoading &&
           publicQuestionsController.position.extentAfter <=
               MediaQuery.of(context).size.height) {
-
         await getPublicQuestions();
       }
     });
@@ -64,7 +62,6 @@ class SessionsCubit extends Cubit<SessionsState> {
       if (!_isConversationsLoading &&
           conversationsController.position.extentAfter <=
               MediaQuery.of(context).size.height) {
-        _isConversationsLoading = true;
         await getConversations();
       }
     });
@@ -187,16 +184,17 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   Future<void> getPublicQuestions(
       {FortunicaUserStatus? status, bool refresh = false}) async {
-    if (!_isPublicLoading) {
+    if (refresh) {
+      _publicHasMore = true;
+      _publicQuestions.clear();
+    }
+
+    if ((status ?? cacheManager.getUserStatus()?.status) ==
+            FortunicaUserStatus.live &&
+        _publicHasMore) {
       _isPublicLoading = true;
-      if (refresh) {
-        _publicHasMore = true;
-        _publicQuestions.clear();
-      }
-      if (_publicHasMore &&
-          await _connectivityService.checkConnection() &&
-          (status ?? cacheManager.getUserStatus()?.status) ==
-              FortunicaUserStatus.live) {
+
+      if (await _connectivityService.checkConnection()) {
         _lastId = _publicQuestions.lastOrNull?.id;
         String? filtersLanguage;
         if (state.userMarkets.isNotEmpty) {
@@ -236,15 +234,17 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   Future<void> getConversations(
       {FortunicaUserStatus? status, bool refresh = false}) async {
-      if (refresh) {
-        _conversationsHasMore = true;
-        _conversationsLastItem = null;
-        _conversationsList.clear();
-      }
-      if (_conversationsHasMore &&
-          await _connectivityService.checkConnection() &&
-          (status ?? cacheManager.getUserStatus()?.status) ==
-              FortunicaUserStatus.live) {
+    if (refresh) {
+      _conversationsHasMore = true;
+      _conversationsLastItem = null;
+      _conversationsList.clear();
+    }
+    if ((status ?? cacheManager.getUserStatus()?.status) ==
+            FortunicaUserStatus.live &&
+        _conversationsHasMore) {
+      _isConversationsLoading = true;
+
+      if (await _connectivityService.checkConnection()) {
         String? filtersLanguage;
         if (state.userMarkets.isNotEmpty) {
           final MarketsType marketsType =
@@ -274,6 +274,7 @@ class SessionsCubit extends Cubit<SessionsState> {
         );
       }
       _isConversationsLoading = false;
+    }
   }
 
 // Future<void> getHistoryList(
