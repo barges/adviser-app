@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/data/network/responses/conversations_re
 import 'package:shared_advisor_interface/data/network/responses/conversations_story_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
+import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
 
 abstract class ChatsRepository {
   Future<QuestionsListResponse> getPublicQuestions({
@@ -58,9 +59,9 @@ abstract class ChatsRepository {
 
   Future<ChatItem> getQuestion({required String id});
 
-  Future<ChatItem> getRitualQuestion({required String id});
+  Future<RitualsResponse> getRituals({required String id});
 
-  Future<dynamic> startAnswer(AnswerRequest request);
+  Future<ChatItem> startAnswer(AnswerRequest request);
 
   Future<ChatItem> sendAnswer(AnswerRequest request);
 }

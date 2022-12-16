@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/empty_error.dart';
 import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
 import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
+import 'package:shared_advisor_interface/data/models/chats/rirual_card_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
@@ -40,7 +40,6 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ChatCubit(
-        getIt.get<CachingManager>(),
         getIt.get<ChatsRepository>(),
         () => showErrorAlert(context),
       ),
@@ -316,6 +315,8 @@ class _ActiveChat extends StatelessWidget {
           builder: (context) {
             final List<ChatItem> activeMessages =
                 context.select((ChatCubit cubit) => cubit.state.activeMessages);
+            final RitualCardInfo? ritualCardInfo =
+                context.select((ChatCubit cubit) => cubit.state.ritualCardInfo);
 
             if (activeMessages.isNotEmpty) {
               return Column(
@@ -337,10 +338,15 @@ class _ActiveChat extends StatelessWidget {
                                   onPressedTryAgain: !question.isSent
                                       ? chatCubit.sendAnswerAgain
                                       : null);
-                            } else {
-                              return InfoCard(
-                                question: chatCubit.state.questionFromDB,
+                            } else if (ritualCardInfo != null) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: InfoCard(
+                                  ritualCardInfo: ritualCardInfo,
+                                ),
                               );
+                            } else {
+                              return const SizedBox.shrink();
                             }
                           } else {
                             final ChatItem question = activeMessages[index];

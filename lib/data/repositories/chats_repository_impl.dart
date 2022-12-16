@@ -5,6 +5,7 @@ import 'package:shared_advisor_interface/data/network/responses/conversations_re
 import 'package:shared_advisor_interface/data/network/responses/conversations_story_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
+import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 
 class ChatsRepositoryImpl implements ChatsRepository {
@@ -91,12 +92,12 @@ class ChatsRepositoryImpl implements ChatsRepository {
   }
 
   @override
-  Future<ChatItem> getRitualQuestion({required String id}) async {
-    return await _api.getRitualQuestion(id: id);
+  Future<RitualsResponse> getRituals({required String id}) async {
+    return await _api.getRituals(id: id);
   }
 
   @override
-  Future<dynamic> startAnswer(AnswerRequest request) async {
+  Future<ChatItem> startAnswer(AnswerRequest request) async {
     return await _api.startAnswer(request);
   }
 

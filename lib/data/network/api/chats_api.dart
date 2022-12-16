@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/data/network/responses/conversations_re
 import 'package:shared_advisor_interface/data/network/responses/conversations_story_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
+import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
 
 part 'chats_api.g.dart';
 
@@ -72,13 +73,13 @@ abstract class ChatsApi {
     @Path() required String id,
   });
 
-  @GET('/v1/rituals/single/{id}')
-  Future<ChatItem> getRitualQuestion({
+  @GET('/rituals/single/{id}')
+  Future<RitualsResponse> getRituals({
     @Path() required String id,
   });
 
   @POST('/questions/answer/start')
-  Future<dynamic> startAnswer(
+  Future<ChatItem> startAnswer(
     @Body() AnswerRequest request,
   );
 
