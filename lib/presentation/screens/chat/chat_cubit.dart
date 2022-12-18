@@ -33,6 +33,7 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 import 'chat_state.dart';
 
@@ -42,6 +43,8 @@ class ChatCubit extends Cubit<ChatState> {
   final ScrollController activeMessagesScrollController = ScrollController();
   final ScrollController textInputScrollController = ScrollController();
   final TextEditingController textEditingController = TextEditingController();
+
+  final GlobalKey questionGlobalKey = GlobalKey();
 
   final ConnectivityService _connectivityService = ConnectivityService();
 
@@ -96,12 +99,8 @@ class ChatCubit extends Cubit<ChatState> {
     _keyboardSubscription =
         keyboardVisibilityController.onChange.listen((bool visible) {
       if (visible) {
-        logger.d(visible);
-        activeMessagesScrollController.animateTo(
-          activeMessagesScrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.fastOutSlowIn,
-        );
+        Future.delayed(const Duration(milliseconds: 300))
+            .then((value) => Utils.animateToWidget(questionGlobalKey));
       }
     });
   }
