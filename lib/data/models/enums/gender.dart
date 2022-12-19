@@ -25,4 +25,19 @@ enum Gender {
         return 'Unknown';
     }
   }
+
+ static Gender genderFromString(String? name) {
+    switch (name) {
+      case 'male':
+        return Gender.male;
+      case 'female':
+        return Gender.female;
+      case 'non_binary':
+        return Gender.nonBinary;
+      case 'non_gender':
+        return Gender.nonGender;
+      default:
+        return Gender.unknown;
+    }
+  }
 }

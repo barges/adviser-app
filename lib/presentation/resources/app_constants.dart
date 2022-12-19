@@ -14,8 +14,8 @@ class AppConstants {
   static const int minRecordDurationInSec = 15;
   static const int maxRecordDurationInSec = 180;
 
-  static const int minTextLengthPublic = 250;
-  static const int maxTextLengthPublic = 1000;
+  static const int minTextLength = 250;
+  static const int maxTextLength = 1000;
   static const int minTextLengthRirual = 1000;
   static const int maxTextLengthRitual = 2000;
 
