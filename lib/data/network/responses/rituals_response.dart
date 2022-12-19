@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:shared_advisor_interface/data/models/chats/rirual_card_info.dart';
 import 'package:shared_advisor_interface/data/models/chats/story.dart';
+import 'package:shared_advisor_interface/data/models/enums/gender.dart';
 import 'package:shared_advisor_interface/data/models/enums/ritual_info_card_field_data.dart';
 import 'package:shared_advisor_interface/data/models/enums/ritual_info_card_field_type.dart';
 
@@ -65,7 +66,7 @@ class RitualsResponse {
     ritualCardInfo = RitualCardInfo(
       name: '${firstName ?? ''} ${lastName ?? ''}',
       birthdate: birthdate,
-      gender: gender,
+      gender: Gender.genderFromString(gender),
       leftImageTitle: leftImageTitle,
       leftImage: leftImage,
       rightImageTitle: rightImageTitle,

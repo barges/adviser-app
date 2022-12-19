@@ -76,7 +76,7 @@ class InfoCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  ritualCardInfo?.gender?.capitalize ?? '',
+                  ritualCardInfo?.gender?.name(context) ?? '',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.shadowColor,
                   ),

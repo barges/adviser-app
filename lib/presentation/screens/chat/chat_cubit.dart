@@ -164,9 +164,7 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> _getData() async {
     if (chatScreenArguments.ritualID != null) {
       _getRituals(chatScreenArguments.ritualID!).then((_) async {
-        await SchedulerBinding.instance.endOfFrame;
-        activeMessagesScrollController
-            .jumpTo(activeMessagesScrollController.position.maxScrollExtent);
+        SchedulerBinding.instance.endOfFrame.then((_) => scrollChatDown);
       });
     } else {
       await _getPublicOrPrivateQuestion();
@@ -274,6 +272,12 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
+  void scrollChatDown() {
+    SchedulerBinding.instance.endOfFrame.then((value) =>
+        activeMessagesScrollController
+            .jumpTo(activeMessagesScrollController.position.maxScrollExtent));
+  }
+
   Future<void> takeQuestion() async {
     try {
       final ChatItem question = await _repository.takeQuestion(
@@ -362,8 +366,8 @@ class ChatCubit extends Cubit<ChatState> {
 
     bool isSendButtonEnabled = false;
     if (recordingPath != null && recordingPath.isNotEmpty) {
-      final File audiofile = File(recordingPath);
-      final Metadata metaAudio = await MetadataRetriever.fromFile(audiofile);
+      final File audioFile = File(recordingPath);
+      final Metadata metaAudio = await MetadataRetriever.fromFile(audioFile);
 
       _recordAudioDuration = (metaAudio.trackDuration ?? 0) / 1000;
       if (_recordAudioDuration! < AppConstants.minRecordDurationInSec) {
@@ -375,7 +379,7 @@ class ChatCubit extends Cubit<ChatState> {
             uiErrorType: UIErrorType
                 .recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min));
         isSendButtonEnabled = true;
-      } else if (audiofile.sizeInMb > AppConstants.maxFileSizeInMb) {
+      } else if (audioFile.sizeInMb > AppConstants.maxFileSizeInMb) {
         updateErrorMessage(
             UIError(uiErrorType: UIErrorType.theMaximumImageSizeIs20Mb));
       } else {
@@ -572,6 +576,7 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       );
       deleteAttachedPictures();
+      scrollChatDown();
 
       if (answer.isSent) {
         _mainCubit.updateSessions();
@@ -593,6 +598,7 @@ class ChatCubit extends Cubit<ChatState> {
       );
       textEditingController.clear();
       deleteAttachedPictures();
+      scrollChatDown();
 
       if (answer.isSent) {
         _mainCubit.updateSessions();
