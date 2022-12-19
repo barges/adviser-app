@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
@@ -11,6 +12,7 @@ class QuestionPropertiesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(
           vertical: 12.0, horizontal: AppConstants.horizontalScreenPadding),
       decoration: BoxDecoration(
@@ -19,30 +21,39 @@ class QuestionPropertiesWidget extends StatelessWidget {
           color: Theme.of(context).hintColor,
         ),
       ),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(
-          S.of(context).questionProperties.toUpperCase(),
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontWeight: FontWeight.w400,
-                fontSize: 13.0,
-                color: Theme.of(context).shadowColor,
-              ),
-        ),
-        const SizedBox(height: 10.0),
-        ListView.separated(
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (_, index) => Text(
-                  properties[index],
-                  style: Theme.of(context)
-                      .textTheme
-                      .displayLarge
-                      ?.copyWith(fontWeight: FontWeight.w500),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            S.of(context).questionProperties.toUpperCase(),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 13.0,
+                  color: Theme.of(context).shadowColor,
                 ),
-            separatorBuilder: (_, __) => const SizedBox(height: 12.0),
-            itemCount: properties.length)
-      ]),
+          ),
+          const SizedBox(height: 10.0),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: properties
+                .mapIndexed(
+                  (element, index) => Padding(
+                    padding: EdgeInsets.only(
+                      bottom: index < properties.length - 1 ? 12.0 : 0.0,
+                    ),
+                    child: Text(
+                      element,
+                      style: Theme.of(context)
+                          .textTheme
+                          .displayLarge
+                          ?.copyWith(fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                )
+                .toList(),
+          )
+        ],
+      ),
     );
   }
 }
