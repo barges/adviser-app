@@ -152,7 +152,7 @@ class ChatScreen extends StatelessWidget {
 
                             return questionFromDB?.clientID != null &&
                                     flutterSoundPlayer != null
-                                ? HistoryTab(
+                                ? HistoryWidget(
                                     clientId: questionFromDB!.clientID!,
                                     playerMedia: chatCubit.playerMedia!,
                                     storyId: chatCubit

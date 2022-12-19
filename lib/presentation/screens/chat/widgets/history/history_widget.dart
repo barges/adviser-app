@@ -12,11 +12,11 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/histo
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/widgets/history_list_group_header.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/widgets/question_and_answer_pair_widget.dart';
 
-class HistoryTab extends StatelessWidget {
+class HistoryWidget extends StatelessWidget {
   final String clientId;
   final FlutterSoundPlayer playerMedia;
   final String? storyId;
-  const HistoryTab({
+  const HistoryWidget({
     Key? key,
     required this.clientId,
     required this.playerMedia,
@@ -40,7 +40,7 @@ class HistoryTab extends StatelessWidget {
             color: Theme.of(context).scaffoldBackgroundColor,
             child: Builder(builder: (context) {
               return CustomScrollView(
-                  physics: const ClampingScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   controller: historyCubit.historyMessagesScrollController,
                   slivers: [
                     historyList == null
