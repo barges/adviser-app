@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 
 import 'customer_profile_screen_state.dart';
 

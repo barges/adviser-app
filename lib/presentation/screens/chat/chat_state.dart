@@ -9,7 +9,7 @@ import 'package:shared_advisor_interface/data/models/app_success/empty_success.d
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/rirual_card_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 
 part 'chat_state.freezed.dart';
 

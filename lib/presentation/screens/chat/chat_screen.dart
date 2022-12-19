@@ -10,9 +10,7 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/rirual_card_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
-import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -24,6 +22,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/messages/ap
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_succes_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_widget.dart';
@@ -63,6 +62,8 @@ class ChatScreen extends StatelessWidget {
                       '',
                   zodiacSign: appBarUpdateArguments?.zodiacSign ??
                       questionFromDB?.clientInformation?.zodiac,
+                  publicQuestionId:
+                      chatCubit.chatScreenArguments.publicQuestionId,
                   returnInQueueButtonOnTap: () async {
                     final dynamic needReturn = await showOkCancelAlert(
                       context: context,
@@ -162,7 +163,7 @@ class ChatScreen extends StatelessWidget {
                           questionFromDB?.clientID != null
                               ? CustomerProfileWidget(
                                   customerId: questionFromDB!.clientID!,
-                                  updateClientInformation:
+                                  updateClientInformationCallback:
                                       chatCubit.updateAppBarInformation,
                                 )
                               : const SizedBox.shrink(),
@@ -343,51 +344,48 @@ class _ActiveChat extends StatelessWidget {
                     Expanded(
                       child: Container(
                         color: Theme.of(context).scaffoldBackgroundColor,
-                        child: ListView.separated(
+                        child: SingleChildScrollView(
                           controller: chatCubit.activeMessagesScrollController,
                           padding:
                               const EdgeInsets.fromLTRB(12.0, 16.0, 12.0, 24.0),
-                          shrinkWrap: true,
-                          itemBuilder: (_, index) {
+                          child: Builder(builder: (context) {
+                            final List<Widget> widgets = [];
+
                             if (activeMessages.last.type ==
-                                ChatItemType.ritual) {
-                              if (index == 0) {
-                                return ritualCardInfo != null
-                                    ? Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 8.0),
-                                        child: InfoCard(
-                                          ritualCardInfo: ritualCardInfo,
-                                        ),
-                                      )
-                                    : const SizedBox.shrink();
-                              } else {
-                                final ChatItem question =
-                                    activeMessages[index - 1];
-
-                                return ChatItemWidget(question,
-                                    onPressedTryAgain: !question.isSent
-                                        ? chatCubit.sendAnswerAgain
-                                        : null);
-                              }
-                            } else {
-                              final ChatItem question = activeMessages[index];
-
-                              return ChatItemWidget(question,
-                                  onPressedTryAgain: !question.isSent
-                                      ? chatCubit.sendAnswerAgain
-                                      : null);
+                                    ChatItemType.ritual &&
+                                ritualCardInfo != null) {
+                              widgets.add(
+                                InfoCard(
+                                  ritualCardInfo: ritualCardInfo,
+                                ),
+                              );
                             }
-                          },
-                          itemCount:
-                              activeMessages.last.type == ChatItemType.ritual
-                                  ? activeMessages.length + 1
-                                  : activeMessages.length,
-                          separatorBuilder: (BuildContext context, int index) {
-                            return const SizedBox(
-                              height: 8.0,
+
+                            for (int i = 0; i < activeMessages.length; i++) {
+                              final ChatItem item = activeMessages[i];
+                              widgets.add(
+                                ChatItemWidget(
+                                    key: i == activeMessages.length - 1
+                                        ? chatCubit.questionGlobalKey
+                                        : null,
+                                    item,
+                                    onPressedTryAgain: !item.isSent
+                                        ? chatCubit.sendAnswerAgain
+                                        : null),
+                              );
+                              if (i < activeMessages.length - 1) {
+                                widgets.add(
+                                  const SizedBox(
+                                    height: 8.0,
+                                  ),
+                                );
+                              }
+                            }
+
+                            return Column(
+                              children: widgets,
                             );
-                          },
+                          }),
                         ),
                       ),
                     ),

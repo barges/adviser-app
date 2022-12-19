@@ -17,12 +17,14 @@ class ChatConversationAppBar extends StatelessWidget
   final String title;
   final ZodiacSign? zodiacSign;
   final VoidCallback? returnInQueueButtonOnTap;
+  final String? publicQuestionId;
 
   const ChatConversationAppBar({
     Key? key,
     required this.title,
     this.zodiacSign,
     this.returnInQueueButtonOnTap,
+    this.publicQuestionId,
   }) : super(key: key);
 
   @override
@@ -47,14 +49,16 @@ class ChatConversationAppBar extends StatelessWidget
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (questionStatus == ChatItemStatusType.taken)
+              if (publicQuestionId != null &&
+                  questionStatus == ChatItemStatusType.taken)
                 Padding(
                   padding: const EdgeInsets.only(right: 16.0),
                   child: _ReturnInQueue(
                     onTap: returnInQueueButtonOnTap,
                   ),
                 ),
-              if (questionStatus != ChatItemStatusType.taken)
+              if (publicQuestionId == null &&
+                  questionStatus != ChatItemStatusType.taken)
                 AppIconButton(
                   icon: Assets.vectors.arrowLeft.path,
                   onTap: Get.back,
@@ -104,7 +108,9 @@ class ChatConversationAppBar extends StatelessWidget
                   ),
                 );
               }),
-              if (questionStatus == ChatItemStatusType.taken) const Spacer(),
+              if (publicQuestionId != null &&
+                  questionStatus == ChatItemStatusType.taken)
+                const Spacer(),
               if (zodiacSign != null)
                 SvgPicture.asset(
                   zodiacSign!.imagePath(context),

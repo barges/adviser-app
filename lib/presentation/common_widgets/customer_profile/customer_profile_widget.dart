@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/note.dart';
-import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/widgets/notes_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/widgets/question_properties_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:get/get.dart';
 
 class CustomerProfileWidget extends StatelessWidget {
   final String customerId;
-  final Function(AppBarUpdateArguments?)? updateClientInformation;
+  final Function(AppBarUpdateArguments?)? updateClientInformationCallback;
 
   const CustomerProfileWidget({
     Key? key,
     required this.customerId,
-    this.updateClientInformation,
+    this.updateClientInformationCallback,
   }) : super(key: key);
 
   @override
@@ -27,7 +26,7 @@ class CustomerProfileWidget extends StatelessWidget {
     return BlocProvider(
       create: (_) => CustomerProfileCubit(
         customerId,
-        updateClientInformation,
+        updateClientInformationCallback,
       ),
       child: Builder(
         builder: (context) {
@@ -188,14 +187,4 @@ class CustomerProfileWidget extends StatelessWidget {
       ),
     );
   }
-}
-
-class AppBarUpdateArguments {
-  String? clientName;
-  ZodiacSign? zodiacSign;
-
-  AppBarUpdateArguments({
-    this.clientName,
-    this.zodiacSign,
-  });
 }

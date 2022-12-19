@@ -28,7 +28,7 @@ class CustomerProfileScreen extends StatelessWidget {
           ),
           body: CustomerProfileWidget(
             customerId: arguments.customerID,
-            updateClientInformation:
+            updateClientInformationCallback:
                 customerProfileScreenCubit.updateAppBarInformation,
           ),
         );
