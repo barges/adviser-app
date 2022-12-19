@@ -11,4 +11,14 @@ class Utils {
     tp.layout(maxWidth: maxWidth);
     return tp.computeLineMetrics().length;
   }
+
+ static void animateToWidget(GlobalKey key) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final BuildContext? context = key.currentContext;
+      if (context != null) {
+        Scrollable.ensureVisible(context,
+            duration: const Duration(milliseconds: 500));
+      }
+    });
+  }
 }

@@ -21,6 +21,7 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 import 'edit_profile_state.dart';
 
@@ -155,16 +156,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
   }
 
-  void animateWithError(GlobalKey key) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final BuildContext? context = key.currentContext;
-      if (context != null) {
-        Scrollable.ensureVisible(context,
-            duration: const Duration(milliseconds: 500));
-      }
-    });
-  }
-
   void addListenersToTextControllers() {
     nicknameController.addListener(() {
       emit(state.copyWith(nicknameErrorType: ValidationErrorType.empty));
@@ -252,7 +243,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     bool isValid = true;
     if (nicknameController.text.length < 3) {
       isValid = false;
-      animateWithError(nicknameFieldKey);
+      Utils.animateToWidget(nicknameFieldKey);
       if (checkUserAvatar()) {
         nicknameFocusNode.requestFocus();
       }
@@ -289,7 +280,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
     if (firstLanguageWithErrorIndex != null) {
       changeCurrentLanguageIndex(firstLanguageWithErrorIndex);
-      animateWithError(activeLanguagesGlobalKeys[firstLanguageWithErrorIndex]);
+      Utils.animateToWidget(
+          activeLanguagesGlobalKeys[firstLanguageWithErrorIndex]);
       if (checkUserAvatar()) {
         firstLanguageWithErrorFocusNode?.requestFocus();
       }
@@ -383,11 +375,11 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   void checkEmptyFields() {
     if (userProfile?.profilePictures?.isNotEmpty != true) {
-      animateWithError(profileAvatarKey);
+      Utils.animateToWidget(profileAvatarKey);
     } else if (nicknameController.text.isEmpty) {
-      animateWithError(nicknameFieldKey);
+      Utils.animateToWidget(nicknameFieldKey);
     } else if (initialLanguageIndexIfHasError != null) {
-      animateWithError(
+      Utils.animateToWidget(
           activeLanguagesGlobalKeys[initialLanguageIndexIfHasError!]);
     }
   }
@@ -396,7 +388,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     bool isValid = true;
     if (userProfile?.profilePictures?.isNotEmpty != true &&
         state.avatar == null) {
-      animateWithError(profileAvatarKey);
+      Utils.animateToWidget(profileAvatarKey);
       isValid = false;
     }
     return isValid;
