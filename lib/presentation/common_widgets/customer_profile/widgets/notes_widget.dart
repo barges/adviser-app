@@ -98,7 +98,7 @@ class NotesWidget extends StatelessWidget {
                       title: S.of(context).youDoNotHaveAnyNotesYet,
                       label: S
                           .of(context)
-                          .addInformationYouWantKeepInMindAboutThisClient,
+                          .addAnyInformationYouWantToRememberAboutThisClient,
                     )
               : const SizedBox.shrink(),
         ],

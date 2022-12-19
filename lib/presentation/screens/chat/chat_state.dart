@@ -7,7 +7,9 @@ import 'package:shared_advisor_interface/data/models/app_errors/empty_error.dart
 import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
 import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
+import 'package:shared_advisor_interface/data/models/chats/rirual_card_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 
 part 'chat_state.freezed.dart';
 
@@ -31,11 +33,13 @@ class ChatState with _$ChatState {
     @Default('') String audioUrl,
     @Default(EmptyError()) AppError appError,
     @Default(EmptySuccess()) AppSuccess appSuccess,
+    RitualCardInfo? ritualCardInfo,
     String? recordingPath,
     Stream<RecordingDisposition>? recordingStream,
     Stream<PlaybackDisposition>? playbackStream,
     ChatItem? questionFromDB,
     ChatItemStatusType? questionStatus,
     FlutterSoundPlayer? flutterSoundPlayer,
+    AppBarUpdateArguments? appBarUpdateArguments,
   }) = _ChatState;
 }

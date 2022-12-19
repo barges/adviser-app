@@ -14,13 +14,13 @@ class HomeScreenArguments {
 
 class GalleryPicturesScreenArguments {
   final List<String> pictures;
-  final PageController editProfilePageController;
-  final double initPage;
+  final PageController? editProfilePageController;
+  final double? initPage;
 
   GalleryPicturesScreenArguments({
     required this.pictures,
-    required this.editProfilePageController,
-    required this.initPage,
+    this.editProfilePageController,
+    this.initPage,
   });
 }
 
@@ -64,16 +64,26 @@ class ChatScreenArguments {
   final String? clientId;
   final ChatItem? question;
   final String? publicQuestionId;
-  final String? ritualId;
-  final String? storyId;
+  final String? privateQuestionId;
+  final String? ritualID;
   final String? storyIdForHistory;
 
   ChatScreenArguments({
     this.clientId,
     this.question,
     this.publicQuestionId,
-    this.ritualId,
-    this.storyId,
+    this.privateQuestionId,
+    this.ritualID,
     this.storyIdForHistory,
+  });
+}
+
+class AppBarUpdateArguments {
+  String? clientName;
+  ZodiacSign? zodiacSign;
+
+  AppBarUpdateArguments({
+    this.clientName,
+    this.zodiacSign,
   });
 }

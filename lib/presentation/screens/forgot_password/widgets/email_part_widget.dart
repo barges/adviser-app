@@ -35,7 +35,9 @@ class EmailPart extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 24.0),
           child: Text(
-            S.of(context).toResetPasswordEnterEmailAddressAndWellSendYou,
+            S
+                .of(context)
+                .enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Theme.of(context).shadowColor,
                 ),

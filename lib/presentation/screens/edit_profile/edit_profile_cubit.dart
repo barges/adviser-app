@@ -21,6 +21,7 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 import 'edit_profile_state.dart';
 
@@ -36,7 +37,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final UserRepository _userRepository = getIt.get<UserRepository>();
   final CachingManager _cacheManager = getIt.get<CachingManager>();
   final DefaultCacheManager _defaultCacheManager = DefaultCacheManager();
-  final ConnectivityService _connectivityService = ConnectivityService();
+  final ConnectivityService _connectivityService =
+      getIt.get<ConnectivityService>();
 
   late final UserProfile? userProfile;
   late final List<MarketsType> activeLanguages;
@@ -134,11 +136,11 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
         final ValidationErrorType statusErrorMessage =
             statusTextController.text.trim().isEmpty
-                ? ValidationErrorType.fieldIsRequired
+                ? ValidationErrorType.requiredField
                 : ValidationErrorType.empty;
         final ValidationErrorType profileErrorMessage =
             profileTextController.text.trim().isEmpty
-                ? ValidationErrorType.fieldIsRequired
+                ? ValidationErrorType.requiredField
                 : ValidationErrorType.empty;
 
         if (statusErrorMessage != ValidationErrorType.empty ||
@@ -153,16 +155,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         ];
       }
     }
-  }
-
-  void animateWithError(GlobalKey key) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final BuildContext? context = key.currentContext;
-      if (context != null) {
-        Scrollable.ensureVisible(context,
-            duration: const Duration(milliseconds: 500));
-      }
-    });
   }
 
   void addListenersToTextControllers() {
@@ -252,7 +244,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     bool isValid = true;
     if (nicknameController.text.length < 3) {
       isValid = false;
-      animateWithError(nicknameFieldKey);
+      Utils.animateToWidget(nicknameFieldKey);
       if (checkUserAvatar()) {
         nicknameFocusNode.requestFocus();
       }
@@ -260,7 +252,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       emit(
         state.copyWith(
             nicknameErrorType: nicknameController.text.isEmpty
-                ? ValidationErrorType.fieldIsRequired
+                ? ValidationErrorType.requiredField
                 : ValidationErrorType.pleaseEnterAtLeast3Characters),
       );
     }
@@ -275,13 +267,21 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         in textControllersMap.entries) {
       final List<TextEditingController> controllersByLanguage = entry.value;
       if (controllersByLanguage.firstOrNull?.text.trim().isEmpty == true) {
-        errorTextsMap[entry.key]?.first = ValidationErrorType.fieldIsRequired;
+        errorTextsMap[entry.key]?.first = ValidationErrorType.requiredField;
+        firstLanguageWithErrorIndex ??= activeLanguages.indexOf(entry.key);
+        firstLanguageWithErrorFocusNode ??= focusNodesMap[entry.key]?.first;
+        isValid = false;
+      } else if (controllersByLanguage.firstOrNull != null &&
+          controllersByLanguage.firstOrNull!.text.length > 300) {
+        errorTextsMap[entry.key]?.first =
+            ValidationErrorType.statusTextMayNotExceed300Characters;
         firstLanguageWithErrorIndex ??= activeLanguages.indexOf(entry.key);
         firstLanguageWithErrorFocusNode ??= focusNodesMap[entry.key]?.first;
         isValid = false;
       }
+
       if (controllersByLanguage.lastOrNull?.text.trim().isEmpty == true) {
-        errorTextsMap[entry.key]?.last = ValidationErrorType.fieldIsRequired;
+        errorTextsMap[entry.key]?.last = ValidationErrorType.requiredField;
         firstLanguageWithErrorIndex ??= activeLanguages.indexOf(entry.key);
         firstLanguageWithErrorFocusNode ??= focusNodesMap[entry.key]?.last;
         isValid = false;
@@ -289,7 +289,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
     if (firstLanguageWithErrorIndex != null) {
       changeCurrentLanguageIndex(firstLanguageWithErrorIndex);
-      animateWithError(activeLanguagesGlobalKeys[firstLanguageWithErrorIndex]);
+      Utils.animateToWidget(
+          activeLanguagesGlobalKeys[firstLanguageWithErrorIndex]);
       if (checkUserAvatar()) {
         firstLanguageWithErrorFocusNode?.requestFocus();
       }
@@ -383,11 +384,11 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   void checkEmptyFields() {
     if (userProfile?.profilePictures?.isNotEmpty != true) {
-      animateWithError(profileAvatarKey);
+      Utils.animateToWidget(profileAvatarKey);
     } else if (nicknameController.text.isEmpty) {
-      animateWithError(nicknameFieldKey);
+      Utils.animateToWidget(nicknameFieldKey);
     } else if (initialLanguageIndexIfHasError != null) {
-      animateWithError(
+      Utils.animateToWidget(
           activeLanguagesGlobalKeys[initialLanguageIndexIfHasError!]);
     }
   }
@@ -396,7 +397,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     bool isValid = true;
     if (userProfile?.profilePictures?.isNotEmpty != true &&
         state.avatar == null) {
-      animateWithError(profileAvatarKey);
+      Utils.animateToWidget(profileAvatarKey);
       isValid = false;
     }
     return isValid;

@@ -17,12 +17,14 @@ class ChatConversationAppBar extends StatelessWidget
   final String title;
   final ZodiacSign? zodiacSign;
   final VoidCallback? returnInQueueButtonOnTap;
+  final String? publicQuestionId;
 
   const ChatConversationAppBar({
     Key? key,
     required this.title,
     this.zodiacSign,
     this.returnInQueueButtonOnTap,
+    this.publicQuestionId,
   }) : super(key: key);
 
   @override
@@ -41,61 +43,81 @@ class ChatConversationAppBar extends StatelessWidget
             ? context.select((ChatCubit cubit) => cubit.state.questionStatus) ??
                 ChatItemStatusType.open
             : null;
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            if (questionStatus == ChatItemStatusType.taken)
-              Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: _ReturnInQueue(
-                  onTap: returnInQueueButtonOnTap,
+        return SizedBox(
+          height: AppConstants.appBarHeight,
+          width: MediaQuery.of(context).size.width,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              if (publicQuestionId != null &&
+                  questionStatus == ChatItemStatusType.taken)
+                Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: _ReturnInQueue(
+                    onTap: returnInQueueButtonOnTap,
+                  ),
                 ),
-              ),
-            if (questionStatus != ChatItemStatusType.taken)
-              AppIconButton(
-                icon: Assets.vectors.arrowLeft.path,
-                onTap: Get.back,
-              ),
-            Builder(builder: (context) {
-              final Brand selectedBrand =
-                  context.select((MainCubit cubit) => cubit.state.currentBrand);
-              return Column(
-                children: [
-                  Row(
+              if (publicQuestionId == null &&
+                  questionStatus != ChatItemStatusType.taken)
+                AppIconButton(
+                  icon: Assets.vectors.arrowLeft.path,
+                  onTap: Get.back,
+                ),
+              Builder(builder: (context) {
+                final Brand selectedBrand = context
+                    .select((MainCubit cubit) => cubit.state.currentBrand);
+                return Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SvgPicture.asset(
-                        selectedBrand.icon,
-                        height: 17.0,
+                      IntrinsicWidth(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              selectedBrand.icon,
+                              height: 17.0,
+                            ),
+                            const SizedBox(width: 12.0),
+                            Expanded(
+                              child: Text(
+                                title,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Theme.of(context).hoverColor,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      const SizedBox(width: 12.0),
                       Text(
-                        title,
+                        selectedBrand.name,
                         style: TextStyle(
-                          fontSize: 16.0,
-                          color: Theme.of(context).hoverColor,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w200,
+                          color: Theme.of(context).shadowColor,
                         ),
                       ),
                     ],
                   ),
-                  Text(
-                    selectedBrand.name,
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w200,
-                      color: Theme.of(context).shadowColor,
-                    ),
-                  ),
-                ],
-              );
-            }),
-            if (questionStatus == ChatItemStatusType.taken) const Spacer(),
-            if (zodiacSign != null)
-              SvgPicture.asset(
-                zodiacSign!.imagePath(context),
-                width: 28.0,
-              ),
-          ],
+                );
+              }),
+              if (publicQuestionId != null &&
+                  questionStatus == ChatItemStatusType.taken)
+                const Spacer(),
+              if (zodiacSign != null)
+                SvgPicture.asset(
+                  zodiacSign!.imagePath(context),
+                  width: 28.0,
+                ),
+            ],
+          ),
         );
       }),
       backgroundColor: Theme.of(context).canvasColor,
@@ -123,7 +145,7 @@ class _ReturnInQueue extends StatelessWidget {
           width: 8.0,
         ),
         Text(
-          S.of(context).returnInQueue.toUpperCase(),
+          S.of(context).returnToQueue.toUpperCase(),
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
                 color: Theme.of(context).primaryColor,
                 fontSize: 12.0,

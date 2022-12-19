@@ -15,19 +15,14 @@ class OpenEmailButton extends StatelessWidget {
       child: GestureDetector(
           onTap: () async {
             var result = await OpenMailApp.openMailApp(
-              nativePickerTitle: S
-                  .of(context)
-                  .chooseEmailApp
-            );
+                nativePickerTitle: S.of(context).chooseEmailApp);
             logger.d(result.options);
-            if(Platform.isIOS && result.options.length > 1){
+            if (Platform.isIOS && result.options.length > 1) {
               showDialog(
                 context: context,
                 builder: (_) {
                   return MailAppPickerDialog(
-                    title: S
-                        .of(context)
-                        .chooseEmailApp,
+                    title: S.of(context).chooseEmailApp,
                     mailApps: result.options,
                   );
                 },
@@ -35,7 +30,7 @@ class OpenEmailButton extends StatelessWidget {
             }
           },
           child: Text(
-            S.of(context).openEmailApp,
+            S.of(context).openEmail,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   color: Theme.of(context).primaryColor,
                   fontWeight: FontWeight.w700,

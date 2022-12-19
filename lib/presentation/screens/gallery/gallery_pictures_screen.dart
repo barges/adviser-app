@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/transparrent_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/screens/edit_profile/gallery/gallery_pictures_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/gallery/gallery_pictures_cubit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class GalleryPicturesScreen extends StatelessWidget {
@@ -30,7 +30,7 @@ class GalleryPicturesScreen extends StatelessWidget {
                   controller: galleryPicturesCubit.pageController,
                   onPageChanged: (page) {
                     galleryPicturesCubit.editProfilePageController
-                        .jumpToPage(page);
+                        ?.jumpToPage(page);
                   },
                   itemBuilder: (context, index) {
                     return InteractiveViewer(
@@ -43,6 +43,7 @@ class GalleryPicturesScreen extends StatelessWidget {
                   },
                 ),
               ),
+              if(galleryPicturesCubit.coverPictures.length > 1)
               Positioned(
                 bottom: 80.0,
                 child: SizedBox(

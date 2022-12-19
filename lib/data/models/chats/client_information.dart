@@ -11,6 +11,7 @@ class ClientInformation with _$ClientInformation {
   const factory ClientInformation({
     DateTime? birthdate,
     ZodiacSign? zodiac,
+    @JsonKey(unknownEnumValue: Gender.unknown)
     Gender? gender,
     String? country,
   }) = _ClientInformation;

@@ -5,8 +5,8 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 enum UISuccessType {
   theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m,
   thisQuestionWillBeReturnedToTheGeneralListAfterCounter,
-  youCanNotHelpUsersSinceYouHaveAnActive,
-  weVeSentYouALinkToEmailToChangeYourPassword;
+  youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse,
+  weVeSentPasswordResetInstructionsToEmail;
 
   String getSuccessMessage(BuildContext context, String? argument) {
     switch (this) {
@@ -20,12 +20,15 @@ enum UISuccessType {
             .of(context)
             .thisQuestionWillBeReturnedToTheGeneralListAfterCounter(
                 argument ?? '');
-      case UISuccessType.youCanNotHelpUsersSinceYouHaveAnActive:
-        return S.of(context).youCanNotHelpUsersSinceYouHaveAnActive;
-      case UISuccessType.weVeSentYouALinkToEmailToChangeYourPassword:
+      case UISuccessType
+          .youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse:
         return S
             .of(context)
-            .weVeSentYouALinkToEmailToChangeYourPassword(argument ?? '');
+            .youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse;
+      case UISuccessType.weVeSentPasswordResetInstructionsToEmail:
+        return S
+            .of(context)
+            .weVeSentPasswordResetInstructionsToEmail(argument ?? '');
     }
   }
 }

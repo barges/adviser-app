@@ -15,7 +15,7 @@ class SuccessResetWidget extends StatelessWidget {
     final ForgotPasswordCubit forgotPasswordCubit =
         context.read<ForgotPasswordCubit>();
     return CustomScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       slivers: [
         SliverFillRemaining(
           hasScrollBody: false,
@@ -38,7 +38,7 @@ class SuccessResetWidget extends StatelessWidget {
                   height: 24.0,
                 ),
                 Text(
-                  S.of(context).nowYouCanLoginWithANewPassword,
+                  S.of(context).useYourNewPasswordToLogin,
                   style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
