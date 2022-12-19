@@ -77,7 +77,10 @@ class ChatScreen extends StatelessWidget {
                 child: Builder(builder: (context) {
                   final List<String> tabsTitles = [];
                   if (chatCubit.chatScreenArguments.storyIdForHistory == null) {
-                    tabsTitles.add(S.of(context).activeChat);
+                    tabsTitles.add(
+                        chatCubit.chatScreenArguments.publicQuestionId != null
+                            ? S.of(context).question
+                            : S.of(context).activeChat);
                   }
                   tabsTitles.addAll([
                     S.of(context).history,
@@ -203,7 +206,6 @@ class ChatScreen extends StatelessWidget {
 
                             if (isAudioFileSaved) {
                               return ChatRecordedWidget(
-                                playbackStream: chatCubit.state.playbackStream,
                                 onStartPlayPressed: () =>
                                     chatCubit.startPlayRecordedAudio(),
                                 onPausePlayPressed: () =>
@@ -247,7 +249,6 @@ class ChatScreen extends StatelessWidget {
 
                             if (isAudioFileSaved) {
                               return ChatRecordedWidget(
-                                playbackStream: chatCubit.state.playbackStream,
                                 onStartPlayPressed: () =>
                                     chatCubit.startPlayRecordedAudio(),
                                 onPausePlayPressed: () =>
@@ -345,8 +346,13 @@ class _ActiveChat extends StatelessWidget {
                                     ChatItemType.ritual &&
                                 ritualCardInfo != null) {
                               widgets.add(
-                                InfoCard(
-                                  ritualCardInfo: ritualCardInfo,
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    bottom: 16.0,
+                                  ),
+                                  child: InfoCard(
+                                    ritualCardInfo: ritualCardInfo,
+                                  ),
                                 ),
                               );
                             }

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:audio_session/audio_session.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
@@ -157,14 +158,14 @@ class ChatCubit extends Cubit<ChatState> {
       const Duration(milliseconds: 100),
     );
 
-    //activeMessagesScrollController.addListener(scrollControllerListener);
-
     textEditingController.addListener(textEditingControllerListener);
   }
 
   Future<void> _getData() async {
     if (chatScreenArguments.ritualID != null) {
-      _getRituals(chatScreenArguments.ritualID!);
+      _getRituals(chatScreenArguments.ritualID!).then((_) async {
+        SchedulerBinding.instance.endOfFrame.then((_) => scrollChatDown);
+      });
     } else {
       await _getPublicOrPrivateQuestion();
     }
@@ -193,7 +194,6 @@ class ChatCubit extends Cubit<ChatState> {
 
   void textEditingControllerListener() {
     _tryStartAnswerSend();
-
     final textLength = textEditingController.text.length;
     emit(
       state.copyWith(
@@ -268,7 +268,14 @@ class ChatCubit extends Cubit<ChatState> {
     } on DioError catch (e) {
       _showErrorAlert();
       logger.d(e);
+      rethrow;
     }
+  }
+
+  void scrollChatDown() {
+    SchedulerBinding.instance.endOfFrame.then((value) =>
+        activeMessagesScrollController
+            .jumpTo(activeMessagesScrollController.position.maxScrollExtent));
   }
 
   Future<void> takeQuestion() async {
@@ -359,8 +366,8 @@ class ChatCubit extends Cubit<ChatState> {
 
     bool isSendButtonEnabled = false;
     if (recordingPath != null && recordingPath.isNotEmpty) {
-      final File audiofile = File(recordingPath);
-      final Metadata metaAudio = await MetadataRetriever.fromFile(audiofile);
+      final File audioFile = File(recordingPath);
+      final Metadata metaAudio = await MetadataRetriever.fromFile(audioFile);
 
       _recordAudioDuration = (metaAudio.trackDuration ?? 0) / 1000;
       if (_recordAudioDuration! < AppConstants.minRecordDurationInSec) {
@@ -372,7 +379,7 @@ class ChatCubit extends Cubit<ChatState> {
             uiErrorType: UIErrorType
                 .recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min));
         isSendButtonEnabled = true;
-      } else if (audiofile.sizeInMb > AppConstants.maxFileSizeInMb) {
+      } else if (audioFile.sizeInMb > AppConstants.maxFileSizeInMb) {
         updateErrorMessage(
             UIError(uiErrorType: UIErrorType.theMaximumImageSizeIs20Mb));
       } else {
@@ -569,6 +576,7 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       );
       deleteAttachedPictures();
+      scrollChatDown();
 
       if (answer.isSent) {
         _mainCubit.updateSessions();
@@ -590,6 +598,7 @@ class ChatCubit extends Cubit<ChatState> {
       );
       textEditingController.clear();
       deleteAttachedPictures();
+      scrollChatDown();
 
       if (answer.isSent) {
         _mainCubit.updateSessions();
@@ -888,11 +897,11 @@ class ChatCubit extends Cubit<ChatState> {
 
   int get minTextLength => state.questionFromDB?.type == ChatItemType.ritual
       ? AppConstants.minTextLengthRirual
-      : AppConstants.minTextLengthPublic;
+      : AppConstants.minTextLength;
 
   int get maxTextLength => state.questionFromDB?.type == ChatItemType.ritual
       ? AppConstants.maxTextLengthRitual
-      : AppConstants.maxTextLengthPublic;
+      : AppConstants.maxTextLength;
 
   bool get isAttachedPictures => state.attachedPictures.isNotEmpty;
 

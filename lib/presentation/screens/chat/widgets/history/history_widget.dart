@@ -14,6 +14,7 @@ class HistoryTab extends StatelessWidget {
   final String clientId;
   final FlutterSoundPlayer playerMedia;
   final String? storyId;
+
   const HistoryTab({
     Key? key,
     required this.clientId,
