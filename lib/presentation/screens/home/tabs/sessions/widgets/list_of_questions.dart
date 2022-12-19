@@ -72,8 +72,9 @@ class _PublicQuestionsListWidget extends StatelessWidget {
                   sessionsCubit.getPublicQuestions(refresh: true);
                 },
                 emptyListTitle: S.of(context).noQuestionsYet,
-                emptyListLabel:
-                    S.of(context).whenSomeoneAsksAPublicQuestionYouWillSeeThem,
+                emptyListLabel: S
+                    .of(context)
+                    .whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisList,
               ),
             );
           },
@@ -116,7 +117,7 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
                 },
                 emptyListTitle: S.of(context).noSessionsYet,
                 emptyListLabel:
-                    S.of(context).whenYouHelpYourFirstClientYouWillSeeYour,
+                    S.of(context).yourClientSessionHistoryWillAppearHere,
               ),
             );
           },
@@ -153,8 +154,7 @@ class _ListOfQuestionsWidget extends StatelessWidget {
       onRefresh: onRefresh,
       child: CustomScrollView(
         controller: controller,
-        physics:
-        const ClampingScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           questions.isNotEmpty
               ? SliverToBoxAdapter(

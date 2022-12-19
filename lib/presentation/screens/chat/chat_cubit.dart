@@ -47,7 +47,8 @@ class ChatCubit extends Cubit<ChatState> {
 
   final GlobalKey questionGlobalKey = GlobalKey();
 
-  final ConnectivityService _connectivityService = ConnectivityService();
+  final ConnectivityService _connectivityService =
+      getIt.get<ConnectivityService>();
 
   late final StreamSubscription<bool> _keyboardSubscription;
 
@@ -202,6 +203,12 @@ class ChatCubit extends Cubit<ChatState> {
             textLength >= minTextLength && textLength <= maxTextLength,
       ),
     );
+  }
+
+  void updateAppBarInformation(AppBarUpdateArguments? appBarUpdateArguments) {
+    emit(state.copyWith(
+      appBarUpdateArguments: appBarUpdateArguments,
+    ));
   }
 
   Future<void> _getPublicOrPrivateQuestion() async {
@@ -375,9 +382,8 @@ class ChatCubit extends Cubit<ChatState> {
             uiErrorType:
                 UIErrorType.youCantSendThisMessageBecauseItsLessThan15Seconds));
       } else if (_recordAudioDuration! > AppConstants.maxRecordDurationInSec) {
-        updateErrorMessage(UIError(
-            uiErrorType: UIErrorType
-                .recordingStoppedBecauseAudioFileIsReachedTheLimitOf3min));
+        updateErrorMessage(
+            UIError(uiErrorType: UIErrorType.youVeReachThe3MinuteTimeLimit));
         isSendButtonEnabled = true;
       } else if (audioFile.sizeInMb > AppConstants.maxFileSizeInMb) {
         updateErrorMessage(

@@ -17,6 +17,7 @@ Future<void> flagsBottomSheet(
     required AdvisorPreviewCubit advisorPreviewCubit}) async {
   showModalBottomSheet(
       context: context,
+      barrierColor: Colors.transparent,
       builder: (context) => BlocProvider<AdvisorPreviewCubit>.value(
             value: advisorPreviewCubit,
             child: Container(
@@ -36,12 +37,11 @@ Future<void> flagsBottomSheet(
                           (AdvisorPreviewCubit cubit) => cubit.state.oldIndex);
                       return ListView.builder(
                           shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (_, index) => _FlagTileWidget(
+                          itemCount: activeLanguages.length,
+                          itemBuilder: (context, index) => _FlagTileWidget(
                               languageCode: activeLanguages[index],
                               isSelected: index == selectedItemIndex,
-                              onTap: () => onSelectLanguage(index)),
-                          itemCount: activeLanguages.length);
+                              onTap: () => onSelectLanguage(index)));
                     }),
                   )
                 ],
@@ -74,7 +74,7 @@ class _FlagBottomSheetHeader extends StatelessWidget {
         onTap: onApply,
         child: Padding(
           padding: padding,
-          child: Text(S.of(context).apply,
+          child: Text(S.of(context).done,
               style: appBarTitleStyle?.copyWith(
                   fontWeight: FontWeight.w500, color: primary)),
         ),

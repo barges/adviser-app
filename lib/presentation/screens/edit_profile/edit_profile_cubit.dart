@@ -37,7 +37,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final UserRepository _userRepository = getIt.get<UserRepository>();
   final CachingManager _cacheManager = getIt.get<CachingManager>();
   final DefaultCacheManager _defaultCacheManager = DefaultCacheManager();
-  final ConnectivityService _connectivityService = ConnectivityService();
+  final ConnectivityService _connectivityService =
+      getIt.get<ConnectivityService>();
 
   late final UserProfile? userProfile;
   late final List<MarketsType> activeLanguages;
@@ -135,11 +136,11 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
         final ValidationErrorType statusErrorMessage =
             statusTextController.text.trim().isEmpty
-                ? ValidationErrorType.fieldIsRequired
+                ? ValidationErrorType.requiredField
                 : ValidationErrorType.empty;
         final ValidationErrorType profileErrorMessage =
             profileTextController.text.trim().isEmpty
-                ? ValidationErrorType.fieldIsRequired
+                ? ValidationErrorType.requiredField
                 : ValidationErrorType.empty;
 
         if (statusErrorMessage != ValidationErrorType.empty ||
@@ -251,7 +252,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       emit(
         state.copyWith(
             nicknameErrorType: nicknameController.text.isEmpty
-                ? ValidationErrorType.fieldIsRequired
+                ? ValidationErrorType.requiredField
                 : ValidationErrorType.pleaseEnterAtLeast3Characters),
       );
     }
@@ -266,13 +267,21 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         in textControllersMap.entries) {
       final List<TextEditingController> controllersByLanguage = entry.value;
       if (controllersByLanguage.firstOrNull?.text.trim().isEmpty == true) {
-        errorTextsMap[entry.key]?.first = ValidationErrorType.fieldIsRequired;
+        errorTextsMap[entry.key]?.first = ValidationErrorType.requiredField;
+        firstLanguageWithErrorIndex ??= activeLanguages.indexOf(entry.key);
+        firstLanguageWithErrorFocusNode ??= focusNodesMap[entry.key]?.first;
+        isValid = false;
+      } else if (controllersByLanguage.firstOrNull != null &&
+          controllersByLanguage.firstOrNull!.text.length > 300) {
+        errorTextsMap[entry.key]?.first =
+            ValidationErrorType.statusTextMayNotExceed300Characters;
         firstLanguageWithErrorIndex ??= activeLanguages.indexOf(entry.key);
         firstLanguageWithErrorFocusNode ??= focusNodesMap[entry.key]?.first;
         isValid = false;
       }
+
       if (controllersByLanguage.lastOrNull?.text.trim().isEmpty == true) {
-        errorTextsMap[entry.key]?.last = ValidationErrorType.fieldIsRequired;
+        errorTextsMap[entry.key]?.last = ValidationErrorType.requiredField;
         firstLanguageWithErrorIndex ??= activeLanguages.indexOf(entry.key);
         firstLanguageWithErrorFocusNode ??= focusNodesMap[entry.key]?.last;
         isValid = false;

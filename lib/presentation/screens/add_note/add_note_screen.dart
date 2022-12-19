@@ -51,7 +51,8 @@ class AddNoteScreen extends StatelessWidget {
               isOnline
                   ? const SizedBox.shrink()
                   : AppErrorWidget(
-                      errorMessage: S.of(context).youDontHaveInternetConnection,
+                      errorMessage:
+                          S.of(context).youDontHaveAnInternetConnection,
                       isRequired: true,
                     ),
               Expanded(
@@ -67,8 +68,9 @@ class AddNoteScreen extends StatelessWidget {
                                 vertical: 12.0,
                               ),
                               child: Text(
-                                addNoteCubit
-                                    .arguments.updatedAt!.parseDateTimePattern2,
+                                addNoteCubit.arguments.updatedAt
+                                        ?.parseDateTimePattern12 ??
+                                    '',
                                 style: Theme.of(context)
                                     .textTheme
                                     .displaySmall

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 
@@ -12,6 +13,7 @@ class UserAvatar extends StatelessWidget {
   final Color? badgeColor;
   final bool withBorder;
   final bool withError;
+  final bool isZodiac;
 
   const UserAvatar(
       {Key? key,
@@ -20,7 +22,8 @@ class UserAvatar extends StatelessWidget {
       this.badgeColor,
       this.diameter = 86.0,
       this.withBorder = false,
-      this.withError = false})
+      this.withError = false,
+      this.isZodiac = false})
       : super(key: key);
 
   @override
@@ -31,7 +34,9 @@ class UserAvatar extends StatelessWidget {
           height: diameter,
           width: diameter,
           decoration: BoxDecoration(
-            color: Theme.of(context).hintColor,
+            color: isZodiac && avatarUrl != null
+                ? null
+                : Theme.of(context).hintColor,
             shape: BoxShape.circle,
             border: withBorder
                 ? Border.all(
@@ -47,15 +52,21 @@ class UserAvatar extends StatelessWidget {
                       child: Assets.vectors.placeholderProfileImage
                           .svg(color: Theme.of(context).canvasColor),
                     )
-                  : Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(avatarUrl!),
-                        ),
-                      ),
-                    )
+                  : isZodiac
+                      ? SvgPicture.asset(
+                          avatarUrl!,
+                          height: diameter,
+                          width: diameter,
+                        )
+                      : Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: CachedNetworkImageProvider(avatarUrl!),
+                            ),
+                          ),
+                        )
               : Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,

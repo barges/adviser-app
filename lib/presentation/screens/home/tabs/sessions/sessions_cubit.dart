@@ -30,7 +30,8 @@ class SessionsCubit extends Cubit<SessionsState> {
   final ScrollController conversationsController = ScrollController();
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final ChatsRepository _repository = getIt.get<ChatsRepository>();
-  final ConnectivityService _connectivityService = ConnectivityService();
+  final ConnectivityService _connectivityService =
+      getIt.get<ConnectivityService>();
 
   late final StreamSubscription<bool> _updateSessionsSubscription;
   late final VoidCallback disposeUserStatusListen;
@@ -184,17 +185,16 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   Future<void> getPublicQuestions(
       {FortunicaUserStatus? status, bool refresh = false}) async {
-    if (refresh) {
-      _publicHasMore = true;
-      _publicQuestions.clear();
-    }
-
-    if ((status ?? cacheManager.getUserStatus()?.status) ==
-            FortunicaUserStatus.live &&
-        _publicHasMore) {
+    if (!_isPublicLoading) {
       _isPublicLoading = true;
-
-      if (await _connectivityService.checkConnection()) {
+      if (refresh) {
+        _publicHasMore = true;
+        _publicQuestions.clear();
+      }
+      if (_publicHasMore &&
+          await _connectivityService.checkConnection() &&
+          (status ?? cacheManager.getUserStatus()?.status) ==
+              FortunicaUserStatus.live) {
         _lastId = _publicQuestions.lastOrNull?.id;
         String? filtersLanguage;
         if (state.userMarkets.isNotEmpty) {
@@ -217,8 +217,8 @@ class SessionsCubit extends Cubit<SessionsState> {
           emit(state.copyWith(
             publicQuestions: List.of(_publicQuestions),
             disabledIndexes: [1],
-            appSuccess:
-                UISuccess(UISuccessType.youCanNotHelpUsersSinceYouHaveAnActive),
+            appSuccess: UISuccess(UISuccessType
+                .youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse),
           ));
         } else {
           emit(state.copyWith(
@@ -234,17 +234,17 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   Future<void> getConversations(
       {FortunicaUserStatus? status, bool refresh = false}) async {
-    if (refresh) {
-      _conversationsHasMore = true;
-      _conversationsLastItem = null;
-      _conversationsList.clear();
-    }
-    if ((status ?? cacheManager.getUserStatus()?.status) ==
-            FortunicaUserStatus.live &&
-        _conversationsHasMore) {
+    if (!_isConversationsLoading) {
       _isConversationsLoading = true;
-
-      if (await _connectivityService.checkConnection()) {
+      if (refresh) {
+        _conversationsHasMore = true;
+        _conversationsLastItem = null;
+        _conversationsList.clear();
+      }
+      if (_conversationsHasMore &&
+          await _connectivityService.checkConnection() &&
+          (status ?? cacheManager.getUserStatus()?.status) ==
+              FortunicaUserStatus.live) {
         String? filtersLanguage;
         if (state.userMarkets.isNotEmpty) {
           final MarketsType marketsType =

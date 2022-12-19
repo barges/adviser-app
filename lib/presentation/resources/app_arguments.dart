@@ -77,3 +77,13 @@ class ChatScreenArguments {
     this.storyIdForHistory,
   });
 }
+
+class AppBarUpdateArguments {
+  String? clientName;
+  ZodiacSign? zodiacSign;
+
+  AppBarUpdateArguments({
+    this.clientName,
+    this.zodiacSign,
+  });
+}

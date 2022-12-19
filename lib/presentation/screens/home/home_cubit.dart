@@ -27,7 +27,8 @@ class HomeCubit extends Cubit<HomeState> {
   final CachingManager cacheManager;
   final BuildContext context;
 
-  final ConnectivityService _connectivityService = ConnectivityService();
+  final ConnectivityService _connectivityService =
+      getIt.get<ConnectivityService>();
 
   final UserRepository _userRepository = getIt.get<UserRepository>();
   final PushNotificationManager _pushNotificationManager =
