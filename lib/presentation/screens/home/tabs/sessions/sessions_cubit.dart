@@ -26,8 +26,8 @@ import 'package:shared_advisor_interface/presentation/services/connectivity_serv
 class SessionsCubit extends Cubit<SessionsState> {
   final CachingManager cacheManager;
 
-  final ScrollController publicQuestionsController = ScrollController();
-  final ScrollController conversationsController = ScrollController();
+  final ScrollController publicQuestionsScrollController = ScrollController();
+  final ScrollController conversationsScrollController = ScrollController();
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final ChatsRepository _repository = getIt.get<ChatsRepository>();
   final ConnectivityService _connectivityService =
@@ -52,16 +52,16 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   SessionsCubit(this.cacheManager, this.context)
       : super(const SessionsState()) {
-    publicQuestionsController.addListener(() async {
+    publicQuestionsScrollController.addListener(() async {
       if (!_isPublicLoading &&
-          publicQuestionsController.position.extentAfter <=
+          publicQuestionsScrollController.position.extentAfter <=
               MediaQuery.of(context).size.height) {
         await getPublicQuestions();
       }
     });
-    conversationsController.addListener(() async {
+    conversationsScrollController.addListener(() async {
       if (!_isConversationsLoading &&
-          conversationsController.position.extentAfter <=
+          conversationsScrollController.position.extentAfter <=
               MediaQuery.of(context).size.height) {
         await getConversations();
       }
@@ -91,8 +91,8 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   @override
   Future<void> close() async {
-    publicQuestionsController.dispose();
-    conversationsController.dispose();
+    publicQuestionsScrollController.dispose();
+    conversationsScrollController.dispose();
     _updateSessionsSubscription.cancel();
     disposeUserProfileListen.call();
     disposeUserStatusListen.call();
@@ -185,7 +185,6 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   Future<void> getPublicQuestions(
       {FortunicaUserStatus? status, bool refresh = false}) async {
-    if (!_isPublicLoading) {
       _isPublicLoading = true;
       if (refresh) {
         _publicHasMore = true;
@@ -229,12 +228,11 @@ class SessionsCubit extends Cubit<SessionsState> {
         }
       }
       _isPublicLoading = false;
-    }
   }
 
   Future<void> getConversations(
       {FortunicaUserStatus? status, bool refresh = false}) async {
-    if (!_isConversationsLoading) {
+
       _isConversationsLoading = true;
       if (refresh) {
         _conversationsHasMore = true;
@@ -274,7 +272,6 @@ class SessionsCubit extends Cubit<SessionsState> {
         );
       }
       _isConversationsLoading = false;
-    }
   }
 
 // Future<void> getHistoryList(
