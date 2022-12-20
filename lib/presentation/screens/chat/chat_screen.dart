@@ -84,7 +84,9 @@ class ChatScreen extends StatelessWidget {
               body: SafeArea(
                 child: Builder(builder: (context) {
                   final List<String> tabsTitles = [];
-                  if (chatCubit.chatScreenArguments.storyIdForHistory == null) {
+                  if (chatCubit.chatScreenArguments.privateQuestionId != null ||
+                      chatCubit.chatScreenArguments.publicQuestionId != null ||
+                      chatCubit.chatScreenArguments.ritualID != null) {
                     tabsTitles.add(
                         chatCubit.chatScreenArguments.publicQuestionId != null
                             ? S.of(context).question
@@ -143,8 +145,11 @@ class ChatScreen extends StatelessWidget {
                       ),
                       Builder(builder: (context) {
                         final List<Widget> tabs = [];
-                        if (chatCubit.chatScreenArguments.storyIdForHistory ==
-                            null) {
+                        if (chatCubit.chatScreenArguments.privateQuestionId !=
+                                null ||
+                            chatCubit.chatScreenArguments.publicQuestionId !=
+                                null ||
+                            chatCubit.chatScreenArguments.ritualID != null) {
                           tabs.add(const _ActiveChat());
                         }
                         tabs.addAll([
@@ -153,19 +158,27 @@ class ChatScreen extends StatelessWidget {
                                 context.select((ChatCubit cubit) =>
                                     cubit.state.flutterSoundPlayer);
 
-                            return questionFromDB?.clientID != null &&
+                            return (chatCubit.chatScreenArguments.clientId !=
+                                            null ||
+                                        questionFromDB?.clientID != null) &&
                                     flutterSoundPlayer != null
                                 ? HistoryWidget(
-                                    clientId: questionFromDB!.clientID!,
+                                    clientId: chatCubit
+                                            .chatScreenArguments.clientId ??
+                                        questionFromDB?.clientID ??
+                                        '',
                                     playerMedia: chatCubit.playerMedia!,
                                     storyId: chatCubit
                                         .chatScreenArguments.storyIdForHistory,
                                   )
                                 : const SizedBox.shrink();
                           }),
-                          questionFromDB?.clientID != null
+                          chatCubit.chatScreenArguments.clientId != null ||
+                                  questionFromDB?.clientID != null
                               ? CustomerProfileWidget(
-                                  customerId: questionFromDB!.clientID!,
+                                  customerId:
+                                      chatCubit.chatScreenArguments.clientId ??
+                                          questionFromDB!.clientID!,
                                   updateClientInformationCallback:
                                       chatCubit.updateAppBarInformation,
                                 )

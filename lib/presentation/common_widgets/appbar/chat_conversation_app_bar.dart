@@ -52,13 +52,12 @@ class ChatConversationAppBar extends StatelessWidget
               if (publicQuestionId != null &&
                   questionStatus == ChatItemStatusType.taken)
                 Padding(
-                  padding: const EdgeInsets.only(right: 16.0),
+                  padding: const EdgeInsets.only(right: 2.0),
                   child: _ReturnInQueue(
                     onTap: returnInQueueButtonOnTap,
                   ),
                 ),
-              if (publicQuestionId == null &&
-                  questionStatus != ChatItemStatusType.taken)
+              if (questionStatus != ChatItemStatusType.taken)
                 AppIconButton(
                   icon: Assets.vectors.arrowLeft.path,
                   onTap: Get.back,
@@ -108,9 +107,9 @@ class ChatConversationAppBar extends StatelessWidget
                   ),
                 );
               }),
-              if (publicQuestionId != null &&
-                  questionStatus == ChatItemStatusType.taken)
-                const Spacer(),
+              // if (publicQuestionId != null &&
+              //     questionStatus == ChatItemStatusType.taken)
+              //   const Spacer(),
               if (zodiacSign != null)
                 SvgPicture.asset(
                   zodiacSign!.imagePath(context),

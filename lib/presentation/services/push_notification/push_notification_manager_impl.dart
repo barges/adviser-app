@@ -2,7 +2,10 @@ import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 
 bool _isRegisteredForPushNotifications = false;
@@ -106,21 +109,24 @@ class PushNotificationManagerImpl implements PushNotificationManager {
 
 Future<void> _navigateToNextScreen(RemoteMessage? message) async {
   if (message != null) {
-    // Map<String, dynamic> data = message.data;
+    Map<String, dynamic> data = message.data;
 
-    // Map<String, dynamic> meta = json.decode(data['meta']);
-    // String? entityId = meta['entityId'];
-    // String? type = meta['type'];
+    Map<String, dynamic> meta = json.decode(data['meta']);
+    String? entityId = meta['entityId'];
+    String? type = meta['type'];
 
-    // if (entityId != null && type != null) {
-    //   if (type == PushType.private.name || type == PushType.session.name) {
-    //     Get.toNamed(AppRoutes.chat,
-    //         arguments: ChatScreenArguments(questionId: entityId));
-    //   } else if (type == PushType.tips.name) {
-    //     Get.toNamed(AppRoutes.chat,
-    //         arguments: ChatScreenArguments(clientId: entityId));
-    //   }
-    // }
+    if (entityId != null && type != null) {
+      if (type == PushType.private.name) {
+        Get.toNamed(AppRoutes.chat,
+            arguments: ChatScreenArguments(privateQuestionId: entityId));
+      } else if (type == PushType.session.name) {
+        Get.toNamed(AppRoutes.chat,
+            arguments: ChatScreenArguments(ritualID: entityId));
+      } else if (type == PushType.tips.name) {
+        Get.toNamed(AppRoutes.chat,
+            arguments: ChatScreenArguments(clientId: entityId));
+      }
+    }
   }
 }
 
