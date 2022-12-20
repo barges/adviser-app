@@ -99,8 +99,7 @@ Future<void> changeStatusCommentBottomSheet(
                         return AppTextField(
                           isBig: true,
                           focusNode: context.read<AccountCubit>().commentNode,
-                          label:
-                              S.of(context).informOurTeamYourPlannedReturnDate,
+                          label: S.of(context).tellOurTeamWhenYouPlanToReturn,
                           controller: commentController,
                         );
                       }),

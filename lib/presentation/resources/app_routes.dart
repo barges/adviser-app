@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/gallery_pictures_screen.dart.dart';
+import 'package:shared_advisor_interface/presentation/screens/gallery/gallery_pictures_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/all_brands/all_brands_screen.dart';

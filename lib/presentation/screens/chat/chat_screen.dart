@@ -22,6 +22,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/messages/ap
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_succes_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_widget.dart';
@@ -50,21 +51,28 @@ class ChatScreen extends StatelessWidget {
 
           final ChatItem? questionFromDB =
               context.select((ChatCubit cubit) => cubit.state.questionFromDB);
+          final AppBarUpdateArguments? appBarUpdateArguments = context
+              .select((ChatCubit cubit) => cubit.state.appBarUpdateArguments);
 
           return Scaffold(
             body: Scaffold(
               appBar: ChatConversationAppBar(
-                  title: questionFromDB?.clientName ?? '',
-                  zodiacSign: questionFromDB?.clientInformation?.zodiac,
+                  title: appBarUpdateArguments?.clientName ??
+                      questionFromDB?.clientName ??
+                      '',
+                  zodiacSign: appBarUpdateArguments?.zodiacSign ??
+                      questionFromDB?.clientInformation?.zodiac,
+                  publicQuestionId:
+                      chatCubit.chatScreenArguments.publicQuestionId,
                   returnInQueueButtonOnTap: () async {
                     final dynamic needReturn = await showOkCancelAlert(
                       context: context,
-                      title: s.youRefuseToAnswerThisQuestion,
+                      title: s.doYouWantToRejectThisQuestion,
                       description: s
-                          .itWillGoBackIntoTheGeneralQueueAndYouWillNotBeAbleToTakeItAgain,
-                      okText: s.ok,
+                          .itWillGoBackIntoTheGeneralQueueYouWillNotBeAbleToTakeItAgain,
+                      okText: s.return_,
                       actionOnOK: () => Navigator.pop(context, true),
-                      allowBarrierClock: false,
+                      allowBarrierClick: false,
                       isCancelEnabled: true,
                     );
 
@@ -147,7 +155,7 @@ class ChatScreen extends StatelessWidget {
 
                             return questionFromDB?.clientID != null &&
                                     flutterSoundPlayer != null
-                                ? HistoryTab(
+                                ? HistoryWidget(
                                     clientId: questionFromDB!.clientID!,
                                     playerMedia: chatCubit.playerMedia!,
                                     storyId: chatCubit
@@ -158,6 +166,8 @@ class ChatScreen extends StatelessWidget {
                           questionFromDB?.clientID != null
                               ? CustomerProfileWidget(
                                   customerId: questionFromDB!.clientID!,
+                                  updateClientInformationCallback:
+                                      chatCubit.updateAppBarInformation,
                                 )
                               : const SizedBox.shrink(),
                         ]);
@@ -215,7 +225,7 @@ class ChatScreen extends StatelessWidget {
                                       context,
                                       S
                                           .of(context)
-                                          .doYouWantToDeleteAudioMessage))!) {
+                                          .doYouWantToDeleteThisAudioMessage))!) {
                                     chatCubit.deletedRecordedAudio();
                                   }
                                 },
@@ -258,7 +268,7 @@ class ChatScreen extends StatelessWidget {
                                       context,
                                       S
                                           .of(context)
-                                          .doYouWantToDeleteAudioMessage))!) {
+                                          .doYouWantToDeleteThisAudioMessage))!) {
                                     chatCubit.deletedRecordedAudio();
                                   }
                                 },
@@ -303,7 +313,7 @@ showAlert(BuildContext context) async {
     actionOnOK: () {
       Get.close(2);
     },
-    allowBarrierClock: false,
+    allowBarrierClick: false,
     isCancelEnabled: false,
   );
 }

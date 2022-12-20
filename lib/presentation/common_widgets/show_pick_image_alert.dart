@@ -29,7 +29,7 @@ Future<void> showPickImageAlert(
               width: MediaQuery.of(context).size.width,
               child: Center(
                   child: Text(
-                S.of(context).chooseFromGallery,
+                S.of(context).choosePhotoFromLibrary,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
@@ -86,7 +86,7 @@ Future<void> showPickImageAlert(
                 ),
                 CupertinoActionSheetAction(
                   child: Text(
-                    S.of(context).chooseFromGallery,
+                    S.of(context).choosePhotoFromLibrary,
                   ),
                   onPressed: () => Get.back(result: ImageSource.gallery),
                 ),
@@ -148,13 +148,11 @@ Future<void> _pickMultiImage(BuildContext context, ImageSource imageSource,
 
 Future<void> _handlePermissions(
     BuildContext context, ImageSource source) async {
-  String alertTitle = '';
   PermissionStatus status;
   switch (source) {
     case ImageSource.camera:
       {
         status = await Permission.camera.request();
-        alertTitle = S.of(context).allowCamera;
       }
       break;
     case ImageSource.gallery:
@@ -164,7 +162,6 @@ Future<void> _handlePermissions(
         } else {
           status = await Permission.storage.request();
         }
-        alertTitle = S.of(context).allowGallery;
       }
       break;
   }
@@ -175,10 +172,13 @@ Future<void> _handlePermissions(
     });
     await showOkCancelAlert(
         context: context,
-        title: alertTitle,
+        title: S.of(context).permissionNeeded,
         okText: S.of(context).settings,
+        description: S
+            .of(context)
+            .weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages,
         actionOnOK: actionOnOk,
-        allowBarrierClock: true,
+        allowBarrierClick: true,
         isCancelEnabled: true);
   }
 }

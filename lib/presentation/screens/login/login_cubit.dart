@@ -153,7 +153,7 @@ class LoginCubit extends Cubit<LoginState> {
       emit(
         state.copyWith(
           appSuccess: UISuccess.withArguments(
-              UISuccessType.weVeSentYouALinkToEmailToChangeYourPassword,
+              UISuccessType.weVeSentPasswordResetInstructionsToEmail,
               email as String),
         ),
       );

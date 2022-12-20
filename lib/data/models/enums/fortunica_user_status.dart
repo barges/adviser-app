@@ -61,11 +61,41 @@ enum FortunicaUserStatus {
       case FortunicaUserStatus.blocked:
         return '';
       case FortunicaUserStatus.incomplete:
-        return S.of(context).youReCurrentlyNotLiveOnThePlatform;
       case FortunicaUserStatus.legalBlock:
-        return S.of(context).beforeProceedingYouNeedToAcceptContracts;
       case FortunicaUserStatus.offline:
-        return S.of(context).youReCurrentlyOfflineOnThePlatform;
+        return '${errorTitleText(context)}. ${errorBodyText(context)}';
+    }
+  }
+
+  String errorTitleText(BuildContext context) {
+    switch (this) {
+      case FortunicaUserStatus.live:
+      case FortunicaUserStatus.blocked:
+        return '';
+      case FortunicaUserStatus.incomplete:
+        return S.of(context).youReNotLiveOnThePlatform;
+      case FortunicaUserStatus.legalBlock:
+        return S.of(context).youNeedToAcceptTheAdvisorContract;
+      case FortunicaUserStatus.offline:
+        return S.of(context).youReCurrentlyOffline;
+    }
+  }
+
+  String errorBodyText(BuildContext context) {
+    switch (this) {
+      case FortunicaUserStatus.live:
+      case FortunicaUserStatus.blocked:
+        return '';
+      case FortunicaUserStatus.incomplete:
+        return S
+            .of(context)
+            .pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManager;
+      case FortunicaUserStatus.legalBlock:
+        return S.of(context).pleaseLoginToTheWebVersionOfYourAccount;
+      case FortunicaUserStatus.offline:
+        return S
+            .of(context)
+            .changeYourStatusInYourProfileToMakeYourselfVisibleToUsers;
     }
   }
 
@@ -75,7 +105,7 @@ enum FortunicaUserStatus {
       case FortunicaUserStatus.blocked:
         return '';
       case FortunicaUserStatus.incomplete:
-        return S.of(context).completeProfileToStartHelping;
+        return S.of(context).completeYourProfileToStartWork;
       case FortunicaUserStatus.legalBlock:
       case FortunicaUserStatus.offline:
         return S.of(context).goToAccount;

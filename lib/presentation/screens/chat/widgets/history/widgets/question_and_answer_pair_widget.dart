@@ -14,18 +14,32 @@ class QuestionAndAnswerPairWidget extends StatelessWidget {
     return Column(
       children: [
         if (historyItem.question != null)
-          ChatItemWidget(
-            historyItem.question!,
-            isHistoryQuestion: true,
+          Column(
+            children: [
+              const SizedBox(
+                height: 8.0,
+              ),
+              ChatItemWidget(
+                historyItem.question!,
+                isHistoryQuestion: true,
+              ),
+            ],
           ),
         if (historyItem.answer != null)
-          ChatItemWidget(
-            historyItem.answer!.copyWith(
-              isAnswer: true,
-              ritualIdentifier: historyItem.question?.ritualIdentifier,
-              type: historyItem.question?.type,
-            ),
-            isHistoryAnswer: true,
+          Column(
+            children: [
+              const SizedBox(
+                height: 8.0,
+              ),
+              ChatItemWidget(
+                historyItem.answer!.copyWith(
+                  isAnswer: true,
+                  ritualIdentifier: historyItem.question?.ritualIdentifier,
+                  type: historyItem.question?.type,
+                ),
+                isHistoryAnswer: true,
+              ),
+            ],
           ),
       ],
     );

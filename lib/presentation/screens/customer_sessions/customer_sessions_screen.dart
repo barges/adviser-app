@@ -86,76 +86,67 @@ class CustomerSessionsScreen extends StatelessWidget {
                                       },
                                       child: questions.isNotEmpty
                                           ? ListView.separated(
-                                            controller: customerSessionsCubit
-                                                .questionsScrollController,
-                                            padding: const EdgeInsets.all(
-                                                AppConstants
-                                                    .horizontalScreenPadding),
-                                            physics:
-                                                const ClampingScrollPhysics(),
-                                            shrinkWrap: true,
-                                            itemBuilder:
-                                                (BuildContext context,
-                                                    int index) {
-                                              return CustomerSessionListTileWidget(
-                                                  question:
-                                                      questions[index]);
-                                            },
-                                            separatorBuilder:
-                                                (BuildContext context,
-                                                        int index) =>
-                                                    const SizedBox(
-                                              height: 12.0,
-                                            ),
-                                            itemCount: questions.length,
-                                          )
-                                          : CustomScrollView(
-                                              slivers: [
-                                                  SliverFillRemaining(
-                                                      hasScrollBody: false,
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                          horizontal: AppConstants
-                                                              .horizontalScreenPadding,
+                                              controller: customerSessionsCubit
+                                                  .questionsScrollController,
+                                              padding: const EdgeInsets.all(
+                                                  AppConstants
+                                                      .horizontalScreenPadding),
+                                              physics:
+                                                  const AlwaysScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return CustomerSessionListTileWidget(
+                                                    question: questions[index]);
+                                              },
+                                              separatorBuilder:
+                                                  (BuildContext context,
+                                                          int index) =>
+                                                      const SizedBox(
+                                                height: 12.0,
+                                              ),
+                                              itemCount: questions.length,
+                                            )
+                                          : CustomScrollView(slivers: [
+                                              SliverFillRemaining(
+                                                  hasScrollBody: false,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      horizontal: AppConstants
+                                                          .horizontalScreenPadding,
+                                                    ),
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        EmptyListWidget(
+                                                          title: S
+                                                              .of(context)
+                                                              .weDidntFindAnything,
+                                                          label: S
+                                                              .of(context)
+                                                              .noSessionsFoundWithThisFilter,
                                                         ),
-                                                        child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            EmptyListWidget(
-                                                              title: S
-                                                                  .of(context)
-                                                                  .weDidntFindAnything,
-                                                              label: S
-                                                                  .of(context)
-                                                                  .thisFilteringOptionDoesntContainAnySessions,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ))
-                                                ]),
+                                                      ],
+                                                    ),
+                                                  ))
+                                            ]),
                                     )
                                   : CustomScrollView(slivers: [
                                       SliverFillRemaining(
-                                        hasScrollBody: false,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: AppConstants
-                                                  .horizontalScreenPadding),
+                                          hasScrollBody: false,
                                           child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: const [
                                               NoConnectionWidget(),
                                             ],
-                                          ),
-                                        ),
-                                      ),
+                                          )),
                                     ]),
                             );
                     }),
@@ -179,7 +170,7 @@ showErrorAlert(BuildContext context) async {
           ),
           (route) => false);
     },
-    allowBarrierClock: false,
+    allowBarrierClick: false,
     isCancelEnabled: false,
   );
 }

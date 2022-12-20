@@ -19,6 +19,7 @@ const String datePattern8 = 'MMM dd';
 const String datePattern9 = 'MMM dd, yyyy';
 const String datePattern10 = 'MM/dd';
 const String datePattern11 = 'MM/dd/yy';
+const String datePattern12 = 'MMM. dd, yyyy HH:mm';
 
 const String currencyPattern = '#,##0.00';
 
@@ -118,6 +119,12 @@ extension StringExt on String {
     final DateTime inputData = DateTime.parse(
         DateFormat(dateFormat).parse(this, true).toLocal().toString());
     return DateFormat(datePattern11).format(inputData);
+  }
+
+  String get parseDateTimePattern12 {
+    final DateTime inputData = DateTime.parse(
+        DateFormat(dateFormat).parse(this, true).toLocal().toString());
+    return DateFormat(datePattern12).format(inputData);
   }
 
   String get removeSpacesAndNewLines {

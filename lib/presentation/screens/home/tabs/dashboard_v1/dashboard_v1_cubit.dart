@@ -11,7 +11,8 @@ import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboar
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 class DashboardV1Cubit extends Cubit<DashboardV1State> {
-  final ConnectivityService _connectivityService = ConnectivityService();
+  final ConnectivityService _connectivityService =
+      getIt.get<ConnectivityService>();
 
   late final VoidCallback disposeUserProfileListen;
   late final VoidCallback disposeUserIdListen;

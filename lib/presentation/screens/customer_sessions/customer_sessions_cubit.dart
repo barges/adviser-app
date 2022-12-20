@@ -29,7 +29,8 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   final CustomerRepository _customerRepository =
       getIt.get<CustomerRepository>();
   final ScrollController questionsScrollController = ScrollController();
-  final ConnectivityService _connectivityService = ConnectivityService();
+  final ConnectivityService _connectivityService =
+      getIt.get<ConnectivityService>();
 
   final List<ChatItemType> filters = [
     ChatItemType.all,
@@ -185,6 +186,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
       }
       _isLoading = false;
     }
+    _isLoading = false;
   }
 
   Future<void> getCustomerInfo() async {

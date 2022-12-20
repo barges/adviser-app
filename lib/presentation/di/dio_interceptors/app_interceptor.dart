@@ -49,7 +49,7 @@ class AppInterceptor extends Interceptor {
         Get.offNamedUntil(AppRoutes.login, (route) => false);
       } else {
         _mainCubit.updateErrorMessage(
-          UIError(uiErrorType: UIErrorType.wrongUsernameOrPassword),
+          UIError(uiErrorType: UIErrorType.wrongUsernameAndOrPassword),
         );
       }
     } else if (err.response?.statusCode == 451 ||

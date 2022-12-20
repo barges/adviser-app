@@ -7,10 +7,10 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:shared_advisor_interface/data/models/chats/history.dart';
 import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_state.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 enum HistoryScrollDirection {
   up,
@@ -19,26 +19,29 @@ enum HistoryScrollDirection {
 
 class HistoryCubit extends Cubit<HistoryState> {
   final ScrollController historyMessagesScrollController = ScrollController();
-  final ConnectivityService _connectivityService = ConnectivityService();
+  final ConnectivityService _connectivityService =
+      getIt.get<ConnectivityService>();
   final ChatsRepository _repository;
   final String _clientId;
-  final String? _storyId;
+  final String? storyId;
   FlutterSoundPlayer? _playerMedia;
   final Codec _codec = Codec.aacMP4;
 
   final List<History> _historyList = [];
   final int _limit = 15;
+  final GlobalKey scrollItemKey = GlobalKey();
   bool _hasMore = true;
   String? _lastItem;
   bool _hasBefore = false;
   String? _firstItem;
   bool _isLoading = false;
+  int offset = 0;
 
   HistoryCubit(
     this._repository,
     this._clientId,
     this._playerMedia,
-    this._storyId,
+    this.storyId,
   ) : super(const HistoryState()) {
     _getHistoryList(firstRequest: true);
     historyMessagesScrollController.addListener(scrollControllerListener);
@@ -53,7 +56,6 @@ class HistoryCubit extends Cubit<HistoryState> {
   }
 
   void scrollControllerListener() {
-
     if (!_isLoading &&
         historyMessagesScrollController.position.extentAfter <= 300) {
       _getHistoryList(
@@ -61,7 +63,7 @@ class HistoryCubit extends Cubit<HistoryState> {
       );
     }
     if (!_isLoading &&
-        historyMessagesScrollController.position.extentBefore <= 300) {
+        historyMessagesScrollController.position.extentBefore <= 0) {
       _getHistoryList(
         scrollDirection: HistoryScrollDirection.up,
       );
@@ -72,25 +74,27 @@ class HistoryCubit extends Cubit<HistoryState> {
     bool firstRequest = false,
     HistoryScrollDirection? scrollDirection,
   }) async {
-
-   _isLoading = true;
+    if (!_isLoading) {
+      _isLoading = true;
       try {
         if (firstRequest && await _connectivityService.checkConnection()) {
           final HistoryResponse result = await _repository.getHistoryList(
             clientId: _clientId,
             limit: _limit,
-            storyId: _storyId,
+            storyId: storyId,
           );
           _hasMore = result.hasMore ?? false;
           _hasBefore = result.hasBefore ?? false;
-          _lastItem = result.history?.lastOrNull?.id;
+          _lastItem = result.lastItem;
           _firstItem = result.firstItem;
 
           _historyList.addAll(result.history ?? const []);
           emit(state.copyWith(
             historyMessages: List.of(_historyList),
           ));
-          _getHistoryList(scrollDirection: HistoryScrollDirection.up);
+          _isLoading = false;
+          await _getHistoryList(scrollDirection: HistoryScrollDirection.down);
+          await _getHistoryList(scrollDirection: HistoryScrollDirection.up);
         } else {
           if (_hasMore &&
               await _connectivityService.checkConnection() &&
@@ -100,11 +104,10 @@ class HistoryCubit extends Cubit<HistoryState> {
               limit: _limit,
               lastItem: _lastItem,
             );
-
             _hasMore = result.hasMore ?? false;
-            _lastItem = result.lastItem;
 
-            _historyList.addAll(result.history ?? const []);
+            _lastItem = result.lastItem;
+            _historyList.insertAll(0, result.history ?? const []);
 
             emit(state.copyWith(
               historyMessages: List.of(_historyList),
@@ -118,18 +121,22 @@ class HistoryCubit extends Cubit<HistoryState> {
               firstItem: _firstItem,
             );
             _hasBefore = result.hasBefore ?? false;
-            _firstItem = result.firstItem;
 
-            _historyList.insertAll(0, result.history ?? const []);
+            _firstItem = result.firstItem;
+            offset = result.history?.length ?? 0;
+            _historyList.addAll(result.history ?? const []);
+
             emit(state.copyWith(
               historyMessages: List.of(_historyList),
             ));
+            Utils.animateToWidget(scrollItemKey, durationInMilliseconds: 0);
           }
         }
       } on DioError catch (e) {
         logger.d(e);
       }
       _isLoading = false;
+    }
   }
 
   Future<void> startPlayAudio(String audioUrl) async {

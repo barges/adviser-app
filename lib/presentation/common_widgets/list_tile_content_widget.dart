@@ -40,6 +40,7 @@ class ListTileContentWidget extends StatelessWidget {
             _MediaContent(
               attachment: question.attachments!.first,
               isActive: question.isActive,
+              isSingleMedia: false,
             ),
             const SizedBox(
               width: 8.0,
