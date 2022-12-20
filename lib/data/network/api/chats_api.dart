@@ -42,6 +42,7 @@ abstract class ChatsApi {
   Future<QuestionsListResponse> getCustomerQuestions({
     @Query('clientID') required String id,
     @Query('filters[type]') String? filterType,
+    @Query('filters[language]') String? filterLanguage,
   });
 
   @GET('/experts/stories/history')

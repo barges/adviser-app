@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
+import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/list_tile_content_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/small_list_tile_badge.dart';
@@ -40,9 +41,9 @@ class CustomerSessionListTileWidget extends StatelessWidget {
                 ),
               ),
               child: SvgPicture.asset(
-                question.ritualIdentifier?.iconPath ??
-                    question.type?.iconPath ??
-                    '',
+                question.type != ChatItemType.ritual
+                    ? question.type?.iconPath ?? ''
+                    : question.ritualIdentifier?.iconPath ?? '',
                 height: AppConstants.iconSize,
                 width: AppConstants.iconSize,
                 fit: BoxFit.scaleDown,
@@ -61,9 +62,11 @@ class CustomerSessionListTileWidget extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          question.ritualIdentifier?.sessionName(context) ??
-                              question.type?.typeName(context) ??
-                              '',
+                          question.type != ChatItemType.ritual
+                              ? question.type?.typeName(context) ?? ''
+                              : question.ritualIdentifier
+                                      ?.sessionName(context) ??
+                                  '',
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.labelMedium?.copyWith(
                             fontSize: 15.0,

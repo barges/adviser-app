@@ -8,6 +8,7 @@ import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
@@ -33,7 +34,6 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
       getIt.get<ConnectivityService>();
 
   final List<ChatItemType> filters = [
-    ChatItemType.all,
     ChatItemType.ritual,
     ChatItemType.private,
   ];
@@ -41,6 +41,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   final List<ChatItem> _privateQuestionsWithHistory = [];
   final List<String> _excludeIds = [];
 
+  late final CustomerSessionsScreenArguments arguments;
   late final ChatItem argumentsQuestion;
   late final StreamSubscription<bool> _updateSessionsSubscription;
 
@@ -53,7 +54,8 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
     this._screenHeight,
     this._showErrorAlert,
   ) : super(const CustomerSessionsState()) {
-    argumentsQuestion = Get.arguments as ChatItem;
+    arguments = Get.arguments as CustomerSessionsScreenArguments;
+    argumentsQuestion = arguments.question;
 
     emit(
       state.copyWith(
@@ -67,6 +69,10 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
       getPrivateQuestions();
     }
 
+    if (arguments.marketIndex != null) {
+      emit(state.copyWith(currentMarketIndex: arguments.marketIndex!));
+    }
+
     questionsScrollController.addListener(() async {
       if (!_isLoading &&
           questionsScrollController.position.extentAfter <= _screenHeight) {
@@ -75,6 +81,8 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
         );
       }
     });
+
+    getUserMarkets();
 
     _updateSessionsSubscription = _mainCubit.sessionsUpdateTrigger.listen(
       (value) async {
@@ -90,8 +98,22 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
     return super.close();
   }
 
-  void changeFilterIndex(int newIndex) {
+  void getUserMarkets() {
+    final List<MarketsType>? cachedUserMarkets = cacheManager.getUserMarkets();
+    final List<MarketsType> userMarkets = [
+      MarketsType.all,
+      ...cachedUserMarkets ?? [],
+    ];
+    emit(state.copyWith(userMarkets: userMarkets));
+  }
+
+  void changeFilterIndex(int? newIndex) {
     emit(state.copyWith(currentFilterIndex: newIndex));
+    getPrivateQuestions(refresh: true);
+  }
+
+  void changeMarketIndex(int newIndex) {
+    emit(state.copyWith(currentMarketIndex: newIndex));
     getPrivateQuestions(refresh: true);
   }
 
@@ -107,14 +129,22 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
 
     if (await _connectivityService.checkConnection()) {
       try {
-        final ChatItemType questionsType = filters[state.currentFilterIndex];
-        final String? filterType = questionsType != ChatItemType.all
-            ? questionsType.filterTypeName
+        final ChatItemType? questionsType = state.currentFilterIndex != null
+            ? filters[state.currentFilterIndex!]
             : null;
+        final String? filterType = questionsType?.filterTypeName;
+        String? filtersLanguage;
+        if (state.userMarkets.isNotEmpty) {
+          final MarketsType marketsType =
+              state.userMarkets[state.currentMarketIndex];
+          filtersLanguage =
+              marketsType != MarketsType.all ? marketsType.name : null;
+        }
         final QuestionsListResponse result =
             await _chatsRepository.getCustomerQuestions(
           clientId: argumentsQuestion.clientID ?? '',
           filterType: filterType,
+          filterLanguage: filtersLanguage,
         );
 
         final List<ChatItem> activeQuestions = [];
@@ -152,10 +182,10 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
 
       if (await _connectivityService.checkConnection()) {
         try {
-          final ChatItemType questionsType = filters[state.currentFilterIndex];
-          final String? filterType = questionsType != ChatItemType.all
-              ? questionsType.filterTypeName
+          final ChatItemType? questionsType = state.currentFilterIndex != null
+              ? filters[state.currentFilterIndex!]
               : null;
+          final String? filterType = questionsType?.filterTypeName;
 
           final QuestionsListResponse result =
               await _chatsRepository.getCustomerHistoryStories(

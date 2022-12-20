@@ -87,3 +87,13 @@ class AppBarUpdateArguments {
     this.zodiacSign,
   });
 }
+
+class CustomerSessionsScreenArguments {
+  ChatItem question;
+  int? marketIndex;
+
+  CustomerSessionsScreenArguments({
+    required this.question,
+    this.marketIndex,
+  });
+}

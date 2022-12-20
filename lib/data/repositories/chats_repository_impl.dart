@@ -110,12 +110,12 @@ class ChatsRepositoryImpl implements ChatsRepository {
   Future<QuestionsListResponse> getCustomerQuestions({
     required String clientId,
     String? filterType,
+    String? filterLanguage,
   }) async {
-
-    final QuestionsListResponse response =
-     await _api.getCustomerQuestions(
+    final QuestionsListResponse response = await _api.getCustomerQuestions(
       id: clientId,
       filterType: filterType,
+      filterLanguage: filterLanguage,
     );
 
     return response;

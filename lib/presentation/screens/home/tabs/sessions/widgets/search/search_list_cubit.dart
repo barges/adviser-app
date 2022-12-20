@@ -8,6 +8,7 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/search/search_list_state.dart';
@@ -103,7 +104,7 @@ class SearchListCubit extends Cubit<SearchListState> {
     closeSearch();
     Get.toNamed(
       AppRoutes.customerSessions,
-      arguments: question,
+      arguments: CustomerSessionsScreenArguments(question: question),
     );
   }
 }

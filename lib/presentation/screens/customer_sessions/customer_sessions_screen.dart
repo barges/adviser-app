@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
+import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
@@ -52,12 +53,19 @@ class CustomerSessionsScreen extends StatelessWidget {
                       height: 1,
                     ),
                     Builder(builder: (context) {
-                      final int currentFilterIndex = context.select(
+                      final int? currentFilterIndex = context.select(
                           (CustomerSessionsCubit cubit) =>
                               cubit.state.currentFilterIndex);
+                      final List<MarketsType> userMarkets = context.select(
+                          (CustomerSessionsCubit cubit) =>
+                              cubit.state.userMarkets);
+                      final int currentMarketIndex = context.select(
+                          (CustomerSessionsCubit cubit) =>
+                              cubit.state.currentMarketIndex);
                       return Opacity(
                         opacity: isOnline ? 1.0 : 0.4,
                         child: ListOfFiltersWidget(
+                          userMarkets: userMarkets,
                           currentFilterIndex: currentFilterIndex,
                           onTapToFilter: isOnline
                               ? customerSessionsCubit.changeFilterIndex
@@ -65,6 +73,10 @@ class CustomerSessionsScreen extends StatelessWidget {
                           filters: customerSessionsCubit.filters
                               .map((e) => e.filterName(context))
                               .toList(),
+                          currentMarketIndex: currentMarketIndex,
+                          onTapToMarket: isOnline
+                              ? customerSessionsCubit.changeMarketIndex
+                              : (value) {},
                         ),
                       );
                     }),

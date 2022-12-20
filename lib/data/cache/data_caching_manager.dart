@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
+import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
@@ -248,5 +249,11 @@ class DataCachingManager implements CachingManager {
     return _userBox.listenKey(_userIdKey, (value) {
       callback(value);
     });
+  }
+
+  @override
+  List<MarketsType>? getUserMarkets() {
+    UserProfile userProfile = _userBox.read(_userProfileKey);
+    return userProfile.activeLanguages;
   }
 }

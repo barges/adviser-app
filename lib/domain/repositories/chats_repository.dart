@@ -43,6 +43,7 @@ abstract class ChatsRepository {
   Future<QuestionsListResponse> getCustomerQuestions({
     required String clientId,
     String? filterType,
+    String? filterLanguage,
   });
 
   Future<QuestionsListResponse> getCustomerHistoryStories({

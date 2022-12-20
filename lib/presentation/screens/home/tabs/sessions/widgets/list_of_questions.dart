@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/data/models/app_success/app_success.dar
 import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
@@ -11,7 +12,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/messages/ap
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/list_tile/chats_list_tile_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/market_filter_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/market_filter_widget.dart';
 
 class ListOfQuestions extends StatelessWidget {
   const ListOfQuestions({Key? key}) : super(key: key);
@@ -42,9 +43,13 @@ class _PublicQuestionsListWidget extends StatelessWidget {
         Builder(builder: (context) {
           final int currentMarketIndex = context.select(
               (SessionsCubit cubit) => cubit.state.currentMarketIndexForPublic);
+          final List<MarketsType> userMarkets =
+              context.select((SessionsCubit cubit) => cubit.state.userMarkets);
           return MarketFilterWidget(
+            userMarkets: userMarkets,
             changeIndex: sessionsCubit.changeMarketIndexForPublic,
             currentMarketIndex: currentMarketIndex,
+            isExpanded: true,
           );
         }),
         const Divider(
@@ -95,9 +100,13 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
         Builder(builder: (context) {
           final int currentMarketIndex = context.select((SessionsCubit cubit) =>
               cubit.state.currentMarketIndexForPrivate);
+          final List<MarketsType> userMarkets =
+              context.select((SessionsCubit cubit) => cubit.state.userMarkets);
           return MarketFilterWidget(
+            userMarkets: userMarkets,
             changeIndex: sessionsCubit.changeMarketIndexForPrivate,
             currentMarketIndex: currentMarketIndex,
+            isExpanded: true,
           );
         }),
         const Divider(
