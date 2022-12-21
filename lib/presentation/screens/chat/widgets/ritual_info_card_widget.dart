@@ -9,10 +9,10 @@ import 'package:shared_advisor_interface/presentation/resources/app_arguments.da
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
-class InfoCard extends StatelessWidget {
+class RitualInfoCardWidget extends StatelessWidget {
   final RitualCardInfo? ritualCardInfo;
 
-  const InfoCard({super.key, required this.ritualCardInfo});
+  const RitualInfoCardWidget({super.key, required this.ritualCardInfo});
 
   @override
   Widget build(BuildContext context) {
@@ -85,13 +85,13 @@ class InfoCard extends StatelessWidget {
             ),
             if (isLeftImage || isRightImage)
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 12.0, horizontal: 36.0),
+                padding: const EdgeInsets.all(12.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     if (isLeftImage)
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           if (ritualCardInfo?.leftImageTitle != null)
                             Padding(
@@ -120,6 +120,9 @@ class InfoCard extends StatelessWidget {
                           )
                         ],
                       ),
+                    const SizedBox(
+                      width: 16.0,
+                    ),
                     if (isRightImage)
                       Column(
                         children: [

@@ -44,9 +44,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "addPhoto": MessageLookupByLibrary.simpleMessage("Foto hinzufügen"),
         "advisors": MessageLookupByLibrary.simpleMessage("Berater"),
         "all": MessageLookupByLibrary.simpleMessage("Alle"),
+        "allMarkets": MessageLookupByLibrary.simpleMessage("Alle Märkte"),
         "allOurBrands":
             MessageLookupByLibrary.simpleMessage("Alle unsere Marken"),
-        "allType": MessageLookupByLibrary.simpleMessage("Alle Arten"),
         "areYouSureThatYouWantToChangeYourStatus":
             MessageLookupByLibrary.simpleMessage(
                 "Sind Sie sicher, dass Sie Ihren Status auf Offline ändern möchten?"),
@@ -280,6 +280,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "totalMarkets": MessageLookupByLibrary.simpleMessage("Gesamtmärkte"),
         "tryAgain":
             MessageLookupByLibrary.simpleMessage("Versuchen Sie es nochmal"),
+        "typeMessage":
+            MessageLookupByLibrary.simpleMessage("Nachricht eingeben"),
         "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgain":
             MessageLookupByLibrary.simpleMessage(
                 "Uh-oh. Es sieht so aus, als hätten Sie Ihre Verbindung verloren. Bitte versuche es erneut."),
@@ -292,6 +294,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages":
             MessageLookupByLibrary.simpleMessage(
                 "Wir benötigen die Erlaubnis, auf Ihre Kamera und Galerie zuzugreifen, damit Sie Bilder senden können"),
+        "weNeedPermissionToAccessYourMicrophone":
+            MessageLookupByLibrary.simpleMessage(
+                "Wir benötigen die Erlaubnis, auf Ihr Mikrofon zuzugreifen"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "Wir sind stolz darauf, Beratern einen sicheren Ort zu bieten, an dem sie Kunden bedienen und sich beruflich weiterentwickeln können. Gute Arbeit bei einer unserer Marken zu leisten, wird Türen zu anderen öffnen"),

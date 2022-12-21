@@ -108,7 +108,7 @@
   "avgDailyEarnings": "Ganancias diarias promedio",
   "perfomanceOverviewAnalytics": "Descripción general del rendimiento Análisis",
   "editNote": "Editar nota",
-  "allType": "Todo tipo",
+  "allMarkets": "Todos los mercados",
   "market": "Mercado:",
   "all": "Todos",
   "privateQuestions": "Preguntas privadas",
@@ -203,5 +203,7 @@
   "openEmail": "Abrir correo electrónico",
   "weVeSentPasswordResetInstructionsToEmail": "Hemos enviado instrucciones para restablecer la contraseña al {email}",
   "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword": "Ingrese su dirección de correo electrónico y le enviaremos instrucciones para crear una nueva contraseña",
-  "wrongUsernameAndOrPassword": "Nombre de usuario y/o contraseña incorrectos."
+  "wrongUsernameAndOrPassword": "Nombre de usuario y/o contraseña incorrectos.",
+  "weNeedPermissionToAccessYourMicrophone": "Necesitamos permiso para acceder a su micrófono",
+  "typeMessage": "escribir mensaje"
 }

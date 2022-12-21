@@ -32,7 +32,7 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_screen.dart';
 
-import 'widgets/chat_info_card.dart';
+import 'widgets/ritual_info_card_widget.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -360,7 +360,7 @@ class _ActiveChat extends StatelessWidget {
                                   padding: const EdgeInsets.only(
                                     bottom: 16.0,
                                   ),
-                                  child: InfoCard(
+                                  child: RitualInfoCardWidget(
                                     ritualCardInfo: ritualCardInfo,
                                   ),
                                 ),

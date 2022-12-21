@@ -44,8 +44,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "addPhoto": MessageLookupByLibrary.simpleMessage("Add photo"),
         "advisors": MessageLookupByLibrary.simpleMessage("advisors"),
         "all": MessageLookupByLibrary.simpleMessage("All"),
+        "allMarkets": MessageLookupByLibrary.simpleMessage("All Markets"),
         "allOurBrands": MessageLookupByLibrary.simpleMessage("All our brands"),
-        "allType": MessageLookupByLibrary.simpleMessage("All Type"),
         "areYouSureThatYouWantToChangeYourStatus":
             MessageLookupByLibrary.simpleMessage(
                 "Are you sure that you want to change your status to Offline?"),
@@ -276,7 +276,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "total": MessageLookupByLibrary.simpleMessage("Total"),
         "totalMarkets": MessageLookupByLibrary.simpleMessage("Total markets"),
         "tryAgain": MessageLookupByLibrary.simpleMessage("Try again"),
-        "typemessage": MessageLookupByLibrary.simpleMessage("Type message"),
+        "typeMessage": MessageLookupByLibrary.simpleMessage("Type message"),
         "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgain":
             MessageLookupByLibrary.simpleMessage(
                 "Uh-oh. It looks like you\'ve lost your connection. Please try again."),
@@ -288,6 +288,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages":
             MessageLookupByLibrary.simpleMessage(
                 "We need permission to access your camera and gallery so you can send images"),
+        "weNeedPermissionToAccessYourMicrophone":
+            MessageLookupByLibrary.simpleMessage(
+                "We need permission to access your microphone"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others"),

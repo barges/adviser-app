@@ -94,26 +94,17 @@ class ChatTextInputWidget extends StatelessWidget {
                                   (ChatCubit cubit) =>
                                       cubit.state.isSendButtonEnabled) ||
                               isAttachedPictures;
-                          final isMicrophoneButtonEnabled = context.select(
-                              (ChatCubit cubit) =>
-                                  cubit.state.isMicrophoneButtonEnabled);
 
                           return Row(
                             children: [
                               if (inputTextLength == 0 &&
                                   !isAttachedPictures &&
                                   isAudio)
-                                Opacity(
-                                  opacity:
-                                      isMicrophoneButtonEnabled ? 1.0 : 0.4,
-                                  child: AppIconGradientButton(
-                                    onTap: isMicrophoneButtonEnabled
-                                        ? chatCubit.startRecordingAudio
-                                        : null,
-                                    icon: Assets.vectors.microphone.path,
-                                    iconColor:
-                                        Theme.of(context).backgroundColor,
-                                  ),
+                                AppIconGradientButton(
+                                  onTap: () => chatCubit.startRecordingAudio(context),
+                                  icon: Assets.vectors.microphone.path,
+                                  iconColor:
+                                      Theme.of(context).backgroundColor,
                                 ),
                               if (inputTextLength > 0 ||
                                   isAttachedPictures ||
@@ -187,7 +178,7 @@ class _InputTextField extends StatelessWidget {
               isCollapsed: true,
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,
-              hintText: S.of(context).typemessage,
+              hintText: S.of(context).typeMessage,
               hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).shadowColor,
                     fontSize: 15.0,

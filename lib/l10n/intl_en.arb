@@ -108,7 +108,7 @@
   "avgDailyEarnings": "Avg Daily Earnings",
   "perfomanceOverviewAnalytics": "Perfomance Overview Analytics",
   "editNote": "Edit Note",
-  "allType": "All Type",
+  "allMarkets": "All Markets",
   "market": "Market:",
   "all": "All",
   "privateQuestions": "Private Questions",
@@ -122,7 +122,6 @@
   "account": "Account",
   "sessions": "Sessions",
   "from15secTo3min": "from 15 sec to 3 min",
-  "typemessage":"Type message",
   "doYouWantToDeleteImage": "Do you want to delete image?",
   "tryAgain": "Try again",
   "ok": "OK",
@@ -204,5 +203,7 @@
   "openEmail": "Open email",
   "weVeSentPasswordResetInstructionsToEmail": "We've sent password reset instructions to {email}.",
   "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword": "Enter your email address and we'll send you instructions to create a new password",
-  "wrongUsernameAndOrPassword": "Wrong username and/or password."
+  "wrongUsernameAndOrPassword": "Wrong username and/or password.",
+  "weNeedPermissionToAccessYourMicrophone": "We need permission to access your microphone",
+  "typeMessage": "Type message"
 }
