@@ -1,20 +1,45 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:shared_advisor_interface/data/models/chats/history.dart';
+import 'package:shared_advisor_interface/data/models/chats/history_ui_model.dart';
 import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_state.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
-import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
-enum HistoryScrollDirection {
-  up,
-  down,
+List<HistoryUiModel> _groupTopHistory(List<History> data) {
+  final Map<String, List<History>> groupedItem =
+      groupBy<History, String>(data, (e) {
+    return e.question?.storyID ?? '';
+  });
+  final items = <HistoryUiModel>[];
+  groupedItem.forEach((key, value) {
+    items.addAll(value.map((e) => HistoryUiModel.data(e)));
+    items.add(HistoryUiModel.separator(value.lastOrNull?.question));
+  });
+
+  return items;
+}
+
+List<HistoryUiModel> _groupBottomHistory(List<History> data) {
+  final Map<String, List<History>> groupedItem =
+      groupBy<History, String>(data, (e) {
+    return e.question?.storyID ?? '';
+  });
+  final items = <HistoryUiModel>[];
+  groupedItem.forEach((key, value) {
+    items.add(HistoryUiModel.separator(value.lastOrNull?.question));
+    items.addAll(value.map((e) => HistoryUiModel.data(e)));
+  });
+
+  return items;
 }
 
 class HistoryCubit extends Cubit<HistoryState> {
@@ -23,28 +48,35 @@ class HistoryCubit extends Cubit<HistoryState> {
       getIt.get<ConnectivityService>();
   final ChatsRepository _repository;
   final String _clientId;
-  final String? storyId;
+  final String? _storyId;
   FlutterSoundPlayer? _playerMedia;
-  final Codec _codec = Codec.aacMP4;
 
-  final List<History> _historyList = [];
+  final List<History> _topHistoriesList = [];
+  final List<History> _bottomHistoriesList = [];
   final int _limit = 15;
   final GlobalKey scrollItemKey = GlobalKey();
   bool _hasMore = true;
   String? _lastItem;
   bool _hasBefore = false;
   String? _firstItem;
-  bool _isLoading = false;
-  int offset = 0;
+  bool _isBottomLoading = false;
+  bool _isTopLoading = false;
 
   HistoryCubit(
     this._repository,
     this._clientId,
     this._playerMedia,
-    this.storyId,
+    this._storyId,
   ) : super(const HistoryState()) {
-    _getHistoryList(firstRequest: true);
-    historyMessagesScrollController.addListener(scrollControllerListener);
+    if (_storyId == null) {
+      _getOldBottomHistoriesList();
+      historyMessagesScrollController
+          .addListener(scrollControllerListenerForStoryFromTop);
+    } else {
+      _getHistoriesFromMiddleList();
+      historyMessagesScrollController
+          .addListener(scrollControllerListenerForStoryFromMiddle);
+    }
   }
 
   @override
@@ -55,144 +87,132 @@ class HistoryCubit extends Cubit<HistoryState> {
     return super.close();
   }
 
-  void scrollControllerListener() {
-    if (!_isLoading &&
-        historyMessagesScrollController.position.extentAfter <= 300) {
-      _getHistoryList(
-        scrollDirection: HistoryScrollDirection.down,
-      );
-    }
-    if (!_isLoading &&
-        historyMessagesScrollController.position.extentBefore <= 0) {
-      _getHistoryList(
-        scrollDirection: HistoryScrollDirection.up,
-      );
+  void scrollControllerListenerForStoryFromTop() {
+    if (historyMessagesScrollController.position.extentAfter <= 500) {
+      _loadBottomData();
     }
   }
 
-  Future<void> _getHistoryList({
-    bool firstRequest = false,
-    HistoryScrollDirection? scrollDirection,
-  }) async {
-    if (!_isLoading) {
-      _isLoading = true;
-      try {
-        if (firstRequest && await _connectivityService.checkConnection()) {
-          final HistoryResponse result = await _repository.getHistoryList(
-            clientId: _clientId,
-            limit: _limit,
-            storyId: storyId,
-          );
-          _hasMore = result.hasMore ?? false;
-          _hasBefore = result.hasBefore ?? false;
-          _lastItem = result.lastItem;
-          _firstItem = result.firstItem;
+  void scrollControllerListenerForStoryFromMiddle() {
+    if (historyMessagesScrollController.position.extentAfter <= 500) {
+      _loadTopData();
+    }
+    if (historyMessagesScrollController.position.extentBefore <= 400) {
+      _loadBottomData();
+    }
+  }
 
-          _historyList.addAll(result.history ?? const []);
-          emit(state.copyWith(
-            historyMessages: List.of(_historyList),
-          ));
-          _isLoading = false;
-          await _getHistoryList(scrollDirection: HistoryScrollDirection.down);
-          await _getHistoryList(scrollDirection: HistoryScrollDirection.up);
-        } else {
-          if (_hasMore &&
-              await _connectivityService.checkConnection() &&
-              scrollDirection == HistoryScrollDirection.down) {
-            final HistoryResponse result = await _repository.getHistoryList(
-              clientId: _clientId,
-              limit: _limit,
-              lastItem: _lastItem,
-            );
-            _hasMore = result.hasMore ?? false;
+  void _loadBottomData() {
+    if (!_isBottomLoading) {
+      _isBottomLoading = true;
+      _getOldBottomHistoriesList();
+    }
+  }
 
-            _lastItem = result.lastItem;
-            _historyList.insertAll(0, result.history ?? const []);
+  void _loadTopData() {
+    if (!_isTopLoading) {
+      _isTopLoading = true;
+      _getNewTopHistoriesList();
+    }
+  }
 
-            emit(state.copyWith(
-              historyMessages: List.of(_historyList),
-            ));
-          } else if (_hasBefore &&
-              await _connectivityService.checkConnection() &&
-              scrollDirection == HistoryScrollDirection.up) {
-            final HistoryResponse result = await _repository.getHistoryList(
-              clientId: _clientId,
-              limit: _limit,
-              firstItem: _firstItem,
-            );
-            _hasBefore = result.hasBefore ?? false;
+  Future<void> _getHistoriesFromMiddleList() async {
+    try {
+      if (await _connectivityService.checkConnection()) {
+        final HistoryResponse result = await _repository.getHistoryList(
+          clientId: _clientId,
+          limit: _limit,
+          storyId: _storyId,
+        );
+        _hasMore = result.hasMore ?? true;
+        _lastItem = result.lastItem;
+        _hasBefore = result.hasBefore ?? false;
+        _firstItem = result.firstItem;
 
-            _firstItem = result.firstItem;
-            offset = result.history?.length ?? 0;
-            _historyList.addAll(result.history ?? const []);
+        _topHistoriesList.addAll(result.history?.reversed ?? const []);
 
-            emit(state.copyWith(
-              historyMessages: List.of(_historyList),
-            ));
-            Utils.animateToWidget(scrollItemKey, durationInMilliseconds: 0);
-          }
+        for (History history in _topHistoriesList) {
+          logger.d(
+              'first ${history.question?.id} --- ${history.question?.createdAt} --- ${history.question?.storyID}');
         }
-      } on DioError catch (e) {
-        logger.d(e);
+
+        final List<HistoryUiModel> items =
+            await compute(_groupTopHistory, _topHistoriesList);
+
+        emit(state.copyWith(
+          topHistoriesList: items,
+        ));
+
+        _getOldBottomHistoriesList();
       }
-      _isLoading = false;
+    } on DioError catch (e) {
+      logger.d(e);
     }
   }
 
-  Future<void> startPlayAudio(String audioUrl) async {
-    if (state.audioUrl != audioUrl) {
-      await _playerMedia?.stopPlayer();
+  Future<void> _getNewTopHistoriesList() async {
+    try {
+      if (_hasBefore && await _connectivityService.checkConnection()) {
+        final HistoryResponse result = await _repository.getHistoryList(
+          clientId: _clientId,
+          limit: _limit,
+          firstItem: _firstItem,
+        );
+        _hasBefore = result.hasBefore ?? false;
+        _firstItem = result.firstItem;
 
-      emit(
-        state.copyWith(
-          isPlayingAudio: false,
-          isPlayingAudioFinished: true,
-          audioUrl: audioUrl,
-        ),
-      );
+        _topHistoriesList.addAll(
+          result.history?.reversed ?? [],
+        );
+
+        for (History history in _topHistoriesList) {
+          logger.d(
+              'prev ${history.question?.id} --- ${history.question?.createdAt} --- ${history.question?.storyID}');
+        }
+
+        final List<HistoryUiModel> items =
+            await compute(_groupTopHistory, _topHistoriesList);
+
+        emit(state.copyWith(
+          topHistoriesList: items,
+        ));
+      }
+    } on DioError catch (e) {
+      logger.d(e);
+    } finally {
+      _isTopLoading = false;
     }
-
-    if (_playerMedia != null && _playerMedia!.isPaused) {
-      await _playerMedia!.resumePlayer();
-
-      emit(
-        state.copyWith(
-          isPlayingAudio: true,
-          isPlayingAudioFinished: false,
-        ),
-      );
-      return;
-    }
-
-    await _playerMedia?.startPlayer(
-      fromURI: audioUrl,
-      codec: _codec,
-      sampleRate: 44000,
-      whenFinished: () => emit(
-        state.copyWith(
-          isPlayingAudio: false,
-          isPlayingAudioFinished: true,
-        ),
-      ),
-    );
-
-    emit(
-      state.copyWith(
-        isPlayingAudio: true,
-        isPlayingAudioFinished: false,
-      ),
-    );
   }
 
-  Future<void> pauseAudio() async {
-    await _playerMedia?.pausePlayer();
+  Future<void> _getOldBottomHistoriesList() async {
+    try {
+      if (_hasMore && await _connectivityService.checkConnection()) {
+        final HistoryResponse result = await _repository.getHistoryList(
+          clientId: _clientId,
+          limit: _limit,
+          lastItem: _lastItem,
+        );
+        _hasMore = result.hasMore ?? true;
+        _lastItem = result.lastItem;
 
-    emit(
-      state.copyWith(
-        isPlayingAudio: false,
-      ),
-    );
+        _bottomHistoriesList.addAll(result.history ?? const []);
+
+        for (History history in _bottomHistoriesList) {
+          logger.d(
+              'first ${history.question?.id} --- ${history.question?.createdAt} --- ${history.question?.storyID}');
+        }
+
+        final List<HistoryUiModel> items =
+            await compute(_groupBottomHistory, _bottomHistoriesList);
+
+        emit(state.copyWith(
+          bottomHistoriesList: items,
+        ));
+      }
+    } on DioError catch (e) {
+      logger.d(e);
+    } finally {
+      _isBottomLoading = false;
+    }
   }
-
-  Stream<PlaybackDisposition>? get onMediaProgress => _playerMedia?.onProgress;
 }

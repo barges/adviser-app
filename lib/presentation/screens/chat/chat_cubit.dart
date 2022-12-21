@@ -29,8 +29,10 @@ import 'package:shared_advisor_interface/data/network/requests/answer_request.da
 import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
@@ -271,6 +273,8 @@ class ChatCubit extends Cubit<ChatState> {
             ritualCardInfo: ritualsResponse.ritualCardInfo,
           ),
         );
+
+        scrollChatDown();
       }
     } on DioError catch (e) {
       _showErrorAlert();
@@ -324,21 +328,13 @@ class ChatCubit extends Cubit<ChatState> {
     _answerTimer = null;
   }
 
-  Future<void> startRecordingAudio() async {
+  Future<void> startRecordingAudio(BuildContext context) async {
     _tryStartAnswerSend();
 
-    if (await Permission.microphone.isPermanentlyDenied) {
-      openAppSettings();
-    } else {
-      await Permission.microphone.request();
-    }
+    await _handlePermissions(context);
 
     final isRecordGranted = await Permission.microphone.isGranted;
-    emit(
-      state.copyWith(
-        isMicrophoneButtonEnabled: isRecordGranted,
-      ),
-    );
+
     if (!isRecordGranted) {
       return;
     }
@@ -362,6 +358,26 @@ class ChatCubit extends Cubit<ChatState> {
         recordingStream: _recorder?.onProgress,
       ),
     );
+  }
+
+  Future<void> _handlePermissions(
+      BuildContext context) async {
+    PermissionStatus status = await Permission.microphone.request();
+
+    if (status.isPermanentlyDenied) {
+      VoidCallback actionOnOk = (() async {
+        await openAppSettings();
+        Navigator.pop(context);
+      });
+      await showOkCancelAlert(
+          context: context,
+          title: S.of(context).permissionNeeded,
+          okText: S.of(context).settings,
+          description: S.of(context).weNeedPermissionToAccessYourMicrophone,
+          actionOnOK: actionOnOk,
+          allowBarrierClick: true,
+          isCancelEnabled: true);
+    }
   }
 
   Future<void> stopRecordingAudio() async {
@@ -902,7 +918,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   int get minTextLength => state.questionFromDB?.type == ChatItemType.ritual
-      ? AppConstants.minTextLengthRirual
+      ? AppConstants.minTextLengthRitual
       : AppConstants.minTextLength;
 
   int get maxTextLength => state.questionFromDB?.type == ChatItemType.ritual

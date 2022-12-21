@@ -44,9 +44,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "addPhoto": MessageLookupByLibrary.simpleMessage("Adicionar foto"),
         "advisors": MessageLookupByLibrary.simpleMessage("conselheiras"),
         "all": MessageLookupByLibrary.simpleMessage("Tudo"),
+        "allMarkets": MessageLookupByLibrary.simpleMessage("Todos os Mercados"),
         "allOurBrands":
             MessageLookupByLibrary.simpleMessage("Todas as nossas marcas"),
-        "allType": MessageLookupByLibrary.simpleMessage("Todo tipo"),
         "areYouSureThatYouWantToChangeYourStatus":
             MessageLookupByLibrary.simpleMessage(
                 "Tem certeza de que deseja alterar seu status para Offline?"),
@@ -285,7 +285,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "total": MessageLookupByLibrary.simpleMessage("Total"),
         "totalMarkets": MessageLookupByLibrary.simpleMessage("Mercados totais"),
         "tryAgain": MessageLookupByLibrary.simpleMessage("Tente novamente"),
-        "typemessage": MessageLookupByLibrary.simpleMessage("digite mensagem"),
+        "typeMessage": MessageLookupByLibrary.simpleMessage("digite mensagem"),
         "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgain":
             MessageLookupByLibrary.simpleMessage(
                 "Uh-oh. Parece que você perdeu sua conexão. Por favor, tente novamente."),
@@ -298,6 +298,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages":
             MessageLookupByLibrary.simpleMessage(
                 "Precisamos de permissão para acessar sua câmera e galeria para que você possa enviar imagens"),
+        "weNeedPermissionToAccessYourMicrophone":
+            MessageLookupByLibrary.simpleMessage(
+                "Precisamos de permissão para acessar seu microfone"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "Orgulhamo-nos de oferecer aos consultores um local seguro para servir os clientes e desenvolver-se profissionalmente. Fazer um bom trabalho em uma de nossas marcas abrirá portas para outras"),

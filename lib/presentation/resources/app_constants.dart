@@ -15,9 +15,9 @@ class AppConstants {
   static const int maxRecordDurationInSec = 180;
 
   static const int minTextLength = 250;
-  static const int maxTextLength = 1000;
-  static const int minTextLengthRirual = 1000;
-  static const int maxTextLengthRitual = 2000;
+  static const int maxTextLength = 2000;
+  static const int minTextLengthRitual = 1000;
+  static const int maxTextLengthRitual = 20000;
 
   static const int tillShowAnswerTimingMessagesInSec = 25 * 60;
   static const int afterShowAnswerTimingMessagesInSec = 5 * 60;

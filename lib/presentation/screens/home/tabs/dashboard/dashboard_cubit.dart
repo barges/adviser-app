@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_month.dart';
-import 'package:shared_advisor_interface/data/network/responses/reports_response.dart';
-import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -27,7 +25,6 @@ class DashboardCubit extends Cubit<DashboardState> {
 
   final PageController pageController = PageController();
   final MainCubit mainCubit = Get.find<MainCubit>();
-  final UserRepository _userRepository = Get.find<UserRepository>();
 
   @override
   Future<void> close() async {
@@ -47,8 +44,8 @@ class DashboardCubit extends Cubit<DashboardState> {
   Future<void> getReports() async {
     if (await _connectivityService.checkConnection()) {
       final List<ReportsMonth> months = [];
-      final ReportsResponse reportsResponse =
-          await _userRepository.getUserReports();
+      // final ReportsResponse reportsResponse =
+      //     await _userRepository.getUserReports();
 
       emit(
         state.copyWith(

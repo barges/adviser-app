@@ -57,6 +57,7 @@ class PushNotificationManagerImpl implements PushNotificationManager {
         channelDescription: 'All app notifications',
         playSound: true,
         enableVibration: true,
+        icon: 'ic_stat_reader_app_push',
         importance: Importance.max,
         priority: Priority.high,
       );
