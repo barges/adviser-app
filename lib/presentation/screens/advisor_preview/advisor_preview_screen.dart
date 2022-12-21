@@ -190,9 +190,6 @@ class AdvisorPreviewScreen extends StatelessWidget {
                       final MarketsType selectedItem =
                           advisorPreviewCubit.languages[selectedIndex];
                       return AboutMeWidget(
-                        rating: advisorPreviewCubit.getSelectedLanguageDetails(
-                                selectedItem)[ratingKey] ??
-                            0.0,
                         description:
                             advisorPreviewCubit.getSelectedLanguageDetails(
                                     selectedItem)[descriptionKey] ??
@@ -200,7 +197,6 @@ class AdvisorPreviewScreen extends StatelessWidget {
                         title: advisorPreviewCubit.getSelectedLanguageDetails(
                                 selectedItem)[titleKey] ??
                             '',
-                        votesNumber: '1555',
                       );
                     }),
                   ),

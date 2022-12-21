@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -63,6 +64,9 @@ class PasswordTextField extends StatelessWidget {
               keyboardType: TextInputType.visiblePassword,
               textInputAction: textInputAction,
               onSubmitted: onSubmitted,
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(RegExp(r'\s')),
+              ],
               style: Theme.of(context).textTheme.bodyMedium,
               maxLines: 1,
               decoration: InputDecoration(

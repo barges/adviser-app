@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
+import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -49,11 +51,11 @@ class _PublicQuestionsListWidget extends StatelessWidget {
           height: 1.0,
         ),
         Builder(builder: (context) {
-          final bool showSuccessMessage = context
-              .select((SessionsCubit cubit) => cubit.state.showSuccessMessage);
-          return showSuccessMessage
+          final AppSuccess appSuccess =
+              context.select((SessionsCubit cubit) => cubit.state.appSuccess);
+          return appSuccess is! EmptySuccess
               ? AppSuccessWidget(
-                  message: S.of(context).youCanNotHelpUsersSinceYouHaveAnActive,
+                  message: appSuccess.getMessage(context),
                   onClose: sessionsCubit.clearSuccessMessage,
                 )
               : const SizedBox.shrink();
@@ -64,14 +66,15 @@ class _PublicQuestionsListWidget extends StatelessWidget {
                 .select((SessionsCubit cubit) => cubit.state.publicQuestions);
             return Expanded(
               child: _ListOfQuestionsWidget(
-                controller: sessionsCubit.publicQuestionsController,
+                controller: sessionsCubit.publicQuestionsScrollController,
                 questions: publicQuestions,
                 onRefresh: () async {
                   sessionsCubit.getPublicQuestions(refresh: true);
                 },
                 emptyListTitle: S.of(context).noQuestionsYet,
-                emptyListLabel:
-                    S.of(context).whenSomeoneAsksAPublicQuestionYouWillSeeThem,
+                emptyListLabel: S
+                    .of(context)
+                    .whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisList,
               ),
             );
           },
@@ -106,15 +109,15 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
                 .select((SessionsCubit cubit) => cubit.state.conversationsList);
             return Expanded(
               child: _ListOfQuestionsWidget(
-                controller: sessionsCubit.conversationsController,
+                controller: sessionsCubit.conversationsScrollController,
                 questions: conversationsList,
                 isPublic: false,
                 onRefresh: () async {
-                   sessionsCubit.getConversations(refresh: true);
+                  sessionsCubit.getConversations(refresh: true);
                 },
                 emptyListTitle: S.of(context).noSessionsYet,
                 emptyListLabel:
-                    S.of(context).whenYouHelpYourFirstClientYouWillSeeYour,
+                    S.of(context).yourClientSessionHistoryWillAppearHere,
               ),
             );
           },
@@ -144,8 +147,8 @@ class _ListOfQuestionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool hasTaken = isPublic &&
-        questions.firstOrNull?.status == ChatItemStatusType.taken;
+    final bool hasTaken =
+        isPublic && questions.firstOrNull?.status == ChatItemStatusType.taken;
 
     return RefreshIndicator(
       onRefresh: onRefresh,

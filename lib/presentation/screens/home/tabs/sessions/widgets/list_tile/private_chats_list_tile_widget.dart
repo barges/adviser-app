@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/list_tile_content_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
@@ -31,12 +30,10 @@ class PrivateChatsListTileWidget extends StatelessWidget {
             onTap: () {
               sessionsCubit.goToCustomerProfile(question);
             },
-            child: SizedBox(
-              width: 48.0,
-              height: 48.0,
-              child: SvgPicture.asset(
-                question.clientInformation?.zodiac?.imagePath(context) ?? '',
-              ),
+            child: UserAvatar(
+              avatarUrl: question.clientInformation?.zodiac?.imagePath(context),
+              diameter: 48.0,
+              isZodiac: true,
             ),
           ),
           const SizedBox(
@@ -88,7 +85,7 @@ class PrivateChatsListTileWidget extends StatelessWidget {
                             height: AppConstants.iconSize,
                             child: count > 0
                                 ? Text(
-                                    S.of(context).youHaveAnActiveSession,
+                                    question.getUnansweredMessage(context),
                                     style: theme.textTheme.bodyMedium?.copyWith(
                                       fontSize: 14.0,
                                       color: AppColors.promotion,

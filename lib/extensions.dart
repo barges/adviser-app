@@ -17,6 +17,9 @@ const String datePattern6 = 'MMM. dd, yyyy, HH:mm';
 const String datePattern7 = 'HH:mm';
 const String datePattern8 = 'MMM dd';
 const String datePattern9 = 'MMM dd, yyyy';
+const String datePattern10 = 'MM/dd';
+const String datePattern11 = 'MM/dd/yy';
+const String datePattern12 = 'MMM. dd, yyyy HH:mm';
 
 const String currencyPattern = '#,##0.00';
 
@@ -106,6 +109,24 @@ extension StringExt on String {
     return DateFormat(datePattern9).format(inputData);
   }
 
+  String get parseDateTimePattern10 {
+    final DateTime inputData = DateTime.parse(
+        DateFormat(dateFormat).parse(this, true).toLocal().toString());
+    return DateFormat(datePattern10).format(inputData);
+  }
+
+  String get parseDateTimePattern11 {
+    final DateTime inputData = DateTime.parse(
+        DateFormat(dateFormat).parse(this, true).toLocal().toString());
+    return DateFormat(datePattern11).format(inputData);
+  }
+
+  String get parseDateTimePattern12 {
+    final DateTime inputData = DateTime.parse(
+        DateFormat(dateFormat).parse(this, true).toLocal().toString());
+    return DateFormat(datePattern12).format(inputData);
+  }
+
   String get removeSpacesAndNewLines {
     return trim().replaceAll(RegExp(r'(\n){3,}'), "\n\n");
   }
@@ -147,19 +168,46 @@ extension IterableExtention<E> on Iterable<E> {
 
 extension DateTimeExt on DateTime {
   String get chatListTime {
-    DateTime now = DateTime.now();
-    DateTime localTime = now.isUtc ? toLocal() : this;
-    int timeDifference =
-        DateTime(localTime.year, localTime.month, localTime.day)
-            .difference(DateTime(now.year, now.month, now.day))
-            .inDays;
+    DateTime now = DateTime.now().toUtc();
+    int timeDifference = DateTime(year, month, day)
+        .difference(DateTime(now.year, now.month, now.day))
+        .inDays;
     if (timeDifference == 0) {
-      return DateFormat(dateFormat).format(localTime).parseDateTimePattern7;
+      return DateFormat(dateFormat).format(toLocal()).parseDateTimePattern7;
     }
     if (timeDifference < -365) {
-      return DateFormat(dateFormat).format(localTime).parseDateTimePattern9;
+      return DateFormat(dateFormat).format(toLocal()).parseDateTimePattern9;
     }
-    return DateFormat(dateFormat).format(localTime).parseDateTimePattern8;
+    return DateFormat(dateFormat).format(toLocal()).parseDateTimePattern8;
+  }
+
+  String historyListTime(BuildContext context) {
+    DateTime now = DateTime.now().toUtc();
+    int timeDifference = DateTime(year, month, day)
+        .difference(DateTime(now.year, now.month, now.day))
+        .inDays;
+    if (timeDifference == 0) {
+      return S.of(context).today;
+    }
+    if (timeDifference < -365) {
+      return DateFormat(dateFormat).format(toLocal()).parseDateTimePattern11;
+    }
+    return DateFormat(dateFormat).format(toLocal()).parseDateTimePattern10;
+  }
+
+  String get historyCardQuestionTime {
+    DateTime now = DateTime.now().toUtc();
+    int timeDifference = DateTime(year, month, day)
+        .difference(DateTime(now.year, now.month, now.day))
+        .inDays;
+    if (timeDifference < -365) {
+      return DateFormat(dateFormat).format(toLocal()).parseDateTimePattern11;
+    }
+    return DateFormat(dateFormat).format(toLocal()).parseDateTimePattern10;
+  }
+
+  String get historyCardAnswerTime {
+    return DateFormat(dateFormat).format(toLocal()).parseDateTimePattern7;
   }
 }
 

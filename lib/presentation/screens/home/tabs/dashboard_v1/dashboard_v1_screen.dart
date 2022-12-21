@@ -28,7 +28,7 @@ class DashboardV1Screen extends StatelessWidget {
                   title: S.of(context).dashboard,
                   iconPath: Assets.vectors.items.path),
               body: CustomScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   slivers: [
                     isOnline
                         ? SliverToBoxAdapter(
@@ -48,17 +48,12 @@ class DashboardV1Screen extends StatelessWidget {
                             ),
                           )
                         : SliverFillRemaining(
-                            hasScrollBody: true,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal:
-                                      AppConstants.horizontalScreenPadding),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  NoConnectionWidget(),
-                                ],
-                              ),
+                            hasScrollBody: false,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                NoConnectionWidget(),
+                              ],
                             ),
                           ),
                   ]));

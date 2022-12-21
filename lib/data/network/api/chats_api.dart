@@ -4,7 +4,9 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_story_response.dart';
+import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
+import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
 
 part 'chats_api.g.dart';
 
@@ -28,18 +30,27 @@ abstract class ChatsApi {
   });
 
   @GET('/experts/conversations/history')
-  Future<QuestionsListResponse> getHistoryList({
+  Future<HistoryResponse> getHistoryList({
+    @Query('clientId') required String clientId,
     @Query('limit') required int limit,
-    @Query('page') required int page,
-    @Query('search') String? search,
+    @Query('lastItem') String? lastItem,
+    @Query('storyId') String? storyId,
+    @Query('firstItem') String? firstItem,
   });
 
-  @GET('/experts/stories')
-  Future<QuestionsListResponse> getCustomerSessions({
+  @GET('/experts/questions/individual')
+  Future<QuestionsListResponse> getCustomerQuestions({
+    @Query('clientID') required String id,
+    @Query('filters[type]') String? filterType,
+  });
+
+  @GET('/experts/stories/history')
+  Future<QuestionsListResponse> getCustomerHistoryStories({
     @Query('clientId') required String id,
     @Query('limit') required int limit,
     @Query('lastItem') String? lastItem,
     @Query('filters[type]') String? filterType,
+    @Query('excludeIds') String? excludeIds,
   });
 
   @GET('/v2/users/{expertID}/conversations/{clientID}')
@@ -51,8 +62,10 @@ abstract class ChatsApi {
   });
 
   @GET('/stories')
-  Future<ConversationsStoryResponse> getConversationsStory({
+  Future<ConversationsStoryResponse> getStory({
     @Query("storyID") required String storyID,
+    @Query('limit') int? limit,
+    @Query('lastItem') String? lastQuestionId,
   });
 
   @GET('/questions/single/{id}')
@@ -60,13 +73,13 @@ abstract class ChatsApi {
     @Path() required String id,
   });
 
-  @GET('/v1/rituals/single/{id}')
-  Future<ChatItem> getRitualQuestion({
+  @GET('/rituals/single/{id}')
+  Future<RitualsResponse> getRituals({
     @Path() required String id,
   });
 
   @POST('/questions/answer/start')
-  Future<dynamic> startAnswer(
+  Future<ChatItem> startAnswer(
     @Body() AnswerRequest request,
   );
 

@@ -90,7 +90,7 @@ class AccountScreen extends StatelessWidget {
                 );
               } else {
                 return CustomScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   slivers: [
                     SliverFillRemaining(
                       hasScrollBody: false,

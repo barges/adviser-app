@@ -106,11 +106,12 @@ class _MyAppState extends State<MyApp> {
                 localeResolutionCallback: (locale, supportedLocales) {
                   final String? languageCode = _cacheManager.getLanguageCode();
 
-                  Locale? newLocale = supportedLocales.toList().firstWhereOrNull(
-                        (element) =>
-                            element.languageCode ==
-                            (languageCode ?? locale?.languageCode),
-                      );
+                  Locale? newLocale =
+                      supportedLocales.toList().firstWhereOrNull(
+                            (element) =>
+                                element.languageCode ==
+                                (languageCode ?? locale?.languageCode),
+                          );
                   newLocale ??= supportedLocales.first;
 
                   getIt.get<Dio>().addLocaleToHeader(newLocale.languageCode);

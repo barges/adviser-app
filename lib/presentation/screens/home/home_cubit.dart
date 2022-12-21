@@ -27,7 +27,8 @@ class HomeCubit extends Cubit<HomeState> {
   final CachingManager cacheManager;
   final BuildContext context;
 
-  final ConnectivityService _connectivityService = ConnectivityService();
+  final ConnectivityService _connectivityService =
+      getIt.get<ConnectivityService>();
 
   final UserRepository _userRepository = getIt.get<UserRepository>();
   final PushNotificationManager _pushNotificationManager =
@@ -71,7 +72,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> _sendPushToken() async {
-    if (await ConnectivityService.checkConnection()) {
+    if (await _connectivityService.checkConnection()) {
       String? pushToken = await _firebaseMessaging.getToken();
       if (pushToken != null) {
         final SetPushNotificationTokenRequest request =

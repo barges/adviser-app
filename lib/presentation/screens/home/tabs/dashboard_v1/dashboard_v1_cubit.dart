@@ -8,8 +8,12 @@ import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/dashboard_v1_state.dart';
+import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 class DashboardV1Cubit extends Cubit<DashboardV1State> {
+  final ConnectivityService _connectivityService =
+      getIt.get<ConnectivityService>();
+
   late final VoidCallback disposeUserProfileListen;
   late final VoidCallback disposeUserIdListen;
   final CachingManager cacheManager;
@@ -36,7 +40,7 @@ class DashboardV1Cubit extends Cubit<DashboardV1State> {
   }
 
   Future<void> getReports() async {
-    if (mainCubit.state.internetConnectionIsAvailable) {
+    if (await _connectivityService.checkConnection()) {
       final ReportsResponse reportsResponse =
           await _userRepository.getUserReports();
       ReportsStatistics? statistics = reportsResponse

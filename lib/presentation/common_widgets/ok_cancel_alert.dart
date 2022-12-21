@@ -10,17 +10,17 @@ Future<bool?> showOkCancelAlert({
   required String title,
   required String okText,
   required VoidCallback actionOnOK,
-  required bool allowBarrierClock,
+  required bool allowBarrierClick,
   required bool isCancelEnabled,
   String? description,
 }) async {
   ThemeData theme = Theme.of(context);
   return await showDialog(
-    barrierDismissible: allowBarrierClock,
+    barrierDismissible: allowBarrierClick,
     context: context,
     builder: (context) {
       return WillPopScope(
-        onWillPop: () => Future.value(allowBarrierClock),
+        onWillPop: () => Future.value(allowBarrierClick),
         child: Platform.isIOS
             ? CupertinoAlertDialog(
                 title: Text(

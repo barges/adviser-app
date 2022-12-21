@@ -25,13 +25,13 @@ class ListTileContentWidget extends StatelessWidget {
       case ChatItemContentType.text:
         widget = _TextContent(
           text: question.content ?? '',
-          hasUnanswered: question.hasUnanswered,
+          isActive: question.isActive,
         );
         break;
       case ChatItemContentType.media:
         widget = _MediaContent(
           attachment: question.attachments!.first,
-          hasUnanswered: question.hasUnanswered,
+          isActive: question.isActive,
         );
         break;
       case ChatItemContentType.mediaText:
@@ -39,7 +39,8 @@ class ListTileContentWidget extends StatelessWidget {
           children: [
             _MediaContent(
               attachment: question.attachments!.first,
-              hasUnanswered: question.hasUnanswered,
+              isActive: question.isActive,
+              isSingleMedia: false,
             ),
             const SizedBox(
               width: 8.0,
@@ -47,7 +48,7 @@ class ListTileContentWidget extends StatelessWidget {
             Expanded(
               child: _TextContent(
                 text: question.content ?? '',
-                hasUnanswered: question.hasUnanswered,
+                isActive: question.isActive,
               ),
             ),
           ],
@@ -64,7 +65,7 @@ class ListTileContentWidget extends StatelessWidget {
             ),
             _TextContent(
               text: question.content ?? '',
-              hasUnanswered: question.hasUnanswered,
+              isActive: question.isActive,
             ),
           ],
         );
@@ -82,12 +83,12 @@ class ListTileContentWidget extends StatelessWidget {
 
 class _TextContent extends StatelessWidget {
   final String text;
-  final bool? hasUnanswered;
+  final bool? isActive;
 
   const _TextContent({
     Key? key,
     required this.text,
-    this.hasUnanswered,
+    this.isActive,
   }) : super(key: key);
 
   @override
@@ -99,7 +100,7 @@ class _TextContent extends StatelessWidget {
       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w400,
             fontSize: 14.0,
-            color: (hasUnanswered != null && hasUnanswered!)
+            color: (isActive == true)
                 ? AppColors.promotion
                 : Theme.of(context).shadowColor,
           ),
@@ -109,12 +110,14 @@ class _TextContent extends StatelessWidget {
 
 class _MediaContent extends StatelessWidget {
   final Attachment attachment;
-  final bool? hasUnanswered;
+  final bool? isActive;
+  final bool isSingleMedia;
 
   const _MediaContent({
     Key? key,
     required this.attachment,
-    this.hasUnanswered,
+    this.isActive,
+    this.isSingleMedia = true,
   }) : super(key: key);
 
   @override
@@ -141,18 +144,22 @@ class _MediaContent extends StatelessWidget {
                   color: theme.primaryColor,
                 ),
         ),
-        const SizedBox(
-          width: 8.0,
-        ),
-        if (!isImage)
-          Text(
-            S.of(context).audioMessage,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              fontSize: 14.0,
-              color: (hasUnanswered != null && hasUnanswered!)
-                  ? AppColors.promotion
-                  : Theme.of(context).shadowColor,
-            ),
+        if (!isImage && isSingleMedia)
+          Row(
+            children: [
+              const SizedBox(
+                width: 8.0,
+              ),
+              Text(
+                S.of(context).audioMessage,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontSize: 14.0,
+                  color: (isActive == true)
+                      ? AppColors.promotion
+                      : Theme.of(context).shadowColor,
+                ),
+              )
+            ],
           )
       ],
     );
@@ -171,14 +178,20 @@ class _MediaMediaContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        _MediaContent(attachment: attachments.first),
+        _MediaContent(
+          attachment: attachments.first,
+          isSingleMedia: false,
+        ),
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 4.0),
           child: VerticalDivider(
             width: 13.0,
           ),
         ),
-        _MediaContent(attachment: attachments.last),
+        _MediaContent(
+          attachment: attachments.last,
+          isSingleMedia: false,
+        ),
         const SizedBox(
           width: 8.0,
         ),

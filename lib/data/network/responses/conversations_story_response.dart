@@ -7,10 +7,12 @@ part 'conversations_story_response.g.dart';
 class ConversationsStoryResponse {
   final List<ChatItem>? questions;
   final List<ChatItem>? answers;
+  final String? clientID;
 
   const ConversationsStoryResponse({
     this.questions,
     this.answers,
+    this.clientID,
   });
 
   factory ConversationsStoryResponse.fromJson(Map<String, dynamic> json) =>

@@ -3,7 +3,9 @@ import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_story_response.dart';
+import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
+import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 
 class ChatsRepositoryImpl implements ChatsRepository {
@@ -34,15 +36,19 @@ class ChatsRepositoryImpl implements ChatsRepository {
   }
 
   @override
-  Future<QuestionsListResponse> getHistoryList({
+  Future<HistoryResponse> getHistoryList({
+    required String clientId,
     required int limit,
-    required int page,
-    String? search,
+    String? lastItem,
+    String? storyId,
+    String? firstItem,
   }) async {
     return await _api.getHistoryList(
+      clientId: clientId,
       limit: limit,
-      page: page,
-      search: search,
+      lastItem: lastItem,
+      storyId: storyId,
+      firstItem: firstItem,
     );
   }
 
@@ -61,11 +67,12 @@ class ChatsRepositoryImpl implements ChatsRepository {
   }
 
   @override
-  Future<ConversationsStoryResponse> getConversationsStory({
-    required String storyID,
-  }) async {
-    return await _api.getConversationsStory(
+  Future<ConversationsStoryResponse> getStory(
+      {required String storyID, int? limit, String? lastQuestionId}) async {
+    return await _api.getStory(
       storyID: storyID,
+      limit: limit,
+      lastQuestionId: lastQuestionId,
     );
   }
 
@@ -85,12 +92,12 @@ class ChatsRepositoryImpl implements ChatsRepository {
   }
 
   @override
-  Future<ChatItem> getRitualQuestion({required String id}) async {
-    return await _api.getRitualQuestion(id: id);
+  Future<RitualsResponse> getRituals({required String id}) async {
+    return await _api.getRituals(id: id);
   }
 
   @override
-  Future<dynamic> startAnswer(AnswerRequest request) async {
+  Future<ChatItem> startAnswer(AnswerRequest request) async {
     return await _api.startAnswer(request);
   }
 
@@ -100,12 +107,35 @@ class ChatsRepositoryImpl implements ChatsRepository {
   }
 
   @override
-  Future<QuestionsListResponse> getCustomerSessions(
-      {required String id,
-      required int limit,
-      String? lastItem,
-      String? filterType}) async {
-    return await _api.getCustomerSessions(
-        id: id, limit: limit, lastItem: lastItem, filterType: filterType);
+  Future<QuestionsListResponse> getCustomerQuestions({
+    required String clientId,
+    String? filterType,
+  }) async {
+
+    final QuestionsListResponse response =
+     await _api.getCustomerQuestions(
+      id: clientId,
+      filterType: filterType,
+    );
+
+    return response;
+  }
+
+  @override
+  Future<QuestionsListResponse> getCustomerHistoryStories({
+    required String id,
+    required int limit,
+    String? lastItem,
+    String? filterType,
+    String? excludeIds,
+  }) async {
+    final QuestionsListResponse response = await _api.getCustomerHistoryStories(
+      id: id,
+      limit: limit,
+      lastItem: lastItem,
+      filterType: filterType,
+      excludeIds: excludeIds,
+    );
+    return response;
   }
 }

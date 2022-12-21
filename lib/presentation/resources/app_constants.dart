@@ -14,8 +14,8 @@ class AppConstants {
   static const int minRecordDurationInSec = 15;
   static const int maxRecordDurationInSec = 180;
 
-  static const int minTextLengthPublic = 250;
-  static const int maxTextLengthPublic = 1000;
+  static const int minTextLength = 250;
+  static const int maxTextLength = 1000;
   static const int minTextLengthRirual = 1000;
   static const int maxTextLengthRitual = 2000;
 
@@ -40,6 +40,6 @@ class AppConstants {
   static const String iosAppId = '1:986930839057:ios:931a04b3aeb905de5cbbb0';
 
   ///DEV
-  // static const String baseUrlDev =
-  //     'https://fortunica-backend-for-2268.fortunica.adviqodev.de';
+  static const String baseUrlDev =
+      'https://fortunica-backend-for-2268.fortunica.adviqodev.de';
 }

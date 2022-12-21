@@ -2,7 +2,9 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_story_response.dart';
+import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
+import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
 
 abstract class ChatsRepository {
   Future<QuestionsListResponse> getPublicQuestions({
@@ -18,10 +20,12 @@ abstract class ChatsRepository {
     String? search,
   });
 
-  Future<QuestionsListResponse> getHistoryList({
+  Future<HistoryResponse> getHistoryList({
+    required String clientId,
     required int limit,
-    required int page,
-    String? search,
+    String? lastItem,
+    String? storyId,
+    String? firstItem,
   });
 
   Future<ConversationsResponse> getConversationsHistory(
@@ -30,14 +34,23 @@ abstract class ChatsRepository {
       required int offset,
       required int limit});
 
-  Future<ConversationsStoryResponse> getConversationsStory(
-      {required String storyID});
+  Future<ConversationsStoryResponse> getStory({
+    required String storyID,
+    int? limit,
+    String? lastQuestionId,
+  });
 
-  Future<QuestionsListResponse> getCustomerSessions({
+  Future<QuestionsListResponse> getCustomerQuestions({
+    required String clientId,
+    String? filterType,
+  });
+
+  Future<QuestionsListResponse> getCustomerHistoryStories({
     required String id,
     required int limit,
     String? lastItem,
     String? filterType,
+    String? excludeIds,
   });
 
   Future<ChatItem> takeQuestion(AnswerRequest request);
@@ -46,9 +59,9 @@ abstract class ChatsRepository {
 
   Future<ChatItem> getQuestion({required String id});
 
-  Future<ChatItem> getRitualQuestion({required String id});
+  Future<RitualsResponse> getRituals({required String id});
 
-  Future<dynamic> startAnswer(AnswerRequest request);
+  Future<ChatItem> startAnswer(AnswerRequest request);
 
   Future<ChatItem> sendAnswer(AnswerRequest request);
 }
