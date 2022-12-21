@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
@@ -18,6 +19,22 @@ class ChatTextInputWidget extends StatelessWidget {
   const ChatTextInputWidget({
     Key? key,
   }) : super(key: key);
+
+  Future<void> _sendAnswer(BuildContext context, ChatCubit chatCubit) async {
+    final s = S.of(context);
+    final dynamic isConfirmed = await showOkCancelAlert(
+      context: context,
+      title: s.pleaseConfirmThatYourAnswerIsReadyToBeSent,
+      okText: s.confirm,
+      actionOnOK: () => Navigator.pop(context, true),
+      allowBarrierClick: false,
+      isCancelEnabled: true,
+    );
+
+    if (isConfirmed == true) {
+      chatCubit.sendTextMediaAnswer();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,9 +138,11 @@ class ChatTextInputWidget extends StatelessWidget {
                                 Opacity(
                                   opacity: isSendButtonEnabled ? 1.0 : 0.4,
                                   child: AppIconGradientButton(
-                                    onTap: isSendButtonEnabled
-                                        ? chatCubit.sendTextMediaAnswer
-                                        : null,
+                                    onTap: () {
+                                      if (isSendButtonEnabled) {
+                                        _sendAnswer(context, chatCubit);
+                                      }
+                                    },
                                     icon: Assets.vectors.send.path,
                                     iconColor:
                                         Theme.of(context).backgroundColor,

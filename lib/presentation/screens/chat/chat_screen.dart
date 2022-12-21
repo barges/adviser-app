@@ -37,6 +37,23 @@ import 'widgets/chat_info_card.dart';
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);
 
+  Future<void> _sendMediaAnswer(
+      BuildContext context, ChatCubit chatCubit) async {
+    final s = S.of(context);
+    final dynamic isConfirmed = await showOkCancelAlert(
+      context: context,
+      title: s.pleaseConfirmThatYourAnswerIsReadyToBeSent,
+      okText: s.confirm,
+      actionOnOK: () => Navigator.pop(context, true),
+      allowBarrierClick: false,
+      isCancelEnabled: true,
+    );
+
+    if (isConfirmed == true) {
+      chatCubit.sendMediaAnswer();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -229,7 +246,8 @@ class ChatScreen extends StatelessWidget {
                                     chatCubit.deletedRecordedAudio();
                                   }
                                 },
-                                onSendPressed: chatCubit.sendMediaAnswer,
+                                onSendPressed: () =>
+                                    _sendMediaAnswer(context, chatCubit),
                               );
                             } else if (isRecordingAudio) {
                               return ChatRecordingWidget(
@@ -272,7 +290,8 @@ class ChatScreen extends StatelessWidget {
                                     chatCubit.deletedRecordedAudio();
                                   }
                                 },
-                                onSendPressed: chatCubit.sendMediaAnswer,
+                                onSendPressed: () =>
+                                    _sendMediaAnswer(context, chatCubit),
                               );
                             } else if (isRecordingAudio) {
                               return ChatRecordingWidget(

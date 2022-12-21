@@ -127,6 +127,7 @@
   "doYouWantToDeleteImage": "Deseja excluir a imagem?",
   "tryAgain": "Tente novamente",
   "ok": "OK",
+  "confirm": "Confirme",
   "note": "Nota",
   "live": "Viver",
   "incomplete": "Incompleto",
@@ -204,5 +205,6 @@
   "openEmail": "Abrir e-mail",
   "weVeSentPasswordResetInstructionsToEmail": "Enviamos instruções de redefinição de senha para o {email}.",
   "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword": "Digite seu endereço de e-mail e enviaremos instruções para criar uma nova senha",
-  "wrongUsernameAndOrPassword": "Nome de usuário e/ou senha incorretos."
+  "wrongUsernameAndOrPassword": "Nome de usuário e/ou senha incorretos.",
+  "pleaseConfirmThatYourAnswerIsReadyToBeSent": "Confirme se sua resposta está pronta para ser enviada"
 }

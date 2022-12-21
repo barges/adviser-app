@@ -125,6 +125,7 @@
   "doYouWantToDeleteImage": "Möchten Sie das Bild löschen?",
   "tryAgain": "Versuchen Sie es nochmal",
   "ok": "OK",
+  "confirm": "Bestätigen",
   "note": "Notiz",
   "live": "Live",
   "incomplete": "Unvollständig",
@@ -202,5 +203,6 @@
   "openEmail": "E-Mail öffnen",
   "weVeSentPasswordResetInstructionsToEmail": "Wir haben Anweisungen zum Zurücksetzen des Passworts an {email} gesendet.",
   "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen Anweisungen zum Erstellen eines neuen Passworts",
-  "wrongUsernameAndOrPassword": "Falscher Nutzername und/oder Passwort."
+  "wrongUsernameAndOrPassword": "Falscher Nutzername und/oder Passwort.",
+  "pleaseConfirmThatYourAnswerIsReadyToBeSent": "Bitte bestätigen Sie, dass Ihre Antwort zum Senden bereit ist"
 }
