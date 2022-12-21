@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
@@ -10,6 +9,7 @@ import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/main_state.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/search/search_list_cubit.dart';
 
@@ -98,11 +98,13 @@ class SearchListWidget extends StatelessWidget {
                               height: 42.0,
                               child: Row(
                                 children: [
-                                  SvgPicture.asset(
-                                      question.clientInformation?.zodiac
-                                              ?.imagePath(context) ??
-                                          '',
-                                      height: 42.0),
+                                  UserAvatar(
+                                    avatarUrl: question
+                                        .clientInformation?.zodiac
+                                        ?.imagePath(context),
+                                    isZodiac: true,
+                                    diameter: 42,
+                                  ),
                                   const SizedBox(
                                     width: 12.0,
                                   ),
