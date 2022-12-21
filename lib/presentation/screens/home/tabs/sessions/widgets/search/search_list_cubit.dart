@@ -32,6 +32,7 @@ class SearchListCubit extends Cubit<SearchListState> {
 
   String? _conversationsLastItem;
   bool _conversationsHasMore = true;
+  bool _isLoading = false;
 
   SearchListCubit(
     this._repository,
@@ -46,8 +47,9 @@ class SearchListCubit extends Cubit<SearchListState> {
 
     conversationsScrollController.addListener(() {
       ///TODO: Remove context
-      if (conversationsScrollController.position.extentAfter <=
-          MediaQuery.of(context).size.height) {
+      if (!_isLoading &&
+          conversationsScrollController.position.extentAfter <=
+              MediaQuery.of(context).size.height) {
         getConversations();
       }
     });
@@ -70,6 +72,7 @@ class SearchListCubit extends Cubit<SearchListState> {
   }
 
   Future<void> getConversations({bool refresh = false}) async {
+    _isLoading = true;
     if (refresh) {
       _conversationsHasMore = true;
       _conversationsLastItem = null;
@@ -98,6 +101,7 @@ class SearchListCubit extends Cubit<SearchListState> {
         ),
       );
     }
+    _isLoading = false;
   }
 
   void goToCustomerSessions(ChatItem question) {

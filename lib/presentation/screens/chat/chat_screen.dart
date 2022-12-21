@@ -207,8 +207,10 @@ class ChatScreen extends StatelessWidget {
                   final ChatItemStatusType? questionStatus = context
                       .select((ChatCubit cubit) => cubit.state.questionStatus);
 
-                  if (chatCubit.chatScreenArguments.storyIdForHistory == null &&
-                      currentIndex == 0) {
+                  if (chatCubit.chatScreenArguments.privateQuestionId != null ||
+                      chatCubit.chatScreenArguments.publicQuestionId != null ||
+                      chatCubit.chatScreenArguments.ritualID != null &&
+                          currentIndex == 0) {
                     if (chatCubit.chatScreenArguments.publicQuestionId !=
                         null) {
                       final bool showInputFieldIfPublic = context.select(

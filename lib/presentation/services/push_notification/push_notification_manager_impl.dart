@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/main.dart';
@@ -46,6 +47,7 @@ class PushNotificationManagerImpl implements PushNotificationManager {
       logger.d(response.input);
       logger.d('+++++++++++++++++++++++');
       final Map<String, dynamic> message = json.decode(response.payload ?? '');
+
       _navigateToNextScreen(RemoteMessage(data: message));
     });
   }
@@ -83,9 +85,25 @@ class PushNotificationManagerImpl implements PushNotificationManager {
     FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
         alert: true, badge: true, sound: true);
 
-    FirebaseMessaging.instance.getInitialMessage().then((message) {
-      logger.d(message?.data);
-      _navigateToNextScreen(message);
+    FirebaseMessaging.instance.getInitialMessage().then((message) async {
+      if (message == null) {
+        final NotificationAppLaunchDetails? notificationAppLaunchDetails =
+            await flutterLocalNotificationsPlugin
+                .getNotificationAppLaunchDetails();
+        if (notificationAppLaunchDetails != null &&
+            notificationAppLaunchDetails.didNotificationLaunchApp) {
+          String? payload =
+              notificationAppLaunchDetails.notificationResponse?.payload;
+          logger.d(
+              'FCM: didNotificationLaunchApp = ${notificationAppLaunchDetails.didNotificationLaunchApp}, payload = $payload');
+          if (payload != null && payload.isNotEmpty) {
+            Map<String, dynamic> data = jsonDecode(payload);
+            _navigateToNextScreen(RemoteMessage(data: data));
+          }
+        }
+      } else {
+        _navigateToNextScreen(message);
+      }
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -96,6 +114,7 @@ class PushNotificationManagerImpl implements PushNotificationManager {
       Map<String, dynamic> map = jsonDecode(message.data['meta'] ?? '');
       logger.d(map['entityId']);
       logger.d('***********************');
+
       showNotification(message);
     });
 

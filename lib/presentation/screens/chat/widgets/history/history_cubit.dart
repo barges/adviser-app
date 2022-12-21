@@ -74,69 +74,67 @@ class HistoryCubit extends Cubit<HistoryState> {
     bool firstRequest = false,
     HistoryScrollDirection? scrollDirection,
   }) async {
-    if (!_isLoading) {
-      _isLoading = true;
-      try {
-        if (firstRequest && await _connectivityService.checkConnection()) {
+    _isLoading = true;
+    try {
+      if (firstRequest && await _connectivityService.checkConnection()) {
+        final HistoryResponse result = await _repository.getHistoryList(
+          clientId: _clientId,
+          limit: _limit,
+          storyId: storyId,
+        );
+        _hasMore = result.hasMore ?? false;
+        _hasBefore = result.hasBefore ?? false;
+        _lastItem = result.lastItem;
+        _firstItem = result.firstItem;
+
+        _historyList.addAll(result.history ?? const []);
+        emit(state.copyWith(
+          historyMessages: List.of(_historyList),
+        ));
+        _isLoading = false;
+        await _getHistoryList(scrollDirection: HistoryScrollDirection.down);
+        await _getHistoryList(scrollDirection: HistoryScrollDirection.up);
+      } else {
+        if (_hasMore &&
+            await _connectivityService.checkConnection() &&
+            scrollDirection == HistoryScrollDirection.down) {
           final HistoryResponse result = await _repository.getHistoryList(
             clientId: _clientId,
             limit: _limit,
-            storyId: storyId,
+            lastItem: _lastItem,
           );
           _hasMore = result.hasMore ?? false;
-          _hasBefore = result.hasBefore ?? false;
-          _lastItem = result.lastItem;
-          _firstItem = result.firstItem;
 
-          _historyList.addAll(result.history ?? const []);
+          _lastItem = result.lastItem;
+          _historyList.insertAll(0, result.history ?? const []);
+
           emit(state.copyWith(
             historyMessages: List.of(_historyList),
           ));
-          _isLoading = false;
-          await _getHistoryList(scrollDirection: HistoryScrollDirection.down);
-          await _getHistoryList(scrollDirection: HistoryScrollDirection.up);
-        } else {
-          if (_hasMore &&
-              await _connectivityService.checkConnection() &&
-              scrollDirection == HistoryScrollDirection.down) {
-            final HistoryResponse result = await _repository.getHistoryList(
-              clientId: _clientId,
-              limit: _limit,
-              lastItem: _lastItem,
-            );
-            _hasMore = result.hasMore ?? false;
+        } else if (_hasBefore &&
+            await _connectivityService.checkConnection() &&
+            scrollDirection == HistoryScrollDirection.up) {
+          final HistoryResponse result = await _repository.getHistoryList(
+            clientId: _clientId,
+            limit: _limit,
+            firstItem: _firstItem,
+          );
+          _hasBefore = result.hasBefore ?? false;
 
-            _lastItem = result.lastItem;
-            _historyList.insertAll(0, result.history ?? const []);
+          _firstItem = result.firstItem;
+          offset = result.history?.length ?? 0;
+          _historyList.addAll(result.history ?? const []);
 
-            emit(state.copyWith(
-              historyMessages: List.of(_historyList),
-            ));
-          } else if (_hasBefore &&
-              await _connectivityService.checkConnection() &&
-              scrollDirection == HistoryScrollDirection.up) {
-            final HistoryResponse result = await _repository.getHistoryList(
-              clientId: _clientId,
-              limit: _limit,
-              firstItem: _firstItem,
-            );
-            _hasBefore = result.hasBefore ?? false;
-
-            _firstItem = result.firstItem;
-            offset = result.history?.length ?? 0;
-            _historyList.addAll(result.history ?? const []);
-
-            emit(state.copyWith(
-              historyMessages: List.of(_historyList),
-            ));
-            Utils.animateToWidget(scrollItemKey, durationInMilliseconds: 0);
-          }
+          emit(state.copyWith(
+            historyMessages: List.of(_historyList),
+          ));
+          Utils.animateToWidget(scrollItemKey, durationInMilliseconds: 0);
         }
-      } on DioError catch (e) {
-        logger.d(e);
       }
-      _isLoading = false;
+    } on DioError catch (e) {
+      logger.d(e);
     }
+    _isLoading = false;
   }
 
   Future<void> startPlayAudio(String audioUrl) async {
