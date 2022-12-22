@@ -38,9 +38,9 @@ class ChatTextInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.select((ChatCubit cubit) => cubit.state.attachedPictures);
+    final theme = Theme.of(context);
     final ChatCubit chatCubit = context.read<ChatCubit>();
-    final List<File> attachedPictures =
-        context.select((ChatCubit cubit) => cubit.state.attachedPictures);
     final isAttachedPictures = chatCubit.isAttachedPictures;
     final isAudio = chatCubit.state.questionFromDB?.isAudio ?? false;
 
@@ -56,7 +56,7 @@ class ChatTextInputWidget extends StatelessWidget {
             Container(
               padding:
                   const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
-              color: Theme.of(context).canvasColor,
+              color: theme.canvasColor,
               child: Column(
                 children: [
                   if (isAttachedPictures) const _InputTextField(),
@@ -79,8 +79,7 @@ class ChatTextInputWidget extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            if (attachedPictures.length <
-                                AppConstants.maxAttachedPictures) {
+                            if (!isAttachedPictures) {
                               showPickImageAlert(
                                 context: context,
                                 setImage: chatCubit.attachPicture,
@@ -88,16 +87,24 @@ class ChatTextInputWidget extends StatelessWidget {
                             }
                           },
                           child: Opacity(
-                            opacity: attachedPictures.length <
-                                    AppConstants.maxAttachedPictures
-                                ? 1.0
-                                : 0.4,
+                            opacity: !isAttachedPictures ? 1.0 : 0.4,
                             child: Assets.vectors.gallery.svg(
                               width: AppConstants.iconSize,
-                              color: Theme.of(context).shadowColor,
+                              color: theme.shadowColor,
                             ),
                           ),
                         ),
+                        if (isAttachedPictures)
+                          GestureDetector(
+                            onTap: () => chatCubit.startRecordingAudio(context),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 16.0,
+                              ),
+                              child: Assets.vectors.microphone
+                                  .svg(width: AppConstants.iconSize),
+                            ),
+                          ),
                         if (isAttachedPictures) const Spacer(),
                         if (!isAttachedPictures)
                           const Expanded(
@@ -118,10 +125,10 @@ class ChatTextInputWidget extends StatelessWidget {
                                   !isAttachedPictures &&
                                   isAudio)
                                 AppIconGradientButton(
-                                  onTap: () => chatCubit.startRecordingAudio(context),
+                                  onTap: () =>
+                                      chatCubit.startRecordingAudio(context),
                                   icon: Assets.vectors.microphone.path,
-                                  iconColor:
-                                      Theme.of(context).backgroundColor,
+                                  iconColor: theme.backgroundColor,
                                 ),
                               if (inputTextLength > 0 ||
                                   isAttachedPictures ||
@@ -135,8 +142,7 @@ class ChatTextInputWidget extends StatelessWidget {
                                       }
                                     },
                                     icon: Assets.vectors.send.path,
-                                    iconColor:
-                                        Theme.of(context).backgroundColor,
+                                    iconColor: theme.backgroundColor,
                                   ),
                                 ),
                             ],
@@ -167,12 +173,14 @@ class _InputTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final ChatCubit chatCubit = context.read<ChatCubit>();
-    final TextStyle? style = Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: Theme.of(context).hoverColor,
-          fontSize: 15.0,
-          height: 0.97,
-        );
+    final TextStyle? style = theme.textTheme.bodySmall?.copyWith(
+      color: theme.hoverColor,
+      fontSize: 15.0,
+      height: 0.97,
+    );
+
     return LayoutBuilder(
       builder: (context, constraints) {
         context.select((ChatCubit cubit) => cubit.state.inputTextLength);
@@ -198,10 +206,10 @@ class _InputTextField extends StatelessWidget {
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,
               hintText: S.of(context).typeMessage,
-              hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).shadowColor,
-                    fontSize: 15.0,
-                  ),
+              hintStyle: theme.textTheme.bodySmall?.copyWith(
+                color: theme.shadowColor,
+                fontSize: 15.0,
+              ),
             ),
           ),
         );
@@ -217,8 +225,9 @@ class _TextCounter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ChatCubit chatCubit = context.read<ChatCubit>();
     final theme = Theme.of(context);
+    final ChatCubit chatCubit = context.read<ChatCubit>();
+
     return Builder(builder: (context) {
       final int inputTextLength =
           context.select((ChatCubit cubit) => cubit.state.inputTextLength);
