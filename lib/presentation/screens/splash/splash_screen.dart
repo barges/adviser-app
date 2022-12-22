@@ -15,12 +15,10 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) {
-
         return SplashCubit(getIt.get<CachingManager>(), context);
       },
       child: Builder(
         builder: (context) {
-          final Size size = MediaQuery.of(context).size;
           return BlocListener<SplashCubit, SplashState>(
             listener: (prev, current) {
               if (current.isLogged == true) {
@@ -30,12 +28,11 @@ class SplashScreen extends StatelessWidget {
               }
             },
             child: Scaffold(
-              body: SizedBox(
-                height: size.height,
-                width: size.width,
-                child: Assets.images.splash.image(
-                  fit: BoxFit.fill,
-                ),
+              backgroundColor: Theme.of(context).primaryColor,
+              body: Center(
+                // height: size.height,
+                // width: size.width,
+                child: Assets.vectors.splashLogo.svg(),
               ),
             ),
           );

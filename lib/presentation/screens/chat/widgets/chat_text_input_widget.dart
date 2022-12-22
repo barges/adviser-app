@@ -12,7 +12,7 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/attac
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
-const _maxTextNumLines = 6;
+const _maxTextNumLines = 5;
 
 class ChatTextInputWidget extends StatelessWidget {
   const ChatTextInputWidget({
@@ -38,7 +38,7 @@ class ChatTextInputWidget extends StatelessWidget {
             ),
             Container(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
               color: Theme.of(context).canvasColor,
               child: Column(
                 children: [
@@ -89,6 +89,9 @@ class ChatTextInputWidget extends StatelessWidget {
                               child: _InputTextField(),
                             ),
                           ),
+                        const SizedBox(
+                          width: 4.0,
+                        ),
                         Builder(builder: (context) {
                           final isSendButtonEnabled = context.select(
                                   (ChatCubit cubit) =>
@@ -101,10 +104,10 @@ class ChatTextInputWidget extends StatelessWidget {
                                   !isAttachedPictures &&
                                   isAudio)
                                 AppIconGradientButton(
-                                  onTap: () => chatCubit.startRecordingAudio(context),
+                                  onTap: () =>
+                                      chatCubit.startRecordingAudio(context),
                                   icon: Assets.vectors.microphone.path,
-                                  iconColor:
-                                      Theme.of(context).backgroundColor,
+                                  iconColor: Theme.of(context).backgroundColor,
                                 ),
                               if (inputTextLength > 0 ||
                                   isAttachedPictures ||
@@ -152,12 +155,12 @@ class _InputTextField extends StatelessWidget {
     final TextStyle? style = Theme.of(context).textTheme.bodySmall?.copyWith(
           color: Theme.of(context).hoverColor,
           fontSize: 15.0,
-          height: 0.97,
+          height: 1.2,
         );
     return LayoutBuilder(
       builder: (context, constraints) {
         context.select((ChatCubit cubit) => cubit.state.inputTextLength);
-        final textNumLines = Utils.getTextNumLines(
+        final int textNumLines = Utils.getTextNumLines(
           chatCubit.textEditingController.text,
           constraints.maxWidth,
           style,
@@ -225,13 +228,17 @@ class _TextCounter extends StatelessWidget {
                 const BorderRadius.only(topLeft: Radius.circular(4.0)),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Text(
-              textAlign: TextAlign.center,
-              '$inputTextLength/${chatCubit.minTextLength}',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: isEnabled ? AppColors.online : theme.errorColor,
-                fontSize: 12.0,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 4.0,
+            ),
+            child: Center(
+              child: Text(
+                textAlign: TextAlign.center,
+                '$inputTextLength/${chatCubit.minTextLength}',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: isEnabled ? AppColors.online : theme.errorColor,
+                  fontSize: 12.0,
+                ),
               ),
             ),
           ),
