@@ -97,10 +97,9 @@ class AccountCubit extends Cubit<AccountState> {
         state.copyWith(
           userProfile: cacheManager.getUserProfile(),
           enableNotifications: userInfo.pushNotificationsEnabled ?? false,
-          millisecondsForTimer:
-              AppConstants.millisecondsInHour - milliseconds < 0
-                  ? 0
-                  : AppConstants.millisecondsInHour - milliseconds,
+          millisecondsForTimer: milliseconds > 0
+              ? AppConstants.millisecondsInHour - milliseconds
+              : milliseconds,
         ),
       );
     }

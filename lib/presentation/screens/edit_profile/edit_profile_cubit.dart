@@ -165,9 +165,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     });
 
     for (var entry in textControllersMap.entries) {
-      entry.value.firstOrNull?.addListener(() {
-        if (entry.value.firstOrNull?.text != null &&
-            entry.value.firstOrNull!.text.length > 300) {
+      final statusController = entry.value.firstOrNull;
+      statusController?.addListener(() {
+        if (statusController.text.length > 300) {
           errorTextsMap[entry.key]?.first =
               ValidationErrorType.statusTextMayNotExceed300Characters;
           emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));

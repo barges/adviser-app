@@ -65,32 +65,29 @@ class CustomerSessionsScreen extends StatelessWidget {
                               cubit.state.currentMarketIndex);
                       return Opacity(
                         opacity: isOnline ? 1.0 : 0.4,
-                        child: Padding(
+                        child: SingleChildScrollView(
                           padding: const EdgeInsets.only(
                               right: AppConstants.horizontalScreenPadding),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: [
-                                ListOfFiltersWidget(
-                                  currentFilterIndex: currentFilterIndex,
-                                  onTapToFilter: isOnline
-                                      ? customerSessionsCubit.changeFilterIndex
-                                      : (value) {},
-                                  filters: customerSessionsCubit.filters
-                                      .map((e) => e.filterName(context))
-                                      .toList(),
-                                  withMarketFilter: true,
-                                ),
-                                MarketFilterWidget(
-                                    userMarkets: userMarkets,
-                                    currentMarketIndex: currentMarketIndex,
-                                    changeIndex: isOnline
-                                        ? customerSessionsCubit
-                                            .changeMarketIndex
-                                        : (value) {}),
-                              ],
-                            ),
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              ListOfFiltersWidget(
+                                currentFilterIndex: currentFilterIndex,
+                                onTapToFilter: isOnline
+                                    ? customerSessionsCubit.changeFilterIndex
+                                    : (value) {},
+                                filters: customerSessionsCubit.filters
+                                    .map((e) => e.filterName(context))
+                                    .toList(),
+                                withMarketFilter: true,
+                              ),
+                              MarketFilterWidget(
+                                  userMarkets: userMarkets,
+                                  currentMarketIndex: currentMarketIndex,
+                                  changeIndex: isOnline
+                                      ? customerSessionsCubit.changeMarketIndex
+                                      : (value) {}),
+                            ],
                           ),
                         ),
                       );
