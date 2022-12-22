@@ -230,7 +230,9 @@ class ChatScreen extends StatelessWidget {
                                     chatCubit.deletedRecordedAudio();
                                   }
                                 },
-                                onSendPressed: chatCubit.sendMediaAnswer,
+                                onSendPressed: () =>
+                                    chatCubit.sendAnswerWithConfirmAlert(
+                                        chatCubit.sendMediaAnswer),
                               );
                             } else if (isRecordingAudio) {
                               return ChatRecordingWidget(
@@ -274,7 +276,9 @@ class ChatScreen extends StatelessWidget {
                                     chatCubit.deletedRecordedAudio();
                                   }
                                 },
-                                onSendPressed: chatCubit.sendMediaAnswer,
+                                onSendPressed: () =>
+                                    chatCubit.sendAnswerWithConfirmAlert(
+                                        chatCubit.sendMediaAnswer),
                               );
                             } else if (isRecordingAudio) {
                               return ChatRecordingWidget(

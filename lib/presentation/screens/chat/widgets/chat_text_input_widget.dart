@@ -120,9 +120,12 @@ class ChatTextInputWidget extends StatelessWidget {
                                 Opacity(
                                   opacity: isSendButtonEnabled ? 1.0 : 0.4,
                                   child: AppIconGradientButton(
-                                    onTap: isSendButtonEnabled
-                                        ? chatCubit.sendTextMediaAnswer
-                                        : null,
+                                    onTap: () {
+                                      if (isSendButtonEnabled) {
+                                        chatCubit.sendAnswerWithConfirmAlert(
+                                            chatCubit.sendTextMediaAnswer);
+                                      }
+                                    },
                                     icon: Assets.vectors.send.path,
                                     iconColor: theme.backgroundColor,
                                   ),
