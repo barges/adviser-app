@@ -10,6 +10,7 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/rirual_card_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
@@ -231,8 +232,7 @@ class ChatScreen extends StatelessWidget {
                                   }
                                 },
                                 onSendPressed: () =>
-                                    chatCubit.sendAnswerWithConfirmAlert(
-                                        chatCubit.sendMediaAnswer),
+                                    chatCubit.sendAnswer(ChatContentType.media),
                               );
                             } else if (isRecordingAudio) {
                               return ChatRecordingWidget(
@@ -277,8 +277,7 @@ class ChatScreen extends StatelessWidget {
                                   }
                                 },
                                 onSendPressed: () =>
-                                    chatCubit.sendAnswerWithConfirmAlert(
-                                        chatCubit.sendMediaAnswer),
+                                    chatCubit.sendAnswer(ChatContentType.media),
                               );
                             } else if (isRecordingAudio) {
                               return ChatRecordingWidget(

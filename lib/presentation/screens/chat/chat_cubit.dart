@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:audio_session/audio_session.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +26,7 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
@@ -586,10 +588,14 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Future<void> sendAnswerWithConfirmAlert(
-      Future<void> Function() sendAnswer) async {
+  Future<void> sendAnswer(ChatContentType contentType) async {
     if (await _confirmSendAnswerAlert() == true) {
-      sendAnswer();
+      switch (contentType) {
+        case ChatContentType.media:
+          return sendMediaAnswer();
+        case ChatContentType.textMedia:
+          return sendTextMediaAnswer();
+      }
     }
   }
 
