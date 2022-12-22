@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:audio_session/audio_session.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +26,7 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
@@ -586,62 +588,65 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Future<void> sendMediaAnswer() async {
-    dynamic isOk = await _confirmSendAnswerAlert();
-
-    if (isOk == true) {
-      if (_playerRecorded != null && _playerRecorded!.isPlaying) {
-        await _playerRecorded!.stopPlayer();
+  Future<void> sendAnswer(ChatContentType contentType) async {
+    if (await _confirmSendAnswerAlert() == true) {
+      switch (contentType) {
+        case ChatContentType.media:
+          return sendMediaAnswer();
+        case ChatContentType.textMedia:
+          return sendTextMediaAnswer();
       }
+    }
+  }
 
-      _answerRequest = await _createMediaAnswerRequest();
-      final ChatItem? answer = await _sendAnswer();
+  Future<void> sendMediaAnswer() async {
+    if (_playerRecorded != null && _playerRecorded!.isPlaying) {
+      await _playerRecorded!.stopPlayer();
+    }
 
-      if (answer != null) {
-        final List<ChatItem> messages = List.of(state.activeMessages);
-        messages.add(answer);
+    _answerRequest = await _createMediaAnswerRequest();
+    final ChatItem? answer = await _sendAnswer();
 
-        emit(
-          state.copyWith(
-            isRecordingAudio: false,
-            isAudioFileSaved: false,
-            isPlayingRecordedAudio: false,
-            recordingPath: null,
-            activeMessages: messages,
-          ),
-        );
-        deleteAttachedPictures();
-        scrollChatDown();
+    if (answer != null) {
+      final List<ChatItem> messages = List.of(state.activeMessages);
+      messages.add(answer);
 
-        if (answer.isSent) {
-          _mainCubit.updateSessions();
-        }
+      emit(
+        state.copyWith(
+          isRecordingAudio: false,
+          isAudioFileSaved: false,
+          isPlayingRecordedAudio: false,
+          recordingPath: null,
+          activeMessages: messages,
+        ),
+      );
+      deleteAttachedPictures();
+      scrollChatDown();
+
+      if (answer.isSent) {
+        _mainCubit.updateSessions();
       }
     }
   }
 
   Future<void> sendTextMediaAnswer() async {
-    dynamic isOk = await _confirmSendAnswerAlert();
+    _answerRequest = await _createTextMediaAnswerRequest();
+    final ChatItem? answer = await _sendAnswer();
 
-    if (isOk == true) {
-      _answerRequest = await _createTextMediaAnswerRequest();
-      final ChatItem? answer = await _sendAnswer();
+    if (answer != null) {
+      final messages = List.of(state.activeMessages);
+      messages.add(answer);
+      emit(
+        state.copyWith(
+          activeMessages: messages,
+        ),
+      );
+      textEditingController.clear();
+      deleteAttachedPictures();
+      scrollChatDown();
 
-      if (answer != null) {
-        final messages = List.of(state.activeMessages);
-        messages.add(answer);
-        emit(
-          state.copyWith(
-            activeMessages: messages,
-          ),
-        );
-        textEditingController.clear();
-        deleteAttachedPictures();
-        scrollChatDown();
-
-        if (answer.isSent) {
-          _mainCubit.updateSessions();
-        }
+      if (answer.isSent) {
+        _mainCubit.updateSessions();
       }
     }
   }

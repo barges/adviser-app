@@ -1,8 +1,12 @@
-
 enum ChatItemContentType {
   text,
   mediaText,
   mediaMediaText,
   media,
-  mediaMedia
+  mediaMedia,
+}
+
+enum ChatContentType {
+  media,
+  textMedia,
 }

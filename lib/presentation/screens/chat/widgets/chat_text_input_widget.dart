@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
@@ -120,9 +121,12 @@ class ChatTextInputWidget extends StatelessWidget {
                                 Opacity(
                                   opacity: isSendButtonEnabled ? 1.0 : 0.4,
                                   child: AppIconGradientButton(
-                                    onTap: isSendButtonEnabled
-                                        ? chatCubit.sendTextMediaAnswer
-                                        : null,
+                                    onTap: () {
+                                      if (isSendButtonEnabled) {
+                                        chatCubit.sendAnswer(
+                                            ChatContentType.textMedia);
+                                      }
+                                    },
                                     icon: Assets.vectors.send.path,
                                     iconColor: theme.backgroundColor,
                                   ),
