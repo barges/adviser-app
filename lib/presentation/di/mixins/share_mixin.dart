@@ -10,7 +10,7 @@ mixin ShareMixin {
       source: ImageSource.gallery,
     );
     if (pickedFile != null) {
-      await Share.shareFiles([pickedFile.path],
+      await Share.shareXFiles([XFile(pickedFile.path)],
           sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
     }
   }
@@ -18,7 +18,7 @@ mixin ShareMixin {
   void shareListOfImages(BuildContext context, List<String> paths) async {
     final box = context.findRenderObject() as RenderBox?;
 
-    await Share.shareFiles(paths,
+    await Share.shareXFiles(paths.map((e) => XFile(e)).toList(),
         sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
   }
 

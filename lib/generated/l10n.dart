@@ -1137,11 +1137,11 @@ class S {
     );
   }
 
-  /// `All Type`
-  String get allType {
+  /// `All Markets`
+  String get allMarkets {
     return Intl.message(
-      'All Type',
-      name: 'allType',
+      'All Markets',
+      name: 'allMarkets',
       desc: '',
       args: [],
     );
@@ -1272,16 +1272,6 @@ class S {
     return Intl.message(
       'from 15 sec to 3 min',
       name: 'from15secTo3min',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Type message`
-  String get typemessage {
-    return Intl.message(
-      'Type message',
-      name: 'typemessage',
       desc: '',
       args: [],
     );
@@ -2092,6 +2082,26 @@ class S {
     return Intl.message(
       'Wrong username and/or password.',
       name: 'wrongUsernameAndOrPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We need permission to access your microphone`
+  String get weNeedPermissionToAccessYourMicrophone {
+    return Intl.message(
+      'We need permission to access your microphone',
+      name: 'weNeedPermissionToAccessYourMicrophone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type message`
+  String get typeMessage {
+    return Intl.message(
+      'Type message',
+      name: 'typeMessage',
       desc: '',
       args: [],
     );

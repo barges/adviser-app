@@ -73,10 +73,10 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
       emit(state.copyWith(currentMarketIndex: arguments.marketIndex!));
     }
 
-    questionsScrollController.addListener(() async {
-      if (!_isLoading &&
-          questionsScrollController.position.extentAfter <= _screenHeight) {
-        await getCustomerHistoryStories(
+    questionsScrollController.addListener(() {
+      if (questionsScrollController.position.extentAfter <= _screenHeight &&
+          !_isLoading) {
+        getCustomerHistoryStories(
           excludeIds: _excludeIds,
         );
       }

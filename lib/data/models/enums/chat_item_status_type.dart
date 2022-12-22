@@ -7,4 +7,6 @@ enum ChatItemStatusType {
   open,
   @JsonValue("ANSWERED")
   answered,
+  @JsonValue("CANCELLED_BY_ADMIN")
+  cancelledByAdmin,
 }

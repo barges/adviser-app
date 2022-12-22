@@ -71,7 +71,7 @@ class _PublicQuestionsListWidget extends StatelessWidget {
                 .select((SessionsCubit cubit) => cubit.state.publicQuestions);
             return Expanded(
               child: _ListOfQuestionsWidget(
-                controller: sessionsCubit.publicQuestionsController,
+                controller: sessionsCubit.publicQuestionsScrollController,
                 questions: publicQuestions,
                 onRefresh: () async {
                   sessionsCubit.getPublicQuestions(refresh: true);
@@ -118,7 +118,7 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
                 .select((SessionsCubit cubit) => cubit.state.conversationsList);
             return Expanded(
               child: _ListOfQuestionsWidget(
-                controller: sessionsCubit.conversationsController,
+                controller: sessionsCubit.conversationsScrollController,
                 questions: conversationsList,
                 isPublic: false,
                 onRefresh: () async {
