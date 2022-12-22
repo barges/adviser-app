@@ -144,7 +144,7 @@ Future<void> _navigateToNextScreen(RemoteMessage? message) async {
             arguments: ChatScreenArguments(ritualID: entityId));
       } else if (type == PushType.tips.name) {
         Get.toNamed(AppRoutes.chat,
-            arguments: ChatScreenArguments(clientId: entityId));
+            arguments: ChatScreenArguments(clientIdFromPush: entityId));
       }
     }
   }

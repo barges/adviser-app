@@ -61,7 +61,7 @@ class AddNoteScreenArguments {
 }
 
 class ChatScreenArguments {
-  final String? clientId;
+  final String? clientIdFromPush;
   final ChatItem? question;
   final String? publicQuestionId;
   final String? privateQuestionId;
@@ -69,7 +69,7 @@ class ChatScreenArguments {
   final String? storyIdForHistory;
 
   ChatScreenArguments({
-    this.clientId,
+    this.clientIdFromPush,
     this.question,
     this.publicQuestionId,
     this.privateQuestionId,
