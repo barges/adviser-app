@@ -202,5 +202,9 @@
   "openEmail": "E-Mail öffnen",
   "weVeSentPasswordResetInstructionsToEmail": "Wir haben Anweisungen zum Zurücksetzen des Passworts an {email} gesendet.",
   "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen Anweisungen zum Erstellen eines neuen Passworts",
-  "wrongUsernameAndOrPassword": "Falscher Nutzername und/oder Passwort."
+  "wrongUsernameAndOrPassword": "Falscher Nutzername und/oder Passwort.",
+  "enterYourPassword": "Geben Sie Ihr Passwort ein",
+  "enterNewPassword": "Neues Passwort eingeben",
+  "repeatNewPassword": "Wiederhole das neue Passwort",
+  "enterYourEmail": "Geben sie ihre E-Mail Adresse ein"
 }

@@ -204,5 +204,9 @@
   "openEmail": "Open email",
   "weVeSentPasswordResetInstructionsToEmail": "We've sent password reset instructions to {email}.",
   "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword": "Enter your email address and we'll send you instructions to create a new password",
-  "wrongUsernameAndOrPassword": "Wrong username and/or password."
+  "wrongUsernameAndOrPassword": "Wrong username and/or password.",
+  "enterYourPassword": "Enter your password",
+  "enterNewPassword": "Enter new password",
+  "repeatNewPassword": "Repeat new password",
+  "enterYourEmail": "Enter your email"
 }

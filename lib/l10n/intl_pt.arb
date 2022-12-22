@@ -204,5 +204,9 @@
   "openEmail": "Abrir e-mail",
   "weVeSentPasswordResetInstructionsToEmail": "Enviamos instruções de redefinição de senha para o {email}.",
   "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword": "Digite seu endereço de e-mail e enviaremos instruções para criar uma nova senha",
-  "wrongUsernameAndOrPassword": "Nome de usuário e/ou senha incorretos."
+  "wrongUsernameAndOrPassword": "Nome de usuário e/ou senha incorretos.",
+  "enterYourPassword": "Coloque sua senha",
+  "enterNewPassword": "Insira a nova senha",
+  "repeatNewPassword": "Repita a nova senha",
+  "enterYourEmail": "Digite seu e-mail"
 }
