@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -117,7 +116,6 @@ class HistoryCubit extends Cubit<HistoryState> {
   }
 
   Future<void> _getHistoriesFromMiddleList() async {
-    try {
       if (await _connectivityService.checkConnection()) {
         final HistoryResponse result = await _repository.getHistoryList(
           clientId: _clientId,
@@ -131,11 +129,6 @@ class HistoryCubit extends Cubit<HistoryState> {
 
         _topHistoriesList.addAll(result.history?.reversed ?? const []);
 
-        for (History history in _topHistoriesList) {
-          logger.d(
-              'first ${history.question?.id} --- ${history.question?.createdAt} --- ${history.question?.storyID}');
-        }
-
         final List<HistoryUiModel> items =
             await compute(_groupTopHistory, _topHistoriesList);
 
@@ -145,13 +138,9 @@ class HistoryCubit extends Cubit<HistoryState> {
 
         _getOldBottomHistoriesList();
       }
-    } on DioError catch (e) {
-      logger.d(e);
-    }
   }
 
   Future<void> _getNewTopHistoriesList() async {
-    try {
       if (_hasBefore && await _connectivityService.checkConnection()) {
         final HistoryResponse result = await _repository.getHistoryList(
           clientId: _clientId,
@@ -165,11 +154,6 @@ class HistoryCubit extends Cubit<HistoryState> {
           result.history?.reversed ?? [],
         );
 
-        for (History history in _topHistoriesList) {
-          logger.d(
-              'prev ${history.question?.id} --- ${history.question?.createdAt} --- ${history.question?.storyID}');
-        }
-
         final List<HistoryUiModel> items =
             await compute(_groupTopHistory, _topHistoriesList);
 
@@ -177,42 +161,28 @@ class HistoryCubit extends Cubit<HistoryState> {
           topHistoriesList: items,
         ));
       }
-    } on DioError catch (e) {
-      logger.d(e);
-    } finally {
       _isTopLoading = false;
-    }
   }
 
   Future<void> _getOldBottomHistoriesList() async {
-    try {
-      if (_hasMore && await _connectivityService.checkConnection()) {
-        final HistoryResponse result = await _repository.getHistoryList(
-          clientId: _clientId,
-          limit: _limit,
-          lastItem: _lastItem,
-        );
-        _hasMore = result.hasMore ?? true;
-        _lastItem = result.lastItem;
+    if (_hasMore && await _connectivityService.checkConnection()) {
+      final HistoryResponse result = await _repository.getHistoryList(
+        clientId: _clientId,
+        limit: _limit,
+        lastItem: _lastItem,
+      );
+      _hasMore = result.hasMore ?? true;
+      _lastItem = result.lastItem;
 
-        _bottomHistoriesList.addAll(result.history ?? const []);
+      _bottomHistoriesList.addAll(result.history ?? const []);
 
-        for (History history in _bottomHistoriesList) {
-          logger.d(
-              'first ${history.question?.id} --- ${history.question?.createdAt} --- ${history.question?.storyID}');
-        }
+      final List<HistoryUiModel> items =
+      await compute(_groupBottomHistory, _bottomHistoriesList);
 
-        final List<HistoryUiModel> items =
-            await compute(_groupBottomHistory, _bottomHistoriesList);
-
-        emit(state.copyWith(
-          bottomHistoriesList: items,
-        ));
-      }
-    } on DioError catch (e) {
-      logger.d(e);
-    } finally {
-      _isBottomLoading = false;
+      emit(state.copyWith(
+        bottomHistoriesList: items,
+      ));
     }
+    _isBottomLoading = false;
   }
 }

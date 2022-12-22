@@ -177,24 +177,22 @@ class HistoryWidget extends StatelessWidget {
 
           return Container(
             color: Theme.of(context).scaffoldBackgroundColor,
-            child: SingleChildScrollView(
-              controller: historyCubit.historyMessagesScrollController,
-              child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 16.0),
-                  itemCount: bottomHistoriesList.length,
-                  shrinkWrap: true,
-                  itemBuilder: (_, index) {
-                    return bottomHistoriesList[index].when(
-                      data: (data) => QuestionAndAnswerPairWidget(
-                        historyItem: data,
-                      ),
-                      separator: (question) => HistoryListGroupHeader(
-                        question: question,
-                      ),
-                    );
-                  }),
-            ),
+            child: ListView.builder(
+                controller: historyCubit.historyMessagesScrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 16.0),
+                itemCount: bottomHistoriesList.length,
+                shrinkWrap: true,
+                itemBuilder: (_, index) {
+                  return bottomHistoriesList[index].when(
+                    data: (data) => QuestionAndAnswerPairWidget(
+                      historyItem: data,
+                    ),
+                    separator: (question) => HistoryListGroupHeader(
+                      question: question,
+                    ),
+                  );
+                }),
           );
         }
       }),

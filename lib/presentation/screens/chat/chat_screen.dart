@@ -283,10 +283,11 @@ class ChatScreen extends StatelessWidget {
                                     chatCubit.pauseRecordedAudio(),
                                 onDeletePressed: () async {
                                   if ((await showDeleteAlert(
-                                      context,
-                                      S
-                                          .of(context)
-                                          .doYouWantToDeleteThisAudioMessage))!) {
+                                          context,
+                                          S
+                                              .of(context)
+                                              .doYouWantToDeleteThisAudioMessage)) ==
+                                      true) {
                                     chatCubit.deletedRecordedAudio();
                                   }
                                 },
