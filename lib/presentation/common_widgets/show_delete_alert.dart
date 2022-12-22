@@ -48,6 +48,7 @@ Future<bool?> showDeleteAlert(
         : Dialog(
             backgroundColor: theme.canvasColor,
             elevation: 0.0,
+            shape: const ContinuousRectangleBorder(),
             insetPadding: const EdgeInsets.symmetric(
                 horizontal: AppConstants.horizontalScreenPadding),
             child: Padding(
@@ -61,10 +62,11 @@ Future<bool?> showDeleteAlert(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title,
-                        style: theme.textTheme.headlineMedium?.copyWith(
-                          fontSize: 17.0,
-                        )),
+                    Text(
+                      title,
+                      style:
+                          theme.textTheme.labelLarge?.copyWith(fontSize: 17.0),
+                    ),
                     const SizedBox(
                       height: 24.0,
                     ),

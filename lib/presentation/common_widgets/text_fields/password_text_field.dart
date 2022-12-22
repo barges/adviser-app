@@ -13,11 +13,13 @@ class PasswordTextField extends StatelessWidget {
   final VoidCallback? clickToHide;
   final FocusNode focusNode;
   final String? label;
+  final String hintText;
 
   const PasswordTextField({
     Key? key,
     required this.controller,
     required this.focusNode,
+    required this.hintText,
     this.textInputAction,
     this.label,
     this.onSubmitted,
@@ -70,6 +72,11 @@ class PasswordTextField extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
               maxLines: 1,
               decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: Theme.of(context).shadowColor),
                 suffixIconConstraints: const BoxConstraints(
                   minWidth: AppConstants.iconSize,
                 ),

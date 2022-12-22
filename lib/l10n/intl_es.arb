@@ -207,5 +207,9 @@
   "wrongUsernameAndOrPassword": "Nombre de usuario y/o contraseña incorrectos.",
   "weNeedPermissionToAccessYourMicrophone": "Necesitamos permiso para acceder a su micrófono",
   "typeMessage": "escribir mensaje",
-  "pleaseConfirmThatYourAnswerIsReadyToBeSent": "Por favor, confirme que su respuesta está lista para ser enviada."
+  "pleaseConfirmThatYourAnswerIsReadyToBeSent": "Por favor, confirme que su respuesta está lista para ser enviada.",
+  "enterYourPassword": "Ingresa tu contraseña",
+  "enterNewPassword": "Introduzca nueva contraseña",
+  "repeatNewPassword": "Repita la nueva contraseña",
+  "enterYourEmail": "Introduce tu correo electrónico"
 }

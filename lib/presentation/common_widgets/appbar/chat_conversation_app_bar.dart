@@ -52,13 +52,12 @@ class ChatConversationAppBar extends StatelessWidget
               if (publicQuestionId != null &&
                   questionStatus == ChatItemStatusType.taken)
                 Padding(
-                  padding: const EdgeInsets.only(right: 16.0),
+                  padding: const EdgeInsets.only(right: 2.0),
                   child: _ReturnInQueue(
                     onTap: returnInQueueButtonOnTap,
                   ),
                 ),
-              if (publicQuestionId == null &&
-                  questionStatus != ChatItemStatusType.taken)
+              if (questionStatus != ChatItemStatusType.taken)
                 AppIconButton(
                   icon: Assets.vectors.arrowLeft.path,
                   onTap: Get.back,
@@ -67,50 +66,52 @@ class ChatConversationAppBar extends StatelessWidget
                 final Brand selectedBrand = context
                     .select((MainCubit cubit) => cubit.state.currentBrand);
                 return Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      IntrinsicWidth(
-                        child: Row(
+                  child: title.isNotEmpty
+                      ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SvgPicture.asset(
-                              selectedBrand.icon,
-                              height: 17.0,
+                            IntrinsicWidth(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    selectedBrand.icon,
+                                    height: 17.0,
+                                  ),
+                                  const SizedBox(width: 12.0),
+                                  Expanded(
+                                    child: Text(
+                                      title,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 16.0,
+                                        color: Theme.of(context).hoverColor,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                            const SizedBox(width: 12.0),
-                            Expanded(
-                              child: Text(
-                                title,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  color: Theme.of(context).hoverColor,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                            Text(
+                              selectedBrand.name,
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w200,
+                                color: Theme.of(context).shadowColor,
                               ),
                             ),
                           ],
-                        ),
-                      ),
-                      Text(
-                        selectedBrand.name,
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w200,
-                          color: Theme.of(context).shadowColor,
-                        ),
-                      ),
-                    ],
-                  ),
+                        )
+                      : const SizedBox.shrink(),
                 );
               }),
-              if (publicQuestionId != null &&
-                  questionStatus == ChatItemStatusType.taken)
-                const Spacer(),
+              // if (publicQuestionId != null &&
+              //     questionStatus == ChatItemStatusType.taken)
+              //   const Spacer(),
               if (zodiacSign != null)
                 SvgPicture.asset(
                   zodiacSign!.imagePath(context),

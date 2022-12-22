@@ -53,6 +53,7 @@ Future<bool?> showOkCancelAlert({
             : Dialog(
                 backgroundColor: Theme.of(context).canvasColor,
                 elevation: 0.0,
+                shape: const ContinuousRectangleBorder(),
                 insetPadding: const EdgeInsets.symmetric(
                     horizontal: AppConstants.horizontalScreenPadding),
                 child: Padding(
@@ -63,7 +64,8 @@ Future<bool?> showOkCancelAlert({
                       children: [
                         Text(
                           title,
-                          style: theme.textTheme.titleMedium,
+                          style: theme.textTheme.labelLarge
+                              ?.copyWith(fontSize: 17.0),
                         ),
                         if (description != null)
                           Padding(
