@@ -205,7 +205,6 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
         Get.toNamed(
           AppRoutes.chat,
           arguments: ChatScreenArguments(
-            clientId: argumentsQuestion.clientID,
             privateQuestionId: question.id,
             ritualID: question.ritualID,
             question: question.copyWith(
@@ -219,7 +218,6 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
         Get.toNamed(
           AppRoutes.chat,
           arguments: ChatScreenArguments(
-            clientId: argumentsQuestion.clientID,
             storyIdForHistory: question.id,
             question: question.copyWith(
               clientID: argumentsQuestion.clientID,

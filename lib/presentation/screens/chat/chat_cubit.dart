@@ -80,7 +80,14 @@ class ChatCubit extends Cubit<ChatState> {
   ) : super(const ChatState()) {
     chatScreenArguments = Get.arguments;
     _init();
-    if (chatScreenArguments.question != null) {
+    if (chatScreenArguments.clientIdFromPush != null) {
+      emit(
+        state.copyWith(
+          questionFromDB:
+              ChatItem(clientID: chatScreenArguments.clientIdFromPush),
+        ),
+      );
+    } else if (chatScreenArguments.question != null) {
       emit(
         state.copyWith(
           questionFromDB: chatScreenArguments.question,
@@ -90,7 +97,8 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       );
     }
-    if (chatScreenArguments.storyIdForHistory == null) {
+    if (chatScreenArguments.storyIdForHistory == null &&
+        chatScreenArguments.clientIdFromPush == null) {
       _getData().whenComplete(() {
         if (chatScreenArguments.publicQuestionId != null) {
           _checkTiming();
@@ -360,8 +368,7 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  Future<void> _handlePermissions(
-      BuildContext context) async {
+  Future<void> _handlePermissions(BuildContext context) async {
     PermissionStatus status = await Permission.microphone.request();
 
     if (status.isPermanentlyDenied) {

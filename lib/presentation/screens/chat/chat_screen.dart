@@ -144,7 +144,9 @@ class ChatScreen extends StatelessWidget {
                       Builder(builder: (context) {
                         final List<Widget> tabs = [];
                         if (chatCubit.chatScreenArguments.storyIdForHistory ==
-                            null) {
+                                null &&
+                            chatCubit.chatScreenArguments.clientIdFromPush ==
+                                null) {
                           tabs.add(const _ActiveChat());
                         }
                         tabs.addAll([
