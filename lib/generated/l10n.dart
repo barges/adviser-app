@@ -1307,6 +1307,16 @@ class S {
     );
   }
 
+  /// `Confirm`
+  String get confirm {
+    return Intl.message(
+      'Confirm',
+      name: 'confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Return`
   String get return_ {
     return Intl.message(
@@ -2102,6 +2112,16 @@ class S {
     return Intl.message(
       'Type message',
       name: 'typeMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please confirm that your answer is ready to be sent`
+  String get pleaseConfirmThatYourAnswerIsReadyToBeSent {
+    return Intl.message(
+      'Please confirm that your answer is ready to be sent',
+      name: 'pleaseConfirmThatYourAnswerIsReadyToBeSent',
       desc: '',
       args: [],
     );

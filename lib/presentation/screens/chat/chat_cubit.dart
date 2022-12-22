@@ -57,6 +57,7 @@ class ChatCubit extends Cubit<ChatState> {
   final ChatsRepository _repository;
   late final ChatScreenArguments chatScreenArguments;
   final VoidCallback _showErrorAlert;
+  final ValueGetter<Future<bool?>> _confirmSendAnswerAlert;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final Codec _codec = Codec.aacMP4;
   final int _tillShowMessagesInSec =
@@ -77,6 +78,7 @@ class ChatCubit extends Cubit<ChatState> {
   ChatCubit(
     this._repository,
     this._showErrorAlert,
+    this._confirmSendAnswerAlert,
   ) : super(const ChatState()) {
     chatScreenArguments = Get.arguments;
     _init();
@@ -175,7 +177,7 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> _getData() async {
     if (chatScreenArguments.ritualID != null) {
       _getRituals(chatScreenArguments.ritualID!).then((_) async {
-        SchedulerBinding.instance.endOfFrame.then((_) => scrollChatDown);
+        scrollChatDown();
       });
     } else {
       await _getPublicOrPrivateQuestion();
@@ -369,6 +371,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> _handlePermissions(BuildContext context) async {
+    final s = S.of(context);
     PermissionStatus status = await Permission.microphone.request();
 
     if (status.isPermanentlyDenied) {
@@ -378,9 +381,9 @@ class ChatCubit extends Cubit<ChatState> {
       });
       await showOkCancelAlert(
           context: context,
-          title: S.of(context).permissionNeeded,
-          okText: S.of(context).settings,
-          description: S.of(context).weNeedPermissionToAccessYourMicrophone,
+          title: s.permissionNeeded,
+          okText: s.settings,
+          description: s.weNeedPermissionToAccessYourMicrophone,
           actionOnOK: actionOnOk,
           allowBarrierClick: true,
           isCancelEnabled: true);
@@ -584,53 +587,61 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> sendMediaAnswer() async {
-    if (_playerRecorded != null && _playerRecorded!.isPlaying) {
-      await _playerRecorded!.stopPlayer();
-    }
+    dynamic isOk = await _confirmSendAnswerAlert();
 
-    _answerRequest = await _createMediaAnswerRequest();
-    final ChatItem? answer = await _sendAnswer();
+    if (isOk == true) {
+      if (_playerRecorded != null && _playerRecorded!.isPlaying) {
+        await _playerRecorded!.stopPlayer();
+      }
 
-    if (answer != null) {
-      final List<ChatItem> messages = List.of(state.activeMessages);
-      messages.add(answer);
+      _answerRequest = await _createMediaAnswerRequest();
+      final ChatItem? answer = await _sendAnswer();
 
-      emit(
-        state.copyWith(
-          isRecordingAudio: false,
-          isAudioFileSaved: false,
-          isPlayingRecordedAudio: false,
-          recordingPath: null,
-          activeMessages: messages,
-        ),
-      );
-      deleteAttachedPictures();
-      scrollChatDown();
+      if (answer != null) {
+        final List<ChatItem> messages = List.of(state.activeMessages);
+        messages.add(answer);
 
-      if (answer.isSent) {
-        _mainCubit.updateSessions();
+        emit(
+          state.copyWith(
+            isRecordingAudio: false,
+            isAudioFileSaved: false,
+            isPlayingRecordedAudio: false,
+            recordingPath: null,
+            activeMessages: messages,
+          ),
+        );
+        deleteAttachedPictures();
+        scrollChatDown();
+
+        if (answer.isSent) {
+          _mainCubit.updateSessions();
+        }
       }
     }
   }
 
   Future<void> sendTextMediaAnswer() async {
-    _answerRequest = await _createTextMediaAnswerRequest();
-    final ChatItem? answer = await _sendAnswer();
+    dynamic isOk = await _confirmSendAnswerAlert();
 
-    if (answer != null) {
-      final messages = List.of(state.activeMessages);
-      messages.add(answer);
-      emit(
-        state.copyWith(
-          activeMessages: messages,
-        ),
-      );
-      textEditingController.clear();
-      deleteAttachedPictures();
-      scrollChatDown();
+    if (isOk == true) {
+      _answerRequest = await _createTextMediaAnswerRequest();
+      final ChatItem? answer = await _sendAnswer();
 
-      if (answer.isSent) {
-        _mainCubit.updateSessions();
+      if (answer != null) {
+        final messages = List.of(state.activeMessages);
+        messages.add(answer);
+        emit(
+          state.copyWith(
+            activeMessages: messages,
+          ),
+        );
+        textEditingController.clear();
+        deleteAttachedPictures();
+        scrollChatDown();
+
+        if (answer.isSent) {
+          _mainCubit.updateSessions();
+        }
       }
     }
   }

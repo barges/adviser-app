@@ -30,7 +30,6 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_recording_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_screen.dart';
 
 import 'widgets/ritual_info_card_widget.dart';
 
@@ -41,9 +40,9 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ChatCubit(
-        getIt.get<ChatsRepository>(),
-        () => showErrorAlert(context),
-      ),
+          getIt.get<ChatsRepository>(),
+          () => _showErrorAlert(context),
+          () => _confirmSendAnswerAlert(context)),
       child: Builder(
         builder: (context) {
           final S s = S.of(context);
@@ -312,7 +311,7 @@ class ChatScreen extends StatelessWidget {
   }
 }
 
-showAlert(BuildContext context) async {
+Future<void> _showErrorAlert(BuildContext context) async {
   await showOkCancelAlert(
     context: context,
     title: getIt.get<MainCubit>().state.appError.getMessage(context),
@@ -322,6 +321,18 @@ showAlert(BuildContext context) async {
     },
     allowBarrierClick: false,
     isCancelEnabled: false,
+  );
+}
+
+Future<bool?> _confirmSendAnswerAlert(BuildContext context) async {
+  final s = S.of(context);
+  return await showOkCancelAlert(
+    context: context,
+    title: s.pleaseConfirmThatYourAnswerIsReadyToBeSent,
+    okText: s.confirm,
+    actionOnOK: () => Navigator.pop(context, true),
+    allowBarrierClick: false,
+    isCancelEnabled: true,
   );
 }
 
