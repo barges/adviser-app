@@ -85,6 +85,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "comingSoon": MessageLookupByLibrary.simpleMessage("Demnächst!"),
         "completeYourProfileToStartWork": MessageLookupByLibrary.simpleMessage(
             "Vervollständigen Sie Ihr Profil, um mit der Arbeit zu beginnen"),
+        "confirm": MessageLookupByLibrary.simpleMessage("Bestätigen"),
         "confirmNewPassword":
             MessageLookupByLibrary.simpleMessage("Bestätige neues Passwort"),
         "courses": MessageLookupByLibrary.simpleMessage("Kurse"),
@@ -194,6 +195,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Foto ist erforderlich"),
         "placesUpFromLastMonth": MessageLookupByLibrary.simpleMessage(
             "Plätze im Vergleich zum letzten Monat"),
+        "pleaseConfirmThatYourAnswerIsReadyToBeSent":
+            MessageLookupByLibrary.simpleMessage(
+                "Bitte bestätigen Sie, dass Ihre Antwort zum Senden bereit ist"),
         "pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManager":
             MessageLookupByLibrary.simpleMessage(
                 "Bitte stellen Sie sicher, dass Ihr Profil für alle Sprachen ausgefüllt ist. Brauchen Sie Hilfe? Wenden Sie sich an Ihren Vorgesetzten."),

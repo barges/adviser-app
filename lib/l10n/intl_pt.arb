@@ -127,6 +127,7 @@
   "doYouWantToDeleteImage": "Deseja excluir a imagem?",
   "tryAgain": "Tente novamente",
   "ok": "OK",
+  "confirm": "Confirme",
   "note": "Nota",
   "live": "Viver",
   "incomplete": "Incompleto",
@@ -206,5 +207,6 @@
   "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword": "Digite seu endereço de e-mail e enviaremos instruções para criar uma nova senha",
   "wrongUsernameAndOrPassword": "Nome de usuário e/ou senha incorretos.",
   "weNeedPermissionToAccessYourMicrophone": "Precisamos de permissão para acessar seu microfone",
-  "typeMessage": "digite mensagem"
+  "typeMessage": "digite mensagem",
+  "pleaseConfirmThatYourAnswerIsReadyToBeSent": "Confirme se sua resposta está pronta para ser enviada"
 }

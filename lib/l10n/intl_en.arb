@@ -125,6 +125,7 @@
   "doYouWantToDeleteImage": "Do you want to delete image?",
   "tryAgain": "Try again",
   "ok": "OK",
+  "confirm": "Confirm",
   "return_": "Return",
   "note": "Note",
   "live": "Live",
@@ -205,5 +206,6 @@
   "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword": "Enter your email address and we'll send you instructions to create a new password",
   "wrongUsernameAndOrPassword": "Wrong username and/or password.",
   "weNeedPermissionToAccessYourMicrophone": "We need permission to access your microphone",
-  "typeMessage": "Type message"
+  "typeMessage": "Type message",
+  "pleaseConfirmThatYourAnswerIsReadyToBeSent": "Please confirm that your answer is ready to be sent"
 }
