@@ -11,6 +11,7 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/list_of_filters_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/market_filter_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
@@ -64,19 +65,33 @@ class CustomerSessionsScreen extends StatelessWidget {
                               cubit.state.currentMarketIndex);
                       return Opacity(
                         opacity: isOnline ? 1.0 : 0.4,
-                        child: ListOfFiltersWidget(
-                          userMarkets: userMarkets,
-                          currentFilterIndex: currentFilterIndex,
-                          onTapToFilter: isOnline
-                              ? customerSessionsCubit.changeFilterIndex
-                              : (value) {},
-                          filters: customerSessionsCubit.filters
-                              .map((e) => e.filterName(context))
-                              .toList(),
-                          currentMarketIndex: currentMarketIndex,
-                          onTapToMarket: isOnline
-                              ? customerSessionsCubit.changeMarketIndex
-                              : (value) {},
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              right: AppConstants.horizontalScreenPadding),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                ListOfFiltersWidget(
+                                  currentFilterIndex: currentFilterIndex,
+                                  onTapToFilter: isOnline
+                                      ? customerSessionsCubit.changeFilterIndex
+                                      : (value) {},
+                                  filters: customerSessionsCubit.filters
+                                      .map((e) => e.filterName(context))
+                                      .toList(),
+                                  withMarketFilter: true,
+                                ),
+                                MarketFilterWidget(
+                                    userMarkets: userMarkets,
+                                    currentMarketIndex: currentMarketIndex,
+                                    changeIndex: isOnline
+                                        ? customerSessionsCubit
+                                            .changeMarketIndex
+                                        : (value) {}),
+                              ],
+                            ),
+                          ),
                         ),
                       );
                     }),
@@ -99,12 +114,14 @@ class CustomerSessionsScreen extends StatelessWidget {
                                       },
                                       child: questions.isNotEmpty
                                           ? Column(
-                                            children: [
-                                              Expanded(
-                                                child: ListView.separated(
-                                                    controller: customerSessionsCubit
-                                                        .questionsScrollController,
-                                                    padding: const EdgeInsets.all(
+                                              children: [
+                                                Expanded(
+                                                  child: ListView.separated(
+                                                    controller:
+                                                        customerSessionsCubit
+                                                            .questionsScrollController,
+                                                    padding: const EdgeInsets
+                                                            .all(
                                                         AppConstants
                                                             .horizontalScreenPadding),
                                                     physics:
@@ -114,7 +131,8 @@ class CustomerSessionsScreen extends StatelessWidget {
                                                         (BuildContext context,
                                                             int index) {
                                                       return CustomerSessionListTileWidget(
-                                                          question: questions[index]);
+                                                          question:
+                                                              questions[index]);
                                                     },
                                                     separatorBuilder:
                                                         (BuildContext context,
@@ -124,9 +142,9 @@ class CustomerSessionsScreen extends StatelessWidget {
                                                     ),
                                                     itemCount: questions.length,
                                                   ),
-                                              ),
-                                            ],
-                                          )
+                                                ),
+                                              ],
+                                            )
                                           : CustomScrollView(slivers: [
                                               SliverFillRemaining(
                                                   hasScrollBody: false,

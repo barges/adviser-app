@@ -9,6 +9,7 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
@@ -57,8 +58,11 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
     arguments = Get.arguments as CustomerSessionsScreenArguments;
     argumentsQuestion = arguments.question;
 
+    getUserMarkets();
+
     emit(
       state.copyWith(
+        currentMarketIndex: arguments.marketIndex,
         clientName: argumentsQuestion.clientName,
         zodiacSign: argumentsQuestion.clientInformation?.zodiac,
       ),
@@ -69,10 +73,6 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
       getPrivateQuestions();
     }
 
-    if (arguments.marketIndex != null) {
-      emit(state.copyWith(currentMarketIndex: arguments.marketIndex!));
-    }
-
     questionsScrollController.addListener(() {
       if (questionsScrollController.position.extentAfter <= _screenHeight &&
           !_isLoading) {
@@ -81,8 +81,6 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
         );
       }
     });
-
-    getUserMarkets();
 
     _updateSessionsSubscription = _mainCubit.sessionsUpdateTrigger.listen(
       (value) async {
@@ -99,10 +97,10 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   }
 
   void getUserMarkets() {
-    final List<MarketsType>? cachedUserMarkets = cacheManager.getUserMarkets();
+    final UserProfile? userProfile = cacheManager.getUserProfile();
     final List<MarketsType> userMarkets = [
       MarketsType.all,
-      ...cachedUserMarkets ?? [],
+      ...userProfile?.activeLanguages ?? [],
     ];
     emit(state.copyWith(userMarkets: userMarkets));
   }

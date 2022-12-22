@@ -41,9 +41,9 @@ class CustomerSessionListTileWidget extends StatelessWidget {
                 ),
               ),
               child: SvgPicture.asset(
-                question.type != ChatItemType.ritual
-                    ? question.type?.iconPath ?? ''
-                    : question.ritualIdentifier?.iconPath ?? '',
+                question.ritualIdentifier?.iconPath ??
+                    question.type?.iconPath ??
+                    '',
                 height: AppConstants.iconSize,
                 width: AppConstants.iconSize,
                 fit: BoxFit.scaleDown,
@@ -62,11 +62,9 @@ class CustomerSessionListTileWidget extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          question.type != ChatItemType.ritual
-                              ? question.type?.typeName(context) ?? ''
-                              : question.ritualIdentifier
-                                      ?.sessionName(context) ??
-                                  '',
+                          question.ritualIdentifier?.sessionName(context) ??
+                              question.type?.typeName(context) ??
+                              '',
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.labelMedium?.copyWith(
                             fontSize: 15.0,

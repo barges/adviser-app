@@ -50,6 +50,8 @@ enum ChatItemType {
         return Assets.vectors.sessionsTypes.public.path;
       case ChatItemType.private:
         return Assets.vectors.sessionsTypes.private.path;
+      case ChatItemType.ritual:
+        return Assets.vectors.sessionsTypes.ritual.path;
       default:
         return '';
     }

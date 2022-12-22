@@ -90,10 +90,10 @@ class AppBarUpdateArguments {
 
 class CustomerSessionsScreenArguments {
   ChatItem question;
-  int? marketIndex;
+  int marketIndex;
 
   CustomerSessionsScreenArguments({
     required this.question,
-    this.marketIndex,
+    required this.marketIndex,
   });
 }

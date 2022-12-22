@@ -108,7 +108,8 @@ class SearchListCubit extends Cubit<SearchListState> {
     closeSearch();
     Get.toNamed(
       AppRoutes.customerSessions,
-      arguments: CustomerSessionsScreenArguments(question: question),
+      arguments:
+          CustomerSessionsScreenArguments(question: question, marketIndex: 0),
     );
   }
 }
