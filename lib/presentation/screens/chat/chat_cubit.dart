@@ -177,7 +177,7 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> _getData() async {
     if (chatScreenArguments.ritualID != null) {
       _getRituals(chatScreenArguments.ritualID!).then((_) async {
-        SchedulerBinding.instance.endOfFrame.then((_) => scrollChatDown);
+        scrollChatDown();
       });
     } else {
       await _getPublicOrPrivateQuestion();
@@ -371,6 +371,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> _handlePermissions(BuildContext context) async {
+    final s = S.of(context);
     PermissionStatus status = await Permission.microphone.request();
 
     if (status.isPermanentlyDenied) {
@@ -380,9 +381,9 @@ class ChatCubit extends Cubit<ChatState> {
       });
       await showOkCancelAlert(
           context: context,
-          title: S.of(context).permissionNeeded,
-          okText: S.of(context).settings,
-          description: S.of(context).weNeedPermissionToAccessYourMicrophone,
+          title: s.permissionNeeded,
+          okText: s.settings,
+          description: s.weNeedPermissionToAccessYourMicrophone,
           actionOnOK: actionOnOk,
           allowBarrierClick: true,
           isCancelEnabled: true);

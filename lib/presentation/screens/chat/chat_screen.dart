@@ -324,8 +324,8 @@ Future<bool?> _confirmSendAnswerAlert(BuildContext context) async {
   final s = S.of(context);
   return await showOkCancelAlert(
     context: context,
-    title: 'SEND?',
-    okText: 'Confirm',
+    title: s.pleaseConfirmThatYourAnswerIsReadyToBeSent,
+    okText: s.confirm,
     actionOnOK: () => Navigator.pop(context, true),
     allowBarrierClick: false,
     isCancelEnabled: true,
