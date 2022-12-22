@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/data/models/user_info/localized_properties/property_by_language.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
@@ -85,21 +86,22 @@ class AccountCubit extends Cubit<AccountState> {
           await cacheManager.saveUserStatus(userInfo.status);
         }
       }
+
       final DateTime? profileUpdatedAt =
           cacheManager.getUserStatus()?.profileUpdatedAt;
 
       if (profileUpdatedAt != null) {
         milliseconds =
-            DateTime.now().difference(profileUpdatedAt).inMilliseconds;
+            DateTime.now().toUtc().difference(profileUpdatedAt).inMilliseconds;
       }
-
       emit(
         state.copyWith(
           userProfile: cacheManager.getUserProfile(),
           enableNotifications: userInfo.pushNotificationsEnabled ?? false,
-          millisecondsForTimer: milliseconds > 0
-              ? AppConstants.millisecondsInHour - milliseconds
-              : milliseconds,
+          millisecondsForTimer:
+              AppConstants.millisecondsInHour - milliseconds < 0
+                  ? 0
+                  : AppConstants.millisecondsInHour - milliseconds,
         ),
       );
     }
