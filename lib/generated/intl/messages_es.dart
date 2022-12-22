@@ -44,9 +44,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "addPhoto": MessageLookupByLibrary.simpleMessage("Añadir foto"),
         "advisors": MessageLookupByLibrary.simpleMessage("Asesores"),
         "all": MessageLookupByLibrary.simpleMessage("Todos"),
+        "allMarkets":
+            MessageLookupByLibrary.simpleMessage("Todos los mercados"),
         "allOurBrands":
             MessageLookupByLibrary.simpleMessage("Todas nuestras marcas"),
-        "allType": MessageLookupByLibrary.simpleMessage("Todo tipo"),
         "areYouSureThatYouWantToChangeYourStatus":
             MessageLookupByLibrary.simpleMessage(
                 "¿Está seguro de que desea cambiar su estado a Desconectado?"),
@@ -287,6 +288,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "totalMarkets":
             MessageLookupByLibrary.simpleMessage("Mercados totales"),
         "tryAgain": MessageLookupByLibrary.simpleMessage("Intentar otra vez"),
+        "typeMessage": MessageLookupByLibrary.simpleMessage("escribir mensaje"),
         "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgain":
             MessageLookupByLibrary.simpleMessage(
                 "UH oh. Parece que has perdido tu conexión. Inténtalo de nuevo."),
@@ -299,6 +301,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages":
             MessageLookupByLibrary.simpleMessage(
                 "Necesitamos permiso para acceder a su cámara y galería para que pueda enviar imágenes."),
+        "weNeedPermissionToAccessYourMicrophone":
+            MessageLookupByLibrary.simpleMessage(
+                "Necesitamos permiso para acceder a su micrófono"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "Nos enorgullecemos de ofrecer a los asesores un lugar seguro para atender a los clientes y desarrollarse profesionalmente. Hacer un buen trabajo en una de nuestras marcas te abrirá puertas a otras"),

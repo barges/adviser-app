@@ -107,7 +107,7 @@
   "avgDailyEarnings": "Durchschn Tagesverdienst",
   "perfomanceOverviewAnalytics": "Leistungsübersicht Analytics",
   "editNote": "Notiz Bearbeiten",
-  "allType": "Alle Arten",
+  "allMarkets": "Alle Märkte",
   "market": "Markt:",
   "all": "Alle",
   "privateQuestions": "Private Fragen",
@@ -204,5 +204,7 @@
   "weVeSentPasswordResetInstructionsToEmail": "Wir haben Anweisungen zum Zurücksetzen des Passworts an {email} gesendet.",
   "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen Anweisungen zum Erstellen eines neuen Passworts",
   "wrongUsernameAndOrPassword": "Falscher Nutzername und/oder Passwort.",
+  "weNeedPermissionToAccessYourMicrophone": "Wir benötigen die Erlaubnis, auf Ihr Mikrofon zuzugreifen",
+  "typeMessage": "Nachricht eingeben",
   "pleaseConfirmThatYourAnswerIsReadyToBeSent": "Bitte bestätigen Sie, dass Ihre Antwort zum Senden bereit ist"
 }

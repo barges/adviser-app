@@ -52,18 +52,18 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   SessionsCubit(this.cacheManager, this.context)
       : super(const SessionsState()) {
-    publicQuestionsScrollController.addListener(() async {
+    publicQuestionsScrollController.addListener((){
       if (!_isPublicLoading &&
           publicQuestionsScrollController.position.extentAfter <=
               MediaQuery.of(context).size.height) {
-        await getPublicQuestions();
+        getPublicQuestions();
       }
     });
-    conversationsScrollController.addListener(() async {
+    conversationsScrollController.addListener(() {
       if (!_isConversationsLoading &&
           conversationsScrollController.position.extentAfter <=
               MediaQuery.of(context).size.height) {
-        await getConversations();
+        getConversations();
       }
     });
     disposeUserStatusListen = cacheManager.listenCurrentUserStatus((value) {

@@ -63,9 +63,11 @@ class ListTileContentWidget extends StatelessWidget {
             const SizedBox(
               width: 8.0,
             ),
-            _TextContent(
-              text: question.content ?? '',
-              isActive: question.isActive,
+            Expanded(
+              child: _TextContent(
+                text: question.content ?? '',
+                isActive: question.isActive,
+              ),
             ),
           ],
         );

@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
@@ -13,34 +10,18 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/attac
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
-const _maxTextNumLines = 6;
+const _maxTextNumLines = 5;
 
 class ChatTextInputWidget extends StatelessWidget {
   const ChatTextInputWidget({
     Key? key,
   }) : super(key: key);
 
-  Future<void> _sendAnswer(BuildContext context, ChatCubit chatCubit) async {
-    final s = S.of(context);
-    final dynamic isConfirmed = await showOkCancelAlert(
-      context: context,
-      title: s.pleaseConfirmThatYourAnswerIsReadyToBeSent,
-      okText: s.confirm,
-      actionOnOK: () => Navigator.pop(context, true),
-      allowBarrierClick: false,
-      isCancelEnabled: true,
-    );
-
-    if (isConfirmed == true) {
-      chatCubit.sendTextMediaAnswer();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    context.select((ChatCubit cubit) => cubit.state.attachedPictures);
+    final theme = Theme.of(context);
     final ChatCubit chatCubit = context.read<ChatCubit>();
-    final List<File> attachedPictures =
-        context.select((ChatCubit cubit) => cubit.state.attachedPictures);
     final isAttachedPictures = chatCubit.isAttachedPictures;
     final isAudio = chatCubit.state.questionFromDB?.isAudio ?? false;
 
@@ -55,8 +36,8 @@ class ChatTextInputWidget extends StatelessWidget {
             ),
             Container(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
-              color: Theme.of(context).canvasColor,
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+              color: theme.canvasColor,
               child: Column(
                 children: [
                   if (isAttachedPictures) const _InputTextField(),
@@ -79,8 +60,7 @@ class ChatTextInputWidget extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            if (attachedPictures.length <
-                                AppConstants.maxAttachedPictures) {
+                            if (!isAttachedPictures) {
                               showPickImageAlert(
                                 context: context,
                                 setImage: chatCubit.attachPicture,
@@ -88,16 +68,24 @@ class ChatTextInputWidget extends StatelessWidget {
                             }
                           },
                           child: Opacity(
-                            opacity: attachedPictures.length <
-                                    AppConstants.maxAttachedPictures
-                                ? 1.0
-                                : 0.4,
+                            opacity: !isAttachedPictures ? 1.0 : 0.4,
                             child: Assets.vectors.gallery.svg(
                               width: AppConstants.iconSize,
-                              color: Theme.of(context).shadowColor,
+                              color: theme.shadowColor,
                             ),
                           ),
                         ),
+                        if (isAttachedPictures)
+                          GestureDetector(
+                            onTap: () => chatCubit.startRecordingAudio(context),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 16.0,
+                              ),
+                              child: Assets.vectors.microphone
+                                  .svg(width: AppConstants.iconSize),
+                            ),
+                          ),
                         if (isAttachedPictures) const Spacer(),
                         if (!isAttachedPictures)
                           const Expanded(
@@ -106,31 +94,25 @@ class ChatTextInputWidget extends StatelessWidget {
                               child: _InputTextField(),
                             ),
                           ),
+                        const SizedBox(
+                          width: 4.0,
+                        ),
                         Builder(builder: (context) {
                           final isSendButtonEnabled = context.select(
                                   (ChatCubit cubit) =>
                                       cubit.state.isSendButtonEnabled) ||
                               isAttachedPictures;
-                          final isMicrophoneButtonEnabled = context.select(
-                              (ChatCubit cubit) =>
-                                  cubit.state.isMicrophoneButtonEnabled);
 
                           return Row(
                             children: [
                               if (inputTextLength == 0 &&
                                   !isAttachedPictures &&
                                   isAudio)
-                                Opacity(
-                                  opacity:
-                                      isMicrophoneButtonEnabled ? 1.0 : 0.4,
-                                  child: AppIconGradientButton(
-                                    onTap: isMicrophoneButtonEnabled
-                                        ? chatCubit.startRecordingAudio
-                                        : null,
-                                    icon: Assets.vectors.microphone.path,
-                                    iconColor:
-                                        Theme.of(context).backgroundColor,
-                                  ),
+                                AppIconGradientButton(
+                                  onTap: () =>
+                                      chatCubit.startRecordingAudio(context),
+                                  icon: Assets.vectors.microphone.path,
+                                  iconColor: theme.backgroundColor,
                                 ),
                               if (inputTextLength > 0 ||
                                   isAttachedPictures ||
@@ -138,14 +120,11 @@ class ChatTextInputWidget extends StatelessWidget {
                                 Opacity(
                                   opacity: isSendButtonEnabled ? 1.0 : 0.4,
                                   child: AppIconGradientButton(
-                                    onTap: () {
-                                      if (isSendButtonEnabled) {
-                                        _sendAnswer(context, chatCubit);
-                                      }
-                                    },
+                                    onTap: isSendButtonEnabled
+                                        ? chatCubit.sendTextMediaAnswer
+                                        : null,
                                     icon: Assets.vectors.send.path,
-                                    iconColor:
-                                        Theme.of(context).backgroundColor,
+                                    iconColor: theme.backgroundColor,
                                   ),
                                 ),
                             ],
@@ -176,16 +155,17 @@ class _InputTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final ChatCubit chatCubit = context.read<ChatCubit>();
-    final TextStyle? style = Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: Theme.of(context).hoverColor,
-          fontSize: 15.0,
-          height: 0.97,
-        );
+    final TextStyle? style = theme.textTheme.bodySmall?.copyWith(
+      color: theme.hoverColor,
+      fontSize: 15.0,
+      height: 1.2,
+    );
     return LayoutBuilder(
       builder: (context, constraints) {
         context.select((ChatCubit cubit) => cubit.state.inputTextLength);
-        final textNumLines = Utils.getTextNumLines(
+        final int textNumLines = Utils.getTextNumLines(
           chatCubit.textEditingController.text,
           constraints.maxWidth,
           style,
@@ -206,11 +186,11 @@ class _InputTextField extends StatelessWidget {
               isCollapsed: true,
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,
-              hintText: S.of(context).typemessage,
-              hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).shadowColor,
-                    fontSize: 15.0,
-                  ),
+              hintText: S.of(context).typeMessage,
+              hintStyle: theme.textTheme.bodySmall?.copyWith(
+                color: theme.shadowColor,
+                fontSize: 15.0,
+              ),
             ),
           ),
         );
@@ -226,8 +206,9 @@ class _TextCounter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ChatCubit chatCubit = context.read<ChatCubit>();
     final theme = Theme.of(context);
+    final ChatCubit chatCubit = context.read<ChatCubit>();
+
     return Builder(builder: (context) {
       final int inputTextLength =
           context.select((ChatCubit cubit) => cubit.state.inputTextLength);
@@ -253,13 +234,17 @@ class _TextCounter extends StatelessWidget {
                 const BorderRadius.only(topLeft: Radius.circular(4.0)),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Text(
-              textAlign: TextAlign.center,
-              '$inputTextLength/${chatCubit.minTextLength}',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: isEnabled ? AppColors.online : theme.errorColor,
-                fontSize: 12.0,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 4.0,
+            ),
+            child: Center(
+              child: Text(
+                textAlign: TextAlign.center,
+                '$inputTextLength/${chatCubit.minTextLength}',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: isEnabled ? AppColors.online : theme.errorColor,
+                  fontSize: 12.0,
+                ),
               ),
             ),
           ),

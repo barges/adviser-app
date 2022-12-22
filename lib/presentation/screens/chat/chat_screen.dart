@@ -30,37 +30,19 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_recording_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_screen.dart';
 
-import 'widgets/chat_info_card.dart';
+import 'widgets/ritual_info_card_widget.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);
-
-  Future<void> _sendMediaAnswer(
-      BuildContext context, ChatCubit chatCubit) async {
-    final s = S.of(context);
-    final dynamic isConfirmed = await showOkCancelAlert(
-      context: context,
-      title: s.pleaseConfirmThatYourAnswerIsReadyToBeSent,
-      okText: s.confirm,
-      actionOnOK: () => Navigator.pop(context, true),
-      allowBarrierClick: false,
-      isCancelEnabled: true,
-    );
-
-    if (isConfirmed == true) {
-      chatCubit.sendMediaAnswer();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ChatCubit(
-        getIt.get<ChatsRepository>(),
-        () => showErrorAlert(context),
-      ),
+          getIt.get<ChatsRepository>(),
+          () => _showErrorAlert(context),
+          () => _confirmSendAnswerAlert(context)),
       child: Builder(
         builder: (context) {
           final S s = S.of(context);
@@ -161,7 +143,9 @@ class ChatScreen extends StatelessWidget {
                       Builder(builder: (context) {
                         final List<Widget> tabs = [];
                         if (chatCubit.chatScreenArguments.storyIdForHistory ==
-                            null) {
+                                null &&
+                            chatCubit.chatScreenArguments.clientIdFromPush ==
+                                null) {
                           tabs.add(const _ActiveChat());
                         }
                         tabs.addAll([
@@ -246,8 +230,7 @@ class ChatScreen extends StatelessWidget {
                                     chatCubit.deletedRecordedAudio();
                                   }
                                 },
-                                onSendPressed: () =>
-                                    _sendMediaAnswer(context, chatCubit),
+                                onSendPressed: chatCubit.sendMediaAnswer,
                               );
                             } else if (isRecordingAudio) {
                               return ChatRecordingWidget(
@@ -283,15 +266,15 @@ class ChatScreen extends StatelessWidget {
                                     chatCubit.pauseRecordedAudio(),
                                 onDeletePressed: () async {
                                   if ((await showDeleteAlert(
-                                      context,
-                                      S
-                                          .of(context)
-                                          .doYouWantToDeleteThisAudioMessage))!) {
+                                          context,
+                                          S
+                                              .of(context)
+                                              .doYouWantToDeleteThisAudioMessage)) ==
+                                      true) {
                                     chatCubit.deletedRecordedAudio();
                                   }
                                 },
-                                onSendPressed: () =>
-                                    _sendMediaAnswer(context, chatCubit),
+                                onSendPressed: chatCubit.sendMediaAnswer,
                               );
                             } else if (isRecordingAudio) {
                               return ChatRecordingWidget(
@@ -324,7 +307,7 @@ class ChatScreen extends StatelessWidget {
   }
 }
 
-showAlert(BuildContext context) async {
+Future<void> _showErrorAlert(BuildContext context) async {
   await showOkCancelAlert(
     context: context,
     title: getIt.get<MainCubit>().state.appError.getMessage(context),
@@ -334,6 +317,18 @@ showAlert(BuildContext context) async {
     },
     allowBarrierClick: false,
     isCancelEnabled: false,
+  );
+}
+
+Future<bool?> _confirmSendAnswerAlert(BuildContext context) async {
+  final s = S.of(context);
+  return await showOkCancelAlert(
+    context: context,
+    title: s.pleaseConfirmThatYourAnswerIsReadyToBeSent,
+    okText: s.confirm,
+    actionOnOK: () => Navigator.pop(context, true),
+    allowBarrierClick: false,
+    isCancelEnabled: true,
   );
 }
 
@@ -379,7 +374,7 @@ class _ActiveChat extends StatelessWidget {
                                   padding: const EdgeInsets.only(
                                     bottom: 16.0,
                                   ),
-                                  child: InfoCard(
+                                  child: RitualInfoCardWidget(
                                     ritualCardInfo: ritualCardInfo,
                                   ),
                                 ),
