@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="default_notification_channel_id" translatable="false">shared_interface_channel</string>
     <string name="freshchat_file_provider_authority">com.questico.fortunica.readerapp.provider</string>
 
 <!--    <string name="facebook_app_id">333040180504214</string>-->

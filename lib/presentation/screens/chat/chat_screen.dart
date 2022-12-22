@@ -30,9 +30,8 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_recording_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_screen.dart';
 
-import 'widgets/chat_info_card.dart';
+import 'widgets/ritual_info_card_widget.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -41,9 +40,9 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ChatCubit(
-        getIt.get<ChatsRepository>(),
-        () => showErrorAlert(context),
-      ),
+          getIt.get<ChatsRepository>(),
+          () => _showErrorAlert(context),
+          () => _confirmSendAnswerAlert(context)),
       child: Builder(
         builder: (context) {
           final S s = S.of(context);
@@ -51,7 +50,7 @@ class ChatScreen extends StatelessWidget {
 
           final ChatItem? questionFromDB =
               context.select((ChatCubit cubit) => cubit.state.questionFromDB);
-          final AppBarUpdateArguments? appBarUpdateArguments = context
+          final CustomerProfileScreenArguments? appBarUpdateArguments = context
               .select((ChatCubit cubit) => cubit.state.appBarUpdateArguments);
 
           return Scaffold(
@@ -84,11 +83,10 @@ class ChatScreen extends StatelessWidget {
               body: SafeArea(
                 child: Builder(builder: (context) {
                   final List<String> tabsTitles = [];
-                  if (chatCubit.chatScreenArguments.storyIdForHistory == null) {
-                    tabsTitles.add(
-                        chatCubit.chatScreenArguments.publicQuestionId != null
-                            ? S.of(context).question
-                            : S.of(context).activeChat);
+                  if (chatCubit.needActiveChatTab()) {
+                    tabsTitles.add(chatCubit.isPublicChat()
+                        ? S.of(context).question
+                        : S.of(context).activeChat);
                   }
                   tabsTitles.addAll([
                     S.of(context).history,
@@ -144,7 +142,9 @@ class ChatScreen extends StatelessWidget {
                       Builder(builder: (context) {
                         final List<Widget> tabs = [];
                         if (chatCubit.chatScreenArguments.storyIdForHistory ==
-                            null) {
+                                null &&
+                            chatCubit.chatScreenArguments.clientIdFromPush ==
+                                null) {
                           tabs.add(const _ActiveChat());
                         }
                         tabs.addAll([
@@ -194,10 +194,8 @@ class ChatScreen extends StatelessWidget {
                   final ChatItemStatusType? questionStatus = context
                       .select((ChatCubit cubit) => cubit.state.questionStatus);
 
-                  if (chatCubit.chatScreenArguments.storyIdForHistory == null &&
-                      currentIndex == 0) {
-                    if (chatCubit.chatScreenArguments.publicQuestionId !=
-                        null) {
+                  if (chatCubit.needActiveChatTab() && currentIndex == 0) {
+                    if (chatCubit.isPublicChat()) {
                       final bool showInputFieldIfPublic = context.select(
                           (ChatCubit cubit) =>
                               cubit.state.showInputFieldIfPublic);
@@ -265,10 +263,11 @@ class ChatScreen extends StatelessWidget {
                                     chatCubit.pauseRecordedAudio(),
                                 onDeletePressed: () async {
                                   if ((await showDeleteAlert(
-                                      context,
-                                      S
-                                          .of(context)
-                                          .doYouWantToDeleteThisAudioMessage))!) {
+                                          context,
+                                          S
+                                              .of(context)
+                                              .doYouWantToDeleteThisAudioMessage)) ==
+                                      true) {
                                     chatCubit.deletedRecordedAudio();
                                   }
                                 },
@@ -305,16 +304,29 @@ class ChatScreen extends StatelessWidget {
   }
 }
 
-showAlert(BuildContext context) async {
+Future<void> _showErrorAlert(BuildContext context) async {
   await showOkCancelAlert(
     context: context,
     title: getIt.get<MainCubit>().state.appError.getMessage(context),
     okText: S.of(context).ok,
     actionOnOK: () {
+      getIt.get<MainCubit>().updateSessions();
       Get.close(2);
     },
     allowBarrierClick: false,
     isCancelEnabled: false,
+  );
+}
+
+Future<bool?> _confirmSendAnswerAlert(BuildContext context) async {
+  final s = S.of(context);
+  return await showOkCancelAlert(
+    context: context,
+    title: s.pleaseConfirmThatYourAnswerIsReadyToBeSent,
+    okText: s.confirm,
+    actionOnOK: () => Navigator.pop(context, true),
+    allowBarrierClick: false,
+    isCancelEnabled: true,
   );
 }
 
@@ -360,7 +372,7 @@ class _ActiveChat extends StatelessWidget {
                                   padding: const EdgeInsets.only(
                                     bottom: 16.0,
                                   ),
-                                  child: InfoCard(
+                                  child: RitualInfoCardWidget(
                                     ritualCardInfo: ritualCardInfo,
                                   ),
                                 ),
@@ -395,7 +407,7 @@ class _ActiveChat extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (chatCubit.chatScreenArguments.publicQuestionId != null)
+                    if (chatCubit.isPublicChat())
                       Builder(
                         builder: (context) {
                           final ChatItemStatusType? questionStatus =
@@ -417,7 +429,7 @@ class _ActiveChat extends StatelessWidget {
               }
             },
           ),
-          if (chatCubit.chatScreenArguments.publicQuestionId != null)
+          if (chatCubit.isPublicChat())
             Builder(
               builder: (context) {
                 final ChatItemStatusType? questionStatus = context

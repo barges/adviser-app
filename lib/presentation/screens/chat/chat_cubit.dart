@@ -29,8 +29,10 @@ import 'package:shared_advisor_interface/data/network/requests/answer_request.da
 import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
@@ -55,6 +57,7 @@ class ChatCubit extends Cubit<ChatState> {
   final ChatsRepository _repository;
   late final ChatScreenArguments chatScreenArguments;
   final VoidCallback _showErrorAlert;
+  final ValueGetter<Future<bool?>> _confirmSendAnswerAlert;
   final MainCubit _mainCubit = getIt.get<MainCubit>();
   final Codec _codec = Codec.aacMP4;
   final int _tillShowMessagesInSec =
@@ -75,10 +78,18 @@ class ChatCubit extends Cubit<ChatState> {
   ChatCubit(
     this._repository,
     this._showErrorAlert,
+    this._confirmSendAnswerAlert,
   ) : super(const ChatState()) {
     chatScreenArguments = Get.arguments;
     _init();
-    if (chatScreenArguments.question != null) {
+    if (chatScreenArguments.clientIdFromPush != null) {
+      emit(
+        state.copyWith(
+          questionFromDB:
+              ChatItem(clientID: chatScreenArguments.clientIdFromPush),
+        ),
+      );
+    } else if (chatScreenArguments.question != null) {
       emit(
         state.copyWith(
           questionFromDB: chatScreenArguments.question,
@@ -88,9 +99,9 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       );
     }
-    if (chatScreenArguments.storyIdForHistory == null) {
+    if (needActiveChatTab()) {
       _getData().whenComplete(() {
-        if (chatScreenArguments.publicQuestionId != null) {
+        if (isPublicChat()) {
           _checkTiming();
         }
       });
@@ -165,7 +176,7 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> _getData() async {
     if (chatScreenArguments.ritualID != null) {
       _getRituals(chatScreenArguments.ritualID!).then((_) async {
-        SchedulerBinding.instance.endOfFrame.then((_) => scrollChatDown);
+        scrollChatDown();
       });
     } else {
       await _getPublicOrPrivateQuestion();
@@ -205,7 +216,8 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  void updateAppBarInformation(AppBarUpdateArguments? appBarUpdateArguments) {
+  void updateAppBarInformation(
+      CustomerProfileScreenArguments? appBarUpdateArguments) {
     emit(state.copyWith(
       appBarUpdateArguments: appBarUpdateArguments,
     ));
@@ -271,6 +283,8 @@ class ChatCubit extends Cubit<ChatState> {
             ritualCardInfo: ritualsResponse.ritualCardInfo,
           ),
         );
+
+        scrollChatDown();
       }
     } on DioError catch (e) {
       _showErrorAlert();
@@ -283,6 +297,16 @@ class ChatCubit extends Cubit<ChatState> {
     SchedulerBinding.instance.endOfFrame.then((value) =>
         activeMessagesScrollController
             .jumpTo(activeMessagesScrollController.position.maxScrollExtent));
+  }
+
+  bool needActiveChatTab() {
+    return chatScreenArguments.privateQuestionId != null ||
+        isPublicChat() ||
+        chatScreenArguments.ritualID != null;
+  }
+
+  bool isPublicChat() {
+    return chatScreenArguments.publicQuestionId != null;
   }
 
   Future<void> takeQuestion() async {
@@ -324,21 +348,13 @@ class ChatCubit extends Cubit<ChatState> {
     _answerTimer = null;
   }
 
-  Future<void> startRecordingAudio() async {
+  Future<void> startRecordingAudio(BuildContext context) async {
     _tryStartAnswerSend();
 
-    if (await Permission.microphone.isPermanentlyDenied) {
-      openAppSettings();
-    } else {
-      await Permission.microphone.request();
-    }
+    await _handlePermissions(context);
 
     final isRecordGranted = await Permission.microphone.isGranted;
-    emit(
-      state.copyWith(
-        isMicrophoneButtonEnabled: isRecordGranted,
-      ),
-    );
+
     if (!isRecordGranted) {
       return;
     }
@@ -362,6 +378,26 @@ class ChatCubit extends Cubit<ChatState> {
         recordingStream: _recorder?.onProgress,
       ),
     );
+  }
+
+  Future<void> _handlePermissions(BuildContext context) async {
+    final s = S.of(context);
+    PermissionStatus status = await Permission.microphone.request();
+
+    if (status.isPermanentlyDenied) {
+      VoidCallback actionOnOk = (() async {
+        await openAppSettings();
+        Navigator.pop(context);
+      });
+      await showOkCancelAlert(
+          context: context,
+          title: s.permissionNeeded,
+          okText: s.settings,
+          description: s.weNeedPermissionToAccessYourMicrophone,
+          actionOnOK: actionOnOk,
+          allowBarrierClick: true,
+          isCancelEnabled: true);
+    }
   }
 
   Future<void> stopRecordingAudio() async {
@@ -561,53 +597,61 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> sendMediaAnswer() async {
-    if (_playerRecorded != null && _playerRecorded!.isPlaying) {
-      await _playerRecorded!.stopPlayer();
-    }
+    dynamic isOk = await _confirmSendAnswerAlert();
 
-    _answerRequest = await _createMediaAnswerRequest();
-    final ChatItem? answer = await _sendAnswer();
+    if (isOk == true) {
+      if (_playerRecorded != null && _playerRecorded!.isPlaying) {
+        await _playerRecorded!.stopPlayer();
+      }
 
-    if (answer != null) {
-      final List<ChatItem> messages = List.of(state.activeMessages);
-      messages.add(answer);
+      _answerRequest = await _createMediaAnswerRequest();
+      final ChatItem? answer = await _sendAnswer();
 
-      emit(
-        state.copyWith(
-          isRecordingAudio: false,
-          isAudioFileSaved: false,
-          isPlayingRecordedAudio: false,
-          recordingPath: null,
-          activeMessages: messages,
-        ),
-      );
-      deleteAttachedPictures();
-      scrollChatDown();
+      if (answer != null) {
+        final List<ChatItem> messages = List.of(state.activeMessages);
+        messages.add(answer);
 
-      if (answer.isSent) {
-        _mainCubit.updateSessions();
+        emit(
+          state.copyWith(
+            isRecordingAudio: false,
+            isAudioFileSaved: false,
+            isPlayingRecordedAudio: false,
+            recordingPath: null,
+            activeMessages: messages,
+          ),
+        );
+        deleteAttachedPictures();
+        scrollChatDown();
+
+        if (answer.isSent) {
+          _mainCubit.updateSessions();
+        }
       }
     }
   }
 
   Future<void> sendTextMediaAnswer() async {
-    _answerRequest = await _createTextMediaAnswerRequest();
-    final ChatItem? answer = await _sendAnswer();
+    dynamic isOk = await _confirmSendAnswerAlert();
 
-    if (answer != null) {
-      final messages = List.of(state.activeMessages);
-      messages.add(answer);
-      emit(
-        state.copyWith(
-          activeMessages: messages,
-        ),
-      );
-      textEditingController.clear();
-      deleteAttachedPictures();
-      scrollChatDown();
+    if (isOk == true) {
+      _answerRequest = await _createTextMediaAnswerRequest();
+      final ChatItem? answer = await _sendAnswer();
 
-      if (answer.isSent) {
-        _mainCubit.updateSessions();
+      if (answer != null) {
+        final messages = List.of(state.activeMessages);
+        messages.add(answer);
+        emit(
+          state.copyWith(
+            activeMessages: messages,
+          ),
+        );
+        textEditingController.clear();
+        deleteAttachedPictures();
+        scrollChatDown();
+
+        if (answer.isSent) {
+          _mainCubit.updateSessions();
+        }
       }
     }
   }
@@ -902,7 +946,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   int get minTextLength => state.questionFromDB?.type == ChatItemType.ritual
-      ? AppConstants.minTextLengthRirual
+      ? AppConstants.minTextLengthRitual
       : AppConstants.minTextLength;
 
   int get maxTextLength => state.questionFromDB?.type == ChatItemType.ritual

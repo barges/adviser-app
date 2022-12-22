@@ -1140,11 +1140,11 @@ class S {
     );
   }
 
-  /// `All Type`
-  String get allType {
+  /// `All Markets`
+  String get allMarkets {
     return Intl.message(
-      'All Type',
-      name: 'allType',
+      'All Markets',
+      name: 'allMarkets',
       desc: '',
       args: [],
     );
@@ -1280,16 +1280,6 @@ class S {
     );
   }
 
-  /// `Type message`
-  String get typemessage {
-    return Intl.message(
-      'Type message',
-      name: 'typemessage',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Do you want to delete image?`
   String get doYouWantToDeleteImage {
     return Intl.message(
@@ -1315,6 +1305,16 @@ class S {
     return Intl.message(
       'OK',
       name: 'ok',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm`
+  String get confirm {
+    return Intl.message(
+      'Confirm',
+      name: 'confirm',
       desc: '',
       args: [],
     );
@@ -2104,6 +2104,76 @@ class S {
     return Intl.message(
       'Wrong username and/or password.',
       name: 'wrongUsernameAndOrPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We need permission to access your microphone`
+  String get weNeedPermissionToAccessYourMicrophone {
+    return Intl.message(
+      'We need permission to access your microphone',
+      name: 'weNeedPermissionToAccessYourMicrophone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type message`
+  String get typeMessage {
+    return Intl.message(
+      'Type message',
+      name: 'typeMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please confirm that your answer is ready to be sent`
+  String get pleaseConfirmThatYourAnswerIsReadyToBeSent {
+    return Intl.message(
+      'Please confirm that your answer is ready to be sent',
+      name: 'pleaseConfirmThatYourAnswerIsReadyToBeSent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your password`
+  String get enterYourPassword {
+    return Intl.message(
+      'Enter your password',
+      name: 'enterYourPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter new password`
+  String get enterNewPassword {
+    return Intl.message(
+      'Enter new password',
+      name: 'enterNewPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Repeat new password`
+  String get repeatNewPassword {
+    return Intl.message(
+      'Repeat new password',
+      name: 'repeatNewPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your email`
+  String get enterYourEmail {
+    return Intl.message(
+      'Enter your email',
+      name: 'enterYourEmail',
       desc: '',
       args: [],
     );

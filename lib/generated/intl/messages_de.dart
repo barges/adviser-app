@@ -44,9 +44,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "addPhoto": MessageLookupByLibrary.simpleMessage("Foto hinzufügen"),
         "advisors": MessageLookupByLibrary.simpleMessage("Berater"),
         "all": MessageLookupByLibrary.simpleMessage("Alle"),
+        "allMarkets": MessageLookupByLibrary.simpleMessage("Alle Märkte"),
         "allOurBrands":
             MessageLookupByLibrary.simpleMessage("Alle unsere Marken"),
-        "allType": MessageLookupByLibrary.simpleMessage("Alle Arten"),
         "areYouSureThatYouWantToChangeYourStatus":
             MessageLookupByLibrary.simpleMessage(
                 "Sind Sie sicher, dass Sie Ihren Status auf Offline ändern möchten?"),
@@ -85,6 +85,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "comingSoon": MessageLookupByLibrary.simpleMessage("Demnächst!"),
         "completeYourProfileToStartWork": MessageLookupByLibrary.simpleMessage(
             "Vervollständigen Sie Ihr Profil, um mit der Arbeit zu beginnen"),
+        "confirm": MessageLookupByLibrary.simpleMessage("Bestätigen"),
         "confirmNewPassword":
             MessageLookupByLibrary.simpleMessage("Bestätige neues Passwort"),
         "courses": MessageLookupByLibrary.simpleMessage("Kurse"),
@@ -113,9 +114,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Profil bearbeiten"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "english": MessageLookupByLibrary.simpleMessage("Englisch"),
+        "enterNewPassword":
+            MessageLookupByLibrary.simpleMessage("Neues Passwort eingeben"),
+        "enterYourEmail": MessageLookupByLibrary.simpleMessage(
+            "Geben sie ihre E-Mail Adresse ein"),
         "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword":
             MessageLookupByLibrary.simpleMessage(
                 "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen Anweisungen zum Erstellen eines neuen Passworts"),
+        "enterYourPassword":
+            MessageLookupByLibrary.simpleMessage("Geben Sie Ihr Passwort ein"),
         "female": MessageLookupByLibrary.simpleMessage("Weiblich"),
         "forMe": MessageLookupByLibrary.simpleMessage("Für mich"),
         "forgotPassword":
@@ -194,6 +201,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Foto ist erforderlich"),
         "placesUpFromLastMonth": MessageLookupByLibrary.simpleMessage(
             "Plätze im Vergleich zum letzten Monat"),
+        "pleaseConfirmThatYourAnswerIsReadyToBeSent":
+            MessageLookupByLibrary.simpleMessage(
+                "Bitte bestätigen Sie, dass Ihre Antwort zum Senden bereit ist"),
         "pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManager":
             MessageLookupByLibrary.simpleMessage(
                 "Bitte stellen Sie sicher, dass Ihr Profil für alle Sprachen ausgefüllt ist. Brauchen Sie Hilfe? Wenden Sie sich an Ihren Vorgesetzten."),
@@ -224,6 +234,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "quickAnswers":
             MessageLookupByLibrary.simpleMessage("Schnelle Antworten"),
         "reading360": MessageLookupByLibrary.simpleMessage("360°-Lesen"),
+        "repeatNewPassword": MessageLookupByLibrary.simpleMessage(
+            "Wiederhole das neue Passwort"),
         "requestNewPassword": MessageLookupByLibrary.simpleMessage(
             "Fordere ein neues Passwort an"),
         "requiredField": MessageLookupByLibrary.simpleMessage("Pflichtfeld"),
@@ -280,6 +292,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "totalMarkets": MessageLookupByLibrary.simpleMessage("Gesamtmärkte"),
         "tryAgain":
             MessageLookupByLibrary.simpleMessage("Versuchen Sie es nochmal"),
+        "typeMessage":
+            MessageLookupByLibrary.simpleMessage("Nachricht eingeben"),
         "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgain":
             MessageLookupByLibrary.simpleMessage(
                 "Uh-oh. Es sieht so aus, als hätten Sie Ihre Verbindung verloren. Bitte versuche es erneut."),
@@ -292,6 +306,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages":
             MessageLookupByLibrary.simpleMessage(
                 "Wir benötigen die Erlaubnis, auf Ihre Kamera und Galerie zuzugreifen, damit Sie Bilder senden können"),
+        "weNeedPermissionToAccessYourMicrophone":
+            MessageLookupByLibrary.simpleMessage(
+                "Wir benötigen die Erlaubnis, auf Ihr Mikrofon zuzugreifen"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "Wir sind stolz darauf, Beratern einen sicheren Ort zu bieten, an dem sie Kunden bedienen und sich beruflich weiterentwickeln können. Gute Arbeit bei einer unserer Marken zu leisten, wird Türen zu anderen öffnen"),

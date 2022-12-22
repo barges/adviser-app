@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 
 class CustomerProfileWidget extends StatelessWidget {
   final String customerId;
-  final Function(AppBarUpdateArguments?)? updateClientInformationCallback;
+  final ValueChanged<CustomerProfileScreenArguments?>? updateClientInformationCallback;
 
   const CustomerProfileWidget({
     Key? key,

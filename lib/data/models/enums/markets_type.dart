@@ -36,7 +36,7 @@ enum MarketsType {
       case MarketsType.pt:
         return AppConstants.ptBrandName;
       case MarketsType.all:
-        return S.of(context).allType;
+        return S.of(context).allMarkets;
     }
   }
 }

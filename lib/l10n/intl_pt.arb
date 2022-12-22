@@ -105,7 +105,7 @@
   "title": "Título",
   "youHaveNotCompletedAnySessionsYet": "Você ainda não concluiu nenhuma sessão",
   "youHaveNotYetCompletedThisMonthsSessions": "Você ainda não concluiu as sessões deste mês",
-  "allType": "Todo tipo",
+  "allMarkets": "Todos os Mercados",
   "market": "Mercado:",
   "all": "Tudo",
   "privateQuestions": "Perguntas particulares",
@@ -127,6 +127,7 @@
   "doYouWantToDeleteImage": "Deseja excluir a imagem?",
   "tryAgain": "Tente novamente",
   "ok": "OK",
+  "confirm": "Confirme",
   "note": "Nota",
   "live": "Viver",
   "incomplete": "Incompleto",
@@ -204,5 +205,12 @@
   "openEmail": "Abrir e-mail",
   "weVeSentPasswordResetInstructionsToEmail": "Enviamos instruções de redefinição de senha para o {email}.",
   "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword": "Digite seu endereço de e-mail e enviaremos instruções para criar uma nova senha",
-  "wrongUsernameAndOrPassword": "Nome de usuário e/ou senha incorretos."
+  "wrongUsernameAndOrPassword": "Nome de usuário e/ou senha incorretos.",
+  "weNeedPermissionToAccessYourMicrophone": "Precisamos de permissão para acessar seu microfone",
+  "typeMessage": "digite mensagem",
+  "pleaseConfirmThatYourAnswerIsReadyToBeSent": "Confirme se sua resposta está pronta para ser enviada",
+  "enterYourPassword": "Coloque sua senha",
+  "enterNewPassword": "Insira a nova senha",
+  "repeatNewPassword": "Repita a nova senha",
+  "enterYourEmail": "Digite seu e-mail"
 }

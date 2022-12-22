@@ -8,6 +8,8 @@ import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
@@ -33,7 +35,6 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
       getIt.get<ConnectivityService>();
 
   final List<ChatItemType> filters = [
-    ChatItemType.all,
     ChatItemType.ritual,
     ChatItemType.private,
   ];
@@ -41,6 +42,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   final List<ChatItem> _privateQuestionsWithHistory = [];
   final List<String> _excludeIds = [];
 
+  late final CustomerSessionsScreenArguments arguments;
   late final ChatItem argumentsQuestion;
   late final StreamSubscription<bool> _updateSessionsSubscription;
 
@@ -53,10 +55,14 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
     this._screenHeight,
     this._showErrorAlert,
   ) : super(const CustomerSessionsState()) {
-    argumentsQuestion = Get.arguments as ChatItem;
+    arguments = Get.arguments as CustomerSessionsScreenArguments;
+    argumentsQuestion = arguments.question;
+
+    getUserMarkets();
 
     emit(
       state.copyWith(
+        currentMarketIndex: arguments.marketIndex,
         clientName: argumentsQuestion.clientName,
         zodiacSign: argumentsQuestion.clientInformation?.zodiac,
       ),
@@ -67,10 +73,10 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
       getPrivateQuestions();
     }
 
-    questionsScrollController.addListener(() async {
-      if (!_isLoading &&
-          questionsScrollController.position.extentAfter <= _screenHeight) {
-        await getCustomerHistoryStories(
+    questionsScrollController.addListener(() {
+      if (questionsScrollController.position.extentAfter <= _screenHeight &&
+          !_isLoading) {
+        getCustomerHistoryStories(
           excludeIds: _excludeIds,
         );
       }
@@ -90,8 +96,22 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
     return super.close();
   }
 
-  void changeFilterIndex(int newIndex) {
+  void getUserMarkets() {
+    final UserProfile? userProfile = cacheManager.getUserProfile();
+    final List<MarketsType> userMarkets = [
+      MarketsType.all,
+      ...userProfile?.activeLanguages ?? [],
+    ];
+    emit(state.copyWith(userMarkets: userMarkets));
+  }
+
+  void changeFilterIndex(int? newIndex) {
     emit(state.copyWith(currentFilterIndex: newIndex));
+    getPrivateQuestions(refresh: true);
+  }
+
+  void changeMarketIndex(int newIndex) {
+    emit(state.copyWith(currentMarketIndex: newIndex));
     getPrivateQuestions(refresh: true);
   }
 
@@ -107,14 +127,22 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
 
     if (await _connectivityService.checkConnection()) {
       try {
-        final ChatItemType questionsType = filters[state.currentFilterIndex];
-        final String? filterType = questionsType != ChatItemType.all
-            ? questionsType.filterTypeName
+        final ChatItemType? questionsType = state.currentFilterIndex != null
+            ? filters[state.currentFilterIndex!]
             : null;
+        final String? filterType = questionsType?.filterTypeName;
+        String? filtersLanguage;
+        if (state.userMarkets.isNotEmpty) {
+          final MarketsType marketsType =
+              state.userMarkets[state.currentMarketIndex];
+          filtersLanguage =
+              marketsType != MarketsType.all ? marketsType.name : null;
+        }
         final QuestionsListResponse result =
             await _chatsRepository.getCustomerQuestions(
           clientId: argumentsQuestion.clientID ?? '',
           filterType: filterType,
+          filterLanguage: filtersLanguage,
         );
 
         final List<ChatItem> activeQuestions = [];
@@ -152,10 +180,18 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
 
       if (await _connectivityService.checkConnection()) {
         try {
-          final ChatItemType questionsType = filters[state.currentFilterIndex];
-          final String? filterType = questionsType != ChatItemType.all
-              ? questionsType.filterTypeName
+          final ChatItemType? questionsType = state.currentFilterIndex != null
+              ? filters[state.currentFilterIndex!]
               : null;
+          final String? filterType = questionsType?.filterTypeName;
+
+          // String? filtersLanguage;
+          // if (state.userMarkets.isNotEmpty) {
+          //   final MarketsType marketsType =
+          //   state.userMarkets[state.currentMarketIndex];
+          //   filtersLanguage =
+          //   marketsType != MarketsType.all ? marketsType.name : null;
+          // }
 
           final QuestionsListResponse result =
               await _chatsRepository.getCustomerHistoryStories(
@@ -163,6 +199,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
             limit: AppConstants.questionsLimit,
             lastItem: _lastItem,
             filterType: filterType,
+           // filterLanguage: filtersLanguage,
             excludeIds: excludeIds.isNotEmpty ? excludeIds.join(',') : null,
           );
           _hasMore = result.hasMore ?? true;
@@ -205,7 +242,6 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
         Get.toNamed(
           AppRoutes.chat,
           arguments: ChatScreenArguments(
-            clientId: argumentsQuestion.clientID,
             privateQuestionId: question.id,
             ritualID: question.ritualID,
             question: question.copyWith(
@@ -219,7 +255,6 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
         Get.toNamed(
           AppRoutes.chat,
           arguments: ChatScreenArguments(
-            clientId: argumentsQuestion.clientID,
             storyIdForHistory: question.id,
             question: question.copyWith(
               clientID: argumentsQuestion.clientID,

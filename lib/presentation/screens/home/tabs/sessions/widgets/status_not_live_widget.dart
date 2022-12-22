@@ -33,6 +33,7 @@ class NotLiveStatusWidget extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Utils.isDarkMode(context)
                             ? Assets.images.logos.noConnectionLogoDark.image(

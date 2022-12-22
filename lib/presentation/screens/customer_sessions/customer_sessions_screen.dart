@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
+import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
@@ -10,6 +11,7 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/list_of_filters_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/market_filter_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
@@ -52,19 +54,41 @@ class CustomerSessionsScreen extends StatelessWidget {
                       height: 1,
                     ),
                     Builder(builder: (context) {
-                      final int currentFilterIndex = context.select(
+                      final int? currentFilterIndex = context.select(
                           (CustomerSessionsCubit cubit) =>
                               cubit.state.currentFilterIndex);
+                      final List<MarketsType> userMarkets = context.select(
+                          (CustomerSessionsCubit cubit) =>
+                              cubit.state.userMarkets);
+                      final int currentMarketIndex = context.select(
+                          (CustomerSessionsCubit cubit) =>
+                              cubit.state.currentMarketIndex);
                       return Opacity(
                         opacity: isOnline ? 1.0 : 0.4,
-                        child: ListOfFiltersWidget(
-                          currentFilterIndex: currentFilterIndex,
-                          onTapToFilter: isOnline
-                              ? customerSessionsCubit.changeFilterIndex
-                              : (value) {},
-                          filters: customerSessionsCubit.filters
-                              .map((e) => e.filterName(context))
-                              .toList(),
+                        child: SingleChildScrollView(
+                          padding: const EdgeInsets.only(
+                              right: AppConstants.horizontalScreenPadding),
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              ListOfFiltersWidget(
+                                currentFilterIndex: currentFilterIndex,
+                                onTapToFilter: isOnline
+                                    ? customerSessionsCubit.changeFilterIndex
+                                    : (value) {},
+                                filters: customerSessionsCubit.filters
+                                    .map((e) => e.filterName(context))
+                                    .toList(),
+                                withMarketFilter: true,
+                              ),
+                              MarketFilterWidget(
+                                  userMarkets: userMarkets,
+                                  currentMarketIndex: currentMarketIndex,
+                                  changeIndex: isOnline
+                                      ? customerSessionsCubit.changeMarketIndex
+                                      : (value) {}),
+                            ],
+                          ),
                         ),
                       );
                     }),
@@ -75,6 +99,7 @@ class CustomerSessionsScreen extends StatelessWidget {
                       final List<ChatItem>? questions = context.select(
                           (CustomerSessionsCubit cubit) =>
                               cubit.state.privateQuestionsWithHistory);
+
                       return questions == null
                           ? const SizedBox.shrink()
                           : Expanded(
@@ -85,28 +110,37 @@ class CustomerSessionsScreen extends StatelessWidget {
                                             .getPrivateQuestions(refresh: true);
                                       },
                                       child: questions.isNotEmpty
-                                          ? ListView.separated(
-                                              controller: customerSessionsCubit
-                                                  .questionsScrollController,
-                                              padding: const EdgeInsets.all(
-                                                  AppConstants
-                                                      .horizontalScreenPadding),
-                                              physics:
-                                                  const AlwaysScrollableScrollPhysics(),
-                                              shrinkWrap: true,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                return CustomerSessionListTileWidget(
-                                                    question: questions[index]);
-                                              },
-                                              separatorBuilder:
-                                                  (BuildContext context,
-                                                          int index) =>
-                                                      const SizedBox(
-                                                height: 12.0,
-                                              ),
-                                              itemCount: questions.length,
+                                          ? Column(
+                                              children: [
+                                                Expanded(
+                                                  child: ListView.separated(
+                                                    controller:
+                                                        customerSessionsCubit
+                                                            .questionsScrollController,
+                                                    padding: const EdgeInsets
+                                                            .all(
+                                                        AppConstants
+                                                            .horizontalScreenPadding),
+                                                    physics:
+                                                        const AlwaysScrollableScrollPhysics(),
+                                                    shrinkWrap: true,
+                                                    itemBuilder:
+                                                        (BuildContext context,
+                                                            int index) {
+                                                      return CustomerSessionListTileWidget(
+                                                          question:
+                                                              questions[index]);
+                                                    },
+                                                    separatorBuilder:
+                                                        (BuildContext context,
+                                                                int index) =>
+                                                            const SizedBox(
+                                                      height: 12.0,
+                                                    ),
+                                                    itemCount: questions.length,
+                                                  ),
+                                                ),
+                                              ],
                                             )
                                           : CustomScrollView(slivers: [
                                               SliverFillRemaining(

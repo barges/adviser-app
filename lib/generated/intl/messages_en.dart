@@ -44,8 +44,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "addPhoto": MessageLookupByLibrary.simpleMessage("Add photo"),
         "advisors": MessageLookupByLibrary.simpleMessage("advisors"),
         "all": MessageLookupByLibrary.simpleMessage("All"),
+        "allMarkets": MessageLookupByLibrary.simpleMessage("All Markets"),
         "allOurBrands": MessageLookupByLibrary.simpleMessage("All our brands"),
-        "allType": MessageLookupByLibrary.simpleMessage("All Type"),
         "areYouSureThatYouWantToChangeYourStatus":
             MessageLookupByLibrary.simpleMessage(
                 "Are you sure that you want to change your status to Offline?"),
@@ -84,6 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon!"),
         "completeYourProfileToStartWork": MessageLookupByLibrary.simpleMessage(
             "Complete your profile to start work"),
+        "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "confirmNewPassword":
             MessageLookupByLibrary.simpleMessage("Confirm new password"),
         "courses": MessageLookupByLibrary.simpleMessage("Courses"),
@@ -114,9 +115,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "editProfile": MessageLookupByLibrary.simpleMessage("Edit profile"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
+        "enterNewPassword":
+            MessageLookupByLibrary.simpleMessage("Enter new password"),
+        "enterYourEmail":
+            MessageLookupByLibrary.simpleMessage("Enter your email"),
         "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword":
             MessageLookupByLibrary.simpleMessage(
                 "Enter your email address and we\'ll send you instructions to create a new password"),
+        "enterYourPassword":
+            MessageLookupByLibrary.simpleMessage("Enter your password"),
         "female": MessageLookupByLibrary.simpleMessage("Female"),
         "forMe": MessageLookupByLibrary.simpleMessage("For me"),
         "forgotPassword":
@@ -193,6 +200,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Photo is required"),
         "placesUpFromLastMonth":
             MessageLookupByLibrary.simpleMessage("places up from last month"),
+        "pleaseConfirmThatYourAnswerIsReadyToBeSent":
+            MessageLookupByLibrary.simpleMessage(
+                "Please confirm that your answer is ready to be sent"),
         "pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManager":
             MessageLookupByLibrary.simpleMessage(
                 "Please ensure your profile is completed for all languages. Need help? Contact your manager."),
@@ -222,6 +232,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "questions": MessageLookupByLibrary.simpleMessage("Questions"),
         "quickAnswers": MessageLookupByLibrary.simpleMessage("Quick Answers"),
         "reading360": MessageLookupByLibrary.simpleMessage("360° Reading"),
+        "repeatNewPassword":
+            MessageLookupByLibrary.simpleMessage("Repeat new password"),
         "requestNewPassword":
             MessageLookupByLibrary.simpleMessage("Request new password"),
         "requiredField": MessageLookupByLibrary.simpleMessage("Required field"),
@@ -276,7 +288,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "total": MessageLookupByLibrary.simpleMessage("Total"),
         "totalMarkets": MessageLookupByLibrary.simpleMessage("Total markets"),
         "tryAgain": MessageLookupByLibrary.simpleMessage("Try again"),
-        "typemessage": MessageLookupByLibrary.simpleMessage("Type message"),
+        "typeMessage": MessageLookupByLibrary.simpleMessage("Type message"),
         "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgain":
             MessageLookupByLibrary.simpleMessage(
                 "Uh-oh. It looks like you\'ve lost your connection. Please try again."),
@@ -288,6 +300,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages":
             MessageLookupByLibrary.simpleMessage(
                 "We need permission to access your camera and gallery so you can send images"),
+        "weNeedPermissionToAccessYourMicrophone":
+            MessageLookupByLibrary.simpleMessage(
+                "We need permission to access your microphone"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others"),

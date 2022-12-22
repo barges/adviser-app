@@ -6,6 +6,6 @@ part 'customer_profile_screen_state.freezed.dart';
 @freezed
 class CustomerProfileScreenState with _$CustomerProfileScreenState {
   const factory CustomerProfileScreenState({
-    AppBarUpdateArguments? appBarUpdateArguments,
+    CustomerProfileScreenArguments? appBarUpdateArguments,
   }) = _CustomerProfileScreenState;
 }

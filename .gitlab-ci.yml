@@ -1,5 +1,6 @@
 stages:
-  #- test
+  - upgrade_flutter
+  - test
   #- analyze
   - build
   - deploy
@@ -8,17 +9,28 @@ stages:
 variables:
   LANG: "en_US.UTF-8"
 
-# test:
-#   stage: test
-#   before_script:
-#     - flutter pub get
-#     - flutter pub run build_runner build --delete-conflicting-outputs
-#   script:
-#     - flutter test
-#   tags:
-#     - macmini
-#   only:
-#     - branches
+upgrade_flutter:
+  stage: upgrade_flutter
+  script:
+    - flutter upgrade
+    - flutter channel stable
+    - flutter --version
+  tags:
+    - macmini
+  only:
+    - develop
+
+test:
+  stage: test
+  before_script:
+    - flutter pub get
+    - flutter pub run build_runner build --delete-conflicting-outputs
+  script:
+    - flutter test
+  tags:
+    - macmini
+  only:
+    - branches
 
 # analyze:
 #   stage: analyze

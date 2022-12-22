@@ -26,7 +26,7 @@ class AttachedPictures extends StatelessWidget {
                       onDeletePressed: () async {
                         final bool? isDelete = await showDeleteAlert(
                             context, S.of(context).doYouWantToDeleteImage);
-                        if (isDelete!) {
+                        if (isDelete == true) {
                           chatCubit.deletePicture(file);
                         }
                       },
