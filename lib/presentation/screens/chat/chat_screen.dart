@@ -36,23 +36,6 @@ import 'widgets/ritual_info_card_widget.dart';
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);
 
-  Future<void> _sendMediaAnswer(
-      BuildContext context, ChatCubit chatCubit) async {
-    final s = S.of(context);
-    final dynamic isConfirmed = await showOkCancelAlert(
-      context: context,
-      title: s.pleaseConfirmThatYourAnswerIsReadyToBeSent,
-      okText: s.confirm,
-      actionOnOK: () => Navigator.pop(context, true),
-      allowBarrierClick: false,
-      isCancelEnabled: true,
-    );
-
-    if (isConfirmed == true) {
-      chatCubit.sendMediaAnswer();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -247,8 +230,7 @@ class ChatScreen extends StatelessWidget {
                                     chatCubit.deletedRecordedAudio();
                                   }
                                 },
-                                onSendPressed: () =>
-                                    _sendMediaAnswer(context, chatCubit),
+                                onSendPressed: chatCubit.sendMediaAnswer,
                               );
                             } else if (isRecordingAudio) {
                               return ChatRecordingWidget(
@@ -292,8 +274,7 @@ class ChatScreen extends StatelessWidget {
                                     chatCubit.deletedRecordedAudio();
                                   }
                                 },
-                                onSendPressed: () =>
-                                    _sendMediaAnswer(context, chatCubit),
+                                onSendPressed: chatCubit.sendMediaAnswer,
                               );
                             } else if (isRecordingAudio) {
                               return ChatRecordingWidget(
@@ -343,8 +324,8 @@ Future<bool?> _confirmSendAnswerAlert(BuildContext context) async {
   final s = S.of(context);
   return await showOkCancelAlert(
     context: context,
-    title: 'SEND?',
-    okText: 'Confirm',
+    title: s.pleaseConfirmThatYourAnswerIsReadyToBeSent,
+    okText: s.confirm,
     actionOnOK: () => Navigator.pop(context, true),
     allowBarrierClick: false,
     isCancelEnabled: true,
