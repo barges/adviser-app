@@ -1,4 +1,5 @@
 stages:
+  - upgrade_flutter
   - test
   #- analyze
   - build
@@ -7,6 +8,17 @@ stages:
 
 variables:
   LANG: "en_US.UTF-8"
+
+upgrade_flutter:
+  stage: upgrade_flutter
+  script:
+    - flutter upgrade
+    - flutter channel stable
+    - flutter --version
+  tags:
+    - macmini
+  only:
+    - develop
 
 test:
   stage: test

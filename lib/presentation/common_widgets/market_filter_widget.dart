@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -22,6 +21,7 @@ class MarketFilterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return userMarkets.length > 2
         ? GestureDetector(
             onTap: () => showPickerModalPopUp(
@@ -53,8 +53,8 @@ class MarketFilterWidget extends StatelessWidget {
                     horizontal: AppConstants.horizontalScreenPadding),
                 decoration: BoxDecoration(
                     color: currentMarket != MarketsType.all
-                        ? Get.theme.primaryColorLight
-                        : Get.theme.scaffoldBackgroundColor,
+                        ? theme.primaryColorLight
+                        : theme.scaffoldBackgroundColor,
                     borderRadius:
                         BorderRadius.circular(AppConstants.buttonRadius)),
                 child: Row(
@@ -64,14 +64,20 @@ class MarketFilterWidget extends StatelessWidget {
                   children: [
                     Text(
                       '${S.of(context).market} ${currentMarket.languageName(context)}',
-                      style: Get.textTheme.bodyMedium?.copyWith(
-                        color: Get.theme.primaryColor,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: currentMarket != MarketsType.all
+                            ? theme.primaryColor
+                            : theme.hoverColor,
                       ),
                     ),
                     const SizedBox(
                       width: 4.0,
                     ),
-                    Assets.vectors.arrowDown.svg()
+                    Assets.vectors.arrowDown.svg(
+                      color: currentMarket != MarketsType.all
+                          ? theme.primaryColor
+                          : theme.hoverColor,
+                    )
                   ],
                 ),
               );

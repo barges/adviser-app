@@ -51,6 +51,7 @@ abstract class ChatsApi {
     @Query('limit') required int limit,
     @Query('lastItem') String? lastItem,
     @Query('filters[type]') String? filterType,
+    @Query('filters[language]') String? filterLanguage,
     @Query('excludeIds') String? excludeIds,
   });
 

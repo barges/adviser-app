@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/screens/customer_profile/customer_profile_screen_cubit.dart';
 
 class CustomerProfileScreen extends StatelessWidget {
-  CustomerProfileScreen({Key? key}) : super(key: key);
-  final CustomerProfileScreenArguments arguments = Get.arguments;
+ const CustomerProfileScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -17,20 +16,21 @@ class CustomerProfileScreen extends StatelessWidget {
         final CustomerProfileScreenCubit customerProfileScreenCubit =
             context.read<CustomerProfileScreenCubit>();
 
-        final AppBarUpdateArguments? appBarUpdateArguments = context.select(
-            (CustomerProfileScreenCubit cubit) =>
+        final CustomerProfileScreenArguments? appBarUpdateArguments =
+            context.select((CustomerProfileScreenCubit cubit) =>
                 cubit.state.appBarUpdateArguments);
         return Scaffold(
           appBar: ChatConversationAppBar(
-            title: appBarUpdateArguments?.clientName ?? arguments.clientName,
-            zodiacSign:
-                appBarUpdateArguments?.zodiacSign ?? arguments.zodiacSign,
+            title: appBarUpdateArguments?.clientName ?? '',
+            zodiacSign: appBarUpdateArguments?.zodiacSign,
           ),
-          body: CustomerProfileWidget(
-            customerId: arguments.customerID,
-            updateClientInformationCallback:
-                customerProfileScreenCubit.updateAppBarInformation,
-          ),
+          body: appBarUpdateArguments?.customerID != null
+              ? CustomerProfileWidget(
+                  customerId: appBarUpdateArguments!.customerID!,
+                  updateClientInformationCallback:
+                      customerProfileScreenCubit.updateAppBarInformation,
+                )
+              : const SizedBox.shrink(),
         );
       }),
     );

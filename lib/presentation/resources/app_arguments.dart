@@ -35,13 +35,13 @@ class ForgotPasswordScreenArguments {
 }
 
 class CustomerProfileScreenArguments {
-  final String customerID;
-  final String clientName;
+  final String? customerID;
+  final String? clientName;
   final ZodiacSign? zodiacSign;
 
   CustomerProfileScreenArguments({
-    required this.customerID,
-    required this.clientName,
+    this.customerID,
+    this.clientName,
     this.zodiacSign,
   });
 }
@@ -75,16 +75,6 @@ class ChatScreenArguments {
     this.privateQuestionId,
     this.ritualID,
     this.storyIdForHistory,
-  });
-}
-
-class AppBarUpdateArguments {
-  String? clientName;
-  ZodiacSign? zodiacSign;
-
-  AppBarUpdateArguments({
-    this.clientName,
-    this.zodiacSign,
   });
 }
 

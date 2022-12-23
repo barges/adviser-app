@@ -39,6 +39,6 @@ class ChatState with _$ChatState {
     ChatItem? questionFromDB,
     ChatItemStatusType? questionStatus,
     FlutterSoundPlayer? flutterSoundPlayer,
-    AppBarUpdateArguments? appBarUpdateArguments,
+    CustomerProfileScreenArguments? appBarUpdateArguments,
   }) = _ChatState;
 }

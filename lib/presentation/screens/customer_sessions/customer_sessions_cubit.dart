@@ -185,12 +185,21 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
               : null;
           final String? filterType = questionsType?.filterTypeName;
 
+          // String? filtersLanguage;
+          // if (state.userMarkets.isNotEmpty) {
+          //   final MarketsType marketsType =
+          //   state.userMarkets[state.currentMarketIndex];
+          //   filtersLanguage =
+          //   marketsType != MarketsType.all ? marketsType.name : null;
+          // }
+
           final QuestionsListResponse result =
               await _chatsRepository.getCustomerHistoryStories(
             id: argumentsQuestion.clientID ?? '',
             limit: AppConstants.questionsLimit,
             lastItem: _lastItem,
             filterType: filterType,
+           // filterLanguage: filtersLanguage,
             excludeIds: excludeIds.isNotEmpty ? excludeIds.join(',') : null,
           );
           _hasMore = result.hasMore ?? true;
