@@ -8,8 +8,10 @@ class AppConstants {
   static const double appBarHeight = 52.0;
 
   static const int millisecondsInHour = 3600000;
-  static const int maxAttachedPictures = 2;
   static const int questionsLimit = 20;
+
+  static const int maxAttachedPictures = 2;
+  static const int maxAttachedPicturesWithAudio = 1;
 
   static const int minRecordDurationInSec = 15;
   static const int maxRecordDurationInSec = 180;
