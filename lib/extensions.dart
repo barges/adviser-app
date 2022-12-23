@@ -168,10 +168,12 @@ extension IterableExtention<E> on Iterable<E> {
 
 extension DateTimeExt on DateTime {
   String get chatListTime {
-    DateTime now = DateTime.now().toUtc();
-    int timeDifference = DateTime(year, month, day)
-        .difference(DateTime(now.year, now.month, now.day))
-        .inDays;
+    DateTime now = DateTime.now();
+    DateTime localTime = toLocal();
+    int timeDifference =
+        DateTime(localTime.year, localTime.month, localTime.day)
+            .difference(DateTime(now.year, now.month, now.day))
+            .inDays;
     if (timeDifference == 0) {
       return DateFormat(dateFormat).format(toLocal()).parseDateTimePattern7;
     }
@@ -182,10 +184,12 @@ extension DateTimeExt on DateTime {
   }
 
   String historyListTime(BuildContext context) {
-    DateTime now = DateTime.now().toUtc();
-    int timeDifference = DateTime(year, month, day)
-        .difference(DateTime(now.year, now.month, now.day))
-        .inDays;
+    DateTime now = DateTime.now();
+    DateTime localTime = toLocal();
+    int timeDifference =
+        DateTime(localTime.year, localTime.month, localTime.day)
+            .difference(DateTime(now.year, now.month, now.day))
+            .inDays;
     if (timeDifference == 0) {
       return S.of(context).today;
     }
@@ -196,10 +200,12 @@ extension DateTimeExt on DateTime {
   }
 
   String get historyCardQuestionTime {
-    DateTime now = DateTime.now().toUtc();
-    int timeDifference = DateTime(year, month, day)
-        .difference(DateTime(now.year, now.month, now.day))
-        .inDays;
+    DateTime now = DateTime.now();
+    DateTime localTime = toLocal();
+    int timeDifference =
+        DateTime(localTime.year, localTime.month, localTime.day)
+            .difference(DateTime(now.year, now.month, now.day))
+            .inDays;
     if (timeDifference < -365) {
       return DateFormat(dateFormat).format(toLocal()).parseDateTimePattern11;
     }
