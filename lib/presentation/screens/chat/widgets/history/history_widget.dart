@@ -3,13 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:shared_advisor_interface/data/models/chats/history_ui_model.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/widgets/empty_history_list_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/widgets/history_list_group_header.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/widgets/question_and_answer_pair_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/widgets/sliver_history_list_widget.dart';
 
 class HistoryWidget extends StatelessWidget {
   final String clientId;
@@ -46,33 +45,7 @@ class HistoryWidget extends StatelessWidget {
             );
           }
           if (topHistoriesList.isEmpty) {
-            return Container(
-              color: Theme.of(context).canvasColor,
-              child: CustomScrollView(
-                slivers: [
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppConstants.horizontalScreenPadding,
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          EmptyListWidget(
-                            title: S.of(context).noSessionsYet,
-                            label: S
-                                .of(context)
-                                .whenYouHelpYourFirstClientYouWillSeeYourSessionHistoryHere,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
+            return const EmptyHistoryListWidget();
           }
 
           return Container(
@@ -89,23 +62,10 @@ class HistoryWidget extends StatelessWidget {
                           cubit.state.bottomHistoriesList);
                   if (bottomHistoriesList != null) {
                     return SliverPadding(
-                      padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 16.0),
-                      sliver: SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
-                            return bottomHistoriesList[index].when(
-                              data: (data) => QuestionAndAnswerPairWidget(
-                                historyItem: data,
-                              ),
-                              separator: (question) => HistoryListGroupHeader(
-                                question: question,
-                              ),
-                            );
-                          },
-                          childCount: bottomHistoriesList.length,
-                        ),
-                      ),
-                    );
+                        padding:
+                            const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 16.0),
+                        sliver: SliverHistoryListWidget(
+                            historiesList: bottomHistoriesList));
                   } else {
                     return const SliverToBoxAdapter(
                       child: SizedBox.shrink(),
@@ -113,26 +73,13 @@ class HistoryWidget extends StatelessWidget {
                   }
                 }),
                 SliverPadding(
-                  key: centerKey,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12.0,
-                  ),
-                  sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                        return topHistoriesList[index].when(
-                          data: (data) => QuestionAndAnswerPairWidget(
-                            historyItem: data,
-                          ),
-                          separator: (question) => HistoryListGroupHeader(
-                            question: question,
-                          ),
-                        );
-                      },
-                      childCount: topHistoriesList.length,
+                    key: centerKey,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12.0,
                     ),
-                  ),
-                ),
+                    sliver: SliverHistoryListWidget(
+                      historiesList: topHistoriesList,
+                    )),
               ],
             ),
           );
@@ -146,33 +93,7 @@ class HistoryWidget extends StatelessWidget {
             );
           }
           if (bottomHistoriesList.isEmpty) {
-            return Container(
-              color: Theme.of(context).canvasColor,
-              child: CustomScrollView(
-                slivers: [
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppConstants.horizontalScreenPadding,
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          EmptyListWidget(
-                            title: S.of(context).noSessionsYet,
-                            label: S
-                                .of(context)
-                                .whenYouHelpYourFirstClientYouWillSeeYourSessionHistoryHere,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
+            return const EmptyHistoryListWidget();
           }
 
           return Container(
