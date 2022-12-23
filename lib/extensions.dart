@@ -176,7 +176,7 @@ extension DateTimeExt on DateTime {
             .difference(DateTime(now.year, now.month, now.day))
             .inDays;
     if (timeDifference == 0) {
-      return DateFormat(dateFormat).format(this).parseDateTimePattern12;
+      return DateFormat(dateFormat).format(this).parseDateTimePattern7;
     }
     if (timeDifference < -365) {
       return DateFormat(dateFormat).format(this).parseDateTimePattern9;
