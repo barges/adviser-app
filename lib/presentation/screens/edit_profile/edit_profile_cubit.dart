@@ -137,7 +137,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         final ValidationErrorType statusErrorMessage =
             statusTextController.text.trim().isEmpty
                 ? ValidationErrorType.requiredField
-                : ValidationErrorType.empty;
+                : statusTextController.text.length > 300
+                    ? ValidationErrorType.statusTextMayNotExceed300Characters
+                    : ValidationErrorType.empty;
         final ValidationErrorType profileErrorMessage =
             profileTextController.text.trim().isEmpty
                 ? ValidationErrorType.requiredField
@@ -163,9 +165,16 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     });
 
     for (var entry in textControllersMap.entries) {
-      entry.value.firstOrNull?.addListener(() {
-        errorTextsMap[entry.key]?.first = ValidationErrorType.empty;
-        emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
+      final statusController = entry.value.firstOrNull;
+      statusController?.addListener(() {
+        if (statusController.text.length > 300) {
+          errorTextsMap[entry.key]?.first =
+              ValidationErrorType.statusTextMayNotExceed300Characters;
+          emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
+        } else {
+          errorTextsMap[entry.key]?.first = ValidationErrorType.empty;
+          emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
+        }
       });
       entry.value.lastOrNull?.addListener(() {
         errorTextsMap[entry.key]?.last = ValidationErrorType.empty;

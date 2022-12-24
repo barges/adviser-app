@@ -116,52 +116,52 @@ class HistoryCubit extends Cubit<HistoryState> {
   }
 
   Future<void> _getHistoriesFromMiddleList() async {
-      if (await _connectivityService.checkConnection()) {
-        final HistoryResponse result = await _repository.getHistoryList(
-          clientId: _clientId,
-          limit: _limit,
-          storyId: _storyId,
-        );
-        _hasMore = result.hasMore ?? true;
-        _lastItem = result.lastItem;
-        _hasBefore = result.hasBefore ?? false;
-        _firstItem = result.firstItem;
+    if (await _connectivityService.checkConnection()) {
+      final HistoryResponse result = await _repository.getHistoryList(
+        clientId: _clientId,
+        limit: _limit,
+        storyId: _storyId,
+      );
+      _hasMore = result.hasMore ?? true;
+      _lastItem = result.lastItem;
+      _hasBefore = result.hasBefore ?? false;
+      _firstItem = result.firstItem;
 
-        _topHistoriesList.addAll(result.history?.reversed ?? const []);
+      _topHistoriesList.addAll(result.history?.reversed ?? const []);
 
-        final List<HistoryUiModel> items =
-            await compute(_groupTopHistory, _topHistoriesList);
+      final List<HistoryUiModel> items =
+          await compute(_groupTopHistory, _topHistoriesList);
 
-        emit(state.copyWith(
-          topHistoriesList: items,
-        ));
+      emit(state.copyWith(
+        topHistoriesList: items,
+      ));
 
-        _getOldBottomHistoriesList();
-      }
+      _getOldBottomHistoriesList();
+    }
   }
 
   Future<void> _getNewTopHistoriesList() async {
-      if (_hasBefore && await _connectivityService.checkConnection()) {
-        final HistoryResponse result = await _repository.getHistoryList(
-          clientId: _clientId,
-          limit: _limit,
-          firstItem: _firstItem,
-        );
-        _hasBefore = result.hasBefore ?? false;
-        _firstItem = result.firstItem;
+    if (_hasBefore && await _connectivityService.checkConnection()) {
+      final HistoryResponse result = await _repository.getHistoryList(
+        clientId: _clientId,
+        limit: _limit,
+        firstItem: _firstItem,
+      );
+      _hasBefore = result.hasBefore ?? false;
+      _firstItem = result.firstItem;
 
-        _topHistoriesList.addAll(
-          result.history?.reversed ?? [],
-        );
+      _topHistoriesList.addAll(
+        result.history?.reversed ?? [],
+      );
 
-        final List<HistoryUiModel> items =
-            await compute(_groupTopHistory, _topHistoriesList);
+      final List<HistoryUiModel> items =
+          await compute(_groupTopHistory, _topHistoriesList);
 
-        emit(state.copyWith(
-          topHistoriesList: items,
-        ));
-      }
-      _isTopLoading = false;
+      emit(state.copyWith(
+        topHistoriesList: items,
+      ));
+    }
+    _isTopLoading = false;
   }
 
   Future<void> _getOldBottomHistoriesList() async {
@@ -177,7 +177,7 @@ class HistoryCubit extends Cubit<HistoryState> {
       _bottomHistoriesList.addAll(result.history ?? const []);
 
       final List<HistoryUiModel> items =
-      await compute(_groupBottomHistory, _bottomHistoriesList);
+          await compute(_groupBottomHistory, _bottomHistoriesList);
 
       emit(state.copyWith(
         bottomHistoriesList: items,

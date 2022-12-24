@@ -207,5 +207,9 @@
   "wrongUsernameAndOrPassword": "Wrong username and/or password.",
   "weNeedPermissionToAccessYourMicrophone": "We need permission to access your microphone",
   "typeMessage": "Type message",
-  "pleaseConfirmThatYourAnswerIsReadyToBeSent": "Please confirm that your answer is ready to be sent"
+  "pleaseConfirmThatYourAnswerIsReadyToBeSent": "Please confirm that your answer is ready to be sent",
+  "enterYourPassword": "Enter your password",
+  "enterNewPassword": "Enter new password",
+  "repeatNewPassword": "Repeat new password",
+  "enterYourEmail": "Enter your email"
 }

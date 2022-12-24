@@ -206,5 +206,9 @@
   "wrongUsernameAndOrPassword": "Falscher Nutzername und/oder Passwort.",
   "weNeedPermissionToAccessYourMicrophone": "Wir benötigen die Erlaubnis, auf Ihr Mikrofon zuzugreifen",
   "typeMessage": "Nachricht eingeben",
-  "pleaseConfirmThatYourAnswerIsReadyToBeSent": "Bitte bestätigen Sie, dass Ihre Antwort zum Senden bereit ist"
+  "pleaseConfirmThatYourAnswerIsReadyToBeSent": "Bitte bestätigen Sie, dass Ihre Antwort zum Senden bereit ist",
+  "enterYourPassword": "Geben Sie Ihr Passwort ein",
+  "enterNewPassword": "Neues Passwort eingeben",
+  "repeatNewPassword": "Wiederhole das neue Passwort",
+  "enterYourEmail": "Geben sie ihre E-Mail Adresse ein"
 }

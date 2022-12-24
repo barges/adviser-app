@@ -115,9 +115,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "editProfile": MessageLookupByLibrary.simpleMessage("Edit profile"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
+        "enterNewPassword":
+            MessageLookupByLibrary.simpleMessage("Enter new password"),
+        "enterYourEmail":
+            MessageLookupByLibrary.simpleMessage("Enter your email"),
         "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword":
             MessageLookupByLibrary.simpleMessage(
                 "Enter your email address and we\'ll send you instructions to create a new password"),
+        "enterYourPassword":
+            MessageLookupByLibrary.simpleMessage("Enter your password"),
         "female": MessageLookupByLibrary.simpleMessage("Female"),
         "forMe": MessageLookupByLibrary.simpleMessage("For me"),
         "forgotPassword":
@@ -226,6 +232,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "questions": MessageLookupByLibrary.simpleMessage("Questions"),
         "quickAnswers": MessageLookupByLibrary.simpleMessage("Quick Answers"),
         "reading360": MessageLookupByLibrary.simpleMessage("360° Reading"),
+        "repeatNewPassword":
+            MessageLookupByLibrary.simpleMessage("Repeat new password"),
         "requestNewPassword":
             MessageLookupByLibrary.simpleMessage("Request new password"),
         "requiredField": MessageLookupByLibrary.simpleMessage("Required field"),

@@ -36,12 +36,12 @@ class ArticlesScreen extends StatelessWidget {
                 ];
                 return Opacity(
                   opacity: isOnline ? 1.0 : 0.4,
-                  child: ListOfFiltersWidget(
-                    currentFilterIndex: selectedFilterIndex,
-                    filters: filters,
-                    onTapToFilter:
-                        isOnline ? articlesCubit.updateFilterIndex : (v) {},
-                  ),
+                  // child: ListOfFiltersWidget(
+                  //   currentFilterIndex: selectedFilterIndex,
+                  //   filters: filters,
+                  //   onTapToFilter:
+                  //       isOnline ? articlesCubit.updateFilterIndex : (v) {},
+                  // ),
                 );
               }),
             ),

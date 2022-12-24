@@ -8,6 +8,7 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/search/search_list_state.dart';
@@ -31,6 +32,7 @@ class SearchListCubit extends Cubit<SearchListState> {
 
   String? _conversationsLastItem;
   bool _conversationsHasMore = true;
+  bool _isLoading = false;
 
   SearchListCubit(
     this._repository,
@@ -45,8 +47,9 @@ class SearchListCubit extends Cubit<SearchListState> {
 
     conversationsScrollController.addListener(() {
       ///TODO: Remove context
-      if (conversationsScrollController.position.extentAfter <=
-          MediaQuery.of(context).size.height) {
+      if (!_isLoading &&
+          conversationsScrollController.position.extentAfter <=
+              MediaQuery.of(context).size.height) {
         getConversations();
       }
     });
@@ -69,6 +72,7 @@ class SearchListCubit extends Cubit<SearchListState> {
   }
 
   Future<void> getConversations({bool refresh = false}) async {
+    _isLoading = true;
     if (refresh) {
       _conversationsHasMore = true;
       _conversationsLastItem = null;
@@ -97,13 +101,15 @@ class SearchListCubit extends Cubit<SearchListState> {
         ),
       );
     }
+    _isLoading = false;
   }
 
   void goToCustomerSessions(ChatItem question) {
     closeSearch();
     Get.toNamed(
       AppRoutes.customerSessions,
-      arguments: question,
+      arguments:
+          CustomerSessionsScreenArguments(question: question, marketIndex: 0),
     );
   }
 }

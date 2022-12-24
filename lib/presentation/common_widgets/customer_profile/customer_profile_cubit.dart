@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/note.dart';
@@ -10,7 +11,7 @@ import 'package:shared_advisor_interface/presentation/resources/app_routes.dart'
 
 class CustomerProfileCubit extends Cubit<CustomerProfileState> {
   final String customerID;
-  final Function(AppBarUpdateArguments?)? updateClientInformation;
+  final ValueChanged<CustomerProfileScreenArguments?>? updateClientInformation;
   final CustomerRepository _repository = getIt.get<CustomerRepository>();
 
   CustomerProfileCubit(this.customerID, this.updateClientInformation)
@@ -31,7 +32,8 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
     );
     if (updateClientInformation != null) {
       updateClientInformation!(
-        AppBarUpdateArguments(
+        CustomerProfileScreenArguments(
+          customerID: customerID,
           clientName: '${customerInfo.firstName} ${customerInfo.lastName}',
           zodiacSign: customerInfo.zodiac,
         ),
