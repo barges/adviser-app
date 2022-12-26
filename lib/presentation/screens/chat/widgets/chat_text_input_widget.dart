@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
@@ -23,7 +24,7 @@ class ChatTextInputWidget extends StatelessWidget {
     final theme = Theme.of(context);
     final ChatCubit chatCubit = context.read<ChatCubit>();
     final isAttachedPictures = chatCubit.isAttachedPictures;
-    final isAudio = chatCubit.state.questionFromDB?.isAudio ?? false;
+    final isAudioQuestion = chatCubit.state.questionFromDB?.isAudio ?? false;
 
     return Stack(
       clipBehavior: Clip.none,
@@ -52,6 +53,9 @@ class ChatTextInputWidget extends StatelessWidget {
                   Builder(builder: (context) {
                     final int inputTextLength = context.select(
                         (ChatCubit cubit) => cubit.state.inputTextLength);
+                    final bool canAttachPicture =
+                        chatCubit.canAttachPictureTo(null);
+                    final bool canRecordAudio = chatCubit.canRecordAudio;
                     return Row(
                       crossAxisAlignment:
                           isAttachedPictures || inputTextLength == 0
@@ -60,7 +64,7 @@ class ChatTextInputWidget extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            if (!isAttachedPictures) {
+                            if (canAttachPicture) {
                               showPickImageAlert(
                                 context: context,
                                 setImage: chatCubit.attachPicture,
@@ -68,7 +72,7 @@ class ChatTextInputWidget extends StatelessWidget {
                             }
                           },
                           child: Opacity(
-                            opacity: !isAttachedPictures ? 1.0 : 0.4,
+                            opacity: canAttachPicture ? 1.0 : 0.4,
                             child: Assets.vectors.gallery.svg(
                               width: AppConstants.iconSize,
                               color: theme.shadowColor,
@@ -77,13 +81,20 @@ class ChatTextInputWidget extends StatelessWidget {
                         ),
                         if (isAttachedPictures)
                           GestureDetector(
-                            onTap: () => chatCubit.startRecordingAudio(context),
+                            onTap: () {
+                              if (canRecordAudio) {
+                                chatCubit.startRecordingAudio(context);
+                              }
+                            },
                             child: Padding(
                               padding: const EdgeInsets.only(
                                 left: 16.0,
                               ),
-                              child: Assets.vectors.microphone
-                                  .svg(width: AppConstants.iconSize),
+                              child: Opacity(
+                                opacity: canRecordAudio ? 1.0 : 0.4,
+                                child: Assets.vectors.microphone
+                                    .svg(width: AppConstants.iconSize),
+                              ),
                             ),
                           ),
                         if (isAttachedPictures) const Spacer(),
@@ -107,7 +118,7 @@ class ChatTextInputWidget extends StatelessWidget {
                             children: [
                               if (inputTextLength == 0 &&
                                   !isAttachedPictures &&
-                                  isAudio)
+                                  isAudioQuestion)
                                 AppIconGradientButton(
                                   onTap: () =>
                                       chatCubit.startRecordingAudio(context),
@@ -116,13 +127,16 @@ class ChatTextInputWidget extends StatelessWidget {
                                 ),
                               if (inputTextLength > 0 ||
                                   isAttachedPictures ||
-                                  !isAudio)
+                                  !isAudioQuestion)
                                 Opacity(
                                   opacity: isSendButtonEnabled ? 1.0 : 0.4,
                                   child: AppIconGradientButton(
-                                    onTap: isSendButtonEnabled
-                                        ? chatCubit.sendTextMediaAnswer
-                                        : null,
+                                    onTap: () {
+                                      if (isSendButtonEnabled) {
+                                        chatCubit.sendAnswer(
+                                            ChatContentType.textMedia);
+                                      }
+                                    },
                                     icon: Assets.vectors.send.path,
                                     iconColor: theme.backgroundColor,
                                   ),

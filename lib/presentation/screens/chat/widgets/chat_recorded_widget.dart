@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
+import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
@@ -54,39 +55,34 @@ class ChatRecordedWidget extends StatelessWidget {
               }),
               Row(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      if (chatCubit.state.attachedPictures.isEmpty) {
-                        showPickImageAlert(
-                          context: context,
-                          setImage: chatCubit.attachPicture,
-                        );
-                      }
-                    },
-                    child: Builder(builder: (context) {
-                      final List<File> attachedPictures = context.select(
-                          (ChatCubit cubit) => cubit.state.attachedPictures);
-                      return Opacity(
-                        opacity: attachedPictures.isEmpty ? 1.0 : 0.4,
+                  Builder(builder: (context) {
+                    context.select(
+                        (ChatCubit cubit) => cubit.state.attachedPictures);
+                    final bool canAttachPicture =
+                        chatCubit.canAttachPictureTo(AttachmentType.audio);
+                    return GestureDetector(
+                      onTap: () {
+                        if (canAttachPicture) {
+                          showPickImageAlert(
+                            context: context,
+                            setImage: chatCubit.attachPicture,
+                          );
+                        }
+                      },
+                      child: Opacity(
+                        opacity: canAttachPicture ? 1.0 : 0.4,
                         child: Assets.vectors.gallery.svg(
                           width: AppConstants.iconSize,
                           color: Theme.of(context).shadowColor,
                         ),
-                      );
-                    }),
-                  ),
+                      ),
+                    );
+                  }),
                   const SizedBox(
                     height: 28.0,
                     child: VerticalDivider(
                       width: 24.0,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      right: 12.0,
-                    ),
-                    child: Assets.vectors.microphone
-                        .svg(width: AppConstants.iconSize),
                   ),
                   Expanded(
                     child: Container(

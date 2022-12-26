@@ -90,9 +90,12 @@ class AccountCubit extends Cubit<AccountState> {
           cacheManager.getUserStatus()?.profileUpdatedAt;
 
       if (profileUpdatedAt != null) {
-        milliseconds =
-            DateTime.now().toUtc().difference(profileUpdatedAt).inMilliseconds;
+        DateTime currentTime = DateTime.now().toUtc();
+        ///TODO: Need check 2 seconds instead 15
+        currentTime = currentTime.add(const Duration(seconds: 2));
+        milliseconds = currentTime.difference(profileUpdatedAt).inMilliseconds;
       }
+
       emit(
         state.copyWith(
           userProfile: cacheManager.getUserProfile(),
