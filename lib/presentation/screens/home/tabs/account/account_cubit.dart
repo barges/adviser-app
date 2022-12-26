@@ -91,7 +91,8 @@ class AccountCubit extends Cubit<AccountState> {
 
       if (profileUpdatedAt != null) {
         DateTime currentTime = DateTime.now().toUtc();
-        currentTime = currentTime.add(const Duration(seconds: 15));
+        ///TODO: Need check 2 seconds instead 15
+        currentTime = currentTime.add(const Duration(seconds: 2));
         milliseconds = currentTime.difference(profileUpdatedAt).inMilliseconds;
       }
 
