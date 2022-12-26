@@ -24,7 +24,7 @@ class AppConstants {
   static const int tillShowAnswerTimingMessagesInSec = 25 * 60;
   static const int afterShowAnswerTimingMessagesInSec = 5 * 60;
 
-  static const num maxFileSizeInMb = 20;
+  static const num maxAttachmentFilesSizeInMb = 20;
 
   static const String recordFileName = 'recorded_audio_aa';
 

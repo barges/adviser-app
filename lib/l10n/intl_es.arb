@@ -164,7 +164,7 @@
   "return_": "Devolver",
   "checkYourInternetConnection": "Comprueba tu conexión a Internet",
   "youCantSendThisMessageBecauseItsLessThan15Seconds": "No puedes enviar este mensaje porque dura menos de 15 segundos",
-  "theMaximumImageSizeIs20Mb" : "El tamaño máximo de la imagen es de 20Mb.",
+  "theMaximumSizeOfTheAttachmentsIs20Mb": "El tamaño máximo de los archivos adjuntos es de 20Mb",
   "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": "Esta pregunta volverá a la lista general después de {counter}",
   "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m":"La respuesta no es posible, esta pregunta volverá a la lista general en ~ 1 minuto",
   "youHaveARitualRequest": "Tienes una petición ritual",

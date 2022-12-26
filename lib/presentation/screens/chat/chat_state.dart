@@ -33,7 +33,7 @@ class ChatState with _$ChatState {
     @Default(EmptyError()) AppError appError,
     @Default(EmptySuccess()) AppSuccess appSuccess,
     RitualCardInfo? ritualCardInfo,
-    String? recordingPath,
+    File? recordedAudio,
     Stream<RecordingDisposition>? recordingStream,
     Stream<PlaybackDisposition>? playbackStream,
     ChatItem? questionFromDB,

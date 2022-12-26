@@ -165,7 +165,7 @@
   "session": "Sessão",
   "checkYourInternetConnection": "Verifique a sua conexão com a internet",
   "youCantSendThisMessageBecauseItsLessThan15Seconds": "Você não pode enviar esta mensagem porque tem menos de 15 segundos",
-  "theMaximumImageSizeIs20Mb" : "O tamanho máximo da imagem é de 20Mb.",
+  "theMaximumSizeOfTheAttachmentsIs20Mb": "O tamanho máximo dos anexos é de 20Mb",
   "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": "Esta questão será devolvida à lista geral após {counter}",
   "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m":"A resposta não é possível, esta questão retornará à lista geral em ~ 1m",
   "youHaveARitualRequest": "Você tem um pedido ritual",

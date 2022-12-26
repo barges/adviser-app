@@ -110,10 +110,8 @@ class ChatTextInputWidget extends StatelessWidget {
                         ),
                         Builder(builder: (context) {
                           final isSendButtonEnabled = context.select(
-                                  (ChatCubit cubit) =>
-                                      cubit.state.isSendButtonEnabled) ||
-                              isAttachedPictures;
-
+                              (ChatCubit cubit) =>
+                                  cubit.state.isSendButtonEnabled);
                           return Row(
                             children: [
                               if (inputTextLength == 0 &&

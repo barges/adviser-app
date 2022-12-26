@@ -296,7 +296,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   void scrollChatDown() {
-    SchedulerBinding.instance.endOfFrame.then((value) =>
+    SchedulerBinding.instance.endOfFrame.then((_) =>
         activeMessagesScrollController
             .jumpTo(activeMessagesScrollController.position.maxScrollExtent));
   }
@@ -382,6 +382,85 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
+  Future<void> stopRecordingAudio() async {
+    _recordingProgressSubscription?.cancel();
+    _recordingProgressSubscription = null;
+
+    String? recordingPath = await _recorder?.stopRecorder();
+    logger.i("recorded audio: $recordingPath");
+
+    bool isSendButtonEnabled = false;
+    File? recordedAudio;
+    if (recordingPath != null && recordingPath.isNotEmpty) {
+      recordedAudio = File(recordingPath);
+      final Metadata metaAudio =
+          await MetadataRetriever.fromFile(recordedAudio);
+
+      _recordAudioDuration = (metaAudio.trackDuration ?? 0) / 1000;
+      if (_recordAudioDuration! < AppConstants.minRecordDurationInSec) {
+        updateErrorMessage(UIError(
+            uiErrorType:
+                UIErrorType.youCantSendThisMessageBecauseItsLessThan15Seconds));
+      } else if (_recordAudioDuration! > AppConstants.maxRecordDurationInSec) {
+        updateErrorMessage(
+            UIError(uiErrorType: UIErrorType.youVeReachThe3MinuteTimeLimit));
+        isSendButtonEnabled = true;
+      } else {
+        isSendButtonEnabled = true;
+      }
+    }
+
+    emit(
+      state.copyWith(
+        recordedAudio: recordedAudio,
+        isAudioFileSaved: true,
+        isRecordingAudio: false,
+        isSendButtonEnabled: isSendButtonEnabled &&
+            _checkAttachmentSize(state.attachedPictures, recordedAudio),
+      ),
+    );
+  }
+
+  Future<void> cancelRecordingAudio() async {
+    _recordingProgressSubscription?.cancel();
+    _recordingProgressSubscription = null;
+
+    await _recorder?.stopRecorder();
+
+    emit(
+      state.copyWith(
+        recordedAudio: null,
+        isRecordingAudio: false,
+        isAudioFileSaved: false,
+      ),
+    );
+  }
+
+  Future<void> deleteRecordedAudio() async {
+    if (_playerRecorded != null && _playerRecorded!.isPlaying) {
+      await _playerRecorded?.stopPlayer();
+    }
+
+    await _deleteRecordedAudioFile();
+
+    emit(
+      state.copyWith(
+          recordedAudio: null,
+          isRecordingAudio: false,
+          isAudioFileSaved: false,
+          isPlayingRecordedAudio: false,
+          isSendButtonEnabled:
+              _checkAttachmentSize(state.attachedPictures, null)),
+    );
+  }
+
+  Future<void> _deleteRecordedAudioFile() async {
+    File? recordedAudio = state.recordedAudio;
+    if (recordedAudio != null && await recordedAudio.exists()) {
+      recordedAudio.deleteSync();
+    }
+  }
+
   Future<void> _handlePermissions(BuildContext context) async {
     final s = S.of(context);
     PermissionStatus status = await Permission.microphone.request();
@@ -402,75 +481,6 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Future<void> stopRecordingAudio() async {
-    _recordingProgressSubscription?.cancel();
-    _recordingProgressSubscription = null;
-
-    String? recordingPath = await _recorder?.stopRecorder();
-    logger.i("recorded audio: $recordingPath");
-
-    bool isSendButtonEnabled = false;
-    if (recordingPath != null && recordingPath.isNotEmpty) {
-      final File audioFile = File(recordingPath);
-      final Metadata metaAudio = await MetadataRetriever.fromFile(audioFile);
-
-      _recordAudioDuration = (metaAudio.trackDuration ?? 0) / 1000;
-      if (_recordAudioDuration! < AppConstants.minRecordDurationInSec) {
-        updateErrorMessage(UIError(
-            uiErrorType:
-                UIErrorType.youCantSendThisMessageBecauseItsLessThan15Seconds));
-      } else if (_recordAudioDuration! > AppConstants.maxRecordDurationInSec) {
-        updateErrorMessage(
-            UIError(uiErrorType: UIErrorType.youVeReachThe3MinuteTimeLimit));
-        isSendButtonEnabled = true;
-      } else if (audioFile.sizeInMb > AppConstants.maxFileSizeInMb) {
-        updateErrorMessage(
-            UIError(uiErrorType: UIErrorType.theMaximumImageSizeIs20Mb));
-      } else {
-        isSendButtonEnabled = true;
-      }
-    }
-
-    emit(
-      state.copyWith(
-        recordingPath: recordingPath ?? '',
-        isAudioFileSaved: true,
-        isRecordingAudio: false,
-        isSendButtonEnabled: isSendButtonEnabled,
-      ),
-    );
-  }
-
-  Future<void> cancelRecordingAudio() async {
-    _recordingProgressSubscription?.cancel();
-    _recordingProgressSubscription = null;
-
-    await _recorder?.stopRecorder();
-
-    emit(
-      state.copyWith(
-        recordingPath: null,
-        isRecordingAudio: false,
-        isAudioFileSaved: false,
-      ),
-    );
-  }
-
-  Future<void> deletedRecordedAudio() async {
-    if (_playerRecorded != null && _playerRecorded!.isPlaying) {
-      await _playerRecorded?.stopPlayer();
-    }
-
-    emit(
-      state.copyWith(
-        recordingPath: null,
-        isRecordingAudio: false,
-        isAudioFileSaved: false,
-        isPlayingRecordedAudio: false,
-      ),
-    );
-  }
-
   Future<void> startPlayRecordedAudio() async {
     if (_playerRecorded != null && _playerRecorded!.isPaused) {
       await _playerRecorded!.resumePlayer();
@@ -483,7 +493,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     await _playerRecorded?.startPlayer(
-      fromURI: state.recordingPath,
+      fromURI: state.recordedAudio != null ? state.recordedAudio!.path : null,
       codec: _codec,
       sampleRate: 44000,
       whenFinished: () {
@@ -571,25 +581,26 @@ class ChatCubit extends Cubit<ChatState> {
   void attachPicture(File? image) {
     _tryStartAnswerSend();
 
-    final images = List.of(state.attachedPictures);
+    final List<File> images = List.of(state.attachedPictures);
     if (image != null && images.length < 2) {
-      if (image.sizeInMb > AppConstants.maxFileSizeInMb) {
-        updateErrorMessage(
-            UIError(uiErrorType: UIErrorType.theMaximumImageSizeIs20Mb));
-        return;
-      }
-
       images.add(image);
-      emit(state.copyWith(
-        attachedPictures: images,
-      ));
+    } else {
+      return;
     }
+
+    emit(state.copyWith(
+      attachedPictures: images,
+      isSendButtonEnabled: _checkAttachmentSize(images, state.recordedAudio),
+    ));
   }
 
   void deletePicture(File? image) {
     final images = List.of(state.attachedPictures);
     images.remove(image);
-    emit(state.copyWith(attachedPictures: images));
+    emit(state.copyWith(
+      attachedPictures: images,
+      isSendButtonEnabled: _checkAttachmentSize(images, state.recordedAudio),
+    ));
   }
 
   void deleteAttachedPictures() {
@@ -626,10 +637,12 @@ class ChatCubit extends Cubit<ChatState> {
           isRecordingAudio: false,
           isAudioFileSaved: false,
           isPlayingRecordedAudio: false,
-          recordingPath: null,
+          recordedAudio: null,
           activeMessages: messages,
         ),
       );
+
+      await _deleteRecordedAudioFile();
       deleteAttachedPictures();
       scrollChatDown();
 
@@ -890,7 +903,7 @@ class ChatCubit extends Cubit<ChatState> {
   ChatItem _getNotSentAnswer() {
     String? picturePath1 = _getAttachedPicturePath(0);
     String? picturePath2 = _getAttachedPicturePath(1);
-    String? recordingPath = state.recordingPath;
+    File? recordedAudio = state.recordedAudio;
 
     final ChatItem answer = ChatItem(
       isAnswer: true,
@@ -899,13 +912,13 @@ class ChatCubit extends Cubit<ChatState> {
       ritualIdentifier: state.questionFromDB?.ritualIdentifier,
       content: _answerRequest!.content,
       attachments: [
-        if (recordingPath != null)
+        if (recordedAudio != null)
           _answerRequest!.attachments![0].copyWith(
-            url: recordingPath,
+            url: recordedAudio.path,
             attachment: null,
           ),
         if (picturePath1 != null)
-          _answerRequest!.attachments![recordingPath == null ? 0 : 1].copyWith(
+          _answerRequest!.attachments![recordedAudio == null ? 0 : 1].copyWith(
             url: picturePath1,
             attachment: null,
           ),
@@ -926,16 +939,15 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<Attachment?> _getAudioAttachment() async {
-    if (state.recordingPath == null) {
+    if (state.recordedAudio == null) {
       return null;
     }
 
-    final File audiofile = File(state.recordingPath!);
-    final List<int> audioBytes = await audiofile.readAsBytes();
+    final List<int> audioBytes = await state.recordedAudio!.readAsBytes();
     final String base64Audio = base64Encode(audioBytes);
 
     return Attachment(
-        mime: lookupMimeType(state.recordingPath!),
+        mime: lookupMimeType(state.recordedAudio!.path),
         attachment: base64Audio,
         meta: Meta(duration: _recordAudioDuration));
   }
@@ -948,6 +960,39 @@ class ChatCubit extends Cubit<ChatState> {
       mime: lookupMimeType(imageFile.path),
       attachment: base64Image,
     );
+  }
+
+  bool _checkAttachmentSize(List<File> images, File? recordedAudio) {
+    if (_calculateAttachmentSize(images, recordedAudio) <=
+        AppConstants.maxAttachmentFilesSizeInMb) {
+      if (state.appError is UIError &&
+          (state.appError as UIError).uiErrorType ==
+              UIErrorType.theMaximumSizeOfTheAttachmentsIs20Mb) {
+        SchedulerBinding.instance.endOfFrame.then((_) => clearErrorMessage());
+      }
+      return true;
+    } else {
+      SchedulerBinding.instance.endOfFrame.then((_) => updateErrorMessage(
+          UIError(
+              uiErrorType: UIErrorType.theMaximumSizeOfTheAttachmentsIs20Mb)));
+      return false;
+    }
+  }
+
+  double _calculateAttachmentSize(List<File> images, File? recordedAudio) {
+    double totalSizeInMb = 0.0;
+
+    if (images.isNotEmpty) {
+      for (File image in images) {
+        totalSizeInMb += image.sizeInMb;
+      }
+    }
+
+    if (recordedAudio != null) {
+      totalSizeInMb += recordedAudio.sizeInMb;
+    }
+
+    return totalSizeInMb;
   }
 
   bool canAttachPictureTo(AttachmentType? attachmentType) {
