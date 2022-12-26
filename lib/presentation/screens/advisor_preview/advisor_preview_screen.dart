@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -12,7 +9,8 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/widgets/about_me_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/widgets/flags_bottom_sheet.dart';
+import 'package:shared_advisor_interface/presentation/screens/advisor_preview/widgets/advisor_preview_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/screens/advisor_preview/widgets/cover_picture_widget.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
 
 class AdvisorPreviewScreen extends StatelessWidget {
@@ -27,80 +25,13 @@ class AdvisorPreviewScreen extends StatelessWidget {
             context.read<AdvisorPreviewCubit>();
         return Scaffold(
           backgroundColor: AppColorsLight.background,
-          appBar: AppBar(
-            backgroundColor: primary,
-            centerTitle: true,
-            titleTextStyle: appBarTitleStyle?.copyWith(color: white),
-            systemOverlayStyle: const SystemUiOverlayStyle(
-                statusBarBrightness: Brightness.dark),
-            leading: GestureDetector(
-              onTap: Get.back,
-              child: Padding(
-                padding: const EdgeInsets.all(14.0),
-                child: Assets.vectors.arrowLeft.svg(color: white),
-              ),
-            ),
-            title: Text(advisorPreviewCubit.userProfile.profileName ?? ''),
-            actions: [
-              GestureDetector(
-                onTap: () {
-                  advisorPreviewCubit.onOpen();
-                  flagsBottomSheet(
-                      context: context,
-                      onApply: advisorPreviewCubit.onApply,
-                      onSelectLanguage:
-                          advisorPreviewCubit.updateActiveLanguagesInUI,
-                      activeLanguages: advisorPreviewCubit.languages,
-                      advisorPreviewCubit: advisorPreviewCubit);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: AppConstants.horizontalScreenPadding,
-                      vertical: 8.0),
-                  child: Row(
-                    children: [
-                      Builder(
-                        builder: (context) {
-                          final int index = context.select(
-                              (AdvisorPreviewCubit cubit) =>
-                                  cubit.state.currentIndex);
-                          return Image.asset(
-                            advisorPreviewCubit.languages[index].flagImagePath,
-                          );
-                        },
-                      ),
-                      Assets.vectors.arrowDropDown.svg(),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
+          appBar: const AdvisorPreviewAppBar(),
           body: ListView(children: [
             Ink(
               color: white,
               child: Stack(
                 children: [
-                  (advisorPreviewCubit.userProfile.coverPictures != null &&
-                          advisorPreviewCubit
-                              .userProfile.coverPictures!.isNotEmpty)
-                      ? Image.network(
-                          advisorPreviewCubit
-                                  .userProfile.coverPictures?.firstOrNull ??
-                              '',
-                          height: 150.0,
-                          width: MediaQuery.of(context).size.width,
-                          fit: BoxFit.cover,
-                        )
-                      : Container(
-                          height: 150.0,
-                          width: MediaQuery.of(context).size.width,
-                          color: AppColorsLight.background,
-                          child: Center(
-                            child: SvgPicture.asset(
-                                Assets.vectors.placeholderCoverImage.path),
-                          ),
-                        ),
+                  const CoverPictureWidget(),
                   Container(
                     margin: const EdgeInsets.only(top: 110.0),
                     child: Column(
