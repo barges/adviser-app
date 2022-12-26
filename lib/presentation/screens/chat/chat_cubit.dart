@@ -25,6 +25,7 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
@@ -256,16 +257,20 @@ class ChatCubit extends Cubit<ChatState> {
 
       final List<ChatItem>? questions = ritualsResponse.story?.questions;
       final List<ChatItem>? answers = ritualsResponse.story?.answers;
+      final SessionsTypes? ritualIdentifier = ritualsResponse.identifier;
 
       if (questions != null && questions.isNotEmpty && answers != null) {
         final List<ChatItem> activeMessages = [];
         for (int i = 0; i < questions.length; i++) {
-          activeMessages.add(questions[i]);
+          activeMessages.add(questions[i].copyWith(
+            ritualIdentifier: ritualIdentifier,
+          ));
           if (i < answers.length) {
             activeMessages.add(answers[i].copyWith(
               isAnswer: true,
               type: questions[i].type,
               ritualID: questions[i].ritualID,
+              ritualIdentifier: ritualIdentifier,
             ));
           }
         }
