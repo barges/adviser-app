@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
@@ -160,7 +161,10 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
 
         _excludeIds.addAll(excludeIds);
         _isLoading = false;
-        await getCustomerHistoryStories(excludeIds: excludeIds);
+        await getCustomerHistoryStories(
+          excludeIds: excludeIds,
+          refresh: refresh,
+        );
       } on DioError catch (e) {
         if (e.response?.statusCode == 409) {
           _showErrorAlert();
@@ -174,6 +178,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
 
   Future<void> getCustomerHistoryStories({
     required List<String> excludeIds,
+    bool refresh = false,
   }) async {
     if (_hasMore) {
       _isLoading = true;
@@ -199,7 +204,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
             limit: AppConstants.questionsLimit,
             lastItem: _lastItem,
             filterType: filterType,
-           // filterLanguage: filtersLanguage,
+            // filterLanguage: filtersLanguage,
             excludeIds: excludeIds.isNotEmpty ? excludeIds.join(',') : null,
           );
           _hasMore = result.hasMore ?? true;
@@ -224,6 +229,15 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
       _isLoading = false;
     }
     _isLoading = false;
+    if (refresh) {
+      scrollListUp();
+    }
+  }
+
+  void scrollListUp() {
+    SchedulerBinding.instance.endOfFrame.then((value) =>
+        questionsScrollController.animateTo(0.0,
+            duration: const Duration(milliseconds: 500), curve: Curves.ease));
   }
 
   Future<void> getCustomerInfo() async {
