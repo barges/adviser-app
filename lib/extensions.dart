@@ -5,6 +5,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 const String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
@@ -168,46 +169,52 @@ extension IterableExtention<E> on Iterable<E> {
 
 extension DateTimeExt on DateTime {
   String get chatListTime {
-    DateTime now = DateTime.now().toUtc();
-    int timeDifference = DateTime(year, month, day)
-        .difference(DateTime(now.year, now.month, now.day))
-        .inDays;
+    DateTime now = DateTime.now();
+    DateTime localTime = toLocal();
+    int timeDifference =
+        DateTime(localTime.year, localTime.month, localTime.day)
+            .difference(DateTime(now.year, now.month, now.day))
+            .inDays;
     if (timeDifference == 0) {
-      return DateFormat(dateFormat).format(toLocal()).parseDateTimePattern7;
+      return DateFormat(dateFormat).format(this).parseDateTimePattern7;
     }
     if (timeDifference < -365) {
-      return DateFormat(dateFormat).format(toLocal()).parseDateTimePattern9;
+      return DateFormat(dateFormat).format(this).parseDateTimePattern9;
     }
-    return DateFormat(dateFormat).format(toLocal()).parseDateTimePattern8;
+    return DateFormat(dateFormat).format(this).parseDateTimePattern8;
   }
 
   String historyListTime(BuildContext context) {
-    DateTime now = DateTime.now().toUtc();
-    int timeDifference = DateTime(year, month, day)
-        .difference(DateTime(now.year, now.month, now.day))
-        .inDays;
+    DateTime now = DateTime.now();
+    DateTime localTime = toLocal();
+    int timeDifference =
+        DateTime(localTime.year, localTime.month, localTime.day)
+            .difference(DateTime(now.year, now.month, now.day))
+            .inDays;
     if (timeDifference == 0) {
       return S.of(context).today;
     }
     if (timeDifference < -365) {
-      return DateFormat(dateFormat).format(toLocal()).parseDateTimePattern11;
+      return DateFormat(dateFormat).format(this).parseDateTimePattern11;
     }
-    return DateFormat(dateFormat).format(toLocal()).parseDateTimePattern10;
+    return DateFormat(dateFormat).format(this).parseDateTimePattern10;
   }
 
   String get historyCardQuestionTime {
-    DateTime now = DateTime.now().toUtc();
-    int timeDifference = DateTime(year, month, day)
-        .difference(DateTime(now.year, now.month, now.day))
-        .inDays;
+    DateTime now = DateTime.now();
+    DateTime localTime = toLocal();
+    int timeDifference =
+        DateTime(localTime.year, localTime.month, localTime.day)
+            .difference(DateTime(now.year, now.month, now.day))
+            .inDays;
     if (timeDifference < -365) {
-      return DateFormat(dateFormat).format(toLocal()).parseDateTimePattern11;
+      return DateFormat(dateFormat).format(this).parseDateTimePattern11;
     }
-    return DateFormat(dateFormat).format(toLocal()).parseDateTimePattern10;
+    return DateFormat(dateFormat).format(this).parseDateTimePattern10;
   }
 
   String get historyCardAnswerTime {
-    return DateFormat(dateFormat).format(toLocal()).parseDateTimePattern7;
+    return DateFormat(dateFormat).format(this).parseDateTimePattern7;
   }
 }
 
