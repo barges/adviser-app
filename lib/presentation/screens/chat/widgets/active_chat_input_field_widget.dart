@@ -27,7 +27,7 @@ class ActiveChatInputFieldWidget extends StatelessWidget {
           if ((await showDeleteAlert(
                   context, S.of(context).doYouWantToDeleteThisAudioMessage)) ==
               true) {
-            chatCubit.deletedRecordedAudio();
+            chatCubit.deleteRecordedAudio();
           }
         },
         onSendPressed: () => chatCubit.sendAnswer(ChatContentType.media),
