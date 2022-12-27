@@ -24,6 +24,7 @@ class ResetPasswordInputPart extends StatelessWidget {
             controller: cubit.passwordController,
             focusNode: cubit.passwordNode,
             label: S.of(context).password,
+            hintText: S.of(context).enterNewPassword,
             errorType: passwordErrorType,
             textInputAction: TextInputAction.next,
             onSubmitted: (_) {
@@ -47,6 +48,7 @@ class ResetPasswordInputPart extends StatelessWidget {
               controller: cubit.confirmPasswordController,
               focusNode: cubit.confirmPasswordNode,
               label: S.of(context).confirmNewPassword,
+              hintText: S.of(context).repeatNewPassword,
               errorType: confirmPasswordErrorType,
               textInputAction: TextInputAction.send,
               hiddenPassword: hiddenConfirmPassword,

@@ -110,12 +110,12 @@ class ChatsRepositoryImpl implements ChatsRepository {
   Future<QuestionsListResponse> getCustomerQuestions({
     required String clientId,
     String? filterType,
+    String? filterLanguage,
   }) async {
-
-    final QuestionsListResponse response =
-     await _api.getCustomerQuestions(
+    final QuestionsListResponse response = await _api.getCustomerQuestions(
       id: clientId,
       filterType: filterType,
+      filterLanguage: filterLanguage,
     );
 
     return response;
@@ -127,6 +127,7 @@ class ChatsRepositoryImpl implements ChatsRepository {
     required int limit,
     String? lastItem,
     String? filterType,
+    String? filterLanguage,
     String? excludeIds,
   }) async {
     final QuestionsListResponse response = await _api.getCustomerHistoryStories(
@@ -134,6 +135,7 @@ class ChatsRepositoryImpl implements ChatsRepository {
       limit: limit,
       lastItem: lastItem,
       filterType: filterType,
+      filterLanguage: filterLanguage,
       excludeIds: excludeIds,
     );
     return response;

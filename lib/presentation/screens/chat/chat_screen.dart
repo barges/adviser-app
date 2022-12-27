@@ -51,7 +51,7 @@ class ChatScreen extends StatelessWidget {
 
           final ChatItem? questionFromDB =
               context.select((ChatCubit cubit) => cubit.state.questionFromDB);
-          final AppBarUpdateArguments? appBarUpdateArguments = context
+          final CustomerProfileScreenArguments? appBarUpdateArguments = context
               .select((ChatCubit cubit) => cubit.state.appBarUpdateArguments);
 
           return Scaffold(
@@ -84,11 +84,10 @@ class ChatScreen extends StatelessWidget {
               body: SafeArea(
                 child: Builder(builder: (context) {
                   final List<String> tabsTitles = [];
-                  if (chatCubit.chatScreenArguments.storyIdForHistory == null) {
-                    tabsTitles.add(
-                        chatCubit.chatScreenArguments.publicQuestionId != null
-                            ? S.of(context).question
-                            : S.of(context).activeChat);
+                  if (chatCubit.needActiveChatTab()) {
+                    tabsTitles.add(chatCubit.isPublicChat()
+                        ? S.of(context).question
+                        : S.of(context).activeChat);
                   }
                   tabsTitles.addAll([
                     S.of(context).history,
@@ -196,10 +195,8 @@ class ChatScreen extends StatelessWidget {
                   final ChatItemStatusType? questionStatus = context
                       .select((ChatCubit cubit) => cubit.state.questionStatus);
 
-                  if (chatCubit.chatScreenArguments.storyIdForHistory == null &&
-                      currentIndex == 0) {
-                    if (chatCubit.chatScreenArguments.publicQuestionId !=
-                        null) {
+                  if (chatCubit.needActiveChatTab() && currentIndex == 0) {
+                    if (chatCubit.isPublicChat()) {
                       final bool showInputFieldIfPublic = context.select(
                           (ChatCubit cubit) =>
                               cubit.state.showInputFieldIfPublic);
@@ -316,6 +313,7 @@ Future<void> _showErrorAlert(BuildContext context) async {
     title: getIt.get<MainCubit>().state.appError.getMessage(context),
     okText: S.of(context).ok,
     actionOnOK: () {
+      getIt.get<MainCubit>().updateSessions();
       Get.close(2);
     },
     allowBarrierClick: false,
@@ -412,7 +410,7 @@ class _ActiveChat extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (chatCubit.chatScreenArguments.publicQuestionId != null)
+                    if (chatCubit.isPublicChat())
                       Builder(
                         builder: (context) {
                           final ChatItemStatusType? questionStatus =
@@ -434,7 +432,7 @@ class _ActiveChat extends StatelessWidget {
               }
             },
           ),
-          if (chatCubit.chatScreenArguments.publicQuestionId != null)
+          if (chatCubit.isPublicChat())
             Builder(
               builder: (context) {
                 final ChatItemStatusType? questionStatus = context

@@ -10,6 +10,7 @@ class AppTextField extends StatelessWidget {
   final FocusNode? nextFocusNode;
   final TextInputType? textInputType;
   final TextInputAction? textInputAction;
+  final String hintText;
   final bool isPassword;
   final bool isBig;
 
@@ -24,6 +25,7 @@ class AppTextField extends StatelessWidget {
     this.isPassword = false,
     this.isBig = false,
     this.errorType = ValidationErrorType.empty,
+    this.hintText = '',
   }) : super(key: key);
 
   @override
@@ -69,6 +71,11 @@ class AppTextField extends StatelessWidget {
                 FocusScope.of(context).requestFocus(nextFocusNode);
               },
               decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: Theme.of(context).shadowColor),
                 contentPadding: isBig
                     ? const EdgeInsets.all(12.0)
                     : const EdgeInsets.symmetric(horizontal: 12.0),

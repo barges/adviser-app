@@ -25,6 +25,7 @@ class EmailPart extends StatelessWidget {
             child: AppTextField(
               errorType: emailErrorType,
               label: S.of(context).email,
+              hintText: S.of(context).enterYourEmail,
               focusNode: cubit.emailNode,
               textInputType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,

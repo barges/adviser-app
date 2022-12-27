@@ -85,14 +85,14 @@ class AccountCubit extends Cubit<AccountState> {
           await cacheManager.saveUserStatus(userInfo.status);
         }
       }
+
       final DateTime? profileUpdatedAt =
           cacheManager.getUserStatus()?.profileUpdatedAt;
 
       if (profileUpdatedAt != null) {
         milliseconds =
-            DateTime.now().difference(profileUpdatedAt).inMilliseconds;
+            DateTime.now().toUtc().difference(profileUpdatedAt).inMilliseconds;
       }
-
       emit(
         state.copyWith(
           userProfile: cacheManager.getUserProfile(),

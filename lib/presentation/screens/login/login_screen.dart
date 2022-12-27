@@ -108,6 +108,8 @@ class LoginScreen extends StatelessWidget {
                                           return AppTextField(
                                             errorType: emailErrorType,
                                             label: S.of(context).email,
+                                            hintText:
+                                                S.of(context).enterYourEmail,
                                             focusNode: loginCubit.emailNode,
                                             textInputType:
                                                 TextInputType.emailAddress,
@@ -140,6 +142,8 @@ class LoginScreen extends StatelessWidget {
                                             focusNode: loginCubit.passwordNode,
                                             label: S.of(context).password,
                                             errorType: passwordErrorType,
+                                            hintText:
+                                                S.of(context).enterYourPassword,
                                             textInputAction:
                                                 TextInputAction.next,
                                             onSubmitted: (_) =>

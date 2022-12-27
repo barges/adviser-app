@@ -169,7 +169,8 @@ class SessionsCubit extends Cubit<SessionsState> {
   void goToCustomerSessions(ChatItem question) {
     Get.toNamed(
       AppRoutes.customerSessions,
-      arguments: question,
+      arguments: CustomerSessionsScreenArguments(
+          question: question, marketIndex: state.currentMarketIndexForPrivate),
     );
   }
 

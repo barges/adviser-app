@@ -101,10 +101,9 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       );
     }
-    if (chatScreenArguments.storyIdForHistory == null &&
-        chatScreenArguments.clientIdFromPush == null) {
+    if (needActiveChatTab()) {
       _getData().whenComplete(() {
-        if (chatScreenArguments.publicQuestionId != null) {
+        if (isPublicChat()) {
           _checkTiming();
         }
       });
@@ -219,7 +218,8 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  void updateAppBarInformation(AppBarUpdateArguments? appBarUpdateArguments) {
+  void updateAppBarInformation(
+      CustomerProfileScreenArguments? appBarUpdateArguments) {
     emit(state.copyWith(
       appBarUpdateArguments: appBarUpdateArguments,
     ));
@@ -299,6 +299,16 @@ class ChatCubit extends Cubit<ChatState> {
     SchedulerBinding.instance.endOfFrame.then((value) =>
         activeMessagesScrollController
             .jumpTo(activeMessagesScrollController.position.maxScrollExtent));
+  }
+
+  bool needActiveChatTab() {
+    return chatScreenArguments.privateQuestionId != null ||
+        isPublicChat() ||
+        chatScreenArguments.ritualID != null;
+  }
+
+  bool isPublicChat() {
+    return chatScreenArguments.publicQuestionId != null;
   }
 
   Future<void> takeQuestion() async {
