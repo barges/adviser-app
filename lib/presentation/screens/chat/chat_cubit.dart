@@ -493,7 +493,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     await _playerRecorded?.startPlayer(
-      fromURI: state.recordedAudio != null ? state.recordedAudio!.path : null,
+      fromURI: state.recordedAudio?.path,
       codec: _codec,
       sampleRate: 44000,
       whenFinished: () {
