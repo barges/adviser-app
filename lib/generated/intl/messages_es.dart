@@ -276,8 +276,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m":
             MessageLookupByLibrary.simpleMessage(
                 "La respuesta no es posible, esta pregunta volverá a la lista general en ~ 1 minuto"),
-        "theMaximumImageSizeIs20Mb": MessageLookupByLibrary.simpleMessage(
-            "El tamaño máximo de la imagen es de 20Mb."),
+        "theMaximumSizeOfTheAttachmentsIs20Mb":
+            MessageLookupByLibrary.simpleMessage(
+                "El tamaño máximo de los archivos adjuntos es de 20Mb"),
         "thePasswordsMustMatch": MessageLookupByLibrary.simpleMessage(
             "Las contraseñas deben coincidir"),
         "theUserWasNotFound": MessageLookupByLibrary.simpleMessage(
