@@ -71,7 +71,8 @@ class _ChatItemPlayer extends StatelessWidget {
   final VoidCallback? onStartPlayPressed;
   final VoidCallback? onPausePlayPressed;
   final Stream<PlaybackDisposition>? playbackStream;
-  const _ChatItemPlayer({
+  double prevValue = 0.0;
+  _ChatItemPlayer({
     Key? key,
     required this.duration,
     required this.iconColor,
@@ -104,11 +105,19 @@ class _ChatItemPlayer extends StatelessWidget {
           child: StreamBuilder<PlaybackDisposition>(
             stream: isPlaying && !isPlayingFinished ? playbackStream : null,
             builder: (_, snapshot) {
-              final value = !isPlayingFinished && snapshot.hasData
+              double value = !isPlayingFinished && snapshot.hasData
                   ? snapshot.data!.position.inMilliseconds /
                       snapshot.data!.duration.inMilliseconds
                   : 0.0;
-              final time = !isPlayingFinished && snapshot.hasData
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                value = prevValue;
+              }
+              if (snapshot.hasData &&
+                  snapshot.connectionState == ConnectionState.active) {
+                prevValue = snapshot.data!.position.inMilliseconds /
+                    snapshot.data!.duration.inMilliseconds;
+              }
+              final String time = !isPlayingFinished && snapshot.hasData
                   ? snapshot.data!.position.toString().substring(2, 7)
                   : "00:00";
               return _PlayProgress(
