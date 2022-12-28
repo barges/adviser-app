@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
@@ -26,10 +27,10 @@ class ActiveChatInputFieldWidget extends StatelessWidget {
           if ((await showDeleteAlert(
                   context, S.of(context).doYouWantToDeleteThisAudioMessage)) ==
               true) {
-            chatCubit.deletedRecordedAudio();
+            chatCubit.deleteRecordedAudio();
           }
         },
-        onSendPressed: chatCubit.sendMediaAnswer,
+        onSendPressed: () => chatCubit.sendAnswer(ChatContentType.media),
       );
     } else if (isRecordingAudio) {
       return ChatRecordingWidget(
