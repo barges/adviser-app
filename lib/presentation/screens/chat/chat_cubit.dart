@@ -368,7 +368,8 @@ class ChatCubit extends Cubit<ChatState> {
     );
 
     _recordingProgressSubscription = _recorder?.onProgress?.listen((e) async {
-      if (e.duration.inSeconds > AppConstants.maxRecordDurationInSec) {
+      _recordAudioDuration = e.duration.inSeconds;
+      if (!_checkMaxRecordDurationIsOk()) {
         stopRecordingAudio();
       }
     });
@@ -397,11 +398,11 @@ class ChatCubit extends Cubit<ChatState> {
           await MetadataRetriever.fromFile(recordedAudio);
 
       _recordAudioDuration = (metaAudio.trackDuration ?? 0) / 1000;
-      if (_recordAudioDuration! < AppConstants.minRecordDurationInSec) {
+      if (!_checkMinRecordDurationIsOk()) {
         updateErrorMessage(UIError(
             uiErrorType:
                 UIErrorType.youCantSendThisMessageBecauseItsLessThan15Seconds));
-      } else if (_recordAudioDuration! > AppConstants.maxRecordDurationInSec) {
+      } else if (!_checkMaxRecordDurationIsOk()) {
         updateErrorMessage(
             UIError(uiErrorType: UIErrorType.youVeReachThe3MinuteTimeLimit));
         isSendButtonEnabled = true;
@@ -416,7 +417,7 @@ class ChatCubit extends Cubit<ChatState> {
         isAudioFileSaved: true,
         isRecordingAudio: false,
         isSendButtonEnabled: isSendButtonEnabled &&
-            _checkAttachmentSize(state.attachedPictures, recordedAudio),
+            _checkAttachmentSizeIsOk(state.attachedPictures, recordedAudio),
       ),
     );
   }
@@ -424,6 +425,7 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> cancelRecordingAudio() async {
     _recordingProgressSubscription?.cancel();
     _recordingProgressSubscription = null;
+    _recordAudioDuration = null;
 
     await _recorder?.stopRecorder();
 
@@ -442,6 +444,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     await _deleteRecordedAudioFile();
+    _recordAudioDuration = null;
 
     emit(
       state.copyWith(
@@ -450,7 +453,7 @@ class ChatCubit extends Cubit<ChatState> {
           isAudioFileSaved: false,
           isPlayingRecordedAudio: false,
           isSendButtonEnabled:
-              _checkAttachmentSize(state.attachedPictures, null)),
+              _checkAttachmentSizeIsOk(state.attachedPictures, null)),
     );
   }
 
@@ -590,7 +593,9 @@ class ChatCubit extends Cubit<ChatState> {
 
     emit(state.copyWith(
       attachedPictures: images,
-      isSendButtonEnabled: _checkAttachmentSize(images, state.recordedAudio),
+      isSendButtonEnabled:
+          _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
+              _checkMinRecordDurationIsOk(),
     ));
   }
 
@@ -599,7 +604,9 @@ class ChatCubit extends Cubit<ChatState> {
     images.remove(image);
     emit(state.copyWith(
       attachedPictures: images,
-      isSendButtonEnabled: _checkAttachmentSize(images, state.recordedAudio),
+      isSendButtonEnabled:
+          _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
+              _checkMinRecordDurationIsOk(),
     ));
   }
 
@@ -645,6 +652,7 @@ class ChatCubit extends Cubit<ChatState> {
       await _deleteRecordedAudioFile();
       deleteAttachedPictures();
       scrollChatDown();
+      _recordAudioDuration = null;
 
       if (answer.isSent) {
         _mainCubit.updateSessions();
@@ -962,7 +970,7 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  bool _checkAttachmentSize(List<File> images, File? recordedAudio) {
+  bool _checkAttachmentSizeIsOk(List<File> images, File? recordedAudio) {
     if (_calculateAttachmentSize(images, recordedAudio) <=
         AppConstants.maxAttachmentFilesSizeInMb) {
       if (state.appError is UIError &&
@@ -976,6 +984,24 @@ class ChatCubit extends Cubit<ChatState> {
           UIError(
               uiErrorType: UIErrorType.theMaximumSizeOfTheAttachmentsIs20Mb)));
       return false;
+    }
+  }
+
+  bool _checkMinRecordDurationIsOk() {
+    if (_recordAudioDuration == null) {
+      return true;
+    } else {
+      return _recordAudioDuration != null &&
+          _recordAudioDuration! >= AppConstants.minRecordDurationInSec;
+    }
+  }
+
+  bool _checkMaxRecordDurationIsOk() {
+    if (_recordAudioDuration == null) {
+      return true;
+    } else {
+      return _recordAudioDuration != null &&
+          _recordAudioDuration! <= AppConstants.maxRecordDurationInSec;
     }
   }
 
