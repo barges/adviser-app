@@ -32,15 +32,18 @@ class AdvisorPreviewAppBar extends StatelessWidget
       title: Text(advisorPreviewCubit.userProfile.profileName ?? ''),
       actions: [
         GestureDetector(
-          onTap: () {
-            advisorPreviewCubit.onOpen();
-            flagsBottomSheet(
-                context: context,
-                onApply: advisorPreviewCubit.onApply,
-                onSelectLanguage: advisorPreviewCubit.updateActiveLanguagesInUI,
-                activeLanguages: advisorPreviewCubit.languages,
-                advisorPreviewCubit: advisorPreviewCubit);
-          },
+          onTap: advisorPreviewCubit.languages.length > 1
+              ? () {
+                  advisorPreviewCubit.onOpen();
+                  flagsBottomSheet(
+                      context: context,
+                      onApply: advisorPreviewCubit.onApply,
+                      onSelectLanguage:
+                          advisorPreviewCubit.updateActiveLanguagesInUI,
+                      activeLanguages: advisorPreviewCubit.languages,
+                      advisorPreviewCubit: advisorPreviewCubit);
+                }
+              : null,
           child: Padding(
             padding: const EdgeInsets.symmetric(
                 horizontal: AppConstants.horizontalScreenPadding,
@@ -57,7 +60,9 @@ class AdvisorPreviewAppBar extends StatelessWidget
                     );
                   },
                 ),
-                Assets.vectors.arrowDropDown.svg(),
+                advisorPreviewCubit.languages.length > 1
+                    ? Assets.vectors.arrowDropDown.svg()
+                    : const SizedBox.shrink(),
               ],
             ),
           ),
