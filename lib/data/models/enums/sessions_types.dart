@@ -15,7 +15,8 @@ enum SessionsTypes {
   tipsLow,
   tipsMedium,
   tipsHigh,
-  tips;
+  tips,
+  undefined;
 
   String sessionName(BuildContext context) {
     switch (this) {
@@ -42,6 +43,8 @@ enum SessionsTypes {
       case SessionsTypes.tipsHigh:
       case SessionsTypes.tips:
         return S.of(context).tips;
+      case SessionsTypes.undefined:
+        return '';
     }
   }
 
@@ -63,6 +66,8 @@ enum SessionsTypes {
       case SessionsTypes.tipsHigh:
       case SessionsTypes.tips:
         return sessionName(context);
+      case SessionsTypes.undefined:
+        return '';
     }
   }
 
@@ -91,6 +96,8 @@ enum SessionsTypes {
       case SessionsTypes.tipsHigh:
       case SessionsTypes.tips:
         return Assets.vectors.sessionsTypes.tips.path;
+      case SessionsTypes.undefined:
+        return '';
     }
   }
 }
