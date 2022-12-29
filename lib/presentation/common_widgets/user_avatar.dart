@@ -101,14 +101,17 @@ class UserAvatar extends StatelessWidget {
           ),
         if (withError)
           Positioned.fill(
-              child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    S.of(context).photoIsRequired,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontSize: 12.0, color: Theme.of(context).errorColor),
-                  ))),
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  S.of(context).photoIsRequired,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontSize: 12.0, color: Theme.of(context).errorColor),
+                )),
+          )),
       ],
     );
   }
