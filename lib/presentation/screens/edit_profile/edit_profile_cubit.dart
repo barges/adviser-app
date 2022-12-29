@@ -66,6 +66,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
     createTextControllersNodesAndErrorsMap();
 
+    checkNickName();
+
     checkEmptyFields();
 
     emit(
