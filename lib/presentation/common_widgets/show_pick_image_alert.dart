@@ -4,10 +4,13 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 
 Future<void> showPickImageAlert(
@@ -122,11 +125,15 @@ Future<void> _pickImage(BuildContext context, ImageSource imageSource,
     ValueChanged<File> setImage) async {
   await _handlePermissions(context, imageSource);
   File? image;
-  final ImagePicker picker = ImagePicker();
-  final XFile? photoFile = await picker.pickImage(source: imageSource);
-  if (photoFile?.path != null) {
-    image = File(photoFile!.path);
+
+  if (await _checkForGrantedPermission(imageSource)) {
+    final ImagePicker picker = ImagePicker();
+    final XFile? photoFile = await picker.pickImage(source: imageSource);
+    if (photoFile?.path != null) {
+      image = File(photoFile!.path);
+    }
   }
+
   if (image != null) {
     setImage(image);
   }
@@ -148,28 +155,48 @@ Future<void> _pickMultiImage(BuildContext context, ImageSource imageSource,
   }
 }
 
+Future<bool> _checkForGrantedPermission(ImageSource imageSource) async {
+  return (imageSource == ImageSource.camera &&
+          await Permission.camera.status == PermissionStatus.granted) ||
+      (Platform.isAndroid &&
+          imageSource == ImageSource.gallery &&
+          await Permission.storage.status == PermissionStatus.granted) ||
+      (Platform.isIOS &&
+          imageSource == ImageSource.gallery &&
+          await Permission.photos.status == PermissionStatus.granted);
+}
+
 Future<void> _handlePermissions(
     BuildContext context, ImageSource source) async {
+  CachingManager cacheManager = getIt.get<CachingManager>();
   PermissionStatus status;
+  PermissionStatus? previousStatus;
   switch (source) {
     case ImageSource.camera:
       {
+        previousStatus = cacheManager.getCameraPermissionStatus();
         status = await Permission.camera.request();
+        await cacheManager.setCameraPermissionStatus(status);
       }
       break;
     case ImageSource.gallery:
       {
+        previousStatus = cacheManager.getGalleryPermissionStatus();
         if (Platform.isIOS) {
           status = await Permission.photos.request();
         } else {
           status = await Permission.storage.request();
         }
+        await cacheManager.setGalleryPermissionStatus(status);
       }
       break;
   }
-  if (status.isPermanentlyDenied) {
+  logger.d('PREVIOUS: $previousStatus');
+  logger.d('CURRENT: $status');
+  if (previousStatus?.isPermanentlyDenied == true) {
     VoidCallback actionOnOk = (() async {
-      await openAppSettings();
+      bool canOpenSettings = await openAppSettings();
+      logger.d('CAN OPEN SETTINGS: $canOpenSettings');
       Navigator.pop(context);
     });
     await showOkCancelAlert(
