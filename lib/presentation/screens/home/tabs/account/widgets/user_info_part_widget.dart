@@ -61,8 +61,10 @@ class UserInfoPartWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          userProfile?.profileName ??
-                              S.of(context).yourUsername,
+                          userProfile?.profileName != null &&
+                                  userProfile!.profileName!.isNotEmpty
+                              ? userProfile.profileName!
+                              : S.of(context).yourUsername,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
                               .textTheme

@@ -124,6 +124,7 @@ Future<void> changeStatusCommentBottomSheet(
                         onPressed: () => Navigator.pop(context),
                         child: Text(
                           S.of(context).noIChangedMyMind,
+                          textAlign: TextAlign.center,
                           style:
                               Theme.of(context).textTheme.titleMedium?.copyWith(
                                     color: Theme.of(context).primaryColor,

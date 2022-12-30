@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
+import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/story.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
 import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
@@ -47,7 +48,9 @@ void main() {
 
       expect(
         await authApi.login(),
-        isA<LoginResponse>(),
+        predicate((value) =>
+            value is LoginResponse &&
+            value.accessToken == 'someRandomAccessToken'),
       );
     });
 
@@ -63,9 +66,11 @@ void main() {
           delay: const Duration(seconds: 1),
         ),
       );
+
       expect(
         await authApi.login(),
-        isA<LoginResponse>(),
+        predicate(
+            (value) => value is LoginResponse && value.accessToken == null),
       );
     });
 
@@ -81,9 +86,11 @@ void main() {
           delay: const Duration(seconds: 1),
         ),
       );
+
       expect(
         await authApi.login(),
-        isA<LoginResponse>(),
+        predicate(
+            (value) => value is LoginResponse && value.accessToken == null),
       );
     });
 
@@ -99,9 +106,17 @@ void main() {
           delay: const Duration(seconds: 1),
         ),
       );
+
       expect(
-        await authApi.login(),
-        isA<LoginResponse>(),
+        () async => await authApi.login(),
+        throwsA(
+          predicate(
+            (e) =>
+                e is TypeError &&
+                e.toString() ==
+                    "type 'List<dynamic>' is not a subtype of type 'String?' in type cast",
+          ),
+        ),
       );
     });
 
@@ -117,9 +132,17 @@ void main() {
           delay: const Duration(seconds: 1),
         ),
       );
+
       expect(
-        await authApi.login(),
-        isA<LoginResponse>(),
+        () async => await authApi.login(),
+        throwsA(
+          predicate(
+            (e) =>
+                e is TypeError &&
+                e.toString() ==
+                    "type 'int' is not a subtype of type 'String?' in type cast",
+          ),
+        ),
       );
     });
 
@@ -135,9 +158,18 @@ void main() {
           delay: const Duration(seconds: 1),
         ),
       );
+
       expect(
-        await authApi.login(),
-        isA<LoginResponse>(),
+        () async => await authApi.login(),
+        throwsA(
+          predicate(
+            (e) =>
+                e is DioError &&
+                e.type == DioErrorType.other &&
+                e.error.toString() ==
+                    "type 'String' is not a subtype of type 'Map<String, dynamic>?' in type cast",
+          ),
+        ),
       );
     });
   });
@@ -160,9 +192,20 @@ void main() {
         ),
       );
 
+      ConversationsStoryResponse conversationsStoryResponse =
+          await chatsApi.getStory(storyID: emptyString);
+
+      print(conversationsStoryResponse.toJson());
+
       expect(
         await chatsApi.getStory(storyID: emptyString),
-        isA<ConversationsStoryResponse>(),
+        predicate((value) =>
+            value is ConversationsStoryResponse &&
+            value.questions is List<ChatItem> &&
+            value.questions!.isEmpty &&
+            value.answers is List<ChatItem> &&
+            value.answers!.isEmpty &&
+            value.clientID == ''),
       );
     });
 
@@ -181,7 +224,11 @@ void main() {
 
       expect(
         await chatsApi.getStory(storyID: emptyString),
-        isA<ConversationsStoryResponse>(),
+        predicate((value) =>
+            value is ConversationsStoryResponse &&
+            value.questions == null &&
+            value.answers == null &&
+            value.clientID == null),
       );
     });
 
@@ -203,8 +250,15 @@ void main() {
       );
 
       expect(
-        await chatsApi.getStory(storyID: emptyString),
-        isA<ConversationsStoryResponse>(),
+        () async => await chatsApi.getStory(storyID: emptyString),
+        throwsA(
+          predicate(
+            (e) =>
+                e is TypeError &&
+                e.toString() ==
+                    "type 'String' is not a subtype of type 'List<dynamic>?' in type cast",
+          ),
+        ),
       );
     });
 
@@ -226,8 +280,15 @@ void main() {
       );
 
       expect(
-        await chatsApi.getStory(storyID: emptyString),
-        isA<ConversationsStoryResponse>(),
+        () async => await chatsApi.getStory(storyID: emptyString),
+        throwsA(
+          predicate(
+            (e) =>
+                e is TypeError &&
+                e.toString() ==
+                    "type 'String' is not a subtype of type 'List<dynamic>?' in type cast",
+          ),
+        ),
       );
     });
 
@@ -249,8 +310,15 @@ void main() {
       );
 
       expect(
-        await chatsApi.getStory(storyID: emptyString),
-        isA<ConversationsStoryResponse>(),
+        () async => await chatsApi.getStory(storyID: emptyString),
+        throwsA(
+          predicate(
+            (e) =>
+                e is TypeError &&
+                e.toString() ==
+                    "type 'int' is not a subtype of type 'String?' in type cast",
+          ),
+        ),
       );
     });
 
@@ -268,8 +336,16 @@ void main() {
       );
 
       expect(
-        await chatsApi.getStory(storyID: emptyString),
-        isA<ConversationsStoryResponse>(),
+        () async => await chatsApi.getStory(storyID: emptyString),
+        throwsA(
+          predicate(
+            (e) =>
+                e is DioError &&
+                e.type == DioErrorType.other &&
+                e.error.toString() ==
+                    "type 'String' is not a subtype of type 'Map<String, dynamic>?' in type cast",
+          ),
+        ),
       );
     });
   });

@@ -43,13 +43,13 @@ class ChatScreen extends StatelessWidget {
               context.select((ChatCubit cubit) => cubit.state.questionFromDB);
           final CustomerProfileScreenArguments? appBarUpdateArguments = context
               .select((ChatCubit cubit) => cubit.state.appBarUpdateArguments);
+          final ChatItemStatusType? questionStatus =
+              context.select((ChatCubit cubit) => cubit.state.questionStatus);
 
           return WillPopScope(
             onWillPop: () => Future.value(
-                chatCubit.chatScreenArguments.publicQuestionId != null &&
-                        questionFromDB?.status == ChatItemStatusType.taken
-                    ? false
-                    : true),
+                !(chatCubit.chatScreenArguments.publicQuestionId != null &&
+                    questionStatus == ChatItemStatusType.taken)),
             child: Scaffold(
               body: Scaffold(
                 appBar: ChatConversationAppBar(
