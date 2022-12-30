@@ -786,10 +786,12 @@ class ChatCubit extends Cubit<ChatState> {
         } else if (afterTakenInSec <
             _tillShowMessagesInSec + _afterShowMessagesInSec) {
           tillShowMessagesInSec = 0;
-          afterShowMessagesInSec = _afterShowMessagesInSec - afterTakenInSec;
+          afterShowMessagesInSec = _afterShowMessagesInSec +
+              _tillShowMessagesInSec -
+              afterTakenInSec;
         }
 
-        if (afterShowMessagesInSec < 60) {
+        if (afterShowMessagesInSec <= 60) {
           _setAnswerIsNotPossible();
         }
 
