@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
@@ -40,9 +42,9 @@ class ChatRecordedWidget extends StatelessWidget {
           child: Column(
             children: [
               Builder(builder: (context) {
-                context
+                final List<File> attachedPictures = context
                     .select((ChatCubit cubit) => cubit.state.attachedPictures);
-                return chatCubit.isAttachedPictures
+                return attachedPictures.isNotEmpty
                     ? const Padding(
                         padding: EdgeInsets.only(
                           top: 4.0,

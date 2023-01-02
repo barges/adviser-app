@@ -846,7 +846,7 @@ class ChatCubit extends Cubit<ChatState> {
   Future<AnswerRequest> _createMediaAnswerRequest() async {
     final Attachment? audioAttachment = await _getAudioAttachment();
     Attachment? pictureAttachment;
-    if (isAttachedPictures) {
+    if (state.attachedPictures.isNotEmpty) {
       pictureAttachment = await _getPictureAttachment(0);
     }
 
@@ -863,8 +863,9 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<AnswerRequest> _createTextMediaAnswerRequest() async {
-    Attachment? pictureAttachment1 =
-        isAttachedPictures ? await _getPictureAttachment(0) : null;
+    Attachment? pictureAttachment1 = state.attachedPictures.isNotEmpty
+        ? await _getPictureAttachment(0)
+        : null;
     Attachment? pictureAttachment2 = state.attachedPictures.length == 2
         ? await _getPictureAttachment(1)
         : null;
@@ -1047,8 +1048,6 @@ class ChatCubit extends Cubit<ChatState> {
   int get maxTextLength => state.questionFromDB?.type == ChatItemType.ritual
       ? AppConstants.maxTextLengthRitual
       : AppConstants.maxTextLength;
-
-  bool get isAttachedPictures => state.attachedPictures.isNotEmpty;
 
   Stream<PlaybackDisposition>? get onMediaProgress => playerMedia?.onProgress;
 

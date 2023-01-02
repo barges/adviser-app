@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
@@ -23,8 +25,9 @@ class ChatTextInputWidget extends StatelessWidget {
     context.select((ChatCubit cubit) => cubit.state.attachedPictures);
     final theme = Theme.of(context);
     final ChatCubit chatCubit = context.read<ChatCubit>();
-    final isAttachedPictures = chatCubit.isAttachedPictures;
-    final isAudioQuestion = chatCubit.state.questionFromDB?.isAudio ?? false;
+    final List<File> attachedPictures = chatCubit.state.attachedPictures;
+    final bool isAudioQuestion =
+        chatCubit.state.questionFromDB?.isAudio ?? false;
 
     return Stack(
       clipBehavior: Clip.none,
@@ -41,8 +44,8 @@ class ChatTextInputWidget extends StatelessWidget {
               color: theme.canvasColor,
               child: Column(
                 children: [
-                  if (isAttachedPictures) const _InputTextField(),
-                  if (isAttachedPictures)
+                  if (attachedPictures.isNotEmpty) const _InputTextField(),
+                  if (attachedPictures.isNotEmpty)
                     const Padding(
                       padding: EdgeInsets.only(
                         top: 10.0,
@@ -58,7 +61,7 @@ class ChatTextInputWidget extends StatelessWidget {
                     final bool canRecordAudio = chatCubit.canRecordAudio;
                     return Row(
                       crossAxisAlignment:
-                          isAttachedPictures || inputTextLength == 0
+                          attachedPictures.isNotEmpty || inputTextLength == 0
                               ? CrossAxisAlignment.center
                               : CrossAxisAlignment.end,
                       children: [
@@ -79,7 +82,7 @@ class ChatTextInputWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                        if (isAttachedPictures)
+                        if (attachedPictures.isNotEmpty)
                           GestureDetector(
                             onTap: () {
                               if (canRecordAudio) {
@@ -97,8 +100,8 @@ class ChatTextInputWidget extends StatelessWidget {
                               ),
                             ),
                           ),
-                        if (isAttachedPictures) const Spacer(),
-                        if (!isAttachedPictures)
+                        if (attachedPictures.isNotEmpty) const Spacer(),
+                        if (attachedPictures.isEmpty)
                           const Expanded(
                             child: Padding(
                               padding: EdgeInsets.only(left: 12.0),
@@ -115,7 +118,7 @@ class ChatTextInputWidget extends StatelessWidget {
                           return Row(
                             children: [
                               if (inputTextLength == 0 &&
-                                  !isAttachedPictures &&
+                                  attachedPictures.isEmpty &&
                                   isAudioQuestion)
                                 AppIconGradientButton(
                                   onTap: () =>
@@ -124,7 +127,7 @@ class ChatTextInputWidget extends StatelessWidget {
                                   iconColor: theme.backgroundColor,
                                 ),
                               if (inputTextLength > 0 ||
-                                  isAttachedPictures ||
+                                  attachedPictures.isNotEmpty ||
                                   !isAudioQuestion)
                                 Opacity(
                                   opacity: isSendButtonEnabled ? 1.0 : 0.4,
