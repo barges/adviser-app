@@ -67,7 +67,7 @@ class ChatCubit extends Cubit<ChatState> {
       AppConstants.tillShowAnswerTimingMessagesInSec;
   final int _afterShowMessagesInSec =
       AppConstants.afterShowAnswerTimingMessagesInSec;
-  num? _recordAudioDuration;
+  int? _recordAudioDuration;
   FlutterSoundRecorder? _recorder;
   FlutterSoundPlayer? _playerRecorded;
   FlutterSoundPlayer? playerMedia;
@@ -402,8 +402,8 @@ class ChatCubit extends Cubit<ChatState> {
       final Metadata metaAudio =
           await MetadataRetriever.fromFile(recordedAudio);
 
-      _recordAudioDuration = (metaAudio.trackDuration ?? 0) / 1000;
-      if (!_checkMinRecordDurationIsOk()) {
+      _recordAudioDuration = (metaAudio.trackDuration ?? 0) ~/ 1000;
+      if (!checkMinRecordDurationIsOk()) {
         updateErrorMessage(UIError(
             uiErrorType:
                 UIErrorType.youCantSendThisMessageBecauseItsLessThan15Seconds));
@@ -600,7 +600,7 @@ class ChatCubit extends Cubit<ChatState> {
       attachedPictures: images,
       isSendButtonEnabled:
           _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
-              _checkMinRecordDurationIsOk(),
+              checkMinRecordDurationIsOk(),
     ));
   }
 
@@ -611,7 +611,7 @@ class ChatCubit extends Cubit<ChatState> {
       attachedPictures: images,
       isSendButtonEnabled:
           _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
-              _checkMinRecordDurationIsOk(),
+              checkMinRecordDurationIsOk(),
     ));
   }
 
@@ -994,15 +994,6 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  bool _checkMinRecordDurationIsOk() {
-    if (_recordAudioDuration == null) {
-      return true;
-    } else {
-      return _recordAudioDuration != null &&
-          _recordAudioDuration! >= AppConstants.minRecordDurationInSec;
-    }
-  }
-
   bool _checkMaxRecordDurationIsOk() {
     if (_recordAudioDuration == null) {
       return true;
@@ -1028,6 +1019,15 @@ class ChatCubit extends Cubit<ChatState> {
     return totalSizeInMb;
   }
 
+  bool checkMinRecordDurationIsOk() {
+    if (_recordAudioDuration == null) {
+      return true;
+    } else {
+      return _recordAudioDuration != null &&
+          _recordAudioDuration! >= AppConstants.minRecordDurationInSec;
+    }
+  }
+
   bool canAttachPictureTo(AttachmentType? attachmentType) {
     return state.attachedPictures.length <
         ((attachmentType != null && attachmentType == AttachmentType.audio)
@@ -1051,4 +1051,6 @@ class ChatCubit extends Cubit<ChatState> {
   bool get isAttachedPictures => state.attachedPictures.isNotEmpty;
 
   Stream<PlaybackDisposition>? get onMediaProgress => playerMedia?.onProgress;
+
+  int? get recordAudioDuration => _recordAudioDuration;
 }
