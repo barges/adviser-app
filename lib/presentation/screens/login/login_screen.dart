@@ -21,6 +21,8 @@ import 'package:shared_advisor_interface/presentation/common_widgets/text_fields
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/login_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/login/widgets/choose_brand_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/login/widgets/forgot_password_button_widget.dart';
+import 'package:shared_advisor_interface/presentation/services/dynamic_link_service.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -30,9 +32,10 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => LoginCubit(
-        getIt.get<AuthRepository>(),
-        getIt.get<CachingManager>(),
-      ),
+          getIt.get<AuthRepository>(),
+          getIt.get<CachingManager>(),
+          getIt.get<MainCubit>(),
+          getIt.get<DynamicLinkService>()),
       child: Builder(
         builder: (BuildContext context) {
           final LoginCubit loginCubit = context.read<LoginCubit>();
@@ -171,20 +174,7 @@ class LoginScreen extends StatelessWidget {
                                         const SizedBox(
                                           height: 22.0,
                                         ),
-                                        GestureDetector(
-                                          onTap: loginCubit.goToForgotPassword,
-                                          child: Text(
-                                            '${S.of(context).forgotPassword}?',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium
-                                                ?.copyWith(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                          ),
-                                        ),
+                                        const ForgotPasswordButtonWidget(),
                                       ],
                                     ),
                                   ),
