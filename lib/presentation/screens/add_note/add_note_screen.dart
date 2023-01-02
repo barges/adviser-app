@@ -1,17 +1,14 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/add_note/widgets/date_if_note_is_not_new_widget.dart';
 
 class AddNoteScreen extends StatelessWidget {
   const AddNoteScreen({
@@ -24,8 +21,6 @@ class AddNoteScreen extends StatelessWidget {
       create: (_) => AddNoteCubit(),
       child: Builder(builder: (context) {
         AddNoteCubit addNoteCubit = context.read<AddNoteCubit>();
-        List<String> imagesPaths =
-            context.select((AddNoteCubit cubit) => cubit.state.imagesPaths);
         bool isNoteNew =
             context.select((AddNoteCubit cubit) => cubit.state.isNoteNew);
         final bool isOnline = context.select(
@@ -61,25 +56,7 @@ class AddNoteScreen extends StatelessWidget {
                     children: [
                       isNoteNew
                           ? const SizedBox.shrink()
-                          : Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal:
-                                    AppConstants.horizontalScreenPadding,
-                                vertical: 12.0,
-                              ),
-                              child: Text(
-                                addNoteCubit.arguments.updatedAt
-                                        ?.parseDateTimePattern12 ??
-                                    '',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displaySmall
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.w400,
-                                      color: Theme.of(context).shadowColor,
-                                    ),
-                              ),
-                            ),
+                          : const DateIfNoteIsNotNewWidget(),
                       Expanded(
                         child: SingleChildScrollView(
                           child: TextField(
@@ -109,64 +86,12 @@ class AddNoteScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 6.0),
-                        child: Center(
-                          child: Builder(builder: (context) {
-                            logger.d(imagesPaths);
-                            return (imagesPaths.isNotEmpty)
-                                ? Column(
-                                    children: List.generate(
-                                        imagesPaths.length,
-                                        (index) => Builder(builder: (context) {
-                                              final String imagesPath =
-                                                  context.select((AddNoteCubit
-                                                          cubit) =>
-                                                      cubit.state
-                                                          .imagesPaths[index]);
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 6.0),
-                                                child: Image.file(
-                                                  File(imagesPath),
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      2,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              );
-                                            })),
-                                  )
-                                : const SizedBox.shrink();
-                          }),
-                        ),
-                      )
+                      //const NoteAttachedPicturesListWidget(),
                     ]),
               ),
             ],
           ),
-          /**
-              floatingActionButton: GestureDetector(
-              onTap: () {
-              showPickImageAlert(
-              context: context,
-              setImage: addNoteCubit.attachPicture,
-              setMultiImage: addNoteCubit.attachMultiPictures);
-              },
-              child: Container(
-              height: 48.0,
-              width: 48.0,
-              decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: LinearGradient(
-              colors: [AppColors.ctaGradient1, AppColors.ctaGradient2]),
-              ),
-              child: Assets.vectors.gallery.svg(fit: BoxFit.scaleDown),
-              ),
-              ),
-           */
+          //floatingActionButton: const AttachNewPictureCircleButtonWidget(),
         );
       }),
     );

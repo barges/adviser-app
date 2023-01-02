@@ -98,7 +98,7 @@ class ChatItem with _$ChatItem {
     if (getAttachment(n) != null &&
         getAttachment(n)!.meta != null &&
         getAttachment(n)!.meta!.duration != null) {
-      return Duration(seconds: getAttachment(n)!.meta!.duration!.toInt());
+      return Duration(seconds: getAttachment(n)!.meta!.duration!);
     }
     return const Duration();
   }

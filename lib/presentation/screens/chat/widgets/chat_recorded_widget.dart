@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
@@ -119,15 +118,15 @@ class ChatRecordedWidget extends StatelessWidget {
                                                 snapshot.data!.duration
                                                     .inMilliseconds
                                             : 0.0;
-                                        final time = playbackStream != null &&
-                                                snapshot.hasData
-                                            ? snapshot.data!.position
-                                                .toString()
-                                                .substring(2, 7)
-                                            : "00:00";
                                         return _PlayProgress(
                                           value: value,
-                                          time: time,
+                                          duration:
+                                              chatCubit.recordAudioDuration !=
+                                                      null
+                                                  ? chatCubit
+                                                      .recordAudioDuration!
+                                                      .formatMMSS
+                                                  : "00:00",
                                         );
                                       },
                                     );
@@ -219,12 +218,12 @@ class _PlayPauseBtn extends StatelessWidget {
 
 class _PlayProgress extends StatelessWidget {
   final double value;
-  final String time;
+  final String duration;
 
   const _PlayProgress({
     Key? key,
     required this.value,
-    required this.time,
+    required this.duration,
   }) : super(key: key);
 
   @override
@@ -245,7 +244,7 @@ class _PlayProgress extends StatelessWidget {
         SizedBox(
           width: 48.0,
           child: Text(
-            time,
+            duration,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(context).hoverColor,
                 ),

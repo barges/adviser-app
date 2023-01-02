@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
@@ -59,4 +60,14 @@ abstract class CachingManager {
   VoidCallback listenCurrentUserStatus(ValueChanged<UserStatus> callback);
 
   VoidCallback listenUserId(ValueChanged<String?> callback);
+
+  PermissionStatus? getCameraPermissionStatus();
+
+  Future<void> setCameraPermissionStatus(
+      PermissionStatus cameraPermissionStatus);
+
+  PermissionStatus? getGalleryPermissionStatus();
+
+  Future<void> setGalleryPermissionStatus(
+      PermissionStatus galleryPermissionStatus);
 }

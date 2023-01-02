@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class ChatRecordingWidget extends StatelessWidget {
@@ -19,6 +21,9 @@ class ChatRecordingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final s = S.of(context);
+    final ChatCubit chatCubit = context.read<ChatCubit>();
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -27,23 +32,30 @@ class ChatRecordingWidget extends StatelessWidget {
         ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
-          color: Theme.of(context).canvasColor,
+          color: theme.canvasColor,
           child: Row(
             children: [
               GestureDetector(
                 onTap: onClosePressed,
                 child: Assets.vectors.close.svg(
-                  color: Theme.of(context).shadowColor,
+                  color: theme.shadowColor,
                 ),
               ),
               const Spacer(),
-              Text(
-                S.of(context).from15secTo3min,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.online,
-                      fontSize: 12.0,
-                    ),
-              ),
+              StreamBuilder<RecordingDisposition>(
+                  stream: recordingStream,
+                  builder: (_, snapshot) {
+                    return Text(
+                      s.from15secTo3min,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: snapshot.hasData &&
+                                chatCubit.checkMinRecordDurationIsOk()
+                            ? AppColors.online
+                            : theme.errorColor,
+                        fontSize: 12.0,
+                      ),
+                    );
+                  }),
               const SizedBox(width: 8.0),
               Container(
                 padding: const EdgeInsets.symmetric(
@@ -51,7 +63,7 @@ class ChatRecordingWidget extends StatelessWidget {
                   vertical: 4.0,
                 ),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
+                  color: theme.scaffoldBackgroundColor,
                   borderRadius:
                       BorderRadius.circular(AppConstants.buttonRadius),
                 ),
@@ -62,10 +74,10 @@ class ChatRecordingWidget extends StatelessWidget {
                       width: 8.0,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Theme.of(context).errorColor,
+                        color: theme.errorColor,
                         border: Border.all(
                           width: 1.5,
-                          color: Theme.of(context).scaffoldBackgroundColor,
+                          color: theme.scaffoldBackgroundColor,
                         ),
                       ),
                     ),
@@ -83,13 +95,10 @@ class ChatRecordingWidget extends StatelessWidget {
                             width: 48.0,
                             child: Text(
                               time,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
-                                    color: Theme.of(context).hoverColor,
-                                    fontSize: 15.0,
-                                  ),
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.hoverColor,
+                                fontSize: 15.0,
+                              ),
                             ),
                           );
                         }),
@@ -103,13 +112,13 @@ class ChatRecordingWidget extends StatelessWidget {
                   height: AppConstants.iconButtonSize,
                   width: AppConstants.iconButtonSize,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
+                    color: theme.primaryColor,
                     borderRadius:
                         BorderRadius.circular(AppConstants.buttonRadius),
                   ),
                   child: Assets.vectors.stop.svg(
                     fit: BoxFit.none,
-                    color: Theme.of(context).backgroundColor,
+                    color: theme.backgroundColor,
                   ),
                 ),
               ),

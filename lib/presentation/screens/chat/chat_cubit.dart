@@ -27,6 +27,7 @@ import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart'
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
@@ -66,7 +67,7 @@ class ChatCubit extends Cubit<ChatState> {
       AppConstants.tillShowAnswerTimingMessagesInSec;
   final int _afterShowMessagesInSec =
       AppConstants.afterShowAnswerTimingMessagesInSec;
-  num? _recordAudioDuration;
+  int? _recordAudioDuration;
   FlutterSoundRecorder? _recorder;
   FlutterSoundPlayer? _playerRecorded;
   FlutterSoundPlayer? playerMedia;
@@ -258,16 +259,20 @@ class ChatCubit extends Cubit<ChatState> {
 
       final List<ChatItem>? questions = ritualsResponse.story?.questions;
       final List<ChatItem>? answers = ritualsResponse.story?.answers;
+      final SessionsTypes? ritualIdentifier = ritualsResponse.identifier;
 
       if (questions != null && questions.isNotEmpty && answers != null) {
         final List<ChatItem> activeMessages = [];
         for (int i = 0; i < questions.length; i++) {
-          activeMessages.add(questions[i]);
+          activeMessages.add(questions[i].copyWith(
+            ritualIdentifier: ritualIdentifier,
+          ));
           if (i < answers.length) {
             activeMessages.add(answers[i].copyWith(
               isAnswer: true,
               type: questions[i].type,
               ritualID: questions[i].ritualID,
+              ritualIdentifier: ritualIdentifier,
             ));
           }
         }
@@ -397,8 +402,8 @@ class ChatCubit extends Cubit<ChatState> {
       final Metadata metaAudio =
           await MetadataRetriever.fromFile(recordedAudio);
 
-      _recordAudioDuration = (metaAudio.trackDuration ?? 0) / 1000;
-      if (!_checkMinRecordDurationIsOk()) {
+      _recordAudioDuration = (metaAudio.trackDuration ?? 0) ~/ 1000;
+      if (!checkMinRecordDurationIsOk()) {
         updateErrorMessage(UIError(
             uiErrorType:
                 UIErrorType.youCantSendThisMessageBecauseItsLessThan15Seconds));
@@ -595,7 +600,7 @@ class ChatCubit extends Cubit<ChatState> {
       attachedPictures: images,
       isSendButtonEnabled:
           _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
-              _checkMinRecordDurationIsOk(),
+              checkMinRecordDurationIsOk(),
     ));
   }
 
@@ -606,7 +611,7 @@ class ChatCubit extends Cubit<ChatState> {
       attachedPictures: images,
       isSendButtonEnabled:
           _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
-              _checkMinRecordDurationIsOk(),
+              checkMinRecordDurationIsOk(),
     ));
   }
 
@@ -781,10 +786,12 @@ class ChatCubit extends Cubit<ChatState> {
         } else if (afterTakenInSec <
             _tillShowMessagesInSec + _afterShowMessagesInSec) {
           tillShowMessagesInSec = 0;
-          afterShowMessagesInSec = _afterShowMessagesInSec - afterTakenInSec;
+          afterShowMessagesInSec = _afterShowMessagesInSec +
+              _tillShowMessagesInSec -
+              afterTakenInSec;
         }
 
-        if (afterShowMessagesInSec < 60) {
+        if (afterShowMessagesInSec <= 60) {
           _setAnswerIsNotPossible();
         }
 
@@ -987,15 +994,6 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  bool _checkMinRecordDurationIsOk() {
-    if (_recordAudioDuration == null) {
-      return true;
-    } else {
-      return _recordAudioDuration != null &&
-          _recordAudioDuration! >= AppConstants.minRecordDurationInSec;
-    }
-  }
-
   bool _checkMaxRecordDurationIsOk() {
     if (_recordAudioDuration == null) {
       return true;
@@ -1021,6 +1019,15 @@ class ChatCubit extends Cubit<ChatState> {
     return totalSizeInMb;
   }
 
+  bool checkMinRecordDurationIsOk() {
+    if (_recordAudioDuration == null) {
+      return true;
+    } else {
+      return _recordAudioDuration != null &&
+          _recordAudioDuration! >= AppConstants.minRecordDurationInSec;
+    }
+  }
+
   bool canAttachPictureTo(AttachmentType? attachmentType) {
     return state.attachedPictures.length <
         ((attachmentType != null && attachmentType == AttachmentType.audio)
@@ -1044,4 +1051,6 @@ class ChatCubit extends Cubit<ChatState> {
   bool get isAttachedPictures => state.attachedPictures.isNotEmpty;
 
   Stream<PlaybackDisposition>? get onMediaProgress => playerMedia?.onProgress;
+
+  int? get recordAudioDuration => _recordAudioDuration;
 }
