@@ -82,7 +82,8 @@ class CustomerSessionsScreen extends StatelessWidget {
                               CustomerSessionsListWidget(questions: questions),
                         );
                       } else {
-                        return const EmptyCustomerSessionsListWidget();
+                        return const Expanded(
+                            child: EmptyCustomerSessionsListWidget());
                       }
                     }),
                   ],
