@@ -75,6 +75,9 @@ class ChatConversationAppBar extends StatelessWidget
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  const SizedBox(
+                                    width: 12.0,
+                                  ),
                                   SvgPicture.asset(
                                     selectedBrand.icon,
                                     height: 17.0,
