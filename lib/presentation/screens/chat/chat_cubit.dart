@@ -284,6 +284,7 @@ class ChatCubit extends Cubit<ChatState> {
             questionFromDB: lastQuestion.copyWith(
               clientID: ritualsResponse.clientID,
               clientName: ritualsResponse.clientName,
+              ritualID: ritualId,
             ),
             questionStatus: lastQuestion.status,
             activeMessages: activeMessages,
@@ -852,7 +853,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     final answerRequest = AnswerRequest(
       questionID: state.questionFromDB?.id,
-      ritualID: state.questionFromDB?.ritualIdentifier,
+      ritualID: state.questionFromDB?.ritualID,
       attachments: [
         audioAttachment!,
         if (pictureAttachment != null) pictureAttachment,
@@ -872,7 +873,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     final answerRequest = AnswerRequest(
       questionID: state.questionFromDB?.id,
-      ritualID: state.questionFromDB?.ritualIdentifier,
+      ritualID: state.questionFromDB?.ritualID,
       content: textEditingController.text.isEmpty
           ? null
           : textEditingController.text,

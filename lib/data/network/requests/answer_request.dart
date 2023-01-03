@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
-import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
 
 part 'answer_request.g.dart';
 
@@ -8,7 +7,7 @@ part 'answer_request.g.dart';
 class AnswerRequest {
   String? questionID;
   String? content;
-  SessionsTypes? ritualID;
+  String? ritualID;
   List<Attachment>? attachments;
 
   AnswerRequest(
