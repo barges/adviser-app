@@ -32,15 +32,4 @@ class Attachment with _$Attachment {
       return AttachmentType.image;
     }
   }
-
-  Duration get duration {
-      return Duration(seconds: meta?.duration ?? 0);
-  }
-
-  String? getImageUrl() {
-    if (type == AttachmentType.image) {
-      return url;
-    }
-    return null;
-  }
 }

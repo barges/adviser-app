@@ -33,7 +33,8 @@ class ChatMediaWidget extends StatelessWidget {
           ? Theme.of(context).primaryColor
           : Theme.of(context).canvasColor,
       child: Stack(children: [
-        Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Column(crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
           if (item.content?.isNotEmpty == true)
             ChatTextAreaWidget(
               content: item.content!,
