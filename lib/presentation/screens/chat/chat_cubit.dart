@@ -1029,7 +1029,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  bool canAttachPictureTo(AttachmentType? attachmentType) {
+  bool canAttachPictureTo({AttachmentType? attachmentType}) {
     return state.attachedPictures.length <
         ((attachmentType != null && attachmentType == AttachmentType.audio)
             ? AppConstants.maxAttachedPicturesWithAudio

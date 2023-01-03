@@ -57,7 +57,7 @@ class ChatTextInputWidget extends StatelessWidget {
                     final int inputTextLength = context.select(
                         (ChatCubit cubit) => cubit.state.inputTextLength);
                     final bool canAttachPicture =
-                        chatCubit.canAttachPictureTo(null);
+                        chatCubit.canAttachPictureTo();
                     final bool canRecordAudio = chatCubit.canRecordAudio;
                     return Row(
                       crossAxisAlignment:
