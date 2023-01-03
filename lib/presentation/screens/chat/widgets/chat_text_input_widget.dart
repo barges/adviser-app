@@ -83,22 +83,27 @@ class ChatTextInputWidget extends StatelessWidget {
                           ),
                         ),
                         if (attachedPictures.isNotEmpty)
-                          GestureDetector(
-                            onTap: () {
-                              if (canRecordAudio) {
-                                chatCubit.startRecordingAudio(context);
-                              }
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 16.0,
+                          Row(
+                            children: [
+                              const SizedBox(
+                                height: 28.0,
+                                child: VerticalDivider(
+                                  width: 24.0,
+                                ),
                               ),
-                              child: Opacity(
-                                opacity: canRecordAudio ? 1.0 : 0.4,
-                                child: Assets.vectors.microphone
-                                    .svg(width: AppConstants.iconSize),
+                              GestureDetector(
+                                onTap: () {
+                                  if (canRecordAudio) {
+                                    chatCubit.startRecordingAudio(context);
+                                  }
+                                },
+                                child: Opacity(
+                                  opacity: canRecordAudio ? 1.0 : 0.4,
+                                  child: Assets.vectors.microphone
+                                      .svg(width: AppConstants.iconSize),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         if (attachedPictures.isNotEmpty) const Spacer(),
                         if (attachedPictures.isEmpty)
