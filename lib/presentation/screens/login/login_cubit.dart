@@ -25,9 +25,8 @@ class LoginCubit extends Cubit<LoginState> {
   final AuthRepository _repository;
   final CachingManager _cacheManager;
 
-  final MainCubit _mainCubit = getIt.get<MainCubit>();
-  final DynamicLinkService _dynamicLinkService =
-      getIt.get<DynamicLinkService>();
+  final MainCubit _mainCubit;
+  final DynamicLinkService _dynamicLinkService;
 
   late final List<Brand> unauthorizedBrands;
   final TextEditingController passwordController = TextEditingController();
@@ -35,7 +34,9 @@ class LoginCubit extends Cubit<LoginState> {
   final FocusNode emailNode = FocusNode();
   final FocusNode passwordNode = FocusNode();
 
-  LoginCubit(this._repository, this._cacheManager) : super(const LoginState()) {
+  LoginCubit(this._repository, this._cacheManager, this._mainCubit,
+      this._dynamicLinkService)
+      : super(const LoginState()) {
     _dynamicLinkService.checkLinkForResetPassword();
 
     unauthorizedBrands = _cacheManager.getUnauthorizedBrands();
@@ -106,15 +107,18 @@ class LoginCubit extends Cubit<LoginState> {
     if (emailIsValid() && passwordIsValid()) {
       getIt.get<Dio>().addAuthorizationToHeader(
           'Basic ${base64.encode(utf8.encode('${emailController.text}:${passwordController.text.to256}'))}');
-
-      LoginResponse? response = await _repository.login();
-      String? token = response?.accessToken;
-      if (token != null && token.isNotEmpty) {
-        String jvtToken = 'JWT $token';
-        await _cacheManager.saveTokenForBrand(state.selectedBrand, jvtToken);
-        getIt.get<Dio>().addAuthorizationToHeader(jvtToken);
-        _cacheManager.saveCurrentBrand(state.selectedBrand);
-        goToHome();
+      try {
+        LoginResponse? response = await _repository.login();
+        String? token = response?.accessToken;
+        if (token != null && token.isNotEmpty) {
+          String jvtToken = 'JWT $token';
+          await _cacheManager.saveTokenForBrand(state.selectedBrand, jvtToken);
+          getIt.get<Dio>().addAuthorizationToHeader(jvtToken);
+          _cacheManager.saveCurrentBrand(state.selectedBrand);
+          goToHome();
+        }
+      } on DioError catch (e) {
+        logger.d(e);
       }
     } else {
       if (!emailIsValid()) {

@@ -14,6 +14,7 @@ class RitualsResponse {
   final String? clientID;
   final String? clientName;
   final List<dynamic>? inputFieldsData;
+  @JsonKey(unknownEnumValue: SessionsTypes.undefined)
   final SessionsTypes? identifier;
   @JsonKey(ignore: true)
   late final RitualCardInfo? ritualCardInfo;

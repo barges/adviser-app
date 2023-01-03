@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
+import 'package:shared_advisor_interface/data/models/chats/history.dart';
 import 'package:shared_advisor_interface/data/models/chats/story.dart';
+import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
 import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
 import 'package:shared_advisor_interface/data/network/api/customer_api.dart';
@@ -32,10 +34,11 @@ void main() {
     customerApi = CustomerApi(dio);
   });
 
-  group('LoginResponse', () {
+  group('AuthApi login()', () {
     test(
-        'returns an LoginResponse'
-        ' if server returns accessToken as String', () async {
+        'returns a LoginResponse'
+        ' if server returns accessToken, that should be String?, as String ',
+        () async {
       dioAdapter.onPost(
         '/experts/login/app',
         (server) => server.reply(
@@ -55,8 +58,9 @@ void main() {
     });
 
     test(
-        'returns an LoginResponse'
-        ' if server returns accessToken as null', () async {
+        'returns a LoginResponse'
+        ' if server returns accessToken, that should be String?, as null',
+        () async {
       dioAdapter.onPost(
         '/experts/login/app',
         (server) => server.reply(
@@ -75,7 +79,7 @@ void main() {
     });
 
     test(
-        'returns an LoginResponse'
+        'returns a LoginResponse'
         ' if server doesn`t return accessToken at all', () async {
       dioAdapter.onPost(
         '/experts/login/app',
@@ -95,8 +99,9 @@ void main() {
     });
 
     test(
-        'returns an LoginResponse'
-        ' if server returns accessToken as List', () async {
+        'throws a TypeError'
+        ' if server returns accessToken, that should be String?, as List',
+        () async {
       dioAdapter.onPost(
         '/experts/login/app',
         (server) => server.reply(
@@ -121,8 +126,9 @@ void main() {
     });
 
     test(
-        'returns an LoginResponse'
-        ' if server returns accessToken as int', () async {
+        'throws a TypeError'
+        ' if server returns accessToken, that should be String?, as int',
+        () async {
       dioAdapter.onPost(
         '/experts/login/app',
         (server) => server.reply(
@@ -147,7 +153,7 @@ void main() {
     });
 
     test(
-        'returns an LoginResponse'
+        'throws a DioError'
         ' if server returns String instead of Map', () async {
       dioAdapter.onPost(
         '/experts/login/app',
@@ -174,9 +180,9 @@ void main() {
     });
   });
 
-  group('ConversationsStoryResponse', () {
+  group('ChatsApi getStory()', () {
     test(
-        'returns an ConversationsStoryResponse'
+        'returns a ConversationsStoryResponse'
         ' if server returns values with right types', () async {
       dioAdapter.onPost(
         '/stories',
@@ -192,11 +198,6 @@ void main() {
         ),
       );
 
-      ConversationsStoryResponse conversationsStoryResponse =
-          await chatsApi.getStory(storyID: emptyString);
-
-      print(conversationsStoryResponse.toJson());
-
       expect(
         await chatsApi.getStory(storyID: emptyString),
         predicate((value) =>
@@ -210,7 +211,7 @@ void main() {
     });
 
     test(
-        'returns an ConversationsStoryResponse'
+        'returns an empty ConversationsStoryResponse'
         ' if server returns empty Map', () async {
       dioAdapter.onPost(
         '/stories',
@@ -233,8 +234,9 @@ void main() {
     });
 
     test(
-        'returns an ConversationsStoryResponse'
-        ' if server returns questions as String', () async {
+        'throws a TypeError'
+        ' if server returns questions, that should be List<ChatItem>?, as String',
+        () async {
       dioAdapter.onPost(
         '/stories',
         (server) => server.reply(
@@ -263,8 +265,9 @@ void main() {
     });
 
     test(
-        'returns an ConversationsStoryResponse'
-        ' if server returns answers as String', () async {
+        'throws a TypeError'
+        ' if server returns answers, that should be List<ChatItem>?, as String',
+        () async {
       dioAdapter.onPost(
         '/stories',
         (server) => server.reply(
@@ -293,8 +296,9 @@ void main() {
     });
 
     test(
-        'returns an ConversationsStoryResponse'
-        ' if server returns clientID as int', () async {
+        'throws a TypeError'
+        ' if server returns clientID, that should be String?, as int',
+        () async {
       dioAdapter.onPost(
         '/stories',
         (server) => server.reply(
@@ -323,7 +327,7 @@ void main() {
     });
 
     test(
-        'returns an ConversationsStoryResponse'
+        'throws a DioError'
         ' if server returns String instead of Map', () async {
       dioAdapter.onPost(
         '/stories',
@@ -350,9 +354,9 @@ void main() {
     });
   });
 
-  group('HistoryResponse', () {
+  group('ChatsApi getHistoryList()', () {
     test(
-        'returns an HistoryResponse'
+        'returns a HistoryResponse'
         ' if server returns values with right types', () async {
       dioAdapter.onGet(
         '/experts/conversations/history',
@@ -375,13 +379,55 @@ void main() {
           clientId: emptyString,
           limit: limit,
         ),
-        isA<HistoryResponse>(),
+        predicate((value) =>
+            value is HistoryResponse &&
+            value.history is List<History> &&
+            value.history!.isEmpty &&
+            value.hasMore == true &&
+            value.lastItem == 'lastItem' &&
+            value.hasBefore == true &&
+            value.firstItem == 'firstItem'),
       );
     });
 
     test(
-        'returns an HistoryResponse'
-        ' if server returns data as int', () async {
+        'returns a HistoryResponse'
+        ' if server returns values with right types, but not returns hasBefore and firstItem at all',
+        () async {
+      dioAdapter.onGet(
+        '/experts/conversations/history',
+        (server) => server.reply(
+          200,
+          {
+            'data': [],
+            'hasMore': true,
+            'lastItem': 'lastItem',
+          },
+          // Reply would wait for one-sec before returning data.
+          delay: const Duration(seconds: 1),
+        ),
+      );
+
+      expect(
+        await chatsApi.getHistoryList(
+          clientId: emptyString,
+          limit: limit,
+        ),
+        predicate((value) =>
+            value is HistoryResponse &&
+            value.history is List<History> &&
+            value.history!.isEmpty &&
+            value.hasMore == true &&
+            value.lastItem == 'lastItem' &&
+            value.hasBefore == null &&
+            value.firstItem == null),
+      );
+    });
+
+    test(
+        'throws a TypeError'
+        ' if server returns data, that should be List<dynamic>?, as int',
+        () async {
       dioAdapter.onGet(
         '/experts/conversations/history',
         (server) => server.reply(
@@ -397,17 +443,25 @@ void main() {
       );
 
       expect(
-        await chatsApi.getHistoryList(
+        () async => await chatsApi.getHistoryList(
           clientId: emptyString,
           limit: limit,
         ),
-        isA<HistoryResponse>(),
+        throwsA(
+          predicate(
+            (e) =>
+                e is TypeError &&
+                e.toString() ==
+                    "type 'int' is not a subtype of type 'List<dynamic>?' in type cast",
+          ),
+        ),
       );
     });
 
     test(
-        'returns an HistoryResponse'
-        ' if server returns hasMore as String', () async {
+        'throws a TypeError'
+        ' if server returns hasMore, that should be bool?, as String',
+        () async {
       dioAdapter.onGet(
         '/experts/conversations/history',
         (server) => server.reply(
@@ -423,17 +477,25 @@ void main() {
       );
 
       expect(
-        await chatsApi.getHistoryList(
+        () async => await chatsApi.getHistoryList(
           clientId: emptyString,
           limit: limit,
         ),
-        isA<HistoryResponse>(),
+        throwsA(
+          predicate(
+            (e) =>
+                e is TypeError &&
+                e.toString() ==
+                    "type 'String' is not a subtype of type 'bool?' in type cast",
+          ),
+        ),
       );
     });
 
     test(
-        'returns an HistoryResponse'
-        ' if server returns lastItem as List', () async {
+        'throws a TypeError'
+        ' if server returns lastItem, that should be String?, as List',
+        () async {
       dioAdapter.onGet(
         '/experts/conversations/history',
         (server) => server.reply(
@@ -449,16 +511,23 @@ void main() {
       );
 
       expect(
-        await chatsApi.getHistoryList(
+        () async => await chatsApi.getHistoryList(
           clientId: emptyString,
           limit: limit,
         ),
-        isA<HistoryResponse>(),
+        throwsA(
+          predicate(
+            (e) =>
+                e is TypeError &&
+                e.toString() ==
+                    "type 'List<dynamic>' is not a subtype of type 'String?' in type cast",
+          ),
+        ),
       );
     });
 
     test(
-        'returns an HistoryResponse'
+        'throws a DioError'
         ' if server returns String instead of Map', () async {
       dioAdapter.onGet(
         '/experts/conversations/history',
@@ -471,16 +540,24 @@ void main() {
       );
 
       expect(
-        await chatsApi.getHistoryList(
+        () async => await chatsApi.getHistoryList(
           clientId: emptyString,
           limit: limit,
         ),
-        isA<HistoryResponse>(),
+        throwsA(
+          predicate(
+            (e) =>
+                e is DioError &&
+                e.type == DioErrorType.other &&
+                e.error.toString() ==
+                    "type 'String' is not a subtype of type 'Map<String, dynamic>?' in type cast",
+          ),
+        ),
       );
     });
   });
 
-  group('RitualsResponse', () {
+  group('ChatsApi getRituals()', () {
     test(
         'returns an RitualsResponse'
         ' if server returns values with right types', () async {
@@ -502,7 +579,15 @@ void main() {
 
       expect(
         await chatsApi.getRituals(id: emptyString),
-        isA<RitualsResponse>(),
+        predicate(
+          (value) =>
+              value is RitualsResponse &&
+              value.story == const Story() &&
+              value.clientID == 'clientID' &&
+              value.clientName == 'clientName' &&
+              value.inputFieldsData!.isEmpty &&
+              value.identifier == SessionsTypes.tarot,
+        ),
       );
     });
 
@@ -527,13 +612,22 @@ void main() {
 
       expect(
         await chatsApi.getRituals(id: emptyString),
-        isA<RitualsResponse>(),
+        predicate(
+          (value) =>
+              value is RitualsResponse &&
+              value.story == const Story() &&
+              value.clientID == 'clientID' &&
+              value.clientName == 'clientName' &&
+              value.inputFieldsData!.isEmpty &&
+              value.identifier == SessionsTypes.undefined,
+        ),
       );
     });
 
     test(
         'returns an RitualsResponse'
-        ' if server returns identifier as int', () async {
+        ' if server returns identifier, that should be SessionsTypes, as int',
+        () async {
       dioAdapter.onGet(
         '/rituals/single/',
         (server) => server.reply(
@@ -552,7 +646,15 @@ void main() {
 
       expect(
         await chatsApi.getRituals(id: emptyString),
-        isA<RitualsResponse>(),
+        predicate(
+          (value) =>
+              value is RitualsResponse &&
+              value.story == const Story() &&
+              value.clientID == 'clientID' &&
+              value.clientName == 'clientName' &&
+              value.inputFieldsData!.isEmpty &&
+              value.identifier == SessionsTypes.undefined,
+        ),
       );
     });
 
@@ -577,13 +679,22 @@ void main() {
 
       expect(
         await chatsApi.getRituals(id: emptyString),
-        isA<RitualsResponse>(),
+        predicate(
+          (value) =>
+              value is RitualsResponse &&
+              value.story == const Story() &&
+              value.clientID == 'clientID' &&
+              value.clientName == 'clientName' &&
+              value.inputFieldsData!.isEmpty &&
+              value.identifier == SessionsTypes.tarot,
+        ),
       );
     });
 
     test(
-        'returns an RitualsResponse'
-        ' if server returns clientID and clientName as int', () async {
+        'throws a TypeError'
+        ' if server returns clientID and clientName, that should be String?, as int',
+        () async {
       dioAdapter.onGet(
         '/rituals/single/',
         (server) => server.reply(
@@ -601,14 +712,22 @@ void main() {
       );
 
       expect(
-        await chatsApi.getRituals(id: emptyString),
-        isA<RitualsResponse>(),
+        () async => await chatsApi.getRituals(id: emptyString),
+        throwsA(
+          predicate(
+            (e) =>
+                e is TypeError &&
+                e.toString() ==
+                    "type 'int' is not a subtype of type 'String?' in type cast",
+          ),
+        ),
       );
     });
 
     test(
-        'returns an RitualsResponse'
-        ' if server returns inputFieldsData as String', () async {
+        'throws a TypeError'
+        ' if server returns inputFieldsData, that should be List<dynamic>?, as String',
+        () async {
       dioAdapter.onGet(
         '/rituals/single/',
         (server) => server.reply(
@@ -626,13 +745,20 @@ void main() {
       );
 
       expect(
-        await chatsApi.getRituals(id: emptyString),
-        isA<RitualsResponse>(),
+        () async => await chatsApi.getRituals(id: emptyString),
+        throwsA(
+          predicate(
+            (e) =>
+                e is TypeError &&
+                e.toString() ==
+                    "type 'String' is not a subtype of type 'List<dynamic>?' in type cast",
+          ),
+        ),
       );
     });
 
     test(
-        'returns an RitualsResponse'
+        'throws a DioError'
         ' if server returns String instead of Map', () async {
       dioAdapter.onGet(
         '/rituals/single/',
@@ -645,13 +771,21 @@ void main() {
       );
 
       expect(
-        await chatsApi.getRituals(id: emptyString),
-        isA<RitualsResponse>(),
+        () async => await chatsApi.getRituals(id: emptyString),
+        throwsA(
+          predicate(
+            (e) =>
+                e is DioError &&
+                e.type == DioErrorType.other &&
+                e.error.toString() ==
+                    "type 'String' is not a subtype of type 'Map<String, dynamic>?' in type cast",
+          ),
+        ),
       );
     });
   });
 
-  group('UpdateNoteResponse', () {
+  group('CustomerApi updateNoteToCustomer()', () {
     test(
         'returns an UpdateNoteResponse'
         ' if server returns values with right types', () async {
@@ -674,16 +808,24 @@ void main() {
       );
 
       expect(
-        await customerApi.updateNoteToCustomer(
-          const UpdateNoteRequest(clientID: emptyString, content: emptyString),
-        ),
-        isA<UpdateNoteResponse>(),
-      );
+          await customerApi.updateNoteToCustomer(
+            const UpdateNoteRequest(
+                clientID: emptyString, content: emptyString),
+          ),
+          const UpdateNoteResponse(
+            id: 'id',
+            content: 'content',
+            expertID: 'expertID',
+            clientID: 'clientID',
+            searchKey: 'searchKey',
+            createdAt: 'createdAt',
+            updatedAt: 'updatedAt',
+          ));
     });
 
     test(
-        'returns an UpdateNoteResponse'
-        ' if server returns values with wrong types', () async {
+        'throws a TypeError'
+        ' if server returns value, that should be String?, as int', () async {
       dioAdapter.onPost(
         '/notes',
         (server) => server.reply(
@@ -703,15 +845,22 @@ void main() {
       );
 
       expect(
-        await customerApi.updateNoteToCustomer(
+        () async => await customerApi.updateNoteToCustomer(
           const UpdateNoteRequest(clientID: emptyString, content: emptyString),
         ),
-        isA<UpdateNoteResponse>(),
+        throwsA(
+          predicate(
+            (e) =>
+                e is TypeError &&
+                e.toString() ==
+                    "type 'int' is not a subtype of type 'String?' in type cast",
+          ),
+        ),
       );
     });
 
     test(
-        'returns an UpdateNoteResponse'
+        'throws a DioError'
         ' if server returns String instead of Map', () async {
       dioAdapter.onGet(
         '/notes',
@@ -724,15 +873,23 @@ void main() {
       );
 
       expect(
-        await customerApi.updateNoteToCustomer(
+        () async => await customerApi.updateNoteToCustomer(
           const UpdateNoteRequest(clientID: emptyString, content: emptyString),
         ),
-        isA<UpdateNoteResponse>(),
+        throwsA(
+          predicate(
+            (e) =>
+                e is DioError &&
+                e.type == DioErrorType.other &&
+                e.error.toString() ==
+                    "type 'String' is not a subtype of type 'Map<String, dynamic>?' in type cast",
+          ),
+        ),
       );
     });
   });
 
-  group('QuestionsListResponse', () {
+  group('ChatsApi GetPublicQuestions', () {
     test(
         'returns an QuestionsListResponse'
         ' if server returns values with right types', () async {
@@ -760,15 +917,114 @@ void main() {
 
     test(
         'returns an QuestionsListResponse'
-        ' if server returns values with wrong types', () async {
+        ' if server returns data, that should be List<dynamic>?, as int',
+        () async {
       dioAdapter.onPost(
         '/experts/questions/public',
         (server) => server.reply(
           200,
           {
             'data': 10,
+            'hasMore': true,
+            'limit': 10,
+            'lastItem': 'lastItem',
+            'lastId': 'lastId',
+          },
+          // Reply would wait for one-sec before returning data.
+          delay: const Duration(seconds: 1),
+        ),
+      );
+
+      expect(
+        () async => await chatsApi.getPublicQuestions(limit: limit),
+        throwsA(
+          predicate(
+            (e) =>
+                e is TypeError &&
+                e.toString() ==
+                    "type 'int' is not a subtype of type 'List<dynamic>?' in type cast",
+          ),
+        ),
+      );
+    });
+
+    test(
+        'returns an QuestionsListResponse'
+        ' if server returns hasMore, that should be bool?, as String',
+        () async {
+      dioAdapter.onPost(
+        '/experts/questions/public',
+        (server) => server.reply(
+          200,
+          {
+            'data': [],
             'hasMore': 'true',
+            'limit': 10,
+            'lastItem': 'lastItem',
+            'lastId': 'lastId',
+          },
+          // Reply would wait for one-sec before returning data.
+          delay: const Duration(seconds: 1),
+        ),
+      );
+
+      expect(
+        () async => await chatsApi.getPublicQuestions(limit: limit),
+        throwsA(
+          predicate(
+            (e) =>
+                e is TypeError &&
+                e.toString() ==
+                    "type 'String' is not a subtype of type 'bool?' in type cast",
+          ),
+        ),
+      );
+    });
+
+    test(
+        'returns an QuestionsListResponse'
+        ' if server returns limit, that should be int?, as String', () async {
+      dioAdapter.onPost(
+        '/experts/questions/public',
+        (server) => server.reply(
+          200,
+          {
+            'data': [],
+            'hasMore': true,
             'limit': '10',
+            'lastItem': 'lastItem',
+            'lastId': 'lastId',
+          },
+          // Reply would wait for one-sec before returning data.
+          delay: const Duration(seconds: 1),
+        ),
+      );
+
+      expect(
+        () async => await chatsApi.getPublicQuestions(limit: limit),
+        throwsA(
+          predicate(
+            (e) =>
+                e is TypeError &&
+                e.toString() ==
+                    "type 'String' is not a subtype of type 'int?' in type cast",
+          ),
+        ),
+      );
+    });
+
+    test(
+        'returns an QuestionsListResponse'
+        ' if server returns limit, that should be String?, as String',
+        () async {
+      dioAdapter.onPost(
+        '/experts/questions/public',
+        (server) => server.reply(
+          200,
+          {
+            'data': [],
+            'hasMore': true,
+            'limit': 10,
             'lastItem': [],
             'lastId': [],
           },
@@ -778,13 +1034,20 @@ void main() {
       );
 
       expect(
-        await chatsApi.getPublicQuestions(limit: limit),
-        isA<QuestionsListResponse>(),
+        () async => await chatsApi.getPublicQuestions(limit: limit),
+        throwsA(
+          predicate(
+            (e) =>
+                e is TypeError &&
+                e.toString() ==
+                    "type 'List<dynamic>' is not a subtype of type 'String?' in type cast",
+          ),
+        ),
       );
     });
 
     test(
-        'returns an QuestionsListResponse'
+        'throws a DioError'
         ' if server returns String instead of Map', () async {
       dioAdapter.onPost(
         '/experts/questions/public',
@@ -797,8 +1060,16 @@ void main() {
       );
 
       expect(
-        await chatsApi.getPublicQuestions(limit: limit),
-        isA<QuestionsListResponse>(),
+        () async => await chatsApi.getPublicQuestions(limit: limit),
+        throwsA(
+          predicate(
+            (e) =>
+                e is DioError &&
+                e.type == DioErrorType.other &&
+                e.error.toString() ==
+                    "type 'String' is not a subtype of type 'Map<String, dynamic>?' in type cast",
+          ),
+        ),
       );
     });
   });
