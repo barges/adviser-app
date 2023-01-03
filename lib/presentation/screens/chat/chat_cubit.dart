@@ -786,10 +786,12 @@ class ChatCubit extends Cubit<ChatState> {
         } else if (afterTakenInSec <
             _tillShowMessagesInSec + _afterShowMessagesInSec) {
           tillShowMessagesInSec = 0;
-          afterShowMessagesInSec = _afterShowMessagesInSec - afterTakenInSec;
+          afterShowMessagesInSec = _afterShowMessagesInSec +
+              _tillShowMessagesInSec -
+              afterTakenInSec;
         }
 
-        if (afterShowMessagesInSec < 60) {
+        if (afterShowMessagesInSec <= 60) {
           _setAnswerIsNotPossible();
         }
 
@@ -1026,7 +1028,7 @@ class ChatCubit extends Cubit<ChatState> {
     return totalSizeInMb;
   }
 
-  bool canAttachPictureTo(AttachmentType? attachmentType) {
+  bool canAttachPictureTo({AttachmentType? attachmentType}) {
     return state.attachedPictures.length <
         ((attachmentType != null && attachmentType == AttachmentType.audio)
             ? AppConstants.maxAttachedPicturesWithAudio

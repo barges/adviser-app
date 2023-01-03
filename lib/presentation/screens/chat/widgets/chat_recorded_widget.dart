@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
@@ -58,8 +56,8 @@ class ChatRecordedWidget extends StatelessWidget {
                   Builder(builder: (context) {
                     final List<File> attachedPictures = context.select(
                         (ChatCubit cubit) => cubit.state.attachedPictures);
-                    final bool canAttachPicture =
-                        chatCubit.canAttachPictureTo(AttachmentType.audio);
+                    final bool canAttachPicture = chatCubit.canAttachPictureTo(
+                        attachmentType: AttachmentType.audio);
                     final bool canRecordAudio = chatCubit.canRecordAudio;
                     final File? recordedAudio = context.select(
                       (ChatCubit cubit) => cubit.state.recordedAudio,
