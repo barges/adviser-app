@@ -8,10 +8,10 @@ import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.da
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/ritual_info_card_widget.dart';
 
-class ActiveChatMessagesIsNotEmptyWidget extends StatelessWidget {
+class ActiveChatMessagesWidget extends StatelessWidget {
   final List<ChatItem> activeMessages;
 
-  const ActiveChatMessagesIsNotEmptyWidget({
+  const ActiveChatMessagesWidget({
     super.key,
     required this.activeMessages,
   });

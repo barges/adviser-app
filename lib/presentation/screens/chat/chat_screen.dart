@@ -140,7 +140,7 @@ class ChatScreen extends StatelessWidget {
                         Builder(builder: (context) {
                           final List<Widget> tabs = [];
                           if (chatCubit.needActiveChatTab()) {
-                            tabs.add(const ActiveChat());
+                            tabs.add(const ActiveChatWidget());
                           }
                           tabs.addAll([
                             Builder(builder: (context) {
