@@ -18,7 +18,7 @@ upgrade_flutter:
   tags:
     - macmini
   only:
-    - develop_2
+    - develop
 
 # test:
 #   stage: test
@@ -90,7 +90,7 @@ generate-release-notes:
   tags:
     - macmini
   only:
-    - develop_2
+    - develop
 
 deploy-ios:
   stage: deploy
@@ -104,7 +104,7 @@ deploy-ios:
   tags:
     - macmini
   only:
-    - develop_2
+    - develop
 deploy-android:
   stage: deploy
   needs:
@@ -117,7 +117,7 @@ deploy-android:
   tags:
     - macmini
   only:
-    - develop_2
+    - develop
 tag:
   stage: tag
   needs:
@@ -136,4 +136,4 @@ tag:
   tags:
     - macmini
   only:
-    - develop_2
+    - develop
