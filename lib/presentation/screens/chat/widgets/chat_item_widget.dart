@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/rounded_rect_image.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_background_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_footer_widget.dart';
@@ -33,8 +34,7 @@ class ChatItemWidget extends StatelessWidget {
           ? Theme.of(context).primaryColor
           : Theme.of(context).canvasColor,
       child: Stack(children: [
-        Column(crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+        Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           if (item.content?.isNotEmpty == true)
             ChatTextAreaWidget(
               content: item.content!,
@@ -44,11 +44,19 @@ class ChatItemWidget extends StatelessWidget {
             ),
           if (item.attachments?.isNotEmpty == true)
             Column(
-              children: item.attachments!.map((e) {
+              children: item.attachments!.mapIndexed((e, index) {
                 if (e.type == AttachmentType.image) {
-                  return RoundedRectImage(
-                    uri: Uri.parse(e.url ?? ''),
-                    height: 134.0,
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      bottom: item.attachments!.length > 1 &&
+                              index < item.attachments!.length - 1
+                          ? 12.0
+                          : 0.0,
+                    ),
+                    child: RoundedRectImage(
+                      uri: Uri.parse(e.url ?? ''),
+                      height: 134.0,
+                    ),
                   );
                 } else if (e.type == AttachmentType.audio) {
                   return ChatItemPlayer(
