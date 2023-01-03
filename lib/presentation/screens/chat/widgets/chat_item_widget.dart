@@ -20,8 +20,8 @@ class ChatItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (item.isMedia) {
-      if (item.content != null && item.content!.isNotEmpty) {
+    if (item.attachments?.isNotEmpty == true) {
+      if (item.content?.isNotEmpty == true) {
         return ChatTextMediaWidget(
           item: item,
           onPressedTryAgain: onPressedTryAgain,

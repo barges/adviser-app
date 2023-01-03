@@ -13,6 +13,7 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 
 part 'chat_item.freezed.dart';
+
 part 'chat_item.g.dart';
 
 @freezed
@@ -69,40 +70,6 @@ class ChatItem with _$ChatItem {
     return chatItemContentType;
   }
 
-  Attachment? getAttachment(int n) {
-    if (isMedia && attachments!.length >= n) {
-      return attachments![n - 1];
-    }
-    return null;
-  }
-
-  String? getAudioUrl(int n) {
-    if (isMedia &&
-        getAttachment(n) != null &&
-        getAttachment(n)!.mime!.contains(AttachmentType.audio.name)) {
-      return getAttachment(n)!.url;
-    }
-    return null;
-  }
-
-  String? getImageUrl(int n) {
-    if (isMedia &&
-        getAttachment(n) != null &&
-        getAttachment(n)!.mime!.contains(AttachmentType.image.name)) {
-      return getAttachment(n)!.url;
-    }
-    return null;
-  }
-
-  Duration getDuration(int n) {
-    if (getAttachment(n) != null &&
-        getAttachment(n)!.meta != null &&
-        getAttachment(n)!.meta!.duration != null) {
-      return Duration(seconds: getAttachment(n)!.meta!.duration!);
-    }
-    return const Duration();
-  }
-
   String getUnansweredMessage(BuildContext context) {
     String? resultMessage;
     if (unansweredCount != null && unansweredCount! > 1) {
@@ -114,7 +81,7 @@ class ChatItem with _$ChatItem {
     return resultMessage;
   }
 
-  bool get isMedia => attachments != null && attachments!.isNotEmpty;
-
-  bool get isAudio => getAudioUrl(1) != null || getAudioUrl(2) != null;
+  bool get isAudio =>
+      attachments?.any((element) => element.type == AttachmentType.audio) ==
+      true;
 }

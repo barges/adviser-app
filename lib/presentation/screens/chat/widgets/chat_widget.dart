@@ -9,19 +9,4 @@ abstract class ChatWidget extends StatelessWidget with ChatItemTypeGetter {
     super.key,
     required this.item,
   });
-
-  @override
-  bool get isAnswer => item.isAnswer;
-
-  DateTime get createdAt => item.createdAt ?? DateTime.now();
-
-  EdgeInsets get paddingItem => getterType(
-        question: const EdgeInsets.only(right: 36.0),
-        answer: const EdgeInsets.only(left: 36.0),
-      );
-
-  Color getColorItem(BuildContext context) => getterType(
-        question: Theme.of(context).canvasColor,
-        answer: Theme.of(context).primaryColor,
-      );
 }
