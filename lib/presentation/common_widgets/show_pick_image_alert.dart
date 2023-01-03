@@ -4,13 +4,10 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 
 Future<void> showPickImageAlert(
@@ -168,35 +165,27 @@ Future<bool> _checkForGrantedPermission(ImageSource imageSource) async {
 
 Future<void> _handlePermissions(
     BuildContext context, ImageSource source) async {
-  CachingManager cacheManager = getIt.get<CachingManager>();
   PermissionStatus status;
-  PermissionStatus? previousStatus;
   switch (source) {
     case ImageSource.camera:
       {
-        previousStatus = cacheManager.getCameraPermissionStatus();
         status = await Permission.camera.request();
-        await cacheManager.setCameraPermissionStatus(status);
       }
       break;
     case ImageSource.gallery:
       {
-        previousStatus = cacheManager.getGalleryPermissionStatus();
         if (Platform.isIOS) {
           status = await Permission.photos.request();
         } else {
           status = await Permission.storage.request();
         }
-        await cacheManager.setGalleryPermissionStatus(status);
       }
       break;
   }
-  logger.d('PREVIOUS: $previousStatus');
-  logger.d('CURRENT: $status');
-  if (previousStatus?.isPermanentlyDenied == true) {
+
+  if (status.isPermanentlyDenied) {
     VoidCallback actionOnOk = (() async {
-      bool canOpenSettings = await openAppSettings();
-      logger.d('CAN OPEN SETTINGS: $canOpenSettings');
+      await openAppSettings();
       Navigator.pop(context);
     });
     await showOkCancelAlert(

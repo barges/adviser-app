@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
@@ -54,26 +56,56 @@ class ChatRecordedWidget extends StatelessWidget {
               Row(
                 children: [
                   Builder(builder: (context) {
-                    context.select(
+                    final List<File> attachedPictures = context.select(
                         (ChatCubit cubit) => cubit.state.attachedPictures);
-                    final bool canAttachPicture =
-                        chatCubit.canAttachPictureTo(attachmentType: AttachmentType.audio);
-                    return GestureDetector(
-                      onTap: () {
-                        if (canAttachPicture) {
-                          showPickImageAlert(
-                            context: context,
-                            setImage: chatCubit.attachPicture,
-                          );
-                        }
-                      },
-                      child: Opacity(
-                        opacity: canAttachPicture ? 1.0 : 0.4,
-                        child: Assets.vectors.gallery.svg(
-                          width: AppConstants.iconSize,
-                          color: Theme.of(context).shadowColor,
+                    final bool canAttachPicture = chatCubit.canAttachPictureTo(
+                        attachmentType: AttachmentType.audio);
+                    final bool canRecordAudio = chatCubit.canRecordAudio;
+                    final File? recordedAudio = context.select(
+                      (ChatCubit cubit) => cubit.state.recordedAudio,
+                    );
+                    final bool audioRecordingButtonIsEnabled =
+                        canRecordAudio && recordedAudio == null;
+
+                    return Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            if (canAttachPicture) {
+                              showPickImageAlert(
+                                context: context,
+                                setImage: chatCubit.attachPicture,
+                              );
+                            }
+                          },
+                          child: Opacity(
+                            opacity: canAttachPicture ? 1.0 : 0.4,
+                            child: Assets.vectors.gallery.svg(
+                              width: AppConstants.iconSize,
+                              color: Theme.of(context).shadowColor,
+                            ),
+                          ),
                         ),
-                      ),
+                        if (attachedPictures.isNotEmpty)
+                          GestureDetector(
+                            onTap: () {
+                              if (audioRecordingButtonIsEnabled) {
+                                chatCubit.startRecordingAudio(context);
+                              }
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 16.0,
+                              ),
+                              child: Opacity(
+                                opacity:
+                                    audioRecordingButtonIsEnabled ? 1.0 : 0.4,
+                                child: Assets.vectors.microphone
+                                    .svg(width: AppConstants.iconSize),
+                              ),
+                            ),
+                          ),
+                      ],
                     );
                   }),
                   const SizedBox(
