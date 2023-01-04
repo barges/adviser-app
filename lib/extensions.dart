@@ -214,3 +214,11 @@ extension DurationExt on Duration {
     return "${minutes < 10 ? '0$minutes' : '$minutes'}:${seconds < 10 ? '0$seconds' : '$seconds'}";
   }
 }
+
+extension IntExt on int {
+  String get formatMMSS {
+    final minutes = this ~/ 60;
+    final seconds = remainder(60);
+    return "${minutes < 10 ? '0$minutes' : '$minutes'}:${seconds < 10 ? '0$seconds' : '$seconds'}";
+  }
+}

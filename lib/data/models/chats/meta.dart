@@ -9,8 +9,10 @@ part 'meta.g.dart';
 class Meta with _$Meta {
   @JsonSerializable(includeIfNull: false)
   const factory Meta({
-    num? duration,
+    @JsonKey(fromJson: _toInt) int? duration,
   }) = _Meta;
 
   factory Meta.fromJson(Map<String, dynamic> json) => _$MetaFromJson(json);
 }
+
+int? _toInt(num? value) => value?.toInt();
