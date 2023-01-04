@@ -8,8 +8,8 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_messages_is_not_empty_widget.dart';
 
-class ActiveChat extends StatelessWidget {
-  const ActiveChat({
+class ActiveChatWidget extends StatelessWidget {
+  const ActiveChatWidget({
     Key? key,
   }) : super(key: key);
 

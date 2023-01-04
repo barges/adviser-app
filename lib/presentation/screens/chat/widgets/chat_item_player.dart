@@ -33,7 +33,7 @@ class ChatItemPlayer extends StatelessWidget with ChatItemTypeGetter {
       isPlaying: isCurrent && isPlayingAudio,
       isPlayingFinished: isCurrent ? isPlayingAudioFinished : true,
       playbackStream: chatCubit.onMediaProgress,
-      duration: Duration(seconds: attachment.meta?.duration ?? 0),
+      duration: attachment.duration,
       textColor: getterType(
         question: Theme.of(context).primaryColor,
         answer: Theme.of(context).backgroundColor,

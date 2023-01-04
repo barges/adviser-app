@@ -24,7 +24,7 @@ class ChatItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChatItemBackground(
+    return ChatItemBackgroundWidget(
       onPressedTryAgain: onPressedTryAgain,
       isTryAgain: !item.isSent,
       padding: item.isAnswer
@@ -36,32 +36,36 @@ class ChatItemWidget extends StatelessWidget {
       child: Stack(children: [
         Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           if (item.content?.isNotEmpty == true)
-            ChatTextAreaWidget(
-              content: item.content!,
-              color: item.isAnswer
-                  ? Theme.of(context).backgroundColor
-                  : Theme.of(context).hoverColor,
+            Padding(
+              padding: EdgeInsets.only(
+                  bottom: item.attachments?.isNotEmpty == true ? 5.0 : 18.0),
+              child: ChatTextAreaWidget(
+                content: item.content!,
+                color: item.isAnswer
+                    ? Theme.of(context).backgroundColor
+                    : Theme.of(context).hoverColor,
+              ),
             ),
           if (item.attachments?.isNotEmpty == true)
             Column(
-              children: item.attachments!.mapIndexed((e, index) {
-                if (e.type == AttachmentType.image) {
+              children: item.attachments!.mapIndexed((attachment, index) {
+                if (attachment.type == AttachmentType.image) {
                   return Padding(
                     padding: EdgeInsets.only(
                       bottom: item.attachments!.length > 1 &&
                               index < item.attachments!.length - 1
                           ? 12.0
-                          : 0.0,
+                          : 20.0,
                     ),
                     child: RoundedRectImage(
-                      uri: Uri.parse(e.url ?? ''),
+                      uri: Uri.parse(attachment.url ?? ''),
                       height: 134.0,
                     ),
                   );
-                } else if (e.type == AttachmentType.audio) {
+                } else if (attachment.type == AttachmentType.audio) {
                   return ChatItemPlayer(
                     isQuestion: !item.isAnswer,
-                    attachment: e,
+                    attachment: attachment,
                   );
                 }
 
@@ -83,39 +87,7 @@ class ChatItemWidget extends StatelessWidget {
             isHistoryAnswer: isHistoryAnswer,
           ),
         ),
-      ]
-          // if (isImage1)
-          //   RoundedRectImage(
-          //     uri: Uri.parse(item.getImageUrl(1)!),
-          //     height: 134.0,
-          //   ),
-          // if (isImage2)
-          //   Padding(
-          //     padding: const EdgeInsets.only(top: 12.0,),
-          //     child: RoundedRectImage(
-          //       uri: Uri.parse(item.getImageUrl(2)!),
-          //       height: 134.0,
-          //     ),
-          //   ),
-          // if (audioUrl1 == null && audioUrl2 == null)
-          //   const SizedBox(height: 24.0),
-          // if ((isImage1 || isImage2) &&
-          //     (audioUrl1 != null || audioUrl2 != null))
-          //   const SizedBox(height: 12.0),
-          // if (audioUrl1 != null)
-          //   ChatItemPlayer(
-          //     isQuestion: !item.isAnswer,
-          //     audioUrl: audioUrl1,
-          //     duration: item.getDuration(1),
-          //   ),
-          // if (audioUrl2 != null)
-          //   ChatItemPlayer(
-          //     isQuestion: !item.isAnswer,
-          //     audioUrl: audioUrl2,
-          //     duration: item.getDuration(2),
-          //   ),
-
-          ),
+      ]),
     );
   }
 }

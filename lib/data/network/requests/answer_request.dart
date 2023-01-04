@@ -8,7 +8,7 @@ part 'answer_request.g.dart';
 class AnswerRequest {
   String? questionID;
   String? content;
-  SessionsTypes? ritualID;
+  String? ritualID;
   List<Attachment>? attachments;
 
   AnswerRequest(
