@@ -79,21 +79,12 @@ class ChatRecordedWidget extends StatelessWidget {
                               );
                             }
                           },
-                          child: Column(
-                            children: [
-                              Opacity(
-                                opacity: canAttachPicture ? 1.0 : 0.4,
-                                child: Assets.vectors.gallery.svg(
-                                  width: AppConstants.iconSize,
-                                  color: Theme.of(context).shadowColor,
-                                ),
-                              ),
-                              // temporary for testing
-                              if (recordedAudio != null)
-                                Text(
-                                    '${recordedAudio.sizeInMb.toString().substring(0, 5)} Mb',
-                                    style: const TextStyle(fontSize: 12.0)),
-                            ],
+                          child: Opacity(
+                            opacity: canAttachPicture ? 1.0 : 0.4,
+                            child: Assets.vectors.gallery.svg(
+                              width: AppConstants.iconSize,
+                              color: Theme.of(context).shadowColor,
+                            ),
                           ),
                         ),
                         if (attachedPictures.isNotEmpty)
