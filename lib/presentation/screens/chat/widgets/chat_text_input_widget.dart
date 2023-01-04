@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -120,6 +121,12 @@ class ChatTextInputWidget extends StatelessWidget {
                           final isSendButtonEnabled = context.select(
                               (ChatCubit cubit) =>
                                   cubit.state.isSendButtonEnabled);
+                          final ChatItem? questionFromDB = context.select(
+                              (ChatCubit cubit) => cubit.state.questionFromDB);
+
+                          final isAudioQuestion =
+                              questionFromDB?.isAudio ?? false;
+
                           return Row(
                             children: [
                               if (inputTextLength == 0 &&
@@ -234,6 +241,7 @@ class _TextCounter extends StatelessWidget {
           context.select((ChatCubit cubit) => cubit.state.inputTextLength);
       final isEnabled =
           context.select((ChatCubit cubit) => cubit.state.isSendButtonEnabled);
+      context.select((ChatCubit cubit) => cubit.state.questionFromDB);
       return Container(
         width: 94.0,
         height: 22.0,

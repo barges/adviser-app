@@ -285,6 +285,7 @@ class ChatCubit extends Cubit<ChatState> {
               clientID: ritualsResponse.clientID,
               clientName: ritualsResponse.clientName,
               ritualID: ritualId,
+              ritualIdentifier: ritualIdentifier,
             ),
             questionStatus: lastQuestion.status,
             activeMessages: activeMessages,

@@ -11,14 +11,17 @@ import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboar
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 class DashboardV1Cubit extends Cubit<DashboardV1State> {
-  final ConnectivityService _connectivityService =
-      getIt.get<ConnectivityService>();
+  final ConnectivityService _connectivityService;
+  final MainCubit mainCubit;
+  final UserRepository _userRepository;
+  final CachingManager cacheManager;
 
   late final VoidCallback disposeUserProfileListen;
   late final VoidCallback disposeUserIdListen;
-  final CachingManager cacheManager;
 
-  DashboardV1Cubit(this.cacheManager) : super(const DashboardV1State()) {
+  DashboardV1Cubit(this.cacheManager, this._connectivityService,
+      this._userRepository, this.mainCubit)
+      : super(const DashboardV1State()) {
     disposeUserProfileListen = cacheManager.listenUserProfile((value) {
       emit(state.copyWith(userProfile: value));
     });
@@ -28,9 +31,6 @@ class DashboardV1Cubit extends Cubit<DashboardV1State> {
       }
     });
   }
-
-  final MainCubit mainCubit = getIt.get<MainCubit>();
-  final UserRepository _userRepository = getIt.get<UserRepository>();
 
   @override
   Future<void> close() async {

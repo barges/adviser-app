@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
+import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/articles/articles_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/dashboard_v1_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_screen.dart';
+import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 enum TabsTypes {
   dashboard,
@@ -38,12 +42,22 @@ enum TabsTypes {
     }
   }
 
-  Navigator getNavigator(BuildContext context) {
+  Navigator getNavigator({
+    required BuildContext context,
+    required CachingManager cacheManager,
+    required ConnectivityService connectivityService,
+    required ChatsRepository chatsRepository,
+    required UserRepository userRepository,
+  }) {
     switch (this) {
       case TabsTypes.dashboard:
         return Navigator(
             onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-                builder: (BuildContext context) => const DashboardV1Screen()));
+                builder: (BuildContext context) => DashboardV1Screen(
+                      cacheManager: cacheManager,
+                      connectivityService: connectivityService,
+                      userRepository: userRepository,
+                    )));
       case TabsTypes.articles:
         return Navigator(
             onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
@@ -51,11 +65,19 @@ enum TabsTypes {
       case TabsTypes.sessions:
         return Navigator(
             onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-                builder: (BuildContext context) => const SessionsScreen()));
+                builder: (BuildContext context) => SessionsScreen(
+                      cacheManager: cacheManager,
+                      connectivityService: connectivityService,
+                      chatsRepository: chatsRepository,
+                    )));
       case TabsTypes.account:
         return Navigator(
             onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-                builder: (BuildContext context) => const AccountScreen()));
+                builder: (BuildContext context) => AccountScreen(
+                      cacheManager: cacheManager,
+                      connectivityService: connectivityService,
+                      userRepository: userRepository,
+                    )));
     }
   }
 }
