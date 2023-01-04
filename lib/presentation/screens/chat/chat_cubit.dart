@@ -32,12 +32,11 @@ import 'package:shared_advisor_interface/data/network/requests/answer_request.da
 import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
@@ -360,7 +359,8 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> startRecordingAudio(BuildContext context) async {
     _tryStartAnswerSend();
 
-    await _handlePermissions(context);
+    await CheckPermissionService.handlePermission(
+        context, PermissionType.audio);
 
     final isRecordGranted = await Permission.microphone.isGranted;
 
@@ -468,26 +468,6 @@ class ChatCubit extends Cubit<ChatState> {
     File? recordedAudio = state.recordedAudio;
     if (recordedAudio != null && await recordedAudio.exists()) {
       recordedAudio.deleteSync();
-    }
-  }
-
-  Future<void> _handlePermissions(BuildContext context) async {
-    final s = S.of(context);
-    PermissionStatus status = await Permission.microphone.request();
-
-    if (status.isPermanentlyDenied) {
-      VoidCallback actionOnOk = (() async {
-        await openAppSettings();
-        Navigator.pop(context);
-      });
-      await showOkCancelAlert(
-          context: context,
-          title: s.permissionNeeded,
-          okText: s.settings,
-          description: s.weNeedPermissionToAccessYourMicrophone,
-          actionOnOK: actionOnOk,
-          allowBarrierClick: true,
-          isCancelEnabled: true);
     }
   }
 

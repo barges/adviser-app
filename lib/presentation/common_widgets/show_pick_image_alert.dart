@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
+import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 
 Future<void> showPickImageAlert(
     {required BuildContext context,
@@ -120,7 +120,8 @@ Future<void> showPickImageAlert(
 
 Future<void> _pickImage(BuildContext context, ImageSource imageSource,
     ValueChanged<File> setImage) async {
-  await _handlePermissions(context, imageSource);
+  await CheckPermissionService.handlePermission(
+      context, PermissionType.getPermissionTypeByImageSource(imageSource));
   File? image;
 
   if (await _checkForGrantedPermission(imageSource)) {
@@ -138,7 +139,8 @@ Future<void> _pickImage(BuildContext context, ImageSource imageSource,
 
 Future<void> _pickMultiImage(BuildContext context, ImageSource imageSource,
     ValueChanged<List<File>> setMultiImage) async {
-  await _handlePermissions(context, imageSource);
+  await CheckPermissionService.handlePermission(
+      context, PermissionType.getPermissionTypeByImageSource(imageSource));
   List<File> images = List.empty(growable: true);
   final ImagePicker picker = ImagePicker();
   final List<XFile>? photoFiles = await picker.pickMultiImage();
@@ -161,42 +163,4 @@ Future<bool> _checkForGrantedPermission(ImageSource imageSource) async {
       (Platform.isIOS &&
           imageSource == ImageSource.gallery &&
           await Permission.photos.status == PermissionStatus.granted);
-}
-
-Future<void> _handlePermissions(
-    BuildContext context, ImageSource source) async {
-  PermissionStatus status;
-  switch (source) {
-    case ImageSource.camera:
-      {
-        status = await Permission.camera.request();
-      }
-      break;
-    case ImageSource.gallery:
-      {
-        if (Platform.isIOS) {
-          status = await Permission.photos.request();
-        } else {
-          status = await Permission.storage.request();
-        }
-      }
-      break;
-  }
-
-  if (status.isPermanentlyDenied) {
-    VoidCallback actionOnOk = (() async {
-      await openAppSettings();
-      Navigator.pop(context);
-    });
-    await showOkCancelAlert(
-        context: context,
-        title: S.of(context).permissionNeeded,
-        okText: S.of(context).settings,
-        description: S
-            .of(context)
-            .weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages,
-        actionOnOK: actionOnOk,
-        allowBarrierClick: true,
-        isCancelEnabled: true);
-  }
 }
