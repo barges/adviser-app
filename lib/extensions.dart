@@ -17,9 +17,7 @@ const String datePattern6 = 'MMM. dd, yyyy, HH:mm';
 const String datePattern7 = 'HH:mm';
 const String datePattern8 = 'MMM dd';
 const String datePattern9 = 'MMM dd, yyyy';
-const String datePattern10 = 'MM/dd';
-const String datePattern11 = 'MM/dd/yy';
-const String datePattern12 = 'MMM. dd, yyyy HH:mm';
+const String datePattern10 = 'MMM. dd, yyyy HH:mm';
 
 const String currencyPattern = '#,##0.00';
 
@@ -115,18 +113,6 @@ extension StringExt on String {
     return DateFormat(datePattern10).format(inputData);
   }
 
-  String get parseDateTimePattern11 {
-    final DateTime inputData = DateTime.parse(
-        DateFormat(dateFormat).parse(this, true).toLocal().toString());
-    return DateFormat(datePattern11).format(inputData);
-  }
-
-  String get parseDateTimePattern12 {
-    final DateTime inputData = DateTime.parse(
-        DateFormat(dateFormat).parse(this, true).toLocal().toString());
-    return DateFormat(datePattern12).format(inputData);
-  }
-
   String get removeSpacesAndNewLines {
     return trim().replaceAll(RegExp(r'(\n){3,}'), "\n\n");
   }
@@ -194,9 +180,9 @@ extension DateTimeExt on DateTime {
       return S.of(context).today;
     }
     if (timeDifference < -365) {
-      return DateFormat(dateFormat).format(this).parseDateTimePattern11;
+      return DateFormat(dateFormat).format(this).parseDateTimePattern9;
     }
-    return DateFormat(dateFormat).format(this).parseDateTimePattern10;
+    return DateFormat(dateFormat).format(this).parseDateTimePattern8;
   }
 
   String get historyCardQuestionTime {
@@ -207,9 +193,9 @@ extension DateTimeExt on DateTime {
             .difference(DateTime(now.year, now.month, now.day))
             .inDays;
     if (timeDifference < -365) {
-      return DateFormat(dateFormat).format(this).parseDateTimePattern11;
+      return DateFormat(dateFormat).format(this).parseDateTimePattern9;
     }
-    return DateFormat(dateFormat).format(this).parseDateTimePattern10;
+    return DateFormat(dateFormat).format(this).parseDateTimePattern8;
   }
 
   String get historyCardAnswerTime {

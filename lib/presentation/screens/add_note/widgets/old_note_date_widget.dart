@@ -4,8 +4,8 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_cubit.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 
-class DateIfNoteIsNotNewWidget extends StatelessWidget {
-  const DateIfNoteIsNotNewWidget({Key? key}) : super(key: key);
+class OldNoteDateWidget extends StatelessWidget {
+  const OldNoteDateWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class DateIfNoteIsNotNewWidget extends StatelessWidget {
         vertical: 12.0,
       ),
       child: Text(
-        addNoteCubit.arguments.updatedAt?.parseDateTimePattern12 ?? '',
+        addNoteCubit.arguments.updatedAt?.parseDateTimePattern10 ?? '',
         style: Theme.of(context).textTheme.displaySmall?.copyWith(
               fontWeight: FontWeight.w400,
               color: Theme.of(context).shadowColor,

@@ -6,7 +6,7 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_messages_is_not_empty_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_messages_widget.dart';
 
 class ActiveChatWidget extends StatelessWidget {
   const ActiveChatWidget({
@@ -28,7 +28,7 @@ class ActiveChatWidget extends StatelessWidget {
                   .select((ChatCubit cubit) => cubit.state.activeMessages);
 
               if (activeMessages.isNotEmpty) {
-                return ActiveChatMessagesIsNotEmptyWidget(
+                return ActiveChatMessagesWidget(
                   activeMessages: activeMessages,
                 );
               } else {

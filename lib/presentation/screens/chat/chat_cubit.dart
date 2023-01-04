@@ -284,6 +284,8 @@ class ChatCubit extends Cubit<ChatState> {
             questionFromDB: lastQuestion.copyWith(
               clientID: ritualsResponse.clientID,
               clientName: ritualsResponse.clientName,
+              ritualID: ritualId,
+              ritualIdentifier: ritualIdentifier,
             ),
             questionStatus: lastQuestion.status,
             activeMessages: activeMessages,

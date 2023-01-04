@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
@@ -16,14 +15,11 @@ const String _userInfoKey = 'userInfoKey';
 const String _userStatusKey = 'userStatusKey';
 const String _userIdKey = 'userIdKey';
 const String _localeKey = 'localeKey';
-const String _cameraPermissionStatusKey = 'cameraPermissionStatusKey';
-const String _galleryPermissionStatusKey = 'galleryPermissionStatusKey';
 
 class DataCachingManager implements CachingManager {
   final GetStorage _userBox = GetStorage();
   final GetStorage _brandsBox = GetStorage();
   final GetStorage _localeBox = GetStorage();
-  final GetStorage _permissionStatusBox = GetStorage();
 
   @override
   Future<bool> clearTokenForBrand(Brand brand) async {
@@ -252,29 +248,5 @@ class DataCachingManager implements CachingManager {
     return _userBox.listenKey(_userIdKey, (value) {
       callback(value);
     });
-  }
-
-  @override
-  PermissionStatus? getCameraPermissionStatus() {
-    return _permissionStatusBox.read(_cameraPermissionStatusKey);
-  }
-
-  @override
-  PermissionStatus? getGalleryPermissionStatus() {
-    return _permissionStatusBox.read(_galleryPermissionStatusKey);
-  }
-
-  @override
-  Future<void> setCameraPermissionStatus(
-      PermissionStatus cameraPermissionStatus) async {
-    await _permissionStatusBox.write(
-        _cameraPermissionStatusKey, cameraPermissionStatus);
-  }
-
-  @override
-  Future<void> setGalleryPermissionStatus(
-      PermissionStatus galleryPermissionStatus) async {
-    await _permissionStatusBox.write(
-        _galleryPermissionStatusKey, galleryPermissionStatus);
   }
 }
