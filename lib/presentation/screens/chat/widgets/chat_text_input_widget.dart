@@ -193,7 +193,7 @@ class _InputTextField extends StatelessWidget {
       builder: (context, constraints) {
         context.select((ChatCubit cubit) => cubit.state.inputTextLength);
         final int textNumLines = Utils.getTextNumLines(
-          chatCubit.textEditingController.text,
+          chatCubit.textInputEditingController.text,
           constraints.maxWidth,
           style,
         );
@@ -204,7 +204,7 @@ class _InputTextField extends StatelessWidget {
           interactive: true,
           child: TextField(
             scrollController: chatCubit.textInputScrollController,
-            controller: chatCubit.textEditingController,
+            controller: chatCubit.textInputEditingController,
             maxLines: textNumLines > _maxTextNumLines ? _maxTextNumLines : null,
             style: style,
             decoration: InputDecoration(
