@@ -21,11 +21,10 @@ class AccountCubit extends Cubit<AccountState> {
   final TextEditingController commentController = TextEditingController();
   final FocusNode commentNode = FocusNode();
 
-  final MainCubit mainCubit = getIt.get<MainCubit>();
+  final MainCubit mainCubit;
 
-  final UserRepository _userRepository = getIt.get<UserRepository>();
-  final ConnectivityService _connectivityService =
-      getIt.get<ConnectivityService>();
+  final UserRepository _userRepository;
+  final ConnectivityService _connectivityService;
 
   final CachingManager cacheManager;
 
@@ -33,7 +32,12 @@ class AccountCubit extends Cubit<AccountState> {
 
   late final VoidCallback disposeListen;
 
-  AccountCubit(this.cacheManager) : super(const AccountState()) {
+  AccountCubit(
+    this.cacheManager,
+    this.mainCubit,
+    this._userRepository,
+    this._connectivityService,
+  ) : super(const AccountState()) {
     disposeListen = cacheManager.listenUserProfile((value) {
       emit(state.copyWith(userProfile: value));
     });

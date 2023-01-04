@@ -24,6 +24,7 @@ import 'package:shared_advisor_interface/presentation/services/dynamic_link_serv
 class LoginCubit extends Cubit<LoginState> {
   final AuthRepository _repository;
   final CachingManager _cacheManager;
+  final Dio _dio;
 
   final MainCubit _mainCubit;
   final DynamicLinkService _dynamicLinkService;
@@ -35,7 +36,7 @@ class LoginCubit extends Cubit<LoginState> {
   final FocusNode passwordNode = FocusNode();
 
   LoginCubit(this._repository, this._cacheManager, this._mainCubit,
-      this._dynamicLinkService)
+      this._dynamicLinkService, this._dio)
       : super(const LoginState()) {
     _dynamicLinkService.checkLinkForResetPassword();
 
@@ -105,7 +106,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> login() async {
     if (emailIsValid() && passwordIsValid()) {
-      getIt.get<Dio>().addAuthorizationToHeader(
+      _dio.addAuthorizationToHeader(
           'Basic ${base64.encode(utf8.encode('${emailController.text}:${passwordController.text.to256}'))}');
       try {
         LoginResponse? response = await _repository.login();
@@ -113,7 +114,7 @@ class LoginCubit extends Cubit<LoginState> {
         if (token != null && token.isNotEmpty) {
           String jvtToken = 'JWT $token';
           await _cacheManager.saveTokenForBrand(state.selectedBrand, jvtToken);
-          getIt.get<Dio>().addAuthorizationToHeader(jvtToken);
+          _dio.addAuthorizationToHeader(jvtToken);
           _cacheManager.saveCurrentBrand(state.selectedBrand);
           goToHome();
         }

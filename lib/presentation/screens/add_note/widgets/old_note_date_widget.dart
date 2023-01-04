@@ -16,7 +16,7 @@ class OldNoteDateWidget extends StatelessWidget {
         vertical: 12.0,
       ),
       child: Text(
-        addNoteCubit.arguments.updatedAt?.parseDateTimePattern12 ?? '',
+        addNoteCubit.arguments.updatedAt?.parseDateTimePattern10 ?? '',
         style: Theme.of(context).textTheme.displaySmall?.copyWith(
               fontWeight: FontWeight.w400,
               color: Theme.of(context).shadowColor,

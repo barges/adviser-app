@@ -54,7 +54,7 @@ class ChatItemFooterWidget extends StatelessWidget {
               ? createdAt.historyCardQuestionTime
               : isHistoryAnswer
                   ? createdAt.historyCardAnswerTime
-                  : createdAt.chatListTime.toString(),
+                  : createdAt.chatListTime,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: color,
                 fontSize: 12.0,

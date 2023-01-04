@@ -9,7 +9,6 @@ import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/data/network/requests/set_push_notification_token_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
-import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_state.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
@@ -24,23 +23,22 @@ class HomeCubit extends Cubit<HomeState> {
     TabsTypes.account,
   ];
 
-  final CachingManager cacheManager;
-  final BuildContext context;
+  final CachingManager _cacheManager;
 
-  final ConnectivityService _connectivityService =
-      getIt.get<ConnectivityService>();
+  final ConnectivityService _connectivityService;
 
-  final UserRepository _userRepository = getIt.get<UserRepository>();
-  final PushNotificationManager _pushNotificationManager =
-      getIt.get<PushNotificationManager>();
+  final UserRepository _userRepository;
+  final PushNotificationManager _pushNotificationManager;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   late final VoidCallback disposeListen;
 
-  HomeCubit({
-    required this.cacheManager,
-    required this.context,
-  }) : super(const HomeState()) {
+  HomeCubit(
+    this._cacheManager,
+    this._connectivityService,
+    this._userRepository,
+    this._pushNotificationManager,
+  ) : super(const HomeState()) {
     final HomeScreenArguments? arguments = Get.arguments;
     if (arguments?.initTab != null && tabsList.contains(arguments!.initTab)) {
       changeTabIndex(
@@ -49,8 +47,8 @@ class HomeCubit extends Cubit<HomeState> {
     }
 
     emit(state.copyWith(
-        userStatus: cacheManager.getUserStatus() ?? const UserStatus()));
-    disposeListen = cacheManager.listenCurrentUserStatus((value) {
+        userStatus: _cacheManager.getUserStatus() ?? const UserStatus()));
+    disposeListen = _cacheManager.listenCurrentUserStatus((value) {
       if (value.status != FortunicaUserStatus.live) {
         changeTabIndex(tabsList.indexOf(TabsTypes.account));
       }

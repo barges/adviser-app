@@ -29,10 +29,9 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   final ScrollController publicQuestionsScrollController = ScrollController();
   final ScrollController conversationsScrollController = ScrollController();
-  final MainCubit _mainCubit = getIt.get<MainCubit>();
-  final ChatsRepository _repository = getIt.get<ChatsRepository>();
-  final ConnectivityService _connectivityService =
-      getIt.get<ConnectivityService>();
+  final MainCubit _mainCubit;
+  final ChatsRepository _repository;
+  final ConnectivityService _connectivityService;
 
   late final StreamSubscription<bool> _updateSessionsSubscription;
   late final VoidCallback disposeUserStatusListen;
@@ -51,8 +50,13 @@ class SessionsCubit extends Cubit<SessionsState> {
   bool _isPublicLoading = false;
   bool _isConversationsLoading = false;
 
-  SessionsCubit(this.cacheManager, this.context)
-      : super(const SessionsState()) {
+  SessionsCubit(
+    this.cacheManager,
+    this.context,
+    this._connectivityService,
+    this._repository,
+    this._mainCubit,
+  ) : super(const SessionsState()) {
     publicQuestionsScrollController.addListener(() {
       if (!_isPublicLoading &&
           publicQuestionsScrollController.position.extentAfter <=
