@@ -11,13 +11,12 @@ class Utils {
     return tp.computeLineMetrics().length;
   }
 
-  static void animateToWidget(GlobalKey key,
-      {int durationInMilliseconds = 500}) {
+  static void animateToWidget(GlobalKey key) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final BuildContext? context = key.currentContext;
       if (context != null) {
         Scrollable.ensureVisible(context,
-            duration: Duration(milliseconds: durationInMilliseconds));
+            duration: const Duration(milliseconds: 500));
       }
     });
   }

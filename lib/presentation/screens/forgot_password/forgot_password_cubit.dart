@@ -18,10 +18,8 @@ import 'package:shared_advisor_interface/presentation/services/dynamic_link_serv
 
 class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   final AuthRepository _repository;
-
-  final DynamicLinkService _dynamicLinkService =
-      getIt.get<DynamicLinkService>();
-  final MainCubit _mainCubit = getIt.get<MainCubit>();
+  final DynamicLinkService _dynamicLinkService;
+  final MainCubit _mainCubit;
 
   late final StreamSubscription<DynamicLinkData> _linkSubscription;
 
@@ -34,7 +32,9 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
 
   late final ForgotPasswordScreenArguments arguments;
 
-  ForgotPasswordCubit(this._repository) : super(const ForgotPasswordState()) {
+  ForgotPasswordCubit(
+      this._repository, this._dynamicLinkService, this._mainCubit)
+      : super(const ForgotPasswordState()) {
     arguments = Get.arguments as ForgotPasswordScreenArguments;
 
     if (arguments.resetToken != null) {

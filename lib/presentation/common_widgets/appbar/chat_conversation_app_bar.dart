@@ -75,6 +75,9 @@ class ChatConversationAppBar extends StatelessWidget
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  const SizedBox(
+                                    width: 12.0,
+                                  ),
                                   SvgPicture.asset(
                                     selectedBrand.icon,
                                     height: 17.0,
@@ -136,23 +139,25 @@ class _ReturnInQueue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        AppIconButton(
-          icon: Assets.vectors.close.path,
-          onTap: onTap,
-        ),
-        const SizedBox(
-          width: 8.0,
-        ),
-        Text(
-          S.of(context).returnToQueue.toUpperCase(),
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: Theme.of(context).primaryColor,
-                fontSize: 12.0,
-              ),
-        ),
-      ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        children: [
+          AppIconButton(
+            icon: Assets.vectors.close.path,
+          ),
+          const SizedBox(
+            width: 8.0,
+          ),
+          Text(
+            S.of(context).returnToQueue.toUpperCase(),
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 12.0,
+                ),
+          ),
+        ],
+      ),
     );
   }
 }

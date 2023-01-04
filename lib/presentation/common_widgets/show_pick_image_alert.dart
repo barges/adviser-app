@@ -122,11 +122,15 @@ Future<void> _pickImage(BuildContext context, ImageSource imageSource,
     ValueChanged<File> setImage) async {
   await _handlePermissions(context, imageSource);
   File? image;
-  final ImagePicker picker = ImagePicker();
-  final XFile? photoFile = await picker.pickImage(source: imageSource);
-  if (photoFile?.path != null) {
-    image = File(photoFile!.path);
+
+  if (await _checkForGrantedPermission(imageSource)) {
+    final ImagePicker picker = ImagePicker();
+    final XFile? photoFile = await picker.pickImage(source: imageSource);
+    if (photoFile?.path != null) {
+      image = File(photoFile!.path);
+    }
   }
+
   if (image != null) {
     setImage(image);
   }
@@ -148,6 +152,17 @@ Future<void> _pickMultiImage(BuildContext context, ImageSource imageSource,
   }
 }
 
+Future<bool> _checkForGrantedPermission(ImageSource imageSource) async {
+  return (imageSource == ImageSource.camera &&
+          await Permission.camera.status == PermissionStatus.granted) ||
+      (Platform.isAndroid &&
+          imageSource == ImageSource.gallery &&
+          await Permission.storage.status == PermissionStatus.granted) ||
+      (Platform.isIOS &&
+          imageSource == ImageSource.gallery &&
+          await Permission.photos.status == PermissionStatus.granted);
+}
+
 Future<void> _handlePermissions(
     BuildContext context, ImageSource source) async {
   PermissionStatus status;
@@ -167,6 +182,7 @@ Future<void> _handlePermissions(
       }
       break;
   }
+
   if (status.isPermanentlyDenied) {
     VoidCallback actionOnOk = (() async {
       await openAppSettings();

@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/data/models/chats/story.dart';
 import 'package:shared_advisor_interface/data/models/enums/gender.dart';
 import 'package:shared_advisor_interface/data/models/enums/ritual_info_card_field_data.dart';
 import 'package:shared_advisor_interface/data/models/enums/ritual_info_card_field_type.dart';
+import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
 
 part 'rituals_response.g.dart';
 
@@ -13,6 +14,8 @@ class RitualsResponse {
   final String? clientID;
   final String? clientName;
   final List<dynamic>? inputFieldsData;
+  @JsonKey(unknownEnumValue: SessionsTypes.undefined)
+  final SessionsTypes? identifier;
   @JsonKey(ignore: true)
   late final RitualCardInfo? ritualCardInfo;
 
@@ -21,6 +24,7 @@ class RitualsResponse {
     this.clientID,
     this.clientName,
     this.inputFieldsData,
+    this.identifier,
   }) {
     String? firstName;
     String? lastName;

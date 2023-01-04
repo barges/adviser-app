@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
+import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
@@ -40,9 +42,9 @@ class ChatRecordedWidget extends StatelessWidget {
           child: Column(
             children: [
               Builder(builder: (context) {
-                context
+                final List<File> attachedPictures = context
                     .select((ChatCubit cubit) => cubit.state.attachedPictures);
-                return chatCubit.isAttachedPictures
+                return attachedPictures.isNotEmpty
                     ? const Padding(
                         padding: EdgeInsets.only(
                           top: 4.0,
@@ -54,39 +56,64 @@ class ChatRecordedWidget extends StatelessWidget {
               }),
               Row(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      if (chatCubit.state.attachedPictures.isEmpty) {
-                        showPickImageAlert(
-                          context: context,
-                          setImage: chatCubit.attachPicture,
-                        );
-                      }
-                    },
-                    child: Builder(builder: (context) {
-                      final List<File> attachedPictures = context.select(
-                          (ChatCubit cubit) => cubit.state.attachedPictures);
-                      return Opacity(
-                        opacity: attachedPictures.isEmpty ? 1.0 : 0.4,
-                        child: Assets.vectors.gallery.svg(
-                          width: AppConstants.iconSize,
-                          color: Theme.of(context).shadowColor,
+                  Builder(builder: (context) {
+                    final List<File> attachedPictures = context.select(
+                        (ChatCubit cubit) => cubit.state.attachedPictures);
+                    final bool canAttachPicture = chatCubit.canAttachPictureTo(
+                        attachmentType: AttachmentType.audio);
+                    final bool canRecordAudio = chatCubit.canRecordAudio;
+                    final File? recordedAudio = context.select(
+                      (ChatCubit cubit) => cubit.state.recordedAudio,
+                    );
+                    final bool audioRecordingButtonIsEnabled =
+                        canRecordAudio && recordedAudio == null;
+
+                    return Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            if (canAttachPicture) {
+                              showPickImageAlert(
+                                context: context,
+                                setImage: chatCubit.attachPicture,
+                              );
+                            }
+                          },
+                          child: Opacity(
+                            opacity: canAttachPicture ? 1.0 : 0.4,
+                            child: Assets.vectors.gallery.svg(
+                              width: AppConstants.iconSize,
+                              color: Theme.of(context).shadowColor,
+                            ),
+                          ),
                         ),
-                      );
-                    }),
-                  ),
+                        if (attachedPictures.isNotEmpty)
+                          GestureDetector(
+                            onTap: () {
+                              if (audioRecordingButtonIsEnabled) {
+                                chatCubit.startRecordingAudio(context);
+                              }
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 16.0,
+                              ),
+                              child: Opacity(
+                                opacity:
+                                    audioRecordingButtonIsEnabled ? 1.0 : 0.4,
+                                child: Assets.vectors.microphone
+                                    .svg(width: AppConstants.iconSize),
+                              ),
+                            ),
+                          ),
+                      ],
+                    );
+                  }),
                   const SizedBox(
                     height: 28.0,
                     child: VerticalDivider(
                       width: 24.0,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      right: 12.0,
-                    ),
-                    child: Assets.vectors.microphone
-                        .svg(width: AppConstants.iconSize),
                   ),
                   Expanded(
                     child: Container(
@@ -123,15 +150,15 @@ class ChatRecordedWidget extends StatelessWidget {
                                                 snapshot.data!.duration
                                                     .inMilliseconds
                                             : 0.0;
-                                        final time = playbackStream != null &&
-                                                snapshot.hasData
-                                            ? snapshot.data!.position
-                                                .toString()
-                                                .substring(2, 7)
-                                            : "00:00";
                                         return _PlayProgress(
                                           value: value,
-                                          time: time,
+                                          duration:
+                                              chatCubit.recordAudioDuration !=
+                                                      null
+                                                  ? chatCubit
+                                                      .recordAudioDuration!
+                                                      .formatMMSS
+                                                  : "00:00",
                                         );
                                       },
                                     );
@@ -223,12 +250,12 @@ class _PlayPauseBtn extends StatelessWidget {
 
 class _PlayProgress extends StatelessWidget {
   final double value;
-  final String time;
+  final String duration;
 
   const _PlayProgress({
     Key? key,
     required this.value,
-    required this.time,
+    required this.duration,
   }) : super(key: key);
 
   @override
@@ -249,7 +276,7 @@ class _PlayProgress extends StatelessWidget {
         SizedBox(
           width: 48.0,
           child: Text(
-            time,
+            duration,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(context).hoverColor,
                 ),

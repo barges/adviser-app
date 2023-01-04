@@ -1700,11 +1700,11 @@ class S {
     );
   }
 
-  /// `The maximum image size is 20Mb.`
-  String get theMaximumImageSizeIs20Mb {
+  /// `The maximum size of the attachments is 20Mb`
+  String get theMaximumSizeOfTheAttachmentsIs20Mb {
     return Intl.message(
-      'The maximum image size is 20Mb.',
-      name: 'theMaximumImageSizeIs20Mb',
+      'The maximum size of the attachments is 20Mb',
+      name: 'theMaximumSizeOfTheAttachmentsIs20Mb',
       desc: '',
       args: [],
     );

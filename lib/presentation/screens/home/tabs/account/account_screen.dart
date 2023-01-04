@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
+import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/main_state.dart';
@@ -13,14 +14,30 @@ import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.da
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/reviews_settings_part_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/user_info_part_widget.dart';
+import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 class AccountScreen extends StatelessWidget {
-  const AccountScreen({Key? key}) : super(key: key);
+  final CachingManager cacheManager;
+  final UserRepository userRepository;
+  final ConnectivityService connectivityService;
+
+  const AccountScreen(
+      {Key? key,
+      required this.cacheManager,
+      required this.userRepository,
+      required this.connectivityService})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final MainCubit mainCubit = context.read<MainCubit>();
     return BlocProvider(
-      create: (_) => AccountCubit(getIt.get<CachingManager>()),
+      create: (_) => AccountCubit(
+        cacheManager,
+        mainCubit,
+        userRepository,
+        connectivityService,
+      ),
       child: Builder(builder: (context) {
         final AccountCubit accountCubit = context.read<AccountCubit>();
         return BlocListener<MainCubit, MainState>(

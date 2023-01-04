@@ -12,7 +12,7 @@
 "faq_feature_not_enabled_text"="A função FAQs está desativada";
 
 /* Article UpVote DownVote */
-"article_vote_prompt_text"="Esta FAQ foi útil?";
+"article_vote_prompt_text"="Esta resposta foi útil?";
 "article_vote_prompt_yes_button_text"="Sim";
 "article_vote_prompt_no_button_text"="Não";
 

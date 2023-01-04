@@ -71,7 +71,8 @@ class _ChatItemPlayer extends StatelessWidget {
   final VoidCallback? onStartPlayPressed;
   final VoidCallback? onPausePlayPressed;
   final Stream<PlaybackDisposition>? playbackStream;
-  const _ChatItemPlayer({
+  double prevValue = 0.0;
+  _ChatItemPlayer({
     Key? key,
     required this.duration,
     required this.iconColor,
@@ -104,16 +105,24 @@ class _ChatItemPlayer extends StatelessWidget {
           child: StreamBuilder<PlaybackDisposition>(
             stream: isPlaying && !isPlayingFinished ? playbackStream : null,
             builder: (_, snapshot) {
-              final value = !isPlayingFinished && snapshot.hasData
+              double value = !isPlayingFinished && snapshot.hasData
                   ? snapshot.data!.position.inMilliseconds /
                       snapshot.data!.duration.inMilliseconds
                   : 0.0;
-              final time = !isPlayingFinished && snapshot.hasData
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                value = prevValue;
+              }
+              if (snapshot.hasData &&
+                  snapshot.connectionState == ConnectionState.active) {
+                prevValue = snapshot.data!.position.inMilliseconds /
+                    snapshot.data!.duration.inMilliseconds;
+              }
+              final String time = !isPlayingFinished && snapshot.hasData
                   ? snapshot.data!.position.toString().substring(2, 7)
                   : "00:00";
               return _PlayProgress(
                 value: value,
-                time: time,
+                time: !isPlayingFinished ? time : null,
                 duration: duration,
                 textColor: textColor,
                 backgroundColor: bgColorProgressIndicator,
@@ -171,7 +180,7 @@ class _PlayPauseBtn extends StatelessWidget {
 
 class _PlayProgress extends StatelessWidget {
   final double value;
-  final String time;
+  final String? time;
   final Duration duration;
   final Color textColor;
   final Color color;
@@ -192,13 +201,14 @@ class _PlayProgress extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text(
-              time,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: textColor,
-                    fontSize: 12.0,
-                  ),
-            ),
+            if (time != null)
+              Text(
+                time!,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: textColor,
+                      fontSize: 12.0,
+                    ),
+              ),
             const Spacer(),
             Text(
               duration.toString().substring(2, 7),
@@ -213,7 +223,7 @@ class _PlayProgress extends StatelessWidget {
           height: 8.0,
         ),
         LinearProgressIndicator(
-          value: (!value.isNaN && !value.isInfinite) ? value : 0.0,
+          value: (value.isNaN || value.isInfinite) ? 0.0 : value,
           backgroundColor: backgroundColor,
           color: color,
           minHeight: 2.0,

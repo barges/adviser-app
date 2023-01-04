@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_cubit.dart';
 
-class PicturesPartWidget extends StatelessWidget {
-  const PicturesPartWidget({Key? key}) : super(key: key);
+class AttachedPicturesListWidget extends StatelessWidget {
+  const AttachedPicturesListWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

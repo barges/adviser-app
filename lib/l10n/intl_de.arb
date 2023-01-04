@@ -163,7 +163,7 @@
   "return_": "Zurückkehren",
   "checkYourInternetConnection": "Prüfe deine Internetverbindung",
   "youCantSendThisMessageBecauseItsLessThan15Seconds": "Sie können diese Nachricht nicht senden, da sie weniger als 15 Sekunden dauert",
-  "theMaximumImageSizeIs20Mb" : "Die maximale Bildgröße beträgt 20 MB.",
+  "theMaximumSizeOfTheAttachmentsIs20Mb": "Die maximale Größe der Anhänge beträgt 20 MB",
   "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": "Diese Frage wird nach {counter} an die allgemeine Liste zurückgegeben",
   "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m":"Die Antwort ist nicht möglich, diese Frage wird in ~ 1 Minute an die allgemeine Liste zurückgegeben",
   "youHaveARitualRequest": "Sie haben eine rituelle Bitte",

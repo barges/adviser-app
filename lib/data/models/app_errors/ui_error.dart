@@ -7,7 +7,7 @@ enum UIErrorType {
   wrongUsernameAndOrPassword,
   youCantSendThisMessageBecauseItsLessThan15Seconds,
   youVeReachThe3MinuteTimeLimit,
-  theMaximumImageSizeIs20Mb,
+  theMaximumSizeOfTheAttachmentsIs20Mb,
   checkYourInternetConnection;
 
   String getErrorMessage(BuildContext context) {
@@ -22,8 +22,8 @@ enum UIErrorType {
         return S.of(context).youCantSendThisMessageBecauseItsLessThan15Seconds;
       case UIErrorType.youVeReachThe3MinuteTimeLimit:
         return S.of(context).youVeReachThe3MinuteTimeLimit;
-      case UIErrorType.theMaximumImageSizeIs20Mb:
-        return S.of(context).theMaximumImageSizeIs20Mb;
+      case UIErrorType.theMaximumSizeOfTheAttachmentsIs20Mb:
+        return S.of(context).theMaximumSizeOfTheAttachmentsIs20Mb;
       case UIErrorType.checkYourInternetConnection:
         return S.of(context).checkYourInternetConnection;
     }
