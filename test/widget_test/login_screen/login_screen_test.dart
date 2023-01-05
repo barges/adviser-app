@@ -14,8 +14,6 @@ import 'package:shared_advisor_interface/data/cache/data_caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
 import 'package:shared_advisor_interface/data/repositories/auth_repository_impl.dart';
-import 'package:shared_advisor_interface/data/repositories/chats_repository_impl.dart';
-import 'package:shared_advisor_interface/data/repositories/user_repository_impl.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
@@ -55,6 +53,36 @@ void setupFirebaseMocks([Callback? customHandlers]) {
   setupFirebaseCoreMocks();
 }
 
+// class FakeApplication extends StatelessWidget {
+//   final AuthRepository authRepository;
+//   final CachingManager cachingManager;
+//   final MainCubit mainCubit;
+//   final DynamicLinkService dynamicLinkService;
+//   final Dio dio;
+//   final ConnectivityService connectivityService;
+//   final PushNotificationManager? pushNotificationManager;
+//   final UserRepository? userRepository;
+//   final ChatsRepository? chatsRepository;
+
+//   const FakeApplication({
+//     Key? key,
+//     required this.authRepository,
+//     required this.cachingManager,
+//     required this.mainCubit,
+//     required this.dynamicLinkService,
+//     required this.dio,
+//     required this.connectivityService,
+//     this.pushNotificationManager,
+//     this.userRepository,
+//     this.chatsRepository,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return
+//   }
+// }
+
 Future<void> pumpLoginScreen({
   required WidgetTester tester,
   required AuthRepository authRepository,
@@ -62,52 +90,53 @@ Future<void> pumpLoginScreen({
   required MainCubit mainCubit,
   required DynamicLinkService dynamicLinkService,
   required Dio dio,
-  ConnectivityService? connectivityService,
+  required ConnectivityService connectivityService,
+  required UserRepository userRepository,
   PushNotificationManager? pushNotificationManager,
-  UserRepository? userRepository,
   ChatsRepository? chatsRepository,
 }) async {
   await tester.pumpWidget(
-    BlocProvider(
-      create: (_) => mainCubit,
-      child: GetMaterialApp(
-        initialRoute: AppRoutes.login,
-        getPages: [
-          GetPage(
-            name: AppRoutes.login,
-            page: () => FakeLoginScreen(
-              authRepository: authRepository,
-              cachingManager: cachingManager,
-              dynamicLinkService: dynamicLinkService,
-              dio: dio,
+    BlocProvider.value(
+      value: mainCubit,
+      child: Builder(builder: (context) {
+        return GetMaterialApp(
+          initialRoute: AppRoutes.login,
+          getPages: [
+            GetPage(
+              name: AppRoutes.login,
+              page: () => FakeLoginScreen(
+                authRepository: authRepository,
+                cachingManager: cachingManager,
+                dynamicLinkService: dynamicLinkService,
+                dio: dio,
+              ),
             ),
-          ),
-          GetPage(
-            name: AppRoutes.home,
-            page: () => FakeHomeScreen(
-              cachingManager: cachingManager,
-              connectivityService:
-                  connectivityService ?? MockConnectivityService(),
-              pushNotificationManager:
-                  pushNotificationManager ?? MockPushNotificationManager(),
-              userRepository: userRepository ?? MockUserRepositoryImpl(),
-              chatsRepository: chatsRepository ?? MockChatsRepositoryImpl(),
+            GetPage(
+              name: AppRoutes.home,
+              page: () => FakeHomeScreen(
+                cachingManager: cachingManager,
+                connectivityService: connectivityService,
+                pushNotificationManager:
+                    pushNotificationManager ?? MockPushNotificationManager(),
+                userRepository: userRepository,
+                chatsRepository: chatsRepository ?? MockChatsRepository(),
+              ),
             ),
-          ),
-          GetPage(
-              name: AppRoutes.forgotPassword,
-              page: () => FakeForgotPasswordScreen(
-                  authRepository: authRepository,
-                  dynamicLinkService: dynamicLinkService)),
-        ],
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
-      ),
+            GetPage(
+                name: AppRoutes.forgotPassword,
+                page: () => FakeForgotPasswordScreen(
+                    authRepository: authRepository,
+                    dynamicLinkService: dynamicLinkService)),
+          ],
+          localizationsDelegates: const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+        );
+      }),
     ),
   );
 
@@ -118,28 +147,33 @@ void main() {
   late Dio dio;
   late DioAdapter dioAdapter;
   late DataCachingManager mockDataCachingManager;
-  late AuthRepositoryImpl mockAuthRepositoryImpl;
+  late AuthRepository mockAuthRepository;
   late ConnectivityService mockConnectivityService;
-  late UserRepositoryImpl mockUserRepositoryImpl;
+  late UserRepository mockUserRepository;
   late DynamicLinkService mockDynamicLinkService;
   late PushNotificationManager mockPushNotificationManager;
-  late ChatsRepositoryImpl mockChatsRepositoryImpl;
+  late ChatsRepository mockChatsRepository;
   late MainCubit mainCubit;
 
   setupFirebaseMocks();
 
-  setUp(() async {
+  setUpAll(() async {
     await Firebase.initializeApp();
     dio = Dio();
     dioAdapter = DioAdapter(dio: dio, matcher: const UrlRequestMatcher());
 
+    mockUserRepository = MockUserRepository();
+    when(mockUserRepository.getUserInfo())
+        .thenAnswer((realInvocation) => Future.value(const UserInfo()));
+  });
+
+  setUp(() async {
     mockDataCachingManager = MockDataCachingManager();
-    mockAuthRepositoryImpl = AuthRepositoryImpl(AuthApi(dio));
+    mockAuthRepository = AuthRepositoryImpl(AuthApi(dio));
     mockConnectivityService = MockConnectivityService();
-    mockUserRepositoryImpl = MockUserRepositoryImpl();
     mockDynamicLinkService = MockDynamicLinkService();
     mockPushNotificationManager = MockPushNotificationManager();
-    mockChatsRepositoryImpl = MockChatsRepositoryImpl();
+    mockChatsRepository = MockChatsRepository();
 
     when(mockDataCachingManager.getUnauthorizedBrands())
         .thenReturn([Brand.fortunica]);
@@ -147,16 +181,13 @@ void main() {
         .thenAnswer((realInvocation) => Future.value(true));
     when(mockConnectivityService.connectivityStream)
         .thenAnswer((realInvocation) => Stream.value(true));
-    when(mockUserRepositoryImpl.getUserInfo())
-        .thenAnswer((realInvocation) => Future.value(const UserInfo()));
     when(mockDynamicLinkService.dynamicLinksStream)
         .thenAnswer((realInvocation) => PublishSubject());
-    // when(mockAuthRepositoryImpl.login()).thenAnswer((realInvocation) =>
-    //     Future.value(LoginResponse('someRandomAccessToken')));
 
     mainCubit = MainCubit(mockDataCachingManager, mockConnectivityService);
 
     dio.interceptors.add(AppInterceptor(mainCubit, mockDataCachingManager));
+    logger.d(await mockUserRepository.getUserInfo());
   });
 
   testWidgets(
@@ -165,11 +196,13 @@ void main() {
     (WidgetTester tester) async {
       await pumpLoginScreen(
         tester: tester,
-        authRepository: mockAuthRepositoryImpl,
+        authRepository: mockAuthRepository,
         cachingManager: mockDataCachingManager,
         mainCubit: mainCubit,
         dynamicLinkService: mockDynamicLinkService,
         dio: dio,
+        connectivityService: mockConnectivityService,
+        userRepository: mockUserRepository,
       );
 
       expect(find.widgetWithText(AppTextField, S.current.enterYourEmail),
@@ -187,16 +220,27 @@ void main() {
   );
 
   group('Login button', () {
+    setUpAll(() {
+      dioAdapter.onPost(
+        '/experts/login/app',
+        (server) => server.reply(
+          200,
+          {'accessToken': 'someRandomAcessToken'},
+        ),
+      );
+    });
     testWidgets(
       'should be disabled if email and password field is empty',
       (WidgetTester tester) async {
         await pumpLoginScreen(
           tester: tester,
-          authRepository: mockAuthRepositoryImpl,
+          authRepository: mockAuthRepository,
           cachingManager: mockDataCachingManager,
           mainCubit: mainCubit,
           dynamicLinkService: mockDynamicLinkService,
           dio: dio,
+          connectivityService: mockConnectivityService,
+          userRepository: mockUserRepository,
         );
 
         expect(
@@ -211,11 +255,13 @@ void main() {
       (WidgetTester tester) async {
         await pumpLoginScreen(
           tester: tester,
-          authRepository: mockAuthRepositoryImpl,
+          authRepository: mockAuthRepository,
           cachingManager: mockDataCachingManager,
           mainCubit: mainCubit,
           dynamicLinkService: mockDynamicLinkService,
           dio: dio,
+          connectivityService: mockConnectivityService,
+          userRepository: mockUserRepository,
         );
 
         await tester.enterText(
@@ -235,11 +281,13 @@ void main() {
       (WidgetTester tester) async {
         await pumpLoginScreen(
           tester: tester,
-          authRepository: mockAuthRepositoryImpl,
+          authRepository: mockAuthRepository,
           cachingManager: mockDataCachingManager,
           mainCubit: mainCubit,
           dynamicLinkService: mockDynamicLinkService,
           dio: dio,
+          connectivityService: mockConnectivityService,
+          userRepository: mockUserRepository,
         );
 
         await tester.enterText(find.byType(PasswordTextField), '123456');
@@ -258,11 +306,13 @@ void main() {
       (WidgetTester tester) async {
         await pumpLoginScreen(
           tester: tester,
-          authRepository: mockAuthRepositoryImpl,
+          authRepository: mockAuthRepository,
           cachingManager: mockDataCachingManager,
           mainCubit: mainCubit,
           dynamicLinkService: mockDynamicLinkService,
           dio: dio,
+          connectivityService: mockConnectivityService,
+          userRepository: mockUserRepository,
         );
 
         await tester.enterText(
@@ -281,25 +331,17 @@ void main() {
       'should redirect user to HomeScreen'
       ' if email and password fields filled and valid',
       (WidgetTester tester) async {
-        dioAdapter.onPost(
-          '/experts/login/app',
-          (server) => server.reply(
-            200,
-            {'accessToken': 'someRandomAccessToken'},
-          ),
-        );
-
         await pumpLoginScreen(
           tester: tester,
-          authRepository: mockAuthRepositoryImpl,
+          authRepository: mockAuthRepository,
           cachingManager: mockDataCachingManager,
           mainCubit: mainCubit,
           dynamicLinkService: mockDynamicLinkService,
           dio: dio,
           connectivityService: mockConnectivityService,
           pushNotificationManager: mockPushNotificationManager,
-          userRepository: mockUserRepositoryImpl,
-          chatsRepository: mockChatsRepositoryImpl,
+          userRepository: mockUserRepository,
+          chatsRepository: mockChatsRepository,
         );
 
         await tester.enterText(
@@ -322,11 +364,13 @@ void main() {
       (WidgetTester tester) async {
         await pumpLoginScreen(
           tester: tester,
-          authRepository: mockAuthRepositoryImpl,
+          authRepository: mockAuthRepository,
           cachingManager: mockDataCachingManager,
           mainCubit: mainCubit,
           dynamicLinkService: mockDynamicLinkService,
           dio: dio,
+          connectivityService: mockConnectivityService,
+          userRepository: mockUserRepository,
         );
 
         await tester.enterText(find.byType(AppTextField), 'someEmailgmailcom');
@@ -351,11 +395,13 @@ void main() {
       (WidgetTester tester) async {
         await pumpLoginScreen(
           tester: tester,
-          authRepository: mockAuthRepositoryImpl,
+          authRepository: mockAuthRepository,
           cachingManager: mockDataCachingManager,
           mainCubit: mainCubit,
           dynamicLinkService: mockDynamicLinkService,
           dio: dio,
+          connectivityService: mockConnectivityService,
+          userRepository: mockUserRepository,
         );
 
         await tester.enterText(
@@ -387,11 +433,13 @@ void main() {
 
       await pumpLoginScreen(
         tester: tester,
-        authRepository: mockAuthRepositoryImpl,
+        authRepository: mockAuthRepository,
         cachingManager: mockDataCachingManager,
         mainCubit: mainCubit,
         dynamicLinkService: mockDynamicLinkService,
         dio: dio,
+        connectivityService: mockConnectivityService,
+        userRepository: mockUserRepository,
       );
 
       expect(find.byType(NoConnectionWidget), findsOneWidget);
@@ -406,11 +454,13 @@ void main() {
         (WidgetTester tester) async {
           await pumpLoginScreen(
             tester: tester,
-            authRepository: mockAuthRepositoryImpl,
+            authRepository: mockAuthRepository,
             cachingManager: mockDataCachingManager,
             mainCubit: mainCubit,
             dynamicLinkService: mockDynamicLinkService,
             dio: dio,
+            connectivityService: mockConnectivityService,
+            userRepository: mockUserRepository,
           );
 
           expect(find.byType(ChangeLocaleButton), findsOneWidget);
@@ -422,11 +472,13 @@ void main() {
         (WidgetTester tester) async {
           await pumpLoginScreen(
             tester: tester,
-            authRepository: mockAuthRepositoryImpl,
+            authRepository: mockAuthRepository,
             cachingManager: mockDataCachingManager,
             mainCubit: mainCubit,
             dynamicLinkService: mockDynamicLinkService,
             dio: dio,
+            connectivityService: mockConnectivityService,
+            userRepository: mockUserRepository,
           );
 
           await tester.tap(find.byType(ChangeLocaleButton));
@@ -439,38 +491,33 @@ void main() {
   );
 
   group('AppErrorWidget', () {
-    setUp(() async {
-      dioAdapter.onPost(
-        '/experts/login/app',
-        (server) => server.throws(
-          401,
-          DioError(
-            requestOptions: RequestOptions(path: '/experts/login/app'),
-            type: DioErrorType.response,
-            response: Response(
-                requestOptions: RequestOptions(path: '/experts/login/app'),
-                statusCode: 401,
-                data: {'status': 'Unauthorized'}),
-          ),
-        ),
-      );
-      try {
-        logger.d(await mockAuthRepositoryImpl.login());
-      } on DioError catch (e) {
-        logger.d('${e.response?.statusCode} ${e.response?.data['status']}');
-      }
-    });
-
     testWidgets(
       'appears if the user entered the wrong email or password and clicked on Login button',
       (WidgetTester tester) async {
+        dioAdapter.onPost(
+          '/experts/login/app',
+          (server) => server.throws(
+            401,
+            DioError(
+              requestOptions: RequestOptions(path: '/experts/login/app'),
+              type: DioErrorType.response,
+              response: Response(
+                  requestOptions: RequestOptions(path: '/experts/login/app'),
+                  statusCode: 401,
+                  data: {'status': 'Unauthorized'}),
+            ),
+          ),
+        );
+
         await pumpLoginScreen(
           tester: tester,
-          authRepository: mockAuthRepositoryImpl,
+          authRepository: AuthRepositoryImpl(AuthApi(dio)),
           cachingManager: mockDataCachingManager,
           mainCubit: mainCubit,
           dynamicLinkService: mockDynamicLinkService,
           dio: dio,
+          connectivityService: mockConnectivityService,
+          userRepository: mockUserRepository,
         );
 
         await tester.enterText(
@@ -500,11 +547,13 @@ void main() {
       (WidgetTester tester) async {
         await pumpLoginScreen(
           tester: tester,
-          authRepository: mockAuthRepositoryImpl,
+          authRepository: mockAuthRepository,
           cachingManager: mockDataCachingManager,
           mainCubit: mainCubit,
           dynamicLinkService: mockDynamicLinkService,
           dio: dio,
+          connectivityService: mockConnectivityService,
+          userRepository: mockUserRepository,
         );
 
         expect(
@@ -519,11 +568,13 @@ void main() {
       (WidgetTester tester) async {
         await pumpLoginScreen(
           tester: tester,
-          authRepository: mockAuthRepositoryImpl,
+          authRepository: mockAuthRepository,
           cachingManager: mockDataCachingManager,
           mainCubit: mainCubit,
           dynamicLinkService: mockDynamicLinkService,
           dio: dio,
+          connectivityService: mockConnectivityService,
+          userRepository: mockUserRepository,
         );
 
         await tester.tap(find.byType(ForgotPasswordButtonWidget));
