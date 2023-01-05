@@ -48,7 +48,8 @@ const String _recordFileExt = 'm4a';
 class ChatCubit extends Cubit<ChatState> {
   final ScrollController activeMessagesScrollController = ScrollController();
   final ScrollController textInputScrollController = ScrollController();
-  final TextEditingController textEditingController = TextEditingController();
+  final TextEditingController textInputEditingController =
+      TextEditingController();
 
   final GlobalKey questionGlobalKey = GlobalKey();
 
@@ -128,7 +129,7 @@ class ChatCubit extends Cubit<ChatState> {
     _keyboardSubscription;
 
     textInputScrollController.dispose();
-    textEditingController.dispose();
+    textInputEditingController.dispose();
 
     _recorder?.closeRecorder();
     _recorder = null;
@@ -173,7 +174,7 @@ class ChatCubit extends Cubit<ChatState> {
       const Duration(milliseconds: 100),
     );
 
-    textEditingController.addListener(textEditingControllerListener);
+    textInputEditingController.addListener(textEditingControllerListener);
   }
 
   Future<void> _getData() async {
@@ -209,10 +210,10 @@ class ChatCubit extends Cubit<ChatState> {
 
   void textEditingControllerListener() {
     _tryStartAnswerSend();
-    final textLength = textEditingController.text.length;
+    final textLength = textInputEditingController.text.length;
     emit(
       state.copyWith(
-        inputTextLength: textEditingController.text.length,
+        inputTextLength: textInputEditingController.text.length,
         isSendButtonEnabled:
             textLength >= minTextLength && textLength <= maxTextLength,
       ),
@@ -679,7 +680,7 @@ class ChatCubit extends Cubit<ChatState> {
           activeMessages: messages,
         ),
       );
-      textEditingController.clear();
+      textInputEditingController.clear();
       deleteAttachedPictures();
       scrollChatDown();
 
@@ -875,9 +876,9 @@ class ChatCubit extends Cubit<ChatState> {
     final answerRequest = AnswerRequest(
       questionID: state.questionFromDB?.id,
       ritualID: state.questionFromDB?.ritualID,
-      content: textEditingController.text.isEmpty
+      content: textInputEditingController.text.isEmpty
           ? null
-          : textEditingController.text,
+          : textInputEditingController.text,
       attachments: [
         if (pictureAttachment1 != null) pictureAttachment1,
         if (pictureAttachment2 != null) pictureAttachment2,
