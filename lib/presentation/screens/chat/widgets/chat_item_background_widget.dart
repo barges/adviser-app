@@ -3,14 +3,14 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
-class ChatItemBackground extends StatelessWidget {
+class ChatItemBackgroundWidget extends StatelessWidget {
   final bool isBorder;
   final bool isTryAgain;
   final EdgeInsets padding;
   final Color color;
   final Widget child;
   final VoidCallback? onPressedTryAgain;
-  const ChatItemBackground({
+  const ChatItemBackgroundWidget({
     super.key,
     this.isBorder = false,
     this.isTryAgain = false,
