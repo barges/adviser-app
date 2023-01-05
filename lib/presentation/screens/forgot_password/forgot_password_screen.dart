@@ -32,13 +32,13 @@ class ForgotPasswordScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => ForgotPasswordCubit(getIt.get<AuthRepository>(),
           getIt.get<DynamicLinkService>(), mainCubit),
-      child: const ForgotPasswordWidget(),
+      child: const ForgotPasswordContentWidget(),
     );
   }
 }
 
-class ForgotPasswordWidget extends StatelessWidget {
-  const ForgotPasswordWidget({super.key});
+class ForgotPasswordContentWidget extends StatelessWidget {
+  const ForgotPasswordContentWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

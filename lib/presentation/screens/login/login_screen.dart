@@ -39,13 +39,13 @@ class LoginScreen extends StatelessWidget {
         getIt.get<DynamicLinkService>(),
         getIt.get<Dio>(),
       ),
-      child: const LoginWidget(),
+      child: const LoginContentWidget(),
     );
   }
 }
 
-class LoginWidget extends StatelessWidget {
-  const LoginWidget({Key? key}) : super(key: key);
+class LoginContentWidget extends StatelessWidget {
+  const LoginContentWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
