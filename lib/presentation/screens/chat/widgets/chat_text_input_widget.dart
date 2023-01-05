@@ -27,8 +27,6 @@ class ChatTextInputWidget extends StatelessWidget {
     final theme = Theme.of(context);
     final ChatCubit chatCubit = context.read<ChatCubit>();
     final List<File> attachedPictures = chatCubit.state.attachedPictures;
-    final bool isAudioQuestion =
-        chatCubit.state.questionFromDB?.isAudio ?? false;
 
     return Stack(
       clipBehavior: Clip.none,

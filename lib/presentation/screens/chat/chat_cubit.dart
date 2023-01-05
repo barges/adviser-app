@@ -278,9 +278,14 @@ class ChatCubit extends Cubit<ChatState> {
 
         final ChatItem lastQuestion = questions.last;
 
+        final ChatItem questionFromDB = questions.firstWhere(
+          (element) => element.isAudio,
+          orElse: () => lastQuestion,
+        );
+
         emit(
           state.copyWith(
-            questionFromDB: lastQuestion.copyWith(
+            questionFromDB: questionFromDB.copyWith(
               clientID: ritualsResponse.clientID,
               clientName: ritualsResponse.clientName,
               ritualID: ritualId,
