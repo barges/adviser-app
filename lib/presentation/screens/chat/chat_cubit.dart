@@ -210,12 +210,11 @@ class ChatCubit extends Cubit<ChatState> {
 
   void textEditingControllerListener() {
     _tryStartAnswerSend();
-    final textLength = textInputEditingController.text.length;
     emit(
       state.copyWith(
         inputTextLength: textInputEditingController.text.length,
         isSendButtonEnabled:
-            textLength >= minTextLength && textLength <= maxTextLength,
+            _checkTextLengthIsOk() || state.attachedPictures.isNotEmpty,
       ),
     );
   }
@@ -612,9 +611,11 @@ class ChatCubit extends Cubit<ChatState> {
     images.remove(image);
     emit(state.copyWith(
       attachedPictures: images,
-      isSendButtonEnabled:
+      isSendButtonEnabled: (state.recordedAudio != null ||
+              _checkTextLengthIsOk() ||
+              images.isNotEmpty) &&
           _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
-              checkMinRecordDurationIsOk(),
+          checkMinRecordDurationIsOk(),
     ));
   }
 
@@ -1021,6 +1022,11 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     return totalSizeInMb;
+  }
+
+  bool _checkTextLengthIsOk() {
+    final textLength = textInputEditingController.text.length;
+    return textLength >= minTextLength && textLength <= maxTextLength;
   }
 
   bool checkMinRecordDurationIsOk() {

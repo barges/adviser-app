@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_type_getter_mixin.dart';
 
 class ChatItemPlayer extends StatelessWidget with ChatItemTypeGetter {
   final bool isQuestion;
-  final String audioUrl;
-  final Duration duration;
+  final Attachment attachment;
   const ChatItemPlayer({
     super.key,
     required this.isQuestion,
-    required this.audioUrl,
-    required this.duration,
+    required this.attachment,
   });
   @override
   bool get isAnswer => !isQuestion;
@@ -25,16 +24,16 @@ class ChatItemPlayer extends StatelessWidget with ChatItemTypeGetter {
         context.select((ChatCubit cubit) => cubit.state.isPlayingAudio);
     final isPlayingAudioFinished =
         context.select((ChatCubit cubit) => cubit.state.isPlayingAudioFinished);
-    final isCurrent = audioUrl == chatCubit.state.audioUrl;
+    final isCurrent = attachment.url == chatCubit.state.audioUrl;
     return _ChatItemPlayer(
       onStartPlayPressed: () {
-        chatCubit.startPlayAudio(audioUrl);
+        chatCubit.startPlayAudio(attachment.url ?? '');
       },
       onPausePlayPressed: () => chatCubit.pauseAudio(),
       isPlaying: isCurrent && isPlayingAudio,
       isPlayingFinished: isCurrent ? isPlayingAudioFinished : true,
       playbackStream: chatCubit.onMediaProgress,
-      duration: duration,
+      duration: Duration(seconds: attachment.meta?.duration ?? 0),
       textColor: getterType(
         question: Theme.of(context).primaryColor,
         answer: Theme.of(context).backgroundColor,
