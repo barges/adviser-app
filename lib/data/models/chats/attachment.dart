@@ -32,11 +32,4 @@ class Attachment with _$Attachment {
       return AttachmentType.image;
     }
   }
-
-  Duration get duration {
-    if (type == AttachmentType.audio && meta?.duration != null) {
-      return Duration(seconds: meta!.duration!);
-    }
-    return const Duration(seconds: 0);
-  }
 }

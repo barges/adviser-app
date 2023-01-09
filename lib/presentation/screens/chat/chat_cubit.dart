@@ -48,7 +48,8 @@ const String _recordFileExt = 'm4a';
 class ChatCubit extends Cubit<ChatState> {
   final ScrollController activeMessagesScrollController = ScrollController();
   final ScrollController textInputScrollController = ScrollController();
-  final TextEditingController textEditingController = TextEditingController();
+  final TextEditingController textInputEditingController =
+      TextEditingController();
 
   final GlobalKey questionGlobalKey = GlobalKey();
 
@@ -128,7 +129,7 @@ class ChatCubit extends Cubit<ChatState> {
     _keyboardSubscription;
 
     textInputScrollController.dispose();
-    textEditingController.dispose();
+    textInputEditingController.dispose();
 
     _recorder?.closeRecorder();
     _recorder = null;
@@ -173,7 +174,7 @@ class ChatCubit extends Cubit<ChatState> {
       const Duration(milliseconds: 100),
     );
 
-    textEditingController.addListener(textEditingControllerListener);
+    textInputEditingController.addListener(textEditingControllerListener);
   }
 
   Future<void> _getData() async {
@@ -209,12 +210,11 @@ class ChatCubit extends Cubit<ChatState> {
 
   void textEditingControllerListener() {
     _tryStartAnswerSend();
-    final textLength = textEditingController.text.length;
     emit(
       state.copyWith(
-        inputTextLength: textEditingController.text.length,
+        inputTextLength: textInputEditingController.text.length,
         isSendButtonEnabled:
-            textLength >= minTextLength && textLength <= maxTextLength,
+            _checkTextLengthIsOk() || state.attachedPictures.isNotEmpty,
       ),
     );
   }
@@ -611,9 +611,11 @@ class ChatCubit extends Cubit<ChatState> {
     images.remove(image);
     emit(state.copyWith(
       attachedPictures: images,
-      isSendButtonEnabled:
+      isSendButtonEnabled: (state.recordedAudio != null ||
+              _checkTextLengthIsOk() ||
+              images.isNotEmpty) &&
           _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
-              checkMinRecordDurationIsOk(),
+          checkMinRecordDurationIsOk(),
     ));
   }
 
@@ -679,7 +681,7 @@ class ChatCubit extends Cubit<ChatState> {
           activeMessages: messages,
         ),
       );
-      textEditingController.clear();
+      textInputEditingController.clear();
       deleteAttachedPictures();
       scrollChatDown();
 
@@ -875,9 +877,9 @@ class ChatCubit extends Cubit<ChatState> {
     final answerRequest = AnswerRequest(
       questionID: state.questionFromDB?.id,
       ritualID: state.questionFromDB?.ritualID,
-      content: textEditingController.text.isEmpty
+      content: textInputEditingController.text.isEmpty
           ? null
-          : textEditingController.text,
+          : textInputEditingController.text,
       attachments: [
         if (pictureAttachment1 != null) pictureAttachment1,
         if (pictureAttachment2 != null) pictureAttachment2,
@@ -1020,6 +1022,11 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     return totalSizeInMb;
+  }
+
+  bool _checkTextLengthIsOk() {
+    final textLength = textInputEditingController.text.length;
+    return textLength >= minTextLength && textLength <= maxTextLength;
   }
 
   bool checkMinRecordDurationIsOk() {

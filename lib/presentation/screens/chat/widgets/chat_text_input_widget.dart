@@ -83,7 +83,7 @@ class ChatTextInputWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                        if (attachedPictures.isNotEmpty)
+                        if (attachedPictures.isNotEmpty && isAudioQuestion)
                           Row(
                             children: [
                               const SizedBox(
@@ -123,10 +123,8 @@ class ChatTextInputWidget extends StatelessWidget {
                                   cubit.state.isSendButtonEnabled);
                           final ChatItem? questionFromDB = context.select(
                               (ChatCubit cubit) => cubit.state.questionFromDB);
-
                           final isAudioQuestion =
                               questionFromDB?.isAudio ?? false;
-
                           return Row(
                             children: [
                               if (inputTextLength == 0 &&
@@ -193,7 +191,7 @@ class _InputTextField extends StatelessWidget {
       builder: (context, constraints) {
         context.select((ChatCubit cubit) => cubit.state.inputTextLength);
         final int textNumLines = Utils.getTextNumLines(
-          chatCubit.textEditingController.text,
+          chatCubit.textInputEditingController.text,
           constraints.maxWidth,
           style,
         );
@@ -204,7 +202,7 @@ class _InputTextField extends StatelessWidget {
           interactive: true,
           child: TextField(
             scrollController: chatCubit.textInputScrollController,
-            controller: chatCubit.textEditingController,
+            controller: chatCubit.textInputEditingController,
             maxLines: textNumLines > _maxTextNumLines ? _maxTextNumLines : null,
             style: style,
             decoration: InputDecoration(
