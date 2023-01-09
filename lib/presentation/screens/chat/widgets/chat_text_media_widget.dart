@@ -49,6 +49,7 @@ class ChatTextMediaWidget extends ChatWidget {
                   child: RoundedRectImage(
                     uri: Uri.parse(item.getImageUrl(1)!),
                     height: 134.0,
+                    canOpenInFullScreen: true,
                   ),
                 ),
               if (isImage2)
@@ -57,6 +58,7 @@ class ChatTextMediaWidget extends ChatWidget {
                   child: RoundedRectImage(
                     uri: Uri.parse(item.getImageUrl(2)!),
                     height: 134.0,
+                    canOpenInFullScreen: true,
                   ),
                 ),
               if (audioUrl1 == null && audioUrl2 == null)

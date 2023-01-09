@@ -103,20 +103,11 @@ class RitualInfoCardWidget extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          GestureDetector(
-                            onTap: () {
-                              Get.toNamed(
-                                AppRoutes.galleryPictures,
-                                arguments: GalleryPicturesScreenArguments(
-                                  pictures: [ritualCardInfo!.leftImage!],
-                                ),
-                              );
-                            },
-                            child: RoundedRectImage(
-                              uri: Uri.parse(ritualCardInfo!.leftImage!),
-                              width: 132.0,
-                              height: 132.0,
-                            ),
+                          RoundedRectImage(
+                            uri: Uri.parse(ritualCardInfo!.leftImage!),
+                            width: 132.0,
+                            height: 132.0,
+                            canOpenInFullScreen: true,
                           )
                         ],
                       ),
@@ -136,20 +127,11 @@ class RitualInfoCardWidget extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          GestureDetector(
-                            onTap: () {
-                              Get.toNamed(
-                                AppRoutes.galleryPictures,
-                                arguments: GalleryPicturesScreenArguments(
-                                  pictures: [ritualCardInfo!.rightImage!],
-                                ),
-                              );
-                            },
-                            child: RoundedRectImage(
-                              uri: Uri.parse(ritualCardInfo!.rightImage!),
-                              width: 132.0,
-                              height: 132.0,
-                            ),
+                          RoundedRectImage(
+                            uri: Uri.parse(ritualCardInfo!.rightImage!),
+                            width: 132.0,
+                            height: 132.0,
+                            canOpenInFullScreen: true,
                           )
                         ],
                       ),
