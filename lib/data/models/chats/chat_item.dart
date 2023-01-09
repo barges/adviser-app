@@ -80,14 +80,9 @@ class ChatItem with _$ChatItem {
     return resultMessage;
   }
 
-  bool get isAudio {
-    if (attachments != null && attachments!.isNotEmpty) {
-      return attachments!
+  bool get isAudio =>
+      attachments?.isNotEmpty == true && attachments!
           .any((element) => element.type == AttachmentType.audio);
-    }
-
-    return false;
-  }
 }
 
 List<Attachment>? _attachmentFromJson(json) => (json as List<dynamic>?)
