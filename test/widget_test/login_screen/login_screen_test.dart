@@ -53,36 +53,6 @@ void setupFirebaseMocks([Callback? customHandlers]) {
   setupFirebaseCoreMocks();
 }
 
-// class FakeApplication extends StatelessWidget {
-//   final AuthRepository authRepository;
-//   final CachingManager cachingManager;
-//   final MainCubit mainCubit;
-//   final DynamicLinkService dynamicLinkService;
-//   final Dio dio;
-//   final ConnectivityService connectivityService;
-//   final PushNotificationManager? pushNotificationManager;
-//   final UserRepository? userRepository;
-//   final ChatsRepository? chatsRepository;
-
-//   const FakeApplication({
-//     Key? key,
-//     required this.authRepository,
-//     required this.cachingManager,
-//     required this.mainCubit,
-//     required this.dynamicLinkService,
-//     required this.dio,
-//     required this.connectivityService,
-//     this.pushNotificationManager,
-//     this.userRepository,
-//     this.chatsRepository,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return
-//   }
-// }
-
 Future<void> pumpLoginScreen({
   required WidgetTester tester,
   required AuthRepository authRepository,
@@ -187,7 +157,6 @@ void main() {
     mainCubit = MainCubit(mockDataCachingManager, mockConnectivityService);
 
     dio.interceptors.add(AppInterceptor(mainCubit, mockDataCachingManager));
-    logger.d(await mockUserRepository.getUserInfo());
   });
 
   testWidgets(
@@ -492,7 +461,8 @@ void main() {
 
   group('AppErrorWidget', () {
     testWidgets(
-      'appears if the user entered the wrong email or password and clicked on Login button',
+      'appears if the user entered the wrong email or password and clicked on Login button'
+      'and disappears after 10 seconds',
       (WidgetTester tester) async {
         dioAdapter.onPost(
           '/experts/login/app',
@@ -530,12 +500,18 @@ void main() {
         await tester.tap(find.byType(AppElevatedButton));
         await tester.pumpAndSettle();
 
-        logger.d(mainCubit.state.appError);
-
         expect(
           find.widgetWithText(
               AppErrorWidget, S.current.wrongUsernameAndOrPassword),
           findsOneWidget,
+        );
+
+        await tester.pumpAndSettle(const Duration(seconds: 11));
+
+        expect(
+          find.widgetWithText(
+              AppErrorWidget, S.current.wrongUsernameAndOrPassword),
+          findsNothing,
         );
       },
     );
