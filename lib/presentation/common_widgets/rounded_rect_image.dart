@@ -9,20 +9,20 @@ class RoundedRectImage extends StatelessWidget {
   final Uri uri;
   final double? width;
   final double? height;
-  final bool canOpenInFullScreen;
+  final bool canBeOpenedInFullScreen;
 
   const RoundedRectImage({
     required this.uri,
     this.width,
     this.height,
-    this.canOpenInFullScreen = false,
+    this.canBeOpenedInFullScreen = false,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: canOpenInFullScreen
+      onTap: canBeOpenedInFullScreen
           ? () {
               Get.toNamed(
                 AppRoutes.galleryPictures,

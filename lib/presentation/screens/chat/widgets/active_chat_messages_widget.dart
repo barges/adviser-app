@@ -53,7 +53,7 @@ class ActiveChatMessagesWidget extends StatelessWidget {
                         key: i == activeMessages.length - 1
                             ? chatCubit.questionGlobalKey
                             : null,
-                        item,
+                        item: item,
                         onPressedTryAgain:
                             !item.isSent ? chatCubit.sendAnswerAgain : null),
                   );

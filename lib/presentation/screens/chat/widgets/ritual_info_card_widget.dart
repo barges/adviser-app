@@ -107,7 +107,7 @@ class RitualInfoCardWidget extends StatelessWidget {
                             uri: Uri.parse(ritualCardInfo!.leftImage!),
                             width: 132.0,
                             height: 132.0,
-                            canOpenInFullScreen: true,
+                            canBeOpenedInFullScreen: true,
                           )
                         ],
                       ),
@@ -131,7 +131,7 @@ class RitualInfoCardWidget extends StatelessWidget {
                             uri: Uri.parse(ritualCardInfo!.rightImage!),
                             width: 132.0,
                             height: 132.0,
-                            canOpenInFullScreen: true,
+                            canBeOpenedInFullScreen: true,
                           )
                         ],
                       ),
