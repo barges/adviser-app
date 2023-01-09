@@ -27,7 +27,7 @@ class ChatTextInputWidget extends StatelessWidget {
     final theme = Theme.of(context);
     final ChatCubit chatCubit = context.read<ChatCubit>();
     final bool isAudioQuestion =
-        chatCubit.state.questionFromDB?.isAudio ?? false;
+        context.select((ChatCubit cubit) => cubit.state.isAudioAnswerEnabled);
 
     return Stack(
       clipBehavior: Clip.none,
@@ -120,6 +120,7 @@ class ChatTextInputWidget extends StatelessWidget {
                           final isSendButtonEnabled = context.select(
                               (ChatCubit cubit) =>
                                   cubit.state.isSendButtonEnabled);
+
                           return Row(
                             children: [
                               if (inputTextLength == 0 &&

@@ -14,8 +14,6 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/empty_error.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/ui_error.dart';
 import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
 import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
@@ -32,12 +30,11 @@ import 'package:shared_advisor_interface/data/network/requests/answer_request.da
 import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
@@ -243,6 +240,7 @@ class ChatCubit extends Cubit<ChatState> {
             questionFromDB: question,
             questionStatus: question.status,
             activeMessages: [question],
+            isAudioAnswerEnabled: question.isAudio,
           ),
         );
       }
@@ -279,6 +277,9 @@ class ChatCubit extends Cubit<ChatState> {
 
         final ChatItem lastQuestion = questions.last;
 
+        final bool isAudioAnswerEnabled =
+            questions.any((element) => element.isAudio);
+
         emit(
           state.copyWith(
             questionFromDB: lastQuestion.copyWith(
@@ -290,6 +291,7 @@ class ChatCubit extends Cubit<ChatState> {
             questionStatus: lastQuestion.status,
             activeMessages: activeMessages,
             ritualCardInfo: ritualsResponse.ritualCardInfo,
+            isAudioAnswerEnabled: isAudioAnswerEnabled,
           ),
         );
 
@@ -360,7 +362,8 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> startRecordingAudio(BuildContext context) async {
     _tryStartAnswerSend();
 
-    await _handlePermissions(context);
+    await CheckPermissionService.handlePermission(
+        context, PermissionType.audio);
 
     final isRecordGranted = await Permission.microphone.isGranted;
 
@@ -406,11 +409,11 @@ class ChatCubit extends Cubit<ChatState> {
 
       _recordAudioDuration = (metaAudio.trackDuration ?? 0) ~/ 1000;
       if (!checkMinRecordDurationIsOk()) {
-        updateErrorMessage(UIError(
+        _mainCubit.updateErrorMessage(UIError(
             uiErrorType:
                 UIErrorType.youCantSendThisMessageBecauseItsLessThan15Seconds));
       } else if (!_checkMaxRecordDurationIsOk()) {
-        updateErrorMessage(
+        _mainCubit.updateErrorMessage(
             UIError(uiErrorType: UIErrorType.youVeReachThe3MinuteTimeLimit));
         isSendButtonEnabled = true;
       } else {
@@ -468,26 +471,6 @@ class ChatCubit extends Cubit<ChatState> {
     File? recordedAudio = state.recordedAudio;
     if (recordedAudio != null && await recordedAudio.exists()) {
       recordedAudio.deleteSync();
-    }
-  }
-
-  Future<void> _handlePermissions(BuildContext context) async {
-    final s = S.of(context);
-    PermissionStatus status = await Permission.microphone.request();
-
-    if (status.isPermanentlyDenied) {
-      VoidCallback actionOnOk = (() async {
-        await openAppSettings();
-        Navigator.pop(context);
-      });
-      await showOkCancelAlert(
-          context: context,
-          title: s.permissionNeeded,
-          okText: s.settings,
-          description: s.weNeedPermissionToAccessYourMicrophone,
-          actionOnOK: actionOnOk,
-          allowBarrierClick: true,
-          isCancelEnabled: true);
     }
   }
 
@@ -725,18 +708,8 @@ class ChatCubit extends Cubit<ChatState> {
     emit(state.copyWith(currentTabIndex: newIndex));
   }
 
-  void updateErrorMessage(AppError appError) {
-    emit(state.copyWith(appError: appError));
-  }
-
   void updateSuccessMessage(AppSuccess appSuccess) {
     emit(state.copyWith(appSuccess: appSuccess));
-  }
-
-  void clearErrorMessage() {
-    if (state.appError is! EmptyError) {
-      emit(state.copyWith(appError: const EmptyError()));
-    }
   }
 
   void clearSuccessMessage() {
@@ -912,11 +885,13 @@ class ChatCubit extends Cubit<ChatState> {
           e.type == DioErrorType.connectTimeout ||
           e.type == DioErrorType.sendTimeout ||
           e.type == DioErrorType.receiveTimeout) {
-        updateErrorMessage(
+        _mainCubit.updateErrorMessage(
             UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
         answer = _getNotSentAnswer();
       }
     }
+
+    clearSuccessMessage();
     return answer;
   }
 
@@ -985,15 +960,16 @@ class ChatCubit extends Cubit<ChatState> {
   bool _checkAttachmentSizeIsOk(List<File> images, File? recordedAudio) {
     if (_calculateAttachmentSize(images, recordedAudio) <=
         AppConstants.maxAttachmentFilesSizeInMb) {
-      if (state.appError is UIError &&
-          (state.appError as UIError).uiErrorType ==
+      if (_mainCubit.state.appError is UIError &&
+          (_mainCubit.state.appError as UIError).uiErrorType ==
               UIErrorType.theMaximumSizeOfTheAttachmentsIs20Mb) {
-        SchedulerBinding.instance.endOfFrame.then((_) => clearErrorMessage());
+        SchedulerBinding.instance.endOfFrame
+            .then((_) => _mainCubit.clearErrorMessage());
       }
       return true;
     } else {
-      SchedulerBinding.instance.endOfFrame.then((_) => updateErrorMessage(
-          UIError(
+      SchedulerBinding.instance.endOfFrame.then((_) =>
+          _mainCubit.updateErrorMessage(UIError(
               uiErrorType: UIErrorType.theMaximumSizeOfTheAttachmentsIs20Mb)));
       return false;
     }
@@ -1048,7 +1024,7 @@ class ChatCubit extends Cubit<ChatState> {
   bool get canRecordAudio =>
       state.attachedPictures.length <=
           AppConstants.maxAttachedPicturesWithAudio &&
-      state.questionFromDB?.isAudio == true;
+      state.isAudioAnswerEnabled == true;
 
   int get minTextLength => state.questionFromDB?.type == ChatItemType.ritual
       ? AppConstants.minTextLengthRitual

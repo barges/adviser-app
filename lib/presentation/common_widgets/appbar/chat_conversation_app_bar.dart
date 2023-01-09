@@ -75,9 +75,7 @@ class ChatConversationAppBar extends StatelessWidget
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const SizedBox(
-                                    width: 12.0,
-                                  ),
+                                  const SizedBox(width: 12.0),
                                   SvgPicture.asset(
                                     selectedBrand.icon,
                                     height: 17.0,
@@ -88,7 +86,7 @@ class ChatConversationAppBar extends StatelessWidget
                                       title,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.center,
+                                      textAlign: TextAlign.start,
                                       style: TextStyle(
                                         fontSize: 16.0,
                                         color: Theme.of(context).hoverColor,
