@@ -15,7 +15,7 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/login_appbar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_succes_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_success_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/password_text_field.dart';
@@ -68,14 +68,12 @@ class LoginContentWidget extends StatelessWidget {
                       builder: (BuildContext context) {
                         final AppError appError = context
                             .select((MainCubit cubit) => cubit.state.appError);
-                        return appError is! EmptyError
-                            ? AppErrorWidget(
-                                errorMessage: appError.getMessage(context),
-                                close: () {
-                                  loginCubit.clearErrorMessage();
-                                },
-                              )
-                            : const SizedBox.shrink();
+                        return AppErrorWidget(
+                          errorMessage: appError.getMessage(context),
+                          close: () {
+                            loginCubit.clearErrorMessage();
+                          },
+                        );
                       },
                     ),
                     Builder(
@@ -83,13 +81,11 @@ class LoginContentWidget extends StatelessWidget {
                         final AppSuccess appSuccess = context.select(
                             (LoginCubit cubit) => cubit.state.appSuccess);
 
-                        return appSuccess is! EmptySuccess
-                            ? AppSuccessWidget(
-                                message: appSuccess.getMessage(context),
-                                needEmailButton: true,
-                                onClose: loginCubit.clearSuccessMessage,
-                              )
-                            : const SizedBox.shrink();
+                        return AppSuccessWidget(
+                          message: appSuccess.getMessage(context),
+                          needEmailButton: true,
+                          onClose: loginCubit.clearSuccessMessage,
+                        );
                       },
                     ),
                     Expanded(

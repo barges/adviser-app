@@ -8,7 +8,7 @@ import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_succes_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_success_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/list_tile/chats_list_tile_widget.dart';
@@ -58,12 +58,10 @@ class _PublicQuestionsListWidget extends StatelessWidget {
         Builder(builder: (context) {
           final AppSuccess appSuccess =
               context.select((SessionsCubit cubit) => cubit.state.appSuccess);
-          return appSuccess is! EmptySuccess
-              ? AppSuccessWidget(
-                  message: appSuccess.getMessage(context),
-                  onClose: sessionsCubit.clearSuccessMessage,
-                )
-              : const SizedBox.shrink();
+          return AppSuccessWidget(
+            message: appSuccess.getMessage(context),
+            onClose: sessionsCubit.clearSuccessMessage,
+          );
         }),
         Builder(
           builder: (context) {

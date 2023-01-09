@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/empty_error.dart';
 import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
-import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
@@ -16,7 +14,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_succes_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_success_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
@@ -38,6 +36,7 @@ class ChatScreen extends StatelessWidget {
         builder: (context) {
           final S s = S.of(context);
           final ChatCubit chatCubit = context.read<ChatCubit>();
+          final MainCubit mainCubit = context.read<MainCubit>();
 
           final ChatItem? questionFromDB =
               context.select((ChatCubit cubit) => cubit.state.questionFromDB);
@@ -117,24 +116,20 @@ class ChatScreen extends StatelessWidget {
                           builder: (BuildContext context) {
                             final AppSuccess appSuccess = context.select(
                                 (ChatCubit cubit) => cubit.state.appSuccess);
-                            return appSuccess is! EmptySuccess
-                                ? AppSuccessWidget(
-                                    message: appSuccess.getMessage(context),
-                                    onClose: chatCubit.clearSuccessMessage,
-                                  )
-                                : const SizedBox.shrink();
+                            return AppSuccessWidget(
+                              message: appSuccess.getMessage(context),
+                              onClose: chatCubit.clearSuccessMessage,
+                            );
                           },
                         ),
                         Builder(
                           builder: (context) {
                             final AppError appError = context.select(
-                                (ChatCubit cubit) => cubit.state.appError);
-                            return appError is! EmptyError
-                                ? AppErrorWidget(
-                                    errorMessage: appError.getMessage(context),
-                                    close: chatCubit.clearErrorMessage,
-                                  )
-                                : const SizedBox.shrink();
+                                (MainCubit cubit) => cubit.state.appError);
+                            return AppErrorWidget(
+                              errorMessage: appError.getMessage(context),
+                              close: mainCubit.clearErrorMessage,
+                            );
                           },
                         ),
                         Builder(builder: (context) {

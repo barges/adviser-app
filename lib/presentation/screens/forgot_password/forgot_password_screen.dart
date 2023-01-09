@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/empty_error.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -67,15 +66,12 @@ class ForgotPasswordContentWidget extends StatelessWidget {
                               builder: (BuildContext context) {
                                 final AppError appError = context.select(
                                     (MainCubit cubit) => cubit.state.appError);
-                                return appError is! EmptyError
-                                    ? AppErrorWidget(
-                                        errorMessage:
-                                            appError.getMessage(context),
-                                        close: () {
-                                          cubit.clearErrorMessage();
-                                        },
-                                      )
-                                    : const SizedBox.shrink();
+                                return AppErrorWidget(
+                                  errorMessage: appError.getMessage(context),
+                                  close: () {
+                                    cubit.clearErrorMessage();
+                                  },
+                                );
                               },
                             ),
                             Expanded(
