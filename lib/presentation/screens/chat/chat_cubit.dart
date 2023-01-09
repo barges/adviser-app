@@ -277,10 +277,8 @@ class ChatCubit extends Cubit<ChatState> {
 
         final ChatItem lastQuestion = questions.last;
 
-        final ChatItem firstQuestionWithAudio = questions.firstWhere(
-          (element) => element.isAudio,
-          orElse: () => lastQuestion,
-        );
+        final bool isAudioAnswerEnabled =
+            questions.any((element) => element.isAudio);
 
         emit(
           state.copyWith(
@@ -293,7 +291,7 @@ class ChatCubit extends Cubit<ChatState> {
             questionStatus: lastQuestion.status,
             activeMessages: activeMessages,
             ritualCardInfo: ritualsResponse.ritualCardInfo,
-            isAudioAnswerEnabled: firstQuestionWithAudio.isAudio,
+            isAudioAnswerEnabled: isAudioAnswerEnabled,
           ),
         );
 

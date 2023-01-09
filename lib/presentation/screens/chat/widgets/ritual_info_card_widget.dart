@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/chats/rirual_card_info.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/rounded_rect_image.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 class RitualInfoCardWidget extends StatelessWidget {
   final RitualCardInfo? ritualCardInfo;
@@ -103,10 +100,11 @@ class RitualInfoCardWidget extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          RoundedRectImage(
+                          AppImageWidget(
                             uri: Uri.parse(ritualCardInfo!.leftImage!),
                             width: 132.0,
                             height: 132.0,
+                            radius: 8.0,
                             canBeOpenedInFullScreen: true,
                           )
                         ],
@@ -127,10 +125,11 @@ class RitualInfoCardWidget extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          RoundedRectImage(
+                          AppImageWidget(
                             uri: Uri.parse(ritualCardInfo!.rightImage!),
                             width: 132.0,
                             height: 132.0,
+                            radius: 8.0,
                             canBeOpenedInFullScreen: true,
                           )
                         ],
