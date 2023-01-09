@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
 import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/rounded_rect_image.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_background_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_footer_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_player.dart';
@@ -57,9 +57,11 @@ class ChatItemWidget extends StatelessWidget {
                           ? 12.0
                           : 20.0,
                     ),
-                    child: RoundedRectImage(
+                    child: AppImageWidget(
                       uri: Uri.parse(attachment.url ?? ''),
                       height: 134.0,
+                      radius: 8.0,
+                      canBeOpenedInFullScreen: true,
                     ),
                   );
                 } else if (attachment.type == AttachmentType.audio) {

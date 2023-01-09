@@ -22,6 +22,8 @@ class MainCubit extends Cubit<MainState> {
   late final VoidCallback _localeListenerDisposeCallback;
   late final StreamSubscription<bool> _connectivitySubscription;
 
+  Timer? _errorTimer;
+
   final PublishSubject<bool> sessionsUpdateTrigger = PublishSubject();
 
   final ConnectivityService _connectivityService;
@@ -50,6 +52,7 @@ class MainCubit extends Cubit<MainState> {
     _connectivityService.disposeStream();
     _localeListenerDisposeCallback.call();
     _disposeCallback.call();
+    _errorTimer?.cancel();
     return super.close();
   }
 
@@ -62,7 +65,10 @@ class MainCubit extends Cubit<MainState> {
   }
 
   void updateErrorMessage(AppError appError) {
-    emit(state.copyWith(appError: appError));
+    if (appError is! EmptyError) {
+      emit(state.copyWith(appError: appError));
+      _errorTimer = Timer(const Duration(seconds: 10), clearErrorMessage);
+    }
   }
 
   void clearErrorMessage() {

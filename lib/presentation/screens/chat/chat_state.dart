@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/empty_error.dart';
 import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
 import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
@@ -30,8 +28,8 @@ class ChatState with _$ChatState {
     @Default(true) bool showInputFieldIfPublic,
     @Default(false) bool isSendButtonEnabled,
     @Default('') String audioUrl,
-    @Default(EmptyError()) AppError appError,
     @Default(EmptySuccess()) AppSuccess appSuccess,
+    @Default(false) bool isAudioAnswerEnabled,
     RitualCardInfo? ritualCardInfo,
     File? recordedAudio,
     Stream<RecordingDisposition>? recordingStream,
