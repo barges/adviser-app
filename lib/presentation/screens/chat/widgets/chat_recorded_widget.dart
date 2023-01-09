@@ -57,7 +57,7 @@ class ChatRecordedWidget extends StatelessWidget {
               Row(
                 children: [
                   Builder(builder: (context) {
-                    final List<File> attachedPictures = context.select(
+                    context.select(
                         (ChatCubit cubit) => cubit.state.attachedPictures);
                     final bool canAttachPicture = chatCubit.canAttachPictureTo(
                         attachmentType: AttachmentType.audio);
@@ -79,51 +79,41 @@ class ChatRecordedWidget extends StatelessWidget {
                               );
                             }
                           },
-                          child: Column(
-                            children: [
-                              Opacity(
-                                opacity: canAttachPicture ? 1.0 : 0.4,
-                                child: Assets.vectors.gallery.svg(
-                                  width: AppConstants.iconSize,
-                                  color: Theme.of(context).shadowColor,
-                                ),
-                              ),
-                              // temporary for testing
-                              if (recordedAudio != null)
-                                Text(
-                                    '${recordedAudio.sizeInMb.toString().substring(0, 5)} Mb',
-                                    style: const TextStyle(fontSize: 12.0)),
-                            ],
-                          ),
-                        ),
-                        if (attachedPictures.isNotEmpty)
-                          GestureDetector(
-                            onTap: () {
-                              if (audioRecordingButtonIsEnabled) {
-                                chatCubit.startRecordingAudio(context);
-                              }
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 16.0,
-                              ),
-                              child: Opacity(
-                                opacity:
-                                    audioRecordingButtonIsEnabled ? 1.0 : 0.4,
-                                child: Assets.vectors.microphone
-                                    .svg(width: AppConstants.iconSize),
-                              ),
+                          child: Opacity(
+                            opacity: canAttachPicture ? 1.0 : 0.4,
+                            child: Assets.vectors.gallery.svg(
+                              width: AppConstants.iconSize,
+                              color: Theme.of(context).shadowColor,
                             ),
                           ),
+                        ),
+                        const SizedBox(
+                          height: 28.0,
+                          child: VerticalDivider(
+                            width: 24.0,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            if (audioRecordingButtonIsEnabled) {
+                              chatCubit.startRecordingAudio(context);
+                            }
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              right: 12.0,
+                            ),
+                            child: Opacity(
+                              opacity:
+                                  audioRecordingButtonIsEnabled ? 1.0 : 0.4,
+                              child: Assets.vectors.microphone
+                                  .svg(width: AppConstants.iconSize),
+                            ),
+                          ),
+                        ),
                       ],
                     );
                   }),
-                  const SizedBox(
-                    height: 28.0,
-                    child: VerticalDivider(
-                      width: 24.0,
-                    ),
-                  ),
                   Expanded(
                     child: Container(
                       padding: const EdgeInsets.all(4.0),
@@ -141,51 +131,40 @@ class ChatRecordedWidget extends StatelessWidget {
                           const SizedBox(
                             width: 8.0,
                           ),
-                          Expanded(
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Builder(builder: (context) {
-                                    final playbackStream = context.select(
-                                        (ChatCubit cubit) =>
-                                            cubit.state.playbackStream);
-                                    return StreamBuilder<PlaybackDisposition>(
-                                      stream: playbackStream,
-                                      builder: (_, snapshot) {
-                                        final value = playbackStream != null &&
-                                                snapshot.hasData
-                                            ? snapshot.data!.position
-                                                    .inMilliseconds /
-                                                snapshot.data!.duration
-                                                    .inMilliseconds
-                                            : 0.0;
-                                        return _PlayProgress(
-                                          value: value,
-                                          duration:
-                                              chatCubit.recordAudioDuration !=
-                                                      null
-                                                  ? chatCubit
-                                                      .recordAudioDuration!
-                                                      .formatMMSS
-                                                  : "00:00",
-                                        );
-                                      },
-                                    );
-                                  }),
-                                ),
-                                GestureDetector(
-                                  onTap: onDeletePressed,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 8.0,
-                                      right: 4.0,
-                                    ),
-                                    child: Assets.vectors.delete.svg(
-                                        width: AppConstants.iconSize,
-                                        color: Theme.of(context).shadowColor),
-                                  ),
-                                ),
-                              ],
+                          Flexible(
+                            child: Builder(builder: (context) {
+                              final playbackStream = context.select(
+                                  (ChatCubit cubit) =>
+                                      cubit.state.playbackStream);
+                              return StreamBuilder<PlaybackDisposition>(
+                                stream: playbackStream,
+                                builder: (_, snapshot) {
+                                  final value = playbackStream != null &&
+                                          snapshot.hasData
+                                      ? snapshot.data!.position.inMilliseconds /
+                                          snapshot.data!.duration.inMilliseconds
+                                      : 0.0;
+                                  return _PlayProgress(
+                                    value: value,
+                                    duration:
+                                        chatCubit.recordAudioDuration != null
+                                            ? chatCubit
+                                                .recordAudioDuration!.formatMSS
+                                            : "0:00",
+                                  );
+                                },
+                              );
+                            }),
+                          ),
+                          GestureDetector(
+                            onTap: onDeletePressed,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                right: 4.0,
+                              ),
+                              child: Assets.vectors.delete.svg(
+                                  width: AppConstants.iconSize,
+                                  color: Theme.of(context).shadowColor),
                             ),
                           ),
                         ],
@@ -283,7 +262,7 @@ class _PlayProgress extends StatelessWidget {
           width: 8.0,
         ),
         SizedBox(
-          width: 48.0,
+          width: 36.0,
           child: Text(
             duration,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(

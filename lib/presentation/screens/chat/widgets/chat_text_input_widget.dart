@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -23,12 +22,12 @@ class ChatTextInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.select((ChatCubit cubit) => cubit.state.attachedPictures);
+    final List<File> attachedPictures =
+        context.select((ChatCubit cubit) => cubit.state.attachedPictures);
     final theme = Theme.of(context);
     final ChatCubit chatCubit = context.read<ChatCubit>();
-    final List<File> attachedPictures = chatCubit.state.attachedPictures;
     final bool isAudioQuestion =
-        chatCubit.state.questionFromDB?.isAudio ?? false;
+        context.select((ChatCubit cubit) => cubit.state.isAudioAnswerEnabled);
 
     return Stack(
       clipBehavior: Clip.none,
@@ -83,7 +82,7 @@ class ChatTextInputWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                        if (attachedPictures.isNotEmpty)
+                        if (attachedPictures.isNotEmpty && isAudioQuestion)
                           Row(
                             children: [
                               const SizedBox(
@@ -121,11 +120,6 @@ class ChatTextInputWidget extends StatelessWidget {
                           final isSendButtonEnabled = context.select(
                               (ChatCubit cubit) =>
                                   cubit.state.isSendButtonEnabled);
-                          final ChatItem? questionFromDB = context.select(
-                              (ChatCubit cubit) => cubit.state.questionFromDB);
-
-                          final isAudioQuestion =
-                              questionFromDB?.isAudio ?? false;
 
                           return Row(
                             children: [

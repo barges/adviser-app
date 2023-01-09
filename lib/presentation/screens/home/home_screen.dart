@@ -26,7 +26,7 @@ class HomeScreen extends StatelessWidget {
         userRepository,
         getIt.get<PushNotificationManager>(),
       ),
-      child: HomeWidget(
+      child: HomeContentWidget(
         cacheManager: cacheManager,
         connectivityService: connectivityService,
         userRepository: userRepository,
@@ -36,13 +36,13 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class HomeWidget extends StatelessWidget {
+class HomeContentWidget extends StatelessWidget {
   final CachingManager cacheManager;
   final ConnectivityService connectivityService;
   final ChatsRepository chatsRepository;
   final UserRepository userRepository;
 
-  const HomeWidget({
+  const HomeContentWidget({
     super.key,
     required this.cacheManager,
     required this.connectivityService,
