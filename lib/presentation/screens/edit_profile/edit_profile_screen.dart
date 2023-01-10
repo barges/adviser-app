@@ -10,7 +10,7 @@ import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_state.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/widgets/gallery_images.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/widgets/languages_section_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/edit_profile/widgets/profile_image_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/edit_profile/widgets/profile_images_widget.dart';
 
 class EditProfileScreen extends StatelessWidget {
   const EditProfileScreen({Key? key}) : super(key: key);
@@ -67,7 +67,7 @@ class EditProfileScreen extends StatelessWidget {
                             },
                             child: Column(
                               children: [
-                                const ProfileImageWidget(),
+                                const ProfileImagesWidget(),
                                 const SizedBox(
                                   height: 16.0,
                                 ),
