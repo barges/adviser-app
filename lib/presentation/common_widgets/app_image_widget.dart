@@ -2,14 +2,17 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-class RoundedRectImage extends StatelessWidget {
+class AppImageWidget extends StatelessWidget {
   final Uri uri;
   final double? width;
   final double? height;
-  const RoundedRectImage({
+  final double? radius;
+
+  const AppImageWidget({
     required this.uri,
     this.width,
     this.height,
+    this.radius,
     super.key,
   });
 
@@ -20,7 +23,7 @@ class RoundedRectImage extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: radius != null ? BorderRadius.circular(radius!) : null,
         image: DecorationImage(
           fit: BoxFit.cover,
           image: uri.hasScheme

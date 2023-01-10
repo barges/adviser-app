@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_cubit.dart';
@@ -13,8 +13,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 const double _backgroundImageSectionHeight = 140.0;
 
-class ProfileImageWidget extends StatelessWidget {
-  const ProfileImageWidget({Key? key}) : super(key: key);
+class ProfileImagesWidget extends StatelessWidget {
+  const ProfileImagesWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +28,14 @@ class ProfileImageWidget extends StatelessWidget {
               builder: (context) {
                 final List<String> coverPictures = context.select(
                     (EditProfileCubit cubit) => cubit.state.coverPictures);
+
+                // final List<Uri?> coverPicturesUris = coverPictures.map((e) {
+                //   if (e is NetworkCoverPicture){
+                //     return Uri.parse(e.imageUrl);
+                //   } else if (e is FileCoverPicture)  {
+                //     return Uri.parse(e.imageFile.path);
+                //   }
+                // }).toList();
 
                 return coverPictures.isEmpty
                     ? Container(
@@ -81,12 +89,10 @@ class ProfileImageWidget extends StatelessWidget {
                                 return GestureDetector(
                                   onTap: cubit.goToGallery,
                                   child: SizedBox(
-                                    height: _backgroundImageSectionHeight,
-                                    child: CachedNetworkImage(
-                                      imageUrl: coverPictures[index],
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+                                      height: _backgroundImageSectionHeight,
+                                      child: AppImageWidget(
+                                        uri: Uri.parse(coverPictures[index]),
+                                      )),
                                 );
                               },
                             ),

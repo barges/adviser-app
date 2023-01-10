@@ -13,6 +13,7 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 
 part 'chat_item.freezed.dart';
+
 part 'chat_item.g.dart';
 
 @freezed
@@ -106,7 +107,9 @@ class ChatItem with _$ChatItem {
   String getUnansweredMessage(BuildContext context) {
     String? resultMessage;
     if (unansweredCount != null && unansweredCount! > 1) {
-      resultMessage = S.of(context).youHaveAFewActiveSessions;
+      resultMessage = S
+          .of(context)
+          .youHaveAFewActiveSessions;
     } else {
       resultMessage = unansweredTypes?.firstOrNull?.unAnsweredMessage(context);
     }
@@ -114,7 +117,12 @@ class ChatItem with _$ChatItem {
     return resultMessage;
   }
 
+  bool get isAudio =>
+      attachments?.isNotEmpty == true && attachments!
+          .any((element) => element.type == AttachmentType.audio);
+
+
   bool get isMedia => attachments != null && attachments!.isNotEmpty;
 
-  bool get isAudio => getAudioUrl(1) != null || getAudioUrl(2) != null;
+//bool get isAudio => getAudioUrl(1) != null || getAudioUrl(2) != null;
 }

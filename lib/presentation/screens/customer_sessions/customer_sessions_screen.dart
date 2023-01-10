@@ -52,14 +52,14 @@ class CustomerSessionsScreen extends StatelessWidget {
                     const Divider(
                       height: 1,
                     ),
-                    Builder(builder: (context) {
-                      final List<ChatItem>? questions = context.select(
-                          (CustomerSessionsCubit cubit) =>
-                              cubit.state.privateQuestionsWithHistory);
+                    Expanded(
+                      child: Builder(builder: (context) {
+                        final List<ChatItem>? questions = context.select(
+                            (CustomerSessionsCubit cubit) =>
+                                cubit.state.privateQuestionsWithHistory);
 
-                      if (!isOnline) {
-                        return Expanded(
-                          child: CustomScrollView(slivers: [
+                        if (!isOnline) {
+                          return CustomScrollView(slivers: [
                             SliverFillRemaining(
                                 hasScrollBody: false,
                                 child: Column(
@@ -68,24 +68,19 @@ class CustomerSessionsScreen extends StatelessWidget {
                                     NoConnectionWidget(),
                                   ],
                                 )),
-                          ]),
-                        );
-                      }
-
-                      if (questions == null) {
-                        return const SizedBox.shrink();
-                      }
-
-                      if (questions.isNotEmpty) {
-                        return Expanded(
-                          child:
-                              CustomerSessionsListWidget(questions: questions),
-                        );
-                      } else {
-                        return const Expanded(
-                            child: EmptyCustomerSessionsListWidget());
-                      }
-                    }),
+                          ]);
+                        } else {
+                          if (questions == null) {
+                            return const SizedBox.shrink();
+                          } else if (questions.isNotEmpty) {
+                            return CustomerSessionsListWidget(
+                                questions: questions);
+                          } else {
+                            return const EmptyCustomerSessionsListWidget();
+                          }
+                        }
+                      }),
+                    ),
                   ],
                 );
               }));

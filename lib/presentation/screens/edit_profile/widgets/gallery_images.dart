@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -17,6 +17,15 @@ class GalleryImages extends StatelessWidget {
     final EditProfileCubit cubit = context.read<EditProfileCubit>();
     final List<String> coverPictures =
         context.select((EditProfileCubit cubit) => cubit.state.coverPictures);
+
+    // final List<Uri?> coverPicturesUris = coverPictures.map((e) {
+    //   if (e is NetworkCoverPicture) {
+    //     return Uri.parse(e.imageUrl);
+    //   } else if (e is FileCoverPicture) {
+    //     return Uri.parse(e.imageFile.path);
+    //   }
+    // }).toList();
+
     return coverPictures.isNotEmpty
         ? Column(
             children: [
@@ -59,8 +68,8 @@ class GalleryImages extends StatelessWidget {
                     : coverPictures.length,
                 itemBuilder: (BuildContext context, int index) {
                   return index < coverPictures.length
-                      ? GalleryImageItem(
-                          imageUrl: coverPictures[index],
+                      ? _GalleryImageItem(
+                          uri: Uri.parse(coverPictures[index]),
                           onDeleteTap: () {
                             cubit.deletePictureFromGallery(index);
                           },
@@ -86,33 +95,33 @@ class GalleryImages extends StatelessWidget {
   }
 }
 
-class GalleryImageItem extends StatelessWidget {
-  final String imageUrl;
+class _GalleryImageItem extends StatelessWidget {
+  final Uri uri;
   final VoidCallback onDeleteTap;
 
-  const GalleryImageItem({
+  const _GalleryImageItem({
     Key? key,
-    required this.imageUrl,
+    required this.uri,
     required this.onDeleteTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(4.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: CachedNetworkImageProvider(imageUrl),
+    return Stack(
+      children: [
+        AppImageWidget(
+          uri: uri,
+          radius: AppConstants.buttonRadius,
         ),
-      ),
-      child: Align(
-          alignment: Alignment.topRight,
+        Positioned(
+          top: 4.0,
+          right: 4.0,
           child: AppIconButton(
             icon: Assets.vectors.close.path,
             onTap: onDeleteTap,
-          )),
+          ),
+        )
+      ],
     );
   }
 }

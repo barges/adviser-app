@@ -19,7 +19,7 @@ class ChatTextWidget extends ChatWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChatItemBackground(
+    return ChatItemBackgroundWidget(
       onPressedTryAgain: onPressedTryAgain,
       isTryAgain: !item.isSent,
       padding: paddingItem,

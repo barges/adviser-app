@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_background_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/rounded_rect_image.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_player.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_area_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_widget.dart';
@@ -26,7 +26,7 @@ class ChatTextMediaWidget extends ChatWidget {
     final bool isImage1 = item.getImageUrl(1) != null;
     final bool isImage2 = item.getImageUrl(2) != null;
 
-    return ChatItemBackground(
+    return ChatItemBackgroundWidget(
       onPressedTryAgain: onPressedTryAgain,
       isTryAgain: !item.isSent,
       padding: paddingItem,
@@ -46,17 +46,19 @@ class ChatTextMediaWidget extends ChatWidget {
               if (isImage1)
                 Padding(
                   padding: const EdgeInsets.only(top: 12.0),
-                  child: RoundedRectImage(
+                  child: AppImageWidget(
                     uri: Uri.parse(item.getImageUrl(1)!),
                     height: 134.0,
+                    radius: 8.0,
                   ),
                 ),
               if (isImage2)
                 Padding(
                   padding: const EdgeInsets.only(top: 12.0),
-                  child: RoundedRectImage(
+                  child: AppImageWidget(
                     uri: Uri.parse(item.getImageUrl(2)!),
                     height: 134.0,
+                    radius: 8.0,
                   ),
                 ),
               if (audioUrl1 == null && audioUrl2 == null)
