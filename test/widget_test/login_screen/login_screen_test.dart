@@ -18,7 +18,6 @@ import 'package:shared_advisor_interface/domain/repositories/auth_repository.dar
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/change_locale_button.dart';
@@ -86,8 +85,8 @@ Future<void> pumpLoginScreen({
               page: () => FakeHomeScreen(
                 cachingManager: cachingManager,
                 connectivityService: connectivityService,
-                pushNotificationManager:
-                    pushNotificationManager ?? MockPushNotificationManager(),
+                pushNotificationManager: pushNotificationManager ??
+                    MockPushNotificationManagerImpl(),
                 userRepository: userRepository,
                 chatsRepository: chatsRepository ?? MockChatsRepository(),
               ),
@@ -132,7 +131,7 @@ void main() {
     dio = Dio();
     dioAdapter = DioAdapter(dio: dio, matcher: const UrlRequestMatcher());
 
-    mockUserRepository = MockUserRepository();
+    mockUserRepository = MockUserRepositoryImpl();
     when(mockUserRepository.getUserInfo())
         .thenAnswer((realInvocation) => Future.value(const UserInfo()));
   });
@@ -142,7 +141,7 @@ void main() {
     mockAuthRepository = AuthRepositoryImpl(AuthApi(dio));
     mockConnectivityService = MockConnectivityService();
     mockDynamicLinkService = MockDynamicLinkService();
-    mockPushNotificationManager = MockPushNotificationManager();
+    mockPushNotificationManager = MockPushNotificationManagerImpl();
     mockChatsRepository = MockChatsRepository();
 
     when(mockDataCachingManager.getUnauthorizedBrands())

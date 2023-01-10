@@ -49,8 +49,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   final GlobalKey questionGlobalKey = GlobalKey();
 
-  final ConnectivityService _connectivityService =
-      getIt.get<ConnectivityService>();
+  final ConnectivityService _connectivityService;
 
   late final StreamSubscription<bool> _keyboardSubscription;
 
@@ -58,7 +57,7 @@ class ChatCubit extends Cubit<ChatState> {
   late final ChatScreenArguments chatScreenArguments;
   final VoidCallback _showErrorAlert;
   final ValueGetter<Future<bool?>> _confirmSendAnswerAlert;
-  final MainCubit _mainCubit = getIt.get<MainCubit>();
+  final MainCubit _mainCubit;
   final Codec _codec = Codec.aacMP4;
   final int _tillShowMessagesInSec =
       AppConstants.tillShowAnswerTimingMessagesInSec;
@@ -77,6 +76,8 @@ class ChatCubit extends Cubit<ChatState> {
 
   ChatCubit(
     this._repository,
+    this._connectivityService,
+    this._mainCubit,
     this._showErrorAlert,
     this._confirmSendAnswerAlert,
   ) : super(const ChatState()) {
@@ -155,6 +156,8 @@ class ChatCubit extends Cubit<ChatState> {
     _playerRecorded = await FlutterSoundPlayer(logLevel: logLevel).openPlayer();
 
     playerMedia = await FlutterSoundPlayer(logLevel: logLevel).openPlayer();
+
+    logger.d(playerMedia);
 
     emit(state.copyWith(flutterSoundPlayer: playerMedia));
 

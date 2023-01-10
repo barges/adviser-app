@@ -43,8 +43,7 @@ List<HistoryUiModel> _groupBottomHistory(List<History> data) {
 
 class HistoryCubit extends Cubit<HistoryState> {
   final ScrollController historyMessagesScrollController = ScrollController();
-  final ConnectivityService _connectivityService =
-      getIt.get<ConnectivityService>();
+  final ConnectivityService _connectivityService;
   final ChatsRepository _repository;
   final String _clientId;
   final String? _storyId;
@@ -63,6 +62,7 @@ class HistoryCubit extends Cubit<HistoryState> {
 
   HistoryCubit(
     this._repository,
+    this._connectivityService,
     this._clientId,
     this._playerMedia,
     this._storyId,
