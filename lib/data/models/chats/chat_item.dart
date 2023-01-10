@@ -13,7 +13,6 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 
 part 'chat_item.freezed.dart';
-
 part 'chat_item.g.dart';
 
 @freezed
@@ -34,7 +33,7 @@ class ChatItem with _$ChatItem {
     String? content,
     @JsonKey(name: '_id') String? id,
     ClientInformation? clientInformation,
-    List<Attachment>? attachments,
+    @JsonKey(fromJson: _attachmentFromJson) List<Attachment>? attachments,
     List<ChatItemType>? unansweredTypes,
     String? clientID,
     String? ritualID,
@@ -70,40 +69,6 @@ class ChatItem with _$ChatItem {
     return chatItemContentType;
   }
 
-  Attachment? getAttachment(int n) {
-    if (isMedia && attachments!.length >= n) {
-      return attachments![n - 1];
-    }
-    return null;
-  }
-
-  String? getAudioUrl(int n) {
-    if (isMedia &&
-        getAttachment(n) != null &&
-        getAttachment(n)!.mime!.contains(AttachmentType.audio.name)) {
-      return getAttachment(n)!.url;
-    }
-    return null;
-  }
-
-  String? getImageUrl(int n) {
-    if (isMedia &&
-        getAttachment(n) != null &&
-        getAttachment(n)!.mime!.contains(AttachmentType.image.name)) {
-      return getAttachment(n)!.url;
-    }
-    return null;
-  }
-
-  Duration getDuration(int n) {
-    if (getAttachment(n) != null &&
-        getAttachment(n)!.meta != null &&
-        getAttachment(n)!.meta!.duration != null) {
-      return Duration(seconds: getAttachment(n)!.meta!.duration!);
-    }
-    return const Duration();
-  }
-
   String getUnansweredMessage(BuildContext context) {
     String? resultMessage;
     if (unansweredCount != null && unansweredCount! > 1) {
@@ -120,9 +85,15 @@ class ChatItem with _$ChatItem {
   bool get isAudio =>
       attachments?.isNotEmpty == true && attachments!
           .any((element) => element.type == AttachmentType.audio);
-
-
-  bool get isMedia => attachments != null && attachments!.isNotEmpty;
-
-//bool get isAudio => getAudioUrl(1) != null || getAudioUrl(2) != null;
 }
+
+List<Attachment>? _attachmentFromJson(json) => (json as List<dynamic>?)
+    ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
+    .toList()
+  ?..sort((a, b) {
+    if (a.type == AttachmentType.image && b.type == AttachmentType.audio) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });

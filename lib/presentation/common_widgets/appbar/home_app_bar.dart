@@ -152,15 +152,7 @@ class _AuthorizedBrandWidget extends StatelessWidget {
     return Builder(builder: (context) {
       final UserStatus currentStatus =
           context.select((HomeCubit cubit) => cubit.state.userStatus);
-      return GestureDetector(
-        onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(Platform.localeName),
-            ),
-          );
-        },
-        child: Container(
+      return Container(
           margin: EdgeInsets.only(right: 24.0 * index),
           child: Stack(
             alignment: Alignment.topRight,
@@ -187,7 +179,6 @@ class _AuthorizedBrandWidget extends StatelessWidget {
               ),
             ],
           ),
-        ),
       );
     });
   }

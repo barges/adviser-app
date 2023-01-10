@@ -70,14 +70,14 @@ class ChatRecordingWidget extends StatelessWidget {
                 child: Row(
                   children: [
                     Container(
-                      height: 8.0,
-                      width: 8.0,
+                      height: 11.0,
+                      width: 11.0,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: theme.errorColor,
                         border: Border.all(
                           width: 1.5,
-                          color: theme.scaffoldBackgroundColor,
+                          color: theme.canvasColor,
                         ),
                       ),
                     ),
@@ -89,10 +89,10 @@ class ChatRecordingWidget extends StatelessWidget {
                               (snapshot.hasData && snapshot.data != null)
                                   ? snapshot.data!.duration
                                       .toString()
-                                      .substring(2, 7)
-                                  : "00:00";
+                                      .substring(3, 7)
+                                  : "0:00";
                           return SizedBox(
-                            width: 48.0,
+                            width: 36.0,
                             child: Text(
                               time,
                               style: theme.textTheme.bodySmall?.copyWith(

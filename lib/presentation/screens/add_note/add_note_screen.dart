@@ -43,13 +43,12 @@ class AddNoteScreen extends StatelessWidget {
           ),
           body: Column(
             children: [
-              isOnline
-                  ? const SizedBox.shrink()
-                  : AppErrorWidget(
-                      errorMessage:
-                          S.of(context).youDontHaveAnInternetConnection,
-                      isRequired: true,
-                    ),
+              AppErrorWidget(
+                errorMessage: isOnline
+                    ? ''
+                    : S.of(context).youDontHaveAnInternetConnection,
+                isRequired: true,
+              ),
               Expanded(
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
