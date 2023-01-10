@@ -23,7 +23,6 @@ class CustomerSessionsListWidget extends StatelessWidget {
           controller: customerSessionsCubit.questionsScrollController,
           padding: const EdgeInsets.all(AppConstants.horizontalScreenPadding),
           physics: const AlwaysScrollableScrollPhysics(),
-          shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
             return CustomerSessionListTileWidget(question: questions[index]);
           },
