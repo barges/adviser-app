@@ -138,21 +138,12 @@ class ChatScreen extends StatelessWidget {
                             tabs.add(const ActiveChatWidget());
                           }
                           tabs.addAll([
-                            Builder(builder: (context) {
-                              final FlutterSoundPlayer? flutterSoundPlayer =
-                                  context.select((ChatCubit cubit) =>
-                                      cubit.state.flutterSoundPlayer);
-
-                              return questionFromDB?.clientID != null &&
-                                      flutterSoundPlayer != null
-                                  ? HistoryWidget(
-                                      clientId: questionFromDB!.clientID!,
-                                      playerMedia: chatCubit.playerMedia!,
-                                      storyId: chatCubit.chatScreenArguments
-                                          .storyIdForHistory,
-                                    )
-                                  : const SizedBox.shrink();
-                            }),
+                            if (questionFromDB?.clientID != null)
+                              HistoryWidget(
+                                clientId: questionFromDB!.clientID!,
+                                storyId: chatCubit
+                                    .chatScreenArguments.storyIdForHistory,
+                              ),
                             questionFromDB?.clientID != null
                                 ? CustomerProfileWidget(
                                     customerId: questionFromDB!.clientID!,
