@@ -18,6 +18,8 @@ import 'package:shared_advisor_interface/domain/repositories/user_repository.dar
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
@@ -74,9 +76,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         chosenLanguageIndex: initialLanguageIndexIfHasError ?? 0,
       ),
     );
-
-    // emitCoverPictures(userProfile?.coverPictures ?? []);
-    // changeCurrentLanguageIndex(initialLanguageIndexIfHasError ?? 0);
 
     _addListenersToTextControllers();
     _addListenersToFocusNodes();
@@ -196,14 +195,14 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   void goToGallery() {
-    // Get.toNamed(
-    //   AppRoutes.galleryPictures,
-    //   arguments: GalleryPicturesScreenArguments(
-    //     pictures: state.coverPictures,
-    //     editProfilePageController: picturesPageController,
-    //     initPage: picturesPageController.page ?? 0.0,
-    //   ),
-    // );
+    Get.toNamed(
+      AppRoutes.galleryPictures,
+      arguments: GalleryPicturesScreenArguments(
+        pictures: state.coverPictures,
+        editProfilePageController: picturesPageController,
+        initPage: picturesPageController.page ?? 0.0,
+      ),
+    );
   }
 
   Future<void> updateUserInfo() async {
@@ -331,14 +330,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     return isOk;
   }
 
-  // File? file;
-  // if (coverPicture is NetworkCoverPicture) {
-  // final String url = coverPicture.imageUrl;
-  // file = await _defaultCacheManager.getSingleFile(url);
-  // } else if (coverPicture is FileCoverPicture) {
-  // file = coverPicture.imageFile;
-  // }
-
   Future<List<String>> updatePictureByIndex(int index) async {
     final String url = state.coverPictures[index];
 
@@ -360,18 +351,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
     return pictures;
   }
-
-  // Future<void> deleteTempPictureFromGallery(int pictureIndex) async {
-  //   final List<CoverPicture> coverPictures = List.from(state.coverPictures);
-  //   coverPictures.removeAt(pictureIndex);
-  //
-  //   emit(state.copyWith(coverPictures: coverPictures));
-  //   // if (await _connectivityService.checkConnection()) {
-  //   //   final List<String> coverPictures =
-  //   //       await _userRepository.deleteCoverPicture(pictureIndex);
-  //   //   emitCoverPictures(coverPictures);
-  //   // }
-  // }
 
   Future<void> deletePictureFromGallery(int pictureIndex) async {
     if (await _connectivityService.checkConnection()) {
@@ -402,12 +381,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   Future<void> addPictureToGallery(File? image) async {
-    // if (image != null) {
-    //   final List<CoverPicture> coverPictures = List.from(state.coverPictures);
-    //   coverPictures.add(FileCoverPicture(image));
-    //   emit(state.copyWith(coverPictures: coverPictures));
-    // }
-
     if (await _connectivityService.checkConnection() && image != null) {
       final String? mimeType = lookupMimeType(image.path);
       final List<int> imageBytes = await image.readAsBytes();
@@ -425,14 +398,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   void setAvatar(File avatar) {
     emit(state.copyWith(avatar: avatar));
   }
-
-  // void emitCoverPictures(List<String> images) {
-  //   final List<CoverPicture> coverPictures = images.map((e) {
-  //     return NetworkCoverPicture(e);
-  //   }).toList();
-  //
-  //   emit(state.copyWith(coverPictures: coverPictures));
-  // }
 
   void changeCurrentLanguageIndex(int index) {
     emit(state.copyWith(chosenLanguageIndex: index));

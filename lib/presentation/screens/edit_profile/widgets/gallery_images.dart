@@ -18,14 +18,6 @@ class GalleryImages extends StatelessWidget {
     final List<String> coverPictures =
         context.select((EditProfileCubit cubit) => cubit.state.coverPictures);
 
-    // final List<Uri?> coverPicturesUris = coverPictures.map((e) {
-    //   if (e is NetworkCoverPicture) {
-    //     return Uri.parse(e.imageUrl);
-    //   } else if (e is FileCoverPicture) {
-    //     return Uri.parse(e.imageFile.path);
-    //   }
-    // }).toList();
-
     return coverPictures.isNotEmpty
         ? Column(
             children: [
