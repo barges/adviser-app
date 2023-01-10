@@ -70,8 +70,9 @@ abstract class UserApi {
     @Body() UpdateProfileImageRequest request,
   );
 
-  @PUT('/v2/users/{id}/profile/coverPictures/0')
-  Future<List<String>> updateCoverPicture(
+  @PUT('/v2/users/{id}/profile/coverPictures/{index}')
+  Future<List<String>> updatePictureByIndex(
+    @Path('index') int index,
     @Path('id') String id,
     @Body() UpdateProfileImageRequest request,
   );
@@ -79,6 +80,6 @@ abstract class UserApi {
   @DELETE('/v2/users/{id}/profile/coverPictures/{index}')
   Future<List<String>> deleteCoverPicture(
     @Path('id') String id,
-    @Path('index') String index,
+    @Path('index') int index,
   );
 }
