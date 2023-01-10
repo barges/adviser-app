@@ -180,9 +180,7 @@ void main() {
           find.widgetWithText(PasswordTextField, S.current.enterYourPassword),
           findsOneWidget);
 
-      expect(
-          find.byWidgetPredicate((widget) =>
-              widget is AppElevatedButton && widget.title == S.current.login),
+      expect(find.widgetWithText(AppElevatedButton, S.current.login),
           findsOneWidget);
     },
   );

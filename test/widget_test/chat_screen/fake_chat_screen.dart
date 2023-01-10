@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
@@ -21,14 +22,18 @@ class FakeChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MainCubit mainCubit = context.read<MainCubit>();
+    ChatCubit chatCubit = ChatCubit(
+      chatsRepository,
+      connectivityService,
+      mainCubit,
+      () => showErrorAlert(context),
+      () => confirmSendAnswerAlert(context),
+    );
+    chatCubit.emit(
+        chatCubit.state.copyWith(flutterSoundPlayer: FlutterSoundPlayer()));
+    chatCubit.playerMedia = chatCubit.state.flutterSoundPlayer;
     return BlocProvider(
-      create: (_) => ChatCubit(
-        chatsRepository,
-        connectivityService,
-        mainCubit,
-        () => showErrorAlert(context),
-        () => confirmSendAnswerAlert(context),
-      ),
+      create: (_) => chatCubit,
       child: ChatContentWidget(
         chatsRepository: chatsRepository,
         connectivityService: connectivityService,
