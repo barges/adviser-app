@@ -20,8 +20,7 @@ class QuestionAndAnswerPairWidget extends StatelessWidget {
                 height: 8.0,
               ),
               ChatItemWidget(
-                historyItem.question!,
-                isHistoryQuestion: true,
+                isHistoryQuestion: true, item: historyItem.question!,
               ),
             ],
           ),
@@ -32,7 +31,7 @@ class QuestionAndAnswerPairWidget extends StatelessWidget {
                 height: 8.0,
               ),
               ChatItemWidget(
-                historyItem.answer!.copyWith(
+               item: historyItem.answer!.copyWith(
                   isAnswer: true,
                   ritualIdentifier: historyItem.question?.ritualIdentifier,
                   type: historyItem.question?.type,

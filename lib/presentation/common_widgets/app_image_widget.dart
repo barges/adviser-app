@@ -5,24 +5,26 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
-class RoundedRectImage extends StatelessWidget {
+class AppImageWidget extends StatelessWidget {
   final Uri uri;
   final double? width;
   final double? height;
-  final bool canOpenInFullScreen;
+  final double? radius;
+  final bool canBeOpenedInFullScreen;
 
-  const RoundedRectImage({
+  const AppImageWidget({
     required this.uri,
     this.width,
     this.height,
-    this.canOpenInFullScreen = false,
+    this.radius,
+    this.canBeOpenedInFullScreen = false,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: canOpenInFullScreen
+      onTap: canBeOpenedInFullScreen
           ? () {
               Get.toNamed(
                 AppRoutes.galleryPictures,
@@ -37,7 +39,7 @@ class RoundedRectImage extends StatelessWidget {
         height: height,
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: radius != null ? BorderRadius.circular(radius!) : null,
           image: DecorationImage(
             fit: BoxFit.cover,
             image: uri.hasScheme
