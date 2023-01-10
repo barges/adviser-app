@@ -590,6 +590,8 @@ class ChatCubit extends Cubit<ChatState> {
           _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
               checkMinRecordDurationIsOk(),
     ));
+
+    _scrollTextFieldToEnd();
   }
 
   void deletePicture(File? image) {
@@ -603,6 +605,8 @@ class ChatCubit extends Cubit<ChatState> {
           _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
           checkMinRecordDurationIsOk(),
     ));
+
+    _scrollTextFieldToEnd();
   }
 
   void deleteAttachedPictures() {
@@ -1022,6 +1026,13 @@ class ChatCubit extends Cubit<ChatState> {
         ((attachmentType != null && attachmentType == AttachmentType.audio)
             ? AppConstants.maxAttachedPicturesWithAudio
             : AppConstants.maxAttachedPictures);
+  }
+
+  void _scrollTextFieldToEnd() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      textInputScrollController
+          .jumpTo(textInputScrollController.position.maxScrollExtent);
+    });
   }
 
   bool get canRecordAudio =>
