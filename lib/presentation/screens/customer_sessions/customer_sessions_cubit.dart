@@ -229,7 +229,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
       _isLoading = false;
     }
     _isLoading = false;
-    if (refresh) {
+    if (refresh && state.privateQuestionsWithHistory?.isNotEmpty == true) {
       scrollListUp();
     }
   }

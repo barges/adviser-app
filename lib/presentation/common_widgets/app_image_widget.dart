@@ -26,13 +26,13 @@ class AppImageWidget extends StatelessWidget {
     return GestureDetector(
       onTap: canBeOpenedInFullScreen
           ? () {
-              Get.toNamed(
-                AppRoutes.galleryPictures,
-                arguments: GalleryPicturesScreenArguments(
-                  pictures: [uri.toString()],
-                ),
-              );
-            }
+        Get.toNamed(
+          AppRoutes.galleryPictures,
+          arguments: GalleryPicturesScreenArguments(
+            pictures: [uri.toString()],
+          ),
+        );
+      }
           : null,
       child: Container(
         width: width,
@@ -44,13 +44,14 @@ class AppImageWidget extends StatelessWidget {
             fit: BoxFit.cover,
             image: uri.hasScheme
                 ? CachedNetworkImageProvider(uri.toString())
-                    as ImageProvider<Object>
+            as ImageProvider<Object>
                 : FileImage(
-                    File(uri.toFilePath()),
-                  ),
+              File(uri.toFilePath()),
+            ),
           ),
         ),
       ),
     );
   }
 }
+
