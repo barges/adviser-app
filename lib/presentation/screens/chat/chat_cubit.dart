@@ -246,7 +246,10 @@ class ChatCubit extends Cubit<ChatState> {
         );
       }
     } on DioError catch (e) {
-      _showErrorAlert();
+      int? statusCode = e.response?.statusCode;
+      if (statusCode != 401 && statusCode != 428 && statusCode != 451) {
+        _showErrorAlert();
+      }
       logger.d(e);
     }
   }
@@ -299,7 +302,10 @@ class ChatCubit extends Cubit<ChatState> {
         scrollChatDown();
       }
     } on DioError catch (e) {
-      _showErrorAlert();
+      int? statusCode = e.response?.statusCode;
+      if (statusCode != 401 && statusCode != 428 && statusCode != 451) {
+        _showErrorAlert();
+      }
       logger.d(e);
       rethrow;
     }
@@ -338,7 +344,10 @@ class ChatCubit extends Cubit<ChatState> {
         _startTimer(_tillShowMessagesInSec, _afterShowMessagesInSec);
       }
     } on DioError catch (e) {
-      _showErrorAlert();
+      int? statusCode = e.response?.statusCode;
+      if (statusCode != 401 && statusCode != 428 && statusCode != 451) {
+        _showErrorAlert();
+      }
       logger.d(e);
     }
   }
