@@ -4,7 +4,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_sound/flutter_sound.dart';
 import 'package:shared_advisor_interface/data/models/chats/history.dart';
 import 'package:shared_advisor_interface/data/models/chats/history_ui_model.dart';
 import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
@@ -47,7 +46,6 @@ class HistoryCubit extends Cubit<HistoryState> {
   final ChatsRepository _repository;
   final String _clientId;
   final String? _storyId;
-  FlutterSoundPlayer? _playerMedia;
 
   final List<History> _topHistoriesList = [];
   final List<History> _bottomHistoriesList = [];
@@ -64,7 +62,6 @@ class HistoryCubit extends Cubit<HistoryState> {
     this._repository,
     this._connectivityService,
     this._clientId,
-    this._playerMedia,
     this._storyId,
   ) : super(const HistoryState()) {
     if (_storyId == null) {
@@ -81,8 +78,6 @@ class HistoryCubit extends Cubit<HistoryState> {
   @override
   Future<void> close() {
     historyMessagesScrollController.dispose();
-    _playerMedia?.closePlayer();
-    _playerMedia = null;
     return super.close();
   }
 

@@ -158,8 +158,6 @@ class ChatCubit extends Cubit<ChatState> {
 
     playerMedia = await FlutterSoundPlayer(logLevel: logLevel).openPlayer();
 
-    emit(state.copyWith(flutterSoundPlayer: playerMedia));
-
     await _recorder?.setSubscriptionDuration(
       const Duration(seconds: 1),
     );

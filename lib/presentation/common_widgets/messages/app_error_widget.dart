@@ -6,11 +6,13 @@ class AppErrorWidget extends StatelessWidget {
   final String errorMessage;
   final VoidCallback? close;
   final bool isRequired;
+  final double? height;
 
   const AppErrorWidget({
     Key? key,
     required this.errorMessage,
     this.close,
+    this.height,
     this.isRequired = false,
   }) : super(key: key);
 
@@ -24,6 +26,7 @@ class AppErrorWidget extends StatelessWidget {
       child: errorMessage.isNotEmpty
           ? Container(
               width: MediaQuery.of(context).size.width,
+              height: height,
               decoration: BoxDecoration(
                   color: Theme.of(context).errorColor,
                   borderRadius: const BorderRadius.only(

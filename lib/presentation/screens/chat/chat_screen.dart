@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
 import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
@@ -160,17 +159,11 @@ class ChatContentWidget extends StatelessWidget {
                     }
                     tabs.addAll([
                       Builder(builder: (context) {
-                        final FlutterSoundPlayer? flutterSoundPlayer =
-                            context.select((ChatCubit cubit) =>
-                                cubit.state.flutterSoundPlayer);
-
-                        return questionFromDB?.clientID != null &&
-                                flutterSoundPlayer != null
+                        return questionFromDB?.clientID != null
                             ? HistoryWidget(
                                 chatsRepository: chatsRepository,
                                 connectivityService: connectivityService,
                                 clientId: questionFromDB!.clientID!,
-                                playerMedia: chatCubit.playerMedia!,
                                 storyId: chatCubit
                                     .chatScreenArguments.storyIdForHistory,
                               )

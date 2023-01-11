@@ -60,9 +60,9 @@ class EditProfileScreen extends StatelessWidget {
                       slivers: [
                         ScrollableAppBar(
                           title: S.of(context).editProfile,
+                          needShowError: true,
                           actionOnClick: editProfileCubit.updateUserInfo,
                           openDrawer: editProfileCubit.openDrawer,
-                          isButtonEnable: isOnline,
                         ),
                         SliverToBoxAdapter(
                           child: GestureDetector(

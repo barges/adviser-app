@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:shared_advisor_interface/data/models/chats/history_ui_model.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_cubit.dart';
@@ -13,13 +12,11 @@ class HistoryWidget extends StatelessWidget {
   final ChatsRepository chatsRepository;
   final ConnectivityService connectivityService;
   final String clientId;
-  final FlutterSoundPlayer playerMedia;
   final String? storyId;
 
   const HistoryWidget({
     Key? key,
     required this.clientId,
-    required this.playerMedia,
     required this.chatsRepository,
     required this.connectivityService,
     this.storyId,
@@ -32,7 +29,6 @@ class HistoryWidget extends StatelessWidget {
         chatsRepository,
         connectivityService,
         clientId,
-        playerMedia,
         storyId,
       ),
       child: Builder(builder: (context) {
