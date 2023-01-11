@@ -24,14 +24,10 @@ class AddGalleryPicturesCubit extends Cubit<AddGalleryPicturesState> {
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
-  late final ValueChanged<List<String>> onUpdateCoverPictures;
   late final UserProfile? userProfile;
   AddGalleryPicturesCubit(
       this._userRepository, this._connectivityService, this._cacheManager)
       : super(AddGalleryPicturesState()) {
-    AddGalleryPicturesScreenArguments arguments = Get.arguments;
-
-    onUpdateCoverPictures = arguments.onUpdateCoverPictures;
     userProfile = _cacheManager.getUserProfile();
 
     emit(
@@ -53,7 +49,7 @@ class AddGalleryPicturesCubit extends Cubit<AddGalleryPicturesState> {
       List<String> coverPictures =
           await _userRepository.addCoverPictureToGallery(request);
 
-      _updateCoverPictures(coverPictures);
+      _cacheManager.updateUserProfileCoverPictures(coverPictures);
 
       emit(state.copyWith(coverPictures: coverPictures));
     }
@@ -64,7 +60,7 @@ class AddGalleryPicturesCubit extends Cubit<AddGalleryPicturesState> {
       final List<String> coverPictures =
           await _userRepository.deleteCoverPicture(pictureIndex);
 
-      _updateCoverPictures(coverPictures);
+      _cacheManager.updateUserProfileCoverPictures(coverPictures);
 
       emit(state.copyWith(coverPictures: coverPictures));
     }
@@ -72,11 +68,6 @@ class AddGalleryPicturesCubit extends Cubit<AddGalleryPicturesState> {
 
   void openDrawer() {
     scaffoldKey.currentState?.openDrawer();
-  }
-
-  void _updateCoverPictures(List<String> coverPictures) {
-    _cacheManager.updateUserProfileCoverPictures(coverPictures);
-    onUpdateCoverPictures(coverPictures);
   }
 
   void goToGallery(int pictureIndex) {

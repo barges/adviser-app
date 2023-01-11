@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_sound/public/flutter_sound_player.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
-import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_screen.dart';
@@ -29,9 +26,6 @@ class FakeChatScreen extends StatelessWidget {
       () => showErrorAlert(context),
       () => confirmSendAnswerAlert(context),
     );
-    chatCubit.emit(
-        chatCubit.state.copyWith(flutterSoundPlayer: FlutterSoundPlayer()));
-    chatCubit.playerMedia = chatCubit.state.flutterSoundPlayer;
     return BlocProvider(
       create: (_) => chatCubit,
       child: ChatContentWidget(

@@ -44,6 +44,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   late final List<MarketsType> activeLanguages;
   late final List<GlobalKey> activeLanguagesGlobalKeys;
   late final Map<String, dynamic> _oldPropertiesMap;
+  late final VoidCallback disposeCoverPicturesListen;
 
   final ScrollController languagesScrollController = ScrollController();
   final PageController picturesPageController = PageController();
@@ -79,6 +80,10 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
     _addListenersToTextControllers();
     _addListenersToFocusNodes();
+
+    disposeCoverPicturesListen = _cacheManager.listenUserProfile((value) {
+      emit(state.copyWith(coverPictures: value.coverPictures ?? []));
+    });
   }
 
   @override
@@ -101,6 +106,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     nicknameController.dispose();
     nicknameFocusNode.dispose();
     picturesPageController.dispose();
+    disposeCoverPicturesListen.call();
     return super.close();
   }
 
@@ -206,12 +212,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   void goToAddGalleryPictures() {
-    Get.toNamed(
-      AppRoutes.addGalleryPictures,
-      arguments: AddGalleryPicturesScreenArguments(
-        onUpdateCoverPictures: updateCoverPictures,
-      ),
-    );
+    Get.toNamed(AppRoutes.addGalleryPictures);
   }
 
   Future<void> updateUserInfo() async {
@@ -404,9 +405,5 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       isValid = false;
     }
     return isValid;
-  }
-
-  void updateCoverPictures(List<String> coverPictures) {
-    emit(state.copyWith(coverPictures: coverPictures));
   }
 }

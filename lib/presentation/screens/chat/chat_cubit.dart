@@ -244,8 +244,7 @@ class ChatCubit extends Cubit<ChatState> {
         );
       }
     } on DioError catch (e) {
-      int? statusCode = e.response?.statusCode;
-      if (statusCode != 401 && statusCode != 428 && statusCode != 451) {
+      if (_checkStatusCode(e)) {
         _showErrorAlert();
       }
       logger.d(e);
@@ -300,8 +299,7 @@ class ChatCubit extends Cubit<ChatState> {
         scrollChatDown();
       }
     } on DioError catch (e) {
-      int? statusCode = e.response?.statusCode;
-      if (statusCode != 401 && statusCode != 428 && statusCode != 451) {
+      if (_checkStatusCode(e)) {
         _showErrorAlert();
       }
       logger.d(e);
@@ -342,8 +340,7 @@ class ChatCubit extends Cubit<ChatState> {
         _startTimer(_tillShowMessagesInSec, _afterShowMessagesInSec);
       }
     } on DioError catch (e) {
-      int? statusCode = e.response?.statusCode;
-      if (statusCode != 401 && statusCode != 428 && statusCode != 451) {
+      if (_checkStatusCode(e)) {
         _showErrorAlert();
       }
       logger.d(e);
@@ -1038,6 +1035,11 @@ class ChatCubit extends Cubit<ChatState> {
       textInputScrollController
           .jumpTo(textInputScrollController.position.maxScrollExtent);
     });
+  }
+
+  bool _checkStatusCode(DioError e) {
+    int? statusCode = e.response?.statusCode;
+    return statusCode != 401 && statusCode != 428 && statusCode != 451;
   }
 
   bool get canRecordAudio =>

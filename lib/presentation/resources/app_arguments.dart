@@ -87,11 +87,3 @@ class CustomerSessionsScreenArguments {
     required this.marketIndex,
   });
 }
-
-class AddGalleryPicturesScreenArguments {
-  final ValueChanged<List<String>> onUpdateCoverPictures;
-
-  AddGalleryPicturesScreenArguments({
-    required this.onUpdateCoverPictures,
-  });
-}
