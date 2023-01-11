@@ -16,12 +16,14 @@ class ScrollableAppBar extends StatelessWidget {
   final String title;
   final VoidCallback? actionOnClick;
   final VoidCallback? openDrawer;
+  final bool isButtonEnable;
 
   const ScrollableAppBar({
     Key? key,
     required this.title,
     this.actionOnClick,
     this.openDrawer,
+    this.isButtonEnable = true,
   }) : super(key: key);
 
   @override
@@ -114,9 +116,14 @@ class ScrollableAppBar extends StatelessWidget {
                                     );
                                   }),
                                   if (actionOnClick != null)
-                                    AppIconButton(
-                                      icon: Assets.vectors.check.path,
-                                      onTap: actionOnClick,
+                                    Opacity(
+                                      opacity: isButtonEnable ? 1.0 : 0.4,
+                                      child: AppIconButton(
+                                        icon: Assets.vectors.check.path,
+                                        onTap: isButtonEnable
+                                            ? actionOnClick
+                                            : null,
+                                      ),
                                     ),
                                 ],
                               ),

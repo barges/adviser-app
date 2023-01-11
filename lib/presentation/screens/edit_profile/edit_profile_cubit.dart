@@ -205,6 +205,15 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     );
   }
 
+  void goToAddGalleryPictures() {
+    Get.toNamed(
+      AppRoutes.addGalleryPictures,
+      arguments: AddGalleryPicturesScreenArguments(
+        onUpdateCoverPictures: updateCoverPictures,
+      ),
+    );
+  }
+
   Future<void> updateUserInfo() async {
     if (await _connectivityService.checkConnection()) {
       if (checkTextFields() & _checkNickName() & checkUserAvatar()) {
@@ -352,18 +361,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     return pictures;
   }
 
-  Future<void> deletePictureFromGallery(int pictureIndex) async {
-    if (await _connectivityService.checkConnection()) {
-      final List<String> coverPictures =
-          await _userRepository.deleteCoverPicture(pictureIndex);
-      emit(
-        state.copyWith(
-          coverPictures: coverPictures,
-        ),
-      );
-    }
-  }
-
   Future<bool> updateUserAvatar() async {
     bool isOk = false;
     if (state.avatar != null) {
@@ -378,21 +375,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       isOk = true;
     }
     return isOk;
-  }
-
-  Future<void> addPictureToGallery(File? image) async {
-    if (await _connectivityService.checkConnection() && image != null) {
-      final String? mimeType = lookupMimeType(image.path);
-      final List<int> imageBytes = await image.readAsBytes();
-      final String base64Image = base64Encode(imageBytes);
-      final UpdateProfileImageRequest request = UpdateProfileImageRequest(
-        mime: mimeType,
-        image: base64Image,
-      );
-      List<String> coverPictures =
-          await _userRepository.addCoverPictureToGallery(request);
-      emit(state.copyWith(coverPictures: coverPictures));
-    }
   }
 
   void setAvatar(File avatar) {
@@ -422,5 +404,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       isValid = false;
     }
     return isValid;
+  }
+
+  void updateCoverPictures(List<String> coverPictures) {
+    emit(state.copyWith(coverPictures: coverPictures));
   }
 }
