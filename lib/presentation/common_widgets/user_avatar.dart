@@ -3,8 +3,11 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 class UserAvatar extends StatelessWidget {
   final String? avatarUrl;
@@ -58,25 +61,41 @@ class UserAvatar extends StatelessWidget {
                           height: diameter,
                           width: diameter,
                         )
-                      : Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: CachedNetworkImageProvider(avatarUrl!),
+                      : GestureDetector(
+                          onTap: () => Get.toNamed(
+                            AppRoutes.galleryPictures,
+                            arguments: GalleryPicturesScreenArguments(
+                              pictures: [avatarUrl!],
+                            ),
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: CachedNetworkImageProvider(avatarUrl!),
+                              ),
                             ),
                           ),
                         )
-              : Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      width: 2.0,
-                      color: Theme.of(context).scaffoldBackgroundColor,
+              : GestureDetector(
+                  onTap: () => Get.toNamed(
+                    AppRoutes.galleryPictures,
+                    arguments: GalleryPicturesScreenArguments(
+                      pictures: [imageFile!.path],
                     ),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: FileImage(imageFile!),
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        width: 2.0,
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                      ),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: FileImage(imageFile!),
+                      ),
                     ),
                   ),
                 ),

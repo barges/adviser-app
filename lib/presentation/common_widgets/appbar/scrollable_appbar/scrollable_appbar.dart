@@ -118,9 +118,12 @@ class ScrollableAppBar extends StatelessWidget {
                               );
                             }),
                             if (actionOnClick != null)
-                              AppIconButton(
-                                icon: Assets.vectors.check.path,
-                                onTap: actionOnClick,
+                              Opacity(
+                                opacity: isOnline ? 1.0 : 0.4,
+                                child: AppIconButton(
+                                  icon: Assets.vectors.check.path,
+                                  onTap: isOnline ? actionOnClick : null,
+                                ),
                               ),
                           ],
                         ),
@@ -196,30 +199,32 @@ class ScrollableAppBar extends StatelessWidget {
                                     ],
                                   ),
                                   actionOnClick != null
-                                      ? AppIconButton(
-                                          icon: Assets.vectors.check.path,
-                                          onTap: actionOnClick,
-                                        )
+                                      ? Opacity(
+                                          opacity: isOnline ? 1.0 : 0.4,
+                                          child: AppIconButton(
+                                            icon: Assets.vectors.check.path,
+                                            onTap: actionOnClick,
+                                          ))
                                       : const SizedBox(
                                           width: AppConstants.iconButtonSize,
                                         ),
                                 ],
                               ),
                             ),
-                            if(needShowError)
-                            Positioned(
-                              bottom: -_errorHeight,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 12.0),
-                                child: AppErrorWidget(
-                                  height: _errorHeight,
-                                  errorMessage: isOnline
-                                      ? ''
-                                      : S.of(context).noInternetConnection,
-                                  isRequired: true,
+                            if (needShowError)
+                              Positioned(
+                                bottom: -_errorHeight,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 12.0),
+                                  child: AppErrorWidget(
+                                    height: _errorHeight,
+                                    errorMessage: isOnline
+                                        ? ''
+                                        : S.of(context).noInternetConnection,
+                                    isRequired: true,
+                                  ),
                                 ),
                               ),
-                            ),
                           ],
                         )
                       : Stack(
@@ -241,17 +246,17 @@ class ScrollableAppBar extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            if(needShowError)
-                            Positioned(
-                              bottom: -_errorHeight,
-                              child: AppErrorWidget(
-                                height: _errorHeight,
-                                errorMessage: isOnline
-                                    ? ''
-                                    : S.of(context).noInternetConnection,
-                                isRequired: true,
+                            if (needShowError)
+                              Positioned(
+                                bottom: -_errorHeight,
+                                child: AppErrorWidget(
+                                  height: _errorHeight,
+                                  errorMessage: isOnline
+                                      ? ''
+                                      : S.of(context).noInternetConnection,
+                                  isRequired: true,
+                                ),
                               ),
-                            ),
                           ],
                         ),
                 );

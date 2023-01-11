@@ -8,6 +8,7 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_cubit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -19,6 +20,8 @@ class ProfileImagesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final EditProfileCubit cubit = context.read<EditProfileCubit>();
+    final List<String> coverPictures =
+        context.select((EditProfileCubit cubit) => cubit.state.coverPictures);
     return Stack(
       children: [
         Column(
@@ -26,22 +29,13 @@ class ProfileImagesWidget extends StatelessWidget {
           children: [
             Builder(
               builder: (context) {
-                final List<String> coverPictures = context.select(
-                    (EditProfileCubit cubit) => cubit.state.coverPictures);
-
                 return coverPictures.isEmpty
                     ? Container(
                         alignment: Alignment.center,
                         height: _backgroundImageSectionHeight,
                         color: Theme.of(context).primaryColorLight,
                         child: GestureDetector(
-                          onTap: () {
-                            showPickImageAlert(
-                                context: context,
-                                setImage: (image) {
-                                  cubit.addPictureToGallery(image);
-                                });
-                          },
+                          onTap: cubit.goToAddGalleryPictures,
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(40),
@@ -89,58 +83,61 @@ class ProfileImagesWidget extends StatelessWidget {
                               },
                             ),
                           ),
-                          Positioned(
-                            bottom: 16.0,
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: Center(
-                                child: SmoothPageIndicator(
-                                  controller: cubit.picturesPageController,
-                                  count: coverPictures.length,
-                                  effect: ScrollingDotsEffect(
-                                    spacing: 12.0,
-                                    maxVisibleDots: 7,
-                                    dotWidth: 8.0,
-                                    dotHeight: 8.0,
-                                    dotColor: Theme.of(context).hintColor,
-                                    activeDotColor:
-                                        Theme.of(context).primaryColor,
+                          if (coverPictures.length > 1)
+                            Positioned(
+                              bottom: 16.0,
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Center(
+                                  child: SmoothPageIndicator(
+                                    controller: cubit.picturesPageController,
+                                    count: coverPictures.length,
+                                    effect: ScrollingDotsEffect(
+                                      spacing: 12.0,
+                                      maxVisibleDots: 7,
+                                      dotWidth: 8.0,
+                                      dotHeight: 8.0,
+                                      dotColor: Theme.of(context).hintColor,
+                                      activeDotColor:
+                                          Theme.of(context).primaryColor,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          )
+                            )
                         ],
                       );
               },
             ),
-            GestureDetector(
-              onTap: () {
-                showPickImageAlert(
-                    context: context,
-                    setImage: (image) {
-                      cubit.setAvatar(image);
-                    });
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 16.0),
-                child: Builder(builder: (context) {
-                  context
-                      .select((EditProfileCubit cubit) => cubit.state.avatar);
-                  final List<String> profileImages =
-                      cubit.userProfile?.profilePictures ?? [];
-                  return Text(
-                    profileImages.isNotEmpty
-                        ? S.of(context).changePhoto
-                        : S.of(context).addPhoto,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.w500),
-                  );
-                }),
-              ),
-            )
+            coverPictures.isNotEmpty
+                ? GestureDetector(
+                    onTap: cubit.goToAddGalleryPictures,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Assets.vectors.myGallery.svg(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          const SizedBox(
+                            width: 4.0,
+                          ),
+                          Text(
+                            S.of(context).myGallery,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : const SizedBox(height: 43.0),
           ],
         ),
         Builder(builder: (context) {
@@ -151,13 +148,37 @@ class ProfileImagesWidget extends StatelessWidget {
           return Positioned(
               left: 16.0,
               bottom: 0.0,
-              child: UserAvatar(
-                key: cubit.profileAvatarKey,
-                imageFile: avatar,
-                avatarUrl: profileImages.firstOrNull,
-                withBorder: true,
-                withError: profileImages.isEmpty && avatar == null,
-              ));
+              child: Stack(children: [
+                UserAvatar(
+                  key: cubit.profileAvatarKey,
+                  imageFile: avatar,
+                  avatarUrl: profileImages.firstOrNull,
+                  withBorder: true,
+                  withError: profileImages.isEmpty && avatar == null,
+                ),
+                Positioned(
+                    right: 0.0,
+                    bottom: 0.0,
+                    child: GestureDetector(
+                      onTap: () {
+                        showPickImageAlert(
+                            context: context,
+                            setImage: (image) {
+                              cubit.setAvatar(image);
+                            });
+                      },
+                      child: Container(
+                        width: AppConstants.iconButtonSize,
+                        height: AppConstants.iconButtonSize,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Theme.of(context).primaryColorLight),
+                        child: Center(
+                            child: Assets.vectors.camera
+                                .svg(color: Theme.of(context).primaryColor)),
+                      ),
+                    ))
+              ]));
         })
       ],
     );
