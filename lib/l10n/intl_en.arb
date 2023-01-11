@@ -211,5 +211,6 @@
   "enterYourPassword": "Enter your password",
   "enterNewPassword": "Enter new password",
   "repeatNewPassword": "Repeat new password",
-  "enterYourEmail": "Enter your email"
+  "enterYourEmail": "Enter your email",
+  "myGallery": "My Gallery"
 }

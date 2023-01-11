@@ -32,29 +32,28 @@ class DynamicLinkService {
     );
   }
 
+  String? get initialLink => _initialLink;
+
   Future<String?> retrieveDynamicInitialLink() async {
-    if (_initialLink == null) {
-      PendingDynamicLinkData? data =
-          await FirebaseDynamicLinks.instance.getInitialLink();
-      if (data != null) {
-        _initialLink = data.link.toString();
-      }
+    final PendingDynamicLinkData? data =
+        await FirebaseDynamicLinks.instance.getInitialLink();
+    if (data != null) {
+      _initialLink = data.link.toString();
     }
-    return _initialLink;
+    return data?.link.toString();
   }
 
   Future<void> checkLinkForResetPassword({String? link}) async {
     final String? initLink = link ?? await retrieveDynamicInitialLink();
     if (initLink != null && initLink.contains(resetLinkKey)) {
-     final DynamicLinkData dynamicLinkData = parseDynamicLink(initLink);
-        Get.toNamed(
-          AppRoutes.forgotPassword,
-          arguments: ForgotPasswordScreenArguments(
-            brand: dynamicLinkData.brand,
-            resetToken: dynamicLinkData.token,
-          ),
-        );
-
+      final DynamicLinkData dynamicLinkData = parseDynamicLink(initLink);
+      Get.toNamed(
+        AppRoutes.forgotPassword,
+        arguments: ForgotPasswordScreenArguments(
+          brand: dynamicLinkData.brand,
+          resetToken: dynamicLinkData.token,
+        ),
+      );
     }
   }
 
