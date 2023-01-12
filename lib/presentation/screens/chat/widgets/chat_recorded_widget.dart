@@ -124,22 +124,43 @@ class ChatRecordedWidget extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          _PlayPauseBtn(
-                            onStartPlayPressed: onStartPlayPressed,
-                            onPausePlayPressed: onPausePlayPressed,
-                          ),
+                          Builder(builder: (context) {
+                            final isPlayingAudio = context.select(
+                                (ChatCubit cubit) =>
+                                    cubit.state.isPlayingAudio);
+                            return _PlayPauseBtn(
+                              isPlaying: chatCubit.isCurrentPlayback(
+                                      chatCubit.state.recordedAudio?.path) &&
+                                  isPlayingAudio,
+                              onStartPlayPressed: onStartPlayPressed,
+                              onPausePlayPressed: onPausePlayPressed,
+                            );
+                          }),
                           const SizedBox(
                             width: 8.0,
                           ),
                           Flexible(
                             child: Builder(builder: (context) {
-                              final playbackStream = context.select(
+                              final isPlayingAudio = context.select(
                                   (ChatCubit cubit) =>
-                                      cubit.state.playbackStream);
+                                      cubit.state.isPlayingAudio);
+                              final isPlayingAudioFinished = context.select(
+                                  (ChatCubit cubit) =>
+                                      cubit.state.isPlayingAudioFinished);
+                              final isCurrentPlayback =
+                                  chatCubit.isCurrentPlayback(
+                                      chatCubit.state.recordedAudio?.path);
+                              final isPlayingFinished = isCurrentPlayback
+                                  ? isPlayingAudioFinished
+                                  : true;
                               return StreamBuilder<PlaybackDisposition>(
-                                stream: playbackStream,
+                                stream: isCurrentPlayback &&
+                                        isPlayingAudio &&
+                                        !isPlayingFinished
+                                    ? chatCubit.onMediaProgress
+                                    : null,
                                 builder: (_, snapshot) {
-                                  final value = playbackStream != null &&
+                                  double value = !isPlayingFinished &&
                                           snapshot.hasData
                                       ? snapshot.data!.position.inMilliseconds /
                                           snapshot.data!.duration.inMilliseconds
@@ -197,23 +218,22 @@ class ChatRecordedWidget extends StatelessWidget {
 }
 
 class _PlayPauseBtn extends StatelessWidget {
+  final bool isPlaying;
   final VoidCallback? onStartPlayPressed;
   final VoidCallback? onPausePlayPressed;
 
   const _PlayPauseBtn({
     Key? key,
+    this.isPlaying = false,
     this.onStartPlayPressed,
     this.onPausePlayPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final isPlayingRecordedAudio =
-        context.select((ChatCubit cubit) => cubit.state.isPlayingRecordedAudio);
     return GestureDetector(
       onTap: () {
-        (isPlayingRecordedAudio ? onPausePlayPressed : onStartPlayPressed)
-            ?.call();
+        (isPlaying ? onPausePlayPressed : onStartPlayPressed)?.call();
       },
       child: Container(
         width: AppConstants.iconButtonSize,
@@ -222,7 +242,7 @@ class _PlayPauseBtn extends StatelessWidget {
           color: Theme.of(context).primaryColor,
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
         ),
-        child: isPlayingRecordedAudio
+        child: isPlaying
             ? Assets.vectors.pause.svg(
                 fit: BoxFit.none,
                 color: Theme.of(context).backgroundColor,
