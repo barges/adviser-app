@@ -44,6 +44,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   late final List<MarketsType> activeLanguages;
   late final List<GlobalKey> activeLanguagesGlobalKeys;
   late final Map<String, dynamic> _oldPropertiesMap;
+  late final VoidCallback disposeCoverPicturesListen;
 
   final ScrollController languagesScrollController = ScrollController();
   final PageController picturesPageController = PageController();
@@ -79,6 +80,10 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
     _addListenersToTextControllers();
     _addListenersToFocusNodes();
+
+    disposeCoverPicturesListen = _cacheManager.listenUserProfile((value) {
+      emit(state.copyWith(coverPictures: value.coverPictures ?? []));
+    });
   }
 
   @override
@@ -101,6 +106,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     nicknameController.dispose();
     nicknameFocusNode.dispose();
     picturesPageController.dispose();
+    disposeCoverPicturesListen.call();
     return super.close();
   }
 
@@ -203,6 +209,10 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         initPage: picturesPageController.page ?? 0.0,
       ),
     );
+  }
+
+  void goToAddGalleryPictures() {
+    Get.toNamed(AppRoutes.addGalleryPictures);
   }
 
   Future<void> updateUserInfo() async {
@@ -315,9 +325,10 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     if (state.coverPictures.isNotEmpty) {
       final int? pictureIndex = picturesPageController.page?.toInt();
       if (pictureIndex != null && pictureIndex > 0) {
-        final List<String> coverPictures1 = await updatePictureByIndex(0);
+        final List<String> coverPictures1 =
+            await updatePictureByIndex(pictureIndex, 0);
         final List<String> coverPictures2 =
-            await updatePictureByIndex(pictureIndex);
+            await updatePictureByIndex(0, pictureIndex);
         _cacheManager.updateUserProfileCoverPictures(coverPictures2);
         emit(
           state.copyWith(
@@ -330,8 +341,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     return isOk;
   }
 
-  Future<List<String>> updatePictureByIndex(int index) async {
-    final String url = state.coverPictures[index];
+  Future<List<String>> updatePictureByIndex(int oldIndex, int newIndex) async {
+    final String url = state.coverPictures[oldIndex];
 
     final File file = await _defaultCacheManager.getSingleFile(url);
 
@@ -347,21 +358,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     );
 
     List<String> pictures =
-        await _userRepository.updatePictureByIndex(index, request);
+        await _userRepository.updatePictureByIndex(newIndex, request);
 
     return pictures;
-  }
-
-  Future<void> deletePictureFromGallery(int pictureIndex) async {
-    if (await _connectivityService.checkConnection()) {
-      final List<String> coverPictures =
-          await _userRepository.deleteCoverPicture(pictureIndex);
-      emit(
-        state.copyWith(
-          coverPictures: coverPictures,
-        ),
-      );
-    }
   }
 
   Future<bool> updateUserAvatar() async {
@@ -378,21 +377,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       isOk = true;
     }
     return isOk;
-  }
-
-  Future<void> addPictureToGallery(File? image) async {
-    if (await _connectivityService.checkConnection() && image != null) {
-      final String? mimeType = lookupMimeType(image.path);
-      final List<int> imageBytes = await image.readAsBytes();
-      final String base64Image = base64Encode(imageBytes);
-      final UpdateProfileImageRequest request = UpdateProfileImageRequest(
-        mime: mimeType,
-        image: base64Image,
-      );
-      List<String> coverPictures =
-          await _userRepository.addCoverPictureToGallery(request);
-      emit(state.copyWith(coverPictures: coverPictures));
-    }
   }
 
   void setAvatar(File avatar) {

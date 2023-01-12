@@ -211,5 +211,6 @@
   "enterYourPassword": "Ingresa tu contraseña",
   "enterNewPassword": "Introduzca nueva contraseña",
   "repeatNewPassword": "Repita la nueva contraseña",
-  "enterYourEmail": "Introduce tu correo electrónico"
+  "enterYourEmail": "Introduce tu correo electrónico",
+  "myGallery": "Mi Galería"
 }

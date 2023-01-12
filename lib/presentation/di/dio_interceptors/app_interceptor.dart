@@ -40,13 +40,13 @@ class AppInterceptor extends Interceptor {
     _mainCubit.updateIsLoading(false);
     if (err.response?.statusCode == 401) {
       if (Get.currentRoute != AppRoutes.login) {
-        _mainCubit.updateErrorMessage(
-          UIError(uiErrorType: UIErrorType.blocked),
-        );
         _cachingManager.clearTokenForBrand(
           _mainCubit.state.currentBrand,
         );
-        Get.offNamedUntil(AppRoutes.login, (route) => false);
+       await Get.offNamedUntil(AppRoutes.login, (route) => false);
+        _mainCubit.updateErrorMessage(
+          UIError(uiErrorType: UIErrorType.blocked),
+        );
       } else {
         _mainCubit.updateErrorMessage(
           UIError(uiErrorType: UIErrorType.wrongUsernameAndOrPassword),

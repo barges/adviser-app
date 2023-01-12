@@ -2178,6 +2178,16 @@ class S {
       args: [],
     );
   }
+
+  /// `My Gallery`
+  String get myGallery {
+    return Intl.message(
+      'My Gallery',
+      name: 'myGallery',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

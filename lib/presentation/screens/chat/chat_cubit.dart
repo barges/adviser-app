@@ -49,8 +49,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   final GlobalKey questionGlobalKey = GlobalKey();
 
-  final ConnectivityService _connectivityService =
-      getIt.get<ConnectivityService>();
+  final ConnectivityService _connectivityService;
 
   late final StreamSubscription<bool> _keyboardSubscription;
 
@@ -58,7 +57,7 @@ class ChatCubit extends Cubit<ChatState> {
   late final ChatScreenArguments chatScreenArguments;
   final VoidCallback _showErrorAlert;
   final ValueGetter<Future<bool?>> _confirmSendAnswerAlert;
-  final MainCubit _mainCubit = getIt.get<MainCubit>();
+  final MainCubit _mainCubit;
   final SoundService _soundService = SoundServiceImp();
   final int _tillShowMessagesInSec =
       AppConstants.tillShowAnswerTimingMessagesInSec;
@@ -74,6 +73,8 @@ class ChatCubit extends Cubit<ChatState> {
 
   ChatCubit(
     this._repository,
+    this._connectivityService,
+    this._mainCubit,
     this._showErrorAlert,
     this._confirmSendAnswerAlert,
   ) : super(const ChatState()) {
@@ -189,7 +190,9 @@ class ChatCubit extends Cubit<ChatState> {
         );
       }
     } on DioError catch (e) {
-      _showErrorAlert();
+      if (_checkStatusCode(e)) {
+        _showErrorAlert();
+      }
       logger.d(e);
     }
   }
@@ -242,7 +245,9 @@ class ChatCubit extends Cubit<ChatState> {
         scrollChatDown();
       }
     } on DioError catch (e) {
-      _showErrorAlert();
+      if (_checkStatusCode(e)) {
+        _showErrorAlert();
+      }
       logger.d(e);
       rethrow;
     }
@@ -281,7 +286,9 @@ class ChatCubit extends Cubit<ChatState> {
         _startTimer(_tillShowMessagesInSec, _afterShowMessagesInSec);
       }
     } on DioError catch (e) {
-      _showErrorAlert();
+      if (_checkStatusCode(e)) {
+        _showErrorAlert();
+      }
       logger.d(e);
     }
   }
@@ -526,6 +533,8 @@ class ChatCubit extends Cubit<ChatState> {
           _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
               checkMinRecordDurationIsOk(),
     ));
+
+    _scrollTextFieldToEnd();
   }
 
   void deletePicture(File? image) {
@@ -539,6 +548,8 @@ class ChatCubit extends Cubit<ChatState> {
           _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
           checkMinRecordDurationIsOk(),
     ));
+
+    _scrollTextFieldToEnd();
   }
 
   void deleteAttachedPictures() {
@@ -958,6 +969,18 @@ class ChatCubit extends Cubit<ChatState> {
         ((attachmentType != null && attachmentType == AttachmentType.audio)
             ? AppConstants.maxAttachedPicturesWithAudio
             : AppConstants.maxAttachedPictures);
+  }
+
+  void _scrollTextFieldToEnd() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      textInputScrollController
+          .jumpTo(textInputScrollController.position.maxScrollExtent);
+    });
+  }
+
+  bool _checkStatusCode(DioError e) {
+    int? statusCode = e.response?.statusCode;
+    return statusCode != 401 && statusCode != 428 && statusCode != 451;
   }
 
   bool get canRecordAudio =>
