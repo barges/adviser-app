@@ -110,6 +110,7 @@ class _GalleryImageItem extends StatelessWidget {
           child: AppImageWidget(
             uri: uri,
             radius: AppConstants.buttonRadius,
+            backgroundColor: Theme.of(context).canvasColor,
           ),
         ),
         Positioned(

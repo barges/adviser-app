@@ -43,7 +43,7 @@ class AppInterceptor extends Interceptor {
         _cachingManager.clearTokenForBrand(
           _mainCubit.state.currentBrand,
         );
-       await Get.offNamedUntil(AppRoutes.login, (route) => false);
+        Get.offNamedUntil(AppRoutes.login, (route) => false);
         _mainCubit.updateErrorMessage(
           UIError(uiErrorType: UIErrorType.blocked),
         );
