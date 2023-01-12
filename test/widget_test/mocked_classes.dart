@@ -19,7 +19,12 @@
     as: #MockCustomerRepository,
     onMissingStub: OnMissingStub.returnDefault,
   ),
+  MockSpec<DefaultCacheManager>(
+    as: #MockDefaultCacheManager,
+    onMissingStub: OnMissingStub.returnDefault,
+  ),
 ])
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:mockito/annotations.dart';
 import 'package:shared_advisor_interface/data/cache/data_caching_manager.dart';
 import 'package:shared_advisor_interface/data/repositories/chats_repository_impl.dart';
