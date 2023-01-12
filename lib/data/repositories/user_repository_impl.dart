@@ -63,18 +63,16 @@ class UserRepositoryImpl implements UserRepository {
     List<String> coverPictures =
         await _api.addCoverPictureToGallery(userId ?? '', request);
 
-    _cacheManager.updateUserProfileCoverPictures(coverPictures);
-
     return coverPictures;
   }
 
   @override
-  Future<List<String>> updateCoverPicture(
-      UpdateProfileImageRequest request) async {
+  Future<List<String>> updatePictureByIndex(
+      int index, UpdateProfileImageRequest request) async {
     final String? userId = _cacheManager.getUserId();
 
     List<String> coverPictures =
-        await _api.updateCoverPicture(userId ?? '', request);
+        await _api.updatePictureByIndex(index, userId ?? '', request);
     return coverPictures;
   }
 
@@ -84,10 +82,8 @@ class UserRepositoryImpl implements UserRepository {
 
     List<String> coverPictures = await _api.deleteCoverPicture(
       userId ?? '',
-      index.toString(),
+      index,
     );
-
-    _cacheManager.updateUserProfileCoverPictures(coverPictures);
 
     return coverPictures;
   }

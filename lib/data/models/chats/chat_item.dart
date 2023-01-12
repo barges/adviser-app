@@ -72,7 +72,9 @@ class ChatItem with _$ChatItem {
   String getUnansweredMessage(BuildContext context) {
     String? resultMessage;
     if (unansweredCount != null && unansweredCount! > 1) {
-      resultMessage = S.of(context).youHaveAFewActiveSessions;
+      resultMessage = S
+          .of(context)
+          .youHaveAFewActiveSessions;
     } else {
       resultMessage = unansweredTypes?.firstOrNull?.unAnsweredMessage(context);
     }
@@ -80,14 +82,9 @@ class ChatItem with _$ChatItem {
     return resultMessage;
   }
 
-  bool get isAudio {
-    if (attachments != null && attachments!.isNotEmpty) {
-      return attachments!
+  bool get isAudio =>
+      attachments?.isNotEmpty == true && attachments!
           .any((element) => element.type == AttachmentType.audio);
-    }
-
-    return false;
-  }
 }
 
 List<Attachment>? _attachmentFromJson(json) => (json as List<dynamic>?)

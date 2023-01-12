@@ -216,9 +216,9 @@ extension DurationExt on Duration {
 }
 
 extension IntExt on int {
-  String get formatMMSS {
+  String get formatMSS {
     final minutes = this ~/ 60;
     final seconds = remainder(60);
-    return "${minutes < 10 ? '0$minutes' : '$minutes'}:${seconds < 10 ? '0$seconds' : '$seconds'}";
+    return "${'$minutes'}:${seconds < 10 ? '0$seconds' : '$seconds'}";
   }
 }

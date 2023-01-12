@@ -43,7 +43,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   late final UserProfile? userProfile;
   late final List<MarketsType> activeLanguages;
   late final List<GlobalKey> activeLanguagesGlobalKeys;
-  late final Map<String, dynamic> oldPropertiesMap;
+  late final Map<String, dynamic> _oldPropertiesMap;
+  late final VoidCallback disposeCoverPicturesListen;
 
   final ScrollController languagesScrollController = ScrollController();
   final PageController picturesPageController = PageController();
@@ -62,13 +63,13 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         activeLanguages.map((e) => GlobalKey()).toList();
     nicknameController.text = userProfile?.profileName ?? '';
 
-    oldPropertiesMap = userProfile?.localizedProperties?.toJson() ?? {};
+    _oldPropertiesMap = userProfile?.localizedProperties?.toJson() ?? {};
 
     createTextControllersNodesAndErrorsMap();
 
-    checkNickName();
+    _checkNickName();
 
-    checkEmptyFields();
+    _checkEmptyFields();
 
     emit(
       state.copyWith(
@@ -77,8 +78,12 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       ),
     );
 
-    addListenersToTextControllers();
-    addListenersToFocusNodes();
+    _addListenersToTextControllers();
+    _addListenersToFocusNodes();
+
+    disposeCoverPicturesListen = _cacheManager.listenUserProfile((value) {
+      emit(state.copyWith(coverPictures: value.coverPictures ?? []));
+    });
   }
 
   @override
@@ -101,24 +106,14 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     nicknameController.dispose();
     nicknameFocusNode.dispose();
     picturesPageController.dispose();
+    disposeCoverPicturesListen.call();
     return super.close();
   }
 
-  void goToGallery() {
-    Get.toNamed(
-      AppRoutes.galleryPictures,
-      arguments: GalleryPicturesScreenArguments(
-        pictures: state.coverPictures,
-        editProfilePageController: picturesPageController,
-        initPage: picturesPageController.page ?? 0.0,
-      ),
-    );
-  }
-
   void createTextControllersNodesAndErrorsMap() {
-    if (oldPropertiesMap.isNotEmpty) {
+    if (_oldPropertiesMap.isNotEmpty) {
       for (MarketsType marketType in activeLanguages) {
-        final PropertyByLanguage property = oldPropertiesMap[marketType.name];
+        final PropertyByLanguage property = _oldPropertiesMap[marketType.name];
         final TextEditingController statusTextController =
             TextEditingController();
         final TextEditingController profileTextController =
@@ -161,7 +156,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
   }
 
-  void addListenersToTextControllers() {
+  void _addListenersToTextControllers() {
     nicknameController.addListener(() {
       emit(state.copyWith(nicknameErrorType: ValidationErrorType.empty));
     });
@@ -185,7 +180,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
   }
 
-  void addListenersToFocusNodes() {
+  void _addListenersToFocusNodes() {
     nicknameFocusNode.addListener(() {
       emit(state.copyWith(nicknameHasFocus: nicknameFocusNode.hasFocus));
     });
@@ -205,9 +200,24 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     scaffoldKey.currentState?.openDrawer();
   }
 
+  void goToGallery() {
+    Get.toNamed(
+      AppRoutes.galleryPictures,
+      arguments: GalleryPicturesScreenArguments(
+        pictures: state.coverPictures,
+        editProfilePageController: picturesPageController,
+        initPage: picturesPageController.page ?? 0.0,
+      ),
+    );
+  }
+
+  void goToAddGalleryPictures() {
+    Get.toNamed(AppRoutes.addGalleryPictures);
+  }
+
   Future<void> updateUserInfo() async {
     if (await _connectivityService.checkConnection()) {
-      if (checkTextFields() & checkNickName() & checkUserAvatar()) {
+      if (checkTextFields() & _checkNickName() & checkUserAvatar()) {
         final bool profileUpdated = await updateUserProfileTexts();
         final bool coverPictureUpdated = await updateCoverPicture();
         final bool avatarUpdated = await updateUserAvatar();
@@ -251,7 +261,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     return isOk;
   }
 
-  bool checkNickName() {
+  bool _checkNickName() {
     bool isValid = true;
     if (nicknameController.text.length < 3) {
       isValid = false;
@@ -315,21 +325,14 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     if (state.coverPictures.isNotEmpty) {
       final int? pictureIndex = picturesPageController.page?.toInt();
       if (pictureIndex != null && pictureIndex > 0) {
-        final String url = state.coverPictures[pictureIndex];
-        final File file = await _defaultCacheManager.getSingleFile(url);
-        final String? mimeType = lookupMimeType(file.path);
-        final List<int> imageBytes = await file.readAsBytes();
-        final String base64Image = base64Encode(imageBytes);
-        final UpdateProfileImageRequest request = UpdateProfileImageRequest(
-          mime: mimeType,
-          image: base64Image,
-        );
-        final List<String> coverPictures =
-            await _userRepository.updateCoverPicture(request);
-        _cacheManager.updateUserProfileCoverPictures(coverPictures);
+        final List<String> coverPictures1 =
+            await updatePictureByIndex(pictureIndex, 0);
+        final List<String> coverPictures2 =
+            await updatePictureByIndex(0, pictureIndex);
+        _cacheManager.updateUserProfileCoverPictures(coverPictures2);
         emit(
           state.copyWith(
-            coverPictures: coverPictures,
+            coverPictures: coverPictures2,
           ),
         );
         isOk = true;
@@ -338,16 +341,26 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     return isOk;
   }
 
-  Future<void> deletePictureFromGallery(int pictureIndex) async {
-    if (await _connectivityService.checkConnection()) {
-      final List<String> coverPictures =
-          await _userRepository.deleteCoverPicture(pictureIndex);
-      emit(
-        state.copyWith(
-          coverPictures: coverPictures,
-        ),
-      );
-    }
+  Future<List<String>> updatePictureByIndex(int oldIndex, int newIndex) async {
+    final String url = state.coverPictures[oldIndex];
+
+    final File file = await _defaultCacheManager.getSingleFile(url);
+
+    final String? mimeType = lookupMimeType(file.path);
+
+    final List<int> imageBytes = await file.readAsBytes();
+
+    final String base64Image = base64Encode(imageBytes);
+
+    final UpdateProfileImageRequest request = UpdateProfileImageRequest(
+      mime: mimeType,
+      image: base64Image,
+    );
+
+    List<String> pictures =
+        await _userRepository.updatePictureByIndex(newIndex, request);
+
+    return pictures;
   }
 
   Future<bool> updateUserAvatar() async {
@@ -366,34 +379,15 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     return isOk;
   }
 
-  Future<void> addPictureToGallery(File? image) async {
-    if (await _connectivityService.checkConnection() && image != null) {
-      final String? mimeType = lookupMimeType(image.path);
-      final List<int> imageBytes = await image.readAsBytes();
-      final String base64Image = base64Encode(imageBytes);
-      final UpdateProfileImageRequest request = UpdateProfileImageRequest(
-        mime: mimeType,
-        image: base64Image,
-      );
-      List<String> coverPictures =
-          await _userRepository.addCoverPictureToGallery(request);
-      emit(state.copyWith(coverPictures: coverPictures));
-    }
-  }
-
   void setAvatar(File avatar) {
     emit(state.copyWith(avatar: avatar));
-  }
-
-  void setCoverImages(List<String> images) {
-    emit(state.copyWith(coverPictures: images));
   }
 
   void changeCurrentLanguageIndex(int index) {
     emit(state.copyWith(chosenLanguageIndex: index));
   }
 
-  void checkEmptyFields() {
+  void _checkEmptyFields() {
     if (userProfile?.profilePictures?.isNotEmpty != true) {
       Utils.animateToWidget(profileAvatarKey);
     } else if (nicknameController.text.isEmpty) {

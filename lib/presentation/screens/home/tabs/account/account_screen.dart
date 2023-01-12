@@ -63,12 +63,10 @@ class AccountScreen extends StatelessWidget {
               if (isOnline) {
                 return Column(
                   children: [
-                    statusErrorText?.isNotEmpty == true
-                        ? AppErrorWidget(
-                            errorMessage: statusErrorText ?? '',
-                            isRequired: true,
-                          )
-                        : const SizedBox.shrink(),
+                    AppErrorWidget(
+                      errorMessage: statusErrorText ?? '',
+                      isRequired: true,
+                    ),
                     Expanded(
                       child: RefreshIndicator(
                         onRefresh: accountCubit.refreshUserinfo,

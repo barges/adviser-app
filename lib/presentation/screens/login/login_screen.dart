@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/empty_error.dart';
 import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
-import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
 import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -15,7 +13,7 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/login_appbar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_succes_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_success_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/password_text_field.dart';
@@ -39,13 +37,13 @@ class LoginScreen extends StatelessWidget {
         getIt.get<DynamicLinkService>(),
         getIt.get<Dio>(),
       ),
-      child: const LoginWidget(),
+      child: const LoginContentWidget(),
     );
   }
 }
 
-class LoginWidget extends StatelessWidget {
-  const LoginWidget({Key? key}) : super(key: key);
+class LoginContentWidget extends StatelessWidget {
+  const LoginContentWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,14 +66,12 @@ class LoginWidget extends StatelessWidget {
                       builder: (BuildContext context) {
                         final AppError appError = context
                             .select((MainCubit cubit) => cubit.state.appError);
-                        return appError is! EmptyError
-                            ? AppErrorWidget(
-                                errorMessage: appError.getMessage(context),
-                                close: () {
-                                  loginCubit.clearErrorMessage();
-                                },
-                              )
-                            : const SizedBox.shrink();
+                        return AppErrorWidget(
+                          errorMessage: appError.getMessage(context),
+                          close: () {
+                            loginCubit.clearErrorMessage();
+                          },
+                        );
                       },
                     ),
                     Builder(
@@ -83,13 +79,11 @@ class LoginWidget extends StatelessWidget {
                         final AppSuccess appSuccess = context.select(
                             (LoginCubit cubit) => cubit.state.appSuccess);
 
-                        return appSuccess is! EmptySuccess
-                            ? AppSuccessWidget(
-                                message: appSuccess.getMessage(context),
-                                needEmailButton: true,
-                                onClose: loginCubit.clearSuccessMessage,
-                              )
-                            : const SizedBox.shrink();
+                        return AppSuccessWidget(
+                          message: appSuccess.getMessage(context),
+                          needEmailButton: true,
+                          onClose: loginCubit.clearSuccessMessage,
+                        );
                       },
                     ),
                     Expanded(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
@@ -19,21 +20,21 @@ class AttachedPictures extends StatelessWidget {
             context.select((ChatCubit cubit) => cubit.state.attachedPictures);
         return Row(
           children: attachedPictures
-              .map((file) => Padding(
-                    padding: const EdgeInsets.only(right: 9.0),
-                    child: _AttachedPicture(
-                      file,
-                      onDeletePressed: () async {
-                        final bool? isDelete = await showDeleteAlert(
-                            context, S.of(context).doYouWantToDeleteImage);
-                        if (isDelete == true) {
-                          chatCubit.deletePicture(file);
-                        }
-                      },
-                      width: 64.0,
-                      height: 64.0,
-                    ),
-                  ))
+              .map(
+                (file) => Padding(
+                  padding: const EdgeInsets.only(right: 9.0),
+                  child: _AttachedPicture(
+                    file,
+                    onDeletePressed: () async {
+                      final bool? isDelete = await showDeleteAlert(
+                          context, S.of(context).doYouWantToDeleteImage);
+                      if (isDelete == true) {
+                        chatCubit.deletePicture(file);
+                      }
+                    },
+                  ),
+                ),
+              )
               .toList(),
         );
       },
@@ -44,14 +45,11 @@ class AttachedPictures extends StatelessWidget {
 class _AttachedPicture extends StatelessWidget {
   final File file;
   final VoidCallback? onDeletePressed;
-  final double? width;
-  final double? height;
+
   const _AttachedPicture(
     this.file, {
     Key? key,
     this.onDeletePressed,
-    this.width,
-    this.height,
   }) : super(key: key);
 
   @override
@@ -60,17 +58,11 @@ class _AttachedPicture extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 7.0, right: 7.0),
-          child: Container(
-            width: width,
-            height: height,
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: FileImage(file),
-              ),
-            ),
+          child: AppImageWidget(
+            uri: Uri.parse(file.path),
+            width: 64.0,
+            height: 64.0,
+            radius: AppConstants.buttonRadius,
           ),
         ),
         Positioned(
@@ -86,6 +78,7 @@ class _AttachedPicture extends StatelessWidget {
 
 class _DeleteBtn extends StatelessWidget {
   final VoidCallback? onPressed;
+
   const _DeleteBtn({
     Key? key,
     this.onPressed,

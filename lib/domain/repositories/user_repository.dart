@@ -30,9 +30,8 @@ abstract class UserRepository {
     UpdateProfileImageRequest request,
   );
 
-  Future<List<String>> updateCoverPicture(
-    UpdateProfileImageRequest request,
-  );
+  Future<List<String>> updatePictureByIndex(int index,
+      UpdateProfileImageRequest request);
 
   Future<List<String>> deleteCoverPicture(
     int index,
