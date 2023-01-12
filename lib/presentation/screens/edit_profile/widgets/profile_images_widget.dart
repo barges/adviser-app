@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
@@ -22,6 +23,8 @@ class ProfileImagesWidget extends StatelessWidget {
     final EditProfileCubit cubit = context.read<EditProfileCubit>();
     final List<String> coverPictures =
         context.select((EditProfileCubit cubit) => cubit.state.coverPictures);
+    final bool isOnline = context
+        .select((MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
     return Stack(
       children: [
         Column(
@@ -35,7 +38,7 @@ class ProfileImagesWidget extends StatelessWidget {
                         height: _backgroundImageSectionHeight,
                         color: Theme.of(context).primaryColorLight,
                         child: GestureDetector(
-                          onTap: cubit.goToAddGalleryPictures,
+                          onTap: isOnline ? cubit.goToAddGalleryPictures : null,
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(40),
@@ -110,30 +113,35 @@ class ProfileImagesWidget extends StatelessWidget {
               },
             ),
             coverPictures.isNotEmpty
-                ? GestureDetector(
-                    onTap: cubit.goToAddGalleryPictures,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Assets.vectors.myGallery.svg(
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          const SizedBox(
-                            width: 4.0,
-                          ),
-                          Text(
-                            S.of(context).myGallery,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                    color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.w500),
-                          ),
-                        ],
+                ? Opacity(
+                    opacity: isOnline ? 1.0 : 0.4,
+                    child: GestureDetector(
+                      onTap: isOnline ? cubit.goToAddGalleryPictures : null,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Assets.vectors.myGallery.svg(
+                              width: AppConstants.iconSize,
+                              height: AppConstants.iconSize,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            const SizedBox(
+                              width: 4.0,
+                            ),
+                            Text(
+                              S.of(context).myGallery,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   )
