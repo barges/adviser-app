@@ -1,3 +1,4 @@
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/cache/data_caching_manager.dart';
 import 'package:shared_advisor_interface/main.dart';
@@ -12,9 +13,11 @@ import 'module.dart';
 class ServicesModule implements Module {
   @override
   Future<void> dependency() async {
+    getIt.registerSingleton<BaseCacheManager>(DefaultCacheManager());
     getIt.registerSingleton<CachingManager>(DataCachingManager());
     getIt.registerLazySingleton<FreshChatService>(() => FreshChatServiceImpl());
-    getIt.registerLazySingleton<ConnectivityService>(() => ConnectivityService());
+    getIt.registerLazySingleton<ConnectivityService>(
+        () => ConnectivityService());
     getIt.registerLazySingleton<PushNotificationManager>(
         () => PushNotificationManagerImpl());
     getIt.registerSingleton<DynamicLinkService>(DynamicLinkService());
