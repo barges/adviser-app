@@ -14,6 +14,7 @@ class AppImageWidget extends StatelessWidget {
   final bool canBeOpenedInFullScreen;
   final BoxFit fit;
   final double? radius;
+  final Color? backgroundColor;
   final double? height;
   final double? width;
 
@@ -22,6 +23,7 @@ class AppImageWidget extends StatelessWidget {
     this.width,
     this.height,
     this.radius,
+    this.backgroundColor,
     this.canBeOpenedInFullScreen = false,
     this.fit = BoxFit.cover,
     super.key,
@@ -53,15 +55,20 @@ class AppImageWidget extends StatelessWidget {
                 height: widgetHeight,
                 fit: fit,
                 cacheManager: getIt.get<BaseCacheManager>(),
-                placeholder: (context, url) => Center(
-                  child: SizedBox(
-                    height: AppConstants.iconSize,
-                    width: AppConstants.iconSize,
-                    child: LoadingIndicator(
-                      indicatorType: Indicator.lineSpinFadeLoader,
-                      colors: [
-                        Theme.of(context).iconTheme.color ?? Colors.grey,
-                      ],
+                placeholder: (context, url) => Container(
+                  width: widgetWidth,
+                  height: widgetHeight,
+                  color: backgroundColor,
+                  child: Center(
+                    child: SizedBox(
+                      height: AppConstants.iconSize,
+                      width: AppConstants.iconSize,
+                      child: LoadingIndicator(
+                        indicatorType: Indicator.lineSpinFadeLoader,
+                        colors: [
+                          Theme.of(context).iconTheme.color ?? Colors.grey,
+                        ],
+                      ),
                     ),
                   ),
                 ),
