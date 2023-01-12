@@ -16,7 +16,7 @@ import 'package:shared_advisor_interface/presentation/services/connectivity_serv
 
 class SearchListCubit extends Cubit<SearchListState> {
   final ChatsRepository _repository;
-  final BuildContext context;
+  final double screenHeight;
   final VoidCallback closeSearch;
   final ConnectivityService _connectivityService =
       getIt.get<ConnectivityService>();
@@ -36,7 +36,7 @@ class SearchListCubit extends Cubit<SearchListState> {
 
   SearchListCubit(
     this._repository,
-    this.context,
+    this.screenHeight,
     this.closeSearch,
   ) : super(const SearchListState()) {
     _searchSubscription = _searchStream
@@ -49,7 +49,7 @@ class SearchListCubit extends Cubit<SearchListState> {
       ///TODO: Remove context
       if (!_isLoading &&
           conversationsScrollController.position.extentAfter <=
-              MediaQuery.of(context).size.height) {
+              screenHeight) {
         getConversations();
       }
     });

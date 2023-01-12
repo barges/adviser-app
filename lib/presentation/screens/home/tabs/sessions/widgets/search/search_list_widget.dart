@@ -28,7 +28,7 @@ class SearchListWidget extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) => SearchListCubit(
         getIt.get<ChatsRepository>(),
-        context,
+        MediaQuery.of(context).size.height,
         closeOnTap,
       ),
       child: BlocListener<MainCubit, MainState>(
