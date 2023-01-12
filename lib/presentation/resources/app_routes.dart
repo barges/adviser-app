@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/presentation/screens/add_gallery_pictures/add_gallery_pictures_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/gallery/gallery_pictures_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_screen.dart';
@@ -33,6 +34,7 @@ class AppRoutes {
   static const reviews = '/reviews';
   static const chat = '/chat_screen';
   static const customerSessions = '/customer_sessions';
+  static const addGalleryPictures = '/add_gallery_pictures';
 
   static final List<GetPage> getPages = [
     GetPage(
@@ -81,7 +83,7 @@ class AppRoutes {
     ),
     GetPage(
       name: customerProfile,
-      page: () => CustomerProfileScreen(),
+      page: () => const CustomerProfileScreen(),
     ),
     GetPage(
       name: addNote,
@@ -98,6 +100,10 @@ class AppRoutes {
     GetPage(
       name: customerSessions,
       page: () => const CustomerSessionsScreen(),
-    )
+    ),
+    GetPage(
+      name: addGalleryPictures,
+      page: () => const AddGalleryPicturesScreen(),
+    ),
   ];
 }

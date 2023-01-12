@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_state.dart';
-import 'package:shared_advisor_interface/presentation/screens/edit_profile/widgets/gallery_images.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/widgets/languages_section_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/edit_profile/widgets/profile_images_widget.dart';
 
@@ -40,6 +41,9 @@ class EditProfileScreen extends StatelessWidget {
             }
           },
           child: Builder(builder: (context) {
+            bool isOnline = context.select(
+              (MainCubit cubit) => cubit.state.internetConnectionIsAvailable,
+            );
             return GestureDetector(
               onTap: FocusScope.of(context).unfocus,
               child: Scaffold(
@@ -56,8 +60,8 @@ class EditProfileScreen extends StatelessWidget {
                       slivers: [
                         ScrollableAppBar(
                           title: S.of(context).editProfile,
-                          actionOnClick: () =>
-                              editProfileCubit.updateUserInfo(),
+                          needShowError: true,
+                          actionOnClick: editProfileCubit.updateUserInfo,
                           openDrawer: editProfileCubit.openDrawer,
                         ),
                         SliverToBoxAdapter(
@@ -65,46 +69,56 @@ class EditProfileScreen extends StatelessWidget {
                             onTap: () {
                               FocusScope.of(context).unfocus();
                             },
-                            child: Column(
+                            child: Stack(
                               children: [
-                                const ProfileImagesWidget(),
-                                const SizedBox(
-                                  height: 16.0,
-                                ),
                                 Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: AppConstants
-                                              .horizontalScreenPadding),
-                                      child: Builder(builder: (context) {
-                                        final ValidationErrorType
-                                            nicknameErrorType = context.select(
+                                    const ProfileImagesWidget(),
+                                    const SizedBox(
+                                      height: 16.0,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: AppConstants
+                                                  .horizontalScreenPadding),
+                                          child: Builder(builder: (context) {
+                                            final ValidationErrorType
+                                                nicknameErrorType =
+                                                context.select(
+                                                    (EditProfileCubit cubit) =>
+                                                        cubit.state
+                                                            .nicknameErrorType);
+                                            context.select(
                                                 (EditProfileCubit cubit) =>
                                                     cubit.state
-                                                        .nicknameErrorType);
-                                        context.select(
-                                            (EditProfileCubit cubit) =>
-                                                cubit.state.nicknameHasFocus);
-                                        return AppTextField(
-                                          key:
-                                              editProfileCubit.nicknameFieldKey,
-                                          controller: editProfileCubit
-                                              .nicknameController,
-                                          focusNode: editProfileCubit
-                                              .nicknameFocusNode,
-                                          label: S.of(context).nickname,
-                                          errorType: nicknameErrorType,
-                                        );
-                                      }),
+                                                        .nicknameHasFocus);
+                                            return AppTextField(
+                                              key: editProfileCubit
+                                                  .nicknameFieldKey,
+                                              controller: editProfileCubit
+                                                  .nicknameController,
+                                              focusNode: editProfileCubit
+                                                  .nicknameFocusNode,
+                                              label: S.of(context).nickname,
+                                              errorType: nicknameErrorType,
+                                            );
+                                          }),
+                                        ),
+                                        const LanguageSectionWidget(),
+                                        const SizedBox(height: 46.0),
+                                      ],
                                     ),
-                                    const LanguageSectionWidget(),
-                                    const SizedBox(
-                                      height: 24.0,
-                                    ),
-                                    const GalleryImages(),
                                   ],
+                                ),
+                                AppErrorWidget(
+                                  errorMessage: !isOnline
+                                      ? S.of(context).noInternetConnection
+                                      : '',
+                                  isRequired: true,
                                 ),
                               ],
                             ),

@@ -155,6 +155,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "male": MessageLookupByLibrary.simpleMessage("Macho"),
         "mandatory": MessageLookupByLibrary.simpleMessage("Obrigatoriedade"),
         "market": MessageLookupByLibrary.simpleMessage("Mercado:"),
+        "myGallery": MessageLookupByLibrary.simpleMessage("Minha Galeria"),
         "newCustomers": MessageLookupByLibrary.simpleMessage("Novos clientes"),
         "newLabel": MessageLookupByLibrary.simpleMessage("Nova"),
         "newMandatoryArticleIsAvailable": MessageLookupByLibrary.simpleMessage(
