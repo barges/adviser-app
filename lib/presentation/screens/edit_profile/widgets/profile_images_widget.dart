@@ -163,6 +163,7 @@ class ProfileImagesWidget extends StatelessWidget {
                   avatarUrl: profileImages.firstOrNull,
                   withBorder: true,
                   withError: profileImages.isEmpty && avatar == null,
+                  withCameraBadge: true,
                 ),
                 Positioned(
                     right: 0.0,
