@@ -3,16 +3,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 class AppImageWidget extends StatelessWidget {
   final Uri uri;
-  final double? width;
-  final double? height;
-  final double? radius;
   final bool canBeOpenedInFullScreen;
+  final BoxFit fit;
+  final double? radius;
+  final double? height;
+  final double? width;
 
   const AppImageWidget({
     required this.uri,
@@ -20,11 +23,15 @@ class AppImageWidget extends StatelessWidget {
     this.height,
     this.radius,
     this.canBeOpenedInFullScreen = false,
+    this.fit = BoxFit.cover,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    double widgetHeight = height ?? MediaQuery.of(context).size.height;
+    double widgetWidth = width ?? MediaQuery.of(context).size.width;
+
     return GestureDetector(
       onTap: canBeOpenedInFullScreen
           ? () {
@@ -36,23 +43,35 @@ class AppImageWidget extends StatelessWidget {
               );
             }
           : null,
-      child: Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          borderRadius: radius != null ? BorderRadius.circular(radius!) : null,
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: uri.hasScheme
-                ? CachedNetworkImageProvider(uri.toString(),
-                        cacheManager: getIt.get<BaseCacheManager>())
-                    as ImageProvider<Object>
-                : FileImage(
-                    File(uri.toFilePath()),
+      child: ClipRRect(
+        borderRadius:
+            radius != null ? BorderRadius.circular(radius!) : BorderRadius.zero,
+        child: uri.hasScheme
+            ? CachedNetworkImage(
+                imageUrl: uri.toString(),
+                width: widgetWidth,
+                height: widgetHeight,
+                fit: fit,
+                cacheManager: getIt.get<BaseCacheManager>(),
+                placeholder: (context, url) => Center(
+                  child: SizedBox(
+                    height: AppConstants.iconSize,
+                    width: AppConstants.iconSize,
+                    child: LoadingIndicator(
+                      indicatorType: Indicator.lineSpinFadeLoader,
+                      colors: [
+                        Theme.of(context).iconTheme.color ?? Colors.grey,
+                      ],
+                    ),
                   ),
-          ),
-        ),
+                ),
+              )
+            : Image.file(
+                File(uri.toFilePath()),
+                fit: fit,
+                width: widgetWidth,
+                height: widgetHeight,
+              ),
       ),
     );
   }
