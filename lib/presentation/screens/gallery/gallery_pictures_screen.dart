@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,40 +35,48 @@ class GalleryPicturesScreen extends StatelessWidget {
                         ?.jumpToPage(page);
                   },
                   itemBuilder: (context, index) {
+                    final Uri uri = Uri.parse(coverPictures[index]);
+
                     return InteractiveViewer(
                       panEnabled: false,
                       maxScale: 3.0,
                       minScale: 1.0,
-                      child: CachedNetworkImage(
-                          imageUrl: coverPictures[index], fit: BoxFit.contain),
+                      child: uri.hasScheme
+                          ? CachedNetworkImage(
+                              imageUrl: uri.toString(),
+                              fit: BoxFit.contain,
+                            )
+                          : Image.file(
+                              File(uri.toFilePath()),
+                            ),
                     );
                   },
                 ),
               ),
-              if(galleryPicturesCubit.coverPictures.length > 1)
-              Positioned(
-                bottom: 80.0,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Center(
-                    child: Builder(builder: (context) {
-                      return SmoothPageIndicator(
-                        controller: galleryPicturesCubit.pageController,
-                        count: coverPictures.length,
-                        effect: ScrollingDotsEffect(
-                          activeDotScale: 1.0,
-                          spacing: 12.0,
-                          maxVisibleDots: 7,
-                          dotWidth: 8.0,
-                          dotHeight: 8.0,
-                          dotColor: Theme.of(context).hintColor,
-                          activeDotColor: Theme.of(context).primaryColor,
-                        ),
-                      );
-                    }),
+              if (galleryPicturesCubit.coverPictures.length > 1)
+                Positioned(
+                  bottom: 80.0,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Center(
+                      child: Builder(builder: (context) {
+                        return SmoothPageIndicator(
+                          controller: galleryPicturesCubit.pageController,
+                          count: coverPictures.length,
+                          effect: ScrollingDotsEffect(
+                            activeDotScale: 1.0,
+                            spacing: 12.0,
+                            maxVisibleDots: 7,
+                            dotWidth: 8.0,
+                            dotHeight: 8.0,
+                            dotColor: Theme.of(context).hintColor,
+                            activeDotColor: Theme.of(context).primaryColor,
+                          ),
+                        );
+                      }),
+                    ),
                   ),
                 ),
-              ),
               const TransparentAppBar(),
             ],
           ),

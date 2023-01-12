@@ -325,9 +325,10 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     if (state.coverPictures.isNotEmpty) {
       final int? pictureIndex = picturesPageController.page?.toInt();
       if (pictureIndex != null && pictureIndex > 0) {
-        final List<String> coverPictures1 = await updatePictureByIndex(0);
+        final List<String> coverPictures1 =
+            await updatePictureByIndex(pictureIndex, 0);
         final List<String> coverPictures2 =
-            await updatePictureByIndex(pictureIndex);
+            await updatePictureByIndex(0, pictureIndex);
         _cacheManager.updateUserProfileCoverPictures(coverPictures2);
         emit(
           state.copyWith(
@@ -340,8 +341,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     return isOk;
   }
 
-  Future<List<String>> updatePictureByIndex(int index) async {
-    final String url = state.coverPictures[index];
+  Future<List<String>> updatePictureByIndex(int oldIndex, int newIndex) async {
+    final String url = state.coverPictures[oldIndex];
 
     final File file = await _defaultCacheManager.getSingleFile(url);
 
@@ -357,7 +358,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     );
 
     List<String> pictures =
-        await _userRepository.updatePictureByIndex(index, request);
+        await _userRepository.updatePictureByIndex(newIndex, request);
 
     return pictures;
   }
