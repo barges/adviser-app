@@ -1,6 +1,6 @@
 import 'package:audio_session/audio_session.dart';
 
-mixin AudioSessionConfigure {
+mixin AudioSessionConfigureMixin {
   Future<void> configureAudioSession() async {
     final AudioSession session = await AudioSession.instance;
     if (!session.isConfigured) {

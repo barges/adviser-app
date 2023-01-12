@@ -2,20 +2,26 @@ import 'dart:ui';
 
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:logger/logger.dart';
-import 'audio_session_configure.dart';
+import 'audio_session_configure_mixin.dart';
 
 abstract class SoundPlaybackService {
-  Future<void> startPlayer({String? fromURI, VoidCallback? whenFinished});
-  Future<void> pausePlayer();
-  Future<void> resumePlayer();
-  Future<void> stopPlayer();
-  void close();
   bool get isPaused;
+
   Stream<PlaybackDisposition>? get onProgress;
+
+  Future<void> startPlayer({String? fromURI, VoidCallback? whenFinished});
+
+  Future<void> pausePlayer();
+
+  Future<void> resumePlayer();
+
+  Future<void> stopPlayer();
+
+  void close();
 }
 
 class SoundPlaybackServiceImp extends SoundPlaybackService
-    with AudioSessionConfigure {
+    with AudioSessionConfigureMixin {
   FlutterSoundPlayer? _player;
 
   SoundPlaybackServiceImp() {
@@ -30,6 +36,12 @@ class SoundPlaybackServiceImp extends SoundPlaybackService
       const Duration(milliseconds: 100),
     );
   }
+
+  @override
+  bool get isPaused => _player?.isPaused == true;
+
+  @override
+  Stream<PlaybackDisposition>? get onProgress => _player?.onProgress;
 
   @override
   Future<void> startPlayer({
@@ -68,10 +80,4 @@ class SoundPlaybackServiceImp extends SoundPlaybackService
     _player?.closePlayer();
     _player = null;
   }
-
-  @override
-  bool get isPaused => _player?.isPaused == true;
-
-  @override
-  Stream<PlaybackDisposition>? get onProgress => _player?.onProgress;
 }

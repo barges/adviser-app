@@ -1,16 +1,19 @@
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:logger/logger.dart';
-import 'audio_session_configure.dart';
+import 'audio_session_configure_mixin.dart';
 
 abstract class SoundRecordService {
-  Future<void> startRecorder(String fileName);
-  Future<String?> stopRecorder();
-  void close();
   Stream<RecordingDisposition>? get onProgress;
+
+  Future<void> startRecorder(String fileName);
+
+  Future<String?> stopRecorder();
+
+  void close();
 }
 
 class SoundRecordServiceImp extends SoundRecordService
-    with AudioSessionConfigure {
+    with AudioSessionConfigureMixin {
   FlutterSoundRecorder? _recorder;
 
   SoundRecordServiceImp() {
@@ -26,6 +29,9 @@ class SoundRecordServiceImp extends SoundRecordService
       const Duration(seconds: 1),
     );
   }
+
+  @override
+  Stream<RecordingDisposition>? get onProgress => _recorder?.onProgress;
 
   @override
   Future<void> startRecorder(String fileName) async {
@@ -45,7 +51,4 @@ class SoundRecordServiceImp extends SoundRecordService
     _recorder?.closeRecorder();
     _recorder = null;
   }
-
-  @override
-  Stream<RecordingDisposition>? get onProgress => _recorder?.onProgress;
 }
