@@ -1,8 +1,6 @@
-import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/transparrent_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/screens/gallery/gallery_pictures_cubit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -38,18 +36,13 @@ class GalleryPicturesScreen extends StatelessWidget {
                     final Uri uri = Uri.parse(coverPictures[index]);
 
                     return InteractiveViewer(
-                      panEnabled: false,
-                      maxScale: 3.0,
-                      minScale: 1.0,
-                      child: uri.hasScheme
-                          ? CachedNetworkImage(
-                              imageUrl: uri.toString(),
-                              fit: BoxFit.contain,
-                            )
-                          : Image.file(
-                              File(uri.toFilePath()),
-                            ),
-                    );
+                        panEnabled: false,
+                        maxScale: 3.0,
+                        minScale: 1.0,
+                        child: AppImageWidget(
+                          uri: uri,
+                          fit: BoxFit.contain,
+                        ));
                   },
                 ),
               ),

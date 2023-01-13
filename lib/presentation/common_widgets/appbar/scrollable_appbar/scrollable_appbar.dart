@@ -65,7 +65,7 @@ class ScrollableAppBar extends StatelessWidget {
                   ? Padding(
                       padding: EdgeInsets.fromLTRB(
                         16.0,
-                        MediaQuery.of(context).padding.top + 10.0,
+                        MediaQuery.of(context).padding.top + 16.0,
                         16.0,
                         0.0,
                       ),
@@ -139,13 +139,13 @@ class ScrollableAppBar extends StatelessWidget {
               builder: (context) {
                 final Brand currentBrand = context
                     .select((MainCubit cubit) => cubit.state.currentBrand);
-                return SizedBox(
-                  height: _minHeight,
-                  child: !isWide
-                      ? Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Padding(
+                return Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    SizedBox(
+                      height: _minHeight,
+                      child: !isWide
+                          ? Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Row(
@@ -210,27 +210,8 @@ class ScrollableAppBar extends StatelessWidget {
                                         ),
                                 ],
                               ),
-                            ),
-                            if (needShowError)
-                              Positioned(
-                                bottom: -_errorHeight,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 12.0),
-                                  child: AppErrorWidget(
-                                    height: _errorHeight,
-                                    errorMessage: isOnline
-                                        ? ''
-                                        : S.of(context).noInternetConnection,
-                                    isRequired: true,
-                                  ),
-                                ),
-                              ),
-                          ],
-                        )
-                      : Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Row(
+                            )
+                          : Row(
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -246,19 +227,19 @@ class ScrollableAppBar extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            if (needShowError)
-                              Positioned(
-                                bottom: -_errorHeight,
-                                child: AppErrorWidget(
-                                  height: _errorHeight,
-                                  errorMessage: isOnline
-                                      ? ''
-                                      : S.of(context).noInternetConnection,
-                                  isRequired: true,
-                                ),
-                              ),
-                          ],
+                    ),
+                    if (needShowError)
+                      Positioned(
+                        bottom: -_errorHeight,
+                        child: AppErrorWidget(
+                          height: _errorHeight,
+                          errorMessage: isOnline
+                              ? ''
+                              : S.of(context).noInternetConnection,
+                          isRequired: true,
                         ),
+                      ),
+                  ],
                 );
               },
             ),

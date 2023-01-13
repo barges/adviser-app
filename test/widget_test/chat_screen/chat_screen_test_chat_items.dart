@@ -63,5 +63,32 @@ class ChatScreenTestChatItems {
       isAnswer: false,
       isSent: true);
 
-  //static ChatItem ritualAuraReadingQuestion = ChatItem(type: ChatItemType.ritual, questionType: null, ritualIdentifier: SessionsTypes.aurareading, status: null, clientName: Hope Fortunikovna, takenDate: null, createdAt: 2022-07-25 06:18:42.278Z, updatedAt: 2022-10-12 12:42:44.793Z, startAnswerDate: null, content: Aut et voluptatem consequatur ad officiis sint voluptatibus inventore. Aut facilis totam est. Cum et ipsa odio officia id quia velit voluptates iure. Et est qui blanditiis quasi error in aut occaecati. Laboriosam earum ipsam voluptatum amet deserunt., id: 62de35c2b584e9001e590daf, clientInformation: ClientInformation(birthdate: 1989-02-07 00:00:00.000Z, zodiac: ZodiacSign.aquarius, gender: Gender.nonGender, country: BR), attachments: [], unansweredTypes: null, clientID: 5f5224f45a1f7c001c99763c, ritualID: 62de35bcb584e9001e590d7d, lastQuestionId: null, unansweredCount: null, storyID: 62de35bcb584e9001e590d82, isActive: true, isAnswer: false, isSent: true);
+  static ChatItem ritualAuraReadingQuestion = ChatItem(
+      type: ChatItemType.ritual,
+      questionType: null,
+      ritualIdentifier: SessionsTypes.aurareading,
+      status: null,
+      clientName: 'Hope Fortunikovna',
+      takenDate: null,
+      createdAt: DateTime.parse('2022-07-25 06:18:42.278Z'),
+      updatedAt: DateTime.parse('2022-10-12 12:42:44.793Z'),
+      startAnswerDate: null,
+      content:
+          'Aut et voluptatem consequatur ad officiis sint voluptatibus inventore. Aut facilis totam est. Cum et ipsa odio officia id quia velit voluptates iure. Et est qui blanditiis quasi error in aut occaecati. Laboriosam earum ipsam voluptatum amet deserunt.',
+      id: '62de35c2b584e9001e590daf',
+      clientInformation: ClientInformation(
+          birthdate: DateTime.parse('1989-02-07 00:00:00.000Z'),
+          zodiac: ZodiacSign.aquarius,
+          gender: Gender.nonGender,
+          country: 'BR'),
+      attachments: [],
+      unansweredTypes: null,
+      clientID: '5f5224f45a1f7c001c99763c',
+      ritualID: '62de35bcb584e9001e590d7d',
+      lastQuestionId: null,
+      unansweredCount: null,
+      storyID: '62de35bcb584e9001e590d82',
+      isActive: true,
+      isAnswer: false,
+      isSent: true);
 }

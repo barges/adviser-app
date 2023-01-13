@@ -4,17 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
-import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/models/chats/client_information.dart';
-import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/gender.dart';
-import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
-import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
+import 'package:network_image_mock/network_image_mock.dart';
 import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
 import 'package:shared_advisor_interface/data/network/api/customer_api.dart';
 import 'package:shared_advisor_interface/data/repositories/chats_repository_impl.dart';
@@ -24,14 +20,18 @@ import 'package:shared_advisor_interface/domain/repositories/customer_repository
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_input_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/ritual_info_card_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/gallery/gallery_pictures_screen.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 import '../mocked_classes.mocks.dart';
@@ -52,12 +52,19 @@ Future<void> pumpChatScreen({
       child: Builder(
         builder: (context) {
           return GetMaterialApp(
-            onGenerateRoute: (_) => GetPageRoute(
-                page: () => FakeChatScreen(
-                      chatsRepository: chatsRepository,
-                      connectivityService: connectivityService,
-                    ),
-                settings: RouteSettings(arguments: chatScreenArguments)),
+            onGenerateRoute: (settings) {
+              if (settings.name == AppRoutes.galleryPictures) {
+                return GetPageRoute(
+                    page: () => const GalleryPicturesScreen(),
+                    settings: settings);
+              }
+              return GetPageRoute(
+                  page: () => FakeChatScreen(
+                        chatsRepository: chatsRepository,
+                        connectivityService: connectivityService,
+                      ),
+                  settings: RouteSettings(arguments: chatScreenArguments));
+            },
             localizationsDelegates: const [
               S.delegate,
               GlobalMaterialLocalizations.delegate,
@@ -70,7 +77,6 @@ Future<void> pumpChatScreen({
       ),
     ),
   );
-  tester.takeException();
   await tester.pumpAndSettle();
 }
 
@@ -145,6 +151,8 @@ void main() {
 
     getIt.registerLazySingleton<CustomerRepository>(
         () => CustomerRepositoryImpl(CustomerApi(dio)));
+
+    getIt.registerSingleton<BaseCacheManager>(MockDefaultCacheManager());
   });
 
   setUp(() {
@@ -402,7 +410,8 @@ void main() {
     'RitualInfoCardWidget',
     () {
       testWidgets(
-        'should be displayed if active question on Chat screen is ritual',
+        'should be displayed without images'
+        ' if active question on Chat screen is love crush reading ritual',
         (WidgetTester tester) async {
           dioAdapter.onGet('/rituals/single/62de59dd510689001ddb8090',
               (server) {
@@ -427,31 +436,99 @@ void main() {
         },
       );
 
-      // testWidgets(
-      //   'should be displayed if active question on Chat screen is ritual',
-      //   (WidgetTester tester) async {
-      //     dioAdapter.onGet('/rituals/single/62de59dd510689001ddb8090',
-      //         (server) {
-      //       server.reply(
-      //         200,
-      //         ChatScreenTestResponses.ritualLoveCrushReadingQuestion,
-      //       );
-      //     });
+      testWidgets(
+        'should be displayed with images'
+        ' if active question on Chat screen is aura reading ritual',
+        (WidgetTester tester) async {
+          dioAdapter.onGet('/rituals/single/62de59dd510689001ddb8090',
+              (server) {
+            server.reply(
+              200,
+              ChatScreenTestResponses.ritualAuraReadingQuestion,
+            );
+          });
 
-      //     await pumpChatScreen(
-      //       tester: tester,
-      //       mainCubit: mainCubit,
-      //       chatsRepository: mockChatsRepository,
-      //       connectivityService: mockConnectivityService,
-      //       chatScreenArguments: ChatScreenArguments(
-      //         ritualID: '62de59dd510689001ddb8090',
-      //         question: ritualQuestion,
-      //       ),
-      //     );
+          await mockNetworkImagesFor(() async {
+            await pumpChatScreen(
+              tester: tester,
+              mainCubit: mainCubit,
+              chatsRepository: mockChatsRepository,
+              connectivityService: mockConnectivityService,
+              chatScreenArguments: ChatScreenArguments(
+                ritualID: '62de59dd510689001ddb8090',
+                question: ChatScreenTestChatItems.ritualAuraReadingQuestion,
+              ),
+            );
 
-      //     expect(find.byType(RitualInfoCardWidget), findsOneWidget);
-      //   },
-      // );
+            expect(find.byType(RitualInfoCardWidget), findsOneWidget);
+            expect(find.byType(AppImageWidget), findsNWidgets(2));
+          });
+        },
+      );
+
+      testWidgets(
+        'should be open picture in full-screen'
+        ' if user clicks on image',
+        (WidgetTester tester) async {
+          dioAdapter.onGet('/rituals/single/62de59dd510689001ddb8090',
+              (server) {
+            server.reply(
+              200,
+              ChatScreenTestResponses.ritualAuraReadingQuestion,
+            );
+          });
+
+          await mockNetworkImagesFor(() async {
+            await pumpChatScreen(
+              tester: tester,
+              mainCubit: mainCubit,
+              chatsRepository: mockChatsRepository,
+              connectivityService: mockConnectivityService,
+              chatScreenArguments: ChatScreenArguments(
+                ritualID: '62de59dd510689001ddb8090',
+                question: ChatScreenTestChatItems.ritualAuraReadingQuestion,
+              ),
+            );
+
+            await tester.tap(find
+                .descendant(
+                    of: find.byType(RitualInfoCardWidget),
+                    matching: find.byType(AppImageWidget))
+                .first);
+            await tester.pumpAndSettle();
+
+            expect(find.byType(GalleryPicturesScreen), findsOneWidget);
+          });
+        },
+      );
+    },
+  );
+
+  group(
+    'ChatTextInputWidget',
+    () {
+      testWidgets(
+        'should have input text field, attach picture button and send button'
+        ' when user opens active chat',
+        (WidgetTester tester) async {
+          await pumpChatScreen(
+            tester: tester,
+            mainCubit: mainCubit,
+            chatsRepository: mockChatsRepository,
+            connectivityService: mockConnectivityService,
+            chatScreenArguments: ChatScreenArguments(
+              ritualID: '62de59dd510689001ddb8090',
+              question: ChatScreenTestChatItems.ritualAuraReadingQuestion,
+            ),
+          );
+
+          expect(
+              find.descendant(
+                  of: find.byType(ChatTextInputWidget),
+                  matching: find.byType(SvgPicture)),
+              findsOneWidget);
+        },
+      );
     },
   );
 }

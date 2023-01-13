@@ -341,8 +341,7 @@ class ChatScreenTestResponses {
           "__v": 0,
           "id": "619f8a415d584a0097ea7fa9"
         },
-        "value":
-            "https://fortunica-data.s3.eu-central-1.amazonaws.com/attachments/312a9d428a50d4c4591be82ff7da4574.jpg",
+        "value": "https://example.com/image.png",
         "__v": 0,
         "id": "62de35bcb584e9001e590d8b"
       },
@@ -352,16 +351,14 @@ class ChatScreenTestResponses {
           "version": 1,
           "_id": "619f8a415d584a0097ea7fca",
           "optional": false,
-          "placeholderImage":
-              "https://s3.eu-central-1.amazonaws.com/fortunica-data/input-fields/camera.png",
+          "placeholderImage": " ",
           "placeholderText": "Your face",
           "subType": "aura",
           "type": "image",
           "__v": 0,
           "id": "619f8a415d584a0097ea7fca"
         },
-        "value":
-            "https://fortunica-data.s3.eu-central-1.amazonaws.com/attachments/312a9d428a50d4c4591be82ff7da4574.jpg",
+        "value": "https://example.com/image.png",
         "__v": 0,
         "id": "62de35bcb584e9001e590d89"
       }

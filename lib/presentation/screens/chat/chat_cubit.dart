@@ -210,7 +210,7 @@ class ChatCubit extends Cubit<ChatState> {
       state.copyWith(
         inputTextLength: textInputEditingController.text.length,
         isSendButtonEnabled:
-            _checkTextLengthIsOk() || state.attachedPictures.isNotEmpty,
+            _checkTextLengthIsOk() || state.recordedAudio != null,
       ),
     );
   }
@@ -468,7 +468,8 @@ class ChatCubit extends Cubit<ChatState> {
           isAudioFileSaved: false,
           isPlayingRecordedAudio: false,
           isSendButtonEnabled:
-              _checkAttachmentSizeIsOk(state.attachedPictures, null)),
+              _checkAttachmentSizeIsOk(state.attachedPictures, null) &&
+                  _checkTextLengthIsOk()),
     );
   }
 
@@ -590,7 +591,7 @@ class ChatCubit extends Cubit<ChatState> {
       attachedPictures: images,
       isSendButtonEnabled:
           _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
-              checkMinRecordDurationIsOk(),
+              (_checkRecordedAudioIsOk() || _checkTextLengthIsOk()),
     ));
 
     _scrollTextFieldToEnd();
@@ -601,11 +602,9 @@ class ChatCubit extends Cubit<ChatState> {
     images.remove(image);
     emit(state.copyWith(
       attachedPictures: images,
-      isSendButtonEnabled: (state.recordedAudio != null ||
-              _checkTextLengthIsOk() ||
-              images.isNotEmpty) &&
-          _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
-          checkMinRecordDurationIsOk(),
+      isSendButtonEnabled:
+          (_checkRecordedAudioIsOk() || _checkTextLengthIsOk()) &&
+              _checkAttachmentSizeIsOk(images, state.recordedAudio),
     ));
 
     _scrollTextFieldToEnd();
@@ -1040,6 +1039,10 @@ class ChatCubit extends Cubit<ChatState> {
   bool _checkStatusCode(DioError e) {
     int? statusCode = e.response?.statusCode;
     return statusCode != 401 && statusCode != 428 && statusCode != 451;
+  }
+
+  bool _checkRecordedAudioIsOk() {
+    return state.recordedAudio != null && checkMinRecordDurationIsOk();
   }
 
   bool get canRecordAudio =>
