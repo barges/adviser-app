@@ -22,6 +22,7 @@ import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
@@ -448,26 +449,26 @@ void main() {
             );
           });
 
-          await mockNetworkImagesFor(() async {
-            await pumpChatScreen(
-              tester: tester,
-              mainCubit: mainCubit,
-              chatsRepository: mockChatsRepository,
-              connectivityService: mockConnectivityService,
-              chatScreenArguments: ChatScreenArguments(
-                ritualID: '62de59dd510689001ddb8090',
-                question: ChatScreenTestChatItems.ritualAuraReadingQuestion,
-              ),
-            );
+          await pumpChatScreen(
+            tester: tester,
+            mainCubit: mainCubit,
+            chatsRepository: mockChatsRepository,
+            connectivityService: mockConnectivityService,
+            chatScreenArguments: ChatScreenArguments(
+              ritualID: '62de59dd510689001ddb8090',
+              question: ChatScreenTestChatItems.ritualAuraReadingQuestion,
+            ),
+          );
 
-            expect(find.byType(RitualInfoCardWidget), findsOneWidget);
-            expect(find.byType(AppImageWidget), findsNWidgets(2));
-          });
+          await tester.pump();
+
+          expect(find.byType(RitualInfoCardWidget), findsOneWidget);
+          expect(find.byType(AppImageWidget), findsNWidgets(2));
         },
       );
 
       testWidgets(
-        'should be open picture in full-screen'
+        'should open picture in full-screen'
         ' if user clicks on image',
         (WidgetTester tester) async {
           dioAdapter.onGet('/rituals/single/62de59dd510689001ddb8090',
@@ -478,27 +479,25 @@ void main() {
             );
           });
 
-          await mockNetworkImagesFor(() async {
-            await pumpChatScreen(
-              tester: tester,
-              mainCubit: mainCubit,
-              chatsRepository: mockChatsRepository,
-              connectivityService: mockConnectivityService,
-              chatScreenArguments: ChatScreenArguments(
-                ritualID: '62de59dd510689001ddb8090',
-                question: ChatScreenTestChatItems.ritualAuraReadingQuestion,
-              ),
-            );
+          await pumpChatScreen(
+            tester: tester,
+            mainCubit: mainCubit,
+            chatsRepository: mockChatsRepository,
+            connectivityService: mockConnectivityService,
+            chatScreenArguments: ChatScreenArguments(
+              ritualID: '62de59dd510689001ddb8090',
+              question: ChatScreenTestChatItems.ritualAuraReadingQuestion,
+            ),
+          );
 
-            await tester.tap(find
-                .descendant(
-                    of: find.byType(RitualInfoCardWidget),
-                    matching: find.byType(AppImageWidget))
-                .first);
-            await tester.pumpAndSettle();
+          await tester.tap(find
+              .descendant(
+                  of: find.byType(RitualInfoCardWidget),
+                  matching: find.byType(AppImageWidget))
+              .first);
+          await tester.pumpAndSettle();
 
-            expect(find.byType(GalleryPicturesScreen), findsOneWidget);
-          });
+          expect(find.byType(GalleryPicturesScreen), findsOneWidget);
         },
       );
     },
@@ -511,6 +510,14 @@ void main() {
         'should have input text field, attach picture button and send button'
         ' when user opens active chat',
         (WidgetTester tester) async {
+          dioAdapter.onGet('/rituals/single/62de59dd510689001ddb8090',
+              (server) {
+            server.reply(
+              200,
+              ChatScreenTestResponses.ritualAuraReadingQuestion,
+            );
+          });
+
           await pumpChatScreen(
             tester: tester,
             mainCubit: mainCubit,
@@ -526,6 +533,18 @@ void main() {
               find.descendant(
                   of: find.byType(ChatTextInputWidget),
                   matching: find.byType(SvgPicture)),
+              findsOneWidget);
+
+          expect(
+              find.descendant(
+                  of: find.byType(ChatTextInputWidget),
+                  matching: find.byType(TextField)),
+              findsOneWidget);
+
+          expect(
+              find.descendant(
+                  of: find.byType(ChatTextInputWidget),
+                  matching: find.byType(AppIconGradientButton)),
               findsOneWidget);
         },
       );
