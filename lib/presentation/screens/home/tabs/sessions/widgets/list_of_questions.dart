@@ -184,7 +184,7 @@ class _ListOfQuestionsWidget extends StatelessWidget {
                   ),
                 )
               : SliverFillRemaining(
-                  hasScrollBody: true,
+                  hasScrollBody: false,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: AppConstants.horizontalScreenPadding,
