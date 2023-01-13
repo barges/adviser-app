@@ -72,12 +72,13 @@ class UserInfoPartWidget extends StatelessWidget {
                               ?.copyWith(fontWeight: FontWeight.w700),
                         ),
                         Text(
-                            userProfile?.rituals
-                                    ?.map((e) => e.sessionName(context))
+                            userProfile?.rituals?.isNotEmpty == true
+                                ? userProfile!.rituals!
+                                    .map((e) => e.sessionName(context))
                                     .toList()
-                                    .reduce((value, element) =>
-                                        '$value, $element') ??
-                                '',
+                                    .reduce(
+                                        (value, element) => '$value, $element')
+                                : '',
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)
                                 .textTheme
