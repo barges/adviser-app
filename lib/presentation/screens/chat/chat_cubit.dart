@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:audio_session/audio_session.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
@@ -36,6 +34,8 @@ import 'package:shared_advisor_interface/presentation/resources/app_arguments.da
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+import 'package:shared_advisor_interface/presentation/services/sound/sound_playback_service.dart';
+import 'package:shared_advisor_interface/presentation/services/sound/sound_record_service.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 import 'chat_state.dart';
@@ -59,15 +59,13 @@ class ChatCubit extends Cubit<ChatState> {
   final VoidCallback _showErrorAlert;
   final ValueGetter<Future<bool?>> _confirmSendAnswerAlert;
   final MainCubit _mainCubit;
-  final Codec _codec = Codec.aacMP4;
+  final SoundRecordService _soundRecordService = SoundRecordServiceImp();
+  final SoundPlaybackService _soundPlaybackService = SoundPlaybackServiceImp();
   final int _tillShowMessagesInSec =
       AppConstants.tillShowAnswerTimingMessagesInSec;
   final int _afterShowMessagesInSec =
       AppConstants.afterShowAnswerTimingMessagesInSec;
   int? _recordAudioDuration;
-  FlutterSoundRecorder? _recorder;
-  FlutterSoundPlayer? _playerRecorded;
-  FlutterSoundPlayer? playerMedia;
   AnswerRequest? _answerRequest;
   StreamSubscription<RecordingDisposition>? _recordingProgressSubscription;
 
@@ -83,7 +81,9 @@ class ChatCubit extends Cubit<ChatState> {
     this._confirmSendAnswerAlert,
   ) : super(const ChatState()) {
     chatScreenArguments = Get.arguments;
-    _init();
+
+    textInputEditingController.addListener(textInputEditingControllerListener);
+
     if (chatScreenArguments.clientIdFromPush != null) {
       emit(
         state.copyWith(
@@ -129,14 +129,8 @@ class ChatCubit extends Cubit<ChatState> {
     textInputScrollController.dispose();
     textInputEditingController.dispose();
 
-    _recorder?.closeRecorder();
-    _recorder = null;
-
-    _playerRecorded?.closePlayer();
-    _playerRecorded = null;
-
-    playerMedia?.closePlayer();
-    playerMedia = null;
+    _soundRecordService.close();
+    _soundPlaybackService.close();
 
     _recordingProgressSubscription?.cancel();
     _recordingProgressSubscription = null;
@@ -149,30 +143,6 @@ class ChatCubit extends Cubit<ChatState> {
     return super.close();
   }
 
-  Future<void> _init() async {
-    await _initAudioSession();
-
-    const logLevel = Level.nothing;
-    _recorder = await FlutterSoundRecorder(logLevel: logLevel).openRecorder();
-    _playerRecorded = await FlutterSoundPlayer(logLevel: logLevel).openPlayer();
-
-    playerMedia = await FlutterSoundPlayer(logLevel: logLevel).openPlayer();
-
-    await _recorder?.setSubscriptionDuration(
-      const Duration(seconds: 1),
-    );
-
-    await _playerRecorded?.setSubscriptionDuration(
-      const Duration(milliseconds: 100),
-    );
-
-    await playerMedia?.setSubscriptionDuration(
-      const Duration(milliseconds: 100),
-    );
-
-    textInputEditingController.addListener(textEditingControllerListener);
-  }
-
   Future<void> _getData() async {
     if (chatScreenArguments.ritualID != null) {
       _getRituals(chatScreenArguments.ritualID!).then((_) async {
@@ -183,28 +153,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Future<void> _initAudioSession() async {
-    final AudioSession session = await AudioSession.instance;
-    await session.configure(AudioSessionConfiguration(
-      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
-      avAudioSessionCategoryOptions:
-          AVAudioSessionCategoryOptions.allowBluetooth |
-              AVAudioSessionCategoryOptions.defaultToSpeaker,
-      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
-      avAudioSessionRouteSharingPolicy:
-          AVAudioSessionRouteSharingPolicy.defaultPolicy,
-      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-      androidAudioAttributes: const AndroidAudioAttributes(
-        contentType: AndroidAudioContentType.speech,
-        flags: AndroidAudioFlags.none,
-        usage: AndroidAudioUsage.voiceCommunication,
-      ),
-      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
-      androidWillPauseWhenDucked: true,
-    ));
-  }
-
-  void textEditingControllerListener() {
+  void textInputEditingControllerListener() {
     _tryStartAnswerSend();
     emit(
       state.copyWith(
@@ -377,12 +326,10 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     const fileName = '${AppConstants.recordFileName}.$_recordFileExt';
-    await _recorder?.startRecorder(
-      toFile: fileName,
-      codec: _codec,
-    );
+    await _soundRecordService.startRecorder(fileName);
 
-    _recordingProgressSubscription = _recorder?.onProgress?.listen((e) async {
+    _recordingProgressSubscription =
+        _soundRecordService.onProgress?.listen((e) async {
       _recordAudioDuration = e.duration.inSeconds;
       if (!_checkMaxRecordDurationIsOk()) {
         stopRecordingAudio();
@@ -393,7 +340,7 @@ class ChatCubit extends Cubit<ChatState> {
       state.copyWith(
         isAudioFileSaved: false,
         isRecordingAudio: true,
-        recordingStream: _recorder?.onProgress,
+        recordingStream: _soundRecordService.onProgress,
       ),
     );
   }
@@ -402,7 +349,7 @@ class ChatCubit extends Cubit<ChatState> {
     _recordingProgressSubscription?.cancel();
     _recordingProgressSubscription = null;
 
-    String? recordingPath = await _recorder?.stopRecorder();
+    String? recordingPath = await _soundRecordService.stopRecorder();
     logger.i("recorded audio: $recordingPath");
 
     bool isSendButtonEnabled = false;
@@ -442,7 +389,11 @@ class ChatCubit extends Cubit<ChatState> {
     _recordingProgressSubscription = null;
     _recordAudioDuration = null;
 
-    await _recorder?.stopRecorder();
+    String? recordingPath = await _soundRecordService.stopRecorder();
+    if (recordingPath != null && recordingPath.isNotEmpty) {
+      File recordedAudio = File(recordingPath);
+      await _deleteRecordedAudioFile(recordedAudio);
+    }
 
     emit(
       state.copyWith(
@@ -454,11 +405,9 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> deleteRecordedAudio() async {
-    if (_playerRecorded != null && _playerRecorded!.isPlaying) {
-      await _playerRecorded?.stopPlayer();
-    }
+    await _soundPlaybackService.stopPlayer();
 
-    await _deleteRecordedAudioFile();
+    await _deleteRecordedAudioFile(state.recordedAudio);
     _recordAudioDuration = null;
 
     emit(
@@ -466,65 +415,26 @@ class ChatCubit extends Cubit<ChatState> {
           recordedAudio: null,
           isRecordingAudio: false,
           isAudioFileSaved: false,
-          isPlayingRecordedAudio: false,
+          isPlayingAudio: false,
           isSendButtonEnabled:
               _checkAttachmentSizeIsOk(state.attachedPictures, null) &&
                   _checkTextLengthIsOk()),
     );
   }
 
-  Future<void> _deleteRecordedAudioFile() async {
-    File? recordedAudio = state.recordedAudio;
+  Future<void> _deleteRecordedAudioFile(File? recordedAudio) async {
     if (recordedAudio != null && await recordedAudio.exists()) {
       recordedAudio.deleteSync();
     }
   }
 
   Future<void> startPlayRecordedAudio() async {
-    if (_playerRecorded != null && _playerRecorded!.isPaused) {
-      await _playerRecorded!.resumePlayer();
-      emit(
-        state.copyWith(
-          isPlayingRecordedAudio: true,
-        ),
-      );
-      return;
-    }
-
-    await _playerRecorded?.startPlayer(
-      fromURI: state.recordedAudio?.path,
-      codec: _codec,
-      sampleRate: 44000,
-      whenFinished: () {
-        emit(
-          state.copyWith(
-            isPlayingRecordedAudio: false,
-            playbackStream: null,
-          ),
-        );
-      },
-    );
-
-    emit(
-      state.copyWith(
-        isPlayingRecordedAudio: true,
-        playbackStream: _playerRecorded?.onProgress,
-      ),
-    );
-  }
-
-  Future<void> pauseRecordedAudio() async {
-    await _playerRecorded?.pausePlayer();
-    emit(
-      state.copyWith(
-        isPlayingRecordedAudio: false,
-      ),
-    );
+    await startPlayAudio(state.recordedAudio?.path ?? '');
   }
 
   Future<void> startPlayAudio(String audioUrl) async {
     if (state.audioUrl != audioUrl) {
-      await playerMedia?.stopPlayer();
+      await _soundPlaybackService.stopPlayer();
 
       emit(
         state.copyWith(
@@ -535,8 +445,8 @@ class ChatCubit extends Cubit<ChatState> {
       );
     }
 
-    if (playerMedia != null && playerMedia!.isPaused) {
-      await playerMedia!.resumePlayer();
+    if (_soundPlaybackService.isPaused) {
+      await _soundPlaybackService.resumePlayer();
 
       emit(
         state.copyWith(
@@ -547,10 +457,8 @@ class ChatCubit extends Cubit<ChatState> {
       return;
     }
 
-    await playerMedia?.startPlayer(
+    await _soundPlaybackService.startPlayer(
       fromURI: audioUrl,
-      codec: _codec,
-      sampleRate: 44000,
       whenFinished: () => emit(
         state.copyWith(
           isPlayingAudio: false,
@@ -568,7 +476,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> pauseAudio() async {
-    await playerMedia?.pausePlayer();
+    await _soundPlaybackService.pausePlayer();
 
     emit(
       state.copyWith(
@@ -628,14 +536,18 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> sendMediaAnswer() async {
-    if (_playerRecorded != null && _playerRecorded!.isPlaying) {
-      await _playerRecorded!.stopPlayer();
-    }
+    await _soundPlaybackService.stopPlayer();
 
     _answerRequest = await _createMediaAnswerRequest();
     final ChatItem? answer = await _sendAnswer();
 
     if (answer != null) {
+      if (answer.isSent) {
+        await _deleteRecordedAudioFile(state.recordedAudio);
+        _mainCubit.updateSessions();
+        _recordAudioDuration = null;
+      }
+
       final List<ChatItem> messages = List.of(state.activeMessages);
       messages.add(answer);
 
@@ -643,20 +555,14 @@ class ChatCubit extends Cubit<ChatState> {
         state.copyWith(
           isRecordingAudio: false,
           isAudioFileSaved: false,
-          isPlayingRecordedAudio: false,
-          recordedAudio: null,
+          isPlayingAudio: false,
+          recordedAudio: answer.isSent ? null : state.recordedAudio,
           activeMessages: messages,
         ),
       );
 
-      await _deleteRecordedAudioFile();
       deleteAttachedPictures();
       scrollChatDown();
-      _recordAudioDuration = null;
-
-      if (answer.isSent) {
-        _mainCubit.updateSessions();
-      }
     }
   }
 
@@ -692,6 +598,10 @@ class ChatCubit extends Cubit<ChatState> {
       logger.i('send text response:$answer');
       _answerRequest = null;
 
+      await _deleteRecordedAudioFile(state.recordedAudio);
+      _mainCubit.updateSessions();
+      _recordAudioDuration = null;
+
       final messages = List.of(state.activeMessages);
       messages.replaceRange(messages.length - 1, messages.length, [
         answer.copyWith(
@@ -700,13 +610,13 @@ class ChatCubit extends Cubit<ChatState> {
           ritualIdentifier: state.questionFromDB?.ritualIdentifier,
         )
       ]);
+
       emit(
         state.copyWith(
+          recordedAudio: null,
           activeMessages: messages,
         ),
       );
-
-      _mainCubit.updateSessions();
     } catch (e) {
       logger.e(e);
     }
@@ -878,9 +788,6 @@ class ChatCubit extends Cubit<ChatState> {
     try {
       answer = await _repository.sendAnswer(_answerRequest!);
       logger.d('send answer response: $answer');
-      if (answer.type == ChatItemType.textAnswer) {
-        emit(state.copyWith(questionStatus: ChatItemStatusType.answered));
-      }
       answer = answer.copyWith(
         isAnswer: true,
         type: state.questionFromDB?.type,
@@ -899,6 +806,7 @@ class ChatCubit extends Cubit<ChatState> {
       }
     }
 
+    emit(state.copyWith(questionStatus: ChatItemStatusType.answered));
     clearSuccessMessage();
     return answer;
   }
@@ -1029,6 +937,10 @@ class ChatCubit extends Cubit<ChatState> {
             : AppConstants.maxAttachedPictures);
   }
 
+   bool isCurrentPlayback(String? url) {
+    return url == state.audioUrl;
+  }
+
   void _scrollTextFieldToEnd() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       textInputScrollController
@@ -1058,7 +970,8 @@ class ChatCubit extends Cubit<ChatState> {
       ? AppConstants.maxTextLengthRitual
       : AppConstants.maxTextLength;
 
-  Stream<PlaybackDisposition>? get onMediaProgress => playerMedia?.onProgress;
+  Stream<PlaybackDisposition>? get onMediaProgress =>
+      _soundPlaybackService.onProgress;
 
   int? get recordAudioDuration => _recordAudioDuration;
 }

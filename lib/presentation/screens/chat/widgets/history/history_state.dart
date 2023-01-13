@@ -1,4 +1,3 @@
-import 'package:flutter_sound/flutter_sound.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_advisor_interface/data/models/chats/history_ui_model.dart';
 
@@ -13,7 +12,6 @@ class HistoryState with _$HistoryState {
     @Default('') String audioUrl,
     @Default('') String errorMessage,
     @Default('') String successMessage,
-    Stream<PlaybackDisposition>? playbackStream,
     List<HistoryUiModel>? topHistoriesList,
     List<HistoryUiModel>? bottomHistoriesList,
   }) = _HistoryState;
