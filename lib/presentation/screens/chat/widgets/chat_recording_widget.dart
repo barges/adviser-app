@@ -92,7 +92,7 @@ class ChatRecordingWidget extends StatelessWidget {
                                       .substring(3, 7)
                                   : "0:00";
                           return SizedBox(
-                            width: 36.0,
+                            width: 38.0,
                             child: Text(
                               time,
                               style: theme.textTheme.bodySmall?.copyWith(
