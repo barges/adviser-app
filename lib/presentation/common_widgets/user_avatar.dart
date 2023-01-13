@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 
 class UserAvatar extends StatelessWidget {
@@ -16,6 +17,7 @@ class UserAvatar extends StatelessWidget {
   final Color? badgeColor;
   final bool withBorder;
   final bool withError;
+  final bool withCameraBadge;
   final bool isZodiac;
 
   const UserAvatar(
@@ -26,6 +28,7 @@ class UserAvatar extends StatelessWidget {
       this.diameter = 86.0,
       this.withBorder = false,
       this.withError = false,
+      this.withCameraBadge = false,
       this.isZodiac = false})
       : super(key: key);
 
@@ -121,9 +124,16 @@ class UserAvatar extends StatelessWidget {
         if (withError)
           Positioned.fill(
               child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            padding: EdgeInsets.fromLTRB(
+              12.0,
+              0.0,
+              12.0,
+              withCameraBadge ? AppConstants.iconButtonSize : 0.0,
+            ),
             child: Align(
-                alignment: Alignment.centerLeft,
+                alignment: withCameraBadge
+                    ? Alignment.bottomLeft
+                    : Alignment.centerLeft,
                 child: Text(
                   S.of(context).photoIsRequired,
                   textAlign: TextAlign.center,
