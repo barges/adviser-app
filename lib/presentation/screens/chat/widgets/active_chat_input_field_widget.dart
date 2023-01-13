@@ -22,7 +22,7 @@ class ActiveChatInputFieldWidget extends StatelessWidget {
     if (isAudioFileSaved) {
       return ChatRecordedWidget(
         onStartPlayPressed: () => chatCubit.startPlayRecordedAudio(),
-        onPausePlayPressed: () => chatCubit.pauseRecordedAudio(),
+        onPausePlayPressed: () => chatCubit.pauseAudio(),
         onDeletePressed: () async {
           if ((await showDeleteAlert(
                   context, S.of(context).doYouWantToDeleteThisAudioMessage)) ==
