@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 
 enum UIErrorType {
@@ -27,16 +26,5 @@ enum UIErrorType {
       case UIErrorType.checkYourInternetConnection:
         return S.of(context).checkYourInternetConnection;
     }
-  }
-}
-
-class UIError extends AppError {
-  final UIErrorType uiErrorType;
-
-  UIError({required this.uiErrorType}) : super(null);
-
-  @override
-  String getMessage(BuildContext context) {
-    return uiErrorType.getErrorMessage(context);
   }
 }

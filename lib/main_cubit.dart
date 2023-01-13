@@ -8,7 +8,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/empty_error.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_state.dart';
 import 'package:shared_advisor_interface/presentation/di/modules/api_module.dart';
