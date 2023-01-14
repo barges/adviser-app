@@ -81,7 +81,6 @@ class ChatCubit extends Cubit<ChatState> {
     this._confirmSendAnswerAlert,
   ) : super(const ChatState()) {
     chatScreenArguments = Get.arguments;
-
     textInputEditingController.addListener(textInputEditingControllerListener);
 
     if (chatScreenArguments.clientIdFromPush != null) {
@@ -937,7 +936,7 @@ class ChatCubit extends Cubit<ChatState> {
             : AppConstants.maxAttachedPictures);
   }
 
-   bool isCurrentPlayback(String? url) {
+  bool isCurrentPlayback(String? url) {
     return url == state.audioUrl;
   }
 
