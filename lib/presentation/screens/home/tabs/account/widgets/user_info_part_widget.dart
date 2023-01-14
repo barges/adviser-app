@@ -71,19 +71,19 @@ class UserInfoPartWidget extends StatelessWidget {
                               .titleMedium
                               ?.copyWith(fontWeight: FontWeight.w700),
                         ),
-                        Text(
-                            userProfile?.rituals
-                                    ?.map((e) => e.sessionName(context))
-                                    .toList()
-                                    .reduce((value, element) =>
-                                        '$value, $element') ??
-                                '',
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                    color: Theme.of(context).shadowColor)),
+                        if (userProfile?.rituals?.isNotEmpty == true)
+                          Text(
+                              userProfile!.rituals!
+                                  .map((e) => e.sessionName(context))
+                                  .toList()
+                                  .reduce(
+                                      (value, element) => '$value, $element'),
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                      color: Theme.of(context).shadowColor)),
                         Text(
                           currentStatus.status?.statusName(context) ?? '',
                           style: Theme.of(context)

@@ -36,11 +36,11 @@ class NotLiveStatusWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Utils.isDarkMode(context)
-                            ? Assets.images.logos.noConnectionLogoDark.image(
+                            ? Assets.images.logos.notLiveLogoDark.image(
                                 height: AppConstants.logoSize,
                                 width: AppConstants.logoSize,
                               )
-                            : Assets.images.logos.noConnectionLogo.image(
+                            : Assets.images.logos.notLiveLogo.image(
                                 height: AppConstants.logoSize,
                                 width: AppConstants.logoSize,
                               ),

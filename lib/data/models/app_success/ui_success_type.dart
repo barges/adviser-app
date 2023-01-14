@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 
 enum UISuccessType {
@@ -30,16 +29,5 @@ enum UISuccessType {
             .of(context)
             .weVeSentPasswordResetInstructionsToEmail(argument ?? '');
     }
-  }
-}
-
-class UISuccess extends AppSuccess {
-  UISuccess(UISuccessType uiSuccessType) : super(uiSuccessType, null);
-  UISuccess.withArguments(UISuccessType uiSuccessType, String? argument)
-      : super(uiSuccessType, argument);
-
-  @override
-  String getMessage(BuildContext context) {
-    return uiSuccessType?.getSuccessMessage(context, argument) ?? '';
   }
 }

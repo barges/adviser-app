@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -153,32 +151,32 @@ class _AuthorizedBrandWidget extends StatelessWidget {
       final UserStatus currentStatus =
           context.select((HomeCubit cubit) => cubit.state.userStatus);
       return Container(
-          margin: EdgeInsets.only(right: 24.0 * index),
-          child: Stack(
-            alignment: Alignment.topRight,
-            children: [
-              Container(
-                height: AppConstants.iconButtonSize,
-                width: AppConstants.iconButtonSize,
-                padding: const EdgeInsets.all(4.0),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius:
-                        BorderRadius.circular(AppConstants.buttonRadius)),
-                child: SvgPicture.asset(brandIcon),
+        margin: EdgeInsets.only(right: 24.0 * index),
+        child: Stack(
+          alignment: Alignment.topRight,
+          children: [
+            Container(
+              height: AppConstants.iconButtonSize,
+              width: AppConstants.iconButtonSize,
+              padding: const EdgeInsets.all(4.0),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius:
+                      BorderRadius.circular(AppConstants.buttonRadius)),
+              child: SvgPicture.asset(brandIcon),
+            ),
+            Container(
+              height: 12.0,
+              width: 12.0,
+              decoration: BoxDecoration(
+                color: currentStatus.status?.statusColorForBadge(context),
+                shape: BoxShape.circle,
+                border: Border.all(
+                    width: 2.0, color: Theme.of(context).canvasColor),
               ),
-              Container(
-                height: 12.0,
-                width: 12.0,
-                decoration: BoxDecoration(
-                  color: currentStatus.status?.statusColorForBadge(context),
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                      width: 2.0, color: Theme.of(context).canvasColor),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
+        ),
       );
     });
   }
