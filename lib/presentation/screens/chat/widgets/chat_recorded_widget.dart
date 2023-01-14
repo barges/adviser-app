@@ -170,12 +170,12 @@ class ChatRecordedWidget extends StatelessWidget {
                                       ? snapshot.data!.position
                                           .toString()
                                           .substring(3, 7)
-                                      : "0:00";
+                                      : AppConstants.startMSS;
                                   final duration =
                                       chatCubit.recordAudioDuration != null
                                           ? chatCubit
                                               .recordAudioDuration!.formatMSS
-                                          : "0:00";
+                                          : AppConstants.startMSS;
                                   return _PlayProgress(
                                     value: value,
                                     time: isPlayingFinished ? duration : time,

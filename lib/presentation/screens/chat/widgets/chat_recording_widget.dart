@@ -90,7 +90,7 @@ class ChatRecordingWidget extends StatelessWidget {
                                   ? snapshot.data!.duration
                                       .toString()
                                       .substring(3, 7)
-                                  : "0:00";
+                                  : AppConstants.startMSS;
                           return SizedBox(
                             width: 38.0,
                             child: Text(
