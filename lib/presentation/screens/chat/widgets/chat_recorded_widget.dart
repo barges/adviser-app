@@ -165,13 +165,20 @@ class ChatRecordedWidget extends StatelessWidget {
                                       ? snapshot.data!.position.inMilliseconds /
                                           snapshot.data!.duration.inMilliseconds
                                       : 0.0;
+                                  final time = (snapshot.hasData &&
+                                          snapshot.data != null)
+                                      ? snapshot.data!.position
+                                          .toString()
+                                          .substring(3, 7)
+                                      : AppConstants.startMSS;
+                                  final duration =
+                                      chatCubit.recordAudioDuration != null
+                                          ? chatCubit
+                                              .recordAudioDuration!.formatMSS
+                                          : AppConstants.startMSS;
                                   return _PlayProgress(
                                     value: value,
-                                    duration:
-                                        chatCubit.recordAudioDuration != null
-                                            ? chatCubit
-                                                .recordAudioDuration!.formatMSS
-                                            : "0:00",
+                                    time: isPlayingFinished ? duration : time,
                                   );
                                 },
                               );
@@ -258,12 +265,12 @@ class _PlayPauseBtn extends StatelessWidget {
 
 class _PlayProgress extends StatelessWidget {
   final double value;
-  final String duration;
+  final String time;
 
   const _PlayProgress({
     Key? key,
     required this.value,
-    required this.duration,
+    required this.time,
   }) : super(key: key);
 
   @override
@@ -282,9 +289,9 @@ class _PlayProgress extends StatelessWidget {
           width: 8.0,
         ),
         SizedBox(
-          width: 36.0,
+          width: 38.0,
           child: Text(
-            duration,
+            time,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(context).hoverColor,
                 ),
