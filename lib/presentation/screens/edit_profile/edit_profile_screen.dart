@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
@@ -40,11 +38,7 @@ class EditProfileScreen extends StatelessWidget {
                   curve: Curves.linear);
             }
           },
-          child: Builder(builder: (context) {
-            bool isOnline = context.select(
-              (MainCubit cubit) => cubit.state.internetConnectionIsAvailable,
-            );
-            return GestureDetector(
+          child: GestureDetector(
               onTap: FocusScope.of(context).unfocus,
               child: Scaffold(
                 key: editProfileCubit.scaffoldKey,
@@ -116,8 +110,7 @@ class EditProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            );
-          }),
+            ),
         );
       }),
     );

@@ -12,6 +12,9 @@ abstract class AuthApi {
   @POST('/experts/login/app')
   Future<LoginResponse?> login();
 
+  @POST('/experts/logout')
+  Future<HttpResponse> logout();
+
   @POST('/experts/reset')
   Future<void> sendEmailForReset(
     @Body() ResetPasswordRequest request,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/drawer_cubit.dart';
@@ -14,7 +15,10 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return BlocProvider(
-      create: (_) => DrawerCubit(getIt.get<CachingManager>()),
+      create: (_) => DrawerCubit(
+        getIt.get<AuthRepository>(),
+        getIt.get<CachingManager>(),
+      ),
       child: Builder(builder: (context) {
         final DrawerCubit cubit = context.read<DrawerCubit>();
         return Container(
