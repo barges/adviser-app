@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
-import 'package:shared_advisor_interface/data/models/app_success/empty_success.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/rirual_card_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
@@ -22,7 +21,6 @@ class ChatState with _$ChatState {
     @Default(false) bool isLoadingAudio,
     @Default(false) bool isRecordingAudio,
     @Default(false) bool isAudioFileSaved,
-    @Default(false) bool isPlayingRecordedAudio,
     @Default(false) bool isPlayingAudio,
     @Default(true) bool isPlayingAudioFinished,
     @Default(true) bool showInputFieldIfPublic,
@@ -33,7 +31,6 @@ class ChatState with _$ChatState {
     RitualCardInfo? ritualCardInfo,
     File? recordedAudio,
     Stream<RecordingDisposition>? recordingStream,
-    Stream<PlaybackDisposition>? playbackStream,
     ChatItem? questionFromDB,
     ChatItemStatusType? questionStatus,
     CustomerProfileScreenArguments? appBarUpdateArguments,

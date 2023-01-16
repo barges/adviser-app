@@ -24,14 +24,14 @@ class ChatItemPlayer extends StatelessWidget with ChatItemTypeGetter {
         context.select((ChatCubit cubit) => cubit.state.isPlayingAudio);
     final isPlayingAudioFinished =
         context.select((ChatCubit cubit) => cubit.state.isPlayingAudioFinished);
-    final isCurrent = attachment.url == chatCubit.state.audioUrl;
+    final isCurrentPlayback = chatCubit.isCurrentPlayback(attachment.url);
     return _ChatItemPlayer(
       onStartPlayPressed: () {
         chatCubit.startPlayAudio(attachment.url ?? '');
       },
       onPausePlayPressed: () => chatCubit.pauseAudio(),
-      isPlaying: isCurrent && isPlayingAudio,
-      isPlayingFinished: isCurrent ? isPlayingAudioFinished : true,
+      isPlaying: isCurrentPlayback && isPlayingAudio,
+      isPlayingFinished: isCurrentPlayback ? isPlayingAudioFinished : true,
       playbackStream: chatCubit.onMediaProgress,
       duration: Duration(seconds: attachment.meta?.duration ?? 0),
       textColor: getterType(

@@ -21,7 +21,11 @@ class AppErrorWidget extends StatelessWidget {
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 500),
       transitionBuilder: (child, animation) {
-        return SizeTransition(sizeFactor: animation, child: child);
+        return SizeTransition(
+          sizeFactor: animation,
+          axisAlignment: 1,
+          child: child,
+        );
       },
       child: errorMessage.isNotEmpty
           ? Container(

@@ -69,56 +69,43 @@ class EditProfileScreen extends StatelessWidget {
                             onTap: () {
                               FocusScope.of(context).unfocus();
                             },
-                            child: Stack(
+                            child: Column(
                               children: [
+                                const ProfileImagesWidget(),
+                                const SizedBox(
+                                  height: 16.0,
+                                ),
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const ProfileImagesWidget(),
-                                    const SizedBox(
-                                      height: 16.0,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: AppConstants
-                                                  .horizontalScreenPadding),
-                                          child: Builder(builder: (context) {
-                                            final ValidationErrorType
-                                                nicknameErrorType =
-                                                context.select(
-                                                    (EditProfileCubit cubit) =>
-                                                        cubit.state
-                                                            .nicknameErrorType);
-                                            context.select(
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: AppConstants
+                                              .horizontalScreenPadding),
+                                      child: Builder(builder: (context) {
+                                        final ValidationErrorType
+                                            nicknameErrorType = context.select(
                                                 (EditProfileCubit cubit) =>
                                                     cubit.state
-                                                        .nicknameHasFocus);
-                                            return AppTextField(
-                                              key: editProfileCubit
-                                                  .nicknameFieldKey,
-                                              controller: editProfileCubit
-                                                  .nicknameController,
-                                              focusNode: editProfileCubit
-                                                  .nicknameFocusNode,
-                                              label: S.of(context).nickname,
-                                              errorType: nicknameErrorType,
-                                            );
-                                          }),
-                                        ),
-                                        const LanguageSectionWidget(),
-                                        const SizedBox(height: 46.0),
-                                      ],
+                                                        .nicknameErrorType);
+                                        context.select(
+                                            (EditProfileCubit cubit) =>
+                                                cubit.state.nicknameHasFocus);
+                                        return AppTextField(
+                                          key:
+                                              editProfileCubit.nicknameFieldKey,
+                                          controller: editProfileCubit
+                                              .nicknameController,
+                                          focusNode: editProfileCubit
+                                              .nicknameFocusNode,
+                                          label: S.of(context).nickname,
+                                          errorType: nicknameErrorType,
+                                        );
+                                      }),
                                     ),
+                                    const LanguageSectionWidget(),
+                                    const SizedBox(height: 46.0),
                                   ],
-                                ),
-                                AppErrorWidget(
-                                  errorMessage: !isOnline
-                                      ? S.of(context).noInternetConnection
-                                      : '',
-                                  isRequired: true,
                                 ),
                               ],
                             ),

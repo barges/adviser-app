@@ -124,33 +124,61 @@ class ChatRecordedWidget extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          _PlayPauseBtn(
-                            onStartPlayPressed: onStartPlayPressed,
-                            onPausePlayPressed: onPausePlayPressed,
-                          ),
+                          Builder(builder: (context) {
+                            final isPlayingAudio = context.select(
+                                (ChatCubit cubit) =>
+                                    cubit.state.isPlayingAudio);
+                            return _PlayPauseBtn(
+                              isPlaying: chatCubit.isCurrentPlayback(
+                                      chatCubit.state.recordedAudio?.path) &&
+                                  isPlayingAudio,
+                              onStartPlayPressed: onStartPlayPressed,
+                              onPausePlayPressed: onPausePlayPressed,
+                            );
+                          }),
                           const SizedBox(
                             width: 8.0,
                           ),
                           Flexible(
                             child: Builder(builder: (context) {
-                              final playbackStream = context.select(
+                              final isPlayingAudio = context.select(
                                   (ChatCubit cubit) =>
-                                      cubit.state.playbackStream);
+                                      cubit.state.isPlayingAudio);
+                              final isPlayingAudioFinished = context.select(
+                                  (ChatCubit cubit) =>
+                                      cubit.state.isPlayingAudioFinished);
+                              final isCurrentPlayback =
+                                  chatCubit.isCurrentPlayback(
+                                      chatCubit.state.recordedAudio?.path);
+                              final isPlayingFinished = isCurrentPlayback
+                                  ? isPlayingAudioFinished
+                                  : true;
                               return StreamBuilder<PlaybackDisposition>(
-                                stream: playbackStream,
+                                stream: isCurrentPlayback &&
+                                        isPlayingAudio &&
+                                        !isPlayingFinished
+                                    ? chatCubit.onMediaProgress
+                                    : null,
                                 builder: (_, snapshot) {
-                                  final value = playbackStream != null &&
+                                  double value = !isPlayingFinished &&
                                           snapshot.hasData
                                       ? snapshot.data!.position.inMilliseconds /
                                           snapshot.data!.duration.inMilliseconds
                                       : 0.0;
+                                  final time = (snapshot.hasData &&
+                                          snapshot.data != null)
+                                      ? snapshot.data!.position
+                                          .toString()
+                                          .substring(3, 7)
+                                      : AppConstants.startMSS;
+                                  final duration =
+                                      chatCubit.recordAudioDuration != null
+                                          ? chatCubit
+                                              .recordAudioDuration!.formatMSS
+                                          : AppConstants.startMSS;
                                   return _PlayProgress(
                                     value: value,
-                                    duration:
-                                        chatCubit.recordAudioDuration != null
-                                            ? chatCubit
-                                                .recordAudioDuration!.formatMSS
-                                            : "0:00",
+                                    time: isPlayingFinished ? duration : time,
                                   );
                                 },
                               );
@@ -197,23 +225,22 @@ class ChatRecordedWidget extends StatelessWidget {
 }
 
 class _PlayPauseBtn extends StatelessWidget {
+  final bool isPlaying;
   final VoidCallback? onStartPlayPressed;
   final VoidCallback? onPausePlayPressed;
 
   const _PlayPauseBtn({
     Key? key,
+    this.isPlaying = false,
     this.onStartPlayPressed,
     this.onPausePlayPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final isPlayingRecordedAudio =
-        context.select((ChatCubit cubit) => cubit.state.isPlayingRecordedAudio);
     return GestureDetector(
       onTap: () {
-        (isPlayingRecordedAudio ? onPausePlayPressed : onStartPlayPressed)
-            ?.call();
+        (isPlaying ? onPausePlayPressed : onStartPlayPressed)?.call();
       },
       child: Container(
         width: AppConstants.iconButtonSize,
@@ -222,7 +249,7 @@ class _PlayPauseBtn extends StatelessWidget {
           color: Theme.of(context).primaryColor,
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
         ),
-        child: isPlayingRecordedAudio
+        child: isPlaying
             ? Assets.vectors.pause.svg(
                 fit: BoxFit.none,
                 color: Theme.of(context).backgroundColor,
@@ -238,12 +265,12 @@ class _PlayPauseBtn extends StatelessWidget {
 
 class _PlayProgress extends StatelessWidget {
   final double value;
-  final String duration;
+  final String time;
 
   const _PlayProgress({
     Key? key,
     required this.value,
-    required this.duration,
+    required this.time,
   }) : super(key: key);
 
   @override
@@ -262,9 +289,9 @@ class _PlayProgress extends StatelessWidget {
           width: 8.0,
         ),
         SizedBox(
-          width: 36.0,
+          width: 38.0,
           child: Text(
-            duration,
+            time,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(context).hoverColor,
                 ),

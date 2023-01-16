@@ -28,6 +28,8 @@ class AppConstants {
 
   static const String recordFileName = 'recorded_audio_aa';
 
+  static const String startMSS = '0:00';
+
   static const String enBrandName = 'English';
   static const String esBrandName = 'Español';
   static const String ptBrandName = 'Português';
