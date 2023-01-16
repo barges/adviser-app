@@ -47,7 +47,7 @@ class AddGalleryPicturesCubit extends Cubit<AddGalleryPicturesState> {
         image: base64Image,
       );
       List<String> coverPictures =
-          await _userRepository.addCoverPictureToGallery(request);
+          await _userRepository.addPictureToGallery(request);
 
       _cacheManager.updateUserProfileCoverPictures(coverPictures);
 

@@ -1,14 +1,17 @@
 import 'package:bloc/bloc.dart';
+import 'package:retrofit/dio.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
+import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_state.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DrawerCubit extends Cubit<SplashState> {
+  final AuthRepository _authRepository;
   final CachingManager _cacheManager;
 
   late final List<Brand> authorizedBrands;
@@ -17,7 +20,10 @@ class DrawerCubit extends Cubit<SplashState> {
 
   final Uri _url = Uri.parse(AppConstants.webToolUrl);
 
-  DrawerCubit(this._cacheManager) : super(const SplashState()) {
+  DrawerCubit(
+    this._authRepository,
+    this._cacheManager,
+  ) : super(const SplashState()) {
     authorizedBrands = _cacheManager.getAuthorizedBrands().reversed.toList();
     unauthorizedBrands = _cacheManager.getUnauthorizedBrands();
     userStatus = _cacheManager.getUserStatus();
@@ -29,14 +35,18 @@ class DrawerCubit extends Cubit<SplashState> {
   }
 
   Future<void> logout(Brand brand) async {
-    final bool isOk = await _cacheManager.logout(brand);
-    if (isOk) {
-      final List<Brand> authorizedBrands = _cacheManager.getAuthorizedBrands();
-      if (authorizedBrands.isNotEmpty) {
-        Get.back();
-        changeCurrentBrand(authorizedBrands.first);
-      } else {
-        Get.offNamedUntil(AppRoutes.login, (route) => false);
+    final HttpResponse response = await _authRepository.logout();
+    if (response.response.statusCode == 200) {
+      final bool isOk = await _cacheManager.logout(brand);
+      if (isOk) {
+        final List<Brand> authorizedBrands =
+            _cacheManager.getAuthorizedBrands();
+        if (authorizedBrands.isNotEmpty) {
+          Get.back();
+          changeCurrentBrand(authorizedBrands.first);
+        } else {
+          Get.offNamedUntil(AppRoutes.login, (route) => false);
+        }
       }
     }
   }

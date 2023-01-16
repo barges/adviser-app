@@ -1,3 +1,4 @@
+import 'package:retrofit/dio.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
 import 'package:shared_advisor_interface/data/network/requests/reset_password_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/login_response.dart';
@@ -11,6 +12,11 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<LoginResponse?> login() async {
     return await _api.login();
+  }
+
+  @override
+  Future<HttpResponse> logout() async {
+    return await _api.logout();
   }
 
   @override

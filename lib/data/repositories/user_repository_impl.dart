@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/network/api/user_api.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
+import 'package:shared_advisor_interface/data/network/requests/reorder_cover_pictures_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/restore_freshchat_id_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/set_push_notification_token_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_image_request.dart';
@@ -56,23 +57,20 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<List<String>> addCoverPictureToGallery(
+  Future<List<String>> addPictureToGallery(
       UpdateProfileImageRequest request) async {
     final String? userId = _cacheManager.getUserId();
 
     List<String> coverPictures =
-        await _api.addCoverPictureToGallery(userId ?? '', request);
+        await _api.addPictureToGallery(userId ?? '', request);
 
     return coverPictures;
   }
 
   @override
-  Future<List<String>> updatePictureByIndex(
-      int index, UpdateProfileImageRequest request) async {
-    final String? userId = _cacheManager.getUserId();
-
-    List<String> coverPictures =
-        await _api.updatePictureByIndex(index, userId ?? '', request);
+  Future<List<String>> reorderCoverPictures(
+      ReorderCoverPicturesRequest request) async {
+    List<String> coverPictures = await _api.reorderCoverPictures(request);
     return coverPictures;
   }
 

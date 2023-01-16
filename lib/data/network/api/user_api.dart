@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_st
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
+import 'package:shared_advisor_interface/data/network/requests/reorder_cover_pictures_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/restore_freshchat_id_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/set_push_notification_token_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_image_request.dart';
@@ -65,16 +66,14 @@ abstract class UserApi {
   );
 
   @POST('/v2/users/{id}/profile/coverPictures')
-  Future<List<String>> addCoverPictureToGallery(
+  Future<List<String>> addPictureToGallery(
     @Path('id') String id,
     @Body() UpdateProfileImageRequest request,
   );
 
-  @PUT('/v2/users/{id}/profile/coverPictures/{index}')
-  Future<List<String>> updatePictureByIndex(
-    @Path('index') int index,
-    @Path('id') String id,
-    @Body() UpdateProfileImageRequest request,
+  @PUT('/experts/profile/coverPictures/reorder')
+  Future<List<String>> reorderCoverPictures(
+    @Body() ReorderCoverPicturesRequest request,
   );
 
   @DELETE('/v2/users/{id}/profile/coverPictures/{index}')

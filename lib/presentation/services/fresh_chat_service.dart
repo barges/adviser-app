@@ -1,9 +1,9 @@
 import 'dart:io';
+import 'package:collection/collection.dart';
 
 import 'package:freshchat_sdk/freshchat_sdk.dart';
 import 'package:freshchat_sdk/freshchat_user.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/main.dart';
 
 const String appName = 'Psychic Union';

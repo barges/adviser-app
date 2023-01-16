@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
 import 'package:mime/mime.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
@@ -12,10 +12,10 @@ import 'package:shared_advisor_interface/data/models/enums/validation_error_type
 import 'package:shared_advisor_interface/data/models/user_info/localized_properties/localized_properties.dart';
 import 'package:shared_advisor_interface/data/models/user_info/localized_properties/property_by_language.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
+import 'package:shared_advisor_interface/data/network/requests/reorder_cover_pictures_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_image_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
@@ -36,7 +36,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   final UserRepository _userRepository = getIt.get<UserRepository>();
   final CachingManager _cacheManager = getIt.get<CachingManager>();
-  final DefaultCacheManager _defaultCacheManager = DefaultCacheManager();
   final ConnectivityService _connectivityService =
       getIt.get<ConnectivityService>();
 
@@ -325,42 +324,21 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     if (state.coverPictures.isNotEmpty) {
       final int? pictureIndex = picturesPageController.page?.toInt();
       if (pictureIndex != null && pictureIndex > 0) {
-        final List<String> coverPictures1 =
-            await updatePictureByIndex(pictureIndex, 0);
-        final List<String> coverPictures2 =
-            await updatePictureByIndex(0, pictureIndex);
-        _cacheManager.updateUserProfileCoverPictures(coverPictures2);
-        emit(
-          state.copyWith(
-            coverPictures: coverPictures2,
-          ),
-        );
+        final List<int> indexes = [pictureIndex];
+        state.coverPictures.forEachIndexed((index, element) {
+          if (index != pictureIndex) {
+            indexes.add(index);
+          }
+        });
+        List<String> coverPictures = await _userRepository
+            .reorderCoverPictures(ReorderCoverPicturesRequest(
+          indexes: indexes.join(','),
+        ));
+        _cacheManager.updateUserProfileCoverPictures(coverPictures);
         isOk = true;
       }
     }
     return isOk;
-  }
-
-  Future<List<String>> updatePictureByIndex(int oldIndex, int newIndex) async {
-    final String url = state.coverPictures[oldIndex];
-
-    final File file = await _defaultCacheManager.getSingleFile(url);
-
-    final String? mimeType = lookupMimeType(file.path);
-
-    final List<int> imageBytes = await file.readAsBytes();
-
-    final String base64Image = base64Encode(imageBytes);
-
-    final UpdateProfileImageRequest request = UpdateProfileImageRequest(
-      mime: mimeType,
-      image: base64Image,
-    );
-
-    List<String> pictures =
-        await _userRepository.updatePictureByIndex(newIndex, request);
-
-    return pictures;
   }
 
   Future<bool> updateUserAvatar() async {
