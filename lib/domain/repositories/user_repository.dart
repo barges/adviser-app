@@ -2,6 +2,7 @@ import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_st
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
+import 'package:shared_advisor_interface/data/network/requests/reorder_cover_pictures_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/restore_freshchat_id_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/set_push_notification_token_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_profile_image_request.dart';
@@ -26,12 +27,12 @@ abstract class UserRepository {
     UpdateProfileImageRequest request,
   );
 
-  Future<List<String>> addCoverPictureToGallery(
+  Future<List<String>> addPictureToGallery(
     UpdateProfileImageRequest request,
   );
 
-  Future<List<String>> updatePictureByIndex(int index,
-      UpdateProfileImageRequest request);
+  Future<List<String>> reorderCoverPictures(
+      ReorderCoverPicturesRequest request);
 
   Future<List<String>> deleteCoverPicture(
     int index,
