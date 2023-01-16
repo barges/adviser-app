@@ -616,8 +616,15 @@ class ChatCubit extends Cubit<ChatState> {
           activeMessages: messages,
         ),
       );
-    } catch (e) {
+    } on DioError catch (e) {
       logger.e(e);
+      if (!await _connectivityService.checkConnection() ||
+          e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.sendTimeout ||
+          e.type == DioErrorType.receiveTimeout) {
+        _mainCubit.updateErrorMessage(
+            UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
+      }
     }
   }
 
