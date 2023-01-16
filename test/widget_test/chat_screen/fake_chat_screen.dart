@@ -19,15 +19,14 @@ class FakeChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MainCubit mainCubit = context.read<MainCubit>();
-    ChatCubit chatCubit = ChatCubit(
-      chatsRepository,
-      connectivityService,
-      mainCubit,
-      () => showErrorAlert(context),
-      () => confirmSendAnswerAlert(context),
-    );
     return BlocProvider(
-      create: (_) => chatCubit,
+      create: (_) => ChatCubit(
+        chatsRepository,
+        connectivityService,
+        mainCubit,
+        () => showErrorAlert(context),
+        () => confirmSendAnswerAlert(context),
+      ),
       child: ChatContentWidget(
         chatsRepository: chatsRepository,
         connectivityService: connectivityService,

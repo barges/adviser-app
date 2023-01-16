@@ -60,77 +60,74 @@ class ScrollableAppBar extends StatelessWidget {
                 constraints.maxHeight - MediaQuery.of(context).padding.top <=
                     _maxHeight);
 
-            return Builder(builder: (context) {
-              return isWide
-                  ? Padding(
-                      padding: EdgeInsets.fromLTRB(
-                        16.0,
-                        MediaQuery.of(context).padding.top + 16.0,
-                        16.0,
-                        0.0,
-                      ),
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                            minWidth: MediaQuery.of(context).size.width),
-                        child: Row(
-                          children: [
-                            AppIconButton(
-                              icon: Assets.vectors.arrowLeft.path,
-                              onTap: Get.back,
-                            ),
-                            Builder(builder: (context) {
-                              final Brand currentBrand = context.select(
-                                  (MainCubit cubit) =>
-                                      cubit.state.currentBrand);
-                              return Expanded(
-                                child: GestureDetector(
-                                  onTap: openDrawer,
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: AppConstants.iconSize,
-                                        width: AppConstants.iconSize,
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 3.0),
-                                        margin: const EdgeInsets.only(
-                                          left: 8.0,
-                                          right: 4.0,
-                                        ),
-                                        child: SvgPicture.asset(
-                                          currentBrand.icon,
-                                        ),
+            return isWide
+                ? Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      16.0,
+                      MediaQuery.of(context).padding.top + 16.0,
+                      16.0,
+                      0.0,
+                    ),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                          minWidth: MediaQuery.of(context).size.width),
+                      child: Row(
+                        children: [
+                          AppIconButton(
+                            icon: Assets.vectors.arrowLeft.path,
+                            onTap: Get.back,
+                          ),
+                          Builder(builder: (context) {
+                            final Brand currentBrand = context.select(
+                                (MainCubit cubit) => cubit.state.currentBrand);
+                            return Expanded(
+                              child: GestureDetector(
+                                onTap: openDrawer,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: AppConstants.iconSize,
+                                      width: AppConstants.iconSize,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 3.0),
+                                      margin: const EdgeInsets.only(
+                                        left: 8.0,
+                                        right: 4.0,
                                       ),
-                                      Text(currentBrand.name,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelMedium
-                                              ?.copyWith(
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Theme.of(context)
-                                                      .primaryColor)),
-                                      const SizedBox(width: 4.0),
-                                      Assets.vectors.swap.svg(
-                                        color: Theme.of(context).primaryColor,
+                                      child: SvgPicture.asset(
+                                        currentBrand.icon,
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }),
-                            if (actionOnClick != null)
-                              Opacity(
-                                opacity: isOnline ? 1.0 : 0.4,
-                                child: AppIconButton(
-                                  icon: Assets.vectors.check.path,
-                                  onTap: isOnline ? actionOnClick : null,
+                                    ),
+                                    Text(currentBrand.name,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium
+                                            ?.copyWith(
+                                                fontWeight: FontWeight.w500,
+                                                color: Theme.of(context)
+                                                    .primaryColor)),
+                                    const SizedBox(width: 4.0),
+                                    Assets.vectors.swap.svg(
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ],
                                 ),
                               ),
-                          ],
-                        ),
+                            );
+                          }),
+                          if (actionOnClick != null)
+                            Opacity(
+                              opacity: isOnline ? 1.0 : 0.4,
+                              child: AppIconButton(
+                                icon: Assets.vectors.check.path,
+                                onTap: isOnline ? actionOnClick : null,
+                              ),
+                            ),
+                        ],
                       ),
-                    )
-                  : const SizedBox.shrink();
-            });
+                    ),
+                  )
+                : const SizedBox.shrink();
           }),
           //title:
           bottom: PreferredSize(
@@ -230,7 +227,7 @@ class ScrollableAppBar extends StatelessWidget {
                     ),
                     if (needShowError)
                       Positioned(
-                        bottom: -_errorHeight,
+                        top: _minHeight,
                         child: AppErrorWidget(
                           height: _errorHeight,
                           errorMessage: isOnline
