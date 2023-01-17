@@ -895,7 +895,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   bool _checkAttachmentSizeIsOk(List<File> images, File? recordedAudio) {
     if (_calculateAttachmentSizeInBytes(images, recordedAudio) <=
-        maxAttachmentFilesSizeInBytes) {
+        maxAttachmentSizeInBytes) {
       if (_mainCubit.state.appError is UIError &&
           (_mainCubit.state.appError as UIError).uiErrorType ==
               UIErrorType.theMaximumSizeOfTheAttachmentsIs20Mb) {
@@ -1009,9 +1009,9 @@ class ChatCubit extends Cubit<ChatState> {
           ? AppConstants.maxTextLengthRitual
           : AppConstants.maxTextLength);
 
-  int get maxAttachmentFilesSizeInBytes =>
+  int get maxAttachmentSizeInBytes =>
       answerLimitation?.content?.bodySize?.max ??
-      AppConstants.maxAttachmentFilesSizeInBytes;
+      AppConstants.maxAttachmentSizeInBytes;
 
   Stream<PlaybackDisposition>? get onMediaProgress =>
       _soundPlaybackService.onProgress;
