@@ -20,6 +20,7 @@ import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.da
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_input_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
+import 'package:shared_advisor_interface/presentation/services/audio_player_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/services/sound/sound_record_service.dart';
 
@@ -37,6 +38,7 @@ class ChatScreen extends StatelessWidget {
           connectivityService,
           getIt.get<MainCubit>(),
           SoundRecordServiceImp(),
+          AudioPlayerServiceImpl(),
           () => showErrorAlert(context),
           () => confirmSendAnswerAlert(context)),
       child: ChatContentWidget(

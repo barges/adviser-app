@@ -10,7 +10,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:mockito/mockito.dart';
-import 'package:network_image_mock/network_image_mock.dart';
 import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
 import 'package:shared_advisor_interface/data/network/api/customer_api.dart';
 import 'package:shared_advisor_interface/data/repositories/chats_repository_impl.dart';
@@ -28,14 +27,17 @@ import 'package:shared_advisor_interface/presentation/common_widgets/customer_pr
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_input_field_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_messages_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/ritual_info_card_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/gallery/gallery_pictures_screen.dart';
+import 'package:shared_advisor_interface/presentation/services/audio_player_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/services/sound/sound_record_service.dart';
 
+import '../../widget_tester_extension.dart';
 import '../mocked_classes/mocked_classes.mocks.dart';
 import 'chat_screen_test_chat_items.dart';
 import 'chat_screen_test_responses.dart';
@@ -48,6 +50,7 @@ Future<void> pumpChatScreen({
   required ConnectivityService connectivityService,
   required ChatScreenArguments chatScreenArguments,
   required SoundRecordService soundRecordService,
+  required AudioPlayerService audioPlayerService,
 }) async {
   await tester.pumpWidget(
     BlocProvider.value(
@@ -66,6 +69,7 @@ Future<void> pumpChatScreen({
                         chatsRepository: chatsRepository,
                         connectivityService: connectivityService,
                         soundRecordService: soundRecordService,
+                        audioPlayerService: audioPlayerService,
                       ),
                   settings: RouteSettings(arguments: chatScreenArguments));
             },
@@ -89,16 +93,19 @@ void main() {
   late MockDataCachingManager mockCacheManager;
   late MockSoundRecordService mockSoundRecordService;
   late MockDefaultCacheManager mockDefaultCacheManager;
+  late MockAudioPlayerService mockAudioPlayerService;
   late MainCubit mainCubit;
   late Dio dio;
   late DioAdapter dioAdapter;
 
   LiveTestWidgetsFlutterBinding.ensureInitialized();
+  WidgetController.hitTestWarningShouldBeFatal = true;
 
   setUpAll(() {
     dio = Dio();
     dioAdapter = DioAdapter(dio: dio, matcher: const UrlRequestMatcher());
     mockSoundRecordService = MockSoundRecordService();
+    mockAudioPlayerService = MockAudioPlayerService();
     mockDefaultCacheManager = MockDefaultCacheManager();
 
     when(mockDefaultCacheManager.getFileStream(argThat(anything)))
@@ -161,6 +168,7 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
+            audioPlayerService: mockAudioPlayerService,
             chatScreenArguments: ChatScreenArguments());
 
         await tester.pumpAndSettle();
@@ -179,6 +187,7 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
+            audioPlayerService: mockAudioPlayerService,
             chatScreenArguments: ChatScreenArguments(
                 clientIdFromPush: '63bbab1b793423001e28722e')));
 
@@ -206,6 +215,7 @@ void main() {
           chatsRepository: mockChatsRepository,
           connectivityService: mockConnectivityService,
           soundRecordService: mockSoundRecordService,
+          audioPlayerService: mockAudioPlayerService,
           chatScreenArguments: ChatScreenArguments(
             publicQuestionId: '63bbab87ea0df2001dce8630',
             question: ChatScreenTestChatItems.publicQuestion,
@@ -233,6 +243,7 @@ void main() {
           chatsRepository: mockChatsRepository,
           connectivityService: mockConnectivityService,
           soundRecordService: mockSoundRecordService,
+          audioPlayerService: mockAudioPlayerService,
           chatScreenArguments: ChatScreenArguments(
             publicQuestionId: '63bbab87ea0df2001dce8630',
             question: ChatScreenTestChatItems.publicQuestion,
@@ -265,6 +276,7 @@ void main() {
           chatsRepository: mockChatsRepository,
           connectivityService: mockConnectivityService,
           soundRecordService: mockSoundRecordService,
+          audioPlayerService: mockAudioPlayerService,
           chatScreenArguments: ChatScreenArguments(
             publicQuestionId: '63bbab87ea0df2001dce8630',
             question: ChatScreenTestChatItems.publicQuestion,
@@ -302,6 +314,7 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
+            audioPlayerService: mockAudioPlayerService,
             chatScreenArguments: ChatScreenArguments(
               publicQuestionId: '63bbab87ea0df2001dce8630',
               question: ChatScreenTestChatItems.publicQuestion,
@@ -331,6 +344,7 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
+            audioPlayerService: mockAudioPlayerService,
             chatScreenArguments: ChatScreenArguments(
               publicQuestionId: '63bbab87ea0df2001dce8630',
               question: ChatScreenTestChatItems.publicQuestion,
@@ -366,6 +380,7 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
+            audioPlayerService: mockAudioPlayerService,
             chatScreenArguments: ChatScreenArguments(
               publicQuestionId: '63bbab87ea0df2001dce8630',
               question: ChatScreenTestChatItems.publicQuestion,
@@ -401,6 +416,7 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
+            audioPlayerService: mockAudioPlayerService,
             chatScreenArguments: ChatScreenArguments(
               publicQuestionId: '63bbab87ea0df2001dce8630',
               question: ChatScreenTestChatItems.publicQuestion,
@@ -442,6 +458,7 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
+            audioPlayerService: mockAudioPlayerService,
             chatScreenArguments: ChatScreenArguments(
               ritualID: '62de59dd510689001ddb8090',
               question: ChatScreenTestChatItems.ritualLoveCrushReadingQuestion,
@@ -478,13 +495,14 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
+            audioPlayerService: mockAudioPlayerService,
             chatScreenArguments: ChatScreenArguments(
               ritualID: '62de35bcb584e9001e590d7d',
               question: ChatScreenTestChatItems.ritualAuraReadingQuestion,
             ),
           );
 
-          await tester.pump(const Duration(seconds: 5));
+          await tester.pumpNtimes(times: 100);
 
           expect(find.byType(RitualInfoCardWidget), findsOneWidget);
           expect(find.byType(AppImageWidget), findsNWidgets(2));
@@ -509,20 +527,27 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
+            audioPlayerService: mockAudioPlayerService,
             chatScreenArguments: ChatScreenArguments(
               ritualID: '62de35bcb584e9001e590d7d',
               question: ChatScreenTestChatItems.ritualAuraReadingQuestion,
             ),
           );
+          await tester.pumpNtimes(times: 100);
 
-          await tester.pumpAndSettle();
-
-          await tester.tap(find
+          final Finder firstRitualInfoCardImage = find
               .descendant(
                   of: find.byType(RitualInfoCardWidget),
-                  matching: find.byType(AppImageWidget))
-              .first);
-          await tester.pumpAndSettle();
+                  matching: find.byType(AppImageWidget),
+                  skipOffstage: false)
+              .first;
+
+          expect(firstRitualInfoCardImage.hitTestable(), findsOneWidget);
+
+          await tester.ensureVisible(firstRitualInfoCardImage);
+          await tester.pumpNtimes(times: 50);
+          await tester.tap(firstRitualInfoCardImage);
+          await tester.pumpNtimes(times: 100);
 
           expect(find.byType(GalleryPicturesScreen), findsOneWidget);
         },
@@ -551,6 +576,7 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
+            audioPlayerService: mockAudioPlayerService,
             chatScreenArguments: ChatScreenArguments(
               ritualID: '62de59dd510689001ddb8090',
               question: ChatScreenTestChatItems.ritualLoveCrushReadingQuestion,
