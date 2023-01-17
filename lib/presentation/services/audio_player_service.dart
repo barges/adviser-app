@@ -9,11 +9,11 @@ abstract class AudioPlayerService {
 
   Stream<PlayerPosition> get positionStream;
 
-  void playPause(Uri uri);
+  Future<void> playPause(Uri uri);
 
-  void stop();
+  Future<void> stop();
 
-  void seek(String url, Duration duration);
+  Future<void> seek(String url, Duration duration);
 
   PlayerState getCurrentState(String? url);
 
@@ -37,49 +37,6 @@ class AudioPlayerServiceImpl implements AudioPlayerService {
   }
 
   @override
-  void playPause(Uri uri) {
-    final String url = uri.toString();
-    final Source source =
-        uri.hasScheme ? UrlSource(url) : DeviceFileSource(url);
-    if (_state == PlayerState.stopped || _state == PlayerState.completed) {
-      _player.play(source);
-      _currentUrl = url;
-    } else {
-      if (_state == PlayerState.playing) {
-        if (url != _currentUrl) {
-          _player.stop();
-          _player.play(source);
-          _currentUrl = url;
-        } else {
-          _player.pause();
-        }
-      } else if (_state == PlayerState.paused) {
-        if (url != _currentUrl) {
-          _player.stop();
-          _player.play(source);
-          _currentUrl = url;
-        } else {
-          _player.resume();
-        }
-      }
-    }
-  }
-
-  @override
-  void stop() {
-    if (_state == PlayerState.playing || _state == PlayerState.paused) {
-      _player.stop();
-    }
-  }
-
-  @override
-  void dispose() {
-    stop();
-    _stateSubscription?.cancel();
-    _player.dispose();
-  }
-
-  @override
   Stream<AudioPlayerState> get stateStream => _player.onPlayerStateChanged
       .map((event) => AudioPlayerState(playerState: event, url: _currentUrl));
 
@@ -96,13 +53,60 @@ class AudioPlayerServiceImpl implements AudioPlayerService {
   Stream<PlayerPosition> get positionStream => _player.onPositionChanged
       .map((event) => PlayerPosition(duration: event, url: _currentUrl));
 
+
+
   @override
-  void seek(String url, Duration duration) {
-    if (url == _currentUrl &&
-        (_state == PlayerState.playing || _state == PlayerState.paused)) {
-      _player.seek(duration);
+  Future<void> playPause(Uri uri) async {
+    final String url = uri.toString();
+    final Source source =
+        uri.hasScheme ? UrlSource(url) : DeviceFileSource(url);
+    if (_state == PlayerState.stopped || _state == PlayerState.completed) {
+      await _player.play(source);
+      _currentUrl = url;
+    } else {
+      if (_state == PlayerState.playing) {
+        if (url != _currentUrl) {
+         await _player.stop();
+         await _player.play(source);
+          _currentUrl = url;
+        } else {
+          await _player.pause();
+        }
+      } else if (_state == PlayerState.paused) {
+        if (url != _currentUrl) {
+          await _player.stop();
+          await _player.play(source);
+          _currentUrl = url;
+        } else {
+          await _player.resume();
+        }
+      }
     }
   }
+
+  @override
+  Future<void> seek(String url, Duration duration) async {
+    if (url == _currentUrl &&
+        (_state == PlayerState.playing || _state == PlayerState.paused)) {
+     await _player.seek(duration);
+    }
+  }
+
+  @override
+  Future<void> stop() async {
+    if (_state == PlayerState.playing || _state == PlayerState.paused) {
+     await _player.stop();
+    }
+  }
+
+  @override
+  void dispose() {
+    stop();
+    _stateSubscription?.cancel();
+    _player.dispose();
+  }
+
+
 }
 
 class AudioPlayerState {

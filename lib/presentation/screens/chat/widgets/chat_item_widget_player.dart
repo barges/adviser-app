@@ -26,13 +26,18 @@ class _ChatItemWidgetPlayerState extends State<ChatItemWidgetPlayer> {
   Duration _position = Duration.zero;
 
   bool isPlaying = false;
+  bool isNotStopped = false;
 
   @override
   void initState() {
     super.initState();
     url = widget.attachment.url ?? '';
 
-    isPlaying = widget.player.getCurrentState(url) == PlayerState.playing;
+    final PlayerState playerState = widget.player.getCurrentState(url);
+
+    isPlaying = playerState == PlayerState.playing;
+    isNotStopped = playerState != PlayerState.stopped &&
+        playerState != PlayerState.completed;
 
     _duration = Duration(seconds: widget.attachment.meta?.duration ?? 0);
 
@@ -41,12 +46,15 @@ class _ChatItemWidgetPlayerState extends State<ChatItemWidgetPlayer> {
         if (mounted) {
           setState(() {
             isPlaying = event.playerState == PlayerState.playing;
+            isNotStopped = event.playerState != PlayerState.stopped &&
+                event.playerState != PlayerState.completed;
           });
         }
       } else {
         if (mounted) {
           setState(() {
             isPlaying = false;
+            isNotStopped = false;
             _position = Duration.zero;
           });
         }
@@ -96,6 +104,7 @@ class _ChatItemWidgetPlayerState extends State<ChatItemWidgetPlayer> {
               color: widget.isQuestion
                   ? Theme.of(context).primaryColor
                   : Theme.of(context).backgroundColor,
+              isNotStopped: isNotStopped,
             ),
           ),
         ],
@@ -151,6 +160,7 @@ class _PlayProgress extends StatelessWidget {
   final Color textColor;
   final Color color;
   final Color backgroundColor;
+  final bool isNotStopped;
 
   const _PlayProgress({
     Key? key,
@@ -161,6 +171,7 @@ class _PlayProgress extends StatelessWidget {
     required this.textColor,
     required this.color,
     required this.backgroundColor,
+    this.isNotStopped = false,
   }) : super(key: key);
 
   @override
@@ -168,15 +179,18 @@ class _PlayProgress extends StatelessWidget {
     return Column(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: isNotStopped
+              ? MainAxisAlignment.spaceBetween
+              : MainAxisAlignment.end,
           children: [
-            Text(
-              position.toString().substring(2, 7),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: textColor,
-                    fontSize: 12.0,
-                  ),
-            ),
+            if (isNotStopped)
+              Text(
+                position.toString().substring(2, 7),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: textColor,
+                      fontSize: 12.0,
+                    ),
+              ),
             Text(
               duration.toString().substring(2, 7),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
