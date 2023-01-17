@@ -34,7 +34,6 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/histo
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/ritual_info_card_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/gallery/gallery_pictures_screen.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
-import 'package:shared_advisor_interface/presentation/services/sound/sound_playback_service.dart';
 import 'package:shared_advisor_interface/presentation/services/sound/sound_record_service.dart';
 
 import '../mocked_classes/mocked_classes.mocks.dart';
@@ -49,7 +48,6 @@ Future<void> pumpChatScreen({
   required ConnectivityService connectivityService,
   required ChatScreenArguments chatScreenArguments,
   required SoundRecordService soundRecordService,
-  required SoundPlaybackService soundPlaybackService,
 }) async {
   await tester.pumpWidget(
     BlocProvider.value(
@@ -68,7 +66,6 @@ Future<void> pumpChatScreen({
                         chatsRepository: chatsRepository,
                         connectivityService: connectivityService,
                         soundRecordService: soundRecordService,
-                        soundPlaybackService: soundPlaybackService,
                       ),
                   settings: RouteSettings(arguments: chatScreenArguments));
             },
@@ -91,7 +88,6 @@ void main() {
   late MockConnectivityService mockConnectivityService;
   late MockDataCachingManager mockCacheManager;
   late MockSoundRecordService mockSoundRecordService;
-  late MockSoundPlaybackService mockSoundPlaybackService;
   late MockDefaultCacheManager mockDefaultCacheManager;
   late MainCubit mainCubit;
   late Dio dio;
@@ -103,7 +99,6 @@ void main() {
     dio = Dio();
     dioAdapter = DioAdapter(dio: dio, matcher: const UrlRequestMatcher());
     mockSoundRecordService = MockSoundRecordService();
-    mockSoundPlaybackService = MockSoundPlaybackService();
     mockDefaultCacheManager = MockDefaultCacheManager();
 
     when(mockDefaultCacheManager.getFileStream(argThat(anything)))
@@ -166,7 +161,6 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
-            soundPlaybackService: mockSoundPlaybackService,
             chatScreenArguments: ChatScreenArguments());
 
         await tester.pumpAndSettle();
@@ -185,7 +179,6 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
-            soundPlaybackService: mockSoundPlaybackService,
             chatScreenArguments: ChatScreenArguments(
                 clientIdFromPush: '63bbab1b793423001e28722e')));
 
@@ -213,7 +206,6 @@ void main() {
           chatsRepository: mockChatsRepository,
           connectivityService: mockConnectivityService,
           soundRecordService: mockSoundRecordService,
-          soundPlaybackService: mockSoundPlaybackService,
           chatScreenArguments: ChatScreenArguments(
             publicQuestionId: '63bbab87ea0df2001dce8630',
             question: ChatScreenTestChatItems.publicQuestion,
@@ -241,7 +233,6 @@ void main() {
           chatsRepository: mockChatsRepository,
           connectivityService: mockConnectivityService,
           soundRecordService: mockSoundRecordService,
-          soundPlaybackService: mockSoundPlaybackService,
           chatScreenArguments: ChatScreenArguments(
             publicQuestionId: '63bbab87ea0df2001dce8630',
             question: ChatScreenTestChatItems.publicQuestion,
@@ -274,7 +265,6 @@ void main() {
           chatsRepository: mockChatsRepository,
           connectivityService: mockConnectivityService,
           soundRecordService: mockSoundRecordService,
-          soundPlaybackService: mockSoundPlaybackService,
           chatScreenArguments: ChatScreenArguments(
             publicQuestionId: '63bbab87ea0df2001dce8630',
             question: ChatScreenTestChatItems.publicQuestion,
@@ -312,7 +302,6 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
-            soundPlaybackService: mockSoundPlaybackService,
             chatScreenArguments: ChatScreenArguments(
               publicQuestionId: '63bbab87ea0df2001dce8630',
               question: ChatScreenTestChatItems.publicQuestion,
@@ -342,7 +331,6 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
-            soundPlaybackService: mockSoundPlaybackService,
             chatScreenArguments: ChatScreenArguments(
               publicQuestionId: '63bbab87ea0df2001dce8630',
               question: ChatScreenTestChatItems.publicQuestion,
@@ -378,7 +366,6 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
-            soundPlaybackService: mockSoundPlaybackService,
             chatScreenArguments: ChatScreenArguments(
               publicQuestionId: '63bbab87ea0df2001dce8630',
               question: ChatScreenTestChatItems.publicQuestion,
@@ -414,7 +401,6 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
-            soundPlaybackService: mockSoundPlaybackService,
             chatScreenArguments: ChatScreenArguments(
               publicQuestionId: '63bbab87ea0df2001dce8630',
               question: ChatScreenTestChatItems.publicQuestion,
@@ -456,7 +442,6 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
-            soundPlaybackService: mockSoundPlaybackService,
             chatScreenArguments: ChatScreenArguments(
               ritualID: '62de59dd510689001ddb8090',
               question: ChatScreenTestChatItems.ritualLoveCrushReadingQuestion,
@@ -493,7 +478,6 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
-            soundPlaybackService: mockSoundPlaybackService,
             chatScreenArguments: ChatScreenArguments(
               ritualID: '62de35bcb584e9001e590d7d',
               question: ChatScreenTestChatItems.ritualAuraReadingQuestion,
@@ -525,7 +509,6 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
-            soundPlaybackService: mockSoundPlaybackService,
             chatScreenArguments: ChatScreenArguments(
               ritualID: '62de35bcb584e9001e590d7d',
               question: ChatScreenTestChatItems.ritualAuraReadingQuestion,
@@ -568,7 +551,6 @@ void main() {
             chatsRepository: mockChatsRepository,
             connectivityService: mockConnectivityService,
             soundRecordService: mockSoundRecordService,
-            soundPlaybackService: mockSoundPlaybackService,
             chatScreenArguments: ChatScreenArguments(
               ritualID: '62de59dd510689001ddb8090',
               question: ChatScreenTestChatItems.ritualLoveCrushReadingQuestion,

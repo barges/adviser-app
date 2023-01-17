@@ -27,10 +27,6 @@
     as: #MockSoundRecordService,
     onMissingStub: OnMissingStub.returnDefault,
   ),
-  MockSpec<SoundPlaybackServiceImp>(
-    as: #MockSoundPlaybackService,
-    onMissingStub: OnMissingStub.returnDefault,
-  ),
 ])
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:mockito/annotations.dart';
@@ -41,5 +37,4 @@ import 'package:shared_advisor_interface/data/repositories/user_repository_impl.
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/services/dynamic_link_service.dart';
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager_impl.dart';
-import 'package:shared_advisor_interface/presentation/services/sound/sound_playback_service.dart';
 import 'package:shared_advisor_interface/presentation/services/sound/sound_record_service.dart';
