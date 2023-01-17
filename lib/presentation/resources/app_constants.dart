@@ -10,8 +10,8 @@ class AppConstants {
   static const int millisecondsInHour = 3600000;
   static const int questionsLimit = 20;
 
-  static const int maxAttachedPictures = 2;
-  static const int maxAttachedPicturesWithAudio = 1;
+  static const int maxAttachments = 2;
+  static const int minAttachments = 1;
 
   static const int minRecordDurationInSec = 15;
   static const int maxRecordDurationInSec = 180;
@@ -24,7 +24,7 @@ class AppConstants {
   static const int tillShowAnswerTimingMessagesInSec = 1 * 60;
   static const int afterShowAnswerTimingMessagesInSec = 5 * 60;
 
-  static const num maxAttachmentFilesSizeInMb = 20;
+  static const int maxAttachmentFilesSizeInBytes = 20000000;
 
   static const String recordFileName = 'recorded_audio_aa';
 

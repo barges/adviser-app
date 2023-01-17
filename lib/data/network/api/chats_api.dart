@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
+import 'package:shared_advisor_interface/data/network/responses/answer_validation_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_story_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
@@ -79,6 +80,9 @@ abstract class ChatsApi {
   Future<RitualsResponse> getRituals({
     @Path() required String id,
   });
+
+  @GET('/experts/validation/answer')
+  Future<AnswerValidationResponse> getAnswerValidation();
 
   @POST('/questions/answer/start')
   Future<ChatItem> startAnswer(
