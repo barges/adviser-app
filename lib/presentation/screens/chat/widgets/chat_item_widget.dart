@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_background_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_footer_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_player.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_widget_player.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_area_widget.dart';
 
-class ChatItemWidget extends StatelessWidget {
+class ChatItemWidget extends StatefulWidget {
   final ChatItem item;
   final VoidCallback? onPressedTryAgain;
   final bool isHistoryQuestion;
@@ -23,37 +25,46 @@ class ChatItemWidget extends StatelessWidget {
   });
 
   @override
+  State<ChatItemWidget> createState() => _ChatItemWidgetState();
+}
+
+class _ChatItemWidgetState extends State<ChatItemWidget>
+    with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ChatItemBackgroundWidget(
-      onPressedTryAgain: onPressedTryAgain,
-      isTryAgain: !item.isSent,
-      padding: item.isAnswer
+      onPressedTryAgain: widget.onPressedTryAgain,
+      isTryAgain: !widget.item.isSent,
+      padding: widget.item.isAnswer
           ? const EdgeInsets.only(left: 36.0)
           : const EdgeInsets.only(right: 36.0),
-      color: item.isAnswer
+      color: widget.item.isAnswer
           ? Theme.of(context).primaryColor
           : Theme.of(context).canvasColor,
       child: Stack(children: [
         Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          if (item.content?.isNotEmpty == true)
+          if (widget.item.content?.isNotEmpty == true)
             Padding(
               padding: EdgeInsets.only(
-                  bottom: item.attachments?.isNotEmpty == true ? 5.0 : 18.0),
+                  bottom:
+                      widget.item.attachments?.isNotEmpty == true ? 5.0 : 18.0),
               child: ChatTextAreaWidget(
-                content: item.content!,
-                color: item.isAnswer
+                content: widget.item.content!,
+                color: widget.item.isAnswer
                     ? Theme.of(context).backgroundColor
                     : Theme.of(context).hoverColor,
               ),
             ),
-          if (item.attachments?.isNotEmpty == true)
+          if (widget.item.attachments?.isNotEmpty == true)
             Column(
-              children: item.attachments!.mapIndexed((attachment, index) {
+              children:
+                  widget.item.attachments!.mapIndexed((attachment, index) {
                 if (attachment.type == AttachmentType.image) {
                   return Padding(
                     padding: EdgeInsets.only(
-                      bottom: item.attachments!.length > 1 &&
-                              index < item.attachments!.length - 1
+                      bottom: widget.item.attachments!.length > 1 &&
+                              index < widget.item.attachments!.length - 1
                           ? 12.0
                           : 20.0,
                     ),
@@ -65,9 +76,10 @@ class ChatItemWidget extends StatelessWidget {
                     ),
                   );
                 } else if (attachment.type == AttachmentType.audio) {
-                  return ChatItemPlayer(
-                    isQuestion: !item.isAnswer,
+                  return ChatItemWidgetPlayer(
+                    isQuestion: !widget.item.isAnswer,
                     attachment: attachment,
+                    player: context.read<ChatCubit>().audioPlayer,
                   );
                 }
 
@@ -79,17 +91,20 @@ class ChatItemWidget extends StatelessWidget {
           right: 0.0,
           bottom: 0.0,
           child: ChatItemFooterWidget(
-            type: item.type,
-            createdAt: item.createdAt ?? DateTime.now(),
-            ritualIdentifier: item.ritualIdentifier,
-            color: item.isAnswer
+            type: widget.item.type,
+            createdAt: widget.item.createdAt ?? DateTime.now(),
+            ritualIdentifier: widget.item.ritualIdentifier,
+            color: widget.item.isAnswer
                 ? Theme.of(context).primaryColorLight
                 : Theme.of(context).shadowColor,
-            isHistoryQuestion: isHistoryQuestion,
-            isHistoryAnswer: isHistoryAnswer,
+            isHistoryQuestion: widget.isHistoryQuestion,
+            isHistoryAnswer: widget.isHistoryAnswer,
           ),
         ),
       ]),
     );
   }
+
+  @override
+  bool get wantKeepAlive => widget.item.isAudio ? true : false;
 }

@@ -1,10 +1,9 @@
 import 'dart:io';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
@@ -12,19 +11,72 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/attached_pictures.dart';
 
-class ChatRecordedWidget extends StatelessWidget {
-  final VoidCallback? onStartPlayPressed;
-  final VoidCallback? onPausePlayPressed;
+import '../../../services/audio_player_service.dart';
+
+class ChatRecordedPlayerWidget extends StatefulWidget {
+  final AudioPlayerService player;
+  final int? recordedDuration;
+  final String? url;
   final VoidCallback? onDeletePressed;
   final VoidCallback? onSendPressed;
 
-  const ChatRecordedWidget({
+  const ChatRecordedPlayerWidget({
     Key? key,
-    this.onStartPlayPressed,
-    this.onPausePlayPressed,
+    required this.player,
+    this.recordedDuration,
+    this.url,
     this.onDeletePressed,
     this.onSendPressed,
   }) : super(key: key);
+
+  @override
+  State<ChatRecordedPlayerWidget> createState() =>
+      _ChatRecordedPlayerWidgetState();
+}
+
+class _ChatRecordedPlayerWidgetState extends State<ChatRecordedPlayerWidget> {
+  late final Duration _duration;
+  late final String url;
+  Duration _position = Duration.zero;
+
+  bool isPlaying = false;
+
+  @override
+  void initState() {
+    super.initState();
+    url = widget.url ?? '';
+
+    isPlaying = widget.player.getCurrentState(url) == PlayerState.playing;
+
+    _duration = Duration(seconds: widget.recordedDuration ?? 0);
+
+    widget.player.stateStream.distinct().listen((event) {
+      if (event.url == url) {
+        if (mounted) {
+          setState(() {
+            isPlaying = event.playerState == PlayerState.playing;
+          });
+        }
+      } else {
+        if (mounted) {
+          setState(() {
+            isPlaying = false;
+            _position = Duration.zero;
+          });
+        }
+      }
+    });
+
+    widget.player.positionStream.listen((event) {
+      if (event.url == url) {
+        if (mounted) {
+          setState(() {
+            _position = event.duration ?? Duration.zero;
+          });
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,68 +176,25 @@ class ChatRecordedWidget extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          Builder(builder: (context) {
-                            final isPlayingAudio = context.select(
-                                (ChatCubit cubit) =>
-                                    cubit.state.isPlayingAudio);
-                            return _PlayPauseBtn(
-                              isPlaying: chatCubit.isCurrentPlayback(
-                                      chatCubit.state.recordedAudio?.path) &&
-                                  isPlayingAudio,
-                              onStartPlayPressed: onStartPlayPressed,
-                              onPausePlayPressed: onPausePlayPressed,
-                            );
-                          }),
+                          _PlayPauseBtn(
+                            isPlaying: isPlaying,
+                            onTapPlayPause: () =>
+                                widget.player.playPause(Uri.parse(url)),
+                          ),
                           const SizedBox(
                             width: 8.0,
                           ),
-                          Flexible(
-                            child: Builder(builder: (context) {
-                              final isPlayingAudio = context.select(
-                                  (ChatCubit cubit) =>
-                                      cubit.state.isPlayingAudio);
-                              final isPlayingAudioFinished = context.select(
-                                  (ChatCubit cubit) =>
-                                      cubit.state.isPlayingAudioFinished);
-                              final isCurrentPlayback =
-                                  chatCubit.isCurrentPlayback(
-                                      chatCubit.state.recordedAudio?.path);
-                              final isPlayingFinished = isCurrentPlayback
-                                  ? isPlayingAudioFinished
-                                  : true;
-                              return StreamBuilder<PlaybackDisposition>(
-                                stream: isCurrentPlayback &&
-                                        isPlayingAudio &&
-                                        !isPlayingFinished
-                                    ? chatCubit.onMediaProgress
-                                    : null,
-                                builder: (_, snapshot) {
-                                  double value = !isPlayingFinished &&
-                                          snapshot.hasData
-                                      ? snapshot.data!.position.inMilliseconds /
-                                          snapshot.data!.duration.inMilliseconds
-                                      : 0.0;
-                                  final time = (snapshot.hasData &&
-                                          snapshot.data != null)
-                                      ? snapshot.data!.position
-                                          .toString()
-                                          .substring(3, 7)
-                                      : AppConstants.startMSS;
-                                  final duration =
-                                      chatCubit.recordAudioDuration != null
-                                          ? chatCubit
-                                              .recordAudioDuration!.formatMSS
-                                          : AppConstants.startMSS;
-                                  return _PlayProgress(
-                                    value: value,
-                                    time: isPlayingFinished ? duration : time,
-                                  );
-                                },
-                              );
-                            }),
+                          Expanded(
+                            child: _PlayProgress(
+                              player: widget.player,
+                              url: url,
+                              position: _position,
+                              duration: _duration,
+                              isPlaying: isPlaying,
+                            ),
                           ),
                           GestureDetector(
-                            onTap: onDeletePressed,
+                            onTap: widget.onDeletePressed,
                             child: Padding(
                               padding: const EdgeInsets.only(
                                 right: 4.0,
@@ -208,7 +217,8 @@ class ChatRecordedWidget extends StatelessWidget {
                     return Opacity(
                       opacity: isSendButtonEnabled ? 1.0 : 0.4,
                       child: AppIconGradientButton(
-                        onTap: isSendButtonEnabled ? onSendPressed : null,
+                        onTap:
+                            isSendButtonEnabled ? widget.onSendPressed : null,
                         icon: Assets.vectors.send.path,
                         iconColor: Theme.of(context).backgroundColor,
                       ),
@@ -226,22 +236,18 @@ class ChatRecordedWidget extends StatelessWidget {
 
 class _PlayPauseBtn extends StatelessWidget {
   final bool isPlaying;
-  final VoidCallback? onStartPlayPressed;
-  final VoidCallback? onPausePlayPressed;
+  final VoidCallback? onTapPlayPause;
 
   const _PlayPauseBtn({
     Key? key,
     this.isPlaying = false,
-    this.onStartPlayPressed,
-    this.onPausePlayPressed,
+    this.onTapPlayPause,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        (isPlaying ? onPausePlayPressed : onStartPlayPressed)?.call();
-      },
+      onTap: onTapPlayPause,
       child: Container(
         width: AppConstants.iconButtonSize,
         height: AppConstants.iconButtonSize,
@@ -264,13 +270,19 @@ class _PlayPauseBtn extends StatelessWidget {
 }
 
 class _PlayProgress extends StatelessWidget {
-  final double value;
-  final String time;
+  final AudioPlayerService player;
+  final String url;
+  final Duration position;
+  final Duration duration;
+  final bool isPlaying;
 
   const _PlayProgress({
     Key? key,
-    required this.value,
-    required this.time,
+    required this.player,
+    required this.url,
+    required this.position,
+    required this.duration,
+    this.isPlaying = false,
   }) : super(key: key);
 
   @override
@@ -278,11 +290,30 @@ class _PlayProgress extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: LinearProgressIndicator(
-            value: value,
-            backgroundColor: Theme.of(context).canvasColor,
-            color: Theme.of(context).primaryColor,
-            minHeight: 2.0,
+          child: SizedBox(
+            height: 8.0,
+            child: SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                activeTrackColor: Theme.of(context).primaryColor,
+                inactiveTrackColor: Theme.of(context).canvasColor,
+                trackHeight: 2.0,
+                thumbShape:
+                    const RoundSliderThumbShape(enabledThumbRadius: 0.0),
+                overlayShape: const RoundSliderOverlayShape(overlayRadius: 0.0),
+                trackShape: const RectangularSliderTrackShape(),
+              ),
+              child: Slider(
+                onChanged: (v) {
+                  final slidePosition = v * duration.inMilliseconds;
+                  player.seek(
+                      url, Duration(milliseconds: slidePosition.round()));
+                },
+                value: (position.inMilliseconds > 0 &&
+                        position.inMilliseconds < duration.inMilliseconds)
+                    ? position.inMilliseconds / duration.inMilliseconds
+                    : 0.0,
+              ),
+            ),
           ),
         ),
         const SizedBox(
@@ -291,7 +322,9 @@ class _PlayProgress extends StatelessWidget {
         SizedBox(
           width: 38.0,
           child: Text(
-            time,
+            isPlaying
+                ? position.toString().substring(3, 7)
+                : duration.toString().substring(3, 7),
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(context).hoverColor,
                 ),

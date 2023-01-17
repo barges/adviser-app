@@ -44,6 +44,7 @@ dependencies:
   web_fonts: ^1.1.1
   flutter_keyboard_visibility: ^5.4.0
   collection: ^1.16.0
+  audioplayers: ^2.0.0
 
   # Firebase
   firebase_core: ^2.2.0
