@@ -21,6 +21,8 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/activ
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+import 'package:shared_advisor_interface/presentation/services/sound/sound_playback_service.dart';
+import 'package:shared_advisor_interface/presentation/services/sound/sound_record_service.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -35,6 +37,8 @@ class ChatScreen extends StatelessWidget {
           chatsRepository,
           connectivityService,
           getIt.get<MainCubit>(),
+          SoundRecordServiceImp(),
+          SoundPlaybackServiceImp(),
           () => showErrorAlert(context),
           () => confirmSendAnswerAlert(context)),
       child: ChatContentWidget(

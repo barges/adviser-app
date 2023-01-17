@@ -59,8 +59,8 @@ class ChatCubit extends Cubit<ChatState> {
   final VoidCallback _showErrorAlert;
   final ValueGetter<Future<bool?>> _confirmSendAnswerAlert;
   final MainCubit _mainCubit;
-  final SoundRecordService _soundRecordService = SoundRecordServiceImp();
-  final SoundPlaybackService _soundPlaybackService = SoundPlaybackServiceImp();
+  final SoundRecordService _soundRecordService;
+  final SoundPlaybackService _soundPlaybackService;
   final int _tillShowMessagesInSec =
       AppConstants.tillShowAnswerTimingMessagesInSec;
   final int _afterShowMessagesInSec =
@@ -77,6 +77,8 @@ class ChatCubit extends Cubit<ChatState> {
     this._repository,
     this._connectivityService,
     this._mainCubit,
+    this._soundRecordService,
+    this._soundPlaybackService,
     this._showErrorAlert,
     this._confirmSendAnswerAlert,
   ) : super(const ChatState()) {

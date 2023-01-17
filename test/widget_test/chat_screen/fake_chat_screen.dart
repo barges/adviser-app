@@ -5,15 +5,21 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_screen.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+import 'package:shared_advisor_interface/presentation/services/sound/sound_playback_service.dart';
+import 'package:shared_advisor_interface/presentation/services/sound/sound_record_service.dart';
 
 class FakeChatScreen extends StatelessWidget {
   final ChatsRepository chatsRepository;
   final ConnectivityService connectivityService;
+  final SoundRecordService soundRecordService;
+  final SoundPlaybackService soundPlaybackService;
 
   const FakeChatScreen({
     Key? key,
     required this.chatsRepository,
     required this.connectivityService,
+    required this.soundRecordService,
+    required this.soundPlaybackService,
   }) : super(key: key);
 
   @override
@@ -24,6 +30,8 @@ class FakeChatScreen extends StatelessWidget {
         chatsRepository,
         connectivityService,
         mainCubit,
+        soundRecordService,
+        soundPlaybackService,
         () => showErrorAlert(context),
         () => confirmSendAnswerAlert(context),
       ),
