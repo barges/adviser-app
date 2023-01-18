@@ -56,10 +56,6 @@ class ChatAudioPlayerWidget extends StatelessWidget {
                   } else {
                     if (!itemUri.hasScheme || isPlaying) {
                       player.playPause(itemUri);
-                    } else {
-                      if (!itemUri.hasScheme) {
-                        player.playPause(itemUri);
-                      }
                     }
                   }
                 },
