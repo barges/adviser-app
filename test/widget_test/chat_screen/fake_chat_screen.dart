@@ -34,6 +34,7 @@ class FakeChatScreen extends StatelessWidget {
         audioPlayerService,
         () => showErrorAlert(context),
         () => confirmSendAnswerAlert(context),
+        () => deleteAudioMessageAlert(context),
       ),
       child: ChatContentWidget(
         chatsRepository: chatsRepository,

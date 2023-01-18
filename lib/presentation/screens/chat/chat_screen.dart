@@ -15,6 +15,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/customer_pr
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_success_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_input_field_widget.dart';
@@ -34,13 +35,15 @@ class ChatScreen extends StatelessWidget {
         getIt.get<ConnectivityService>();
     return BlocProvider(
       create: (_) => ChatCubit(
-          chatsRepository,
-          connectivityService,
-          getIt.get<MainCubit>(),
-          SoundRecordServiceImp(),
-          AudioPlayerServiceImpl(),
-          () => showErrorAlert(context),
-          () => confirmSendAnswerAlert(context)),
+        chatsRepository,
+        connectivityService,
+        getIt.get<MainCubit>(),
+        SoundRecordServiceImp(),
+        AudioPlayerServiceImpl(),
+        () => showErrorAlert(context),
+        () => confirmSendAnswerAlert(context),
+        () => deleteAudioMessageAlert(context),
+      ),
       child: ChatContentWidget(
         chatsRepository: chatsRepository,
         connectivityService: connectivityService,
@@ -257,4 +260,9 @@ Future<bool?> confirmSendAnswerAlert(BuildContext context) async {
     allowBarrierClick: false,
     isCancelEnabled: true,
   );
+}
+
+Future<bool?> deleteAudioMessageAlert(BuildContext context) async {
+  return await showDeleteAlert(
+      context, S.of(context).doYouWantToDeleteThisAudioMessage);
 }

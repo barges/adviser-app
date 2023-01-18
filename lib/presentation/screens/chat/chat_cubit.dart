@@ -58,6 +58,7 @@ class ChatCubit extends Cubit<ChatState> {
   late final ChatScreenArguments chatScreenArguments;
   final VoidCallback _showErrorAlert;
   final ValueGetter<Future<bool?>> _confirmSendAnswerAlert;
+  final ValueGetter<Future<bool?>> _deleteAudioMessageAlert;
   final MainCubit _mainCubit;
   final AudioPlayerService audioPlayer;
   final SoundRecordService _soundRecordService;
@@ -81,6 +82,7 @@ class ChatCubit extends Cubit<ChatState> {
     this.audioPlayer,
     this._showErrorAlert,
     this._confirmSendAnswerAlert,
+    this._deleteAudioMessageAlert,
   ) : super(const ChatState()) {
     chatScreenArguments = Get.arguments;
     textInputEditingController.addListener(textInputEditingControllerListener);
@@ -317,6 +319,8 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> startRecordingAudio(BuildContext context) async {
     _tryStartAnswerSend();
 
+    audioPlayer.stop();
+
     await CheckPermissionService.handlePermission(
         context, PermissionType.audio);
 
@@ -408,18 +412,20 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> deleteRecordedAudio() async {
     audioPlayer.stop();
 
-    await _deleteRecordedAudioFile(state.recordedAudio);
-    _recordAudioDuration = null;
+    if (await _deleteAudioMessageAlert() == true) {
+      await _deleteRecordedAudioFile(state.recordedAudio);
+      _recordAudioDuration = null;
 
-    emit(
-      state.copyWith(
-          recordedAudio: null,
-          isRecordingAudio: false,
-          isAudioFileSaved: false,
-          isSendButtonEnabled:
-              _checkAttachmentSizeIsOk(state.attachedPictures, null) &&
-                  _checkTextLengthIsOk()),
-    );
+      emit(
+        state.copyWith(
+            recordedAudio: null,
+            isRecordingAudio: false,
+            isAudioFileSaved: false,
+            isSendButtonEnabled:
+                _checkAttachmentSizeIsOk(state.attachedPictures, null) &&
+                    _checkTextLengthIsOk()),
+      );
+    }
   }
 
   Future<void> _deleteRecordedAudioFile(File? recordedAudio) async {
