@@ -1270,13 +1270,14 @@ class S {
     );
   }
 
-  /// `from 15 sec to 3 min`
-  String get from15secTo3min {
+  /// `from {minRecordDurationInSec} sec to {maxRecordDurationInMinutes} min`
+  String fromXsecToYmin(
+      Object minRecordDurationInSec, Object maxRecordDurationInMinutes) {
     return Intl.message(
-      'from 15 sec to 3 min',
-      name: 'from15secTo3min',
+      'from $minRecordDurationInSec sec to $maxRecordDurationInMinutes min',
+      name: 'fromXsecToYmin',
       desc: '',
-      args: [],
+      args: [minRecordDurationInSec, maxRecordDurationInMinutes],
     );
   }
 
@@ -1690,23 +1691,24 @@ class S {
     );
   }
 
-  /// `You can’t send this message because it’s less than 15 seconds`
-  String get youCantSendThisMessageBecauseItsLessThan15Seconds {
+  /// `You can’t send this message because it’s less than {minRecordDurationInSec} seconds`
+  String youCantSendThisMessageBecauseItsLessThanXSeconds(
+      Object minRecordDurationInSec) {
     return Intl.message(
-      'You can’t send this message because it’s less than 15 seconds',
-      name: 'youCantSendThisMessageBecauseItsLessThan15Seconds',
+      'You can’t send this message because it’s less than $minRecordDurationInSec seconds',
+      name: 'youCantSendThisMessageBecauseItsLessThanXSeconds',
       desc: '',
-      args: [],
+      args: [minRecordDurationInSec],
     );
   }
 
-  /// `The maximum size of the attachments is 20Mb`
-  String get theMaximumSizeOfTheAttachmentsIs20Mb {
+  /// `The maximum size of the attachments is {maxAttachmentSizeInMb}Mb`
+  String theMaximumSizeOfTheAttachmentsIsXMb(Object maxAttachmentSizeInMb) {
     return Intl.message(
-      'The maximum size of the attachments is 20Mb',
-      name: 'theMaximumSizeOfTheAttachmentsIs20Mb',
+      'The maximum size of the attachments is ${maxAttachmentSizeInMb}Mb',
+      name: 'theMaximumSizeOfTheAttachmentsIsXMb',
       desc: '',
-      args: [],
+      args: [maxAttachmentSizeInMb],
     );
   }
 
@@ -1947,13 +1949,13 @@ class S {
     );
   }
 
-  /// `You've reach the 3 minute time limit.`
-  String get youVeReachThe3MinuteTimeLimit {
+  /// `You've reach the {maxRecordDurationInMinutes} minute time limit.`
+  String youVeReachTheXMinuteTimeLimit(Object maxRecordDurationInMinutes) {
     return Intl.message(
-      'You\'ve reach the 3 minute time limit.',
-      name: 'youVeReachThe3MinuteTimeLimit',
+      'You\'ve reach the $maxRecordDurationInMinutes minute time limit.',
+      name: 'youVeReachTheXMinuteTimeLimit',
       desc: '',
-      args: [],
+      args: [maxRecordDurationInMinutes],
     );
   }
 

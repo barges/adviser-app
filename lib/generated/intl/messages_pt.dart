@@ -20,11 +20,23 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'pt';
 
-  static String m0(counter) =>
+  static String m0(minRecordDurationInSec, maxRecordDurationInMinutes) =>
+      "de ${minRecordDurationInSec} segundos a ${maxRecordDurationInMinutes} minutos";
+
+  static String m1(maxAttachmentSizeInMb) =>
+      "O tamanho máximo dos anexos é de ${maxAttachmentSizeInMb}Mb";
+
+  static String m2(counter) =>
       "Esta questão será devolvida à lista geral após ${counter}";
 
-  static String m1(email) =>
+  static String m3(email) =>
       "Enviamos instruções de redefinição de senha para o ${email}.";
+
+  static String m4(minRecordDurationInSec) =>
+      "Você não pode enviar esta mensagem porque tem menos de ${minRecordDurationInSec} segundos";
+
+  static String m5(maxRecordDurationInMinutes) =>
+      "Você atingiu o limite de tempo de ${maxRecordDurationInMinutes} minutos.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -134,8 +146,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "forgotYourPassword":
             MessageLookupByLibrary.simpleMessage("Esqueceu sua senha"),
         "fortunica": MessageLookupByLibrary.simpleMessage("Fortunica"),
-        "from15secTo3min":
-            MessageLookupByLibrary.simpleMessage("de 15 segundos a 3 minutos"),
+        "fromXsecToYmin": m0,
         "goToAccount": MessageLookupByLibrary.simpleMessage("Ir para Conta"),
         "history": MessageLookupByLibrary.simpleMessage("História"),
         "imAvailableNow":
@@ -275,15 +286,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m":
             MessageLookupByLibrary.simpleMessage(
                 "A resposta não é possível, esta questão retornará à lista geral em ~ 1m"),
-        "theMaximumSizeOfTheAttachmentsIs20Mb":
-            MessageLookupByLibrary.simpleMessage(
-                "O tamanho máximo dos anexos é de 20Mb"),
+        "theMaximumSizeOfTheAttachmentsIsXMb": m1,
         "thePasswordsMustMatch": MessageLookupByLibrary.simpleMessage(
             "As senhas devem corresponder"),
         "theUserWasNotFound": MessageLookupByLibrary.simpleMessage(
             "O usuário não foi encontrado"),
         "thisMonth": MessageLookupByLibrary.simpleMessage("Este mês"),
-        "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": m0,
+        "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": m2,
         "thisWeek": MessageLookupByLibrary.simpleMessage("Essa semana"),
         "tips": MessageLookupByLibrary.simpleMessage("Pontas"),
         "title": MessageLookupByLibrary.simpleMessage("Título"),
@@ -314,7 +323,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "Orgulhamo-nos de oferecer aos consultores um local seguro para servir os clientes e desenvolver-se profissionalmente. Fazer um bom trabalho em uma de nossas marcas abrirá portas para outras"),
-        "weVeSentPasswordResetInstructionsToEmail": m1,
+        "weVeSentPasswordResetInstructionsToEmail": m3,
         "whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisList":
             MessageLookupByLibrary.simpleMessage(
                 "Quando alguém fizer uma pergunta pública, você a verá nesta lista"),
@@ -329,9 +338,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Nome de usuário e/ou senha incorretos."),
         "yesImSure":
             MessageLookupByLibrary.simpleMessage("Sim eu tenho certeza"),
-        "youCantSendThisMessageBecauseItsLessThan15Seconds":
-            MessageLookupByLibrary.simpleMessage(
-                "Você não pode enviar esta mensagem porque tem menos de 15 segundos"),
+        "youCantSendThisMessageBecauseItsLessThanXSeconds": m4,
         "youDoNotHaveAnyNotesYet":
             MessageLookupByLibrary.simpleMessage("Você ainda não tem notas"),
         "youDontHaveAnInternetConnection": MessageLookupByLibrary.simpleMessage(
@@ -359,8 +366,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Você está off-line no momento"),
         "youReNotLiveOnThePlatform": MessageLookupByLibrary.simpleMessage(
             "Você não está ao vivo na plataforma"),
-        "youVeReachThe3MinuteTimeLimit": MessageLookupByLibrary.simpleMessage(
-            "Você atingiu o limite de tempo de 3 minutos."),
+        "youVeReachTheXMinuteTimeLimit": m5,
         "youWillBeAbleToChangeYourStatusBackIn":
             MessageLookupByLibrary.simpleMessage(
                 "Você poderá alterar seu status de volta em 1 hora"),
