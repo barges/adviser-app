@@ -211,5 +211,9 @@
   "enterNewPassword": "Neues Passwort eingeben",
   "repeatNewPassword": "Wiederhole das neue Passwort",
   "enterYourEmail": "Geben sie ihre E-Mail Adresse ein",
-  "myGallery": "Meine Gallerie"
+  "myGallery": "Meine Gallerie",
+  "pleaseUpdateTheApp": "Bitte aktualisieren Sie die App",
+  "thisVersionOfTheAppIsNoLongerSupported": "Diese Version der App wird nicht mehr unterstützt. Um zu all Ihren Unterhaltungen zurückzukehren, installieren Sie die neueste Version",
+  "learnMore": "Lern mehr",
+  "update": "Aktualisieren"
 }

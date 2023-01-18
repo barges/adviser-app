@@ -10,7 +10,7 @@ import 'intl/messages_all.dart';
 
 // ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
 // ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
-// ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
+// ignore_for_file: avoid_redundant_argument_values
 
 class S {
   S();
@@ -18,31 +18,28 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(_current != null, 'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
     return _current!;
   }
 
-  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
+  static const AppLocalizationDelegate delegate =
+    AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false)
-        ? locale.languageCode
-        : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name);
+    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name); 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       final instance = S();
       S._current = instance;
-
+ 
       return instance;
     });
-  }
+  } 
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(instance != null, 'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
     return instance!;
   }
 
@@ -1711,8 +1708,7 @@ class S {
   }
 
   /// `This question will be returned to the general list after {counter}`
-  String thisQuestionWillBeReturnedToTheGeneralListAfterCounter(
-      Object counter) {
+  String thisQuestionWillBeReturnedToTheGeneralListAfterCounter(Object counter) {
     return Intl.message(
       'This question will be returned to the general list after $counter',
       name: 'thisQuestionWillBeReturnedToTheGeneralListAfterCounter',
@@ -1722,12 +1718,10 @@ class S {
   }
 
   /// `The answer is not possible, this question will be returned to the general list in ~ 1m`
-  String
-      get theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m {
+  String get theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m {
     return Intl.message(
       'The answer is not possible, this question will be returned to the general list in ~ 1m',
-      name:
-          'theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m',
+      name: 'theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m',
       desc: '',
       args: [],
     );
@@ -1824,12 +1818,10 @@ class S {
   }
 
   /// `Customers want to know you're a real person. The more photos you add, the more trust you can build.`
-  String
-      get customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuild {
+  String get customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuild {
     return Intl.message(
       'Customers want to know you\'re a real person. The more photos you add, the more trust you can build.',
-      name:
-          'customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuild',
+      name: 'customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuild',
       desc: '',
       args: [],
     );
@@ -1856,12 +1848,10 @@ class S {
   }
 
   /// `Please ensure your profile is completed for all languages. Need help? Contact your manager.`
-  String
-      get pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManager {
+  String get pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManager {
     return Intl.message(
       'Please ensure your profile is completed for all languages. Need help? Contact your manager.',
-      name:
-          'pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManager',
+      name: 'pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManager',
       desc: '',
       args: [],
     );
@@ -2088,12 +2078,10 @@ class S {
   }
 
   /// `Enter your email address and we'll send you instructions to create a new password`
-  String
-      get enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword {
+  String get enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword {
     return Intl.message(
       'Enter your email address and we\'ll send you instructions to create a new password',
-      name:
-          'enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword',
+      name: 'enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword',
       desc: '',
       args: [],
     );
@@ -2184,6 +2172,46 @@ class S {
     return Intl.message(
       'My Gallery',
       name: 'myGallery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please update the app`
+  String get pleaseUpdateTheApp {
+    return Intl.message(
+      'Please update the app',
+      name: 'pleaseUpdateTheApp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This version of the app is no longer supported. To get back to all your conversations, install the latest version`
+  String get thisVersionOfTheAppIsNoLongerSupported {
+    return Intl.message(
+      'This version of the app is no longer supported. To get back to all your conversations, install the latest version',
+      name: 'thisVersionOfTheAppIsNoLongerSupported',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Learn More`
+  String get learnMore {
+    return Intl.message(
+      'Learn More',
+      name: 'learnMore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update`
+  String get update {
+    return Intl.message(
+      'Update',
+      name: 'update',
       desc: '',
       args: [],
     );
