@@ -53,11 +53,12 @@ class AudioPlayerServiceImpl implements AudioPlayerService {
   Stream<PlayerPosition> get positionStream => _player.onPositionChanged
       .map((event) => PlayerPosition(duration: event, url: _currentUrl));
 
-
-
   @override
   Future<void> playPause(Uri uri) async {
     final String url = uri.toString();
+
+    logger.d('url from play ----- $url');
+
     final Source source =
         uri.hasScheme ? UrlSource(url) : DeviceFileSource(url);
     if (_state == PlayerState.stopped || _state == PlayerState.completed) {
@@ -66,8 +67,8 @@ class AudioPlayerServiceImpl implements AudioPlayerService {
     } else {
       if (_state == PlayerState.playing) {
         if (url != _currentUrl) {
-         await _player.stop();
-         await _player.play(source);
+          await _player.stop();
+          await _player.play(source);
           _currentUrl = url;
         } else {
           await _player.pause();
@@ -88,14 +89,14 @@ class AudioPlayerServiceImpl implements AudioPlayerService {
   Future<void> seek(String url, Duration duration) async {
     if (url == _currentUrl &&
         (_state == PlayerState.playing || _state == PlayerState.paused)) {
-     await _player.seek(duration);
+      await _player.seek(duration);
     }
   }
 
   @override
   Future<void> stop() async {
     if (_state == PlayerState.playing || _state == PlayerState.paused) {
-     await _player.stop();
+      await _player.stop();
     }
   }
 
@@ -105,8 +106,6 @@ class AudioPlayerServiceImpl implements AudioPlayerService {
     _stateSubscription?.cancel();
     _player.dispose();
   }
-
-
 }
 
 class AudioPlayerState {

@@ -5,9 +5,9 @@ import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart'
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_players/chat_audio_player_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_background_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_footer_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_widget_player.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_area_widget.dart';
 
 class ChatItemWidget extends StatefulWidget {
@@ -76,7 +76,7 @@ class _ChatItemWidgetState extends State<ChatItemWidget>
                     ),
                   );
                 } else if (attachment.type == AttachmentType.audio) {
-                  return ChatItemWidgetPlayer(
+                  return ChatAudioPlayerWidget(
                     isQuestion: !widget.item.isAnswer,
                     attachment: attachment,
                     player: context.read<ChatCubit>().audioPlayer,

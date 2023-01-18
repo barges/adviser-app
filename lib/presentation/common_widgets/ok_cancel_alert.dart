@@ -30,7 +30,9 @@ Future<bool?> showOkCancelAlert({
                 content: description != null
                     ? Text(
                         description,
-                        style: theme.textTheme.bodySmall,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontSize: 13.0,
+                        ),
                       )
                     : null,
                 actions: [
@@ -74,7 +76,9 @@ Future<bool?> showOkCancelAlert({
                             ),
                             child: Text(
                               description,
-                              style: theme.textTheme.bodySmall,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                fontSize: 13.0,
+                              ),
                             ),
                           ),
                         const SizedBox(

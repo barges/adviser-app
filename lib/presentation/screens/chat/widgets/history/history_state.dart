@@ -6,10 +6,6 @@ part 'history_state.freezed.dart';
 @freezed
 class HistoryState with _$HistoryState {
   const factory HistoryState({
-    @Default(false) bool isLoadingAudio,
-    @Default(false) bool isPlayingAudio,
-    @Default(true) bool isPlayingAudioFinished,
-    @Default('') String audioUrl,
     @Default('') String errorMessage,
     @Default('') String successMessage,
     List<HistoryUiModel>? topHistoriesList,
