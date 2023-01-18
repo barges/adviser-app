@@ -76,6 +76,11 @@ class ChatScreenArguments {
     this.ritualID,
     this.storyIdForHistory,
   });
+
+  @override
+  String toString() {
+    return 'ChatScreenArguments{clientIdFromPush: $clientIdFromPush, question: $question, publicQuestionId: $publicQuestionId, privateQuestionId: $privateQuestionId, ritualID: $ritualID, storyIdForHistory: $storyIdForHistory}';
+  }
 }
 
 class CustomerSessionsScreenArguments {

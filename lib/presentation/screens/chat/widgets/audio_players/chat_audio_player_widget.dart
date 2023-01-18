@@ -1,15 +1,18 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_players/chat_audio_player_cubit.dart';
 import 'package:shared_advisor_interface/presentation/services/audio_player_service.dart';
 
-class ChatItemWidgetPlayer extends StatefulWidget {
+class ChatAudioPlayerWidget extends StatelessWidget {
   final bool isQuestion;
   final Attachment attachment;
   final AudioPlayerService player;
 
-  const ChatItemWidgetPlayer({
+  const ChatAudioPlayerWidget({
     super.key,
     required this.isQuestion,
     required this.attachment,
@@ -17,97 +20,73 @@ class ChatItemWidgetPlayer extends StatefulWidget {
   });
 
   @override
-  State<ChatItemWidgetPlayer> createState() => _ChatItemWidgetPlayerState();
-}
-
-class _ChatItemWidgetPlayerState extends State<ChatItemWidgetPlayer> {
-  late final Duration _duration;
-  late final String url;
-  Duration _position = Duration.zero;
-
-  bool isPlaying = false;
-  bool isNotStopped = false;
-
-  @override
-  void initState() {
-    super.initState();
-    url = widget.attachment.url ?? '';
-
-    final PlayerState playerState = widget.player.getCurrentState(url);
-
-    isPlaying = playerState == PlayerState.playing;
-    isNotStopped = playerState != PlayerState.stopped &&
-        playerState != PlayerState.completed;
-
-    _duration = Duration(seconds: widget.attachment.meta?.duration ?? 0);
-
-    widget.player.stateStream.distinct().listen((event) {
-      if (event.url == url) {
-        if (mounted) {
-          setState(() {
-            isPlaying = event.playerState == PlayerState.playing;
-            isNotStopped = event.playerState != PlayerState.stopped &&
-                event.playerState != PlayerState.completed;
-          });
-        }
-      } else {
-        if (mounted) {
-          setState(() {
-            isPlaying = false;
-            isNotStopped = false;
-            _position = Duration.zero;
-          });
-        }
-      }
-    });
-
-    widget.player.positionStream.listen((event) {
-      if (event.url == url) {
-        if (mounted) {
-          setState(() {
-            _position = event.duration ?? Duration.zero;
-          });
-        }
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 48.0,
-      child: Row(
-        children: [
-          _PlayPauseBtn(
-            isPlaying: isPlaying,
-            color: widget.isQuestion
-                ? Theme.of(context).primaryColor
-                : Theme.of(context).backgroundColor,
-            iconColor: widget.isQuestion
-                ? Theme.of(context).backgroundColor
-                : Theme.of(context).primaryColor,
-            onTapPlayPause: () => widget.player.playPause(Uri.parse(url)),
-          ),
-          const SizedBox(
-            width: 12.0,
-          ),
-          Expanded(
-            child: _PlayProgress(
-              player: widget.player,
-              url: url,
-              duration: _duration,
-              position: _position,
-              textColor: widget.isQuestion
-                  ? Theme.of(context).primaryColor
-                  : Theme.of(context).backgroundColor,
-              backgroundColor: Theme.of(context).primaryColorLight,
-              color: widget.isQuestion
-                  ? Theme.of(context).primaryColor
-                  : Theme.of(context).backgroundColor,
-              isNotStopped: isNotStopped,
+    return BlocProvider(
+      create: (_) => ChatAudioPlayerCubit(
+        player,
+        attachment.url,
+      ),
+      child: SizedBox(
+        height: 48.0,
+        child: Row(
+          children: [
+            Builder(builder: (context) {
+              final bool isOnline = context.select((MainCubit cubit) =>
+                  cubit.state.internetConnectionIsAvailable);
+              final bool isPlaying = context.select(
+                  (ChatAudioPlayerCubit cubit) => cubit.state.isPlaying);
+
+              final Uri itemUri = Uri.parse(attachment.url ?? '');
+
+              return _PlayPauseBtn(
+                isPlaying: isPlaying,
+                color: isQuestion
+                    ? Theme.of(context).primaryColor
+                    : Theme.of(context).backgroundColor,
+                iconColor: isQuestion
+                    ? Theme.of(context).backgroundColor
+                    : Theme.of(context).primaryColor,
+                onTapPlayPause: () {
+                  logger.d('attachment url +++++ ${attachment.url}');
+                    if(isOnline) {
+                      player.playPause(itemUri);
+                    } else {
+                      if(!itemUri.hasScheme){
+                        player.playPause(itemUri);
+                      }
+                    }
+                },
+              );
+            }),
+            const SizedBox(
+              width: 12.0,
             ),
-          ),
-        ],
+            Builder(builder: (context) {
+              final Duration position = context
+                  .select((ChatAudioPlayerCubit cubit) => cubit.state.position);
+
+              final bool isNotStopped = context.select(
+                  (ChatAudioPlayerCubit cubit) => cubit.state.isNotStopped);
+
+              return Expanded(
+                child: _PlayProgress(
+                  player: player,
+                  url: attachment.url ?? '',
+                  duration: Duration(seconds: attachment.meta?.duration ?? 0),
+                  position: position,
+                  textColor: isQuestion
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).backgroundColor,
+                  backgroundColor: Theme.of(context).primaryColorLight,
+                  color: isQuestion
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).backgroundColor,
+                  isNotStopped: isNotStopped,
+                ),
+              );
+            }),
+          ],
+        ),
       ),
     );
   }
@@ -220,7 +199,8 @@ class _PlayProgress extends StatelessWidget {
                 final slidePosition = v * duration.inMilliseconds;
                 player.seek(url, Duration(milliseconds: slidePosition.round()));
               },
-              value: (position.inMilliseconds > 0 &&
+              value: (isNotStopped &&
+                      position.inMilliseconds > 0 &&
                       position.inMilliseconds < duration.inMilliseconds)
                   ? position.inMilliseconds / duration.inMilliseconds
                   : 0.0,

@@ -2,13 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart' hide PlayerState;
 import 'package:get/get.dart';
 import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -81,6 +82,7 @@ class ChatCubit extends Cubit<ChatState> {
     this._confirmSendAnswerAlert,
   ) : super(const ChatState()) {
     chatScreenArguments = Get.arguments;
+
     textInputEditingController.addListener(textInputEditingControllerListener);
 
     if (chatScreenArguments.clientIdFromPush != null) {
@@ -528,35 +530,43 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  void sendAnswerAgain() async {
+  Future<void> sendAnswerAgain() async {
     try {
-      if (_answerRequest == null) {
-        return;
+      final PlayerState currentRecordedState =
+          audioPlayer.getCurrentState(state.recordedAudio?.path);
+
+      if (currentRecordedState == PlayerState.playing ||
+          currentRecordedState == PlayerState.paused) {
+        await audioPlayer.stop();
+        logger.d('STOP');
       }
 
-      final ChatItem answer = await _repository.sendAnswer(_answerRequest!);
-      logger.i('send text response:$answer');
-      _answerRequest = null;
+      if (_answerRequest != null) {
+        final ChatItem answer = await _repository.sendAnswer(_answerRequest!);
+        logger.i('send text response:$answer');
+        _answerRequest = null;
 
-      await _deleteRecordedAudioFile(state.recordedAudio);
-      _mainCubit.updateSessions();
-      _recordAudioDuration = null;
+        await _deleteRecordedAudioFile(state.recordedAudio);
+        _mainCubit.updateSessions();
+        _recordAudioDuration = null;
 
-      final messages = List.of(state.activeMessages);
-      messages.replaceRange(messages.length - 1, messages.length, [
-        answer.copyWith(
+        final List<ChatItem> messages = List.of(state.activeMessages);
+
+        messages.removeLast();
+
+        messages.add(answer.copyWith(
           isAnswer: true,
           type: state.questionFromDB?.type,
           ritualIdentifier: state.questionFromDB?.ritualIdentifier,
-        )
-      ]);
+        ));
 
-      emit(
-        state.copyWith(
-          recordedAudio: null,
-          activeMessages: messages,
-        ),
-      );
+        emit(
+          state.copyWith(
+            recordedAudio: null,
+            activeMessages: messages,
+          ),
+        );
+      }
     } catch (e) {
       logger.e(e);
     }
@@ -742,7 +752,7 @@ class ChatCubit extends Cubit<ChatState> {
           e.type == DioErrorType.receiveTimeout) {
         _mainCubit.updateErrorMessage(
             UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
-        answer = _getNotSentAnswer();
+        answer = await _getNotSentAnswer();
       }
     }
 
@@ -751,10 +761,15 @@ class ChatCubit extends Cubit<ChatState> {
     return answer;
   }
 
-  ChatItem _getNotSentAnswer() {
+  Future<ChatItem> _getNotSentAnswer() async {
     String? picturePath1 = _getAttachedPicturePath(0);
     String? picturePath2 = _getAttachedPicturePath(1);
     File? recordedAudio = state.recordedAudio;
+    // File? renamedAudioFile;
+    // if (recordedAudio != null) {
+    //   renamedAudioFile = await changeFileNameOnly(
+    //       recordedAudio, recordedAudio.hashCode.toString());
+    // }
 
     final ChatItem answer = ChatItem(
       isAnswer: true,
@@ -782,6 +797,14 @@ class ChatCubit extends Cubit<ChatState> {
     );
     return answer;
   }
+
+  // Future<File> changeFileNameOnly(File file, String newFileName) {
+  //   var path = file.path;
+  //   var lastSeparator = path.lastIndexOf(Platform.pathSeparator);
+  //   var newPath = path.substring(0, lastSeparator + 1) + newFileName;
+  //   logger.d(newPath);
+  //    return file.rename('$newPath.$_recordFileExt');
+  // }
 
   String? _getAttachedPicturePath(int n) {
     return state.attachedPictures.length >= n + 1

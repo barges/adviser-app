@@ -14,11 +14,9 @@ part 'chat_state.freezed.dart';
 class ChatState with _$ChatState {
   const factory ChatState({
     @Default([]) List<ChatItem> activeMessages,
-    @Default([]) List<ChatItem> historyMessages,
     @Default([]) List<File> attachedPictures,
     @Default(0) int currentTabIndex,
     @Default(0) int inputTextLength,
-    @Default(false) bool isLoadingAudio,
     @Default(false) bool isRecordingAudio,
     @Default(false) bool isAudioFileSaved,
     @Default(true) bool showInputFieldIfPublic,
