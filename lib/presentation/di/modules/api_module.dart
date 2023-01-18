@@ -58,6 +58,7 @@ class ApiModule implements Module {
       'Content-Type': 'application/json',
       'x-adviqo-version': packageInfo.version,
       'x-adviqo-platform': Platform.operatingSystem,
+      'x-adviqo-app-id': packageInfo.packageName,
       'Authorization': cacheManager
           .getTokenByBrand(cacheManager.getCurrentBrand() ?? Brand.fortunica),
     };
