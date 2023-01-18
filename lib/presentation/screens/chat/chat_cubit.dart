@@ -17,6 +17,7 @@ import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/ui_error_type.dart';
 import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
 import 'package:shared_advisor_interface/data/models/app_success/ui_success_type.dart';
+import 'package:shared_advisor_interface/data/models/chats/answer_limitation.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
@@ -26,6 +27,7 @@ import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
+import 'package:shared_advisor_interface/data/network/responses/answer_validation_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -73,6 +75,8 @@ class ChatCubit extends Cubit<ChatState> {
   Timer? _answerTimer;
   bool _counterMessageCleared = false;
   bool _isStartAnswerSending = false;
+
+  static List<AnswerLimitation> _answerLimitations = [];
 
   ChatCubit(
     this._repository,
@@ -145,6 +149,10 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> _getData() async {
+    if (_answerLimitations.isEmpty) {
+      await _getAnswerLimitations();
+    }
+
     if (chatScreenArguments.ritualID != null) {
       _getRituals(chatScreenArguments.ritualID!).then((_) async {
         scrollChatDown();
@@ -152,6 +160,12 @@ class ChatCubit extends Cubit<ChatState> {
     } else {
       await _getPublicOrPrivateQuestion();
     }
+  }
+
+  Future<void> _getAnswerLimitations() async {
+    final AnswerValidationResponse response =
+        await _repository.getAnswerValidation();
+    _answerLimitations = response.answerLimitations ?? [];
   }
 
   void textInputEditingControllerListener() {
@@ -560,17 +574,24 @@ class ChatCubit extends Cubit<ChatState> {
           ritualIdentifier: state.questionFromDB?.ritualIdentifier,
         ));
 
-        emit(
-          state.copyWith(
-            recordedAudio: null,
-            activeMessages: messages,
-          ),
-        );
-      }
-    } catch (e) {
+      emit(
+        state.copyWith(
+          recordedAudio: null,
+          activeMessages: messages,
+        ),
+      );
+    } on DioError catch (e) {
       logger.e(e);
+      if (!await _connectivityService.checkConnection() ||
+          e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.sendTimeout ||
+          e.type == DioErrorType.receiveTimeout) {
+        _mainCubit.updateErrorMessage(
+            UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
+      }
     }
   }
+
 
   void changeCurrentTabIndex(int newIndex) {
     emit(state.copyWith(currentTabIndex: newIndex));
@@ -837,8 +858,8 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   bool _checkAttachmentSizeIsOk(List<File> images, File? recordedAudio) {
-    if (_calculateAttachmentSize(images, recordedAudio) <=
-        AppConstants.maxAttachmentFilesSizeInMb) {
+    if (_calculateAttachmentSizeInBytes(images, recordedAudio) <=
+        maxAttachmentSizeInBytes) {
       if (_mainCubit.state.appError is UIError &&
           (_mainCubit.state.appError as UIError).uiErrorType ==
               UIErrorType.theMaximumSizeOfTheAttachmentsIs20Mb) {
@@ -859,24 +880,24 @@ class ChatCubit extends Cubit<ChatState> {
       return true;
     } else {
       return _recordAudioDuration != null &&
-          _recordAudioDuration! <= AppConstants.maxRecordDurationInSec;
+          _recordAudioDuration! <= maxRecordDurationInSec;
     }
   }
 
-  double _calculateAttachmentSize(List<File> images, File? recordedAudio) {
-    double totalSizeInMb = 0.0;
+  int _calculateAttachmentSizeInBytes(List<File> images, File? recordedAudio) {
+    int totalSizeInBytes = 0;
 
     if (images.isNotEmpty) {
       for (File image in images) {
-        totalSizeInMb += image.sizeInMb;
+        totalSizeInBytes += image.sizeInBytes;
       }
     }
 
     if (recordedAudio != null) {
-      totalSizeInMb += recordedAudio.sizeInMb;
+      totalSizeInBytes += recordedAudio.sizeInBytes;
     }
 
-    return totalSizeInMb;
+    return totalSizeInBytes;
   }
 
   bool _checkTextLengthIsOk() {
@@ -889,15 +910,15 @@ class ChatCubit extends Cubit<ChatState> {
       return true;
     } else {
       return _recordAudioDuration != null &&
-          _recordAudioDuration! >= AppConstants.minRecordDurationInSec;
+          _recordAudioDuration! >= minRecordDurationInSec;
     }
   }
 
   bool canAttachPictureTo({AttachmentType? attachmentType}) {
     return state.attachedPictures.length <
         ((attachmentType != null && attachmentType == AttachmentType.audio)
-            ? AppConstants.maxAttachedPicturesWithAudio
-            : AppConstants.maxAttachedPictures);
+            ? minAttachedPictures
+            : maxAttachedPictures);
   }
 
   void _scrollTextFieldToEnd() {
@@ -917,17 +938,49 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   bool get canRecordAudio =>
-      state.attachedPictures.length <=
-          AppConstants.maxAttachedPicturesWithAudio &&
+      state.attachedPictures.length <= minAttachedPictures &&
       state.isAudioAnswerEnabled == true;
 
-  int get minTextLength => state.questionFromDB?.type == ChatItemType.ritual
-      ? AppConstants.minTextLengthRitual
-      : AppConstants.minTextLength;
+  int get minRecordDurationInSec =>
+      answerLimitation?.content?.audioTime?.min ??
+      AppConstants.minRecordDurationInSec;
 
-  int get maxTextLength => state.questionFromDB?.type == ChatItemType.ritual
-      ? AppConstants.maxTextLengthRitual
-      : AppConstants.maxTextLength;
+  int get maxRecordDurationInSec =>
+      answerLimitation?.content?.audioTime?.max ??
+      AppConstants.maxRecordDurationInSec;
+
+  int get minAttachedPictures =>
+      answerLimitation?.content?.attachments?.min ??
+      AppConstants.minAttachments;
+
+  int get maxAttachedPictures =>
+      answerLimitation?.content?.attachments?.max ??
+      AppConstants.maxAttachments;
+
+  int get minTextLength =>
+      answerLimitation?.content?.min ??
+      (questionFromDBtype == ChatItemType.ritual
+          ? AppConstants.minTextLengthRitual
+          : AppConstants.minTextLength);
+
+  int get maxTextLength =>
+      answerLimitation?.content?.max ??
+      (questionFromDBtype == ChatItemType.ritual
+          ? AppConstants.maxTextLengthRitual
+          : AppConstants.maxTextLength);
+
+  int get maxAttachmentSizeInBytes =>
+      answerLimitation?.content?.bodySize?.max ??
+      AppConstants.maxAttachmentSizeInBytes;
 
   int? get recordAudioDuration => _recordAudioDuration;
+
+  AnswerLimitation? get answerLimitation =>
+      getAnswerLimitationByType(questionFromDBtype);
+
+  AnswerLimitation? getAnswerLimitationByType(ChatItemType? type) {
+    return _answerLimitations.firstWhereOrNull((e) => e.questionType == type);
+  }
+
+  ChatItemType? get questionFromDBtype => state.questionFromDB?.type;
 }
