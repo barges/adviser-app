@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 
-import '../../main.dart';
-
 abstract class AudioPlayerService {
   Stream<AudioPlayerState> get stateStream;
 
@@ -31,7 +29,6 @@ class AudioPlayerServiceImpl implements AudioPlayerService {
 
   AudioPlayerServiceImpl() {
     _stateSubscription = _player.onPlayerStateChanged.listen((event) {
-      logger.d(event);
       _state = event;
     });
   }
@@ -56,8 +53,6 @@ class AudioPlayerServiceImpl implements AudioPlayerService {
   @override
   Future<void> playPause(Uri uri) async {
     final String url = uri.toString();
-
-    logger.d('url from play ----- $url');
 
     final Source source =
         uri.hasScheme ? UrlSource(url) : DeviceFileSource(url);

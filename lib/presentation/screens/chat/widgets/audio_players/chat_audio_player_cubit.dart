@@ -9,8 +9,8 @@ class ChatAudioPlayerCubit extends Cubit<ChatAudioPlayerState> {
   final AudioPlayerService _player;
   final String? _url;
 
-  late StreamSubscription<AudioPlayerState> _playerStateSubscription;
-  late StreamSubscription<PlayerPosition> _playerPositionSubscription;
+  StreamSubscription<AudioPlayerState>? _playerStateSubscription;
+  StreamSubscription<PlayerPosition>? _playerPositionSubscription;
 
   ChatAudioPlayerCubit(
     this._player,
@@ -51,8 +51,8 @@ class ChatAudioPlayerCubit extends Cubit<ChatAudioPlayerState> {
 
   @override
   Future<void> close() {
-    _playerStateSubscription.cancel();
-    _playerPositionSubscription.cancel();
+    _playerStateSubscription?.cancel();
+    _playerPositionSubscription?.cancel();
     return super.close();
   }
 }
