@@ -48,14 +48,19 @@ class ActiveChatMessagesWidget extends StatelessWidget {
 
                 for (int i = 0; i < activeMessages.length; i++) {
                   final ChatItem item = activeMessages[i];
+                  final GlobalKey key = GlobalKey();
+                  if (i == activeMessages.length - 1 && !item.isAnswer) {
+                    chatCubit.questionGlobalKey = key;
+                  }
                   widgets.add(
                     ChatItemWidget(
-                        key: i == activeMessages.length - 1
-                            ? chatCubit.questionGlobalKey
-                            : null,
+                        key: key,
                         item: item,
-                        onPressedTryAgain:
-                            !item.isSent ? chatCubit.sendAnswerAgain : null),
+                        onPressedTryAgain: () async {
+                          if (!item.isSent) {
+                            await chatCubit.sendAnswerAgain();
+                          }
+                        }),
                   );
                   if (i < activeMessages.length - 1) {
                     widgets.add(
