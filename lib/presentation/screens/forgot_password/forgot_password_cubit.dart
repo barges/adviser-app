@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
+import 'package:shared_advisor_interface/data/models/app_success/ui_success_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/data/network/requests/reset_password_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
@@ -14,12 +16,14 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_state.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+import 'package:shared_advisor_interface/presentation/screens/login/login_cubit.dart';
 import 'package:shared_advisor_interface/presentation/services/dynamic_link_service.dart';
 
 class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   final AuthRepository _repository;
   final DynamicLinkService _dynamicLinkService;
   final MainCubit _mainCubit;
+  final LoginCubit _loginCubit;
 
   late final StreamSubscription<DynamicLinkData> _linkSubscription;
 
@@ -33,8 +37,11 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   late final ForgotPasswordScreenArguments arguments;
 
   ForgotPasswordCubit(
-      this._repository, this._dynamicLinkService, this._mainCubit)
-      : super(const ForgotPasswordState()) {
+    this._repository,
+    this._dynamicLinkService,
+    this._mainCubit,
+    this._loginCubit,
+  ) : super(const ForgotPasswordState()) {
     arguments = Get.arguments as ForgotPasswordScreenArguments;
 
     if (arguments.resetToken != null) {
@@ -142,15 +149,19 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
       );
       if (success) {
         logger.d(Get.previousRoute);
-        Get.back(result: emailController.text);
+        _loginCubit.updateSuccessMessage(
+          UISuccess.withArguments(
+            UISuccessType.weVeSentPasswordResetInstructionsToEmail,
+            emailController.text,
+          ),
+        );
+        Get.back();
       }
     } else {
-      if (!emailIsValid()) {
-        emit(
-          state.copyWith(
-              emailErrorType: ValidationErrorType.pleaseInsertCorrectEmail),
-        );
-      }
+      emit(
+        state.copyWith(
+            emailErrorType: ValidationErrorType.pleaseInsertCorrectEmail),
+      );
     }
   }
 

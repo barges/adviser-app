@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_players/chat_audio_player_cubit.dart';
 import 'package:shared_advisor_interface/presentation/services/audio_player_service.dart';
 
@@ -20,6 +21,7 @@ class ChatAudioPlayerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ChatCubit chatCubit = context.read<ChatCubit>();
     return BlocProvider(
       create: (_) => ChatAudioPlayerCubit(
         player,
@@ -47,6 +49,9 @@ class ChatAudioPlayerWidget extends StatelessWidget {
                     : Theme.of(context).primaryColor,
                 onTapPlayPause: () {
                   if (isOnline) {
+                    if (chatCubit.state.isRecordingAudio) {
+                      chatCubit.stopRecordingAudio();
+                    }
                     player.playPause(itemUri);
                   } else {
                     if (!itemUri.hasScheme || isPlaying) {

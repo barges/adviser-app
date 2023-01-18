@@ -60,9 +60,10 @@ class ChatCubit extends Cubit<ChatState> {
   late final ChatScreenArguments chatScreenArguments;
   final VoidCallback _showErrorAlert;
   final ValueGetter<Future<bool?>> _confirmSendAnswerAlert;
+  final ValueGetter<Future<bool?>> _deleteAudioMessageAlert;
   final MainCubit _mainCubit;
-  final AudioPlayerService audioPlayer = AudioPlayerServiceImpl();
-  final SoundRecordService _soundRecordService = SoundRecordServiceImp();
+  final AudioPlayerService audioPlayer;
+  final SoundRecordService _soundRecordService;
   final int _tillShowMessagesInSec =
       AppConstants.tillShowAnswerTimingMessagesInSec;
   final int _afterShowMessagesInSec =
@@ -81,8 +82,11 @@ class ChatCubit extends Cubit<ChatState> {
     this._repository,
     this._connectivityService,
     this._mainCubit,
+    this._soundRecordService,
+    this.audioPlayer,
     this._showErrorAlert,
     this._confirmSendAnswerAlert,
+    this._deleteAudioMessageAlert,
   ) : super(const ChatState()) {
     chatScreenArguments = Get.arguments;
 
@@ -330,6 +334,8 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> startRecordingAudio(BuildContext context) async {
     _tryStartAnswerSend();
 
+    audioPlayer.stop();
+
     await CheckPermissionService.handlePermission(
         context, PermissionType.audio);
 
@@ -421,18 +427,20 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> deleteRecordedAudio() async {
     await audioPlayer.stop();
 
-    await _deleteRecordedAudioFile(state.recordedAudio);
-    _recordAudioDuration = null;
+    if (await _deleteAudioMessageAlert() == true) {
+      await _deleteRecordedAudioFile(state.recordedAudio);
+      _recordAudioDuration = null;
 
-    emit(
-      state.copyWith(
-          recordedAudio: null,
-          isRecordingAudio: false,
-          isAudioFileSaved: false,
-          isSendButtonEnabled:
-              _checkAttachmentSizeIsOk(state.attachedPictures, null) &&
-                  _checkTextLengthIsOk()),
-    );
+      emit(
+        state.copyWith(
+            recordedAudio: null,
+            isRecordingAudio: false,
+            isAudioFileSaved: false,
+            isSendButtonEnabled:
+                _checkAttachmentSizeIsOk(state.attachedPictures, null) &&
+                    _checkTextLengthIsOk()),
+      );
+    }
   }
 
   Future<void> _deleteRecordedAudioFile(File? recordedAudio) async {

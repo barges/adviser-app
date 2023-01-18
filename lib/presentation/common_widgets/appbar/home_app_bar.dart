@@ -1,9 +1,9 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/change_locale_button.dart';
@@ -124,7 +124,7 @@ class _AuthorizedBrandsWidget extends StatelessWidget {
     return Stack(
         textDirection: TextDirection.rtl,
         children: brands
-            .mapIndexed((element, index) => _AuthorizedBrandWidget(
+            .mapIndexed((index, element) => _AuthorizedBrandWidget(
                   index: index,
                   brandIcon: element.icon,
                   isFirstBrand: index == brands.length - 1,

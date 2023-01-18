@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/presentation/screens/add_gallery_pictures/add_gallery_pictures_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/force_update/force_update_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/gallery/gallery_pictures_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_screen.dart';
@@ -35,6 +36,7 @@ class AppRoutes {
   static const chat = '/chat_screen';
   static const customerSessions = '/customer_sessions';
   static const addGalleryPictures = '/add_gallery_pictures';
+  static const forceUpdate = '/force_update';
 
   static final List<GetPage> getPages = [
     GetPage(
@@ -104,6 +106,10 @@ class AppRoutes {
     GetPage(
       name: addGalleryPictures,
       page: () => const AddGalleryPicturesScreen(),
+    ),
+    GetPage(
+      name: forceUpdate,
+      page: () => const ForceUpdateScreen(),
     ),
   ];
 }

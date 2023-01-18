@@ -130,28 +130,6 @@ extension DoubleExt on double {
   }
 }
 
-extension IterableExtention<E> on Iterable<E> {
-  Iterable<T> mapIndexed<T>(T Function(E element, int index) f) {
-    var i = 0;
-    return map((e) => f(e, i++));
-  }
-
-  void forEachIndexed(void Function(E element, int index) f) {
-    var i = 0;
-    for (var e in this) {
-      f(e, i++);
-    }
-  }
-
-  E? get firstOrNull {
-    return isEmpty ? null : first;
-  }
-
-  E? get lastOrNull {
-    return isEmpty ? null : last;
-  }
-}
-
 extension DateTimeExt on DateTime {
   String get chatListTime {
     DateTime now = DateTime.now();

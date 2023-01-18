@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_market.dart';
@@ -51,7 +52,7 @@ class ReportsMarketWidget extends StatelessWidget {
                 ],
               ),
               Column(
-                children: units.mapIndexed((element, index) {
+                children: units.mapIndexed((index, element) {
                   return ReportsUnitWidget(
                     reportsUnit: element,
                     currencySymbol: currencySymbol,
