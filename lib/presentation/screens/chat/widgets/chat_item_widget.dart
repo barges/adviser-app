@@ -1,8 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_players/chat_audio_player_widget.dart';
@@ -59,7 +59,7 @@ class _ChatItemWidgetState extends State<ChatItemWidget>
           if (widget.item.attachments?.isNotEmpty == true)
             Column(
               children:
-                  widget.item.attachments!.mapIndexed((attachment, index) {
+                  widget.item.attachments!.mapIndexed((index, attachment) {
                 if (attachment.type == AttachmentType.image) {
                   return Padding(
                     padding: EdgeInsets.only(

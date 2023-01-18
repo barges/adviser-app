@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_market.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
@@ -33,7 +34,7 @@ class ListOfMarketsByMonth extends StatelessWidget {
         children: [
           if (markets.isNotEmpty)
             Column(
-              children: markets.mapIndexed((element, index) {
+              children: markets.mapIndexed((index, element) {
                 return ReportsMarketWidget(
                   reportsMarket: element,
                   currencySymbol: currencySymbol,
