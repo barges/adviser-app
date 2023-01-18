@@ -94,8 +94,6 @@ class LoginContentWidget extends StatelessWidget {
                         final AppSuccess appSuccess = context.select(
                             (LoginCubit cubit) => cubit.state.appSuccess);
 
-                        logger.d(appSuccess);
-
                         return AppSuccessWidget(
                           message: appSuccess.getMessage(context),
                           needEmailButton: true,
