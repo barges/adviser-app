@@ -1,9 +1,9 @@
 // ignore_for_file: invalid_annotation_target
 
+import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
 import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 
 part 'attachment.freezed.dart';
 part 'attachment.g.dart';
@@ -16,7 +16,7 @@ class Attachment with _$Attachment {
     String? mime,
     String? attachment,
     String? url,
-    Meta? meta,
+    @JsonKey(fromJson: metaFromJson) Meta? meta,
   }) = _Attachment;
 
   factory Attachment.fromJson(Map<String, dynamic> json) =>
@@ -32,4 +32,8 @@ class Attachment with _$Attachment {
       return AttachmentType.image;
     }
   }
+}
+
+Meta? metaFromJson(dynamic jsonValue) {
+  return jsonValue is Map<String, dynamic> ? Meta.fromJson(jsonValue) : null;
 }

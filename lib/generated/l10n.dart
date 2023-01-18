@@ -2190,6 +2190,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Please update the app`
+  String get pleaseUpdateTheApp {
+    return Intl.message(
+      'Please update the app',
+      name: 'pleaseUpdateTheApp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This version of the app is no longer supported. To get back to all your conversations, install the latest version`
+  String get thisVersionOfTheAppIsNoLongerSupported {
+    return Intl.message(
+      'This version of the app is no longer supported. To get back to all your conversations, install the latest version',
+      name: 'thisVersionOfTheAppIsNoLongerSupported',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Learn More`
+  String get learnMore {
+    return Intl.message(
+      'Learn More',
+      name: 'learnMore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update`
+  String get update {
+    return Intl.message(
+      'Update',
+      name: 'update',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

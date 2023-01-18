@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_annotation_target
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
@@ -10,7 +11,6 @@ import 'package:shared_advisor_interface/data/models/enums/message_content_type.
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 
 part 'chat_item.freezed.dart';
 part 'chat_item.g.dart';
@@ -72,9 +72,7 @@ class ChatItem with _$ChatItem {
   String getUnansweredMessage(BuildContext context) {
     String? resultMessage;
     if (unansweredCount != null && unansweredCount! > 1) {
-      resultMessage = S
-          .of(context)
-          .youHaveAFewActiveSessions;
+      resultMessage = S.of(context).youHaveAFewActiveSessions;
     } else {
       resultMessage = unansweredTypes?.firstOrNull?.unAnsweredMessage(context);
     }
@@ -83,8 +81,8 @@ class ChatItem with _$ChatItem {
   }
 
   bool get isAudio =>
-      attachments?.isNotEmpty == true && attachments!
-          .any((element) => element.type == AttachmentType.audio);
+      attachments?.isNotEmpty == true &&
+      attachments!.any((element) => element.type == AttachmentType.audio);
 }
 
 List<Attachment>? _attachmentFromJson(json) => (json as List<dynamic>?)

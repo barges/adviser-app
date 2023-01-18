@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
-import 'package:shared_advisor_interface/data/models/app_success/ui_success_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/data/network/responses/login_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
@@ -147,22 +146,19 @@ class LoginCubit extends Cubit<LoginState> {
     clearErrorMessage();
     clearSuccessMessage();
 
-    final dynamic email = await Get.toNamed(
+    Get.toNamed(
       AppRoutes.forgotPassword,
       arguments: ForgotPasswordScreenArguments(
         brand: state.selectedBrand,
       ),
     );
+  }
 
-    if (email != null) {
-      emit(
-        state.copyWith(
-          appSuccess: UISuccess.withArguments(
-              UISuccessType.weVeSentPasswordResetInstructionsToEmail,
-              email as String),
-        ),
-      );
-    }
+  void updateSuccessMessage(AppSuccess appSuccess) {
+    emit(
+      state.copyWith(appSuccess: appSuccess),
+    );
+    logger.d(state.appSuccess);
   }
 
   bool emailIsValid() => GetUtils.isEmail(emailController.text);

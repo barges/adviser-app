@@ -153,6 +153,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "itWillGoBackIntoTheGeneralQueueYouWillNotBeAbleToTakeItAgain":
             MessageLookupByLibrary.simpleMessage(
                 "Es wird zurück in die allgemeine Warteschlange gestellt. Sie können es nicht noch einmal nehmen."),
+        "learnMore": MessageLookupByLibrary.simpleMessage("Lern mehr"),
         "legalBlock":
             MessageLookupByLibrary.simpleMessage("Gesetzliche Sperre"),
         "live": MessageLookupByLibrary.simpleMessage("Live"),
@@ -228,6 +229,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseLoginToTheWebVersionOfYourAccount":
             MessageLookupByLibrary.simpleMessage(
                 "Bitte melden Sie sich bei der Webversion Ihres Kontos an."),
+        "pleaseUpdateTheApp": MessageLookupByLibrary.simpleMessage(
+            "Bitte aktualisieren Sie die App"),
         "portuguese": MessageLookupByLibrary.simpleMessage("Portugiesisch"),
         "preferNotToAnswer":
             MessageLookupByLibrary.simpleMessage("Keine Angabe"),
@@ -291,6 +294,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "Der Benutzer wurde nicht gefunden"),
         "thisMonth": MessageLookupByLibrary.simpleMessage("Diesen Monat"),
         "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": m2,
+        "thisVersionOfTheAppIsNoLongerSupported":
+            MessageLookupByLibrary.simpleMessage(
+                "Diese Version der App wird nicht mehr unterstützt. Um zu all Ihren Unterhaltungen zurückzukehren, installieren Sie die neueste Version"),
         "thisWeek": MessageLookupByLibrary.simpleMessage("In dieser Woche"),
         "tips": MessageLookupByLibrary.simpleMessage("Tipps"),
         "title": MessageLookupByLibrary.simpleMessage("Titel"),
@@ -310,6 +316,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Uh-oh. Es sieht so aus, als hätten Sie Ihre Verbindung verloren. Bitte versuche es erneut."),
         "unknownError":
             MessageLookupByLibrary.simpleMessage("Unbekannter Fehler"),
+        "update": MessageLookupByLibrary.simpleMessage("Aktualisieren"),
         "useYourNewPasswordToLogin": MessageLookupByLibrary.simpleMessage(
             "Verwenden Sie Ihr neues Passwort, um sich anzumelden"),
         "weDidntFindAnything":

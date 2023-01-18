@@ -36,7 +36,7 @@ import 'package:shared_advisor_interface/presentation/services/push_notification
 
 import '../forgot_password_screen/fake_forgot_password_screen.dart';
 import '../home_screen/fake_home_screen.dart';
-import '../mocked_classes.mocks.dart';
+import '../mocked_classes/mocked_classes.mocks.dart';
 import 'fake_login_screen.dart';
 
 // ignore: depend_on_referenced_packages

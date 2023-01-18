@@ -8,7 +8,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart' hide PlayerState;
 import 'package:get/get.dart';
 import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -51,7 +51,7 @@ class ChatCubit extends Cubit<ChatState> {
   final TextEditingController textInputEditingController =
       TextEditingController();
 
-  final GlobalKey questionGlobalKey = GlobalKey();
+  GlobalKey? questionGlobalKey;
 
   final ConnectivityService _connectivityService;
 
@@ -61,9 +61,10 @@ class ChatCubit extends Cubit<ChatState> {
   late final ChatScreenArguments chatScreenArguments;
   final VoidCallback _showErrorAlert;
   final ValueGetter<Future<bool?>> _confirmSendAnswerAlert;
+  final ValueGetter<Future<bool?>> _deleteAudioMessageAlert;
   final MainCubit _mainCubit;
-  final AudioPlayerService audioPlayer = AudioPlayerServiceImpl();
-  final SoundRecordService _soundRecordService = SoundRecordServiceImp();
+  final AudioPlayerService audioPlayer;
+  final SoundRecordService _soundRecordService;
   final int _tillShowMessagesInSec =
       AppConstants.tillShowAnswerTimingMessagesInSec;
   final int _afterShowMessagesInSec =
@@ -82,10 +83,14 @@ class ChatCubit extends Cubit<ChatState> {
     this._repository,
     this._connectivityService,
     this._mainCubit,
+    this._soundRecordService,
+    this.audioPlayer,
     this._showErrorAlert,
     this._confirmSendAnswerAlert,
+    this._deleteAudioMessageAlert,
   ) : super(const ChatState()) {
     chatScreenArguments = Get.arguments;
+
     textInputEditingController.addListener(textInputEditingControllerListener);
 
     if (chatScreenArguments.clientIdFromPush != null) {
@@ -113,13 +118,13 @@ class ChatCubit extends Cubit<ChatState> {
       });
     }
 
-    final keyboardVisibilityController = KeyboardVisibilityController();
-
     _keyboardSubscription =
-        keyboardVisibilityController.onChange.listen((bool visible) {
+        KeyboardVisibilityController().onChange.listen((bool visible) {
       if (visible) {
-        Future.delayed(const Duration(milliseconds: 300))
-            .then((value) => Utils.animateToWidget(questionGlobalKey));
+        if (questionGlobalKey != null) {
+          Future.delayed(const Duration(milliseconds: 300))
+              .then((value) => Utils.animateToWidget(questionGlobalKey!));
+        }
       }
     });
   }
@@ -128,7 +133,7 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> close() {
     activeMessagesScrollController.dispose();
 
-    _keyboardSubscription;
+    _keyboardSubscription.cancel();
 
     textInputScrollController.dispose();
     textInputEditingController.dispose();
@@ -330,6 +335,8 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> startRecordingAudio(BuildContext context) async {
     _tryStartAnswerSend();
 
+    audioPlayer.stop();
+
     await CheckPermissionService.handlePermission(
         context, PermissionType.audio);
 
@@ -421,20 +428,22 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> deleteRecordedAudio() async {
-    audioPlayer.stop();
+    await audioPlayer.stop();
 
-    await _deleteRecordedAudioFile(state.recordedAudio);
-    _recordAudioDuration = null;
+    if (await _deleteAudioMessageAlert() == true) {
+      await _deleteRecordedAudioFile(state.recordedAudio);
+      _recordAudioDuration = null;
 
-    emit(
-      state.copyWith(
-          recordedAudio: null,
-          isRecordingAudio: false,
-          isAudioFileSaved: false,
-          isSendButtonEnabled:
-              _checkAttachmentSizeIsOk(state.attachedPictures, null) &&
-                  _checkTextLengthIsOk()),
-    );
+      emit(
+        state.copyWith(
+            recordedAudio: null,
+            isRecordingAudio: false,
+            isAudioFileSaved: false,
+            isSendButtonEnabled:
+                _checkAttachmentSizeIsOk(state.attachedPictures, null) &&
+                    _checkTextLengthIsOk()),
+      );
+    }
   }
 
   Future<void> _deleteRecordedAudioFile(File? recordedAudio) async {
@@ -494,7 +503,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> sendMediaAnswer() async {
-    audioPlayer.stop();
+    await audioPlayer.stop();
 
     _answerRequest = await _createMediaAnswerRequest();
     final ChatItem? answer = await _sendAnswer();
@@ -545,47 +554,6 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  void sendAnswerAgain() async {
-    try {
-      if (_answerRequest == null) {
-        return;
-      }
-
-      final ChatItem answer = await _repository.sendAnswer(_answerRequest!);
-      logger.i('send text response:$answer');
-      _answerRequest = null;
-
-      await _deleteRecordedAudioFile(state.recordedAudio);
-      _mainCubit.updateSessions();
-      _recordAudioDuration = null;
-
-      final messages = List.of(state.activeMessages);
-      messages.replaceRange(messages.length - 1, messages.length, [
-        answer.copyWith(
-          isAnswer: true,
-          type: state.questionFromDB?.type,
-          ritualIdentifier: state.questionFromDB?.ritualIdentifier,
-        )
-      ]);
-
-      emit(
-        state.copyWith(
-          recordedAudio: null,
-          activeMessages: messages,
-        ),
-      );
-    } on DioError catch (e) {
-      logger.e(e);
-      if (!await _connectivityService.checkConnection() ||
-          e.type == DioErrorType.connectTimeout ||
-          e.type == DioErrorType.sendTimeout ||
-          e.type == DioErrorType.receiveTimeout) {
-        _mainCubit.updateErrorMessage(
-            UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
-      }
-    }
-  }
-
   void changeCurrentTabIndex(int newIndex) {
     emit(state.copyWith(currentTabIndex: newIndex));
   }
@@ -603,7 +571,8 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> _tryStartAnswerSend() async {
-    if (!_isStartAnswerSending &&
+    if (await _connectivityService.checkConnection() &&
+        !_isStartAnswerSending &&
         chatScreenArguments.publicQuestionId == null &&
         state.questionFromDB?.id != null &&
         state.questionFromDB?.startAnswerDate == null) {
@@ -766,7 +735,7 @@ class ChatCubit extends Cubit<ChatState> {
           e.type == DioErrorType.receiveTimeout) {
         _mainCubit.updateErrorMessage(
             UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
-        answer = _getNotSentAnswer();
+        answer = await _getNotSentAnswer();
       }
     }
 
@@ -775,7 +744,7 @@ class ChatCubit extends Cubit<ChatState> {
     return answer;
   }
 
-  ChatItem _getNotSentAnswer() {
+  Future<ChatItem> _getNotSentAnswer() async {
     String? picturePath1 = _getAttachedPicturePath(0);
     String? picturePath2 = _getAttachedPicturePath(1);
     File? recordedAudio = state.recordedAudio;
@@ -807,6 +776,48 @@ class ChatCubit extends Cubit<ChatState> {
     return answer;
   }
 
+  Future<void> sendAnswerAgain() async {
+    try {
+      await audioPlayer.stop();
+
+      if (_answerRequest != null) {
+        final ChatItem answer = await _repository.sendAnswer(_answerRequest!);
+        logger.i('send text response:$answer');
+        _answerRequest = null;
+
+        await _deleteRecordedAudioFile(state.recordedAudio);
+        _mainCubit.updateSessions();
+        _recordAudioDuration = null;
+
+        final List<ChatItem> messages = List.of(state.activeMessages);
+
+        messages.removeLast();
+
+        messages.add(answer.copyWith(
+          isAnswer: true,
+          type: state.questionFromDB?.type,
+          ritualIdentifier: state.questionFromDB?.ritualIdentifier,
+        ));
+
+        emit(
+          state.copyWith(
+            recordedAudio: null,
+            activeMessages: messages,
+          ),
+        );
+      }
+    } on DioError catch (e) {
+      logger.e(e);
+      if (!await _connectivityService.checkConnection() ||
+          e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.sendTimeout ||
+          e.type == DioErrorType.receiveTimeout) {
+        _mainCubit.updateErrorMessage(
+            UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
+      }
+    }
+  }
+
   String? _getAttachedPicturePath(int n) {
     return state.attachedPictures.length >= n + 1
         ? state.attachedPictures[n].path
@@ -820,9 +831,9 @@ class ChatCubit extends Cubit<ChatState> {
 
     final List<int> audioBytes = await state.recordedAudio!.readAsBytes();
     final String base64Audio = base64Encode(audioBytes);
-
+    final String? mime = lookupMimeType(state.recordedAudio!.path);
     return Attachment(
-        mime: lookupMimeType(state.recordedAudio!.path),
+        mime: mime,
         attachment: base64Audio,
         meta: Meta(duration: _recordAudioDuration));
   }

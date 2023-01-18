@@ -174,7 +174,6 @@
   "whenYouHelpYourFirstClientYouWillSeeYourSessionHistoryHere": "When you help your first client, you will see your session history here.",
   "yourClientSessionHistoryWillAppearHere": "Your client session history will appear here",
   "statusTextMayNotExceed300Characters": "Status Text may not exceed 300 characters",
-
   "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgain": "Uh-oh. It looks like you've lost your connection. Please try again.",
   "requiredField": "Required field",
   "customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuild": "Customers want to know you're a real person. The more photos you add, the more trust you can build.",
@@ -212,5 +211,9 @@
   "enterNewPassword": "Enter new password",
   "repeatNewPassword": "Repeat new password",
   "enterYourEmail": "Enter your email",
-  "myGallery": "My Gallery"
+  "myGallery": "My Gallery",
+  "pleaseUpdateTheApp": "Please update the app",
+  "thisVersionOfTheAppIsNoLongerSupported": "This version of the app is no longer supported. To get back to all your conversations, install the latest version",
+  "learnMore": "Learn More",
+  "update": "Update"
 }
