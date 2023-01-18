@@ -19,6 +19,7 @@ import 'package:shared_advisor_interface/presentation/screens/forgot_password/fo
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/widgets/email_part_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/widgets/reset_password_input_part.dart';
 import 'package:shared_advisor_interface/presentation/screens/forgot_password/widgets/success_reset.dart';
+import 'package:shared_advisor_interface/presentation/screens/login/login_cubit.dart';
 import 'package:shared_advisor_interface/presentation/services/dynamic_link_service.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
@@ -29,8 +30,12 @@ class ForgotPasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final MainCubit mainCubit = context.read<MainCubit>();
     return BlocProvider(
-      create: (_) => ForgotPasswordCubit(getIt.get<AuthRepository>(),
-          getIt.get<DynamicLinkService>(), mainCubit),
+      create: (_) => ForgotPasswordCubit(
+        getIt.get<AuthRepository>(),
+        getIt.get<DynamicLinkService>(),
+        mainCubit,
+        getIt.get<LoginCubit>(),
+      ),
       child: const ForgotPasswordContentWidget(),
     );
   }
