@@ -182,7 +182,8 @@ extension DateTimeExt on DateTime {
 }
 
 extension FileExt on File {
-  double get sizeInMb => lengthSync() / (1024 * 1024);
+  int get sizeInBytes => lengthSync();
+  double get sizeInMb => sizeInBytes / (1024 * 1024);
 }
 
 extension DurationExt on Duration {
