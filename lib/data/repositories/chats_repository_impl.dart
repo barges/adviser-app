@@ -1,6 +1,7 @@
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
+import 'package:shared_advisor_interface/data/network/responses/answer_validation_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/conversations_story_response.dart';
 import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
@@ -139,5 +140,10 @@ class ChatsRepositoryImpl implements ChatsRepository {
       excludeIds: excludeIds,
     );
     return response;
+  }
+
+  @override
+  Future<AnswerValidationResponse> getAnswerValidation() async {
+    return await _api.getAnswerValidation();
   }
 }

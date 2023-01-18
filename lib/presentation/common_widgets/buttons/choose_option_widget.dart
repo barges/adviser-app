@@ -1,5 +1,5 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class ChooseOptionWidget extends StatelessWidget {
@@ -25,45 +25,42 @@ class ChooseOptionWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: options
-            .mapIndexed(
-              (element, index) {
-                final bool isDisabled = disabledIndexes.contains(index);
-                return Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    if (!isDisabled && onChangeOptionIndex != null) {
-                      onChangeOptionIndex!(index);
-                    }
-                  },
-                  child: Opacity(
-                    opacity: isDisabled ? 0.4
-                    : 1.0,
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(vertical: 6.0),
-                      decoration: BoxDecoration(
-                          color: currentIndex == index
-                              ? Theme.of(context).primaryColor
-                              : Colors.transparent,
-                          borderRadius:
-                              BorderRadius.circular(AppConstants.buttonRadius)),
-                      child: Text(
-                        element,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w500,
-                              color: currentIndex == index
-                                  ? Theme.of(context).backgroundColor
-                                  : Theme.of(context).primaryColor,
-                            ),
-                      ),
+        children: options.mapIndexed(
+          (index, element) {
+            final bool isDisabled = disabledIndexes.contains(index);
+            return Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  if (!isDisabled && onChangeOptionIndex != null) {
+                    onChangeOptionIndex!(index);
+                  }
+                },
+                child: Opacity(
+                  opacity: isDisabled ? 0.4 : 1.0,
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(vertical: 6.0),
+                    decoration: BoxDecoration(
+                        color: currentIndex == index
+                            ? Theme.of(context).primaryColor
+                            : Colors.transparent,
+                        borderRadius:
+                            BorderRadius.circular(AppConstants.buttonRadius)),
+                    child: Text(
+                      element,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: currentIndex == index
+                                ? Theme.of(context).backgroundColor
+                                : Theme.of(context).primaryColor,
+                          ),
                     ),
                   ),
                 ),
-              );
-              },
-            )
-            .toList(),
+              ),
+            );
+          },
+        ).toList(),
       ),
     );
   }

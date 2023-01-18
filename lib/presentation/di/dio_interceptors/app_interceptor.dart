@@ -38,6 +38,9 @@ class AppInterceptor extends Interceptor {
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
     _mainCubit.updateIsLoading(false);
+    if (err.response?.statusCode == 426) {
+      Get.offNamedUntil(AppRoutes.forceUpdate, (route) => false);
+    }
     if (err.response?.statusCode == 401) {
       if (Get.currentRoute != AppRoutes.login) {
         _cachingManager.clearTokenForBrand(

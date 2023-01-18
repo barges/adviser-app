@@ -24,19 +24,34 @@ import 'package:shared_advisor_interface/presentation/screens/login/widgets/forg
 import 'package:shared_advisor_interface/presentation/services/dynamic_link_service.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  @override
+  void dispose() {
+    getIt.unregister<LoginCubit>();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => LoginCubit(
-        getIt.get<AuthRepository>(),
-        getIt.get<CachingManager>(),
-        getIt.get<MainCubit>(),
-        getIt.get<DynamicLinkService>(),
-        getIt.get<Dio>(),
-      ),
+      create: (_) {
+        getIt.registerSingleton(LoginCubit(
+          getIt.get<AuthRepository>(),
+          getIt.get<CachingManager>(),
+          getIt.get<MainCubit>(),
+          getIt.get<DynamicLinkService>(),
+          getIt.get<Dio>(),
+        ));
+
+        return getIt.get<LoginCubit>();
+      },
       child: const LoginContentWidget(),
     );
   }

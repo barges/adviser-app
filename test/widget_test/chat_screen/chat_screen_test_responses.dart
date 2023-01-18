@@ -1,4 +1,6 @@
 class ChatScreenTestResponses {
+  static const String ritualImageUrl = 'https://example.com/image.png';
+
   static const Map<String, dynamic> publicQuestionClient = {
     "_id": "63bbab1b793423001e28722e",
     "firstName": "Anabel",
@@ -341,7 +343,7 @@ class ChatScreenTestResponses {
           "__v": 0,
           "id": "619f8a415d584a0097ea7fa9"
         },
-        "value": "https://example.com/image.png",
+        "value": ritualImageUrl,
         "__v": 0,
         "id": "62de35bcb584e9001e590d8b"
       },
@@ -358,7 +360,7 @@ class ChatScreenTestResponses {
           "__v": 0,
           "id": "619f8a415d584a0097ea7fca"
         },
-        "value": "https://example.com/image.png",
+        "value": ritualImageUrl,
         "__v": 0,
         "id": "62de35bcb584e9001e590d89"
       }
