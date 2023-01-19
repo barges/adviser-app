@@ -216,5 +216,6 @@
   "pleaseUpdateTheApp": "Please update the app",
   "thisVersionOfTheAppIsNoLongerSupported": "This version of the app is no longer supported. To get back to all your conversations, install the latest version",
   "learnMore": "Learn More",
-  "update": "Update"
+  "update": "Update",
+  "messageIsNotSent": "Message is not sent"
 }

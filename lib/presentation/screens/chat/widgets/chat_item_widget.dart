@@ -100,6 +100,7 @@ class _ChatItemWidgetState extends State<ChatItemWidget>
             color: widget.item.isAnswer
                 ? Theme.of(context).primaryColorLight
                 : Theme.of(context).shadowColor,
+            isSent: widget.item.isSent,
             isHistoryQuestion: widget.isHistoryQuestion,
             isHistoryAnswer: widget.isHistoryAnswer,
           ),

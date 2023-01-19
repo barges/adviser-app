@@ -2240,6 +2240,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Message is not sent`
+  String get messageIsNotSent {
+    return Intl.message(
+      'Message is not sent',
+      name: 'messageIsNotSent',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
