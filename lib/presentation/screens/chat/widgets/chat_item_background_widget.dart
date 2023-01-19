@@ -10,11 +10,13 @@ class ChatItemBackgroundWidget extends StatelessWidget {
   final Color color;
   final Widget child;
   final VoidCallback? onPressedTryAgain;
+  final VoidCallback? onPressedCancelSending;
   const ChatItemBackgroundWidget({
     super.key,
     this.isBorder = false,
     this.isTryAgain = false,
     this.onPressedTryAgain,
+    this.onPressedCancelSending,
     required this.padding,
     required this.color,
     required this.child,
@@ -56,6 +58,16 @@ class ChatItemBackgroundWidget extends StatelessWidget {
                   child: const _TryAgain(),
                 ),
               ),
+            if (isTryAgain)
+              Positioned(
+                right: 94.0,
+                bottom: 0.0,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: onPressedCancelSending,
+                  child: const _CancelSending(),
+                ),
+              ),
           ],
         ));
   }
@@ -82,7 +94,7 @@ class _TryAgain extends StatelessWidget {
             Text(
               S.of(context).tryAgain,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).errorColor,
+                    color: Theme.of(context).primaryColor,
                     fontSize: 12.0,
                   ),
             ),
@@ -91,6 +103,46 @@ class _TryAgain extends StatelessWidget {
             ),
             Assets.vectors.refresh.svg(
               width: 16.0,
+              color: Theme.of(context).primaryColor,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CancelSending extends StatelessWidget {
+  const _CancelSending({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Theme.of(context).canvasColor,
+        borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              S.of(context).cancelSending,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).errorColor,
+                    fontSize: 12.0,
+                  ),
+            ),
+            const SizedBox(
+              width: 4.0,
+            ),
+            Assets.vectors.cancel.svg(
+              width: 16.0,
+              color: Theme.of(context).errorColor,
             ),
           ],
         ),

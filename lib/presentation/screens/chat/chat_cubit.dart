@@ -790,9 +790,7 @@ class ChatCubit extends Cubit<ChatState> {
         _recordAudioDuration = null;
 
         final List<ChatItem> messages = List.of(state.activeMessages);
-
         messages.removeLast();
-
         messages.add(answer.copyWith(
           isAnswer: true,
           type: state.questionFromDB?.type,
@@ -816,6 +814,27 @@ class ChatCubit extends Cubit<ChatState> {
             UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
       }
     }
+  }
+
+  Future<void> cancelSending() async {
+    await audioPlayer.stop();
+    await _deleteRecordedAudioFile(state.recordedAudio);
+
+    _answerRequest = null;
+    _recordAudioDuration = null;
+
+    final List<ChatItem> messages = List.of(state.activeMessages);
+    messages.removeLast();
+
+    emit(
+      state.copyWith(
+        recordedAudio: null,
+        activeMessages: messages,
+        questionStatus: state.questionFromDB?.type == ChatItemType.public
+            ? ChatItemStatusType.taken
+            : ChatItemStatusType.open,
+      ),
+    );
   }
 
   String? _getAttachedPicturePath(int n) {
@@ -968,9 +987,6 @@ class ChatCubit extends Cubit<ChatState> {
   double get maxAttachmentSizeInMb => maxAttachmentSizeInBytes / 1000000;
 
   int? get recordAudioDuration => _recordAudioDuration;
-
-  AnswerLimitation? get answerLimitation =>
-      getAnswerLimitationByType(questionFromDBtype);
 
   ContentLimitation? get answerLimitationContent =>
       getAnswerLimitationByType(questionFromDBtype)?.content;

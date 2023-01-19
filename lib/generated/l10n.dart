@@ -380,6 +380,16 @@ class S {
     );
   }
 
+  /// `Cancel sending`
+  String get cancelSending {
+    return Intl.message(
+      'Cancel sending',
+      name: 'cancelSending',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Delete`
   String get delete {
     return Intl.message(
