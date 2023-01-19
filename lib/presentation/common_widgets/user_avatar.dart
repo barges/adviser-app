@@ -123,24 +123,20 @@ class UserAvatar extends StatelessWidget {
           ),
         if (withError)
           Positioned.fill(
+              bottom: withCameraBadge ? AppConstants.iconButtonSize : 0.0,
               child: Padding(
-            padding: EdgeInsets.fromLTRB(
-              12.0,
-              0.0,
-              12.0,
-              withCameraBadge ? AppConstants.iconButtonSize : 0.0,
-            ),
-            child: Align(
-                alignment: withCameraBadge
-                    ? Alignment.bottomLeft
-                    : Alignment.centerLeft,
-                child: Text(
-                  S.of(context).photoIsRequired,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontSize: 12.0, color: Theme.of(context).errorColor),
-                )),
-          )),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Align(
+                    alignment: withCameraBadge
+                        ? Alignment.bottomLeft
+                        : Alignment.centerLeft,
+                    child: Text(
+                      S.of(context).photoIsRequired,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontSize: 12.0, color: Theme.of(context).errorColor),
+                    )),
+              )),
       ],
     );
   }
