@@ -17,76 +17,71 @@ class ForceUpdateScreen extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
         body: SafeArea(
-      child: CustomScrollView(
-        slivers: [
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppConstants.horizontalScreenPadding,
-              ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppConstants.horizontalScreenPadding,
+        ),
+        child: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  Utils.isDarkMode(context)
-                      ? Assets.images.logos.forceUpdateLogoDark.image(
-                          height: AppConstants.logoSize,
-                          width: AppConstants.logoSize,
-                        )
-                      : Assets.images.logos.forceUpdateLogo.image(
-                          height: AppConstants.logoSize,
-                          width: AppConstants.logoSize,
-                        ),
-                  const SizedBox(
-                    height: 24.0,
-                  ),
-                  Text(
-                    S.of(context).pleaseUpdateTheApp,
-                    style: theme.textTheme.headlineMedium,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(
-                    height: 8.0,
-                  ),
-                  Text(
-                    S.of(context).thisVersionOfTheAppIsNoLongerSupported,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontSize: 16.0,
-                      color: theme.shadowColor,
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(
+                            height: 16.0,
+                          ),
+                          Utils.isDarkMode(context)
+                              ? Assets.images.logos.forceUpdateLogoDark.image(
+                                  height: AppConstants.logoSize,
+                                  width: AppConstants.logoSize,
+                                )
+                              : Assets.images.logos.forceUpdateLogo.image(
+                                  height: AppConstants.logoSize,
+                                  width: AppConstants.logoSize,
+                                ),
+                          const SizedBox(
+                            height: 24.0,
+                          ),
+                          Text(
+                            S.of(context).pleaseUpdateTheApp,
+                            style: theme.textTheme.headlineMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(
+                            height: 8.0,
+                          ),
+                          Text(
+                            S
+                                .of(context)
+                                .thisVersionOfTheAppIsNoLongerSupported,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontSize: 16.0,
+                              color: theme.shadowColor,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(
-                    height: 68.0,
                   ),
                   AppElevatedButton(
                     title: S.of(context).update,
                     onPressed: goToStore,
                   ),
                   const SizedBox(
-                    height: 22.0,
-                  ),
-                  GestureDetector(
-                    onTap: null,
-                    child: Text(
-                      S.of(context).learnMore,
-                      style: theme.textTheme.labelMedium?.copyWith(
-                        fontSize: 17.0,
-                        color: theme.primaryColor,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 34.0,
+                    height: 58.0,
                   ),
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ));
   }
