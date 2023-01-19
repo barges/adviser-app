@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +14,9 @@ import 'package:shared_advisor_interface/data/network/requests/push_enable_reque
 import 'package:shared_advisor_interface/data/network/requests/set_push_notification_token_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_state.dart';
@@ -28,6 +32,7 @@ class AccountCubit extends Cubit<AccountState> {
 
   final UserRepository _userRepository;
   final ConnectivityService _connectivityService;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   final CachingManager cacheManager;
 
@@ -36,6 +41,7 @@ class AccountCubit extends Cubit<AccountState> {
   final Uri _url = Uri.parse(AppConstants.webToolUrl);
 
   late final VoidCallback disposeListen;
+  StreamSubscription<bool>? _connectivitySubscription;
 
   AccountCubit(
     this.cacheManager,
@@ -59,11 +65,13 @@ class AccountCubit extends Cubit<AccountState> {
         ),
       );
     });
+    _sendPushToken();
     refreshUserinfo();
   }
 
   @override
   Future<void> close() async {
+    _connectivitySubscription?.cancel();
     disposeListen.call();
     commentController.dispose();
     commentNode.dispose();
@@ -74,12 +82,32 @@ class AccountCubit extends Cubit<AccountState> {
     if (await _connectivityService.checkConnection()) {
       int milliseconds = 0;
 
-      final UserInfo userInfo = await _userRepository.getUserInfo();
+      UserInfo userInfo = await _userRepository.getUserInfo();
+
+      bool isPushNotificationPermissionGranted =
+          await _pushNotificationManager.registerForPushNotifications();
+
+      bool? firstPushNotificationSet =
+          cacheManager.getFirstPushNotificationSet();
+
+      if (userInfo.pushNotificationsEnabled == false &&
+          isPushNotificationPermissionGranted &&
+          firstPushNotificationSet == null) {
+        userInfo = await _userRepository.setPushEnabled(
+          PushEnableRequest(value: true),
+        );
+        await _sendPushToken();
+        cacheManager.saveFirstPushNotificationSet();
+      } else if (userInfo.pushNotificationsEnabled == true &&
+          !isPushNotificationPermissionGranted) {
+        userInfo = await _userRepository.setPushEnabled(
+          PushEnableRequest(value: false),
+        );
+      }
 
       await cacheManager.saveUserInfo(userInfo);
       await cacheManager.saveUserProfile(userInfo.profile);
       await cacheManager.saveUserId(userInfo.id);
-      ///TODO: save push info
 
       if (userInfo.contracts?.updates?.isNotEmpty == true) {
         await cacheManager.saveUserStatus(userInfo.status?.copyWith(
@@ -143,38 +171,41 @@ class AccountCubit extends Cubit<AccountState> {
     refreshUserinfo();
   }
 
-  Future<void> updateEnableNotificationsValue(bool newValue) async {
+  Future<void> updateEnableNotificationsValue(
+      bool newValue, BuildContext context) async {
     if (newValue) {
-      PermissionStatus? statusNotification =
-          await Permission.notification.request();
-      if (statusNotification.isGranted) {
-        final UserInfo userInfo = await _userRepository
+      final bool isGranted =
+          await _pushNotificationManager.registerForPushNotifications();
+      if (isGranted) {
+        await _userRepository
             .setPushEnabled(PushEnableRequest(value: newValue));
         await _sendPushToken();
-        emit(
-          state.copyWith(
-            enableNotifications: userInfo.pushNotificationsEnabled ?? false,
-          ),
-        );
+      } else {
+        VoidCallback actionOnOk = (() async {
+          await openAppSettings();
+          Navigator.pop(context);
+        });
+        await showOkCancelAlert(
+            context: context,
+            title: S.of(context).permissionNeeded,
+            okText: S.of(context).settings,
+            description: 'Push notification permission text',
+            actionOnOK: actionOnOk,
+            allowBarrierClick: true,
+            isCancelEnabled: true);
       }
     } else {
-      final UserInfo userInfo = await _userRepository
-          .setPushEnabled(PushEnableRequest(value: newValue));
-      emit(
-        state.copyWith(
-          enableNotifications: userInfo.pushNotificationsEnabled ?? false,
-        ),
-      );
+      await _userRepository.setPushEnabled(PushEnableRequest(value: newValue));
     }
+    refreshUserinfo();
   }
 
   Future<void> _sendPushToken() async {
-    final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
     final bool isGranted =
         await _pushNotificationManager.registerForPushNotifications();
 
     if (isGranted && await _connectivityService.checkConnection()) {
-      String? pushToken = await firebaseMessaging.getToken();
+      String? pushToken = await _firebaseMessaging.getToken();
       if (pushToken != null) {
         final SetPushNotificationTokenRequest request =
             SetPushNotificationTokenRequest(
@@ -182,6 +213,14 @@ class AccountCubit extends Cubit<AccountState> {
         );
         _userRepository.sendPushToken(request);
       }
+      _connectivitySubscription?.cancel();
+    } else {
+      _connectivitySubscription =
+          _connectivityService.connectivityStream.listen((event) {
+        if (event) {
+          _sendPushToken();
+        }
+      });
     }
   }
 

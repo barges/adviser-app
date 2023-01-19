@@ -176,7 +176,8 @@ class UserInfoPartWidget extends StatelessWidget {
                   initSwitcherValue: enableNotifications,
                   title: S.of(context).notifications,
                   iconSVGPath: Assets.vectors.notification.path,
-                  onChanged: accountCubit.updateEnableNotificationsValue,
+                  onChanged: (value) => accountCubit
+                      .updateEnableNotificationsValue(value, context),
                 );
               },
             ),

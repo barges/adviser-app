@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/main_state.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
@@ -14,6 +15,7 @@ import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/reviews_settings_part_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/user_info_part_widget.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 
 class AccountScreen extends StatelessWidget {
   final CachingManager cacheManager;
@@ -35,6 +37,7 @@ class AccountScreen extends StatelessWidget {
         cacheManager,
         mainCubit,
         userRepository,
+        getIt.get<PushNotificationManager>(),
         connectivityService,
       ),
       child: Builder(builder: (context) {

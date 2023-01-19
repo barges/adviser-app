@@ -29,9 +29,6 @@ class FakeHomeScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => HomeCubit(
         cachingManager,
-        connectivityService,
-        userRepository,
-        pushNotificationManager,
       ),
       child: HomeContentWidget(
         cacheManager: cachingManager,
