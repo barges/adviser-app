@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ForceUpdateScreen extends StatelessWidget {
   const ForceUpdateScreen({Key? key}) : super(key: key);
@@ -60,7 +64,7 @@ class ForceUpdateScreen extends StatelessWidget {
                   ),
                   AppElevatedButton(
                     title: S.of(context).update,
-                    onPressed: () {},
+                    onPressed: goToStore,
                   ),
                   const SizedBox(
                     height: 22.0,
@@ -85,5 +89,23 @@ class ForceUpdateScreen extends StatelessWidget {
         ],
       ),
     ));
+  }
+
+  Future<void> goToStore() async {
+    String appId = '1164888500';
+    if (Platform.isAndroid) {
+      final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      appId = packageInfo.packageName;
+    }
+
+    final Uri url = Uri.parse(
+      Platform.isAndroid
+          ? "market://details?id=$appId"
+          : "https://apps.apple.com/app/id$appId",
+    );
+    launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
+    );
   }
 }

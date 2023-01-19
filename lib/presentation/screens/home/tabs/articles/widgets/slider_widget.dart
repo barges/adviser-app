@@ -61,7 +61,7 @@ class SliderWidget extends StatelessWidget {
           Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: courses
-                  .mapIndexed((_, index) => Padding(
+                  .mapIndexed((index, _) => Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4.0),
                         child: Builder(
                             builder: (_) => CircleAvatar(
