@@ -24,6 +24,8 @@ import 'package:shared_advisor_interface/presentation/services/connectivity_serv
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+bool _pushTokenIsSent = false;
+
 class AccountCubit extends Cubit<AccountState> {
   final TextEditingController commentController = TextEditingController();
   final FocusNode commentNode = FocusNode();
@@ -65,7 +67,6 @@ class AccountCubit extends Cubit<AccountState> {
         ),
       );
     });
-    _sendPushToken();
     refreshUserinfo();
   }
 
@@ -82,28 +83,9 @@ class AccountCubit extends Cubit<AccountState> {
     if (await _connectivityService.checkConnection()) {
       int milliseconds = 0;
 
-      UserInfo userInfo = await _userRepository.getUserInfo();
+      final UserInfo userInfo = await _userRepository.getUserInfo();
 
-      bool isPushNotificationPermissionGranted =
-          await _pushNotificationManager.registerForPushNotifications();
-
-      bool? firstPushNotificationSet =
-          cacheManager.getFirstPushNotificationSet();
-
-      if (userInfo.pushNotificationsEnabled == false &&
-          isPushNotificationPermissionGranted &&
-          firstPushNotificationSet == null) {
-        userInfo = await _userRepository.setPushEnabled(
-          PushEnableRequest(value: true),
-        );
-        await _sendPushToken();
-        cacheManager.saveFirstPushNotificationSet();
-      } else if (userInfo.pushNotificationsEnabled == true &&
-          !isPushNotificationPermissionGranted) {
-        userInfo = await _userRepository.setPushEnabled(
-          PushEnableRequest(value: false),
-        );
-      }
+      _checkPushNotificationPermission(userInfo);
 
       await cacheManager.saveUserInfo(userInfo);
       await cacheManager.saveUserProfile(userInfo.profile);
@@ -162,6 +144,41 @@ class AccountCubit extends Cubit<AccountState> {
     return false;
   }
 
+  Future<void> _checkPushNotificationPermission(UserInfo userInfo) async {
+    bool isPushNotificationPermissionGranted =
+        await _pushNotificationManager.registerForPushNotifications();
+
+    bool? firstPushNotificationSet = cacheManager.getFirstPushNotificationSet();
+
+    if (userInfo.pushNotificationsEnabled == false &&
+        isPushNotificationPermissionGranted &&
+        firstPushNotificationSet == null) {
+      userInfo = await _userRepository.setPushEnabled(
+        PushEnableRequest(value: true),
+      );
+      await _sendPushToken();
+      emit(
+        state.copyWith(
+          enableNotifications: userInfo.pushNotificationsEnabled ?? false,
+        ),
+      );
+      cacheManager.saveFirstPushNotificationSet();
+    } else if (userInfo.pushNotificationsEnabled == true &&
+        !isPushNotificationPermissionGranted) {
+      userInfo = await _userRepository.setPushEnabled(
+        PushEnableRequest(value: false),
+      );
+      emit(
+        state.copyWith(
+          enableNotifications: userInfo.pushNotificationsEnabled ?? false,
+        ),
+      );
+    } else if (userInfo.pushNotificationsEnabled == true &&
+        isPushNotificationPermissionGranted) {
+      await _sendPushToken();
+    }
+  }
+
   Future<void> updateUserStatus({required FortunicaUserStatus status}) async {
     final UpdateUserStatusRequest request = UpdateUserStatusRequest(
       status: status,
@@ -173,17 +190,18 @@ class AccountCubit extends Cubit<AccountState> {
 
   Future<void> updateEnableNotificationsValue(
       bool newValue, BuildContext context) async {
+    UserInfo? userInfo;
     if (newValue) {
       final bool isGranted =
           await _pushNotificationManager.registerForPushNotifications();
       if (isGranted) {
-        await _userRepository
+        userInfo = await _userRepository
             .setPushEnabled(PushEnableRequest(value: newValue));
         await _sendPushToken();
       } else {
         VoidCallback actionOnOk = (() async {
           await openAppSettings();
-          Navigator.pop(context);
+          Get.back();
         });
         await showOkCancelAlert(
             context: context,
@@ -195,32 +213,37 @@ class AccountCubit extends Cubit<AccountState> {
             isCancelEnabled: true);
       }
     } else {
-      await _userRepository.setPushEnabled(PushEnableRequest(value: newValue));
+      userInfo = await _userRepository
+          .setPushEnabled(PushEnableRequest(value: newValue));
     }
-    refreshUserinfo();
+    emit(
+      state.copyWith(
+        enableNotifications: userInfo?.pushNotificationsEnabled ?? false,
+      ),
+    );
   }
 
   Future<void> _sendPushToken() async {
-    final bool isGranted =
-        await _pushNotificationManager.registerForPushNotifications();
-
-    if (isGranted && await _connectivityService.checkConnection()) {
-      String? pushToken = await _firebaseMessaging.getToken();
-      if (pushToken != null) {
-        final SetPushNotificationTokenRequest request =
-            SetPushNotificationTokenRequest(
-          pushToken: pushToken,
-        );
-        _userRepository.sendPushToken(request);
-      }
-      _connectivitySubscription?.cancel();
-    } else {
-      _connectivitySubscription =
-          _connectivityService.connectivityStream.listen((event) {
-        if (event) {
-          _sendPushToken();
+    if (!_pushTokenIsSent) {
+      if (await _connectivityService.checkConnection()) {
+        String? pushToken = await _firebaseMessaging.getToken();
+        if (pushToken != null) {
+          final SetPushNotificationTokenRequest request =
+              SetPushNotificationTokenRequest(
+            pushToken: pushToken,
+          );
+          _userRepository.sendPushToken(request);
+          _pushTokenIsSent = true;
         }
-      });
+        _connectivitySubscription?.cancel();
+      } else {
+        _connectivitySubscription =
+            _connectivityService.connectivityStream.listen((event) {
+          if (event) {
+            _sendPushToken();
+          }
+        });
+      }
     }
   }
 
