@@ -1,3 +1,3 @@
 abstract class PushNotificationManager {
-  Future<void> registerForPushNotifications();
+  Future<bool> registerForPushNotifications();
 }

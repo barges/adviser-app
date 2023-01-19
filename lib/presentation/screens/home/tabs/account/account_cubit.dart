@@ -1,12 +1,15 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/data/models/user_info/localized_properties/property_by_language.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
+import 'package:shared_advisor_interface/data/network/requests/set_push_notification_token_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -14,6 +17,7 @@ import 'package:shared_advisor_interface/presentation/resources/app_constants.da
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_state.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AccountCubit extends Cubit<AccountState> {
@@ -27,6 +31,8 @@ class AccountCubit extends Cubit<AccountState> {
 
   final CachingManager cacheManager;
 
+  final PushNotificationManager _pushNotificationManager;
+
   final Uri _url = Uri.parse(AppConstants.webToolUrl);
 
   late final VoidCallback disposeListen;
@@ -35,6 +41,7 @@ class AccountCubit extends Cubit<AccountState> {
     this.cacheManager,
     this.mainCubit,
     this._userRepository,
+    this._pushNotificationManager,
     this._connectivityService,
   ) : super(const AccountState()) {
     disposeListen = cacheManager.listenUserProfile((value) {
@@ -72,6 +79,7 @@ class AccountCubit extends Cubit<AccountState> {
       await cacheManager.saveUserInfo(userInfo);
       await cacheManager.saveUserProfile(userInfo.profile);
       await cacheManager.saveUserId(userInfo.id);
+      ///TODO: save push info
 
       if (userInfo.contracts?.updates?.isNotEmpty == true) {
         await cacheManager.saveUserStatus(userInfo.status?.copyWith(
@@ -136,13 +144,45 @@ class AccountCubit extends Cubit<AccountState> {
   }
 
   Future<void> updateEnableNotificationsValue(bool newValue) async {
-    final UserInfo userInfo = await _userRepository
-        .setPushEnabled(PushEnableRequest(value: newValue));
-    emit(
-      state.copyWith(
-        enableNotifications: userInfo.pushNotificationsEnabled ?? false,
-      ),
-    );
+    if (newValue) {
+      PermissionStatus? statusNotification =
+          await Permission.notification.request();
+      if (statusNotification.isGranted) {
+        final UserInfo userInfo = await _userRepository
+            .setPushEnabled(PushEnableRequest(value: newValue));
+        await _sendPushToken();
+        emit(
+          state.copyWith(
+            enableNotifications: userInfo.pushNotificationsEnabled ?? false,
+          ),
+        );
+      }
+    } else {
+      final UserInfo userInfo = await _userRepository
+          .setPushEnabled(PushEnableRequest(value: newValue));
+      emit(
+        state.copyWith(
+          enableNotifications: userInfo.pushNotificationsEnabled ?? false,
+        ),
+      );
+    }
+  }
+
+  Future<void> _sendPushToken() async {
+    final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+    final bool isGranted =
+        await _pushNotificationManager.registerForPushNotifications();
+
+    if (isGranted && await _connectivityService.checkConnection()) {
+      String? pushToken = await firebaseMessaging.getToken();
+      if (pushToken != null) {
+        final SetPushNotificationTokenRequest request =
+            SetPushNotificationTokenRequest(
+          pushToken: pushToken,
+        );
+        _userRepository.sendPushToken(request);
+      }
+    }
   }
 
   Future<void> goToEditProfile() async {

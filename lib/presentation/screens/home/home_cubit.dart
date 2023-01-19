@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
+import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/set_push_notification_token_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
@@ -54,7 +56,6 @@ class HomeCubit extends Cubit<HomeState> {
       }
       emit(state.copyWith(userStatus: value));
     });
-    _pushNotificationManager.registerForPushNotifications();
     _sendPushToken();
   }
 
@@ -70,16 +71,25 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> _sendPushToken() async {
+    final bool isGranted =
+        await _pushNotificationManager.registerForPushNotifications();
+
     if (await _connectivityService.checkConnection()) {
-      String? pushToken = await _firebaseMessaging.getToken();
-      if (pushToken != null) {
-        final SetPushNotificationTokenRequest request =
-            SetPushNotificationTokenRequest(
-          pushToken: pushToken,
-        );
-        _userRepository.sendPushToken(request);
+      if(isGranted) {
+       await _enableNotificationsValue(true);
+        String? pushToken = await _firebaseMessaging.getToken();
+        if (pushToken != null) {
+          final SetPushNotificationTokenRequest request =
+          SetPushNotificationTokenRequest(
+            pushToken: pushToken,
+          );
+          _userRepository.sendPushToken(request);
+        }
+      } else {
+        await _enableNotificationsValue(false);
       }
-      _connectivitySubscription?.cancel();
+        _connectivitySubscription?.cancel();
+
     } else {
       _connectivitySubscription =
           _connectivityService.connectivityStream.listen((event) {
@@ -88,6 +98,13 @@ class HomeCubit extends Cubit<HomeState> {
         }
       });
     }
+  }
+
+  Future<void> _enableNotificationsValue(bool value) async {
+    final UserInfo userInfo =
+        await _userRepository.setPushEnabled(PushEnableRequest(value: value));
+
+    ///TODO: Update account push switcher
   }
 
   void openDrawer() {
