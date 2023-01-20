@@ -19,18 +19,20 @@ class UserAvatar extends StatelessWidget {
   final bool withError;
   final bool withCameraBadge;
   final bool isZodiac;
+  final bool canOpenInFullScreen;
 
-  const UserAvatar(
-      {Key? key,
-      this.avatarUrl,
-      this.imageFile,
-      this.badgeColor,
-      this.diameter = 86.0,
-      this.withBorder = false,
-      this.withError = false,
-      this.withCameraBadge = false,
-      this.isZodiac = false})
-      : super(key: key);
+  const UserAvatar({
+    Key? key,
+    this.avatarUrl,
+    this.imageFile,
+    this.badgeColor,
+    this.diameter = 86.0,
+    this.withBorder = false,
+    this.withError = false,
+    this.withCameraBadge = false,
+    this.isZodiac = false,
+    this.canOpenInFullScreen = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -65,12 +67,14 @@ class UserAvatar extends StatelessWidget {
                           width: diameter,
                         )
                       : GestureDetector(
-                          onTap: () => Get.toNamed(
-                            AppRoutes.galleryPictures,
-                            arguments: GalleryPicturesScreenArguments(
-                              pictures: [avatarUrl!],
-                            ),
-                          ),
+                          onTap: () => canOpenInFullScreen
+                              ? Get.toNamed(
+                                  AppRoutes.galleryPictures,
+                                  arguments: GalleryPicturesScreenArguments(
+                                    pictures: [avatarUrl!],
+                                  ),
+                                )
+                              : null,
                           child: Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
@@ -82,12 +86,14 @@ class UserAvatar extends StatelessWidget {
                           ),
                         )
               : GestureDetector(
-                  onTap: () => Get.toNamed(
-                    AppRoutes.galleryPictures,
-                    arguments: GalleryPicturesScreenArguments(
-                      pictures: [imageFile!.path],
-                    ),
-                  ),
+                  onTap: () => canOpenInFullScreen
+                      ? Get.toNamed(
+                          AppRoutes.galleryPictures,
+                          arguments: GalleryPicturesScreenArguments(
+                            pictures: [imageFile!.path],
+                          ),
+                        )
+                      : null,
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
@@ -123,24 +129,20 @@ class UserAvatar extends StatelessWidget {
           ),
         if (withError)
           Positioned.fill(
+              bottom: withCameraBadge ? AppConstants.iconButtonSize : 0.0,
               child: Padding(
-            padding: EdgeInsets.fromLTRB(
-              12.0,
-              0.0,
-              12.0,
-              withCameraBadge ? AppConstants.iconButtonSize : 0.0,
-            ),
-            child: Align(
-                alignment: withCameraBadge
-                    ? Alignment.bottomLeft
-                    : Alignment.centerLeft,
-                child: Text(
-                  S.of(context).photoIsRequired,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontSize: 12.0, color: Theme.of(context).errorColor),
-                )),
-          )),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Align(
+                    alignment: withCameraBadge
+                        ? Alignment.bottomLeft
+                        : Alignment.centerLeft,
+                    child: Text(
+                      S.of(context).photoIsRequired,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontSize: 12.0, color: Theme.of(context).errorColor),
+                    )),
+              )),
       ],
     );
   }

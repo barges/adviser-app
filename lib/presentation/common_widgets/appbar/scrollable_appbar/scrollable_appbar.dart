@@ -212,7 +212,7 @@ class ScrollableAppBar extends StatelessWidget {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                    vertical: 13.0,
+                                    vertical: 10.0,
                                     horizontal: 16.0,
                                   ),
                                   child: Text(

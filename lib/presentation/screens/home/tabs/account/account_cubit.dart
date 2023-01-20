@@ -87,25 +87,7 @@ class AccountCubit extends Cubit<AccountState> {
 
       _checkPushNotificationPermission(userInfo);
 
-      await cacheManager.saveUserInfo(userInfo);
-      await cacheManager.saveUserProfile(userInfo.profile);
-      await cacheManager.saveUserId(userInfo.id);
-
-      if (userInfo.contracts?.updates?.isNotEmpty == true) {
-        await cacheManager.saveUserStatus(userInfo.status?.copyWith(
-          status: FortunicaUserStatus.legalBlock,
-        ));
-      } else {
-        if (checkPropertiesMapIfHasEmpty(userInfo) ||
-            userInfo.profile?.profileName?.isNotEmpty != true ||
-            userInfo.profile?.profilePictures?.isNotEmpty != true) {
-          await cacheManager.saveUserStatus(userInfo.status?.copyWith(
-            status: FortunicaUserStatus.incomplete,
-          ));
-        } else {
-          await cacheManager.saveUserStatus(userInfo.status);
-        }
-      }
+      await _saveUserInfo(userInfo);
 
       final DateTime? profileUpdatedAt =
           cacheManager.getUserStatus()?.profileUpdatedAt;
@@ -144,11 +126,34 @@ class AccountCubit extends Cubit<AccountState> {
     return false;
   }
 
+  Future<void> _saveUserInfo(UserInfo userInfo) async {
+    await cacheManager.saveUserInfo(userInfo);
+    await cacheManager.saveUserProfile(userInfo.profile);
+    await cacheManager.saveUserId(userInfo.id);
+
+    if (userInfo.contracts?.updates?.isNotEmpty == true) {
+      await cacheManager.saveUserStatus(userInfo.status?.copyWith(
+        status: FortunicaUserStatus.legalBlock,
+      ));
+    } else {
+      if (checkPropertiesMapIfHasEmpty(userInfo) ||
+          userInfo.profile?.profileName?.isNotEmpty != true ||
+          userInfo.profile?.profilePictures?.isNotEmpty != true) {
+        await cacheManager.saveUserStatus(userInfo.status?.copyWith(
+          status: FortunicaUserStatus.incomplete,
+        ));
+      } else {
+        await cacheManager.saveUserStatus(userInfo.status);
+      }
+    }
+  }
+
   Future<void> _checkPushNotificationPermission(UserInfo userInfo) async {
-    bool isPushNotificationPermissionGranted =
+    final bool isPushNotificationPermissionGranted =
         await _pushNotificationManager.registerForPushNotifications();
 
-    bool? firstPushNotificationSet = cacheManager.getFirstPushNotificationSet();
+    final bool? firstPushNotificationSet =
+        cacheManager.getFirstPushNotificationSet();
 
     if (userInfo.pushNotificationsEnabled == false &&
         isPushNotificationPermissionGranted &&
@@ -162,7 +167,6 @@ class AccountCubit extends Cubit<AccountState> {
           enableNotifications: userInfo.pushNotificationsEnabled ?? false,
         ),
       );
-      cacheManager.saveFirstPushNotificationSet();
     } else if (userInfo.pushNotificationsEnabled == true &&
         !isPushNotificationPermissionGranted) {
       userInfo = await _userRepository.setPushEnabled(
@@ -176,6 +180,9 @@ class AccountCubit extends Cubit<AccountState> {
     } else if (userInfo.pushNotificationsEnabled == true &&
         isPushNotificationPermissionGranted) {
       await _sendPushToken();
+    }
+    if (firstPushNotificationSet == null) {
+      cacheManager.saveFirstPushNotificationSet();
     }
   }
 
