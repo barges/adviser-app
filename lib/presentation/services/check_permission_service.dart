@@ -7,6 +7,8 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 
 class CheckPermissionService {
+  static Map<PermissionType, PermissionStatus> permissionStatusesMap = {};
+
   static Future<void> handlePermission(
       BuildContext context, PermissionType permissionType) async {
     PermissionStatus status;
@@ -32,7 +34,12 @@ class CheckPermissionService {
         break;
     }
 
-    if (status.isPermanentlyDenied) {
+    if (permissionStatusesMap[permissionType] == null &&
+        status.isPermanentlyDenied) {
+      permissionStatusesMap[permissionType] = status;
+    }
+
+    if (permissionStatusesMap[permissionType]?.isPermanentlyDenied == true) {
       VoidCallback actionOnOk = (() async {
         await openAppSettings();
         Navigator.pop(context);
@@ -46,6 +53,8 @@ class CheckPermissionService {
           allowBarrierClick: true,
           isCancelEnabled: true);
     }
+
+    permissionStatusesMap[permissionType] = status;
   }
 }
 

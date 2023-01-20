@@ -28,11 +28,12 @@ class NetworkError extends AppError {
 
 class UIError extends AppError {
   final UIErrorType uiErrorType;
+  final List<Object>? args;
 
-  UIError({required this.uiErrorType}) : super(null);
+  UIError({required this.uiErrorType, this.args}) : super(null);
 
   @override
   String getMessage(BuildContext context) {
-    return uiErrorType.getErrorMessage(context);
+    return uiErrorType.getErrorMessage(context, args);
   }
 }

@@ -164,6 +164,7 @@ class ProfileImagesWidget extends StatelessWidget {
                   withBorder: true,
                   withError: profileImages.isEmpty && avatar == null,
                   withCameraBadge: true,
+                  canOpenInFullScreen: true,
                 ),
                 Positioned(
                     right: 0.0,

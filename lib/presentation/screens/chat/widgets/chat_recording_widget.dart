@@ -46,7 +46,8 @@ class ChatRecordingWidget extends StatelessWidget {
                   stream: recordingStream,
                   builder: (_, snapshot) {
                     return Text(
-                      s.from15secTo3min,
+                      s.fromXsecToYmin(chatCubit.minRecordDurationInSec,
+                          chatCubit.maxRecordDurationInMinutes),
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: snapshot.hasData &&
                                 chatCubit.checkMinRecordDurationIsOk()

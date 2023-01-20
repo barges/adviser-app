@@ -12,14 +12,12 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_
 
 class ChatItemWidget extends StatefulWidget {
   final ChatItem item;
-  final VoidCallback? onPressedTryAgain;
   final bool isHistoryQuestion;
   final bool isHistoryAnswer;
 
   const ChatItemWidget({
     super.key,
     required this.item,
-    this.onPressedTryAgain,
     this.isHistoryQuestion = false,
     this.isHistoryAnswer = false,
   });
@@ -34,8 +32,7 @@ class _ChatItemWidgetState extends State<ChatItemWidget>
   Widget build(BuildContext context) {
     super.build(context);
     return ChatItemBackgroundWidget(
-      onPressedTryAgain: widget.onPressedTryAgain,
-      isTryAgain: !widget.item.isSent,
+      isNotSent: !widget.item.isSent,
       padding: widget.item.isAnswer
           ? const EdgeInsets.only(left: 36.0)
           : const EdgeInsets.only(right: 36.0),
@@ -97,6 +94,7 @@ class _ChatItemWidgetState extends State<ChatItemWidget>
             color: widget.item.isAnswer
                 ? Theme.of(context).primaryColorLight
                 : Theme.of(context).shadowColor,
+            isSent: widget.item.isSent,
             isHistoryQuestion: widget.isHistoryQuestion,
             isHistoryAnswer: widget.isHistoryAnswer,
           ),

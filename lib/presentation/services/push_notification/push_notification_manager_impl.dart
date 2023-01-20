@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -17,13 +18,37 @@ class PushNotificationManagerImpl implements PushNotificationManager {
       FlutterLocalNotificationsPlugin();
 
   @override
-  Future<void> registerForPushNotifications() async {
-    if (_isRegisteredForPushNotifications) {
-      return;
-    }
-    _isRegisteredForPushNotifications = true;
+  Future<bool> registerForPushNotifications() async {
+    if (Platform.isIOS) {
+      NotificationSettings settings =
+          await FirebaseMessaging.instance.requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,
+      );
 
-    await _configure();
+      logger.d(settings.authorizationStatus);
+
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+        if (!_isRegisteredForPushNotifications) {
+          _isRegisteredForPushNotifications = true;
+          await _configure();
+        }
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      if (!_isRegisteredForPushNotifications) {
+        _isRegisteredForPushNotifications = true;
+        await _configure();
+      }
+      return true;
+    }
   }
 
   Future<void> _configure() async {
@@ -34,7 +59,9 @@ class PushNotificationManagerImpl implements PushNotificationManager {
   void _configLocalNotification() {
     var initializationSettingsAndroid =
         const AndroidInitializationSettings('mipmap/ic_launcher');
-    var initializationSettingsIOS = const DarwinInitializationSettings();
+    var initializationSettingsIOS = const DarwinInitializationSettings(
+      requestAlertPermission: false,
+    );
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
