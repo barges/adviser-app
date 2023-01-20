@@ -8,7 +8,6 @@ import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
-import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -22,9 +21,6 @@ class HomeScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => HomeCubit(
         cacheManager,
-        connectivityService,
-        userRepository,
-        getIt.get<PushNotificationManager>(),
       ),
       child: HomeContentWidget(
         cacheManager: cacheManager,

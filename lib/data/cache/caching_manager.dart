@@ -59,4 +59,8 @@ abstract class CachingManager {
   VoidCallback listenCurrentUserStatus(ValueChanged<UserStatus> callback);
 
   VoidCallback listenUserId(ValueChanged<String?> callback);
+
+  bool? getFirstPushNotificationSet();
+
+  void saveFirstPushNotificationSet();
 }
