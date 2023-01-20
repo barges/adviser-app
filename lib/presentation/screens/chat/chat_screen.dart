@@ -45,6 +45,7 @@ class ChatScreen extends StatelessWidget {
         () => showErrorAlert(context),
         () => confirmSendAnswerAlert(context),
         () => deleteAudioMessageAlert(context),
+        () => recordingIsNotPossibleAlert(context),
       ),
       child: ChatContentWidget(
         chatsRepository: chatsRepository,
@@ -281,4 +282,16 @@ Future<bool?> confirmSendAnswerAlert(BuildContext context) async {
 Future<bool?> deleteAudioMessageAlert(BuildContext context) async {
   return await showDeleteAlert(
       context, S.of(context).doYouWantToDeleteThisAudioMessage);
+}
+
+Future<bool?> recordingIsNotPossibleAlert(BuildContext context) async {
+  final s = S.of(context);
+  return await showOkCancelAlert(
+    context: context,
+    title: s.recordingIsNotPossibleAllocateSpaceOnTheDevice,
+    okText: s.ok,
+    actionOnOK: () => Navigator.pop(context, true),
+    allowBarrierClick: true,
+    isCancelEnabled: false,
+  );
 }

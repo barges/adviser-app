@@ -217,5 +217,6 @@
   "thisVersionOfTheAppIsNoLongerSupported": "Diese Version der App wird nicht mehr unterstützt. Um zu all Ihren Unterhaltungen zurückzukehren, installieren Sie die neueste Version",
   "learnMore": "Lern mehr",
   "update": "Aktualisieren",
-  "messageIsNotSent": "Nachricht wird nicht gesendet"
+  "messageIsNotSent": "Nachricht wird nicht gesendet",
+  "recordingIsNotPossibleAllocateSpaceOnTheDevice": "Aufnahme ist nicht möglich, weisen Sie Speicherplatz auf dem Gerät zu"
 }

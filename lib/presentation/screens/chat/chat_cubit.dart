@@ -40,6 +40,7 @@ import 'package:shared_advisor_interface/presentation/services/connectivity_serv
 import 'package:shared_advisor_interface/presentation/services/audio_player_service.dart';
 import 'package:shared_advisor_interface/presentation/services/sound/sound_record_service.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
+import 'package:storage_space/storage_space.dart';
 
 import 'chat_state.dart';
 
@@ -62,6 +63,7 @@ class ChatCubit extends Cubit<ChatState> {
   final VoidCallback _showErrorAlert;
   final ValueGetter<Future<bool?>> _confirmSendAnswerAlert;
   final ValueGetter<Future<bool?>> _deleteAudioMessageAlert;
+  final ValueGetter<Future<bool?>> _recordingIsNotPossibleAlert;
   final MainCubit _mainCubit;
   final AudioPlayerService audioPlayer;
   final SoundRecordService _soundRecordService;
@@ -88,6 +90,7 @@ class ChatCubit extends Cubit<ChatState> {
     this._showErrorAlert,
     this._confirmSendAnswerAlert,
     this._deleteAudioMessageAlert,
+    this._recordingIsNotPossibleAlert,
   ) : super(const ChatState()) {
     chatScreenArguments = Get.arguments;
 
@@ -339,10 +342,21 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> startRecordingAudio(BuildContext context) async {
+    StorageSpace freeSpace = await getStorageSpace(
+      lowOnSpaceThreshold: 0,
+      fractionDigits: 1,
+    );
+    final freeSpaceInMb = freeSpace.free / (1024 * 1024);
+    if (freeSpaceInMb <= AppConstants.minFreeSpaceInMb) {
+      await _recordingIsNotPossibleAlert();
+      return;
+    }
+
     _tryStartAnswerSend();
 
     audioPlayer.stop();
 
+    // ignore: use_build_context_synchronously
     await CheckPermissionService.handlePermission(
         context, PermissionType.audio);
 

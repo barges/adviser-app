@@ -2250,6 +2250,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Recording is not possible, allocate space on the device`
+  String get recordingIsNotPossibleAllocateSpaceOnTheDevice {
+    return Intl.message(
+      'Recording is not possible, allocate space on the device',
+      name: 'recordingIsNotPossibleAllocateSpaceOnTheDevice',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
