@@ -130,7 +130,13 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   @override
-  Future<void> close() {
+  Future<void> close() async {
+    if (state.isRecordingAudio) {
+      await cancelRecordingAudio();
+    }
+    _deleteRecordedAudioFile(state.recordedAudio);
+    _recordAudioDuration = null;
+
     activeMessagesScrollController.dispose();
 
     _keyboardSubscription.cancel();
