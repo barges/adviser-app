@@ -19,6 +19,7 @@ import 'package:shared_advisor_interface/data/models/app_success/ui_success_type
 import 'package:shared_advisor_interface/data/models/chats/answer_limitation.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
+import 'package:shared_advisor_interface/data/models/chats/content_limitation.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
 import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
@@ -358,7 +359,6 @@ class ChatCubit extends Cubit<ChatState> {
 
     emit(
       state.copyWith(
-        isAudioFileSaved: false,
         isRecordingAudio: true,
         recordingStream: _soundRecordService.onProgress,
       ),
@@ -383,10 +383,12 @@ class ChatCubit extends Cubit<ChatState> {
       if (!checkMinRecordDurationIsOk()) {
         _mainCubit.updateErrorMessage(UIError(
             uiErrorType:
-                UIErrorType.youCantSendThisMessageBecauseItsLessThan15Seconds));
+                UIErrorType.youCantSendThisMessageBecauseItsLessThanXSeconds,
+            args: [minRecordDurationInSec]));
       } else if (!_checkMaxRecordDurationIsOk()) {
-        _mainCubit.updateErrorMessage(
-            UIError(uiErrorType: UIErrorType.youVeReachThe3MinuteTimeLimit));
+        _mainCubit.updateErrorMessage(UIError(
+            uiErrorType: UIErrorType.youVeReachTheXMinuteTimeLimit,
+            args: [maxRecordDurationInMinutes]));
         isSendButtonEnabled = true;
       } else {
         isSendButtonEnabled = true;
@@ -396,7 +398,6 @@ class ChatCubit extends Cubit<ChatState> {
     emit(
       state.copyWith(
         recordedAudio: recordedAudio,
-        isAudioFileSaved: true,
         isRecordingAudio: false,
         isSendButtonEnabled: isSendButtonEnabled &&
             _checkAttachmentSizeIsOk(state.attachedPictures, recordedAudio),
@@ -419,7 +420,6 @@ class ChatCubit extends Cubit<ChatState> {
       state.copyWith(
         recordedAudio: null,
         isRecordingAudio: false,
-        isAudioFileSaved: false,
       ),
     );
   }
@@ -435,7 +435,6 @@ class ChatCubit extends Cubit<ChatState> {
         state.copyWith(
             recordedAudio: null,
             isRecordingAudio: false,
-            isAudioFileSaved: false,
             isSendButtonEnabled:
                 _checkAttachmentSizeIsOk(state.attachedPictures, null) &&
                     _checkTextLengthIsOk()),
@@ -518,7 +517,6 @@ class ChatCubit extends Cubit<ChatState> {
       emit(
         state.copyWith(
           isRecordingAudio: false,
-          isAudioFileSaved: false,
           recordedAudio: answer.isSent ? null : state.recordedAudio,
           activeMessages: messages,
         ),
@@ -787,9 +785,7 @@ class ChatCubit extends Cubit<ChatState> {
         _recordAudioDuration = null;
 
         final List<ChatItem> messages = List.of(state.activeMessages);
-
         messages.removeLast();
-
         messages.add(answer.copyWith(
           isAnswer: true,
           type: state.questionFromDB?.type,
@@ -813,6 +809,27 @@ class ChatCubit extends Cubit<ChatState> {
             UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
       }
     }
+  }
+
+  Future<void> cancelSending() async {
+    await audioPlayer.stop();
+    await _deleteRecordedAudioFile(state.recordedAudio);
+
+    _answerRequest = null;
+    _recordAudioDuration = null;
+
+    final List<ChatItem> messages = List.of(state.activeMessages);
+    messages.removeLast();
+
+    emit(
+      state.copyWith(
+        recordedAudio: null,
+        activeMessages: messages,
+        questionStatus: state.questionFromDB?.type == ChatItemType.public
+            ? ChatItemStatusType.taken
+            : ChatItemStatusType.open,
+      ),
+    );
   }
 
   String? _getAttachedPicturePath(int n) {
@@ -850,7 +867,7 @@ class ChatCubit extends Cubit<ChatState> {
         maxAttachmentSizeInBytes) {
       if (_mainCubit.state.appError is UIError &&
           (_mainCubit.state.appError as UIError).uiErrorType ==
-              UIErrorType.theMaximumSizeOfTheAttachmentsIs20Mb) {
+              UIErrorType.theMaximumSizeOfTheAttachmentsIsXMb) {
         SchedulerBinding.instance.endOfFrame
             .then((_) => _mainCubit.clearErrorMessage());
       }
@@ -858,7 +875,8 @@ class ChatCubit extends Cubit<ChatState> {
     } else {
       SchedulerBinding.instance.endOfFrame.then((_) =>
           _mainCubit.updateErrorMessage(UIError(
-              uiErrorType: UIErrorType.theMaximumSizeOfTheAttachmentsIs20Mb)));
+              uiErrorType: UIErrorType.theMaximumSizeOfTheAttachmentsIsXMb,
+              args: [maxAttachmentSizeInMb])));
       return false;
     }
   }
@@ -930,41 +948,43 @@ class ChatCubit extends Cubit<ChatState> {
       state.isAudioAnswerEnabled == true;
 
   int get minRecordDurationInSec =>
-      answerLimitation?.content?.audioTime?.min ??
+      answerLimitationContent?.audioTime?.min ??
       AppConstants.minRecordDurationInSec;
 
   int get maxRecordDurationInSec =>
-      answerLimitation?.content?.audioTime?.max ??
+      answerLimitationContent?.audioTime?.max ??
       AppConstants.maxRecordDurationInSec;
 
+  int get maxRecordDurationInMinutes => maxRecordDurationInSec ~/ 60;
+
   int get minAttachedPictures =>
-      answerLimitation?.content?.attachments?.min ??
-      AppConstants.minAttachments;
+      answerLimitationContent?.attachments?.min ?? AppConstants.minAttachments;
 
   int get maxAttachedPictures =>
-      answerLimitation?.content?.attachments?.max ??
-      AppConstants.maxAttachments;
+      answerLimitationContent?.attachments?.max ?? AppConstants.maxAttachments;
 
   int get minTextLength =>
-      answerLimitation?.content?.min ??
+      answerLimitationContent?.min ??
       (questionFromDBtype == ChatItemType.ritual
           ? AppConstants.minTextLengthRitual
           : AppConstants.minTextLength);
 
   int get maxTextLength =>
-      answerLimitation?.content?.max ??
+      answerLimitationContent?.max ??
       (questionFromDBtype == ChatItemType.ritual
           ? AppConstants.maxTextLengthRitual
           : AppConstants.maxTextLength);
 
   int get maxAttachmentSizeInBytes =>
-      answerLimitation?.content?.bodySize?.max ??
+      answerLimitationContent?.bodySize?.max ??
       AppConstants.maxAttachmentSizeInBytes;
+
+  double get maxAttachmentSizeInMb => maxAttachmentSizeInBytes / 1000000;
 
   int? get recordAudioDuration => _recordAudioDuration;
 
-  AnswerLimitation? get answerLimitation =>
-      getAnswerLimitationByType(questionFromDBtype);
+  ContentLimitation? get answerLimitationContent =>
+      getAnswerLimitationByType(questionFromDBtype)?.content;
 
   AnswerLimitation? getAnswerLimitationByType(ChatItemType? type) {
     return _answerLimitations.firstWhereOrNull((e) => e.questionType == type);
