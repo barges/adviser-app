@@ -167,7 +167,18 @@ class DataCachingManager implements CachingManager {
 
   @override
   UserInfo? getUserInfo() {
-    UserInfo userInfo = _userBox.read(_userInfoKey);
+    UserInfo? userInfo = _userBox.read(_userInfoKey);
+    return userInfo;
+  }
+
+  @override
+  Future<UserInfo?> updateUserInfoPushEnabled(bool? value) async {
+    UserInfo? userInfo = getUserInfo();
+    userInfo = userInfo?.copyWith(
+      pushNotificationsEnabled: value,
+    );
+
+    await saveUserInfo(userInfo);
     return userInfo;
   }
 

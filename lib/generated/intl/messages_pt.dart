@@ -194,6 +194,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "note": MessageLookupByLibrary.simpleMessage("Nota"),
         "notes": MessageLookupByLibrary.simpleMessage("Notas"),
         "notifications": MessageLookupByLibrary.simpleMessage("Notificações"),
+        "notificationsAreDisabled": MessageLookupByLibrary.simpleMessage(
+            "As notificações estão desativadas"),
         "numerology": MessageLookupByLibrary.simpleMessage("Numerologia"),
         "offline": MessageLookupByLibrary.simpleMessage("Desligado"),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
@@ -305,6 +307,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "thisWeek": MessageLookupByLibrary.simpleMessage("Essa semana"),
         "tips": MessageLookupByLibrary.simpleMessage("Pontas"),
         "title": MessageLookupByLibrary.simpleMessage("Título"),
+        "toEnableNotificationYoullNeedToAllowNotificationsInYour":
+            MessageLookupByLibrary.simpleMessage(
+                "Para habilitar a notificação, você precisará permitir notificações nas configurações do seu telefone"),
         "toReadItBeforeYourAccountWillGetBlocked":
             MessageLookupByLibrary.simpleMessage(
                 "para lê-lo antes que sua conta seja bloqueada!"),

@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/main_state.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart';
@@ -39,6 +43,7 @@ class AccountScreen extends StatelessWidget {
         userRepository,
         getIt.get<PushNotificationManager>(),
         connectivityService,
+        () => showSettingsAlert(context),
       ),
       child: Builder(builder: (context) {
         final AccountCubit accountCubit = context.read<AccountCubit>();
@@ -126,5 +131,20 @@ class AccountScreen extends StatelessWidget {
         );
       }),
     );
+  }
+
+  Future<void> showSettingsAlert(BuildContext context) async {
+    VoidCallback actionOnOk = (() async {
+      await openAppSettings();
+      Get.back();
+    });
+    await showOkCancelAlert(
+        context: context,
+        title: S.of(context).notificationsAreDisabled,
+        okText: S.of(context).settings,
+        description: S.of(context).toEnableNotificationYoullNeedToAllowNotificationsInYour,
+        actionOnOK: actionOnOk,
+        allowBarrierClick: true,
+        isCancelEnabled: true);
   }
 }

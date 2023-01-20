@@ -217,5 +217,7 @@
   "thisVersionOfTheAppIsNoLongerSupported": "Diese Version der App wird nicht mehr unterstützt. Um zu all Ihren Unterhaltungen zurückzukehren, installieren Sie die neueste Version",
   "learnMore": "Lern mehr",
   "update": "Aktualisieren",
-  "messageIsNotSent": "Nachricht wird nicht gesendet"
+  "messageIsNotSent": "Nachricht wird nicht gesendet",
+  "notificationsAreDisabled": "Benachrichtigungen sind deaktiviert",
+  "toEnableNotificationYoullNeedToAllowNotificationsInYour": "Um die Benachrichtigung zu aktivieren, müssen Sie Benachrichtigungen in Ihren Telefoneinstellungen zulassen"
 }

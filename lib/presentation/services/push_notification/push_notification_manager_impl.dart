@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
@@ -43,11 +44,20 @@ class PushNotificationManagerImpl implements PushNotificationManager {
         return false;
       }
     } else {
-      if (!_isRegisteredForPushNotifications) {
-        _isRegisteredForPushNotifications = true;
-        await _configure();
+      PermissionStatus? statusNotification =
+      await Permission.notification.request();
+
+      logger.d(statusNotification);
+
+      if (statusNotification.isGranted) {
+        if (!_isRegisteredForPushNotifications) {
+          _isRegisteredForPushNotifications = true;
+          await _configure();
+        }
+        return true;
+      } else {
+        return false;
       }
-      return true;
     }
   }
 
