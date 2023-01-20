@@ -4,12 +4,12 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 enum UIErrorType {
   blocked,
   wrongUsernameAndOrPassword,
-  youCantSendThisMessageBecauseItsLessThan15Seconds,
-  youVeReachThe3MinuteTimeLimit,
-  theMaximumSizeOfTheAttachmentsIs20Mb,
+  youCantSendThisMessageBecauseItsLessThanXSeconds,
+  youVeReachTheXMinuteTimeLimit,
+  theMaximumSizeOfTheAttachmentsIsXMb,
   checkYourInternetConnection;
 
-  String getErrorMessage(BuildContext context) {
+  String getErrorMessage(BuildContext context, List<Object>? args) {
     switch (this) {
       case UIErrorType.blocked:
         return S
@@ -17,12 +17,16 @@ enum UIErrorType {
             .yourAccountHasBeenBlockedPleaseContactYourAdvisorManager;
       case UIErrorType.wrongUsernameAndOrPassword:
         return S.of(context).wrongUsernameAndOrPassword;
-      case UIErrorType.youCantSendThisMessageBecauseItsLessThan15Seconds:
-        return S.of(context).youCantSendThisMessageBecauseItsLessThan15Seconds;
-      case UIErrorType.youVeReachThe3MinuteTimeLimit:
-        return S.of(context).youVeReachThe3MinuteTimeLimit;
-      case UIErrorType.theMaximumSizeOfTheAttachmentsIs20Mb:
-        return S.of(context).theMaximumSizeOfTheAttachmentsIs20Mb;
+      case UIErrorType.youCantSendThisMessageBecauseItsLessThanXSeconds:
+        return S
+            .of(context)
+            .youCantSendThisMessageBecauseItsLessThanXSeconds(args?[0] ?? '');
+      case UIErrorType.youVeReachTheXMinuteTimeLimit:
+        return S.of(context).youVeReachTheXMinuteTimeLimit(args?[0] ?? '');
+      case UIErrorType.theMaximumSizeOfTheAttachmentsIsXMb:
+        return S
+            .of(context)
+            .theMaximumSizeOfTheAttachmentsIsXMb(args?[0] ?? '');
       case UIErrorType.checkYourInternetConnection:
         return S.of(context).checkYourInternetConnection;
     }

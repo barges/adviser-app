@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
@@ -14,10 +16,10 @@ class ActiveChatInputFieldWidget extends StatelessWidget {
     final ChatCubit chatCubit = context.read<ChatCubit>();
     final bool isRecordingAudio =
         context.select((ChatCubit cubit) => cubit.state.isRecordingAudio);
-    final bool isAudioFileSaved =
-        context.select((ChatCubit cubit) => cubit.state.isAudioFileSaved);
+    final File? recordedAudio =
+        context.select((ChatCubit cubit) => cubit.state.recordedAudio);
 
-    if (isAudioFileSaved) {
+    if (recordedAudio != null) {
       return ChatRecordedPlayerWidget(
         player: chatCubit.audioPlayer,
         url: chatCubit.state.recordedAudio?.path,

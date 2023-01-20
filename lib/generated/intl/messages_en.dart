@@ -19,9 +19,17 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static m0(counter) => "This question will be returned to the general list after ${counter}";
+  static m0(minRecordDurationInSec, maxRecordDurationInMinutes) => "from ${minRecordDurationInSec} sec to ${maxRecordDurationInMinutes} min";
 
-  static m1(email) => "We\'ve sent password reset instructions to ${email}.";
+  static m1(maxAttachmentSizeInMb) => "The maximum size of the attachments is ${maxAttachmentSizeInMb}Mb";
+
+  static m2(counter) => "This question will be returned to the general list after ${counter}";
+
+  static m3(email) => "We\'ve sent password reset instructions to ${email}.";
+
+  static m4(minRecordDurationInSec) => "You can’t send this message because it’s less than ${minRecordDurationInSec} seconds";
+
+  static m5(maxRecordDurationInMinutes) => "You\'ve reach the ${maxRecordDurationInMinutes} minute time limit.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -54,6 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "born" : MessageLookupByLibrary.simpleMessage("Born"),
     "calls" : MessageLookupByLibrary.simpleMessage("Calls"),
     "cancel" : MessageLookupByLibrary.simpleMessage("Cancel"),
+    "cancelSending" : MessageLookupByLibrary.simpleMessage("Cancel sending"),
     "changeCoverPicture" : MessageLookupByLibrary.simpleMessage("Change cover picture"),
     "changePassword" : MessageLookupByLibrary.simpleMessage("Change password"),
     "changePhoto" : MessageLookupByLibrary.simpleMessage("Change photo"),
@@ -94,7 +103,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "forgotPassword" : MessageLookupByLibrary.simpleMessage("Forgot password"),
     "forgotYourPassword" : MessageLookupByLibrary.simpleMessage("Forgot your password"),
     "fortunica" : MessageLookupByLibrary.simpleMessage("Fortunica"),
-    "from15secTo3min" : MessageLookupByLibrary.simpleMessage("from 15 sec to 3 min"),
+    "fromXsecToYmin" : m0,
     "goToAccount" : MessageLookupByLibrary.simpleMessage("Go to Account"),
     "history" : MessageLookupByLibrary.simpleMessage("History"),
     "imAvailableNow" : MessageLookupByLibrary.simpleMessage("I\'m available now"),
@@ -102,6 +111,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "ingenio" : MessageLookupByLibrary.simpleMessage("Ingenio"),
     "itWillGoBackIntoTheGeneralQueueYouWillNotBeAbleToTakeItAgain" : MessageLookupByLibrary.simpleMessage("It will go back into the general queue. You will not be able to take it again."),
     "justSentYouAMessage" : MessageLookupByLibrary.simpleMessage("Just sent you a message"),
+    "learnMore" : MessageLookupByLibrary.simpleMessage("Learn More"),
     "legalBlock" : MessageLookupByLibrary.simpleMessage("Legal block"),
     "live" : MessageLookupByLibrary.simpleMessage("Live"),
     "logOut" : MessageLookupByLibrary.simpleMessage("Log out"),
@@ -111,6 +121,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "male" : MessageLookupByLibrary.simpleMessage("Male"),
     "mandatory" : MessageLookupByLibrary.simpleMessage("Mandatory"),
     "market" : MessageLookupByLibrary.simpleMessage("Market:"),
+    "messageIsNotSent" : MessageLookupByLibrary.simpleMessage("Message is not sent"),
     "myGallery" : MessageLookupByLibrary.simpleMessage("My Gallery"),
     "newCustomers" : MessageLookupByLibrary.simpleMessage("New customers"),
     "newLabel" : MessageLookupByLibrary.simpleMessage("New"),
@@ -191,11 +202,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "tarot" : MessageLookupByLibrary.simpleMessage("Tarot"),
     "tellOurTeamWhenYouPlanToReturn" : MessageLookupByLibrary.simpleMessage("Tell our team when you plan to return:"),
     "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m" : MessageLookupByLibrary.simpleMessage("The answer is not possible, this question will be returned to the general list in ~ 1m"),
-    "theMaximumSizeOfTheAttachmentsIs20Mb" : MessageLookupByLibrary.simpleMessage("The maximum size of the attachments is 20Mb"),
+    "theMaximumSizeOfTheAttachmentsIsXMb" : m1,
     "thePasswordsMustMatch" : MessageLookupByLibrary.simpleMessage("The passwords must match"),
     "theUserWasNotFound" : MessageLookupByLibrary.simpleMessage("The user was not found"),
     "thisMonth" : MessageLookupByLibrary.simpleMessage("This Month"),
-    "thisQuestionWillBeReturnedToTheGeneralListAfterCounter" : m0,
+    "thisQuestionWillBeReturnedToTheGeneralListAfterCounter" : m2,
     "thisVersionOfTheAppIsNoLongerSupported" : MessageLookupByLibrary.simpleMessage("This version of the app is no longer supported. To get back to all your conversations, install the latest version"),
     "thisWeek" : MessageLookupByLibrary.simpleMessage("This Week"),
     "tips" : MessageLookupByLibrary.simpleMessage("Tips"),
@@ -215,14 +226,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages" : MessageLookupByLibrary.simpleMessage("We need permission to access your camera and gallery so you can send images"),
     "weNeedPermissionToAccessYourMicrophone" : MessageLookupByLibrary.simpleMessage("We need permission to access your microphone"),
     "wePrideOurselvesToOfferAdvisorsASafePlaceTo" : MessageLookupByLibrary.simpleMessage("We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others"),
-    "weVeSentPasswordResetInstructionsToEmail" : m1,
+    "weVeSentPasswordResetInstructionsToEmail" : m3,
     "whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisList" : MessageLookupByLibrary.simpleMessage("When someone asks a public question, you\'ll see them on this list"),
     "whenYouHelpYourFirstClientYouWillSeeYourSessionHistoryHere" : MessageLookupByLibrary.simpleMessage("When you help your first client, you will see your session history here."),
     "willBeAvailableIn" : MessageLookupByLibrary.simpleMessage("Will be available in"),
     "workspaces" : MessageLookupByLibrary.simpleMessage("Workspaces"),
     "wrongUsernameAndOrPassword" : MessageLookupByLibrary.simpleMessage("Wrong username and/or password."),
     "yesImSure" : MessageLookupByLibrary.simpleMessage("Yes, I’m sure"),
-    "youCantSendThisMessageBecauseItsLessThan15Seconds" : MessageLookupByLibrary.simpleMessage("You can’t send this message because it’s less than 15 seconds"),
+    "youCantSendThisMessageBecauseItsLessThanXSeconds" : m4,
     "youDoNotHaveAnyNotesYet" : MessageLookupByLibrary.simpleMessage("You don’t have any notes yet"),
     "youDontHaveAnInternetConnection" : MessageLookupByLibrary.simpleMessage("You don\'t have an internet connection"),
     "youHave" : MessageLookupByLibrary.simpleMessage("You have"),
@@ -235,7 +246,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "youNeedToAcceptTheAdvisorContract" : MessageLookupByLibrary.simpleMessage("You need to accept the advisor contract"),
     "youReCurrentlyOffline" : MessageLookupByLibrary.simpleMessage("You\'re currently offline"),
     "youReNotLiveOnThePlatform" : MessageLookupByLibrary.simpleMessage("You\'re not live on the platform"),
-    "youVeReachThe3MinuteTimeLimit" : MessageLookupByLibrary.simpleMessage("You\'ve reach the 3 minute time limit."),
+    "youVeReachTheXMinuteTimeLimit" : m5,
     "youWillBeAbleToChangeYourStatusBackIn" : MessageLookupByLibrary.simpleMessage("You will be able to change your status back in 1 hour"),
     "yourAccountHasBeenBlockedPleaseContactYourAdvisorManager" : MessageLookupByLibrary.simpleMessage("Your account has been blocked. Please contact your advisor manager."),
     "yourClientSessionHistoryWillAppearHere" : MessageLookupByLibrary.simpleMessage("Your client session history will appear here"),

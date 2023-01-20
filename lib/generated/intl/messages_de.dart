@@ -19,9 +19,17 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'de';
 
-  static m0(counter) => "Diese Frage wird nach ${counter} an die allgemeine Liste zurückgegeben";
+  static m0(minRecordDurationInSec, maxRecordDurationInMinutes) => "von ${minRecordDurationInSec} Sek. bis ${maxRecordDurationInMinutes} Min";
 
-  static m1(email) => "Wir haben Anweisungen zum Zurücksetzen des Passworts an ${email} gesendet.";
+  static m1(maxAttachmentSizeInMb) => "Die maximale Größe der Anhänge beträgt ${maxAttachmentSizeInMb} MB";
+
+  static m2(counter) => "Diese Frage wird nach ${counter} an die allgemeine Liste zurückgegeben";
+
+  static m3(email) => "Wir haben Anweisungen zum Zurücksetzen des Passworts an ${email} gesendet.";
+
+  static m4(minRecordDurationInSec) => "Sie können diese Nachricht nicht senden, da sie weniger als ${minRecordDurationInSec} Sekunden dauert";
+
+  static m5(maxRecordDurationInMinutes) => "Sie haben das ${maxRecordDurationInMinutes}-Minuten-Zeitlimit erreicht.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -54,6 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "born" : MessageLookupByLibrary.simpleMessage("Geboren"),
     "calls" : MessageLookupByLibrary.simpleMessage("Anrufe"),
     "cancel" : MessageLookupByLibrary.simpleMessage("Absagen"),
+    "cancelSending" : MessageLookupByLibrary.simpleMessage("Senden abbrechen"),
     "changeCoverPicture" : MessageLookupByLibrary.simpleMessage("Titelbild ändern"),
     "changePassword" : MessageLookupByLibrary.simpleMessage("Passwort ändern"),
     "changePhoto" : MessageLookupByLibrary.simpleMessage("Foto ändern"),
@@ -93,13 +102,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "forgotPassword" : MessageLookupByLibrary.simpleMessage("Passwort vergessen"),
     "forgotYourPassword" : MessageLookupByLibrary.simpleMessage("Haben Sie Ihr Passwort vergessen"),
     "fortunica" : MessageLookupByLibrary.simpleMessage("Fortunica"),
-    "from15secTo3min" : MessageLookupByLibrary.simpleMessage("von 15 Sek. bis 3 Min"),
+    "fromXsecToYmin" : m0,
     "goToAccount" : MessageLookupByLibrary.simpleMessage("Gehen Sie zu Konto"),
     "history" : MessageLookupByLibrary.simpleMessage("Geschichte"),
     "imAvailableNow" : MessageLookupByLibrary.simpleMessage("Ich bin jetzt verfügbar"),
     "incomplete" : MessageLookupByLibrary.simpleMessage("Unvollständig"),
     "ingenio" : MessageLookupByLibrary.simpleMessage("Ingenio"),
     "itWillGoBackIntoTheGeneralQueueYouWillNotBeAbleToTakeItAgain" : MessageLookupByLibrary.simpleMessage("Es wird zurück in die allgemeine Warteschlange gestellt. Sie können es nicht noch einmal nehmen."),
+    "learnMore" : MessageLookupByLibrary.simpleMessage("Lern mehr"),
     "legalBlock" : MessageLookupByLibrary.simpleMessage("Gesetzliche Sperre"),
     "live" : MessageLookupByLibrary.simpleMessage("Live"),
     "logOut" : MessageLookupByLibrary.simpleMessage("Ausloggen"),
@@ -109,6 +119,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "male" : MessageLookupByLibrary.simpleMessage("Männlich"),
     "mandatory" : MessageLookupByLibrary.simpleMessage("Obligatorisch"),
     "market" : MessageLookupByLibrary.simpleMessage("Markt:"),
+    "messageIsNotSent" : MessageLookupByLibrary.simpleMessage("Nachricht wird nicht gesendet"),
     "myGallery" : MessageLookupByLibrary.simpleMessage("Meine Gallerie"),
     "newCustomers" : MessageLookupByLibrary.simpleMessage("Neue Kunden"),
     "newLabel" : MessageLookupByLibrary.simpleMessage("Neu"),
@@ -189,11 +200,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "tarot" : MessageLookupByLibrary.simpleMessage("Tarot"),
     "tellOurTeamWhenYouPlanToReturn" : MessageLookupByLibrary.simpleMessage("Teilen Sie unserem Team mit, wann Sie zurückkehren möchten:"),
     "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m" : MessageLookupByLibrary.simpleMessage("Die Antwort ist nicht möglich, diese Frage wird in ~ 1 Minute an die allgemeine Liste zurückgegeben"),
-    "theMaximumSizeOfTheAttachmentsIs20Mb" : MessageLookupByLibrary.simpleMessage("Die maximale Größe der Anhänge beträgt 20 MB"),
+    "theMaximumSizeOfTheAttachmentsIsXMb" : m1,
     "thePasswordsMustMatch" : MessageLookupByLibrary.simpleMessage("Die Passwörter müssen übereinstimmen"),
     "theUserWasNotFound" : MessageLookupByLibrary.simpleMessage("Der Benutzer wurde nicht gefunden"),
     "thisMonth" : MessageLookupByLibrary.simpleMessage("Diesen Monat"),
-    "thisQuestionWillBeReturnedToTheGeneralListAfterCounter" : m0,
+    "thisQuestionWillBeReturnedToTheGeneralListAfterCounter" : m2,
     "thisVersionOfTheAppIsNoLongerSupported" : MessageLookupByLibrary.simpleMessage("Diese Version der App wird nicht mehr unterstützt. Um zu all Ihren Unterhaltungen zurückzukehren, installieren Sie die neueste Version"),
     "thisWeek" : MessageLookupByLibrary.simpleMessage("In dieser Woche"),
     "tips" : MessageLookupByLibrary.simpleMessage("Tipps"),
@@ -213,14 +224,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages" : MessageLookupByLibrary.simpleMessage("Wir benötigen die Erlaubnis, auf Ihre Kamera und Galerie zuzugreifen, damit Sie Bilder senden können"),
     "weNeedPermissionToAccessYourMicrophone" : MessageLookupByLibrary.simpleMessage("Wir benötigen die Erlaubnis, auf Ihr Mikrofon zuzugreifen"),
     "wePrideOurselvesToOfferAdvisorsASafePlaceTo" : MessageLookupByLibrary.simpleMessage("Wir sind stolz darauf, Beratern einen sicheren Ort zu bieten, an dem sie Kunden bedienen und sich beruflich weiterentwickeln können. Gute Arbeit bei einer unserer Marken zu leisten, wird Türen zu anderen öffnen"),
-    "weVeSentPasswordResetInstructionsToEmail" : m1,
+    "weVeSentPasswordResetInstructionsToEmail" : m3,
     "whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisList" : MessageLookupByLibrary.simpleMessage("Wenn jemand eine öffentliche Frage stellt, sehen Sie ihn auf dieser Liste"),
     "whenYouHelpYourFirstClientYouWillSeeYourSessionHistoryHere" : MessageLookupByLibrary.simpleMessage("Wenn Sie Ihrem ersten Kunden helfen, sehen Sie hier Ihren Sitzungsverlauf."),
     "willBeAvailableIn" : MessageLookupByLibrary.simpleMessage("Wird verfügbar sein in"),
     "workspaces" : MessageLookupByLibrary.simpleMessage("Arbeitsbereiche"),
     "wrongUsernameAndOrPassword" : MessageLookupByLibrary.simpleMessage("Falscher Nutzername und/oder Passwort."),
     "yesImSure" : MessageLookupByLibrary.simpleMessage("Ja, ich bin mir sicher"),
-    "youCantSendThisMessageBecauseItsLessThan15Seconds" : MessageLookupByLibrary.simpleMessage("Sie können diese Nachricht nicht senden, da sie weniger als 15 Sekunden dauert"),
+    "youCantSendThisMessageBecauseItsLessThanXSeconds" : m4,
     "youDoNotHaveAnyNotesYet" : MessageLookupByLibrary.simpleMessage("Sie haben noch keine Notizen"),
     "youDontHaveAnInternetConnection" : MessageLookupByLibrary.simpleMessage("Sie haben keine Internetverbindung"),
     "youHave" : MessageLookupByLibrary.simpleMessage("Du hast"),
@@ -233,7 +244,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "youNeedToAcceptTheAdvisorContract" : MessageLookupByLibrary.simpleMessage("Sie müssen den Beratervertrag akzeptieren"),
     "youReCurrentlyOffline" : MessageLookupByLibrary.simpleMessage("Sie sind derzeit offline"),
     "youReNotLiveOnThePlatform" : MessageLookupByLibrary.simpleMessage("Sie sind nicht live auf der Plattform"),
-    "youVeReachThe3MinuteTimeLimit" : MessageLookupByLibrary.simpleMessage("Sie haben das 3-Minuten-Zeitlimit erreicht."),
+    "youVeReachTheXMinuteTimeLimit" : m5,
     "youWillBeAbleToChangeYourStatusBackIn" : MessageLookupByLibrary.simpleMessage("Sie können Ihren Status in 1 Stunde zurücksetzen"),
     "yourAccountHasBeenBlockedPleaseContactYourAdvisorManager" : MessageLookupByLibrary.simpleMessage("Ihr Konto wurde gesperrt. Bitte wenden Sie sich an Ihren Beratermanager."),
     "yourClientSessionHistoryWillAppearHere" : MessageLookupByLibrary.simpleMessage("Ihr Client-Sitzungsverlauf wird hier angezeigt"),
