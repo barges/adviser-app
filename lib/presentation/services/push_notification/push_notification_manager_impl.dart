@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
@@ -21,7 +20,8 @@ class PushNotificationManagerImpl implements PushNotificationManager {
   @override
   Future<bool> registerForPushNotifications() async {
     if (Platform.isIOS) {
-      await FirebaseMessaging.instance.requestPermission(
+      NotificationSettings settings =
+          await FirebaseMessaging.instance.requestPermission(
         alert: true,
         announcement: false,
         badge: true,
@@ -31,10 +31,9 @@ class PushNotificationManagerImpl implements PushNotificationManager {
         sound: true,
       );
 
-      PermissionStatus? statusNotification =
-          await Permission.notification.request();
+      logger.d(settings.authorizationStatus);
 
-      if (statusNotification.isGranted) {
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
         if (!_isRegisteredForPushNotifications) {
           _isRegisteredForPushNotifications = true;
           await _configure();
