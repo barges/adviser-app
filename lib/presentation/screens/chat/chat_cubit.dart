@@ -187,7 +187,9 @@ class ChatCubit extends Cubit<ChatState> {
       state.copyWith(
         inputTextLength: textInputEditingController.text.length,
         isSendButtonEnabled:
-            _checkTextLengthIsOk() || state.recordedAudio != null,
+            (_checkTextLengthIsOk() || state.recordedAudio != null) &&
+                _checkAttachmentSizeIsOk(
+                    state.attachedPictures, state.recordedAudio),
       ),
     );
   }
@@ -883,6 +885,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   bool _checkAttachmentSizeIsOk(List<File> images, File? recordedAudio) {
+    print(_calculateAttachmentSizeInBytes(images, recordedAudio));
     if (_calculateAttachmentSizeInBytes(images, recordedAudio) <=
         maxAttachmentSizeInBytes) {
       if (_mainCubit.state.appError is UIError &&
@@ -996,7 +999,7 @@ class ChatCubit extends Cubit<ChatState> {
           : AppConstants.maxTextLength);
 
   int get maxAttachmentSizeInBytes =>
-      answerLimitationContent?.bodySize?.max ??
+      //answerLimitationContent?.bodySize?.max ??
       AppConstants.maxAttachmentSizeInBytes;
 
   double get maxAttachmentSizeInMb => maxAttachmentSizeInBytes / 1000000;
