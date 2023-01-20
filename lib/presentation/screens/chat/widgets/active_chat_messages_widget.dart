@@ -57,16 +57,6 @@ class ActiveChatMessagesWidget extends StatelessWidget {
                     ChatItemWidget(
                       key: key,
                       item: item,
-                      onPressedTryAgain: () async {
-                        if (!item.isSent) {
-                          await chatCubit.sendAnswerAgain();
-                        }
-                      },
-                      onPressedCancelSending: () async {
-                        if (!item.isSent) {
-                          await chatCubit.cancelSending();
-                        }
-                      },
                     ),
                   );
                   if (i < activeMessages.length - 1) {

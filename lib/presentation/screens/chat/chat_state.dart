@@ -18,7 +18,6 @@ class ChatState with _$ChatState {
     @Default(0) int currentTabIndex,
     @Default(0) int inputTextLength,
     @Default(false) bool isRecordingAudio,
-    @Default(false) bool isAudioFileSaved,
     @Default(true) bool showInputFieldIfPublic,
     @Default(false) bool isSendButtonEnabled,
     @Default(EmptySuccess()) AppSuccess appSuccess,

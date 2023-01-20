@@ -359,7 +359,6 @@ class ChatCubit extends Cubit<ChatState> {
 
     emit(
       state.copyWith(
-        isAudioFileSaved: false,
         isRecordingAudio: true,
         recordingStream: _soundRecordService.onProgress,
       ),
@@ -399,7 +398,6 @@ class ChatCubit extends Cubit<ChatState> {
     emit(
       state.copyWith(
         recordedAudio: recordedAudio,
-        isAudioFileSaved: true,
         isRecordingAudio: false,
         isSendButtonEnabled: isSendButtonEnabled &&
             _checkAttachmentSizeIsOk(state.attachedPictures, recordedAudio),
@@ -422,7 +420,6 @@ class ChatCubit extends Cubit<ChatState> {
       state.copyWith(
         recordedAudio: null,
         isRecordingAudio: false,
-        isAudioFileSaved: false,
       ),
     );
   }
@@ -438,7 +435,6 @@ class ChatCubit extends Cubit<ChatState> {
         state.copyWith(
             recordedAudio: null,
             isRecordingAudio: false,
-            isAudioFileSaved: false,
             isSendButtonEnabled:
                 _checkAttachmentSizeIsOk(state.attachedPictures, null) &&
                     _checkTextLengthIsOk()),
@@ -521,7 +517,6 @@ class ChatCubit extends Cubit<ChatState> {
       emit(
         state.copyWith(
           isRecordingAudio: false,
-          isAudioFileSaved: false,
           recordedAudio: answer.isSent ? null : state.recordedAudio,
           activeMessages: messages,
         ),

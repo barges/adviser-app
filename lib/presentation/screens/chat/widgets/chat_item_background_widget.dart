@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 
 class ChatItemBackgroundWidget extends StatelessWidget {
   final bool isBorder;
-  final bool isTryAgain;
+  final bool isNotSent;
   final EdgeInsets padding;
   final Color color;
   final Widget child;
-  final VoidCallback? onPressedTryAgain;
-  final VoidCallback? onPressedCancelSending;
   const ChatItemBackgroundWidget({
     super.key,
     this.isBorder = false,
-    this.isTryAgain = false,
-    this.onPressedTryAgain,
-    this.onPressedCancelSending,
+    this.isNotSent = false,
     required this.padding,
     required this.color,
     required this.child,
@@ -24,14 +22,15 @@ class ChatItemBackgroundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ChatCubit chatCubit = context.read<ChatCubit>();
     return Padding(
-        padding: isTryAgain
+        padding: isNotSent
             ? padding.copyWith(bottom: padding.bottom + 8.0)
             : padding,
         child: Stack(
           children: [
             Container(
-              margin: EdgeInsets.only(bottom: isTryAgain ? 24.0 : 0),
+              margin: EdgeInsets.only(bottom: isNotSent ? 24.0 : 0),
               padding: const EdgeInsets.symmetric(
                 vertical: 10.0,
                 horizontal: 12.0,
@@ -48,23 +47,23 @@ class ChatItemBackgroundWidget extends StatelessWidget {
               ),
               child: child,
             ),
-            if (isTryAgain)
+            if (isNotSent)
               Positioned(
                 right: 0.0,
                 bottom: 0.0,
                 child: GestureDetector(
                   behavior: HitTestBehavior.translucent,
-                  onTap: onPressedTryAgain,
+                  onTap: isNotSent ? chatCubit.sendAnswerAgain : null,
                   child: const _TryAgain(),
                 ),
               ),
-            if (isTryAgain)
+            if (isNotSent)
               Positioned(
                 right: 94.0,
                 bottom: 0.0,
                 child: GestureDetector(
                   behavior: HitTestBehavior.translucent,
-                  onTap: onPressedCancelSending,
+                  onTap: isNotSent ? chatCubit.cancelSending : null,
                   child: const _CancelSending(),
                 ),
               ),
