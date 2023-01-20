@@ -999,7 +999,7 @@ class ChatCubit extends Cubit<ChatState> {
           : AppConstants.maxTextLength);
 
   int get maxAttachmentSizeInBytes =>
-      //answerLimitationContent?.bodySize?.max ??
+      answerLimitationContent?.bodySize?.max ??
       AppConstants.maxAttachmentSizeInBytes;
 
   double get maxAttachmentSizeInMb => maxAttachmentSizeInBytes / 1000000;
