@@ -218,7 +218,7 @@ class ChatCubit extends Cubit<ChatState> {
             questionFromDB: question,
             questionStatus: question.status,
             activeMessages: [question],
-            isAudioAnswerEnabled: question.isAudio,
+            isAudioAnswerEnabled: question.type != ChatItemType.public,
           ),
         );
       }
@@ -257,9 +257,6 @@ class ChatCubit extends Cubit<ChatState> {
 
         final ChatItem lastQuestion = questions.last;
 
-        final bool isAudioAnswerEnabled =
-            questions.any((element) => element.isAudio);
-
         emit(
           state.copyWith(
             questionFromDB: lastQuestion.copyWith(
@@ -271,7 +268,7 @@ class ChatCubit extends Cubit<ChatState> {
             questionStatus: lastQuestion.status,
             activeMessages: activeMessages,
             ritualCardInfo: ritualsResponse.ritualCardInfo,
-            isAudioAnswerEnabled: isAudioAnswerEnabled,
+            isAudioAnswerEnabled: true,
           ),
         );
 
@@ -480,12 +477,13 @@ class ChatCubit extends Cubit<ChatState> {
       return;
     }
 
-    emit(state.copyWith(
-      attachedPictures: images,
-      isSendButtonEnabled:
-          _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
-              (_checkRecordedAudioIsOk() || _checkTextLengthIsOk()),
-    ));
+    emit(
+      state.copyWith(
+          attachedPictures: images,
+          isSendButtonEnabled:
+              _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
+                  (_checkRecordedAudioIsOk() || _checkTextLengthIsOk())),
+    );
 
     _scrollTextFieldToEnd();
   }
@@ -493,12 +491,13 @@ class ChatCubit extends Cubit<ChatState> {
   void deletePicture(File? image) {
     final images = List.of(state.attachedPictures);
     images.remove(image);
-    emit(state.copyWith(
-      attachedPictures: images,
-      isSendButtonEnabled:
-          (_checkRecordedAudioIsOk() || _checkTextLengthIsOk()) &&
-              _checkAttachmentSizeIsOk(images, state.recordedAudio),
-    ));
+    emit(
+      state.copyWith(
+          attachedPictures: images,
+          isSendButtonEnabled:
+              _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
+                  (_checkRecordedAudioIsOk() || _checkTextLengthIsOk())),
+    );
 
     _scrollTextFieldToEnd();
   }
@@ -885,7 +884,6 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   bool _checkAttachmentSizeIsOk(List<File> images, File? recordedAudio) {
-    print(_calculateAttachmentSizeInBytes(images, recordedAudio));
     if (_calculateAttachmentSizeInBytes(images, recordedAudio) <=
         maxAttachmentSizeInBytes) {
       if (_mainCubit.state.appError is UIError &&
