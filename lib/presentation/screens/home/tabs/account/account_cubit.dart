@@ -203,8 +203,8 @@ class AccountCubit extends Cubit<AccountState> {
     UserInfo? userInfo =
         await _userRepository.setPushEnabled(PushEnableRequest(value: value));
 
-    return await _cacheManager
-        .updateUserInfoPushEnabled(userInfo.pushNotificationsEnabled); 
+    await _cacheManager.saveUserInfo(userInfo);
+    return userInfo;
   }
 
   Future<void> updateUserStatus({required FortunicaUserStatus status}) async {
@@ -230,9 +230,10 @@ class AccountCubit extends Cubit<AccountState> {
         _showSettingsAlert();
       }
     } else {
-      if (isGranted) {
+      ///TODO: disable for all or not????
+      // if (isGranted) {
         userInfo = await _setPushEnabled(newValue);
-      }
+      // }
     }
     emit(
       state.copyWith(
