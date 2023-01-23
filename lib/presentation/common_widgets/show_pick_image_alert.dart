@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 
 Future<void> showPickImageAlert(
@@ -120,7 +121,7 @@ Future<void> showPickImageAlert(
 
 Future<void> _pickImage(BuildContext context, ImageSource imageSource,
     ValueChanged<File> setImage) async {
-  await CheckPermissionService.handlePermission(
+  await getIt.get<CheckPermissionService>().handlePermission(
       context, PermissionType.getPermissionTypeByImageSource(imageSource));
   File? image;
 
@@ -139,7 +140,7 @@ Future<void> _pickImage(BuildContext context, ImageSource imageSource,
 
 Future<void> _pickMultiImage(BuildContext context, ImageSource imageSource,
     ValueChanged<List<File>> setMultiImage) async {
-  await CheckPermissionService.handlePermission(
+  await getIt.get<CheckPermissionService>().handlePermission(
       context, PermissionType.getPermissionTypeByImageSource(imageSource));
   List<File> images = List.empty(growable: true);
   final ImagePicker picker = ImagePicker();

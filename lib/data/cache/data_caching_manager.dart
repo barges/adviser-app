@@ -5,6 +5,7 @@ import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
+import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 
 import 'caching_manager.dart';
 
@@ -16,11 +17,13 @@ const String _userStatusKey = 'userStatusKey';
 const String _userIdKey = 'userIdKey';
 const String _localeKey = 'localeKey';
 const String _pushNotificationSetKey = 'pushNotificationSetKey';
+const String _firstPermissionStatusesKey = 'firstPermissionStatusesKey';
 
 class DataCachingManager implements CachingManager {
   final GetStorage _userBox = GetStorage();
   final GetStorage _brandsBox = GetStorage();
   final GetStorage _localeBox = GetStorage();
+  final GetStorage _permissionBox = GetStorage();
 
   @override
   Future<bool> clearTokenForBrand(Brand brand) async {
@@ -270,5 +273,22 @@ class DataCachingManager implements CachingManager {
   @override
   void saveFirstPushNotificationSet() {
     _userBox.write(_pushNotificationSetKey, true);
+  }
+
+  @override
+  Map<PermissionType, bool> getFirstPermissionStatusesRequestsMap() {
+    return _permissionBox.read(_firstPermissionStatusesKey) ?? {};
+  }
+
+  @override
+  Future<void> saveFirstPermissionStatusesRequestsMap(
+      PermissionType permissionType) async {
+    Map<PermissionType, bool> firstPermissionStatusesRequestsMap =
+        getFirstPermissionStatusesRequestsMap();
+
+    firstPermissionStatusesRequestsMap[permissionType] = true;
+
+    await _permissionBox.write(
+        _firstPermissionStatusesKey, firstPermissionStatusesRequestsMap);
   }
 }

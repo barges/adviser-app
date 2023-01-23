@@ -4,15 +4,20 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 
 class CheckPermissionService {
-  static Map<PermissionType, PermissionStatus> permissionStatusesMap = {};
+  final CachingManager cacheManager;
 
-  static Future<bool> handlePermission(
+  CheckPermissionService(this.cacheManager);
+
+  Future<bool> handlePermission(
       BuildContext context, PermissionType permissionType) async {
     PermissionStatus status;
+    Map<PermissionType, bool> permissionStatusesMap =
+        cacheManager.getFirstPermissionStatusesRequestsMap();
     switch (permissionType) {
       case PermissionType.camera:
         {
@@ -50,12 +55,8 @@ class CheckPermissionService {
         }
     }
 
-    if (permissionStatusesMap[permissionType] == null &&
-        status.isPermanentlyDenied) {
-      permissionStatusesMap[permissionType] = status;
-    }
-
-    if (permissionStatusesMap[permissionType]?.isPermanentlyDenied == true) {
+    if (status.isPermanentlyDenied &&
+        permissionStatusesMap[permissionType] != null) {
       VoidCallback actionOnOk = (() async {
         await openAppSettings();
         Navigator.pop(context);
@@ -70,7 +71,10 @@ class CheckPermissionService {
           isCancelEnabled: true);
     }
 
-    permissionStatusesMap[permissionType] = status;
+    if (status.isPermanentlyDenied) {
+      cacheManager.saveFirstPermissionStatusesRequestsMap(permissionType);
+    }
+
     return status.isGranted;
   }
 }
@@ -93,7 +97,7 @@ enum PermissionType {
       case PermissionType.notification:
         return S
             .of(context)
-            .toEnableNotificationYouLlNeedToAllowNotificationsForReaderAppInYourPhoneSettings;
+            .toEnableNotificationYoullNeedToAllowNotificationsInYour;
     }
   }
 

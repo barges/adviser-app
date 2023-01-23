@@ -8,6 +8,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:mockito/mockito.dart';
@@ -34,6 +35,7 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/histo
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/ritual_info_card_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/gallery/gallery_pictures_screen.dart';
 import 'package:shared_advisor_interface/presentation/services/audio_player_service.dart';
+import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/services/sound/sound_record_service.dart';
 
@@ -70,6 +72,8 @@ Future<void> pumpChatScreen({
                         connectivityService: connectivityService,
                         soundRecordService: soundRecordService,
                         audioPlayerService: audioPlayerService,
+                        checkPermissionService:
+                            GetIt.instance.get<CheckPermissionService>(),
                       ),
                   settings: RouteSettings(arguments: chatScreenArguments));
             },
@@ -102,6 +106,7 @@ void main() {
   WidgetController.hitTestWarningShouldBeFatal = true;
 
   setUpAll(() {
+    GetIt.instance.allowReassignment = true;
     dio = Dio();
     dioAdapter = DioAdapter(dio: dio, matcher: const UrlRequestMatcher());
     mockSoundRecordService = MockSoundRecordService();
@@ -239,6 +244,9 @@ void main() {
     mockChatsRepository = ChatsRepositoryImpl(ChatsApi(dio));
     mockConnectivityService = MockConnectivityService();
     mockCacheManager = MockDataCachingManager();
+
+    getIt.registerSingleton<CheckPermissionService>(
+        CheckPermissionService(mockCacheManager));
 
     mainCubit = MainCubit(mockCacheManager, mockConnectivityService);
   });

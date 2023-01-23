@@ -32,6 +32,7 @@ class AccountCubit extends Cubit<AccountState> {
   final UserRepository _userRepository;
   final ConnectivityService _connectivityService;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  final CheckPermissionService _checkPermissionService;
   final BuildContext context;
 
   final CachingManager _cacheManager;
@@ -50,6 +51,7 @@ class AccountCubit extends Cubit<AccountState> {
     this._userRepository,
     this._pushNotificationManager,
     this._connectivityService,
+    this._checkPermissionService,
     this.context,
   ) : super(const AccountState()) {
     disposeListen = _cacheManager.listenUserProfile((value) {
@@ -73,7 +75,7 @@ class AccountCubit extends Cubit<AccountState> {
       (value) async {
         if (value) {
           final bool isPushNotificationPermissionGranted =
-              await CheckPermissionService.handlePermission(
+              await _checkPermissionService.handlePermission(
                   context, PermissionType.notification);
           if (isPushNotificationPermissionGranted) {
             _pushNotificationManager.registerForPushNotifications();
@@ -101,7 +103,7 @@ class AccountCubit extends Cubit<AccountState> {
       int milliseconds = 0;
 
       final bool isPushNotificationPermissionGranted =
-          await CheckPermissionService.handlePermission(
+          await _checkPermissionService.handlePermission(
               context, PermissionType.notification);
       if (isPushNotificationPermissionGranted) {
         _pushNotificationManager.registerForPushNotifications();
@@ -227,7 +229,7 @@ class AccountCubit extends Cubit<AccountState> {
 
   Future<void> updateEnableNotificationsValue(bool newValue) async {
     UserInfo? userInfo = _cacheManager.getUserInfo();
-    final bool isGranted = await CheckPermissionService.handlePermission(
+    final bool isGranted = await _checkPermissionService.handlePermission(
         context, PermissionType.notification);
     if (newValue) {
       if (isGranted) {
