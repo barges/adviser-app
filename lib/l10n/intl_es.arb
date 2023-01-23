@@ -219,5 +219,7 @@
   "learnMore": "Aprende más",
   "update": "Actualizar",
   "messageIsNotSent": "No se envia el mensaje",
-  "recordingIsNotPossibleAllocateSpaceOnTheDevice": "La grabación no es posible, asigne espacio en el dispositivo"
+  "recordingIsNotPossibleAllocateSpaceOnTheDevice": "La grabación no es posible, asigne espacio en el dispositivo",
+  "notificationsAreDisabled": "Las notificaciones están deshabilitadas",
+  "toEnableNotificationYoullNeedToAllowNotificationsInYour": "Para habilitar la notificación, deberá permitir las notificaciones en la configuración de su teléfono"
 }
