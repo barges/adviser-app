@@ -5,10 +5,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 
 bool _isRegisteredForPushNotifications = false;
@@ -52,11 +53,6 @@ class PushNotificationManagerImpl implements PushNotificationManager {
     }
   }
 
-  Future<void> _configure() async {
-    _configLocalNotification();
-    _setUpFirebaseMessaging();
-  }
-
   void _configLocalNotification() {
     var initializationSettingsAndroid =
         const AndroidInitializationSettings('mipmap/ic_launcher');
@@ -78,6 +74,11 @@ class PushNotificationManagerImpl implements PushNotificationManager {
 
       _navigateToNextScreen(RemoteMessage(data: message));
     });
+  }
+
+  Future<void> _configure() async {
+    _configLocalNotification();
+    await _setUpFirebaseMessaging();
   }
 
   static void showNotification(RemoteMessage message) async {
@@ -145,42 +146,54 @@ class PushNotificationManagerImpl implements PushNotificationManager {
       logger.d('***********************');
 
       showNotification(message);
+      if (map['type'] != null && map['type'] == PushType.public_returned.name) {
+        getIt.get<MainCubit>().updateSessions();
+      }
     });
 
-    FirebaseMessaging.onBackgroundMessage(_navigateToNextScreen);
+    FirebaseMessaging.onMessageOpenedApp.listen(_navigateToNextScreen);
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      _navigateToNextScreen(message);
-    });
+    FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
+  }
+}
+
+Future<void> _backgroundMessageHandler(RemoteMessage message) async {
+  logger.d('***********************');
+  logger.d(message.toMap());
+  logger.d(message.data);
+  logger.d(message.data['meta']);
+  Map<String, dynamic> map = jsonDecode(message.data['meta'] ?? '');
+  logger.d(map['entityId']);
+  logger.d('***********************');
+
+  if (map['type'] != null && map['type'] == PushType.public_returned.name) {
+    // getIt.get<MainCubit>().updateSessions();
   }
 }
 
 Future<void> _navigateToNextScreen(RemoteMessage? message) async {
-  CachingManager cacheManager = getIt.get<CachingManager>();
-  bool isUserLoggedIn = cacheManager.isLoggedIn() == true;
-  if (isUserLoggedIn) {
-    if (message != null) {
-      Map<String, dynamic> data = message.data;
+  if (message != null) {
+    Map<String, dynamic> data = message.data;
 
-      Map<String, dynamic> meta = json.decode(data['meta']);
-      String? entityId = meta['entityId'];
-      String? type = meta['type'];
+    Map<String, dynamic> meta = json.decode(data['meta']);
+    String? entityId = meta['entityId'];
+    String? type = meta['type'];
 
-      if (entityId != null && type != null) {
-        if (type == PushType.private.name) {
-          Get.toNamed(AppRoutes.chat,
-              arguments: ChatScreenArguments(privateQuestionId: entityId));
-        } else if (type == PushType.session.name) {
-          Get.toNamed(AppRoutes.chat,
-              arguments: ChatScreenArguments(ritualID: entityId));
-        } else if (type == PushType.tips.name) {
-          Get.toNamed(AppRoutes.chat,
-              arguments: ChatScreenArguments(clientIdFromPush: entityId));
-        }
+    if (entityId != null && type != null) {
+      if (type == PushType.private.name) {
+        Get.toNamed(AppRoutes.chat,
+            arguments: ChatScreenArguments(privateQuestionId: entityId));
+      } else if (type == PushType.session.name) {
+        Get.toNamed(AppRoutes.chat,
+            arguments: ChatScreenArguments(ritualID: entityId));
+      } else if (type == PushType.tips.name) {
+        Get.toNamed(AppRoutes.chat,
+            arguments: ChatScreenArguments(clientIdFromPush: entityId));
+      } else if (type == PushType.public_returned.name) {
+        Get.offNamedUntil(AppRoutes.home, (route) => false,
+            arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
       }
     }
-  } else {
-    Get.toNamed(AppRoutes.login);
   }
 }
 
@@ -188,4 +201,6 @@ enum PushType {
   private,
   session,
   tips,
+  // ignore: constant_identifier_names
+  public_returned,
 }
