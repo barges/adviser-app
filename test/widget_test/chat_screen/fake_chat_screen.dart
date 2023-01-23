@@ -4,14 +4,14 @@ import 'package:shared_advisor_interface/domain/repositories/chats_repository.da
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_screen.dart';
-import 'package:shared_advisor_interface/presentation/services/audio_player_service.dart';
+import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
+import 'package:shared_advisor_interface/presentation/services/audio/audio_recorder_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
-import 'package:shared_advisor_interface/presentation/services/sound/sound_record_service.dart';
 
 class FakeChatScreen extends StatelessWidget {
   final ChatsRepository chatsRepository;
   final ConnectivityService connectivityService;
-  final SoundRecordService soundRecordService;
+  final AudioRecorderService soundRecordService;
   final AudioPlayerService audioPlayerService;
 
   const FakeChatScreen({

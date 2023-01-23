@@ -32,7 +32,8 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/ritual_info_card_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/gallery/gallery_pictures_screen.dart';
-import 'package:shared_advisor_interface/presentation/services/audio_player_service.dart';
+import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
+import 'package:shared_advisor_interface/presentation/services/audio/audio_recorder_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 import '../../widget_tester_extension.dart';
@@ -47,7 +48,7 @@ Future<void> pumpChatScreen({
   required ChatsRepository chatsRepository,
   required ConnectivityService connectivityService,
   required ChatScreenArguments chatScreenArguments,
-  required SoundRecordService soundRecordService,
+  required AudioRecorderService soundRecordService,
   required AudioPlayerService audioPlayerService,
 }) async {
   await tester.pumpWidget(
