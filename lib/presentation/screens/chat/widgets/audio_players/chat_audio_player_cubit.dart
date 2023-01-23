@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bloc/bloc.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_players/chat_audio_player_state.dart';
-import 'package:shared_advisor_interface/presentation/services/audio_player_service.dart';
+import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
 
 class ChatAudioPlayerCubit extends Cubit<ChatAudioPlayerState> {
   final AudioPlayerService _player;
