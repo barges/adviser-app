@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart' hide Response;
+import 'package:get_it/get_it.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
@@ -152,10 +153,20 @@ void main() {
         .thenAnswer((realInvocation) => Stream.value(true));
     when(mockDynamicLinkService.dynamicLinksStream)
         .thenAnswer((realInvocation) => PublishSubject());
+    when(mockPushNotificationManager.registerForPushNotifications())
+        .thenAnswer((realInvocation) => Future.value(true));
+
+    GetIt.instance.registerLazySingleton<PushNotificationManager>(
+      () => mockPushNotificationManager,
+    );
 
     mainCubit = MainCubit(mockDataCachingManager, mockConnectivityService);
 
     dio.interceptors.add(AppInterceptor(mainCubit, mockDataCachingManager));
+  });
+
+  tearDown(() {
+    GetIt.instance.unregister<PushNotificationManager>();
   });
 
   testWidgets(
