@@ -220,6 +220,6 @@
   "learnMore": "Saber mais",
   "update": "Atualizar",
   "messageIsNotSent": "Mensagem não foi enviada",
-  "toEnableNotificationYouLlNeedToAllowNotificationsForReaderAppInYourPhoneSettings": "Para habilitar a notificação, você precisará permitir notificações para o Reader App nas configurações do seu telefone",
-  "notificationsAreDisabled": "As notificações estão desativadas"
+  "notificationsAreDisabled": "As notificações estão desativadas",
+  "toEnableNotificationYoullNeedToAllowNotificationsInYour": "Para habilitar a notificação, você precisará permitir notificações nas configurações do seu telefone"
 }

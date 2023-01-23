@@ -153,8 +153,7 @@ void main() {
         .thenAnswer((realInvocation) => Stream.value(true));
     when(mockDynamicLinkService.dynamicLinksStream)
         .thenAnswer((realInvocation) => PublishSubject());
-    when(mockPushNotificationManager
-            .registerForPushNotifications(argThat(anything)))
+    when(mockPushNotificationManager.registerForPushNotifications())
         .thenAnswer((realInvocation) => Future.value(true));
 
     GetIt.instance.registerLazySingleton<PushNotificationManager>(

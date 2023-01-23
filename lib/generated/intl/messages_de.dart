@@ -210,7 +210,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "thisWeek" : MessageLookupByLibrary.simpleMessage("In dieser Woche"),
     "tips" : MessageLookupByLibrary.simpleMessage("Tipps"),
     "title" : MessageLookupByLibrary.simpleMessage("Titel"),
-    "toEnableNotificationYouLlNeedToAllowNotificationsForReaderAppInYourPhoneSettings" : MessageLookupByLibrary.simpleMessage("Um die Benachrichtigung zu aktivieren, müssen Sie Benachrichtigungen für die Reader-App in Ihren Telefoneinstellungen zulassen"),
+    "toEnableNotificationYoullNeedToAllowNotificationsInYour" : MessageLookupByLibrary.simpleMessage("Um die Benachrichtigung zu aktivieren, müssen Sie Benachrichtigungen in Ihren Telefoneinstellungen zulassen"),
     "toReadItBeforeYourAccountWillGetBlocked" : MessageLookupByLibrary.simpleMessage("um es zu lesen, bevor Ihr Konto gesperrt wird!"),
     "today" : MessageLookupByLibrary.simpleMessage("Heute"),
     "topSpender" : MessageLookupByLibrary.simpleMessage("Top-Spender"),

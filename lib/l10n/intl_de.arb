@@ -218,6 +218,6 @@
   "learnMore": "Lern mehr",
   "update": "Aktualisieren",
   "messageIsNotSent": "Nachricht wird nicht gesendet",
-  "toEnableNotificationYouLlNeedToAllowNotificationsForReaderAppInYourPhoneSettings": "Um die Benachrichtigung zu aktivieren, müssen Sie Benachrichtigungen für die Reader-App in Ihren Telefoneinstellungen zulassen",
-  "notificationsAreDisabled": "Benachrichtigungen sind deaktiviert"
+  "notificationsAreDisabled": "Benachrichtigungen sind deaktiviert",
+  "toEnableNotificationYoullNeedToAllowNotificationsInYour": "Um die Benachrichtigung zu aktivieren, müssen Sie Benachrichtigungen in Ihren Telefoneinstellungen zulassen"
 }

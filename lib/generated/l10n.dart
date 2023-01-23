@@ -2237,21 +2237,21 @@ class S {
     );
   }
 
-  /// `To enable notification, you’ll need to allow notifications for Reader App in your phone settings`
-  String get toEnableNotificationYouLlNeedToAllowNotificationsForReaderAppInYourPhoneSettings {
-    return Intl.message(
-      'To enable notification, you’ll need to allow notifications for Reader App in your phone settings',
-      name: 'toEnableNotificationYouLlNeedToAllowNotificationsForReaderAppInYourPhoneSettings',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Notifications are disabled`
   String get notificationsAreDisabled {
     return Intl.message(
       'Notifications are disabled',
       name: 'notificationsAreDisabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To enable notification, you’ll need to allow notifications in your phone settings`
+  String get toEnableNotificationYoullNeedToAllowNotificationsInYour {
+    return Intl.message(
+      'To enable notification, you’ll need to allow notifications in your phone settings',
+      name: 'toEnableNotificationYoullNeedToAllowNotificationsInYour',
       desc: '',
       args: [],
     );

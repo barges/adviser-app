@@ -24,6 +24,7 @@ abstract class CachingManager {
 
   UserInfo? getUserInfo();
 
+
   Future<void> updateUserStatusByStatus(FortunicaUserStatus status);
 
   Future<void> saveUserId(String? userId);
