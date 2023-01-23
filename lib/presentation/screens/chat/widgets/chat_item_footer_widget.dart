@@ -15,6 +15,7 @@ class ChatItemFooterWidget extends StatelessWidget {
   final bool isSent;
   final bool isHistoryQuestion;
   final bool isHistoryAnswer;
+  final bool isHistoryAnswerInSameDay;
   const ChatItemFooterWidget({
     super.key,
     required this.type,
@@ -24,6 +25,7 @@ class ChatItemFooterWidget extends StatelessWidget {
     this.isSent = true,
     this.isHistoryQuestion = false,
     this.isHistoryAnswer = false,
+    this.isHistoryAnswerInSameDay = false,
   });
 
   @override
@@ -59,7 +61,8 @@ class ChatItemFooterWidget extends StatelessWidget {
                 isHistoryQuestion
                     ? createdAt.historyCardQuestionTime
                     : isHistoryAnswer
-                        ? createdAt.historyCardAnswerTime
+                        ? createdAt
+                            .historyCardAnswerTime(isHistoryAnswerInSameDay)
                         : createdAt.chatListTime,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: color,

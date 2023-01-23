@@ -14,12 +14,14 @@ class ChatItemWidget extends StatefulWidget {
   final ChatItem item;
   final bool isHistoryQuestion;
   final bool isHistoryAnswer;
+  final bool isHistoryAnswerInSameDay;
 
   const ChatItemWidget({
     super.key,
     required this.item,
     this.isHistoryQuestion = false,
     this.isHistoryAnswer = false,
+    this.isHistoryAnswerInSameDay = false,
   });
 
   @override
@@ -97,6 +99,7 @@ class _ChatItemWidgetState extends State<ChatItemWidget>
             isSent: widget.item.isSent,
             isHistoryQuestion: widget.isHistoryQuestion,
             isHistoryAnswer: widget.isHistoryAnswer,
+            isHistoryAnswerInSameDay: widget.isHistoryAnswerInSameDay,
           ),
         ),
       ]),

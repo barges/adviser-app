@@ -141,7 +141,7 @@ extension DateTimeExt on DateTime {
     if (timeDifference == 0) {
       return DateFormat(dateFormat).format(this).parseDateTimePattern7;
     }
-    if (timeDifference < -365) {
+    if (localTime.year != now.year) {
       return DateFormat(dateFormat).format(this).parseDateTimePattern9;
     }
     return DateFormat(dateFormat).format(this).parseDateTimePattern8;
@@ -157,7 +157,7 @@ extension DateTimeExt on DateTime {
     if (timeDifference == 0) {
       return S.of(context).today;
     }
-    if (timeDifference < -365) {
+    if (localTime.year != now.year) {
       return DateFormat(dateFormat).format(this).parseDateTimePattern9;
     }
     return DateFormat(dateFormat).format(this).parseDateTimePattern8;
@@ -166,18 +166,23 @@ extension DateTimeExt on DateTime {
   String get historyCardQuestionTime {
     DateTime now = DateTime.now();
     DateTime localTime = toLocal();
-    int timeDifference =
-        DateTime(localTime.year, localTime.month, localTime.day)
-            .difference(DateTime(now.year, now.month, now.day))
-            .inDays;
-    if (timeDifference < -365) {
+    if (localTime.year != now.year) {
       return DateFormat(dateFormat).format(this).parseDateTimePattern9;
     }
     return DateFormat(dateFormat).format(this).parseDateTimePattern8;
   }
 
-  String get historyCardAnswerTime {
-    return DateFormat(dateFormat).format(this).parseDateTimePattern7;
+  String historyCardAnswerTime(bool sameDay) {
+    if (sameDay) {
+      return DateFormat(dateFormat).format(this).parseDateTimePattern7;
+    } else {
+      DateTime now = DateTime.now();
+      DateTime localTime = toLocal();
+      if (localTime.year != now.year) {
+        return DateFormat(dateFormat).format(this).parseDateTimePattern9;
+      }
+      return DateFormat(dateFormat).format(this).parseDateTimePattern8;
+    }
   }
 }
 
