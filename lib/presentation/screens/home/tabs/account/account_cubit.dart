@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
@@ -14,12 +13,11 @@ import 'package:shared_advisor_interface/data/network/requests/push_enable_reque
 import 'package:shared_advisor_interface/data/network/requests/set_push_notification_token_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_state.dart';
+import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -150,7 +148,11 @@ class AccountCubit extends Cubit<AccountState> {
 
   Future<void> _checkPushNotificationPermission(UserInfo userInfo) async {
     final bool isPushNotificationPermissionGranted =
-        await _pushNotificationManager.registerForPushNotifications();
+        await CheckPermissionService.handlePermission(
+            context, PermissionType.notification);
+    if (isPushNotificationPermissionGranted) {
+      await _pushNotificationManager.registerForPushNotifications();
+    }
 
     final bool? firstPushNotificationSet =
         cacheManager.getFirstPushNotificationSet();
@@ -199,25 +201,13 @@ class AccountCubit extends Cubit<AccountState> {
       bool newValue, BuildContext context) async {
     UserInfo? userInfo;
     if (newValue) {
-      final bool isGranted =
-          await _pushNotificationManager.registerForPushNotifications();
+      final bool isGranted = await CheckPermissionService.handlePermission(
+          context, PermissionType.notification);
       if (isGranted) {
+        await _pushNotificationManager.registerForPushNotifications();
         userInfo = await _userRepository
             .setPushEnabled(PushEnableRequest(value: newValue));
         await _sendPushToken();
-      } else {
-        VoidCallback actionOnOk = (() async {
-          await openAppSettings();
-          Get.back();
-        });
-        await showOkCancelAlert(
-            context: context,
-            title: S.of(context).permissionNeeded,
-            okText: S.of(context).settings,
-            description: 'Push notification permission text',
-            actionOnOK: actionOnOk,
-            allowBarrierClick: true,
-            isCancelEnabled: true);
       }
     } else {
       userInfo = await _userRepository

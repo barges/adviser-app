@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/main.dart';
@@ -11,6 +12,7 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
+import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 
 bool _isRegisteredForPushNotifications = false;
@@ -24,36 +26,10 @@ class PushNotificationManagerImpl implements PushNotificationManager {
       FlutterLocalNotificationsPlugin();
 
   @override
-  Future<bool> registerForPushNotifications() async {
-    if (Platform.isIOS) {
-      NotificationSettings settings =
-          await FirebaseMessaging.instance.requestPermission(
-        alert: true,
-        announcement: false,
-        badge: true,
-        carPlay: false,
-        criticalAlert: false,
-        provisional: false,
-        sound: true,
-      );
-
-      logger.d(settings.authorizationStatus);
-
-      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-        if (!_isRegisteredForPushNotifications) {
-          _isRegisteredForPushNotifications = true;
-          await _configure();
-        }
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      if (!_isRegisteredForPushNotifications) {
-        _isRegisteredForPushNotifications = true;
-        await _configure();
-      }
-      return true;
+  Future<void> registerForPushNotifications() async {
+    if (!_isRegisteredForPushNotifications) {
+      _isRegisteredForPushNotifications = true;
+      await _configure();
     }
   }
 

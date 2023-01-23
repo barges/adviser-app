@@ -10,7 +10,7 @@ import 'intl/messages_all.dart';
 
 // ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
 // ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
-// ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
+// ignore_for_file: avoid_redundant_argument_values
 
 class S {
   S();
@@ -18,31 +18,28 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(_current != null, 'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
     return _current!;
   }
 
-  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
+  static const AppLocalizationDelegate delegate =
+    AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false)
-        ? locale.languageCode
-        : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name);
+    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name); 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       final instance = S();
       S._current = instance;
-
+ 
       return instance;
     });
-  }
+  } 
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(instance != null, 'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
     return instance!;
   }
 
@@ -1281,8 +1278,7 @@ class S {
   }
 
   /// `from {minRecordDurationInSec} sec to {maxRecordDurationInMinutes} min`
-  String fromXsecToYmin(
-      Object minRecordDurationInSec, Object maxRecordDurationInMinutes) {
+  String fromXsecToYmin(Object minRecordDurationInSec, Object maxRecordDurationInMinutes) {
     return Intl.message(
       'from $minRecordDurationInSec sec to $maxRecordDurationInMinutes min',
       name: 'fromXsecToYmin',
@@ -1702,8 +1698,7 @@ class S {
   }
 
   /// `You can’t send this message because it’s less than {minRecordDurationInSec} seconds`
-  String youCantSendThisMessageBecauseItsLessThanXSeconds(
-      Object minRecordDurationInSec) {
+  String youCantSendThisMessageBecauseItsLessThanXSeconds(Object minRecordDurationInSec) {
     return Intl.message(
       'You can’t send this message because it’s less than $minRecordDurationInSec seconds',
       name: 'youCantSendThisMessageBecauseItsLessThanXSeconds',
@@ -1723,8 +1718,7 @@ class S {
   }
 
   /// `This question will be returned to the general list after {counter}`
-  String thisQuestionWillBeReturnedToTheGeneralListAfterCounter(
-      Object counter) {
+  String thisQuestionWillBeReturnedToTheGeneralListAfterCounter(Object counter) {
     return Intl.message(
       'This question will be returned to the general list after $counter',
       name: 'thisQuestionWillBeReturnedToTheGeneralListAfterCounter',
@@ -1734,12 +1728,10 @@ class S {
   }
 
   /// `The answer is not possible, this question will be returned to the general list in ~ 1m`
-  String
-      get theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m {
+  String get theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m {
     return Intl.message(
       'The answer is not possible, this question will be returned to the general list in ~ 1m',
-      name:
-          'theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m',
+      name: 'theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m',
       desc: '',
       args: [],
     );
@@ -1836,12 +1828,10 @@ class S {
   }
 
   /// `Customers want to know you're a real person. The more photos you add, the more trust you can build.`
-  String
-      get customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuild {
+  String get customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuild {
     return Intl.message(
       'Customers want to know you\'re a real person. The more photos you add, the more trust you can build.',
-      name:
-          'customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuild',
+      name: 'customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuild',
       desc: '',
       args: [],
     );
@@ -1868,12 +1858,10 @@ class S {
   }
 
   /// `Please ensure your profile is completed for all languages. Need help? Contact your manager.`
-  String
-      get pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManager {
+  String get pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManager {
     return Intl.message(
       'Please ensure your profile is completed for all languages. Need help? Contact your manager.',
-      name:
-          'pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManager',
+      name: 'pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManager',
       desc: '',
       args: [],
     );
@@ -2100,12 +2088,10 @@ class S {
   }
 
   /// `Enter your email address and we'll send you instructions to create a new password`
-  String
-      get enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword {
+  String get enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword {
     return Intl.message(
       'Enter your email address and we\'ll send you instructions to create a new password',
-      name:
-          'enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword',
+      name: 'enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword',
       desc: '',
       args: [],
     );
@@ -2246,6 +2232,26 @@ class S {
     return Intl.message(
       'Message is not sent',
       name: 'messageIsNotSent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To enable notification, you’ll need to allow notifications for Reader App in your phone settings`
+  String get toEnableNotificationYouLlNeedToAllowNotificationsForReaderAppInYourPhoneSettings {
+    return Intl.message(
+      'To enable notification, you’ll need to allow notifications for Reader App in your phone settings',
+      name: 'toEnableNotificationYouLlNeedToAllowNotificationsForReaderAppInYourPhoneSettings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications are disabled`
+  String get notificationsAreDisabled {
+    return Intl.message(
+      'Notifications are disabled',
+      name: 'notificationsAreDisabled',
       desc: '',
       args: [],
     );

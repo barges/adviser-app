@@ -217,5 +217,7 @@
   "thisVersionOfTheAppIsNoLongerSupported": "This version of the app is no longer supported. To get back to all your conversations, install the latest version",
   "learnMore": "Learn More",
   "update": "Update",
-  "messageIsNotSent": "Message is not sent"
+  "messageIsNotSent": "Message is not sent",
+  "toEnableNotificationYouLlNeedToAllowNotificationsForReaderAppInYourPhoneSettings": "To enable notification, you’ll need to allow notifications for Reader App in your phone settings",
+  "notificationsAreDisabled": "Notifications are disabled"
 }

@@ -121,7 +121,7 @@ void main() {
   late ConnectivityService mockConnectivityService;
   late UserRepository mockUserRepository;
   late DynamicLinkService mockDynamicLinkService;
-  late PushNotificationManager mockPushNotificationManager;
+  late MockPushNotificationManagerImpl mockPushNotificationManager;
   late ChatsRepository mockChatsRepository;
   late MainCubit mainCubit;
 
@@ -153,7 +153,8 @@ void main() {
         .thenAnswer((realInvocation) => Stream.value(true));
     when(mockDynamicLinkService.dynamicLinksStream)
         .thenAnswer((realInvocation) => PublishSubject());
-    when(mockPushNotificationManager.registerForPushNotifications())
+    when(mockPushNotificationManager
+            .registerForPushNotifications(argThat(anything)))
         .thenAnswer((realInvocation) => Future.value(true));
 
     GetIt.instance.registerLazySingleton<PushNotificationManager>(

@@ -218,5 +218,7 @@
   "thisVersionOfTheAppIsNoLongerSupported": "Esta versión de la aplicación ya no es compatible. Para volver a todas tus conversaciones, instala la última versión",
   "learnMore": "Aprende más",
   "update": "Actualizar",
-  "messageIsNotSent": "No se envia el mensaje"
+  "messageIsNotSent": "No se envia el mensaje",
+  "toEnableNotificationYouLlNeedToAllowNotificationsForReaderAppInYourPhoneSettings": "Para habilitar la notificación, deberá permitir las notificaciones para la aplicación Reader en la configuración de su teléfono",
+  "notificationsAreDisabled": "Las notificaciones están deshabilitadas"
 }
