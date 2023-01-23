@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:isolate';
+import 'dart:ui';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -12,6 +14,9 @@ import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.da
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 
 bool _isRegisteredForPushNotifications = false;
+
+final ReceivePort _receiveNotificationPort = ReceivePort();
+const String _notificationPortChannel = 'communication_channel';
 
 class PushNotificationManagerImpl implements PushNotificationManager {
   final FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -76,6 +81,19 @@ class PushNotificationManagerImpl implements PushNotificationManager {
   }
 
   Future<void> _configure() async {
+    IsolateNameServer.registerPortWithName(
+      _receiveNotificationPort.sendPort,
+      _notificationPortChannel,
+    );
+    _receiveNotificationPort.listen((dynamic message) {
+      if (message is RemoteMessage) {
+        Map<String, dynamic> map = jsonDecode(message.data['meta'] ?? '');
+        if (map['type'] != null &&
+            map['type'] == PushType.public_returned.name) {
+          getIt.get<MainCubit>().updateSessions();
+        }
+      }
+    });
     _configLocalNotification();
     await _setUpFirebaseMessaging();
   }
@@ -165,9 +183,9 @@ Future<void> _backgroundMessageHandler(RemoteMessage message) async {
   logger.d(map['entityId']);
   logger.d('***********************');
 
-  if (map['type'] != null && map['type'] == PushType.public_returned.name) {
-    // getIt.get<MainCubit>().updateSessions();
-  }
+  final SendPort? send =
+      IsolateNameServer.lookupPortByName(_notificationPortChannel);
+  send?.send(message);
 }
 
 Future<void> _navigateToNextScreen(RemoteMessage? message) async {
