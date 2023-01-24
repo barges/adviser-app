@@ -72,6 +72,7 @@ class ChatCubit extends Cubit<ChatState> {
   int? _recordAudioDuration;
   AnswerRequest? _answerRequest;
   StreamSubscription<RecordingDisposition>? _recordingProgressSubscription;
+  late final StreamSubscription<bool> _appOnPauseSubscription;
 
   Timer? _answerTimer;
   bool _counterMessageCleared = false;
@@ -118,6 +119,14 @@ class ChatCubit extends Cubit<ChatState> {
       });
     }
 
+    _appOnPauseSubscription = _mainCubit.changeAppLifecycleStream.listen(
+      (value) async {
+        if (!value) {
+          ///TODO: stop players
+        }
+      },
+    );
+
     _keyboardSubscription =
         KeyboardVisibilityController().onChange.listen((bool visible) {
       if (visible) {
@@ -132,6 +141,7 @@ class ChatCubit extends Cubit<ChatState> {
   @override
   Future<void> close() {
     activeMessagesScrollController.dispose();
+    _appOnPauseSubscription.cancel();
 
     _keyboardSubscription.cancel();
 
