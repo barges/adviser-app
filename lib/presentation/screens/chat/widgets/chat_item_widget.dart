@@ -70,6 +70,7 @@ class _ChatItemWidgetState extends State<ChatItemWidget>
                     child: AppImageWidget(
                       uri: Uri.parse(attachment.url ?? ''),
                       height: 134.0,
+                      memCacheHeight: 134,
                       radius: 8.0,
                       canBeOpenedInFullScreen: true,
                     ),

@@ -85,6 +85,10 @@ class MainCubit extends Cubit<MainState> {
     changeAppLifecycleStream.add(true);
   }
 
+  void widgetOnPauseEvent() {
+    changeAppLifecycleStream.add(false);
+  }
+
   void changeLocale(String languageCode) {
     if (Platform.isAndroid) {
       getIt.get<FreshChatService>().changeLocaleInvite();

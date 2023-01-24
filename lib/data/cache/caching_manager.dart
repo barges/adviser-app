@@ -61,10 +61,6 @@ abstract class CachingManager {
 
   VoidCallback listenUserId(ValueChanged<String?> callback);
 
-  bool? getFirstPushNotificationSet();
-
-  void saveFirstPushNotificationSet();
-
   Map<PermissionType, bool> getFirstPermissionStatusesRequestsMap();
 
   Future<void> saveFirstPermissionStatusesRequestsMap(

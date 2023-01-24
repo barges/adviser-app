@@ -44,6 +44,7 @@ class AccountCubit extends Cubit<AccountState> {
   late final VoidCallback disposeListen;
   late final StreamSubscription<bool> _appOnResumeSubscription;
   StreamSubscription<bool>? _connectivitySubscription;
+  late bool isPushNotificationPermissionGranted;
 
   AccountCubit(
     this._cacheManager,
@@ -74,15 +75,15 @@ class AccountCubit extends Cubit<AccountState> {
     _appOnResumeSubscription = _mainCubit.changeAppLifecycleStream.listen(
       (value) async {
         if (value) {
-          final bool isPushNotificationPermissionGranted =
-              await _checkPermissionService.handlePermission(
-                  context, PermissionType.notification);
-          if (isPushNotificationPermissionGranted) {
+          final bool newPushPermissionsValue = await _checkPermissionService
+              .handlePermission(context, PermissionType.notification);
+          if (newPushPermissionsValue) {
             _pushNotificationManager.registerForPushNotifications();
           }
-
-          await updateEnableNotificationsValue(
-              isPushNotificationPermissionGranted);
+          if (isPushNotificationPermissionGranted != newPushPermissionsValue) {
+            isPushNotificationPermissionGranted = newPushPermissionsValue;
+            await refreshUserinfo();
+          }
         }
       },
     );
@@ -102,17 +103,17 @@ class AccountCubit extends Cubit<AccountState> {
     if (await _connectivityService.checkConnection()) {
       int milliseconds = 0;
 
-      final bool isPushNotificationPermissionGranted =
-          await _checkPermissionService.handlePermission(
-              context, PermissionType.notification);
+      isPushNotificationPermissionGranted = await _checkPermissionService
+          .handlePermission(context, PermissionType.notification);
       if (isPushNotificationPermissionGranted) {
         _pushNotificationManager.registerForPushNotifications();
       }
 
       final UserInfo userInfo = await _userRepository.getUserInfo();
 
-      _checkPushNotificationPermission(
-          userInfo, isPushNotificationPermissionGranted);
+      if (isPushNotificationPermissionGranted) {
+        await _sendPushToken();
+      }
 
       await _saveUserInfo(userInfo);
 
@@ -176,41 +177,7 @@ class AccountCubit extends Cubit<AccountState> {
     }
   }
 
-  Future<void> _checkPushNotificationPermission(
-      UserInfo? userInfo, bool isPushNotificationPermissionGranted) async {
-    final bool? firstPushNotificationSet =
-        _cacheManager.getFirstPushNotificationSet();
-
-    final bool isPushNotificationEnableOnBackend =
-        userInfo?.pushNotificationsEnabled ?? false;
-
-    if (!isPushNotificationEnableOnBackend &&
-        isPushNotificationPermissionGranted &&
-        firstPushNotificationSet == null) {
-      userInfo = await _setPushEnabled(true);
-      await _sendPushToken();
-      emit(
-        state.copyWith(
-          enableNotifications: userInfo?.pushNotificationsEnabled ?? false,
-        ),
-      );
-    } else if (isPushNotificationEnableOnBackend &&
-        !isPushNotificationPermissionGranted) {
-      emit(
-        state.copyWith(
-          enableNotifications: isPushNotificationPermissionGranted,
-        ),
-      );
-    } else if (isPushNotificationEnableOnBackend &&
-        isPushNotificationPermissionGranted) {
-      await _sendPushToken();
-    }
-    if (firstPushNotificationSet == null) {
-      _cacheManager.saveFirstPushNotificationSet();
-    }
-  }
-
-  Future<UserInfo?> _setPushEnabled(bool value) async {
+  Future<UserInfo?> _setPushEnabledForBackend(bool value) async {
     UserInfo? userInfo =
         await _userRepository.setPushEnabled(PushEnableRequest(value: value));
 
@@ -228,28 +195,27 @@ class AccountCubit extends Cubit<AccountState> {
   }
 
   Future<void> updateEnableNotificationsValue(bool newValue) async {
-    UserInfo? userInfo = _cacheManager.getUserInfo();
-    final bool isGranted = await _checkPermissionService.handlePermission(
-        context, PermissionType.notification);
     if (newValue) {
-      if (isGranted) {
-        await _pushNotificationManager.registerForPushNotifications();
-        userInfo = await _userRepository
-            .setPushEnabled(PushEnableRequest(value: newValue));
+      if (isPushNotificationPermissionGranted) {
         await _sendPushToken();
+        await _setPushEnabledForBackend(newValue);
+        emit(
+          state.copyWith(
+            enableNotifications: newValue,
+          ),
+        );
+      } else {
+        _checkPermissionService.handlePermission(
+            context, PermissionType.notification);
       }
     } else {
-      ///TODO: disable for all or not????
-      // if (isGranted) {
-      userInfo = await _setPushEnabled(newValue);
-      // }
+      await _setPushEnabledForBackend(newValue);
+      emit(
+        state.copyWith(
+          enableNotifications: newValue,
+        ),
+      );
     }
-    emit(
-      state.copyWith(
-        enableNotifications:
-            (userInfo?.pushNotificationsEnabled ?? false) && isGranted,
-      ),
-    );
   }
 
   Future<void> _sendPushToken() async {

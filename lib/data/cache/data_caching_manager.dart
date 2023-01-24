@@ -16,7 +16,6 @@ const String _userInfoKey = 'userInfoKey';
 const String _userStatusKey = 'userStatusKey';
 const String _userIdKey = 'userIdKey';
 const String _localeKey = 'localeKey';
-const String _pushNotificationSetKey = 'pushNotificationSetKey';
 const String _firstPermissionStatusesKey = 'firstPermissionStatusesKey';
 
 class DataCachingManager implements CachingManager {
@@ -263,16 +262,6 @@ class DataCachingManager implements CachingManager {
     return _userBox.listenKey(_userIdKey, (value) {
       callback(value);
     });
-  }
-
-  @override
-  bool? getFirstPushNotificationSet() {
-    return _userBox.read(_pushNotificationSetKey);
-  }
-
-  @override
-  void saveFirstPushNotificationSet() {
-    _userBox.write(_pushNotificationSetKey, true);
   }
 
   @override

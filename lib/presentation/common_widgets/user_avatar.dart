@@ -80,7 +80,11 @@ class UserAvatar extends StatelessWidget {
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: CachedNetworkImageProvider(avatarUrl!),
+                                image: CachedNetworkImageProvider(
+                                  avatarUrl!,
+                                  maxHeight: diameter.toInt() * 2,
+                                  maxWidth: diameter.toInt() * 2,
+                                ),
                               ),
                             ),
                           ),
