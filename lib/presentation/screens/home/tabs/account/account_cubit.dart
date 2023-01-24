@@ -76,7 +76,8 @@ class AccountCubit extends Cubit<AccountState> {
       (value) async {
         if (value) {
           final bool newPushPermissionsValue = await _checkPermissionService
-              .handlePermission(context, PermissionType.notification);
+              .handlePermission(context, PermissionType.notification,
+                  needShowSettings: false);
           if (newPushPermissionsValue) {
             _pushNotificationManager.registerForPushNotifications();
           }
@@ -104,7 +105,8 @@ class AccountCubit extends Cubit<AccountState> {
       int milliseconds = 0;
 
       isPushNotificationPermissionGranted = await _checkPermissionService
-          .handlePermission(context, PermissionType.notification);
+          .handlePermission(context, PermissionType.notification,
+              needShowSettings: false);
       if (isPushNotificationPermissionGranted) {
         _pushNotificationManager.registerForPushNotifications();
       }

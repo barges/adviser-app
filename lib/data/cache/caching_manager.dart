@@ -61,7 +61,7 @@ abstract class CachingManager {
 
   VoidCallback listenUserId(ValueChanged<String?> callback);
 
-  Map<PermissionType, bool> getFirstPermissionStatusesRequestsMap();
+  Map<String, dynamic> getFirstPermissionStatusesRequestsMap();
 
   Future<void> saveFirstPermissionStatusesRequestsMap(
       PermissionType permissionType);

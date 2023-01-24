@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
@@ -14,9 +15,10 @@ class CheckPermissionService {
   CheckPermissionService(this.cacheManager);
 
   Future<bool> handlePermission(
-      BuildContext context, PermissionType permissionType) async {
+      BuildContext context, PermissionType permissionType,
+      {bool needShowSettings = true}) async {
     PermissionStatus status;
-    Map<PermissionType, bool> permissionStatusesMap =
+    Map<String, dynamic> permissionStatusesMap =
         cacheManager.getFirstPermissionStatusesRequestsMap();
     switch (permissionType) {
       case PermissionType.camera:
@@ -52,14 +54,19 @@ class CheckPermissionService {
             );
           }
           status = await Permission.notification.request();
+          if (!status.isGranted) {
+            status = PermissionStatus.permanentlyDenied;
+          }
         }
+        break;
     }
 
-    if (status.isPermanentlyDenied &&
-        permissionStatusesMap[permissionType] != null) {
+    if (needShowSettings &&
+        status.isPermanentlyDenied &&
+        permissionStatusesMap[permissionType.name] != null) {
       VoidCallback actionOnOk = (() async {
         await openAppSettings();
-        Navigator.pop(context);
+        Get.back();
       });
       await showOkCancelAlert(
           context: context,

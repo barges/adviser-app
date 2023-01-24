@@ -265,17 +265,17 @@ class DataCachingManager implements CachingManager {
   }
 
   @override
-  Map<PermissionType, bool> getFirstPermissionStatusesRequestsMap() {
+  Map<String, dynamic> getFirstPermissionStatusesRequestsMap() {
     return _permissionBox.read(_firstPermissionStatusesKey) ?? {};
   }
 
   @override
   Future<void> saveFirstPermissionStatusesRequestsMap(
       PermissionType permissionType) async {
-    Map<PermissionType, bool> firstPermissionStatusesRequestsMap =
+    Map<String, dynamic> firstPermissionStatusesRequestsMap =
         getFirstPermissionStatusesRequestsMap();
 
-    firstPermissionStatusesRequestsMap[permissionType] = true;
+    firstPermissionStatusesRequestsMap[permissionType.name] = true;
 
     await _permissionBox.write(
         _firstPermissionStatusesKey, firstPermissionStatusesRequestsMap);
