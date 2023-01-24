@@ -129,7 +129,10 @@ class ChatCubit extends Cubit<ChatState> {
     _appOnPauseSubscription = _mainCubit.changeAppLifecycleStream.listen(
       (value) async {
         if (!value) {
-          ///TODO: stop players
+          if (state.isRecordingAudio) {
+            stopRecordingAudio();
+          }
+          await audioPlayer.pause();
         }
       },
     );
