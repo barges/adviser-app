@@ -27,8 +27,6 @@ class AppConstants {
   static const int maxAttachmentSizeInBytes = 20000000;
   static const int minFreeSpaceInMb = 1;
 
-  static const String recordFileName = 'recorded_audio_aa';
-
   static const String startMSS = '0:00';
 
   static const String enBrandName = 'English';

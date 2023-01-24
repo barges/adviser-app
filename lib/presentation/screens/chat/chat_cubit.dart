@@ -41,6 +41,7 @@ import 'package:shared_advisor_interface/presentation/services/audio/audio_playe
 import 'package:shared_advisor_interface/presentation/services/audio/audio_recorder_service.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 import 'package:storage_space/storage_space.dart';
+import 'package:uuid/uuid.dart';
 
 import 'chat_state.dart';
 
@@ -72,6 +73,7 @@ class ChatCubit extends Cubit<ChatState> {
       AppConstants.tillShowAnswerTimingMessagesInSec;
   final int _afterShowMessagesInSec =
       AppConstants.afterShowAnswerTimingMessagesInSec;
+  final _uuid = const Uuid();
   int? _recordAudioDuration;
   AnswerRequest? _answerRequest;
   StreamSubscription<RecordingDisposition>? _recordingProgressSubscription;
@@ -377,7 +379,7 @@ class ChatCubit extends Cubit<ChatState> {
       return;
     }
 
-    const fileName = '${AppConstants.recordFileName}.$_recordFileExt';
+    final fileName = '${_uuid.v4()}.$_recordFileExt';
     await _audioRecorderService.startRecorder(fileName);
 
     _recordingProgressSubscription =

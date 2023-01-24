@@ -47,6 +47,7 @@ dependencies:
   audioplayers: ^2.0.0
   file: ^6.1.4
   storage_space: ^1.0.1+5
+  uuid: ^3.0.7
 
   # Firebase
   firebase_core: ^2.2.0
