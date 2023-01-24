@@ -2,7 +2,7 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:logger/logger.dart';
 import 'audio_session_configure_mixin.dart';
 
-abstract class SoundRecordService {
+abstract class AudioRecorderService {
   Stream<RecordingDisposition>? get onProgress;
 
   Future<void> startRecorder(String fileName);
@@ -12,11 +12,11 @@ abstract class SoundRecordService {
   void close();
 }
 
-class SoundRecordServiceImp extends SoundRecordService
+class AudioRecorderServiceImp extends AudioRecorderService
     with AudioSessionConfigureMixin {
   FlutterSoundRecorder? _recorder;
 
-  SoundRecordServiceImp() {
+  AudioRecorderServiceImp() {
     _init();
   }
 

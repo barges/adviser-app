@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/chats/history_ui_model.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/widgets/empty_history_list_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/widgets/history_list_started_from_begin_widget.dart';
@@ -9,16 +10,12 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/histo
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 class HistoryWidget extends StatelessWidget {
-  final ChatsRepository chatsRepository;
-  final ConnectivityService connectivityService;
   final String clientId;
   final String? storyId;
 
   const HistoryWidget({
     Key? key,
     required this.clientId,
-    required this.chatsRepository,
-    required this.connectivityService,
     this.storyId,
   }) : super(key: key);
 
@@ -26,8 +23,8 @@ class HistoryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => HistoryCubit(
-        chatsRepository,
-        connectivityService,
+        getIt.get<ChatsRepository>(),
+        getIt.get<ConnectivityService>(),
         clientId,
         storyId,
       ),

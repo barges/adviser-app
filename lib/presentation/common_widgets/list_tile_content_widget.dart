@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
@@ -6,6 +5,7 @@ import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart'
 import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
@@ -129,23 +129,33 @@ class _MediaContent extends StatelessWidget {
 
     return Row(
       children: [
-        Container(
-          height: AppConstants.iconSize,
-          width: AppConstants.iconSize,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            shape: isImage ? BoxShape.rectangle : BoxShape.circle,
-            color: theme.primaryColorLight,
-            borderRadius: isImage ? BorderRadius.circular(4.0) : null,
-          ),
-          child: isImage
-              ? CachedNetworkImage(imageUrl: attachment.url ?? '')
-              : Assets.vectors.play.svg(
+        isImage
+            ? Container(
+                height: AppConstants.iconSize,
+                width: AppConstants.iconSize,
+                alignment: Alignment.center,
+                child: AppImageWidget(
+                  uri: Uri.parse(attachment.url ?? ''),
+                  height: AppConstants.iconSize,
+                  width: AppConstants.iconSize,
+                  loadingIndicatorHeight: 16.0,
+                  radius: 4.0,
+                  memCacheHeight: AppConstants.iconSize.toInt(),
+                ))
+            : Container(
+                height: AppConstants.iconSize,
+                width: AppConstants.iconSize,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: theme.primaryColorLight,
+                ),
+                child: Assets.vectors.play.svg(
                   height: AppConstants.iconSize,
                   width: AppConstants.iconSize,
                   color: theme.primaryColor,
                 ),
-        ),
+              ),
         if (!isImage && isSingleMedia)
           Row(
             children: [

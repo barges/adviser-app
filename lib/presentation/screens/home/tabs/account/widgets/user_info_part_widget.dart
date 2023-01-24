@@ -177,7 +177,7 @@ class UserInfoPartWidget extends StatelessWidget {
                   title: S.of(context).notifications,
                   iconSVGPath: Assets.vectors.notification.path,
                   onChanged: (value) => accountCubit
-                      .updateEnableNotificationsValue(value, context),
+                      .updateEnableNotificationsValue(value),
                 );
               },
             ),

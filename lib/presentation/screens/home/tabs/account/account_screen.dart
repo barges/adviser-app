@@ -14,31 +14,27 @@ import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.da
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/reviews_settings_part_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/user_info_part_widget.dart';
+import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 
 class AccountScreen extends StatelessWidget {
-  final CachingManager cacheManager;
-  final UserRepository userRepository;
-  final ConnectivityService connectivityService;
-
-  const AccountScreen(
-      {Key? key,
-      required this.cacheManager,
-      required this.userRepository,
-      required this.connectivityService})
-      : super(key: key);
+  const AccountScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final MainCubit mainCubit = context.read<MainCubit>();
     return BlocProvider(
       create: (_) => AccountCubit(
-        cacheManager,
+        getIt.get<CachingManager>(),
         mainCubit,
-        userRepository,
+        getIt.get<UserRepository>(),
         getIt.get<PushNotificationManager>(),
-        connectivityService,
+        getIt.get<ConnectivityService>(),
+        getIt.get<CheckPermissionService>(),
+        context,
       ),
       child: Builder(builder: (context) {
         final AccountCubit accountCubit = context.read<AccountCubit>();

@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/data/models/user_info/user_status.dart'
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
@@ -20,23 +21,21 @@ import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 class SessionsScreen extends StatelessWidget {
-  final CachingManager cacheManager;
-  final ConnectivityService connectivityService;
-  final ChatsRepository chatsRepository;
-
   const SessionsScreen({
     Key? key,
-    required this.cacheManager,
-    required this.connectivityService,
-    required this.chatsRepository,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final MainCubit mainCubit = context.read<MainCubit>();
     return BlocProvider(
-      create: (BuildContext context) => SessionsCubit(cacheManager, context,
-          connectivityService, chatsRepository, mainCubit),
+      create: (BuildContext context) => SessionsCubit(
+        getIt.get<CachingManager>(),
+        context,
+        getIt.get<ConnectivityService>(),
+        getIt.get<ChatsRepository>(),
+        mainCubit,
+      ),
       child: Builder(builder: (BuildContext context) {
         final SessionsCubit sessionsCubit = context.read<SessionsCubit>();
 

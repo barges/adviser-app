@@ -5,6 +5,7 @@ import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
+import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 
 import 'caching_manager.dart';
 
@@ -15,12 +16,13 @@ const String _userInfoKey = 'userInfoKey';
 const String _userStatusKey = 'userStatusKey';
 const String _userIdKey = 'userIdKey';
 const String _localeKey = 'localeKey';
-const String _pushNotificationSetKey = 'pushNotificationSetKey';
+const String _firstPermissionStatusesKey = 'firstPermissionStatusesKey';
 
 class DataCachingManager implements CachingManager {
   final GetStorage _userBox = GetStorage();
   final GetStorage _brandsBox = GetStorage();
   final GetStorage _localeBox = GetStorage();
+  final GetStorage _permissionBox = GetStorage();
 
   @override
   Future<bool> clearTokenForBrand(Brand brand) async {
@@ -167,7 +169,18 @@ class DataCachingManager implements CachingManager {
 
   @override
   UserInfo? getUserInfo() {
-    UserInfo userInfo = _userBox.read(_userInfoKey);
+    UserInfo? userInfo = _userBox.read(_userInfoKey);
+    return userInfo;
+  }
+
+  @override
+  Future<UserInfo?> updateUserInfoPushEnabled(bool? value) async {
+    UserInfo? userInfo = getUserInfo();
+    userInfo = userInfo?.copyWith(
+      pushNotificationsEnabled: value,
+    );
+
+    await saveUserInfo(userInfo);
     return userInfo;
   }
 
@@ -252,12 +265,19 @@ class DataCachingManager implements CachingManager {
   }
 
   @override
-  bool? getFirstPushNotificationSet() {
-    return _userBox.read(_pushNotificationSetKey);
+  Map<String, dynamic> getFirstPermissionStatusesRequestsMap() {
+    return _permissionBox.read(_firstPermissionStatusesKey) ?? {};
   }
 
   @override
-  void saveFirstPushNotificationSet() {
-    _userBox.write(_pushNotificationSetKey, true);
+  Future<void> saveFirstPermissionStatusesRequestsMap(
+      PermissionType permissionType) async {
+    Map<String, dynamic> firstPermissionStatusesRequestsMap =
+        getFirstPermissionStatusesRequestsMap();
+
+    firstPermissionStatusesRequestsMap[permissionType.name] = true;
+
+    await _permissionBox.write(
+        _firstPermissionStatusesKey, firstPermissionStatusesRequestsMap);
   }
 }

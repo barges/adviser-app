@@ -24,6 +24,7 @@ class MainCubit extends Cubit<MainState> {
   Timer? _errorTimer;
 
   final PublishSubject<bool> sessionsUpdateTrigger = PublishSubject();
+  final PublishSubject<bool> changeAppLifecycleStream = PublishSubject();
 
   final ConnectivityService _connectivityService;
 
@@ -78,6 +79,14 @@ class MainCubit extends Cubit<MainState> {
 
   void updateSessions() {
     sessionsUpdateTrigger.add(true);
+  }
+
+  void widgetOnResumeEvent() {
+    changeAppLifecycleStream.add(true);
+  }
+
+  void widgetOnPauseEvent() {
+    changeAppLifecycleStream.add(false);
   }
 
   void changeLocale(String languageCode) {

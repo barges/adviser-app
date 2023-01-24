@@ -217,5 +217,8 @@
   "thisVersionOfTheAppIsNoLongerSupported": "This version of the app is no longer supported. To get back to all your conversations, install the latest version",
   "learnMore": "Learn More",
   "update": "Update",
-  "messageIsNotSent": "Message is not sent"
+  "messageIsNotSent": "Message is not sent",
+  "recordingIsNotPossibleAllocateSpaceOnTheDevice": "Recording is not possible, allocate space on the device",
+  "notificationsAreDisabled": "Notifications are disabled",
+  "toEnableNotificationYoullNeedToAllowNotificationsInYour": "To enable notification, you’ll need to allow notifications in your phone settings"
 }

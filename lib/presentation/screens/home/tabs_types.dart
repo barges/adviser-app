@@ -44,20 +44,12 @@ enum TabsTypes {
 
   Navigator getNavigator({
     required BuildContext context,
-    required CachingManager cacheManager,
-    required ConnectivityService connectivityService,
-    required ChatsRepository chatsRepository,
-    required UserRepository userRepository,
   }) {
     switch (this) {
       case TabsTypes.dashboard:
         return Navigator(
             onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-                builder: (BuildContext context) => DashboardV1Screen(
-                      cacheManager: cacheManager,
-                      connectivityService: connectivityService,
-                      userRepository: userRepository,
-                    )));
+                builder: (BuildContext context) => const DashboardV1Screen()));
       case TabsTypes.articles:
         return Navigator(
             onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
@@ -65,19 +57,11 @@ enum TabsTypes {
       case TabsTypes.sessions:
         return Navigator(
             onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-                builder: (BuildContext context) => SessionsScreen(
-                      cacheManager: cacheManager,
-                      connectivityService: connectivityService,
-                      chatsRepository: chatsRepository,
-                    )));
+                builder: (BuildContext context) => const SessionsScreen()));
       case TabsTypes.account:
         return Navigator(
             onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-                builder: (BuildContext context) => AccountScreen(
-                      cacheManager: cacheManager,
-                      connectivityService: connectivityService,
-                      userRepository: userRepository,
-                    )));
+                builder: (BuildContext context) => const AccountScreen()));
     }
   }
 }

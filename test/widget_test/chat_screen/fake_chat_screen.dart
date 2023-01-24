@@ -4,22 +4,16 @@ import 'package:shared_advisor_interface/domain/repositories/chats_repository.da
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_screen.dart';
-import 'package:shared_advisor_interface/presentation/services/audio_player_service.dart';
+import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
+import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
+import 'package:shared_advisor_interface/presentation/services/audio/audio_recorder_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
-import 'package:shared_advisor_interface/presentation/services/sound/sound_record_service.dart';
+
+import '../../common_variables.dart';
 
 class FakeChatScreen extends StatelessWidget {
-  final ChatsRepository chatsRepository;
-  final ConnectivityService connectivityService;
-  final SoundRecordService soundRecordService;
-  final AudioPlayerService audioPlayerService;
-
   const FakeChatScreen({
     Key? key,
-    required this.chatsRepository,
-    required this.connectivityService,
-    required this.soundRecordService,
-    required this.audioPlayerService,
   }) : super(key: key);
 
   @override
@@ -27,19 +21,18 @@ class FakeChatScreen extends StatelessWidget {
     MainCubit mainCubit = context.read<MainCubit>();
     return BlocProvider(
       create: (_) => ChatCubit(
-        chatsRepository,
-        connectivityService,
+        testGetIt.get<ChatsRepository>(),
+        testGetIt.get<ConnectivityService>(),
         mainCubit,
-        soundRecordService,
-        audioPlayerService,
+        testGetIt.get<AudioRecorderService>(),
+        testGetIt.get<AudioPlayerService>(),
+        testGetIt.get<CheckPermissionService>(),
         () => showErrorAlert(context),
         () => confirmSendAnswerAlert(context),
         () => deleteAudioMessageAlert(context),
+        () => recordingIsNotPossibleAlert(context),
       ),
-      child: ChatContentWidget(
-        chatsRepository: chatsRepository,
-        connectivityService: connectivityService,
-      ),
+      child: const ChatContentWidget(),
     );
   }
 }

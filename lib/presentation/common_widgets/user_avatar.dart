@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -80,7 +81,11 @@ class UserAvatar extends StatelessWidget {
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: CachedNetworkImageProvider(avatarUrl!),
+                                image: CachedNetworkImageProvider(
+                                  avatarUrl!,
+                                  maxHeight: diameter.toInt() * 2,
+                                  maxWidth: diameter.toInt() * 2,
+                                ),
                               ),
                             ),
                           ),
@@ -131,14 +136,16 @@ class UserAvatar extends StatelessWidget {
           Positioned.fill(
               bottom: withCameraBadge ? AppConstants.iconButtonSize : 0.0,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Align(
                     alignment: withCameraBadge
                         ? Alignment.bottomLeft
                         : Alignment.centerLeft,
-                    child: Text(
+                    child: AutoSizeText(
                       S.of(context).photoIsRequired,
                       textAlign: TextAlign.center,
+                      maxLines: 2,
+                      minFontSize: 10.0,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontSize: 12.0, color: Theme.of(context).errorColor),
                     )),

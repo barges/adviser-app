@@ -5,7 +5,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_players/chat_audio_player_cubit.dart';
-import 'package:shared_advisor_interface/presentation/services/audio_player_service.dart';
+import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
 
 class ChatAudioPlayerWidget extends StatelessWidget {
   final bool isQuestion;

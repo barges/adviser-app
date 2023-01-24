@@ -20,6 +20,7 @@ class CoverPictureWidget extends StatelessWidget {
           advisorPreviewCubit.userProfile.coverPictures?.firstOrNull ?? '',
         ),
         height: 150.0,
+        memCacheHeight: 150,
         width: MediaQuery.of(context).size.width,
       );
     } else {
