@@ -36,10 +36,10 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/ritual_info_card_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/gallery/gallery_pictures_screen.dart';
-import 'package:shared_advisor_interface/presentation/services/audio_player_service.dart';
+import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
+import 'package:shared_advisor_interface/presentation/services/audio/audio_recorder_service.dart';
 import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
-import 'package:shared_advisor_interface/presentation/services/sound/sound_record_service.dart';
 
 import '../../common_variables.dart';
 import '../../widget_tester_extension.dart';
@@ -86,7 +86,7 @@ void main() {
   late ChatsRepository mockChatsRepository;
   late MockConnectivityService mockConnectivityService;
   late MockDataCachingManager mockCacheManager;
-  late MockSoundRecordService mockSoundRecordService;
+  late MockAudioRecorderService mockAudioRecorderService;
   late MockDefaultCacheManager mockDefaultCacheManager;
   late MockAudioPlayerService mockAudioPlayerService;
   late MockCheckPermissionService mockCheckPermissionService;
@@ -101,7 +101,7 @@ void main() {
     GetIt.instance.allowReassignment = true;
     dio = Dio();
     dioAdapter = DioAdapter(dio: dio, matcher: const UrlRequestMatcher());
-    mockSoundRecordService = MockSoundRecordService();
+    mockAudioRecorderService = MockAudioRecorderService();
     mockAudioPlayerService = MockAudioPlayerService();
     mockDefaultCacheManager = MockDefaultCacheManager();
 
@@ -230,8 +230,8 @@ void main() {
         () => CustomerRepositoryImpl(CustomerApi(dio)));
 
     testGetIt.registerSingleton<BaseCacheManager>(mockDefaultCacheManager);
-    testGetIt.registerLazySingleton<SoundRecordService>(
-        () => mockSoundRecordService);
+    testGetIt.registerLazySingleton<AudioRecorderService>(
+        () => mockAudioRecorderService);
     testGetIt.registerLazySingleton<AudioPlayerService>(
         () => mockAudioPlayerService);
   });

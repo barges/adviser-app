@@ -218,6 +218,7 @@
   "learnMore": "Lern mehr",
   "update": "Aktualisieren",
   "messageIsNotSent": "Nachricht wird nicht gesendet",
+  "recordingIsNotPossibleAllocateSpaceOnTheDevice": "Aufnahme ist nicht möglich, weisen Sie Speicherplatz auf dem Gerät zu",
   "notificationsAreDisabled": "Benachrichtigungen sind deaktiviert",
   "toEnableNotificationYoullNeedToAllowNotificationsInYour": "Um die Benachrichtigung zu aktivieren, müssen Sie Benachrichtigungen in Ihren Telefoneinstellungen zulassen"
 }

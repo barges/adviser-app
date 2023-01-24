@@ -220,6 +220,7 @@
   "learnMore": "Saber mais",
   "update": "Atualizar",
   "messageIsNotSent": "Mensagem não foi enviada",
+  "recordingIsNotPossibleAllocateSpaceOnTheDevice": "A gravação não é possível, aloque espaço no dispositivo",
   "notificationsAreDisabled": "As notificações estão desativadas",
   "toEnableNotificationYoullNeedToAllowNotificationsInYour": "Para habilitar a notificação, você precisará permitir notificações nas configurações do seu telefone"
 }

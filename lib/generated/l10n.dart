@@ -2237,6 +2237,16 @@ class S {
     );
   }
 
+  /// `Recording is not possible, allocate space on the device`
+  String get recordingIsNotPossibleAllocateSpaceOnTheDevice {
+    return Intl.message(
+      'Recording is not possible, allocate space on the device',
+      name: 'recordingIsNotPossibleAllocateSpaceOnTheDevice',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Notifications are disabled`
   String get notificationsAreDisabled {
     return Intl.message(

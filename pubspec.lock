@@ -1405,6 +1405,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.10.0"
+  storage_space:
+    dependency: "direct main"
+    description:
+      name: storage_space
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1+5"
   stream_channel:
     dependency: transitive
     description:
