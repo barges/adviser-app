@@ -11,20 +11,6 @@ import 'package:shared_advisor_interface/domain/repositories/chats_repository.da
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_state.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
-// List<HistoryUiModel> _groupTopHistory(List<History> data) {
-//   final Map<String, List<History>> groupedItem =
-//       groupBy<History, String>(data, (e) {
-//     return e.question?.storyID ?? '';
-//   });
-//   final items = <HistoryUiModel>[];
-//   groupedItem.forEach((key, value) {
-//     items.addAll(value.map((e) => HistoryUiModel.data(e)));
-//     items.add(HistoryUiModel.separator(value.lastOrNull?.question));
-//   });
-//
-//   return items;
-// }
-
 List<HistoryUiModel> _groupTopHistory(List<History> data) {
   final Map<String, List<History>> groupedItem = _groupByStoryId(data);
 
@@ -51,9 +37,8 @@ List<HistoryUiModel> _groupBottomHistory(List<History> data) {
 
 Map<String, List<History>> _groupByStoryId(List<History> data) {
   final Map<String, List<History>> groupedItem = {};
-  final List<History> historiesById = [];
+  List<History> historiesById = [];
   String? previousId = data.firstOrNull?.question?.storyID;
-
   for (int i = 0; i < data.length; i++) {
     final History history = data[i];
     if (i < data.length - 1) {
@@ -62,7 +47,7 @@ Map<String, List<History>> _groupByStoryId(List<History> data) {
       } else {
         if (previousId != null) {
           groupedItem[previousId] = historiesById;
-          historiesById.clear();
+          historiesById = [];
           previousId = history.question?.storyID;
           historiesById.add(history);
         }
@@ -73,7 +58,7 @@ Map<String, List<History>> _groupByStoryId(List<History> data) {
           historiesById.add(history);
           groupedItem[previousId] = historiesById;
         } else {
-          historiesById.clear();
+          historiesById = [];
           historiesById.add(history);
           groupedItem[previousId] = historiesById;
         }
@@ -82,20 +67,6 @@ Map<String, List<History>> _groupByStoryId(List<History> data) {
   }
   return groupedItem;
 }
-
-// List<HistoryUiModel> _groupBottomHistory(List<History> data) {
-//   final Map<String, List<History>> groupedItem =
-//       groupBy<History, String>(data, (e) {
-//     return e.question?.storyID ?? '';
-//   });
-//   final items = <HistoryUiModel>[];
-//   groupedItem.forEach((key, value) {
-//     items.add(HistoryUiModel.separator(value.lastOrNull?.question));
-//     items.addAll(value.map((e) => HistoryUiModel.data(e)));
-//   });
-//
-//   return items;
-// }
 
 class HistoryCubit extends Cubit<HistoryState> {
   final ScrollController historyMessagesScrollController = ScrollController();
