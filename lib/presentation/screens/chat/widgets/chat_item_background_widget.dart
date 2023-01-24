@@ -28,6 +28,7 @@ class ChatItemBackgroundWidget extends StatelessWidget {
             ? padding.copyWith(bottom: padding.bottom + 8.0)
             : padding,
         child: Stack(
+          clipBehavior: Clip.none,
           children: [
             Container(
               margin: EdgeInsets.only(bottom: isNotSent ? 24.0 : 0),
@@ -51,20 +52,22 @@ class ChatItemBackgroundWidget extends StatelessWidget {
               Positioned(
                 right: 0.0,
                 bottom: 0.0,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: isNotSent ? chatCubit.sendAnswerAgain : null,
-                  child: const _TryAgain(),
-                ),
-              ),
-            if (isNotSent)
-              Positioned(
-                right: 94.0,
-                bottom: 0.0,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: isNotSent ? chatCubit.cancelSending : null,
-                  child: const _CancelSending(),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: isNotSent ? chatCubit.cancelSending : null,
+                      child: const _CancelSending(),
+                    ),
+                    const SizedBox(
+                      width: 8.0,
+                    ),
+                    GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: isNotSent ? chatCubit.sendAnswerAgain : null,
+                      child: const _TryAgain(),
+                    ),
+                  ],
                 ),
               ),
           ],

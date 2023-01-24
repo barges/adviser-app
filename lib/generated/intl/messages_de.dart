@@ -255,6 +255,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "quickAnswers":
             MessageLookupByLibrary.simpleMessage("Schnelle Antworten"),
         "reading360": MessageLookupByLibrary.simpleMessage("360°-Lesen"),
+        "recordingIsNotPossibleAllocateSpaceOnTheDevice":
+            MessageLookupByLibrary.simpleMessage(
+                "Aufnahme ist nicht möglich, weisen Sie Speicherplatz auf dem Gerät zu"),
         "repeatNewPassword": MessageLookupByLibrary.simpleMessage(
             "Wiederhole das neue Passwort"),
         "requestNewPassword": MessageLookupByLibrary.simpleMessage(

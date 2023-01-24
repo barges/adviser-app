@@ -37,9 +37,10 @@ import 'package:shared_advisor_interface/presentation/resources/app_arguments.da
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
-import 'package:shared_advisor_interface/presentation/services/audio_player_service.dart';
-import 'package:shared_advisor_interface/presentation/services/sound/sound_record_service.dart';
+import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
+import 'package:shared_advisor_interface/presentation/services/audio/audio_recorder_service.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
+import 'package:storage_space/storage_space.dart';
 
 import 'chat_state.dart';
 
@@ -62,9 +63,10 @@ class ChatCubit extends Cubit<ChatState> {
   final VoidCallback _showErrorAlert;
   final ValueGetter<Future<bool?>> _confirmSendAnswerAlert;
   final ValueGetter<Future<bool?>> _deleteAudioMessageAlert;
+  final ValueGetter<Future<bool?>> _recordingIsNotPossibleAlert;
   final MainCubit _mainCubit;
   final AudioPlayerService audioPlayer;
-  final SoundRecordService _soundRecordService;
+  final AudioRecorderService _audioRecorderService;
   final int _tillShowMessagesInSec =
       AppConstants.tillShowAnswerTimingMessagesInSec;
   final int _afterShowMessagesInSec =
@@ -84,11 +86,12 @@ class ChatCubit extends Cubit<ChatState> {
     this._repository,
     this._connectivityService,
     this._mainCubit,
-    this._soundRecordService,
+    this._audioRecorderService,
     this.audioPlayer,
     this._showErrorAlert,
     this._confirmSendAnswerAlert,
     this._deleteAudioMessageAlert,
+    this._recordingIsNotPossibleAlert,
   ) : super(const ChatState()) {
     chatScreenArguments = Get.arguments;
 
@@ -139,7 +142,13 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   @override
-  Future<void> close() {
+  Future<void> close() async {
+    if (state.isRecordingAudio) {
+      await cancelRecordingAudio();
+    }
+    _deleteRecordedAudioFile(state.recordedAudio);
+    _recordAudioDuration = null;
+
     activeMessagesScrollController.dispose();
     _appOnPauseSubscription.cancel();
 
@@ -148,7 +157,7 @@ class ChatCubit extends Cubit<ChatState> {
     textInputScrollController.dispose();
     textInputEditingController.dispose();
 
-    _soundRecordService.close();
+    _audioRecorderService.close();
     audioPlayer.dispose();
 
     _recordingProgressSubscription?.cancel();
@@ -188,7 +197,9 @@ class ChatCubit extends Cubit<ChatState> {
       state.copyWith(
         inputTextLength: textInputEditingController.text.length,
         isSendButtonEnabled:
-            _checkTextLengthIsOk() || state.recordedAudio != null,
+            (_checkTextLengthIsOk() || state.recordedAudio != null) &&
+                _checkAttachmentSizeIsOk(
+                    state.attachedPictures, state.recordedAudio),
       ),
     );
   }
@@ -217,7 +228,7 @@ class ChatCubit extends Cubit<ChatState> {
             questionFromDB: question,
             questionStatus: question.status,
             activeMessages: [question],
-            isAudioAnswerEnabled: question.isAudio,
+            isAudioAnswerEnabled: question.type != ChatItemType.public,
           ),
         );
       }
@@ -256,9 +267,6 @@ class ChatCubit extends Cubit<ChatState> {
 
         final ChatItem lastQuestion = questions.last;
 
-        final bool isAudioAnswerEnabled =
-            questions.any((element) => element.isAudio);
-
         emit(
           state.copyWith(
             questionFromDB: lastQuestion.copyWith(
@@ -270,7 +278,7 @@ class ChatCubit extends Cubit<ChatState> {
             questionStatus: lastQuestion.status,
             activeMessages: activeMessages,
             ritualCardInfo: ritualsResponse.ritualCardInfo,
-            isAudioAnswerEnabled: isAudioAnswerEnabled,
+            isAudioAnswerEnabled: true,
           ),
         );
 
@@ -343,10 +351,21 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> startRecordingAudio(BuildContext context) async {
+    StorageSpace freeSpace = await getStorageSpace(
+      lowOnSpaceThreshold: 0,
+      fractionDigits: 1,
+    );
+    final freeSpaceInMb = freeSpace.free / (1024 * 1024);
+    if (freeSpaceInMb <= AppConstants.minFreeSpaceInMb) {
+      await _recordingIsNotPossibleAlert();
+      return;
+    }
+
     _tryStartAnswerSend();
 
     audioPlayer.stop();
 
+    // ignore: use_build_context_synchronously
     await CheckPermissionService.handlePermission(
         context, PermissionType.audio);
 
@@ -357,10 +376,10 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     const fileName = '${AppConstants.recordFileName}.$_recordFileExt';
-    await _soundRecordService.startRecorder(fileName);
+    await _audioRecorderService.startRecorder(fileName);
 
     _recordingProgressSubscription =
-        _soundRecordService.onProgress?.listen((e) async {
+        _audioRecorderService.onProgress?.listen((e) async {
       _recordAudioDuration = e.duration.inSeconds;
       if (!_checkMaxRecordDurationIsOk()) {
         stopRecordingAudio();
@@ -370,7 +389,7 @@ class ChatCubit extends Cubit<ChatState> {
     emit(
       state.copyWith(
         isRecordingAudio: true,
-        recordingStream: _soundRecordService.onProgress,
+        recordingStream: _audioRecorderService.onProgress,
       ),
     );
   }
@@ -379,7 +398,7 @@ class ChatCubit extends Cubit<ChatState> {
     _recordingProgressSubscription?.cancel();
     _recordingProgressSubscription = null;
 
-    String? recordingPath = await _soundRecordService.stopRecorder();
+    String? recordingPath = await _audioRecorderService.stopRecorder();
     logger.i("recorded audio: $recordingPath");
 
     bool isSendButtonEnabled = false;
@@ -420,7 +439,7 @@ class ChatCubit extends Cubit<ChatState> {
     _recordingProgressSubscription = null;
     _recordAudioDuration = null;
 
-    String? recordingPath = await _soundRecordService.stopRecorder();
+    String? recordingPath = await _audioRecorderService.stopRecorder();
     if (recordingPath != null && recordingPath.isNotEmpty) {
       File recordedAudio = File(recordingPath);
       await _deleteRecordedAudioFile(recordedAudio);
@@ -468,12 +487,13 @@ class ChatCubit extends Cubit<ChatState> {
       return;
     }
 
-    emit(state.copyWith(
-      attachedPictures: images,
-      isSendButtonEnabled:
-          _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
-              (_checkRecordedAudioIsOk() || _checkTextLengthIsOk()),
-    ));
+    emit(
+      state.copyWith(
+          attachedPictures: images,
+          isSendButtonEnabled:
+              _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
+                  (_checkRecordedAudioIsOk() || _checkTextLengthIsOk())),
+    );
 
     _scrollTextFieldToEnd();
   }
@@ -481,12 +501,13 @@ class ChatCubit extends Cubit<ChatState> {
   void deletePicture(File? image) {
     final images = List.of(state.attachedPictures);
     images.remove(image);
-    emit(state.copyWith(
-      attachedPictures: images,
-      isSendButtonEnabled:
-          (_checkRecordedAudioIsOk() || _checkTextLengthIsOk()) &&
-              _checkAttachmentSizeIsOk(images, state.recordedAudio),
-    ));
+    emit(
+      state.copyWith(
+          attachedPictures: images,
+          isSendButtonEnabled:
+              _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
+                  (_checkRecordedAudioIsOk() || _checkTextLengthIsOk())),
+    );
 
     _scrollTextFieldToEnd();
   }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:shared_advisor_interface/presentation/services/audio/audio_session_configure_mixin.dart';
 
 abstract class AudioPlayerService {
   Stream<AudioPlayerState> get stateStream;
@@ -18,7 +19,8 @@ abstract class AudioPlayerService {
   void dispose();
 }
 
-class AudioPlayerServiceImpl implements AudioPlayerService {
+class AudioPlayerServiceImpl extends AudioPlayerService
+    with AudioSessionConfigureMixin {
   final AudioPlayer _player = AudioPlayer();
 
   PlayerState _state = PlayerState.stopped;
@@ -28,6 +30,12 @@ class AudioPlayerServiceImpl implements AudioPlayerService {
   StreamSubscription? _stateSubscription;
 
   AudioPlayerServiceImpl() {
+    _init();
+  }
+
+  Future<void> _init() async {
+    await configureAudioSession();
+
     _stateSubscription = _player.onPlayerStateChanged.listen((event) {
       _state = event;
     });

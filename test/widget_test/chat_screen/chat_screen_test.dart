@@ -27,15 +27,14 @@ import 'package:shared_advisor_interface/presentation/common_widgets/customer_pr
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_input_field_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_messages_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/ritual_info_card_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/gallery/gallery_pictures_screen.dart';
-import 'package:shared_advisor_interface/presentation/services/audio_player_service.dart';
+import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
+import 'package:shared_advisor_interface/presentation/services/audio/audio_recorder_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
-import 'package:shared_advisor_interface/presentation/services/sound/sound_record_service.dart';
 
 import '../../widget_tester_extension.dart';
 import '../mocked_classes/mocked_classes.mocks.dart';
@@ -49,7 +48,7 @@ Future<void> pumpChatScreen({
   required ChatsRepository chatsRepository,
   required ConnectivityService connectivityService,
   required ChatScreenArguments chatScreenArguments,
-  required SoundRecordService soundRecordService,
+  required AudioRecorderService soundRecordService,
   required AudioPlayerService audioPlayerService,
 }) async {
   await tester.pumpWidget(
