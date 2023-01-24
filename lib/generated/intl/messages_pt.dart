@@ -7,7 +7,8 @@
 // ignore_for_file:unnecessary_brace_in_string_interps, unnecessary_new
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
-// ignore_for_file:unused_import, file_names
+// ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
+// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
@@ -19,22 +20,22 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'pt';
 
-  static m0(minRecordDurationInSec, maxRecordDurationInMinutes) =>
+  static String m0(minRecordDurationInSec, maxRecordDurationInMinutes) =>
       "de ${minRecordDurationInSec} segundos a ${maxRecordDurationInMinutes} minutos";
 
-  static m1(maxAttachmentSizeInMb) =>
+  static String m1(maxAttachmentSizeInMb) =>
       "O tamanho máximo dos anexos é de ${maxAttachmentSizeInMb}Mb";
 
-  static m2(counter) =>
+  static String m2(counter) =>
       "Esta questão será devolvida à lista geral após ${counter}";
 
-  static m3(email) =>
+  static String m3(email) =>
       "Enviamos instruções de redefinição de senha para o ${email}.";
 
-  static m4(minRecordDurationInSec) =>
+  static String m4(minRecordDurationInSec) =>
       "Você não pode enviar esta mensagem porque tem menos de ${minRecordDurationInSec} segundos";
 
-  static m5(maxRecordDurationInMinutes) =>
+  static String m5(maxRecordDurationInMinutes) =>
       "Você atingiu o limite de tempo de ${maxRecordDurationInMinutes} minutos.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
