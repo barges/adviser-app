@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
@@ -14,15 +15,8 @@ import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboar
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 class DashboardV1Screen extends StatelessWidget {
-  final CachingManager cacheManager;
-  final ConnectivityService connectivityService;
-  final UserRepository userRepository;
-
   const DashboardV1Screen({
     super.key,
-    required this.cacheManager,
-    required this.connectivityService,
-    required this.userRepository,
   });
 
   @override
@@ -30,7 +24,11 @@ class DashboardV1Screen extends StatelessWidget {
     final MainCubit mainCubit = context.read<MainCubit>();
     return BlocProvider(
         create: (_) => DashboardV1Cubit(
-            cacheManager, connectivityService, userRepository, mainCubit),
+              getIt.get<CachingManager>(),
+              getIt.get<ConnectivityService>(),
+              getIt.get<UserRepository>(),
+              mainCubit,
+            ),
         child: Builder(builder: (context) {
           final bool isOnline = context.select(
               (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);

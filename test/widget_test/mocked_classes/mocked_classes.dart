@@ -31,6 +31,10 @@
     as: #MockAudioPlayerService,
     onMissingStub: OnMissingStub.returnDefault,
   ),
+  MockSpec<CheckPermissionService>(
+    as: #MockCheckPermissionService,
+    onMissingStub: OnMissingStub.returnDefault,
+  ),
 ])
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:mockito/annotations.dart';
@@ -39,6 +43,7 @@ import 'package:shared_advisor_interface/data/repositories/chats_repository_impl
 import 'package:shared_advisor_interface/data/repositories/customer_repository_impl.dart';
 import 'package:shared_advisor_interface/data/repositories/user_repository_impl.dart';
 import 'package:shared_advisor_interface/presentation/services/audio_player_service.dart';
+import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/services/dynamic_link_service.dart';
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager_impl.dart';

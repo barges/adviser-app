@@ -33,13 +33,10 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ChatsRepository chatsRepository = getIt.get<ChatsRepository>();
-    final ConnectivityService connectivityService =
-        getIt.get<ConnectivityService>();
     return BlocProvider(
       create: (_) => ChatCubit(
-        chatsRepository,
-        connectivityService,
+        getIt.get<ChatsRepository>(),
+        getIt.get<ConnectivityService>(),
         getIt.get<MainCubit>(),
         SoundRecordServiceImp(),
         AudioPlayerServiceImpl(),
@@ -48,23 +45,13 @@ class ChatScreen extends StatelessWidget {
         () => confirmSendAnswerAlert(context),
         () => deleteAudioMessageAlert(context),
       ),
-      child: ChatContentWidget(
-        chatsRepository: chatsRepository,
-        connectivityService: connectivityService,
-      ),
+      child: const ChatContentWidget(),
     );
   }
 }
 
 class ChatContentWidget extends StatelessWidget {
-  final ChatsRepository chatsRepository;
-  final ConnectivityService connectivityService;
-
-  const ChatContentWidget({
-    Key? key,
-    required this.chatsRepository,
-    required this.connectivityService,
-  }) : super(key: key);
+  const ChatContentWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -184,8 +171,6 @@ class ChatContentWidget extends StatelessWidget {
                         Builder(builder: (context) {
                           return questionFromDB?.clientID != null
                               ? HistoryWidget(
-                                  chatsRepository: chatsRepository,
-                                  connectivityService: connectivityService,
                                   clientId: questionFromDB!.clientID!,
                                   storyId: chatCubit
                                       .chatScreenArguments.storyIdForHistory,

@@ -9,20 +9,11 @@ import 'package:shared_advisor_interface/presentation/services/check_permission_
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/services/sound/sound_record_service.dart';
 
-class FakeChatScreen extends StatelessWidget {
-  final ChatsRepository chatsRepository;
-  final ConnectivityService connectivityService;
-  final SoundRecordService soundRecordService;
-  final AudioPlayerService audioPlayerService;
-  final CheckPermissionService checkPermissionService;
+import '../../common_variables.dart';
 
+class FakeChatScreen extends StatelessWidget {
   const FakeChatScreen({
     Key? key,
-    required this.chatsRepository,
-    required this.connectivityService,
-    required this.soundRecordService,
-    required this.audioPlayerService,
-    required this.checkPermissionService,
   }) : super(key: key);
 
   @override
@@ -30,20 +21,17 @@ class FakeChatScreen extends StatelessWidget {
     MainCubit mainCubit = context.read<MainCubit>();
     return BlocProvider(
       create: (_) => ChatCubit(
-        chatsRepository,
-        connectivityService,
+        testGetIt.get<ChatsRepository>(),
+        testGetIt.get<ConnectivityService>(),
         mainCubit,
-        soundRecordService,
-        audioPlayerService,
-        checkPermissionService,
+        testGetIt.get<SoundRecordService>(),
+        testGetIt.get<AudioPlayerService>(),
+        testGetIt.get<CheckPermissionService>(),
         () => showErrorAlert(context),
         () => confirmSendAnswerAlert(context),
         () => deleteAudioMessageAlert(context),
       ),
-      child: ChatContentWidget(
-        chatsRepository: chatsRepository,
-        connectivityService: connectivityService,
-      ),
+      child: const ChatContentWidget(),
     );
   }
 }
