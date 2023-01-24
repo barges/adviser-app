@@ -90,9 +90,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // if (state == AppLifecycleState.paused) {
-    //
-    // }
+    if (state == AppLifecycleState.paused) {
+      getIt.get<MainCubit>().widgetOnPauseEvent();
+    }
     if (state == AppLifecycleState.resumed) {
       getIt.get<MainCubit>().widgetOnResumeEvent();
     }

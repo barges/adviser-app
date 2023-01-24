@@ -62,6 +62,7 @@ class _AttachedPicture extends StatelessWidget {
             uri: Uri.parse(file.path),
             width: 64.0,
             height: 64.0,
+            memCacheHeight: 64,
             radius: AppConstants.buttonRadius,
           ),
         ),

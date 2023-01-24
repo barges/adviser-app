@@ -78,10 +78,12 @@ class ProfileImagesWidget extends StatelessWidget {
                                 return GestureDetector(
                                   onTap: cubit.goToGallery,
                                   child: SizedBox(
-                                      height: _backgroundImageSectionHeight,
-                                      child: AppImageWidget(
-                                        uri: Uri.parse(coverPictures[index]),
-                                      )),
+                                    height: _backgroundImageSectionHeight,
+                                    child: AppImageWidget(
+                                      uri: Uri.parse(coverPictures[index]),
+                                      memCacheHeight: _backgroundImageSectionHeight.toInt(),
+                                    ),
+                                  ),
                                 );
                               },
                             ),

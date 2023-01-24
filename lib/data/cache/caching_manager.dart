@@ -24,7 +24,6 @@ abstract class CachingManager {
 
   UserInfo? getUserInfo();
 
-
   Future<void> updateUserStatusByStatus(FortunicaUserStatus status);
 
   Future<void> saveUserId(String? userId);
@@ -60,8 +59,4 @@ abstract class CachingManager {
   VoidCallback listenCurrentUserStatus(ValueChanged<UserStatus> callback);
 
   VoidCallback listenUserId(ValueChanged<String?> callback);
-
-  bool? getFirstPushNotificationSet();
-
-  void saveFirstPushNotificationSet();
 }

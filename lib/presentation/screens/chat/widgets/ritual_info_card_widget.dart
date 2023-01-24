@@ -100,13 +100,8 @@ class RitualInfoCardWidget extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          AppImageWidget(
-                            uri: Uri.parse(ritualCardInfo!.leftImage!),
-                            width: 132.0,
-                            height: 132.0,
-                            radius: 8.0,
-                            canBeOpenedInFullScreen: true,
-                          )
+                          _RitualInfoCardImageWidget(
+                              imageUrl: ritualCardInfo!.leftImage!),
                         ],
                       ),
                     const SizedBox(
@@ -125,13 +120,8 @@ class RitualInfoCardWidget extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          AppImageWidget(
-                            uri: Uri.parse(ritualCardInfo!.rightImage!),
-                            width: 132.0,
-                            height: 132.0,
-                            radius: 8.0,
-                            canBeOpenedInFullScreen: true,
-                          )
+                          _RitualInfoCardImageWidget(
+                              imageUrl: ritualCardInfo!.rightImage!),
                         ],
                       ),
                   ],
@@ -140,6 +130,27 @@ class RitualInfoCardWidget extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _RitualInfoCardImageWidget extends StatelessWidget {
+  final String imageUrl;
+
+  const _RitualInfoCardImageWidget({
+    Key? key,
+    required this.imageUrl,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppImageWidget(
+      uri: Uri.parse(imageUrl),
+      width: 132.0,
+      height: 132.0,
+      memCacheHeight: 132,
+      radius: 8.0,
+      canBeOpenedInFullScreen: true,
     );
   }
 }
