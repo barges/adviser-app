@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
+import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 
 abstract class CachingManager {
   Future<void> saveUserProfile(UserProfile? userProfile);
@@ -59,4 +60,9 @@ abstract class CachingManager {
   VoidCallback listenCurrentUserStatus(ValueChanged<UserStatus> callback);
 
   VoidCallback listenUserId(ValueChanged<String?> callback);
+
+  Map<String, dynamic> getFirstPermissionStatusesRequestsMap();
+
+  Future<void> saveFirstPermissionStatusesRequestsMap(
+      PermissionType permissionType);
 }

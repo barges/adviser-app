@@ -20,7 +20,8 @@ class QuestionAndAnswerPairWidget extends StatelessWidget {
                 height: 8.0,
               ),
               ChatItemWidget(
-                isHistoryQuestion: true, item: historyItem.question!,
+                isHistoryQuestion: true,
+                item: historyItem.question!,
               ),
             ],
           ),
@@ -31,16 +32,26 @@ class QuestionAndAnswerPairWidget extends StatelessWidget {
                 height: 8.0,
               ),
               ChatItemWidget(
-               item: historyItem.answer!.copyWith(
+                item: historyItem.answer!.copyWith(
                   isAnswer: true,
                   ritualIdentifier: historyItem.question?.ritualIdentifier,
                   type: historyItem.question?.type,
                 ),
                 isHistoryAnswer: true,
+                isHistoryAnswerInSameDay: checkIfAnsweredInSameDay(),
               ),
             ],
           ),
       ],
     );
+  }
+
+  bool checkIfAnsweredInSameDay() {
+    return historyItem.answer?.createdAt?.day ==
+            historyItem.question?.createdAt?.day &&
+        historyItem.answer?.createdAt?.month ==
+            historyItem.question?.createdAt?.month &&
+        historyItem.answer?.createdAt?.year ==
+            historyItem.question?.createdAt?.year;
   }
 }

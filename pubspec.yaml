@@ -50,7 +50,7 @@ dependencies:
 
   # Firebase
   firebase_core: ^2.2.0
-  firebase_messaging: ^14.1.0
+  firebase_messaging: ^14.0.4
   firebase_dynamic_links: ^5.0.5
   firebase_crashlytics: ^3.0.5
   firebase_remote_config: ^3.0.5

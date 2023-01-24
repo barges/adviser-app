@@ -67,6 +67,7 @@ class ChatCubit extends Cubit<ChatState> {
   final MainCubit _mainCubit;
   final AudioPlayerService audioPlayer;
   final AudioRecorderService _audioRecorderService;
+  final CheckPermissionService _checkPermissionService;
   final int _tillShowMessagesInSec =
       AppConstants.tillShowAnswerTimingMessagesInSec;
   final int _afterShowMessagesInSec =
@@ -88,6 +89,7 @@ class ChatCubit extends Cubit<ChatState> {
     this._mainCubit,
     this._audioRecorderService,
     this.audioPlayer,
+    this._checkPermissionService,
     this._showErrorAlert,
     this._confirmSendAnswerAlert,
     this._deleteAudioMessageAlert,
@@ -366,7 +368,7 @@ class ChatCubit extends Cubit<ChatState> {
     audioPlayer.stop();
 
     // ignore: use_build_context_synchronously
-    await CheckPermissionService.handlePermission(
+    await _checkPermissionService.handlePermission(
         context, PermissionType.audio);
 
     final isRecordGranted = await Permission.microphone.isGranted;

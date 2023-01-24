@@ -14,88 +14,59 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CachingManager cacheManager = getIt.get<CachingManager>();
-    final ConnectivityService connectivityService =
-        getIt.get<ConnectivityService>();
-    final UserRepository userRepository = getIt.get<UserRepository>();
     return BlocProvider(
-      create: (_) => HomeCubit(
-        cacheManager,
-      ),
-      child: HomeContentWidget(
-        cacheManager: cacheManager,
-        connectivityService: connectivityService,
-        userRepository: userRepository,
-        chatsRepository: getIt.get<ChatsRepository>(),
-      ),
-    );
-  }
-}
+        create: (_) => HomeCubit(
+              getIt.get<CachingManager>(),
+            ),
+        child: Builder(
+          builder: (context) {
+            final ThemeData theme = Theme.of(context);
+            final HomeCubit cubit = context.read<HomeCubit>();
+            final int tabPositionIndex = context
+                .select((HomeCubit cubit) => cubit.state.tabPositionIndex);
 
-class HomeContentWidget extends StatelessWidget {
-  final CachingManager cacheManager;
-  final ConnectivityService connectivityService;
-  final ChatsRepository chatsRepository;
-  final UserRepository userRepository;
-
-  const HomeContentWidget({
-    super.key,
-    required this.cacheManager,
-    required this.connectivityService,
-    required this.chatsRepository,
-    required this.userRepository,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final HomeCubit cubit = context.read<HomeCubit>();
-    final int tabPositionIndex =
-        context.select((HomeCubit cubit) => cubit.state.tabPositionIndex);
-
-    return Scaffold(
-      key: cubit.scaffoldKey,
-      drawer: const AppDrawer(),
-      body: _TabPages(
-        tabIndex: tabPositionIndex,
-        tabs: HomeCubit.tabsList
-            .map((e) => e.getNavigator(
-                context: context,
-                cacheManager: cacheManager,
-                connectivityService: connectivityService,
-                chatsRepository: chatsRepository,
-                userRepository: userRepository))
-            .toList(),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: tabPositionIndex,
-        type: BottomNavigationBarType.fixed,
-        selectedIconTheme: theme.iconTheme.copyWith(
-          color: theme.primaryColor,
-        ),
-        selectedLabelStyle: theme.textTheme.labelSmall,
-        unselectedLabelStyle: theme.textTheme.labelSmall,
-        unselectedItemColor: theme.iconTheme.color,
-        showUnselectedLabels: true,
-        onTap: cubit.changeTabIndex,
-        selectedItemColor: theme.primaryColor,
-        items: HomeCubit.tabsList
-            .map(
-              (e) => BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  e.iconPath,
-                  color: theme.shadowColor,
-                ),
-                activeIcon: SvgPicture.asset(
-                  e.iconPath,
+            return Scaffold(
+              key: cubit.scaffoldKey,
+              drawer: const AppDrawer(),
+              body: _TabPages(
+                tabIndex: tabPositionIndex,
+                tabs: HomeCubit.tabsList
+                    .map((e) => e.getNavigator(
+                          context: context,
+                        ))
+                    .toList(),
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                currentIndex: tabPositionIndex,
+                type: BottomNavigationBarType.fixed,
+                selectedIconTheme: theme.iconTheme.copyWith(
                   color: theme.primaryColor,
                 ),
-                label: e.tabName(context),
+                selectedLabelStyle: theme.textTheme.labelSmall,
+                unselectedLabelStyle: theme.textTheme.labelSmall,
+                unselectedItemColor: theme.iconTheme.color,
+                showUnselectedLabels: true,
+                onTap: cubit.changeTabIndex,
+                selectedItemColor: theme.primaryColor,
+                items: HomeCubit.tabsList
+                    .map(
+                      (e) => BottomNavigationBarItem(
+                        icon: SvgPicture.asset(
+                          e.iconPath,
+                          color: theme.shadowColor,
+                        ),
+                        activeIcon: SvgPicture.asset(
+                          e.iconPath,
+                          color: theme.primaryColor,
+                        ),
+                        label: e.tabName(context),
+                      ),
+                    )
+                    .toList(),
               ),
-            )
-            .toList(),
-      ),
-    );
+            );
+          },
+        ));
   }
 }
 
