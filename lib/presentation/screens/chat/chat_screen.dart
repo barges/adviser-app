@@ -24,6 +24,7 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/activ
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
+import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/services/audio/audio_recorder_service.dart';
 
@@ -32,38 +33,26 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ChatsRepository chatsRepository = getIt.get<ChatsRepository>();
-    final ConnectivityService connectivityService =
-        getIt.get<ConnectivityService>();
     return BlocProvider(
       create: (_) => ChatCubit(
-        chatsRepository,
-        connectivityService,
+        getIt.get<ChatsRepository>(),
+        getIt.get<ConnectivityService>(),
         getIt.get<MainCubit>(),
         AudioRecorderServiceImp(),
         AudioPlayerServiceImpl(),
+        getIt.get<CheckPermissionService>(),
         () => showErrorAlert(context),
         () => confirmSendAnswerAlert(context),
         () => deleteAudioMessageAlert(context),
         () => recordingIsNotPossibleAlert(context),
       ),
-      child: ChatContentWidget(
-        chatsRepository: chatsRepository,
-        connectivityService: connectivityService,
-      ),
+      child: const ChatContentWidget(),
     );
   }
 }
 
 class ChatContentWidget extends StatelessWidget {
-  final ChatsRepository chatsRepository;
-  final ConnectivityService connectivityService;
-
-  const ChatContentWidget({
-    Key? key,
-    required this.chatsRepository,
-    required this.connectivityService,
-  }) : super(key: key);
+  const ChatContentWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -183,8 +172,6 @@ class ChatContentWidget extends StatelessWidget {
                         Builder(builder: (context) {
                           return questionFromDB?.clientID != null
                               ? HistoryWidget(
-                                  chatsRepository: chatsRepository,
-                                  connectivityService: connectivityService,
                                   clientId: questionFromDB!.clientID!,
                                   storyId: chatCubit
                                       .chatScreenArguments.storyIdForHistory,

@@ -1,49 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/main_state.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/reviews_settings_part_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/user_info_part_widget.dart';
+import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 
 class AccountScreen extends StatelessWidget {
-  final CachingManager cacheManager;
-  final UserRepository userRepository;
-  final ConnectivityService connectivityService;
-
-  const AccountScreen(
-      {Key? key,
-      required this.cacheManager,
-      required this.userRepository,
-      required this.connectivityService})
-      : super(key: key);
+  const AccountScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final MainCubit mainCubit = context.read<MainCubit>();
     return BlocProvider(
       create: (_) => AccountCubit(
-        cacheManager,
+        getIt.get<CachingManager>(),
         mainCubit,
-        userRepository,
+        getIt.get<UserRepository>(),
         getIt.get<PushNotificationManager>(),
-        connectivityService,
-        () => showSettingsAlert(context),
+        getIt.get<ConnectivityService>(),
+        getIt.get<CheckPermissionService>(),
+        context,
       ),
       child: Builder(builder: (context) {
         final AccountCubit accountCubit = context.read<AccountCubit>();
@@ -131,20 +122,5 @@ class AccountScreen extends StatelessWidget {
         );
       }),
     );
-  }
-
-  Future<void> showSettingsAlert(BuildContext context) async {
-    VoidCallback actionOnOk = (() async {
-      await openAppSettings();
-      Get.back();
-    });
-    await showOkCancelAlert(
-        context: context,
-        title: S.of(context).notificationsAreDisabled,
-        okText: S.of(context).settings,
-        description: S.of(context).toEnableNotificationYoullNeedToAllowNotificationsInYour,
-        actionOnOK: actionOnOk,
-        allowBarrierClick: true,
-        isCancelEnabled: true);
   }
 }

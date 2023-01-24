@@ -52,165 +52,167 @@ class _LoginScreenState extends State<LoginScreen> {
 
         return getIt.get<LoginCubit>();
       },
-      child: const LoginContentWidget(),
-    );
-  }
-}
-
-class LoginContentWidget extends StatelessWidget {
-  const LoginContentWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final LoginCubit loginCubit = context.read<LoginCubit>();
-    final bool isOnline = context
-        .select((MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
-    return Scaffold(
-      appBar: const LoginAppBar(),
-      body: SafeArea(
-        child: isOnline
-            ? GestureDetector(
-                onTap: () {
-                  FocusScope.of(context).unfocus();
-                  loginCubit.clearErrorMessage();
-                  loginCubit.clearSuccessMessage();
-                },
-                child: Column(
-                  children: [
-                    Builder(
-                      builder: (BuildContext context) {
-                        final AppError appError = context
-                            .select((MainCubit cubit) => cubit.state.appError);
-                        return AppErrorWidget(
-                          errorMessage: appError.getMessage(context),
-                          close: () {
-                            loginCubit.clearErrorMessage();
+      child: Builder(builder: ((context) {
+        final LoginCubit loginCubit = context.read<LoginCubit>();
+        final bool isOnline = context.select(
+            (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
+        return Scaffold(
+          appBar: const LoginAppBar(),
+          body: SafeArea(
+            child: isOnline
+                ? GestureDetector(
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                      loginCubit.clearErrorMessage();
+                      loginCubit.clearSuccessMessage();
+                    },
+                    child: Column(
+                      children: [
+                        Builder(
+                          builder: (BuildContext context) {
+                            final AppError appError = context.select(
+                                (MainCubit cubit) => cubit.state.appError);
+                            return AppErrorWidget(
+                              errorMessage: appError.getMessage(context),
+                              close: () {
+                                loginCubit.clearErrorMessage();
+                              },
+                            );
                           },
-                        );
-                      },
-                    ),
-                    Builder(
-                      builder: (BuildContext context) {
-                        final AppSuccess appSuccess = context.select(
-                            (LoginCubit cubit) => cubit.state.appSuccess);
-
-                        return AppSuccessWidget(
-                          message: appSuccess.getMessage(context),
-                          needEmailButton: true,
-                          onClose: loginCubit.clearSuccessMessage,
-                        );
-                      },
-                    ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 16.0,
-                            ),
-                            const ChooseBrandWidget(),
-                            const SizedBox(
-                              height: 24.0,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal:
-                                    AppConstants.horizontalScreenPadding,
-                              ),
-                              child: Column(
-                                children: [
-                                  Builder(builder: (BuildContext context) {
-                                    final ValidationErrorType emailErrorType =
-                                        context.select((LoginCubit cubit) =>
-                                            cubit.state.emailErrorType);
-                                    context.select((LoginCubit cubit) =>
-                                        cubit.state.emailHasFocus);
-                                    return AppTextField(
-                                      errorType: emailErrorType,
-                                      label: S.of(context).email,
-                                      hintText: S.of(context).enterYourEmail,
-                                      focusNode: loginCubit.emailNode,
-                                      textInputType: TextInputType.emailAddress,
-                                      textInputAction: TextInputAction.next,
-                                      nextFocusNode: loginCubit.passwordNode,
-                                      controller: loginCubit.emailController,
-                                    );
-                                  }),
-                                  const SizedBox(
-                                    height: 24.0,
-                                  ),
-                                  Builder(builder: (BuildContext context) {
-                                    final bool hiddenPassword = context.select(
-                                        (LoginCubit cubit) =>
-                                            cubit.state.hiddenPassword);
-                                    context.select((LoginCubit cubit) =>
-                                        cubit.state.passwordHasFocus);
-                                    final ValidationErrorType
-                                        passwordErrorType = context.select(
-                                            (LoginCubit cubit) =>
-                                                cubit.state.passwordErrorType);
-                                    return PasswordTextField(
-                                      controller: loginCubit.passwordController,
-                                      focusNode: loginCubit.passwordNode,
-                                      label: S.of(context).password,
-                                      errorType: passwordErrorType,
-                                      hintText: S.of(context).enterYourPassword,
-                                      textInputAction: TextInputAction.next,
-                                      onSubmitted: (_) => loginCubit.login,
-                                      hiddenPassword: hiddenPassword,
-                                      clickToHide: loginCubit.showHidePassword,
-                                    );
-                                  }),
-                                  const SizedBox(
-                                    height: 24.0,
-                                  ),
-                                  Builder(builder: (context) {
-                                    final bool isActive = context.select(
-                                      (LoginCubit cubit) =>
-                                          cubit.state.buttonIsActive,
-                                    );
-                                    return AppElevatedButton(
-                                      title: S.of(context).login,
-                                      onPressed:
-                                          isActive ? loginCubit.login : null,
-                                    );
-                                  }),
-                                  const SizedBox(
-                                    height: 22.0,
-                                  ),
-                                  const ForgotPasswordButtonWidget(),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 24.0,
-                              ),
-                              child: Utils.isDarkMode(context)
-                                  ? Assets.images.logos.loginLogoDark.image(
-                                      height: AppConstants.logoSize,
-                                      width: AppConstants.logoSize,
-                                    )
-                                  : Assets.images.logos.loginLogo.image(
-                                      height: AppConstants.logoSize,
-                                      width: AppConstants.logoSize,
-                                    ),
-                            ),
-                          ],
                         ),
-                      ),
+                        Builder(
+                          builder: (BuildContext context) {
+                            final AppSuccess appSuccess = context.select(
+                                (LoginCubit cubit) => cubit.state.appSuccess);
+
+                            return AppSuccessWidget(
+                              message: appSuccess.getMessage(context),
+                              needEmailButton: true,
+                              onClose: loginCubit.clearSuccessMessage,
+                            );
+                          },
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 16.0,
+                                ),
+                                const ChooseBrandWidget(),
+                                const SizedBox(
+                                  height: 24.0,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal:
+                                        AppConstants.horizontalScreenPadding,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Builder(builder: (BuildContext context) {
+                                        final ValidationErrorType
+                                            emailErrorType = context.select(
+                                                (LoginCubit cubit) =>
+                                                    cubit.state.emailErrorType);
+                                        context.select((LoginCubit cubit) =>
+                                            cubit.state.emailHasFocus);
+                                        return AppTextField(
+                                          errorType: emailErrorType,
+                                          label: S.of(context).email,
+                                          hintText:
+                                              S.of(context).enterYourEmail,
+                                          focusNode: loginCubit.emailNode,
+                                          textInputType:
+                                              TextInputType.emailAddress,
+                                          textInputAction: TextInputAction.next,
+                                          nextFocusNode:
+                                              loginCubit.passwordNode,
+                                          controller:
+                                              loginCubit.emailController,
+                                        );
+                                      }),
+                                      const SizedBox(
+                                        height: 24.0,
+                                      ),
+                                      Builder(builder: (BuildContext context) {
+                                        final bool hiddenPassword =
+                                            context.select((LoginCubit cubit) =>
+                                                cubit.state.hiddenPassword);
+                                        context.select((LoginCubit cubit) =>
+                                            cubit.state.passwordHasFocus);
+                                        final ValidationErrorType
+                                            passwordErrorType =
+                                            context.select((LoginCubit cubit) =>
+                                                cubit.state.passwordErrorType);
+                                        return PasswordTextField(
+                                          controller:
+                                              loginCubit.passwordController,
+                                          focusNode: loginCubit.passwordNode,
+                                          label: S.of(context).password,
+                                          errorType: passwordErrorType,
+                                          hintText:
+                                              S.of(context).enterYourPassword,
+                                          textInputAction: TextInputAction.next,
+                                          onSubmitted: (_) => loginCubit.login,
+                                          hiddenPassword: hiddenPassword,
+                                          clickToHide:
+                                              loginCubit.showHidePassword,
+                                        );
+                                      }),
+                                      const SizedBox(
+                                        height: 24.0,
+                                      ),
+                                      Builder(builder: (context) {
+                                        final bool isActive = context.select(
+                                          (LoginCubit cubit) =>
+                                              cubit.state.buttonIsActive,
+                                        );
+                                        return AppElevatedButton(
+                                          title: S.of(context).login,
+                                          onPressed: isActive
+                                              ? loginCubit.login
+                                              : null,
+                                        );
+                                      }),
+                                      const SizedBox(
+                                        height: 22.0,
+                                      ),
+                                      const ForgotPasswordButtonWidget(),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 24.0,
+                                  ),
+                                  child: Utils.isDarkMode(context)
+                                      ? Assets.images.logos.loginLogoDark.image(
+                                          height: AppConstants.logoSize,
+                                          width: AppConstants.logoSize,
+                                        )
+                                      : Assets.images.logos.loginLogo.image(
+                                          height: AppConstants.logoSize,
+                                          width: AppConstants.logoSize,
+                                        ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              )
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  NoConnectionWidget(),
-                ],
-              ),
-      ),
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      NoConnectionWidget(),
+                    ],
+                  ),
+          ),
+        );
+      })),
     );
   }
 }

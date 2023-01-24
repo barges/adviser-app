@@ -36,125 +36,127 @@ class ForgotPasswordScreen extends StatelessWidget {
         mainCubit,
         getIt.get<LoginCubit>(),
       ),
-      child: const ForgotPasswordContentWidget(),
-    );
-  }
-}
-
-class ForgotPasswordContentWidget extends StatelessWidget {
-  const ForgotPasswordContentWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final ForgotPasswordCubit cubit = context.read<ForgotPasswordCubit>();
-    final bool isOnline = context
-        .select((MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
-    return Scaffold(
-      appBar: SimpleAppBar(
-        title: S.of(context).forgotPassword,
-      ),
-      body: SafeArea(
-        child: isOnline
-            ? Builder(builder: (context) {
-                final bool isResetSuccess = context.select(
-                    (ForgotPasswordCubit cubit) => cubit.state.isResetSuccess);
-                return isResetSuccess
-                    ? const SuccessResetWidget()
-                    : GestureDetector(
-                        onTap: () {
-                          FocusScope.of(context).unfocus();
-                          cubit.clearErrorMessage();
-                        },
-                        child: Column(
-                          children: [
-                            Builder(
-                              builder: (BuildContext context) {
-                                final AppError appError = context.select(
-                                    (MainCubit cubit) => cubit.state.appError);
-                                return AppErrorWidget(
-                                  errorMessage: appError.getMessage(context),
-                                  close: () {
-                                    cubit.clearErrorMessage();
+      child: Builder(builder: (context) {
+        final ForgotPasswordCubit cubit = context.read<ForgotPasswordCubit>();
+        final bool isOnline = context.select(
+            (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
+        return Scaffold(
+          appBar: SimpleAppBar(
+            title: S.of(context).forgotPassword,
+          ),
+          body: SafeArea(
+            child: isOnline
+                ? Builder(builder: (context) {
+                    final bool isResetSuccess = context.select(
+                        (ForgotPasswordCubit cubit) =>
+                            cubit.state.isResetSuccess);
+                    return isResetSuccess
+                        ? const SuccessResetWidget()
+                        : GestureDetector(
+                            onTap: () {
+                              FocusScope.of(context).unfocus();
+                              cubit.clearErrorMessage();
+                            },
+                            child: Column(
+                              children: [
+                                Builder(
+                                  builder: (BuildContext context) {
+                                    final AppError appError = context.select(
+                                        (MainCubit cubit) =>
+                                            cubit.state.appError);
+                                    return AppErrorWidget(
+                                      errorMessage:
+                                          appError.getMessage(context),
+                                      close: () {
+                                        cubit.clearErrorMessage();
+                                      },
+                                    );
                                   },
-                                );
-                              },
-                            ),
-                            Expanded(
-                              child: SingleChildScrollView(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal:
-                                        AppConstants.horizontalScreenPadding),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 24.0),
-                                      child: _BrandLogo(),
-                                    ),
-                                    Builder(builder: (context) {
-                                      final String? resetToken = context.select(
-                                          (ForgotPasswordCubit cubit) =>
-                                              cubit.state.resetToken);
-                                      return Column(
-                                        children: [
-                                          resetToken == null
-                                              ? const EmailPart()
-                                              : const ResetPasswordInputPart(),
-                                          Builder(builder: (context) {
-                                            final bool isActive =
-                                                context.select(
-                                              (ForgotPasswordCubit cubit) =>
-                                                  cubit.state.isButtonActive,
-                                            );
-                                            return AppElevatedButton(
-                                              title: resetToken == null
-                                                  ? S.of(context).resetPassword
-                                                  : S
-                                                      .of(context)
-                                                      .changePassword,
-                                              onPressed: isActive
-                                                  ? () => cubit
-                                                      .resetPassword(resetToken)
-                                                  : null,
-                                            );
-                                          }),
-                                        ],
-                                      );
-                                    }),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 24.0,
-                                      ),
-                                      child: Utils.isDarkMode(context)
-                                          ? Assets.images.logos
-                                              .forgotPasswordLogoDark
-                                              .image(
-                                              height: AppConstants.logoSize,
-                                              width: AppConstants.logoSize,
-                                            )
-                                          : Assets
-                                              .images.logos.forgotPasswordLogo
-                                              .image(
-                                              height: AppConstants.logoSize,
-                                              width: AppConstants.logoSize,
-                                            ),
-                                    ),
-                                  ],
                                 ),
-                              ),
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: AppConstants
+                                            .horizontalScreenPadding),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 24.0),
+                                          child: _BrandLogo(),
+                                        ),
+                                        Builder(builder: (context) {
+                                          final String? resetToken =
+                                              context.select(
+                                                  (ForgotPasswordCubit cubit) =>
+                                                      cubit.state.resetToken);
+                                          return Column(
+                                            children: [
+                                              resetToken == null
+                                                  ? const EmailPart()
+                                                  : const ResetPasswordInputPart(),
+                                              Builder(builder: (context) {
+                                                final bool isActive =
+                                                    context.select(
+                                                  (ForgotPasswordCubit cubit) =>
+                                                      cubit
+                                                          .state.isButtonActive,
+                                                );
+                                                return AppElevatedButton(
+                                                  title: resetToken == null
+                                                      ? S
+                                                          .of(context)
+                                                          .resetPassword
+                                                      : S
+                                                          .of(context)
+                                                          .changePassword,
+                                                  onPressed: isActive
+                                                      ? () =>
+                                                          cubit.resetPassword(
+                                                              resetToken)
+                                                      : null,
+                                                );
+                                              }),
+                                            ],
+                                          );
+                                        }),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 24.0,
+                                          ),
+                                          child: Utils.isDarkMode(context)
+                                              ? Assets.images.logos
+                                                  .forgotPasswordLogoDark
+                                                  .image(
+                                                  height: AppConstants.logoSize,
+                                                  width: AppConstants.logoSize,
+                                                )
+                                              : Assets.images.logos
+                                                  .forgotPasswordLogo
+                                                  .image(
+                                                  height: AppConstants.logoSize,
+                                                  width: AppConstants.logoSize,
+                                                ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      );
-              })
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  NoConnectionWidget(),
-                ],
-              ),
-      ),
+                          );
+                  })
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      NoConnectionWidget(),
+                    ],
+                  ),
+          ),
+        );
+      }),
     );
   }
 }

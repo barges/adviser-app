@@ -24,11 +24,15 @@
     onMissingStub: OnMissingStub.returnDefault,
   ),
   MockSpec<AudioRecorderServiceImp>(
-    as: #MockSoundRecordService,
+    as: #MockAudioRecorderService,
     onMissingStub: OnMissingStub.returnDefault,
   ),
   MockSpec<AudioPlayerServiceImpl>(
     as: #MockAudioPlayerService,
+    onMissingStub: OnMissingStub.returnDefault,
+  ),
+  MockSpec<CheckPermissionService>(
+    as: #MockCheckPermissionService,
     onMissingStub: OnMissingStub.returnDefault,
   ),
 ])
@@ -39,6 +43,7 @@ import 'package:shared_advisor_interface/data/repositories/chats_repository_impl
 import 'package:shared_advisor_interface/data/repositories/customer_repository_impl.dart';
 import 'package:shared_advisor_interface/data/repositories/user_repository_impl.dart';
 import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
+import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/presentation/services/audio/audio_recorder_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/services/dynamic_link_service.dart';
