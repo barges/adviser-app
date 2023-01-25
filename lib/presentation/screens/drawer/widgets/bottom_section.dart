@@ -38,6 +38,24 @@ class BottomSection extends StatelessWidget {
                 text: S.of(context).customerSupport,
                 onTap: cubit.goToCustomerSupport,
               ),
+              const SizedBox(
+                height: 16.0,
+              ),
+              Builder(builder: (context) {
+                String? version =
+                    context.select((DrawerCubit cubit) => cubit.state.version);
+                bool copyButtonTapped = context.select(
+                    (DrawerCubit cubit) => cubit.state.copyButtonTapped);
+
+                return _BottomSectionItem(
+                  icon: Assets.vectors.packageOpen.path,
+                  text: '${S.of(context).version} ${version ?? ''}',
+                  bottomText: copyButtonTapped
+                      ? S.of(context).copied
+                      : S.of(context).tapToCopy,
+                  onTap: cubit.tapToCopy,
+                );
+              }),
             ],
           ),
         ),
@@ -50,22 +68,21 @@ class _BottomSectionItem extends StatelessWidget {
   final String icon;
   final String text;
   final VoidCallback onTap;
+  final String? bottomText;
 
   const _BottomSectionItem({
     Key? key,
     required this.icon,
     required this.text,
     required this.onTap,
+    this.bottomText,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return GestureDetector(
-      onTap: () {
-        Get.back();
-        onTap();
-      },
+      onTap: onTap,
       child: Container(
         width: MediaQuery.of(context).size.width,
         color: Colors.transparent,
@@ -80,11 +97,22 @@ class _BottomSectionItem extends StatelessWidget {
             const SizedBox(
               width: 12.0,
             ),
-            Text(
-              text,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  text,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                if (bottomText != null)
+                  Text(
+                    bottomText!,
+                    style: theme.textTheme.bodySmall
+                        ?.copyWith(fontSize: 12.0, color: theme.shadowColor),
+                  ),
+              ],
             ),
           ],
         ),

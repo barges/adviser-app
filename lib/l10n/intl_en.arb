@@ -220,5 +220,8 @@
   "messageIsNotSent": "Message is not sent",
   "recordingIsNotPossibleAllocateSpaceOnTheDevice": "Recording is not possible, allocate space on the device",
   "notificationsAreDisabled": "Notifications are disabled",
-  "toEnableNotificationYoullNeedToAllowNotificationsInYour": "To enable notification, you’ll need to allow notifications in your phone settings"
+  "toEnableNotificationYoullNeedToAllowNotificationsInYour": "To enable notification, you’ll need to allow notifications in your phone settings",
+  "version": "Version",
+  "tapToCopy": "Tap to copy",
+  "copied": "Copied!"
 }

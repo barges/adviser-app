@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class AddMoreImagesFromGalleryWidget extends StatelessWidget {

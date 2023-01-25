@@ -114,6 +114,8 @@ PODS:
     - Flutter
   - flutter_media_metadata (0.0.1):
     - Flutter
+  - flutter_native_splash (0.0.1):
+    - Flutter
   - flutter_sound (9.2.13):
     - Flutter
     - flutter_sound_core (= 9.2.13)
@@ -211,6 +213,7 @@ DEPENDENCIES:
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_media_metadata (from `.symlinks/plugins/flutter_media_metadata/ios`)
+  - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - flutter_sound (from `.symlinks/plugins/flutter_sound/ios`)
   - freshchat_sdk (from `.symlinks/plugins/freshchat_sdk/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
@@ -276,6 +279,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
   flutter_media_metadata:
     :path: ".symlinks/plugins/flutter_media_metadata/ios"
+  flutter_native_splash:
+    :path: ".symlinks/plugins/flutter_native_splash/ios"
   flutter_sound:
     :path: ".symlinks/plugins/flutter_sound/ios"
   freshchat_sdk:
@@ -325,6 +330,7 @@ SPEC CHECKSUMS:
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   flutter_media_metadata: 9db7298c789a54da26e0d2f6f808fa39bfd9bcd7
+  flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   flutter_sound: c60effa2a350fb977885f0db2fbc4c1ad5160900
   flutter_sound_core: 26c10e5832e76aaacfae252d8925232281c486ae
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
