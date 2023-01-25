@@ -37,6 +37,12 @@ class DrawerCubit extends Cubit<DrawerState> {
     userStatus = _cacheManager.getUserStatus();
   }
 
+  @override
+  Future<void> close() async {
+    _copyTimer?.cancel();
+    return super.close();
+  }
+
   void changeCurrentBrand(Brand newBrand) {
     _cacheManager.saveCurrentBrand(newBrand);
     Get.back();
@@ -90,7 +96,7 @@ class DrawerCubit extends Cubit<DrawerState> {
 
   void tapToCopy() async {
     await Clipboard.setData(ClipboardData(text: state.version));
-    if (_copyTimer == null || !_copyTimer!.isActive) {
+    if (_copyTimer == null || _copyTimer?.isActive == false) {
       emit(state.copyWith(copyButtonTapped: true));
       _copyTimer = Timer(const Duration(seconds: 2), () {
         emit(state.copyWith(copyButtonTapped: false));
