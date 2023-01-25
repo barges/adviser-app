@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
-import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/articles/articles_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/dashboard_v1_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_screen.dart';
-import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 enum TabsTypes {
   dashboard,
