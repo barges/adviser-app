@@ -10,8 +10,8 @@ class AppConstants {
   static const int millisecondsInHour = 3600000;
   static const int questionsLimit = 20;
 
-  static const int maxAttachments = 2;
-  static const int minAttachments = 1;
+  static const int maxAttachedPictures = 1;
+  static const int minAttachedPictures = 1;
 
   static const int minRecordDurationInSec = 15;
   static const int maxRecordDurationInSec = 180;

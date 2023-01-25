@@ -132,7 +132,7 @@ class ChatCubit extends Cubit<ChatState> {
           if (state.isRecordingAudio) {
             stopRecordingAudio();
           }
-          await audioPlayer.pause();
+          audioPlayer.pause();
         }
       },
     );
@@ -488,7 +488,7 @@ class ChatCubit extends Cubit<ChatState> {
     _tryStartAnswerSend();
 
     final List<File> images = List.of(state.attachedPictures);
-    if (image != null && images.length < 2) {
+    if (image != null && images.length < AppConstants.maxAttachedPictures) {
       images.add(image);
     } else {
       return;
@@ -914,7 +914,7 @@ class ChatCubit extends Cubit<ChatState> {
       SchedulerBinding.instance.endOfFrame.then((_) =>
           _mainCubit.updateErrorMessage(UIError(
               uiErrorType: UIErrorType.theMaximumSizeOfTheAttachmentsIsXMb,
-              args: [maxAttachmentSizeInMb])));
+              args: [maxAttachmentSizeInMb.toInt()])));
       return false;
     }
   }
@@ -961,8 +961,8 @@ class ChatCubit extends Cubit<ChatState> {
   bool canAttachPictureTo({AttachmentType? attachmentType}) {
     return state.attachedPictures.length <
         ((attachmentType != null && attachmentType == AttachmentType.audio)
-            ? minAttachedPictures
-            : maxAttachedPictures);
+            ? AppConstants.minAttachedPictures
+            : AppConstants.maxAttachedPictures);
   }
 
   void _scrollTextFieldToEnd() {
@@ -981,10 +981,6 @@ class ChatCubit extends Cubit<ChatState> {
     return state.recordedAudio != null && checkMinRecordDurationIsOk();
   }
 
-  bool get canRecordAudio =>
-      state.attachedPictures.length <= minAttachedPictures &&
-      state.isAudioAnswerEnabled == true;
-
   int get minRecordDurationInSec =>
       answerLimitationContent?.audioTime?.min ??
       AppConstants.minRecordDurationInSec;
@@ -994,12 +990,6 @@ class ChatCubit extends Cubit<ChatState> {
       AppConstants.maxRecordDurationInSec;
 
   int get maxRecordDurationInMinutes => maxRecordDurationInSec ~/ 60;
-
-  int get minAttachedPictures =>
-      answerLimitationContent?.attachments?.min ?? AppConstants.minAttachments;
-
-  int get maxAttachedPictures =>
-      answerLimitationContent?.attachments?.max ?? AppConstants.maxAttachments;
 
   int get minTextLength =>
       answerLimitationContent?.min ??
