@@ -7,11 +7,11 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/histo
 const Key _centerKey = ValueKey('second-sliver-list');
 
 class HistoryListStartedWithStoryIdWidget extends StatelessWidget {
-  final List<HistoryUiModel> topHistoriesList;
+  final List<HistoryUiModel> bottomHistoriesList;
 
   const HistoryListStartedWithStoryIdWidget({
     Key? key,
-    required this.topHistoriesList,
+    required this.bottomHistoriesList,
   }) : super(key: key);
 
   @override
@@ -21,18 +21,20 @@ class HistoryListStartedWithStoryIdWidget extends StatelessWidget {
       color: Theme.of(context).scaffoldBackgroundColor,
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        reverse: true,
         controller: historyCubit.historyMessagesScrollController,
         center: _centerKey,
         slivers: <Widget>[
           Builder(builder: (context) {
-            final List<HistoryUiModel>? bottomHistoriesList = context.select(
-                (HistoryCubit cubit) => cubit.state.bottomHistoriesList);
-            if (bottomHistoriesList != null) {
-              return SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 16.0),
+            final List<HistoryUiModel>? topHistoriesList = context.select(
+                (HistoryCubit cubit) => cubit.state.topHistoriesList);
+            if (topHistoriesList != null) {
+             return SliverPadding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12.0,
+                  ),
                   sliver: SliverHistoryListWidget(
-                      historiesList: bottomHistoriesList));
+                    historiesList: topHistoriesList,
+                  ));
             } else {
               return const SliverToBoxAdapter(
                 child: SizedBox.shrink(),
@@ -41,12 +43,9 @@ class HistoryListStartedWithStoryIdWidget extends StatelessWidget {
           }),
           SliverPadding(
               key: _centerKey,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12.0,
-              ),
-              sliver: SliverHistoryListWidget(
-                historiesList: topHistoriesList,
-              )),
+              padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 16.0),
+              sliver:
+              SliverHistoryListWidget(historiesList: bottomHistoriesList)),
         ],
       ),
     );
