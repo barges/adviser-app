@@ -162,28 +162,6 @@ extension DateTimeExt on DateTime {
     }
     return DateFormat(dateFormat).format(this).parseDateTimePattern8;
   }
-
-  String get historyCardQuestionTime {
-    DateTime now = DateTime.now();
-    DateTime localTime = toLocal();
-    if (localTime.year != now.year) {
-      return DateFormat(dateFormat).format(this).parseDateTimePattern9;
-    }
-    return DateFormat(dateFormat).format(this).parseDateTimePattern8;
-  }
-
-  String historyCardAnswerTime(bool sameDay) {
-    if (sameDay) {
-      return DateFormat(dateFormat).format(this).parseDateTimePattern7;
-    } else {
-      DateTime now = DateTime.now();
-      DateTime localTime = toLocal();
-      if (localTime.year != now.year) {
-        return DateFormat(dateFormat).format(this).parseDateTimePattern9;
-      }
-      return DateFormat(dateFormat).format(this).parseDateTimePattern8;
-    }
-  }
 }
 
 extension FileExt on File {

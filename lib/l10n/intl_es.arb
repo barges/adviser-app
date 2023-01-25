@@ -221,5 +221,8 @@
   "messageIsNotSent": "No se envia el mensaje",
   "recordingIsNotPossibleAllocateSpaceOnTheDevice": "La grabación no es posible, asigne espacio en el dispositivo",
   "notificationsAreDisabled": "Las notificaciones están deshabilitadas",
-  "toEnableNotificationYoullNeedToAllowNotificationsInYour": "Para habilitar la notificación, deberá permitir las notificaciones en la configuración de su teléfono"
+  "toEnableNotificationYoullNeedToAllowNotificationsInYour": "Para habilitar la notificación, deberá permitir las notificaciones en la configuración de su teléfono",
+  "version": "Versión",
+  "tapToCopy": "Toca para copiar",
+  "copied": "¡Copiado!"
 }

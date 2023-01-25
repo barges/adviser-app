@@ -4,7 +4,6 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/list_of_filters_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/articles/articles_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/articles/widgets/list_of_articles_widget.dart';
