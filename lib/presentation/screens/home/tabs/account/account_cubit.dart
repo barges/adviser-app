@@ -78,11 +78,10 @@ class AccountCubit extends Cubit<AccountState> {
           final bool newPushPermissionsValue = await _checkPermissionService
               .handlePermission(context, PermissionType.notification,
                   needShowSettings: false);
-          if (newPushPermissionsValue) {
-            _pushNotificationManager.registerForPushNotifications();
-          }
+
           if (isPushNotificationPermissionGranted != newPushPermissionsValue) {
             isPushNotificationPermissionGranted = newPushPermissionsValue;
+            _pushTokenIsSent = false;
             await refreshUserinfo();
           }
         }
