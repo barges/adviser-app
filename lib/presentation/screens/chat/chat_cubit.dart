@@ -128,11 +128,21 @@ class ChatCubit extends Cubit<ChatState> {
 
     _appOnPauseSubscription = _mainCubit.changeAppLifecycleStream.listen(
       (value) async {
+        if (value) {
+          if (isPublicChat()) {
+            _checkTiming();
+          }
+        }
         if (!value) {
           if (state.isRecordingAudio) {
             stopRecordingAudio();
           }
           audioPlayer.pause();
+
+          if (isPublicChat()) {
+            _answerTimer?.cancel();
+            _answerTimer = null;
+          }
         }
       },
     );
@@ -325,6 +335,7 @@ class ChatCubit extends Cubit<ChatState> {
       );
       emit(
         state.copyWith(
+          questionFromDB: question,
           questionStatus: question.status ?? ChatItemStatusType.open,
         ),
       );
