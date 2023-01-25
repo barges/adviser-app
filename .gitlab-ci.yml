@@ -47,6 +47,10 @@ upgrade_flutter:
 build-ios:
   stage: build
   before_script:
+    - flutter clean
+    - cd ios
+    - pod deintegrate
+    - pod install
     - flutter pub get
     - flutter pub run build_runner build --delete-conflicting-outputs
   script:
