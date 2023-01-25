@@ -37,7 +37,7 @@ class GalleryPicturesScreen extends StatelessWidget {
 
                     return InteractiveViewer(
                         panEnabled: false,
-                        maxScale: 3.0,
+                        maxScale: 5.0,
                         minScale: 1.0,
                         child: AppImageWidget(
                           uri: uri,

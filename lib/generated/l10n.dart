@@ -2280,6 +2280,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Version`
+  String get version {
+    return Intl.message(
+      'Version',
+      name: 'version',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tap to copy`
+  String get tapToCopy {
+    return Intl.message(
+      'Tap to copy',
+      name: 'tapToCopy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copied!`
+  String get copied {
+    return Intl.message(
+      'Copied!',
+      name: 'copied',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

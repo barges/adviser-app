@@ -105,6 +105,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirm": MessageLookupByLibrary.simpleMessage("Confirmar"),
         "confirmNewPassword":
             MessageLookupByLibrary.simpleMessage("Confirmar nueva contraseña"),
+        "copied": MessageLookupByLibrary.simpleMessage("¡Copiado!"),
         "courses": MessageLookupByLibrary.simpleMessage("Cursos"),
         "customerProfile":
             MessageLookupByLibrary.simpleMessage("Perfil de cliente"),
@@ -293,6 +294,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "takeAPhoto": MessageLookupByLibrary.simpleMessage("Toma una foto"),
         "takeMeThere": MessageLookupByLibrary.simpleMessage("Llévame allí"),
         "takeQuestion": MessageLookupByLibrary.simpleMessage("Tomar pregunta"),
+        "tapToCopy": MessageLookupByLibrary.simpleMessage("Toca para copiar"),
         "tarot": MessageLookupByLibrary.simpleMessage("Tarot"),
         "tellOurTeamWhenYouPlanToReturn": MessageLookupByLibrary.simpleMessage(
             "Dígale a nuestro equipo cuándo planea regresar:"),
@@ -333,6 +335,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "update": MessageLookupByLibrary.simpleMessage("Actualizar"),
         "useYourNewPasswordToLogin": MessageLookupByLibrary.simpleMessage(
             "Usa tu nueva contraseña para iniciar sesión"),
+        "version": MessageLookupByLibrary.simpleMessage("Versión"),
         "weDidntFindAnything": MessageLookupByLibrary.simpleMessage(
             "Nosotros no encontramos nada"),
         "weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages":

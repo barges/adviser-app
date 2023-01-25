@@ -3,7 +3,7 @@ description: Shared advisor interface
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.1+4
+version: 1.0.1+5
 
 environment:
   sdk: ">=2.17.5 <3.0.0"
@@ -79,6 +79,7 @@ dependencies:
   charts_painter: ^2.0.0+2
 
   flutter_launcher_icons: ^0.10.0
+  flutter_native_splash: ^2.2.16
 
 dev_dependencies:
   flutter_test:
@@ -92,6 +93,20 @@ dev_dependencies:
   http_mock_adapter: ^0.3.3
 
   flutter_lints: ^2.0.0
+
+flutter_native_splash:
+  # image: assets/images/splash_logo.png
+  color: "#3975E9"
+  # image_dark: assets/images/splash_logo.png
+  color_dark: "#366EBA"
+  android_12:
+    color: "#3975E9"
+    color_dark: "#366EBA"
+  #   image: assets/images/splash_logo_android12.png
+  #   image_dark: assets/images/splash_logo_android12.png
+  android: true
+  ios: true
+  web: false
 
 flutter_icons:
   image_path: 'assets/app_icon.png'
