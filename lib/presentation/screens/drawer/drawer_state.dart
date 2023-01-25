@@ -4,5 +4,8 @@ part 'drawer_state.freezed.dart';
 
 @freezed
 class DrawerState with _$DrawerState {
-  const factory DrawerState() = _DrawerState;
+  const factory DrawerState({
+    @Default(false) bool copyButtonTapped,
+    String? version,
+  }) = _DrawerState;
 }
