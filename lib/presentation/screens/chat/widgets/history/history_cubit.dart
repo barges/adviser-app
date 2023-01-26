@@ -151,26 +151,10 @@ class HistoryCubit extends Cubit<HistoryState> {
         _hasBefore = result.hasBefore ?? false;
         _firstItem = result.firstItem;
 
-        result.history?.forEach((element) {
-          logger.d('ELEMENT - ${element.question?.storyID}');
-          logger.d('ELEMENT - ${element.question?.createdAt}');
-          logger.d('ELEMENT - ${element.question?.content}');
-        });
-
         _bottomHistoriesList.addAll(result.history ?? const []);
 
         final List<HistoryUiModel> items =
             await compute(_groupBottomHistory, _bottomHistoriesList);
-
-        items.forEach((element) {
-          element.when(data: (data) {
-            logger.d('DATA - ${data.question?.storyID}');
-            logger.d('DATA - ${data.question?.createdAt}');
-            logger.d('DATA - ${data.question?.content}');
-          }, separator: (s) {
-            logger.d('SEPARATOR - ${s?.storyID}');
-          });
-        });
 
         emit(state.copyWith(
           bottomHistoriesList: items,
