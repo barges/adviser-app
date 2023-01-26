@@ -10,6 +10,8 @@ abstract class AudioPlayerService {
 
   Future<void> playPause(Uri uri);
 
+  Future<void> pause();
+
   Future<void> stop();
 
   Future<void> seek(String url, Duration duration);
@@ -85,6 +87,13 @@ class AudioPlayerServiceImpl extends AudioPlayerService
           await _player.resume();
         }
       }
+    }
+  }
+
+  @override
+  Future<void> pause() async {
+    if (_state == PlayerState.playing) {
+      await _player.pause();
     }
   }
 
