@@ -89,7 +89,5 @@
 		<false/>
 		<key>UIStatusBarHidden</key>
 		<false/>
-		<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-</dict>
+	</dict>
 </plist>
