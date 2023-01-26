@@ -58,7 +58,6 @@ class ChatTextInputWidget extends StatelessWidget {
                         (ChatCubit cubit) => cubit.state.inputTextLength);
                     final bool canAttachPicture =
                         chatCubit.canAttachPictureTo();
-                    final bool canRecordAudio = chatCubit.canRecordAudio;
                     return Row(
                       crossAxisAlignment:
                           attachedPictures.isNotEmpty || inputTextLength == 0
@@ -93,15 +92,10 @@ class ChatTextInputWidget extends StatelessWidget {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  if (canRecordAudio) {
-                                    chatCubit.startRecordingAudio(context);
-                                  }
+                                  chatCubit.startRecordingAudio(context);
                                 },
-                                child: Opacity(
-                                  opacity: canRecordAudio ? 1.0 : 0.4,
-                                  child: Assets.vectors.microphone
-                                      .svg(width: AppConstants.iconSize),
-                                ),
+                                child: Assets.vectors.microphone
+                                    .svg(width: AppConstants.iconSize),
                               ),
                             ],
                           ),
