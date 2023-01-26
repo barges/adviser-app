@@ -47,6 +47,7 @@ variables:
 build-ios:
   stage: build
   before_script:
+    - flutter --version
     - flutter pub get
     - flutter pub run build_runner build --delete-conflicting-outputs
   script:
@@ -62,6 +63,7 @@ build-ios:
 build-android:
   stage: build
   before_script:
+    - flutter --version
     - flutter pub get
     - flutter pub run build_runner build --delete-conflicting-outputs
   script:
