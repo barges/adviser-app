@@ -34,7 +34,7 @@ abstract class UserApi {
   );
 
   @POST('/experts/pushToken')
-  Future<void> setPushNotificationToken(
+  Future<UserInfo> setPushNotificationToken(
     @Body() SetPushNotificationTokenRequest request,
   );
 
