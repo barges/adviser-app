@@ -41,6 +41,7 @@ import 'package:shared_advisor_interface/presentation/services/audio/audio_playe
 import 'package:shared_advisor_interface/presentation/services/audio/audio_recorder_service.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 import 'package:storage_space/storage_space.dart';
+import 'package:uuid/uuid.dart';
 
 import 'chat_state.dart';
 
@@ -72,6 +73,7 @@ class ChatCubit extends Cubit<ChatState> {
       AppConstants.tillShowAnswerTimingMessagesInSec;
   final int _afterShowMessagesInSec =
       AppConstants.afterShowAnswerTimingMessagesInSec;
+  final _uuid = const Uuid();
   int? _recordAudioDuration;
   AnswerRequest? _answerRequest;
   StreamSubscription<RecordingDisposition>? _recordingProgressSubscription;
@@ -126,8 +128,21 @@ class ChatCubit extends Cubit<ChatState> {
 
     _appOnPauseSubscription = _mainCubit.changeAppLifecycleStream.listen(
       (value) async {
+        if (value) {
+          if (isPublicChat()) {
+            _checkTiming();
+          }
+        }
         if (!value) {
-          ///TODO: stop players
+          if (state.isRecordingAudio) {
+            stopRecordingAudio();
+          }
+          audioPlayer.pause();
+
+          if (isPublicChat()) {
+            _answerTimer?.cancel();
+            _answerTimer = null;
+          }
         }
       },
     );
@@ -320,6 +335,7 @@ class ChatCubit extends Cubit<ChatState> {
       );
       emit(
         state.copyWith(
+          questionFromDB: question,
           questionStatus: question.status ?? ChatItemStatusType.open,
         ),
       );
@@ -377,7 +393,7 @@ class ChatCubit extends Cubit<ChatState> {
       return;
     }
 
-    const fileName = '${AppConstants.recordFileName}.$_recordFileExt';
+    final fileName = '${_uuid.v4()}.$_recordFileExt';
     await _audioRecorderService.startRecorder(fileName);
 
     _recordingProgressSubscription =
@@ -483,7 +499,7 @@ class ChatCubit extends Cubit<ChatState> {
     _tryStartAnswerSend();
 
     final List<File> images = List.of(state.attachedPictures);
-    if (image != null && images.length < 2) {
+    if (image != null && images.length < AppConstants.maxAttachedPictures) {
       images.add(image);
     } else {
       return;
@@ -909,7 +925,7 @@ class ChatCubit extends Cubit<ChatState> {
       SchedulerBinding.instance.endOfFrame.then((_) =>
           _mainCubit.updateErrorMessage(UIError(
               uiErrorType: UIErrorType.theMaximumSizeOfTheAttachmentsIsXMb,
-              args: [maxAttachmentSizeInMb])));
+              args: [maxAttachmentSizeInMb.toInt()])));
       return false;
     }
   }
@@ -956,8 +972,8 @@ class ChatCubit extends Cubit<ChatState> {
   bool canAttachPictureTo({AttachmentType? attachmentType}) {
     return state.attachedPictures.length <
         ((attachmentType != null && attachmentType == AttachmentType.audio)
-            ? minAttachedPictures
-            : maxAttachedPictures);
+            ? AppConstants.minAttachedPictures
+            : AppConstants.maxAttachedPictures);
   }
 
   void _scrollTextFieldToEnd() {
@@ -976,10 +992,6 @@ class ChatCubit extends Cubit<ChatState> {
     return state.recordedAudio != null && checkMinRecordDurationIsOk();
   }
 
-  bool get canRecordAudio =>
-      state.attachedPictures.length <= minAttachedPictures &&
-      state.isAudioAnswerEnabled == true;
-
   int get minRecordDurationInSec =>
       answerLimitationContent?.audioTime?.min ??
       AppConstants.minRecordDurationInSec;
@@ -989,12 +1001,6 @@ class ChatCubit extends Cubit<ChatState> {
       AppConstants.maxRecordDurationInSec;
 
   int get maxRecordDurationInMinutes => maxRecordDurationInSec ~/ 60;
-
-  int get minAttachedPictures =>
-      answerLimitationContent?.attachments?.min ?? AppConstants.minAttachments;
-
-  int get maxAttachedPictures =>
-      answerLimitationContent?.attachments?.max ?? AppConstants.maxAttachments;
 
   int get minTextLength =>
       answerLimitationContent?.min ??

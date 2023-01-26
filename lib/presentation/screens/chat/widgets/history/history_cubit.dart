@@ -43,26 +43,27 @@ Map<String, List<History>> _groupByStoryId(List<History> data) {
   String? previousId = data.firstOrNull?.question?.storyID;
   for (int i = 0; i < data.length; i++) {
     final History history = data[i];
-    if (i < data.length - 1) {
-      if (history.question?.storyID == previousId) {
-        historiesById.add(history);
-      } else {
-        if (previousId != null) {
+    final bool isLastIndex = i == data.length - 1;
+    final String? currentStoryId = history.question?.storyID;
+    if (previousId != null && currentStoryId != null) {
+      if (!isLastIndex) {
+        if (currentStoryId == previousId) {
+          historiesById.add(history);
+        } else {
           groupedItem[previousId] = historiesById;
           historiesById = [];
-          previousId = history.question?.storyID;
+          previousId = currentStoryId;
           historiesById.add(history);
         }
-      }
-    } else {
-      if (previousId != null) {
-        if (history.question?.storyID == previousId) {
+      } else {
+        if (currentStoryId == previousId) {
           historiesById.add(history);
           groupedItem[previousId] = historiesById;
         } else {
+          groupedItem[previousId] = historiesById;
           historiesById = [];
           historiesById.add(history);
-          groupedItem[previousId] = historiesById;
+          groupedItem[currentStoryId] = historiesById;
         }
       }
     }
