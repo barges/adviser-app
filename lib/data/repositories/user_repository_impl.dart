@@ -102,7 +102,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<void> sendPushToken(SetPushNotificationTokenRequest request) async {
+  Future<UserInfo> sendPushToken(SetPushNotificationTokenRequest request) async {
     return _api.setPushNotificationToken(request);
   }
 }
