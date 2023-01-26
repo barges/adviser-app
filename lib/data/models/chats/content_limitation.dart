@@ -15,6 +15,8 @@ class ContentLimitation with _$ContentLimitation {
     final Limitation? bodySize,
     final Limitation? attachments,
     final Limitation? audioTime,
+    final int? questionReturnMinutes,
+    final int? questionRemindMinutes,
   }) = _ContentLimitation;
 
   factory ContentLimitation.fromJson(Map<String, dynamic> json) =>

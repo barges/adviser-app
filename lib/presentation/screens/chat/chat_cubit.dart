@@ -69,11 +69,9 @@ class ChatCubit extends Cubit<ChatState> {
   final AudioPlayerService audioPlayer;
   final AudioRecorderService _audioRecorderService;
   final CheckPermissionService _checkPermissionService;
-  final int _tillShowMessagesInSec =
-      AppConstants.tillShowAnswerTimingMessagesInSec;
-  final int _afterShowMessagesInSec =
-      AppConstants.afterShowAnswerTimingMessagesInSec;
   final _uuid = const Uuid();
+  late final int _tillShowMessagesInSec;
+  late final int _afterShowMessagesInSec;
   int? _recordAudioDuration;
   AnswerRequest? _answerRequest;
   StreamSubscription<RecordingDisposition>? _recordingProgressSubscription;
@@ -123,6 +121,7 @@ class ChatCubit extends Cubit<ChatState> {
         if (isPublicChat()) {
           _checkTiming();
         }
+        _setAnswerLimitations();
       });
     }
 
@@ -200,6 +199,18 @@ class ChatCubit extends Cubit<ChatState> {
     } else {
       await _getPublicOrPrivateQuestion();
     }
+  }
+
+  void _setAnswerLimitations() {
+    _afterShowMessagesInSec =
+        answerLimitationContent?.questionRemindMinutes != null
+            ? answerLimitationContent!.questionRemindMinutes! * 60
+            : AppConstants.afterShowAnswerTimingMessagesInSec;
+    _tillShowMessagesInSec =
+        answerLimitationContent?.questionReturnMinutes != null
+            ? answerLimitationContent!.questionReturnMinutes! * 60 -
+                _afterShowMessagesInSec
+            : AppConstants.tillShowAnswerTimingMessagesInSec;
   }
 
   Future<void> _getAnswerLimitations() async {
