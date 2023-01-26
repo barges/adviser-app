@@ -1,4 +1,3 @@
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/cache/data_caching_manager.dart';
 import 'package:shared_advisor_interface/main.dart';
