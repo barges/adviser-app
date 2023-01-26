@@ -61,7 +61,6 @@ class AppImageWidget extends StatelessWidget {
                 width: widgetWidth,
                 height: widgetHeight,
                 fit: fit,
-                cacheManager: getIt.get<BaseCacheManager>(),
                 placeholder: (context, url) => Container(
                   width: widgetWidth,
                   height: widgetHeight,

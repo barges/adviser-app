@@ -14,7 +14,6 @@ import 'module.dart';
 class ServicesModule implements Module {
   @override
   Future<void> dependency() async {
-    getIt.registerSingleton<BaseCacheManager>(DefaultCacheManager());
     getIt.registerSingleton<CachingManager>(DataCachingManager());
     getIt.registerLazySingleton<FreshChatService>(() => FreshChatServiceImpl());
     getIt.registerLazySingleton<ConnectivityService>(

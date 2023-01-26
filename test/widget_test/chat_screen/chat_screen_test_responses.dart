@@ -1,5 +1,5 @@
 class ChatScreenTestResponses {
-  static const String ritualImageUrl = 'https://example.com/image.png';
+  static const String ritualImageUrl = 'test/assets/test_placeholder.png';
 
   static const Map<String, dynamic> publicQuestionClient = {
     "_id": "63bbab1b793423001e28722e",
