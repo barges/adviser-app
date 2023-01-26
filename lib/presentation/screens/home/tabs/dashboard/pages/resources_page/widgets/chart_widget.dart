@@ -1,5 +1,4 @@
 import 'package:blur/blur.dart';
-import 'package:charts_painter/chart.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -88,51 +87,51 @@ class _ChartWidgetState extends State<ChartWidget> {
             const SizedBox(
               height: 34.0,
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Column(
-                children: [
-                  Chart(
-                    width: MediaQuery.of(context).size.width,
-                    height: 68.0,
-                    state: ChartState(
-                      ChartData.fromList(
-                          _lst.map((e) => BarValue<void>(e.value)).toList(),
-                          axisMax: maximumValue!),
-                      behaviour: ChartBehaviour(
-                          isScrollable: true,
-                          onItemClicked: ((value) => setState(() {
-                                selectedItem = value;
-                              }))),
-                      itemOptions: BarItemOptions(
-                          maxBarWidth: 32.0,
-                          minBarWidth: 32.0,
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          radius: BorderRadius.circular(4.0),
-                          color: Theme.of(context).primaryColorLight,
-                          colorForValue: ((defaultColor, value, [min]) =>
-                              value == maximumValue!
-                                  ? Theme.of(context).primaryColor
-                                  : defaultColor)),
-                      backgroundDecorations: [
-                        HorizontalAxisDecoration(
-                          showLines: false,
-                          endWithChart: false,
-                        )
-                      ],
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                    child: Divider(height: 1.0),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: _getValuesOfXAxis(_lst),
-                  )
-                ],
-              ),
-            ),
+            // SingleChildScrollView(
+            //   scrollDirection: Axis.horizontal,
+            //   child: Column(
+            //     children: [
+            //       Chart(
+            //         width: MediaQuery.of(context).size.width,
+            //         height: 68.0,
+            //         state: ChartState(
+            //          data: ChartData.fromList(
+            //               _lst.map((e) => BarValue<void>(e.value)).toList(),
+            //               axisMax: maximumValue!),
+            //           behaviour: ChartBehaviour(
+            //               isScrollable: true,
+            //               onItemClicked: ((value) => setState(() {
+            //                     selectedItem = value;
+            //                   }))),
+            //           itemOptions: BarItemOptions(
+            //               maxBarWidth: 32.0,
+            //               minBarWidth: 32.0,
+            //               padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            //               radius: BorderRadius.circular(4.0),
+            //               color: Theme.of(context).primaryColorLight,
+            //               colorForValue: ((defaultColor, value, [min]) =>
+            //                   value == maximumValue!
+            //                       ? Theme.of(context).primaryColor
+            //                       : defaultColor)),
+            //           backgroundDecorations: [
+            //             HorizontalAxisDecoration(
+            //               showLines: false,
+            //               endWithChart: false,
+            //             )
+            //           ],
+            //         ),
+            //       ),
+            //       const Padding(
+            //         padding: EdgeInsets.symmetric(vertical: 8.0),
+            //         child: Divider(height: 1.0),
+            //       ),
+            //       Row(
+            //         mainAxisAlignment: MainAxisAlignment.start,
+            //         children: _getValuesOfXAxis(_lst),
+            //       )
+            //     ],
+            //   ),
+            // ),
             const SizedBox(
               height: 4.0,
             ),
