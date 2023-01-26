@@ -45,5 +45,5 @@ abstract class UserRepository {
     String endDate,
   );
 
-  Future<void> sendPushToken(SetPushNotificationTokenRequest request);
+  Future<UserInfo> sendPushToken(SetPushNotificationTokenRequest request);
 }

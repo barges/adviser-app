@@ -22,8 +22,6 @@ import 'package:shared_advisor_interface/presentation/services/connectivity_serv
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-bool _pushTokenIsSent = false;
-
 class AccountCubit extends Cubit<AccountState> {
   final TextEditingController commentController = TextEditingController();
   final FocusNode commentNode = FocusNode();
@@ -81,7 +79,7 @@ class AccountCubit extends Cubit<AccountState> {
 
           if (isPushNotificationPermissionGranted != newPushPermissionsValue) {
             isPushNotificationPermissionGranted = newPushPermissionsValue;
-            _pushTokenIsSent = false;
+            _cacheManager.pushTokenIsSent = false;
             await refreshUserinfo();
           }
         }
@@ -220,7 +218,7 @@ class AccountCubit extends Cubit<AccountState> {
   }
 
   Future<void> _sendPushToken() async {
-    if (!_pushTokenIsSent) {
+    if (!_cacheManager.pushTokenIsSent) {
       if (await _connectivityService.checkConnection()) {
         String? pushToken = await _firebaseMessaging.getToken();
         if (pushToken != null) {
@@ -228,8 +226,14 @@ class AccountCubit extends Cubit<AccountState> {
               SetPushNotificationTokenRequest(
             pushToken: pushToken,
           );
-          _userRepository.sendPushToken(request);
-          _pushTokenIsSent = true;
+          final UserInfo userInfo =
+              await _userRepository.sendPushToken(request);
+          emit(
+            state.copyWith(
+              enableNotifications: userInfo.pushNotificationsEnabled ?? false,
+            ),
+          );
+          _cacheManager.pushTokenIsSent = true;
         }
         _connectivitySubscription?.cancel();
       } else {
