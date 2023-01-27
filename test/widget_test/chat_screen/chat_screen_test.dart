@@ -1,13 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
+import 'package:mockito/mockito.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
 import 'package:shared_advisor_interface/data/network/api/customer_api.dart';
@@ -15,6 +18,7 @@ import 'package:shared_advisor_interface/data/repositories/chats_repository_impl
 import 'package:shared_advisor_interface/data/repositories/customer_repository_impl.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
@@ -26,6 +30,8 @@ import 'package:shared_advisor_interface/presentation/resources/app_arguments.da
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_input_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_players/chat_recorded_player_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_recording_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/ritual_info_card_widget.dart';
@@ -90,12 +96,47 @@ void main() {
   LiveTestWidgetsFlutterBinding.ensureInitialized();
   WidgetController.hitTestWarningShouldBeFatal = true;
 
+  const MethodChannel('storage_space')
+      .setMockMethodCallHandler((methodCall) async {
+    if (methodCall.method == 'getFreeSpace') {
+      return Future.value(4989227008);
+    }
+    if (methodCall.method == 'getTotalSpace') {
+      return Future.value(6240665600);
+    }
+    return null;
+  });
+
+  const MethodChannel('flutter.baseflow.com/permissions/methods')
+      .setMockMethodCallHandler((methodCall) async {
+    if (methodCall.method == 'checkPermissionStatus') {
+      return 1;
+    }
+    return null;
+  });
+
+  const MethodChannel('flutter_media_metadata')
+      .setMockMethodCallHandler((methodCall) async {
+    if (methodCall.method == 'MetadataRetriever') {
+      return const Metadata(
+          mimeType: 'audio/mp4',
+          trackDuration: 7808,
+          bitrate: 16000,
+          filePath:
+              '/data/user/0/com.questico.fortunica.readerapp/cache/dd3aa41e-bfe1-4734-aecd-02c6854d1d48.m4a');
+    }
+    return null;
+  });
+
   setUpAll(() {
     GetIt.instance.allowReassignment = true;
     dio = Dio();
     dioAdapter = DioAdapter(dio: dio, matcher: const UrlRequestMatcher());
     mockAudioRecorderService = MockAudioRecorderService();
     mockAudioPlayerService = MockAudioPlayerService();
+
+    when(mockAudioRecorderService.stopRecorder())
+        .thenAnswer((realInvocation) => Future.value('test_audio.mp3'));
 
     dioAdapter.onGet('/v2/clients/63bbab1b793423001e28722e', (server) {
       server.reply(200, ChatScreenTestResponses.publicQuestionClient);
@@ -131,6 +172,13 @@ void main() {
   });
 
   setUp(() {
+    dioAdapter.onPost(
+      '/questions/take',
+      (server) {
+        server.reply(200, ChatScreenTestResponses.successTakenQuestion);
+      },
+    );
+
     mockChatsRepository = ChatsRepositoryImpl(ChatsApi(dio));
     mockConnectivityService = MockConnectivityService();
     mockCacheManager = MockDataCachingManager();
@@ -289,13 +337,6 @@ void main() {
         'should disappear when user click on it and the input field should appear'
         ' if public question that user want to take is not taken by anyone else',
         (WidgetTester tester) async {
-          dioAdapter.onPost(
-            '/questions/take',
-            (server) {
-              server.reply(200, ChatScreenTestResponses.successTakenQuestion);
-            },
-          );
-
           await pumpChatScreen(
             tester: tester,
             chatScreenArguments: ChatScreenArguments(
@@ -495,7 +536,7 @@ void main() {
               (server) {
             server.reply(
               200,
-              ChatScreenTestChatItems.ritualLoveCrushReadingQuestion,
+              ChatScreenTestResponses.ritualLoveCrushReadingQuestion,
             );
           });
 
@@ -528,6 +569,149 @@ void main() {
               findsOneWidget);
         },
       );
+
+      testWidgets(
+        'should have AppIconGradientButton with microphone icon'
+        ' if question that advisor should answer is not public',
+        (WidgetTester tester) async {
+          dioAdapter.onGet('/rituals/single/62de59dd510689001ddb8090',
+              (server) {
+            server.reply(
+              200,
+              ChatScreenTestResponses.ritualLoveCrushReadingQuestion,
+            );
+          });
+
+          await pumpChatScreen(
+            tester: tester,
+            chatScreenArguments: ChatScreenArguments(
+              ritualID: '62de59dd510689001ddb8090',
+              question: ChatScreenTestChatItems.ritualLoveCrushReadingQuestion,
+            ),
+          );
+
+          await tester.pumpAndSettle();
+
+          await tester.pumpNtimes(times: 50);
+          Finder appIconGradientButton = find.descendant(
+              of: find.byType(ChatTextInputWidget),
+              matching: find.byType(AppIconGradientButton));
+
+          String buttonIcon = (appIconGradientButton.evaluate().single.widget
+                  as AppIconGradientButton)
+              .icon;
+
+          expect(appIconGradientButton, findsOneWidget);
+          expect(buttonIcon, Assets.vectors.microphone.path);
+        },
+      );
+
+      testWidgets(
+        'should have AppIconGradientButton with send icon'
+        ' if question that advisor should answer is public',
+        (WidgetTester tester) async {
+          await pumpChatScreen(
+            tester: tester,
+            chatScreenArguments: ChatScreenArguments(
+              publicQuestionId: '63bbab87ea0df2001dce8630',
+              question: ChatScreenTestChatItems.publicQuestion,
+            ),
+          );
+
+          await tester.pumpAndSettle();
+
+          await tester.tap(find.byType(AppElevatedButton));
+          await tester.pump();
+
+          Finder appIconGradientButton = find.descendant(
+              of: find.byType(ChatTextInputWidget),
+              matching: find.byType(AppIconGradientButton));
+
+          String buttonIcon = (appIconGradientButton.evaluate().single.widget
+                  as AppIconGradientButton)
+              .icon;
+
+          expect(appIconGradientButton, findsOneWidget);
+          expect(buttonIcon, Assets.vectors.send.path);
+        },
+      );
+
+      testWidgets(
+        'should have ChatRecordingWidget'
+        ' if user taps on microphone button',
+        (WidgetTester tester) async {
+          dioAdapter.onGet('/rituals/single/62de59dd510689001ddb8090',
+              (server) {
+            server.reply(
+              200,
+              ChatScreenTestResponses.ritualLoveCrushReadingQuestion,
+            );
+          });
+
+          await pumpChatScreen(
+            tester: tester,
+            chatScreenArguments: ChatScreenArguments(
+              ritualID: '62de59dd510689001ddb8090',
+              question: ChatScreenTestChatItems.ritualLoveCrushReadingQuestion,
+            ),
+          );
+
+          await tester.pumpAndSettle();
+
+          await tester.pumpNtimes(times: 50);
+          Finder appIconGradientButton = find.descendant(
+              of: find.byType(ChatTextInputWidget),
+              matching: find.byType(AppIconGradientButton));
+
+          await tester.tap(appIconGradientButton);
+          await tester.pump();
+
+          expect(find.byType(ChatRecordingWidget), findsOneWidget);
+        },
+      );
+
+      // testWidgets(
+      //   'should be replaced with ChatRecordedWidget'
+      //   ' if user taps on microphone button'
+      //   ' and then stopped recording audio',
+      //   (WidgetTester tester) async {
+      //     dioAdapter.onGet('/rituals/single/62de59dd510689001ddb8090',
+      //         (server) {
+      //       server.reply(
+      //         200,
+      //         ChatScreenTestResponses.ritualLoveCrushReadingQuestion,
+      //       );
+      //     });
+
+      //     await pumpChatScreen(
+      //       tester: tester,
+      //       chatScreenArguments: ChatScreenArguments(
+      //         ritualID: '62de59dd510689001ddb8090',
+      //         question: ChatScreenTestChatItems.ritualLoveCrushReadingQuestion,
+      //       ),
+      //     );
+
+      //     await tester.pumpAndSettle();
+      //     await tester.pumpNtimes(times: 50);
+
+      //     Finder appIconGradientButton = find.descendant(
+      //         of: find.byType(ChatTextInputWidget),
+      //         matching: find.byType(AppIconGradientButton));
+
+      //     await tester.tap(appIconGradientButton);
+      //     await tester.pumpNtimes(times: 50);
+
+      //     Finder stopRecordingButton =
+      //         find.byKey(const Key('stopRecordingButton'));
+
+      //     expect(stopRecordingButton, findsOneWidget);
+
+      //     await tester.tap(stopRecordingButton);
+      //     await tester.pumpNtimes(times: 100);
+
+      //     expect(find.byType(ChatRecordedPlayerWidget), findsOneWidget);
+      //   },
+      // );
     },
   );
 }

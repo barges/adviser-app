@@ -140,7 +140,7 @@ class ChatScreenTestResponses {
     "_id": "62de59dd510689001ddb8090",
     "status": "FAILED",
     "identifier": "lovecrushreading",
-    "clientName": "Maryna Test",
+    "clientName": "Hope Fortunikovna",
     "language": "en",
     "inputFieldsData": [
       {
@@ -216,6 +216,7 @@ class ChatScreenTestResponses {
     "sortDate": "2022-07-25T08:52:45.695Z",
     "isDeleted": false,
     "isOpen": false,
+    "isCancelled": false,
     "isInitialized": false,
     "canBeDeleted": false,
     "id": "62de59dd510689001ddb8090",
