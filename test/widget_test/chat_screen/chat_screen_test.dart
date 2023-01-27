@@ -1,17 +1,13 @@
 import 'package:dio/dio.dart';
-import 'package:file/local.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
-import 'package:loading_indicator/loading_indicator.dart';
-import 'package:mockito/mockito.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
 import 'package:shared_advisor_interface/data/network/api/customer_api.dart';
@@ -20,7 +16,6 @@ import 'package:shared_advisor_interface/data/repositories/customer_repository_i
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
@@ -29,7 +24,6 @@ import 'package:shared_advisor_interface/presentation/common_widgets/buttons/cho
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/chat_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_input_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
@@ -87,7 +81,6 @@ void main() {
   late MockConnectivityService mockConnectivityService;
   late MockDataCachingManager mockCacheManager;
   late MockAudioRecorderService mockAudioRecorderService;
-  late MockDefaultCacheManager mockDefaultCacheManager;
   late MockAudioPlayerService mockAudioPlayerService;
   late MockCheckPermissionService mockCheckPermissionService;
   late MainCubit mainCubit;
@@ -103,104 +96,6 @@ void main() {
     dioAdapter = DioAdapter(dio: dio, matcher: const UrlRequestMatcher());
     mockAudioRecorderService = MockAudioRecorderService();
     mockAudioPlayerService = MockAudioPlayerService();
-    mockDefaultCacheManager = MockDefaultCacheManager();
-
-    when(mockDefaultCacheManager.getFileStream(argThat(anything)))
-        .thenAnswer((realInvocation) {
-      logger.d('FileStream');
-      const LocalFileSystem fileSystem = LocalFileSystem();
-      const String fileName = './test/assets/test_placeholder.png';
-
-      final file = fileSystem.file(fileName);
-      logger.d(realInvocation.positionalArguments[0]);
-
-      return Stream.value(FileInfo(
-        file, // Path to the asset
-        FileSource.Cache, // Simulate a cache hit
-        DateTime(2050), // Very long validity
-        realInvocation.positionalArguments[0], // Source url
-      ));
-    });
-
-    when(mockDefaultCacheManager.getFileFromCache(argThat(anything)))
-        .thenAnswer((realInvocation) {
-      logger.d('File from cache');
-      const LocalFileSystem fileSystem = LocalFileSystem();
-      const String fileName = './test/assets/test_placeholder.png';
-
-      final file = fileSystem.file(fileName);
-      logger.d(realInvocation.positionalArguments[0]);
-
-      return Future.value(FileInfo(
-        file, // Path to the asset
-        FileSource.Cache, // Simulate a cache hit
-        DateTime(2050), // Very long validity
-        realInvocation.positionalArguments[0], // Source url
-      ));
-    });
-
-    when(mockDefaultCacheManager.getImageFile(argThat(anything)))
-        .thenAnswer((realInvocation) {
-      logger.d('Image file');
-      const LocalFileSystem fileSystem = LocalFileSystem();
-      const String fileName = './test/assets/test_placeholder.png';
-
-      final file = fileSystem.file(fileName);
-      logger.d(realInvocation.positionalArguments[0]);
-
-      return Stream.value(FileInfo(
-        file, // Path to the asset
-        FileSource.Cache, // Simulate a cache hit
-        DateTime(2050), // Very long validity
-        realInvocation.positionalArguments[0], // Source url
-      ));
-    });
-
-    when(mockDefaultCacheManager.getFile(argThat(anything)))
-        .thenAnswer((realInvocation) {
-      logger.d('Get file');
-      const LocalFileSystem fileSystem = LocalFileSystem();
-      const String fileName = './test/assets/test_placeholder.png';
-
-      final file = fileSystem.file(fileName);
-      logger.d(realInvocation.positionalArguments[0]);
-
-      return Stream.value(FileInfo(
-        file, // Path to the asset
-        FileSource.Cache, // Simulate a cache hit
-        DateTime(2050), // Very long validity
-        realInvocation.positionalArguments[0], // Source url
-      ));
-    });
-
-    when(mockDefaultCacheManager.getSingleFile(argThat(anything)))
-        .thenAnswer((realInvocation) {
-      logger.d('Single file');
-      const LocalFileSystem fileSystem = LocalFileSystem();
-      const String fileName = './test/assets/test_placeholder.png';
-
-      final file = fileSystem.file(fileName);
-      logger.d(realInvocation.positionalArguments[0]);
-
-      return Future.value(file);
-    });
-
-    when(mockDefaultCacheManager.getFileFromMemory(argThat(anything)))
-        .thenAnswer((realInvocation) {
-      logger.d('Single file');
-      const LocalFileSystem fileSystem = LocalFileSystem();
-      const String fileName = './test/assets/test_placeholder.png';
-
-      final file = fileSystem.file(fileName);
-      logger.d(realInvocation.positionalArguments[0]);
-
-      return Future.value(FileInfo(
-        file, // Path to the asset
-        FileSource.Cache, // Simulate a cache hit
-        DateTime(2050), // Very long validity
-        realInvocation.positionalArguments[0], // Source url
-      ));
-    });
 
     dioAdapter.onGet('/v2/clients/63bbab1b793423001e28722e', (server) {
       server.reply(200, ChatScreenTestResponses.publicQuestionClient);
@@ -229,7 +124,6 @@ void main() {
     testGetIt.registerLazySingleton<CustomerRepository>(
         () => CustomerRepositoryImpl(CustomerApi(dio)));
 
-    testGetIt.registerSingleton<BaseCacheManager>(mockDefaultCacheManager);
     testGetIt.registerLazySingleton<AudioRecorderService>(
         () => mockAudioRecorderService);
     testGetIt.registerLazySingleton<AudioPlayerService>(
@@ -579,23 +473,12 @@ void main() {
               of: firstRitualInfoCardImage,
               matching: find.byType(GestureDetector));
 
-          // expect(ritualInfoCardImageGesture.hitTestable(), findsOneWidget);
+          expect(ritualInfoCardImageGesture.hitTestable(), findsOneWidget);
 
-          // await tester.ensureVisible(find.byType(RitualInfoCardWidget));
-          // // await tester.dragUntilVisible(ritualInfoCardImageGesture,
-          // //     find.byType(SingleChildScrollView), const Offset(0.0, 30.0));
-          // await tester.pumpNtimes(times: 100);
-          // //expect(ritualInfoCardImageGesture.hitTestable(), findsOneWidget);
-          // await tester.tap(ritualInfoCardImageGesture);
-          // await tester.pumpNtimes(times: 100);
+          await tester.tap(ritualInfoCardImageGesture);
+          await tester.pumpNtimes(times: 100);
 
-          // expect(find.byType(GalleryPicturesScreen), findsOneWidget);
-
-          expect(
-              find.descendant(
-                  of: firstRitualInfoCardImage,
-                  matching: find.byType(LoadingIndicator)),
-              findsOneWidget);
+          expect(find.byType(GalleryPicturesScreen), findsOneWidget);
         },
       );
     },

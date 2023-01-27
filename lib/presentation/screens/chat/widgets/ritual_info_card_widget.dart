@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/data/models/chats/rirual_card_info.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 
 class RitualInfoCardWidget extends StatelessWidget {
   final RitualCardInfo? ritualCardInfo;
@@ -101,7 +103,9 @@ class RitualInfoCardWidget extends StatelessWidget {
                               ),
                             ),
                           _RitualInfoCardImageWidget(
-                              imageUrl: ritualCardInfo!.leftImage!),
+                            ritualCardInfo: ritualCardInfo!,
+                            ritualInfoCardImage: _RitualInfoCardImage.left,
+                          ),
                         ],
                       ),
                     const SizedBox(
@@ -121,7 +125,9 @@ class RitualInfoCardWidget extends StatelessWidget {
                               ),
                             ),
                           _RitualInfoCardImageWidget(
-                              imageUrl: ritualCardInfo!.rightImage!),
+                            ritualCardInfo: ritualCardInfo!,
+                            ritualInfoCardImage: _RitualInfoCardImage.right,
+                          ),
                         ],
                       ),
                   ],
@@ -135,22 +141,47 @@ class RitualInfoCardWidget extends StatelessWidget {
 }
 
 class _RitualInfoCardImageWidget extends StatelessWidget {
-  final String imageUrl;
+  final RitualCardInfo ritualCardInfo;
+  final _RitualInfoCardImage ritualInfoCardImage;
 
   const _RitualInfoCardImageWidget({
     Key? key,
-    required this.imageUrl,
+    required this.ritualCardInfo,
+    required this.ritualInfoCardImage,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AppImageWidget(
-      uri: Uri.parse(imageUrl),
-      width: 132.0,
-      height: 132.0,
-      memCacheHeight: 132,
-      radius: 8.0,
-      canBeOpenedInFullScreen: true,
+    final ChatCubit chatCubit = context.read<ChatCubit>();
+    return GestureDetector(
+      onTap: () {
+        chatCubit.goToGallery(ritualCardInfo, ritualInfoCardImage.value);
+      },
+      child: AppImageWidget(
+        uri: Uri.parse(ritualInfoCardImage.getImageUrl(ritualCardInfo)),
+        width: 132.0,
+        height: 132.0,
+        memCacheHeight: 132,
+        radius: 8.0,
+      ),
     );
+  }
+}
+
+enum _RitualInfoCardImage {
+  left(0.0),
+  right(1.0);
+
+  final double value;
+
+  const _RitualInfoCardImage(this.value);
+
+  String getImageUrl(RitualCardInfo ritualCardInfo) {
+    switch (this) {
+      case _RitualInfoCardImage.right:
+        return ritualCardInfo.rightImage ?? '';
+      case _RitualInfoCardImage.left:
+        return ritualCardInfo.leftImage ?? '';
+    }
   }
 }
