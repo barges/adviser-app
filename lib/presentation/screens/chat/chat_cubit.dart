@@ -21,6 +21,7 @@ import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/content_limitation.dart';
 import 'package:shared_advisor_interface/data/models/chats/meta.dart';
+import 'package:shared_advisor_interface/data/models/chats/rirual_card_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
@@ -35,6 +36,7 @@ import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
@@ -516,7 +518,7 @@ class ChatCubit extends Cubit<ChatState> {
     _scrollTextFieldToEnd();
   }
 
-  void deletePicture(File? image) {
+  void deletePicture(File? image, {bool scrollToEnd = true}) {
     final images = List.of(state.attachedPictures);
     images.remove(image);
     emit(
@@ -526,13 +528,14 @@ class ChatCubit extends Cubit<ChatState> {
               _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
                   (_checkRecordedAudioIsOk() || _checkTextLengthIsOk())),
     );
-
-    _scrollTextFieldToEnd();
+    if (scrollToEnd) {
+      _scrollTextFieldToEnd();
+    }
   }
 
   void deleteAttachedPictures() {
     for (var image in state.attachedPictures) {
-      deletePicture(image);
+      deletePicture(image, scrollToEnd: false);
     }
   }
 
@@ -612,6 +615,23 @@ class ChatCubit extends Cubit<ChatState> {
           UISuccessType.thisQuestionWillBeReturnedToTheGeneralListAfterCounter;
       emit(state.copyWith(appSuccess: const EmptySuccess()));
     }
+  }
+
+  void goToGallery(RitualCardInfo ritualCardInfo, double initPage) {
+    List<String> pictures = [];
+    if (ritualCardInfo.leftImage != null) {
+      pictures.add(ritualCardInfo.leftImage!);
+    }
+    if (ritualCardInfo.rightImage != null) {
+      pictures.add(ritualCardInfo.rightImage!);
+    }
+    Get.toNamed(
+      AppRoutes.galleryPictures,
+      arguments: GalleryPicturesScreenArguments(
+        pictures: pictures,
+        initPage: initPage,
+      ),
+    );
   }
 
   Future<void> _tryStartAnswerSend() async {

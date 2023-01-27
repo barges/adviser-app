@@ -1,16 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:file/local.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
@@ -19,8 +18,8 @@ import 'package:shared_advisor_interface/data/repositories/chats_repository_impl
 import 'package:shared_advisor_interface/data/repositories/customer_repository_impl.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
@@ -29,9 +28,10 @@ import 'package:shared_advisor_interface/presentation/common_widgets/buttons/cho
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/chat_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_input_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_players/chat_recorded_player_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_recording_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/ritual_info_card_widget.dart';
@@ -87,7 +87,6 @@ void main() {
   late MockConnectivityService mockConnectivityService;
   late MockDataCachingManager mockCacheManager;
   late MockAudioRecorderService mockAudioRecorderService;
-  late MockDefaultCacheManager mockDefaultCacheManager;
   late MockAudioPlayerService mockAudioPlayerService;
   late MockCheckPermissionService mockCheckPermissionService;
   late MainCubit mainCubit;
@@ -97,110 +96,47 @@ void main() {
   LiveTestWidgetsFlutterBinding.ensureInitialized();
   WidgetController.hitTestWarningShouldBeFatal = true;
 
+  const MethodChannel('storage_space')
+      .setMockMethodCallHandler((methodCall) async {
+    if (methodCall.method == 'getFreeSpace') {
+      return Future.value(4989227008);
+    }
+    if (methodCall.method == 'getTotalSpace') {
+      return Future.value(6240665600);
+    }
+    return null;
+  });
+
+  const MethodChannel('flutter.baseflow.com/permissions/methods')
+      .setMockMethodCallHandler((methodCall) async {
+    if (methodCall.method == 'checkPermissionStatus') {
+      return 1;
+    }
+    return null;
+  });
+
+  const MethodChannel('flutter_media_metadata')
+      .setMockMethodCallHandler((methodCall) async {
+    if (methodCall.method == 'MetadataRetriever') {
+      return const Metadata(
+          mimeType: 'audio/mp4',
+          trackDuration: 7808,
+          bitrate: 16000,
+          filePath:
+              '/data/user/0/com.questico.fortunica.readerapp/cache/dd3aa41e-bfe1-4734-aecd-02c6854d1d48.m4a');
+    }
+    return null;
+  });
+
   setUpAll(() {
     GetIt.instance.allowReassignment = true;
     dio = Dio();
     dioAdapter = DioAdapter(dio: dio, matcher: const UrlRequestMatcher());
     mockAudioRecorderService = MockAudioRecorderService();
     mockAudioPlayerService = MockAudioPlayerService();
-    mockDefaultCacheManager = MockDefaultCacheManager();
 
-    when(mockDefaultCacheManager.getFileStream(argThat(anything)))
-        .thenAnswer((realInvocation) {
-      logger.d('FileStream');
-      const LocalFileSystem fileSystem = LocalFileSystem();
-      const String fileName = './test/assets/test_placeholder.png';
-
-      final file = fileSystem.file(fileName);
-      logger.d(realInvocation.positionalArguments[0]);
-
-      return Stream.value(FileInfo(
-        file, // Path to the asset
-        FileSource.Cache, // Simulate a cache hit
-        DateTime(2050), // Very long validity
-        realInvocation.positionalArguments[0], // Source url
-      ));
-    });
-
-    when(mockDefaultCacheManager.getFileFromCache(argThat(anything)))
-        .thenAnswer((realInvocation) {
-      logger.d('File from cache');
-      const LocalFileSystem fileSystem = LocalFileSystem();
-      const String fileName = './test/assets/test_placeholder.png';
-
-      final file = fileSystem.file(fileName);
-      logger.d(realInvocation.positionalArguments[0]);
-
-      return Future.value(FileInfo(
-        file, // Path to the asset
-        FileSource.Cache, // Simulate a cache hit
-        DateTime(2050), // Very long validity
-        realInvocation.positionalArguments[0], // Source url
-      ));
-    });
-
-    when(mockDefaultCacheManager.getImageFile(argThat(anything)))
-        .thenAnswer((realInvocation) {
-      logger.d('Image file');
-      const LocalFileSystem fileSystem = LocalFileSystem();
-      const String fileName = './test/assets/test_placeholder.png';
-
-      final file = fileSystem.file(fileName);
-      logger.d(realInvocation.positionalArguments[0]);
-
-      return Stream.value(FileInfo(
-        file, // Path to the asset
-        FileSource.Cache, // Simulate a cache hit
-        DateTime(2050), // Very long validity
-        realInvocation.positionalArguments[0], // Source url
-      ));
-    });
-
-    when(mockDefaultCacheManager.getFile(argThat(anything)))
-        .thenAnswer((realInvocation) {
-      logger.d('Get file');
-      const LocalFileSystem fileSystem = LocalFileSystem();
-      const String fileName = './test/assets/test_placeholder.png';
-
-      final file = fileSystem.file(fileName);
-      logger.d(realInvocation.positionalArguments[0]);
-
-      return Stream.value(FileInfo(
-        file, // Path to the asset
-        FileSource.Cache, // Simulate a cache hit
-        DateTime(2050), // Very long validity
-        realInvocation.positionalArguments[0], // Source url
-      ));
-    });
-
-    when(mockDefaultCacheManager.getSingleFile(argThat(anything)))
-        .thenAnswer((realInvocation) {
-      logger.d('Single file');
-      const LocalFileSystem fileSystem = LocalFileSystem();
-      const String fileName = './test/assets/test_placeholder.png';
-
-      final file = fileSystem.file(fileName);
-      logger.d(realInvocation.positionalArguments[0]);
-
-      return Future.value(file);
-    });
-
-    when(mockDefaultCacheManager.getFileFromMemory(argThat(anything)))
-        .thenAnswer((realInvocation) {
-      logger.d('Single file');
-      const LocalFileSystem fileSystem = LocalFileSystem();
-      const String fileName = './test/assets/test_placeholder.png';
-
-      final file = fileSystem.file(fileName);
-      logger.d(realInvocation.positionalArguments[0]);
-
-      return Future.value(FileInfo(
-        file, // Path to the asset
-        FileSource.Cache, // Simulate a cache hit
-        DateTime(2050), // Very long validity
-        realInvocation.positionalArguments[0], // Source url
-      ));
-    });
+    when(mockAudioRecorderService.stopRecorder())
+        .thenAnswer((realInvocation) => Future.value('test_audio.mp3'));
 
     dioAdapter.onGet('/v2/clients/63bbab1b793423001e28722e', (server) {
       server.reply(200, ChatScreenTestResponses.publicQuestionClient);
@@ -229,7 +165,6 @@ void main() {
     testGetIt.registerLazySingleton<CustomerRepository>(
         () => CustomerRepositoryImpl(CustomerApi(dio)));
 
-    testGetIt.registerSingleton<BaseCacheManager>(mockDefaultCacheManager);
     testGetIt.registerLazySingleton<AudioRecorderService>(
         () => mockAudioRecorderService);
     testGetIt.registerLazySingleton<AudioPlayerService>(
@@ -237,6 +172,13 @@ void main() {
   });
 
   setUp(() {
+    dioAdapter.onPost(
+      '/questions/take',
+      (server) {
+        server.reply(200, ChatScreenTestResponses.successTakenQuestion);
+      },
+    );
+
     mockChatsRepository = ChatsRepositoryImpl(ChatsApi(dio));
     mockConnectivityService = MockConnectivityService();
     mockCacheManager = MockDataCachingManager();
@@ -395,13 +337,6 @@ void main() {
         'should disappear when user click on it and the input field should appear'
         ' if public question that user want to take is not taken by anyone else',
         (WidgetTester tester) async {
-          dioAdapter.onPost(
-            '/questions/take',
-            (server) {
-              server.reply(200, ChatScreenTestResponses.successTakenQuestion);
-            },
-          );
-
           await pumpChatScreen(
             tester: tester,
             chatScreenArguments: ChatScreenArguments(
@@ -579,23 +514,12 @@ void main() {
               of: firstRitualInfoCardImage,
               matching: find.byType(GestureDetector));
 
-          // expect(ritualInfoCardImageGesture.hitTestable(), findsOneWidget);
+          expect(ritualInfoCardImageGesture.hitTestable(), findsOneWidget);
 
-          // await tester.ensureVisible(find.byType(RitualInfoCardWidget));
-          // // await tester.dragUntilVisible(ritualInfoCardImageGesture,
-          // //     find.byType(SingleChildScrollView), const Offset(0.0, 30.0));
-          // await tester.pumpNtimes(times: 100);
-          // //expect(ritualInfoCardImageGesture.hitTestable(), findsOneWidget);
-          // await tester.tap(ritualInfoCardImageGesture);
-          // await tester.pumpNtimes(times: 100);
+          await tester.tap(ritualInfoCardImageGesture);
+          await tester.pumpNtimes(times: 100);
 
-          // expect(find.byType(GalleryPicturesScreen), findsOneWidget);
-
-          expect(
-              find.descendant(
-                  of: firstRitualInfoCardImage,
-                  matching: find.byType(LoadingIndicator)),
-              findsOneWidget);
+          expect(find.byType(GalleryPicturesScreen), findsOneWidget);
         },
       );
     },
@@ -612,7 +536,7 @@ void main() {
               (server) {
             server.reply(
               200,
-              ChatScreenTestChatItems.ritualLoveCrushReadingQuestion,
+              ChatScreenTestResponses.ritualLoveCrushReadingQuestion,
             );
           });
 
@@ -645,6 +569,149 @@ void main() {
               findsOneWidget);
         },
       );
+
+      testWidgets(
+        'should have AppIconGradientButton with microphone icon'
+        ' if question that advisor should answer is not public',
+        (WidgetTester tester) async {
+          dioAdapter.onGet('/rituals/single/62de59dd510689001ddb8090',
+              (server) {
+            server.reply(
+              200,
+              ChatScreenTestResponses.ritualLoveCrushReadingQuestion,
+            );
+          });
+
+          await pumpChatScreen(
+            tester: tester,
+            chatScreenArguments: ChatScreenArguments(
+              ritualID: '62de59dd510689001ddb8090',
+              question: ChatScreenTestChatItems.ritualLoveCrushReadingQuestion,
+            ),
+          );
+
+          await tester.pumpAndSettle();
+
+          await tester.pumpNtimes(times: 50);
+          Finder appIconGradientButton = find.descendant(
+              of: find.byType(ChatTextInputWidget),
+              matching: find.byType(AppIconGradientButton));
+
+          String buttonIcon = (appIconGradientButton.evaluate().single.widget
+                  as AppIconGradientButton)
+              .icon;
+
+          expect(appIconGradientButton, findsOneWidget);
+          expect(buttonIcon, Assets.vectors.microphone.path);
+        },
+      );
+
+      testWidgets(
+        'should have AppIconGradientButton with send icon'
+        ' if question that advisor should answer is public',
+        (WidgetTester tester) async {
+          await pumpChatScreen(
+            tester: tester,
+            chatScreenArguments: ChatScreenArguments(
+              publicQuestionId: '63bbab87ea0df2001dce8630',
+              question: ChatScreenTestChatItems.publicQuestion,
+            ),
+          );
+
+          await tester.pumpAndSettle();
+
+          await tester.tap(find.byType(AppElevatedButton));
+          await tester.pump();
+
+          Finder appIconGradientButton = find.descendant(
+              of: find.byType(ChatTextInputWidget),
+              matching: find.byType(AppIconGradientButton));
+
+          String buttonIcon = (appIconGradientButton.evaluate().single.widget
+                  as AppIconGradientButton)
+              .icon;
+
+          expect(appIconGradientButton, findsOneWidget);
+          expect(buttonIcon, Assets.vectors.send.path);
+        },
+      );
+
+      testWidgets(
+        'should have ChatRecordingWidget'
+        ' if user taps on microphone button',
+        (WidgetTester tester) async {
+          dioAdapter.onGet('/rituals/single/62de59dd510689001ddb8090',
+              (server) {
+            server.reply(
+              200,
+              ChatScreenTestResponses.ritualLoveCrushReadingQuestion,
+            );
+          });
+
+          await pumpChatScreen(
+            tester: tester,
+            chatScreenArguments: ChatScreenArguments(
+              ritualID: '62de59dd510689001ddb8090',
+              question: ChatScreenTestChatItems.ritualLoveCrushReadingQuestion,
+            ),
+          );
+
+          await tester.pumpAndSettle();
+
+          await tester.pumpNtimes(times: 50);
+          Finder appIconGradientButton = find.descendant(
+              of: find.byType(ChatTextInputWidget),
+              matching: find.byType(AppIconGradientButton));
+
+          await tester.tap(appIconGradientButton);
+          await tester.pump();
+
+          expect(find.byType(ChatRecordingWidget), findsOneWidget);
+        },
+      );
+
+      // testWidgets(
+      //   'should be replaced with ChatRecordedWidget'
+      //   ' if user taps on microphone button'
+      //   ' and then stopped recording audio',
+      //   (WidgetTester tester) async {
+      //     dioAdapter.onGet('/rituals/single/62de59dd510689001ddb8090',
+      //         (server) {
+      //       server.reply(
+      //         200,
+      //         ChatScreenTestResponses.ritualLoveCrushReadingQuestion,
+      //       );
+      //     });
+
+      //     await pumpChatScreen(
+      //       tester: tester,
+      //       chatScreenArguments: ChatScreenArguments(
+      //         ritualID: '62de59dd510689001ddb8090',
+      //         question: ChatScreenTestChatItems.ritualLoveCrushReadingQuestion,
+      //       ),
+      //     );
+
+      //     await tester.pumpAndSettle();
+      //     await tester.pumpNtimes(times: 50);
+
+      //     Finder appIconGradientButton = find.descendant(
+      //         of: find.byType(ChatTextInputWidget),
+      //         matching: find.byType(AppIconGradientButton));
+
+      //     await tester.tap(appIconGradientButton);
+      //     await tester.pumpNtimes(times: 50);
+
+      //     Finder stopRecordingButton =
+      //         find.byKey(const Key('stopRecordingButton'));
+
+      //     expect(stopRecordingButton, findsOneWidget);
+
+      //     await tester.tap(stopRecordingButton);
+      //     await tester.pumpNtimes(times: 100);
+
+      //     expect(find.byType(ChatRecordedPlayerWidget), findsOneWidget);
+      //   },
+      // );
     },
   );
 }
