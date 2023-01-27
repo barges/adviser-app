@@ -518,7 +518,7 @@ class ChatCubit extends Cubit<ChatState> {
     _scrollTextFieldToEnd();
   }
 
-  void deletePicture(File? image) {
+  void deletePicture(File? image, {bool scrollToEnd = true}) {
     final images = List.of(state.attachedPictures);
     images.remove(image);
     emit(
@@ -528,13 +528,14 @@ class ChatCubit extends Cubit<ChatState> {
               _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
                   (_checkRecordedAudioIsOk() || _checkTextLengthIsOk())),
     );
-
-    _scrollTextFieldToEnd();
+    if (scrollToEnd) {
+      _scrollTextFieldToEnd();
+    }
   }
 
   void deleteAttachedPictures() {
     for (var image in state.attachedPictures) {
-      deletePicture(image);
+      deletePicture(image, scrollToEnd: false);
     }
   }
 
