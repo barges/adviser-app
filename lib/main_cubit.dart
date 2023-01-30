@@ -67,6 +67,7 @@ class MainCubit extends Cubit<MainState> {
   void updateErrorMessage(AppError appError) {
     if (appError is! EmptyError) {
       emit(state.copyWith(appError: appError));
+      _errorTimer?.cancel();
       _errorTimer = Timer(const Duration(seconds: 10), clearErrorMessage);
     }
   }

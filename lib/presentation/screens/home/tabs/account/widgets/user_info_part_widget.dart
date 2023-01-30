@@ -44,7 +44,9 @@ class UserInfoPartWidget extends StatelessWidget {
               AppConstants.horizontalScreenPadding,
             ),
             child: GestureDetector(
-              onTap: accountCubit.goToEditProfile,
+              onTap: currentStatus.status != FortunicaUserStatus.legalBlock
+                  ? accountCubit.goToEditProfile
+                  : null,
               child: Row(
                 children: [
                   UserAvatar(
@@ -103,8 +105,14 @@ class UserInfoPartWidget extends StatelessWidget {
                     ),
                     child: Stack(
                       children: [
-                        Assets.vectors.arrowRight.svg(
-                          color: Theme.of(context).primaryColor,
+                        Opacity(
+                          opacity: currentStatus.status !=
+                                  FortunicaUserStatus.legalBlock
+                              ? 1.0
+                              : 0.4,
+                          child: Assets.vectors.arrowRight.svg(
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ),
                         if (currentStatus.status ==
                             FortunicaUserStatus.incomplete)
