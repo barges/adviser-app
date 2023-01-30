@@ -120,15 +120,18 @@ class ChatCubit extends Cubit<ChatState> {
     }
     if (needActiveChatTab()) {
       _getData().whenComplete(() {
+        _setAnswerLimitations();
         if (isPublicChat()) {
           _checkTiming();
         }
-        _setAnswerLimitations();
       });
     }
 
     _appOnPauseSubscription = _mainCubit.changeAppLifecycleStream.listen(
       (value) async {
+        if (isPublicChat()) {
+          _answerTimer?.cancel();
+        }
         if (value) {
           if (isPublicChat()) {
             _checkTiming();
@@ -139,11 +142,6 @@ class ChatCubit extends Cubit<ChatState> {
             stopRecordingAudio();
           }
           audioPlayer.pause();
-
-          if (isPublicChat()) {
-            _answerTimer?.cancel();
-            _answerTimer = null;
-          }
         }
       },
     );
@@ -182,7 +180,6 @@ class ChatCubit extends Cubit<ChatState> {
     _recordingProgressSubscription = null;
 
     _answerTimer?.cancel();
-    _answerTimer = null;
 
     _answerRequest = null;
 
@@ -378,7 +375,6 @@ class ChatCubit extends Cubit<ChatState> {
     _mainCubit.updateSessions();
     Get.back();
     _answerTimer?.cancel();
-    _answerTimer = null;
   }
 
   Future<void> startRecordingAudio(BuildContext context) async {
@@ -706,6 +702,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   _startTimer(int tillShowMessagesInSec, int afterShowMessagesInSec) async {
+    _answerTimer?.cancel();
     _answerTimer = Timer(Duration(seconds: tillShowMessagesInSec), () {
       if (state.questionStatus == ChatItemStatusType.taken) {
         const minuteInSec = 60;
@@ -729,8 +726,6 @@ class ChatCubit extends Cubit<ChatState> {
             clearSuccessMessage();
           }
         });
-      } else {
-        _answerTimer = null;
       }
     });
   }
@@ -790,7 +785,6 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<ChatItem?> _sendAnswer() async {
     _answerTimer?.cancel();
-    _answerTimer = null;
 
     ChatItem? answer;
     try {
@@ -1049,7 +1043,7 @@ class ChatCubit extends Cubit<ChatState> {
       answerLimitationContent?.bodySize?.max ??
       AppConstants.maxAttachmentSizeInBytes;
 
-  double get maxAttachmentSizeInMb => maxAttachmentSizeInBytes / 1000000;
+  double get maxAttachmentSizeInMb => maxAttachmentSizeInBytes / (1024 * 1024);
 
   int? get recordAudioDuration => _recordAudioDuration;
 
