@@ -131,7 +131,7 @@ class AccountCubit extends Cubit<AccountState> {
           : milliseconds;
 
       if (millisecondsForTimer > 0) {
-        startTimer(millisecondsForTimer);
+        _startTimer(millisecondsForTimer);
       }
 
       emit(
@@ -182,7 +182,7 @@ class AccountCubit extends Cubit<AccountState> {
     }
   }
 
-  void startTimer(int millisecondsForTimer) {
+  void _startTimer(int millisecondsForTimer) {
     _timer?.cancel();
     int start = millisecondsForTimer ~/ 1000;
     _timer = Timer.periodic(
