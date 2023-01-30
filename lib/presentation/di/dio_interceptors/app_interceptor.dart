@@ -38,6 +38,7 @@ class AppInterceptor extends Interceptor {
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
     _mainCubit.updateIsLoading(false);
+
     if (err.response?.statusCode == 426) {
       Get.offNamedUntil(AppRoutes.forceUpdate, (route) => false);
     }
@@ -63,6 +64,14 @@ class AppInterceptor extends Interceptor {
             initTab: TabsTypes.account,
           ),
           (route) => false);
+    } else if (err.type == DioErrorType.connectTimeout ||
+        err.type == DioErrorType.receiveTimeout ||
+        err.type == DioErrorType.sendTimeout) {
+      _mainCubit.updateErrorMessage(
+        UIError(
+          uiErrorType: UIErrorType.checkYourInternetConnection,
+        ),
+      );
     } else {
       _mainCubit.updateErrorMessage(
         NetworkError(err.response?.data['localizedMessage'] ??
