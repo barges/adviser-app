@@ -14,7 +14,7 @@ import 'package:shared_advisor_interface/presentation/resources/app_routes.dart'
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/change_status_comment_bottom_sheet.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/count_down_timer.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/timer_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/tile_widget.dart';
 
 class UserInfoPartWidget extends StatelessWidget {
@@ -129,8 +129,9 @@ class UserInfoPartWidget extends StatelessWidget {
             ),
             Builder(
               builder: (context) {
-                final int millisecondsForTimer = context.select(
+                final int secondsForTimer = context.select(
                     (AccountCubit cubit) => cubit.state.secondsForTimer);
+
                 return TileWidget(
                   title: S.of(context).imAvailableNow,
                   iconSVGPath: Assets.vectors.availability.path,
@@ -156,10 +157,9 @@ class UserInfoPartWidget extends StatelessWidget {
                       currentStatus.status != FortunicaUserStatus.offline,
                   initSwitcherValue:
                       currentStatus.status == FortunicaUserStatus.live,
-                  timerWidget: millisecondsForTimer > 0
-                      ? CountDownTimer(
-                          milliseconds: millisecondsForTimer,
-                          onEnd: accountCubit.hideTimer,
+                  timerWidget: secondsForTimer > 0
+                      ? TimerWidget(
+                          secondsForTimer: secondsForTimer,
                         )
                       : null,
                 );
@@ -176,8 +176,8 @@ class UserInfoPartWidget extends StatelessWidget {
                   initSwitcherValue: enableNotifications,
                   title: S.of(context).notifications,
                   iconSVGPath: Assets.vectors.notification.path,
-                  onChanged: (value) => accountCubit
-                      .updateEnableNotificationsValue(value),
+                  onChanged: (value) =>
+                      accountCubit.updateEnableNotificationsValue(value),
                 );
               },
             ),
