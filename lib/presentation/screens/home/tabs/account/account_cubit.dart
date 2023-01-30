@@ -276,14 +276,6 @@ class AccountCubit extends Cubit<AccountState> {
     }
   }
 
-  void hideTimer() {
-    emit(
-      state.copyWith(
-        secondsForTimer: 0,
-      ),
-    );
-  }
-
   Future<void> openSettingsUrl() async {
     if (!await launchUrl(
       _url,
