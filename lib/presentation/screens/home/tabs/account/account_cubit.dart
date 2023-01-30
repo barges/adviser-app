@@ -43,6 +43,7 @@ class AccountCubit extends Cubit<AccountState> {
   late final StreamSubscription<bool> _appOnResumeSubscription;
   StreamSubscription<bool>? _connectivitySubscription;
   late bool isPushNotificationPermissionGranted;
+  Timer? _timer;
 
   AccountCubit(
     this._cacheManager,
@@ -89,6 +90,7 @@ class AccountCubit extends Cubit<AccountState> {
 
   @override
   Future<void> close() async {
+    _timer?.cancel();
     _appOnResumeSubscription.cancel();
     _connectivitySubscription?.cancel();
     disposeListen.call();
@@ -109,7 +111,6 @@ class AccountCubit extends Cubit<AccountState> {
       }
 
       final UserInfo userInfo = await _userRepository.getUserInfo();
-
       if (isPushNotificationPermissionGranted) {
         await _sendPushToken();
       }
@@ -125,14 +126,17 @@ class AccountCubit extends Cubit<AccountState> {
         milliseconds = currentTime.difference(profileUpdatedAt).inMilliseconds;
       }
 
+      final int millisecondsForTimer = milliseconds > 0
+          ? AppConstants.millisecondsInHour - milliseconds
+          : milliseconds;
+
+      startTimer(millisecondsForTimer);
+
       emit(
         state.copyWith(
           userProfile: _cacheManager.getUserProfile(),
           enableNotifications: (userInfo.pushNotificationsEnabled ?? false) &&
               isPushNotificationPermissionGranted,
-          millisecondsForTimer: milliseconds > 0
-              ? AppConstants.millisecondsInHour - milliseconds
-              : milliseconds,
         ),
       );
     }
@@ -174,6 +178,22 @@ class AccountCubit extends Cubit<AccountState> {
         await _cacheManager.saveUserStatus(userInfo.status);
       }
     }
+  }
+
+  void startTimer(int millisecondsForTimer) {
+    _timer?.cancel();
+    int start = millisecondsForTimer ~/ 1000;
+    _timer = Timer.periodic(
+      const Duration(seconds: 1),
+      (Timer timer) {
+        if (start <= 0) {
+          timer.cancel();
+        }
+        emit(state.copyWith(
+          secondsForTimer: start--,
+        ));
+      },
+    );
   }
 
   Future<UserInfo?> _setPushEnabledForBackend(bool value) async {
@@ -259,7 +279,7 @@ class AccountCubit extends Cubit<AccountState> {
   void hideTimer() {
     emit(
       state.copyWith(
-        millisecondsForTimer: 0,
+        secondsForTimer: 0,
       ),
     );
   }
