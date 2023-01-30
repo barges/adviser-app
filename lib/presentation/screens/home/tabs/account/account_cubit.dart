@@ -130,7 +130,9 @@ class AccountCubit extends Cubit<AccountState> {
           ? AppConstants.millisecondsInHour - milliseconds
           : milliseconds;
 
-      startTimer(millisecondsForTimer);
+      if (millisecondsForTimer > 0) {
+        startTimer(millisecondsForTimer);
+      }
 
       emit(
         state.copyWith(
