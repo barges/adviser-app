@@ -14,60 +14,62 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/histo
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
 List<HistoryUiModel> _groupTopHistory(List<History> data) {
-  final Map<String, List<History>> groupedItem = _groupByStoryId(data);
+  final List<List<History>> groupedItem = _groupByStoryId(data);
 
   final items = <HistoryUiModel>[];
-  groupedItem.forEach((key, value) {
+  for (var value in groupedItem) {
     items.addAll(value.map((e) => HistoryUiModel.data(e)));
     items.add(HistoryUiModel.separator(value.lastOrNull?.question));
-  });
+  }
 
   return items;
 }
 
 List<HistoryUiModel> _groupBottomHistory(List<History> data) {
-  final Map<String, List<History>> groupedItem = _groupByStoryId(data);
+  final List<List<History>> groupedItem = _groupByStoryId(data);
 
   final items = <HistoryUiModel>[];
-  groupedItem.forEach((key, value) {
+  for (var value in groupedItem) {
     items.add(HistoryUiModel.separator(value.lastOrNull?.question));
     items.addAll(value.map((e) => HistoryUiModel.data(e)));
-  });
+  }
 
   return items;
 }
 
-Map<String, List<History>> _groupByStoryId(List<History> data) {
-  final Map<String, List<History>> groupedItem = {};
+List<List<History>> _groupByStoryId(List<History> data) {
+  final List<List<History>> histories = [];
+
   List<History> historiesById = [];
   String? previousId = data.firstOrNull?.question?.storyID;
   for (int i = 0; i < data.length; i++) {
     final History history = data[i];
-    if (i < data.length - 1) {
-      if (history.question?.storyID == previousId) {
-        historiesById.add(history);
-      } else {
-        if (previousId != null) {
-          groupedItem[previousId] = historiesById;
+    final bool isLastIndex = i == data.length - 1;
+    final String? currentStoryId = history.question?.storyID;
+    if (previousId != null && currentStoryId != null) {
+      if (!isLastIndex) {
+        if (currentStoryId == previousId) {
+          historiesById.add(history);
+        } else {
+          histories.add(historiesById);
           historiesById = [];
-          previousId = history.question?.storyID;
+          previousId = currentStoryId;
           historiesById.add(history);
         }
-      }
-    } else {
-      if (previousId != null) {
-        if (history.question?.storyID == previousId) {
+      } else {
+        if (currentStoryId == previousId) {
           historiesById.add(history);
-          groupedItem[previousId] = historiesById;
+          histories.add(historiesById);
         } else {
+          histories.add(historiesById);
           historiesById = [];
           historiesById.add(history);
-          groupedItem[previousId] = historiesById;
+          histories.add(historiesById);
         }
       }
     }
   }
-  return groupedItem;
+  return histories;
 }
 
 class HistoryCubit extends Cubit<HistoryState> {

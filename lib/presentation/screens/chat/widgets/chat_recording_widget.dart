@@ -108,6 +108,7 @@ class ChatRecordingWidget extends StatelessWidget {
               ),
               const Spacer(),
               GestureDetector(
+                key: const Key('stopRecordingButton'),
                 onTap: onStopRecordPressed,
                 child: Container(
                   height: AppConstants.iconButtonSize,

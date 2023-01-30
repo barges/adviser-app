@@ -22,8 +22,6 @@ import 'package:shared_advisor_interface/presentation/services/connectivity_serv
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-bool _pushTokenIsSent = false;
-
 class AccountCubit extends Cubit<AccountState> {
   final TextEditingController commentController = TextEditingController();
   final FocusNode commentNode = FocusNode();
@@ -45,6 +43,7 @@ class AccountCubit extends Cubit<AccountState> {
   late final StreamSubscription<bool> _appOnResumeSubscription;
   StreamSubscription<bool>? _connectivitySubscription;
   late bool isPushNotificationPermissionGranted;
+  Timer? _timer;
 
   AccountCubit(
     this._cacheManager,
@@ -81,7 +80,7 @@ class AccountCubit extends Cubit<AccountState> {
 
           if (isPushNotificationPermissionGranted != newPushPermissionsValue) {
             isPushNotificationPermissionGranted = newPushPermissionsValue;
-            _pushTokenIsSent = false;
+            _cacheManager.pushTokenIsSent = false;
             await refreshUserinfo();
           }
         }
@@ -91,6 +90,7 @@ class AccountCubit extends Cubit<AccountState> {
 
   @override
   Future<void> close() async {
+    _timer?.cancel();
     _appOnResumeSubscription.cancel();
     _connectivitySubscription?.cancel();
     disposeListen.call();
@@ -111,7 +111,6 @@ class AccountCubit extends Cubit<AccountState> {
       }
 
       final UserInfo userInfo = await _userRepository.getUserInfo();
-
       if (isPushNotificationPermissionGranted) {
         await _sendPushToken();
       }
@@ -127,14 +126,17 @@ class AccountCubit extends Cubit<AccountState> {
         milliseconds = currentTime.difference(profileUpdatedAt).inMilliseconds;
       }
 
+      final int millisecondsForTimer = milliseconds > 0
+          ? AppConstants.millisecondsInHour - milliseconds
+          : milliseconds;
+
+      startTimer(millisecondsForTimer);
+
       emit(
         state.copyWith(
           userProfile: _cacheManager.getUserProfile(),
           enableNotifications: (userInfo.pushNotificationsEnabled ?? false) &&
               isPushNotificationPermissionGranted,
-          millisecondsForTimer: milliseconds > 0
-              ? AppConstants.millisecondsInHour - milliseconds
-              : milliseconds,
         ),
       );
     }
@@ -176,6 +178,22 @@ class AccountCubit extends Cubit<AccountState> {
         await _cacheManager.saveUserStatus(userInfo.status);
       }
     }
+  }
+
+  void startTimer(int millisecondsForTimer) {
+    _timer?.cancel();
+    int start = millisecondsForTimer ~/ 1000;
+    _timer = Timer.periodic(
+      const Duration(seconds: 1),
+      (Timer timer) {
+        if (start <= 0) {
+          timer.cancel();
+        }
+        emit(state.copyWith(
+          secondsForTimer: start--,
+        ));
+      },
+    );
   }
 
   Future<UserInfo?> _setPushEnabledForBackend(bool value) async {
@@ -220,7 +238,7 @@ class AccountCubit extends Cubit<AccountState> {
   }
 
   Future<void> _sendPushToken() async {
-    if (!_pushTokenIsSent) {
+    if (!_cacheManager.pushTokenIsSent) {
       if (await _connectivityService.checkConnection()) {
         String? pushToken = await _firebaseMessaging.getToken();
         if (pushToken != null) {
@@ -228,8 +246,14 @@ class AccountCubit extends Cubit<AccountState> {
               SetPushNotificationTokenRequest(
             pushToken: pushToken,
           );
-          _userRepository.sendPushToken(request);
-          _pushTokenIsSent = true;
+          final UserInfo userInfo =
+              await _userRepository.sendPushToken(request);
+          emit(
+            state.copyWith(
+              enableNotifications: userInfo.pushNotificationsEnabled ?? false,
+            ),
+          );
+          _cacheManager.pushTokenIsSent = true;
         }
         _connectivitySubscription?.cancel();
       } else {
@@ -250,14 +274,6 @@ class AccountCubit extends Cubit<AccountState> {
     if (needUpdateInfo is bool && needUpdateInfo == true) {
       refreshUserinfo();
     }
-  }
-
-  void hideTimer() {
-    emit(
-      state.copyWith(
-        millisecondsForTimer: 0,
-      ),
-    );
   }
 
   Future<void> openSettingsUrl() async {

@@ -24,6 +24,16 @@ class DataCachingManager implements CachingManager {
   final GetStorage _localeBox = GetStorage();
   final GetStorage _permissionBox = GetStorage();
 
+  bool _pushTokenIsSent = false;
+
+  @override
+  bool get pushTokenIsSent => _pushTokenIsSent;
+
+  @override
+  set pushTokenIsSent(bool value) {
+    _pushTokenIsSent = value;
+  }
+
   @override
   Future<bool> clearTokenForBrand(Brand brand) async {
     Map<String, dynamic>? tokensMap = _brandsBox.read(_tokensMapKey);
@@ -44,6 +54,7 @@ class DataCachingManager implements CachingManager {
     final bool isOk = await clearTokenForBrand(brand);
     if (isOk) {
       _userBox.erase();
+      _pushTokenIsSent = false;
     }
     return isOk;
   }

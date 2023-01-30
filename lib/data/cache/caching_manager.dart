@@ -7,6 +7,10 @@ import 'package:shared_advisor_interface/data/models/user_info/user_status.dart'
 import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 
 abstract class CachingManager {
+  bool get pushTokenIsSent;
+
+  set pushTokenIsSent(bool value);
+
   Future<void> saveUserProfile(UserProfile? userProfile);
 
   VoidCallback listenUserProfile(ValueChanged<UserProfile> callback);
