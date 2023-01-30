@@ -432,6 +432,120 @@ void main() {
         );
       },
     );
+
+    testWidgets(
+      'appears with "Check internet connection" message'
+      'if Dio throws connect timeout',
+      (WidgetTester tester) async {
+        dioAdapter.onPost(
+          '/experts/login/app',
+          (server) => server.throws(
+            401,
+            DioError(
+                requestOptions: RequestOptions(path: '/experts/login/app'),
+                type: DioErrorType.connectTimeout),
+          ),
+        );
+
+        await pumpLoginScreen(
+          tester: tester,
+        );
+
+        await tester.enterText(
+            find.byType(AppTextField), 'someEmail@gmail.com');
+        await tester.pumpAndSettle();
+
+        await tester.enterText(find.byType(PasswordTextField), '123456');
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byType(AppElevatedButton));
+        await tester.pumpAndSettle();
+
+        expect(
+          find.widgetWithText(
+              AppErrorWidget, S.current.checkYourInternetConnection),
+          findsOneWidget,
+        );
+
+        await tester.pumpAndSettle(const Duration(seconds: 11));
+      },
+    );
+
+    testWidgets(
+      'appears with "Check internet connection" message'
+      'if Dio throws receive timeout',
+      (WidgetTester tester) async {
+        dioAdapter.onPost(
+          '/experts/login/app',
+          (server) => server.throws(
+            401,
+            DioError(
+                requestOptions: RequestOptions(path: '/experts/login/app'),
+                type: DioErrorType.receiveTimeout),
+          ),
+        );
+
+        await pumpLoginScreen(
+          tester: tester,
+        );
+
+        await tester.enterText(
+            find.byType(AppTextField), 'someEmail@gmail.com');
+        await tester.pumpAndSettle();
+
+        await tester.enterText(find.byType(PasswordTextField), '123456');
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byType(AppElevatedButton));
+        await tester.pumpAndSettle();
+
+        expect(
+          find.widgetWithText(
+              AppErrorWidget, S.current.checkYourInternetConnection),
+          findsOneWidget,
+        );
+
+        await tester.pumpAndSettle(const Duration(seconds: 11));
+      },
+    );
+
+    testWidgets(
+      'appears with "Check internet connection" message'
+      'if Dio throws send timeout',
+      (WidgetTester tester) async {
+        dioAdapter.onPost(
+          '/experts/login/app',
+          (server) => server.throws(
+            401,
+            DioError(
+                requestOptions: RequestOptions(path: '/experts/login/app'),
+                type: DioErrorType.sendTimeout),
+          ),
+        );
+
+        await pumpLoginScreen(
+          tester: tester,
+        );
+
+        await tester.enterText(
+            find.byType(AppTextField), 'someEmail@gmail.com');
+        await tester.pumpAndSettle();
+
+        await tester.enterText(find.byType(PasswordTextField), '123456');
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byType(AppElevatedButton));
+        await tester.pumpAndSettle();
+
+        expect(
+          find.widgetWithText(
+              AppErrorWidget, S.current.checkYourInternetConnection),
+          findsOneWidget,
+        );
+
+        await tester.pumpAndSettle(const Duration(seconds: 11));
+      },
+    );
   });
 
   group('Forgot password button', () {

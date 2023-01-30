@@ -128,6 +128,14 @@ void main() {
     return null;
   });
 
+  const MethodChannel('flutter_keyboard_visibility')
+      .setMockMethodCallHandler((methodCall) async {
+    if (methodCall.method == 'listen') {
+      return false;
+    }
+    return null;
+  });
+
   setUpAll(() {
     GetIt.instance.allowReassignment = true;
     dio = Dio();
@@ -200,7 +208,9 @@ void main() {
       'should be displayed on Chat screen',
       (WidgetTester tester) async {
         await pumpChatScreen(
-            tester: tester, chatScreenArguments: ChatScreenArguments());
+            tester: tester,
+            chatScreenArguments: ChatScreenArguments(
+                clientIdFromPush: '63bbab1b793423001e28722e'));
 
         await tester.pumpAndSettle();
 
@@ -212,10 +222,10 @@ void main() {
       'should have 2 options and HistoryWidget should be displayed'
       ' if there are any question ids in ChatScreenArguments',
       (WidgetTester tester) async {
-        await tester.runAsync(() async => await pumpChatScreen(
+        await pumpChatScreen(
             tester: tester,
             chatScreenArguments: ChatScreenArguments(
-                clientIdFromPush: '63bbab1b793423001e28722e')));
+                clientIdFromPush: '63bbab1b793423001e28722e'));
 
         await tester.pumpAndSettle();
 
