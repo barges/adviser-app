@@ -10,7 +10,7 @@ class AccountState with _$AccountState {
     @Default(false) bool enableNotifications,
     @Default(false) bool commentButtonIsActive,
     @Default(false) bool commentHasFocus,
-    @Default(0) int millisecondsForTimer,
+    @Default(0) int secondsForTimer,
     UserProfile? userProfile,
   }) = _AccountState;
 }

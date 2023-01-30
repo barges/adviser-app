@@ -130,7 +130,7 @@ class UserInfoPartWidget extends StatelessWidget {
             Builder(
               builder: (context) {
                 final int millisecondsForTimer = context.select(
-                    (AccountCubit cubit) => cubit.state.millisecondsForTimer);
+                    (AccountCubit cubit) => cubit.state.secondsForTimer);
                 return TileWidget(
                   title: S.of(context).imAvailableNow,
                   iconSVGPath: Assets.vectors.availability.path,
