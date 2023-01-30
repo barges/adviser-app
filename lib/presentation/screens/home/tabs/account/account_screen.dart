@@ -33,8 +33,7 @@ class AccountScreen extends StatelessWidget {
         getIt.get<UserRepository>(),
         getIt.get<PushNotificationManager>(),
         getIt.get<ConnectivityService>(),
-        getIt.get<CheckPermissionService>(),
-        context,
+        (value) => handlePermission(context, value),
       ),
       child: Builder(builder: (context) {
         final AccountCubit accountCubit = context.read<AccountCubit>();
@@ -122,5 +121,12 @@ class AccountScreen extends StatelessWidget {
         );
       }),
     );
+  }
+
+  Future<bool> handlePermission(
+      BuildContext context, bool needShowSettingsAlert) async {
+    return await getIt.get<CheckPermissionService>().handlePermission(
+        context, PermissionType.notification,
+        needShowSettings: needShowSettingsAlert);
   }
 }

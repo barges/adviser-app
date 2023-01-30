@@ -71,11 +71,9 @@ class ChatCubit extends Cubit<ChatState> {
   final AudioPlayerService audioPlayer;
   final AudioRecorderService _audioRecorderService;
   final CheckPermissionService _checkPermissionService;
-  final int _tillShowMessagesInSec =
-      AppConstants.tillShowAnswerTimingMessagesInSec;
-  final int _afterShowMessagesInSec =
-      AppConstants.afterShowAnswerTimingMessagesInSec;
   final _uuid = const Uuid();
+  late final int _tillShowMessagesInSec;
+  late final int _afterShowMessagesInSec;
   int? _recordAudioDuration;
   AnswerRequest? _answerRequest;
   StreamSubscription<RecordingDisposition>? _recordingProgressSubscription;
@@ -122,6 +120,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
     if (needActiveChatTab()) {
       _getData().whenComplete(() {
+        _setAnswerLimitations();
         if (isPublicChat()) {
           _checkTiming();
         }
@@ -130,6 +129,9 @@ class ChatCubit extends Cubit<ChatState> {
 
     _appOnPauseSubscription = _mainCubit.changeAppLifecycleStream.listen(
       (value) async {
+        if (isPublicChat()) {
+          _answerTimer?.cancel();
+        }
         if (value) {
           if (isPublicChat()) {
             _checkTiming();
@@ -140,11 +142,6 @@ class ChatCubit extends Cubit<ChatState> {
             stopRecordingAudio();
           }
           audioPlayer.pause();
-
-          if (isPublicChat()) {
-            _answerTimer?.cancel();
-            _answerTimer = null;
-          }
         }
       },
     );
@@ -183,7 +180,6 @@ class ChatCubit extends Cubit<ChatState> {
     _recordingProgressSubscription = null;
 
     _answerTimer?.cancel();
-    _answerTimer = null;
 
     _answerRequest = null;
 
@@ -202,6 +198,18 @@ class ChatCubit extends Cubit<ChatState> {
     } else {
       await _getPublicOrPrivateQuestion();
     }
+  }
+
+  void _setAnswerLimitations() {
+    _afterShowMessagesInSec =
+        answerLimitationContent?.questionRemindMinutes != null
+            ? answerLimitationContent!.questionRemindMinutes! * 60
+            : AppConstants.afterShowAnswerTimingMessagesInSec;
+    _tillShowMessagesInSec =
+        answerLimitationContent?.questionReturnMinutes != null
+            ? answerLimitationContent!.questionReturnMinutes! * 60 -
+                _afterShowMessagesInSec
+            : AppConstants.tillShowAnswerTimingMessagesInSec;
   }
 
   Future<void> _getAnswerLimitations() async {
@@ -367,7 +375,6 @@ class ChatCubit extends Cubit<ChatState> {
     _mainCubit.updateSessions();
     Get.back();
     _answerTimer?.cancel();
-    _answerTimer = null;
   }
 
   Future<void> startRecordingAudio(BuildContext context) async {
@@ -695,6 +702,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   _startTimer(int tillShowMessagesInSec, int afterShowMessagesInSec) async {
+    _answerTimer?.cancel();
     _answerTimer = Timer(Duration(seconds: tillShowMessagesInSec), () {
       if (state.questionStatus == ChatItemStatusType.taken) {
         const minuteInSec = 60;
@@ -718,8 +726,6 @@ class ChatCubit extends Cubit<ChatState> {
             clearSuccessMessage();
           }
         });
-      } else {
-        _answerTimer = null;
       }
     });
   }
@@ -779,7 +785,6 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<ChatItem?> _sendAnswer() async {
     _answerTimer?.cancel();
-    _answerTimer = null;
 
     ChatItem? answer;
     try {
@@ -1038,7 +1043,7 @@ class ChatCubit extends Cubit<ChatState> {
       answerLimitationContent?.bodySize?.max ??
       AppConstants.maxAttachmentSizeInBytes;
 
-  double get maxAttachmentSizeInMb => maxAttachmentSizeInBytes / 1000000;
+  double get maxAttachmentSizeInMb => maxAttachmentSizeInBytes / (1024 * 1024);
 
   int? get recordAudioDuration => _recordAudioDuration;
 

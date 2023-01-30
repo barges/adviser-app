@@ -18,6 +18,7 @@ class LanguageSectionWidget extends StatelessWidget {
         .select((EditProfileCubit cubit) => cubit.state.chosenLanguageIndex);
     context.select((EditProfileCubit cubit) => cubit.state.updateTextsFlag);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           margin: const EdgeInsets.symmetric(vertical: 24.0),
