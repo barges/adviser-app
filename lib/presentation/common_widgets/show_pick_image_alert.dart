@@ -129,6 +129,8 @@ Future<void> _pickImage(BuildContext context, ImageSource imageSource,
     final ImagePicker picker = ImagePicker();
     final XFile? photoFile = await picker.pickImage(
       source: imageSource,
+      requestFullMetadata: false,
+
       ///Uncomment if we need crop image size
       // maxHeight: 2048.0,
       // maxWidth: 2048.0,
@@ -167,6 +169,7 @@ Future<bool> _checkForGrantedPermission(ImageSource imageSource) async {
           imageSource == ImageSource.gallery &&
           await Permission.storage.status == PermissionStatus.granted) ||
       (Platform.isIOS &&
-          imageSource == ImageSource.gallery &&
-          await Permission.photos.status == PermissionStatus.granted);
+              imageSource == ImageSource.gallery &&
+              await Permission.photos.status == PermissionStatus.granted ||
+          await Permission.photos.status == PermissionStatus.limited);
 }

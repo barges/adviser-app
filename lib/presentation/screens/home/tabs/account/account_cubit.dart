@@ -17,7 +17,6 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_state.dart';
-import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -30,8 +29,7 @@ class AccountCubit extends Cubit<AccountState> {
   final UserRepository _userRepository;
   final ConnectivityService _connectivityService;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  final CheckPermissionService _checkPermissionService;
-  final BuildContext context;
+  final Future<bool> Function(bool needShowSettingsAlert) _handlePermission;
 
   final CachingManager _cacheManager;
 
@@ -51,8 +49,7 @@ class AccountCubit extends Cubit<AccountState> {
     this._userRepository,
     this._pushNotificationManager,
     this._connectivityService,
-    this._checkPermissionService,
-    this.context,
+    this._handlePermission,
   ) : super(const AccountState()) {
     disposeListen = _cacheManager.listenUserProfile((value) {
       emit(state.copyWith(userProfile: value));
@@ -74,9 +71,7 @@ class AccountCubit extends Cubit<AccountState> {
     _appOnResumeSubscription = _mainCubit.changeAppLifecycleStream.listen(
       (value) async {
         if (value) {
-          final bool newPushPermissionsValue = await _checkPermissionService
-              .handlePermission(context, PermissionType.notification,
-                  needShowSettings: false);
+          final bool newPushPermissionsValue = await _handlePermission(false);
 
           if (isPushNotificationPermissionGranted != newPushPermissionsValue) {
             isPushNotificationPermissionGranted = newPushPermissionsValue;
@@ -103,9 +98,8 @@ class AccountCubit extends Cubit<AccountState> {
     if (await _connectivityService.checkConnection()) {
       int milliseconds = 0;
 
-      isPushNotificationPermissionGranted = await _checkPermissionService
-          .handlePermission(context, PermissionType.notification,
-              needShowSettings: false);
+      isPushNotificationPermissionGranted = await _handlePermission(false);
+
       if (isPushNotificationPermissionGranted) {
         _pushNotificationManager.registerForPushNotifications();
       }
@@ -226,8 +220,7 @@ class AccountCubit extends Cubit<AccountState> {
           ),
         );
       } else {
-        _checkPermissionService.handlePermission(
-            context, PermissionType.notification);
+        _handlePermission(true);
       }
     } else {
       await _setPushEnabledForBackend(newValue);

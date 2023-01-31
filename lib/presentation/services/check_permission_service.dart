@@ -10,16 +10,16 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 
 class CheckPermissionService {
-  final CachingManager cacheManager;
+  final CachingManager _cacheManager;
 
-  CheckPermissionService(this.cacheManager);
+  CheckPermissionService(this._cacheManager);
 
   Future<bool> handlePermission(
       BuildContext context, PermissionType permissionType,
       {bool needShowSettings = true}) async {
     PermissionStatus status;
     Map<String, dynamic> permissionStatusesMap =
-        cacheManager.getFirstPermissionStatusesRequestsMap();
+        _cacheManager.getFirstPermissionStatusesRequestsMap();
     switch (permissionType) {
       case PermissionType.camera:
         {
@@ -79,7 +79,7 @@ class CheckPermissionService {
     }
 
     if (status.isPermanentlyDenied) {
-      cacheManager.saveFirstPermissionStatusesRequestsMap(permissionType);
+      _cacheManager.saveFirstPermissionStatusesRequestsMap(permissionType);
     }
 
     return status.isGranted;
