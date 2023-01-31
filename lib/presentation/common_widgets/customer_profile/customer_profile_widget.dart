@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/note.dart';
 import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/widgets/notes_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/widgets/question_properties_widget.dart';
@@ -13,7 +14,8 @@ import 'package:get/get.dart';
 
 class CustomerProfileWidget extends StatelessWidget {
   final String customerId;
-  final ValueChanged<CustomerProfileScreenArguments?>? updateClientInformationCallback;
+  final ValueChanged<CustomerProfileScreenArguments?>?
+      updateClientInformationCallback;
 
   const CustomerProfileWidget({
     Key? key,
@@ -93,52 +95,65 @@ class CustomerProfileWidget extends StatelessWidget {
                                         padding: const EdgeInsets.symmetric(
                                           vertical: 12.0,
                                         ),
-                                        child: Text(
-                                          '${customerInfo.firstName ?? ''} ${customerInfo.lastName ?? ''}',
-                                          textAlign: TextAlign.center,
-                                          style: theme.textTheme.headlineMedium,
+                                        child: Builder(builder: (context) {
+                                          final String? firstName =
+                                              customerInfo.firstName;
+                                          final String? lastName =
+                                              customerInfo.lastName;
+                                          return Text(
+                                            firstName != null &&
+                                                    lastName != null
+                                                ? '$firstName $lastName'
+                                                : S.of(context).notSpecified,
+                                            textAlign: TextAlign.center,
+                                            style:
+                                                theme.textTheme.headlineMedium,
+                                          );
+                                        }),
+                                      ),
+                                      if (customerInfo.gender != null ||
+                                          customerInfo.birthdate != null)
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              customerInfo
+                                                      .birthdate
+                                                      ?.parseDateTimePattern9
+                                                      .capitalize ??
+                                                  '',
+                                              style: theme.textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                color: theme.shadowColor,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 8.0,
+                                            ),
+                                            Container(
+                                              width: 4.0,
+                                              height: 4.0,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          90.0),
+                                                  color: theme.hintColor),
+                                            ),
+                                            const SizedBox(
+                                              width: 8.0,
+                                            ),
+                                            Text(
+                                              customerInfo.gender
+                                                      ?.name(context) ??
+                                                  '',
+                                              style: theme.textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                color: theme.shadowColor,
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            customerInfo
-                                                    .birthdate
-                                                    ?.parseDateTimePattern9
-                                                    .capitalize ??
-                                                '',
-                                            style: theme.textTheme.bodyMedium
-                                                ?.copyWith(
-                                              color: theme.shadowColor,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 8.0,
-                                          ),
-                                          Container(
-                                            width: 4.0,
-                                            height: 4.0,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(90.0),
-                                                color: theme.hintColor),
-                                          ),
-                                          const SizedBox(
-                                            width: 8.0,
-                                          ),
-                                          Text(
-                                            customerInfo.gender
-                                                    ?.name(context) ??
-                                                '',
-                                            style: theme.textTheme.bodyMedium
-                                                ?.copyWith(
-                                              color: theme.shadowColor,
-                                            ),
-                                          )
-                                        ],
-                                      ),
                                     ],
                                   )),
                               Builder(builder: (context) {

@@ -41,7 +41,7 @@
   "public": "Public",
   "forMe": "For me",
   "search": "Search",
-  "imAvailableNow":"I'm available now",
+  "imAvailableNow": "I'm available now",
   "notifications": "Notifications",
   "previewAccount": "Preview account",
   "reviews": "Reviews",
@@ -137,7 +137,7 @@
   "goToAccount": "Go to Account",
   "activeChat": "Active chat",
   "history": "History",
-  "profile":"Profile",
+  "profile": "Profile",
   "personalDetails": "PERSONAL DETAILS",
   "takeQuestion": "Take question",
   "addPhoto": "Add photo",
@@ -167,7 +167,7 @@
   "youCantSendThisMessageBecauseItsLessThanXSeconds": "You can’t send this message because it’s less than {minRecordDurationInSec} seconds",
   "theMaximumSizeOfTheAttachmentsIsXMb": "The maximum size of the attachments is {maxAttachmentSizeInMb}Mb",
   "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": "This question will be returned to the general list after {counter}",
-  "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m":"The answer is not possible, this question will be returned to the general list in ~ 1m",
+  "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m": "The answer is not possible, this question will be returned to the general list in ~ 1m",
   "youHaveARitualRequest": "You have a ritual request",
   "youHaveAPrivateMessage": "You have a private message",
   "youHaveAFewActiveSessions": "You have a few active sessions",
@@ -223,5 +223,6 @@
   "toEnableNotificationYoullNeedToAllowNotificationsInYour": "To enable notification, you’ll need to allow notifications in your phone settings",
   "version": "Version",
   "tapToCopy": "Tap to copy",
-  "copied": "Copied!"
+  "copied": "Copied!",
+  "notSpecified": "Not specified"
 }

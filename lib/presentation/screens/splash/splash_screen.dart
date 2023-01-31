@@ -9,6 +9,7 @@ import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_state.dart';
+import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -28,19 +29,22 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void didChangeDependencies() async {
+    super.didChangeDependencies();
     await precachePicture(
       splashLogo.pictureProvider,
       context,
     );
     FlutterNativeSplash.remove();
-    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) {
-        return SplashCubit(getIt.get<CachingManager>(), context);
+        return SplashCubit(
+          getIt.get<CachingManager>(),
+          Utils.isDarkMode(context),
+        );
       },
       child: Builder(
         builder: (context) {

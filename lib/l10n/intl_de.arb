@@ -40,7 +40,7 @@
   "public": "Öffentlichkeit",
   "forMe": "Für mich",
   "search": "Suche",
-  "imAvailableNow":"Ich bin jetzt verfügbar",
+  "imAvailableNow": "Ich bin jetzt verfügbar",
   "notifications": "Benachrichtigungen",
   "previewAccount": "Konto Vorschau",
   "reviews": "Bewertungen",
@@ -135,7 +135,7 @@
   "offline": "Offline",
   "activeChat": "Aktiver Chat",
   "history": "Geschichte",
-  "profile":"Profil",
+  "profile": "Profil",
   "personalDetails": "PERSÖNLICHE DATEN",
   "takeQuestion": "Frage stellen",
   "goToAccount": "Gehen Sie zu Konto",
@@ -166,7 +166,7 @@
   "youCantSendThisMessageBecauseItsLessThanXSeconds": "Sie können diese Nachricht nicht senden, da sie weniger als {minRecordDurationInSec} Sekunden dauert",
   "theMaximumSizeOfTheAttachmentsIsXMb": "Die maximale Größe der Anhänge beträgt {maxAttachmentSizeInMb} MB",
   "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": "Diese Frage wird nach {counter} an die allgemeine Liste zurückgegeben",
-  "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m":"Die Antwort ist nicht möglich, diese Frage wird in ~ 1 Minute an die allgemeine Liste zurückgegeben",
+  "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m": "Die Antwort ist nicht möglich, diese Frage wird in ~ 1 Minute an die allgemeine Liste zurückgegeben",
   "youHaveARitualRequest": "Sie haben eine rituelle Bitte",
   "youHaveAPrivateMessage": "Du hast eine private Nachricht",
   "youHaveAFewActiveSessions": "Sie haben einige aktive Sitzungen",
@@ -174,7 +174,6 @@
   "whenYouHelpYourFirstClientYouWillSeeYourSessionHistoryHere": "Wenn Sie Ihrem ersten Kunden helfen, sehen Sie hier Ihren Sitzungsverlauf.",
   "yourClientSessionHistoryWillAppearHere": "Ihr Client-Sitzungsverlauf wird hier angezeigt",
   "statusTextMayNotExceed300Characters": "Der Statustext darf 300 Zeichen nicht überschreiten",
-
   "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgain": "Uh-oh. Es sieht so aus, als hätten Sie Ihre Verbindung verloren. Bitte versuche es erneut.",
   "requiredField": "Pflichtfeld",
   "customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuild": "Kunden möchten wissen, dass Sie eine echte Person sind. Je mehr Fotos Sie hinzufügen, desto mehr Vertrauen können Sie aufbauen.",
@@ -223,5 +222,6 @@
   "toEnableNotificationYoullNeedToAllowNotificationsInYour": "Um die Benachrichtigung zu aktivieren, müssen Sie Benachrichtigungen in Ihren Telefoneinstellungen zulassen",
   "version": "Ausführung",
   "tapToCopy": "Zum Kopieren tippen",
-  "copied": "Kopiert!"
+  "copied": "Kopiert!",
+  "notSpecified": "Nicht angegeben"
 }

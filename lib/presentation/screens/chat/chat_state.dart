@@ -27,6 +27,8 @@ class ChatState with _$ChatState {
     Stream<RecordingDisposition>? recordingStream,
     ChatItem? questionFromDB,
     ChatItemStatusType? questionStatus,
-    CustomerProfileScreenArguments? appBarUpdateArguments,
+    @Default(CustomerProfileScreenArguments(
+      clientName: '',
+    ),) CustomerProfileScreenArguments? appBarUpdateArguments,
   }) = _ChatState;
 }

@@ -67,6 +67,8 @@ class ChatContentWidget extends StatelessWidget {
     final ChatItemStatusType? questionStatus =
         context.select((ChatCubit cubit) => cubit.state.questionStatus);
 
+    logger.d(appBarUpdateArguments?.clientName);
+
     return WillPopScope(
       onWillPop: () => Future.value(
           !(chatCubit.chatScreenArguments.publicQuestionId != null &&
@@ -84,9 +86,7 @@ class ChatContentWidget extends StatelessWidget {
         child: Scaffold(
           body: Scaffold(
             appBar: ChatConversationAppBar(
-                title: appBarUpdateArguments?.clientName ??
-                    questionFromDB?.clientName ??
-                    '',
+                title: appBarUpdateArguments?.clientName,
                 zodiacSign: appBarUpdateArguments?.zodiacSign ??
                     questionFromDB?.clientInformation?.zodiac,
                 publicQuestionId:

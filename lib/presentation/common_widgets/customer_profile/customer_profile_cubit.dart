@@ -31,10 +31,14 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
       ),
     );
     if (updateClientInformation != null) {
+      final String? firstName = customerInfo.firstName;
+      final String? lastName = customerInfo.lastName;
       updateClientInformation!(
         CustomerProfileScreenArguments(
           customerID: customerID,
-          clientName: '${customerInfo.firstName} ${customerInfo.lastName}',
+          clientName: firstName != null && lastName != null
+              ? '$firstName $lastName'
+              : null,
           zodiacSign: customerInfo.zodiac,
         ),
       );
