@@ -76,7 +76,8 @@ class AppInterceptor extends Interceptor {
       _mainCubit.updateErrorMessage(
         NetworkError(err.response?.data['localizedMessage'] ??
             err.response?.data['message'] ??
-            err.response?.data['status']),
+            err.response?.data['status'] ??
+            '${err.response?.statusCode} ${err.response?.realUri}'),
       );
     }
     return super.onError(err, handler);
