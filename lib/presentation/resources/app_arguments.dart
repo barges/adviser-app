@@ -92,3 +92,17 @@ class CustomerSessionsScreenArguments {
     required this.marketIndex,
   });
 }
+
+class ForceUpdateScreenArguments {
+  final String? title;
+  final String? message;
+  final String? updateLink;
+  final String? moreLink;
+
+  ForceUpdateScreenArguments({
+    this.title,
+    this.message,
+    this.updateLink,
+    this.moreLink,
+  });
+}
