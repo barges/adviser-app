@@ -14,14 +14,14 @@ import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.da
 
 class ChatConversationAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  final String title;
+  final String? title;
   final ZodiacSign? zodiacSign;
   final VoidCallback? returnInQueueButtonOnTap;
   final String? publicQuestionId;
 
   const ChatConversationAppBar({
     Key? key,
-    required this.title,
+    this.title,
     this.zodiacSign,
     this.returnInQueueButtonOnTap,
     this.publicQuestionId,
@@ -66,8 +66,7 @@ class ChatConversationAppBar extends StatelessWidget
                 final Brand selectedBrand = context
                     .select((MainCubit cubit) => cubit.state.currentBrand);
                 return Expanded(
-                  child: title.isNotEmpty
-                      ? Column(
+                  child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -83,7 +82,7 @@ class ChatConversationAppBar extends StatelessWidget
                                   const SizedBox(width: 12.0),
                                   Expanded(
                                     child: Text(
-                                      title,
+                                      title ?? S.of(context).notSpecified,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.start,
@@ -106,8 +105,7 @@ class ChatConversationAppBar extends StatelessWidget
                               ),
                             ),
                           ],
-                        )
-                      : const SizedBox.shrink(),
+                        ),
                 );
               }),
               // if (publicQuestionId != null &&

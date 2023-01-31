@@ -222,5 +222,6 @@
   "toEnableNotificationYoullNeedToAllowNotificationsInYour": "Um die Benachrichtigung zu aktivieren, müssen Sie Benachrichtigungen in Ihren Telefoneinstellungen zulassen",
   "version": "Ausführung",
   "tapToCopy": "Zum Kopieren tippen",
-  "copied": "Kopiert!"
+  "copied": "Kopiert!",
+  "notSpecified": "Nicht angegeben"
 }

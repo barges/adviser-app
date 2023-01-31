@@ -39,7 +39,7 @@ class CustomerProfileScreenArguments {
   final String? clientName;
   final ZodiacSign? zodiacSign;
 
-  CustomerProfileScreenArguments({
+ const CustomerProfileScreenArguments({
     this.customerID,
     this.clientName,
     this.zodiacSign,
@@ -95,13 +95,13 @@ class CustomerSessionsScreenArguments {
 
 class ForceUpdateScreenArguments {
   final String? title;
-  final String? message;
+  final String? description;
   final String? updateLink;
   final String? moreLink;
 
   ForceUpdateScreenArguments({
     this.title,
-    this.message,
+    this.description,
     this.updateLink,
     this.moreLink,
   });

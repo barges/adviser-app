@@ -67,7 +67,7 @@ class _ForceUpdateScreenState extends State<ForceUpdateScreen> {
                             height: 8.0,
                           ),
                           Text(
-                            _arguments?.message ??
+                            _arguments?.description ??
                                 S
                                     .of(context)
                                     .thisVersionOfTheAppIsNoLongerSupported,

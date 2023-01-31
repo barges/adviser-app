@@ -192,6 +192,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "notEnoughConversationsCheckOurProfileGuide":
             MessageLookupByLibrary.simpleMessage(
                 "Não há conversas suficientes? Confira nosso Guia de Perfil."),
+        "notSpecified":
+            MessageLookupByLibrary.simpleMessage("Não especificado"),
         "note": MessageLookupByLibrary.simpleMessage("Nota"),
         "notes": MessageLookupByLibrary.simpleMessage("Notas"),
         "notifications": MessageLookupByLibrary.simpleMessage("Notificações"),

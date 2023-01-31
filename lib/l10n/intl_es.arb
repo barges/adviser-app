@@ -223,5 +223,6 @@
   "toEnableNotificationYoullNeedToAllowNotificationsInYour": "Para habilitar la notificación, deberá permitir las notificaciones en la configuración de su teléfono",
   "version": "Versión",
   "tapToCopy": "Toca para copiar",
-  "copied": "¡Copiado!"
+  "copied": "¡Copiado!",
+  "notSpecified": "No especificado"
 }

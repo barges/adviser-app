@@ -14,6 +14,7 @@ const String _messageKey = 'message';
 const String _statusKey = 'status';
 const String _localizedMessageKey = 'localizedMessage';
 const String _titleKey = 'title';
+const String _descriptionKey = 'description';
 const String _updateLinkKey = 'update_link';
 const String _moreLinkKey = 'more_link';
 
@@ -51,7 +52,7 @@ class AppInterceptor extends Interceptor {
 
       final arguments = ForceUpdateScreenArguments(
         title: data[_titleKey],
-        message: data[_messageKey],
+        description: data[_descriptionKey],
         updateLink: data[_updateLinkKey],
         moreLink: data[_moreLinkKey],
       );

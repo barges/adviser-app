@@ -223,5 +223,6 @@
   "toEnableNotificationYoullNeedToAllowNotificationsInYour": "To enable notification, you’ll need to allow notifications in your phone settings",
   "version": "Version",
   "tapToCopy": "Tap to copy",
-  "copied": "Copied!"
+  "copied": "Copied!",
+  "notSpecified": "Not specified"
 }

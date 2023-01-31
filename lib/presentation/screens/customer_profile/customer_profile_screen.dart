@@ -21,7 +21,7 @@ class CustomerProfileScreen extends StatelessWidget {
                 cubit.state.appBarUpdateArguments);
         return Scaffold(
           appBar: ChatConversationAppBar(
-            title: appBarUpdateArguments?.clientName ?? '',
+            title: appBarUpdateArguments?.clientName,
             zodiacSign: appBarUpdateArguments?.zodiacSign,
           ),
           body: appBarUpdateArguments?.customerID != null
