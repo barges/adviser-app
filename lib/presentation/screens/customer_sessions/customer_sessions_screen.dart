@@ -37,7 +37,7 @@ class CustomerSessionsScreen extends StatelessWidget {
           return Scaffold(
               backgroundColor: Theme.of(context).canvasColor,
               appBar: ChatConversationAppBar(
-                title: clientName ?? '',
+                title: clientName,
                 zodiacSign: zodiacSign,
               ),
               body: Builder(builder: (context) {
