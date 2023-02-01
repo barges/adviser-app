@@ -190,6 +190,7 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   Future<void> getPublicQuestions(
       {FortunicaUserStatus? status, bool refresh = false}) async {
+
     _isPublicLoading = true;
     if (refresh) {
       _publicHasMore = true;
