@@ -65,7 +65,7 @@ class AppInterceptor extends Interceptor {
     }
     if (err.response?.statusCode == 401) {
       if (Get.currentRoute != AppRoutes.login) {
-        _cachingManager.clearTokenForBrand(
+        _cachingManager.logout(
           _mainCubit.state.currentBrand,
         );
         Get.offNamedUntil(
