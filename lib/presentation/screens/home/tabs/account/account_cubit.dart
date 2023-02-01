@@ -21,6 +21,8 @@ import 'package:shared_advisor_interface/presentation/services/connectivity_serv
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+bool _isFirstLoadUserInfo = true;
+
 class AccountCubit extends Cubit<AccountState> {
   final TextEditingController commentController = TextEditingController();
   final FocusNode commentNode = FocusNode();
@@ -66,7 +68,6 @@ class AccountCubit extends Cubit<AccountState> {
         ),
       );
     });
-    refreshUserinfo();
 
     _appOnResumeSubscription = _mainCubit.changeAppLifecycleStream.listen(
       (value) async {
@@ -81,6 +82,8 @@ class AccountCubit extends Cubit<AccountState> {
         }
       },
     );
+
+    firstGetUserInfo();
   }
 
   @override
@@ -92,6 +95,12 @@ class AccountCubit extends Cubit<AccountState> {
     commentController.dispose();
     commentNode.dispose();
     return super.close();
+  }
+
+  Future<void> firstGetUserInfo() async {
+    if (_isFirstLoadUserInfo) {
+      await refreshUserinfo();
+    }
   }
 
   Future<void> refreshUserinfo() async {
@@ -135,6 +144,7 @@ class AccountCubit extends Cubit<AccountState> {
               isPushNotificationPermissionGranted,
         ),
       );
+      _isFirstLoadUserInfo = false;
     }
   }
 
