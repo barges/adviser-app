@@ -300,26 +300,6 @@ class S {
     );
   }
 
-  /// `English`
-  String get english {
-    return Intl.message(
-      'English',
-      name: 'english',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Portuguese`
-  String get portuguese {
-    return Intl.message(
-      'Portuguese',
-      name: 'portuguese',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Workspaces`
   String get workspaces {
     return Intl.message(
@@ -425,16 +405,6 @@ class S {
     return Intl.message(
       'Choose email app',
       name: 'chooseEmailApp',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Fortunica`
-  String get fortunica {
-    return Intl.message(
-      'Fortunica',
-      name: 'fortunica',
       desc: '',
       args: [],
     );
@@ -710,66 +680,6 @@ class S {
     );
   }
 
-  /// `Better than`
-  String get betterThan {
-    return Intl.message(
-      'Better than',
-      name: 'betterThan',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `advisors`
-  String get advisors {
-    return Intl.message(
-      'advisors',
-      name: 'advisors',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `places up from last month`
-  String get placesUpFromLastMonth {
-    return Intl.message(
-      'places up from last month',
-      name: 'placesUpFromLastMonth',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Personal Balance`
-  String get personalBalance {
-    return Intl.message(
-      'Personal Balance',
-      name: 'personalBalance',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `New customers`
-  String get newCustomers {
-    return Intl.message(
-      'New customers',
-      name: 'newCustomers',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Sales`
-  String get sales {
-    return Intl.message(
-      'Sales',
-      name: 'sales',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Customers`
   String get customers {
     return Intl.message(
@@ -935,36 +845,6 @@ class S {
     return Intl.message(
       'Quick Answers',
       name: 'quickAnswers',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `People helped`
-  String get peopleHelped {
-    return Intl.message(
-      'People helped',
-      name: 'peopleHelped',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Customer Profile`
-  String get customerProfile {
-    return Intl.message(
-      'Customer Profile',
-      name: 'customerProfile',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Top spender`
-  String get topSpender {
-    return Intl.message(
-      'Top spender',
-      name: 'topSpender',
       desc: '',
       args: [],
     );

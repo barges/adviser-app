@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/list_tile_content_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -54,7 +55,7 @@ class PrivateChatsListTileWidget extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          question.clientName ?? '',
+                          question.clientName ?? S.of(context).notSpecified,
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.labelMedium?.copyWith(
                             fontSize: 15.0,

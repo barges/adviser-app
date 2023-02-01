@@ -26,7 +26,7 @@ class SearchListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => SearchListCubit(
+      create: (_) => SearchListCubit(
         getIt.get<ChatsRepository>(),
         MediaQuery.of(context).size.height,
         closeOnTap,
@@ -110,7 +110,8 @@ class SearchListWidget extends StatelessWidget {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      question.clientName ?? '',
+                                      question.clientName ??
+                                          S.of(context).notSpecified,
                                       overflow: TextOverflow.ellipsis,
                                       style: Theme.of(context)
                                           .textTheme
