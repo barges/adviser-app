@@ -146,13 +146,12 @@ class SessionsCubit extends Cubit<SessionsState> {
   }
 
   void goToCustomerProfile(ChatItem question) {
-    if ((question.clientID != null || question.id != null) &&
-        question.clientName != null) {
+    if (question.clientID != null || question.id != null) {
       Get.toNamed(
         AppRoutes.customerProfile,
         arguments: CustomerProfileScreenArguments(
           customerID: question.clientID ?? question.id!,
-          clientName: question.clientName!,
+          clientName: question.clientName,
           zodiacSign: question.clientInformation?.zodiac,
         ),
       );

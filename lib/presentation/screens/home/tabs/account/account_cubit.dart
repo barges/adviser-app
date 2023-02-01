@@ -21,8 +21,6 @@ import 'package:shared_advisor_interface/presentation/services/connectivity_serv
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-bool _isFirstLoadUserInfo = true;
-
 class AccountCubit extends Cubit<AccountState> {
   final TextEditingController commentController = TextEditingController();
   final FocusNode commentNode = FocusNode();
@@ -98,7 +96,7 @@ class AccountCubit extends Cubit<AccountState> {
   }
 
   Future<void> firstGetUserInfo() async {
-    if (_isFirstLoadUserInfo) {
+    if (_cacheManager.isFirstLoadUserInfo) {
       await refreshUserinfo();
     }
   }
@@ -144,7 +142,7 @@ class AccountCubit extends Cubit<AccountState> {
               isPushNotificationPermissionGranted,
         ),
       );
-      _isFirstLoadUserInfo = false;
+      _cacheManager.isFirstLoadUserInfo = false;
     }
   }
 

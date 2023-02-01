@@ -25,6 +25,7 @@ class DataCachingManager implements CachingManager {
   final GetStorage _permissionBox = GetStorage();
 
   bool _pushTokenIsSent = false;
+  bool _isFirstLoadUserInfo = true;
 
   @override
   bool get pushTokenIsSent => _pushTokenIsSent;
@@ -32,6 +33,14 @@ class DataCachingManager implements CachingManager {
   @override
   set pushTokenIsSent(bool value) {
     _pushTokenIsSent = value;
+  }
+
+  @override
+  bool get isFirstLoadUserInfo => _isFirstLoadUserInfo;
+
+  @override
+  set isFirstLoadUserInfo(bool value) {
+    _isFirstLoadUserInfo = value;
   }
 
   @override
@@ -55,6 +64,7 @@ class DataCachingManager implements CachingManager {
     if (isOk) {
       _userBox.erase();
       _pushTokenIsSent = false;
+      _isFirstLoadUserInfo = true;
     }
     return isOk;
   }
