@@ -16,6 +16,7 @@ import 'package:shared_advisor_interface/data/models/user_info/user_status.dart'
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -37,8 +38,8 @@ class SessionsCubit extends Cubit<SessionsState> {
   late final VoidCallback disposeUserProfileListen;
   final BuildContext context;
 
-  final List<ChatItem> _publicQuestions = [];
-  final List<ChatItem> _conversationsList = [];
+  List<ChatItem> _publicQuestions = [];
+  List<ChatItem> _conversationsList = [];
 
   UserStatus? previousStatus;
 
@@ -190,92 +191,96 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   Future<void> getPublicQuestions(
       {FortunicaUserStatus? status, bool refresh = false}) async {
-
-    _isPublicLoading = true;
-    if (refresh) {
-      _publicHasMore = true;
-      _publicQuestions.clear();
-    }
-    if (_publicHasMore &&
-        await _connectivityService.checkConnection() &&
-        (status ?? cacheManager.getUserStatus()?.status) ==
-            FortunicaUserStatus.live) {
-      _lastId = _publicQuestions.lastOrNull?.id;
-      String? filtersLanguage;
-      if (state.userMarkets.isNotEmpty) {
-        final MarketsType marketsType =
-            state.userMarkets[state.currentMarketIndexForPublic];
-        filtersLanguage =
-            marketsType != MarketsType.all ? marketsType.name : null;
+    if (!_isPublicLoading) {
+      _isPublicLoading = true;
+      if (refresh) {
+        _publicHasMore = true;
+        _publicQuestions = [];
       }
+      if (_publicHasMore &&
+          await _connectivityService.checkConnection() &&
+          (status ?? cacheManager.getUserStatus()?.status) ==
+              FortunicaUserStatus.live) {
+        _lastId = _publicQuestions.lastOrNull?.id;
+        String? filtersLanguage;
+        if (state.userMarkets.isNotEmpty) {
+          final MarketsType marketsType =
+              state.userMarkets[state.currentMarketIndexForPublic];
+          filtersLanguage =
+              marketsType != MarketsType.all ? marketsType.name : null;
+        }
 
-      final QuestionsListResponse result = await _repository.getPublicQuestions(
-          limit: AppConstants.questionsLimit,
-          lastId: _lastId,
-          filtersLanguage: filtersLanguage);
-      _publicHasMore = result.hasMore ?? true;
+        final QuestionsListResponse result =
+            await _repository.getPublicQuestions(
+                limit: AppConstants.questionsLimit,
+                lastId: _lastId,
+                filtersLanguage: filtersLanguage);
+        _publicHasMore = result.hasMore ?? true;
 
-      _publicQuestions.addAll(result.questions ?? const []);
+        _publicQuestions.addAll(result.questions ?? const []);
 
-      if (_publicQuestions.firstOrNull?.status == ChatItemStatusType.taken) {
-        emit(state.copyWith(
-          publicQuestions: List.of(_publicQuestions),
-          disabledIndexes: [1],
-          appSuccess: UISuccess(UISuccessType
-              .youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse),
-        ));
-      } else {
-        emit(state.copyWith(
-          publicQuestions: List.of(_publicQuestions),
-          disabledIndexes: [],
-          appSuccess: const EmptySuccess(),
-        ));
+        if (_publicQuestions.firstOrNull?.status == ChatItemStatusType.taken) {
+          emit(state.copyWith(
+            publicQuestions: List.of(_publicQuestions),
+            disabledIndexes: [1],
+            appSuccess: UISuccess(UISuccessType
+                .youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse),
+          ));
+        } else {
+          emit(state.copyWith(
+            publicQuestions: List.of(_publicQuestions),
+            disabledIndexes: [],
+            appSuccess: const EmptySuccess(),
+          ));
+        }
       }
+      _isPublicLoading = false;
     }
-    _isPublicLoading = false;
   }
 
   Future<void> getConversations(
       {FortunicaUserStatus? status, bool refresh = false}) async {
-    _isConversationsLoading = true;
-    if (refresh) {
-      _conversationsHasMore = true;
-      _conversationsLastItem = null;
-      _conversationsList.clear();
-    }
-    if (_conversationsHasMore &&
-        await _connectivityService.checkConnection() &&
-        (status ?? cacheManager.getUserStatus()?.status) ==
-            FortunicaUserStatus.live) {
-      String? filtersLanguage;
-      if (state.userMarkets.isNotEmpty) {
-        final MarketsType marketsType =
-            state.userMarkets[state.currentMarketIndexForPrivate];
-        filtersLanguage =
-            marketsType != MarketsType.all ? marketsType.name : null;
+    if (!_isConversationsLoading) {
+      _isConversationsLoading = true;
+      if (refresh) {
+        _conversationsHasMore = true;
+        _conversationsLastItem = null;
+        _conversationsList = [];
       }
+      if (_conversationsHasMore &&
+          await _connectivityService.checkConnection() &&
+          (status ?? cacheManager.getUserStatus()?.status) ==
+              FortunicaUserStatus.live) {
+        String? filtersLanguage;
+        if (state.userMarkets.isNotEmpty) {
+          final MarketsType marketsType =
+              state.userMarkets[state.currentMarketIndexForPrivate];
+          filtersLanguage =
+              marketsType != MarketsType.all ? marketsType.name : null;
+        }
 
-      final QuestionsListResponse result =
-          await _repository.getConversationsList(
-        limit: AppConstants.questionsLimit,
-        filtersLanguage: filtersLanguage,
-        lastItem: _conversationsLastItem,
-      );
+        final QuestionsListResponse result =
+            await _repository.getConversationsList(
+          limit: AppConstants.questionsLimit,
+          filtersLanguage: filtersLanguage,
+          lastItem: _conversationsLastItem,
+        );
 
-      _conversationsHasMore = result.hasMore ?? true;
-      _conversationsLastItem = result.lastItem;
+        _conversationsHasMore = result.hasMore ?? true;
+        _conversationsLastItem = result.lastItem;
 
-      _conversationsList.addAll(result.questions ?? const []);
+        _conversationsList.addAll(result.questions ?? const []);
 
-      emit(
-        state.copyWith(
-          conversationsList: List.of(
-            _conversationsList,
+        emit(
+          state.copyWith(
+            conversationsList: List.of(
+              _conversationsList,
+            ),
           ),
-        ),
-      );
+        );
+      }
+      _isConversationsLoading = false;
     }
-    _isConversationsLoading = false;
   }
 
 // Future<void> getHistoryList(
