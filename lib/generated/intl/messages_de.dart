@@ -65,7 +65,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "ascendant": MessageLookupByLibrary.simpleMessage("Aufsteigend"),
         "astrology": MessageLookupByLibrary.simpleMessage("Astrologie"),
         "audioMessage": MessageLookupByLibrary.simpleMessage("Audio-Nachricht"),
-        "auraReading": MessageLookupByLibrary.simpleMessage("Aura-Lesen"),
         "avgDailyEarnings":
             MessageLookupByLibrary.simpleMessage("Durchschn Tagesverdienst"),
         "back": MessageLookupByLibrary.simpleMessage("Zurück"),
@@ -270,6 +269,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "signIn": MessageLookupByLibrary.simpleMessage("Einloggen"),
         "similarArticles":
             MessageLookupByLibrary.simpleMessage("Ähnliche Artikel"),
+        "soulmateReading":
+            MessageLookupByLibrary.simpleMessage("Seelenpartner Reading"),
         "stats": MessageLookupByLibrary.simpleMessage("Statistiken"),
         "statusText": MessageLookupByLibrary.simpleMessage("Statustext"),
         "statusTextMayNotExceed300Characters":
