@@ -10,6 +10,14 @@ import 'package:shared_advisor_interface/presentation/resources/app_arguments.da
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
 
+const String _messageKey = 'message';
+const String _statusKey = 'status';
+const String _localizedMessageKey = 'localizedMessage';
+const String _titleKey = 'title';
+const String _descriptionKey = 'description';
+const String _updateLinkKey = 'update_link';
+const String _moreLinkKey = 'more_link';
+
 class AppInterceptor extends Interceptor {
   final MainCubit _mainCubit;
   final CachingManager _cachingManager;
@@ -40,20 +48,38 @@ class AppInterceptor extends Interceptor {
     _mainCubit.updateIsLoading(false);
 
     if (err.response?.statusCode == 426) {
-      Get.offNamedUntil(AppRoutes.forceUpdate, (route) => false);
+      final Map<String, dynamic> data = err.response?.data;
+
+      final arguments = ForceUpdateScreenArguments(
+        title: data[_titleKey],
+        description: data[_descriptionKey],
+        updateLink: data[_updateLinkKey],
+        moreLink: data[_moreLinkKey],
+      );
+
+      Get.offNamedUntil(
+        AppRoutes.forceUpdate,
+        arguments: arguments,
+        (route) => false,
+      );
     }
     if (err.response?.statusCode == 401) {
       if (Get.currentRoute != AppRoutes.login) {
         _cachingManager.clearTokenForBrand(
           _mainCubit.state.currentBrand,
         );
-        Get.offNamedUntil(AppRoutes.login, (route) => false);
+        Get.offNamedUntil(
+          AppRoutes.login,
+          (route) => false,
+        );
         _mainCubit.updateErrorMessage(
           UIError(uiErrorType: UIErrorType.blocked),
         );
       } else {
         _mainCubit.updateErrorMessage(
-          UIError(uiErrorType: UIErrorType.wrongUsernameAndOrPassword),
+          UIError(
+            uiErrorType: UIErrorType.wrongUsernameAndOrPassword,
+          ),
         );
       }
     } else if (err.response?.statusCode == 451 ||
@@ -74,10 +100,11 @@ class AppInterceptor extends Interceptor {
       );
     } else {
       _mainCubit.updateErrorMessage(
-        NetworkError(err.response?.data['localizedMessage'] ??
-            err.response?.data['message'] ??
-            err.response?.data['status'] ??
-            '${err.response?.statusCode} ${err.response?.realUri}'),
+        NetworkError(
+          err.response?.data[_localizedMessageKey] ??
+              err.response?.data[_messageKey] ??
+              err.response?.data[_statusKey],
+        ),
       );
     }
     return super.onError(err, handler);

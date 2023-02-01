@@ -54,7 +54,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "addNew": MessageLookupByLibrary.simpleMessage("Neue hinzufügen"),
         "addNote": MessageLookupByLibrary.simpleMessage("Notiz Hinzufügen"),
         "addPhoto": MessageLookupByLibrary.simpleMessage("Foto hinzufügen"),
-        "advisors": MessageLookupByLibrary.simpleMessage("Berater"),
         "all": MessageLookupByLibrary.simpleMessage("Alle"),
         "allMarkets": MessageLookupByLibrary.simpleMessage("Alle Märkte"),
         "allOurBrands":
@@ -72,7 +71,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "back": MessageLookupByLibrary.simpleMessage("Zurück"),
         "balanceTransactions":
             MessageLookupByLibrary.simpleMessage("Guthaben & Transaktionen"),
-        "betterThan": MessageLookupByLibrary.simpleMessage("Besser als"),
         "birthTown": MessageLookupByLibrary.simpleMessage("Geburtsort"),
         "blocked": MessageLookupByLibrary.simpleMessage("Verstopft"),
         "born": MessageLookupByLibrary.simpleMessage("Geboren"),
@@ -104,7 +102,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Bestätige neues Passwort"),
         "copied": MessageLookupByLibrary.simpleMessage("Kopiert!"),
         "courses": MessageLookupByLibrary.simpleMessage("Kurse"),
-        "customerProfile": MessageLookupByLibrary.simpleMessage("Kundenprofil"),
         "customerSupport": MessageLookupByLibrary.simpleMessage("Kundendienst"),
         "customers": MessageLookupByLibrary.simpleMessage("Kunden"),
         "customersComeBackToYouAfterBuyingFirstSessionPlatform":
@@ -128,7 +125,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "editProfile":
             MessageLookupByLibrary.simpleMessage("Profil bearbeiten"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
-        "english": MessageLookupByLibrary.simpleMessage("Englisch"),
         "enterNewPassword":
             MessageLookupByLibrary.simpleMessage("Neues Passwort eingeben"),
         "enterYourEmail": MessageLookupByLibrary.simpleMessage(
@@ -144,7 +140,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Passwort vergessen"),
         "forgotYourPassword": MessageLookupByLibrary.simpleMessage(
             "Haben Sie Ihr Passwort vergessen"),
-        "fortunica": MessageLookupByLibrary.simpleMessage("Fortunica"),
         "fromXsecToYmin": m0,
         "goToAccount":
             MessageLookupByLibrary.simpleMessage("Gehen Sie zu Konto"),
@@ -171,7 +166,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "messageIsNotSent": MessageLookupByLibrary.simpleMessage(
             "Nachricht wird nicht gesendet"),
         "myGallery": MessageLookupByLibrary.simpleMessage("Meine Gallerie"),
-        "newCustomers": MessageLookupByLibrary.simpleMessage("Neue Kunden"),
         "newLabel": MessageLookupByLibrary.simpleMessage("Neu"),
         "newMandatoryArticleIsAvailable": MessageLookupByLibrary.simpleMessage(
             "Neuer Pflichtartikel ist verfügbar!"),
@@ -191,6 +185,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notEnoughConversationsCheckOurProfileGuide":
             MessageLookupByLibrary.simpleMessage(
                 "Nicht genug Gespräche? Sehen Sie sich unseren Profilleitfaden an."),
+        "notSpecified": MessageLookupByLibrary.simpleMessage("Nicht angegeben"),
         "note": MessageLookupByLibrary.simpleMessage("Notiz"),
         "notes": MessageLookupByLibrary.simpleMessage("Notizen"),
         "notifications":
@@ -207,20 +202,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "otherBrands": MessageLookupByLibrary.simpleMessage("Andere Marken"),
         "palmReading": MessageLookupByLibrary.simpleMessage("Handlesen"),
         "password": MessageLookupByLibrary.simpleMessage("Passwort"),
-        "peopleHelped":
-            MessageLookupByLibrary.simpleMessage("Menschen haben geholfen"),
         "perfomanceOverviewAnalytics": MessageLookupByLibrary.simpleMessage(
             "Leistungsübersicht Analytics"),
         "permissionNeeded":
             MessageLookupByLibrary.simpleMessage("Erlaubnis erforderlich"),
-        "personalBalance":
-            MessageLookupByLibrary.simpleMessage("Persönliches Gleichgewicht"),
         "personalDetails":
             MessageLookupByLibrary.simpleMessage("PERSÖNLICHE DATEN"),
         "photoIsRequired":
             MessageLookupByLibrary.simpleMessage("Foto ist erforderlich"),
-        "placesUpFromLastMonth": MessageLookupByLibrary.simpleMessage(
-            "Plätze im Vergleich zum letzten Monat"),
         "pleaseConfirmThatYourAnswerIsReadyToBeSent":
             MessageLookupByLibrary.simpleMessage(
                 "Bitte bestätigen Sie, dass Ihre Antwort zum Senden bereit ist"),
@@ -238,7 +227,6 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Bitte melden Sie sich bei der Webversion Ihres Kontos an."),
         "pleaseUpdateTheApp": MessageLookupByLibrary.simpleMessage(
             "Bitte aktualisieren Sie die App"),
-        "portuguese": MessageLookupByLibrary.simpleMessage("Portugiesisch"),
         "preferNotToAnswer":
             MessageLookupByLibrary.simpleMessage("Keine Angabe"),
         "preferredTopics":
@@ -272,7 +260,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "return_": MessageLookupByLibrary.simpleMessage("Zurückkehren"),
         "reviews": MessageLookupByLibrary.simpleMessage("Bewertungen"),
         "ritual": MessageLookupByLibrary.simpleMessage("Ritual"),
-        "sales": MessageLookupByLibrary.simpleMessage("Verkauf"),
         "save": MessageLookupByLibrary.simpleMessage("Speichern"),
         "search": MessageLookupByLibrary.simpleMessage("Suche"),
         "seeMore": MessageLookupByLibrary.simpleMessage("Mehr sehen"),
@@ -319,7 +306,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "um es zu lesen, bevor Ihr Konto gesperrt wird!"),
         "today": MessageLookupByLibrary.simpleMessage("Heute"),
-        "topSpender": MessageLookupByLibrary.simpleMessage("Top-Spender"),
         "total": MessageLookupByLibrary.simpleMessage("Gesamt"),
         "totalMarkets": MessageLookupByLibrary.simpleMessage("Gesamtmärkte"),
         "tryAgain":

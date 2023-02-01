@@ -243,9 +243,14 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   Future<void> getCustomerInfo() async {
     CustomerInfo customerInfo = await _customerRepository
         .getCustomerInfo(argumentsQuestion.clientID ?? '');
+
+    final String? firstName = customerInfo.firstName;
+    final String? lastName = customerInfo.lastName;
     emit(
       state.copyWith(
-          clientName: '${customerInfo.firstName} ${customerInfo.lastName}',
+          clientName: firstName != null && lastName != null
+              ? '$firstName $lastName'
+              : null,
           zodiacSign: customerInfo.zodiac),
     );
   }
