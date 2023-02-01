@@ -35,7 +35,10 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m4(minRecordDurationInSec) =>
       "Você não pode enviar esta mensagem porque tem menos de ${minRecordDurationInSec} segundos";
 
-  static String m5(maxRecordDurationInMinutes) =>
+  static String m5(count) =>
+      "Você tem ${count} dias para lê-lo antes que sua conta seja bloqueada!";
+
+  static String m6(maxRecordDurationInMinutes) =>
       "Você atingiu o limite de tempo de ${maxRecordDurationInMinutes} minutos.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -53,7 +56,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "addMore": MessageLookupByLibrary.simpleMessage("Adicione mais"),
         "addNew": MessageLookupByLibrary.simpleMessage("Adicionar novo"),
         "addNote": MessageLookupByLibrary.simpleMessage("Adicionar nota"),
-        "addPhoto": MessageLookupByLibrary.simpleMessage("Adicionar foto"),
         "all": MessageLookupByLibrary.simpleMessage("Tudo"),
         "allMarkets": MessageLookupByLibrary.simpleMessage("Todos os Mercados"),
         "allOurBrands":
@@ -62,11 +64,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Tem certeza de que deseja alterar seu status para Offline?"),
         "articles": MessageLookupByLibrary.simpleMessage("Artigos"),
-        "ascendant": MessageLookupByLibrary.simpleMessage("Ascendente"),
         "astrology": MessageLookupByLibrary.simpleMessage("Astrologia"),
         "audioMessage":
             MessageLookupByLibrary.simpleMessage("mensagem de áudio"),
-        "auraReading": MessageLookupByLibrary.simpleMessage("Leitura de Aura"),
         "avgDailyEarnings":
             MessageLookupByLibrary.simpleMessage("Ganhos Diários Médios"),
         "back": MessageLookupByLibrary.simpleMessage("De volta"),
@@ -113,7 +113,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Os clientes querem saber que você é uma pessoa real. Quanto mais fotos você adicionar, mais confiança você pode construir."),
         "dashboard": MessageLookupByLibrary.simpleMessage("Painel"),
-        "days": MessageLookupByLibrary.simpleMessage("dias"),
         "delete": MessageLookupByLibrary.simpleMessage("Excluir"),
         "doYouWantToDeleteImage":
             MessageLookupByLibrary.simpleMessage("Deseja excluir a imagem?"),
@@ -188,11 +187,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "notSpecified":
             MessageLookupByLibrary.simpleMessage("Não especificado"),
         "note": MessageLookupByLibrary.simpleMessage("Nota"),
-        "notes": MessageLookupByLibrary.simpleMessage("Notas"),
         "notifications": MessageLookupByLibrary.simpleMessage("Notificações"),
         "notificationsAreDisabled": MessageLookupByLibrary.simpleMessage(
             "As notificações estão desativadas"),
-        "numerology": MessageLookupByLibrary.simpleMessage("Numerologia"),
         "offline": MessageLookupByLibrary.simpleMessage("Desligado"),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "onlyPremiumProducts":
@@ -271,6 +268,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "signIn": MessageLookupByLibrary.simpleMessage("Entrar"),
         "similarArticles":
             MessageLookupByLibrary.simpleMessage("Artigos semelhantes"),
+        "soulmateReading":
+            MessageLookupByLibrary.simpleMessage("Leitura de Alma Gêmea"),
         "stats": MessageLookupByLibrary.simpleMessage("Estatísticas"),
         "statusText": MessageLookupByLibrary.simpleMessage("Texto de status"),
         "statusTextMayNotExceed300Characters":
@@ -302,9 +301,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "toEnableNotificationYoullNeedToAllowNotificationsInYour":
             MessageLookupByLibrary.simpleMessage(
                 "Para habilitar a notificação, você precisará permitir notificações nas configurações do seu telefone"),
-        "toReadItBeforeYourAccountWillGetBlocked":
-            MessageLookupByLibrary.simpleMessage(
-                "para lê-lo antes que sua conta seja bloqueada!"),
         "today": MessageLookupByLibrary.simpleMessage("Hoje"),
         "total": MessageLookupByLibrary.simpleMessage("Total"),
         "totalMarkets": MessageLookupByLibrary.simpleMessage("Mercados totais"),
@@ -350,7 +346,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Você ainda não tem notas"),
         "youDontHaveAnInternetConnection": MessageLookupByLibrary.simpleMessage(
             "Você não tem uma conexão com a Internet"),
-        "youHave": MessageLookupByLibrary.simpleMessage("Você tem"),
         "youHaveAFewActiveSessions": MessageLookupByLibrary.simpleMessage(
             "Você tem algumas sessões ativas"),
         "youHaveAPrivateMessage": MessageLookupByLibrary.simpleMessage(
@@ -363,6 +358,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "youHaveNotYetCompletedThisMonthsSessions":
             MessageLookupByLibrary.simpleMessage(
                 "Você ainda não concluiu as sessões deste mês"),
+        "youHaveXdaystoReadItBeforeYourAccountWillGetBlocked": m5,
         "youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse":
             MessageLookupByLibrary.simpleMessage(
                 "Você deve responder à sua pergunta pública ativa antes de poder ajudar outra pessoa."),
@@ -373,7 +369,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Você está off-line no momento"),
         "youReNotLiveOnThePlatform": MessageLookupByLibrary.simpleMessage(
             "Você não está ao vivo na plataforma"),
-        "youVeReachTheXMinuteTimeLimit": m5,
+        "youVeReachTheXMinuteTimeLimit": m6,
         "youWillBeAbleToChangeYourStatusBackIn":
             MessageLookupByLibrary.simpleMessage(
                 "Você poderá alterar seu status de volta em 1 hora"),
@@ -384,7 +380,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "O histórico da sua sessão de cliente aparecerá aqui"),
         "yourUsername":
-            MessageLookupByLibrary.simpleMessage("Seu nome de usuário"),
-        "zodiacSign": MessageLookupByLibrary.simpleMessage("Signo do zodíaco")
+            MessageLookupByLibrary.simpleMessage("Seu nome de usuário")
       };
 }

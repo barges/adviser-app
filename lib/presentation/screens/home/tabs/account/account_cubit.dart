@@ -42,6 +42,7 @@ class AccountCubit extends Cubit<AccountState> {
   StreamSubscription<bool>? _connectivitySubscription;
   late bool isPushNotificationPermissionGranted;
   Timer? _timer;
+  bool _isFirstLoadUserInfo = true;
 
   AccountCubit(
     this._cacheManager,
@@ -96,7 +97,7 @@ class AccountCubit extends Cubit<AccountState> {
   }
 
   Future<void> firstGetUserInfo() async {
-    if (_cacheManager.isFirstLoadUserInfo) {
+    if (_isFirstLoadUserInfo) {
       await refreshUserinfo();
     }
   }
@@ -142,7 +143,7 @@ class AccountCubit extends Cubit<AccountState> {
               isPushNotificationPermissionGranted,
         ),
       );
-      _cacheManager.isFirstLoadUserInfo = false;
+      _isFirstLoadUserInfo = false;
     }
   }
 

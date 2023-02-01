@@ -3,12 +3,14 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 
@@ -59,8 +61,9 @@ class PushNotificationManagerImpl implements PushNotificationManager {
       _notificationPortChannel,
     );
     _receiveNotificationPort.listen((dynamic message) {
-      if (message is RemoteMessage) {
-        Map<String, dynamic> map = jsonDecode(message.data['meta'] ?? '');
+      logger.d(message);
+      if (message is Map<String, dynamic>) {
+        Map<String, dynamic> map = jsonDecode(message['meta'] ?? '{}');
         if (map['type'] != null &&
             map['type'] == PushType.public_returned.name) {
           getIt.get<MainCubit>().updateSessions();
@@ -156,9 +159,12 @@ Future<void> _backgroundMessageHandler(RemoteMessage message) async {
   logger.d(map['entityId']);
   logger.d('***********************');
 
+  logger.d('On background');
+
   final SendPort? send =
       IsolateNameServer.lookupPortByName(_notificationPortChannel);
-  send?.send(message);
+
+  send?.send(message.data);
 }
 
 Future<void> _navigateToNextScreen(RemoteMessage? message) async {
@@ -180,8 +186,14 @@ Future<void> _navigateToNextScreen(RemoteMessage? message) async {
         Get.toNamed(AppRoutes.chat,
             arguments: ChatScreenArguments(clientIdFromPush: entityId));
       } else if (type == PushType.public_returned.name) {
-        Get.offNamedUntil(AppRoutes.home, (route) => false,
-            arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
+        Get.offNamedUntil(
+          AppRoutes.home,
+          (route) => route.settings.name != AppRoutes.home,
+          arguments: HomeScreenArguments(initTab: TabsTypes.sessions),
+        );
+
+        // Get.offNamedUntil(AppRoutes.home, (route) => false,
+        //    arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
       }
     }
   }

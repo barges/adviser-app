@@ -35,7 +35,10 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m4(minRecordDurationInSec) =>
       "You can’t send this message because it’s less than ${minRecordDurationInSec} seconds";
 
-  static String m5(maxRecordDurationInMinutes) =>
+  static String m5(count) =>
+      "You have ${count} days to read it before your account will get blocked!";
+
+  static String m6(maxRecordDurationInMinutes) =>
       "You\'ve reach the ${maxRecordDurationInMinutes} minute time limit.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -53,7 +56,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "addMore": MessageLookupByLibrary.simpleMessage("Add more"),
         "addNew": MessageLookupByLibrary.simpleMessage("Add new"),
         "addNote": MessageLookupByLibrary.simpleMessage("Add Note"),
-        "addPhoto": MessageLookupByLibrary.simpleMessage("Add photo"),
         "all": MessageLookupByLibrary.simpleMessage("All"),
         "allMarkets": MessageLookupByLibrary.simpleMessage("All Markets"),
         "allOurBrands": MessageLookupByLibrary.simpleMessage("All our brands"),
@@ -61,10 +63,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Are you sure that you want to change your status to Offline?"),
         "articles": MessageLookupByLibrary.simpleMessage("Articles"),
-        "ascendant": MessageLookupByLibrary.simpleMessage("Ascendant"),
         "astrology": MessageLookupByLibrary.simpleMessage("Astrology"),
         "audioMessage": MessageLookupByLibrary.simpleMessage("Audio message"),
-        "auraReading": MessageLookupByLibrary.simpleMessage("Aura Reading"),
         "avgDailyEarnings":
             MessageLookupByLibrary.simpleMessage("Avg Daily Earnings"),
         "back": MessageLookupByLibrary.simpleMessage("Back"),
@@ -110,7 +110,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Customers want to know you\'re a real person. The more photos you add, the more trust you can build."),
         "dashboard": MessageLookupByLibrary.simpleMessage("Dashboard"),
-        "days": MessageLookupByLibrary.simpleMessage("days"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "doYouWantToDeleteImage": MessageLookupByLibrary.simpleMessage(
             "Do you want to delete image?"),
@@ -149,8 +148,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "itWillGoBackIntoTheGeneralQueueYouWillNotBeAbleToTakeItAgain":
             MessageLookupByLibrary.simpleMessage(
                 "It will go back into the general queue. You will not be able to take it again."),
-        "justSentYouAMessage":
-            MessageLookupByLibrary.simpleMessage("Just sent you a message"),
         "learnMore": MessageLookupByLibrary.simpleMessage("Learn More"),
         "legalBlock": MessageLookupByLibrary.simpleMessage("Legal block"),
         "live": MessageLookupByLibrary.simpleMessage("Live"),
@@ -186,11 +183,9 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Not enough conversations? Check our Profile Guide."),
         "notSpecified": MessageLookupByLibrary.simpleMessage("Not specified"),
         "note": MessageLookupByLibrary.simpleMessage("Note"),
-        "notes": MessageLookupByLibrary.simpleMessage("Notes"),
         "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
         "notificationsAreDisabled":
             MessageLookupByLibrary.simpleMessage("Notifications are disabled"),
-        "numerology": MessageLookupByLibrary.simpleMessage("Numerology"),
         "offline": MessageLookupByLibrary.simpleMessage("Offline"),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "onlyPremiumProducts":
@@ -266,6 +261,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
         "similarArticles":
             MessageLookupByLibrary.simpleMessage("Similar articles"),
+        "soulmateReading":
+            MessageLookupByLibrary.simpleMessage("Soulmate Reading"),
         "stats": MessageLookupByLibrary.simpleMessage("Stats"),
         "statusText": MessageLookupByLibrary.simpleMessage("Status Text"),
         "statusTextMayNotExceed300Characters":
@@ -297,9 +294,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "toEnableNotificationYoullNeedToAllowNotificationsInYour":
             MessageLookupByLibrary.simpleMessage(
                 "To enable notification, you’ll need to allow notifications in your phone settings"),
-        "toReadItBeforeYourAccountWillGetBlocked":
-            MessageLookupByLibrary.simpleMessage(
-                "to read it before your account will get blocked!"),
         "today": MessageLookupByLibrary.simpleMessage("Today"),
         "total": MessageLookupByLibrary.simpleMessage("Total"),
         "totalMarkets": MessageLookupByLibrary.simpleMessage("Total markets"),
@@ -342,7 +336,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "You don’t have any notes yet"),
         "youDontHaveAnInternetConnection": MessageLookupByLibrary.simpleMessage(
             "You don\'t have an internet connection"),
-        "youHave": MessageLookupByLibrary.simpleMessage("You have"),
         "youHaveAFewActiveSessions": MessageLookupByLibrary.simpleMessage(
             "You have a few active sessions"),
         "youHaveAPrivateMessage":
@@ -355,6 +348,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "youHaveNotYetCompletedThisMonthsSessions":
             MessageLookupByLibrary.simpleMessage(
                 "You have not yet completed this month\'s sessions"),
+        "youHaveXdaystoReadItBeforeYourAccountWillGetBlocked": m5,
         "youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse":
             MessageLookupByLibrary.simpleMessage(
                 "You must answer your active public question before you can help someone else."),
@@ -365,7 +359,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("You\'re currently offline"),
         "youReNotLiveOnThePlatform": MessageLookupByLibrary.simpleMessage(
             "You\'re not live on the platform"),
-        "youVeReachTheXMinuteTimeLimit": m5,
+        "youVeReachTheXMinuteTimeLimit": m6,
         "youWillBeAbleToChangeYourStatusBackIn":
             MessageLookupByLibrary.simpleMessage(
                 "You will be able to change your status back in 1 hour"),
@@ -375,7 +369,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "yourClientSessionHistoryWillAppearHere":
             MessageLookupByLibrary.simpleMessage(
                 "Your client session history will appear here"),
-        "yourUsername": MessageLookupByLibrary.simpleMessage("Your Username"),
-        "zodiacSign": MessageLookupByLibrary.simpleMessage("Zodiac Sign")
+        "yourUsername": MessageLookupByLibrary.simpleMessage("Your Username")
       };
 }
