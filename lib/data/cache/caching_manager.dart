@@ -11,6 +11,10 @@ abstract class CachingManager {
 
   set pushTokenIsSent(bool value);
 
+  bool get isFirstLoadUserInfo;
+
+  set isFirstLoadUserInfo(bool value);
+
   Future<void> saveUserProfile(UserProfile? userProfile);
 
   VoidCallback listenUserProfile(ValueChanged<UserProfile> callback);

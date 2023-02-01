@@ -43,7 +43,7 @@ class AccountScreen extends StatelessWidget {
               current.internetConnectionIsAvailable,
           listener: (_, state) {
             if (state.internetConnectionIsAvailable) {
-              accountCubit.refreshUserinfo();
+              accountCubit.firstGetUserInfo();
             }
           },
           child: Scaffold(
