@@ -16,7 +16,6 @@ import 'package:shared_advisor_interface/data/models/user_info/user_status.dart'
 import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
 import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
-import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -38,8 +37,8 @@ class SessionsCubit extends Cubit<SessionsState> {
   late final VoidCallback disposeUserProfileListen;
   final BuildContext context;
 
-  List<ChatItem> _publicQuestions = [];
-  List<ChatItem> _conversationsList = [];
+  final List<ChatItem> _publicQuestions = [];
+  final List<ChatItem> _conversationsList = [];
 
   UserStatus? previousStatus;
 
@@ -195,7 +194,7 @@ class SessionsCubit extends Cubit<SessionsState> {
       _isPublicLoading = true;
       if (refresh) {
         _publicHasMore = true;
-        _publicQuestions = [];
+        _publicQuestions.clear();
       }
       if (_publicHasMore &&
           await _connectivityService.checkConnection() &&
@@ -245,7 +244,7 @@ class SessionsCubit extends Cubit<SessionsState> {
       if (refresh) {
         _conversationsHasMore = true;
         _conversationsLastItem = null;
-        _conversationsList = [];
+        _conversationsList.clear();
       }
       if (_conversationsHasMore &&
           await _connectivityService.checkConnection() &&
