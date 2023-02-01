@@ -1417,11 +1417,11 @@ class S {
     );
   }
 
-  /// `Aura Reading`
-  String get auraReading {
+  /// `Soulmate Reading`
+  String get soulmateReading {
     return Intl.message(
-      'Aura Reading',
-      name: 'auraReading',
+      'Soulmate Reading',
+      name: 'soulmateReading',
       desc: '',
       args: [],
     );
