@@ -38,8 +38,8 @@ class SessionsCubit extends Cubit<SessionsState> {
   late final VoidCallback disposeUserProfileListen;
   final BuildContext context;
 
-  List<ChatItem> _publicQuestions = [];
-  List<ChatItem> _conversationsList = [];
+  final List<ChatItem> _publicQuestions = [];
+  final List<ChatItem> _conversationsList = [];
 
   UserStatus? previousStatus;
 
@@ -196,7 +196,7 @@ class SessionsCubit extends Cubit<SessionsState> {
       try {
         if (refresh) {
           _publicHasMore = true;
-          _publicQuestions = [];
+          _publicQuestions.clear();
         }
         if (_publicHasMore &&
             await _connectivityService.checkConnection() &&
@@ -252,7 +252,7 @@ class SessionsCubit extends Cubit<SessionsState> {
         if (refresh) {
           _conversationsHasMore = true;
           _conversationsLastItem = null;
-          _conversationsList = [];
+          _conversationsList.clear();
         }
         if (_conversationsHasMore &&
             await _connectivityService.checkConnection() &&

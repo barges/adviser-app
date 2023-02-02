@@ -33,7 +33,7 @@ enum SessionsTypes {
       case SessionsTypes.reading360:
         return S.of(context).reading360;
       case SessionsTypes.aurareading:
-        return S.of(context).auraReading;
+        return S.of(context).soulmateReading;
       case SessionsTypes.lovecrushreading:
         return S.of(context).loveCrushReading;
       case SessionsTypes.ritual:
