@@ -99,6 +99,8 @@ class _ReportsUnit extends StatelessWidget {
                   ? Assets.vectors.close.path
                   : reportsUnit.type?.iconPath ?? '',
               color: Theme.of(context).backgroundColor,
+              height: AppConstants.iconSize,
+              width: AppConstants.iconSize,
             ),
           ),
           Expanded(
