@@ -1010,7 +1010,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   bool _checkStatusCode(DioError e) {
     int? statusCode = e.response?.statusCode;
-    return statusCode != 401 && statusCode != 428 && statusCode != 451;
+    return statusCode == 404 || statusCode == 409;
   }
 
   bool _checkRecordedAudioIsOk() {
