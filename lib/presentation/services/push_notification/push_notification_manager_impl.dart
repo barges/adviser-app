@@ -1,16 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 
@@ -32,29 +31,6 @@ class PushNotificationManagerImpl implements PushNotificationManager {
     }
   }
 
-  void _configLocalNotification() {
-    var initializationSettingsAndroid =
-        const AndroidInitializationSettings('mipmap/ic_launcher');
-    var initializationSettingsIOS = const DarwinInitializationSettings(
-      requestAlertPermission: false,
-    );
-    var initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse: (response) async {
-      logger.d('+++++++++++++++++++++++');
-      logger.d(response.notificationResponseType);
-      logger.d(response.payload);
-      logger.d(response.id);
-      logger.d(response.actionId);
-      logger.d(response.input);
-      logger.d('+++++++++++++++++++++++');
-      final Map<String, dynamic> message = json.decode(response.payload ?? '');
-
-      _navigateToNextScreen(RemoteMessage(data: message));
-    });
-  }
-
   Future<void> _configure() async {
     IsolateNameServer.registerPortWithName(
       _receiveNotificationPort.sendPort,
@@ -72,6 +48,31 @@ class PushNotificationManagerImpl implements PushNotificationManager {
     });
     _configLocalNotification();
     await _setUpFirebaseMessaging();
+  }
+
+  void _configLocalNotification() {
+    var initializationSettingsAndroid =
+        const AndroidInitializationSettings('mipmap/ic_launcher');
+    var initializationSettingsIOS = const DarwinInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+    );
+    var initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onDidReceiveNotificationResponse: (response) async {
+      logger.d('+++++++++++++++++++++++');
+      logger.d(response.notificationResponseType);
+      logger.d(response.payload);
+      logger.d(response.id);
+      logger.d(response.actionId);
+      logger.d(response.input);
+      logger.d('+++++++++++++++++++++++');
+      final Map<String, dynamic> message = json.decode(response.payload ?? '');
+
+      _navigateToNextScreen(RemoteMessage(data: message));
+    });
   }
 
   static void showNotification(RemoteMessage message) async {
@@ -138,7 +139,9 @@ class PushNotificationManagerImpl implements PushNotificationManager {
       logger.d(map['entityId']);
       logger.d('***********************');
 
-      showNotification(message);
+      if(Platform.isAndroid) {
+        showNotification(message);
+      }
       if (map['type'] != null && map['type'] == PushType.public_returned.name) {
         getIt.get<MainCubit>().updateSessions();
       }
@@ -191,9 +194,6 @@ Future<void> _navigateToNextScreen(RemoteMessage? message) async {
           (route) => route.settings.name != AppRoutes.home,
           arguments: HomeScreenArguments(initTab: TabsTypes.sessions),
         );
-
-        // Get.offNamedUntil(AppRoutes.home, (route) => false,
-        //    arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
       }
     }
   }
