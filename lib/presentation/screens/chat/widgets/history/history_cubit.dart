@@ -192,12 +192,13 @@ class HistoryCubit extends Cubit<HistoryState> {
           topHistoriesList: items,
         ));
       }
-      _isTopLoading = false;
     } on DioError catch (e) {
       if (e.response?.statusCode == 409) {
         _showErrorAlert();
       }
       logger.d(e);
+    } finally {
+      _isTopLoading = false;
     }
   }
 
@@ -221,12 +222,13 @@ class HistoryCubit extends Cubit<HistoryState> {
           bottomHistoriesList: items,
         ));
       }
-      _isBottomLoading = false;
     } on DioError catch (e) {
       if (e.response?.statusCode == 409) {
         _showErrorAlert();
       }
       logger.d(e);
+    } finally {
+      _isBottomLoading = false;
     }
   }
 }

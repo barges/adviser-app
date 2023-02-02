@@ -170,6 +170,8 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
           _showErrorAlert();
         }
         logger.d(e);
+      } finally {
+        _isLoading = false;
       }
     } else {
       _isLoading = false;
@@ -224,6 +226,8 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
             _showErrorAlert();
           }
           logger.d(e);
+        } finally {
+          _isLoading = false;
         }
       }
       _isLoading = false;
