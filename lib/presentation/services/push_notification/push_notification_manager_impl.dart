@@ -41,7 +41,7 @@ class PushNotificationManagerImpl implements PushNotificationManager {
       if (message is Map<String, dynamic>) {
         Map<String, dynamic> map = jsonDecode(message['meta'] ?? '{}');
         if (map['type'] != null &&
-            map['type'] == PushType.public_returned.name) {
+            map['type'] == PushType.publicReturned.name) {
           getIt.get<MainCubit>().updateSessions();
         }
       }
@@ -139,10 +139,10 @@ class PushNotificationManagerImpl implements PushNotificationManager {
       logger.d(map['entityId']);
       logger.d('***********************');
 
-      if(Platform.isAndroid) {
+      if (Platform.isAndroid) {
         showNotification(message);
       }
-      if (map['type'] != null && map['type'] == PushType.public_returned.name) {
+      if (map['type'] != null && map['type'] == PushType.publicReturned.name) {
         getIt.get<MainCubit>().updateSessions();
       }
     });
@@ -180,18 +180,24 @@ Future<void> _navigateToNextScreen(RemoteMessage? message) async {
 
     if (entityId != null && type != null) {
       if (type == PushType.private.name) {
+        getIt.get<MainCubit>().stopAudio();
         Get.toNamed(AppRoutes.chat,
+            preventDuplicates: false,
             arguments: ChatScreenArguments(privateQuestionId: entityId));
       } else if (type == PushType.session.name) {
+        getIt.get<MainCubit>().stopAudio();
         Get.toNamed(AppRoutes.chat,
+            preventDuplicates: false,
             arguments: ChatScreenArguments(ritualID: entityId));
       } else if (type == PushType.tips.name) {
+        getIt.get<MainCubit>().stopAudio();
         Get.toNamed(AppRoutes.chat,
+            preventDuplicates: false,
             arguments: ChatScreenArguments(clientIdFromPush: entityId));
-      } else if (type == PushType.public_returned.name) {
+      } else if (type == PushType.publicReturned.name) {
         Get.offNamedUntil(
           AppRoutes.home,
-          (route) => route.settings.name != AppRoutes.home,
+          (route) => false,
           arguments: HomeScreenArguments(initTab: TabsTypes.sessions),
         );
       }
@@ -203,6 +209,18 @@ enum PushType {
   private,
   session,
   tips,
-  // ignore: constant_identifier_names
-  public_returned,
+  publicReturned;
+
+  get name {
+    switch (this) {
+      case PushType.private:
+        return 'private';
+      case PushType.session:
+        return 'session';
+      case PushType.tips:
+        return 'tips';
+      case PushType.publicReturned:
+        return 'public_returned';
+    }
+  }
 }
