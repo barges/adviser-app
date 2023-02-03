@@ -27,7 +27,7 @@ class AppConstants {
   static const int afterShowAnswerTimingMessagesInSec = 5 * 60;
 
   static const int maxAttachmentSizeInBytes = 20000000;
-  static const int minFreeSpaceInMb = 1;
+  static const int minFreeSpaceInMb = 3;
 
   static const String startMSS = '0:00';
 
