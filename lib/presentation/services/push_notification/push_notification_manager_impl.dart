@@ -42,7 +42,15 @@ class PushNotificationManagerImpl implements PushNotificationManager {
         Map<String, dynamic> map = jsonDecode(message['meta'] ?? '{}');
         if (map['type'] != null &&
             map['type'] == PushType.publicReturned.name) {
-          getIt.get<MainCubit>().updateSessions();
+          if(Get.currentRoute == AppRoutes.chat){
+            Get.offNamedUntil(
+              AppRoutes.home,
+                  (route) => false,
+              arguments: HomeScreenArguments(initTab: TabsTypes.sessions),
+            );
+          } else {
+            getIt.get<MainCubit>().updateSessions();
+          }
         }
       }
     });
