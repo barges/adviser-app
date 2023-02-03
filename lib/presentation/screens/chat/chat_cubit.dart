@@ -157,11 +157,11 @@ class ChatCubit extends Cubit<ChatState> {
       }
     });
 
-    _stopAudioSubscription = _mainCubit.audioStopStream.listen((value) {
+    _stopAudioSubscription = _mainCubit.audioStopTrigger.listen((value) {
       if (state.isRecordingAudio) {
         stopRecordingAudio();
       }
-      audioPlayer.stop();
+      audioPlayer.pause();
     });
   }
 
@@ -171,7 +171,6 @@ class ChatCubit extends Cubit<ChatState> {
       await cancelRecordingAudio();
     }
     _deleteRecordedAudioFile(state.recordedAudio);
-    _recordAudioDuration = null;
 
     activeMessagesScrollController.dispose();
     _appOnPauseSubscription.cancel();
@@ -186,11 +185,8 @@ class ChatCubit extends Cubit<ChatState> {
     audioPlayer.dispose();
 
     _recordingProgressSubscription?.cancel();
-    _recordingProgressSubscription = null;
 
     _answerTimer?.cancel();
-
-    _answerRequest = null;
 
     return super.close();
   }
