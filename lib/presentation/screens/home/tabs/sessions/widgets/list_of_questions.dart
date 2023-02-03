@@ -64,7 +64,7 @@ class _PublicQuestionsListWidget extends StatelessWidget {
         }),
         Builder(
           builder: (context) {
-            final List<ChatItem> publicQuestions = context
+            final List<ChatItem>? publicQuestions = context
                 .select((SessionsCubit cubit) => cubit.state.publicQuestions);
             return Expanded(
               child: _ListOfQuestionsWidget(
@@ -111,7 +111,7 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
         ),
         Builder(
           builder: (context) {
-            final List<ChatItem> conversationsList = context
+            final List<ChatItem>? conversationsList = context
                 .select((SessionsCubit cubit) => cubit.state.conversationsList);
             return Expanded(
               child: _ListOfQuestionsWidget(
@@ -134,7 +134,7 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
 }
 
 class _ListOfQuestionsWidget extends StatelessWidget {
-  final List<ChatItem> questions;
+  final List<ChatItem>? questions;
   final RefreshCallback onRefresh;
   final ScrollController controller;
   final String emptyListTitle;
@@ -154,7 +154,7 @@ class _ListOfQuestionsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool hasTaken =
-        isPublic && questions.firstOrNull?.status == ChatItemStatusType.taken;
+        isPublic && questions?.firstOrNull?.status == ChatItemStatusType.taken;
 
     return RefreshIndicator(
       onRefresh: onRefresh,
@@ -162,44 +162,46 @@ class _ListOfQuestionsWidget extends StatelessWidget {
         controller: controller,
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
-          questions.isNotEmpty
-              ? SliverToBoxAdapter(
-                  child: ListView.separated(
-                    padding: const EdgeInsets.all(
-                        AppConstants.horizontalScreenPadding),
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ChatsListTileWidget(
-                        question: questions[index],
-                        needCheckTakenStatus: hasTaken,
-                        isPublic: isPublic,
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const SizedBox(
-                      height: 12.0,
-                    ),
-                    itemCount: questions.length,
-                  ),
-                )
-              : SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppConstants.horizontalScreenPadding,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        EmptyListWidget(
-                          title: emptyListTitle,
-                          label: emptyListLabel,
+          questions == null
+              ? const SliverToBoxAdapter(child: SizedBox.shrink())
+              : questions!.isNotEmpty
+                  ? SliverToBoxAdapter(
+                      child: ListView.separated(
+                        padding: const EdgeInsets.all(
+                            AppConstants.horizontalScreenPadding),
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ChatsListTileWidget(
+                            question: questions![index],
+                            needCheckTakenStatus: hasTaken,
+                            isPublic: isPublic,
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const SizedBox(
+                          height: 12.0,
                         ),
-                      ],
-                    ),
-                  )),
+                        itemCount: questions!.length,
+                      ),
+                    )
+                  : SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppConstants.horizontalScreenPadding,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            EmptyListWidget(
+                              title: emptyListTitle,
+                              label: emptyListLabel,
+                            ),
+                          ],
+                        ),
+                      )),
         ],
       ),
     );

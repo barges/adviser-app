@@ -78,6 +78,7 @@ class ChatCubit extends Cubit<ChatState> {
   AnswerRequest? _answerRequest;
   StreamSubscription<RecordingDisposition>? _recordingProgressSubscription;
   late final StreamSubscription<bool> _appOnPauseSubscription;
+  late final StreamSubscription<bool> _stopAudioSubscription;
 
   Timer? _answerTimer;
   bool _counterMessageCleared = false;
@@ -155,6 +156,13 @@ class ChatCubit extends Cubit<ChatState> {
         }
       }
     });
+
+    _stopAudioSubscription = _mainCubit.audioStopTrigger.listen((value) {
+      if (state.isRecordingAudio) {
+        stopRecordingAudio();
+      }
+      audioPlayer.pause();
+    });
   }
 
   @override
@@ -163,10 +171,10 @@ class ChatCubit extends Cubit<ChatState> {
       await cancelRecordingAudio();
     }
     _deleteRecordedAudioFile(state.recordedAudio);
-    _recordAudioDuration = null;
 
     activeMessagesScrollController.dispose();
     _appOnPauseSubscription.cancel();
+    _stopAudioSubscription.cancel();
 
     _keyboardSubscription.cancel();
 
@@ -177,11 +185,8 @@ class ChatCubit extends Cubit<ChatState> {
     audioPlayer.dispose();
 
     _recordingProgressSubscription?.cancel();
-    _recordingProgressSubscription = null;
 
     _answerTimer?.cancel();
-
-    _answerRequest = null;
 
     return super.close();
   }
@@ -216,6 +221,7 @@ class ChatCubit extends Cubit<ChatState> {
     final AnswerValidationResponse response =
         await _repository.getAnswerValidation();
     _answerLimitations = response.answerLimitations ?? [];
+    logger.d('Limitations: ${response.toJson()}');
   }
 
   void textInputEditingControllerListener() {

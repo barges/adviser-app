@@ -40,7 +40,8 @@ class AccountCubit extends Cubit<AccountState> {
   late final VoidCallback disposeListen;
   late final StreamSubscription<bool> _appOnResumeSubscription;
   StreamSubscription<bool>? _connectivitySubscription;
-  late bool isPushNotificationPermissionGranted;
+
+  bool? isPushNotificationPermissionGranted;
   Timer? _timer;
   bool _isFirstLoadUserInfo = true;
 
@@ -108,12 +109,12 @@ class AccountCubit extends Cubit<AccountState> {
 
       isPushNotificationPermissionGranted = await _handlePermission(false);
 
-      if (isPushNotificationPermissionGranted) {
+      if (isPushNotificationPermissionGranted == true) {
         _pushNotificationManager.registerForPushNotifications();
       }
 
       final UserInfo userInfo = await _userRepository.getUserInfo();
-      if (isPushNotificationPermissionGranted) {
+      if (isPushNotificationPermissionGranted == true) {
         await _sendPushToken();
       }
 
@@ -140,7 +141,7 @@ class AccountCubit extends Cubit<AccountState> {
         state.copyWith(
           userProfile: _cacheManager.getUserProfile(),
           enableNotifications: (userInfo.pushNotificationsEnabled ?? false) &&
-              isPushNotificationPermissionGranted,
+              isPushNotificationPermissionGranted == true,
         ),
       );
       _isFirstLoadUserInfo = false;
@@ -220,7 +221,7 @@ class AccountCubit extends Cubit<AccountState> {
 
   Future<void> updateEnableNotificationsValue(bool newValue) async {
     if (newValue) {
-      if (isPushNotificationPermissionGranted) {
+      if (isPushNotificationPermissionGranted == true) {
         await _sendPushToken();
         await _setPushEnabledForBackend(newValue);
         emit(

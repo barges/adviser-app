@@ -80,6 +80,7 @@ class _ReportsUnit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return SizedBox(
       height: AppConstants.iconButtonSize,
       child: Row(
@@ -90,15 +91,13 @@ class _ReportsUnit extends StatelessWidget {
             width: AppConstants.iconButtonSize,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: isCanceled
-                  ? Theme.of(context).errorColor
-                  : Theme.of(context).primaryColor,
+              color: isCanceled ? theme.errorColor : theme.primaryColor,
             ),
             child: SvgPicture.asset(
               isCanceled
                   ? Assets.vectors.close.path
                   : reportsUnit.type?.iconPath ?? '',
-              color: Theme.of(context).backgroundColor,
+              color: theme.backgroundColor,
               height: AppConstants.iconSize,
               width: AppConstants.iconSize,
             ),
@@ -117,24 +116,20 @@ class _ReportsUnit extends StatelessWidget {
                           text:
                               '${reportsUnit.type?.sessionNameForStatistics(context)} '
                               '(${isCanceled ? reportsUnit.numberCancelled : reportsUnit.number}) ',
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    fontSize: 14.0,
-                                    height: 1.2,
-                                  ),
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            fontSize: 14.0,
+                            height: 1.2,
+                          ),
                           children: [
                             if (!isCanceled)
                               TextSpan(
                                 text:
                                     '($currencySymbol${rate.toStringAsFixed(2)})',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w500,
-                                      color: Theme.of(context).shadowColor,
-                                    ),
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: Theme.of(context).shadowColor,
+                                ),
                               )
                           ]),
                     ),
@@ -176,13 +171,13 @@ class _ReportsUnit extends StatelessWidget {
                 child: Text(
                   '${isCanceled ? '' : '~ '}$currencySymbol '
                   '${isCanceled ? reportsUnit.amountCancelled?.toStringAsFixed(2) : reportsUnit.amount?.toStringAsFixed(2)}',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w500,
-                        color: isCanceled
-                            ? Theme.of(context).errorColor
-                            : Theme.of(context).textTheme.bodySmall?.color,
-                      ),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w500,
+                    color: isCanceled
+                        ? theme.errorColor
+                        : theme.textTheme.bodySmall?.color,
+                  ),
                 ),
               ),
               if (isCanceled)
@@ -190,10 +185,10 @@ class _ReportsUnit extends StatelessWidget {
                   height: 14.0,
                   child: Text(
                     S.of(context).earned,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontSize: 12.0,
-                          color: Theme.of(context).shadowColor,
-                        ),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      fontSize: 12.0,
+                      color: theme.shadowColor,
+                    ),
                   ),
                 )
             ],
