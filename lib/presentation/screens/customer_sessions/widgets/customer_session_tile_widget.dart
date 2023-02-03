@@ -43,6 +43,7 @@ class CustomerSessionListTileWidget extends StatelessWidget {
                 question.ritualIdentifier?.iconPath ??
                     question.type?.iconPath ??
                     '',
+                color: theme.primaryColor,
                 height: AppConstants.iconSize,
                 width: AppConstants.iconSize,
                 fit: BoxFit.scaleDown,
