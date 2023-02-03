@@ -181,12 +181,15 @@ Future<void> _navigateToNextScreen(RemoteMessage? message) async {
     if (entityId != null && type != null) {
       if (type == PushType.private.name) {
         Get.toNamed(AppRoutes.chat,
+            preventDuplicates: false,
             arguments: ChatScreenArguments(privateQuestionId: entityId));
       } else if (type == PushType.session.name) {
         Get.toNamed(AppRoutes.chat,
+            preventDuplicates: false,
             arguments: ChatScreenArguments(ritualID: entityId));
       } else if (type == PushType.tips.name) {
         Get.toNamed(AppRoutes.chat,
+            preventDuplicates: false,
             arguments: ChatScreenArguments(clientIdFromPush: entityId));
       } else if (type == PushType.publicReturned.name) {
         Get.offNamedUntil(

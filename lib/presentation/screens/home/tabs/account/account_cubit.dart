@@ -40,6 +40,10 @@ class AccountCubit extends Cubit<AccountState> {
   late final VoidCallback disposeListen;
   late final StreamSubscription<bool> _appOnResumeSubscription;
   StreamSubscription<bool>? _connectivitySubscription;
+
+  ///TODO: [VERBOSE-2:dart_vm_initializer.cc(41)] Unhandled Exception: LateInitializationError: Field 'isPushNotificationPermissionGranted' has not been initialized.
+  // #0      AccountCubit.isPushNotificationPermissionGranted (package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart)
+  // #1      new AccountCubit.<anonymous closure> (package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart:76:15)
   late bool isPushNotificationPermissionGranted;
   Timer? _timer;
   bool _isFirstLoadUserInfo = true;
