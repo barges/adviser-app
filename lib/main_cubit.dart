@@ -25,6 +25,7 @@ class MainCubit extends Cubit<MainState> {
 
   final PublishSubject<bool> sessionsUpdateTrigger = PublishSubject();
   final PublishSubject<bool> changeAppLifecycleStream = PublishSubject();
+  final PublishSubject<bool> audioStopStream = PublishSubject();
 
   final ConnectivityService _connectivityService;
 
@@ -88,6 +89,10 @@ class MainCubit extends Cubit<MainState> {
 
   void widgetOnPauseEvent() {
     changeAppLifecycleStream.add(false);
+  }
+
+  void stopAudio() {
+    audioStopStream.add(true);
   }
 
   void changeLocale(String languageCode) {

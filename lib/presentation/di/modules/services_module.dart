@@ -1,6 +1,8 @@
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/cache/data_caching_manager.dart';
 import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
+import 'package:shared_advisor_interface/presentation/services/audio/audio_recorder_service.dart';
 import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/services/dynamic_link_service.dart';
@@ -22,5 +24,9 @@ class ServicesModule implements Module {
     getIt.registerSingleton<DynamicLinkService>(DynamicLinkService());
     getIt.registerSingleton<CheckPermissionService>(
         CheckPermissionService(getIt.get<CachingManager>()));
+    getIt.registerLazySingleton<AudioPlayerService>(
+        () => AudioPlayerServiceImpl());
+    getIt.registerLazySingleton<AudioRecorderService>(
+        () => AudioRecorderServiceImp());
   }
 }
