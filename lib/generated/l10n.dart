@@ -560,33 +560,13 @@ class S {
     );
   }
 
-  /// `You have`
-  String get youHave {
+  /// `You have {count} days to read it before your account will get blocked!`
+  String youHaveXdaystoReadItBeforeYourAccountWillGetBlocked(Object count) {
     return Intl.message(
-      'You have',
-      name: 'youHave',
+      'You have $count days to read it before your account will get blocked!',
+      name: 'youHaveXdaystoReadItBeforeYourAccountWillGetBlocked',
       desc: '',
-      args: [],
-    );
-  }
-
-  /// `days`
-  String get days {
-    return Intl.message(
-      'days',
-      name: 'days',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `to read it before your account will get blocked!`
-  String get toReadItBeforeYourAccountWillGetBlocked {
-    return Intl.message(
-      'to read it before your account will get blocked!',
-      name: 'toReadItBeforeYourAccountWillGetBlocked',
-      desc: '',
-      args: [],
+      args: [count],
     );
   }
 
@@ -890,51 +870,11 @@ class S {
     );
   }
 
-  /// `Zodiac Sign`
-  String get zodiacSign {
-    return Intl.message(
-      'Zodiac Sign',
-      name: 'zodiacSign',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Numerology`
-  String get numerology {
-    return Intl.message(
-      'Numerology',
-      name: 'numerology',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Ascendant`
-  String get ascendant {
-    return Intl.message(
-      'Ascendant',
-      name: 'ascendant',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `birth town`
   String get birthTown {
     return Intl.message(
       'birth town',
       name: 'birthTown',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Notes`
-  String get notes {
-    return Intl.message(
-      'Notes',
-      name: 'notes',
       desc: '',
       args: [],
     );
@@ -1341,16 +1281,6 @@ class S {
     );
   }
 
-  /// `Add photo`
-  String get addPhoto {
-    return Intl.message(
-      'Add photo',
-      name: 'addPhoto',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Photo is required`
   String get photoIsRequired {
     return Intl.message(
@@ -1416,16 +1346,6 @@ class S {
     return Intl.message(
       'Audio message',
       name: 'audioMessage',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Just sent you a message`
-  String get justSentYouAMessage {
-    return Intl.message(
-      'Just sent you a message',
-      name: 'justSentYouAMessage',
       desc: '',
       args: [],
     );
@@ -1501,11 +1421,11 @@ class S {
     );
   }
 
-  /// `Aura Reading`
-  String get auraReading {
+  /// `Soulmate Reading`
+  String get soulmateReading {
     return Intl.message(
-      'Aura Reading',
-      name: 'auraReading',
+      'Soulmate Reading',
+      name: 'soulmateReading',
       desc: '',
       args: [],
     );

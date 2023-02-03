@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
@@ -30,11 +31,32 @@ class PushNotificationManagerImpl implements PushNotificationManager {
     }
   }
 
+  Future<void> _configure() async {
+    IsolateNameServer.registerPortWithName(
+      _receiveNotificationPort.sendPort,
+      _notificationPortChannel,
+    );
+    _receiveNotificationPort.listen((dynamic message) {
+      logger.d(message);
+      if (message is Map<String, dynamic>) {
+        Map<String, dynamic> map = jsonDecode(message['meta'] ?? '{}');
+        if (map['type'] != null &&
+            map['type'] == PushType.public_returned.name) {
+          getIt.get<MainCubit>().updateSessions();
+        }
+      }
+    });
+    _configLocalNotification();
+    await _setUpFirebaseMessaging();
+  }
+
   void _configLocalNotification() {
     var initializationSettingsAndroid =
         const AndroidInitializationSettings('mipmap/ic_launcher');
     var initializationSettingsIOS = const DarwinInitializationSettings(
       requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
     );
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
@@ -51,24 +73,6 @@ class PushNotificationManagerImpl implements PushNotificationManager {
 
       _navigateToNextScreen(RemoteMessage(data: message));
     });
-  }
-
-  Future<void> _configure() async {
-    IsolateNameServer.registerPortWithName(
-      _receiveNotificationPort.sendPort,
-      _notificationPortChannel,
-    );
-    _receiveNotificationPort.listen((dynamic message) {
-      if (message is RemoteMessage) {
-        Map<String, dynamic> map = jsonDecode(message.data['meta'] ?? '');
-        if (map['type'] != null &&
-            map['type'] == PushType.public_returned.name) {
-          getIt.get<MainCubit>().updateSessions();
-        }
-      }
-    });
-    _configLocalNotification();
-    await _setUpFirebaseMessaging();
   }
 
   static void showNotification(RemoteMessage message) async {
@@ -135,7 +139,9 @@ class PushNotificationManagerImpl implements PushNotificationManager {
       logger.d(map['entityId']);
       logger.d('***********************');
 
-      showNotification(message);
+      if(Platform.isAndroid) {
+        showNotification(message);
+      }
       if (map['type'] != null && map['type'] == PushType.public_returned.name) {
         getIt.get<MainCubit>().updateSessions();
       }
@@ -156,9 +162,12 @@ Future<void> _backgroundMessageHandler(RemoteMessage message) async {
   logger.d(map['entityId']);
   logger.d('***********************');
 
+  logger.d('On background');
+
   final SendPort? send =
       IsolateNameServer.lookupPortByName(_notificationPortChannel);
-  send?.send(message);
+
+  send?.send(message.data);
 }
 
 Future<void> _navigateToNextScreen(RemoteMessage? message) async {
@@ -180,8 +189,11 @@ Future<void> _navigateToNextScreen(RemoteMessage? message) async {
         Get.toNamed(AppRoutes.chat,
             arguments: ChatScreenArguments(clientIdFromPush: entityId));
       } else if (type == PushType.public_returned.name) {
-        Get.offNamedUntil(AppRoutes.home, (route) => false,
-            arguments: HomeScreenArguments(initTab: TabsTypes.sessions));
+        Get.offNamedUntil(
+          AppRoutes.home,
+          (route) => route.settings.name != AppRoutes.home,
+          arguments: HomeScreenArguments(initTab: TabsTypes.sessions),
+        );
       }
     }
   }

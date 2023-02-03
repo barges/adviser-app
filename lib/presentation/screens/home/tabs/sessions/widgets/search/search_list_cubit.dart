@@ -48,8 +48,7 @@ class SearchListCubit extends Cubit<SearchListState> {
     conversationsScrollController.addListener(() {
       ///TODO: Remove context
       if (!_isLoading &&
-          conversationsScrollController.position.extentAfter <=
-              screenHeight) {
+          conversationsScrollController.position.extentAfter <= screenHeight) {
         getConversations();
       }
     });
@@ -73,35 +72,41 @@ class SearchListCubit extends Cubit<SearchListState> {
 
   Future<void> getConversations({bool refresh = false}) async {
     _isLoading = true;
-    if (refresh) {
-      _conversationsHasMore = true;
-      _conversationsLastItem = null;
-      _conversationsList.clear();
-    }
-    if (_conversationsHasMore && await _connectivityService.checkConnection()) {
-      final QuestionsListResponse result =
-          await _repository.getConversationsList(
-        limit: AppConstants.questionsLimit,
-        lastItem: _conversationsLastItem,
-        search: searchTextController.text.isNotEmpty
-            ? searchTextController.text
-            : null,
-      );
+    try {
+      if (refresh) {
+        _conversationsHasMore = true;
+        _conversationsLastItem = null;
+        _conversationsList.clear();
+      }
+      if (_conversationsHasMore &&
+          await _connectivityService.checkConnection()) {
+        final QuestionsListResponse result =
+            await _repository.getConversationsList(
+          limit: AppConstants.questionsLimit,
+          lastItem: _conversationsLastItem,
+          search: searchTextController.text.isNotEmpty
+              ? searchTextController.text
+              : null,
+        );
 
-      _conversationsHasMore = result.hasMore ?? true;
-      _conversationsLastItem = result.lastItem;
+        _conversationsHasMore = result.hasMore ?? true;
+        _conversationsLastItem = result.lastItem;
 
-      _conversationsList.addAll(result.questions ?? const []);
+        _conversationsList.addAll(result.questions ?? const []);
 
-      emit(
-        state.copyWith(
-          conversationsList: List.of(
-            _conversationsList,
+        emit(
+          state.copyWith(
+            conversationsList: List.of(
+              _conversationsList,
+            ),
           ),
-        ),
-      );
+        );
+      }
+    } catch (e) {
+      logger.d(e);
+    } finally {
+      _isLoading = false;
     }
-    _isLoading = false;
   }
 
   void goToCustomerSessions(ChatItem question) {

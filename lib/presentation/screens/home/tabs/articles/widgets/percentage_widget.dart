@@ -66,29 +66,15 @@ class PercentageWidget extends StatelessWidget {
                       ?.copyWith(fontWeight: FontWeight.w700),
                 ),
               ),
-              RichText(
-                text: TextSpan(
-                  text: S.of(context).youHave,
+              Text(
+                  S
+                      .of(context)
+                      .youHaveXdaystoReadItBeforeYourAccountWillGetBlocked(
+                          7.toString()),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Theme.of(context).shadowColor,
                         fontWeight: FontWeight.w500,
-                      ),
-                  children: <TextSpan>[
-                    TextSpan(
-                        text: ' 7 ${S.of(context).days} ',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).errorColor,
-                            fontWeight: FontWeight.w500)),
-                    TextSpan(
-                        text: S
-                            .of(context)
-                            .toReadItBeforeYourAccountWillGetBlocked,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).shadowColor,
-                            fontWeight: FontWeight.w500))
-                  ],
-                ),
-              ),
+                      )),
               InkWell(
                 onTap: () {
                   //TODO -- take me there

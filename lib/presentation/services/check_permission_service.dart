@@ -43,7 +43,8 @@ class CheckPermissionService {
       case PermissionType.notification:
         {
           if (Platform.isIOS) {
-            await FirebaseMessaging.instance.requestPermission(
+            NotificationSettings settings =
+                await FirebaseMessaging.instance.requestPermission(
               alert: true,
               announcement: false,
               badge: true,
@@ -52,10 +53,15 @@ class CheckPermissionService {
               provisional: false,
               sound: true,
             );
-          }
-          status = await Permission.notification.request();
-          if (!status.isGranted) {
-            status = PermissionStatus.permanentlyDenied;
+            status =
+                settings.authorizationStatus == AuthorizationStatus.authorized
+                    ? PermissionStatus.granted
+                    : PermissionStatus.permanentlyDenied;
+          } else {
+            status = await Permission.notification.request();
+            if (!status.isGranted) {
+              status = PermissionStatus.permanentlyDenied;
+            }
           }
         }
         break;

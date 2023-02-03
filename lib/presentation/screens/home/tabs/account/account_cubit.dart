@@ -42,6 +42,7 @@ class AccountCubit extends Cubit<AccountState> {
   StreamSubscription<bool>? _connectivitySubscription;
   late bool isPushNotificationPermissionGranted;
   Timer? _timer;
+  bool _isFirstLoadUserInfo = true;
 
   AccountCubit(
     this._cacheManager,
@@ -66,7 +67,6 @@ class AccountCubit extends Cubit<AccountState> {
         ),
       );
     });
-    refreshUserinfo();
 
     _appOnResumeSubscription = _mainCubit.changeAppLifecycleStream.listen(
       (value) async {
@@ -81,6 +81,8 @@ class AccountCubit extends Cubit<AccountState> {
         }
       },
     );
+
+    firstGetUserInfo();
   }
 
   @override
@@ -92,6 +94,12 @@ class AccountCubit extends Cubit<AccountState> {
     commentController.dispose();
     commentNode.dispose();
     return super.close();
+  }
+
+  Future<void> firstGetUserInfo() async {
+    if (_isFirstLoadUserInfo) {
+      await refreshUserinfo();
+    }
   }
 
   Future<void> refreshUserinfo() async {
@@ -135,6 +143,7 @@ class AccountCubit extends Cubit<AccountState> {
               isPushNotificationPermissionGranted,
         ),
       );
+      _isFirstLoadUserInfo = false;
     }
   }
 
