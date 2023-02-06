@@ -793,6 +793,7 @@ class ChatCubit extends Cubit<ChatState> {
     _answerTimer?.cancel();
 
     ChatItem? answer;
+    int? statusCode;
     try {
       answer = await _repository.sendAnswer(_answerRequest!);
       logger.d('send answer response: $answer');
@@ -812,9 +813,18 @@ class ChatCubit extends Cubit<ChatState> {
             UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
         answer = await _getNotSentAnswer();
       }
+
+      statusCode = e.response?.statusCode;
+      if (statusCode == 413) {
+        _mainCubit.updateErrorMessage(UIError(
+            uiErrorType: UIErrorType.theMaximumSizeOfTheAttachmentsIsXMb,
+            args: [maxAttachmentSizeInMb.toInt()]));
+      }
     }
 
-    emit(state.copyWith(questionStatus: ChatItemStatusType.answered));
+    if (statusCode != 413) {
+      emit(state.copyWith(questionStatus: ChatItemStatusType.answered));
+    }
     clearSuccessMessage();
     return answer;
   }
