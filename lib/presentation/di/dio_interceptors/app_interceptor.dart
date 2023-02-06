@@ -90,6 +90,8 @@ class AppInterceptor extends Interceptor {
             initTab: TabsTypes.account,
           ),
           (route) => false);
+    } else if (err.response?.statusCode == 413) {
+      // Handele error 413 Request Entity Too Large in chat_cubit.dart
     } else if (err.type == DioErrorType.connectTimeout ||
         err.type == DioErrorType.receiveTimeout ||
         err.type == DioErrorType.sendTimeout) {
