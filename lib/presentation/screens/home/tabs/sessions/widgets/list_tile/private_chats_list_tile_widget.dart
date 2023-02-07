@@ -22,6 +22,7 @@ class PrivateChatsListTileWidget extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final SessionsCubit sessionsCubit = context.read<SessionsCubit>();
     final int count = question.unansweredCount ?? 0;
+    final bool hasUnansweredQuestions = count > 0;
     return SizedBox(
       height: 62.0,
       child: Row(
@@ -76,7 +77,8 @@ class PrivateChatsListTileWidget extends StatelessWidget {
                   Expanded(
                     child: Row(
                       crossAxisAlignment:
-                          question.attachments?.isEmpty == true || count > 0
+                          question.attachments?.isEmpty == true ||
+                                  hasUnansweredQuestions
                               ? CrossAxisAlignment.start
                               : CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,23 +86,25 @@ class PrivateChatsListTileWidget extends StatelessWidget {
                         Expanded(
                           child: SizedBox(
                             height: AppConstants.iconSize,
-                            child: count > 0
+                            child: hasUnansweredQuestions
                                 ? Text(
                                     question.getUnansweredMessage(context),
                                     style: theme.textTheme.bodyMedium?.copyWith(
                                       fontSize: 14.0,
                                       color: AppColors.promotion,
                                     ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   )
                                 : ListTileContentWidget(
                                     question: question,
                                   ),
                           ),
                         ),
-                        const SizedBox(
-                          width: 32.0,
+                        SizedBox(
+                          width: hasUnansweredQuestions ? 8.0 : 32.0,
                         ),
-                        if (count > 0)
+                        if (hasUnansweredQuestions)
                           _PrivateBadge(
                             count: count,
                           ),
