@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/password_text_field.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_themes.dart';
 
 void main() {
   group('PasswordField', () {
@@ -55,8 +54,6 @@ void main() {
         await tester.pumpWidget(
           Builder(builder: (context) {
             return MaterialApp(
-              theme: AppThemes.themeLight(context),
-              darkTheme: AppThemes.themeDark(context),
               home: Scaffold(
                 body: PasswordTextField(
                   controller: TextEditingController(),
@@ -80,8 +77,6 @@ void main() {
         await tester.pumpWidget(
           Builder(builder: (context) {
             return MaterialApp(
-              theme: AppThemes.themeLight(context),
-              darkTheme: AppThemes.themeDark(context),
               home: Scaffold(
                 body: PasswordTextField(
                   controller: TextEditingController(),
