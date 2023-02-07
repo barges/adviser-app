@@ -173,7 +173,7 @@
   "permissionNeeded": "Permission Needed",
   "weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages": "We need permission to access your camera and gallery so you can send images",
   "doYouWantToRejectThisQuestion": "Do you want to reject this question?",
-  "itWillGoBackIntoTheGeneralQueueYouWillNotBeAbleToTakeItAgain": "It will go back into the general queue. You will not be able to take it again.",
+  "itWillGoBackIntoTheGeneralQueue": "It will go back into the general queue.",
   "youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse": "You must answer your active public question before you can help someone else.",
   "returnToQueue": "RETURN\n TO QUEUE",
   "noSessionsFoundWithThisFilter": "No sessions found with this filter",

@@ -1787,11 +1787,11 @@ class S {
     );
   }
 
-  /// `It will go back into the general queue. You will not be able to take it again.`
-  String get itWillGoBackIntoTheGeneralQueueYouWillNotBeAbleToTakeItAgain {
+  /// `It will go back into the general queue.`
+  String get itWillGoBackIntoTheGeneralQueue {
     return Intl.message(
-      'It will go back into the general queue. You will not be able to take it again.',
-      name: 'itWillGoBackIntoTheGeneralQueueYouWillNotBeAbleToTakeItAgain',
+      'It will go back into the general queue.',
+      name: 'itWillGoBackIntoTheGeneralQueue',
       desc: '',
       args: [],
     );

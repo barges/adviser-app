@@ -102,7 +102,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "imAvailableNow" : MessageLookupByLibrary.simpleMessage("I\'m available now"),
     "incomplete" : MessageLookupByLibrary.simpleMessage("Incomplete"),
     "ingenio" : MessageLookupByLibrary.simpleMessage("Ingenio"),
-    "itWillGoBackIntoTheGeneralQueueYouWillNotBeAbleToTakeItAgain" : MessageLookupByLibrary.simpleMessage("It will go back into the general queue. You will not be able to take it again."),
+    "itWillGoBackIntoTheGeneralQueue" : MessageLookupByLibrary.simpleMessage("It will go back into the general queue."),
     "learnMore" : MessageLookupByLibrary.simpleMessage("Learn More"),
     "legalBlock" : MessageLookupByLibrary.simpleMessage("Legal block"),
     "live" : MessageLookupByLibrary.simpleMessage("Live"),
