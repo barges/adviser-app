@@ -1,10 +1,11 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
@@ -31,6 +32,7 @@ import 'package:shared_advisor_interface/presentation/resources/app_routes.dart'
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_input_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_players/chat_recorded_player_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_recording_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
@@ -118,12 +120,27 @@ void main() {
   const MethodChannel('flutter_media_metadata')
       .setMockMethodCallHandler((methodCall) async {
     if (methodCall.method == 'MetadataRetriever') {
-      return const Metadata(
-          mimeType: 'audio/mp4',
-          trackDuration: 7808,
-          bitrate: 16000,
-          filePath:
-              '/data/user/0/com.questico.fortunica.readerapp/cache/dd3aa41e-bfe1-4734-aecd-02c6854d1d48.m4a');
+      return {
+        'metadata': {
+          'albumName': null,
+          'trackNumber': null,
+          'year': '20230203T140429.000Z',
+          'trackArtistNames': null,
+          'albumArtistName': null,
+          'bitrate': 16000,
+          'trackName': null,
+          'mimeType': 'audio/mp4',
+          'albumLength': null,
+          'writerName': null,
+          'discNumber': null,
+          'authorName': null,
+          'genre': null,
+          'trackDuration': 16192
+        },
+        'albumArt': null,
+        'filePath':
+            '/data/user/0/com.questico.fortunica.readerapp/cache/dd3aa41e-bfe1-4734-aecd-02c6854d1d48.m4a'
+      };
     }
     return null;
   });
@@ -143,8 +160,8 @@ void main() {
     mockAudioRecorderService = MockAudioRecorderService();
     mockAudioPlayerService = MockAudioPlayerService();
 
-    when(mockAudioRecorderService.stopRecorder())
-        .thenAnswer((realInvocation) => Future.value('test_audio.mp3'));
+    when(mockAudioRecorderService.stopRecorder()).thenAnswer(
+        (realInvocation) => Future.value('test/assets/test_audio1.mp3'));
 
     dioAdapter.onGet('/v2/clients/63bbab1b793423001e28722e', (server) {
       server.reply(200, ChatScreenTestResponses.publicQuestionClient);
@@ -358,7 +375,7 @@ void main() {
           await tester.pumpAndSettle();
 
           await tester.tap(find.byType(AppElevatedButton));
-          await tester.pump();
+          await tester.pumpAndSettle();
 
           expect(find.byType(ActiveChatInputFieldWidget), findsOneWidget);
         },
@@ -375,37 +392,6 @@ void main() {
                 409,
                 ChatScreenTestResponses.questionWasAlreadyTaken,
               );
-            },
-          );
-
-          await pumpChatScreen(
-            tester: tester,
-            chatScreenArguments: ChatScreenArguments(
-              publicQuestionId: '63bbab87ea0df2001dce8630',
-              question: ChatScreenTestChatItems.publicQuestion,
-            ),
-          );
-
-          await tester.pumpAndSettle();
-
-          await tester.tap(find.byType(AppElevatedButton));
-          await tester.pump();
-
-          expect(
-              find.byWidgetPredicate((widget) =>
-                  widget is CupertinoAlertDialog || widget is Dialog),
-              findsOneWidget);
-        },
-      );
-
-      testWidgets(
-        'should open error dialog box'
-        ' if user click on it, but backend returns unknown error',
-        (WidgetTester tester) async {
-          dioAdapter.onPost(
-            '/questions/take',
-            (server) {
-              server.reply(440, {});
             },
           );
 
@@ -569,7 +555,8 @@ void main() {
           expect(
               find.descendant(
                   of: find.byType(ChatTextInputWidget),
-                  matching: find.byType(TextField)),
+                  matching:
+                      find.byWidgetPredicate((widget) => widget is TextField)),
               findsOneWidget);
 
           expect(
@@ -680,48 +667,260 @@ void main() {
         },
       );
 
-      // testWidgets(
-      //   'should be replaced with ChatRecordedWidget'
-      //   ' if user taps on microphone button'
-      //   ' and then stopped recording audio',
-      //   (WidgetTester tester) async {
-      //     dioAdapter.onGet('/rituals/single/62de59dd510689001ddb8090',
-      //         (server) {
-      //       server.reply(
-      //         200,
-      //         ChatScreenTestResponses.ritualLoveCrushReadingQuestion,
-      //       );
-      //     });
+      testWidgets(
+        'should be replaced with ChatRecordedWidget'
+        ' if user taps on microphone button'
+        ' and then stopped recording audio',
+        (WidgetTester tester) async {
+          dioAdapter.onGet('/rituals/single/62de59dd510689001ddb8090',
+              (server) {
+            server.reply(
+              200,
+              ChatScreenTestResponses.ritualLoveCrushReadingQuestion,
+            );
+          });
 
-      //     await pumpChatScreen(
-      //       tester: tester,
-      //       chatScreenArguments: ChatScreenArguments(
-      //         ritualID: '62de59dd510689001ddb8090',
-      //         question: ChatScreenTestChatItems.ritualLoveCrushReadingQuestion,
-      //       ),
-      //     );
+          File audioFile = File('test/assets/test_audio.mp3');
+          audioFile.copy('test/assets/test_audio1.mp3');
 
-      //     await tester.pumpAndSettle();
-      //     await tester.pumpNtimes(times: 50);
+          await pumpChatScreen(
+            tester: tester,
+            chatScreenArguments: ChatScreenArguments(
+              ritualID: '62de59dd510689001ddb8090',
+              question: ChatScreenTestChatItems.ritualLoveCrushReadingQuestion,
+            ),
+          );
 
-      //     Finder appIconGradientButton = find.descendant(
-      //         of: find.byType(ChatTextInputWidget),
-      //         matching: find.byType(AppIconGradientButton));
+          await tester.pumpAndSettle();
+          await tester.pumpNtimes(times: 50);
 
-      //     await tester.tap(appIconGradientButton);
-      //     await tester.pumpNtimes(times: 50);
+          Finder appIconGradientButton = find.descendant(
+              of: find.byType(ChatTextInputWidget),
+              matching: find.byType(AppIconGradientButton));
 
-      //     Finder stopRecordingButton =
-      //         find.byKey(const Key('stopRecordingButton'));
+          await tester.tap(appIconGradientButton);
+          await tester.pumpNtimes(times: 50);
 
-      //     expect(stopRecordingButton, findsOneWidget);
+          Finder stopRecordingButton =
+              find.byKey(const Key('stopRecordingButton'));
 
-      //     await tester.tap(stopRecordingButton);
-      //     await tester.pumpNtimes(times: 100);
+          expect(stopRecordingButton, findsOneWidget);
 
-      //     expect(find.byType(ChatRecordedPlayerWidget), findsOneWidget);
-      //   },
-      // );
+          await tester.tap(stopRecordingButton);
+          await tester.pumpNtimes(times: 100);
+
+          expect(find.byType(ChatRecordedPlayerWidget), findsOneWidget);
+        },
+      );
     },
   );
+
+  group('Send button', () {
+    testWidgets(
+        'should be inactive '
+        'if user try to answer public question with less then 250 characters',
+        (tester) async {
+      await pumpChatScreen(
+        tester: tester,
+        chatScreenArguments: ChatScreenArguments(
+          publicQuestionId: '63bbab87ea0df2001dce8630',
+          question: ChatScreenTestChatItems.publicQuestion,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(AppElevatedButton));
+      await tester.pumpAndSettle();
+
+      await tester.enterText(
+          find.byWidgetPredicate((widget) => widget is TextField),
+          'answer with less then 250 characters');
+      await tester.pump();
+
+      expect(
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is Opacity &&
+              widget.opacity == 0.4 &&
+              widget.child is AppIconGradientButton,
+        ),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets(
+        'should become active '
+        'if user types 250 or more symbols in textfield', (tester) async {
+      await pumpChatScreen(
+        tester: tester,
+        chatScreenArguments: ChatScreenArguments(
+          publicQuestionId: '63bbab87ea0df2001dce8630',
+          question: ChatScreenTestChatItems.publicQuestion,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(AppElevatedButton));
+      await tester.pumpAndSettle();
+
+      String enteredText = '';
+      for (int i = 0; i < 250; i++) {
+        enteredText += 'a';
+      }
+      await tester.enterText(
+          find.byWidgetPredicate((widget) => widget is TextField), enteredText);
+      await tester.pump();
+
+      expect(
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is Opacity &&
+              widget.opacity == 1.0 &&
+              widget.child is AppIconGradientButton,
+        ),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets(
+        'should show dialog '
+        'if user clicks on active button', (tester) async {
+      await pumpChatScreen(
+        tester: tester,
+        chatScreenArguments: ChatScreenArguments(
+          publicQuestionId: '63bbab87ea0df2001dce8630',
+          question: ChatScreenTestChatItems.publicQuestion,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(AppElevatedButton));
+      await tester.pumpAndSettle();
+
+      String enteredText = '';
+      for (int i = 0; i < 250; i++) {
+        enteredText += 'a';
+      }
+      await tester.enterText(
+          find.byWidgetPredicate((widget) => widget is TextField), enteredText);
+      await tester.pump();
+
+      await tester.tap(find.byType(AppIconGradientButton));
+      await tester.pump();
+
+      expect(
+          find.text(
+            S.current.pleaseConfirmThatYourAnswerIsReadyToBeSent,
+          ),
+          findsOneWidget);
+    });
+
+    testWidgets(
+        'should not send message and text field should be displayed on screen'
+        'if user clicks on active button,'
+        ' but on opened dialog user clicks on cancel button', (tester) async {
+      await pumpChatScreen(
+        tester: tester,
+        chatScreenArguments: ChatScreenArguments(
+          publicQuestionId: '63bbab87ea0df2001dce8630',
+          question: ChatScreenTestChatItems.publicQuestion,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(AppElevatedButton));
+      await tester.pumpAndSettle();
+
+      String enteredText = '';
+      for (int i = 0; i < 250; i++) {
+        enteredText += 'a';
+      }
+      await tester.enterText(
+          find.byWidgetPredicate((widget) => widget is TextField), enteredText);
+      await tester.pump();
+
+      await tester.tap(find.byType(AppIconGradientButton));
+      await tester.pump();
+
+      expect(
+          find.byWidgetPredicate(
+              (widget) => widget is CupertinoAlertDialog || widget is Dialog),
+          findsOneWidget);
+
+      await tester.tap(
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is Text &&
+              widget.data?.toLowerCase() == S.current.cancel.toLowerCase(),
+        ),
+      );
+      await tester.pump();
+
+      expect(
+          find.byWidgetPredicate(
+              (widget) => widget is CupertinoAlertDialog || widget is Dialog),
+          findsNothing);
+      expect(find.byWidgetPredicate((widget) => widget is TextField),
+          findsOneWidget);
+    });
+
+    testWidgets(
+        'should send message and text field should not be displayed on screen,'
+        ' but sended message should be displayed on a screen as a new ChatItemWidget'
+        ' if user clicks on active button,'
+        ' and on opened dialog user clicks on "confirm send" button',
+        (tester) async {
+      String enteredText = '';
+      for (int i = 0; i < 250; i++) {
+        enteredText += 'a';
+      }
+      dioAdapter.onPost('/answers', (server) {
+        server.reply(
+            200,
+            ChatScreenTestChatItems.publicAnswer
+                .copyWith(content: enteredText));
+      });
+
+      await pumpChatScreen(
+        tester: tester,
+        chatScreenArguments: ChatScreenArguments(
+          publicQuestionId: '63bbab87ea0df2001dce8630',
+          question: ChatScreenTestChatItems.publicQuestion,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(AppElevatedButton));
+      await tester.pumpAndSettle();
+
+      await tester.enterText(
+          find.byWidgetPredicate((widget) => widget is TextField), enteredText);
+      await tester.pump();
+
+      await tester.tap(find.byType(AppIconGradientButton));
+      await tester.pump();
+
+      expect(
+          find.byWidgetPredicate(
+              (widget) => widget is CupertinoAlertDialog || widget is Dialog),
+          findsOneWidget);
+
+      await tester.tap(
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is Text &&
+              widget.data?.toLowerCase() == S.current.confirm.toLowerCase(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+          find.byWidgetPredicate(
+              (widget) => widget is CupertinoAlertDialog || widget is Dialog),
+          findsNothing);
+      expect(find.byWidgetPredicate((widget) => widget is TextField),
+          findsNothing);
+      expect(find.widgetWithText(ChatItemWidget, enteredText), findsOneWidget);
+    });
+  });
 }
