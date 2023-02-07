@@ -95,8 +95,7 @@ class ChatContentWidget extends StatelessWidget {
                   final dynamic needReturn = await showOkCancelAlert(
                     context: context,
                     title: s.doYouWantToRejectThisQuestion,
-                    description: s
-                        .itWillGoBackIntoTheGeneralQueueYouWillNotBeAbleToTakeItAgain,
+                    description: s.itWillGoBackIntoTheGeneralQueue,
                     okText: s.return_,
                     actionOnOK: () => Navigator.pop(context, true),
                     allowBarrierClick: false,

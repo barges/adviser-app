@@ -221,7 +221,6 @@ class ChatCubit extends Cubit<ChatState> {
     final AnswerValidationResponse response =
         await _repository.getAnswerValidation();
     _answerLimitations = response.answerLimitations ?? [];
-    logger.d('Limitations: ${response.toJson()}');
   }
 
   void textInputEditingControllerListener() {
