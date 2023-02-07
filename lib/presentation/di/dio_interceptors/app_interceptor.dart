@@ -101,13 +101,19 @@ class AppInterceptor extends Interceptor {
         ),
       );
     } else {
-      _mainCubit.updateErrorMessage(
-        NetworkError(
-          err.response?.data[_localizedMessageKey] ??
-              err.response?.data[_messageKey] ??
-              err.response?.data[_statusKey],
-        ),
-      );
+      try {
+        _mainCubit.updateErrorMessage(
+          NetworkError(
+            message: err.response?.data[_localizedMessageKey] ??
+                err.response?.data[_messageKey] ??
+                err.response?.data[_statusKey],
+          ),
+        );
+      } catch (e) {
+        _mainCubit.updateErrorMessage(
+          const NetworkError(),
+        );
+      }
     }
     return super.onError(err, handler);
   }

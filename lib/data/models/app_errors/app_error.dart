@@ -4,12 +4,12 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 
 abstract class AppError {
   final String? message;
-  const AppError(this.message);
+  const AppError({this.message});
   String getMessage(BuildContext context);
 }
 
 class EmptyError extends AppError {
-  const EmptyError() : super(null);
+  const EmptyError() : super();
 
   @override
   String getMessage(BuildContext context) {
@@ -18,7 +18,7 @@ class EmptyError extends AppError {
 }
 
 class NetworkError extends AppError {
-  const NetworkError(message) : super(message);
+  const NetworkError({message}) : super(message: message);
 
   @override
   String getMessage(BuildContext context) {
@@ -30,7 +30,7 @@ class UIError extends AppError {
   final UIErrorType uiErrorType;
   final List<Object>? args;
 
-  UIError({required this.uiErrorType, this.args}) : super(null);
+  UIError({required this.uiErrorType, this.args}) : super();
 
   @override
   String getMessage(BuildContext context) {
