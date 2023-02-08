@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_recorder/chat_audio_recorder_cubit.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class ChatRecordingWidget extends StatelessWidget {
   final VoidCallback? onClosePressed;
   final VoidCallback? onStopRecordPressed;
-  final Stream<RecordingDisposition>? recordingStream;
 
   const ChatRecordingWidget({
     Key? key,
     this.onClosePressed,
     this.onStopRecordPressed,
-    this.recordingStream,
   }) : super(key: key);
 
   @override
@@ -42,21 +40,20 @@ class ChatRecordingWidget extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              StreamBuilder<RecordingDisposition>(
-                  stream: recordingStream,
-                  builder: (_, snapshot) {
-                    return Text(
-                      s.fromXsecToYmin(chatCubit.minRecordDurationInSec,
-                          chatCubit.maxRecordDurationInMinutes),
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: snapshot.hasData &&
-                                chatCubit.checkMinRecordDurationIsOk()
-                            ? AppColors.online
-                            : theme.errorColor,
-                        fontSize: 12.0,
-                      ),
-                    );
-                  }),
+              Builder(builder: (context) {
+                context.select(
+                    (ChatAudioRecorderCubit cubit) => cubit.state.duration);
+                return Text(
+                  s.fromXsecToYmin(chatCubit.minRecordDurationInSec,
+                      chatCubit.maxRecordDurationInMinutes),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: chatCubit.checkMinRecordDurationIsOk()
+                        ? AppColors.online
+                        : theme.errorColor,
+                    fontSize: 12.0,
+                  ),
+                );
+              }),
               const SizedBox(width: 8.0),
               Container(
                 padding: const EdgeInsets.symmetric(
@@ -82,27 +79,22 @@ class ChatRecordingWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 4.0),
-                    StreamBuilder<RecordingDisposition>(
-                        stream: recordingStream,
-                        builder: (_, snapshot) {
-                          final time =
-                              (snapshot.hasData && snapshot.data != null)
-                                  ? snapshot.data!.duration
-                                      .toString()
-                                      .substring(3, 7)
-                                  : AppConstants.startMSS;
-                          return SizedBox(
-                            width: 38.0,
-                            child: Text(
-                              time,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.hoverColor,
-                                fontSize: 15.0,
-                              ),
-                            ),
-                          );
-                        }),
+                    Builder(builder: (context) {
+                      Duration duration = context.select(
+                          (ChatAudioRecorderCubit cubit) =>
+                              cubit.state.duration);
+                      final time = duration.toString().substring(3, 7);
+                      return SizedBox(
+                        width: 38.0,
+                        child: Text(
+                          time,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.hoverColor,
+                            fontSize: 15.0,
+                          ),
+                        ),
+                      );
+                    }),
                   ],
                 ),
               ),

@@ -33,7 +33,7 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/activ
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_players/chat_recorded_player_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_recording_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_recorder/chat_recording_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/ritual_info_card_widget.dart';
