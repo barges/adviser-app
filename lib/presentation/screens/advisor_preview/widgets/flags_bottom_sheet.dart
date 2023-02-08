@@ -6,7 +6,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/constants.dart';
+import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_constants.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 Future<void> flagsBottomSheet(
@@ -22,7 +22,7 @@ Future<void> flagsBottomSheet(
             value: advisorPreviewCubit,
             child: Container(
               decoration: const BoxDecoration(
-                color: white,
+                color: AdvisorPreviewConstants.white,
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(8.0),
                     topLeft: Radius.circular(8.0)),
@@ -48,7 +48,7 @@ Future<void> flagsBottomSheet(
               ),
             ),
           ),
-      backgroundColor: white);
+      backgroundColor: AdvisorPreviewConstants.white);
 }
 
 class _FlagBottomSheetHeader extends StatelessWidget {
@@ -66,8 +66,9 @@ class _FlagBottomSheetHeader extends StatelessWidget {
         child: Padding(
           padding: padding,
           child: Text(S.of(context).cancel,
-              style: appBarTitleStyle?.copyWith(
-                  fontWeight: FontWeight.w500, color: primary)),
+              style: AdvisorPreviewConstants.appBarTitleStyle.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: AdvisorPreviewConstants.primary)),
         ),
       ),
       GestureDetector(
@@ -75,8 +76,9 @@ class _FlagBottomSheetHeader extends StatelessWidget {
         child: Padding(
           padding: padding,
           child: Text(S.of(context).done,
-              style: appBarTitleStyle?.copyWith(
-                  fontWeight: FontWeight.w500, color: primary)),
+              style: AdvisorPreviewConstants.appBarTitleStyle.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: AdvisorPreviewConstants.primary)),
         ),
       )
     ]);
@@ -101,9 +103,12 @@ class _FlagTileWidget extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-            color: isSelected ? AppColors.online.withOpacity(0.4) : white,
-            border:
-                const Border(top: BorderSide(color: inactive1, width: 0.5))),
+            color: isSelected
+                ? AppColors.online.withOpacity(0.4)
+                : AdvisorPreviewConstants.white,
+            border: const Border(
+                top: BorderSide(
+                    color: AdvisorPreviewConstants.inactive1, width: 0.5))),
         padding: const EdgeInsets.symmetric(
             vertical: 20.0, horizontal: AppConstants.horizontalScreenPadding),
         child:
@@ -115,7 +120,8 @@ class _FlagTileWidget extends StatelessWidget {
               const SizedBox(width: 8.0),
               Text(
                 languageCode.languageName(context),
-                style: displayLarge?.copyWith(color: secondary),
+                style: AdvisorPreviewConstants.displayLarge
+                    .copyWith(color: AdvisorPreviewConstants.secondary),
               ),
             ],
           ),

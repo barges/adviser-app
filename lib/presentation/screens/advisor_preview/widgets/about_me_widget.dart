@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/constants.dart';
+import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_constants.dart';
 
 class AboutMeWidget extends StatelessWidget {
   final String title;
@@ -14,14 +14,17 @@ class AboutMeWidget extends StatelessWidget {
     return Container(
         padding: const EdgeInsets.all(12.0),
         decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(8.0)), color: white),
+            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+            color: AdvisorPreviewConstants.white),
         child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: bodySmall),
+              Text(title, style: AdvisorPreviewConstants.bodySmall),
               const Divider(),
-              Text(description, style: displayLarge?.copyWith(color: color2))
+              Text(description,
+                  style: AdvisorPreviewConstants.displayLarge
+                      .copyWith(color: AdvisorPreviewConstants.color2))
             ]));
   }
 }
