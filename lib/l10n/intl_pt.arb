@@ -204,5 +204,6 @@
   "version": "Versão",
   "tapToCopy": "Toque para copiar",
   "copied": "Copiado!",
-  "notSpecified": "Não especificado"
+  "notSpecified": "Não especificado",
+  "newPassword": "Nova senha"
 }

@@ -23,7 +23,7 @@ class ResetPasswordInputPart extends StatelessWidget {
           return PasswordTextField(
             controller: cubit.passwordController,
             focusNode: cubit.passwordNode,
-            label: S.of(context).password,
+            label: S.of(context).newPassword,
             hintText: S.of(context).enterNewPassword,
             errorType: passwordErrorType,
             textInputAction: TextInputAction.next,
