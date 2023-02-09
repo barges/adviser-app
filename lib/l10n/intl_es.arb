@@ -203,6 +203,7 @@
   "toEnableNotificationYoullNeedToAllowNotificationsInYour": "Para activar las notificaciones, tendrás que permitir las notificaciones desde los ajustes de tu teléfono",
   "version": "Versión",
   "tapToCopy": "Toca para copiar",
-  "copied": "¡Copiado!",
-  "notSpecified": "No especificado"
+  "copied": "Copiado!",
+  "notSpecified": "No especificado",
+  "newPassword": "Nueva contraseña"
 }

@@ -203,5 +203,6 @@
   "version": "Version",
   "tapToCopy": "Tap to copy",
   "copied": "Copied!",
-  "notSpecified": "Not specified"
+  "notSpecified": "Not specified",
+  "newPassword": "New password"
 }
