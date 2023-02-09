@@ -92,10 +92,19 @@ class ChatTextInputWidget extends StatelessWidget {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  chatCubit.startRecordingAudio(context);
+                                  if (chatCubit.textInputEditingController.text
+                                      .isEmpty) {
+                                    chatCubit.startRecordingAudio(context);
+                                  }
                                 },
-                                child: Assets.vectors.microphone
-                                    .svg(width: AppConstants.iconSize),
+                                child: Opacity(
+                                  opacity: chatCubit.textInputEditingController
+                                          .text.isEmpty
+                                      ? 1.0
+                                      : 0.4,
+                                  child: Assets.vectors.microphone
+                                      .svg(width: AppConstants.iconSize),
+                                ),
                               ),
                             ],
                           ),
