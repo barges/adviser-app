@@ -2,18 +2,16 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:retrofit/dio.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/drawer_state.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DrawerCubit extends Cubit<DrawerState> {
   final AuthRepository _authRepository;
@@ -24,8 +22,6 @@ class DrawerCubit extends Cubit<DrawerState> {
   late final UserStatus? userStatus;
 
   Timer? _copyTimer;
-
-  final Uri _url = Uri.parse(AppConstants.webToolUrl);
 
   DrawerCubit(
     this._authRepository,
@@ -65,17 +61,18 @@ class DrawerCubit extends Cubit<DrawerState> {
     }
   }
 
-  Future<void> openSettingsUrl() async {
-    if (!await launchUrl(
-      _url,
-      mode: LaunchMode.externalApplication,
-    )) {
-      Get.showSnackbar(GetSnackBar(
-        duration: const Duration(seconds: 2),
-        message: 'Could not launch $_url',
-      ));
-    }
-  }
+  // Future<void> openSettingsUrl() async {
+  //   final Uri url = Uri.parse(AppConstants.webToolUrl);
+  //   if (!await launchUrl(
+  //     url,
+  //     mode: LaunchMode.externalApplication,
+  //   )) {
+  //     Get.showSnackbar(GetSnackBar(
+  //       duration: const Duration(seconds: 2),
+  //       message: 'Could not launch $url',
+  //     ));
+  //   }
+  // }
 
   void goToAllBrands() {
     Get.back();

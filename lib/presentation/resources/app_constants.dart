@@ -36,15 +36,20 @@ class AppConstants {
   static const String ptBrandName = 'Português';
   static const String deBrandName = 'Deutsch';
 
-  static const String webToolUrl = 'https://advisor-staging.fortunica-app.com';
-  static const String baseUrl = 'https://api-staging.fortunica-app.com';
-
   static const String firebaseProjectId = 'reader-app-fortunica';
   static const String iosApiKey = 'AIzaSyCj0OVmpL96tU3WQLYJjqgCh6Af2gEoMa0';
   static const String firebaseMessagingSenderId = '986930839057';
   static const String iosAppId = '1:986930839057:ios:931a04b3aeb905de5cbbb0';
 
+  ///STAGE
+  static const String baseUrl = 'https://api-staging.fortunica-app.com';
+  static const String webToolUrl = 'https://advisor-staging.fortunica-app.com';
+
   ///DEV
   static const String baseUrlDev =
       'https://fortunica-backend-for-2268.fortunica.adviqodev.de';
+
+  ///PROD
+  static const String baseUrlProd = 'https://api.fortunica-app.com';
+  static const String webToolUrlProd = 'https://advisor.fortunica-app.com';
 }

@@ -23,7 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m1(maxAttachmentSizeInMb) => "Die maximale Größe der Anhänge beträgt ${maxAttachmentSizeInMb}Mb";
 
-  static m2(counter) => "Diese Frage wird nach ${counter} wieder auf die allgemeine Liste gesetzt.";
+  static m2(counter) => "Diese Frage wird wieder auf die allgemeine Liste nach ${counter} gesetzt.";
 
   static m3(email) => "Wir haben Anweisungen zum Zurücksetzen des Passworts an ${email} gesendet.";
 
@@ -117,6 +117,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "myGallery" : MessageLookupByLibrary.simpleMessage("Meine Galerie"),
     "newLabel" : MessageLookupByLibrary.simpleMessage("Neu"),
     "newMandatoryArticleIsAvailable" : MessageLookupByLibrary.simpleMessage("Neuer obligatorischer Artikel ist verfügbar!"),
+    "newPassword" : MessageLookupByLibrary.simpleMessage("Neues Passwort"),
     "newUsers" : MessageLookupByLibrary.simpleMessage("Neue Benutzer"),
     "nickname" : MessageLookupByLibrary.simpleMessage("Spitzname"),
     "noIChangedMyMind" : MessageLookupByLibrary.simpleMessage("Nein, ich habe meine Meinung geändert"),
@@ -205,7 +206,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "total" : MessageLookupByLibrary.simpleMessage("Insgesamt"),
     "totalMarkets" : MessageLookupByLibrary.simpleMessage("Gesamte Märkte"),
     "tryAgain" : MessageLookupByLibrary.simpleMessage("Erneut versuchen"),
-    "typeMessage" : MessageLookupByLibrary.simpleMessage("Nachricht eingeben"),
+    "typeMessage" : MessageLookupByLibrary.simpleMessage("Schreibe eine Nachricht"),
     "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgain" : MessageLookupByLibrary.simpleMessage("Uh-oh. Es sieht so aus, als hättest du deine Verbindung verloren. Bitte versuche es erneut."),
     "unknownError" : MessageLookupByLibrary.simpleMessage("Unbekannter Fehler"),
     "update" : MessageLookupByLibrary.simpleMessage("Aktualisierung"),

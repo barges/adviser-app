@@ -117,6 +117,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "myGallery" : MessageLookupByLibrary.simpleMessage("My Gallery"),
     "newLabel" : MessageLookupByLibrary.simpleMessage("New"),
     "newMandatoryArticleIsAvailable" : MessageLookupByLibrary.simpleMessage("New mandatory article is available!"),
+    "newPassword" : MessageLookupByLibrary.simpleMessage("New password"),
     "newUsers" : MessageLookupByLibrary.simpleMessage("New Users"),
     "nickname" : MessageLookupByLibrary.simpleMessage("Nickname"),
     "noIChangedMyMind" : MessageLookupByLibrary.simpleMessage("No, I changed my mind"),

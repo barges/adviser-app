@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/constants.dart';
+import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/widgets/flags_bottom_sheet.dart';
 
 class AdvisorPreviewAppBar extends StatelessWidget
@@ -17,16 +17,18 @@ class AdvisorPreviewAppBar extends StatelessWidget
     final AdvisorPreviewCubit advisorPreviewCubit =
         context.read<AdvisorPreviewCubit>();
     return AppBar(
-      backgroundColor: primary,
+      backgroundColor: AdvisorPreviewConstants.primary,
       centerTitle: true,
-      titleTextStyle: appBarTitleStyle?.copyWith(color: white),
+      titleTextStyle: AdvisorPreviewConstants.appBarTitleStyle
+          .copyWith(color: AdvisorPreviewConstants.white),
       systemOverlayStyle:
           const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
       leading: GestureDetector(
         onTap: Get.back,
         child: Padding(
           padding: const EdgeInsets.all(14.0),
-          child: Assets.vectors.arrowLeft.svg(color: white),
+          child: Assets.vectors.arrowLeft
+              .svg(color: AdvisorPreviewConstants.white),
         ),
       ),
       title: Text(advisorPreviewCubit.userProfile.profileName ?? ''),

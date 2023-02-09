@@ -6,7 +6,7 @@ import 'package:shared_advisor_interface/data/models/user_info/localized_propert
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_state.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/constants.dart';
+import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_constants.dart';
 
 class AdvisorPreviewCubit extends Cubit<AdvisorPreviewState> {
   final CachingManager cacheManager = getIt.get<CachingManager>();
@@ -33,15 +33,16 @@ class AdvisorPreviewCubit extends Cubit<AdvisorPreviewState> {
 
   Map<String, dynamic> getSelectedLanguageDetails(MarketsType language) {
     Map<String, dynamic> details = {};
-    details[ratingKey] = userProfile.rating?[language];
-    details[titleKey] = (userProfile.localizedProperties
+    details[AdvisorPreviewConstants.ratingKey] = userProfile.rating?[language];
+    details[AdvisorPreviewConstants.titleKey] = (userProfile.localizedProperties
                 ?.toJson()[language.name] as PropertyByLanguage?)
             ?.statusMessage ??
         '';
-    details[descriptionKey] = (userProfile.localizedProperties
-                ?.toJson()[language.name] as PropertyByLanguage?)
-            ?.description ??
-        '';
+    details[AdvisorPreviewConstants.descriptionKey] =
+        (userProfile.localizedProperties?.toJson()[language.name]
+                    as PropertyByLanguage?)
+                ?.description ??
+            '';
     return details;
   }
 }

@@ -146,7 +146,7 @@
   "checkYourInternetConnection": "Überprüfe deine Internetverbindung",
   "youCantSendThisMessageBecauseItsLessThanXSeconds": "Du kannst diese Nachricht nicht senden, weil es weniger als {minRecordDurationInSec} Sekunden sind",
   "theMaximumSizeOfTheAttachmentsIsXMb": "Die maximale Größe der Anhänge beträgt {maxAttachmentSizeInMb}Mb",
-  "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": "Diese Frage wird nach {counter} wieder auf die allgemeine Liste gesetzt.",
+  "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": "Diese Frage wird wieder auf die allgemeine Liste nach {counter} gesetzt.",
   "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m": "Die Antwort ist nicht möglich, diese Frage wird in ~ 1m wieder auf die allgemeine Liste gesetzt",
   "youHaveARitualRequest": "Du hast eine Blockadenlösung Anfrage",
   "youHaveAPrivateMessage": "Du hast eine private Nachricht",
@@ -186,7 +186,7 @@
   "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword": "Gib deine E-Mail-Adresse ein und wir schicken dir Anweisungen, um ein neues Passwort zu erstellen.",
   "wrongUsernameAndOrPassword": "Falscher Benutzername und/oder falsches Passwort.",
   "weNeedPermissionToAccessYourMicrophone": "Wir benötigen die Erlaubnis, auf dein Mikrofon zuzugreifen",
-  "typeMessage": "Nachricht eingeben",
+  "typeMessage": "Schreibe eine Nachricht",
   "pleaseConfirmThatYourAnswerIsReadyToBeSent": "Bitte bestätige, dass deine Antwort versandbereit ist",
   "enterYourPassword": "Gib dein Passwort ein",
   "enterNewPassword": "Neues Passwort eingeben",
@@ -204,5 +204,6 @@
   "version": "Version",
   "tapToCopy": "Tippe zum Kopieren",
   "copied": "Kopiert!",
-  "notSpecified": "Nicht angegeben"
+  "notSpecified": "Nicht angegeben",
+  "newPassword": "Neues Passwort"
 }
