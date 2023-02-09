@@ -1,0 +1,141 @@
+stages:
+  - upgrade_flutter
+  # - test
+  # - analyze
+  - build
+  - deploy
+  - tag
+
+variables:
+  LANG: "en_US.UTF-8"
+
+upgrade_flutter:
+  stage: upgrade_flutter
+  script:
+    - flutter upgrade
+    - flutter channel stable
+    - flutter --version
+  tags:
+    - macmini
+  only:
+    - branches
+
+# test:
+#   stage: test
+#   before_script:
+#     - flutter pub get
+#     - flutter pub run build_runner build --delete-conflicting-outputs
+#   script:
+#     - flutter test
+#   tags:
+#     - macmini
+#   only:
+#     - branches
+
+# analyze:
+#   stage: analyze
+#   before_script:
+#     - flutter pub get
+#     - flutter pub run build_runner build --delete-conflicting-outputs
+#   script:
+#     - flutter analyze
+#   tags:
+#     - macmini
+#   only:
+#     - branches
+
+build-ios:
+  stage: build
+  before_script:
+    - flutter --version
+    - flutter pub get
+    - flutter pub run build_runner build --delete-conflicting-outputs
+  script:
+    - flutter build ipa --release --export-method development
+  artifacts:
+    paths:
+      - build/ios/ipa/*
+  tags:
+    - macmini
+  only:
+    - branches
+
+build-android:
+  stage: build
+  before_script:
+    - flutter --version
+    - flutter pub get
+    - flutter pub run build_runner build --delete-conflicting-outputs
+  script:
+    - flutter build apk --release
+  artifacts:
+    paths:
+      - build/app/outputs/flutter-apk/app-release.apk
+  tags:
+    - macmini
+  only:
+    - branches
+
+generate-release-notes:
+  stage: deploy
+  before_script:
+    - git config --global user.email "gitlab-pipeline@adviqo.com"
+    - git config --global user.name "gitlab-pipeline"
+  script:
+    - git checkout -B "$CI_BUILD_REF_NAME" "$CI_BUILD_REF"
+    - git remote set-url origin https://gitlab-pipeline:${COMMITTOKEN}@gitlab.com/adviqotech/adviser-app.git
+    - git tag $CI_COMMIT_REF_SLUG-$(date +%Y%m%d%H%M%S)
+    - git log --pretty="- %s (%h)" $(git tag --sort=-creatordate | head -2)...$(git tag --sort=-creatordate | head -1) > release-notes.txt
+  artifacts:
+    paths:
+      - release-notes.txt
+  tags:
+    - macmini
+  only:
+    - develop
+
+deploy-ios:
+  stage: deploy
+  needs:
+    - job: build-ios
+      artifacts: true
+    - job: generate-release-notes
+      artifacts: true
+  script:
+    - firebase appdistribution:distribute "build/ios/ipa/Advisor App.ipa" --app 1:986930839057:ios:931a04b3aeb905de5cbbb0 --token "$FIREBASE_TOKEN" --release-notes-file release-notes.txt --groups "Testers" --debug
+  tags:
+    - macmini
+  only:
+    - develop
+deploy-android:
+  stage: deploy
+  needs:
+    - job: build-android
+      artifacts: true
+    - job: generate-release-notes
+      artifacts: true
+  script:
+    - firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk --app 1:986930839057:android:16ca6e7b357f2ba95cbbb0 --token "$FIREBASE_TOKEN" --release-notes-file release-notes.txt --groups "Testers" --debug
+  tags:
+    - macmini
+  only:
+    - develop
+tag:
+  stage: tag
+  needs:
+    - job: deploy-android
+    - job: deploy-ios
+  before_script:
+    - git config --global user.email "gitlab-pipeline@adviqo.com"
+    - git config --global user.name "gitlab-pipeline"
+  script:
+    - git checkout -B "$CI_BUILD_REF_NAME" "$CI_BUILD_REF"
+    - git remote set-url origin https://gitlab-pipeline:${COMMITTOKEN}@gitlab.com/adviqotech/adviser-app.git
+    - git tag --delete $(git tag)
+    - git fetch --tags
+    - git tag $CI_COMMIT_REF_SLUG-$(date +%Y%m%d%H%M%S)
+    - git push --tags
+  tags:
+    - macmini
+  only:
+    - develop

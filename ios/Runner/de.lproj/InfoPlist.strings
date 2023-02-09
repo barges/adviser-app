@@ -1,0 +1,5 @@
+
+"NSCameraUsageDescription" = "Diese App erfordert Zugriff auf die Kamera, damit Sie Fotos aufnehmen und in die App hochladen können.";
+"NSMicrophoneUsageDescription" = "Diese App erfordert Zugriff auf das Mikrofon, damit Sie Audionachrichten aufzeichnen können.";
+"NSPhotoLibraryUsageDescription" = "Diese App erfordert Zugriff auf die Galerie, damit Sie Fotos in der App teilen können.";
+"NSUserTrackingUsageDescription" = "Wenn Sie dies zulassen, können wir feststellen, über welchen Marketingkanal Sie gekommen sind, und es wird für keinen anderen Zweck verwendet. Sie können dies in der App unter Einstellungen ändern.";
