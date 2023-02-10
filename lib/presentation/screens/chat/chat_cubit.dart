@@ -821,6 +821,7 @@ class ChatCubit extends Cubit<ChatState> {
   Future<ChatItem?> _sendAnswer() async {
     ChatItem? answer;
     int? statusCode;
+    DioErrorType? errorType;
     try {
       answer = await _repository.sendAnswer(_answerRequest!);
       logger.d('send answer response: $answer');
@@ -832,11 +833,12 @@ class ChatCubit extends Cubit<ChatState> {
       _answerTimer?.cancel();
       _answerRequest = null;
     } on DioError catch (e) {
-      logger.e(e);
+      logger.d(e);
+      errorType = e.type;
       if (!await _connectivityService.checkConnection() ||
-          e.type == DioErrorType.connectTimeout ||
-          e.type == DioErrorType.sendTimeout ||
-          e.type == DioErrorType.receiveTimeout) {
+          errorType == DioErrorType.connectTimeout ||
+          errorType == DioErrorType.sendTimeout ||
+          errorType == DioErrorType.receiveTimeout) {
         _mainCubit.updateErrorMessage(
             UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
         answer = await _getNotSentAnswer();
@@ -850,7 +852,7 @@ class ChatCubit extends Cubit<ChatState> {
       }
     }
 
-    if (statusCode != 413) {
+    if (statusCode != 413 && errorType != DioErrorType.other) {
       emit(state.copyWith(questionStatus: ChatItemStatusType.answered));
     }
 
