@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
+import 'package:shared_advisor_interface/presentation/themes/app_themes.dart';
 
 void main() {
   group('EmptyListWiidget', () {
@@ -50,14 +51,26 @@ void main() {
         ' if theme of application is light', (tester) async {
       String title = 'Some title';
 
-      await tester.pumpWidget(MaterialApp(
-        theme: ThemeData(brightness: Brightness.light),
-        home: Scaffold(
-            body: EmptyListWidget(
-          title: title,
-        )),
-      ));
-      await tester.pumpAndSettle();
+      await tester.runAsync(() async {
+        await tester.pumpWidget(
+          Builder(builder: (context) {
+            return MaterialApp(
+              theme: AppThemes.themeLight(context),
+              home: Scaffold(
+                  body: EmptyListWidget(
+                title: title,
+              )),
+            );
+          }),
+        );
+        await tester.pumpAndSettle();
+
+        Element element = tester.element(find.byType(Image));
+        Image image = element.widget as Image;
+        await precacheImage(image.image, element);
+
+        await tester.pumpAndSettle();
+      });
 
       expectLater(find.byType(Image),
           matchesGoldenFile('goldens/assets_empty_list_logo.png'));
@@ -68,17 +81,26 @@ void main() {
         ' if theme of application is dark', (tester) async {
       String title = 'Some title';
 
-      await tester.pumpWidget(MaterialApp(
-        theme: ThemeData(brightness: Brightness.dark),
-        home: Scaffold(
-            backgroundColor: Colors.white,
-            body: EmptyListWidget(
-              title: title,
-            )),
-      ));
-      await tester.pumpAndSettle();
+      await tester.runAsync(() async {
+        await tester.pumpWidget(
+          Builder(builder: (context) {
+            return MaterialApp(
+              theme: AppThemes.themeDark(context),
+              home: Scaffold(
+                  body: EmptyListWidget(
+                title: title,
+              )),
+            );
+          }),
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.byType(Image), findsOneWidget);
+        Element element = tester.element(find.byType(Image));
+        Image image = element.widget as Image;
+        await precacheImage(image.image, element);
+
+        await tester.pumpAndSettle();
+      });
 
       expectLater(find.byType(Image),
           matchesGoldenFile('goldens/assets_empty_list_logo_dark.png'));
