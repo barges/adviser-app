@@ -601,7 +601,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     if (answer != null) {
       if (answer.isSent) {
-        await _deleteRecordedAudioFile(state.recordedAudio);
+        _deleteRecordedAudioFile(state.recordedAudio);
         _mainCubit.updateSessions();
         _recordAudioDuration = null;
       }
@@ -835,21 +835,14 @@ class ChatCubit extends Cubit<ChatState> {
     } on DioError catch (e) {
       logger.d(e);
       errorType = e.type;
-      if (!await _connectivityService.checkConnection() ||
-          errorType == DioErrorType.connectTimeout ||
-          errorType == DioErrorType.sendTimeout ||
-          errorType == DioErrorType.receiveTimeout) {
+      if (await _isConnectionProblem(errorType)) {
         _mainCubit.updateErrorMessage(
             UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
         answer = await _getNotSentAnswer();
       }
 
       statusCode = e.response?.statusCode;
-      if (statusCode == 413) {
-        _mainCubit.updateErrorMessage(UIError(
-            uiErrorType: UIErrorType.theMaximumSizeOfTheAttachmentsIsXMb,
-            args: [_maxAttachmentSizeInMb.toInt()]));
-      }
+      _handleIfEntityTooLargeError(statusCode);
     }
 
     if (statusCode != 413 && errorType != DioErrorType.other) {
@@ -861,6 +854,62 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     return answer;
+  }
+
+  Future<void> sendAnswerAgain() async {
+    try {
+      await audioPlayer.stop();
+
+      if (_answerRequest != null) {
+        final ChatItem answer = await _repository.sendAnswer(_answerRequest!);
+        logger.i('send text response:$answer');
+        _answerRequest = null;
+
+        final List<ChatItem> messages = List.of(state.activeMessages);
+        messages.removeLast();
+        messages.add(answer.copyWith(
+          isAnswer: true,
+          type: questionFromDBtype,
+          ritualIdentifier: state.questionFromDB?.ritualIdentifier,
+        ));
+
+        _answerTimer?.cancel();
+        _recordAudioDuration = null;
+        clearSuccessMessage();
+        _mainCubit.updateSessions();
+        _deleteRecordedAudioFile(state.recordedAudio);
+
+        emit(
+          state.copyWith(
+              recordedAudio: null,
+              activeMessages: messages,
+              questionStatus: ChatItemStatusType.answered),
+        );
+      }
+    } on DioError catch (e) {
+      logger.d(e);
+      if (await _isConnectionProblem(e.type)) {
+        _mainCubit.updateErrorMessage(
+            UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
+      }
+
+      _handleIfEntityTooLargeError(e.response?.statusCode);
+    }
+  }
+
+  Future<bool> _isConnectionProblem(DioErrorType errorType) async {
+    return !await _connectivityService.checkConnection() ||
+        errorType == DioErrorType.connectTimeout ||
+        errorType == DioErrorType.sendTimeout ||
+        errorType == DioErrorType.receiveTimeout;
+  }
+
+  _handleIfEntityTooLargeError(int? statusCode) {
+    if (statusCode == 413) {
+      _mainCubit.updateErrorMessage(UIError(
+          uiErrorType: UIErrorType.theMaximumSizeOfTheAttachmentsIsXMb,
+          args: [_maxAttachmentSizeInMb.toInt()]));
+    }
   }
 
   Future<ChatItem> _getNotSentAnswer() async {
@@ -893,56 +942,6 @@ class ChatCubit extends Cubit<ChatState> {
       ],
     );
     return answer;
-  }
-
-  Future<void> sendAnswerAgain() async {
-    int? statusCode;
-    try {
-      await audioPlayer.stop();
-
-      if (_answerRequest != null) {
-        final ChatItem answer = await _repository.sendAnswer(_answerRequest!);
-        logger.i('send text response:$answer');
-        _answerRequest = null;
-
-        final List<ChatItem> messages = List.of(state.activeMessages);
-        messages.removeLast();
-        messages.add(answer.copyWith(
-          isAnswer: true,
-          type: questionFromDBtype,
-          ritualIdentifier: state.questionFromDB?.ritualIdentifier,
-        ));
-
-        _answerTimer?.cancel();
-        _recordAudioDuration = null;
-        clearSuccessMessage();
-        _mainCubit.updateSessions();
-        _deleteRecordedAudioFile(state.recordedAudio);
-
-        emit(
-          state.copyWith(
-              recordedAudio: null,
-              activeMessages: messages,
-              questionStatus: ChatItemStatusType.answered),
-        );
-      }
-    } on DioError catch (e) {
-      logger.e(e);
-      if (!await _connectivityService.checkConnection() ||
-          e.type == DioErrorType.connectTimeout ||
-          e.type == DioErrorType.sendTimeout ||
-          e.type == DioErrorType.receiveTimeout) {
-        _mainCubit.updateErrorMessage(
-            UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
-      }
-
-      statusCode = e.response?.statusCode;
-      if (statusCode == 413) {
-        _mainCubit.updateErrorMessage(UIError(
-            uiErrorType: UIErrorType.theMaximumSizeOfTheAttachmentsIsXMb,
-            args: [_maxAttachmentSizeInMb.toInt()]));
-      }
-    }
   }
 
   Future<void> cancelSending() async {
