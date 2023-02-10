@@ -144,7 +144,7 @@ class ChatTextInputWidget extends StatelessWidget {
                                     onTap: () {
                                       if (isSendButtonEnabled) {
                                         chatCubit.sendAnswer(
-                                            ChatContentType.textMedia);
+                                            ChatContentType.textMedia, context);
                                       }
                                     },
                                     icon: Assets.vectors.send.path,
