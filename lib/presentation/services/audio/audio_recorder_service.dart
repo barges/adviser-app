@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:logger/logger.dart';
 import 'audio_session_configure_mixin.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 
 abstract class AudioRecorderService {
-  Stream<RecorderState>? get stateStream;
+  Stream<RecorderServiceState>? get stateStream;
 
   Stream<RecorderDisposition>? get onProgress;
 
@@ -21,7 +23,8 @@ abstract class AudioRecorderService {
 class AudioRecorderServiceImp extends AudioRecorderService
     with AudioSessionConfigureMixin {
   FlutterSoundRecorder? _recorder;
-  StreamController<RecorderState>? _controller = StreamController.broadcast();
+  StreamController<RecorderServiceState>? _controller =
+      StreamController.broadcast();
 
   AudioRecorderServiceImp() {
     _init();
@@ -38,7 +41,7 @@ class AudioRecorderServiceImp extends AudioRecorderService
   }
 
   @override
-  Stream<RecorderState>? get stateStream => _controller?.stream;
+  Stream<RecorderServiceState>? get stateStream => _controller?.stream;
 
   @override
   Stream<RecorderDisposition>? get onProgress => _recorder?.onProgress
@@ -52,14 +55,16 @@ class AudioRecorderServiceImp extends AudioRecorderService
       codec: Codec.aacMP4,
     )
         .then((_) {
-      _controller?.add(RecorderState(_recorder?.isRecording));
+      _controller?.add(RecorderServiceState(
+          _recorder?.recorderState.toSoundRecorderState()));
     });
   }
 
   @override
   Future<String?> stopRecorder() async {
     return await _recorder?.stopRecorder().then((value) {
-      _controller?.add(RecorderState(_recorder?.isRecording));
+      _controller?.add(RecorderServiceState(
+          _recorder?.recorderState.toSoundRecorderState()));
       return value;
     });
   }
@@ -77,11 +82,30 @@ class AudioRecorderServiceImp extends AudioRecorderService
   }
 }
 
-class RecorderState {
-  final bool? isRecording;
+enum SoundRecorderState {
+  isStopped,
+  isPaused,
+  isRecording,
+}
 
-  RecorderState(
-    this.isRecording,
+extension RecorderStateExt on RecorderState {
+  SoundRecorderState toSoundRecorderState() {
+    switch (this) {
+      case RecorderState.isStopped:
+        return SoundRecorderState.isStopped;
+      case RecorderState.isPaused:
+        return SoundRecorderState.isPaused;
+      case RecorderState.isRecording:
+        return SoundRecorderState.isRecording;
+    }
+  }
+}
+
+class RecorderServiceState {
+  final SoundRecorderState? state;
+
+  RecorderServiceState(
+    this.state,
   );
 }
 

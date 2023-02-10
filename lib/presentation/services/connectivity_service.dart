@@ -53,6 +53,8 @@ class ConnectivityService {
 
       case ConnectivityResult.none:
         return false;
+      case ConnectivityResult.other:
+        return true;
     }
   }
 

@@ -7,13 +7,13 @@ import 'package:shared_advisor_interface/presentation/services/audio/audio_recor
 class ChatAudioRecorderCubit extends Cubit<ChatAudioRecorderState> {
   final AudioRecorderService _recorder;
   StreamSubscription<RecorderDisposition>? _recordingProgressSubscription;
-  StreamSubscription<RecorderState>? _recordingStateSubscription;
+  StreamSubscription<RecorderServiceState>? _recordingStateSubscription;
 
   ChatAudioRecorderCubit(
     this._recorder,
   ) : super(const ChatAudioRecorderState()) {
     _recordingStateSubscription = _recorder.stateStream?.listen((e) async {
-      if (e.isRecording == true) {
+      if (e.state == SoundRecorderState.isRecording) {
         emit(state.copyWith(
           duration: const Duration(),
         ));
@@ -29,7 +29,7 @@ class ChatAudioRecorderCubit extends Cubit<ChatAudioRecorderState> {
       }
 
       emit(state.copyWith(
-        isRecording: e.isRecording == true,
+        isRecording: e.state == SoundRecorderState.isRecording,
       ));
     });
   }
