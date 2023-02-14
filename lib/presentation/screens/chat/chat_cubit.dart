@@ -820,10 +820,11 @@ class ChatCubit extends Cubit<ChatState> {
       }
     }
 
+    if (statusCode != 413) {
+      emit(state.copyWith(questionStatus: ChatItemStatusType.answered));
+    }
+
     if (answer?.isSent == true) {
-      if (statusCode != 413) {
-        emit(state.copyWith(questionStatus: ChatItemStatusType.answered));
-      }
       clearSuccessMessage();
     }
 
