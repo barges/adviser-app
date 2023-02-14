@@ -1,7 +1,6 @@
 @GenerateMocks([
   DynamicLinkService,
   PushNotificationManagerImpl,
-  UserRepositoryImpl,
 ], customMocks: [
   MockSpec<DataCachingManager>(
     as: #MockDataCachingManager,
@@ -33,6 +32,10 @@
   ),
   MockSpec<CheckPermissionService>(
     as: #MockCheckPermissionService,
+    onMissingStub: OnMissingStub.returnDefault,
+  ),
+  MockSpec<UserRepositoryImpl>(
+    as: #MockUserRepositoryImpl,
     onMissingStub: OnMissingStub.returnDefault,
   ),
 ])

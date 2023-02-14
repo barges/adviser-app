@@ -37,21 +37,13 @@ import 'package:shared_advisor_interface/presentation/services/connectivity_serv
 import 'package:shared_advisor_interface/presentation/services/dynamic_link_service.dart';
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 
+import '../../common_methods.dart';
 import '../../common_variables.dart';
 import '../mocked_classes/mocked_classes.mocks.dart';
 
-// ignore: depend_on_referenced_packages
-import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
 import 'package:flutter/services.dart';
 
 typedef Callback = void Function(MethodCall call);
-
-void setupFirebaseMocks([Callback? customHandlers]) {
-  TestWidgetsFlutterBinding.ensureInitialized();
-  Get.testMode = true;
-
-  setupFirebaseCoreMocks();
-}
 
 Future<void> pumpLoginScreen({
   required WidgetTester tester,
