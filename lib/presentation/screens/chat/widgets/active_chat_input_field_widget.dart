@@ -25,8 +25,7 @@ class ActiveChatInputFieldWidget extends StatelessWidget {
         url: chatCubit.state.recordedAudio?.path,
         recordedDuration: chatCubit.recordAudioDuration,
         onDeletePressed: () async => await chatCubit.deleteRecordedAudio(),
-        onSendPressed: () =>
-            chatCubit.sendAnswer(ChatContentType.media, context),
+        onSendPressed: () => chatCubit.sendAnswer(ChatContentType.media),
       );
     } else if (isRecordingAudio) {
       return ChatRecordingWidget(

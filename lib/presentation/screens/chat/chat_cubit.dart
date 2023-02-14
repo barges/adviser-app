@@ -551,9 +551,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Future<void> sendAnswer(
-      ChatContentType contentType, BuildContext context) async {
-    FocusScope.of(context).unfocus();
+  Future<void> sendAnswer(ChatContentType contentType) async {
     if (await _confirmSendAnswerAlert() == true) {
       switch (contentType) {
         case ChatContentType.media:
