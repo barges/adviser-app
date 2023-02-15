@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:mockito/mockito.dart';
+import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
@@ -15,17 +17,23 @@ import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
 import 'package:shared_advisor_interface/data/repositories/chats_repository_impl.dart';
+import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
+import 'package:shared_advisor_interface/presentation/screens/drawer/widgets/bottom_section.dart';
+import 'package:shared_advisor_interface/presentation/screens/drawer/widgets/brand_item.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/tile_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard/pages/resources_page/widgets/chart_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/dashboard_v1_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/widgets/month_statistic_widget.dart';
@@ -84,6 +92,7 @@ void main() {
   late ChatsRepository mockChatsRepository;
   late PushNotificationManager mockPushNotificationManager;
   late CheckPermissionService mockCheckPermissionService;
+  late MockAuthRepositoryImpl mockAuthRepository;
 
   setupFirebaseMocks();
   testGetIt.allowReassignment = true;
@@ -99,6 +108,7 @@ void main() {
     mockChatsRepository = ChatsRepositoryImpl(ChatsApi(dio));
     mockPushNotificationManager = MockPushNotificationManagerImpl();
     mockCheckPermissionService = MockCheckPermissionService();
+    mockAuthRepository = MockAuthRepositoryImpl();
 
     when(mockConnectivityService.checkConnection())
         .thenAnswer((realInvocation) => Future.value(true));
@@ -110,25 +120,13 @@ void main() {
     when(mockUserRepository.getUserReports()).thenAnswer((realInvocation) =>
         Future.value(HomeScreenTestConstants.reportsResponse));
 
-    when(mockCachingManager.listenUserProfile(argThat(anything)))
-        .thenAnswer((realInvocation) {
-      Function(UserProfile) callback = realInvocation.positionalArguments[0];
-      callback(HomeScreenTestConstants.userInfo.profile!);
-      return () {};
-    });
-    when(mockCachingManager.listenUserId(argThat(anything)))
-        .thenAnswer((realInvocation) {
-      Function(String?) callback = realInvocation.positionalArguments[0];
-      callback(HomeScreenTestConstants.userInfo.id);
-      return () {};
-    });
-
     testGetIt.registerSingleton<ConnectivityService>(mockConnectivityService);
     testGetIt.registerSingleton<UserRepository>(mockUserRepository);
     testGetIt
         .registerSingleton<CheckPermissionService>(mockCheckPermissionService);
     testGetIt.registerSingleton<PushNotificationManager>(
         mockPushNotificationManager);
+    testGetIt.registerSingleton<AuthRepository>(mockAuthRepository);
   });
 
   setUp(() {
@@ -141,6 +139,22 @@ void main() {
 
     when(mockCachingManager.getUserStatus())
         .thenReturn(const UserStatus(status: FortunicaUserStatus.live));
+    when(mockCachingManager.listenUserProfile(argThat(anything)))
+        .thenAnswer((realInvocation) {
+      Function(UserProfile) callback = realInvocation.positionalArguments[0];
+      callback(HomeScreenTestConstants.userInfo.profile!);
+      return () {};
+    });
+    when(mockCachingManager.listenUserId(argThat(anything)))
+        .thenAnswer((realInvocation) {
+      Function(String?) callback = realInvocation.positionalArguments[0];
+      callback(HomeScreenTestConstants.userInfo.id);
+      return () {};
+    });
+    when(mockCachingManager.getAuthorizedBrands())
+        .thenReturn([Brand.fortunica]);
+    when(mockCachingManager.getUnauthorizedBrands())
+        .thenReturn([Brand.zodiacPsychics]);
 
     testGetIt.registerSingleton<ChatsRepository>(mockChatsRepository);
     testGetIt.registerSingleton<CachingManager>(mockCachingManager);
@@ -387,7 +401,181 @@ void main() {
   });
 
   group('Account tab', () {
-    testWidgets('should be displayed with UserAvatar, user name'
-    ' and five tile widgets: "I\'m available now", ', (tester) async {});
+    testWidgets(
+        'should be displayed with UserAvatar, user name'
+        ' and five tile widgets', (tester) async {
+      await pumpHomeScreen(tester: tester);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.widgetWithText(BottomNavigationBar, 'Account'));
+      await tester.pump();
+
+      expect(
+          find.descendant(
+              of: find.byType(AccountScreen),
+              matching: find.byType(UserAvatar)),
+          findsOneWidget);
+      expect(find.text(HomeScreenTestConstants.userInfo.profile!.profileName!),
+          findsOneWidget);
+      expect(find.byType(TileWidget), findsNWidgets(5));
+    });
+
+    testWidgets(
+        'should be displayed with "I\'m available now" tile widget'
+        ' that contains switcher', (tester) async {
+      await pumpHomeScreen(tester: tester);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.widgetWithText(BottomNavigationBar, 'Account'));
+      await tester.pump();
+
+      expect(find.widgetWithText(TileWidget, 'I\'m available now'),
+          findsOneWidget);
+      expect(
+          find.descendant(
+              of: find.widgetWithText(TileWidget, 'I\'m available now'),
+              matching: find.byType(CupertinoSwitch)),
+          findsOneWidget);
+    });
+
+    testWidgets(
+        'should be displayed with "Notifications" tile widget'
+        ' that contains switcher', (tester) async {
+      await pumpHomeScreen(tester: tester);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.widgetWithText(BottomNavigationBar, 'Account'));
+      await tester.pump();
+
+      expect(find.widgetWithText(TileWidget, 'Notifications'), findsOneWidget);
+      expect(
+          find.descendant(
+              of: find.widgetWithText(TileWidget, 'Notifications'),
+              matching: find.byType(CupertinoSwitch)),
+          findsOneWidget);
+    });
+
+    testWidgets(
+        'should be displayed with "Preview account" tile widget'
+        ' that contains arrow button', (tester) async {
+      await pumpHomeScreen(tester: tester);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.widgetWithText(BottomNavigationBar, 'Account'));
+      await tester.pump();
+
+      expect(
+          find.widgetWithText(TileWidget, 'Preview account'), findsOneWidget);
+      expect(
+          find.descendant(
+              of: find.widgetWithText(TileWidget, 'Preview account'),
+              matching: find.byKey(const Key('arrow_right_button'))),
+          findsOneWidget);
+    });
+
+    testWidgets(
+        'should be displayed with "Balance & Transactions" tile widget'
+        ' that contains arrow button', (tester) async {
+      await pumpHomeScreen(tester: tester);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.widgetWithText(BottomNavigationBar, 'Account'));
+      await tester.pump();
+
+      expect(find.widgetWithText(TileWidget, 'Balance & Transactions'),
+          findsOneWidget);
+      expect(
+          find.descendant(
+              of: find.widgetWithText(TileWidget, 'Balance & Transactions'),
+              matching: find.byKey(const Key('arrow_right_button'))),
+          findsOneWidget);
+    });
+
+    testWidgets(
+        'should be displayed with "Settings" tile widget'
+        ' that contains arrow button', (tester) async {
+      await pumpHomeScreen(tester: tester);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.widgetWithText(BottomNavigationBar, 'Account'));
+      await tester.pump();
+
+      expect(find.widgetWithText(TileWidget, 'Settings'), findsOneWidget);
+      expect(
+          find.descendant(
+              of: find.widgetWithText(TileWidget, 'Settings'),
+              matching: find.byKey(const Key('arrow_right_button'))),
+          findsOneWidget);
+    });
+
+    testWidgets(
+        'should be displayed "Your Username text"'
+        ' if advisor profile name is null', (tester) async {
+      when(mockCachingManager.listenUserProfile(argThat(anything)))
+          .thenAnswer((realInvocation) {
+        Function(UserProfile) callback = realInvocation.positionalArguments[0];
+        callback(HomeScreenTestConstants.userInfo.profile!
+            .copyWith(profileName: null));
+        return () {};
+      });
+      await pumpHomeScreen(tester: tester);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.widgetWithText(BottomNavigationBar, 'Account'));
+      await tester.pump();
+
+      expect(find.text('Your Username'), findsOneWidget);
+    });
+  });
+
+  group('Sidebar', () {
+    testWidgets('should not be displayed by default', (tester) async {
+      await pumpHomeScreen(tester: tester);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AppDrawer), findsNothing);
+    });
+
+    testWidgets(
+        'should be displayed'
+        ' if user clicks on text on AppBar', (tester) async {
+      await pumpHomeScreen(tester: tester);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.descendant(
+          of: find.byType(DashboardV1Screen),
+          matching: find.descendant(
+              of: find.byType(HomeAppBar), matching: find.byType(Text))));
+      await tester.pump();
+
+      expect(find.byType(AppDrawer), findsOneWidget);
+    });
+
+    testWidgets('should be displayed with BrandItem widgets', (tester) async {
+      await pumpHomeScreen(tester: tester);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.descendant(
+          of: find.byType(DashboardV1Screen),
+          matching: find.descendant(
+              of: find.byType(HomeAppBar), matching: find.byType(Text))));
+      await tester.pump();
+
+      expect(find.byType(BrandItem), findsWidgets);
+    });
+
+    testWidgets('should be displayed with BottomSection widget',
+        (tester) async {
+      await pumpHomeScreen(tester: tester);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.descendant(
+          of: find.byType(DashboardV1Screen),
+          matching: find.descendant(
+              of: find.byType(HomeAppBar), matching: find.byType(Text))));
+      await tester.pump();
+
+      expect(find.byType(BottomSection), findsOneWidget);
+    });
   });
 }
