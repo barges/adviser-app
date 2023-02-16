@@ -100,4 +100,53 @@ enum SessionsTypes {
         return '';
     }
   }
+
+  static const List<String> actualSessionsTypes = [
+    'public',
+    'private',
+    'tarot',
+    'palmreading',
+    'astrology',
+    'reading360',
+    'aurareading',
+    'lovecrushreading',
+    'ritual',
+    'tipsLow',
+    'tipsMedium',
+    'tipsHigh',
+    'tips',
+  ];
+
+  static SessionsTypes typeFromString(String? type) {
+    switch (type) {
+      case 'public':
+        return SessionsTypes.public;
+      case 'private':
+        return SessionsTypes.private;
+      case 'tarot':
+        return SessionsTypes.tarot;
+      case 'palmreading':
+        return SessionsTypes.palmreading;
+      case 'astrology':
+        return SessionsTypes.astrology;
+      case 'reading360':
+        return SessionsTypes.reading360;
+      case 'aurareading':
+        return SessionsTypes.aurareading;
+      case 'lovecrushreading':
+        return SessionsTypes.lovecrushreading;
+      case 'ritual':
+        return SessionsTypes.ritual;
+      case 'tipsLow':
+        return SessionsTypes.tipsLow;
+      case 'tipsMedium':
+        return SessionsTypes.tipsMedium;
+      case 'tipsHigh':
+        return SessionsTypes.tipsHigh;
+      case 'tips':
+        return SessionsTypes.tips;
+      default:
+        return SessionsTypes.undefined;
+    }
+  }
 }
