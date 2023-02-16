@@ -28,9 +28,12 @@ import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_screen.dart';
+import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/widgets/bottom_section.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/widgets/brand_item.dart';
+import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/tile_widget.dart';
@@ -69,6 +72,18 @@ Future<void> pumpHomeScreen({
               name: AppRoutes.home,
               page: () => const HomeScreen(),
             ),
+            GetPage(
+              name: AppRoutes.advisorPreview,
+              page: () => const AdvisorPreviewScreen(),
+            ),
+            GetPage(
+              name: AppRoutes.balanceAndTransactions,
+              page: () => const BalanceAndTransactionsScreen(),
+            ),
+            GetPage(
+              name: AppRoutes.editProfile,
+              page: () => const EditProfileScreen(),
+            )
           ],
           localizationsDelegates: const [
             S.delegate,
@@ -155,6 +170,8 @@ void main() {
         .thenReturn([Brand.fortunica]);
     when(mockCachingManager.getUnauthorizedBrands())
         .thenReturn([Brand.zodiacPsychics]);
+    when(mockCachingManager.getUserProfile())
+        .thenReturn(HomeScreenTestConstants.userInfo.profile);
 
     testGetIt.registerSingleton<ChatsRepository>(mockChatsRepository);
     testGetIt.registerSingleton<CachingManager>(mockCachingManager);
@@ -415,7 +432,11 @@ void main() {
               of: find.byType(AccountScreen),
               matching: find.byType(UserAvatar)),
           findsOneWidget);
-      expect(find.text(HomeScreenTestConstants.userInfo.profile!.profileName!),
+      expect(
+          find.descendant(
+              of: find.byType(AccountScreen),
+              matching: find.text(
+                  HomeScreenTestConstants.userInfo.profile!.profileName!)),
           findsOneWidget);
       expect(find.byType(TileWidget), findsNWidgets(5));
     });
@@ -518,6 +539,9 @@ void main() {
             .copyWith(profileName: null));
         return () {};
       });
+      when(mockCachingManager.getUserProfile()).thenReturn(
+          HomeScreenTestConstants.userInfo.profile!
+              .copyWith(profileName: null));
       await pumpHomeScreen(tester: tester);
       await tester.pumpAndSettle();
 
@@ -525,6 +549,61 @@ void main() {
       await tester.pump();
 
       expect(find.text('Your Username'), findsOneWidget);
+    });
+
+    testWidgets(
+        'should redirect to Preview account screen'
+        ' if user clicks on "Preview account" tile', (tester) async {
+      await pumpHomeScreen(tester: tester);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.descendant(
+          of: find.byType(BottomNavigationBar),
+          matching: find.text('Account')));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.descendant(
+          of: find.byType(TileWidget), matching: find.text('Preview account')));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AdvisorPreviewScreen), findsOneWidget);
+    });
+
+    testWidgets(
+        'should redirect to Balance & Transactions screen'
+        ' if user clicks on "Balance & Transactions" tile', (tester) async {
+      await pumpHomeScreen(tester: tester);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.descendant(
+          of: find.byType(BottomNavigationBar),
+          matching: find.text('Account')));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.descendant(
+          of: find.byType(TileWidget),
+          matching: find.text('Balance & Transactions')));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(BalanceAndTransactionsScreen), findsOneWidget);
+    });
+
+    testWidgets(
+        'should redirect to Edit profile screen'
+        ' if user clicks on UserAvatar', (tester) async {
+      await pumpHomeScreen(tester: tester);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.descendant(
+          of: find.byType(BottomNavigationBar),
+          matching: find.text('Account')));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.descendant(
+          of: find.byType(AccountScreen), matching: find.byType(UserAvatar)));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(EditProfileScreen), findsOneWidget);
     });
   });
 
