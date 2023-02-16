@@ -23,6 +23,7 @@ class ChatItem with _$ChatItem {
   const factory ChatItem({
     ChatItemType? type,
     ChatItemType? questionType,
+    @JsonKey(unknownEnumValue: SessionsTypes.undefined)
     SessionsTypes? ritualIdentifier,
     ChatItemStatusType? status,
     String? clientName,
