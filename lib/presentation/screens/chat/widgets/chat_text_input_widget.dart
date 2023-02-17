@@ -143,6 +143,7 @@ class ChatTextInputWidget extends StatelessWidget {
                                   child: AppIconGradientButton(
                                     onTap: () {
                                       if (isSendButtonEnabled) {
+                                        FocusScope.of(context).unfocus();
                                         chatCubit.sendAnswer(
                                             ChatContentType.textMedia);
                                       }
