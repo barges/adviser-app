@@ -35,7 +35,7 @@ class AccountCubit extends Cubit<AccountState> {
 
   final PushNotificationManager _pushNotificationManager;
 
-  final Uri _url = Uri.parse(AppConstants.webToolUrlProd);
+  final Uri _url = Uri.parse(AppConstants.webToolUrl);
 
   late final VoidCallback disposeListen;
   late final StreamSubscription<bool> _appOnResumeSubscription;
