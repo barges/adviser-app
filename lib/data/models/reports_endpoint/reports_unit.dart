@@ -12,6 +12,7 @@ class ReportsUnit with _$ReportsUnit {
   @JsonSerializable(includeIfNull: false)
   const factory ReportsUnit({
     String? group,
+    @JsonKey(unknownEnumValue: SessionsTypes.undefined)
     SessionsTypes? type,
     int? number,
     double? amount,

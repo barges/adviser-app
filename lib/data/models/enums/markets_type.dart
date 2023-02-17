@@ -39,4 +39,26 @@ enum MarketsType {
         return S.of(context).allMarkets;
     }
   }
+
+ static const List<String> actualMarkets = [
+    'en',
+    'es',
+    'de',
+    'pt',
+  ];
+
+  static MarketsType typeFromString(String? market) {
+    switch (market) {
+      case 'en':
+        return MarketsType.en;
+      case 'es':
+        return MarketsType.es;
+      case 'pt':
+        return MarketsType.pt;
+      case 'de':
+        return MarketsType.de;
+      default:
+        return MarketsType.all;
+    }
+  }
 }
