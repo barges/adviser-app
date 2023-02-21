@@ -40,15 +40,9 @@ class HomeScreenTestConstants {
           MarketsType.es,
           MarketsType.pt
         ],
-        readerManager: 'Test Manager',
         profilePictures: [],
         coverPictures: [],
         galleryPictures: [],
-        roles: ['READER'],
-        likeScore: 0,
-        timezone: 'Europe/Berlin',
-        loyaltyScore: 0,
-        likesPercentage: 0,
         rituals: [
           SessionsTypes.ritual,
           SessionsTypes.astrology,
