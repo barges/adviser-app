@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
@@ -30,6 +32,8 @@ class CustomerSessionsScreen extends StatelessWidget {
               () => showErrorAlert(context),
             ),
         child: Builder(builder: (context) {
+          final CustomerSessionsCubit customerSessionsCubit =
+              context.read<CustomerSessionsCubit>();
           final String? clientName = context
               .select((CustomerSessionsCubit cubit) => cubit.state.clientName);
           final ZodiacSign? zodiacSign = context
@@ -43,6 +47,8 @@ class CustomerSessionsScreen extends StatelessWidget {
               body: Builder(builder: (context) {
                 final bool isOnline = context.select((MainCubit cubit) =>
                     cubit.state.internetConnectionIsAvailable);
+                final AppError appError =
+                    context.select((MainCubit cubit) => cubit.state.appError);
                 return Column(
                   children: [
                     const Divider(
@@ -51,6 +57,10 @@ class CustomerSessionsScreen extends StatelessWidget {
                     CustomerSessionsFiltersWidget(isOnline: isOnline),
                     const Divider(
                       height: 1,
+                    ),
+                    AppErrorWidget(
+                      errorMessage: appError.getMessage(context),
+                      close: customerSessionsCubit.closeErrorWidget,
                     ),
                     Expanded(
                       child: Builder(builder: (context) {
@@ -71,7 +81,18 @@ class CustomerSessionsScreen extends StatelessWidget {
                           ]);
                         } else {
                           if (questions == null) {
-                            return const SizedBox.shrink();
+                            return RefreshIndicator(
+                              onRefresh: customerSessionsCubit.getData,
+                              child: ListView(
+                                padding: EdgeInsets.zero,
+                                shrinkWrap: true,
+                                children: [
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height,
+                                  )
+                                ],
+                              ),
+                            );
                           } else if (questions.isNotEmpty) {
                             return CustomerSessionsListWidget(
                                 questions: questions);

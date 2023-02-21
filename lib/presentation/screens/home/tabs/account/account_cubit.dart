@@ -14,6 +14,7 @@ import 'package:shared_advisor_interface/data/network/requests/set_push_notifica
 import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_state.dart';
@@ -39,11 +40,13 @@ class AccountCubit extends Cubit<AccountState> {
 
   late final VoidCallback disposeListen;
   late final StreamSubscription<bool> _appOnResumeSubscription;
+  StreamSubscription<bool>? _updateAccountSubscription;
   StreamSubscription<bool>? _connectivitySubscription;
 
   bool? isPushNotificationPermissionGranted;
   Timer? _timer;
   bool _isFirstLoadUserInfo = true;
+  bool isTimeout = false;
 
   AccountCubit(
     this._cacheManager,
@@ -83,6 +86,12 @@ class AccountCubit extends Cubit<AccountState> {
       },
     );
 
+    _updateAccountSubscription = _mainCubit.updateAccountTrigger.listen(
+      (value) {
+        refreshUserinfo();
+      },
+    );
+
     firstGetUserInfo();
   }
 
@@ -91,6 +100,7 @@ class AccountCubit extends Cubit<AccountState> {
     _timer?.cancel();
     _appOnResumeSubscription.cancel();
     _connectivitySubscription?.cancel();
+    _updateAccountSubscription?.cancel();
     disposeListen.call();
     commentController.dispose();
     commentNode.dispose();
@@ -104,47 +114,53 @@ class AccountCubit extends Cubit<AccountState> {
   }
 
   Future<void> refreshUserinfo() async {
-    if (await _connectivityService.checkConnection()) {
-      int milliseconds = 0;
+    try {
+      if (await _connectivityService.checkConnection()) {
+        int milliseconds = 0;
 
-      isPushNotificationPermissionGranted = await _handlePermission(false);
+        isPushNotificationPermissionGranted = await _handlePermission(false);
 
-      if (isPushNotificationPermissionGranted == true) {
-        _pushNotificationManager.registerForPushNotifications();
+        if (isPushNotificationPermissionGranted == true) {
+          _pushNotificationManager.registerForPushNotifications();
+        }
+
+        final UserInfo userInfo = await _userRepository.getUserInfo();
+        if (isPushNotificationPermissionGranted == true) {
+          await _sendPushToken();
+        }
+
+        await _saveUserInfo(userInfo);
+
+        final DateTime? profileUpdatedAt =
+            _cacheManager.getUserStatus()?.profileUpdatedAt;
+
+        if (profileUpdatedAt != null) {
+          DateTime currentTime = DateTime.now().toUtc();
+          currentTime = currentTime.add(const Duration(seconds: 15));
+          milliseconds =
+              currentTime.difference(profileUpdatedAt).inMilliseconds;
+        }
+
+        final int millisecondsForTimer = milliseconds > 0
+            ? AppConstants.millisecondsInHour - milliseconds
+            : milliseconds;
+
+        if (millisecondsForTimer > 0) {
+          _startTimer(millisecondsForTimer);
+        }
+
+        emit(
+          state.copyWith(
+            userProfile: _cacheManager.getUserProfile(),
+            enableNotifications: (userInfo.pushNotificationsEnabled ?? false) &&
+                isPushNotificationPermissionGranted == true,
+          ),
+        );
+        _isFirstLoadUserInfo = false;
       }
-
-      final UserInfo userInfo = await _userRepository.getUserInfo();
-      if (isPushNotificationPermissionGranted == true) {
-        await _sendPushToken();
-      }
-
-      await _saveUserInfo(userInfo);
-
-      final DateTime? profileUpdatedAt =
-          _cacheManager.getUserStatus()?.profileUpdatedAt;
-
-      if (profileUpdatedAt != null) {
-        DateTime currentTime = DateTime.now().toUtc();
-        currentTime = currentTime.add(const Duration(seconds: 15));
-        milliseconds = currentTime.difference(profileUpdatedAt).inMilliseconds;
-      }
-
-      final int millisecondsForTimer = milliseconds > 0
-          ? AppConstants.millisecondsInHour - milliseconds
-          : milliseconds;
-
-      if (millisecondsForTimer > 0) {
-        _startTimer(millisecondsForTimer);
-      }
-
-      emit(
-        state.copyWith(
-          userProfile: _cacheManager.getUserProfile(),
-          enableNotifications: (userInfo.pushNotificationsEnabled ?? false) &&
-              isPushNotificationPermissionGranted == true,
-        ),
-      );
-      _isFirstLoadUserInfo = false;
+      isTimeout = false;
+    } catch (e) {
+      isTimeout = true;
     }
   }
 
@@ -275,10 +291,18 @@ class AccountCubit extends Cubit<AccountState> {
   Future<void> goToEditProfile() async {
     final dynamic needUpdateInfo = await Get.toNamed(
       AppRoutes.editProfile,
+      arguments: EditProfileScreenArguments(isAccountTimeout: isTimeout),
     );
     if (needUpdateInfo is bool && needUpdateInfo == true) {
       refreshUserinfo();
     }
+  }
+
+  void goToAdvisorPreview() {
+    Get.toNamed(
+      AppRoutes.advisorPreview,
+      arguments: AdvisorPreviewScreenArguments(isAccountTimeout: isTimeout),
+    );
   }
 
   Future<void> openSettingsUrl() async {
@@ -291,5 +315,9 @@ class AccountCubit extends Cubit<AccountState> {
         message: 'Could not launch $_url',
       ));
     }
+  }
+
+  void closeErrorWidget() {
+    _mainCubit.clearErrorMessage();
   }
 }

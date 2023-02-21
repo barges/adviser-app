@@ -32,18 +32,29 @@ class HistoryWidget extends StatelessWidget {
       create: (_) => HistoryCubit(
         getIt.get<ChatsRepository>(),
         getIt.get<ConnectivityService>(),
-            () => showErrorAlert(context),
+        () => showErrorAlert(context),
         clientId,
         storyId,
       ),
       child: Builder(builder: (context) {
+        final HistoryCubit historyCubit = context.read<HistoryCubit>();
         if (storyId != null) {
           final List<HistoryUiModel>? bottomHistoriesList = context
               .select((HistoryCubit cubit) => cubit.state.bottomHistoriesList);
 
           if (bottomHistoriesList == null) {
-            return Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
+            return RefreshIndicator(
+              onRefresh: historyCubit.getHistory,
+              child: ListView(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                children: [
+                  Container(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    height: MediaQuery.of(context).size.height,
+                  )
+                ],
+              ),
             );
           }
           if (bottomHistoriesList.isEmpty) {
@@ -58,8 +69,18 @@ class HistoryWidget extends StatelessWidget {
               .select((HistoryCubit cubit) => cubit.state.bottomHistoriesList);
 
           if (bottomHistoriesList == null) {
-            return Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
+            return RefreshIndicator(
+              onRefresh: historyCubit.getHistory,
+              child: ListView(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                children: [
+                  Container(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    height: MediaQuery.of(context).size.height,
+                  )
+                ],
+              ),
             );
           }
           if (bottomHistoriesList.isEmpty) {
@@ -85,7 +106,7 @@ class HistoryWidget extends StatelessWidget {
             arguments: HomeScreenArguments(
               initTab: TabsTypes.sessions,
             ),
-                (route) => false);
+            (route) => false);
       },
       allowBarrierClick: false,
       isCancelEnabled: false,

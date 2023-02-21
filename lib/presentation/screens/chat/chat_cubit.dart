@@ -72,8 +72,8 @@ class ChatCubit extends Cubit<ChatState> {
   final AudioRecorderService _audioRecorderService;
   final CheckPermissionService _checkPermissionService;
   final _uuid = const Uuid();
-  late final int _tillShowMessagesInSec;
-  late final int _afterShowMessagesInSec;
+  late int _tillShowMessagesInSec;
+  late int _afterShowMessagesInSec;
   int? _recordAudioDuration;
   AnswerRequest? _answerRequest;
   StreamSubscription<RecordingDisposition>? _recordingProgressSubscription;
@@ -119,14 +119,7 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       );
     }
-    if (needActiveChatTab()) {
-      _getData().whenComplete(() {
-        _setAnswerLimitations();
-        if (isPublicChat()) {
-          _checkTiming();
-        }
-      });
-    }
+    getData();
 
     _appOnPauseSubscription = _mainCubit.changeAppLifecycleStream.listen(
       (value) async {
@@ -191,6 +184,16 @@ class ChatCubit extends Cubit<ChatState> {
     return super.close();
   }
 
+  Future<void> getData() async {
+    if (needActiveChatTab()) {
+      await _getData();
+      _setAnswerLimitations();
+      if (isPublicChat()) {
+        _checkTiming();
+      }
+    }
+  }
+
   Future<void> _getData() async {
     if (_answerLimitations.isEmpty) {
       await _getAnswerLimitations();
@@ -218,9 +221,13 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> _getAnswerLimitations() async {
-    final AnswerValidationResponse response =
-        await _repository.getAnswerValidation();
-    _answerLimitations = response.answerLimitations ?? [];
+    try {
+      final AnswerValidationResponse response =
+          await _repository.getAnswerValidation();
+      _answerLimitations = response.answerLimitations ?? [];
+    } catch (e) {
+      emit(state.copyWith(refreshEnabled: true));
+    }
   }
 
   void textInputEditingControllerListener() {
@@ -264,10 +271,12 @@ class ChatCubit extends Cubit<ChatState> {
           ),
         );
       }
+      emit(state.copyWith(refreshEnabled: false));
     } on DioError catch (e) {
       if (_checkStatusCode(e)) {
         _showErrorAlert();
       }
+      emit(state.copyWith(refreshEnabled: true));
       logger.d(e);
     }
   }
@@ -316,10 +325,12 @@ class ChatCubit extends Cubit<ChatState> {
 
         scrollChatDown();
       }
+      emit(state.copyWith(refreshEnabled: false));
     } on DioError catch (e) {
       if (_checkStatusCode(e)) {
         _showErrorAlert();
       }
+      emit(state.copyWith(refreshEnabled: true));
       logger.d(e);
       rethrow;
     }
@@ -1031,8 +1042,10 @@ class ChatCubit extends Cubit<ChatState> {
 
   void _scrollTextFieldToEnd() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      textInputScrollController
-          .jumpTo(textInputScrollController.position.maxScrollExtent);
+      if (textInputScrollController.hasClients) {
+        textInputScrollController
+            .jumpTo(textInputScrollController.position.maxScrollExtent);
+      }
     });
   }
 

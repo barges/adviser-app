@@ -98,6 +98,16 @@ class HistoryCubit extends Cubit<HistoryState> {
     this._clientId,
     this._storyId,
   ) : super(const HistoryState()) {
+    getHistory();
+  }
+
+  @override
+  Future<void> close() {
+    historyMessagesScrollController.dispose();
+    return super.close();
+  }
+
+  Future<void> getHistory() async {
     if (_storyId == null) {
       _getOldBottomHistoriesList();
       historyMessagesScrollController.addListener(() {
@@ -116,12 +126,6 @@ class HistoryCubit extends Cubit<HistoryState> {
         }
       });
     }
-  }
-
-  @override
-  Future<void> close() {
-    historyMessagesScrollController.dispose();
-    return super.close();
   }
 
   void _loadBottomData() {

@@ -13,22 +13,36 @@ part 'chat_state.freezed.dart';
 @freezed
 class ChatState with _$ChatState {
   const factory ChatState({
-    @Default([]) List<ChatItem> activeMessages,
-    @Default([]) List<File> attachedPictures,
-    @Default(0) int currentTabIndex,
-    @Default(0) int inputTextLength,
-    @Default(false) bool isRecordingAudio,
-    @Default(true) bool showInputFieldIfPublic,
-    @Default(false) bool isSendButtonEnabled,
-    @Default(EmptySuccess()) AppSuccess appSuccess,
-    @Default(false) bool isAudioAnswerEnabled,
+    @Default([])
+        List<ChatItem> activeMessages,
+    @Default([])
+        List<File> attachedPictures,
+    @Default(0)
+        int currentTabIndex,
+    @Default(0)
+        int inputTextLength,
+    @Default(false)
+        bool isRecordingAudio,
+    @Default(true)
+        bool showInputFieldIfPublic,
+    @Default(false)
+        bool isSendButtonEnabled,
+    @Default(EmptySuccess())
+        AppSuccess appSuccess,
+    @Default(false)
+        bool isAudioAnswerEnabled,
+    @Default(false)
+        bool refreshEnabled,
     RitualCardInfo? ritualCardInfo,
     File? recordedAudio,
     Stream<RecordingDisposition>? recordingStream,
     ChatItem? questionFromDB,
     ChatItemStatusType? questionStatus,
-    @Default(CustomerProfileScreenArguments(
-      clientName: '',
-    ),) CustomerProfileScreenArguments? appBarUpdateArguments,
+    @Default(
+      CustomerProfileScreenArguments(
+        clientName: '',
+      ),
+    )
+        CustomerProfileScreenArguments? appBarUpdateArguments,
   }) = _ChatState;
 }

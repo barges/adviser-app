@@ -16,11 +16,20 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
 
   CustomerProfileCubit(this.customerID, this.updateClientInformation)
       : super(CustomerProfileState()) {
-    getCustomerInfo().then((_) => getNotes());
+    getData();
   }
 
   void updateIsFavorite() {
     emit(state.copyWith(isFavorite: !state.isFavorite));
+  }
+
+  Future<void> getData() async {
+    try {
+      await getCustomerInfo();
+      await getNotes();
+    } catch (e) {
+      logger.d(e);
+    }
   }
 
   Future<void> getCustomerInfo() async {

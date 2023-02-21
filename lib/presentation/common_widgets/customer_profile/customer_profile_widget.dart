@@ -32,15 +32,30 @@ class CustomerProfileWidget extends StatelessWidget {
       ),
       child: Builder(
         builder: (context) {
+          final CustomerProfileCubit customerProfileCubit =
+              context.read<CustomerProfileCubit>();
           final CustomerInfo? customerInfo = context
               .select((CustomerProfileCubit cubit) => cubit.state.customerInfo);
+          final bool refreshEnabled = context.select(
+              (CustomerProfileCubit cubit) => cubit.state.refreshEnabled);
           final ThemeData theme = Theme.of(context);
           return SingleChildScrollView(
             physics: const ClampingScrollPhysics(),
             child: Builder(
               builder: (context) {
                 return (customerInfo == null)
-                    ? const SizedBox.shrink()
+                    ? RefreshIndicator(
+                        onRefresh: customerProfileCubit.getData,
+                        child: ListView(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          children: [
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height,
+                            )
+                          ],
+                        ),
+                      )
                     : Column(
                         children: [
                           Ink(

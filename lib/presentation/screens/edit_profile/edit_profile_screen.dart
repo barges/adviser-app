@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -21,6 +22,7 @@ class EditProfileScreen extends StatelessWidget {
       child: Builder(builder: (context) {
         final EditProfileCubit editProfileCubit =
             context.read<EditProfileCubit>();
+        logger.d(editProfileCubit.needRefresh);
         return BlocListener<EditProfileCubit, EditProfileState>(
           listener: (prev, current) {
             if (current.chosenLanguageIndex == 0) {
@@ -39,18 +41,23 @@ class EditProfileScreen extends StatelessWidget {
             }
           },
           child: GestureDetector(
-              onTap: FocusScope.of(context).unfocus,
-              child: Scaffold(
-                key: editProfileCubit.scaffoldKey,
-                drawer: const AppDrawer(),
-                body: SafeArea(
-                  top: false,
-                  child: GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).unfocus();
-                    },
+            onTap: FocusScope.of(context).unfocus,
+            child: Scaffold(
+              key: editProfileCubit.scaffoldKey,
+              drawer: const AppDrawer(),
+              body: SafeArea(
+                top: false,
+                child: GestureDetector(
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                  },
+                  child: RefreshIndicator(
+                    onRefresh: editProfileCubit.refreshUserProfile,
+                    notificationPredicate: (_) => editProfileCubit.needRefresh,
+                    edgeOffset: (AppConstants.appBarHeight * 2) +
+                        MediaQuery.of(context).padding.top,
                     child: CustomScrollView(
-                      physics: const ClampingScrollPhysics(),
+                      physics: const AlwaysScrollableScrollPhysics(),
                       slivers: [
                         ScrollableAppBar(
                           title: S.of(context).editProfile,
@@ -111,6 +118,7 @@ class EditProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
+          ),
         );
       }),
     );

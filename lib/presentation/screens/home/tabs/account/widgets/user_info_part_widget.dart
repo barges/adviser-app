@@ -196,9 +196,7 @@ class UserInfoPartWidget extends StatelessWidget {
               isDisable: currentStatus.status != FortunicaUserStatus.live,
               iconSVGPath: Assets.vectors.eye.path,
               title: S.of(context).previewAccount,
-              onTap: () {
-                Get.toNamed(AppRoutes.advisorPreview);
-              },
+              onTap: accountCubit.goToAdvisorPreview,
             )
           ]),
         )

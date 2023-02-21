@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/main.dart';
@@ -56,6 +57,8 @@ class AccountScreen extends StatelessWidget {
                   context.select((HomeCubit cubit) => cubit.state.userStatus);
               final String? statusErrorText =
                   currentStatus.status?.errorText(context);
+              final AppError appError =
+                  context.select((MainCubit cubit) => cubit.state.appError);
 
               if (isOnline) {
                 return Column(
@@ -64,6 +67,12 @@ class AccountScreen extends StatelessWidget {
                       errorMessage: statusErrorText ?? '',
                       isRequired: true,
                     ),
+                    if (statusErrorText == null ||
+                        statusErrorText.isEmpty == true)
+                      AppErrorWidget(
+                        errorMessage: appError.getMessage(context),
+                        close: accountCubit.closeErrorWidget,
+                      ),
                     Expanded(
                       child: RefreshIndicator(
                         onRefresh: accountCubit.refreshUserinfo,

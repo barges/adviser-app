@@ -99,7 +99,8 @@ class AppInterceptor extends Interceptor {
       // Handele error 413 Request Entity Too Large in chat_cubit.dart
     } else if (err.type == DioErrorType.connectTimeout ||
         err.type == DioErrorType.receiveTimeout ||
-        err.type == DioErrorType.sendTimeout) {
+        err.type == DioErrorType.sendTimeout ||
+        err.type == DioErrorType.other) {
       _mainCubit.updateErrorMessage(
         UIError(
           uiErrorType: UIErrorType.checkYourInternetConnection,

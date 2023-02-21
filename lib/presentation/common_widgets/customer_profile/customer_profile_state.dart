@@ -6,8 +6,9 @@ part 'customer_profile_state.freezed.dart';
 
 @freezed
 class CustomerProfileState with _$CustomerProfileState {
-  factory CustomerProfileState(
-      {List<Note>? notes,
-      CustomerInfo? customerInfo,
-      @Default(false) bool isFavorite}) = _CustomerProfileState;
+  factory CustomerProfileState({
+    List<Note>? notes,
+    CustomerInfo? customerInfo,
+    @Default(false) bool isFavorite,
+  }) = _CustomerProfileState;
 }
