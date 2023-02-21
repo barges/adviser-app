@@ -33,140 +33,152 @@ class AdvisorPreviewScreen extends StatelessWidget {
         return Scaffold(
           backgroundColor: AppColorsLight.background,
           appBar: const AdvisorPreviewAppBar(),
-          body: RefreshIndicator(
-            onRefresh: advisorPreviewCubit.refreshInfo,
-            notificationPredicate: (_) => advisorPreviewCubit.needRefresh,
-            child: ListView(
-                physics: const AlwaysScrollableScrollPhysics()
-                    .applyTo(const ClampingScrollPhysics()),
-                children: [
-                  Ink(
-                    color: AdvisorPreviewConstants.white,
-                    child: Stack(
-                      children: [
-                        const CoverPictureWidget(),
-                        Container(
-                          margin: const EdgeInsets.only(top: 110.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: AppConstants.horizontalScreenPadding,
-                                    right:
-                                        AppConstants.horizontalScreenPadding),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    UserAvatar(
-                                        diameter: 82.0,
-                                        avatarUrl: advisorPreviewCubit
-                                                .userProfile
-                                                .profilePictures
-                                                ?.firstOrNull ??
-                                            ''),
-                                    const SizedBox(width: 12.0),
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 12.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                Assets.vectors.responseProfile
-                                                    .svg(),
-                                                const SizedBox(width: 4.0),
-                                                const Text('≈ 2 hr',
-                                                    style:
-                                                        AdvisorPreviewConstants
-                                                            .displayLarge),
-                                              ],
-                                            ),
+          body: Stack(
+            children: [
+              RefreshIndicator(
+                onRefresh: advisorPreviewCubit.refreshInfo,
+                notificationPredicate: (_) => advisorPreviewCubit.needRefresh,
+                child: ListView(
+                    physics: const AlwaysScrollableScrollPhysics()
+                        .applyTo(const ClampingScrollPhysics()),
+                    children: [
+                      Ink(
+                        color: AdvisorPreviewConstants.white,
+                        child: Stack(
+                          children: [
+                            const CoverPictureWidget(),
+                            Container(
+                              margin: const EdgeInsets.only(top: 110.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: AppConstants
+                                            .horizontalScreenPadding,
+                                        right: AppConstants
+                                            .horizontalScreenPadding),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        UserAvatar(
+                                            diameter: 82.0,
+                                            avatarUrl: advisorPreviewCubit
+                                                    .userProfile
+                                                    .profilePictures
+                                                    ?.firstOrNull ??
+                                                ''),
+                                        const SizedBox(width: 12.0),
+                                        Expanded(
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 12.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Assets
+                                                        .vectors.responseProfile
+                                                        .svg(),
+                                                    const SizedBox(width: 4.0),
+                                                    const Text('≈ 2 hr',
+                                                        style:
+                                                            AdvisorPreviewConstants
+                                                                .displayLarge),
+                                                  ],
+                                                ),
+                                              ),
+                                              const Divider(height: 1.0),
+                                            ],
                                           ),
-                                          const Divider(height: 1.0),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        AppErrorWidget(
-                          errorMessage: appError.getMessage(context),
-                          close: advisorPreviewCubit.closeErrorWidget,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Center(
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          color: AdvisorPreviewConstants.white,
-                          height: 47.0,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  decoration: const BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                          color:
-                                              AdvisorPreviewConstants.primary,
-                                          width: 2.0),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  child: Text(S.of(context).aboutMe,
-                                      style:
-                                          AdvisorPreviewConstants.displayLarge),
-                                ),
+                                ],
                               ),
-                              Expanded(
-                                child: Center(
-                                  child: Text(S.of(context).quickAnswers,
-                                      style:
-                                          AdvisorPreviewConstants.displayLarge),
-                                ),
-                              )
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 12.0,
-                              horizontal: AppConstants.horizontalScreenPadding),
-                          child: Builder(builder: (context) {
-                            final int selectedIndex = context.select(
-                                (AdvisorPreviewCubit cubit) =>
-                                    cubit.state.currentIndex);
+                      ),
+                      Center(
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              color: AdvisorPreviewConstants.white,
+                              height: 47.0,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      decoration: const BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                              color: AdvisorPreviewConstants
+                                                  .primary,
+                                              width: 2.0),
+                                        ),
+                                      ),
+                                      child: Text(S.of(context).aboutMe,
+                                          style: AdvisorPreviewConstants
+                                              .displayLarge),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Center(
+                                      child: Text(S.of(context).quickAnswers,
+                                          style: AdvisorPreviewConstants
+                                              .displayLarge),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 12.0,
+                                  horizontal:
+                                      AppConstants.horizontalScreenPadding),
+                              child: Builder(builder: (context) {
+                                final int selectedIndex = context.select(
+                                    (AdvisorPreviewCubit cubit) =>
+                                        cubit.state.currentIndex);
 
-                            final MarketsType selectedItem =
-                                advisorPreviewCubit.languages[selectedIndex];
-                            return AboutMeWidget(
-                              description: advisorPreviewCubit
-                                          .getSelectedLanguageDetails(
-                                              selectedItem)[
-                                      AdvisorPreviewConstants.descriptionKey] ??
-                                  '',
-                              title: advisorPreviewCubit
-                                          .getSelectedLanguageDetails(
-                                              selectedItem)[
-                                      AdvisorPreviewConstants.titleKey] ??
-                                  '',
-                            );
-                          }),
+                                final MarketsType selectedItem =
+                                    advisorPreviewCubit
+                                        .languages[selectedIndex];
+                                return AboutMeWidget(
+                                  description: advisorPreviewCubit
+                                              .getSelectedLanguageDetails(
+                                                  selectedItem)[
+                                          AdvisorPreviewConstants
+                                              .descriptionKey] ??
+                                      '',
+                                  title: advisorPreviewCubit
+                                              .getSelectedLanguageDetails(
+                                                  selectedItem)[
+                                          AdvisorPreviewConstants.titleKey] ??
+                                      '',
+                                );
+                              }),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  )
-                ]),
+                      )
+                    ]),
+              ),
+              AppErrorWidget(
+                errorMessage: appError.getMessage(context),
+                close: advisorPreviewCubit.closeErrorWidget,
+              ),
+            ],
           ),
         );
       }),
