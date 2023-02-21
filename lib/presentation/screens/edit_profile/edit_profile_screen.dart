@@ -57,7 +57,8 @@ class EditProfileScreen extends StatelessWidget {
                     edgeOffset: (AppConstants.appBarHeight * 2) +
                         MediaQuery.of(context).padding.top,
                     child: CustomScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
+                      physics: const AlwaysScrollableScrollPhysics()
+                          .applyTo(const ClampingScrollPhysics()),
                       slivers: [
                         ScrollableAppBar(
                           title: S.of(context).editProfile,
