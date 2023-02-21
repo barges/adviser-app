@@ -36,8 +36,6 @@ class CustomerProfileWidget extends StatelessWidget {
               context.read<CustomerProfileCubit>();
           final CustomerInfo? customerInfo = context
               .select((CustomerProfileCubit cubit) => cubit.state.customerInfo);
-          final bool refreshEnabled = context.select(
-              (CustomerProfileCubit cubit) => cubit.state.refreshEnabled);
           final ThemeData theme = Theme.of(context);
           return SingleChildScrollView(
             physics: const ClampingScrollPhysics(),
