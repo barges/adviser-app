@@ -42,12 +42,12 @@ List<MarketsType>? _activeLanguagesFromJson(json) {
 }
 
 Map<MarketsType, double?>? _ratingFromJson(json) {
-  final Map<MarketsType, double?>? ratingMap = {};
+  final Map<MarketsType, double?> ratingMap = {};
 
   (json as Map<String, dynamic>?)?.forEach((key, value) {
     if (MarketsType.actualMarkets.contains(key)) {
       if (value is double) {
-        ratingMap?[MarketsType.typeFromString(key)] = value;
+        ratingMap[MarketsType.typeFromString(key)] = value;
       }
     }
   });
