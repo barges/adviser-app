@@ -1031,8 +1031,10 @@ class ChatCubit extends Cubit<ChatState> {
 
   void _scrollTextFieldToEnd() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      textInputScrollController
-          .jumpTo(textInputScrollController.position.maxScrollExtent);
+      if(textInputScrollController.hasClients) {
+        textInputScrollController
+            .jumpTo(textInputScrollController.position.maxScrollExtent);
+      }
     });
   }
 
