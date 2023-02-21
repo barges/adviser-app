@@ -42,6 +42,7 @@ class ConnectivityService {
       case ConnectivityResult.bluetooth:
       case ConnectivityResult.ethernet:
       case ConnectivityResult.vpn:
+      case ConnectivityResult.other:
         {
           final bool previousConnection = hasConnection;
           hasConnection = await _checker.hasConnection;
