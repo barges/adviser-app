@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,15 +10,33 @@ import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_state.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 
 class CustomerProfileCubit extends Cubit<CustomerProfileState> {
   final String customerID;
   final ValueChanged<CustomerProfileScreenArguments?>? updateClientInformation;
   final CustomerRepository _repository = getIt.get<CustomerRepository>();
+  final ChatCubit? _chatCubit;
 
-  CustomerProfileCubit(this.customerID, this.updateClientInformation)
-      : super(CustomerProfileState()) {
+  late final StreamSubscription<bool>? _refreshChatInfoSubscription;
+
+  CustomerProfileCubit(
+    this.customerID,
+    this.updateClientInformation,
+    this._chatCubit,
+  ) : super(CustomerProfileState()) {
     getData();
+
+    _refreshChatInfoSubscription =
+        _chatCubit?.refreshChatInfoTrigger.listen((value) {
+      getData();
+    });
+  }
+
+  @override
+  Future<void> close() async {
+    _refreshChatInfoSubscription?.cancel();
+    super.close();
   }
 
   void updateIsFavorite() {
@@ -27,6 +47,7 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
     try {
       await getCustomerInfo();
       await getNotes();
+      _refreshChatInfoSubscription?.cancel();
     } catch (e) {
       logger.d(e);
     }

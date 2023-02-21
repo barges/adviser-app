@@ -11,6 +11,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:get/get.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 
 class CustomerProfileWidget extends StatelessWidget {
   final String customerId;
@@ -25,15 +26,25 @@ class CustomerProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isInsideChat;
+    ChatCubit? chatCubit;
+    try {
+      chatCubit = context.read<ChatCubit>();
+      isInsideChat = true;
+    } catch (e) {
+      isInsideChat = false;
+    }
     return BlocProvider(
       create: (_) => CustomerProfileCubit(
         customerId,
         updateClientInformationCallback,
+        chatCubit,
       ),
       child: Builder(
         builder: (context) {
           final CustomerProfileCubit customerProfileCubit =
               context.read<CustomerProfileCubit>();
+
           final CustomerInfo? customerInfo = context
               .select((CustomerProfileCubit cubit) => cubit.state.customerInfo);
           final ThemeData theme = Theme.of(context);
@@ -43,7 +54,9 @@ class CustomerProfileWidget extends StatelessWidget {
               builder: (context) {
                 return (customerInfo == null)
                     ? RefreshIndicator(
-                        onRefresh: customerProfileCubit.getData,
+                        onRefresh: isInsideChat
+                            ? chatCubit?.refreshChatInfo ?? () async {}
+                            : customerProfileCubit.getData,
                         child: ListView(
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,

@@ -12,6 +12,7 @@ import 'package:flutter_sound/flutter_sound.dart' hide PlayerState;
 import 'package:get/get.dart';
 import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/ui_error_type.dart';
 import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
@@ -55,6 +56,8 @@ class ChatCubit extends Cubit<ChatState> {
   final TextEditingController textInputEditingController =
       TextEditingController();
 
+  final PublishSubject<bool> refreshChatInfoTrigger = PublishSubject();
+
   GlobalKey? questionGlobalKey;
 
   final ConnectivityService _connectivityService;
@@ -79,6 +82,7 @@ class ChatCubit extends Cubit<ChatState> {
   StreamSubscription<RecordingDisposition>? _recordingProgressSubscription;
   late final StreamSubscription<bool> _appOnPauseSubscription;
   late final StreamSubscription<bool> _stopAudioSubscription;
+  late final StreamSubscription<bool> _refreshChatInfoSubscription;
 
   Timer? _answerTimer;
   bool _counterMessageCleared = false;
@@ -156,6 +160,10 @@ class ChatCubit extends Cubit<ChatState> {
       }
       audioPlayer.pause();
     });
+
+    _refreshChatInfoSubscription = refreshChatInfoTrigger.listen((value) {
+      getData();
+    });
   }
 
   @override
@@ -180,6 +188,8 @@ class ChatCubit extends Cubit<ChatState> {
     _recordingProgressSubscription?.cancel();
 
     _answerTimer?.cancel();
+
+    _refreshChatInfoSubscription.cancel();
 
     return super.close();
   }
@@ -206,6 +216,10 @@ class ChatCubit extends Cubit<ChatState> {
     } else {
       await _getPublicOrPrivateQuestion();
     }
+  }
+
+  Future<void> refreshChatInfo() async {
+    refreshChatInfoTrigger.add(true);
   }
 
   void _setAnswerLimitations() {
@@ -272,6 +286,7 @@ class ChatCubit extends Cubit<ChatState> {
         );
       }
       emit(state.copyWith(refreshEnabled: false));
+      _refreshChatInfoSubscription.cancel();
     } on DioError catch (e) {
       if (_checkStatusCode(e)) {
         _showErrorAlert();
@@ -326,6 +341,7 @@ class ChatCubit extends Cubit<ChatState> {
         scrollChatDown();
       }
       emit(state.copyWith(refreshEnabled: false));
+      _refreshChatInfoSubscription.cancel();
     } on DioError catch (e) {
       if (_checkStatusCode(e)) {
         _showErrorAlert();

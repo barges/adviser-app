@@ -24,20 +24,18 @@ class ActiveChatMessagesWidget extends StatelessWidget {
         context.select((ChatCubit cubit) => cubit.state.ritualCardInfo);
     final bool refreshEnabled =
         context.select((ChatCubit cubit) => cubit.state.refreshEnabled);
-    logger.d('REFRESH ENABLED: $refreshEnabled');
     return Column(
       children: [
         Expanded(
           child: Container(
             color: Theme.of(context).scaffoldBackgroundColor,
             child: RefreshIndicator(
-              onRefresh: chatCubit.getData,
+              onRefresh: chatCubit.refreshChatInfo,
               notificationPredicate: (_) => refreshEnabled,
               child: SingleChildScrollView(
                 controller: chatCubit.activeMessagesScrollController,
-                physics: refreshEnabled
-                    ? const AlwaysScrollableScrollPhysics()
-                    : null,
+                physics: const AlwaysScrollableScrollPhysics()
+                    .applyTo(const ClampingScrollPhysics()),
                 padding: const EdgeInsets.fromLTRB(12.0, 16.0, 12.0, 24.0),
                 child: Builder(builder: (context) {
                   final List<Widget> widgets = [];
