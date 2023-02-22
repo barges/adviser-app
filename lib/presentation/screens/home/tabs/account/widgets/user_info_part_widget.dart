@@ -193,7 +193,8 @@ class UserInfoPartWidget extends StatelessWidget {
               height: 1.0,
             ),
             TileWidget(
-              isDisable: currentStatus.status != FortunicaUserStatus.live,
+              isDisable: currentStatus.status != FortunicaUserStatus.live &&
+                  currentStatus.status != FortunicaUserStatus.offline,
               iconSVGPath: Assets.vectors.eye.path,
               title: S.of(context).previewAccount,
               onTap: () {
