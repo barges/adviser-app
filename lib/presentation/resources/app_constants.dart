@@ -31,8 +31,6 @@ class AppConstants {
   static const int maxAttachmentSizeInBytes = 20000000;
   static const int minFreeSpaceInMb = 3;
 
-  static const String startMSS = '0:00';
-
   static const String enBrandName = 'English';
   static const String esBrandName = 'Español';
   static const String ptBrandName = 'Português';

@@ -33,7 +33,7 @@ import 'package:shared_advisor_interface/presentation/screens/chat/widgets/activ
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_players/chat_recorded_player_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_recording_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_recorder/chat_recording_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/ritual_info_card_widget.dart';
@@ -218,6 +218,10 @@ void main() {
         () => mockConnectivityService);
     testGetIt.registerLazySingleton<CachingManager>(() => mockCacheManager);
     testGetIt.registerLazySingleton<MainCubit>(() => mainCubit);
+
+    when(mockAudioRecorderService.isRecording).thenReturn(false);
+    when(mockAudioRecorderService.stateStream).thenAnswer((_) =>
+        Stream.value(RecorderServiceState(SoundRecorderState.isStopped)));
   });
 
   group('ChooseOptionWidget', () {
@@ -635,7 +639,7 @@ void main() {
 
       testWidgets(
         'should have ChatRecordingWidget'
-        ' if user taps on microphone button',
+        ' if user is recording audio',
         (WidgetTester tester) async {
           dioAdapter.onGet('/rituals/single/62de59dd510689001ddb8090',
               (server) {
@@ -644,6 +648,11 @@ void main() {
               ChatScreenTestResponses.ritualLoveCrushReadingQuestion,
             );
           });
+
+          when(mockAudioRecorderService.isRecording).thenReturn(true);
+          when(mockAudioRecorderService.stateStream).thenAnswer((_) =>
+              Stream.value(
+                  RecorderServiceState(SoundRecorderState.isRecording)));
 
           await pumpChatScreen(
             tester: tester,
@@ -656,12 +665,12 @@ void main() {
           await tester.pumpAndSettle();
 
           await tester.pumpNtimes(times: 50);
-          Finder appIconGradientButton = find.descendant(
+          /*Finder appIconGradientButton = find.descendant(
               of: find.byType(ChatTextInputWidget),
               matching: find.byType(AppIconGradientButton));
 
           await tester.tap(appIconGradientButton);
-          await tester.pump();
+          await tester.pump();*/
 
           expect(find.byType(ChatRecordingWidget), findsOneWidget);
         },
@@ -680,6 +689,11 @@ void main() {
             );
           });
 
+          when(mockAudioRecorderService.isRecording).thenReturn(true);
+          when(mockAudioRecorderService.stateStream).thenAnswer((_) =>
+              Stream.value(
+                  RecorderServiceState(SoundRecorderState.isRecording)));
+
           File audioFile = File('test/assets/test_audio.mp3');
           audioFile.copy('test/assets/test_audio1.mp3');
 
@@ -692,13 +706,6 @@ void main() {
           );
 
           await tester.pumpAndSettle();
-          await tester.pumpNtimes(times: 50);
-
-          Finder appIconGradientButton = find.descendant(
-              of: find.byType(ChatTextInputWidget),
-              matching: find.byType(AppIconGradientButton));
-
-          await tester.tap(appIconGradientButton);
           await tester.pumpNtimes(times: 50);
 
           Finder stopRecordingButton =

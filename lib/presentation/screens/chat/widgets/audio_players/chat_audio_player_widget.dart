@@ -49,7 +49,7 @@ class ChatAudioPlayerWidget extends StatelessWidget {
                     : Theme.of(context).primaryColor,
                 onTapPlayPause: () {
                   if (isOnline) {
-                    if (chatCubit.state.isRecordingAudio) {
+                    if (chatCubit.audioRecorder.isRecording) {
                       chatCubit.stopRecordingAudio();
                     }
                     player.playPause(itemUri);

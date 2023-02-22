@@ -8,7 +8,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
-import 'package:flutter_sound/flutter_sound.dart' hide PlayerState;
 import 'package:get/get.dart';
 import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -69,7 +68,7 @@ class ChatCubit extends Cubit<ChatState> {
   final ValueGetter<Future<bool?>> _recordingIsNotPossibleAlert;
   final MainCubit _mainCubit;
   final AudioPlayerService audioPlayer;
-  final AudioRecorderService _audioRecorderService;
+  final AudioRecorderService audioRecorder;
   final CheckPermissionService _checkPermissionService;
   final _uuid = const Uuid();
   int _tillShowMessagesInSec = 0;
@@ -83,7 +82,7 @@ class ChatCubit extends Cubit<ChatState> {
   double _maxAttachmentSizeInMb = 0;
   int? _recordAudioDuration;
   AnswerRequest? _answerRequest;
-  StreamSubscription<RecordingDisposition>? _recordingProgressSubscription;
+  StreamSubscription<RecorderDisposition>? _recordingProgressSubscription;
   late final StreamSubscription<bool> _appOnPauseSubscription;
   late final StreamSubscription<bool> _stopAudioSubscription;
 
@@ -97,7 +96,7 @@ class ChatCubit extends Cubit<ChatState> {
     this._repository,
     this._connectivityService,
     this._mainCubit,
-    this._audioRecorderService,
+    this.audioRecorder,
     this.audioPlayer,
     this._checkPermissionService,
     this._showErrorAlert,
@@ -146,7 +145,7 @@ class ChatCubit extends Cubit<ChatState> {
           }
         }
         if (!value) {
-          if (state.isRecordingAudio) {
+          if (audioRecorder.isRecording) {
             stopRecordingAudio();
           }
           audioPlayer.pause();
@@ -165,7 +164,7 @@ class ChatCubit extends Cubit<ChatState> {
     });
 
     _stopAudioSubscription = _mainCubit.audioStopTrigger.listen((value) {
-      if (state.isRecordingAudio) {
+      if (audioRecorder.isRecording) {
         stopRecordingAudio();
       }
       audioPlayer.pause();
@@ -174,7 +173,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   @override
   Future<void> close() async {
-    if (state.isRecordingAudio) {
+    if (audioRecorder.isRecording) {
       await cancelRecordingAudio();
     }
     _deleteRecordedAudioFile(state.recordedAudio);
@@ -188,7 +187,7 @@ class ChatCubit extends Cubit<ChatState> {
     textInputScrollController.dispose();
     textInputEditingController.dispose();
 
-    _audioRecorderService.close();
+    audioRecorder.close();
     audioPlayer.dispose();
 
     _recordingProgressSubscription?.cancel();
@@ -439,29 +438,22 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     final fileName = '${_uuid.v4()}.$_recordFileExt';
-    await _audioRecorderService.startRecorder(fileName);
+    await audioRecorder.startRecorder(fileName);
 
     _recordingProgressSubscription =
-        _audioRecorderService.onProgress?.listen((e) async {
-      _recordAudioDuration = e.duration.inSeconds;
+        audioRecorder.onProgress?.listen((e) async {
+      _recordAudioDuration = e.duration?.inSeconds;
       if (!_checkMaxRecordDurationIsOk()) {
         stopRecordingAudio();
       }
     });
-
-    emit(
-      state.copyWith(
-        isRecordingAudio: true,
-        recordingStream: _audioRecorderService.onProgress,
-      ),
-    );
   }
 
   Future<void> stopRecordingAudio() async {
     _recordingProgressSubscription?.cancel();
     _recordingProgressSubscription = null;
 
-    String? recordingPath = await _audioRecorderService.stopRecorder();
+    String? recordingPath = await audioRecorder.stopRecorder();
     logger.i("recorded audio: $recordingPath");
 
     bool isSendButtonEnabled = false;
@@ -490,7 +482,6 @@ class ChatCubit extends Cubit<ChatState> {
     emit(
       state.copyWith(
         recordedAudio: recordedAudio,
-        isRecordingAudio: false,
         isSendButtonEnabled: isSendButtonEnabled &&
             _checkAttachmentSizeIsOk(state.attachedPictures, recordedAudio),
       ),
@@ -502,7 +493,7 @@ class ChatCubit extends Cubit<ChatState> {
     _recordingProgressSubscription = null;
     _recordAudioDuration = null;
 
-    String? recordingPath = await _audioRecorderService.stopRecorder();
+    String? recordingPath = await audioRecorder.stopRecorder();
     if (recordingPath != null && recordingPath.isNotEmpty) {
       File recordedAudio = File(recordingPath);
       await _deleteRecordedAudioFile(recordedAudio);
@@ -511,7 +502,6 @@ class ChatCubit extends Cubit<ChatState> {
     emit(
       state.copyWith(
         recordedAudio: null,
-        isRecordingAudio: false,
       ),
     );
   }
@@ -526,7 +516,6 @@ class ChatCubit extends Cubit<ChatState> {
       emit(
         state.copyWith(
             recordedAudio: null,
-            isRecordingAudio: false,
             isSendButtonEnabled:
                 _checkAttachmentSizeIsOk(state.attachedPictures, null) &&
                     _checkTextLengthIsOk()),
@@ -611,7 +600,6 @@ class ChatCubit extends Cubit<ChatState> {
 
       emit(
         state.copyWith(
-          isRecordingAudio: false,
           recordedAudio: answer.isSent ? null : state.recordedAudio,
           activeMessages: messages,
         ),
