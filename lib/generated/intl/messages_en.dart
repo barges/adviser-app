@@ -246,7 +246,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "resetPassword": MessageLookupByLibrary.simpleMessage("Reset password"),
         "resources": MessageLookupByLibrary.simpleMessage("Resources"),
         "returnToQueue":
-            MessageLookupByLibrary.simpleMessage("RETURN\n TO QUEUE"),
+            MessageLookupByLibrary.simpleMessage("RETURN\nTO QUEUE"),
         "return_": MessageLookupByLibrary.simpleMessage("Return"),
         "reviews": MessageLookupByLibrary.simpleMessage("Reviews"),
         "ritual": MessageLookupByLibrary.simpleMessage("Ritual"),

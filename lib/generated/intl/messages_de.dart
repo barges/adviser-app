@@ -253,8 +253,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "resetPassword":
             MessageLookupByLibrary.simpleMessage("Passwort zurücksetzen"),
         "resources": MessageLookupByLibrary.simpleMessage("Ressourcen"),
-        "returnToQueue":
-            MessageLookupByLibrary.simpleMessage("RÜCKKEHR\n ZUR QUEUEUE"),
+        "returnToQueue": MessageLookupByLibrary.simpleMessage(
+            "Zurück in die\nWarteschlange"),
         "return_": MessageLookupByLibrary.simpleMessage("Zurück"),
         "reviews": MessageLookupByLibrary.simpleMessage("Bewertungen"),
         "ritual": MessageLookupByLibrary.simpleMessage("Blockadenlösung"),

@@ -252,7 +252,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Redefinir senha"),
         "resources": MessageLookupByLibrary.simpleMessage("Recursos"),
         "returnToQueue":
-            MessageLookupByLibrary.simpleMessage("RETORNAR\n À FILA"),
+            MessageLookupByLibrary.simpleMessage("RETORNAR\nÀ FILA"),
         "return_": MessageLookupByLibrary.simpleMessage("Voltar"),
         "reviews": MessageLookupByLibrary.simpleMessage("Avaliações"),
         "ritual": MessageLookupByLibrary.simpleMessage("Ritual"),

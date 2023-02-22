@@ -1819,10 +1819,10 @@ class S {
     );
   }
 
-  /// `RETURN\n TO QUEUE`
+  /// `RETURN\nTO QUEUE`
   String get returnToQueue {
     return Intl.message(
-      'RETURN\n TO QUEUE',
+      'RETURN\nTO QUEUE',
       name: 'returnToQueue',
       desc: '',
       args: [],
