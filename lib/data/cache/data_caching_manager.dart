@@ -164,7 +164,7 @@ class DataCachingManager implements CachingManager {
 
   @override
   UserProfile? getUserProfile() {
-    UserProfile userProfile = _userBox.read(_userProfileKey);
+    UserProfile? userProfile = _userBox.read(_userProfileKey);
     return userProfile;
   }
 
