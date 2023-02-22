@@ -320,10 +320,10 @@ class S {
     );
   }
 
-  /// `All our brands`
+  /// `All brands`
   String get allOurBrands {
     return Intl.message(
-      'All our brands',
+      'All brands',
       name: 'allOurBrands',
       desc: '',
       args: [],

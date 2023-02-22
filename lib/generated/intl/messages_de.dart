@@ -58,8 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addNote": MessageLookupByLibrary.simpleMessage("Notiz hinzufügen"),
         "all": MessageLookupByLibrary.simpleMessage("Alle"),
         "allMarkets": MessageLookupByLibrary.simpleMessage("Alle Märkte"),
-        "allOurBrands":
-            MessageLookupByLibrary.simpleMessage("Alle unsere Marken"),
+        "allOurBrands": MessageLookupByLibrary.simpleMessage("Alle Marken"),
         "areYouSureThatYouWantToChangeYourStatus":
             MessageLookupByLibrary.simpleMessage(
                 "Bist du sicher, dass du deinen Status auf Offline ändern möchtest?"),
