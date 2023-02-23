@@ -10,5 +10,6 @@ class CustomerProfileState with _$CustomerProfileState {
     List<Note>? notes,
     CustomerInfo? customerInfo,
     @Default(false) bool isFavorite,
+    @Default(false) bool needRefresh,
   }) = _CustomerProfileState;
 }

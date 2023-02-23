@@ -48,7 +48,9 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
       await getCustomerInfo();
       await getNotes();
       _refreshChatInfoSubscription?.cancel();
+      emit(state.copyWith(needRefresh: false));
     } catch (e) {
+      emit(state.copyWith(needRefresh: true));
       logger.d(e);
     }
   }
