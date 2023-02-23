@@ -4,7 +4,9 @@ part 'advisor_preview_state.freezed.dart';
 
 @freezed
 class AdvisorPreviewState with _$AdvisorPreviewState {
-  factory AdvisorPreviewState(
-      {@Default(0) int currentIndex,
-      @Default(0) int oldIndex}) = _AdvisorPreviewState;
+  factory AdvisorPreviewState({
+    @Default(0) int currentIndex,
+    @Default(0) int oldIndex,
+    @Default(true) bool updateInfo,
+  }) = _AdvisorPreviewState;
 }

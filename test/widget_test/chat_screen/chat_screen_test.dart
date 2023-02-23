@@ -27,15 +27,20 @@ import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/widgets/notes_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/widgets/question_properties_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_input_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_players/chat_recorded_player_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_recording_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_recorder/chat_recording_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/widgets/empty_history_list_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/widgets/sliver_history_list_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/ritual_info_card_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/gallery/gallery_pictures_screen.dart';
 import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
@@ -163,10 +168,6 @@ void main() {
     when(mockAudioRecorderService.stopRecorder()).thenAnswer(
         (realInvocation) => Future.value('test/assets/test_audio1.mp3'));
 
-    dioAdapter.onGet('/v2/clients/63bbab1b793423001e28722e', (server) {
-      server.reply(200, ChatScreenTestResponses.publicQuestionClient);
-    });
-
     dioAdapter.onGet(
       '/notes',
       data: {'clientID': '63bbab1b793423001e28722e'},
@@ -204,12 +205,22 @@ void main() {
       },
     );
 
+    dioAdapter.onGet('/v2/clients/63bbab1b793423001e28722e', (server) {
+      server.reply(
+          200,
+          ChatScreenTestResponses
+              .publicQuestionClientWithoutQuestionProperties);
+    });
+
     mockChatsRepository = ChatsRepositoryImpl(ChatsApi(dio));
     mockConnectivityService = MockConnectivityService();
     mockCacheManager = MockDataCachingManager();
     mockCheckPermissionService = MockCheckPermissionService();
 
     mainCubit = MainCubit(mockCacheManager, mockConnectivityService);
+
+    when(mockConnectivityService.checkConnection())
+        .thenAnswer((realInvocation) => Future.value(true));
 
     testGetIt.registerLazySingleton<CheckPermissionService>(
         () => mockCheckPermissionService);
@@ -218,6 +229,10 @@ void main() {
         () => mockConnectivityService);
     testGetIt.registerLazySingleton<CachingManager>(() => mockCacheManager);
     testGetIt.registerLazySingleton<MainCubit>(() => mainCubit);
+
+    when(mockAudioRecorderService.isRecording).thenReturn(false);
+    when(mockAudioRecorderService.stateStream).thenAnswer((_) =>
+        Stream.value(RecorderServiceState(SoundRecorderState.isStopped)));
   });
 
   group('ChooseOptionWidget', () {
@@ -635,7 +650,7 @@ void main() {
 
       testWidgets(
         'should have ChatRecordingWidget'
-        ' if user taps on microphone button',
+        ' if user is recording audio',
         (WidgetTester tester) async {
           dioAdapter.onGet('/rituals/single/62de59dd510689001ddb8090',
               (server) {
@@ -644,6 +659,11 @@ void main() {
               ChatScreenTestResponses.ritualLoveCrushReadingQuestion,
             );
           });
+
+          when(mockAudioRecorderService.isRecording).thenReturn(true);
+          when(mockAudioRecorderService.stateStream).thenAnswer((_) =>
+              Stream.value(
+                  RecorderServiceState(SoundRecorderState.isRecording)));
 
           await pumpChatScreen(
             tester: tester,
@@ -656,12 +676,12 @@ void main() {
           await tester.pumpAndSettle();
 
           await tester.pumpNtimes(times: 50);
-          Finder appIconGradientButton = find.descendant(
+          /*Finder appIconGradientButton = find.descendant(
               of: find.byType(ChatTextInputWidget),
               matching: find.byType(AppIconGradientButton));
 
           await tester.tap(appIconGradientButton);
-          await tester.pump();
+          await tester.pump();*/
 
           expect(find.byType(ChatRecordingWidget), findsOneWidget);
         },
@@ -680,6 +700,11 @@ void main() {
             );
           });
 
+          when(mockAudioRecorderService.isRecording).thenReturn(true);
+          when(mockAudioRecorderService.stateStream).thenAnswer((_) =>
+              Stream.value(
+                  RecorderServiceState(SoundRecorderState.isRecording)));
+
           File audioFile = File('test/assets/test_audio.mp3');
           audioFile.copy('test/assets/test_audio1.mp3');
 
@@ -692,13 +717,6 @@ void main() {
           );
 
           await tester.pumpAndSettle();
-          await tester.pumpNtimes(times: 50);
-
-          Finder appIconGradientButton = find.descendant(
-              of: find.byType(ChatTextInputWidget),
-              matching: find.byType(AppIconGradientButton));
-
-          await tester.tap(appIconGradientButton);
           await tester.pumpNtimes(times: 50);
 
           Finder stopRecordingButton =
@@ -921,6 +939,122 @@ void main() {
       expect(find.byWidgetPredicate((widget) => widget is TextField),
           findsNothing);
       expect(find.widgetWithText(ChatItemWidget, enteredText), findsOneWidget);
+    });
+  });
+
+  group('HistoryTab', () {
+    testWidgets(
+        'should be displayed'
+        ' if current tab in ChooseOptionWidget is "History"', (tester) async {
+      await pumpChatScreen(
+          tester: tester,
+          chatScreenArguments: ChatScreenArguments(
+              clientIdFromPush: '63bbab1b793423001e28722e'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('History'), findsOneWidget);
+
+      await tester.tap(find.widgetWithText(GestureDetector, 'History'));
+      await tester.pump();
+
+      expect(find.byType(HistoryWidget), findsOneWidget);
+    });
+
+    testWidgets(
+        'should be displayed with EmptyHistoryListWidget'
+        ' if History list is empty', (tester) async {
+      dioAdapter.onGet('/experts/conversations/history', (server) {
+        server.reply(200, ChatScreenTestResponses.emptyHistoryResponse);
+      }, queryParameters: {
+        'clientId': '63bbab1b793423001e28722e',
+        'limit': 15
+      });
+
+      await pumpChatScreen(
+          tester: tester,
+          chatScreenArguments: ChatScreenArguments(
+              clientIdFromPush: '63bbab1b793423001e28722e'));
+      await tester.pumpNtimes(times: 100);
+
+      expect(find.byType(EmptyHistoryListWidget), findsOneWidget);
+    });
+
+    testWidgets(
+        'should be displayed with SliverHistoryListWidget'
+        ' if History list is not empty', (tester) async {
+      dioAdapter.onGet('/experts/conversations/history', (server) {
+        server.reply(200, ChatScreenTestResponses.historyResponse);
+      }, queryParameters: {
+        'clientId': '63bbab1b793423001e28722e',
+        'limit': 15
+      });
+
+      await pumpChatScreen(
+          tester: tester,
+          chatScreenArguments: ChatScreenArguments(
+              clientIdFromPush: '63bbab1b793423001e28722e'));
+      await tester.pumpNtimes(times: 100);
+
+      expect(find.byType(ListView), findsOneWidget);
+    });
+  });
+
+  group('CustomerProfileWidget', () {
+    testWidgets('should be displayed with UserAvatar and NotesWidget',
+        (tester) async {
+      await pumpChatScreen(
+          tester: tester,
+          chatScreenArguments: ChatScreenArguments(
+              clientIdFromPush: '63bbab1b793423001e28722e'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.widgetWithText(GestureDetector, 'Profile'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(UserAvatar), findsOneWidget);
+      expect(find.byType(NotesWidget), findsOneWidget);
+    });
+
+    testWidgets(
+        'should be displayed without QuestionPropertiesWidget'
+        ' if CustomerInfo advisorMatch is empty', (tester) async {
+      dioAdapter.onGet('/v2/clients/63bbab1b793423001e28722e', (server) {
+        server.reply(
+            200,
+            ChatScreenTestResponses
+                .publicQuestionClientWithoutQuestionProperties);
+      });
+
+      await pumpChatScreen(
+          tester: tester,
+          chatScreenArguments: ChatScreenArguments(
+              clientIdFromPush: '63bbab1b793423001e28722e'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.widgetWithText(GestureDetector, 'Profile'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(QuestionPropertiesWidget), findsNothing);
+    });
+
+    testWidgets(
+        'should be displayed with QuestionPropertiesWidget'
+        ' if CustomerInfo advisorMatch is not empty', (tester) async {
+      dioAdapter.onGet('/v2/clients/63bbab1b793423001e28722e', (server) {
+        server.reply(200,
+            ChatScreenTestResponses.publicQuestionClientWithQuestionProperties);
+      });
+
+      await pumpChatScreen(
+          tester: tester,
+          chatScreenArguments: ChatScreenArguments(
+              clientIdFromPush: '63bbab1b793423001e28722e'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.widgetWithText(GestureDetector, 'Profile'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(QuestionPropertiesWidget), findsOneWidget);
     });
   });
 }

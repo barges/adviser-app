@@ -1,7 +1,8 @@
 class ChatScreenTestResponses {
   static const String ritualImageUrl = 'test/assets/test_placeholder.png';
 
-  static const Map<String, dynamic> publicQuestionClient = {
+  static const Map<String, dynamic>
+      publicQuestionClientWithoutQuestionProperties = {
     "_id": "63bbab1b793423001e28722e",
     "firstName": "Anabel",
     "lastName": "Rau",
@@ -16,6 +17,27 @@ class ChatScreenTestResponses {
     "countryFullName": "Ireland",
     "totalMessages": 0,
     "advisorMatch": {}
+  };
+
+  static const Map<String, dynamic> publicQuestionClientWithQuestionProperties =
+      {
+    "_id": "63bbab1b793423001e28722e",
+    "firstName": "Anabel",
+    "lastName": "Rau",
+    "zodiac": "capricorn",
+    "birthdate": "1989-01-09T00:00:00.000Z",
+    "gender": "female",
+    "country": "IE",
+    "isProfileCompleted": false,
+    "questionsSubscription": {"active": false},
+    "safeToSendEmail": false,
+    "id": "63bbab1b793423001e28722e",
+    "countryFullName": "Ireland",
+    "totalMessages": 0,
+    "advisorMatch": {
+      "offer": "Purpose and Destiny",
+      "advisorType": "Keep it real"
+    }
   };
 
   static const Map<String, dynamic> emptyClientNote = {"content": ""};
@@ -405,5 +427,125 @@ class ChatScreenTestResponses {
       "lastName": "Fortunikovna"
     },
     "clientID": "5f5224f45a1f7c001c99763c"
+  };
+
+  static const Map<String, dynamic> historyResponse = {
+    "data": [
+      {
+        "_id": "62e228a4b584e9001e593860",
+        "answer": {
+          "_id": "63975da8e0e83f001d48dff1",
+          "content": "dsfsdfdsf aefeaf",
+          "attachments": [],
+          "type": "TEXT_ANSWER",
+          "createdAt": "2022-12-12T16:58:16.574Z"
+        },
+        "question": {
+          "_id": "62e228a4b584e9001e593860",
+          "clientID": "5f5224f45a1f7c001c99763c",
+          "clientName": "Hope Fortunikovna",
+          "createdAt": "2022-07-28T06:11:48.862Z",
+          "clientInformation": {
+            "birthdate": "1989-02-07T00:00:00.000Z",
+            "zodiac": "aquarius",
+            "gender": "non_gender",
+            "country": "BR"
+          },
+          "content":
+              "Dolor debitis est inventore ex sint molestiae aliquam. Accusantium id quisquam. Consectetur enim animi voluptas velit praesentium. Consectetur adipisci omnis similique voluptatem. Ea et quidem totam quia sunt aut. Temporibus ipsam nam.",
+          "attachments": [],
+          "type": "PUBLIC",
+          "storyID": "62e228a4b584e9001e59385e"
+        }
+      },
+      {
+        "_id": "62e228a4b584e9001e593860",
+        "answer": {
+          "_id": "63975da8e0e83f001d48dff1",
+          "content": "dsfsdfdsf aefeaf",
+          "attachments": [],
+          "type": "TEXT_ANSWER",
+          "createdAt": "2022-12-12T16:58:16.574Z"
+        },
+        "question": {
+          "_id": "62e228a4b584e9001e593860",
+          "clientID": "5f5224f45a1f7c001c99763c",
+          "clientName": "Hope Fortunikovna",
+          "createdAt": "2022-07-28T06:11:48.862Z",
+          "clientInformation": {
+            "birthdate": "1989-02-07T00:00:00.000Z",
+            "zodiac": "aquarius",
+            "gender": "non_gender",
+            "country": "BR"
+          },
+          "content":
+              "Dolor debitis est inventore ex sint molestiae aliquam. Accusantium id quisquam. Consectetur enim animi voluptas velit praesentium. Consectetur adipisci omnis similique voluptatem. Ea et quidem totam quia sunt aut. Temporibus ipsam nam.",
+          "attachments": [],
+          "type": "PUBLIC",
+          "storyID": "62e228a4b584e9001e59385e"
+        }
+      },
+      {
+        "_id": "62e228a4b584e9001e593860",
+        "answer": {
+          "_id": "63975da8e0e83f001d48dff1",
+          "content": "dsfsdfdsf aefeaf",
+          "attachments": [],
+          "type": "TEXT_ANSWER",
+          "createdAt": "2022-12-12T16:58:16.574Z"
+        },
+        "question": {
+          "_id": "62e228a4b584e9001e593860",
+          "clientID": "5f5224f45a1f7c001c99763c",
+          "clientName": "Hope Fortunikovna",
+          "createdAt": "2022-07-28T06:11:48.862Z",
+          "clientInformation": {
+            "birthdate": "1989-02-07T00:00:00.000Z",
+            "zodiac": "aquarius",
+            "gender": "non_gender",
+            "country": "BR"
+          },
+          "content":
+              "Dolor debitis est inventore ex sint molestiae aliquam. Accusantium id quisquam. Consectetur enim animi voluptas velit praesentium. Consectetur adipisci omnis similique voluptatem. Ea et quidem totam quia sunt aut. Temporibus ipsam nam.",
+          "attachments": [],
+          "type": "PUBLIC",
+          "storyID": "62e228a4b584e9001e59385e"
+        }
+      },
+      {
+        "_id": "62e228a4b584e9001e593860",
+        "answer": {
+          "_id": "63975da8e0e83f001d48dff1",
+          "content": "dsfsdfdsf aefeaf",
+          "attachments": [],
+          "type": "TEXT_ANSWER",
+          "createdAt": "2022-12-12T16:58:16.574Z"
+        },
+        "question": {
+          "_id": "62e228a4b584e9001e593860",
+          "clientID": "5f5224f45a1f7c001c99763c",
+          "clientName": "Hope Fortunikovna",
+          "createdAt": "2022-07-28T06:11:48.862Z",
+          "clientInformation": {
+            "birthdate": "1989-02-07T00:00:00.000Z",
+            "zodiac": "aquarius",
+            "gender": "non_gender",
+            "country": "BR"
+          },
+          "content":
+              "Dolor debitis est inventore ex sint molestiae aliquam. Accusantium id quisquam. Consectetur enim animi voluptas velit praesentium. Consectetur adipisci omnis similique voluptatem. Ea et quidem totam quia sunt aut. Temporibus ipsam nam.",
+          "attachments": [],
+          "type": "PUBLIC",
+          "storyID": "62e228a4b584e9001e59385e"
+        }
+      },
+    ],
+    "hasMore": false,
+    "lastItem": "62d105728e240d001ff91e11"
+  };
+
+  static const Map<String, dynamic> emptyHistoryResponse = {
+    "data": [],
+    "hasMore": false
   };
 }

@@ -189,6 +189,10 @@ class SessionsCubit extends Cubit<SessionsState> {
     }
   }
 
+  void closeErrorWidget() {
+    _mainCubit.clearErrorMessage();
+  }
+
   Future<void> getPublicQuestions(
       {FortunicaUserStatus? status, bool refresh = false}) async {
     if (!_isPublicLoading) {

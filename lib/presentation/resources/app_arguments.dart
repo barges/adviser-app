@@ -39,7 +39,7 @@ class CustomerProfileScreenArguments {
   final String? clientName;
   final ZodiacSign? zodiacSign;
 
- const CustomerProfileScreenArguments({
+  const CustomerProfileScreenArguments({
     this.customerID,
     this.clientName,
     this.zodiacSign,
@@ -105,4 +105,16 @@ class ForceUpdateScreenArguments {
     this.updateLink,
     this.moreLink,
   });
+}
+
+class EditProfileScreenArguments {
+  final bool isAccountTimeout;
+
+  EditProfileScreenArguments({required this.isAccountTimeout});
+}
+
+class AdvisorPreviewScreenArguments {
+  final bool isAccountTimeout;
+
+  AdvisorPreviewScreenArguments({required this.isAccountTimeout});
 }

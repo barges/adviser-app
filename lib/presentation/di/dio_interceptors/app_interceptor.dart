@@ -82,6 +82,11 @@ class AppInterceptor extends Interceptor {
           ),
         );
       }
+      // } else if (err.response?.statusCode == 400 &&
+      //     Get.currentRoute == AppRoutes.login) {
+      //   _mainCubit.updateErrorMessage(
+      //     UIError(uiErrorType: UIErrorType.blocked),
+      //   );
     } else if (err.response?.statusCode == 451 ||
         err.response?.statusCode == 428) {
       Get.offNamedUntil(
@@ -90,17 +95,16 @@ class AppInterceptor extends Interceptor {
             initTab: TabsTypes.account,
           ),
           (route) => false);
-    } else if (err.response?.statusCode == 413) {
-      // Handele error 413 Request Entity Too Large in chat_cubit.dart
     } else if (err.type == DioErrorType.connectTimeout ||
         err.type == DioErrorType.receiveTimeout ||
-        err.type == DioErrorType.sendTimeout) {
+        err.type == DioErrorType.sendTimeout ||
+        err.type == DioErrorType.other) {
       _mainCubit.updateErrorMessage(
         UIError(
           uiErrorType: UIErrorType.checkYourInternetConnection,
         ),
       );
-    } else {
+    } else if (err.response?.statusCode != 413) {
       try {
         _mainCubit.updateErrorMessage(
           NetworkError(

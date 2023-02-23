@@ -53,4 +53,13 @@ class DashboardV1Cubit extends Cubit<DashboardV1State> {
       );
     }
   }
+
+  Future<void> refreshInfo() async {
+    mainCubit.updateAccount();
+    getReports();
+  }
+
+  void closeErrorWidget() {
+    mainCubit.clearErrorMessage();
+  }
 }

@@ -102,6 +102,7 @@ class TileWidget extends StatelessWidget {
                     child: Stack(
                       children: [
                         Assets.vectors.arrowRight.svg(
+                          key: const Key('arrow_right_button'),
                           color: Theme.of(context).primaryColor,
                         ),
                         if (withError)

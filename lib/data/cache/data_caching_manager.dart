@@ -164,7 +164,12 @@ class DataCachingManager implements CachingManager {
 
   @override
   UserProfile? getUserProfile() {
-    UserProfile userProfile = _userBox.read(_userProfileKey);
+    dynamic cacheInfo = _userBox.read(_userProfileKey);
+    UserProfile? userProfile = cacheInfo is UserProfile
+        ? cacheInfo
+        : cacheInfo is Map<String, dynamic>
+            ? UserProfile.fromJson(cacheInfo)
+            : null;
     return userProfile;
   }
 

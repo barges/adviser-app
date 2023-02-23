@@ -74,8 +74,19 @@ class BalanceAndTransactionsScreen extends StatelessWidget {
                                 )
                               : const EmptyStatisticsWidget();
                         } else {
-                          return const SliverFillRemaining(
-                              child: SizedBox.shrink());
+                          return SliverToBoxAdapter(
+                              child: RefreshIndicator(
+                            onRefresh: balanceAndTransactionsCubit.getReports,
+                            child: ListView(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              children: [
+                                SizedBox(
+                                  height: MediaQuery.of(context).size.height,
+                                )
+                              ],
+                            ),
+                          ));
                         }
                       } else {
                         return SliverFillRemaining(
