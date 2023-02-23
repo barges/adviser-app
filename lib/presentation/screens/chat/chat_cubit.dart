@@ -8,7 +8,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
-import 'package:flutter_sound/flutter_sound.dart' hide PlayerState;
 import 'package:get/get.dart';
 import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -72,14 +71,21 @@ class ChatCubit extends Cubit<ChatState> {
   final ValueGetter<Future<bool?>> _recordingIsNotPossibleAlert;
   final MainCubit _mainCubit;
   final AudioPlayerService audioPlayer;
-  final AudioRecorderService _audioRecorderService;
+  final AudioRecorderService audioRecorder;
   final CheckPermissionService _checkPermissionService;
   final _uuid = const Uuid();
-  late int _tillShowMessagesInSec;
-  late int _afterShowMessagesInSec;
+  int _tillShowMessagesInSec = 0;
+  int _afterShowMessagesInSec = 0;
+  int _minRecordDurationInSec = 0;
+  int _maxRecordDurationInSec = 0;
+  int _maxRecordDurationInMinutes = 0;
+  int _minTextLength = 0;
+  int _maxTextLength = 0;
+  int _maxAttachmentSizeInBytes = 0;
+  double _maxAttachmentSizeInMb = 0;
   int? _recordAudioDuration;
   AnswerRequest? _answerRequest;
-  StreamSubscription<RecordingDisposition>? _recordingProgressSubscription;
+  StreamSubscription<RecorderDisposition>? _recordingProgressSubscription;
   late final StreamSubscription<bool> _appOnPauseSubscription;
   late final StreamSubscription<bool> _stopAudioSubscription;
   late final StreamSubscription<bool> _refreshChatInfoSubscription;
@@ -94,7 +100,7 @@ class ChatCubit extends Cubit<ChatState> {
     this._repository,
     this._connectivityService,
     this._mainCubit,
-    this._audioRecorderService,
+    this.audioRecorder,
     this.audioPlayer,
     this._checkPermissionService,
     this._showErrorAlert,
@@ -136,7 +142,7 @@ class ChatCubit extends Cubit<ChatState> {
           }
         }
         if (!value) {
-          if (state.isRecordingAudio) {
+          if (audioRecorder.isRecording) {
             stopRecordingAudio();
           }
           audioPlayer.pause();
@@ -155,7 +161,7 @@ class ChatCubit extends Cubit<ChatState> {
     });
 
     _stopAudioSubscription = _mainCubit.audioStopTrigger.listen((value) {
-      if (state.isRecordingAudio) {
+      if (audioRecorder.isRecording) {
         stopRecordingAudio();
       }
       audioPlayer.pause();
@@ -168,7 +174,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   @override
   Future<void> close() async {
-    if (state.isRecordingAudio) {
+    if (audioRecorder.isRecording) {
       await cancelRecordingAudio();
     }
     _deleteRecordedAudioFile(state.recordedAudio);
@@ -182,7 +188,7 @@ class ChatCubit extends Cubit<ChatState> {
     textInputScrollController.dispose();
     textInputEditingController.dispose();
 
-    _audioRecorderService.close();
+    audioRecorder.close();
     audioPlayer.dispose();
 
     _recordingProgressSubscription?.cancel();
@@ -225,13 +231,36 @@ class ChatCubit extends Cubit<ChatState> {
   void _setAnswerLimitations() {
     _afterShowMessagesInSec =
         answerLimitationContent?.questionRemindMinutes != null
-            ? answerLimitationContent!.questionRemindMinutes! * 60
+            ? answerLimitationContent!.questionRemindMinutes! *
+                AppConstants.minuteInSec
             : AppConstants.afterShowAnswerTimingMessagesInSec;
     _tillShowMessagesInSec =
         answerLimitationContent?.questionReturnMinutes != null
-            ? answerLimitationContent!.questionReturnMinutes! * 60 -
+            ? answerLimitationContent!.questionReturnMinutes! *
+                    AppConstants.minuteInSec -
                 _afterShowMessagesInSec
             : AppConstants.tillShowAnswerTimingMessagesInSec;
+
+    _minRecordDurationInSec = answerLimitationContent?.audioTime?.min ??
+        AppConstants.minRecordDurationInSec;
+    _maxRecordDurationInSec = answerLimitationContent?.audioTime?.max ??
+        AppConstants.maxRecordDurationInSec;
+    _maxRecordDurationInMinutes =
+        _maxRecordDurationInSec ~/ AppConstants.minuteInSec;
+
+    _minTextLength = answerLimitationContent?.min ??
+        (questionFromDBtype == ChatItemType.ritual
+            ? AppConstants.minTextLengthRitual
+            : AppConstants.minTextLength);
+    _maxTextLength = answerLimitationContent?.max ??
+        (questionFromDBtype == ChatItemType.ritual
+            ? AppConstants.maxTextLengthRitual
+            : AppConstants.maxTextLength);
+
+    _maxAttachmentSizeInBytes = answerLimitationContent?.bodySize?.max ??
+        AppConstants.maxAttachmentSizeInBytes;
+    _maxAttachmentSizeInMb = _maxAttachmentSizeInBytes /
+        (AppConstants.bytesInKilobyte * AppConstants.bytesInKilobyte);
   }
 
   Future<void> _getAnswerLimitations() async {
@@ -414,7 +443,8 @@ class ChatCubit extends Cubit<ChatState> {
       lowOnSpaceThreshold: 0,
       fractionDigits: 1,
     );
-    final freeSpaceInMb = freeSpace.free / (1024 * 1024);
+    final freeSpaceInMb = freeSpace.free /
+        (AppConstants.bytesInKilobyte * AppConstants.bytesInKilobyte);
     if (freeSpaceInMb <= AppConstants.minFreeSpaceInMb) {
       await _recordingIsNotPossibleAlert();
       return;
@@ -435,29 +465,22 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     final fileName = '${_uuid.v4()}.$_recordFileExt';
-    await _audioRecorderService.startRecorder(fileName);
+    await audioRecorder.startRecorder(fileName);
 
     _recordingProgressSubscription =
-        _audioRecorderService.onProgress?.listen((e) async {
-      _recordAudioDuration = e.duration.inSeconds;
+        audioRecorder.onProgress?.listen((e) async {
+      _recordAudioDuration = e.duration?.inSeconds;
       if (!_checkMaxRecordDurationIsOk()) {
         stopRecordingAudio();
       }
     });
-
-    emit(
-      state.copyWith(
-        isRecordingAudio: true,
-        recordingStream: _audioRecorderService.onProgress,
-      ),
-    );
   }
 
   Future<void> stopRecordingAudio() async {
     _recordingProgressSubscription?.cancel();
     _recordingProgressSubscription = null;
 
-    String? recordingPath = await _audioRecorderService.stopRecorder();
+    String? recordingPath = await audioRecorder.stopRecorder();
     logger.i("recorded audio: $recordingPath");
 
     bool isSendButtonEnabled = false;
@@ -472,11 +495,11 @@ class ChatCubit extends Cubit<ChatState> {
         _mainCubit.updateErrorMessage(UIError(
             uiErrorType:
                 UIErrorType.youCantSendThisMessageBecauseItsLessThanXSeconds,
-            args: [minRecordDurationInSec]));
+            args: [_minRecordDurationInSec]));
       } else if (!_checkMaxRecordDurationIsOk()) {
         _mainCubit.updateErrorMessage(UIError(
             uiErrorType: UIErrorType.youVeReachTheXMinuteTimeLimit,
-            args: [maxRecordDurationInMinutes]));
+            args: [_maxRecordDurationInMinutes]));
         isSendButtonEnabled = true;
       } else {
         isSendButtonEnabled = true;
@@ -486,7 +509,6 @@ class ChatCubit extends Cubit<ChatState> {
     emit(
       state.copyWith(
         recordedAudio: recordedAudio,
-        isRecordingAudio: false,
         isSendButtonEnabled: isSendButtonEnabled &&
             _checkAttachmentSizeIsOk(state.attachedPictures, recordedAudio),
       ),
@@ -498,7 +520,7 @@ class ChatCubit extends Cubit<ChatState> {
     _recordingProgressSubscription = null;
     _recordAudioDuration = null;
 
-    String? recordingPath = await _audioRecorderService.stopRecorder();
+    String? recordingPath = await audioRecorder.stopRecorder();
     if (recordingPath != null && recordingPath.isNotEmpty) {
       File recordedAudio = File(recordingPath);
       await _deleteRecordedAudioFile(recordedAudio);
@@ -507,7 +529,6 @@ class ChatCubit extends Cubit<ChatState> {
     emit(
       state.copyWith(
         recordedAudio: null,
-        isRecordingAudio: false,
       ),
     );
   }
@@ -522,7 +543,6 @@ class ChatCubit extends Cubit<ChatState> {
       emit(
         state.copyWith(
             recordedAudio: null,
-            isRecordingAudio: false,
             isSendButtonEnabled:
                 _checkAttachmentSizeIsOk(state.attachedPictures, null) &&
                     _checkTextLengthIsOk()),
@@ -597,7 +617,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     if (answer != null) {
       if (answer.isSent) {
-        await _deleteRecordedAudioFile(state.recordedAudio);
+        _deleteRecordedAudioFile(state.recordedAudio);
         _mainCubit.updateSessions();
         _recordAudioDuration = null;
       }
@@ -607,7 +627,6 @@ class ChatCubit extends Cubit<ChatState> {
 
       emit(
         state.copyWith(
-          isRecordingAudio: false,
           recordedAudio: answer.isSent ? null : state.recordedAudio,
           activeMessages: messages,
         ),
@@ -722,7 +741,7 @@ class ChatCubit extends Cubit<ChatState> {
               afterTakenInSec;
         }
 
-        if (afterShowMessagesInSec <= 60) {
+        if (afterShowMessagesInSec <= AppConstants.minuteInSec) {
           _setAnswerIsNotPossible();
         }
 
@@ -735,22 +754,21 @@ class ChatCubit extends Cubit<ChatState> {
 
   _startTimer(int tillShowMessagesInSec, int afterShowMessagesInSec) async {
     _answerTimer?.cancel();
-    _answerTimer = Timer(Duration(seconds: tillShowMessagesInSec), () {
-      if (state.questionStatus == ChatItemStatusType.taken) {
-        const minuteInSec = 60;
+    if (state.questionStatus == ChatItemStatusType.taken) {
+      _answerTimer = Timer(Duration(seconds: tillShowMessagesInSec), () {
         const tick = Duration(seconds: 1);
         Duration tillEnd = Duration(seconds: afterShowMessagesInSec);
 
         _answerTimer = Timer.periodic(tick, (_) {
           tillEnd = tillEnd - tick;
-          if (tillEnd.inSeconds > minuteInSec) {
+          if (tillEnd.inSeconds > AppConstants.minuteInSec) {
             if (!_counterMessageCleared) {
               updateSuccessMessage(UISuccess.withArguments(
                   UISuccessType
                       .thisQuestionWillBeReturnedToTheGeneralListAfterCounter,
                   tillEnd.formatMMSS));
             }
-          } else if (tillEnd.inSeconds == minuteInSec) {
+          } else if (tillEnd.inSeconds == AppConstants.minuteInSec) {
             _setAnswerIsNotPossible();
           }
           if (tillEnd.inSeconds == 0) {
@@ -758,8 +776,8 @@ class ChatCubit extends Cubit<ChatState> {
             clearSuccessMessage();
           }
         });
-      }
-    });
+      });
+    }
   }
 
   _setAnswerIsNotPossible() {
@@ -818,36 +836,31 @@ class ChatCubit extends Cubit<ChatState> {
   Future<ChatItem?> _sendAnswer() async {
     ChatItem? answer;
     int? statusCode;
+    DioErrorType? errorType;
     try {
       answer = await _repository.sendAnswer(_answerRequest!);
       logger.d('send answer response: $answer');
       answer = answer.copyWith(
         isAnswer: true,
-        type: state.questionFromDB?.type,
+        type: questionFromDBtype,
         ritualIdentifier: state.questionFromDB?.ritualIdentifier,
       );
       _answerTimer?.cancel();
       _answerRequest = null;
     } on DioError catch (e) {
-      logger.e(e);
-      if (!await _connectivityService.checkConnection() ||
-          e.type == DioErrorType.connectTimeout ||
-          e.type == DioErrorType.sendTimeout ||
-          e.type == DioErrorType.receiveTimeout) {
+      logger.d(e);
+      errorType = e.type;
+      if (await _isConnectionProblem(errorType)) {
         _mainCubit.updateErrorMessage(
             UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
         answer = await _getNotSentAnswer();
       }
 
       statusCode = e.response?.statusCode;
-      if (statusCode == 413) {
-        _mainCubit.updateErrorMessage(UIError(
-            uiErrorType: UIErrorType.theMaximumSizeOfTheAttachmentsIsXMb,
-            args: [maxAttachmentSizeInMb.toInt()]));
-      }
+      _handleIfEntityTooLargeError(statusCode);
     }
 
-    if (statusCode != 413) {
+    if (statusCode != 413 && errorType != DioErrorType.other) {
       emit(state.copyWith(questionStatus: ChatItemStatusType.answered));
     }
 
@@ -858,6 +871,62 @@ class ChatCubit extends Cubit<ChatState> {
     return answer;
   }
 
+  Future<void> sendAnswerAgain() async {
+    try {
+      await audioPlayer.stop();
+
+      if (_answerRequest != null) {
+        final ChatItem answer = await _repository.sendAnswer(_answerRequest!);
+        logger.i('send text response:$answer');
+        _answerRequest = null;
+
+        final List<ChatItem> messages = List.of(state.activeMessages);
+        messages.removeLast();
+        messages.add(answer.copyWith(
+          isAnswer: true,
+          type: questionFromDBtype,
+          ritualIdentifier: state.questionFromDB?.ritualIdentifier,
+        ));
+
+        _answerTimer?.cancel();
+        _recordAudioDuration = null;
+        clearSuccessMessage();
+        _mainCubit.updateSessions();
+        _deleteRecordedAudioFile(state.recordedAudio);
+
+        emit(
+          state.copyWith(
+              recordedAudio: null,
+              activeMessages: messages,
+              questionStatus: ChatItemStatusType.answered),
+        );
+      }
+    } on DioError catch (e) {
+      logger.d(e);
+      if (await _isConnectionProblem(e.type)) {
+        _mainCubit.updateErrorMessage(
+            UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
+      }
+
+      _handleIfEntityTooLargeError(e.response?.statusCode);
+    }
+  }
+
+  Future<bool> _isConnectionProblem(DioErrorType errorType) async {
+    return !await _connectivityService.checkConnection() ||
+        errorType == DioErrorType.connectTimeout ||
+        errorType == DioErrorType.sendTimeout ||
+        errorType == DioErrorType.receiveTimeout;
+  }
+
+  _handleIfEntityTooLargeError(int? statusCode) {
+    if (statusCode == 413) {
+      _mainCubit.updateErrorMessage(UIError(
+          uiErrorType: UIErrorType.theMaximumSizeOfTheAttachmentsIsXMb,
+          args: [_maxAttachmentSizeInMb.toInt()]));
+    }
+  }
+
   Future<ChatItem> _getNotSentAnswer() async {
     String? picturePath1 = _getAttachedPicturePath(0);
     String? picturePath2 = _getAttachedPicturePath(1);
@@ -866,7 +935,7 @@ class ChatCubit extends Cubit<ChatState> {
     final ChatItem answer = ChatItem(
       isAnswer: true,
       isSent: false,
-      type: state.questionFromDB?.type,
+      type: questionFromDBtype,
       ritualIdentifier: state.questionFromDB?.ritualIdentifier,
       content: _answerRequest!.content,
       attachments: [
@@ -890,56 +959,6 @@ class ChatCubit extends Cubit<ChatState> {
     return answer;
   }
 
-  Future<void> sendAnswerAgain() async {
-    int? statusCode;
-    try {
-      await audioPlayer.stop();
-
-      if (_answerRequest != null) {
-        final ChatItem answer = await _repository.sendAnswer(_answerRequest!);
-        logger.i('send text response:$answer');
-        _answerRequest = null;
-
-        final List<ChatItem> messages = List.of(state.activeMessages);
-        messages.removeLast();
-        messages.add(answer.copyWith(
-          isAnswer: true,
-          type: state.questionFromDB?.type,
-          ritualIdentifier: state.questionFromDB?.ritualIdentifier,
-        ));
-
-        _answerTimer?.cancel();
-        _recordAudioDuration = null;
-        clearSuccessMessage();
-        _mainCubit.updateSessions();
-        _deleteRecordedAudioFile(state.recordedAudio);
-
-        emit(
-          state.copyWith(
-              recordedAudio: null,
-              activeMessages: messages,
-              questionStatus: ChatItemStatusType.answered),
-        );
-      }
-    } on DioError catch (e) {
-      logger.e(e);
-      if (!await _connectivityService.checkConnection() ||
-          e.type == DioErrorType.connectTimeout ||
-          e.type == DioErrorType.sendTimeout ||
-          e.type == DioErrorType.receiveTimeout) {
-        _mainCubit.updateErrorMessage(
-            UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
-      }
-
-      statusCode = e.response?.statusCode;
-      if (statusCode == 413) {
-        _mainCubit.updateErrorMessage(UIError(
-            uiErrorType: UIErrorType.theMaximumSizeOfTheAttachmentsIsXMb,
-            args: [maxAttachmentSizeInMb.toInt()]));
-      }
-    }
-  }
-
   Future<void> cancelSending() async {
     await audioPlayer.stop();
     await _deleteRecordedAudioFile(state.recordedAudio);
@@ -954,7 +973,7 @@ class ChatCubit extends Cubit<ChatState> {
       state.copyWith(
         recordedAudio: null,
         activeMessages: messages,
-        questionStatus: state.questionFromDB?.type == ChatItemType.public
+        questionStatus: questionFromDBtype == ChatItemType.public
             ? ChatItemStatusType.taken
             : ChatItemStatusType.open,
       ),
@@ -993,7 +1012,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   bool _checkAttachmentSizeIsOk(List<File> images, File? recordedAudio) {
     if (_calculateAttachmentSizeInBytes(images, recordedAudio) <=
-        maxAttachmentSizeInBytes) {
+        _maxAttachmentSizeInBytes) {
       if (_mainCubit.state.appError is UIError &&
           (_mainCubit.state.appError as UIError).uiErrorType ==
               UIErrorType.theMaximumSizeOfTheAttachmentsIsXMb) {
@@ -1005,7 +1024,7 @@ class ChatCubit extends Cubit<ChatState> {
       SchedulerBinding.instance.endOfFrame.then((_) =>
           _mainCubit.updateErrorMessage(UIError(
               uiErrorType: UIErrorType.theMaximumSizeOfTheAttachmentsIsXMb,
-              args: [maxAttachmentSizeInMb.toInt()])));
+              args: [_maxAttachmentSizeInMb.toInt()])));
       return false;
     }
   }
@@ -1015,7 +1034,7 @@ class ChatCubit extends Cubit<ChatState> {
       return true;
     } else {
       return _recordAudioDuration != null &&
-          _recordAudioDuration! <= maxRecordDurationInSec;
+          _recordAudioDuration! <= _maxRecordDurationInSec;
     }
   }
 
@@ -1037,7 +1056,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   bool _checkTextLengthIsOk() {
     final textLength = textInputEditingController.text.length;
-    return textLength >= minTextLength && textLength <= maxTextLength;
+    return textLength >= _minTextLength && textLength <= _maxTextLength;
   }
 
   bool checkMinRecordDurationIsOk() {
@@ -1045,7 +1064,7 @@ class ChatCubit extends Cubit<ChatState> {
       return true;
     } else {
       return _recordAudioDuration != null &&
-          _recordAudioDuration! >= minRecordDurationInSec;
+          _recordAudioDuration! >= _minRecordDurationInSec;
     }
   }
 
@@ -1074,33 +1093,11 @@ class ChatCubit extends Cubit<ChatState> {
     return state.recordedAudio != null && checkMinRecordDurationIsOk();
   }
 
-  int get minRecordDurationInSec =>
-      answerLimitationContent?.audioTime?.min ??
-      AppConstants.minRecordDurationInSec;
+  int get minRecordDurationInSec => _minRecordDurationInSec;
 
-  int get maxRecordDurationInSec =>
-      answerLimitationContent?.audioTime?.max ??
-      AppConstants.maxRecordDurationInSec;
+  int get maxRecordDurationInMinutes => _maxRecordDurationInMinutes;
 
-  int get maxRecordDurationInMinutes => maxRecordDurationInSec ~/ 60;
-
-  int get minTextLength =>
-      answerLimitationContent?.min ??
-      (questionFromDBtype == ChatItemType.ritual
-          ? AppConstants.minTextLengthRitual
-          : AppConstants.minTextLength);
-
-  int get maxTextLength =>
-      answerLimitationContent?.max ??
-      (questionFromDBtype == ChatItemType.ritual
-          ? AppConstants.maxTextLengthRitual
-          : AppConstants.maxTextLength);
-
-  int get maxAttachmentSizeInBytes =>
-      answerLimitationContent?.bodySize?.max ??
-      AppConstants.maxAttachmentSizeInBytes;
-
-  double get maxAttachmentSizeInMb => maxAttachmentSizeInBytes / (1024 * 1024);
+  int get minTextLength => _minTextLength;
 
   int? get recordAudioDuration => _recordAudioDuration;
 
