@@ -39,11 +39,13 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final ConnectivityService _connectivityService =
       getIt.get<ConnectivityService>();
 
-  late final UserProfile? userProfile;
-  late final List<MarketsType> activeLanguages;
-  late final List<GlobalKey> activeLanguagesGlobalKeys;
-  late final Map<String, dynamic> _oldPropertiesMap;
-  late final VoidCallback disposeCoverPicturesListen;
+  UserProfile? userProfile;
+  late List<MarketsType> activeLanguages;
+  late List<GlobalKey> activeLanguagesGlobalKeys;
+  late Map<String, dynamic> _oldPropertiesMap;
+  late VoidCallback disposeCoverPicturesListen;
+
+  late bool needRefresh;
 
   final ScrollController languagesScrollController = ScrollController();
   final PageController picturesPageController = PageController();
@@ -56,31 +58,18 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   int? initialLanguageIndexIfHasError;
 
   EditProfileCubit() : super(EditProfileState()) {
+    EditProfileScreenArguments arguments =
+        Get.arguments as EditProfileScreenArguments;
+    needRefresh = arguments.isAccountTimeout;
+
     userProfile = _cacheManager.getUserProfile();
-    activeLanguages = userProfile?.activeLanguages ?? [];
-    activeLanguagesGlobalKeys =
-        activeLanguages.map((e) => GlobalKey()).toList();
-    nicknameController.text = userProfile?.profileName ?? '';
-
-    _oldPropertiesMap = userProfile?.localizedProperties?.toJson() ?? {};
-
-    createTextControllersNodesAndErrorsMap();
-
-    _checkNickName();
-
-    _checkEmptyFields();
-
-    emit(
-      state.copyWith(
-        coverPictures: userProfile?.coverPictures ?? [],
-        chosenLanguageIndex: initialLanguageIndexIfHasError ?? 0,
-      ),
-    );
-
-    _addListenersToTextControllers();
-    _addListenersToFocusNodes();
+    setUpScreenForUserProfile();
 
     disposeCoverPicturesListen = _cacheManager.listenUserProfile((value) {
+      if (userProfile == null) {
+        userProfile = value;
+        setUpScreenForUserProfile();
+      }
       emit(state.copyWith(coverPictures: value.coverPictures ?? []));
     });
   }
@@ -107,6 +96,39 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     picturesPageController.dispose();
     disposeCoverPicturesListen.call();
     return super.close();
+  }
+
+  Future<void> refreshUserProfile() async {
+    mainCubit.updateAccount();
+  }
+
+  void setUpScreenForUserProfile() {
+    activeLanguages = userProfile?.activeLanguages ?? [];
+    activeLanguagesGlobalKeys =
+        activeLanguages.map((e) => GlobalKey()).toList();
+    nicknameController.text = userProfile?.profileName ?? '';
+
+    _oldPropertiesMap = userProfile?.localizedProperties?.toJson() ?? {};
+
+    createTextControllersNodesAndErrorsMap();
+
+    _checkNickName();
+
+    _checkEmptyFields();
+
+    emit(
+      state.copyWith(
+        coverPictures: userProfile?.coverPictures ?? [],
+        chosenLanguageIndex: initialLanguageIndexIfHasError ?? 0,
+      ),
+    );
+
+    if (userProfile != null) {
+      emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
+    }
+
+    _addListenersToTextControllers();
+    _addListenersToFocusNodes();
   }
 
   void createTextControllersNodesAndErrorsMap() {

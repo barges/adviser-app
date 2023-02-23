@@ -37,21 +37,13 @@ import 'package:shared_advisor_interface/presentation/services/connectivity_serv
 import 'package:shared_advisor_interface/presentation/services/dynamic_link_service.dart';
 import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
 
+import '../../common_methods.dart';
 import '../../common_variables.dart';
 import '../mocked_classes/mocked_classes.mocks.dart';
 
-// ignore: depend_on_referenced_packages
-import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
 import 'package:flutter/services.dart';
 
 typedef Callback = void Function(MethodCall call);
-
-void setupFirebaseMocks([Callback? customHandlers]) {
-  TestWidgetsFlutterBinding.ensureInitialized();
-  Get.testMode = true;
-
-  setupFirebaseCoreMocks();
-}
 
 Future<void> pumpLoginScreen({
   required WidgetTester tester,
@@ -435,7 +427,7 @@ void main() {
 
     testWidgets(
       'appears with "Check internet connection" message'
-      'if Dio throws connect timeout',
+      ' if Dio throws connect timeout',
       (WidgetTester tester) async {
         dioAdapter.onPost(
           '/experts/login/app',
@@ -473,7 +465,7 @@ void main() {
 
     testWidgets(
       'appears with "Check internet connection" message'
-      'if Dio throws receive timeout',
+      ' if Dio throws receive timeout',
       (WidgetTester tester) async {
         dioAdapter.onPost(
           '/experts/login/app',
@@ -511,7 +503,7 @@ void main() {
 
     testWidgets(
       'appears with "Check internet connection" message'
-      'if Dio throws send timeout',
+      ' if Dio throws send timeout',
       (WidgetTester tester) async {
         dioAdapter.onPost(
           '/experts/login/app',
@@ -540,6 +532,41 @@ void main() {
         expect(
           find.widgetWithText(
               AppErrorWidget, S.current.checkYourInternetConnection),
+          findsOneWidget,
+        );
+
+        await tester.pumpAndSettle(const Duration(seconds: 11));
+      },
+    );
+
+    testWidgets(
+      'appears with "Check internet connection" message'
+      ' if Dio throws send timeout',
+      (WidgetTester tester) async {
+        dioAdapter.onPost(
+          '/experts/login/app',
+          (server) => server.reply(400, {}),
+        );
+
+        await pumpLoginScreen(
+          tester: tester,
+        );
+
+        await tester.enterText(
+            find.byType(AppTextField), 'someEmail@gmail.com');
+        await tester.pumpAndSettle();
+
+        await tester.enterText(find.byType(PasswordTextField), '123456');
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byType(AppElevatedButton));
+        await tester.pumpAndSettle();
+
+        expect(
+          find.widgetWithText(
+              AppErrorWidget,
+              S.current
+                  .yourAccountHasBeenBlockedPleaseContactYourAdvisorManager),
           findsOneWidget,
         );
 

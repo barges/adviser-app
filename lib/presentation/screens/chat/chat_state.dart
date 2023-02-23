@@ -29,6 +29,8 @@ class ChatState with _$ChatState {
         AppSuccess appSuccess,
     @Default(false)
         bool isAudioAnswerEnabled,
+    @Default(false)
+        bool refreshEnabled,
     RitualCardInfo? ritualCardInfo,
     File? recordedAudio,
     ChatItem? questionFromDB,

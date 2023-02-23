@@ -8,6 +8,7 @@ import 'package:shared_advisor_interface/data/network/responses/update_note_resp
 import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 
 import 'add_note_state.dart';
@@ -18,8 +19,9 @@ class AddNoteCubit extends Cubit<AddNoteState> {
   final CustomerRepository _repository = getIt.get<CustomerRepository>();
   late final TextEditingController noteController;
   late final TextEditingController titleController;
+  final MainCubit _mainCubit;
 
-  AddNoteCubit() : super(AddNoteState()) {
+  AddNoteCubit(this._mainCubit) : super(AddNoteState()) {
     arguments = Get.arguments as AddNoteScreenArguments;
     noteController = TextEditingController(text: arguments.oldNote ?? '');
     titleController = TextEditingController(text: oldTitle ?? '');
@@ -62,5 +64,9 @@ class AddNoteCubit extends Cubit<AddNoteState> {
 
   void addTitle() {
     emit(state.copyWith(hadTitle: true));
+  }
+
+  void closeErrorWidget() {
+    _mainCubit.clearErrorMessage();
   }
 }

@@ -9,6 +9,7 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/widgets/empty_history_list_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/widgets/history_list_started_from_begin_widget.dart';
@@ -28,22 +29,35 @@ class HistoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ChatCubit chatCubit = context.read<ChatCubit>();
     return BlocProvider(
       create: (_) => HistoryCubit(
         getIt.get<ChatsRepository>(),
         getIt.get<ConnectivityService>(),
-            () => showErrorAlert(context),
+        () => showErrorAlert(context),
         clientId,
         storyId,
+        chatCubit,
       ),
       child: Builder(builder: (context) {
+        final HistoryCubit historyCubit = context.read<HistoryCubit>();
         if (storyId != null) {
           final List<HistoryUiModel>? bottomHistoriesList = context
               .select((HistoryCubit cubit) => cubit.state.bottomHistoriesList);
 
           if (bottomHistoriesList == null) {
-            return Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
+            return RefreshIndicator(
+              onRefresh: chatCubit.refreshChatInfo,
+              child: ListView(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                children: [
+                  Container(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    height: MediaQuery.of(context).size.height,
+                  )
+                ],
+              ),
             );
           }
           if (bottomHistoriesList.isEmpty) {
@@ -58,8 +72,18 @@ class HistoryWidget extends StatelessWidget {
               .select((HistoryCubit cubit) => cubit.state.bottomHistoriesList);
 
           if (bottomHistoriesList == null) {
-            return Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
+            return RefreshIndicator(
+              onRefresh: chatCubit.refreshChatInfo,
+              child: ListView(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                children: [
+                  Container(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    height: MediaQuery.of(context).size.height,
+                  )
+                ],
+              ),
             );
           }
           if (bottomHistoriesList.isEmpty) {
@@ -85,7 +109,7 @@ class HistoryWidget extends StatelessWidget {
             arguments: HomeScreenArguments(
               initTab: TabsTypes.sessions,
             ),
-                (route) => false);
+            (route) => false);
       },
       allowBarrierClick: false,
       isCancelEnabled: false,
