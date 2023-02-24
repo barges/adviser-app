@@ -185,6 +185,7 @@ class ChatContentWidget extends StatelessWidget {
                                   customerId: questionFromDB!.clientID!,
                                   updateClientInformationCallback:
                                       chatCubit.updateAppBarInformation,
+                                  chatCubit: chatCubit,
                                 )
                               : const SizedBox.shrink(),
                         ]);

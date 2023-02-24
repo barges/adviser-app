@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -21,6 +22,7 @@ class EditProfileScreen extends StatelessWidget {
       child: Builder(builder: (context) {
         final EditProfileCubit editProfileCubit =
             context.read<EditProfileCubit>();
+        logger.d(editProfileCubit.needRefresh);
         return BlocListener<EditProfileCubit, EditProfileState>(
           listener: (prev, current) {
             if (current.chosenLanguageIndex == 0) {
@@ -49,68 +51,78 @@ class EditProfileScreen extends StatelessWidget {
                   onTap: () {
                     FocusScope.of(context).unfocus();
                   },
-                  child: CustomScrollView(
-                    physics: const ClampingScrollPhysics(),
-                    slivers: [
-                      ScrollableAppBar(
-                        title: S.of(context).editProfile,
-                        needShowError: true,
-                        actionOnClick: editProfileCubit.updateUserInfo,
-                        openDrawer: editProfileCubit.openDrawer,
-                      ),
-                      SliverToBoxAdapter(
-                        child: GestureDetector(
-                          onTap: () {
-                            FocusScope.of(context).unfocus();
-                          },
-                          child: Column(
-                            children: [
-                              const ProfileImagesWidget(),
-                              const SizedBox(
-                                height: 16.0,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: AppConstants
-                                            .horizontalScreenPadding),
-                                    child: Builder(builder: (context) {
-                                      final ValidationErrorType
-                                          nicknameErrorType = context.select(
-                                              (EditProfileCubit cubit) => cubit
-                                                  .state.nicknameErrorType);
-                                      context.select((EditProfileCubit cubit) =>
-                                          cubit.state.nicknameHasFocus);
-                                      return AppTextField(
-                                        key: editProfileCubit.nicknameFieldKey,
-                                        controller:
-                                            editProfileCubit.nicknameController,
-                                        focusNode:
-                                            editProfileCubit.nicknameFocusNode,
-                                        label: S.of(context).nickname,
-                                        errorType: nicknameErrorType,
-                                        isEnabled: editProfileCubit
-                                                .nicknameController
-                                                .text
-                                                .length <
-                                            3,
-                                        detailsText: S
-                                            .of(context)
-                                            .nameCanBeChangedOnlyOnAdvisorTool,
-                                      );
-                                    }),
-                                  ),
-                                  const LanguageSectionWidget(),
-                                  const SizedBox(height: 46.0),
-                                ],
-                              ),
-                            ],
+                  child: RefreshIndicator(
+                    onRefresh: editProfileCubit.refreshUserProfile,
+                    notificationPredicate: (_) => editProfileCubit.needRefresh,
+                    edgeOffset: (AppConstants.appBarHeight * 2) +
+                        MediaQuery.of(context).padding.top,
+                    child: CustomScrollView(
+                      physics: const AlwaysScrollableScrollPhysics()
+                          .applyTo(const ClampingScrollPhysics()),
+                      slivers: [
+                        ScrollableAppBar(
+                          title: S.of(context).editProfile,
+                          needShowError: true,
+                          actionOnClick: editProfileCubit.updateUserInfo,
+                          openDrawer: editProfileCubit.openDrawer,
+                        ),
+                        SliverToBoxAdapter(
+                          child: GestureDetector(
+                            onTap: () {
+                              FocusScope.of(context).unfocus();
+                            },
+                            child: Column(
+                              children: [
+                                const ProfileImagesWidget(),
+                                const SizedBox(
+                                  height: 16.0,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: AppConstants
+                                              .horizontalScreenPadding),
+                                      child: Builder(builder: (context) {
+                                        final ValidationErrorType
+                                            nicknameErrorType = context.select(
+                                                (EditProfileCubit cubit) =>
+                                                    cubit.state
+                                                        .nicknameErrorType);
+                                        context.select(
+                                            (EditProfileCubit cubit) =>
+                                                cubit.state.nicknameHasFocus);
+                                        return AppTextField(
+                                          key:
+                                              editProfileCubit.nicknameFieldKey,
+                                          controller: editProfileCubit
+                                              .nicknameController,
+                                          focusNode: editProfileCubit
+                                              .nicknameFocusNode,
+                                          label: S.of(context).nickname,
+                                          errorType: nicknameErrorType,
+                                          isEnabled: editProfileCubit
+                                                  .nicknameController
+                                                  .text
+                                                  .length <
+                                              3,
+                                          detailsText: S
+                                              .of(context)
+                                              .nameCanBeChangedOnlyOnAdvisorTool,
+                                        );
+                                      }),
+                                    ),
+                                    const LanguageSectionWidget(),
+                                    const SizedBox(height: 46.0),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

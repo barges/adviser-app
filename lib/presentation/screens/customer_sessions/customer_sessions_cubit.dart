@@ -69,10 +69,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
       ),
     );
 
-    if (argumentsQuestion.clientID != null) {
-      getCustomerInfo();
-      getPrivateQuestions();
-    }
+    getData();
 
     questionsScrollController.addListener(() {
       if (questionsScrollController.position.extentAfter <= _screenHeight &&
@@ -95,6 +92,17 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
     questionsScrollController.dispose();
     _updateSessionsSubscription.cancel();
     return super.close();
+  }
+
+  Future<void> getData() async {
+    if (argumentsQuestion.clientID != null) {
+      getCustomerInfo();
+      getPrivateQuestions();
+    }
+  }
+
+  void closeErrorWidget() {
+    _mainCubit.clearErrorMessage();
   }
 
   void getUserMarkets() {

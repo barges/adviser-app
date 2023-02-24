@@ -11,6 +11,7 @@ import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:get/get.dart';
 import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/ui_error_type.dart';
 import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
@@ -54,6 +55,8 @@ class ChatCubit extends Cubit<ChatState> {
   final TextEditingController textInputEditingController =
       TextEditingController();
 
+  final PublishSubject<bool> refreshChatInfoTrigger = PublishSubject();
+
   GlobalKey? questionGlobalKey;
 
   final ConnectivityService _connectivityService;
@@ -85,6 +88,7 @@ class ChatCubit extends Cubit<ChatState> {
   StreamSubscription<RecorderDisposition>? _recordingProgressSubscription;
   late final StreamSubscription<bool> _appOnPauseSubscription;
   late final StreamSubscription<bool> _stopAudioSubscription;
+  late final StreamSubscription<bool> _refreshChatInfoSubscription;
 
   Timer? _answerTimer;
   bool _counterMessageCleared = false;
@@ -125,14 +129,7 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       );
     }
-    if (needActiveChatTab()) {
-      _getData().whenComplete(() {
-        _setAnswerLimitations();
-        if (isPublicChat()) {
-          _checkTiming();
-        }
-      });
-    }
+    getData();
 
     _appOnPauseSubscription = _mainCubit.changeAppLifecycleStream.listen(
       (value) async {
@@ -169,6 +166,10 @@ class ChatCubit extends Cubit<ChatState> {
       }
       audioPlayer.pause();
     });
+
+    _refreshChatInfoSubscription = refreshChatInfoTrigger.listen((value) {
+      getData();
+    });
   }
 
   @override
@@ -194,7 +195,19 @@ class ChatCubit extends Cubit<ChatState> {
 
     _answerTimer?.cancel();
 
+    _refreshChatInfoSubscription.cancel();
+
     return super.close();
+  }
+
+  Future<void> getData() async {
+    if (needActiveChatTab()) {
+      await _getData();
+      _setAnswerLimitations();
+      if (isPublicChat()) {
+        _checkTiming();
+      }
+    }
   }
 
   Future<void> _getData() async {
@@ -209,6 +222,10 @@ class ChatCubit extends Cubit<ChatState> {
     } else {
       await _getPublicOrPrivateQuestion();
     }
+  }
+
+  Future<void> refreshChatInfo() async {
+    refreshChatInfoTrigger.add(true);
   }
 
   void _setAnswerLimitations() {
@@ -247,9 +264,13 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> _getAnswerLimitations() async {
-    final AnswerValidationResponse response =
-        await _repository.getAnswerValidation();
-    _answerLimitations = response.answerLimitations ?? [];
+    try {
+      final AnswerValidationResponse response =
+          await _repository.getAnswerValidation();
+      _answerLimitations = response.answerLimitations ?? [];
+    } catch (e) {
+      emit(state.copyWith(refreshEnabled: true));
+    }
   }
 
   void textInputEditingControllerListener() {
@@ -293,10 +314,13 @@ class ChatCubit extends Cubit<ChatState> {
           ),
         );
       }
+      emit(state.copyWith(refreshEnabled: false));
+      _refreshChatInfoSubscription.cancel();
     } on DioError catch (e) {
       if (_checkStatusCode(e)) {
         _showErrorAlert();
       }
+      emit(state.copyWith(refreshEnabled: true));
       logger.d(e);
     }
   }
@@ -345,10 +369,13 @@ class ChatCubit extends Cubit<ChatState> {
 
         scrollChatDown();
       }
+      emit(state.copyWith(refreshEnabled: false));
+      _refreshChatInfoSubscription.cancel();
     } on DioError catch (e) {
       if (_checkStatusCode(e)) {
         _showErrorAlert();
       }
+      emit(state.copyWith(refreshEnabled: true));
       logger.d(e);
       rethrow;
     }
@@ -1050,7 +1077,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   void _scrollTextFieldToEnd() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if(textInputScrollController.hasClients) {
+      if (textInputScrollController.hasClients) {
         textInputScrollController
             .jumpTo(textInputScrollController.position.maxScrollExtent);
       }
