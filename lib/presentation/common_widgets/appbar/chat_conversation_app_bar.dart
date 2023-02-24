@@ -53,8 +53,9 @@ class ChatConversationAppBar extends StatelessWidget
                   questionStatus == ChatItemStatusType.taken)
                 Padding(
                   padding: const EdgeInsets.only(right: 2.0),
-                  child: _ReturnInQueue(
+                  child: AppIconButton(
                     onTap: returnInQueueButtonOnTap,
+                    icon: Assets.vectors.arrowReturn.path,
                   ),
                 ),
               if (questionStatus != ChatItemStatusType.taken)
@@ -121,25 +122,6 @@ class ChatConversationAppBar extends StatelessWidget
         );
       }),
       backgroundColor: Theme.of(context).canvasColor,
-    );
-  }
-}
-
-class _ReturnInQueue extends StatelessWidget {
-  final VoidCallback? onTap;
-
-  const _ReturnInQueue({
-    Key? key,
-    this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AppIconButton(
-        icon: Assets.vectors.arrowReturn.path,
-      ),
     );
   }
 }
