@@ -67,45 +67,45 @@ class ChatConversationAppBar extends StatelessWidget
                     .select((MainCubit cubit) => cubit.state.currentBrand);
                 return Expanded(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      IntrinsicWidth(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            IntrinsicWidth(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const SizedBox(width: 12.0),
-                                  SvgPicture.asset(
-                                    selectedBrand.icon,
-                                    height: 17.0,
-                                  ),
-                                  const SizedBox(width: 12.0),
-                                  Expanded(
-                                    child: Text(
-                                      title ?? S.of(context).notSpecified,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                        fontSize: 16.0,
-                                        color: Theme.of(context).hoverColor,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            const SizedBox(width: 12.0),
+                            SvgPicture.asset(
+                              selectedBrand.icon,
+                              height: 17.0,
                             ),
-                            Text(
-                              selectedBrand.name,
-                              style: TextStyle(
-                                fontSize: 12.0,
-                                fontWeight: FontWeight.w200,
-                                color: Theme.of(context).shadowColor,
+                            const SizedBox(width: 12.0),
+                            Expanded(
+                              child: Text(
+                                title ?? S.of(context).notSpecified,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: Theme.of(context).hoverColor,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
                           ],
                         ),
+                      ),
+                      Text(
+                        selectedBrand.name,
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w200,
+                          color: Theme.of(context).shadowColor,
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               }),
               // if (publicQuestionId != null &&
@@ -137,22 +137,8 @@ class _ReturnInQueue extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Row(
-        children: [
-          AppIconButton(
-            icon: Assets.vectors.close.path,
-          ),
-          const SizedBox(
-            width: 8.0,
-          ),
-          Text(
-            S.of(context).returnToQueue.toUpperCase(),
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 12.0,
-                ),
-          ),
-        ],
+      child: AppIconButton(
+        icon: Assets.vectors.arrowReturn.path,
       ),
     );
   }
