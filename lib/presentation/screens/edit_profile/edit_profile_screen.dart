@@ -39,78 +39,83 @@ class EditProfileScreen extends StatelessWidget {
             }
           },
           child: GestureDetector(
-              onTap: FocusScope.of(context).unfocus,
-              child: Scaffold(
-                key: editProfileCubit.scaffoldKey,
-                drawer: const AppDrawer(),
-                body: SafeArea(
-                  top: false,
-                  child: GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).unfocus();
-                    },
-                    child: CustomScrollView(
-                      physics: const ClampingScrollPhysics(),
-                      slivers: [
-                        ScrollableAppBar(
-                          title: S.of(context).editProfile,
-                          needShowError: true,
-                          actionOnClick: editProfileCubit.updateUserInfo,
-                          openDrawer: editProfileCubit.openDrawer,
-                        ),
-                        SliverToBoxAdapter(
-                          child: GestureDetector(
-                            onTap: () {
-                              FocusScope.of(context).unfocus();
-                            },
-                            child: Column(
-                              children: [
-                                const ProfileImagesWidget(),
-                                const SizedBox(
-                                  height: 16.0,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: AppConstants
-                                              .horizontalScreenPadding),
-                                      child: Builder(builder: (context) {
-                                        final ValidationErrorType
-                                            nicknameErrorType = context.select(
-                                                (EditProfileCubit cubit) =>
-                                                    cubit.state
-                                                        .nicknameErrorType);
-                                        context.select(
-                                            (EditProfileCubit cubit) =>
-                                                cubit.state.nicknameHasFocus);
-                                        return AppTextField(
-                                          key:
-                                              editProfileCubit.nicknameFieldKey,
-                                          controller: editProfileCubit
-                                              .nicknameController,
-                                          focusNode: editProfileCubit
-                                              .nicknameFocusNode,
-                                          label: S.of(context).nickname,
-                                          errorType: nicknameErrorType,
-                                        );
-                                      }),
-                                    ),
-                                    const LanguageSectionWidget(),
-                                    const SizedBox(height: 46.0),
-                                  ],
-                                ),
-                              ],
-                            ),
+            onTap: FocusScope.of(context).unfocus,
+            child: Scaffold(
+              key: editProfileCubit.scaffoldKey,
+              drawer: const AppDrawer(),
+              body: SafeArea(
+                top: false,
+                child: GestureDetector(
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                  },
+                  child: CustomScrollView(
+                    physics: const ClampingScrollPhysics(),
+                    slivers: [
+                      ScrollableAppBar(
+                        title: S.of(context).editProfile,
+                        needShowError: true,
+                        actionOnClick: editProfileCubit.updateUserInfo,
+                        openDrawer: editProfileCubit.openDrawer,
+                      ),
+                      SliverToBoxAdapter(
+                        child: GestureDetector(
+                          onTap: () {
+                            FocusScope.of(context).unfocus();
+                          },
+                          child: Column(
+                            children: [
+                              const ProfileImagesWidget(),
+                              const SizedBox(
+                                height: 16.0,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: AppConstants
+                                            .horizontalScreenPadding),
+                                    child: Builder(builder: (context) {
+                                      final ValidationErrorType
+                                          nicknameErrorType = context.select(
+                                              (EditProfileCubit cubit) => cubit
+                                                  .state.nicknameErrorType);
+                                      context.select((EditProfileCubit cubit) =>
+                                          cubit.state.nicknameHasFocus);
+                                      return AppTextField(
+                                        key: editProfileCubit.nicknameFieldKey,
+                                        controller:
+                                            editProfileCubit.nicknameController,
+                                        focusNode:
+                                            editProfileCubit.nicknameFocusNode,
+                                        label: S.of(context).nickname,
+                                        errorType: nicknameErrorType,
+                                        isEnabled: editProfileCubit
+                                                .nicknameController
+                                                .text
+                                                .length <
+                                            3,
+                                        detailsText: S
+                                            .of(context)
+                                            .nameCanBeChangedOnlyOnAdvisorTool,
+                                      );
+                                    }),
+                                  ),
+                                  const LanguageSectionWidget(),
+                                  const SizedBox(height: 46.0),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
+          ),
         );
       }),
     );

@@ -164,6 +164,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "messageIsNotSent": MessageLookupByLibrary.simpleMessage(
             "Nachricht wird nicht gesendet"),
         "myGallery": MessageLookupByLibrary.simpleMessage("Meine Galerie"),
+        "nameCanBeChangedOnlyOnAdvisorTool":
+            MessageLookupByLibrary.simpleMessage(
+                "Der Name kann nur im Advisor-Tool geändert werden"),
         "newLabel": MessageLookupByLibrary.simpleMessage("Neu"),
         "newMandatoryArticleIsAvailable": MessageLookupByLibrary.simpleMessage(
             "Neuer obligatorischer Artikel ist verfügbar!"),

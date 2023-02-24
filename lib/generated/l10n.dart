@@ -260,6 +260,16 @@ class S {
     );
   }
 
+  /// `Name can be changed only on advisor tool`
+  String get nameCanBeChangedOnlyOnAdvisorTool {
+    return Intl.message(
+      'Name can be changed only on advisor tool',
+      name: 'nameCanBeChangedOnlyOnAdvisorTool',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Status Text`
   String get statusText {
     return Intl.message(
