@@ -260,6 +260,16 @@ class S {
     );
   }
 
+  /// `Name can be changed only on advisor tool`
+  String get nameCanBeChangedOnlyOnAdvisorTool {
+    return Intl.message(
+      'Name can be changed only on advisor tool',
+      name: 'nameCanBeChangedOnlyOnAdvisorTool',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Status Text`
   String get statusText {
     return Intl.message(
@@ -320,10 +330,10 @@ class S {
     );
   }
 
-  /// `All our brands`
+  /// `All brands`
   String get allOurBrands {
     return Intl.message(
-      'All our brands',
+      'All brands',
       name: 'allOurBrands',
       desc: '',
       args: [],
@@ -1819,10 +1829,10 @@ class S {
     );
   }
 
-  /// `RETURN\n TO QUEUE`
+  /// `RETURN\nTO QUEUE`
   String get returnToQueue {
     return Intl.message(
-      'RETURN\n TO QUEUE',
+      'RETURN\nTO QUEUE',
       name: 'returnToQueue',
       desc: '',
       args: [],

@@ -58,8 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addNote": MessageLookupByLibrary.simpleMessage("Notiz hinzufügen"),
         "all": MessageLookupByLibrary.simpleMessage("Alle"),
         "allMarkets": MessageLookupByLibrary.simpleMessage("Alle Märkte"),
-        "allOurBrands":
-            MessageLookupByLibrary.simpleMessage("Alle unsere Marken"),
+        "allOurBrands": MessageLookupByLibrary.simpleMessage("Alle Marken"),
         "areYouSureThatYouWantToChangeYourStatus":
             MessageLookupByLibrary.simpleMessage(
                 "Bist du sicher, dass du deinen Status auf Offline ändern möchtest?"),
@@ -165,6 +164,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "messageIsNotSent": MessageLookupByLibrary.simpleMessage(
             "Nachricht wird nicht gesendet"),
         "myGallery": MessageLookupByLibrary.simpleMessage("Meine Galerie"),
+        "nameCanBeChangedOnlyOnAdvisorTool":
+            MessageLookupByLibrary.simpleMessage(
+                "Der Name kann nur im Advisor-Tool geändert werden"),
         "newLabel": MessageLookupByLibrary.simpleMessage("Neu"),
         "newMandatoryArticleIsAvailable": MessageLookupByLibrary.simpleMessage(
             "Neuer obligatorischer Artikel ist verfügbar!"),
@@ -253,8 +255,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "resetPassword":
             MessageLookupByLibrary.simpleMessage("Passwort zurücksetzen"),
         "resources": MessageLookupByLibrary.simpleMessage("Ressourcen"),
-        "returnToQueue":
-            MessageLookupByLibrary.simpleMessage("RÜCKKEHR\n ZUR QUEUEUE"),
+        "returnToQueue": MessageLookupByLibrary.simpleMessage(
+            "Zurück in die\nWarteschlange"),
         "return_": MessageLookupByLibrary.simpleMessage("Zurück"),
         "reviews": MessageLookupByLibrary.simpleMessage("Bewertungen"),
         "ritual": MessageLookupByLibrary.simpleMessage("Blockadenlösung"),
