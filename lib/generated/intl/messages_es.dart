@@ -59,8 +59,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "all": MessageLookupByLibrary.simpleMessage("Todos"),
         "allMarkets":
             MessageLookupByLibrary.simpleMessage("Todos los Mercados"),
-        "allOurBrands":
-            MessageLookupByLibrary.simpleMessage("Todas nuestras marcas"),
+        "allOurBrands": MessageLookupByLibrary.simpleMessage("Todas marcas"),
         "areYouSureThatYouWantToChangeYourStatus":
             MessageLookupByLibrary.simpleMessage(
                 "¿Estás seguro de que quieres cambiar tu estado a Offline?"),
@@ -164,6 +163,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "messageIsNotSent":
             MessageLookupByLibrary.simpleMessage("El mensaje no fue enviado"),
         "myGallery": MessageLookupByLibrary.simpleMessage("Mi galería"),
+        "nameCanBeChangedOnlyOnAdvisorTool":
+            MessageLookupByLibrary.simpleMessage(
+                "El nombre solo se puede cambiar en la herramienta de asesor"),
         "newLabel": MessageLookupByLibrary.simpleMessage("Nuevo"),
         "newMandatoryArticleIsAvailable": MessageLookupByLibrary.simpleMessage(
             "¡Nuestro artículo obligatorio está disponible!"),
@@ -253,7 +255,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Restablecer contraseña"),
         "resources": MessageLookupByLibrary.simpleMessage("Recursos"),
         "returnToQueue":
-            MessageLookupByLibrary.simpleMessage("VOLVER\n A LA LISTA"),
+            MessageLookupByLibrary.simpleMessage("VOLVER\nA LA LISTA"),
         "return_": MessageLookupByLibrary.simpleMessage("Volver"),
         "reviews": MessageLookupByLibrary.simpleMessage("Reseñas"),
         "ritual": MessageLookupByLibrary.simpleMessage("Ritual"),
