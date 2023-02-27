@@ -19,6 +19,7 @@ import 'package:shared_advisor_interface/domain/repositories/user_repository.dar
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
@@ -284,19 +285,20 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   bool _checkNickName() {
     bool isValid = true;
-    if (nicknameController.text.length < 3) {
+    if (nicknameController.text.length < AppConstants.minNickNameLength) {
       isValid = false;
       Utils.animateToWidget(nicknameFieldKey);
       if (checkUserAvatar()) {
         nicknameFocusNode.requestFocus();
       }
-
-      emit(
-        state.copyWith(
-            nicknameErrorType: nicknameController.text.isEmpty
-                ? ValidationErrorType.requiredField
-                : ValidationErrorType.pleaseEnterAtLeast3Characters),
-      );
+      Future.delayed(const Duration(milliseconds: 500)).then((value) {
+        emit(
+          state.copyWith(
+              nicknameErrorType: nicknameController.text.isEmpty
+                  ? ValidationErrorType.requiredField
+                  : ValidationErrorType.pleaseEnterAtLeast3Characters),
+        );
+      });
     }
     return isValid;
   }

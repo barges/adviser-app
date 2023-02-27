@@ -102,11 +102,12 @@ class EditProfileScreen extends StatelessWidget {
                                               .nicknameFocusNode,
                                           label: S.of(context).nickname,
                                           errorType: nicknameErrorType,
-                                          isEnabled: editProfileCubit
-                                                  .nicknameController
-                                                  .text
-                                                  .length <
-                                              3,
+                                          isEnabled: (editProfileCubit
+                                                      .userProfile
+                                                      ?.profileName
+                                                      ?.length ??
+                                                  0) <
+                                              AppConstants.minNickNameLength,
                                           detailsText: S
                                               .of(context)
                                               .nameCanBeChangedOnlyOnAdvisorTool,

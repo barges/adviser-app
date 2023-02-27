@@ -9,6 +9,8 @@ class AppConstants {
   static const double horizontalScreenPadding = 16.0;
   static const double appBarHeight = 52.0;
 
+  static const int minNickNameLength = 3;
+
   static const int millisecondsInHour = 3600000;
   static const int questionsLimit = 20;
 
