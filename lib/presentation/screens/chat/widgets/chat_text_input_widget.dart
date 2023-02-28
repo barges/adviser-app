@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
@@ -49,6 +50,7 @@ class ChatTextInputWidget extends StatelessWidget {
                 Builder(builder: (context) {
                   context
                       .select((ChatCubit cubit) => cubit.state.keyboardOpened);
+
                   return SolidBottomSheet(
                     controller: chatCubit.textInputSolidController,
                     draggableBody: true,
@@ -56,7 +58,6 @@ class ChatTextInputWidget extends StatelessWidget {
                     maxHeight: MediaQuery.of(context).size.height -
                         MediaQueryData.fromWindow(window).viewPadding.top -
                         MediaQueryData.fromWindow(window).viewInsets.bottom -
-                        MediaQueryData.fromWindow(window).viewPadding.bottom -
                         bottomTextAreaHeight -
                         (AppConstants.appBarHeight / 2) -
                         21.0,
