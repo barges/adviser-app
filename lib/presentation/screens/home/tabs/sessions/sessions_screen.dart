@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
@@ -12,7 +11,6 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
@@ -43,10 +41,11 @@ class SessionsScreen extends StatelessWidget {
 
         final bool isOnline = context.select(
             (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
-        final UserStatus userStatus =
+        final UserStatus? userStatus =
             context.select((HomeCubit cubit) => cubit.state.userStatus);
 
-        final bool statusIsLive = userStatus.status == FortunicaUserStatus.live;
+        final bool statusIsLive =
+            (userStatus?.status == FortunicaUserStatus.live) == true;
 
         return Stack(
           fit: StackFit.expand,
@@ -105,22 +104,12 @@ class SessionsScreen extends StatelessWidget {
                 withBrands: true,
               ),
               body: Builder(builder: (context) {
-                final AppError appError =
-                    context.select((MainCubit cubit) => cubit.state.appError);
                 if (isOnline) {
                   if (statusIsLive) {
-                    return Column(
-                      children: [
-                        AppErrorWidget(
-                          errorMessage: appError.getMessage(context),
-                          close: sessionsCubit.closeErrorWidget,
-                        ),
-                        const Expanded(child: ListOfQuestions()),
-                      ],
-                    );
+                    return const ListOfQuestions();
                   } else {
                     return NotLiveStatusWidget(
-                      status: userStatus.status ?? FortunicaUserStatus.offline,
+                      status: userStatus?.status ?? FortunicaUserStatus.offline,
                     );
                   }
                 } else {

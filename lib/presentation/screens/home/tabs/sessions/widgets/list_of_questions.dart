@@ -1,12 +1,15 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
 import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_success_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
@@ -54,6 +57,14 @@ class _PublicQuestionsListWidget extends StatelessWidget {
         const Divider(
           height: 1.0,
         ),
+        Builder(builder: (context) {
+          final AppError appError =
+              context.select((MainCubit cubit) => cubit.state.appError);
+          return AppErrorWidget(
+            errorMessage: appError.getMessage(context),
+            close: sessionsCubit.closeErrorWidget,
+          );
+        }),
         Builder(builder: (context) {
           final AppSuccess appSuccess =
               context.select((SessionsCubit cubit) => cubit.state.appSuccess);

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/network/responses/reports_response.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -22,6 +23,9 @@ class DashboardV1Cubit extends Cubit<DashboardV1State> {
   DashboardV1Cubit(this.cacheManager, this._connectivityService,
       this._userRepository, this.mainCubit)
       : super(const DashboardV1State()) {
+    final UserProfile? userProfile = cacheManager.getUserProfile();
+
+    emit(state.copyWith(userProfile: userProfile));
     disposeUserProfileListen = cacheManager.listenUserProfile((value) {
       emit(state.copyWith(userProfile: value));
     });

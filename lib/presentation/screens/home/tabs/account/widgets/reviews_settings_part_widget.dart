@@ -36,13 +36,14 @@ class ReviewsSettingsPartWidget extends StatelessWidget {
             height: 1.0,
           ),
           Builder(builder: (context) {
-            final UserStatus currentStatus =
+            final UserStatus? currentStatus =
                 context.select((HomeCubit cubit) => cubit.state.userStatus);
             return TileWidget(
               onTap: accountCubit.openSettingsUrl,
               title: S.of(context).settings,
               iconSVGPath: Assets.vectors.settings.path,
-              withError: currentStatus.status == FortunicaUserStatus.legalBlock,
+              withError:
+                  currentStatus?.status == FortunicaUserStatus.legalBlock,
             );
           })
         ],

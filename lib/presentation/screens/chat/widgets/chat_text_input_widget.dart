@@ -1,10 +1,13 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -12,6 +15,7 @@ import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.da
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/attached_pictures.dart';
 import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
+import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
 const _maxTextNumLines = 5;
 
@@ -28,141 +32,231 @@ class ChatTextInputWidget extends StatelessWidget {
     final ChatCubit chatCubit = context.read<ChatCubit>();
     final bool isAudioQuestion =
         context.select((ChatCubit cubit) => cubit.state.isAudioAnswerEnabled);
+    final bool textInputFocused =
+        context.select((ChatCubit cubit) => cubit.state.textInputFocused);
+    final double textInputHeight =
+        context.select((ChatCubit cubit) => cubit.state.textInputHeight);
 
+    final double bottomTextAreaHeight =
+        context.select((ChatCubit cubit) => cubit.state.bottomTextAreaHeight);
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Divider(
-              height: 1.0,
-            ),
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-              color: theme.canvasColor,
-              child: Column(
-                children: [
-                  if (attachedPictures.isNotEmpty) const _InputTextField(),
-                  if (attachedPictures.isNotEmpty)
-                    const Padding(
-                      padding: EdgeInsets.only(
-                        top: 10.0,
-                        bottom: 7.0,
-                      ),
-                      child: AttachedPictures(),
+        Container(
+            padding: const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 10.0),
+            color: theme.canvasColor,
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              if (textInputFocused)
+                Builder(builder: (context) {
+                  context
+                      .select((ChatCubit cubit) => cubit.state.keyboardOpened);
+
+                  return SolidBottomSheet(
+                    controller: chatCubit.textInputSolidController,
+                    draggableBody: true,
+                    minHeight: textInputHeight,
+                    maxHeight: MediaQuery.of(context).size.height -
+                        MediaQueryData.fromWindow(window).viewPadding.top -
+                        MediaQueryData.fromWindow(window).viewInsets.bottom -
+                        bottomTextAreaHeight -
+                        (AppConstants.appBarHeight / 2) -
+                        21.0,
+                    headerBar: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 4.0,
+                          width: 48.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(90.0),
+                            color: theme.hintColor,
+                          ),
+                        ),
+                        const SizedBox(height: 8.0)
+                      ],
                     ),
+                    body: Builder(builder: (context) {
+                      return _InputTextField(key: chatCubit.textInputKey);
+                    }),
+                    onShow: () {
+                      chatCubit.updateTextFieldIsCollapse(false);
+                    },
+                    onHide: () {
+                      chatCubit.updateTextFieldIsCollapse(true);
+                    },
+                  );
+                }),
+              Column(
+                key: chatCubit.bottomTextAreaKey,
+                children: [
+                  Builder(builder: (context) {
+                    final bool isFocused = context.select(
+                        (ChatCubit cubit) => cubit.state.textInputFocused);
+                    return isFocused
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                              top: textInputFocused ? 10.0 : 0.0,
+                              bottom: 7.0,
+                            ),
+                            child: const AttachedPictures(),
+                          )
+                        : const SizedBox.shrink();
+                  }),
                   Builder(builder: (context) {
                     final int inputTextLength = context.select(
                         (ChatCubit cubit) => cubit.state.inputTextLength);
                     final bool canAttachPicture =
                         chatCubit.canAttachPictureTo();
                     return Row(
-                      crossAxisAlignment:
-                          attachedPictures.isNotEmpty || inputTextLength == 0
-                              ? CrossAxisAlignment.center
-                              : CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            if (canAttachPicture) {
-                              showPickImageAlert(
-                                context: context,
-                                setImage: chatCubit.attachPicture,
-                              );
-                            }
-                          },
-                          child: Opacity(
-                            opacity: canAttachPicture ? 1.0 : 0.4,
-                            child: Assets.vectors.gallery.svg(
-                              width: AppConstants.iconSize,
-                              color: theme.shadowColor,
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                if (canAttachPicture) {
+                                  showPickImageAlert(
+                                    context: context,
+                                    setImage: chatCubit.attachPicture,
+                                  );
+                                }
+                              },
+                              child: Opacity(
+                                opacity: canAttachPicture ? 1.0 : 0.4,
+                                child: Assets.vectors.gallery.svg(
+                                  width: AppConstants.iconSize,
+                                  color: theme.shadowColor,
+                                ),
+                              ),
                             ),
-                          ),
+                            if (attachedPictures.isNotEmpty && isAudioQuestion)
+                              Row(
+                                children: [
+                                  const SizedBox(
+                                    height: 28.0,
+                                    child: VerticalDivider(
+                                      width: 24.0,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      if (chatCubit.textInputEditingController
+                                          .text.isEmpty) {
+                                        chatCubit.startRecordingAudio(context);
+                                      }
+                                    },
+                                    child: Opacity(
+                                      opacity: chatCubit
+                                              .textInputEditingController
+                                              .text
+                                              .isEmpty
+                                          ? 1.0
+                                          : 0.4,
+                                      child: Assets.vectors.microphone
+                                          .svg(width: AppConstants.iconSize),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                          ],
                         ),
-                        if (attachedPictures.isNotEmpty && isAudioQuestion)
-                          Row(
-                            children: [
-                              const SizedBox(
-                                height: 28.0,
-                                child: VerticalDivider(
-                                  width: 24.0,
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  if (chatCubit.textInputEditingController.text
-                                      .isEmpty) {
-                                    chatCubit.startRecordingAudio(context);
-                                  }
-                                },
-                                child: Opacity(
-                                  opacity: chatCubit.textInputEditingController
-                                          .text.isEmpty
-                                      ? 1.0
-                                      : 0.4,
-                                  child: Assets.vectors.microphone
-                                      .svg(width: AppConstants.iconSize),
-                                ),
-                              ),
-                            ],
-                          ),
-                        if (attachedPictures.isNotEmpty) const Spacer(),
-                        if (attachedPictures.isEmpty)
-                          const Expanded(
+                        if (!textInputFocused)
+                          Expanded(
                             child: Padding(
-                              padding: EdgeInsets.only(left: 12.0),
-                              child: _InputTextField(),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12.0),
+                              child: GestureDetector(
+                                  onVerticalDragStart: (_) {
+                                    chatCubit.setTextInputFocus(true);
+                                  },
+                                  onTap: () {
+                                    chatCubit.setTextInputFocus(true);
+                                  },
+                                  child: inputTextLength > 0
+                                      ? Text(
+                                          chatCubit
+                                              .textInputEditingController.text,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.start,
+                                          style: theme.textTheme.bodySmall
+                                              ?.copyWith(
+                                            color: theme.hoverColor,
+                                            fontSize: 15.0,
+                                            height: 1.2,
+                                          ))
+                                      : Text(
+                                          S.of(context).typeMessage,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.start,
+                                          style: theme.textTheme.bodySmall
+                                              ?.copyWith(
+                                            color: theme.shadowColor,
+                                            fontSize: 15.0,
+                                          ),
+                                        )),
                             ),
                           ),
-                        const SizedBox(
-                          width: 4.0,
-                        ),
                         Builder(builder: (context) {
                           final isSendButtonEnabled = context.select(
                               (ChatCubit cubit) =>
                                   cubit.state.isSendButtonEnabled);
+                          final bool isFocused = context.select(
+                              (ChatCubit cubit) =>
+                                  cubit.state.textInputFocused);
 
-                          return Row(
-                            children: [
-                              if (inputTextLength == 0 &&
-                                  attachedPictures.isEmpty &&
-                                  isAudioQuestion)
-                                AppIconGradientButton(
-                                  onTap: () =>
-                                      chatCubit.startRecordingAudio(context),
-                                  icon: Assets.vectors.microphone.path,
-                                  iconColor: theme.backgroundColor,
-                                ),
-                              if (inputTextLength > 0 ||
-                                  attachedPictures.isNotEmpty ||
-                                  !isAudioQuestion)
-                                Opacity(
-                                  opacity: isSendButtonEnabled ? 1.0 : 0.4,
-                                  child: AppIconGradientButton(
-                                    onTap: () {
-                                      if (isSendButtonEnabled) {
-                                        FocusScope.of(context).unfocus();
-                                        chatCubit.sendAnswer(
-                                            ChatContentType.textMedia);
-                                      }
-                                    },
-                                    icon: Assets.vectors.send.path,
-                                    iconColor: theme.backgroundColor,
-                                  ),
-                                ),
-                            ],
-                          );
+                          if (attachedPictures.isNotEmpty && !isFocused) {
+                            return GestureDetector(
+                              onTap: () {
+                                chatCubit.setTextInputFocus(true);
+                              },
+                              child: AppImageWidget(
+                                uri: Uri.parse(attachedPictures[0].path),
+                                height: 32.0,
+                                width: 32.0,
+                                radius: 12.0,
+                              ),
+                            );
+                          } else if (inputTextLength == 0 &&
+                              attachedPictures.isEmpty &&
+                              isAudioQuestion &&
+                              !isFocused) {
+                            return AppIconGradientButton(
+                              onTap: () =>
+                                  chatCubit.startRecordingAudio(context),
+                              icon: Assets.vectors.microphone.path,
+                              iconColor: theme.backgroundColor,
+                            );
+                          } else if (inputTextLength > 0 ||
+                              attachedPictures.isNotEmpty ||
+                              !isAudioQuestion ||
+                              isFocused) {
+                            return Opacity(
+                              opacity: isSendButtonEnabled ? 1.0 : 0.4,
+                              child: AppIconGradientButton(
+                                onTap: () {
+                                  if (isSendButtonEnabled) {
+                                    FocusScope.of(context).unfocus();
+                                    chatCubit
+                                        .sendAnswer(ChatContentType.textMedia);
+                                  }
+                                },
+                                icon: Assets.vectors.send.path,
+                                iconColor: theme.backgroundColor,
+                              ),
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
                         }),
                       ],
                     );
-                  }),
+                  })
                 ],
               ),
-            ),
-          ],
-        ),
+            ])),
         const Positioned(
           top: -21.0,
           right: 0.0,
@@ -187,6 +281,10 @@ class _InputTextField extends StatelessWidget {
       fontSize: 15.0,
       height: 1.2,
     );
+
+    final bool isCollapsed =
+        context.select((ChatCubit cubit) => cubit.state.isTextInputCollapsed);
+
     return LayoutBuilder(
       builder: (context, constraints) {
         context.select((ChatCubit cubit) => cubit.state.inputTextLength);
@@ -195,6 +293,24 @@ class _InputTextField extends StatelessWidget {
           constraints.maxWidth,
           style,
         );
+        double textHeight;
+
+        if (isCollapsed) {
+          if (textNumLines < 6) {
+            textHeight = Utils.getTextHeight(
+              chatCubit.textInputEditingController.text,
+              constraints.maxWidth,
+              style,
+            );
+          } else {
+            textHeight = Utils.getTextHeight(
+              '\n\n\n\n\n',
+              constraints.maxWidth,
+              style,
+            );
+          }
+          chatCubit.updateHiddenInputHeight(textHeight);
+        }
         return Scrollbar(
           thickness: 4.0,
           controller: chatCubit.textInputScrollController,
@@ -203,11 +319,17 @@ class _InputTextField extends StatelessWidget {
           child: TextField(
             scrollController: chatCubit.textInputScrollController,
             controller: chatCubit.textInputEditingController,
-            maxLines: textNumLines > _maxTextNumLines ? _maxTextNumLines : null,
+            focusNode: chatCubit.textInputFocusNode,
+            maxLines: isCollapsed && textNumLines > _maxTextNumLines
+                ? _maxTextNumLines
+                : null,
+            expands: !isCollapsed,
             style: style,
             decoration: InputDecoration(
               contentPadding: EdgeInsets.only(
-                  right: textNumLines > _maxTextNumLines ? 4.0 : 0.0),
+                  right: isCollapsed && textNumLines > _maxTextNumLines
+                      ? 4.0
+                      : 0.0),
               isCollapsed: true,
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,

@@ -9,6 +9,7 @@ import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status
 import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/data/models/user_info/localized_properties/property_by_language.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/set_push_notification_token_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
@@ -56,6 +57,10 @@ class AccountCubit extends Cubit<AccountState> {
     this._connectivityService,
     this._handlePermission,
   ) : super(const AccountState()) {
+    final UserProfile? userProfile = _cacheManager.getUserProfile();
+
+    emit(state.copyWith(userProfile: userProfile));
+
     disposeListen = _cacheManager.listenUserProfile((value) {
       emit(state.copyWith(userProfile: value));
     });
