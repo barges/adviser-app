@@ -292,16 +292,23 @@ class _InputTextField extends StatelessWidget {
           constraints.maxWidth,
           style,
         );
-        final double textHeight = Utils.getTextHeight(
-          chatCubit.textInputEditingController.text,
-          constraints.maxWidth,
-          style,
-        );
+        double textHeight;
 
         if (isCollapsed) {
           if (textNumLines < 6) {
-            chatCubit.updateHiddenInputHeight(textHeight);
+            textHeight = Utils.getTextHeight(
+              chatCubit.textInputEditingController.text,
+              constraints.maxWidth,
+              style,
+            );
+          } else {
+            textHeight = Utils.getTextHeight(
+              '\n\n\n\n\n',
+              constraints.maxWidth,
+              style,
+            );
           }
+          chatCubit.updateHiddenInputHeight(textHeight);
         }
         return Scrollbar(
           thickness: 4.0,
