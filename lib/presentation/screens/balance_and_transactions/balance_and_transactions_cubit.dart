@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_month.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_year.dart';
@@ -13,28 +14,58 @@ import 'package:shared_advisor_interface/presentation/screens/balance_and_transa
 class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   final UserRepository _userRepository = getIt.get<UserRepository>();
   final MainCubit mainCubit = getIt.get<MainCubit>();
+  final CachingManager _cacheManager = getIt.get<CachingManager>();
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
+  late final VoidCallback _disposeUserIdListen;
+
+  String? userId;
+
   BalanceAndTransactionsCubit() : super(const BalanceAndTransactionsState()) {
+    userId = _cacheManager.getUserId();
+
     getReports();
+
+    _disposeUserIdListen = _cacheManager.listenUserId((value) {
+      if (value != null) {
+        userId = value;
+        getReports();
+      }
+    });
+  }
+
+  @override
+  Future<void> close() async {
+    _disposeUserIdListen.call();
+
+    super.close();
   }
 
   Future<void> getReports() async {
-    final List<ReportsMonth> months = [];
-    final ReportsResponse reportsResponse =
-        await _userRepository.getUserReports();
+    try {
+      if (userId == null) {
+        mainCubit.updateAccount();
+      }
+      if (userId != null) {
+        final List<ReportsMonth> months = [];
+        final ReportsResponse reportsResponse =
+            await _userRepository.getUserReports();
 
-    for (ReportsYear year in reportsResponse.dateRange ?? []) {
-      months.addAll(year.months ?? []);
+        for (ReportsYear year in reportsResponse.dateRange ?? []) {
+          months.addAll(year.months ?? []);
+        }
+
+        emit(
+          state.copyWith(
+            months: months,
+            reportsStatistics: months.firstOrNull?.statistics,
+          ),
+        );
+      }
+    } catch (e) {
+      logger.d(e);
     }
-
-    emit(
-      state.copyWith(
-        months: months,
-        reportsStatistics: months.firstOrNull?.statistics,
-      ),
-    );
   }
 
   void openDrawer() {
