@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_advisor_interface/presentation/themes/app_colors_dark.dart';
+import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
 
 class Utils {
   static bool isDarkMode(BuildContext context) =>
@@ -28,5 +30,9 @@ class Utils {
             duration: const Duration(milliseconds: 500));
       }
     });
+  }
+
+  static Color getOverlayColor(BuildContext context) {
+    return isDarkMode(context) ? AppColorsDark.overlay : AppColorsLight.overlay;
   }
 }

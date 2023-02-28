@@ -159,6 +159,9 @@ class ChatCubit extends Cubit<ChatState> {
 
     _keyboardSubscription =
         KeyboardVisibilityController().onChange.listen((bool visible) {
+
+          logger.d(visible);
+
       if (visible) {
         if (questionGlobalKey != null) {
           Future.delayed(const Duration(milliseconds: 300))
@@ -169,7 +172,10 @@ class ChatCubit extends Cubit<ChatState> {
         textInputFocusNode.unfocus();
         emit(state.copyWith(isTextInputCollapsed: true));
       }
-      emit(state.copyWith(keyboardOpened: !state.keyboardOpened));
+
+      Future.delayed( const Duration(milliseconds: 500)).then((value) {
+        emit(state.copyWith(keyboardOpened: !state.keyboardOpened));
+      });
     });
 
     _stopAudioSubscription = _mainCubit.audioStopTrigger.listen((value) {
@@ -181,12 +187,6 @@ class ChatCubit extends Cubit<ChatState> {
 
     _refreshChatInfoSubscription = refreshChatInfoTrigger.listen((value) {
       getData();
-    });
-
-    textInputSolidController.heightStream.listen((event) {
-      if (event > state.textInputHeight + 50.0) {
-        textInputSolidController.show();
-      }
     });
 
     textInputFocusNode.addListener(() {
@@ -237,8 +237,11 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  void updateIsTextInputCollapsed(bool isTextInputCollapsed) {
-    emit(state.copyWith(isTextInputCollapsed: isTextInputCollapsed));
+  void updateTextFieldIsCollapse(bool value) {
+    emit(state.copyWith(isTextInputCollapsed: value));
+    if (value) {
+      _scrollTextFieldToEnd();
+    }
   }
 
   void updateHiddenInputHeight(double height) {
@@ -628,10 +631,14 @@ class ChatCubit extends Cubit<ChatState> {
     emit(
       state.copyWith(
           attachedPictures: images,
+          textInputFocused: true,
           isSendButtonEnabled:
               _checkAttachmentSizeIsOk(images, state.recordedAudio) &&
                   (_checkRecordedAudioIsOk() || _checkTextLengthIsOk())),
     );
+
+   textInputFocusNode.requestFocus();
+
 
     getBottomTextAreaHeight();
     _scrollTextFieldToEnd();
