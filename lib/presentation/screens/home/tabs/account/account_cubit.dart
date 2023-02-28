@@ -191,7 +191,8 @@ class AccountCubit extends Cubit<AccountState> {
       ));
     } else {
       if (checkPropertiesMapIfHasEmpty(userInfo) ||
-          userInfo.profile?.profileName?.isNotEmpty != true ||
+          (userInfo.profile?.profileName?.length ?? 0) <
+              AppConstants.minNickNameLength ||
           userInfo.profile?.profilePictures?.isNotEmpty != true) {
         await _cacheManager.saveUserStatus(userInfo.status?.copyWith(
           status: FortunicaUserStatus.incomplete,
