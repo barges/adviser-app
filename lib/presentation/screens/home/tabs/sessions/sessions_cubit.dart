@@ -57,6 +57,8 @@ class SessionsCubit extends Cubit<SessionsState> {
     this._repository,
     this._mainCubit,
   ) : super(const SessionsState()) {
+    emit(state.copyWith(userMarkets: [MarketsType.all]));
+
     publicQuestionsScrollController.addListener(() {
       if (!_isPublicLoading &&
           publicQuestionsScrollController.position.extentAfter <=
