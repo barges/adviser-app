@@ -183,12 +183,6 @@ class ChatCubit extends Cubit<ChatState> {
       getData();
     });
 
-    textInputSolidController.heightStream.listen((event) {
-      if (event > state.textInputHeight + 50.0) {
-        textInputSolidController.show();
-      }
-    });
-
     textInputFocusNode.addListener(() {
       final bool isFocused = textInputFocusNode.hasFocus;
 
@@ -237,8 +231,11 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  void updateIsTextInputCollapsed(bool isTextInputCollapsed) {
-    emit(state.copyWith(isTextInputCollapsed: isTextInputCollapsed));
+  void updateTextFieldIsCollapse(bool value) {
+    emit(state.copyWith(isTextInputCollapsed: value));
+    if (value) {
+      _scrollTextFieldToEnd();
+    }
   }
 
   void updateHiddenInputHeight(double height) {
