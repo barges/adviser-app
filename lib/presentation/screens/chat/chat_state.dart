@@ -41,5 +41,15 @@ class ChatState with _$ChatState {
       ),
     )
         CustomerProfileScreenArguments? appBarUpdateArguments,
+    @Default(true)
+        bool isTextInputCollapsed,
+    @Default(18.0)
+        double textInputHeight,
+    @Default(false)
+        bool keyboardOpened,
+    @Default(false)
+        bool textInputFocused,
+    @Default(96.0)
+        double bottomTextAreaHeight,
   }) = _ChatState;
 }

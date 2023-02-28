@@ -11,6 +11,15 @@ class Utils {
     return tp.computeLineMetrics().length;
   }
 
+  static double getTextHeight(String text, double maxWidth, TextStyle? style) {
+    TextPainter textPainter = TextPainter()
+      ..text = TextSpan(text: text, style: style)
+      ..textDirection = TextDirection.ltr
+      ..layout(minWidth: 0, maxWidth: double.infinity);
+
+    return textPainter.size.height;
+  }
+
   static void animateToWidget(GlobalKey key) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final BuildContext? context = key.currentContext;
