@@ -53,10 +53,10 @@ class AccountScreen extends StatelessWidget {
               final bool isOnline = context.select((MainCubit cubit) =>
                   cubit.state.internetConnectionIsAvailable);
 
-              final UserStatus currentStatus =
+              final UserStatus? currentStatus =
                   context.select((HomeCubit cubit) => cubit.state.userStatus);
               final String? statusErrorText =
-                  currentStatus.status?.errorText(context);
+                  currentStatus?.status?.errorText(context);
               final AppError appError =
                   context.select((MainCubit cubit) => cubit.state.appError);
 

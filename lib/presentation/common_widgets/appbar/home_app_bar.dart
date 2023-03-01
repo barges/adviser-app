@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
@@ -148,7 +149,7 @@ class _AuthorizedBrandWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
-      final UserStatus currentStatus =
+      final UserStatus? currentStatus =
           context.select((HomeCubit cubit) => cubit.state.userStatus);
       return Container(
         margin: EdgeInsets.only(right: 24.0 * index),
@@ -169,7 +170,8 @@ class _AuthorizedBrandWidget extends StatelessWidget {
               height: 12.0,
               width: 12.0,
               decoration: BoxDecoration(
-                color: currentStatus.status?.statusColorForBadge(context),
+                color: currentStatus?.status?.statusColorForBadge(context) ??
+                    FortunicaUserStatus.offline.statusColorForBadge(context),
                 shape: BoxShape.circle,
                 border: Border.all(
                     width: 2.0, color: Theme.of(context).canvasColor),
