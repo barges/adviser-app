@@ -104,7 +104,8 @@ class AppInterceptor extends Interceptor {
           uiErrorType: UIErrorType.checkYourInternetConnection,
         ),
       );
-    } else if (err.response?.statusCode != 413) {
+    } else if (err.response?.statusCode != 413 &&
+        !err.requestOptions.uri.path.contains('/questions/answer/start')) {
       try {
         _mainCubit.updateErrorMessage(
           NetworkError(

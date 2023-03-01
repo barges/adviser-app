@@ -785,6 +785,12 @@ class ChatCubit extends Cubit<ChatState> {
       );
     } on DioError catch (e) {
       logger.e(e);
+      emit(
+        state.copyWith(
+          questionFromDB:
+              state.questionFromDB?.copyWith(startAnswerDate: DateTime.now()),
+        ),
+      );
     }
   }
 
