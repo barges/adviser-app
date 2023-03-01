@@ -32,8 +32,7 @@ class HomeCubit extends Cubit<HomeState> {
       );
     }
 
-    emit(state.copyWith(
-        userStatus: _cacheManager.getUserStatus() ?? const UserStatus()));
+    emit(state.copyWith(userStatus: _cacheManager.getUserStatus()));
     disposeListen = _cacheManager.listenCurrentUserStatus((value) {
       if (value.status != FortunicaUserStatus.live) {
         changeTabIndex(tabsList.indexOf(TabsTypes.account));
