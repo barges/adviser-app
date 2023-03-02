@@ -159,8 +159,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     _keyboardSubscription =
         KeyboardVisibilityController().onChange.listen((bool visible) {
-
-          logger.d(visible);
+      logger.d(visible);
 
       if (visible) {
         if (questionGlobalKey != null) {
@@ -173,7 +172,7 @@ class ChatCubit extends Cubit<ChatState> {
         emit(state.copyWith(isTextInputCollapsed: true));
       }
 
-      Future.delayed( const Duration(milliseconds: 500)).then((value) {
+      Future.delayed(const Duration(milliseconds: 500)).then((value) {
         emit(state.copyWith(keyboardOpened: !state.keyboardOpened));
       });
     });
@@ -433,9 +432,11 @@ class ChatCubit extends Cubit<ChatState> {
       emit(state.copyWith(refreshEnabled: false));
       _refreshChatInfoSubscription.cancel();
     } on DioError catch (e) {
-      if (_checkStatusCode(e)) {
+      final int? statusCode = e.response?.statusCode;
+      if (statusCode == 404 || statusCode == 409 || statusCode == 400) {
         _showErrorAlert();
       }
+
       emit(state.copyWith(refreshEnabled: true));
       logger.d(e);
       rethrow;
@@ -637,8 +638,7 @@ class ChatCubit extends Cubit<ChatState> {
                   (_checkRecordedAudioIsOk() || _checkTextLengthIsOk())),
     );
 
-   textInputFocusNode.requestFocus();
-
+    textInputFocusNode.requestFocus();
 
     getBottomTextAreaHeight();
     _scrollTextFieldToEnd();
@@ -937,6 +937,10 @@ class ChatCubit extends Cubit<ChatState> {
 
     if (statusCode != 413 && errorType != DioErrorType.other) {
       emit(state.copyWith(questionStatus: ChatItemStatusType.answered));
+    }
+
+    if (statusCode == 409) {
+      _showErrorAlert();
     }
 
     if (answer?.isSent == true) {
