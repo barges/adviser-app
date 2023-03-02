@@ -15,7 +15,7 @@ class AdvisorPreviewCubit extends Cubit<AdvisorPreviewState> {
   final CachingManager cacheManager = getIt.get<CachingManager>();
   final MainCubit mainCubit;
   late UserProfile userProfile;
-  late final List<MarketsType> languages;
+  late List<MarketsType> languages;
   late bool needRefresh;
 
   VoidCallback? _listenUserProfile;
@@ -29,6 +29,7 @@ class AdvisorPreviewCubit extends Cubit<AdvisorPreviewState> {
     languages = userProfile.activeLanguages ?? const [];
     _listenUserProfile = cacheManager.listenUserProfile((value) {
       userProfile = value;
+      languages = userProfile.activeLanguages ?? const [];
       emit(state.copyWith(updateInfo: !state.updateInfo));
     });
   }

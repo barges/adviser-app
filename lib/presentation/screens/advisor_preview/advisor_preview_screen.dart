@@ -141,34 +141,35 @@ class AdvisorPreviewScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 12.0,
-                                  horizontal:
-                                      AppConstants.horizontalScreenPadding),
-                              child: Builder(builder: (context) {
-                                final int selectedIndex = context.select(
-                                    (AdvisorPreviewCubit cubit) =>
-                                        cubit.state.currentIndex);
+                            if (advisorPreviewCubit.languages.isNotEmpty)
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 12.0,
+                                    horizontal:
+                                        AppConstants.horizontalScreenPadding),
+                                child: Builder(builder: (context) {
+                                  final int selectedIndex = context.select(
+                                      (AdvisorPreviewCubit cubit) =>
+                                          cubit.state.currentIndex);
 
-                                final MarketsType selectedItem =
-                                    advisorPreviewCubit
-                                        .languages[selectedIndex];
-                                return AboutMeWidget(
-                                  description: advisorPreviewCubit
-                                              .getSelectedLanguageDetails(
-                                                  selectedItem)[
-                                          AdvisorPreviewConstants
-                                              .descriptionKey] ??
-                                      '',
-                                  title: advisorPreviewCubit
-                                              .getSelectedLanguageDetails(
-                                                  selectedItem)[
-                                          AdvisorPreviewConstants.titleKey] ??
-                                      '',
-                                );
-                              }),
-                            ),
+                                  final MarketsType selectedItem =
+                                      advisorPreviewCubit
+                                          .languages[selectedIndex];
+                                  return AboutMeWidget(
+                                    description: advisorPreviewCubit
+                                                .getSelectedLanguageDetails(
+                                                    selectedItem)[
+                                            AdvisorPreviewConstants
+                                                .descriptionKey] ??
+                                        '',
+                                    title: advisorPreviewCubit
+                                                .getSelectedLanguageDetails(
+                                                    selectedItem)[
+                                            AdvisorPreviewConstants.titleKey] ??
+                                        '',
+                                  );
+                                }),
+                              ),
                           ],
                         ),
                       )
