@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/ui_error_type.dart';
@@ -106,7 +107,6 @@ class ChatContentWidget extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           children: [
             Scaffold(
-              resizeToAvoidBottomInset: true,
               appBar: ChatConversationAppBar(
                   title: appBarUpdateArguments?.clientName,
                   zodiacSign: appBarUpdateArguments?.zodiacSign ??
@@ -229,50 +229,54 @@ class ChatContentWidget extends StatelessWidget {
                 }),
               ),
             ),
-            Builder(builder: (context) {
-              final bool isCollapsed = context.select(
-                  (ChatCubit cubit) => cubit.state.isTextInputCollapsed);
-              return SafeArea(
-                child: Material(
-                  type: isCollapsed
-                      ? MaterialType.transparency
-                      : MaterialType.canvas,
-                  color: isCollapsed
-                      ? Colors.transparent
-                      : Utils.getOverlayColor(context),
-                  child: Builder(
-                    builder: (context) {
-                      final int currentIndex = context.select(
-                          (ChatCubit cubit) => cubit.state.currentTabIndex);
-                      final ChatItemStatusType? questionStatus = context.select(
-                          (ChatCubit cubit) => cubit.state.questionStatus);
+            KeyboardSizeProvider(
+              child: Builder(builder: (context) {
+                final bool needBarrierColor = context
+                    .select((ChatCubit cubit) => cubit.state.needBarrierColor);
+                return SafeArea(
+                  child: Material(
+                    type: needBarrierColor
+                        ? MaterialType.canvas
+                        : MaterialType.transparency,
+                    color: needBarrierColor
+                        ? Utils.getOverlayColor(context)
+                        : Colors.transparent,
+                    child: Builder(
+                      builder: (context) {
+                        final int currentIndex = context.select(
+                            (ChatCubit cubit) => cubit.state.currentTabIndex);
+                        final ChatItemStatusType? questionStatus =
+                            context.select((ChatCubit cubit) =>
+                                cubit.state.questionStatus);
 
-                      if (chatCubit.needActiveChatTab() && currentIndex == 0) {
-                        if (chatCubit.isPublicChat()) {
-                          final bool showInputFieldIfPublic = context.select(
-                              (ChatCubit cubit) =>
-                                  cubit.state.showInputFieldIfPublic);
-                          if (!showInputFieldIfPublic ||
-                              questionStatus != ChatItemStatusType.taken) {
-                            return const SizedBox.shrink();
+                        if (chatCubit.needActiveChatTab() &&
+                            currentIndex == 0) {
+                          if (chatCubit.isPublicChat()) {
+                            final bool showInputFieldIfPublic = context.select(
+                                (ChatCubit cubit) =>
+                                    cubit.state.showInputFieldIfPublic);
+                            if (!showInputFieldIfPublic ||
+                                questionStatus != ChatItemStatusType.taken) {
+                              return const SizedBox.shrink();
+                            } else {
+                              return const ActiveChatInputFieldWidget();
+                            }
                           } else {
-                            return const ActiveChatInputFieldWidget();
+                            if (questionStatus != ChatItemStatusType.answered) {
+                              return const ActiveChatInputFieldWidget();
+                            } else {
+                              return const SizedBox.shrink();
+                            }
                           }
                         } else {
-                          if (questionStatus != ChatItemStatusType.answered) {
-                            return const ActiveChatInputFieldWidget();
-                          } else {
-                            return const SizedBox.shrink();
-                          }
+                          return const SizedBox.shrink();
                         }
-                      } else {
-                        return const SizedBox.shrink();
-                      }
-                    },
+                      },
+                    ),
                   ),
-                ),
-              );
-            }),
+                );
+              }),
+            ),
           ],
         ),
       ),

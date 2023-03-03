@@ -22,7 +22,7 @@ class AttachedPictures extends StatelessWidget {
           children: attachedPictures
               .map(
                 (file) => Padding(
-                  padding: const EdgeInsets.only(right: 9.0),
+                  padding: const EdgeInsets.only(right: 8.0),
                   child: _AttachedPicture(
                     file,
                     onDeletePressed: () async {
@@ -55,9 +55,10 @@ class _AttachedPicture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      clipBehavior: Clip.none,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 7.0, right: 7.0),
+          padding: const EdgeInsets.only(right: 7.0),
           child: AppImageWidget(
             uri: Uri.parse(file.path),
             width: 64.0,
@@ -68,6 +69,7 @@ class _AttachedPicture extends StatelessWidget {
         ),
         Positioned(
           right: 0.0,
+          top: -7.0,
           child: _DeleteBtn(
             onPressed: onDeletePressed,
           ),

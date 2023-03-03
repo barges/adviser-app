@@ -46,9 +46,9 @@ class ChatState with _$ChatState {
     @Default(18.0)
         double textInputHeight,
     @Default(false)
-        bool keyboardOpened,
-    @Default(false)
         bool textInputFocused,
+    @Default(false)
+        bool needBarrierColor,
     @Default(96.0)
         double bottomTextAreaHeight,
   }) = _ChatState;
