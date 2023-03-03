@@ -233,14 +233,6 @@ class ChatCubit extends Cubit<ChatState> {
     });
   }
 
-  void scrollChatUp() {
-    if (activeMessagesScrollController.hasClients) {
-      SchedulerBinding.instance.addPostFrameCallback((timeStamp) =>
-          activeMessagesScrollController
-              .jumpTo(activeMessagesScrollController.position.minScrollExtent));
-    }
-  }
-
   void setTextInputFocus(bool value) {
     emit(state.copyWith(textInputFocused: value));
     if (value) {
