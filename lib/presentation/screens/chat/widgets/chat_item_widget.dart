@@ -80,9 +80,13 @@ class _ChatItemWidgetState extends State<ChatItemWidget>
                 return const SizedBox();
               }).toList(),
             ),
+          const SizedBox(
+            height: 5.0,
+          ),
         ]),
         Positioned(
           right: 0.0,
+          left: 0.0,
           bottom: 0.0,
           child: ChatItemFooterWidget(
             type: widget.item.type,

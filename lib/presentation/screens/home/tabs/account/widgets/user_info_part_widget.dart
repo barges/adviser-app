@@ -139,6 +139,8 @@ class UserInfoPartWidget extends StatelessWidget {
                 final int secondsForTimer = context.select(
                     (AccountCubit cubit) => cubit.state.secondsForTimer);
                 final HomeCubit homeCubit = context.read<HomeCubit>();
+                final bool isTimeout = context
+                    .select((AccountCubit cubit) => cubit.state.isTimeout);
 
                 return TileWidget(
                   title: S.of(context).imAvailableNow,
@@ -161,11 +163,11 @@ class UserInfoPartWidget extends StatelessWidget {
                       );
                     }
                   },
-                  isDisable:
+                  isDisable: isTimeout ||
                       (currentStatus.status != FortunicaUserStatus.live &&
-                              currentStatus.status !=
-                                  FortunicaUserStatus.offline) ||
-                          homeCubit.state.userStatus == null,
+                          currentStatus.status !=
+                              FortunicaUserStatus.offline) ||
+                      homeCubit.state.userStatus == null,
                   initSwitcherValue:
                       currentStatus.status == FortunicaUserStatus.live,
                   timerWidget: secondsForTimer > 0
@@ -183,10 +185,14 @@ class UserInfoPartWidget extends StatelessWidget {
               builder: (context) {
                 final bool enableNotifications = context.select(
                     (AccountCubit cubit) => cubit.state.enableNotifications);
+                final HomeCubit homeCubit = context.read<HomeCubit>();
+                final bool isTimeout = context
+                    .select((AccountCubit cubit) => cubit.state.isTimeout);
                 return TileWidget(
                   initSwitcherValue: enableNotifications,
                   title: S.of(context).notifications,
                   iconSVGPath: Assets.vectors.notification.path,
+                  isDisable: isTimeout || homeCubit.state.userStatus == null,
                   onChanged: (value) =>
                       accountCubit.updateEnableNotificationsValue(value),
                 );
