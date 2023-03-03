@@ -100,7 +100,7 @@ class ChatTextInputWidget extends StatelessWidget {
                             color: theme.hintColor,
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 5.0),
+                            margin: const EdgeInsets.only(top: 5.0),
                             height: 4.0,
                             width: 48.0,
                             decoration: BoxDecoration(
