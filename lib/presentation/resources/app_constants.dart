@@ -30,7 +30,7 @@ class AppConstants {
   static const int afterShowAnswerTimingMessagesInSec = 5 * minuteInSec;
 
   static const int bytesInKilobyte = 1024;
-  static const int maxAttachmentSizeInBytes = 20000000;
+  static const int maxAttachmentSizeInBytes = 26214400;
   static const int minFreeSpaceInMb = 3;
 
   static const String enBrandName = 'English';

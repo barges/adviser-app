@@ -167,8 +167,7 @@ class ChatCubit extends Cubit<ChatState> {
         if (visible) {
           scrollChatDown();
         }
-        emit(state.copyWith(keyboardOpened: !state.keyboardOpened));
-      });
+      }).onError((error, stackTrace) {});
     });
 
     _stopAudioSubscription = _mainCubit.audioStopTrigger.listen((value) {
@@ -196,6 +195,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   @override
   Future<void> close() async {
+    _keyboardSubscription.cancel();
     if (audioRecorder.isRecording) {
       await cancelRecordingAudio();
     }
@@ -204,8 +204,6 @@ class ChatCubit extends Cubit<ChatState> {
     activeMessagesScrollController.dispose();
     _appOnPauseSubscription.cancel();
     _stopAudioSubscription.cancel();
-
-    _keyboardSubscription.cancel();
 
     textInputScrollController.dispose();
     textInputEditingController.dispose();
@@ -227,8 +225,10 @@ class ChatCubit extends Cubit<ChatState> {
     Future.delayed(const Duration(milliseconds: 300)).then((value) {
       if (activeMessagesScrollController.hasClients) {
         SchedulerBinding.instance.addPostFrameCallback((timeStamp) =>
-            activeMessagesScrollController.jumpTo(
-                activeMessagesScrollController.position.maxScrollExtent));
+            activeMessagesScrollController.animateTo(
+                activeMessagesScrollController.position.maxScrollExtent,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.linear));
       }
     });
   }
@@ -245,6 +245,10 @@ class ChatCubit extends Cubit<ChatState> {
     if (value) {
       _scrollTextFieldToEnd();
     }
+  }
+
+  void setNeedBarrierColor(bool value) {
+    emit(state.copyWith(needBarrierColor: value));
   }
 
   void updateHiddenInputHeight(double height, double maxHeight) {
