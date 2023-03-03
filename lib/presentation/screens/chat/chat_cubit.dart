@@ -450,9 +450,11 @@ class ChatCubit extends Cubit<ChatState> {
       emit(state.copyWith(refreshEnabled: false));
       _refreshChatInfoSubscription.cancel();
     } on DioError catch (e) {
-      if (_checkStatusCode(e)) {
+      final int? statusCode = e.response?.statusCode;
+      if (statusCode == 404 || statusCode == 409 || statusCode == 400) {
         _showErrorAlert();
       }
+
       emit(state.copyWith(refreshEnabled: true));
       logger.d(e);
       rethrow;
@@ -948,6 +950,10 @@ class ChatCubit extends Cubit<ChatState> {
 
     if (statusCode != 413 && errorType != DioErrorType.other) {
       emit(state.copyWith(questionStatus: ChatItemStatusType.answered));
+    }
+
+    if (statusCode == 409) {
+      _showErrorAlert();
     }
 
     if (answer?.isSent == true) {
