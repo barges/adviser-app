@@ -12,5 +12,6 @@ class AccountState with _$AccountState {
     @Default(false) bool commentHasFocus,
     @Default(0) int secondsForTimer,
     UserProfile? userProfile,
+    @Default(false) bool isTimeout,
   }) = _AccountState;
 }
