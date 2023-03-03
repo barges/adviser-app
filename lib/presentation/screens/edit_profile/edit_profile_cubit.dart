@@ -180,7 +180,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   void _addListenersToTextControllers() {
     nicknameController.addListener(() {
-      emit(state.copyWith(nicknameErrorType: ValidationErrorType.empty));
+      if (_checkNickName(false)) {
+        emit(state.copyWith(nicknameErrorType: ValidationErrorType.empty));
+      }
     });
 
     for (var entry in textControllersMap.entries) {
@@ -189,6 +191,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         if (statusController.text.length > 300) {
           errorTextsMap[entry.key]?.first =
               ValidationErrorType.statusTextMayNotExceed300Characters;
+          emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
+        } else if (statusController.text.isEmpty) {
+          errorTextsMap[entry.key]?.first = ValidationErrorType.requiredField;
           emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
         } else {
           errorTextsMap[entry.key]?.first = ValidationErrorType.empty;
@@ -283,15 +288,17 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     return isOk;
   }
 
-  bool _checkNickName() {
+  bool _checkNickName([bool animate = true]) {
     bool isValid = true;
     if (nicknameController.text.length < AppConstants.minNickNameLength) {
       isValid = false;
-      Utils.animateToWidget(nicknameFieldKey);
+      if (animate) {
+        Utils.animateToWidget(nicknameFieldKey);
+      }
       if (checkUserAvatar()) {
         nicknameFocusNode.requestFocus();
       }
-      Future.delayed(const Duration(milliseconds: 500)).then((value) {
+      Future.delayed(Duration(milliseconds: animate ? 500 : 0)).then((value) {
         emit(
           state.copyWith(
               nicknameErrorType: nicknameController.text.isEmpty

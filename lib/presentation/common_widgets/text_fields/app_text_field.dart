@@ -91,10 +91,10 @@ class AppTextField extends StatelessWidget {
                 fillColor: Theme.of(context).scaffoldBackgroundColor,
               ),
               maxLines: isBig ? 10 : 1,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(color: Theme.of(context).shadowColor),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: isEnabled
+                      ? Theme.of(context).hoverColor
+                      : Theme.of(context).shadowColor),
             ),
           ),
         ),

@@ -260,10 +260,10 @@ class S {
     );
   }
 
-  /// `Name can be changed only on advisor tool`
+  /// `Name can be changed only on Advisor Tool`
   String get nameCanBeChangedOnlyOnAdvisorTool {
     return Intl.message(
-      'Name can be changed only on advisor tool',
+      'Name can be changed only on Advisor Tool',
       name: 'nameCanBeChangedOnlyOnAdvisorTool',
       desc: '',
       args: [],
