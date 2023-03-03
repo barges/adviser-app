@@ -37,12 +37,12 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
-import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
 import 'package:shared_advisor_interface/presentation/services/audio/audio_recorder_service.dart';
-import 'package:shared_advisor_interface/presentation/utils/utils.dart';
-import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
+import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
+import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:storage_space/storage_space.dart';
 import 'package:uuid/uuid.dart';
 
@@ -53,13 +53,12 @@ const String _recordFileExt = 'm4a';
 class ChatCubit extends Cubit<ChatState> {
   final ScrollController activeMessagesScrollController = ScrollController();
   final ScrollController textInputScrollController = ScrollController();
+  final SnappingSheetController controller = SnappingSheetController();
   final TextEditingController textInputEditingController =
       TextEditingController();
   final FocusNode textInputFocusNode = FocusNode();
   final GlobalKey textInputKey = GlobalKey();
   final GlobalKey bottomTextAreaKey = GlobalKey();
-
-  final SolidController textInputSolidController = SolidController();
 
   final PublishSubject<bool> refreshChatInfoTrigger = PublishSubject();
 
@@ -159,21 +158,15 @@ class ChatCubit extends Cubit<ChatState> {
 
     _keyboardSubscription =
         KeyboardVisibilityController().onChange.listen((bool visible) {
-
-          logger.d(visible);
-
-      if (visible) {
-        if (questionGlobalKey != null) {
-          Future.delayed(const Duration(milliseconds: 300))
-              .then((value) => Utils.animateToWidget(questionGlobalKey!));
-        }
-      } else {
-        textInputSolidController.hide();
+      if (!visible) {
         textInputFocusNode.unfocus();
         emit(state.copyWith(isTextInputCollapsed: true));
       }
 
-      Future.delayed( const Duration(milliseconds: 500)).then((value) {
+      Future.delayed(const Duration(milliseconds: 500)).then((value) {
+        if (visible) {
+          scrollChatDown();
+        }
         emit(state.copyWith(keyboardOpened: !state.keyboardOpened));
       });
     });
@@ -230,6 +223,24 @@ class ChatCubit extends Cubit<ChatState> {
     return super.close();
   }
 
+  void scrollChatDown() {
+    Future.delayed(const Duration(milliseconds: 300)).then((value) {
+      if (activeMessagesScrollController.hasClients) {
+        SchedulerBinding.instance.addPostFrameCallback((timeStamp) =>
+            activeMessagesScrollController.jumpTo(
+                activeMessagesScrollController.position.maxScrollExtent));
+      }
+    });
+  }
+
+  void scrollChatUp() {
+    if (activeMessagesScrollController.hasClients) {
+      SchedulerBinding.instance.addPostFrameCallback((timeStamp) =>
+          activeMessagesScrollController
+              .jumpTo(activeMessagesScrollController.position.minScrollExtent));
+    }
+  }
+
   void setTextInputFocus(bool value) {
     emit(state.copyWith(textInputFocused: value));
     if (value) {
@@ -244,8 +255,14 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  void updateHiddenInputHeight(double height) {
-    emit(state.copyWith(textInputHeight: height));
+  void updateHiddenInputHeight(double height, double maxHeight) {
+    if (height <= maxHeight) {
+      emit(state.copyWith(textInputHeight: height));
+      if (state.isTextInputCollapsed) {
+        controller.snapToPosition(SnappingPosition.pixels(
+            positionPixels: height + grabbingHeight * 2));
+      }
+    }
   }
 
   void getBottomTextAreaHeight() {
@@ -442,12 +459,6 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  void scrollChatDown() {
-    SchedulerBinding.instance.endOfFrame.then((_) =>
-        activeMessagesScrollController
-            .jumpTo(activeMessagesScrollController.position.maxScrollExtent));
-  }
-
   bool needActiveChatTab() {
     return chatScreenArguments.privateQuestionId != null ||
         isPublicChat() ||
@@ -500,7 +511,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> startRecordingAudio(BuildContext context) async {
-    textInputSolidController.hide();
+    textInputFocusNode.unfocus();
     StorageSpace freeSpace = await getStorageSpace(
       lowOnSpaceThreshold: 0,
       fractionDigits: 1,
@@ -637,8 +648,7 @@ class ChatCubit extends Cubit<ChatState> {
                   (_checkRecordedAudioIsOk() || _checkTextLengthIsOk())),
     );
 
-   textInputFocusNode.requestFocus();
-
+    textInputFocusNode.requestFocus();
 
     getBottomTextAreaHeight();
     _scrollTextFieldToEnd();
@@ -730,6 +740,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   void changeCurrentTabIndex(int newIndex) {
     emit(state.copyWith(currentTabIndex: newIndex));
+    textInputFocusNode.unfocus();
   }
 
   void updateSuccessMessage(AppSuccess appSuccess) {

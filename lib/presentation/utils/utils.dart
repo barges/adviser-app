@@ -13,12 +13,12 @@ class Utils {
     return tp.computeLineMetrics().length;
   }
 
-  static double getTextHeight(String text, double maxWidth, TextStyle? style) {
-    TextPainter textPainter = TextPainter()
-      ..text = TextSpan(text: text, style: style)
-      ..textDirection = TextDirection.ltr
-      ..layout(minWidth: 0, maxWidth: double.infinity);
-
+  static double getTextHeight(String text, TextStyle? style) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      textDirection: TextDirection.ltr,
+      textScaleFactor: WidgetsBinding.instance.window.textScaleFactor,
+    )..layout();
     return textPainter.size.height;
   }
 
