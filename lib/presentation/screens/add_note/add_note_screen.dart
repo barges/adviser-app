@@ -79,6 +79,7 @@ class AddNoteScreen extends StatelessWidget {
                             autofocus: true,
                             scrollPadding: EdgeInsets.zero,
                             cursorColor: Theme.of(context).hoverColor,
+                            textCapitalization: TextCapitalization.sentences,
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               focusedBorder: InputBorder.none,

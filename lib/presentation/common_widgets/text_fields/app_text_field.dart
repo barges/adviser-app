@@ -72,6 +72,7 @@ class AppTextField extends StatelessWidget {
               focusNode: focusNode,
               keyboardType: textInputType,
               textInputAction: textInputAction,
+              textCapitalization: isBig ? TextCapitalization.sentences : TextCapitalization.none,
               onSubmitted: (_) {
                 FocusScope.of(context).requestFocus(nextFocusNode);
               },

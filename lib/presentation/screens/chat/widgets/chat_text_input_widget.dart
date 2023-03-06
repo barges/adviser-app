@@ -76,7 +76,6 @@ class ChatTextInputWidget extends StatelessWidget {
                       logger.d(chatCubit.state.needBarrierColor);
                     } else if (data.relativeToSnappingPositions == 1.0) {
                       chatCubit.setNeedBarrierColor(true);
-                      logger.d(chatCubit.state.needBarrierColor);
                     }
                   },
                   controller: chatCubit.controller,
@@ -97,6 +96,7 @@ class ChatTextInputWidget extends StatelessWidget {
                       Container(
                         color: theme.canvasColor,
                         width: MediaQuery.of(context).size.width,
+                        height: grabbingHeight,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -378,6 +378,7 @@ class _InputTextField extends StatelessWidget {
         thumbVisibility: true,
         child: TextField(
           scrollController: chatCubit.textInputScrollController,
+          textCapitalization: TextCapitalization.sentences,
           scrollPhysics: const ClampingScrollPhysics(),
           controller: chatCubit.textInputEditingController,
           focusNode: chatCubit.textInputFocusNode,
