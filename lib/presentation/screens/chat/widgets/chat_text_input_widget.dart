@@ -6,6 +6,7 @@ import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -16,6 +17,7 @@ import 'package:snapping_sheet/snapping_sheet.dart';
 
 const grabbingHeight = 16.0;
 const textCounterHeight = 21.0;
+const scrollbarThickness = 4.0;
 
 class ChatTextInputWidget extends StatelessWidget {
   const ChatTextInputWidget({
@@ -125,9 +127,16 @@ class ChatTextInputWidget extends StatelessWidget {
                     childScrollController: isStretchedTextField
                         ? chatCubit.textInputScrollController
                         : null,
-                    child: Container(
-                      color: theme.canvasColor,
-                      child: _InputTextField(key: chatCubit.textInputKey),
+                    child: Stack(
+                      children: [
+                        Container(
+                          color: theme.canvasColor,
+                        ),
+                        Container(
+                          color: theme.canvasColor,
+                          child: _InputTextField(key: chatCubit.textInputKey),
+                        ),
+                      ],
                     ),
                   ),
                   // child: Container(
@@ -368,7 +377,7 @@ class _InputTextField extends StatelessWidget {
         horizontal: AppConstants.horizontalScreenPadding,
       ),
       child: Scrollbar(
-        thickness: 4.0,
+        thickness: scrollbarThickness,
         controller: chatCubit.textInputScrollController,
         thumbVisibility: true,
         child: TextField(

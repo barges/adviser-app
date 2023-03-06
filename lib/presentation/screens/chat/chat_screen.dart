@@ -20,10 +20,12 @@ import 'package:shared_advisor_interface/presentation/common_widgets/messages/ap
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_state.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_input_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
 import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
@@ -56,6 +58,9 @@ class ChatScreen extends StatelessWidget {
             listener: (context, state) {
               final theme = Theme.of(context);
               final ChatCubit chatCubit = context.read<ChatCubit>();
+              final double maxWidth = MediaQuery.of(context).size.width -
+                  scrollbarThickness -
+                  AppConstants.horizontalScreenPadding * 2;
               final TextStyle? style = theme.textTheme.bodySmall?.copyWith(
                 color: theme.hoverColor,
                 fontSize: 15.0,
@@ -63,8 +68,8 @@ class ChatScreen extends StatelessWidget {
               );
               chatCubit.updateHiddenInputHeight(
                 Utils.getTextHeight(
-                    chatCubit.textInputEditingController.text, style),
-                Utils.getTextHeight('\n\n\n\n', style),
+                    chatCubit.textInputEditingController.text, style, maxWidth),
+                Utils.getTextHeight('\n\n\n\n', style, maxWidth),
               );
             },
             child: const ChatContentWidget());
@@ -231,8 +236,8 @@ class ChatContentWidget extends StatelessWidget {
             ),
             KeyboardSizeProvider(
               child: Builder(builder: (context) {
-                final bool needBarrierColor = context
-                    .select((ChatCubit cubit) => cubit.state.isStretchedTextField);
+                final bool needBarrierColor = context.select(
+                    (ChatCubit cubit) => cubit.state.isStretchedTextField);
                 return SafeArea(
                   child: Material(
                     type: needBarrierColor
