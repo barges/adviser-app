@@ -259,6 +259,13 @@ class ChatCubit extends Cubit<ChatState> {
             positionPixels: height + grabbingHeight * 2));
         scrollChatDown();
       }
+    } else {
+      emit(state.copyWith(textInputHeight: maxHeight));
+      if (controller.isAttached && state.isTextInputCollapsed) {
+        controller.snapToPosition(SnappingPosition.pixels(
+            positionPixels: maxHeight + grabbingHeight * 2));
+        scrollChatDown();
+      }
     }
   }
 
