@@ -2,12 +2,10 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -35,8 +33,8 @@ class ChatTextInputWidget extends StatelessWidget {
         context.select((ChatCubit cubit) => cubit.state.isAudioAnswerEnabled);
     final bool textInputFocused =
         context.select((ChatCubit cubit) => cubit.state.textInputFocused);
-    final bool isCollapsed =
-        context.select((ChatCubit cubit) => cubit.state.isTextInputCollapsed);
+    final bool isStretchedTextField =
+        context.select((ChatCubit cubit) => cubit.state.isStretchedTextField);
 
     final double bottomTextAreaHeight =
         context.select((ChatCubit cubit) => cubit.state.bottomTextAreaHeight);
@@ -56,8 +54,6 @@ class ChatTextInputWidget extends StatelessWidget {
                   (AppConstants.appBarHeight / 2) -
                   textCounterHeight;
 
-              //logger.d(MediaQueryData.fromWindow(window).viewInsets.bottom);
-
               return Flexible(
                 child: SnappingSheet(
                   grabbingHeight: grabbingHeight,
@@ -72,10 +68,9 @@ class ChatTextInputWidget extends StatelessWidget {
                     if (data.relativeToSnappingPositions == 0.0 &&
                         !chatCubit.state.isTextInputCollapsed) {
                       chatCubit.updateTextFieldIsCollapse(true);
-                      chatCubit.setNeedBarrierColor(false);
-                      logger.d(chatCubit.state.needBarrierColor);
+                      chatCubit.setStretchedTextField(false);
                     } else if (data.relativeToSnappingPositions == 1.0) {
-                      chatCubit.setNeedBarrierColor(true);
+                      chatCubit.setStretchedTextField(true);
                     }
                   },
                   controller: chatCubit.controller,
@@ -127,9 +122,9 @@ class ChatTextInputWidget extends StatelessWidget {
                   ),
                   sheetBelow: SnappingSheetContent(
                     draggable: true,
-                    childScrollController: isCollapsed
-                        ? null
-                        : chatCubit.textInputScrollController,
+                    childScrollController: isStretchedTextField
+                        ? chatCubit.textInputScrollController
+                        : null,
                     child: Container(
                       color: theme.canvasColor,
                       child: _InputTextField(key: chatCubit.textInputKey),
