@@ -243,12 +243,12 @@ class ChatCubit extends Cubit<ChatState> {
   void updateTextFieldIsCollapse(bool value) {
     emit(state.copyWith(isTextInputCollapsed: value));
     if (value) {
-      scrollTextFieldToEnd();
+      _scrollTextFieldToEnd();
     }
   }
 
-  void setNeedBarrierColor(bool value) {
-    emit(state.copyWith(needBarrierColor: value));
+  void setStretchedTextField(bool value) {
+    emit(state.copyWith(isStretchedTextField: value));
   }
 
   void updateHiddenInputHeight(double height, double maxHeight) {
@@ -650,7 +650,7 @@ class ChatCubit extends Cubit<ChatState> {
     textInputFocusNode.requestFocus();
 
     getBottomTextAreaHeight();
-    scrollTextFieldToEnd();
+    _scrollTextFieldToEnd();
   }
 
   void deletePicture(File? image, {bool scrollToEnd = true}) {
@@ -665,7 +665,7 @@ class ChatCubit extends Cubit<ChatState> {
     );
 
     if (scrollToEnd) {
-      scrollTextFieldToEnd();
+      _scrollTextFieldToEnd();
     }
     getBottomTextAreaHeight();
   }
@@ -1164,7 +1164,7 @@ class ChatCubit extends Cubit<ChatState> {
             : AppConstants.maxAttachedPictures);
   }
 
-  void scrollTextFieldToEnd() {
+  void _scrollTextFieldToEnd() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (textInputScrollController.hasClients) {
         textInputScrollController

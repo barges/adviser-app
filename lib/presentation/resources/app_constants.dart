@@ -18,7 +18,7 @@ class AppConstants {
   static const int minAttachedPictures = 1;
 
   static const int minRecordDurationInSec = 15;
-  static const int maxRecordDurationInSec = 180;
+  static const int maxRecordDurationInSec = 360;
 
   static const int minTextLength = 250;
   static const int maxTextLength = 2000;

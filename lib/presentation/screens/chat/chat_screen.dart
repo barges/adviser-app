@@ -232,7 +232,7 @@ class ChatContentWidget extends StatelessWidget {
             KeyboardSizeProvider(
               child: Builder(builder: (context) {
                 final bool needBarrierColor = context
-                    .select((ChatCubit cubit) => cubit.state.needBarrierColor);
+                    .select((ChatCubit cubit) => cubit.state.isStretchedTextField);
                 return SafeArea(
                   child: Material(
                     type: needBarrierColor
