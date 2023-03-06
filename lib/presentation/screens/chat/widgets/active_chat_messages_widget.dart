@@ -34,9 +34,9 @@ class ActiveChatMessagesWidget extends StatelessWidget {
         context.select((ChatCubit cubit) => cubit.state.textInputHeight);
 
     final double bottomPadding =
-        MediaQueryData.fromWindow(window).viewPadding.bottom > 0.0
+        (MediaQueryData.fromWindow(window).viewPadding.bottom > 0.0
             ? MediaQueryData.fromWindow(window).viewPadding.bottom
-            : 24.0 +
+            : 24.0) +
                 bottomTextAreaHeight +
                 grabbingHeight +
                 textInputHeight +
