@@ -35,6 +35,11 @@ class AppTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isNotEmptyError = errorType != ValidationErrorType.empty;
+
+    final BorderRadius outerRadius =
+        BorderRadius.circular(AppConstants.buttonRadius);
+    final BorderRadius innerRadius =
+        BorderRadius.circular(AppConstants.buttonRadius - 1);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -52,7 +57,7 @@ class AppTextField extends StatelessWidget {
         ),
         Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
+            borderRadius: outerRadius,
             color: isNotEmptyError
                 ? Theme.of(context).errorColor
                 : focusNode.hasPrimaryFocus
@@ -63,8 +68,7 @@ class AppTextField extends StatelessWidget {
             margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
             height: (isBig ? 144.0 : AppConstants.textFieldsHeight) - 3,
             decoration: BoxDecoration(
-              borderRadius:
-                  BorderRadius.circular(AppConstants.buttonRadius - 1),
+              borderRadius: innerRadius,
               color: Theme.of(context).canvasColor,
             ),
             child: TextField(
@@ -72,7 +76,9 @@ class AppTextField extends StatelessWidget {
               focusNode: focusNode,
               keyboardType: textInputType,
               textInputAction: textInputAction,
-              textCapitalization: isBig ? TextCapitalization.sentences : TextCapitalization.none,
+              textCapitalization: isBig
+                  ? TextCapitalization.sentences
+                  : TextCapitalization.none,
               onSubmitted: (_) {
                 FocusScope.of(context).requestFocus(nextFocusNode);
               },
@@ -87,6 +93,7 @@ class AppTextField extends StatelessWidget {
                     ? const EdgeInsets.all(12.0)
                     : const EdgeInsets.symmetric(horizontal: 12.0),
                 disabledBorder: OutlineInputBorder(
+                    borderRadius: innerRadius,
                     borderSide: BorderSide(color: Theme.of(context).hintColor)),
                 filled: !isEnabled,
                 fillColor: Theme.of(context).scaffoldBackgroundColor,

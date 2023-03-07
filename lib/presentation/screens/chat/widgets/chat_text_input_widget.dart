@@ -6,7 +6,6 @@ import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -27,6 +26,7 @@ class ChatTextInputWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
 
     final List<File> attachedPictures =
         context.select((ChatCubit cubit) => cubit.state.attachedPictures);
@@ -49,7 +49,7 @@ class ChatTextInputWidget extends StatelessWidget {
               final double textInputHeight = context
                   .select((ChatCubit cubit) => cubit.state.textInputHeight);
 
-              final double h = MediaQuery.of(context).size.height -
+              final double h = size.height -
                   MediaQueryData.fromWindow(window).viewPadding.top -
                   MediaQueryData.fromWindow(window).viewInsets.bottom -
                   bottomTextAreaHeight -
@@ -91,9 +91,17 @@ class ChatTextInputWidget extends StatelessWidget {
                     clipBehavior: Clip.none,
                     children: [
                       Container(
-                        color: theme.canvasColor,
                         width: MediaQuery.of(context).size.width,
                         height: grabbingHeight,
+                        decoration:
+                            BoxDecoration(color: theme.canvasColor, boxShadow: [
+                          BoxShadow(
+                            blurRadius: 2.0,
+                            spreadRadius: 2.0,
+                            color: theme.canvasColor,
+                            offset: const Offset(0, 10),
+                          )
+                        ]),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -119,7 +127,7 @@ class ChatTextInputWidget extends StatelessWidget {
                         top: -textCounterHeight,
                         right: 0.0,
                         child: _TextCounter(),
-                      )
+                      ),
                     ],
                   ),
                   sheetBelow: SnappingSheetContent(
@@ -127,22 +135,11 @@ class ChatTextInputWidget extends StatelessWidget {
                     childScrollController: isStretchedTextField
                         ? chatCubit.textInputScrollController
                         : null,
-                    child: Stack(
-                      children: [
-                        Container(
-                          color: theme.canvasColor,
-                        ),
-                        Container(
-                          color: theme.canvasColor,
-                          child: _InputTextField(key: chatCubit.textInputKey),
-                        ),
-                      ],
+                    child: Container(
+                      color: theme.canvasColor,
+                      child: _InputTextField(key: chatCubit.textInputKey),
                     ),
                   ),
-                  // child: Container(
-                  //   color:Colors.red,
-                  //   height: h,
-                  // ),
                 ),
               );
             }),
@@ -382,6 +379,7 @@ class _InputTextField extends StatelessWidget {
         thumbVisibility: true,
         child: TextField(
           scrollController: chatCubit.textInputScrollController,
+          keyboardType: TextInputType.text,
           textCapitalization: TextCapitalization.sentences,
           scrollPhysics: const ClampingScrollPhysics(),
           controller: chatCubit.textInputEditingController,
