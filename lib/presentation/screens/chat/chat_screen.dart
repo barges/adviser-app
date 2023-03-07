@@ -135,7 +135,6 @@ class ChatContentWidget extends StatelessWidget {
                   }),
               backgroundColor: Theme.of(context).canvasColor,
               body: SafeArea(
-                bottom: false,
                 child: Builder(builder: (context) {
                   final List<String> tabsTitles = [];
                   if (chatCubit.needActiveChatTab()) {
