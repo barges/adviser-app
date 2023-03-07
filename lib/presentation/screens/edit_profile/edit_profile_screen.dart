@@ -22,7 +22,7 @@ class EditProfileScreen extends StatelessWidget {
       child: Builder(builder: (context) {
         final EditProfileCubit editProfileCubit =
             context.read<EditProfileCubit>();
-        logger.d(editProfileCubit.needRefresh);
+
         return BlocListener<EditProfileCubit, EditProfileState>(
           listener: (prev, current) {
             if (current.chosenLanguageIndex == 0) {
