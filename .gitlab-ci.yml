@@ -71,7 +71,7 @@ build-android:
     - flutter build appbundle --release
   artifacts:
     paths:
-      - build/app/outputs/flutter-apk/app-release.apk
+      - build/app/outputs/bundle/release/app-release.aab
   tags:
     - macmini
   only:
@@ -116,7 +116,7 @@ deploy-android:
     - job: generate-release-notes
       artifacts: true
   script:
-    - firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk --app 1:986930839057:android:16ca6e7b357f2ba95cbbb0 --token "$FIREBASE_TOKEN" --release-notes-file release-notes.txt --groups "Testers" --debug
+    - firebase appdistribution:distribute build/app/outputs/bundle/release/app-release.aab --app 1:986930839057:android:16ca6e7b357f2ba95cbbb0 --token "$FIREBASE_TOKEN" --release-notes-file release-notes.txt --groups "Testers" --debug
   tags:
     - macmini
   only:
