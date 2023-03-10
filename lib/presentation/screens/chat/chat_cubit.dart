@@ -298,7 +298,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     if (chatScreenArguments.ritualID != null) {
-      _getRituals(chatScreenArguments.ritualID!).then((_) async {
+      await _getRituals(chatScreenArguments.ritualID!).then((_) async {
         scrollChatDown();
       });
     } else {
