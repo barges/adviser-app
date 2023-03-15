@@ -70,13 +70,6 @@ class PushNotificationManagerImpl implements PushNotificationManager {
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse: (response) async {
-      logger.d('+++++++++++++++++++++++');
-      logger.d(response.notificationResponseType);
-      logger.d(response.payload);
-      logger.d(response.id);
-      logger.d(response.actionId);
-      logger.d(response.input);
-      logger.d('+++++++++++++++++++++++');
       final Map<String, dynamic> message = json.decode(response.payload ?? '');
 
       _navigateToNextScreen(RemoteMessage(data: message));
@@ -139,13 +132,8 @@ class PushNotificationManagerImpl implements PushNotificationManager {
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      logger.d('***********************');
-      logger.d(message.toMap());
-      logger.d(message.data);
-      logger.d(message.data['meta']);
       Map<String, dynamic> map = jsonDecode(message.data['meta'] ?? '');
-      logger.d(map['entityId']);
-      logger.d('***********************');
+
 
       if (Platform.isAndroid) {
         showNotification(message);
@@ -170,15 +158,6 @@ class PushNotificationManagerImpl implements PushNotificationManager {
 }
 
 Future<void> _backgroundMessageHandler(RemoteMessage message) async {
-  logger.d('***********************');
-  logger.d(message.toMap());
-  logger.d(message.data);
-  logger.d(message.data['meta']);
-  Map<String, dynamic> map = jsonDecode(message.data['meta'] ?? '');
-  logger.d(map['entityId']);
-  logger.d('***********************');
-
-  logger.d('On background');
 
   final SendPort? send =
       IsolateNameServer.lookupPortByName(_notificationPortChannel);
