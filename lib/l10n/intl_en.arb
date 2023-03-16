@@ -148,7 +148,7 @@
   "theMaximumSizeOfTheAttachmentsIsXMb": "The maximum size of the attachments is {maxAttachmentSizeInMb}Mb",
   "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": "This question will be returned to the general list after {counter}",
   "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m": "The answer is not possible, this question will be returned to the general list in ~ 1m",
-  "youHaveARitualRequest": "You have a ritual request",
+  "youHaveAnActiveSession": "You have an active session",
   "youHaveAPrivateMessage": "You have a private message",
   "youHaveAFewActiveSessions": "You have a few active sessions",
   "unknownError": "Unknown error",

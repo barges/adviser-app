@@ -149,7 +149,7 @@
   "theMaximumSizeOfTheAttachmentsIsXMb": "El tamaño máximo de los archivos adjuntos es de {maxAttachmentSizeInMb}Mb",
   "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": "Esta pregunta vuelve a la lista general después de las {counter}",
   "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m": "La respuesta no es posible, esta pregunta volverá a la lista general en ~ 1m",
-  "youHaveARitualRequest": "Tienes una solicitud de ritual",
+  "youHaveAnActiveSession": "Tienes una sesión activa",
   "youHaveAPrivateMessage": "Tienes un mensaje privado",
   "youHaveAFewActiveSessions": "Tiene algunas sesiones activas",
   "unknownError": "Error desconocido",
