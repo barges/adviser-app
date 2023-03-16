@@ -299,31 +299,4 @@ class SessionsCubit extends Cubit<SessionsState> {
       }
     }
   }
-
-// Future<void> getHistoryList(
-//     {FortunicaUserStatus? status, isFirstRequest = false}) async {
-//   if (_historyHasMore &&
-//       await _connectivityService.checkConnection() &&
-//       (status ?? cacheManager.getUserStatus()?.status) ==
-//           FortunicaUserStatus.live) {
-//     final QuestionsListResponse result = await _repository.getHistoryList(
-//       limit: questionsLimit,
-//       page: _historyPage++,
-//     );
-//
-//     _historyHasMore = result.hasMore ?? true;
-//
-//     _privateQuestionsWithHistory.addAll(result.questions ?? const []);
-//
-//     if (!isFirstRequest) {
-//       emit(
-//         state.copyWith(
-//           privateQuestionsWithHistory: List.of(
-//             _privateQuestionsWithHistory,
-//           ),
-//         ),
-//       );
-//     }
-//   }
-// }
 }

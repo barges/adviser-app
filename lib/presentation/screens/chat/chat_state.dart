@@ -6,7 +6,6 @@ import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/rirual_card_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/services/audio/audio_recorder_service.dart';
 
 part 'chat_state.freezed.dart';
 
@@ -46,9 +45,9 @@ class ChatState with _$ChatState {
     @Default(18.0)
         double textInputHeight,
     @Default(false)
-        bool keyboardOpened,
-    @Default(false)
         bool textInputFocused,
+    @Default(false)
+        bool isStretchedTextField,
     @Default(96.0)
         double bottomTextAreaHeight,
   }) = _ChatState;

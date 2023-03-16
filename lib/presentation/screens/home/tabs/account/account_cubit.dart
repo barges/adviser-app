@@ -14,6 +14,7 @@ import 'package:shared_advisor_interface/data/network/requests/push_enable_reque
 import 'package:shared_advisor_interface/data/network/requests/set_push_notification_token_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
@@ -37,7 +38,7 @@ class AccountCubit extends Cubit<AccountState> {
 
   final PushNotificationManager _pushNotificationManager;
 
-  final Uri _url = Uri.parse(AppConstants.webToolUrl);
+  final Uri _url = Uri.parse(AppConstants.webToolUrlProd);
 
   late final VoidCallback disposeListen;
   late final StreamSubscription<bool> _appOnResumeSubscription;
@@ -163,9 +164,9 @@ class AccountCubit extends Cubit<AccountState> {
         );
         _isFirstLoadUserInfo = false;
       }
-      isTimeout = false;
+      emit(state.copyWith(isTimeout: false));
     } catch (e) {
-      isTimeout = true;
+      emit(state.copyWith(isTimeout: true));
     }
   }
 
@@ -233,34 +234,42 @@ class AccountCubit extends Cubit<AccountState> {
   }
 
   Future<void> updateUserStatus({required FortunicaUserStatus status}) async {
-    final UpdateUserStatusRequest request = UpdateUserStatusRequest(
-      status: status,
-      comment: commentController.text,
-    );
-    await _userRepository.updateUserStatus(request);
-    refreshUserinfo();
+    try {
+      final UpdateUserStatusRequest request = UpdateUserStatusRequest(
+        status: status,
+        comment: commentController.text,
+      );
+      await _userRepository.updateUserStatus(request);
+      refreshUserinfo();
+    } catch (e) {
+      logger.d(e);
+    }
   }
 
   Future<void> updateEnableNotificationsValue(bool newValue) async {
-    if (newValue) {
-      if (isPushNotificationPermissionGranted == true) {
-        await _sendPushToken();
+    try {
+      if (newValue) {
+        if (isPushNotificationPermissionGranted == true) {
+          await _sendPushToken();
+          await _setPushEnabledForBackend(newValue);
+          emit(
+            state.copyWith(
+              enableNotifications: newValue,
+            ),
+          );
+        } else {
+          _handlePermission(true);
+        }
+      } else {
         await _setPushEnabledForBackend(newValue);
         emit(
           state.copyWith(
             enableNotifications: newValue,
           ),
         );
-      } else {
-        _handlePermission(true);
       }
-    } else {
-      await _setPushEnabledForBackend(newValue);
-      emit(
-        state.copyWith(
-          enableNotifications: newValue,
-        ),
-      );
+    } catch (e) {
+      logger.d(e);
     }
   }
 
@@ -297,7 +306,7 @@ class AccountCubit extends Cubit<AccountState> {
   Future<void> goToEditProfile() async {
     final dynamic needUpdateInfo = await Get.toNamed(
       AppRoutes.editProfile,
-      arguments: EditProfileScreenArguments(isAccountTimeout: isTimeout),
+      arguments: EditProfileScreenArguments(isAccountTimeout: state.isTimeout),
     );
     if (needUpdateInfo is bool && needUpdateInfo == true) {
       refreshUserinfo();
@@ -307,7 +316,8 @@ class AccountCubit extends Cubit<AccountState> {
   void goToAdvisorPreview() {
     Get.toNamed(
       AppRoutes.advisorPreview,
-      arguments: AdvisorPreviewScreenArguments(isAccountTimeout: isTimeout),
+      arguments:
+          AdvisorPreviewScreenArguments(isAccountTimeout: state.isTimeout),
     );
   }
 

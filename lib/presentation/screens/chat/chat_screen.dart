@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/ui_error_type.dart';
@@ -19,9 +20,12 @@ import 'package:shared_advisor_interface/presentation/common_widgets/messages/ap
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/chat_state.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_input_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
 import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
@@ -47,7 +51,29 @@ class ChatScreen extends StatelessWidget {
         () => deleteAudioMessageAlert(context),
         () => recordingIsNotPossibleAlert(context),
       ),
-      child: const ChatContentWidget(),
+      child: Builder(builder: (context) {
+        return BlocListener<ChatCubit, ChatState>(
+            listenWhen: (prev, current) =>
+                prev.inputTextLength != current.inputTextLength,
+            listener: (context, state) {
+              final theme = Theme.of(context);
+              final ChatCubit chatCubit = context.read<ChatCubit>();
+              final double maxWidth = MediaQuery.of(context).size.width -
+                  scrollbarThickness -
+                  AppConstants.horizontalScreenPadding * 2;
+              final TextStyle? style = theme.textTheme.bodySmall?.copyWith(
+                color: theme.hoverColor,
+                fontSize: 15.0,
+                height: 1.2,
+              );
+              chatCubit.updateHiddenInputHeight(
+                Utils.getTextHeight(
+                    chatCubit.textInputEditingController.text, style, maxWidth),
+                Utils.getTextHeight('\n\n\n\n', style, maxWidth),
+              );
+            },
+            child: const ChatContentWidget());
+      }),
     );
   }
 }
@@ -67,10 +93,6 @@ class ChatContentWidget extends StatelessWidget {
         context.select((ChatCubit cubit) => cubit.state.appBarUpdateArguments);
     final ChatItemStatusType? questionStatus =
         context.select((ChatCubit cubit) => cubit.state.questionStatus);
-    final bool isTextInputCollapsed =
-        context.select((ChatCubit cubit) => cubit.state.isTextInputCollapsed);
-
-    logger.d(appBarUpdateArguments?.clientName);
 
     return WillPopScope(
       onWillPop: () => Future.value(
@@ -86,17 +108,16 @@ class ChatContentWidget extends StatelessWidget {
                 UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
           }
         },
-        child: Scaffold(
-          backgroundColor: Theme.of(context).canvasColor,
-          body: SafeArea(
-            child: Scaffold(
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Scaffold(
               appBar: ChatConversationAppBar(
                   title: appBarUpdateArguments?.clientName,
                   zodiacSign: appBarUpdateArguments?.zodiacSign ??
                       questionFromDB?.clientInformation?.zodiac,
                   publicQuestionId:
                       chatCubit.chatScreenArguments.publicQuestionId,
-                  isTextFieldCollapsed: isTextInputCollapsed,
                   returnInQueueButtonOnTap: () async {
                     final dynamic needReturn = await showOkCancelAlert(
                       context: context,
@@ -112,144 +133,156 @@ class ChatContentWidget extends StatelessWidget {
                       await chatCubit.returnQuestion();
                     }
                   }),
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              body: ColorFiltered(
-                colorFilter: ColorFilter.mode(
-                    isTextInputCollapsed
-                        ? Colors.transparent
-                        : Utils.getOverlayColor(context),
-                    BlendMode.multiply),
-                child: SafeArea(
-                  child: Builder(builder: (context) {
-                    final List<String> tabsTitles = [];
-                    if (chatCubit.needActiveChatTab()) {
-                      tabsTitles.add(chatCubit.isPublicChat()
-                          ? S.of(context).question
-                          : S.of(context).activeChat);
-                    }
-                    tabsTitles.addAll([
-                      S.of(context).history,
-                      S.of(context).profile,
-                    ]);
-
-                    return Column(
-                      children: [
-                        const Divider(
-                          height: 1.0,
-                        ),
-                        Container(
-                          color: Theme.of(context).canvasColor,
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10.0,
-                            horizontal: 16.0,
-                          ),
-                          child: Builder(builder: (context) {
-                            final int currentIndex = context.select(
-                                (ChatCubit cubit) =>
-                                    cubit.state.currentTabIndex);
-                            return ChooseOptionWidget(
-                              options: tabsTitles,
-                              currentIndex: currentIndex,
-                              onChangeOptionIndex:
-                                  chatCubit.changeCurrentTabIndex,
-                            );
-                          }),
-                        ),
-                        Builder(
-                          builder: (BuildContext context) {
-                            final AppSuccess appSuccess = context.select(
-                                (ChatCubit cubit) => cubit.state.appSuccess);
-                            return AppSuccessWidget(
-                              message: appSuccess.getMessage(context),
-                              onClose: chatCubit.clearSuccessMessage,
-                            );
-                          },
-                        ),
-                        Builder(
-                          builder: (context) {
-                            final AppError appError = context.select(
-                                (MainCubit cubit) => cubit.state.appError);
-
-                            return AppErrorWidget(
-                              errorMessage: appError.getMessage(context),
-                              close: mainCubit.clearErrorMessage,
-                            );
-                          },
-                        ),
-                        Builder(builder: (context) {
-                          final List<Widget> tabs = [];
-                          if (chatCubit.needActiveChatTab()) {
-                            tabs.add(const ActiveChatWidget());
-                          }
-                          tabs.addAll([
-                            Builder(builder: (context) {
-                              return questionFromDB?.clientID != null
-                                  ? HistoryWidget(
-                                      clientId: questionFromDB!.clientID!,
-                                      storyId: chatCubit.chatScreenArguments
-                                          .storyIdForHistory,
-                                    )
-                                  : const SizedBox.shrink();
-                            }),
-                            questionFromDB?.clientID != null
-                                ? CustomerProfileWidget(
-                                    customerId: questionFromDB!.clientID!,
-                                    updateClientInformationCallback:
-                                        chatCubit.updateAppBarInformation,
-                                    chatCubit: chatCubit,
-                                  )
-                                : const SizedBox.shrink(),
-                          ]);
-
-                          return Builder(builder: (context) {
-                            final int currentIndex = context.select(
-                                (ChatCubit cubit) =>
-                                    cubit.state.currentTabIndex);
-                            return Expanded(
-                              child: IndexedStack(
-                                index: currentIndex,
-                                children: tabs,
-                              ),
-                            );
-                          });
-                        }),
-                      ],
-                    );
-                  }),
-                ),
-              ),
-              bottomNavigationBar: Builder(
-                builder: (context) {
-                  final int currentIndex = context
-                      .select((ChatCubit cubit) => cubit.state.currentTabIndex);
-                  final ChatItemStatusType? questionStatus = context
-                      .select((ChatCubit cubit) => cubit.state.questionStatus);
-
-                  if (chatCubit.needActiveChatTab() && currentIndex == 0) {
-                    if (chatCubit.isPublicChat()) {
-                      final bool showInputFieldIfPublic = context.select(
-                          (ChatCubit cubit) =>
-                              cubit.state.showInputFieldIfPublic);
-                      if (!showInputFieldIfPublic ||
-                          questionStatus != ChatItemStatusType.taken) {
-                        return const SizedBox.shrink();
-                      } else {
-                        return const ActiveChatInputFieldWidget();
-                      }
-                    } else {
-                      if (questionStatus != ChatItemStatusType.answered) {
-                        return const ActiveChatInputFieldWidget();
-                      } else {
-                        return const SizedBox.shrink();
-                      }
-                    }
-                  } else {
-                    return const SizedBox.shrink();
+              backgroundColor: Theme.of(context).canvasColor,
+              body: SafeArea(
+                child: Builder(builder: (context) {
+                  final List<String> tabsTitles = [];
+                  if (chatCubit.needActiveChatTab()) {
+                    tabsTitles.add(chatCubit.isPublicChat()
+                        ? S.of(context).question
+                        : S.of(context).activeChat);
                   }
-                },
+                  tabsTitles.addAll([
+                    S.of(context).history,
+                    S.of(context).profile,
+                  ]);
+
+                  return Column(
+                    children: [
+                      const Divider(
+                        height: 1.0,
+                      ),
+                      Container(
+                        color: Theme.of(context).canvasColor,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10.0,
+                          horizontal: 16.0,
+                        ),
+                        child: Builder(builder: (context) {
+                          final int currentIndex = context.select(
+                              (ChatCubit cubit) => cubit.state.currentTabIndex);
+                          return ChooseOptionWidget(
+                            options: tabsTitles,
+                            currentIndex: currentIndex,
+                            onChangeOptionIndex:
+                                chatCubit.changeCurrentTabIndex,
+                          );
+                        }),
+                      ),
+                      const Divider(
+                        height: 1.0,
+                      ),
+                      Builder(
+                        builder: (BuildContext context) {
+                          final AppSuccess appSuccess = context.select(
+                              (ChatCubit cubit) => cubit.state.appSuccess);
+                          return AppSuccessWidget(
+                            message: appSuccess.getMessage(context),
+                            onClose: chatCubit.clearSuccessMessage,
+                          );
+                        },
+                      ),
+                      Builder(
+                        builder: (context) {
+                          final AppError appError = context.select(
+                              (MainCubit cubit) => cubit.state.appError);
+
+                          return AppErrorWidget(
+                            errorMessage: appError.getMessage(context),
+                            close: mainCubit.clearErrorMessage,
+                          );
+                        },
+                      ),
+                      Builder(builder: (context) {
+                        final List<Widget> tabs = [];
+                        if (chatCubit.needActiveChatTab()) {
+                          tabs.add(const ActiveChatWidget());
+                        }
+                        tabs.addAll([
+                          Builder(builder: (context) {
+                            return questionFromDB?.clientID != null
+                                ? HistoryWidget(
+                                    clientId: questionFromDB!.clientID!,
+                                    storyId: chatCubit
+                                        .chatScreenArguments.storyIdForHistory,
+                                  )
+                                : const SizedBox.shrink();
+                          }),
+                          questionFromDB?.clientID != null
+                              ? CustomerProfileWidget(
+                                  customerId: questionFromDB!.clientID!,
+                                  updateClientInformationCallback:
+                                      chatCubit.updateAppBarInformation,
+                                  chatCubit: chatCubit,
+                                )
+                              : const SizedBox.shrink(),
+                        ]);
+
+                        return Builder(builder: (context) {
+                          final int currentIndex = context.select(
+                              (ChatCubit cubit) => cubit.state.currentTabIndex);
+                          return Expanded(
+                            child: IndexedStack(
+                              index: currentIndex,
+                              children: tabs,
+                            ),
+                          );
+                        });
+                      }),
+                    ],
+                  );
+                }),
               ),
             ),
-          ),
+            KeyboardSizeProvider(
+              child: Builder(builder: (context) {
+                final bool needBarrierColor = context.select(
+                    (ChatCubit cubit) => cubit.state.isStretchedTextField);
+                return SafeArea(
+                  child: Material(
+                    type: needBarrierColor
+                        ? MaterialType.canvas
+                        : MaterialType.transparency,
+                    color: needBarrierColor
+                        ? Utils.getOverlayColor(context)
+                        : Colors.transparent,
+                    child: Builder(
+                      builder: (context) {
+                        final int currentIndex = context.select(
+                            (ChatCubit cubit) => cubit.state.currentTabIndex);
+                        final ChatItemStatusType? questionStatus =
+                            context.select((ChatCubit cubit) =>
+                                cubit.state.questionStatus);
+
+                        if (chatCubit.needActiveChatTab() &&
+                            currentIndex == 0) {
+                          if (chatCubit.isPublicChat()) {
+                            final bool showInputFieldIfPublic = context.select(
+                                (ChatCubit cubit) =>
+                                    cubit.state.showInputFieldIfPublic);
+                            if (!showInputFieldIfPublic ||
+                                questionStatus != ChatItemStatusType.taken) {
+                              return const SizedBox.shrink();
+                            } else {
+                              return const ActiveChatInputFieldWidget();
+                            }
+                          } else {
+                            if (questionStatus != ChatItemStatusType.answered) {
+                              return const ActiveChatInputFieldWidget();
+                            } else {
+                              return const SizedBox.shrink();
+                            }
+                          }
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      },
+                    ),
+                  ),
+                );
+              }),
+            ),
+          ],
         ),
       ),
     );

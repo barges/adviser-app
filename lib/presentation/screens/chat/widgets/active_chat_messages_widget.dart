@@ -1,12 +1,14 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
 import 'package:shared_advisor_interface/data/models/chats/rirual_card_info.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
 import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
-import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/ritual_info_card_widget.dart';
 
 class ActiveChatMessagesWidget extends StatelessWidget {
@@ -24,6 +26,22 @@ class ActiveChatMessagesWidget extends StatelessWidget {
         context.select((ChatCubit cubit) => cubit.state.ritualCardInfo);
     final bool refreshEnabled =
         context.select((ChatCubit cubit) => cubit.state.refreshEnabled);
+
+    final double bottomTextAreaHeight =
+        context.select((ChatCubit cubit) => cubit.state.bottomTextAreaHeight);
+
+    final double textInputHeight =
+        context.select((ChatCubit cubit) => cubit.state.textInputHeight);
+
+    final double bottomPadding =
+        (MediaQueryData.fromWindow(window).viewPadding.bottom > 0.0
+            ? MediaQueryData.fromWindow(window).viewPadding.bottom
+            : 24.0) +
+                bottomTextAreaHeight +
+                grabbingHeight +
+                textInputHeight +
+                textCounterHeight;
+
     return Column(
       children: [
         Expanded(
@@ -36,7 +54,7 @@ class ActiveChatMessagesWidget extends StatelessWidget {
                 controller: chatCubit.activeMessagesScrollController,
                 physics: const AlwaysScrollableScrollPhysics()
                     .applyTo(const ClampingScrollPhysics()),
-                padding: const EdgeInsets.fromLTRB(12.0, 16.0, 12.0, 24.0),
+                padding: EdgeInsets.fromLTRB(12.0, 16.0, 12.0, bottomPadding),
                 child: Builder(builder: (context) {
                   final List<Widget> widgets = [];
 

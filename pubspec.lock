@@ -710,6 +710,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.3.0"
+  flutter_keyboard_size:
+    dependency: "direct main"
+    description:
+      name: flutter_keyboard_size
+      sha256: "90b6a45ca79a0c756ae38bc5ed90ccaeae4d917c6141a646208c5a98e4285453"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   flutter_keyboard_visibility:
     dependency: "direct main"
     description:
@@ -1570,14 +1578,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
-  solid_bottom_sheet:
+  snapping_sheet:
     dependency: "direct main"
     description:
-      name: solid_bottom_sheet
-      sha256: "7a18ee17da1c57fdad953f785be4cbdaf5e1116650888162ceaccb80e6b6a6aa"
+      name: snapping_sheet
+      sha256: "17c6367bca51858a903ea2dc66db1d82a61d417e1faf78b0374aae181abb0d79"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.10"
+    version: "3.1.0"
   source_gen:
     dependency: transitive
     description:
