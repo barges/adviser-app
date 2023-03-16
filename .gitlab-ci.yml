@@ -63,14 +63,15 @@ build-ios:
 build-android:
   stage: build
   before_script:
+    - printf ${ANDROID_RELEASE_KEY} | base64 -d > ./android/keys/release.keystore
     - flutter --version
     - flutter pub get
     - flutter pub run build_runner build --delete-conflicting-outputs
   script:
-    - flutter build apk --release
+    - flutter build appbundle --release
   artifacts:
     paths:
-      - build/app/outputs/flutter-apk/app-release.apk
+      - build/app/outputs/bundle/release/app-release.aab
   tags:
     - macmini
   only:
@@ -115,7 +116,7 @@ deploy-android:
     - job: generate-release-notes
       artifacts: true
   script:
-    - firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk --app 1:986930839057:android:16ca6e7b357f2ba95cbbb0 --token "$FIREBASE_TOKEN" --release-notes-file release-notes.txt --groups "Testers" --debug
+    - firebase appdistribution:distribute build/app/outputs/bundle/release/app-release.aab --app 1:986930839057:android:16ca6e7b357f2ba95cbbb0 --token "$FIREBASE_TOKEN" --release-notes-file release-notes.txt --groups "Testers" --debug
   tags:
     - macmini
   only:
