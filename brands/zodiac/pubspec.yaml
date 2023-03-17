@@ -1,0 +1,58 @@
+name: zodiac
+description: Zodiac brand
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: '>=2.18.2 <3.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_advisor_interface:
+    path: ../..
+  freezed: ^2.1.0+1
+  intl: ^0.17.0
+ # intl_utils: ^2.8.2
+  freezed_annotation: ^2.1.0
+  json_annotation: ^4.7.0
+  flutter_svg: ^1.1.3
+  dio: ^4.0.6
+  rxdart: ^0.27.5
+  injectable: ^1.5.3
+  get_it: ^7.2.0
+  device_info_plus: ^4.1.2
+  package_info_plus: ^1.4.3+1
+  android_id: ^0.0.7
+  open_mail_app: ^0.4.5
+  flutter_bloc: ^8.1.2
+  auto_route: ^5.0.2
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  json_serializable: ^6.5.4
+  flutter_gen_runner: ^4.3.0
+
+  injectable_generator: ^1.5.4
+  auto_route_generator: any
+  retrofit_generator: ^4.0.3
+
+  build_runner: ^2.3.2
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+flutter_intl:
+  enabled: true
+  class_name: SZodiac
+  main_locale: en
+  arb_dir: lib/l10n
+  output_dir: lib/generated
+  use_deferred_loading: false

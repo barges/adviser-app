@@ -1,8 +1,10 @@
+import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/brands/base_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:fortunica/generated/l10n.dart';
 
 void showPickerModalPopUp({
   required BuildContext context,
@@ -10,6 +12,8 @@ void showPickerModalPopUp({
   required List<Widget> elements,
   int? currentIndex,
 }) {
+
+  final router = globalGetIt.get<AppRouter>();
   showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) {
@@ -32,13 +36,13 @@ void showPickerModalPopUp({
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: Get.back,
+                      onTap:() => router.pop(context),
                       child: Container(
                         alignment: Alignment.center,
                         height: AppConstants.appBarHeight,
                         color: Colors.transparent,
                         child: Text(
-                          S.of(context).cancel,
+                          SFortunica.of(context).cancelFortunica,
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: Theme.of(context).primaryColor,
@@ -49,14 +53,14 @@ void showPickerModalPopUp({
                     GestureDetector(
                       onTap: () {
                         setIndex(controller.selectedItem);
-                        Get.back();
+                        router.pop(context);
                       },
                       child: Container(
                         alignment: Alignment.center,
                         height: AppConstants.appBarHeight,
                         color: Colors.transparent,
                         child: Text(
-                          S.of(context).done,
+                          SFortunica.of(context).doneFortunica,
                           style:
                               Theme.of(context).textTheme.labelMedium?.copyWith(
                                     fontSize: 15.0,

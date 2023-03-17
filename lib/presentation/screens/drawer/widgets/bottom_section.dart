@@ -1,10 +1,12 @@
+import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/presentation/screens/drawer/drawer_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/drawer/drawer_cubit.dart';
 
 class BottomSection extends StatelessWidget {
   const BottomSection({Key? key}) : super(key: key);
@@ -27,7 +29,10 @@ class BottomSection extends StatelessWidget {
               _BottomSectionItem(
                 icon: Assets.vectors.bookOpen.path,
                 text: S.of(context).allOurBrands,
-                onTap: cubit.goToAllBrands,
+                onTap: () {
+                  context.pop();
+                  context.push(route: const AllBrands());
+                },
               ),
               const SizedBox(
                 height: 16.0,
@@ -35,7 +40,10 @@ class BottomSection extends StatelessWidget {
               _BottomSectionItem(
                 icon: Assets.vectors.questionMark.path,
                 text: S.of(context).customerSupport,
-                onTap: cubit.goToCustomerSupport,
+                onTap: () {
+                  context.pop();
+                  context.push(route: const FortunicaSupport());
+                },
               ),
               const SizedBox(
                 height: 16.0,
@@ -48,10 +56,8 @@ class BottomSection extends StatelessWidget {
 
                 return _BottomSectionItem(
                   icon: Assets.vectors.packageOpen.path,
-                  text: '${S.of(context).version} ${version ?? ''}',
-                  bottomText: copyButtonTapped
-                      ? S.of(context).copied
-                      : S.of(context).tapToCopy,
+                  text: 'Version ${version ?? ''}',
+                  bottomText: copyButtonTapped ? 'Copied' : 'Tap to copy',
                   onTap: cubit.tapToCopy,
                 );
               }),

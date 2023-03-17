@@ -1,23 +1,30 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
+import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
+import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_bottom_sheet.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/drawer_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/widgets/bottom_section.dart';
-import 'package:shared_advisor_interface/presentation/screens/drawer/widgets/brand_item.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortunica/presentation/common_widgets/brand_drawer_item/fortunica_drawer_item.dart';
+import 'package:zodiac/presentation/common_widgets/brand_drawer_item/zodiac_drawer_item.dart';
 
 class AppDrawer extends StatelessWidget {
-  const AppDrawer({Key? key}) : super(key: key);
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
+  const AppDrawer({
+    Key? key,
+    required this.scaffoldKey,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return BlocProvider(
       create: (_) => DrawerCubit(
-        getIt.get<AuthRepository>(),
-        getIt.get<CachingManager>(),
+        globalGetIt.get<GlobalCachingManager>(),
       ),
       child: Builder(builder: (context) {
         final DrawerCubit cubit = context.read<DrawerCubit>();
@@ -55,8 +62,8 @@ class AppDrawer extends StatelessWidget {
                                             (e) => Column(
                                               children: [
                                                 BrandItem(
+                                                  scaffoldKey: scaffoldKey,
                                                   brand: e,
-                                                  isLoggedIn: true,
                                                 ),
                                                 const SizedBox(
                                                   height: 8.0,
@@ -98,6 +105,7 @@ class AppDrawer extends StatelessWidget {
                                                 children: [
                                                   BrandItem(
                                                     brand: e,
+                                                    scaffoldKey: scaffoldKey,
                                                   ),
                                                   const SizedBox(
                                                     height: 8.0,
@@ -125,5 +133,53 @@ class AppDrawer extends StatelessWidget {
             ));
       }),
     );
+  }
+}
+
+class BrandItem extends StatelessWidget {
+  final Brand brand;
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  final router = globalGetIt.get<AppRouter>();
+
+  BrandItem({
+    Key? key,
+    required this.brand,
+    required this.scaffoldKey,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Builder(builder: (context) {
+      switch (brand) {
+        case Brand.fortunica:
+          return FortunicaDrawerItem(
+            openLogoutDialog: (fortunicaContext, callback) =>
+                showOkCancelBottomSheet(
+              context: context,
+              okButtonText: S.of(context).logOut,
+              okOnTap: () {
+                callback(fortunicaContext).then((value) {
+                  router.pop(context);
+                  scaffoldKey.currentState?.openEndDrawer();
+                });
+              },
+            ),
+          );
+        case Brand.zodiac:
+          return ZodiacDrawerItem(
+            openLogoutDialog: (zodiacContext, callback) =>
+                showOkCancelBottomSheet(
+              context: context,
+              okButtonText: S.of(context).logOut,
+              okOnTap: () {
+                callback(zodiacContext).then((value) {
+                  router.pop(context);
+                  scaffoldKey.currentState?.openEndDrawer();
+                });
+              },
+            ),
+          );
+      }
+    });
   }
 }

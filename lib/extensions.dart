@@ -5,7 +5,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
 
 const String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 const String datePattern1 = 'MMM d, yyyy';
@@ -32,6 +32,17 @@ extension StringExt on String {
     return hash.toString();
   }
 
+  String? get capitalize {
+    if (length > 1) {
+      return this[0].toUpperCase() + substring(1).toLowerCase();
+    }
+    else if (length == 1) {
+      return this[0].toUpperCase();
+    } else {
+      return null;
+    }
+  }
+
   String languageNameByCode(BuildContext context) {
     final String languageCode = substring(0, 2);
     switch (languageCode) {
@@ -44,7 +55,7 @@ extension StringExt on String {
       case 'pt':
         return AppConstants.ptBrandName;
       default:
-        return S.of(context).other;
+        return 'Other';
     }
   }
 
@@ -139,12 +150,18 @@ extension DateTimeExt on DateTime {
             .difference(DateTime(now.year, now.month, now.day))
             .inDays;
     if (timeDifference == 0) {
-      return DateFormat(dateFormat).format(this).parseDateTimePattern7;
+      return DateFormat(dateFormat)
+          .format(this)
+          .parseDateTimePattern7;
     }
     if (localTime.year != now.year) {
-      return DateFormat(dateFormat).format(this).parseDateTimePattern9;
+      return DateFormat(dateFormat)
+          .format(this)
+          .parseDateTimePattern9;
     }
-    return DateFormat(dateFormat).format(this).parseDateTimePattern8;
+    return DateFormat(dateFormat)
+        .format(this)
+        .parseDateTimePattern8;
   }
 
   String historyListTime(BuildContext context) {
@@ -155,17 +172,22 @@ extension DateTimeExt on DateTime {
             .difference(DateTime(now.year, now.month, now.day))
             .inDays;
     if (timeDifference == 0) {
-      return S.of(context).today;
+      return 'Today';
     }
     if (localTime.year != now.year) {
-      return DateFormat(dateFormat).format(this).parseDateTimePattern9;
+      return DateFormat(dateFormat)
+          .format(this)
+          .parseDateTimePattern9;
     }
-    return DateFormat(dateFormat).format(this).parseDateTimePattern8;
+    return DateFormat(dateFormat)
+        .format(this)
+        .parseDateTimePattern8;
   }
 }
 
 extension FileExt on File {
   int get sizeInBytes => lengthSync();
+
   double get sizeInMb => sizeInBytes / (1024 * 1024);
 }
 
@@ -173,7 +195,9 @@ extension DurationExt on Duration {
   String get formatMMSS {
     final minutes = inMinutes.remainder(60);
     final seconds = inSeconds.remainder(60);
-    return "${minutes < 10 ? '0$minutes' : '$minutes'}:${seconds < 10 ? '0$seconds' : '$seconds'}";
+    return "${minutes < 10 ? '0$minutes' : '$minutes'}:${seconds < 10
+        ? '0$seconds'
+        : '$seconds'}";
   }
 }
 

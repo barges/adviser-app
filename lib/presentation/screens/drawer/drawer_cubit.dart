@@ -1,64 +1,37 @@
 import 'dart:async';
 
+import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
+import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/presentation/screens/drawer/drawer_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:retrofit/dio.dart';
-import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
-import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/drawer/drawer_state.dart';
 
 class DrawerCubit extends Cubit<DrawerState> {
-  final AuthRepository _authRepository;
-  final CachingManager _cacheManager;
+  final GlobalCachingManager _cacheManager;
 
   late final List<Brand> authorizedBrands;
   late final List<Brand> unauthorizedBrands;
-  late final UserStatus? userStatus;
 
   Timer? _copyTimer;
 
   DrawerCubit(
-    this._authRepository,
     this._cacheManager,
   ) : super(const DrawerState()) {
     getVersion();
-    authorizedBrands = _cacheManager.getAuthorizedBrands().reversed.toList();
-    unauthorizedBrands = _cacheManager.getUnauthorizedBrands();
-    userStatus = _cacheManager.getUserStatus();
+    authorizedBrands =
+        Configuration.authorizedBrands(_cacheManager.getCurrentBrand())
+            .reversed
+            .toList();
+    unauthorizedBrands = Configuration.unauthorizedBrands();
   }
 
   @override
   Future<void> close() async {
     _copyTimer?.cancel();
     return super.close();
-  }
-
-  void changeCurrentBrand(Brand newBrand) {
-    _cacheManager.saveCurrentBrand(newBrand);
-    Get.back();
-  }
-
-  Future<void> logout(Brand brand) async {
-    final HttpResponse response = await _authRepository.logout();
-    if (response.response.statusCode == 200) {
-      final bool isOk = await _cacheManager.logout(brand);
-      if (isOk) {
-        final List<Brand> authorizedBrands =
-            _cacheManager.getAuthorizedBrands();
-        if (authorizedBrands.isNotEmpty) {
-          Get.back();
-          changeCurrentBrand(authorizedBrands.first);
-        } else {
-          Get.offNamedUntil(AppRoutes.login, (route) => false);
-        }
-      }
-    }
   }
 
   // Future<void> openSettingsUrl() async {
@@ -73,16 +46,6 @@ class DrawerCubit extends Cubit<DrawerState> {
   //     ));
   //   }
   // }
-
-  void goToAllBrands() {
-    Get.back();
-    Get.toNamed(AppRoutes.allBrands);
-  }
-
-  void goToCustomerSupport() {
-    Get.back();
-    Get.toNamed(AppRoutes.support);
-  }
 
   void getVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -99,7 +62,5 @@ class DrawerCubit extends Cubit<DrawerState> {
         emit(state.copyWith(copyButtonTapped: false));
       });
     }
-    ClipboardData? data = await Clipboard.getData('text/plain');
-    logger.d(data?.text);
   }
 }

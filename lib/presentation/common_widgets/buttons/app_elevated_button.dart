@@ -1,6 +1,6 @@
+import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
 
 class AppElevatedButton extends StatelessWidget {
   final String title;

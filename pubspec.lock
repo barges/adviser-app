@@ -129,6 +129,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.2"
+  auto_route:
+    dependency: "direct main"
+    description:
+      name: auto_route
+      sha256: "12047baeca0e01df93165ef33275b32119d72699ab9a49dc64c20e78f586f96d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.4"
+  auto_route_generator:
+    dependency: "direct dev"
+    description:
+      name: auto_route_generator
+      sha256: c66eaa20dbba3211cac656037f88ba836a633dda953d9f4f9f9f5809b57e4278
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.2"
   auto_size_text:
     dependency: "direct main"
     description:
@@ -138,7 +154,7 @@ packages:
     source: hosted
     version: "3.0.0"
   bloc:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: bloc
       sha256: "658a5ae59edcf1e58aac98b000a71c762ad8f46f1394c34a52050cafb3e11a80"
@@ -686,14 +702,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.0"
-  flutter_gen:
-    dependency: "direct dev"
-    description:
-      name: flutter_gen
-      sha256: "69601f26e2a071a829d22ce01c78d811f77124869577f3f07f932748a23b8af7"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.3.0"
   flutter_gen_core:
     dependency: transitive
     description:
@@ -885,6 +893,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  fortunica:
+    dependency: "direct main"
+    description:
+      path: "brands/fortunica"
+      relative: true
+    source: path
+    version: "0.0.1"
   freezed:
     dependency: "direct main"
     description:
@@ -917,14 +932,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.0"
-  get:
-    dependency: "direct main"
-    description:
-      name: get
-      sha256: "2ba20a47c8f1f233bed775ba2dd0d3ac97b4cf32fc17731b3dfc672b06b0e92a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.6.5"
   get_it:
     dependency: "direct main"
     description:
@@ -933,14 +940,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.2.0"
-  get_storage:
-    dependency: "direct main"
-    description:
-      name: get_storage
-      sha256: "00b3908d9cd4138738b4db69bcc0fc1cf4ee8570c06594136569470f32a84207"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.3"
   glob:
     dependency: transitive
     description:
@@ -965,6 +964,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
+  hive:
+    dependency: "direct main"
+    description:
+      name: hive
+      sha256: "8dcf6db979d7933da8217edcec84e9df1bdb4e4edc7fc77dbd5aa74356d6d941"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.3"
   html:
     dependency: transitive
     description:
@@ -981,14 +988,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.13.5"
-  http_mock_adapter:
-    dependency: "direct dev"
-    description:
-      name: http_mock_adapter
-      sha256: "6fa1a00932a5758750f54c5594f8bf37393fe5ae86e49325281b5a9d99114f33"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.3"
   http_multi_server:
     dependency: transitive
     description:
@@ -1053,6 +1052,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.6.2"
+  injectable:
+    dependency: "direct main"
+    description:
+      name: injectable
+      sha256: f71eb879124ed286cbd2210337b91ff5f345f146187c1f1891c172e0ac06443a
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.4"
+  injectable_generator:
+    dependency: "direct dev"
+    description:
+      name: injectable_generator
+      sha256: "1f5bbe44f06cf15dc55b9797a8df8b4d22b0471f6a7d7f79f4c651393b130a9d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.5"
   internet_connection_checker:
     dependency: "direct main"
     description:
@@ -1165,14 +1180,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
-  mockito:
-    dependency: "direct dev"
-    description:
-      name: mockito
-      sha256: "2a8a17b82b1bde04d514e75d90d634a0ac23f6cb4991f6098009dd56836aeafe"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.3.2"
   modal_bottom_sheet:
     dependency: "direct main"
     description:
@@ -1181,6 +1188,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  multiple_localization:
+    dependency: "direct main"
+    description:
+      name: multiple_localization
+      sha256: "0178b9999878f52595493a957742034f0976fc4a399cd363f8f0a59dfb1e281f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0"
   nested:
     dependency: transitive
     description:
@@ -1446,7 +1461,7 @@ packages:
     source: hosted
     version: "4.2.4"
   provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: provider
       sha256: cdbe7530b12ecd9eb455bdaa2fcb8d4dad22e80b8afb4798b41479d5ce26847f
@@ -1485,14 +1500,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.1"
-  retrofit_generator:
-    dependency: "direct dev"
-    description:
-      name: retrofit_generator
-      sha256: f5107e842e77ce71c63b995331b43d4597f71df9031389dd93a1197a00118d83
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.2.0"
   rxdart:
     dependency: "direct main"
     description:
@@ -1549,6 +1556,62 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  shared_preferences:
+    dependency: "direct main"
+    description:
+      name: shared_preferences
+      sha256: ee6257848f822b8481691f20c3e6d2bfee2e9eccb2a3d249907fcfb198c55b41
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.18"
+  shared_preferences_android:
+    dependency: transitive
+    description:
+      name: shared_preferences_android
+      sha256: ad423a80fe7b4e48b50d6111b3ea1027af0e959e49d485712e134863d9c1c521
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.17"
+  shared_preferences_foundation:
+    dependency: transitive
+    description:
+      name: shared_preferences_foundation
+      sha256: "1e755f8583229f185cfca61b1d80fb2344c9d660e1c69ede5450d8f478fa5310"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.5"
+  shared_preferences_linux:
+    dependency: transitive
+    description:
+      name: shared_preferences_linux
+      sha256: "3a59ed10890a8409ad0faad7bb2957dab4b92b8fbe553257b05d30ed8af2c707"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.5"
+  shared_preferences_platform_interface:
+    dependency: transitive
+    description:
+      name: shared_preferences_platform_interface
+      sha256: "824bfd02713e37603b2bdade0842e47d56e7db32b1dcdd1cae533fb88e2913fc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
+  shared_preferences_web:
+    dependency: transitive
+    description:
+      name: shared_preferences_web
+      sha256: "0dc2633f215a3d4aa3184c9b2c5766f4711e4e5a6b256e62aafee41f89f1bfb8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.6"
+  shared_preferences_windows:
+    dependency: transitive
+    description:
+      name: shared_preferences_windows
+      sha256: "71bcd669bb9cdb6b39f22c4a7728b6d49e934f6cba73157ffa5a54f1eed67436"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.5"
   shelf:
     dependency: transitive
     description:
@@ -1714,14 +1777,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
-  tuple:
-    dependency: transitive
-    description:
-      name: tuple
-      sha256: "0ea99cd2f9352b2586583ab2ce6489d1f95a5f6de6fb9492faaf97ae2060f0aa"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.1"
   typed_data:
     dependency: transitive
     description:
@@ -1874,6 +1929,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
+  zodiac:
+    dependency: "direct main"
+    description:
+      path: "brands/zodiac"
+      relative: true
+    source: path
+    version: "0.0.1"
 sdks:
   dart: ">=2.19.0 <3.0.0"
   flutter: ">=3.3.0"

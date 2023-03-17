@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbars/simple_app_bar.dart';
+import 'package:flutter/material.dart';
 
 class AllBrandsScreen extends StatelessWidget {
   const AllBrandsScreen({Key? key}) : super(key: key);

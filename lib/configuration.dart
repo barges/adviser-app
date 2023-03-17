@@ -1,43 +1,138 @@
+import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:flutter/material.dart';
+import 'package:fortunica/data/cache/fortunica_caching_manager.dart';
+import 'package:fortunica/infrastructure/di/app_initializer.dart';
+import 'package:fortunica/infrastructure/di/inject_config.dart';
+import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/infrastructure/di/app_initializer.dart';
+import 'package:zodiac/infrastructure/di/inject_config.dart';
 
 class Configuration {
   static const List<Brand> brands = [
     Brand.fortunica,
-    Brand.zodiacPsychics,
+    Brand.zodiac,
   ];
+
+  static BuildContext? globalContext;
+  static BuildContext? fortunicaContext;
+  static BuildContext? zodiacContext;
+
+  static List<Brand> authorizedBrands(Brand currentBrand) {
+    final List<Brand> authBrands = [];
+    for (Brand b in brands) {
+      if (b.isAuth) {
+        authBrands.add(b);
+      }
+    }
+    if (authBrands.contains(currentBrand)) {
+      authBrands.removeWhere((element) => element == currentBrand);
+      authBrands.add(currentBrand);
+    }
+
+    return authBrands;
+  }
+
+  static List<Brand> unauthorizedBrands() {
+    final List<Brand> unAuthBrands = [];
+    for (Brand brand in brands) {
+      if (!brand.isAuth) {
+        unAuthBrands.add(brand);
+      }
+    }
+    return unAuthBrands;
+  }
 }
 
 enum Brand {
   fortunica,
-  zodiacPsychics;
+  zodiac;
+
+  static const String zodiacAlias = 'zodiac';
+  static const String fortunicaAlias = 'fortunica';
+
+  Future<void> init(Flavor flavor, AppRouter navigationService) async {
+    switch (this) {
+      case Brand.fortunica:
+        return await FortunicaAppInitializer.setupPrerequisites(
+            flavor, navigationService);
+      case Brand.zodiac:
+        return await ZodiacAppInitializer.setupPrerequisites(
+            flavor, navigationService);
+    }
+  }
+
+  bool get isAuth {
+    switch (this) {
+      case Brand.fortunica:
+        return fortunicaGetIt.get<FortunicaCachingManager>().getUserToken() !=
+            null;
+      case Brand.zodiac:
+        return zodiacGetIt.get<ZodiacCachingManager>().getUserToken() != null;
+    }
+  }
+
+  // Future<void> logout() async {
+  //   switch (this) {
+  //     case Brand.fortunica:
+  //       fortunicaGetIt.get<FortunicaCachingManager>().logout();
+  //       break;
+  //     case Brand.zodiac:
+  //       //zodiacGetIt.get<ZodiacCachingManager>().logout();
+  //       break;
+  //   }
+  // }
 
   static Brand brandFromString(String? s) {
     switch (s) {
       case 'Brand.fortunica':
         return Brand.fortunica;
-      case 'Brand.zodiacPsychics':
-        return Brand.zodiacPsychics;
+      case 'Brand.zodiac':
+        return Brand.zodiac;
       default:
         return Brand.fortunica;
     }
   }
 
-  static Brand brandFromName(String? s) {
+  String get alias {
+    switch (this) {
+      case Brand.fortunica:
+        return fortunicaAlias;
+      case Brand.zodiac:
+        return zodiacAlias;
+      default:
+        return fortunicaAlias;
+    }
+  }
+
+  static Brand brandFromAlias(String? s) {
     switch (s) {
-      case 'fortunica':
+      case fortunicaAlias:
         return Brand.fortunica;
-      case 'zodiacPsychics':
-        return Brand.zodiacPsychics;
+      case zodiacAlias:
+        return Brand.zodiac;
       default:
         return Brand.fortunica;
     }
   }
 
-  String get name {
+  // RootStackRouter get getRouter {
+  //   switch (this) {
+  //     case Brand.fortunica:
+  //       return FortunicaAppRouter();
+  //     case Brand.zodiac:
+  //       return ZodiacAppRouter();
+  //   }
+  // }
+
+  String get title {
     switch (this) {
       case Brand.fortunica:
         return 'Fortunica';
-      case Brand.zodiacPsychics:
+      case Brand.zodiac:
         return 'Zodiac Psychics';
     }
   }
@@ -46,7 +141,7 @@ enum Brand {
     switch (this) {
       case Brand.fortunica:
         return '';
-      case Brand.zodiacPsychics:
+      case Brand.zodiac:
         return 'www.zodiacpsychics.com';
     }
   }
@@ -55,7 +150,7 @@ enum Brand {
     switch (this) {
       case Brand.fortunica:
         return Assets.vectors.fortunica.path;
-      case Brand.zodiacPsychics:
+      case Brand.zodiac:
         return Assets.vectors.zodiacTouch.path;
     }
   }
@@ -64,8 +159,8 @@ enum Brand {
     switch (this) {
       case Brand.fortunica:
         return true;
-      case Brand.zodiacPsychics:
-        return false;
+      case Brand.zodiac:
+        return true;
     }
   }
 
