@@ -40,15 +40,19 @@ class PushNotificationManagerImpl implements PushNotificationManager {
       logger.d(message);
       if (message is Map<String, dynamic>) {
         Map<String, dynamic> map = jsonDecode(message['meta'] ?? '{}');
-        if (map['type'] != null &&
-            map['type'] == PushType.publicReturned.name) {
-          if (Get.currentRoute == AppRoutes.chat) {
-            Get.offNamedUntil(
-              AppRoutes.home,
-              (route) => false,
-              arguments: HomeScreenArguments(initTab: TabsTypes.sessions),
-            );
-          } else {
+        final String? type = map['type'];
+        if (type != null) {
+          if (type == PushType.publicReturned.name) {
+            if (Get.currentRoute == AppRoutes.chat) {
+              Get.offNamedUntil(
+                AppRoutes.home,
+                (route) => false,
+                arguments: HomeScreenArguments(initTab: TabsTypes.sessions),
+              );
+            } else {
+              getIt.get<MainCubit>().updateSessions();
+            }
+          } else if (type != PushType.tips.name) {
             getIt.get<MainCubit>().updateSessions();
           }
         }
@@ -150,20 +154,28 @@ class PushNotificationManagerImpl implements PushNotificationManager {
       if (Platform.isAndroid) {
         showNotification(message);
       }
-      if (map['type'] != null && map['type'] == PushType.publicReturned.name) {
-        if (Get.currentRoute == AppRoutes.chat) {
-          Get.offNamedUntil(
-            AppRoutes.home,
-            (route) => false,
-            arguments: HomeScreenArguments(initTab: TabsTypes.sessions),
-          );
-        } else {
+      final String? type = map['type'];
+      if (type != null) {
+        if (type == PushType.publicReturned.name) {
+          if (Get.currentRoute == AppRoutes.chat) {
+            Get.offNamedUntil(
+              AppRoutes.home,
+              (route) => false,
+              arguments: HomeScreenArguments(initTab: TabsTypes.sessions),
+            );
+          } else {
+            getIt.get<MainCubit>().updateSessions();
+          }
+        } else if (type != PushType.tips.name) {
           getIt.get<MainCubit>().updateSessions();
         }
       }
     });
 
-    FirebaseMessaging.onMessageOpenedApp.listen(_navigateToNextScreen);
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      getIt.get<MainCubit>().updateSessions();
+      _navigateToNextScreen(message);
+    });
 
     FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
   }
