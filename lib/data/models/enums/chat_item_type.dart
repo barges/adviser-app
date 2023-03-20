@@ -75,7 +75,7 @@ enum ChatItemType {
       case ChatItemType.private:
         return S.of(context).youHaveAPrivateMessage;
       case ChatItemType.ritual:
-        return S.of(context).youHaveARitualRequest;
+        return S.of(context).youHaveAnActiveSession;
       default:
         return '';
     }

@@ -120,6 +120,14 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
         const Divider(
           height: 1.0,
         ),
+        Builder(builder: (context) {
+          final AppError appError =
+              context.select((MainCubit cubit) => cubit.state.appError);
+          return AppErrorWidget(
+            errorMessage: appError.getMessage(context),
+            close: sessionsCubit.closeErrorWidget,
+          );
+        }),
         Builder(
           builder: (context) {
             final List<ChatItem>? conversationsList = context
