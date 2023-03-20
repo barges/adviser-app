@@ -1,28 +1,41 @@
-
+import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:fortunica/infrastructure/routing/route_paths_fortunica.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/global.dart';
-import 'package:shared_advisor_interface/main.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 
 const String resetLinkKey = '/reset';
 const String brandQueryKey = 'brand';
 const String tokenQueryKey = 'token';
 
-//@injectable
+@singleton
 class DynamicLinkService {
   String? _initialLink;
 
-  // final PublishSubject<DynamicLinkData> dynamicLinksStream = PublishSubject();
+  final PublishSubject<DynamicLinkData> dynamicLinksStream = PublishSubject();
 
   DynamicLinkService() {
     FirebaseDynamicLinks.instance.onLink.listen(
       (PendingDynamicLinkData dynamicLink) async {
+        final BuildContext? fortunicaContext = Configuration.fortunicaContext;
+
         final String link = dynamicLink.link.toString();
-        // dynamicLinksStream.add(parseDynamicLink(link));
+        dynamicLinksStream.add(parseDynamicLink(link));
         logger.d(link);
-        // if (Get.currentRoute == AppRoutes.login) {
-        //   checkLinkForResetPassword(link: link);
-        // }
+        if (fortunicaContext != null &&
+            (fortunicaContext.currentRoutePath ==
+                    RoutePathsFortunica.loginScreen ||
+                fortunicaContext.currentRoutePath ==
+                    RoutePathsFortunica.authScreen)) {
+          checkLinkForResetPasswordFortunica(fortunicaContext, link: link);
+        }
       },
       onError: (e) async {
         logger.d('DynamicLinkService.init(): ${e.toString()}');
@@ -41,36 +54,36 @@ class DynamicLinkService {
     return data?.link.toString();
   }
 
-  Future<void> checkLinkForResetPassword({String? link}) async {
+  Future<void> checkLinkForResetPasswordFortunica(BuildContext context,
+      {String? link}) async {
     final String? initLink = link ?? await retrieveDynamicInitialLink();
 
     if (initLink != null && initLink.contains(resetLinkKey)) {
-      // final DynamicLinkData dynamicLinkData = parseDynamicLink(initLink);
-      // Get.toNamed(
-      //   AppRoutes.forgotPassword,
-      //   arguments: ForgotPasswordScreenArguments(
-      //     brand: dynamicLinkData.brand,
-      //     resetToken: dynamicLinkData.token,
-      //   ),
-      //  );
+      final DynamicLinkData dynamicLinkData = parseDynamicLink(initLink);
+
+      context.push(
+        route: FortunicaForgotPassword(
+          resetToken: dynamicLinkData.token,
+        ),
+      );
     }
   }
 
-//   DynamicLinkData parseDynamicLink(String link) {
-//     final String queriesString = link.split('?').lastOrNull ?? '';
-//     final Map<String, String> queriesMap = Uri.splitQueryString(queriesString);
-//     // return DynamicLinkData(
-//     //     brand: Brand.brandFromName(queriesMap[brandQueryKey]),
-//     //     token: queriesMap[tokenQueryKey]);
-//   }
-// }
+  DynamicLinkData parseDynamicLink(String link) {
+    final String queriesString = link.split('?').lastOrNull ?? '';
+    final Map<String, String> queriesMap = Uri.splitQueryString(queriesString);
+    return DynamicLinkData(
+        brand: Brand.brandFromName(queriesMap[brandQueryKey]),
+        token: queriesMap[tokenQueryKey]);
+  }
+}
 
-// class DynamicLinkData {
-//   final Brand brand;
-//   final String? token;
-//
-//   DynamicLinkData({
-//     required this.brand,
-//     this.token,
-//   });
- }
+class DynamicLinkData {
+  final Brand brand;
+  final String? token;
+
+  DynamicLinkData({
+    required this.brand,
+    this.token,
+  });
+}

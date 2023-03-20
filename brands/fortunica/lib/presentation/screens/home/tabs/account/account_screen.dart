@@ -18,6 +18,7 @@ import 'package:fortunica/presentation/screens/home/home_cubit.dart';
 import 'package:fortunica/presentation/screens/home/tabs/account/account_cubit.dart';
 import 'package:fortunica/presentation/screens/home/tabs/account/widgets/reviews_settings_part_widget.dart';
 import 'package:fortunica/presentation/screens/home/tabs/account/widgets/user_info_part_widget.dart';
+import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({
@@ -32,7 +33,7 @@ class AccountScreen extends StatelessWidget {
         fortunicaGetIt.get<MainCubit>(),
         fortunicaGetIt.get<FortunicaMainCubit>(),
         fortunicaGetIt.get<FortunicaUserRepository>(),
-        //fortunicaGetIt.get<PushNotificationManager>(),
+        fortunicaGetIt.get<PushNotificationManager>(),
         fortunicaGetIt.get<ConnectivityService>(),
         (value) => handlePermission(context, value),
       ),

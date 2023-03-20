@@ -9,7 +9,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortunica/generated/l10n.dart';
-import 'package:fortunica/infrastructure/routing/route_paths.dart';
+import 'package:fortunica/infrastructure/routing/route_paths_fortunica.dart';
 import 'package:fortunica/presentation/screens/forgot_password/forgot_password_cubit.dart';
 
 class SuccessResetWidget extends StatelessWidget {
@@ -53,10 +53,14 @@ class SuccessResetWidget extends StatelessWidget {
                 AppElevatedButton(
                   title: SFortunica.of(context).loginFortunica,
                   onPressed: () {
-                    if (context.previousRoutePath == RoutePaths.loginScreen) {
+                    logger.d(context.previousRoutePath);
+                    if (context.previousRoutePath ==
+                            RoutePathsFortunica.loginScreen ||
+                        context.previousRoutePath ==
+                            RoutePathsFortunica.authScreen) {
                       context.pop();
                     } else {
-                      context.replace(route: const FortunicaLogin());
+                      context.replace(route: FortunicaAuth());
                     }
                   },
                 )

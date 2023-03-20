@@ -7,7 +7,6 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.da
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,12 +33,12 @@ class AccountCubit extends Cubit<AccountState> {
   final FortunicaUserRepository _userRepository;
   final ConnectivityService _connectivityService;
 
-  // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final Future<bool> Function(bool needShowSettingsAlert) _handlePermission;
 
   final FortunicaCachingManager _cacheManager;
 
-  // final PushNotificationManager _pushNotificationManager;
+  final PushNotificationManager _pushNotificationManager;
 
   final Uri _url = Uri.parse(AppConstants.webToolUrlProd);
 
@@ -58,7 +57,7 @@ class AccountCubit extends Cubit<AccountState> {
     this._mainCubit,
     this._fortunicaMainCubit,
     this._userRepository,
-    // this._pushNotificationManager,
+    this._pushNotificationManager,
     this._connectivityService,
     this._handlePermission,
   ) : super(const AccountState()) {
@@ -129,16 +128,16 @@ class AccountCubit extends Cubit<AccountState> {
       if (await _connectivityService.checkConnection()) {
         int milliseconds = 0;
 
-        // isPushNotificationPermissionGranted = await _handlePermission(false);
-        //
-        // if (isPushNotificationPermissionGranted == true) {
-        //   _pushNotificationManager.registerForPushNotifications();
-        // }
-        //
+        isPushNotificationPermissionGranted = await _handlePermission(false);
+
+        if (isPushNotificationPermissionGranted == true) {
+          _pushNotificationManager.registerForPushNotifications();
+        }
+
         final UserInfo userInfo = await _userRepository.getUserInfo();
-        // if (isPushNotificationPermissionGranted == true) {
-        //   await _sendPushToken();
-        // }
+        if (isPushNotificationPermissionGranted == true) {
+          await _sendPushToken();
+        }
 
         await _saveUserInfo(userInfo);
 
@@ -255,7 +254,7 @@ class AccountCubit extends Cubit<AccountState> {
     try {
       if (newValue) {
         if (isPushNotificationPermissionGranted == true) {
-          // await _sendPushToken();
+          await _sendPushToken();
           await _setPushEnabledForBackend(newValue);
           emit(
             state.copyWith(
@@ -278,35 +277,35 @@ class AccountCubit extends Cubit<AccountState> {
     }
   }
 
-  // Future<void> _sendPushToken() async {
-  //   if (!_cacheManager.pushTokenIsSent) {
-  //     if (await _connectivityService.checkConnection()) {
-  //       String? pushToken = await _firebaseMessaging.getToken();
-  //       if (pushToken != null) {
-  //         final SetPushNotificationTokenRequest request =
-  //             SetPushNotificationTokenRequest(
-  //           pushToken: pushToken,
-  //         );
-  //         final UserInfo userInfo =
-  //             await _userRepository.sendPushToken(request);
-  //         emit(
-  //           state.copyWith(
-  //             enableNotifications: userInfo.pushNotificationsEnabled ?? false,
-  //           ),
-  //         );
-  //         _cacheManager.pushTokenIsSent = true;
-  //       }
-  //       _connectivitySubscription?.cancel();
-  //     } else {
-  //       _connectivitySubscription =
-  //           _connectivityService.connectivityStream.listen((event) {
-  //         if (event) {
-  //           _sendPushToken();
-  //         }
-  //       });
-  //     }
-  //   }
-  // }
+  Future<void> _sendPushToken() async {
+    if (!_cacheManager.pushTokenIsSent) {
+      if (await _connectivityService.checkConnection()) {
+        String? pushToken = await _firebaseMessaging.getToken();
+        if (pushToken != null) {
+          final SetPushNotificationTokenRequest request =
+              SetPushNotificationTokenRequest(
+            pushToken: pushToken,
+          );
+          final UserInfo userInfo =
+              await _userRepository.sendPushToken(request);
+          emit(
+            state.copyWith(
+              enableNotifications: userInfo.pushNotificationsEnabled ?? false,
+            ),
+          );
+          _cacheManager.pushTokenIsSent = true;
+        }
+        _connectivitySubscription?.cancel();
+      } else {
+        _connectivitySubscription =
+            _connectivityService.connectivityStream.listen((event) {
+          if (event) {
+            _sendPushToken();
+          }
+        });
+      }
+    }
+  }
 
   Future<void> goToEditProfile(BuildContext context) async {
 

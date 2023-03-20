@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/infrastructure/brands/base_router.dart'
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/services/check_permission_service.dart';
+import 'package:shared_advisor_interface/services/dynamic_link_service.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/services/fresh_chat_service.dart';
 import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
@@ -37,5 +38,13 @@ abstract class ServicesModule {
   @singleton
   FreshChatService get freshChatService =>
       globalGetIt.get<FreshChatService>();
+
+  @singleton
+  PushNotificationManager get pushNotificationManager =>
+      globalGetIt.get<PushNotificationManager>();
+
+  @singleton
+  DynamicLinkService get dynamicLinkService =>
+      globalGetIt.get<DynamicLinkService>();
 
 }

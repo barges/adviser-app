@@ -35,7 +35,7 @@ class FortunicaDrawerItemCubit extends Cubit<FortunicaDrawerItemState> {
     final HttpResponse response = await _authRepository.logout();
     if (response.response.statusCode == 200) {
       await _fortunicaCachingManager.logout();
-        context.replaceAll([const FortunicaAuth()]);
+        context.replaceAll([FortunicaAuth()]);
     }
   }
 

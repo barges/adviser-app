@@ -1,6 +1,6 @@
 import 'package:shared_advisor_interface/configuration.dart';
 
-class RoutePaths {
+class RoutePathsFortunica {
   static const mainScreen = '${Brand.fortunicaAlias}Main';
   static const homeScreen = "${Brand.fortunicaAlias}Home";
   static const authScreen = "${Brand.fortunicaAlias}Auth";

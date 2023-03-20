@@ -5,6 +5,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/choose_brand_widget.dart';
+import 'package:shared_advisor_interface/services/dynamic_link_service.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
@@ -46,15 +47,17 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) {
-        Configuration.fortunicaContext = context;
-        fortunicaGetIt.registerSingleton(LoginCubit(
-          fortunicaGetIt.get<FortunicaAuthRepository>(),
-          fortunicaGetIt.get<FortunicaCachingManager>(),
-          fortunicaGetIt.get<FortunicaMainCubit>(),
-          //fortunicaGetIt.get<DynamicLinkService>(),
-          fortunicaGetIt.get<Dio>(),
-        ));
-
+        fortunicaGetIt
+            .get<DynamicLinkService>()
+            .checkLinkForResetPasswordFortunica(context);
+        fortunicaGetIt.registerSingleton(
+          LoginCubit(
+            fortunicaGetIt.get<FortunicaAuthRepository>(),
+            fortunicaGetIt.get<FortunicaCachingManager>(),
+            fortunicaGetIt.get<FortunicaMainCubit>(),
+            fortunicaGetIt.get<Dio>(),
+          ),
+        );
         return fortunicaGetIt.get<LoginCubit>();
       },
       child: Builder(builder: (context) {
@@ -126,7 +129,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                             cubit.state.emailHasFocus);
                                         return AppTextField(
                                           errorType: emailErrorType,
-                                          label: SFortunica.of(context).emailFortunica,
+                                          label: SFortunica.of(context)
+                                              .emailFortunica,
                                           hintText: SFortunica.of(context)
                                               .enterYourEmailFortunica,
                                           focusNode: loginCubit.emailNode,
@@ -156,8 +160,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                           controller:
                                               loginCubit.passwordController,
                                           focusNode: loginCubit.passwordNode,
-                                          label:
-                                              SFortunica.of(context).passwordFortunica,
+                                          label: SFortunica.of(context)
+                                              .passwordFortunica,
                                           errorType: passwordErrorType,
                                           hintText: SFortunica.of(context)
                                               .enterYourPasswordFortunica,
@@ -177,7 +181,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                               cubit.state.buttonIsActive,
                                         );
                                         return AppElevatedButton(
-                                          title: SFortunica.of(context).loginFortunica,
+                                          title: SFortunica.of(context)
+                                              .loginFortunica,
                                           onPressed: isActive
                                               ? () => loginCubit.login(context)
                                               : null,
@@ -192,7 +197,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 GestureDetector(
                                   onLongPress: () {
-
                                     if (kDebugMode) {
                                       context
                                           .read<LoginCubit>()
@@ -205,7 +209,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     }
                                   },
                                   onDoubleTap: () {
-                                    logger.d(context.router.routeCollection.routes);
+                                    logger.d(
+                                        context.router.routeCollection.routes);
                                     if (kDebugMode) {
                                       context
                                           .read<LoginCubit>()

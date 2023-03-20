@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/intl/messages_all.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/global.dart';
@@ -133,13 +135,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                         supportedLocales.toList().firstWhereOrNull(
                               (element) =>
                                   element.languageCode ==
-                                  (
-                                      languageCode ??
-                                      locale?.languageCode),
+                                  (languageCode ?? locale?.languageCode),
                             );
                     newLocale ??= supportedLocales.first;
 
-                    if(languageCode == null){
+                    if (languageCode == null) {
                       _cacheManager.saveLanguageCode(newLocale.languageCode);
                     }
 
@@ -170,27 +170,60 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 class _AppNavigatorObserver extends AutoRouterObserver {
   @override
   void didPush(Route route, Route? previousRoute) {
+    super.didPush(route, previousRoute);
     _clearErrorMessage();
+    _setContext();
   }
 
   @override
   void didReplace({Route? newRoute, Route? oldRoute}) {
+    super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
     _clearErrorMessage();
+    _setContext();
   }
 
   @override
   void didRemove(Route route, Route? previousRoute) {
+    super.didRemove(route, previousRoute);
     _clearErrorMessage();
+    _setContext();
+  }
+
+  @override
+  void didInitTabRoute(TabPageRoute route, TabPageRoute? previousRoute) {
+    super.didInitTabRoute(route, previousRoute);
+    _setContext();
+  }
+
+  @override
+  void didChangeTabRoute(TabPageRoute route, TabPageRoute previousRoute) {
+    super.didChangeTabRoute(route, previousRoute);
+    _setContext();
   }
 
   @override
   void didPop(Route route, Route? previousRoute) {
+    super.didPop(route, previousRoute);
     _clearErrorMessage();
+    _setContext();
   }
 
   void _clearErrorMessage() {
     fortunicaGetIt.get<FortunicaMainCubit>().clearErrorMessage();
     zodiacGetIt.get<ZodiacMainCubit>().clearErrorMessage();
+  }
+
+  void _setContext() {
+    final BuildContext? currentContext = navigator?.context;
+    if (currentContext != null) {
+      final String path = currentContext.router.current.path;
+      logger.d('context $path');
+      if (path.contains(Brand.fortunicaAlias)) {
+        Configuration.fortunicaContext = currentContext;
+      } else if (path.contains(Brand.zodiacAlias)) {
+        Configuration.zodiacContext = currentContext;
+      }
+    }
   }
 }
 

@@ -1,3 +1,4 @@
+import 'package:fortunica/presentation/screens/home/tabs_types.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -8,7 +9,8 @@ import 'package:fortunica/presentation/wrappers/auth_wrapper/fortunica_auth_wrap
 import 'package:fortunica/presentation/wrappers/auth_wrapper/fortunica_auth_wrapper_state.dart';
 
 class FortunicaAuthWrapper extends StatelessWidget {
-  const FortunicaAuthWrapper({Key? key}) : super(key: key);
+  final TabsTypes? initTab;
+  const FortunicaAuthWrapper({Key? key, this.initTab}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class FortunicaAuthWrapper extends StatelessWidget {
                 listener: (_, state) {
                   logger.d(state.isAuth);
                   if (state.isAuth) {
-                    context.replaceAll([FortunicaHome()]);
+                    context.replaceAll([FortunicaHome(initTab: initTab)]);
                   }
                 },
                 child: Builder(builder: (context) {

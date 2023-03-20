@@ -20,7 +20,7 @@ const zodiacRoute = AutoRoute(
     AutoRoute(
         initial: true,
         page: ZodiacHomeWrapper,
-        path: '',
+        path: RoutePaths.mainScreen,
         name: RoutePaths.mainScreen,
         children: [
           AutoRoute(

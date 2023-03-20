@@ -26,13 +26,7 @@ Future<void> configureDependencies() async => $initGetIt(globalGetIt);
 
 @module
 abstract class RegisterModule {
-  final brandManager = BrandManager(
-      [
-        Brand.fortunica,
-        Brand.zodiac,
-      ],
-      MainAppRouter()
-  );
+  final brandManager = BrandManager(Configuration.brands, MainAppRouter());
 
   @Injectable(as: Key)
   UniqueKey get key;
@@ -42,6 +36,4 @@ abstract class RegisterModule {
 
   @singleton
   AppRouter get navigationService => AppRouterImpl();
-
 }
-

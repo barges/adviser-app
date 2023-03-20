@@ -113,9 +113,14 @@ class MainAppRouter extends _i32.RootStackRouter {
       );
     },
     FortunicaAuth.name: (routeData) {
+      final args = routeData.argsAs<FortunicaAuthArgs>(
+          orElse: () => const FortunicaAuthArgs());
       return _i32.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i6.FortunicaAuthWrapper(),
+        child: _i6.FortunicaAuthWrapper(
+          key: args.key,
+          initTab: args.initTab,
+        ),
       );
     },
     FortunicaHome.name: (routeData) {
@@ -330,8 +335,15 @@ class MainAppRouter extends _i32.RootStackRouter {
               parent: MainHomeScreen.name,
               children: [
                 _i32.RouteConfig(
-                  FortunicaAuth.name,
+                  '#redirect',
                   path: '',
+                  parent: Fortunica.name,
+                  redirectTo: 'fortunicaAuth',
+                  fullMatch: true,
+                ),
+                _i32.RouteConfig(
+                  FortunicaAuth.name,
+                  path: 'fortunicaAuth',
                   parent: Fortunica.name,
                   children: [
                     _i32.RouteConfig(
@@ -433,8 +445,15 @@ class MainAppRouter extends _i32.RootStackRouter {
               parent: MainHomeScreen.name,
               children: [
                 _i32.RouteConfig(
-                  ZodiacMain.name,
+                  '#redirect',
                   path: '',
+                  parent: Zodiac.name,
+                  redirectTo: 'zodiacMain',
+                  fullMatch: true,
+                ),
+                _i32.RouteConfig(
+                  ZodiacMain.name,
+                  path: 'zodiacMain',
                   parent: Zodiac.name,
                   children: [
                     _i32.RouteConfig(
@@ -599,15 +618,38 @@ class Zodiac extends _i32.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i6.FortunicaAuthWrapper]
-class FortunicaAuth extends _i32.PageRouteInfo<void> {
-  const FortunicaAuth({List<_i32.PageRouteInfo>? children})
-      : super(
+class FortunicaAuth extends _i32.PageRouteInfo<FortunicaAuthArgs> {
+  FortunicaAuth({
+    _i33.Key? key,
+    _i34.TabsTypes? initTab,
+    List<_i32.PageRouteInfo>? children,
+  }) : super(
           FortunicaAuth.name,
-          path: '',
+          path: 'fortunicaAuth',
+          args: FortunicaAuthArgs(
+            key: key,
+            initTab: initTab,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'FortunicaAuth';
+}
+
+class FortunicaAuthArgs {
+  const FortunicaAuthArgs({
+    this.key,
+    this.initTab,
+  });
+
+  final _i33.Key? key;
+
+  final _i34.TabsTypes? initTab;
+
+  @override
+  String toString() {
+    return 'FortunicaAuthArgs{key: $key, initTab: $initTab}';
+  }
 }
 
 /// generated route for
@@ -1015,7 +1057,7 @@ class ZodiacMain extends _i32.PageRouteInfo<void> {
   const ZodiacMain({List<_i32.PageRouteInfo>? children})
       : super(
           ZodiacMain.name,
-          path: '',
+          path: 'zodiacMain',
           initialChildren: children,
         );
 

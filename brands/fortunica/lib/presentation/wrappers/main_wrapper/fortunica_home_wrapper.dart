@@ -20,7 +20,7 @@ class FortunicaHomeWrapper extends StatelessWidget {
               if (!state.isAuth) {
                 fortunicaGetIt
                     .get<AppRouter>()
-                    .replaceAll(context, [const FortunicaAuth()]);
+                    .replaceAll(context, [FortunicaAuth()]);
               }
             },
             child: Builder(builder: (context) {

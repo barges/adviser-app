@@ -1,9 +1,13 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbars/simple_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
+import 'package:shared_advisor_interface/services/dynamic_link_service.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +39,8 @@ class ForgotPasswordScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => ForgotPasswordCubit(
         authRepository: fortunicaGetIt.get<FortunicaAuthRepository>(),
+        dynamicLinkService: fortunicaGetIt.get<DynamicLinkService>(),
         loginCubit: fortunicaGetIt.get<LoginCubit>(),
-        // dynamicLincService: fortunicaGetIt.get<DynamicLinkService>(),
         resetToken: resetToken,
         mainCubit: fortunicaGetIt.get<FortunicaMainCubit>(),
       ),

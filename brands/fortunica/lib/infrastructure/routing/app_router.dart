@@ -1,6 +1,6 @@
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:auto_route/annotations.dart';
-import 'package:fortunica/infrastructure/routing/route_paths.dart';
+import 'package:fortunica/infrastructure/routing/route_paths_fortunica.dart';
 import 'package:fortunica/presentation/screens/add_note/add_note_screen.dart';
 import 'package:fortunica/presentation/screens/advisor_preview/advisor_preview_screen.dart';
 import 'package:fortunica/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
@@ -27,89 +27,89 @@ const fortunicaRoute = AutoRoute(
   children: <AutoRoute>[
     AutoRoute(
         page: FortunicaAuthWrapper,
-        path: '',
+        path: RoutePathsFortunica.authScreen,
         initial: true,
-        name: RoutePaths.authScreen,
+        name: RoutePathsFortunica.authScreen,
         children: [
           AutoRoute(
             page: LoginScreen,
-            path: RoutePaths.loginScreen,
-            name: RoutePaths.loginScreen,
+            path: RoutePathsFortunica.loginScreen,
+            name: RoutePathsFortunica.loginScreen,
             initial: true,
           ),
         ]),
     AutoRoute(
         page: HomeScreen,
-        path: RoutePaths.homeScreen,
-        name: RoutePaths.homeScreen,
+        path: RoutePathsFortunica.homeScreen,
+        name: RoutePathsFortunica.homeScreen,
         children: [
           AutoRoute(
               page: DashboardV1Screen,
-              path: RoutePaths.dashboardScreen,
-              name: RoutePaths.dashboardScreen,),
+              path: RoutePathsFortunica.dashboardScreen,
+              name: RoutePathsFortunica.dashboardScreen,),
           AutoRoute(
               page: SessionsScreen,
-              path: RoutePaths.chatsScreen,
-              name: RoutePaths.chatsScreen),
+              path: RoutePathsFortunica.chatsScreen,
+              name: RoutePathsFortunica.chatsScreen),
           AutoRoute(
               page: AccountScreen,
-              path: RoutePaths.accountScreen,
-              name: RoutePaths.accountScreen),
+              path: RoutePathsFortunica.accountScreen,
+              name: RoutePathsFortunica.accountScreen),
         ]),
     AutoRoute(
       page: AddGalleryPicturesScreen,
-      path: RoutePaths.addGalleryPicturesScreen,
-      name: RoutePaths.addGalleryPicturesScreen,
+      path: RoutePathsFortunica.addGalleryPicturesScreen,
+      name: RoutePathsFortunica.addGalleryPicturesScreen,
     ),
     AutoRoute(
       page: AddNoteScreen,
-      path: RoutePaths.addNoteScreen,
-      name: RoutePaths.addNoteScreen,
+      path: RoutePathsFortunica.addNoteScreen,
+      name: RoutePathsFortunica.addNoteScreen,
     ),
     AutoRoute(
       page: AdvisorPreviewScreen,
-      path: RoutePaths.advisorPreviewScreen,
-      name: RoutePaths.advisorPreviewScreen,
+      path: RoutePathsFortunica.advisorPreviewScreen,
+      name: RoutePathsFortunica.advisorPreviewScreen,
     ),
     AutoRoute(
       page: BalanceAndTransactionsScreen,
-      path: RoutePaths.balanceAndTransactionsScreen,
-      name: RoutePaths.balanceAndTransactionsScreen,
+      path: RoutePathsFortunica.balanceAndTransactionsScreen,
+      name: RoutePathsFortunica.balanceAndTransactionsScreen,
     ),
     AutoRoute(
       page: ChatScreen,
-      path: RoutePaths.chatScreen,
-      name: RoutePaths.chatScreen,
+      path: RoutePathsFortunica.chatScreen,
+      name: RoutePathsFortunica.chatScreen,
     ),
     AutoRoute(
       page: CustomerProfileScreen,
-      path: RoutePaths.customerProfileScreen,
-      name: RoutePaths.customerProfileScreen,
+      path: RoutePathsFortunica.customerProfileScreen,
+      name: RoutePathsFortunica.customerProfileScreen,
     ),
     AutoRoute(
       page: CustomerSessionsScreen,
-      path: RoutePaths.customerSessionsScreen,
-      name: RoutePaths.customerSessionsScreen,
+      path: RoutePathsFortunica.customerSessionsScreen,
+      name: RoutePathsFortunica.customerSessionsScreen,
     ),
     AutoRoute(
       page: EditProfileScreen,
-      path: RoutePaths.editProfileScreen,
-      name: RoutePaths.editProfileScreen,
+      path: RoutePathsFortunica.editProfileScreen,
+      name: RoutePathsFortunica.editProfileScreen,
     ),
     AutoRoute(
       page: ForgotPasswordScreen,
-      path: RoutePaths.forgotPasswordScreen,
-      name: RoutePaths.forgotPasswordScreen,
+      path: RoutePathsFortunica.forgotPasswordScreen,
+      name: RoutePathsFortunica.forgotPasswordScreen,
     ),
     AutoRoute(
       page: GalleryPicturesScreen,
-      path: RoutePaths.galleryPicturesScreen,
-      name: RoutePaths.galleryPicturesScreen,
+      path: RoutePathsFortunica.galleryPicturesScreen,
+      name: RoutePathsFortunica.galleryPicturesScreen,
     ),
     AutoRoute(
       page: SupportScreen,
-      path: RoutePaths.supportScreen,
-      name: RoutePaths.supportScreen,
+      path: RoutePathsFortunica.supportScreen,
+      name: RoutePathsFortunica.supportScreen,
     ),
   ],
 );

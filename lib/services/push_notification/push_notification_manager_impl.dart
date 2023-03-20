@@ -1,14 +1,31 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:isolate';
+import 'dart:ui';
 
-import 'package:shared_advisor_interface/global.dart';
-import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fortunica/fortunica_main_cubit.dart';
+import 'package:fortunica/infrastructure/di/inject_config.dart';
+import 'package:fortunica/infrastructure/routing/route_paths_fortunica.dart';
+import 'package:fortunica/presentation/screens/chat/chat_screen.dart';
+import 'package:fortunica/presentation/screens/home/tabs_types.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
 
 bool _isRegisteredForPushNotifications = false;
 
-//@Injectable(as: PushNotificationManager)
+final ReceivePort _receiveNotificationPort = ReceivePort();
+const String _notificationPortChannel = 'communication_channel';
+
+@Singleton(as: PushNotificationManager)
 class PushNotificationManagerImpl implements PushNotificationManager {
   final FirebaseMessaging messaging = FirebaseMessaging.instance;
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -16,23 +33,51 @@ class PushNotificationManagerImpl implements PushNotificationManager {
 
   @override
   Future<void> registerForPushNotifications() async {
-    if (_isRegisteredForPushNotifications) {
-      return;
+    if (!_isRegisteredForPushNotifications) {
+      _isRegisteredForPushNotifications = true;
+      await _configure();
     }
-    _isRegisteredForPushNotifications = true;
-
-    await _configure();
   }
 
   Future<void> _configure() async {
+    IsolateNameServer.registerPortWithName(
+      _receiveNotificationPort.sendPort,
+      _notificationPortChannel,
+    );
+    _receiveNotificationPort.listen((dynamic message) {
+      final BuildContext? fortunicaContext = Configuration.fortunicaContext;
+      logger.d(message);
+      if (message is Map<String, dynamic>) {
+        Map<String, dynamic> map = jsonDecode(message['meta'] ?? '{}');
+        final String? type = map['type'];
+        if (type != null) {
+          if (type == PushType.publicReturned.name) {
+            if (fortunicaContext != null &&
+                fortunicaContext.currentRoutePath ==
+                    RoutePathsFortunica.chatScreen) {
+              fortunicaContext
+                  .replaceAll([FortunicaAuth(initTab: TabsTypes.sessions)]);
+            } else {
+              fortunicaGetIt.get<FortunicaMainCubit>().updateSessions();
+            }
+          } else if (type != PushType.tips.name) {
+            fortunicaGetIt.get<FortunicaMainCubit>().updateSessions();
+          }
+        }
+      }
+    });
     _configLocalNotification();
-    _setUpFirebaseMessaging();
+    await _setUpFirebaseMessaging();
   }
 
   void _configLocalNotification() {
     var initializationSettingsAndroid =
         const AndroidInitializationSettings('mipmap/ic_launcher');
-    var initializationSettingsIOS = const DarwinInitializationSettings();
+    var initializationSettingsIOS = const DarwinInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+    );
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
@@ -106,56 +151,112 @@ class PushNotificationManagerImpl implements PushNotificationManager {
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      Map<String, dynamic> map = jsonDecode(message.data['meta'] ?? '');
+
       logger.d('***********************');
       logger.d(message.toMap());
       logger.d(message.data);
       logger.d(message.data['meta']);
-      Map<String, dynamic> map = jsonDecode(message.data['meta'] ?? '');
       logger.d(map['entityId']);
       logger.d('***********************');
 
-      showNotification(message);
+      final BuildContext? fortunicaContext = Configuration.fortunicaContext;
+
+      if (Platform.isAndroid) {
+        showNotification(message);
+      }
+
+      final String? type = map['type'];
+      if (type != null) {
+        if (type == PushType.publicReturned.name) {
+          if (fortunicaContext != null &&
+              fortunicaContext.currentRoutePath ==
+                  RoutePathsFortunica.chatScreen) {
+            fortunicaContext
+                .replaceAll([FortunicaAuth(initTab: TabsTypes.sessions)]);
+          } else {
+            fortunicaGetIt.get<FortunicaMainCubit>().updateSessions();
+          }
+        } else if (type != PushType.tips.name) {
+          fortunicaGetIt.get<FortunicaMainCubit>().updateSessions();
+        }
+      }
     });
 
-    FirebaseMessaging.onBackgroundMessage(_navigateToNextScreen);
-
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
       _navigateToNextScreen(message);
     });
+
+    FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
   }
 }
 
+Future<void> _backgroundMessageHandler(RemoteMessage message) async {
+  logger.d('***********************');
+  logger.d(message.toMap());
+  logger.d(message.data);
+  logger.d('On background');
+  logger.d('***********************');
+
+  final SendPort? send =
+      IsolateNameServer.lookupPortByName(_notificationPortChannel);
+
+  send?.send(message.data);
+}
+
 Future<void> _navigateToNextScreen(RemoteMessage? message) async {
-  // CachingManager cacheManager = getIt.get<CachingManager>();
-  // bool isUserLoggedIn = cacheManager.isLoggedIn() == true;
-  // if (isUserLoggedIn) {
-  //   if (message != null) {
-  //     Map<String, dynamic> data = message.data;
-  //
-  //     Map<String, dynamic> meta = json.decode(data['meta']);
-  //     String? entityId = meta['entityId'];
-  //     String? type = meta['type'];
-  //
-  //     if (entityId != null && type != null) {
-  //       if (type == PushType.private.name) {
-  //         Get.toNamed(AppRoutes.chat,
-  //             arguments: ChatScreenArguments(privateQuestionId: entityId));
-  //       } else if (type == PushType.session.name) {
-  //         Get.toNamed(AppRoutes.chat,
-  //             arguments: ChatScreenArguments(ritualID: entityId));
-  //       } else if (type == PushType.tips.name) {
-  //         Get.toNamed(AppRoutes.chat,
-  //             arguments: ChatScreenArguments(clientIdFromPush: entityId));
-  //       }
-  //     }
-  //   }
-  // } else {
-  //   Get.toNamed(AppRoutes.login);
-  // }
+  final BuildContext? fortunicaContext = Configuration.fortunicaContext;
+
+  if (Brand.fortunica.isAuth && fortunicaContext != null && message != null) {
+    Map<String, dynamic> data = message.data;
+
+    Map<String, dynamic> meta = json.decode(data['meta']);
+    String? entityId = meta['entityId'];
+    String? type = meta['type'];
+
+    if (entityId != null && type != null) {
+      if (type == PushType.private.name) {
+        globalGetIt.get<MainCubit>().stopAudio();
+        fortunicaContext.push(
+            route: FortunicaChat(
+          chatScreenArguments: ChatScreenArguments(privateQuestionId: entityId),
+        ));
+      } else if (type == PushType.session.name) {
+        globalGetIt.get<MainCubit>().stopAudio();
+        fortunicaContext.push(
+            route: FortunicaChat(
+          chatScreenArguments: ChatScreenArguments(ritualID: entityId),
+        ));
+      } else if (type == PushType.tips.name) {
+        globalGetIt.get<MainCubit>().stopAudio();
+        fortunicaContext.push(
+            route: FortunicaChat(
+          chatScreenArguments: ChatScreenArguments(clientIdFromPush: entityId),
+        ));
+      } else if (type == PushType.publicReturned.name) {
+        fortunicaContext
+            .replaceAll([FortunicaAuth(initTab: TabsTypes.sessions)]);
+      }
+    }
+  }
 }
 
 enum PushType {
   private,
   session,
   tips,
+  publicReturned;
+
+  get name {
+    switch (this) {
+      case PushType.private:
+        return 'private';
+      case PushType.session:
+        return 'session';
+      case PushType.tips:
+        return 'tips';
+      case PushType.publicReturned:
+        return 'public_returned';
+    }
+  }
 }

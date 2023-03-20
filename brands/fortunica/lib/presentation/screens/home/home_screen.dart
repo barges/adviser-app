@@ -17,7 +17,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (_) {
-          Configuration.fortunicaContext = context;
           return HomeCubit(
               fortunicaGetIt.get<FortunicaCachingManager>(),
           initTab,

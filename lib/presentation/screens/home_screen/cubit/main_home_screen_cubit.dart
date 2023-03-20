@@ -15,25 +15,12 @@ class MainHomeScreenCubit extends Cubit<MainHomeScreenState> {
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  MainHomeScreenCubit(this._globalCachingManager) : super(const MainHomeScreenState()) {
-    final Brand currentBrand =
-        _globalCachingManager.getCurrentBrand();
+  MainHomeScreenCubit(this._globalCachingManager)
+      : super(const MainHomeScreenState()) {
+    final Brand currentBrand = _globalCachingManager.getCurrentBrand();
 
-    switch (currentBrand) {
-      case Brand.fortunica:
-        brands = [
-          Brand.fortunica,
-          Brand.zodiac,
-        ];
-        break;
-      case Brand.zodiac:
-        brands = [
-          Brand.zodiac,
-          Brand.fortunica,
-        ];
-        break;
-    }
-    
+    brands = Configuration.getBrandsWithFirstCurrent(currentBrand);
+
     routes = brands.map((e) => getPage(e)).toList();
   }
 

@@ -7,6 +7,7 @@ import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/services/dynamic_link_service.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -29,21 +30,18 @@ class LoginCubit extends Cubit<LoginState> {
 
   final FortunicaMainCubit _fortunicaMainCubit;
 
-  //final DynamicLinkService _dynamicLinkService;
-
   late final List<Brand> unauthorizedBrands;
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final FocusNode emailNode = FocusNode();
   final FocusNode passwordNode = FocusNode();
 
-  LoginCubit(this._repository,
-      this._cachingManager,
-      this._fortunicaMainCubit,
-      //this._dynamicLinkService,
-      this._dio,) : super(const LoginState()) {
-    //_dynamicLinkService.checkLinkForResetPassword();
-
+  LoginCubit(
+    this._repository,
+    this._cachingManager,
+    this._fortunicaMainCubit,
+    this._dio,
+  ) : super(const LoginState()) {
     unauthorizedBrands = Configuration.unauthorizedBrands();
 
     emailNode.addListener(() {
@@ -102,8 +100,7 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> login(BuildContext context) async {
     if (emailIsValid() && passwordIsValid()) {
       _dio.addAuthorizationToHeader(
-          'Basic ${base64.encode(utf8.encode(
-              '${emailController.text}:${passwordController.text.to256}'))}');
+          'Basic ${base64.encode(utf8.encode('${emailController.text}:${passwordController.text.to256}'))}');
       try {
         LoginResponse? response = await _repository.login();
         String? token = response?.accessToken;
@@ -127,7 +124,7 @@ class LoginCubit extends Cubit<LoginState> {
         emit(
           state.copyWith(
             passwordErrorType:
-            ValidationErrorType.pleaseEnterAtLeast6Characters,
+                ValidationErrorType.pleaseEnterAtLeast6Characters,
           ),
         );
       }
@@ -142,7 +139,9 @@ class LoginCubit extends Cubit<LoginState> {
     clearErrorMessage();
     clearSuccessMessage();
 
-    final dynamic email = await context.push(route: FortunicaForgotPassword(),);
+    final dynamic email = await context.push(
+      route: FortunicaForgotPassword(),
+    );
 
     if (email != null) {
       emit(

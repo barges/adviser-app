@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -15,7 +16,7 @@ import 'package:fortunica/data/models/app_errors/app_error.dart';
 import 'package:fortunica/data/models/app_errors/ui_error_type.dart';
 import 'package:fortunica/data/network/api/chats_api.dart';
 import 'package:fortunica/fortunica_main_cubit.dart';
-import 'package:fortunica/infrastructure/routing/route_paths.dart';
+import 'package:fortunica/infrastructure/routing/route_paths_fortunica.dart';
 import 'package:fortunica/presentation/screens/home/tabs_types.dart';
 import 'package:injectable/injectable.dart';
 
@@ -51,7 +52,7 @@ class AppInterceptor extends Interceptor {
     _mainCubit.updateIsLoading(false);
     if (fortunicaContext != null) {
       final bool isLogin =
-          fortunicaContext.currentRoutePath == RoutePaths.loginScreen;
+          fortunicaContext.currentRoutePath == RoutePathsFortunica.loginScreen;
 
       if (err.response?.statusCode == 426) {
         final Map<String, dynamic> data = err.response?.data;
@@ -73,7 +74,7 @@ class AppInterceptor extends Interceptor {
       } else if (err.response?.statusCode == 401) {
         if (!isLogin) {
           _cachingManager.logout().then((value) {
-            fortunicaContext.replaceAll([const FortunicaAuth()]);
+            fortunicaContext.replaceAll([FortunicaAuth()]);
             _fortunicaMainCubit.updateErrorMessage(
               UIError(uiErrorType: UIErrorType.blocked),
             );
@@ -93,7 +94,7 @@ class AppInterceptor extends Interceptor {
           err.response?.statusCode == 428) {
         fortunicaContext.replaceAll(
           [
-            const FortunicaAuth(),
+            FortunicaAuth(),
           ],
         );
       } else if (err.type == DioErrorType.connectTimeout ||

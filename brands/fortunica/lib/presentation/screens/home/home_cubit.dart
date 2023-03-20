@@ -29,11 +29,11 @@ class HomeCubit extends Cubit<HomeState> {
     routes = tabsList.map((e) => _getPage(e)).toList();
 
     if (_initTab != null && tabsList.contains(_initTab)) {
-      // Future.delayed(const Duration(seconds: 1)).then((value) {
+      Future.delayed(const Duration(seconds: 1)).then((value) {
         changeTabIndex(
           tabsList.indexOf(_initTab!),
         );
-      // });
+      });
     }
 
     emit(state.copyWith(userStatus: _cacheManager.getUserStatus()));

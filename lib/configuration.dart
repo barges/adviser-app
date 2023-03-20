@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/global.dart';
@@ -45,6 +46,20 @@ class Configuration {
     }
     return unAuthBrands;
   }
+
+  static List<Brand> getBrandsWithFirstCurrent(Brand currentBrand) {
+    final List<Brand> allBrands = [];
+    for (Brand brand in brands) {
+      allBrands.add(brand);
+    }
+    if (allBrands.firstOrNull != currentBrand) {
+      allBrands.removeWhere((element) => element == currentBrand);
+      allBrands.add(currentBrand);
+      return allBrands.reversed.toList();
+    } else {
+      return allBrands;
+    }
+  }
 }
 
 enum Brand {
@@ -91,6 +106,17 @@ enum Brand {
       case 'Brand.fortunica':
         return Brand.fortunica;
       case 'Brand.zodiac':
+        return Brand.zodiac;
+      default:
+        return Brand.fortunica;
+    }
+  }
+
+  static Brand brandFromName(String? name) {
+    switch (name) {
+      case 'fortunica':
+        return Brand.fortunica;
+      case 'zodiac':
         return Brand.zodiac;
       default:
         return Brand.fortunica;
