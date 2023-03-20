@@ -1,13 +1,10 @@
 import 'dart:async';
 
 import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/force_update/force_update_screen.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fortunica/data/cache/fortunica_caching_manager.dart';
@@ -17,7 +14,6 @@ import 'package:fortunica/data/models/app_errors/ui_error_type.dart';
 import 'package:fortunica/data/network/api/chats_api.dart';
 import 'package:fortunica/fortunica_main_cubit.dart';
 import 'package:fortunica/infrastructure/routing/route_paths_fortunica.dart';
-import 'package:fortunica/presentation/screens/home/tabs_types.dart';
 import 'package:injectable/injectable.dart';
 
 const String _messageKey = 'message';
@@ -63,7 +59,7 @@ class AppInterceptor extends Interceptor {
           updateLink: data[_updateLinkKey],
           moreLink: data[_moreLinkKey],
         );
-        ///TODO: Maybe do not work! Need check!
+
         fortunicaContext.replaceAllRoot(
           [
             ForceUpdate(

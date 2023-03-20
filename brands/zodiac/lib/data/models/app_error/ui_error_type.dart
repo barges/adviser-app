@@ -3,7 +3,7 @@ import 'package:zodiac/generated/l10n.dart';
 
 enum UIErrorType {
   // blocked,
-  // wrongUsernameAndOrPassword,
+  wrongUsernameAndOrPassword,
   // youCantSendThisMessageBecauseItsLessThanXSeconds,
   // youVeReachTheXMinuteTimeLimit,
   // theMaximumSizeOfTheAttachmentsIsXMb,
@@ -15,8 +15,8 @@ enum UIErrorType {
       //   return SFortunica
       //       .of(context)
       //       .yourAccountHasBeenBlockedPleaseContactYourAdvisorManager;
-      // case UIErrorType.wrongUsernameAndOrPassword:
-      //   return SFortunica.of(context).wrongUsernameAndOrPassword;
+      case UIErrorType.wrongUsernameAndOrPassword:
+        return SZodiac.of(context).wrongUsernameAndOrPasswordZodiac;
       // case UIErrorType.youCantSendThisMessageBecauseItsLessThanXSeconds:
       //   return SFortunica
       //       .of(context)

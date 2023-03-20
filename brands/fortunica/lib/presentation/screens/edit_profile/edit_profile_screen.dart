@@ -1,3 +1,4 @@
+import 'package:fortunica/fortunica_constants.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:flutter/material.dart';
@@ -120,7 +121,7 @@ class EditProfileScreen extends StatelessWidget {
                                                       ?.profileName
                                                       ?.length ??
                                                   0) <
-                                              AppConstants.minNickNameLength,
+                                              FortunicaConstants.minNickNameLength,
                                           detailsText: SFortunica.of(context)
                                               .nameCanBeChangedOnlyOnAdvisorToolFortunica,
                                         );

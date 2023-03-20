@@ -2,16 +2,15 @@
 
 import 'dart:io';
 
-import 'package:shared_advisor_interface/global.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:shared_advisor_interface/services/check_permission_service.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:fortunica/infrastructure/di/inject_config.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/services/check_permission_service.dart';
 
 Future<void> showPickImageAlert(
     {required BuildContext context,
@@ -99,7 +98,6 @@ Future<void> showPickImageAlert(
               cancelButton: CupertinoActionSheetAction(
                 isDefaultAction: true,
                 onPressed: () {
-                  logger.d(context.router.root.navigatorKey.currentContext);
                   context.popRoot();
                   // Navigator.of(context).pop();
                   if (cancelOnTap != null) {

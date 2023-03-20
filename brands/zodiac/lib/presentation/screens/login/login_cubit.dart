@@ -1,14 +1,13 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/app_success/app_success.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
@@ -19,7 +18,6 @@ import 'package:zodiac/presentation/screens/login/login_state.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  final AppRouter _routerService;
   final AuthRepository _repository;
   final ZodiacCachingManager _cachingManager;
 
@@ -33,7 +31,6 @@ class LoginCubit extends Cubit<LoginState> {
   final FocusNode passwordNode = FocusNode();
 
   LoginCubit(
-    this._routerService,
     this._repository,
     this._cachingManager,
     this._zodiacMainCubit,

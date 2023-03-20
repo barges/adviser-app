@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,7 +46,7 @@ Future<void> showOkCancelBottomSheet({
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.only(top: 16.0, bottom: 32.0),
               child: Center(
-                child: Text('Cancel',
+                child: Text(S.of(context).cancel,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).primaryColor,
@@ -80,7 +81,7 @@ Future<void> showOkCancelBottomSheet({
                 }
               },
               child: Text(
-                'Cancel',
+                S.of(context).cancel,
               ),
             ),
           );

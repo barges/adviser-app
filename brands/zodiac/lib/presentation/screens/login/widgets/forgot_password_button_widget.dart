@@ -12,7 +12,7 @@ class ForgotPasswordButtonWidget extends StatelessWidget {
     return GestureDetector(
       onTap: loginCubit.goToForgotPassword,
       child: Text(
-        'Forgot Password?',
+        '${SZodiac.of(context).forgotPasswordZodiac}?',
         style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: Theme.of(context).primaryColor,
               fontWeight: FontWeight.w500,

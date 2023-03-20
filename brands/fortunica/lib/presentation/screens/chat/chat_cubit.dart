@@ -2,16 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/global.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/services/audio/audio_player_service.dart';
-import 'package:shared_advisor_interface/services/audio/audio_recorder_service.dart';
-import 'package:shared_advisor_interface/services/check_permission_service.dart';
-import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +18,6 @@ import 'package:fortunica/data/models/chats/attachment.dart';
 import 'package:fortunica/data/models/chats/chat_item.dart';
 import 'package:fortunica/data/models/chats/content_limitation.dart';
 import 'package:fortunica/data/models/chats/meta.dart';
-import 'package:fortunica/data/models/chats/rirual_card_info.dart';
 import 'package:fortunica/data/models/enums/attachment_type.dart';
 import 'package:fortunica/data/models/enums/chat_item_status_type.dart';
 import 'package:fortunica/data/models/enums/chat_item_type.dart';
@@ -38,6 +27,7 @@ import 'package:fortunica/data/network/requests/answer_request.dart';
 import 'package:fortunica/data/network/responses/answer_validation_response.dart';
 import 'package:fortunica/data/network/responses/rituals_response.dart';
 import 'package:fortunica/domain/repositories/fortunica_chats_repository.dart';
+import 'package:fortunica/fortunica_constants.dart';
 import 'package:fortunica/fortunica_main_cubit.dart';
 import 'package:fortunica/presentation/screens/chat/chat_screen.dart';
 import 'package:fortunica/presentation/screens/chat/widgets/chat_text_input_widget.dart';
@@ -45,7 +35,16 @@ import 'package:fortunica/presentation/screens/customer_profile/customer_profile
 import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
-
+import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/services/audio/audio_player_service.dart';
+import 'package:shared_advisor_interface/services/audio/audio_recorder_service.dart';
+import 'package:shared_advisor_interface/services/check_permission_service.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:storage_space/storage_space.dart';
 import 'package:uuid/uuid.dart';
@@ -75,7 +74,6 @@ class ChatCubit extends Cubit<ChatState> {
   final FortunicaChatsRepository chatsRepository;
   final ChatScreenArguments chatScreenArguments;
   final VoidCallback showErrorAlert;
-  final VoidCallback popRouter;
   final ValueGetter<Future<bool?>> confirmSendAnswerAlert;
   final ValueGetter<Future<bool?>> deleteAudioMessageAlert;
   final ValueGetter<Future<bool?>> recordingIsNotPossibleAlert;
@@ -117,7 +115,6 @@ class ChatCubit extends Cubit<ChatState> {
    required this.audioPlayer,
    required this.checkPermissionService,
    required this.showErrorAlert,
-   required this.popRouter,
    required this.confirmSendAnswerAlert,
    required this.deleteAudioMessageAlert,
    required this.recordingIsNotPossibleAlert,
@@ -326,33 +323,33 @@ class ChatCubit extends Cubit<ChatState> {
     _afterShowMessagesInSec =
         answerLimitationContent?.questionRemindMinutes != null
             ? answerLimitationContent!.questionRemindMinutes! *
-                AppConstants.minuteInSec
-            : AppConstants.afterShowAnswerTimingMessagesInSec;
+            FortunicaConstants.minuteInSec
+            : FortunicaConstants.afterShowAnswerTimingMessagesInSec;
     _tillShowMessagesInSec =
         answerLimitationContent?.questionReturnMinutes != null
             ? answerLimitationContent!.questionReturnMinutes! *
-                    AppConstants.minuteInSec -
+            FortunicaConstants.minuteInSec -
                 _afterShowMessagesInSec
-            : AppConstants.tillShowAnswerTimingMessagesInSec;
+            : FortunicaConstants.tillShowAnswerTimingMessagesInSec;
 
     _minRecordDurationInSec = answerLimitationContent?.audioTime?.min ??
-        AppConstants.minRecordDurationInSec;
+        FortunicaConstants.minRecordDurationInSec;
     _maxRecordDurationInSec = answerLimitationContent?.audioTime?.max ??
-        AppConstants.maxRecordDurationInSec;
+        FortunicaConstants.maxRecordDurationInSec;
     _maxRecordDurationInMinutes =
-        _maxRecordDurationInSec ~/ AppConstants.minuteInSec;
+        _maxRecordDurationInSec ~/ FortunicaConstants.minuteInSec;
 
     _minTextLength = answerLimitationContent?.min ??
         (questionFromDBtype == ChatItemType.ritual
-            ? AppConstants.minTextLengthRitual
-            : AppConstants.minTextLength);
+            ? FortunicaConstants.minTextLengthRitual
+            : FortunicaConstants.minTextLength);
     _maxTextLength = answerLimitationContent?.max ??
         (questionFromDBtype == ChatItemType.ritual
-            ? AppConstants.maxTextLengthRitual
-            : AppConstants.maxTextLength);
+            ? FortunicaConstants.maxTextLengthRitual
+            : FortunicaConstants.maxTextLength);
 
     _maxAttachmentSizeInBytes = answerLimitationContent?.bodySize?.max ??
-        AppConstants.maxAttachmentSizeInBytes;
+        FortunicaConstants.maxAttachmentSizeInBytes;
     _maxAttachmentSizeInMb = _maxAttachmentSizeInBytes /
         (AppConstants.bytesInKilobyte * AppConstants.bytesInKilobyte);
   }
@@ -524,7 +521,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     fortunicaMainCubit.updateSessions();
-    popRouter();
+    Configuration.fortunicaContext?.popForced();
     _answerTimer?.cancel();
   }
 
@@ -651,7 +648,7 @@ class ChatCubit extends Cubit<ChatState> {
     _tryStartAnswerSend();
 
     final List<File> images = List.of(state.attachedPictures);
-    if (image != null && images.length < AppConstants.maxAttachedPictures) {
+    if (image != null && images.length < FortunicaConstants.maxAttachedPictures) {
       images.add(image);
     } else {
       return;
@@ -828,7 +825,7 @@ class ChatCubit extends Cubit<ChatState> {
               afterTakenInSec;
         }
 
-        if (afterShowMessagesInSec <= AppConstants.minuteInSec) {
+        if (afterShowMessagesInSec <= FortunicaConstants.minuteInSec) {
           _setAnswerIsNotPossible();
         }
 
@@ -848,14 +845,14 @@ class ChatCubit extends Cubit<ChatState> {
 
         _answerTimer = Timer.periodic(tick, (_) {
           tillEnd = tillEnd - tick;
-          if (tillEnd.inSeconds > AppConstants.minuteInSec) {
+          if (tillEnd.inSeconds > FortunicaConstants.minuteInSec) {
             if (!_counterMessageCleared) {
               updateSuccessMessage(UISuccess.withArguments(
                   UISuccessMessagesType
                       .thisQuestionWillBeReturnedToTheGeneralListAfterCounter,
                   tillEnd.formatMMSS));
             }
-          } else if (tillEnd.inSeconds == AppConstants.minuteInSec) {
+          } else if (tillEnd.inSeconds == FortunicaConstants.minuteInSec) {
             _setAnswerIsNotPossible();
           }
           if (tillEnd.inSeconds == 0) {
@@ -1162,8 +1159,8 @@ class ChatCubit extends Cubit<ChatState> {
   bool canAttachPictureTo({AttachmentType? attachmentType}) {
     return state.attachedPictures.length <
         ((attachmentType != null && attachmentType == AttachmentType.audio)
-            ? AppConstants.minAttachedPictures
-            : AppConstants.maxAttachedPictures);
+            ? FortunicaConstants.minAttachedPictures
+            : FortunicaConstants.maxAttachedPictures);
   }
 
   void _scrollTextFieldToEnd() {

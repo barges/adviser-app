@@ -1,12 +1,10 @@
 import 'dart:io';
 
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/global.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fortunica/generated/l10n.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 
 Future<bool?> showOkCancelAlert({
   required BuildContext context,
@@ -42,7 +40,7 @@ Future<bool?> showOkCancelAlert({
                   if (isCancelEnabled)
                     CupertinoDialogAction(
                       child: Text(
-                        SFortunica.of(context).cancelFortunica,
+                        S.of(context).cancel,
                       ),
                       onPressed: () {
                         context.popForced(false);
@@ -99,10 +97,7 @@ Future<bool?> showOkCancelAlert({
                           children: [
                             if (isCancelEnabled)
                               TextButton(
-                                child: Text(
-                                    SFortunica.of(context)
-                                        .cancelFortunica
-                                        .toUpperCase(),
+                                child: Text(S.of(context).cancel.toUpperCase(),
                                     style:
                                         theme.textTheme.displayLarge?.copyWith(
                                       fontSize: 14.0,

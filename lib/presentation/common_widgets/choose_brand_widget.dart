@@ -1,6 +1,5 @@
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/brand_widget.dart';
 import 'package:flutter/material.dart';

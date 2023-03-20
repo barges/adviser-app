@@ -2,14 +2,12 @@ import 'dart:io';
 
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:fortunica/generated/l10n.dart';
-import 'package:fortunica/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 
 @singleton
 class CheckPermissionService {
@@ -81,7 +79,7 @@ class CheckPermissionService {
       await showOkCancelAlert(
           context: context,
           title: permissionType.getSettingsAlertTitleText(context),
-          okText: SFortunica.of(context).settingsFortunica,
+          okText: S.of(context).settings,
           description: permissionType.getSettingsAlertDescriptionText(context),
           actionOnOK: actionOnOk,
           allowBarrierClick: true,
@@ -106,15 +104,15 @@ enum PermissionType {
     switch (this) {
       case PermissionType.gallery:
       case PermissionType.camera:
-        return SFortunica
+        return S
             .of(context)
-            .weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImagesFortunica;
+            .weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages;
       case PermissionType.audio:
-        return SFortunica.of(context).weNeedPermissionToAccessYourMicrophoneFortunica;
+        return S.of(context).weNeedPermissionToAccessYourMicrophone;
       case PermissionType.notification:
-        return SFortunica
+        return S
             .of(context)
-            .toEnableNotificationYoullNeedToAllowNotificationsInYourFortunica;
+            .toEnableNotificationYoullNeedToAllowNotificationsInYour;
     }
   }
 
@@ -123,9 +121,9 @@ enum PermissionType {
       case PermissionType.gallery:
       case PermissionType.camera:
       case PermissionType.audio:
-        return SFortunica.of(context).permissionNeededFortunica;
+        return S.of(context).permissionNeeded;
       case PermissionType.notification:
-        return SFortunica.of(context).notificationsAreDisabledFortunica;
+        return S.of(context).notificationsAreDisabled;
     }
   }
 

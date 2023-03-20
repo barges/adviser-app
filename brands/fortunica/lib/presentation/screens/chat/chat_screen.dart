@@ -1,13 +1,3 @@
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/main_state.dart';
-import 'package:shared_advisor_interface/services/audio/audio_player_service.dart';
-import 'package:shared_advisor_interface/services/audio/audio_recorder_service.dart';
-import 'package:shared_advisor_interface/services/check_permission_service.dart';
-import 'package:shared_advisor_interface/services/connectivity_service.dart';
-import 'package:shared_advisor_interface/utils/utils.dart';
-import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
@@ -25,7 +15,6 @@ import 'package:fortunica/presentation/common_widgets/buttons/choose_option_widg
 import 'package:fortunica/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
 import 'package:fortunica/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:fortunica/presentation/common_widgets/messages/app_success_widget.dart';
-import 'package:fortunica/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:fortunica/presentation/common_widgets/show_delete_alert.dart';
 import 'package:fortunica/presentation/screens/chat/chat_cubit.dart';
 import 'package:fortunica/presentation/screens/chat/chat_state.dart';
@@ -34,6 +23,18 @@ import 'package:fortunica/presentation/screens/chat/widgets/active_chat_widget.d
 import 'package:fortunica/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:fortunica/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:fortunica/presentation/screens/customer_profile/customer_profile_screen.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
+import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/main_state.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
+import 'package:shared_advisor_interface/services/audio/audio_player_service.dart';
+import 'package:shared_advisor_interface/services/audio/audio_recorder_service.dart';
+import 'package:shared_advisor_interface/services/check_permission_service.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
+import 'package:shared_advisor_interface/utils/utils.dart';
 
 class ChatScreen extends StatelessWidget {
   final ChatScreenArguments chatScreenArguments;
@@ -59,7 +60,6 @@ class ChatScreen extends StatelessWidget {
         deleteAudioMessageAlert: () => deleteAudioMessageAlert(context),
         recordingIsNotPossibleAlert: () => recordingIsNotPossibleAlert(context),
         chatScreenArguments: chatScreenArguments,
-        popRouter: context.pop,
       ),
       child: Builder(builder: (context) {
         return BlocListener<ChatCubit, ChatState>(
@@ -130,6 +130,9 @@ class ChatContentWidget extends StatelessWidget {
                   publicQuestionId:
                       chatCubit.chatScreenArguments.publicQuestionId,
                   returnInQueueButtonOnTap: () async {
+
+
+
                     final dynamic needReturn = await showOkCancelAlert(
                       context: context,
                       title: s.doYouWantToRejectThisQuestionFortunica,
@@ -138,6 +141,8 @@ class ChatContentWidget extends StatelessWidget {
                       allowBarrierClick: false,
                       isCancelEnabled: true,
                     );
+
+                    logger.d(needReturn);
 
                     if (needReturn == true) {
                       await chatCubit.returnQuestion();

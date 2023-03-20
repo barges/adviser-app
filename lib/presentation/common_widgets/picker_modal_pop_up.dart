@@ -1,10 +1,9 @@
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/global.dart';
-import 'package:shared_advisor_interface/infrastructure/brands/base_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:fortunica/generated/l10n.dart';
 
 void showPickerModalPopUp({
   required BuildContext context,
@@ -42,7 +41,7 @@ void showPickerModalPopUp({
                         height: AppConstants.appBarHeight,
                         color: Colors.transparent,
                         child: Text(
-                          SFortunica.of(context).cancelFortunica,
+                          S.of(context).cancel,
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: Theme.of(context).primaryColor,
@@ -60,7 +59,7 @@ void showPickerModalPopUp({
                         height: AppConstants.appBarHeight,
                         color: Colors.transparent,
                         child: Text(
-                          SFortunica.of(context).doneFortunica,
+                          S.of(context).done,
                           style:
                               Theme.of(context).textTheme.labelMedium?.copyWith(
                                     fontSize: 15.0,

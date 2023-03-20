@@ -15,5 +15,13 @@
   "logOut": "Log out",
   "version": "Version",
   "tapToCopy": "Tap to copy",
-  "copied": "Copied!"
+  "copied": "Copied!",
+  "cancel": "Cancel",
+  "done": "Done",
+  "settings": "Settings",
+  "permissionNeeded": "Permission Needed",
+  "weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages": "We need permission to access your camera and gallery so you can send images",
+  "weNeedPermissionToAccessYourMicrophone": "We need permission to access your microphone",
+  "toEnableNotificationYoullNeedToAllowNotificationsInYour": "To enable notification, you’ll need to allow notifications in your phone settings",
+  "notificationsAreDisabled": "Notifications are disabled"
 }

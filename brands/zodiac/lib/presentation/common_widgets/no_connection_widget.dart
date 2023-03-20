@@ -2,6 +2,7 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:zodiac/generated/l10n.dart';
 
 class NoConnectionWidget extends StatelessWidget {
   const NoConnectionWidget({Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class NoConnectionWidget extends StatelessWidget {
             height: 24.0,
           ),
           Text(
-            'No internet connection',
+            SZodiac.of(context).noInternetConnectionZodiac,
             style: Theme.of(context).textTheme.headlineMedium,
             textAlign: TextAlign.center,
           ),
@@ -35,7 +36,7 @@ class NoConnectionWidget extends StatelessWidget {
             height: 8.0,
           ),
           Text(
-            'Uh-oh. It looks like you\'ve lost your connection. Please try again.',
+            SZodiac.of(context).uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainZodiac,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontSize: 16.0,
                   color: Theme.of(context).shadowColor,

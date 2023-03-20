@@ -2,11 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
-import 'package:shared_advisor_interface/services/connectivity_service.dart';
-import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,9 +15,14 @@ import 'package:fortunica/data/network/requests/reorder_cover_pictures_request.d
 import 'package:fortunica/data/network/requests/update_profile_image_request.dart';
 import 'package:fortunica/data/network/requests/update_profile_request.dart';
 import 'package:fortunica/domain/repositories/fortunica_user_repository.dart';
+import 'package:fortunica/fortunica_constants.dart';
 import 'package:fortunica/fortunica_main_cubit.dart';
 import 'package:fortunica/presentation/screens/gallery/gallery_pictures_screen.dart';
 import 'package:mime/mime.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
+import 'package:shared_advisor_interface/utils/utils.dart';
 
 import 'edit_profile_state.dart';
 
@@ -291,7 +291,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   bool _checkNickName([bool animate = true]) {
     bool isValid = true;
-    if (nicknameController.text.length < AppConstants.minNickNameLength) {
+    if (nicknameController.text.length < FortunicaConstants.minNickNameLength) {
       isValid = false;
       if (animate) {
         Utils.animateToWidget(nicknameFieldKey);

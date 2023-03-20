@@ -1,36 +1,33 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fortunica/fortunica_main_cubit.dart';
+import 'package:fortunica/generated/l10n.dart';
+import 'package:fortunica/infrastructure/di/inject_config.dart';
+import 'package:multiple_localization/multiple_localization.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/intl/messages_all.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_loading_indicator.dart';
 import 'package:shared_advisor_interface/themes/app_themes.dart';
-import 'package:auto_route/auto_route.dart';
-import 'package:collection/collection.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:fortunica/fortunica_main_cubit.dart';
-
-import 'package:fortunica/generated/l10n.dart';
-import 'package:fortunica/infrastructure/di/inject_config.dart';
-import 'package:multiple_localization/multiple_localization.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter/material.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 import 'infrastructure/di/app_initializer.dart';
 import 'infrastructure/di/brand_manager.dart';
-import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
 
 void main() async {
   await AppInitializer.setupPrerequisites(
@@ -140,7 +137,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                     newLocale ??= supportedLocales.first;
 
                     if (languageCode == null) {
-                      _cacheManager.saveLanguageCode(newLocale.languageCode);
+                      final String code = newLocale.languageCode;
+                      _cacheManager.saveLanguageCode(code);
+                      Configuration.setBrandsLocales(code);
                     }
 
                     return newLocale;

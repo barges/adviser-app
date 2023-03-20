@@ -23,26 +23,42 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "allOurBrands": MessageLookupByLibrary.simpleMessage("Alle Marken"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Abbrechen"),
         "chooseBrand":
             MessageLookupByLibrary.simpleMessage("Auswahl einer Marke"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("Kommt bald!"),
         "copied": MessageLookupByLibrary.simpleMessage("Kopiert!"),
         "customerSupport":
             MessageLookupByLibrary.simpleMessage("Kundensupport"),
+        "done": MessageLookupByLibrary.simpleMessage("Fertig"),
         "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
         "learnMore": MessageLookupByLibrary.simpleMessage("Mehr erfahren"),
         "logOut": MessageLookupByLibrary.simpleMessage("Abmelden"),
+        "notificationsAreDisabled": MessageLookupByLibrary.simpleMessage(
+            "Benachrichtigungen sind deaktiviert"),
         "otherBrands": MessageLookupByLibrary.simpleMessage("Andere Marken"),
+        "permissionNeeded":
+            MessageLookupByLibrary.simpleMessage("Erlaubnis notwendig"),
         "pleaseUpdateTheApp":
             MessageLookupByLibrary.simpleMessage("Bitte aktualisiere die App"),
+        "settings": MessageLookupByLibrary.simpleMessage("Einstellungen"),
         "tapToCopy": MessageLookupByLibrary.simpleMessage("Tippe zum Kopieren"),
         "thisVersionOfTheAppIsNoLongerSupported":
             MessageLookupByLibrary.simpleMessage(
                 "Diese Version der App wird nicht mehr unterstützt. Um zu all deinen Unterhaltungen zurückzukehren, installiere die neueste Version"),
+        "toEnableNotificationYoullNeedToAllowNotificationsInYour":
+            MessageLookupByLibrary.simpleMessage(
+                "Um die Benachrichtigung zu aktivieren, muss man in den Einstellungen des Handys Benachrichtigungen zulassen"),
         "unknownError":
             MessageLookupByLibrary.simpleMessage("Unbekannter Fehler"),
         "update": MessageLookupByLibrary.simpleMessage("Aktualisierung"),
         "version": MessageLookupByLibrary.simpleMessage("Version"),
+        "weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages":
+            MessageLookupByLibrary.simpleMessage(
+                "Wir benötigen die Erlaubnis, auf deine Kamera und Galerie zuzugreifen, damit du Bilder senden kannst."),
+        "weNeedPermissionToAccessYourMicrophone":
+            MessageLookupByLibrary.simpleMessage(
+                "Wir benötigen die Erlaubnis, auf dein Mikrofon zuzugreifen"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "Wir sind stolz darauf, Beratern einen sicheren Ort zu bieten, an dem sie Kunden betreuen und sich beruflich weiterentwickeln können. Wenn du bei einer unserer Marken gute Arbeit leistest, öffnet das Türen zu anderen."),

@@ -28,13 +28,13 @@ enum MarketsType {
   String languageName(BuildContext context) {
     switch (this) {
       case MarketsType.de:
-        return AppConstants.deBrandName;
+        return AppConstants.deLanguageName;
       case MarketsType.en:
-        return AppConstants.enBrandName;
+        return AppConstants.enLanguageName;
       case MarketsType.es:
-        return AppConstants.esBrandName;
+        return AppConstants.esLanguageName;
       case MarketsType.pt:
-        return AppConstants.ptBrandName;
+        return AppConstants.ptLanguageName;
       case MarketsType.all:
         return SFortunica.of(context).allMarketsFortunica;
     }

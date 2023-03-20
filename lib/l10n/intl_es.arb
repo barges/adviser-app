@@ -15,5 +15,13 @@
   "logOut": "Cerrar sesión",
   "version": "Versión",
   "tapToCopy": "Toca para copiar",
-  "copied": "Copiado!"
+  "copied": "Copiado!",
+  "cancel": "Cancelar",
+  "done": "Listo",
+  "settings": "Configuraciones",
+  "permissionNeeded": "Se Necesita Permiso",
+  "weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages": "Necesitamos permiso para acceder a tu cámara y galería para que puedas enviar imágenes",
+  "weNeedPermissionToAccessYourMicrophone": "Necesitamos permiso para acceder a tu micrófono",
+  "toEnableNotificationYoullNeedToAllowNotificationsInYour": "Para activar las notificaciones, tendrás que permitir las notificaciones desde los ajustes de tu teléfono",
+  "notificationsAreDisabled": "Las notificaciones están desactivadas"
 }

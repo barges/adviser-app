@@ -23,24 +23,40 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "allOurBrands": MessageLookupByLibrary.simpleMessage("All brands"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chooseBrand": MessageLookupByLibrary.simpleMessage("Choose brand"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon!"),
         "copied": MessageLookupByLibrary.simpleMessage("Copied!"),
         "customerSupport":
             MessageLookupByLibrary.simpleMessage("Customer Support"),
+        "done": MessageLookupByLibrary.simpleMessage("Done"),
         "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
         "learnMore": MessageLookupByLibrary.simpleMessage("Learn More"),
         "logOut": MessageLookupByLibrary.simpleMessage("Log out"),
+        "notificationsAreDisabled":
+            MessageLookupByLibrary.simpleMessage("Notifications are disabled"),
         "otherBrands": MessageLookupByLibrary.simpleMessage("Other brands"),
+        "permissionNeeded":
+            MessageLookupByLibrary.simpleMessage("Permission Needed"),
         "pleaseUpdateTheApp":
             MessageLookupByLibrary.simpleMessage("Please update the app"),
+        "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "tapToCopy": MessageLookupByLibrary.simpleMessage("Tap to copy"),
         "thisVersionOfTheAppIsNoLongerSupported":
             MessageLookupByLibrary.simpleMessage(
                 "This version of the app is no longer supported. To get back to all your conversations, install the latest version"),
+        "toEnableNotificationYoullNeedToAllowNotificationsInYour":
+            MessageLookupByLibrary.simpleMessage(
+                "To enable notification, you’ll need to allow notifications in your phone settings"),
         "unknownError": MessageLookupByLibrary.simpleMessage("Unknown error"),
         "update": MessageLookupByLibrary.simpleMessage("Update"),
         "version": MessageLookupByLibrary.simpleMessage("Version"),
+        "weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages":
+            MessageLookupByLibrary.simpleMessage(
+                "We need permission to access your camera and gallery so you can send images"),
+        "weNeedPermissionToAccessYourMicrophone":
+            MessageLookupByLibrary.simpleMessage(
+                "We need permission to access your microphone"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others"),

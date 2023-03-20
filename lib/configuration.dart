@@ -1,13 +1,13 @@
 import 'package:collection/collection.dart';
-import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/global.dart';
-import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fortunica/data/cache/fortunica_caching_manager.dart';
 import 'package:fortunica/infrastructure/di/app_initializer.dart';
 import 'package:fortunica/infrastructure/di/inject_config.dart';
+import 'package:fortunica/infrastructure/di/modules/api_module.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/infrastructure/di/app_initializer.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
@@ -45,6 +45,14 @@ class Configuration {
       }
     }
     return unAuthBrands;
+  }
+
+  static void setBrandsLocales(String languageCode) {
+    for (Brand brand in brands) {
+      if (brand.isEnabled) {
+        brand.setLanguageCode(languageCode);
+      }
+    }
   }
 
   static List<Brand> getBrandsWithFirstCurrent(Brand currentBrand) {
@@ -87,6 +95,27 @@ enum Brand {
             null;
       case Brand.zodiac:
         return zodiacGetIt.get<ZodiacCachingManager>().getUserToken() != null;
+    }
+  }
+
+  String? get languageCode {
+    switch (this) {
+      case Brand.fortunica:
+        return fortunicaGetIt.get<FortunicaCachingManager>().getLanguageCode();
+      case Brand.zodiac:
+        return zodiacGetIt.get<ZodiacCachingManager>().getLanguageCode();
+    }
+  }
+
+  setLanguageCode(String code) {
+    switch (this) {
+      case Brand.fortunica:
+        fortunicaGetIt.get<FortunicaCachingManager>().saveLanguageCode(code);
+        fortunicaGetIt.get<Dio>().addLocaleToHeader(code);
+        break;
+      case Brand.zodiac:
+        zodiacGetIt.get<ZodiacCachingManager>().saveLanguageCode(code);
+        break;
     }
   }
 

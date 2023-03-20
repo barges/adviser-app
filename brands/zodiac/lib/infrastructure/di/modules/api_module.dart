@@ -1,16 +1,15 @@
 import 'dart:io';
 
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
-import 'package:shared_advisor_interface/global.dart';
 import 'package:android_id/android_id.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
+import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/infrastructure/di/dio_interceptors/app_interceptor.dart';
+import 'package:zodiac/zodiac_constants.dart';
 
 @module
 abstract class ApiModule {
@@ -19,7 +18,7 @@ abstract class ApiModule {
   Future<Dio> initDio(
       GlobalCachingManager cacheManager, AppInterceptor appInterceptor) async {
     final dio = Dio();
-    dio.options.baseUrl = AppConstants.baseUrlZodiac;
+    dio.options.baseUrl = ZodiacConstants.baseUrlZodiac;
     // dio.options.headers = await _getHeaders(cacheManager);
     dio.options.connectTimeout = 30000;
     dio.options.receiveTimeout = 30000;
@@ -72,4 +71,3 @@ extension DioHeadersExt on Dio {
     options.headers['Authorization'] = token;
   }
 }
-

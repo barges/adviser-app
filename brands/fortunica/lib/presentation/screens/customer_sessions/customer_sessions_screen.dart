@@ -16,7 +16,7 @@ import 'package:fortunica/infrastructure/di/inject_config.dart';
 import 'package:fortunica/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
 import 'package:fortunica/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:fortunica/presentation/common_widgets/no_connection_widget.dart';
-import 'package:fortunica/presentation/common_widgets/ok_cancel_alert.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:fortunica/presentation/screens/customer_sessions/customer_sessions_cubit.dart';
 import 'package:fortunica/presentation/screens/customer_sessions/widgets/customer_sessions_filters_widget.dart';
 import 'package:fortunica/presentation/screens/customer_sessions/widgets/customer_sessions_list_widget.dart';

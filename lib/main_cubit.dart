@@ -1,25 +1,20 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/global.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/main_state.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/services/fresh_chat_service.dart';
-import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:fortunica/infrastructure/di/inject_config.dart';
-import 'package:fortunica/infrastructure/di/modules/api_module.dart';
-import 'package:injectable/injectable.dart';
-import 'package:rxdart/rxdart.dart';
 
 @singleton
 class MainCubit extends Cubit<MainState> {
   final GlobalCachingManager _cacheManager;
-  final AppRouter _routerService;
 
   late final StreamSubscription _currentBrandSubscription;
   late final StreamSubscription _localeSubscription;
@@ -31,7 +26,6 @@ class MainCubit extends Cubit<MainState> {
   final ConnectivityService _connectivityService;
 
   MainCubit(
-    this._routerService,
     this._cacheManager,
     this._connectivityService,
   ) : super(const MainState()) {
@@ -41,13 +35,19 @@ class MainCubit extends Cubit<MainState> {
     });
 
     emit(state.copyWith(
-        currentBrand: _cacheManager.getCurrentBrand() ?? Brand.fortunica));
+        currentBrand: _cacheManager.getCurrentBrand()));
 
     _currentBrandSubscription = _cacheManager.listenCurrentBrandStream((value) {
-      // logger.d('CHANGE');
-      // _routerService.navigateToRouteName(
-      //     path: '/${value.alias}');
-      emit(state.copyWith(currentBrand: value));
+      emit(state.copyWith(
+          currentBrand: value,
+        ));
+
+        final String? languageCode = value.languageCode;
+
+        if (languageCode != null) {
+          _cacheManager.saveLanguageCode(languageCode);
+        }
+
     });
 
     _localeSubscription = _cacheManager.listenLanguageCodeStream(changeLocale);
@@ -87,7 +87,8 @@ class MainCubit extends Cubit<MainState> {
       globalGetIt.get<FreshChatService>().changeLocaleInvite();
     }
 
-    fortunicaGetIt.get<Dio>().addLocaleToHeader(languageCode);
+
+    logger.d(languageCode);
 
     emit(state.copyWith(
         locale: Locale(languageCode, languageCode.toUpperCase())));

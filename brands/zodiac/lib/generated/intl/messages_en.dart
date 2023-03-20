@@ -22,10 +22,29 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "cancelZodiac": MessageLookupByLibrary.simpleMessage("Cancel"),
         "checkYourInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Check your internet connection"),
-        "unknownErrorZodiac":
-            MessageLookupByLibrary.simpleMessage("Unknown error")
+        "chooseEmailAppZodiac":
+            MessageLookupByLibrary.simpleMessage("Choose email app"),
+        "emailZodiac": MessageLookupByLibrary.simpleMessage("Email"),
+        "enterYourEmailZodiac":
+            MessageLookupByLibrary.simpleMessage("Enter your email"),
+        "enterYourPasswordZodiac":
+            MessageLookupByLibrary.simpleMessage("Enter your password"),
+        "forgotPasswordZodiac":
+            MessageLookupByLibrary.simpleMessage("Forgot password"),
+        "loginZodiac": MessageLookupByLibrary.simpleMessage("Login"),
+        "noInternetConnectionZodiac":
+            MessageLookupByLibrary.simpleMessage("No internet connection."),
+        "openEmailZodiac": MessageLookupByLibrary.simpleMessage("Open email"),
+        "passwordZodiac": MessageLookupByLibrary.simpleMessage("Password"),
+        "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Uh-oh. It looks like you\'ve lost your connection. Please try again."),
+        "wrongUsernameAndOrPasswordZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Wrong username and/or password.")
       };
 }

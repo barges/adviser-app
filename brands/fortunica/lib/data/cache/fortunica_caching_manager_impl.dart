@@ -45,8 +45,11 @@ class FortunicaCachingManagerImpl implements FortunicaCachingManager {
 
   @override
   UserInfo? getUserInfo() {
-    UserInfo? userInfo = UserInfo.fromJson(
-        json.decode(Hive.box(_fortunicaUserBoxKey).get(_userInfoKey)));
+    UserInfo? userInfo;
+    if (Hive.box(_fortunicaUserBoxKey).containsKey(_userInfoKey)) {
+      userInfo = UserInfo.fromJson(
+          json.decode(Hive.box(_fortunicaUserBoxKey).get(_userInfoKey)));
+    }
     return userInfo;
   }
 

@@ -15,5 +15,13 @@
   "logOut": "Sair",
   "version": "Versão",
   "tapToCopy": "Toque para copiar",
-  "copied": "Copiado!"
+  "copied": "Copiado!",
+  "cancel": "Cancelar",
+  "done": "Feito",
+  "settings": "Configurações",
+  "permissionNeeded": "Permissão Necessária",
+  "weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages": "Precisamos de permissão para acessar sua câmera e galeria para que você possa enviar imagens",
+  "weNeedPermissionToAccessYourMicrophone": "Precisamos de permissão para acessar seu microfone",
+  "toEnableNotificationYoullNeedToAllowNotificationsInYour": "Para habilitar notificações, você precisa permitir notificações nas configurações do seu telefone",
+  "notificationsAreDisabled": "As notificações estão desativadas"
 }

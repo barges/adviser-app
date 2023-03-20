@@ -1,4 +1,15 @@
 {
   "checkYourInternetConnectionZodiac": "Verifique a sua conexão com a internet",
-  "unknownErrorZodiac": "Erro desconhecido"
+  "forgotPasswordZodiac": "Esqueceu a senha",
+  "emailZodiac": "E-Mail",
+  "passwordZodiac": "Senha",
+  "enterYourPasswordZodiac": "Insira sua senha",
+  "enterYourEmailZodiac": "Insira seu e-mail",
+  "loginZodiac": "Conectar-se",
+  "chooseEmailAppZodiac": "Escolher email do app",
+  "openEmailZodiac": "Abrir e-mail",
+  "noInternetConnectionZodiac": "Sem conexão com a internet.",
+  "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainZodiac": "Uh-oh. Parece que você perdeu sua conexão. Por favor, tente novamente.",
+  "cancelZodiac": "Cancelar",
+  "wrongUsernameAndOrPasswordZodiac": "Nome de usuário e/ou senha incorretos."
 }

@@ -24,26 +24,42 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "allOurBrands":
             MessageLookupByLibrary.simpleMessage("Todas las marcas"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "chooseBrand":
             MessageLookupByLibrary.simpleMessage("Escolher uma marca"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("Em breve!"),
         "copied": MessageLookupByLibrary.simpleMessage("Copiado!"),
         "customerSupport":
             MessageLookupByLibrary.simpleMessage("Suporte ao cliente"),
+        "done": MessageLookupByLibrary.simpleMessage("Feito"),
         "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
         "learnMore": MessageLookupByLibrary.simpleMessage("Saiba mais"),
         "logOut": MessageLookupByLibrary.simpleMessage("Sair"),
+        "notificationsAreDisabled": MessageLookupByLibrary.simpleMessage(
+            "As notificações estão desativadas"),
         "otherBrands": MessageLookupByLibrary.simpleMessage("Outras marcas"),
+        "permissionNeeded":
+            MessageLookupByLibrary.simpleMessage("Permissão Necessária"),
         "pleaseUpdateTheApp":
             MessageLookupByLibrary.simpleMessage("Por favor, atualize o app"),
+        "settings": MessageLookupByLibrary.simpleMessage("Configurações"),
         "tapToCopy": MessageLookupByLibrary.simpleMessage("Toque para copiar"),
         "thisVersionOfTheAppIsNoLongerSupported":
             MessageLookupByLibrary.simpleMessage(
                 "Esta versão do app não está atualizada. Para acessar todas as suas conversas, instale a versão mais recente."),
+        "toEnableNotificationYoullNeedToAllowNotificationsInYour":
+            MessageLookupByLibrary.simpleMessage(
+                "Para habilitar notificações, você precisa permitir notificações nas configurações do seu telefone"),
         "unknownError":
             MessageLookupByLibrary.simpleMessage("Erro desconhecido"),
         "update": MessageLookupByLibrary.simpleMessage("Atualizar"),
         "version": MessageLookupByLibrary.simpleMessage("Versão"),
+        "weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages":
+            MessageLookupByLibrary.simpleMessage(
+                "Precisamos de permissão para acessar sua câmera e galeria para que você possa enviar imagens"),
+        "weNeedPermissionToAccessYourMicrophone":
+            MessageLookupByLibrary.simpleMessage(
+                "Precisamos de permissão para acessar seu microfone"),
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "Temos orgulho de oferecer aos consultores um lugar seguro para atender os clientes e se desenvolver profissionalmente. Fazer um bom trabalho em uma de nossas marcas abrirá portas para outras."),

@@ -202,8 +202,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "notSpecifiedFortunica":
             MessageLookupByLibrary.simpleMessage("Not specified"),
         "noteFortunica": MessageLookupByLibrary.simpleMessage("Note"),
-        "notificationsAreDisabledFortunica":
-            MessageLookupByLibrary.simpleMessage("Notifications are disabled"),
         "notificationsFortunica":
             MessageLookupByLibrary.simpleMessage("Notifications"),
         "offlineFortunica": MessageLookupByLibrary.simpleMessage("Offline"),
@@ -219,8 +217,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "perfomanceOverviewAnalyticsFortunica":
             MessageLookupByLibrary.simpleMessage(
                 "Perfomance Overview Analytics"),
-        "permissionNeededFortunica":
-            MessageLookupByLibrary.simpleMessage("Permission Needed"),
         "personalDetailsFortunica":
             MessageLookupByLibrary.simpleMessage("PERSONAL DETAILS"),
         "photoIsRequiredFortunica":
@@ -321,9 +317,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "thisWeekFortunica": MessageLookupByLibrary.simpleMessage("This Week"),
         "tipsFortunica": MessageLookupByLibrary.simpleMessage("Tips"),
         "titleFortunica": MessageLookupByLibrary.simpleMessage("Title"),
-        "toEnableNotificationYoullNeedToAllowNotificationsInYourFortunica":
-            MessageLookupByLibrary.simpleMessage(
-                "To enable notification, you’ll need to allow notifications in your phone settings"),
         "todayFortunica": MessageLookupByLibrary.simpleMessage("Today"),
         "totalFortunica": MessageLookupByLibrary.simpleMessage("Total"),
         "totalMarketsFortunica":
@@ -341,12 +334,6 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Use your new password to login"),
         "weDidntFindAnythingFortunica":
             MessageLookupByLibrary.simpleMessage("We didn’t find anything"),
-        "weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImagesFortunica":
-            MessageLookupByLibrary.simpleMessage(
-                "We need permission to access your camera and gallery so you can send images"),
-        "weNeedPermissionToAccessYourMicrophoneFortunica":
-            MessageLookupByLibrary.simpleMessage(
-                "We need permission to access your microphone"),
         "weVeSentPasswordResetInstructionsToEmailFortunica": m3,
         "whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisListFortunica":
             MessageLookupByLibrary.simpleMessage(
@@ -375,8 +362,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "You have a few active sessions"),
         "youHaveAPrivateMessageFortunica":
             MessageLookupByLibrary.simpleMessage("You have a private message"),
-        "youHaveARitualRequestFortunica":
-            MessageLookupByLibrary.simpleMessage("You have a ritual request"),
+        "youHaveAnActiveSessionFortunica":
+            MessageLookupByLibrary.simpleMessage("You have an active session"),
         "youHaveNotCompletedAnySessionsYetFortunica":
             MessageLookupByLibrary.simpleMessage(
                 "You have not completed any sessions yet"),

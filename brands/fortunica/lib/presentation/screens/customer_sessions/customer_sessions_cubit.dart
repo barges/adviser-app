@@ -1,10 +1,5 @@
 import 'dart:async';
 
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/global.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
-import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -18,10 +13,15 @@ import 'package:fortunica/data/models/user_info/user_profile.dart';
 import 'package:fortunica/data/network/responses/questions_list_response.dart';
 import 'package:fortunica/domain/repositories/fortunica_chats_repository.dart';
 import 'package:fortunica/domain/repositories/fortunica_customer_repository.dart';
+import 'package:fortunica/fortunica_constants.dart';
 import 'package:fortunica/fortunica_main_cubit.dart';
 import 'package:fortunica/presentation/screens/chat/chat_screen.dart';
 import 'package:fortunica/presentation/screens/customer_sessions/customer_sessions_screen.dart';
 import 'package:fortunica/presentation/screens/customer_sessions/customer_sessions_state.dart';
+import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
 
 class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   final FortunicaCachingManager cacheManager;
@@ -215,7 +215,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
           final QuestionsListResponse result =
               await chatsRepository.getCustomerHistoryStories(
             id: argumentsQuestion.clientID ?? '',
-            limit: AppConstants.questionsLimit,
+            limit: FortunicaConstants.questionsLimit,
             lastItem: _lastItem,
             filterType: filterType,
             filterLanguage: filtersLanguage,

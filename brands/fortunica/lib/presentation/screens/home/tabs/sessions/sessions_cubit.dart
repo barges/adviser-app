@@ -1,10 +1,5 @@
 import 'dart:async';
 
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/global.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
-import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -20,11 +15,16 @@ import 'package:fortunica/data/models/user_info/user_status.dart';
 import 'package:fortunica/data/network/requests/answer_request.dart';
 import 'package:fortunica/data/network/responses/questions_list_response.dart';
 import 'package:fortunica/domain/repositories/fortunica_chats_repository.dart';
+import 'package:fortunica/fortunica_constants.dart';
 import 'package:fortunica/fortunica_main_cubit.dart';
 import 'package:fortunica/presentation/screens/chat/chat_screen.dart';
 import 'package:fortunica/presentation/screens/customer_profile/customer_profile_screen.dart';
 import 'package:fortunica/presentation/screens/customer_sessions/customer_sessions_screen.dart';
 import 'package:fortunica/presentation/screens/home/tabs/sessions/sessions_state.dart';
+import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
 
 class SessionsCubit extends Cubit<SessionsState> {
   final FortunicaCachingManager cacheManager;
@@ -227,7 +227,7 @@ class SessionsCubit extends Cubit<SessionsState> {
 
           final QuestionsListResponse result =
               await chatsRepository.getPublicQuestions(
-                  limit: AppConstants.questionsLimit,
+                  limit: FortunicaConstants.questionsLimit,
                   lastId: _lastId,
                   filtersLanguage: filtersLanguage);
           _publicHasMore = result.hasMore ?? true;
@@ -282,7 +282,7 @@ class SessionsCubit extends Cubit<SessionsState> {
 
           final QuestionsListResponse result =
               await chatsRepository.getConversationsList(
-            limit: AppConstants.questionsLimit,
+            limit: FortunicaConstants.questionsLimit,
             filtersLanguage: filtersLanguage,
             lastItem: _conversationsLastItem,
           );

@@ -1,3 +1,15 @@
 {
   "checkYourInternetConnectionZodiac": "Überprüfe deine Internetverbindung",
+  "forgotPasswordZodiac": "Passwort vergessen",
+  "emailZodiac": "E-Mail",
+  "passwordZodiac": "Passwort",
+  "enterYourPasswordZodiac": "Gib dein Passwort ein",
+  "enterYourEmailZodiac": "Gib deine E-Mail",
+  "loginZodiac": "Einloggen",
+  "openEmailZodiac": "Email öffnen",
+  "chooseEmailAppZodiac": "E-Mail-App auswählen",
+  "noInternetConnectionZodiac": "Keine Internetverbindung.",
+  "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainZodiac": "Uh-oh. Es sieht so aus, als hättest du deine Verbindung verloren. Bitte versuche es erneut.",
+  "cancelZodiac": "Abbrechen",
+  "wrongUsernameAndOrPasswordZodiac": "Falscher Benutzername und/oder falsches Passwort."
 }

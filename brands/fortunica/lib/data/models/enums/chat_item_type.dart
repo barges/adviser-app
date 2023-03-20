@@ -75,7 +75,7 @@ enum ChatItemType {
       case ChatItemType.private:
         return SFortunica.of(context).youHaveAPrivateMessageFortunica;
       case ChatItemType.ritual:
-        return SFortunica.of(context).youHaveARitualRequestFortunica;
+        return SFortunica.of(context).youHaveAnActiveSessionFortunica;
       default:
         return '';
     }

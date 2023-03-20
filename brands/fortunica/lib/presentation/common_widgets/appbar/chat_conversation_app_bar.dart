@@ -1,16 +1,16 @@
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/utils/utils.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fortunica/data/models/enums/chat_item_status_type.dart';
 import 'package:fortunica/data/models/enums/zodiac_sign.dart';
 import 'package:fortunica/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:fortunica/presentation/screens/chat/chat_cubit.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
+import 'package:shared_advisor_interface/utils/utils.dart';
 
 class ChatConversationAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -71,7 +71,7 @@ class ChatConversationAppBar extends StatelessWidget
                     if (questionStatus != ChatItemStatusType.taken)
                       AppIconButton(
                         icon: Assets.vectors.arrowLeft.path,
-                        onTap: context.popRoute,
+                        onTap: Configuration.fortunicaContext?.pop,
                       ),
                     Expanded(
                         child: Column(

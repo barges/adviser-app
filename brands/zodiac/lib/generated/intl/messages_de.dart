@@ -22,10 +22,29 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "cancelZodiac": MessageLookupByLibrary.simpleMessage("Abbrechen"),
         "checkYourInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Überprüfe deine Internetverbindung"),
-        "unknownErrorZodiac":
-            MessageLookupByLibrary.simpleMessage("Unbekannter Fehler")
+        "chooseEmailAppZodiac":
+            MessageLookupByLibrary.simpleMessage("E-Mail-App auswählen"),
+        "emailZodiac": MessageLookupByLibrary.simpleMessage("E-Mail"),
+        "enterYourEmailZodiac":
+            MessageLookupByLibrary.simpleMessage("Gib deine E-Mail"),
+        "enterYourPasswordZodiac":
+            MessageLookupByLibrary.simpleMessage("Gib dein Passwort ein"),
+        "forgotPasswordZodiac":
+            MessageLookupByLibrary.simpleMessage("Passwort vergessen"),
+        "loginZodiac": MessageLookupByLibrary.simpleMessage("Einloggen"),
+        "noInternetConnectionZodiac":
+            MessageLookupByLibrary.simpleMessage("Keine Internetverbindung."),
+        "openEmailZodiac": MessageLookupByLibrary.simpleMessage("Email öffnen"),
+        "passwordZodiac": MessageLookupByLibrary.simpleMessage("Passwort"),
+        "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Uh-oh. Es sieht so aus, als hättest du deine Verbindung verloren. Bitte versuche es erneut."),
+        "wrongUsernameAndOrPasswordZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Falscher Benutzername und/oder falsches Passwort.")
       };
 }

@@ -370,6 +370,16 @@ class SFortunica {
     );
   }
 
+  /// `Open email`
+  String get openEmailFortunica {
+    return Intl.message(
+      'Open email',
+      name: 'openEmailFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Public`
   String get publicFortunica {
     return Intl.message(
@@ -1001,6 +1011,16 @@ class SFortunica {
     );
   }
 
+  /// `Uh-oh. It looks like you've lost your connection. Please try again.`
+  String get uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainFortunica {
+    return Intl.message(
+      'Uh-oh. It looks like you\'ve lost your connection. Please try again.',
+      name: 'uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `You will be able to change your status back in 1 hour`
   String get youWillBeAbleToChangeYourStatusBackInFortunica {
     return Intl.message(
@@ -1497,11 +1517,11 @@ class SFortunica {
     );
   }
 
-  /// `You have a ritual request`
-  String get youHaveARitualRequestFortunica {
+  /// `You have an active session`
+  String get youHaveAnActiveSessionFortunica {
     return Intl.message(
-      'You have a ritual request',
-      name: 'youHaveARitualRequestFortunica',
+      'You have an active session',
+      name: 'youHaveAnActiveSessionFortunica',
       desc: '',
       args: [],
     );
@@ -1564,16 +1584,6 @@ class SFortunica {
     return Intl.message(
       'Status Text may not exceed 300 characters',
       name: 'statusTextMayNotExceed300CharactersFortunica',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Uh-oh. It looks like you've lost your connection. Please try again.`
-  String get uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainFortunica {
-    return Intl.message(
-      'Uh-oh. It looks like you\'ve lost your connection. Please try again.',
-      name: 'uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainFortunica',
       desc: '',
       args: [],
     );
@@ -1736,28 +1746,6 @@ class SFortunica {
     );
   }
 
-  /// `Permission Needed`
-  String get permissionNeededFortunica {
-    return Intl.message(
-      'Permission Needed',
-      name: 'permissionNeededFortunica',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `We need permission to access your camera and gallery so you can send images`
-  String
-      get weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImagesFortunica {
-    return Intl.message(
-      'We need permission to access your camera and gallery so you can send images',
-      name:
-          'weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImagesFortunica',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Do you want to reject this question?`
   String get doYouWantToRejectThisQuestionFortunica {
     return Intl.message(
@@ -1840,16 +1828,6 @@ class SFortunica {
     );
   }
 
-  /// `Open email`
-  String get openEmailFortunica {
-    return Intl.message(
-      'Open email',
-      name: 'openEmailFortunica',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `We've sent password reset instructions to {email}.`
   String weVeSentPasswordResetInstructionsToEmailFortunica(Object email) {
     return Intl.message(
@@ -1877,16 +1855,6 @@ class SFortunica {
     return Intl.message(
       'Wrong username and/or password.',
       name: 'wrongUsernameAndOrPasswordFortunica',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `We need permission to access your microphone`
-  String get weNeedPermissionToAccessYourMicrophoneFortunica {
-    return Intl.message(
-      'We need permission to access your microphone',
-      name: 'weNeedPermissionToAccessYourMicrophoneFortunica',
       desc: '',
       args: [],
     );
@@ -1922,6 +1890,16 @@ class SFortunica {
     );
   }
 
+  /// `Enter your email`
+  String get enterYourEmailFortunica {
+    return Intl.message(
+      'Enter your email',
+      name: 'enterYourEmailFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Enter new password`
   String get enterNewPasswordFortunica {
     return Intl.message(
@@ -1937,16 +1915,6 @@ class SFortunica {
     return Intl.message(
       'Repeat new password',
       name: 'repeatNewPasswordFortunica',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Enter your email`
-  String get enterYourEmailFortunica {
-    return Intl.message(
-      'Enter your email',
-      name: 'enterYourEmailFortunica',
       desc: '',
       args: [],
     );
@@ -1977,26 +1945,6 @@ class SFortunica {
     return Intl.message(
       'Recording is not possible, allocate space on the device',
       name: 'recordingIsNotPossibleAllocateSpaceOnTheDeviceFortunica',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Notifications are disabled`
-  String get notificationsAreDisabledFortunica {
-    return Intl.message(
-      'Notifications are disabled',
-      name: 'notificationsAreDisabledFortunica',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `To enable notification, you’ll need to allow notifications in your phone settings`
-  String get toEnableNotificationYoullNeedToAllowNotificationsInYourFortunica {
-    return Intl.message(
-      'To enable notification, you’ll need to allow notifications in your phone settings',
-      name: 'toEnableNotificationYoullNeedToAllowNotificationsInYourFortunica',
       desc: '',
       args: [],
     );

@@ -1,17 +1,18 @@
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
-import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/choose_brand_widget.dart';
+import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/app_success/app_success.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 import 'package:zodiac/domain/repositories/auth_repository.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/login_appbar.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dart';
@@ -20,7 +21,6 @@ import 'package:zodiac/presentation/common_widgets/no_connection_widget.dart';
 import 'package:zodiac/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:zodiac/presentation/common_widgets/text_fields/password_text_field.dart';
 import 'package:zodiac/presentation/screens/login/login_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/choose_brand_widget.dart';
 import 'package:zodiac/presentation/screens/login/widgets/forgot_password_button_widget.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
@@ -44,7 +44,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocProvider(
       create: (_) {
         zodiacGetIt.registerSingleton(LoginCubit(
-          zodiacGetIt.get<AppRouter>(),
           zodiacGetIt.get<AuthRepository>(),
           zodiacGetIt.get<ZodiacCachingManager>(),
           zodiacGetIt.get<ZodiacMainCubit>(),
@@ -120,9 +119,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   cubit.state.emailHasFocus);
                                   return AppTextField(
                                     errorType: emailErrorType,
-                                    label: 'Email',
+                                    label: SZodiac.of(context).emailZodiac,
                                     hintText:
-                                    'Enter your email',
+                                    SZodiac.of(context).enterYourEmailZodiac,
                                     focusNode: loginCubit.emailNode,
                                     textInputType:
                                     TextInputType.emailAddress,
@@ -150,10 +149,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     controller:
                                     loginCubit.passwordController,
                                     focusNode: loginCubit.passwordNode,
-                                    label: 'Password',
+                                    label: SZodiac.of(context).passwordZodiac,
                                     errorType: passwordErrorType,
                                     hintText:
-                                    'Enter your password',
+                                    SZodiac.of(context).enterYourPasswordZodiac,
                                     textInputAction: TextInputAction.next,
                                     onSubmitted: (_) => loginCubit.login,
                                     hiddenPassword: hiddenPassword,
@@ -170,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     cubit.state.buttonIsActive,
                                   );
                                   return AppElevatedButton(
-                                    title: 'Login',
+                                    title: SZodiac.of(context).loginZodiac,
                                     onPressed: isActive
                                         ? () => loginCubit.login(context)
                                         : null,

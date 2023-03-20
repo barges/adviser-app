@@ -1,4 +1,5 @@
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -16,6 +17,7 @@ class ChangeLocaleButton extends StatelessWidget {
     final String languageCode = Intl.getCurrentLocale();
     final List<String> locales =
         SZodiac.delegate.supportedLocales.map((e) => e.languageCode).toList();
+    locales.removeWhere((element) => element == 'de');
     final int currentLocaleIndex =
         !locales.contains(languageCode) ? 0 : locales.indexOf(languageCode);
 
@@ -25,7 +27,11 @@ class ChangeLocaleButton extends StatelessWidget {
         onTap: () => showPickerModalPopUp(
           context: context,
           setIndex: (index) {
-            zodiacGetIt.get<GlobalCachingManager>().saveLanguageCode(locales[index]);
+            final String languageCode = locales[index];
+            zodiacGetIt
+                .get<GlobalCachingManager>()
+                .saveLanguageCode(languageCode);
+            Brand.zodiac.setLanguageCode(languageCode);
           },
           currentIndex: currentLocaleIndex,
           elements: locales.map((element) {

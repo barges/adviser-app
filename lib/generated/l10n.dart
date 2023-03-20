@@ -219,6 +219,86 @@ class S {
       args: [],
     );
   }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Done`
+  String get done {
+    return Intl.message(
+      'Done',
+      name: 'done',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get settings {
+    return Intl.message(
+      'Settings',
+      name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Permission Needed`
+  String get permissionNeeded {
+    return Intl.message(
+      'Permission Needed',
+      name: 'permissionNeeded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We need permission to access your camera and gallery so you can send images`
+  String get weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages {
+    return Intl.message(
+      'We need permission to access your camera and gallery so you can send images',
+      name: 'weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We need permission to access your microphone`
+  String get weNeedPermissionToAccessYourMicrophone {
+    return Intl.message(
+      'We need permission to access your microphone',
+      name: 'weNeedPermissionToAccessYourMicrophone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To enable notification, you’ll need to allow notifications in your phone settings`
+  String get toEnableNotificationYoullNeedToAllowNotificationsInYour {
+    return Intl.message(
+      'To enable notification, you’ll need to allow notifications in your phone settings',
+      name: 'toEnableNotificationYoullNeedToAllowNotificationsInYour',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications are disabled`
+  String get notificationsAreDisabled {
+    return Intl.message(
+      'Notifications are disabled',
+      name: 'notificationsAreDisabled',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

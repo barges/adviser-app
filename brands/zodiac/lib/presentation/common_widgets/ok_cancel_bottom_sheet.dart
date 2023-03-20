@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:shared_advisor_interface/infrastructure/brands/base_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 
 Future<void> showOkCancelBottomSheet({
@@ -46,7 +46,7 @@ Future<void> showOkCancelBottomSheet({
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.only(top: 16.0, bottom: 32.0),
               child: Center(
-                child: Text('Cancel',
+                child: Text(SZodiac.of(context).cancelZodiac,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).primaryColor,
@@ -81,7 +81,7 @@ Future<void> showOkCancelBottomSheet({
                 }
               },
               child: Text(
-                'Cancel',
+                SZodiac.of(context).cancelZodiac,
               ),
             ),
           );

@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 
 const String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
@@ -47,13 +46,13 @@ extension StringExt on String {
     final String languageCode = substring(0, 2);
     switch (languageCode) {
       case 'de':
-        return AppConstants.deBrandName;
+        return AppConstants.deLanguageName;
       case 'en':
-        return AppConstants.enBrandName;
+        return AppConstants.enLanguageName;
       case 'es':
-        return AppConstants.esBrandName;
+        return AppConstants.esLanguageName;
       case 'pt':
-        return AppConstants.ptBrandName;
+        return AppConstants.ptLanguageName;
       default:
         return 'Other';
     }

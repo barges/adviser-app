@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fortunica/fortunica_constants.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
@@ -40,7 +41,7 @@ class AccountCubit extends Cubit<AccountState> {
 
   final PushNotificationManager _pushNotificationManager;
 
-  final Uri _url = Uri.parse(AppConstants.webToolUrlProd);
+  final Uri _url = Uri.parse(FortunicaConstants.webToolUrl);
 
   late final StreamSubscription _userProfileSubscription;
   late final StreamSubscription<bool> _appOnResumeSubscription;
@@ -202,7 +203,7 @@ class AccountCubit extends Cubit<AccountState> {
     } else {
       if (checkPropertiesMapIfHasEmpty(userInfo) ||
           (userInfo.profile?.profileName?.length ?? 0) <
-              AppConstants.minNickNameLength ||
+              FortunicaConstants.minNickNameLength ||
           userInfo.profile?.profilePictures?.isNotEmpty != true) {
         await _cacheManager.saveUserStatus(userInfo.status?.copyWith(
           status: FortunicaUserStatus.incomplete,

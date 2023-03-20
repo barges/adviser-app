@@ -1,18 +1,18 @@
 import 'dart:async';
 
-import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortunica/data/models/chats/chat_item.dart';
+import 'package:fortunica/data/network/responses/questions_list_response.dart';
+import 'package:fortunica/domain/repositories/fortunica_chats_repository.dart';
+import 'package:fortunica/fortunica_constants.dart';
+import 'package:fortunica/presentation/screens/customer_sessions/customer_sessions_screen.dart';
+import 'package:fortunica/presentation/screens/home/tabs/sessions/widgets/search/search_list_state.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortunica/domain/repositories/fortunica_chats_repository.dart';
-import 'package:fortunica/presentation/screens/customer_sessions/customer_sessions_screen.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:fortunica/data/models/chats/chat_item.dart';
-import 'package:fortunica/data/network/responses/questions_list_response.dart';
-import 'package:fortunica/presentation/screens/home/tabs/sessions/widgets/search/search_list_state.dart';
 
 class SearchListCubit extends Cubit<SearchListState> {
   final FortunicaChatsRepository _repository;
@@ -82,7 +82,7 @@ class SearchListCubit extends Cubit<SearchListState> {
           await _connectivityService.checkConnection()) {
         final QuestionsListResponse result =
             await _repository.getConversationsList(
-          limit: AppConstants.questionsLimit,
+          limit: FortunicaConstants.questionsLimit,
           lastItem: _conversationsLastItem,
           search: searchTextController.text.isNotEmpty
               ? searchTextController.text

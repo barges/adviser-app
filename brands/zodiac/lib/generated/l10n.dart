@@ -60,11 +60,121 @@ class SZodiac {
     );
   }
 
-  /// `Unknown error`
-  String get unknownErrorZodiac {
+  /// `Forgot password`
+  String get forgotPasswordZodiac {
     return Intl.message(
-      'Unknown error',
-      name: 'unknownErrorZodiac',
+      'Forgot password',
+      name: 'forgotPasswordZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email`
+  String get emailZodiac {
+    return Intl.message(
+      'Email',
+      name: 'emailZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get passwordZodiac {
+    return Intl.message(
+      'Password',
+      name: 'passwordZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your password`
+  String get enterYourPasswordZodiac {
+    return Intl.message(
+      'Enter your password',
+      name: 'enterYourPasswordZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your email`
+  String get enterYourEmailZodiac {
+    return Intl.message(
+      'Enter your email',
+      name: 'enterYourEmailZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login`
+  String get loginZodiac {
+    return Intl.message(
+      'Login',
+      name: 'loginZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose email app`
+  String get chooseEmailAppZodiac {
+    return Intl.message(
+      'Choose email app',
+      name: 'chooseEmailAppZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open email`
+  String get openEmailZodiac {
+    return Intl.message(
+      'Open email',
+      name: 'openEmailZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No internet connection.`
+  String get noInternetConnectionZodiac {
+    return Intl.message(
+      'No internet connection.',
+      name: 'noInternetConnectionZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Uh-oh. It looks like you've lost your connection. Please try again.`
+  String get uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainZodiac {
+    return Intl.message(
+      'Uh-oh. It looks like you\'ve lost your connection. Please try again.',
+      name: 'uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancelZodiac {
+    return Intl.message(
+      'Cancel',
+      name: 'cancelZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wrong username and/or password.`
+  String get wrongUsernameAndOrPasswordZodiac {
+    return Intl.message(
+      'Wrong username and/or password.',
+      name: 'wrongUsernameAndOrPasswordZodiac',
       desc: '',
       args: [],
     );

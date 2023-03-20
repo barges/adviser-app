@@ -8,7 +8,7 @@ import 'package:fortunica/domain/repositories/fortunica_chats_repository.dart';
 import 'package:fortunica/fortunica_main_cubit.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:fortunica/infrastructure/di/inject_config.dart';
-import 'package:fortunica/presentation/common_widgets/ok_cancel_alert.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:fortunica/presentation/screens/chat/chat_cubit.dart';
 import 'package:fortunica/presentation/screens/chat/widgets/history/history_cubit.dart';
 import 'package:fortunica/presentation/screens/chat/widgets/history/widgets/empty_history_list_widget.dart';
@@ -39,7 +39,6 @@ class HistoryWidget extends StatelessWidget {
         chatCubit,
       ),
       child: Builder(builder: (context) {
-        final HistoryCubit historyCubit = context.read<HistoryCubit>();
         if (storyId != null) {
           final List<HistoryUiModel>? bottomHistoriesList = context
               .select((HistoryCubit cubit) => cubit.state.bottomHistoriesList);
@@ -107,7 +106,7 @@ class HistoryWidget extends StatelessWidget {
           .getMessage(context),
       okText: SFortunica.of(context).okFortunica,
       actionOnOK: () {
-       context.replaceAll([
+        context.replaceAll([
           FortunicaHome(
             initTab: TabsTypes.sessions,
           )

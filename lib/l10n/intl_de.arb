@@ -15,5 +15,13 @@
   "logOut": "Abmelden",
   "version": "Version",
   "tapToCopy": "Tippe zum Kopieren",
-  "copied": "Kopiert!"
+  "copied": "Kopiert!",
+  "cancel": "Abbrechen",
+  "done": "Fertig",
+  "settings": "Einstellungen",
+  "permissionNeeded": "Erlaubnis notwendig",
+  "weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages": "Wir benötigen die Erlaubnis, auf deine Kamera und Galerie zuzugreifen, damit du Bilder senden kannst.",
+  "weNeedPermissionToAccessYourMicrophone": "Wir benötigen die Erlaubnis, auf dein Mikrofon zuzugreifen",
+  "toEnableNotificationYoullNeedToAllowNotificationsInYour": "Um die Benachrichtigung zu aktivieren, muss man in den Einstellungen des Handys Benachrichtigungen zulassen",
+  "notificationsAreDisabled": "Benachrichtigungen sind deaktiviert"
 }
