@@ -1545,11 +1545,11 @@ class S {
     );
   }
 
-  /// `You have a ritual request`
-  String get youHaveARitualRequest {
+  /// `You have an active session`
+  String get youHaveAnActiveSession {
     return Intl.message(
-      'You have a ritual request',
-      name: 'youHaveARitualRequest',
+      'You have an active session',
+      name: 'youHaveAnActiveSession',
       desc: '',
       args: [],
     );

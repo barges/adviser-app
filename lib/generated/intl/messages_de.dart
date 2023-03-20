@@ -352,8 +352,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Du hast ein paar aktive Sitzungen"),
         "youHaveAPrivateMessage": MessageLookupByLibrary.simpleMessage(
             "Du hast eine private Nachricht"),
-        "youHaveARitualRequest": MessageLookupByLibrary.simpleMessage(
-            "Du hast eine Blockadenlösung Anfrage"),
+        "youHaveAnActiveSession":
+            MessageLookupByLibrary.simpleMessage("Du hast eine aktive Sitzung"),
         "youHaveNotCompletedAnySessionsYet":
             MessageLookupByLibrary.simpleMessage(
                 "Du hast noch keine Sitzungen abgeschlossen"),
