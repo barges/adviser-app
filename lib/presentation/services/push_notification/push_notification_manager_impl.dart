@@ -173,7 +173,6 @@ class PushNotificationManagerImpl implements PushNotificationManager {
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      getIt.get<MainCubit>().updateSessions();
       _navigateToNextScreen(message);
     });
 
