@@ -15,13 +15,13 @@ abstract class AuthApi {
   @factoryMethod
   factory AuthApi(Dio dio) = _AuthApi;
 
-  @POST('/api/login')
+  @POST('/login')
   Future<LoginResponse?> login({@Body() required LoginRequest request});
 
-  @POST('/api/logout')
+  @POST('/logout')
   Future<BaseResponse?> logout({@Body() required AuthorizedRequest request});
 
-  @POST('/api/forgot-password')
+  @POST('/forgot-password')
   Future<LoginResponse?> forgotPassword(
       {@Body() required ForgotPasswordRequest request});
 }

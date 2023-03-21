@@ -84,7 +84,6 @@ class ZodiacCachingManagerImpl implements ZodiacCachingManager {
 
   @override
   DetailedUserInfo? getDetailedUserInfo() {
-
     DetailedUserInfo? detailedUserInfo;
     if (Hive.box(_zodiacUserBoxKey).containsKey(_detailedUserInfoKey)) {
       detailedUserInfo = DetailedUserInfo.fromJson(
@@ -99,7 +98,9 @@ class ZodiacCachingManagerImpl implements ZodiacCachingManager {
     return Hive.box(_zodiacUserBoxKey)
         .watch(key: _detailedUserInfoKey)
         .listen((event) {
-      callback(DetailedUserInfo.fromJson(json.decode(event.value)));
+      if (event.value != null) {
+        callback(DetailedUserInfo.fromJson(json.decode(event.value)));
+      }
     });
   }
 

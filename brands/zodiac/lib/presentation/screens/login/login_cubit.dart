@@ -107,8 +107,12 @@ class LoginCubit extends Cubit<LoginState> {
             await _repository.login(request: loginRequest);
 
         String? token = response?.result?.authToken;
-        if (token != null && token.isNotEmpty) {
+        int? userId = response?.result?.id;
+
+        if (response?.errorCode == 0 && token != null && userId != null) {
           await _cachingManager.saveUserToken(token);
+          await _cachingManager.saveUid(userId);
+
           goToHome(context);
         }
       } on DioError catch (e) {

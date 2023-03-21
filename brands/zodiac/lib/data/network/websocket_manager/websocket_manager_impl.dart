@@ -165,6 +165,7 @@ class WebSocketManagerImpl implements WebSocketManager {
     _send(SocketMessage.getUnreadChats());
   }
 
+  @override
   void close() => _channel?.sink.close();
 
   void _send(SocketMessage message) {

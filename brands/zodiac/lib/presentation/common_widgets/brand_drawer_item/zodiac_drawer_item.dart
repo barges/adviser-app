@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
+import 'package:zodiac/domain/repositories/zodiac_auth_repository.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/brand_drawer_item/zodiac_drawer_item_cubit.dart';
 
@@ -27,9 +29,10 @@ class ZodiacDrawerItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ZodiacDrawerItemCubit(
-        //fortunicaGetIt.get<FortunicaAuthRepository>(),
+        zodiacGetIt.get<ZodiacAuthRepository>(),
         zodiacGetIt.get<GlobalCachingManager>(),
         zodiacGetIt.get<ZodiacCachingManager>(),
+        zodiacGetIt.get<WebSocketManager>(),
       ),
       child: Builder(builder: (context) {
         final ZodiacDrawerItemCubit cubit =
