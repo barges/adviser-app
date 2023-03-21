@@ -91,7 +91,7 @@ generate-release-notes:
   tags:
     - macmini
   only:
-    - develop
+    - develop_new
 
 deploy-ios:
   stage: deploy
@@ -105,7 +105,7 @@ deploy-ios:
   tags:
     - macmini
   only:
-    - develop
+    - develop_new
 deploy-android:
   stage: deploy
   needs:
@@ -118,7 +118,7 @@ deploy-android:
   tags:
     - macmini
   only:
-    - develop
+    - develop_new
 tag:
   stage: tag
   needs:
@@ -137,4 +137,4 @@ tag:
   tags:
     - macmini
   only:
-    - develop
+    - develop_new
