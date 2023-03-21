@@ -8,16 +8,16 @@ part 'user_information.g.dart';
 
 @freezed
 class UserInformation with _$UserInformation {
-  @JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)
+  @JsonSerializable(includeIfNull: false, createToJson: true)
   const factory UserInformation({
-    String? authToken,
-    int? profilesId,
+    @JsonKey(name: 'auth_token') String? authToken,
+    @JsonKey(name: 'profiles_id') int? profilesId,
     int? id,
     String? name,
     String? email,
     String? locale,
     String? avatar,
-    String? sessionId,
+    @JsonKey(name: 'session_id') String? sessionId,
   }) = _UserInformation;
 
   factory UserInformation.fromJson(Map<String, dynamic> json) =>

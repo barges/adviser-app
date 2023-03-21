@@ -15,9 +15,4 @@ class LoginRequest extends BaseLoginRequest {
 
   @override
   Map<String, dynamic> toJson() => _$LoginRequestToJson(this);
-
-  @override
-  String toString() {
-    return 'LoginRequest{password: $password, email: $email}';
-  }
 }

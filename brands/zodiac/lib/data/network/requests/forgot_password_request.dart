@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:zodiac/data/network/requests/authorized_request.dart';
+import 'package:zodiac/data/network/requests/base_request.dart';
 
 part 'forgot_password_request.g.dart';
 
 @JsonSerializable(includeIfNull: false)
-class ForgotPasswordRequest extends AuthorizedRequest {
+class ForgotPasswordRequest extends BaseRequest {
   final String email;
 
   ForgotPasswordRequest({required this.email});
