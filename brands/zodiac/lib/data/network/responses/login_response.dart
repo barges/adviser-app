@@ -10,7 +10,12 @@ class LoginResponse extends BaseResponse {
   final UserInformation? result;
 
   LoginResponse(
-      {super.status, super.errorCode, super.errorMsg, this.count, this.result});
+      {super.status,
+      super.errorCode,
+      super.errorMsg,
+      super.message,
+      this.count,
+      this.result});
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) =>
       _$LoginResponseFromJson(json);

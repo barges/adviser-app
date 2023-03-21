@@ -179,6 +179,28 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Enter your email address and we'll send you instructions to create a new password`
+  String
+      get enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac {
+    return Intl.message(
+      'Enter your email address and we\'ll send you instructions to create a new password',
+      name:
+          'enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset password`
+  String get resetPasswordZodiac {
+    return Intl.message(
+      'Reset password',
+      name: 'resetPasswordZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

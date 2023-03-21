@@ -55,7 +55,6 @@ _i1.GetIt $initGetIt(
   gh.factory<_i11.HomeServices>(() => _i11.HomeServices());
   gh.factory<_i12.Key>(() => registerModule.key);
   gh.singleton<_i13.MainCubit>(_i13.MainCubit(
-    get<_i3.AppRouter>(),
     get<_i9.GlobalCachingManager>(),
     get<_i6.ConnectivityService>(),
   ));

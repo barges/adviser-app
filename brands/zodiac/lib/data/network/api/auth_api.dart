@@ -9,9 +9,6 @@ import 'package:zodiac/data/network/responses/login_response.dart';
 
 part 'auth_api.g.dart';
 
-
-
-
 @RestApi()
 @injectable
 abstract class AuthApi {
@@ -25,6 +22,6 @@ abstract class AuthApi {
   Future<BaseResponse?> logout({@Body() required AuthorizedRequest request});
 
   @POST('/api/forgot-password')
-  Future<LoginResponse?> forgotLogin(
+  Future<LoginResponse?> forgotPassword(
       {@Body() required ForgotPasswordRequest request});
 }

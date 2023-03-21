@@ -7,7 +7,6 @@ import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/login_response.dart';
 import 'package:zodiac/domain/repositories/auth_repository.dart';
 
-
 @Injectable(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
   final AuthApi _api;
@@ -25,8 +24,8 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<BaseResponse?> forgotLogin(
+  Future<BaseResponse?> forgotPassword(
       {required ForgotPasswordRequest request}) async {
-    return await _api.forgotLogin(request: request);
+    return await _api.forgotPassword(request: request);
   }
 }

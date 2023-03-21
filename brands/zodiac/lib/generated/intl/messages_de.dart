@@ -29,6 +29,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "chooseEmailAppZodiac":
             MessageLookupByLibrary.simpleMessage("E-Mail-App auswählen"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("E-Mail"),
+        "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Gib deine E-Mail-Adresse ein und wir schicken dir Anweisungen, um ein neues Passwort zu erstellen."),
         "enterYourEmailZodiac":
             MessageLookupByLibrary.simpleMessage("Gib deine E-Mail"),
         "enterYourPasswordZodiac":
@@ -40,6 +43,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Keine Internetverbindung."),
         "openEmailZodiac": MessageLookupByLibrary.simpleMessage("Email öffnen"),
         "passwordZodiac": MessageLookupByLibrary.simpleMessage("Passwort"),
+        "resetPasswordZodiac":
+            MessageLookupByLibrary.simpleMessage("Passwort zurücksetzen"),
         "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Uh-oh. Es sieht so aus, als hättest du deine Verbindung verloren. Bitte versuche es erneut."),

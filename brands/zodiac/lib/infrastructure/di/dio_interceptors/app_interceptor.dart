@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:zodiac/data/models/app_error/app_error.dart';
 import 'package:zodiac/data/models/app_error/ui_error_type.dart';
+import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 const String _messageKey = 'message';
@@ -112,6 +113,17 @@ class AppInterceptor extends Interceptor {
   FutureOr<dynamic> onResponse(
       Response response, ResponseInterceptorHandler handler) async {
     _mainCubit.updateIsLoading(false);
+
+    BaseResponse baseResponse = BaseResponse.fromJson(response.data);
+
+    if (baseResponse.errorCode != 0 &&
+        !response.realUri.path.contains('forgot-password')) {
+      _zodiacMainCubit.updateErrorMessage(
+        NetworkError(
+          message: baseResponse.getErrorMessage(),
+        ),
+      );
+    }
     // if (response.headers.value("verifyToken") != null) {
     //   //if the header is present, then compare it with the Shared Prefs key
     //   SharedPreferences prefs = await SharedPreferences.getInstance();

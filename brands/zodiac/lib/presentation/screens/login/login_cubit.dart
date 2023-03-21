@@ -77,6 +77,10 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith(hiddenPassword: !state.hiddenPassword));
   }
 
+  void updateSuccessMessage(AppSuccess appSuccess) {
+    emit(state.copyWith(appSuccess: appSuccess));
+  }
+
   void clearErrorMessage() {
     _zodiacMainCubit.clearErrorMessage();
   }
@@ -99,8 +103,8 @@ class LoginCubit extends Cubit<LoginState> {
           password: passwordController.text.trim(),
         );
         logger.d(loginRequest);
-        LoginResponse? response = await _repository.login(
-            request: loginRequest);
+        LoginResponse? response =
+            await _repository.login(request: loginRequest);
 
         String? token = response?.result?.authToken;
         if (token != null && token.isNotEmpty) {
@@ -146,26 +150,14 @@ class LoginCubit extends Cubit<LoginState> {
     context.replaceAll([const ZodiacMain()]);
   }
 
-  Future<void> goToForgotPassword({Brand? brand, String? token}) async {
+  Future<void> goToForgotPassword(BuildContext context,
+      {Brand? brand, String? token}) async {
     clearErrorMessage();
     clearSuccessMessage();
 
-    // final dynamic email = await Get.toNamed(
-    //   AppRoutes.forgotPassword,
-    //   arguments: ForgotPasswordScreenArguments(
-    //     brand: state.selectedBrand,
-    //   ),
-    // );
-    //
-    // if (email != null) {
-    //   emit(
-    //     state.copyWith(
-    //       appSuccess: UISuccess.withArguments(
-    //           UISuccessMessagesType.weVeSentPasswordResetInstructionsToEmail,
-    //           email as String),
-    //     ),
-    //   );
-    // }
+    context.push(
+      route: const ZodiacForgotPassword(),
+    );
   }
 
   bool emailIsValid() => Utils.isEmail(emailController.text);

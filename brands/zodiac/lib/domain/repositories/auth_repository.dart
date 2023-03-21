@@ -9,5 +9,6 @@ abstract class AuthRepository {
 
   Future<BaseResponse?> logout({required AuthorizedRequest request});
 
-  Future<BaseResponse?> forgotLogin({required ForgotPasswordRequest request});
+  Future<BaseResponse?> forgotPassword(
+      {required ForgotPasswordRequest request});
 }
