@@ -13,6 +13,18 @@
   "cancelZodiac": "Cancel",
   "wrongUsernameAndOrPasswordZodiac": "Wrong username and/or password.",
   "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac": "Enter your email address and we'll send you instructions to create a new password",
-  "resetPasswordZodiac": "Reset password"
-
+  "resetPasswordZodiac": "Reset password",
+  "weVeSentPasswordResetInstructionsToEmailZodiac": "We've sent password reset instructions to {email}.",
+  "dashboardZodiac": "Dashboard",
+  "accountZodiac": "Account",
+  "articlesZodiac": "Articles",
+  "sessionsZodiac": "Sessions",
+  "yourClientSessionHistoryWillAppearHereZodiac": "Your client session history will appear here",
+  "noSessionsYetZodiac": "No sessions, yet.",
+  "searchZodiac": "Search",
+  "avgDailyEarningsZodiac": "Avg Daily Earnings",
+  "performanceOverviewAnalyticsZodiac": "Performance Overview Analytics",
+  "todayZodiac": "Today",
+  "thisMonthZodiac": "This Month",
+  "newZodiac": "New"
 }

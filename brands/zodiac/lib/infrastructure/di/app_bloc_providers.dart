@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/src/bloc_provider.dart';
 
-import '../../presentation/screens/home_screen/cubit/home_screen_cubit.dart';
 import '../../zodiac.dart';
 
 import 'inject_config.dart';

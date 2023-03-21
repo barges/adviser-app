@@ -11,7 +11,7 @@ import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/app_success/app_success.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
-import 'package:zodiac/domain/repositories/auth_repository.dart';
+import 'package:zodiac/domain/repositories/zodiac_auth_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/login_appbar.dart';
@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocProvider(
       create: (_) {
         zodiacGetIt.registerSingleton(LoginCubit(
-          zodiacGetIt.get<AuthRepository>(),
+          zodiacGetIt.get<ZodiacAuthRepository>(),
           zodiacGetIt.get<ZodiacCachingManager>(),
           zodiacGetIt.get<ZodiacMainCubit>(),
           //fortunicaGetIt.get<DynamicLinkService>(),

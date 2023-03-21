@@ -41,6 +41,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
             context.read<MainHomeScreenCubit>();
         return AutoTabsRouter(
             routes: homeScreenCubit.routes,
+            duration: Duration.zero,
             builder: (context, child, animation) {
               final tabsRouter = AutoTabsRouter.of(context);
 

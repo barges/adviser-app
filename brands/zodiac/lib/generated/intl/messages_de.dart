@@ -20,14 +20,22 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'de';
 
+  static String m0(email) =>
+      "Wir haben Anweisungen zum Zurücksetzen des Passworts an ${email} gesendet.";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "accountZodiac": MessageLookupByLibrary.simpleMessage("Account"),
+        "articlesZodiac": MessageLookupByLibrary.simpleMessage("Artikel"),
+        "avgDailyEarningsZodiac": MessageLookupByLibrary.simpleMessage(
+            "Durchschnittliche Tageseinkommen"),
         "cancelZodiac": MessageLookupByLibrary.simpleMessage("Abbrechen"),
         "checkYourInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Überprüfe deine Internetverbindung"),
         "chooseEmailAppZodiac":
             MessageLookupByLibrary.simpleMessage("E-Mail-App auswählen"),
+        "dashboardZodiac": MessageLookupByLibrary.simpleMessage("Dashboard"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("E-Mail"),
         "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(
@@ -39,17 +47,30 @@ class MessageLookup extends MessageLookupByLibrary {
         "forgotPasswordZodiac":
             MessageLookupByLibrary.simpleMessage("Passwort vergessen"),
         "loginZodiac": MessageLookupByLibrary.simpleMessage("Einloggen"),
+        "newZodiac": MessageLookupByLibrary.simpleMessage("Neu"),
         "noInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage("Keine Internetverbindung."),
+        "noSessionsYetZodiac":
+            MessageLookupByLibrary.simpleMessage("Noch keine Sitzungen"),
         "openEmailZodiac": MessageLookupByLibrary.simpleMessage("Email öffnen"),
         "passwordZodiac": MessageLookupByLibrary.simpleMessage("Passwort"),
+        "performanceOverviewAnalyticsZodiac":
+            MessageLookupByLibrary.simpleMessage("Allgemeine Leistungsanalyse"),
         "resetPasswordZodiac":
             MessageLookupByLibrary.simpleMessage("Passwort zurücksetzen"),
+        "searchZodiac": MessageLookupByLibrary.simpleMessage("Suche"),
+        "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sitzungen"),
+        "thisMonthZodiac": MessageLookupByLibrary.simpleMessage("Dieser Monat"),
+        "todayZodiac": MessageLookupByLibrary.simpleMessage("Heute"),
         "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Uh-oh. Es sieht so aus, als hättest du deine Verbindung verloren. Bitte versuche es erneut."),
+        "weVeSentPasswordResetInstructionsToEmailZodiac": m0,
         "wrongUsernameAndOrPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(
-                "Falscher Benutzername und/oder falsches Passwort.")
+                "Falscher Benutzername und/oder falsches Passwort."),
+        "yourClientSessionHistoryWillAppearHereZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Der Sitzungsverlauf deines Kunden wird hier erscheinen")
       };
 }

@@ -53,25 +53,25 @@ import 'package:shared_advisor_interface/presentation/screens/force_update/force
     as _i2;
 import 'package:shared_advisor_interface/presentation/screens/home_screen/main_home_screen.dart'
     as _i1;
-import 'package:zodiac/presentation/screens/account_screen/account_screen.dart'
-    as _i30;
-import 'package:zodiac/presentation/screens/articles_screen/articles_screen.dart'
-    as _i31;
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart'
     as _i5;
-import 'package:zodiac/presentation/screens/chats_screen/chats_screen.dart'
-    as _i29;
-import 'package:zodiac/presentation/screens/dashboard_screen/dashboard_screen.dart'
-    as _i28;
 import 'package:zodiac/presentation/screens/forgot_password/forgot_password_screen.dart'
-    as _i26;
-import 'package:zodiac/presentation/screens/home_screen/home_screen.dart'
     as _i27;
-import 'package:zodiac/presentation/screens/login/login_screen.dart' as _i32;
-import 'package:zodiac/presentation/screens/profile/profile.dart' as _i24;
+import 'package:zodiac/presentation/screens/gallery/gallery_pictures_screen.dart'
+    as _i26;
+import 'package:zodiac/presentation/screens/home/home_screen.dart' as _i24;
+import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_screen.dart'
+    as _i31;
+import 'package:zodiac/presentation/screens/home/tabs/articles/articles_screen.dart'
+    as _i32;
+import 'package:zodiac/presentation/screens/home/tabs/dashboard/dashboard_screen.dart'
+    as _i29;
+import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_screen.dart'
+    as _i30;
+import 'package:zodiac/presentation/screens/home/tabs_types.dart' as _i36;
+import 'package:zodiac/presentation/screens/login/login_screen.dart' as _i28;
+import 'package:zodiac/presentation/screens/profile/profile.dart' as _i25;
 import 'package:zodiac/presentation/wrappers/auth_wrapper/zodiac_auth_wrapper.dart'
-    as _i25;
-import 'package:zodiac/presentation/wrappers/main_wrapper/zodiac_home_wrapper.dart'
     as _i23;
 
 class MainAppRouter extends _i33.RootStackRouter {
@@ -259,68 +259,77 @@ class MainAppRouter extends _i33.RootStackRouter {
         child: const _i22.AccountScreen(),
       );
     },
-    ZodiacMain.name: (routeData) {
+    ZodiacAuth.name: (routeData) {
       return _i33.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i23.ZodiacHomeWrapper(),
+        child: const _i23.ZodiacAuthWrapper(),
+      );
+    },
+    ZodiacHome.name: (routeData) {
+      final args = routeData.argsAs<ZodiacHomeArgs>(
+          orElse: () => const ZodiacHomeArgs());
+      return _i33.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: _i24.HomeScreen(
+          key: args.key,
+          initTab: args.initTab,
+        ),
       );
     },
     ZodiacProfile.name: (routeData) {
       final args = routeData.argsAs<ZodiacProfileArgs>();
       return _i33.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: _i24.ProfileScreen(
+        child: _i25.ProfileScreen(
           key: args.key,
           name: args.name,
         ),
       );
     },
-    ZodiacAuth.name: (routeData) {
+    ZodiacGallery.name: (routeData) {
+      final args = routeData.argsAs<ZodiacGalleryArgs>();
       return _i33.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i25.ZodiacAuthWrapper(),
+        child: _i26.GalleryPicturesScreen(
+          key: args.key,
+          galleryPicturesScreenArguments: args.galleryPicturesScreenArguments,
+        ),
       );
     },
     ZodiacForgotPassword.name: (routeData) {
       return _i33.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i26.ForgotPasswordScreen(),
-      );
-    },
-    ZodiacHome.name: (routeData) {
-      return _i33.AdaptivePage<dynamic>(
-        routeData: routeData,
-        child: const _i27.HomeScreen(),
-      );
-    },
-    ZodiacDashboard.name: (routeData) {
-      return _i33.AdaptivePage<dynamic>(
-        routeData: routeData,
-        child: const _i28.DashboardScreen(),
-      );
-    },
-    ZodiacChats.name: (routeData) {
-      return _i33.AdaptivePage<dynamic>(
-        routeData: routeData,
-        child: const _i29.ChatsScreen(),
-      );
-    },
-    ZodiacAccount.name: (routeData) {
-      return _i33.AdaptivePage<dynamic>(
-        routeData: routeData,
-        child: const _i30.AccountScreen(),
-      );
-    },
-    ZodiacArticles.name: (routeData) {
-      return _i33.AdaptivePage<dynamic>(
-        routeData: routeData,
-        child: const _i31.ArticlesScreen(),
+        child: const _i27.ForgotPasswordScreen(),
       );
     },
     ZodiacLogin.name: (routeData) {
       return _i33.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i32.LoginScreen(),
+        child: const _i28.LoginScreen(),
+      );
+    },
+    ZodiacDashboard.name: (routeData) {
+      return _i33.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const _i29.DashboardScreen(),
+      );
+    },
+    ZodiacChats.name: (routeData) {
+      return _i33.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const _i30.SessionsScreen(),
+      );
+    },
+    ZodiacAccount.name: (routeData) {
+      return _i33.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const _i31.AccountScreen(),
+      );
+    },
+    ZodiacArticles.name: (routeData) {
+      return _i33.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const _i32.ArticlesScreen(),
       );
     },
   };
@@ -456,54 +465,8 @@ class MainAppRouter extends _i33.RootStackRouter {
                   '#redirect',
                   path: '',
                   parent: Zodiac.name,
-                  redirectTo: 'zodiacMain',
+                  redirectTo: 'zodiacAuth',
                   fullMatch: true,
-                ),
-                _i33.RouteConfig(
-                  ZodiacMain.name,
-                  path: 'zodiacMain',
-                  parent: Zodiac.name,
-                  children: [
-                    _i33.RouteConfig(
-                      '#redirect',
-                      path: '',
-                      parent: ZodiacMain.name,
-                      redirectTo: 'zodiacHome',
-                      fullMatch: true,
-                    ),
-                    _i33.RouteConfig(
-                      ZodiacHome.name,
-                      path: 'zodiacHome',
-                      parent: ZodiacMain.name,
-                      children: [
-                        _i33.RouteConfig(
-                          ZodiacDashboard.name,
-                          path: 'zodiacDashboard',
-                          parent: ZodiacHome.name,
-                        ),
-                        _i33.RouteConfig(
-                          ZodiacChats.name,
-                          path: 'zodiacChats',
-                          parent: ZodiacHome.name,
-                        ),
-                        _i33.RouteConfig(
-                          ZodiacAccount.name,
-                          path: 'zodiacAccount',
-                          parent: ZodiacHome.name,
-                        ),
-                        _i33.RouteConfig(
-                          ZodiacArticles.name,
-                          path: 'zodiacArticles',
-                          parent: ZodiacHome.name,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                _i33.RouteConfig(
-                  ZodiacProfile.name,
-                  path: 'zodiacProfile',
-                  parent: Zodiac.name,
                 ),
                 _i33.RouteConfig(
                   ZodiacAuth.name,
@@ -523,6 +486,43 @@ class MainAppRouter extends _i33.RootStackRouter {
                       parent: ZodiacAuth.name,
                     ),
                   ],
+                ),
+                _i33.RouteConfig(
+                  ZodiacHome.name,
+                  path: 'zodiacHome',
+                  parent: Zodiac.name,
+                  children: [
+                    _i33.RouteConfig(
+                      ZodiacDashboard.name,
+                      path: 'zodiacDashboard',
+                      parent: ZodiacHome.name,
+                    ),
+                    _i33.RouteConfig(
+                      ZodiacChats.name,
+                      path: 'zodiacChats',
+                      parent: ZodiacHome.name,
+                    ),
+                    _i33.RouteConfig(
+                      ZodiacAccount.name,
+                      path: 'zodiacAccount',
+                      parent: ZodiacHome.name,
+                    ),
+                    _i33.RouteConfig(
+                      ZodiacArticles.name,
+                      path: 'zodiacArticles',
+                      parent: ZodiacHome.name,
+                    ),
+                  ],
+                ),
+                _i33.RouteConfig(
+                  ZodiacProfile.name,
+                  path: 'zodiacProfile',
+                  parent: Zodiac.name,
+                ),
+                _i33.RouteConfig(
+                  ZodiacGallery.name,
+                  path: 'zodiacGallery',
+                  parent: Zodiac.name,
                 ),
                 _i33.RouteConfig(
                   ZodiacForgotPassword.name,
@@ -1065,20 +1065,56 @@ class FortunicaAccount extends _i33.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i23.ZodiacHomeWrapper]
-class ZodiacMain extends _i33.PageRouteInfo<void> {
-  const ZodiacMain({List<_i33.PageRouteInfo>? children})
+/// [_i23.ZodiacAuthWrapper]
+class ZodiacAuth extends _i33.PageRouteInfo<void> {
+  const ZodiacAuth({List<_i33.PageRouteInfo>? children})
       : super(
-          ZodiacMain.name,
-          path: 'zodiacMain',
+          ZodiacAuth.name,
+          path: 'zodiacAuth',
           initialChildren: children,
         );
 
-  static const String name = 'ZodiacMain';
+  static const String name = 'ZodiacAuth';
 }
 
 /// generated route for
-/// [_i24.ProfileScreen]
+/// [_i24.HomeScreen]
+class ZodiacHome extends _i33.PageRouteInfo<ZodiacHomeArgs> {
+  ZodiacHome({
+    _i34.Key? key,
+    _i36.TabsTypes? initTab,
+    List<_i33.PageRouteInfo>? children,
+  }) : super(
+          ZodiacHome.name,
+          path: 'zodiacHome',
+          args: ZodiacHomeArgs(
+            key: key,
+            initTab: initTab,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'ZodiacHome';
+}
+
+class ZodiacHomeArgs {
+  const ZodiacHomeArgs({
+    this.key,
+    this.initTab,
+  });
+
+  final _i34.Key? key;
+
+  final _i36.TabsTypes? initTab;
+
+  @override
+  String toString() {
+    return 'ZodiacHomeArgs{key: $key, initTab: $initTab}';
+  }
+}
+
+/// generated route for
+/// [_i25.ProfileScreen]
 class ZodiacProfile extends _i33.PageRouteInfo<ZodiacProfileArgs> {
   ZodiacProfile({
     _i34.Key? key,
@@ -1112,20 +1148,41 @@ class ZodiacProfileArgs {
 }
 
 /// generated route for
-/// [_i25.ZodiacAuthWrapper]
-class ZodiacAuth extends _i33.PageRouteInfo<void> {
-  const ZodiacAuth({List<_i33.PageRouteInfo>? children})
-      : super(
-          ZodiacAuth.name,
-          path: 'zodiacAuth',
-          initialChildren: children,
+/// [_i26.GalleryPicturesScreen]
+class ZodiacGallery extends _i33.PageRouteInfo<ZodiacGalleryArgs> {
+  ZodiacGallery({
+    _i34.Key? key,
+    required _i26.GalleryPicturesScreenArguments galleryPicturesScreenArguments,
+  }) : super(
+          ZodiacGallery.name,
+          path: 'zodiacGallery',
+          args: ZodiacGalleryArgs(
+            key: key,
+            galleryPicturesScreenArguments: galleryPicturesScreenArguments,
+          ),
         );
 
-  static const String name = 'ZodiacAuth';
+  static const String name = 'ZodiacGallery';
+}
+
+class ZodiacGalleryArgs {
+  const ZodiacGalleryArgs({
+    this.key,
+    required this.galleryPicturesScreenArguments,
+  });
+
+  final _i34.Key? key;
+
+  final _i26.GalleryPicturesScreenArguments galleryPicturesScreenArguments;
+
+  @override
+  String toString() {
+    return 'ZodiacGalleryArgs{key: $key, galleryPicturesScreenArguments: $galleryPicturesScreenArguments}';
+  }
 }
 
 /// generated route for
-/// [_i26.ForgotPasswordScreen]
+/// [_i27.ForgotPasswordScreen]
 class ZodiacForgotPassword extends _i33.PageRouteInfo<void> {
   const ZodiacForgotPassword()
       : super(
@@ -1137,20 +1194,19 @@ class ZodiacForgotPassword extends _i33.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i27.HomeScreen]
-class ZodiacHome extends _i33.PageRouteInfo<void> {
-  const ZodiacHome({List<_i33.PageRouteInfo>? children})
+/// [_i28.LoginScreen]
+class ZodiacLogin extends _i33.PageRouteInfo<void> {
+  const ZodiacLogin()
       : super(
-          ZodiacHome.name,
-          path: 'zodiacHome',
-          initialChildren: children,
+          ZodiacLogin.name,
+          path: 'zodiacLogin',
         );
 
-  static const String name = 'ZodiacHome';
+  static const String name = 'ZodiacLogin';
 }
 
 /// generated route for
-/// [_i28.DashboardScreen]
+/// [_i29.DashboardScreen]
 class ZodiacDashboard extends _i33.PageRouteInfo<void> {
   const ZodiacDashboard()
       : super(
@@ -1162,7 +1218,7 @@ class ZodiacDashboard extends _i33.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i29.ChatsScreen]
+/// [_i30.SessionsScreen]
 class ZodiacChats extends _i33.PageRouteInfo<void> {
   const ZodiacChats()
       : super(
@@ -1174,7 +1230,7 @@ class ZodiacChats extends _i33.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i30.AccountScreen]
+/// [_i31.AccountScreen]
 class ZodiacAccount extends _i33.PageRouteInfo<void> {
   const ZodiacAccount()
       : super(
@@ -1186,7 +1242,7 @@ class ZodiacAccount extends _i33.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i31.ArticlesScreen]
+/// [_i32.ArticlesScreen]
 class ZodiacArticles extends _i33.PageRouteInfo<void> {
   const ZodiacArticles()
       : super(
@@ -1195,16 +1251,4 @@ class ZodiacArticles extends _i33.PageRouteInfo<void> {
         );
 
   static const String name = 'ZodiacArticles';
-}
-
-/// generated route for
-/// [_i32.LoginScreen]
-class ZodiacLogin extends _i33.PageRouteInfo<void> {
-  const ZodiacLogin()
-      : super(
-          ZodiacLogin.name,
-          path: 'zodiacLogin',
-        );
-
-  static const String name = 'ZodiacLogin';
 }

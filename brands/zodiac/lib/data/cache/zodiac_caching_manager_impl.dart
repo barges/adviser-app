@@ -51,8 +51,12 @@ class ZodiacCachingManagerImpl implements ZodiacCachingManager {
 
   @override
   UserInfo? getUserInfo() {
-    return UserInfo.fromJson(
-        json.decode(Hive.box(_zodiacUserBoxKey).get(_userInfoKey)));
+    UserInfo? userInfo;
+    if (Hive.box(_zodiacUserBoxKey).containsKey(_userInfoKey)) {
+      userInfo = UserInfo.fromJson(
+          json.decode(Hive.box(_zodiacUserBoxKey).get(_userInfoKey)));
+    }
+    return userInfo;
   }
 
   @override
@@ -80,8 +84,13 @@ class ZodiacCachingManagerImpl implements ZodiacCachingManager {
 
   @override
   DetailedUserInfo? getDetailedUserInfo() {
-    return DetailedUserInfo.fromJson(
-        json.decode(Hive.box(_zodiacUserBoxKey).get(_detailedUserInfoKey)));
+
+    DetailedUserInfo? detailedUserInfo;
+    if (Hive.box(_zodiacUserBoxKey).containsKey(_detailedUserInfoKey)) {
+      detailedUserInfo = DetailedUserInfo.fromJson(
+          json.decode(Hive.box(_zodiacUserBoxKey).get(_detailedUserInfoKey)));
+    }
+    return detailedUserInfo;
   }
 
   @override

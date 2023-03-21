@@ -10,7 +10,7 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbars/simple_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
-import 'package:zodiac/domain/repositories/auth_repository.dart';
+import 'package:zodiac/domain/repositories/zodiac_auth_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dart';
@@ -27,7 +27,7 @@ class ForgotPasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ForgotPasswordCubit(
-        zodiacGetIt.get<AuthRepository>(),
+        zodiacGetIt.get<ZodiacAuthRepository>(),
         zodiacGetIt.get<ZodiacMainCubit>(),
         zodiacGetIt.get<LoginCubit>(),
       ),

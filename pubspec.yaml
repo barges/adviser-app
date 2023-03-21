@@ -137,6 +137,7 @@ flutter_icons:
 flutter:
   assets:
     - assets/
+    - assets/zodiac/
     - assets/vectors/
     - assets/images/
     - assets/images/brands/

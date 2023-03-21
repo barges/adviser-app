@@ -32,6 +32,14 @@ dependencies:
   web_socket_channel: ^2.3.0
   eventify: ^1.0.1
   retrofit: ^3.0.1+1
+  collection: ^1.16.0
+  blur: ^3.1.0
+  charts_painter: ^2.0.0+2
+  smooth_page_indicator: ^1.0.0+2
+  loading_indicator: ^3.1.0
+  cached_network_image: 3.2.3
+  flutter_widget_from_html_core: ^0.9.1
+  flutter_rating_bar: ^4.0.1
 
 
 dev_dependencies:

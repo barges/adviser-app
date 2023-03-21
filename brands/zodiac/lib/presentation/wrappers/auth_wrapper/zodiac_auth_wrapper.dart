@@ -22,7 +22,7 @@ class ZodiacAuthWrapper extends StatelessWidget {
               if (state.isAuth) {
                 zodiacGetIt
                     .get<AppRouter>()
-                    .replaceAll(context, [const ZodiacMain()]);
+                    .replaceAll(context, [ZodiacHome()]);
               }
             },
             child: Builder(builder: (context) {

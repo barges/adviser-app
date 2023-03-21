@@ -51,7 +51,7 @@ class _ChartWidgetState extends State<ChartWidget> {
                 .displayLarge
                 ?.copyWith(fontWeight: FontWeight.w800),
           ),
-          Text(SFortunica.of(context).perfomanceOverviewAnalyticsFortunica,
+          Text(SFortunica.of(context).performanceOverviewAnalyticsFortunica,
               textAlign: TextAlign.center,
               style: Theme.of(context)
                   .textTheme

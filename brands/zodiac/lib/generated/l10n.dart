@@ -201,6 +201,136 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `We've sent password reset instructions to {email}.`
+  String weVeSentPasswordResetInstructionsToEmailZodiac(Object email) {
+    return Intl.message(
+      'We\'ve sent password reset instructions to $email.',
+      name: 'weVeSentPasswordResetInstructionsToEmailZodiac',
+      desc: '',
+      args: [email],
+    );
+  }
+
+  /// `Dashboard`
+  String get dashboardZodiac {
+    return Intl.message(
+      'Dashboard',
+      name: 'dashboardZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account`
+  String get accountZodiac {
+    return Intl.message(
+      'Account',
+      name: 'accountZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Articles`
+  String get articlesZodiac {
+    return Intl.message(
+      'Articles',
+      name: 'articlesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sessions`
+  String get sessionsZodiac {
+    return Intl.message(
+      'Sessions',
+      name: 'sessionsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your client session history will appear here`
+  String get yourClientSessionHistoryWillAppearHereZodiac {
+    return Intl.message(
+      'Your client session history will appear here',
+      name: 'yourClientSessionHistoryWillAppearHereZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No sessions, yet.`
+  String get noSessionsYetZodiac {
+    return Intl.message(
+      'No sessions, yet.',
+      name: 'noSessionsYetZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search`
+  String get searchZodiac {
+    return Intl.message(
+      'Search',
+      name: 'searchZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Avg Daily Earnings`
+  String get avgDailyEarningsZodiac {
+    return Intl.message(
+      'Avg Daily Earnings',
+      name: 'avgDailyEarningsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Performance Overview Analytics`
+  String get performanceOverviewAnalyticsZodiac {
+    return Intl.message(
+      'Performance Overview Analytics',
+      name: 'performanceOverviewAnalyticsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today`
+  String get todayZodiac {
+    return Intl.message(
+      'Today',
+      name: 'todayZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This Month`
+  String get thisMonthZodiac {
+    return Intl.message(
+      'This Month',
+      name: 'thisMonthZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New`
+  String get newZodiac {
+    return Intl.message(
+      'New',
+      name: 'newZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

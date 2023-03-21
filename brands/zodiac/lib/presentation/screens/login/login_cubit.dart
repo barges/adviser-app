@@ -13,12 +13,12 @@ import 'package:zodiac/data/models/app_success/app_success.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 import 'package:zodiac/data/network/requests/login_request.dart';
 import 'package:zodiac/data/network/responses/login_response.dart';
-import 'package:zodiac/domain/repositories/auth_repository.dart';
+import 'package:zodiac/domain/repositories/zodiac_auth_repository.dart';
 import 'package:zodiac/presentation/screens/login/login_state.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  final AuthRepository _repository;
+  final ZodiacAuthRepository _repository;
   final ZodiacCachingManager _cachingManager;
 
   final ZodiacMainCubit _zodiacMainCubit;
@@ -147,7 +147,7 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void goToHome(BuildContext context) {
-    context.replaceAll([const ZodiacMain()]);
+    context.replaceAll([ZodiacHome()]);
   }
 
   Future<void> goToForgotPassword(BuildContext context,

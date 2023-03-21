@@ -7,7 +7,7 @@ import 'package:zodiac/data/models/app_success/app_success.dart';
 import 'package:zodiac/data/models/app_success/ui_success_type.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 import 'package:zodiac/data/network/requests/forgot_password_request.dart';
-import 'package:zodiac/domain/repositories/auth_repository.dart';
+import 'package:zodiac/domain/repositories/zodiac_auth_repository.dart';
 import 'package:zodiac/presentation/screens/forgot_password/forgot_password_state.dart';
 import 'package:zodiac/presentation/screens/login/login_cubit.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
@@ -16,7 +16,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   final TextEditingController emailController = TextEditingController();
   final FocusNode emailNode = FocusNode();
 
-  final AuthRepository _authRepository;
+  final ZodiacAuthRepository _authRepository;
   final ZodiacMainCubit _zodiacMainCubit;
   final LoginCubit _loginCubit;
 

@@ -11,7 +11,6 @@ import 'package:zodiac/zodiac_main_state.dart';
 
 @singleton
 class ZodiacMainCubit extends Cubit<ZodiacMainState> {
-  final GlobalCachingManager cacheManager;
 
   Timer? _errorTimer;
 
@@ -19,9 +18,7 @@ class ZodiacMainCubit extends Cubit<ZodiacMainState> {
   final PublishSubject<bool> audioStopTrigger = PublishSubject();
   final PublishSubject<UserBalance> userBalanceUpdateTrigger = PublishSubject();
 
-  final ConnectivityService _connectivityService;
-
-  ZodiacMainCubit(this.cacheManager, this._connectivityService)
+  ZodiacMainCubit()
       : super(const ZodiacMainState());
 
   @override

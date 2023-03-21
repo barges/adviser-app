@@ -9,6 +9,7 @@ class RoutePaths {
   static const chatsScreen = '${Brand.zodiacAlias}Chats';
   static const articlesScreen = '${Brand.zodiacAlias}Articles';
   static const profileScreen = '${Brand.zodiacAlias}Profile';
+  static const galleryScreen = '${Brand.zodiacAlias}Gallery';
   static const accountScreen = '${Brand.zodiacAlias}Account';
   static const forgotPasswordScreen = '${Brand.zodiacAlias}ForgotPassword';
 }

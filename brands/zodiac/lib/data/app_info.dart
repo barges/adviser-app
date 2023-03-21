@@ -38,6 +38,7 @@ class AppInfo {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
     secret = '23d45b337ff85d0a326a79082f7c6f50';
+    ///TODO: Need change on backend
     package = 'com.zodiactouch';
     version = packageInfo.version;
     locale = Intl.getCurrentLocale();

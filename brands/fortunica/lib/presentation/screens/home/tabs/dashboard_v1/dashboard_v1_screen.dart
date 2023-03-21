@@ -27,21 +27,22 @@ class DashboardV1Screen extends StatelessWidget {
     return BlocProvider(
         create: (_) => DashboardV1Cubit(
               fortunicaGetIt.get<FortunicaCachingManager>(),
-          fortunicaGetIt.get<ConnectivityService>(),
-          fortunicaGetIt.get<FortunicaUserRepository>(),
-          fortunicaGetIt.get<FortunicaMainCubit>(),
+              fortunicaGetIt.get<ConnectivityService>(),
+              fortunicaGetIt.get<FortunicaUserRepository>(),
+              fortunicaGetIt.get<FortunicaMainCubit>(),
             ),
         child: Builder(builder: (context) {
           DashboardV1Cubit dashboardCubit = context.read<DashboardV1Cubit>();
           final bool isOnline = context.select(
               (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
-          final AppError appError =
-              context.select((FortunicaMainCubit cubit) => cubit.state.appError);
+          final AppError appError = context
+              .select((FortunicaMainCubit cubit) => cubit.state.appError);
           return Scaffold(
               appBar: HomeAppBar(
-                  withBrands: true,
-                  title: SFortunica.of(context).dashboardFortunica,
-                  iconPath: Assets.vectors.items.path),
+                withBrands: true,
+                title: SFortunica.of(context).dashboardFortunica,
+                iconPath: Assets.vectors.items.path,
+              ),
               body: Column(
                 children: [
                   AppErrorWidget(
