@@ -28,3 +28,13 @@ migrate_working_dir/
 .dart_tool/
 .packages
 build/
+
+*.g.dart
+*.freezed.dart
+*.gen.dart
+*.mocks.dart
+*.jks
+*.keystore
+*.gr.dart
+*.config.dart
+inject_config.config.dart

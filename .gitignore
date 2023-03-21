@@ -54,3 +54,4 @@ app.*.map.json
 *.keystore
 *.gr.dart
 *.config.dart
+inject_config.config.dart
