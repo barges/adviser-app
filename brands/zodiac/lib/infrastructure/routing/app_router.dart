@@ -6,6 +6,7 @@ import 'package:zodiac/presentation/screens/articles_screen/articles_screen.dart
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart';
 import 'package:zodiac/presentation/screens/chats_screen/chats_screen.dart';
 import 'package:zodiac/presentation/screens/dashboard_screen/dashboard_screen.dart';
+import 'package:zodiac/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'package:zodiac/presentation/screens/home_screen/home_screen.dart';
 import 'package:zodiac/presentation/screens/login/login_screen.dart';
 import 'package:zodiac/presentation/screens/profile/profile.dart';
@@ -64,6 +65,11 @@ const zodiacRoute = AutoRoute(
             name: RoutePaths.loginScreen,
           )
         ]),
+    AutoRoute(
+      page: ForgotPasswordScreen,
+      path: RoutePaths.forgotPasswordScreen,
+      name: RoutePaths.forgotPasswordScreen,
+    ),
   ],
 );
 

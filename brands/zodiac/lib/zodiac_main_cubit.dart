@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/zodiac_main_state.dart';
 
 @singleton
@@ -16,6 +17,7 @@ class ZodiacMainCubit extends Cubit<ZodiacMainState> {
 
   final PublishSubject<bool> sessionsUpdateTrigger = PublishSubject();
   final PublishSubject<bool> audioStopTrigger = PublishSubject();
+  final PublishSubject<UserBalance> userBalanceUpdateTrigger = PublishSubject();
 
   final ConnectivityService _connectivityService;
 
@@ -48,5 +50,9 @@ class ZodiacMainCubit extends Cubit<ZodiacMainState> {
 
   void stopAudio() {
     audioStopTrigger.add(true);
+  }
+
+  void updateUserBalance(UserBalance userBalance) {
+    userBalanceUpdateTrigger.add(userBalance);
   }
 }

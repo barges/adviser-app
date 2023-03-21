@@ -11,5 +11,8 @@
   "noInternetConnectionZodiac": "Sin conexión a internet.",
   "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainZodiac": "Uh-oh. Parece que has perdido la conexión. Por favor, inténtalo de nuevo",
   "cancelZodiac": "Cancelar",
-  "wrongUsernameAndOrPasswordZodiac": "Nombre de usuario y/o contraseña incorrectos"
+  "wrongUsernameAndOrPasswordZodiac": "Nombre de usuario y/o contraseña incorrectos",
+  "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac": "Ingresa tu email y te enviaremos instrucciones para crear una nueva contraseña",
+  "resetPasswordZodiac": "Restablecer contraseña"
+
 }

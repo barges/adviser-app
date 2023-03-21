@@ -21,20 +21,33 @@ import 'package:shared_advisor_interface/services/connectivity_service.dart'
 import '../../data/cache/zodiac_caching_manager.dart' as _i12;
 import '../../data/cache/zodiac_caching_manager_impl.dart' as _i13;
 import '../../data/data_source/remote/authentication_services.dart' as _i4;
-import '../../data/network/api/auth_api.dart' as _i20;
-import '../../data/repository_impl/auth_repository_impl.dart' as _i22;
+import '../../data/network/api/articles_api.dart' as _i26;
+import '../../data/network/api/auth_api.dart' as _i29;
+import '../../data/network/api/chats_api.dart' as _i32;
+import '../../data/network/api/services_api.dart' as _i20;
+import '../../data/network/api/user_api.dart' as _i21;
+import '../../data/network/websocket_manager/websocket_manager.dart' as _i24;
+import '../../data/network/websocket_manager/websocket_manager_impl.dart'
+    as _i25;
+import '../../data/repository_impl/articles_repository_impl.dart' as _i28;
+import '../../data/repository_impl/auth_repository_impl.dart' as _i31;
 import '../../data/repository_impl/authentication_repository_impl.dart' as _i17;
+import '../../data/repository_impl/chats_repository_impl.dart' as _i34;
 import '../../data/repository_impl/home_repository_impl.dart' as _i8;
-import '../../domain/repositories/auth_repository.dart' as _i21;
+import '../../data/repository_impl/user_repository_impl.dart' as _i23;
+import '../../domain/repositories/articles_repository.dart' as _i27;
+import '../../domain/repositories/auth_repository.dart' as _i30;
 import '../../domain/repositories/authentication_repository.dart' as _i16;
+import '../../domain/repositories/chats_repository.dart' as _i33;
 import '../../domain/repositories/home_screen_repository.dart' as _i7;
+import '../../domain/repositories/user_repository.dart' as _i22;
 import '../../domain/usecase/authentication_usecase.dart' as _i18;
 import '../../domain/usecase/home_screen_usecase.dart' as _i10;
 import '../../zodiac_main_cubit.dart' as _i14;
 import 'dio_interceptors/app_interceptor.dart' as _i15;
-import 'modules/api_module.dart' as _i24;
+import 'modules/api_module.dart' as _i36;
 import 'modules/services_module.dart'
-    as _i23; // ignore_for_file: unnecessary_lambdas
+    as _i35; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -80,12 +93,24 @@ Future<_i1.GetIt> $initGetIt(
     ),
     preResolve: true,
   );
-  gh.factory<_i20.AuthApi>(() => _i20.AuthApi(get<_i19.Dio>()));
-  gh.factory<_i21.AuthRepository>(
-      () => _i22.AuthRepositoryImpl(get<_i20.AuthApi>()));
+  gh.factory<_i20.ServicesApi>(() => _i20.ServicesApi(get<_i19.Dio>()));
+  gh.factory<_i21.UserApi>(() => _i21.UserApi(get<_i19.Dio>()));
+  gh.factory<_i22.UserRepository>(
+      () => _i23.UserRepositoryImpl(get<_i21.UserApi>()));
+  gh.factory<_i24.WebSocketManager>(
+      () => _i25.WebSocketManagerImpl(get<_i14.ZodiacMainCubit>()));
+  gh.factory<_i26.ArticlesApi>(() => _i26.ArticlesApi(get<_i19.Dio>()));
+  gh.factory<_i27.ArticlesRepository>(
+      () => _i28.AuthRepositoryImpl(get<_i26.ArticlesApi>()));
+  gh.factory<_i29.AuthApi>(() => _i29.AuthApi(get<_i19.Dio>()));
+  gh.factory<_i30.AuthRepository>(
+      () => _i31.AuthRepositoryImpl(get<_i29.AuthApi>()));
+  gh.factory<_i32.ChatsApi>(() => _i32.ChatsApi(get<_i19.Dio>()));
+  gh.factory<_i33.ChatsRepository>(
+      () => _i34.ChatsRepositoryImpl(get<_i32.ChatsApi>()));
   return get;
 }
 
-class _$ServicesModule extends _i23.ServicesModule {}
+class _$ServicesModule extends _i35.ServicesModule {}
 
-class _$ApiModule extends _i24.ApiModule {}
+class _$ApiModule extends _i36.ApiModule {}

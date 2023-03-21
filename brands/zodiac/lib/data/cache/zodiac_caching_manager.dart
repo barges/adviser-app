@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
+import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
+import 'package:zodiac/data/models/user_info/user_info.dart';
 
 abstract class ZodiacCachingManager {
-
   Future<void> saveUserToken(String userToken);
 
   String? getUserToken();
@@ -13,4 +15,20 @@ abstract class ZodiacCachingManager {
 
   String? getLanguageCode();
 
+  Future<void> saveUserInfo(UserInfo? userInfo);
+
+  UserInfo? getUserInfo();
+
+  Future<void> saveUid(int uid);
+
+  int? getUid();
+
+  StreamSubscription listenUserInfo(ValueChanged<UserInfo> callback);
+
+  Future<void> saveDetailedUserInfo(DetailedUserInfo? userInfo);
+
+  DetailedUserInfo? getDetailedUserInfo();
+
+  StreamSubscription listenDetailedUserInfo(
+      ValueChanged<DetailedUserInfo> callback);
 }

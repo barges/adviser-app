@@ -1,11 +1,13 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/network/requests/base_request.dart';
+import 'package:zodiac/infrastructure/di/inject_config.dart';
 
 part 'authorized_request.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class AuthorizedRequest extends BaseRequest {
-  String auth = '5f8a5b058cef92bca9109bb3df6dc9d8';
+  String? auth = zodiacGetIt.get<ZodiacCachingManager>().getUserToken();
 
   AuthorizedRequest();
 
