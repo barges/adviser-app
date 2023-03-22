@@ -22,7 +22,7 @@ class PerformanceMOMAWidget extends StatelessWidget {
                   .textTheme
                   .displayLarge
                   ?.copyWith(fontWeight: FontWeight.w800)),
-          Text(S.of(context).perfomanceOverviewAnalytics,
+          Text(S.of(context).performanceOverviewAnalytics,
               style: Theme.of(context)
                   .textTheme
                   .labelMedium

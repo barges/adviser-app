@@ -202,7 +202,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "otherBrands": MessageLookupByLibrary.simpleMessage("Andere Marken"),
         "palmReading": MessageLookupByLibrary.simpleMessage("Handlesen"),
         "password": MessageLookupByLibrary.simpleMessage("Passwort"),
-        "perfomanceOverviewAnalytics":
+        "performanceOverviewAnalytics":
             MessageLookupByLibrary.simpleMessage("Allgemeine Leistungsanalyse"),
         "permissionNeeded":
             MessageLookupByLibrary.simpleMessage("Erlaubnis notwendig"),
