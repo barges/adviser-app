@@ -197,8 +197,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "otherBrands": MessageLookupByLibrary.simpleMessage("Other brands"),
         "palmReading": MessageLookupByLibrary.simpleMessage("Palm Reading"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
-        "perfomanceOverviewAnalytics": MessageLookupByLibrary.simpleMessage(
-            "Perfomance Overview Analytics"),
+        "performanceOverviewAnalytics": MessageLookupByLibrary.simpleMessage(
+            "Performance Overview Analytics"),
         "permissionNeeded":
             MessageLookupByLibrary.simpleMessage("Permission Needed"),
         "personalDetails":

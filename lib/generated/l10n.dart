@@ -950,11 +950,11 @@ class S {
     );
   }
 
-  /// `Perfomance Overview Analytics`
-  String get perfomanceOverviewAnalytics {
+  /// `Performance Overview Analytics`
+  String get performanceOverviewAnalytics {
     return Intl.message(
-      'Perfomance Overview Analytics',
-      name: 'perfomanceOverviewAnalytics',
+      'Performance Overview Analytics',
+      name: 'performanceOverviewAnalytics',
       desc: '',
       args: [],
     );

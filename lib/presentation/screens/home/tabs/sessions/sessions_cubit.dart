@@ -92,7 +92,10 @@ class SessionsCubit extends Cubit<SessionsState> {
     _updateSessionsSubscription = _mainCubit.sessionsUpdateTrigger.listen(
       (value) {
         getQuestions().then((value) => SchedulerBinding.instance.endOfFrame
-            .then((value) => publicQuestionsScrollController.jumpTo(0.0)));
+            .then((value) {
+              conversationsScrollController.jumpTo(0.0);
+              publicQuestionsScrollController.jumpTo(0.0);
+            }));
       },
     );
   }

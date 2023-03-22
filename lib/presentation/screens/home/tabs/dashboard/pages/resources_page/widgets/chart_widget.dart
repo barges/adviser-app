@@ -51,7 +51,7 @@ class _ChartWidgetState extends State<ChartWidget> {
                 .displayLarge
                 ?.copyWith(fontWeight: FontWeight.w800),
           ),
-          Text(S.of(context).perfomanceOverviewAnalytics,
+          Text(S.of(context).performanceOverviewAnalytics,
               textAlign: TextAlign.center,
               style: Theme.of(context)
                   .textTheme
