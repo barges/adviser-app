@@ -1,7 +1,7 @@
 abstract class WebSocketManager {
   Future connect(String authToken, int userId);
 
-  void close();
+  Future<void> close();
 
   void sendStatus();
 }
