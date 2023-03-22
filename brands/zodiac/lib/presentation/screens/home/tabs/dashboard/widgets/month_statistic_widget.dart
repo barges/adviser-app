@@ -50,19 +50,17 @@ class MonthStatisticWidget extends StatelessWidget {
                   height: 8.0,
                 ),
                 Row(
-                  children: const [
+                  children: [
                     CategoryWithCounterWidget(
                       count: 0,
-                      ///TODO: need change
-                      category: 'New customers',
+                      category: SZodiac.of(context).newCustomersZodiac,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 8.0,
                     ),
                     CategoryWithCounterWidget(
                       count: 0,
-                      ///TODO: need change
-                      category: 'Sales',
+                      category: SZodiac.of(context).salesZodiac,
                     ),
                   ],
                 ),

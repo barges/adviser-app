@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:eventify/eventify.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:web_socket_channel/io.dart';
 import 'package:zodiac/data/models/socket_message/commands.dart';
 import 'package:zodiac/data/models/socket_message/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
@@ -14,9 +15,11 @@ import 'package:zodiac/zodiac_main_cubit.dart';
 
 @Injectable(as: WebSocketManager)
 class WebSocketManagerImpl implements WebSocketManager {
-  WebSocketChannel? _channel;
+  static WebSocketChannel? _channel;
 
   final ZodiacMainCubit _zodiacMainCubit;
+
+  static StreamSubscription? _socketStream;
 
   final _emitter = EventEmitter();
 
@@ -145,14 +148,14 @@ class WebSocketManagerImpl implements WebSocketManager {
         queryParameters: {"authToken": authToken});
 
     logger.d("Socket is connecting ...");
-    _channel = WebSocketChannel.connect(url);
-    _channel!.stream.listen((event) {
+    _channel = IOWebSocketChannel.connect(url);
+    _socketStream = _channel!.stream.listen((event) {
       logger.d("Socket event: $event");
 
       final message = SocketMessage.fromJson(json.decode(event));
       _emitter.emit(message.action, this, message);
     }, onDone: () {
-      //logger.d("Socket is closed...");
+      logger.d("Socket is closed...");
     }, onError: (error) {
       logger.d("Socket error: $error");
       connect(authToken, userId);
@@ -166,7 +169,12 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   @override
-  void close() => _channel?.sink.close();
+  Future<void> close() async {
+    await _socketStream?.cancel();
+    _socketStream = null;
+    await _channel?.sink.close();
+    _channel = null;
+  }
 
   void _send(SocketMessage message) {
     //logger.d("WebSocketManager._send() - message: ${message.encoded}");
