@@ -37,10 +37,11 @@ class ZodiacDrawerItemCubit extends Cubit<ZodiacDrawerItemState> {
   }
 
   Future<void> logout(BuildContext context) async {
-    final BaseResponse? response = await _authRepository.logout(request: AuthorizedRequest());
-    if(response?.status == true) {
+    final BaseResponse? response =
+        await _authRepository.logout(request: AuthorizedRequest());
+    if (response?.status == true) {
       logger.d('CLOSE');
-      _webSocketManager.close();
+      await _webSocketManager.close();
       await _zodiacCachingManager.logout();
       router.replaceAll(context, [const ZodiacAuth()]);
     }

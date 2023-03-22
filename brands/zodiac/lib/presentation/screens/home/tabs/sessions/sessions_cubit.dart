@@ -7,6 +7,8 @@ import 'package:zodiac/data/network/responses/chat_entities_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_chats_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_state.dart';
 
+const int _count = 20;
+
 class SessionsCubit extends Cubit<SessionsState> {
   final ZodiacChatsRepository _chatsRepository;
 
@@ -14,7 +16,8 @@ class SessionsCubit extends Cubit<SessionsState> {
   final TextEditingController searchEditingController = TextEditingController();
 
   bool _isLoading = false;
- final List<ZodiacChatsListItem> _chatsList = [];
+  bool _hasMore = true;
+  final List<ZodiacChatsListItem> _chatsList = [];
 
   SessionsCubit(
     this._chatsRepository,
@@ -46,18 +49,24 @@ class SessionsCubit extends Cubit<SessionsState> {
       _isLoading = true;
       if (refresh) {
         _chatsList.clear();
+        _hasMore = true;
       }
+      if (_hasMore) {
+        final ChatEntitiesResponse response =
+            await _chatsRepository.getChatsList(
+          ChatEntitiesRequest(
+            count: _count,
+            offset: _chatsList.length,
+          ),
+        );
 
-      final ChatEntitiesResponse response = await _chatsRepository.getChatsList(
-        ChatEntitiesRequest(
-          count: 20,
-          offset: _chatsList.length,
-        ),
-      );
+        List<ZodiacChatsListItem>? chatsList = response.result;
+        _chatsList.addAll(chatsList ?? []);
 
-      List<ZodiacChatsListItem>? chatsList = response.result;
-      _chatsList.addAll(chatsList ?? []);
-      emit(state.copyWith(chatList: List.of(_chatsList)));
+        _hasMore = chatsList != null && chatsList.length < _count == true;
+
+        emit(state.copyWith(chatList: List.of(_chatsList)));
+      }
     } catch (e) {
       logger.d(e);
     } finally {

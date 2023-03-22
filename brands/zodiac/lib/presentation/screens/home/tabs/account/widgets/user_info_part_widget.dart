@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/widgets/tile_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_cubit.dart';
@@ -40,8 +41,7 @@ class UserInfoPartWidget extends StatelessWidget {
                       (ZodiacAccountCubit cubit) =>
                           cubit.state.userStatusOnline);
                   return TileWidget(
-                    ///TODO: need translate
-                    title: 'I\'m available now',
+                    title: SZodiac.of(context).imAvailableNowZodiac,
                     iconSVGPath: Assets.vectors.availability.path,
                     initSwitcherValue: userOnline,
                     onChanged: zodiacAccountCubit.updateUserStatus,
@@ -51,8 +51,7 @@ class UserInfoPartWidget extends StatelessWidget {
                   height: 1.0,
                 ),
                 TileWidget(
-                  ///TODO: need translate
-                  title: 'Preview account',
+                  title: SZodiac.of(context).previewAccountZodiac,
                   iconSVGPath: Assets.vectors.eye.path,
                   onTap: () {},
                 ),

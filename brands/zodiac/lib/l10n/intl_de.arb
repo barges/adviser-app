@@ -26,5 +26,24 @@
   "performanceOverviewAnalyticsZodiac": "Allgemeine Leistungsanalyse",
   "todayZodiac": "Heute",
   "thisMonthZodiac": "Dieser Monat",
-  "newZodiac": "Neu"
+  "newZodiac": "Neu",
+  "youCanChangePriceOncePer24HZodiac": "You can change price once per 24 h",
+  "perMinuteZodiac": "per minute",
+  "imAvailableNowZodiac": "Ich bin jetzt verfügbar",
+  "notificationsZodiac": "Benachrichtigungen",
+  "previewAccountZodiac": "Vorschau Konto",
+  "reviewsZodiac": "Bewertungen",
+  "balanceTransactionsZodiac": "Guthaben & Transaktionen",
+  "templatesContentZodiac": "Templates & Content",
+  "servicesZodiac": "Services",
+  "pricePerMinZodiac": "${price}/min",
+  "changeZodiac": "Change",
+  "lowestRateZodiac": "Lowest rate",
+  "newCustomersZodiac":"New customers",
+  "salesZodiac": "Sales",
+  "personalBalanceZodiac": "Personal Balance:",
+  "yesterdayZodiac": "Yesterday"
+
+
+
 }
