@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
 import 'package:zodiac/presentation/screens/home/tabs/dashboard/dashboard_cubit.dart';
 
@@ -45,8 +46,7 @@ class DashboardUserInfoPartWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    ///TODO: need change
-                    'Personal Balance:',
+                    SZodiac.of(context).personalBalanceZodiac,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontSize: 14.0,
                           color: Theme.of(context).shadowColor,

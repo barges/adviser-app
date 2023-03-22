@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:zodiac/generated/l10n.dart';
 
 Future<void> changePriceBottomsheet({
   required BuildContext context,
@@ -40,8 +41,7 @@ Future<void> changePriceBottomsheet({
                     ),
                   ),
                   Text(
-                    ///TODO: need translate
-                    'You can change price once per 24 h',
+                    SZodiac.of(context).youCanChangePriceOncePer24HZodiac,
                     style: theme.textTheme.bodySmall,
                   ),
                   GestureDetector(
@@ -151,8 +151,7 @@ Future<void> changePriceBottomsheet({
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
-                                      ///TODO: need translate
-                                      'per minute',
+                                      SZodiac.of(context).perMinuteZodiac,
                                       style: theme.textTheme.labelMedium
                                           ?.copyWith(fontSize: 16.0),
                                     ),

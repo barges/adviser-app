@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/home/home_cubit.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/widgets/change_price_bottomsheet.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/widgets/tile_widget.dart';
@@ -31,8 +32,8 @@ class UserFeePartWidget extends StatelessWidget {
               final bool chatsEnabled = context.select(
                   (ZodiacAccountCubit cubit) => cubit.state.chatsEnabled);
               return TileWidget(
-                ///TODO: need translate
-                title: '\$${userInfo?.chatFee ?? '0.0'}/min',
+                title: SZodiac.of(context)
+                    .pricePerMinZodiac(userInfo?.chatFee ?? '0.0'),
                 iconSVGPath: Assets.zodiac.chatFee.path,
                 onChanged: zodiacAccountCubit.updateChatsEnabled,
                 widget: GestureDetector(
@@ -49,8 +50,7 @@ class UserFeePartWidget extends StatelessWidget {
                     );
                   },
                   child: Text(
-                    ///TODO: need translate
-                    'Change',
+                    SZodiac.of(context).changeZodiac,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
                           fontSize: 13.0,
                           color: Theme.of(context).primaryColor,
@@ -67,14 +67,15 @@ class UserFeePartWidget extends StatelessWidget {
               final bool callsEnabled = context.select(
                   (ZodiacAccountCubit cubit) => cubit.state.callsEnabled);
               return TileWidget(
-                ///TODO: need translate
-                title: '\$${userInfo?.callFee ?? '0.0'}/min',
+                title: SZodiac.of(context)
+                    .pricePerMinZodiac(userInfo?.callFee ?? '0.0'),
                 iconSVGPath: Assets.zodiac.callFee.path,
                 onChanged: zodiacAccountCubit.updateCallsEnabled,
                 widget: GestureDetector(
                   onTap: () {
                     final HomeCubit homeCubit = context.read<HomeCubit>();
                     final double fee = userInfo?.callFee ?? 0.0;
+
                     ///TODO: need check
                     changePriceBottomsheet(
                       context: //homeCubit.scaffoldKey.currentContext ??
@@ -85,8 +86,7 @@ class UserFeePartWidget extends StatelessWidget {
                     );
                   },
                   child: Text(
-                    ///TODO: need translate
-                    'Change',
+                    SZodiac.of(context).changeZodiac,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
                           fontSize: 13.0,
                           color: Theme.of(context).primaryColor,
@@ -103,13 +103,12 @@ class UserFeePartWidget extends StatelessWidget {
               final bool randomCallsEnabled = context.select(
                   (ZodiacAccountCubit cubit) => cubit.state.randomCallsEnabled);
               return TileWidget(
-                ///TODO: need translate
-                title: '\$${userInfo?.randomCallFee ?? '1.00'}/min',
+                title: SZodiac.of(context)
+                    .pricePerMinZodiac(userInfo?.randomCallFee ?? '1.99'),
                 iconSVGPath: Assets.zodiac.callFee.path,
                 onChanged: zodiacAccountCubit.updateRandomCallsEnabled,
                 widget: Text(
-                  ///TODO: need translate
-                  'Lowest rate',
+                  SZodiac.of(context).lowestRateZodiac,
                   style: Theme.of(context).textTheme.labelMedium?.copyWith(
                         fontSize: 13.0,
                         color: Theme.of(context).shadowColor,

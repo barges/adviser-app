@@ -15,8 +15,7 @@ extension DateTimeExt on DateTime {
       return SZodiac.of(context).todayZodiac;
     }
     if (timeDifference == -1) {
-      ///TODO: need change
-      return 'Yesterday';
+      return SZodiac.of(context).yesterdayZodiac;
     }
     if (localTime.year != now.year) {
       return DateFormat(dateFormat).format(this).parseDateTimePattern9;

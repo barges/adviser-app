@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/widgets/tile_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_cubit.dart';
 
@@ -25,8 +26,7 @@ class ReviewsPartWidget extends StatelessWidget {
         child: Column(
           children: [
             TileWidget(
-              ///TODO: need translate
-              title: 'Reviews',
+              title: SZodiac.of(context).reviewsZodiac,
               iconSVGPath: Assets.zodiac.reviewsIcon.path,
               onTap: () {
                 ///TODO add
@@ -37,8 +37,7 @@ class ReviewsPartWidget extends StatelessWidget {
               height: 1.0,
             ),
             TileWidget(
-              ///TODO: need translate
-              title: 'Templates&Content',
+              title: SZodiac.of(context).templatesContentZodiac,
               iconSVGPath: Assets.zodiac.couponIcon.path,
               onTap: () {},
             ),
@@ -52,8 +51,7 @@ class ReviewsPartWidget extends StatelessWidget {
               final ZodiacAccountCubit zodiacAccountCubit =
                   context.read<ZodiacAccountCubit>();
               return TileWidget(
-                ///TODO: need translate
-                title: 'Notifications',
+                title: SZodiac.of(context).notificationsZodiac,
                 iconSVGPath: Assets.vectors.notification.path,
                 withIconBadge: unreadedCount > 0,
                 widget: unreadedCount > 0
@@ -87,8 +85,7 @@ class ReviewsPartWidget extends StatelessWidget {
               final UserBalance userBalance = context.select(
                   (ZodiacAccountCubit cubit) => cubit.state.userBalance);
               return TileWidget(
-                ///TODO: need translate
-                title: 'Balance & Transactions',
+                title: SZodiac.of(context).balanceTransactionsZodiac,
                 iconSVGPath: Assets.zodiac.transactionsIcon.path,
                 onTap: () {},
                 widget: Text(
@@ -103,8 +100,7 @@ class ReviewsPartWidget extends StatelessWidget {
               height: 1.0,
             ),
             TileWidget(
-              ///TODO: need translate
-              title: 'Services',
+              title: SZodiac.of(context).servicesZodiac,
               iconSVGPath: Assets.zodiac.servicesIcon.path,
               onTap: () {},
             ),
