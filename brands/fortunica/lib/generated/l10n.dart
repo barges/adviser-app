@@ -491,10 +491,10 @@ class SFortunica {
   }
 
   /// `New`
-  String get newLabelFortunica {
+  String get newFortunica {
     return Intl.message(
       'New',
-      name: 'newLabelFortunica',
+      name: 'newFortunica',
       desc: '',
       args: [],
     );
@@ -505,16 +505,6 @@ class SFortunica {
     return Intl.message(
       'Mandatory',
       name: 'mandatoryFortunica',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Articles`
-  String get articlesFortunica {
-    return Intl.message(
-      'Articles',
-      name: 'articlesFortunica',
       desc: '',
       args: [],
     );
@@ -611,21 +601,21 @@ class SFortunica {
     );
   }
 
-  /// `This Week`
-  String get thisWeekFortunica {
-    return Intl.message(
-      'This Week',
-      name: 'thisWeekFortunica',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `This Month`
   String get thisMonthFortunica {
     return Intl.message(
       'This Month',
       name: 'thisMonthFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This Week`
+  String get thisWeekFortunica {
+    return Intl.message(
+      'This Week',
+      name: 'thisWeekFortunica',
       desc: '',
       args: [],
     );
@@ -911,11 +901,11 @@ class SFortunica {
     );
   }
 
-  /// `Perfomance Overview Analytics`
-  String get perfomanceOverviewAnalyticsFortunica {
+  /// `Performance Overview Analytics`
+  String get performanceOverviewAnalyticsFortunica {
     return Intl.message(
-      'Perfomance Overview Analytics',
-      name: 'perfomanceOverviewAnalyticsFortunica',
+      'Performance Overview Analytics',
+      name: 'performanceOverviewAnalyticsFortunica',
       desc: '',
       args: [],
     );
@@ -991,16 +981,6 @@ class SFortunica {
     );
   }
 
-  /// `No sessions, yet.`
-  String get noSessionsYetFortunica {
-    return Intl.message(
-      'No sessions, yet.',
-      name: 'noSessionsYetFortunica',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `No internet connection.`
   String get noInternetConnectionFortunica {
     return Intl.message(
@@ -1056,6 +1036,16 @@ class SFortunica {
     return Intl.message(
       'Account',
       name: 'accountFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Articles`
+  String get articlesFortunica {
+    return Intl.message(
+      'Articles',
+      name: 'articlesFortunica',
       desc: '',
       args: [],
     );
@@ -1574,6 +1564,16 @@ class SFortunica {
     return Intl.message(
       'Your client session history will appear here',
       name: 'yourClientSessionHistoryWillAppearHereFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No sessions, yet.`
+  String get noSessionsYetFortunica {
+    return Intl.message(
+      'No sessions, yet.',
+      name: 'noSessionsYetFortunica',
       desc: '',
       args: [],
     );

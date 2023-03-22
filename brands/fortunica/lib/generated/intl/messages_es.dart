@@ -148,7 +148,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "femaleFortunica": MessageLookupByLibrary.simpleMessage("Femenino"),
         "forMeFortunica": MessageLookupByLibrary.simpleMessage("Para mí"),
         "forgotPasswordFortunica":
-            MessageLookupByLibrary.simpleMessage("¿Olvidaste tu contraseña"),
+            MessageLookupByLibrary.simpleMessage("Olvidaste tu contraseña"),
         "forgotYourPasswordFortunica":
             MessageLookupByLibrary.simpleMessage("Olvidaste tu contraseña"),
         "fromXsecToYminFortunica": m0,
@@ -181,7 +181,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "nameCanBeChangedOnlyOnAdvisorToolFortunica":
             MessageLookupByLibrary.simpleMessage(
                 "El nombre solo se puede cambiar en Advisor Tool"),
-        "newLabelFortunica": MessageLookupByLibrary.simpleMessage("Nuevo"),
+        "newFortunica": MessageLookupByLibrary.simpleMessage("Nuevo"),
         "newMandatoryArticleIsAvailableFortunica":
             MessageLookupByLibrary.simpleMessage(
                 "¡Nuestro artículo obligatorio está disponible!"),
@@ -221,7 +221,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "palmReadingFortunica":
             MessageLookupByLibrary.simpleMessage("Lectura de Mano"),
         "passwordFortunica": MessageLookupByLibrary.simpleMessage("Contraseña"),
-        "perfomanceOverviewAnalyticsFortunica":
+        "performanceOverviewAnalyticsFortunica":
             MessageLookupByLibrary.simpleMessage(
                 "Análisis General de Desempeño"),
         "personalDetailsFortunica":

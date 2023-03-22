@@ -183,7 +183,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "nameCanBeChangedOnlyOnAdvisorToolFortunica":
             MessageLookupByLibrary.simpleMessage(
                 "O nome pode ser alterado somente no Advisor Tool"),
-        "newLabelFortunica": MessageLookupByLibrary.simpleMessage("Novo"),
+        "newFortunica": MessageLookupByLibrary.simpleMessage("Novo"),
         "newMandatoryArticleIsAvailableFortunica":
             MessageLookupByLibrary.simpleMessage(
                 "Novo artigo obrigatório está disponível!"),
@@ -223,7 +223,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "palmReadingFortunica":
             MessageLookupByLibrary.simpleMessage("Leitura de Mão"),
         "passwordFortunica": MessageLookupByLibrary.simpleMessage("Senha"),
-        "perfomanceOverviewAnalyticsFortunica":
+        "performanceOverviewAnalyticsFortunica":
             MessageLookupByLibrary.simpleMessage("Análise geral de desempenho"),
         "personalDetailsFortunica":
             MessageLookupByLibrary.simpleMessage("DETALHES PESSOAIS"),

@@ -10,7 +10,7 @@ class ForgotPasswordButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final LoginCubit loginCubit = context.read<LoginCubit>();
     return GestureDetector(
-      onTap: loginCubit.goToForgotPassword,
+      onTap: () => loginCubit.goToForgotPassword(context),
       child: Text(
         '${SZodiac.of(context).forgotPasswordZodiac}?',
         style: Theme.of(context).textTheme.titleMedium?.copyWith(

@@ -60,7 +60,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                               iconPath: iconPath!,
                             )
                           : _IconAndTitleWidget(
-                              title: currentBrand.name,
+                              title: currentBrand.title,
                               iconPath: currentBrand.icon,
                               needIconColor: false,
                             ),

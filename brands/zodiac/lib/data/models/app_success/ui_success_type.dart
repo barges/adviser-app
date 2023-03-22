@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zodiac/generated/l10n.dart';
 
 enum UISuccessMessagesType {
   weVeSentPasswordResetInstructionsToEmail;
@@ -6,7 +7,8 @@ enum UISuccessMessagesType {
   String getSuccessMessage(BuildContext context, String? argument) {
     switch (this) {
       case UISuccessMessagesType.weVeSentPasswordResetInstructionsToEmail:
-        return 'We\'ve sent password reset instructions to $argument.';
+        return SZodiac.of(context)
+            .weVeSentPasswordResetInstructionsToEmailZodiac(argument ?? '');
     }
   }
 }

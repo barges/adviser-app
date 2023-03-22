@@ -46,10 +46,10 @@
 // import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 // import 'package:mockito/annotations.dart';
 // import 'package:shared_advisor_interface/data/cache/data_caching_manager.dart';
-// import 'package:shared_advisor_interface/data/repositories/auth_repository_impl.dart';
-// import 'package:shared_advisor_interface/data/repositories/chats_repository_impl.dart';
+// import 'package:shared_advisor_interface/data/repositories/zodiac_auth_repository_impl.dart';
+// import 'package:shared_advisor_interface/data/repositories/zodiac_chats_repository_impl.dart';
 // import 'package:shared_advisor_interface/data/repositories/customer_repository_impl.dart';
-// import 'package:shared_advisor_interface/data/repositories/user_repository_impl.dart';
+// import 'package:shared_advisor_interface/data/repositories/zodiac_user_repository_impl.dart';
 // import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
 // import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 // import 'package:shared_advisor_interface/presentation/services/audio/audio_recorder_service.dart';

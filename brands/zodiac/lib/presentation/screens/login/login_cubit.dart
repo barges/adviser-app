@@ -13,12 +13,12 @@ import 'package:zodiac/data/models/app_success/app_success.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 import 'package:zodiac/data/network/requests/login_request.dart';
 import 'package:zodiac/data/network/responses/login_response.dart';
-import 'package:zodiac/domain/repositories/auth_repository.dart';
+import 'package:zodiac/domain/repositories/zodiac_auth_repository.dart';
 import 'package:zodiac/presentation/screens/login/login_state.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  final AuthRepository _repository;
+  final ZodiacAuthRepository _repository;
   final ZodiacCachingManager _cachingManager;
 
   final ZodiacMainCubit _zodiacMainCubit;
@@ -77,6 +77,10 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith(hiddenPassword: !state.hiddenPassword));
   }
 
+  void updateSuccessMessage(AppSuccess appSuccess) {
+    emit(state.copyWith(appSuccess: appSuccess));
+  }
+
   void clearErrorMessage() {
     _zodiacMainCubit.clearErrorMessage();
   }
@@ -99,12 +103,16 @@ class LoginCubit extends Cubit<LoginState> {
           password: passwordController.text.trim(),
         );
         logger.d(loginRequest);
-        LoginResponse? response = await _repository.login(
-            request: loginRequest);
+        LoginResponse? response =
+            await _repository.login(request: loginRequest);
 
         String? token = response?.result?.authToken;
-        if (token != null && token.isNotEmpty) {
+        int? userId = response?.result?.id;
+
+        if (response?.errorCode == 0 && token != null && userId != null) {
           await _cachingManager.saveUserToken(token);
+          await _cachingManager.saveUid(userId);
+
           goToHome(context);
         }
       } on DioError catch (e) {
@@ -143,29 +151,17 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void goToHome(BuildContext context) {
-    context.replaceAll([const ZodiacMain()]);
+    context.replaceAll([ZodiacHome()]);
   }
 
-  Future<void> goToForgotPassword({Brand? brand, String? token}) async {
+  Future<void> goToForgotPassword(BuildContext context,
+      {Brand? brand, String? token}) async {
     clearErrorMessage();
     clearSuccessMessage();
 
-    // final dynamic email = await Get.toNamed(
-    //   AppRoutes.forgotPassword,
-    //   arguments: ForgotPasswordScreenArguments(
-    //     brand: state.selectedBrand,
-    //   ),
-    // );
-    //
-    // if (email != null) {
-    //   emit(
-    //     state.copyWith(
-    //       appSuccess: UISuccess.withArguments(
-    //           UISuccessMessagesType.weVeSentPasswordResetInstructionsToEmail,
-    //           email as String),
-    //     ),
-    //   );
-    // }
+    context.push(
+      route: const ZodiacForgotPassword(),
+    );
   }
 
   bool emailIsValid() => Utils.isEmail(emailController.text);

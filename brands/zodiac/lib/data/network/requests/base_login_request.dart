@@ -4,7 +4,7 @@ import 'package:zodiac/data/network/requests/base_request.dart';
 
 part 'base_login_request.g.dart';
 
-@JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)
+@JsonSerializable(includeIfNull: false)
 class BaseLoginRequest extends BaseRequest {
   String locale = AppInfo.locale;
   @JsonKey(name: 'device_id')
@@ -14,7 +14,7 @@ class BaseLoginRequest extends BaseRequest {
   String deviceType = AppInfo.deviceType;
   String os = AppInfo.os;
   @JsonKey(name: 'appsflyer_id')
-  String appsflyerId = AppInfo.appsflyerId;
+  String appsflyerID = AppInfo.appsflyerId;
 
   BaseLoginRequest();
 
@@ -23,9 +23,4 @@ class BaseLoginRequest extends BaseRequest {
 
   @override
   Map<String, dynamic> toJson() => _$BaseLoginRequestToJson(this);
-
-  @override
-  String toString() {
-    return 'BaseLoginRequest{locale: $locale, deviceId: $deviceId, device: $device, deviceType: $deviceType, os: $os, appsflyerId: $appsflyerId}';
-  }
 }

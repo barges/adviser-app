@@ -11,5 +11,42 @@
   "noInternetConnectionZodiac": "Sem conexão com a internet.",
   "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainZodiac": "Uh-oh. Parece que você perdeu sua conexão. Por favor, tente novamente.",
   "cancelZodiac": "Cancelar",
-  "wrongUsernameAndOrPasswordZodiac": "Nome de usuário e/ou senha incorretos."
+  "wrongUsernameAndOrPasswordZodiac": "Nome de usuário e/ou senha incorretos.",
+  "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac": "Digite seu endereço de e-mail e enviaremos instruções para criar uma nova senha",
+  "resetPasswordZodiac": "Redefinir senha",
+  "weVeSentPasswordResetInstructionsToEmailZodiac": "Enviamos instruções de redefinição de senha para {email}.",
+  "dashboardZodiac": "Painel de Controle",
+  "accountZodiac": "Conta",
+  "articlesZodiac": "Artigos",
+  "sessionsZodiac": "Sessões",
+  "yourClientSessionHistoryWillAppearHereZodiac": "O histórico de ssessões de clientes aparecerá aqui",
+  "noSessionsYetZodiac": "Ainda não há sessões.",
+  "searchZodiac": "Procurar",
+  "avgDailyEarningsZodiac": "Ganhos diários médios",
+  "performanceOverviewAnalyticsZodiac": "Análise geral de desempenho",
+  "todayZodiac": "Hoje",
+  "thisMonthZodiac": "Este mês",
+  "newZodiac": "Novo",
+  "youCanChangePriceOncePer24HZodiac": "You can change price once per 24 h",
+  "perMinuteZodiac": "per minute",
+  "imAvailableNowZodiac": "Estou disponível agora",
+  "notificationsZodiac": "Notificações",
+  "previewAccountZodiac": "Visualizar conta",
+  "reviewsZodiac": "Avaliações",
+  "balanceTransactionsZodiac": "Saldo e Transações",
+  "templatesContentZodiac": "Templates & Content",
+  "servicesZodiac": "Services",
+  "pricePerMinZodiac": "${price}/min",
+  "changeZodiac": "Change",
+  "lowestRateZodiac": "Lowest rate",
+  "newCustomersZodiac":"New customers",
+  "salesZodiac": "Sales",
+  "personalBalanceZodiac": "Personal Balance:",
+  "yesterdayZodiac": "Yesterday"
+
+
+
+
+
+
 }
