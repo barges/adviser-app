@@ -147,6 +147,7 @@ class PushNotificationManagerImpl implements PushNotificationManager {
   }
 }
 
+@pragma('vm:entry-point')
 Future<void> _backgroundMessageHandler(RemoteMessage message) async {
   logger.d('***********************');
   logger.d(message.toMap());
