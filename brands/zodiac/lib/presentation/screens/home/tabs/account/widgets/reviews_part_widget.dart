@@ -130,6 +130,7 @@ class _ReviewRatingWidget extends StatelessWidget {
         RatingBar(
           initialRating: userInfo?.averageRatingReal ?? 0,
           direction: Axis.horizontal,
+          ignoreGestures: true,
           itemSize: 18,
           allowHalfRating: true,
           itemCount: 5,
