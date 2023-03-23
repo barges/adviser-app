@@ -46,8 +46,8 @@ class NotificationsCubit extends Cubit<NotificationsState> {
           ),
         );
         if (response.errorCode == 0) {
-          _hasMore =
-              response.result != null && response.result!.length < _count;
+          _hasMore = response.result != null &&
+              response.result!.length < _count == false;
           _notificationsList.addAll(response.result ?? []);
           emit(state.copyWith(notifications: List.of(_notificationsList)));
         }
