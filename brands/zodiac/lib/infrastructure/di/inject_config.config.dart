@@ -36,11 +36,14 @@ import '../../domain/repositories/zodiac_articles_repository.dart' as _i22;
 import '../../domain/repositories/zodiac_auth_repository.dart' as _i24;
 import '../../domain/repositories/zodiac_chats_repository.dart' as _i26;
 import '../../domain/repositories/zodiac_user_repository.dart' as _i17;
+import '../../presentation/screens/home/home_cubit.dart' as _i29;
+import '../../presentation/screens/home/tabs/articles/articles_cubit.dart'
+    as _i28;
 import '../../zodiac_main_cubit.dart' as _i10;
 import 'dio_interceptors/app_interceptor.dart' as _i11;
-import 'modules/api_module.dart' as _i29;
+import 'modules/api_module.dart' as _i31;
 import 'modules/services_module.dart'
-    as _i28; // ignore_for_file: unnecessary_lambdas
+    as _i30; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -90,9 +93,16 @@ Future<_i1.GetIt> $initGetIt(
       () => _i25.ZodiacAuthRepositoryImpl(get<_i20.AuthApi>()));
   gh.factory<_i26.ZodiacChatsRepository>(
       () => _i27.ZodiacChatsRepositoryImpl(get<_i21.ChatsApi>()));
+  gh.lazySingleton<_i28.ArticlesCubit>(
+      () => _i28.ArticlesCubit(get<_i22.ZodiacArticlesRepository>()));
+  gh.lazySingleton<_i29.HomeCubit>(() => _i29.HomeCubit(
+        get<_i8.ZodiacCachingManager>(),
+        get<_i15.WebSocketManager>(),
+        get<_i22.ZodiacArticlesRepository>(),
+      ));
   return get;
 }
 
-class _$ServicesModule extends _i28.ServicesModule {}
+class _$ServicesModule extends _i30.ServicesModule {}
 
-class _$ApiModule extends _i29.ApiModule {}
+class _$ApiModule extends _i31.ApiModule {}

@@ -18,11 +18,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => HomeCubit(
-              zodiacGetIt.get<ZodiacCachingManager>(),
-              zodiacGetIt.get<WebSocketManager>(),
-              zodiacGetIt.get<ZodiacArticlesRepository>(),
-            ),
+        create: (_) => zodiacGetIt.get<HomeCubit>(),
         child: Builder(
           builder: (context) {
             final ThemeData theme = Theme.of(context);
@@ -63,25 +59,25 @@ class HomeScreen extends StatelessWidget {
                         return BottomNavigationBarItem(
                           icon: e == TabsTypes.articles
                               ? _ArticleIcon(
-                              child: SvgPicture.asset(
-                                e.iconPath,
-                                color: theme.shadowColor,
-                              ))
+                                  child: SvgPicture.asset(
+                                  e.iconPath,
+                                  color: theme.shadowColor,
+                                ))
                               : SvgPicture.asset(
-                            e.iconPath,
-                            color: theme.shadowColor,
-                          ),
+                                  e.iconPath,
+                                  color: theme.shadowColor,
+                                ),
                           activeIcon: e == TabsTypes.articles
                               ? _ArticleIcon(
-                            child: SvgPicture.asset(
-                              e.iconPath,
-                              color: theme.primaryColor,
-                            ),
-                          )
+                                  child: SvgPicture.asset(
+                                    e.iconPath,
+                                    color: theme.primaryColor,
+                                  ),
+                                )
                               : SvgPicture.asset(
-                            e.iconPath,
-                            color: theme.primaryColor,
-                          ),
+                                  e.iconPath,
+                                  color: theme.primaryColor,
+                                ),
                           label: e.tabName(context),
                         );
                       }).toList(),
@@ -102,15 +98,15 @@ class _ArticleIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(builder: (context) {
-      final int? count =
-          context.select((HomeCubit cubit) => cubit.state.articleCount);
-      return Stack(
-        clipBehavior: Clip.none,
-        children: [
-          child,
-          if (count != null)
-            Positioned(
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        child,
+        Builder(builder: (context) {
+          final int? count =
+              context.select((HomeCubit cubit) => cubit.state.articleCount);
+          if (count != null && count != 0) {
+            return Positioned(
               top: -2.0,
               right: -7.0,
               child: Container(
@@ -121,18 +117,23 @@ class _ArticleIcon extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: Center(
-                  child: Text(
-                    count.toString(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .displaySmall
-                        ?.copyWith(color: const Color(0xFFFFFFFF)),
-                  ),
+                  child: Builder(builder: (_) {
+                    return Text(
+                      count.toString(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .displaySmall
+                          ?.copyWith(color: const Color(0xFFFFFFFF)),
+                    );
+                  }),
                 ),
               ),
-            ),
-        ],
-      );
-    });
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        }),
+      ],
+    );
   }
 }

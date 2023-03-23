@@ -6,27 +6,34 @@ import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/themes/app_colors_light.dart';
 import 'package:zodiac/data/models/articles/article_content.dart';
-import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/transparrent_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
+import 'package:zodiac/presentation/screens/home/home_cubit.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_cubit.dart';
 
 class ArticleDetailsScreen extends StatelessWidget {
-  const ArticleDetailsScreen({Key? key}) : super(key: key);
+  final int articleId;
+  const ArticleDetailsScreen({Key? key, required this.articleId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) => ArticlesCubit(
-        zodiacGetIt.get<ZodiacArticlesRepository>(),
-      )..getArticleContent(143),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(
+          value: zodiacGetIt.get<ArticlesCubit>()..getArticleContent(articleId),
+        ),
+        BlocProvider.value(
+          value: zodiacGetIt.get<HomeCubit>(),
+        ),
+      ],
       child: Builder(builder: (context) {
         final ArticleContent? articleContent =
             context.select((ArticlesCubit cubit) => cubit.state.articleContent);
+        final HomeCubit homeCubit = context.read<HomeCubit>();
         return Scaffold(
           body: Stack(
             fit: StackFit.passthrough,
@@ -79,7 +86,6 @@ class ArticleDetailsScreen extends StatelessWidget {
                                       padding:
                                           const EdgeInsets.only(left: 12.0),
                                       child: Column(children: [
-
                                         Text(
                                           'Psychic Cilla',
                                           style: Theme.of(context)
@@ -88,23 +94,23 @@ class ArticleDetailsScreen extends StatelessWidget {
                                               ?.copyWith(
                                                   fontWeight: FontWeight.w500),
                                         ),
-                                        Text(
-                                          DateFormat(dateFormat)
-                                              .format(DateTime
-                                                  .fromMillisecondsSinceEpoch(
-                                                      (articleContent
-                                                                  ?.dateCreate ??
-                                                              0) *
-                                                          1000))
-                                              .parseDateTimePattern1,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displaySmall
-                                              ?.copyWith(
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Theme.of(context)
-                                                      .shadowColor),
-                                        ),
+                                        if (articleContent?.dateCreate != null)
+                                          Text(
+                                            DateFormat(dateFormat)
+                                                .format(DateTime
+                                                    .fromMillisecondsSinceEpoch(
+                                                        (articleContent!
+                                                                .dateCreate!) *
+                                                            1000))
+                                                .parseDateTimePattern1,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displaySmall
+                                                ?.copyWith(
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Theme.of(context)
+                                                        .shadowColor),
+                                          ),
                                       ]),
                                     )
                                   ]),
@@ -125,7 +131,9 @@ class ArticleDetailsScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const TransparentAppBar()
+              TransparentAppBar(
+                onTap: () => homeCubit.getArticleCount(),
+              )
             ],
           ),
         );

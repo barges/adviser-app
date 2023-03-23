@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
+import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/network/requests/article_count_request.dart';
@@ -8,6 +10,7 @@ import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/presentation/screens/home/home_state.dart';
 import 'package:zodiac/presentation/screens/home/tabs_types.dart';
 
+@lazySingleton
 class HomeCubit extends Cubit<HomeState> {
   static final List<TabsTypes> tabsList = [
     TabsTypes.dashboard,
@@ -23,7 +26,8 @@ class HomeCubit extends Cubit<HomeState> {
   //late final StreamSubscription _userStatusSubscription;
   late final List<PageRouteInfo> routes;
 
-  HomeCubit(this._cacheManager, this._webSocketManager, this._articlesRepository)
+  HomeCubit(
+      this._cacheManager, this._webSocketManager, this._articlesRepository)
       : super(const HomeState()) {
     routes = tabsList.map((e) => _getPage(e)).toList();
     final String? authToken = _cacheManager.getUserToken();
@@ -33,24 +37,27 @@ class HomeCubit extends Cubit<HomeState> {
       _webSocketManager.connect(authToken, userId);
     }
 
-    _getArticleCount();
+    getArticleCount();
   }
 
-  Future<void> _getArticleCount() async {
-    final articleCountResponse = await _articlesRepository.getArticleCount(
-        request: ArticleCountRequest(update: 0, isBadge: 1));
-    emit(state.copyWith(articleCount: articleCountResponse?.count));
+  Future<void> getArticleCount() async {
+    try {
+      final articleCountResponse = await _articlesRepository.getArticleCount(
+          request: ArticleCountRequest(update: 0, isBadge: 0));
+      emit(state.copyWith(articleCount: articleCountResponse?.count));
+    } catch (e) {
+      logger.d(e);
+    }
   }
 
-
-    // emit(state.copyWith(userStatus: _cacheManager.getUserStatus()));
-    // _userStatusSubscription =
-    //     _cacheManager.listenCurrentUserStatusStream((value) {
-    //       if (value.status != FortunicaUserStatus.live) {
-    //         changeTabIndex(tabsList.indexOf(TabsTypes.account));
-    //       }
-    //       emit(state.copyWith(userStatus: value));
-    //     });
+  // emit(state.copyWith(userStatus: _cacheManager.getUserStatus()));
+  // _userStatusSubscription =
+  //     _cacheManager.listenCurrentUserStatusStream((value) {
+  //       if (value.status != FortunicaUserStatus.live) {
+  //         changeTabIndex(tabsList.indexOf(TabsTypes.account));
+  //       }
+  //       emit(state.copyWith(userStatus: value));
+  //     });
 
   // @override
   // Future<void> close() {
@@ -70,7 +77,7 @@ class HomeCubit extends Cubit<HomeState> {
         return const ZodiacChats();
       case TabsTypes.account:
         return const ZodiacAccount();
-        case TabsTypes.articles:
+      case TabsTypes.articles:
         return const ZodiacArticles();
     }
   }
