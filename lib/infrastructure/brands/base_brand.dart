@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
 
@@ -10,6 +11,12 @@ abstract class BaseBrand {
   BuildContext? get context;
 
   set context(BuildContext? context);
+
+  PageRouteInfo get initRoute;
+
+  bool get isCurrent;
+
+  set isCurrent(bool isCurrent);
 
   String? get languageCode;
 
