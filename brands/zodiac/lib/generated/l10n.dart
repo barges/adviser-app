@@ -491,6 +491,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `No notifications, yet`
+  String get noNotificationsYetZodiac {
+    return Intl.message(
+      'No notifications, yet',
+      name: 'noNotificationsYetZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your notifications history will appear here`
+  String get yourNotificationsHistoryWillAppearHereZodiac {
+    return Intl.message(
+      'Your notifications history will appear here',
+      name: 'yourNotificationsHistoryWillAppearHereZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

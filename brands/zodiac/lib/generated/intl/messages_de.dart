@@ -60,6 +60,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "newZodiac": MessageLookupByLibrary.simpleMessage("Neu"),
         "noInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage("Keine Internetverbindung."),
+        "noNotificationsYetZodiac":
+            MessageLookupByLibrary.simpleMessage("No notifications, yet"),
         "noSessionsYetZodiac":
             MessageLookupByLibrary.simpleMessage("Noch keine Sitzungen"),
         "notificationsZodiac":
@@ -98,6 +100,9 @@ class MessageLookup extends MessageLookupByLibrary {
                 "You can change price once per 24 h"),
         "yourClientSessionHistoryWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
-                "Der Sitzungsverlauf deines Kunden wird hier erscheinen")
+                "Der Sitzungsverlauf deines Kunden wird hier erscheinen"),
+        "yourNotificationsHistoryWillAppearHereZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Your notifications history will appear here")
       };
 }

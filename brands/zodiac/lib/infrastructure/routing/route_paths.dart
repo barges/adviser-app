@@ -12,4 +12,5 @@ class RoutePaths {
   static const galleryScreen = '${Brand.zodiacAlias}Gallery';
   static const accountScreen = '${Brand.zodiacAlias}Account';
   static const forgotPasswordScreen = '${Brand.zodiacAlias}ForgotPassword';
+  static const notificationsScreen = '${Brand.zodiacAlias}Notifications';
 }

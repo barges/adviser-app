@@ -75,7 +75,7 @@ class ReviewsPartWidget extends StatelessWidget {
                         ),
                       )
                     : const SizedBox.shrink(),
-                onTap: zodiacAccountCubit.goToNotifications,
+                onTap: () => zodiacAccountCubit.goToNotifications(context),
               );
             }),
             const Divider(
