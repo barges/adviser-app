@@ -1,10 +1,9 @@
 import 'dart:io';
 
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/global.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 
 Future<void> showOkCancelBottomSheet({
   required BuildContext context,
@@ -12,7 +11,6 @@ Future<void> showOkCancelBottomSheet({
   VoidCallback? cancelOnTap,
   String okButtonText = 'Ok',
 }) async {
-  final route = globalGetIt.get<AppRouter>();
 
   if (Platform.isAndroid) {
     showModalBottomSheet(
@@ -37,7 +35,7 @@ Future<void> showOkCancelBottomSheet({
           ),
           GestureDetector(
             onTap: () {
-              route.pop(context);
+              context.pop();
               if (cancelOnTap != null) {
                 cancelOnTap();
               }
@@ -75,7 +73,7 @@ Future<void> showOkCancelBottomSheet({
             cancelButton: CupertinoActionSheetAction(
               isDefaultAction: true,
               onPressed: () {
-                route.pop(context);
+                context.pop();
                 if (cancelOnTap != null) {
                   cancelOnTap();
                 }

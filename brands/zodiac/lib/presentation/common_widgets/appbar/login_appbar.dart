@@ -1,9 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:flutter/material.dart';
-import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:zodiac/presentation/common_widgets/buttons/change_locale_button.dart';
 
@@ -28,7 +27,7 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
               children: [
                 AppIconButton(
                   icon: Assets.vectors.arrowLeft.path,
-                  onTap: () => zodiacGetIt.get<AppRouter>().pop(context),
+                  onTap: context.pop,
                 ),
                 const SizedBox(
                   width: 12.0,

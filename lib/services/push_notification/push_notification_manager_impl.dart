@@ -13,7 +13,6 @@ import 'package:fortunica/infrastructure/routing/route_paths_fortunica.dart';
 import 'package:fortunica/presentation/screens/chat/chat_screen.dart';
 import 'package:fortunica/presentation/screens/home/tabs_types.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';

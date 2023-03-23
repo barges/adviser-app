@@ -90,7 +90,8 @@ class BrandManager {
     }
   }
 
-  static List<BaseBrand> getActiveBrandsWithFirstCurrent(BaseBrand currentBrand) {
+  static List<BaseBrand> getActiveBrandsWithFirstCurrent(
+      BaseBrand currentBrand) {
     final List<String> allBrandsAliases = [];
     for (BaseBrand brand in brands) {
       if (brand.isActive) {

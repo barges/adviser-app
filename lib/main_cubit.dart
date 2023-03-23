@@ -38,14 +38,14 @@ class MainCubit extends Cubit<MainState> {
     final BaseBrand currentBrand = _cacheManager.getCurrentBrand();
 
     BrandManager.setIsCurrentForBrands(currentBrand);
+
     emit(state.copyWith(currentBrand: currentBrand));
 
     _currentBrandSubscription = _cacheManager.listenCurrentBrandStream((value) {
-      BrandManager.setIsCurrentForBrands(currentBrand);
-
       emit(state.copyWith(
         currentBrand: value,
       ));
+      BrandManager.setIsCurrentForBrands(value);
 
       final String? languageCode = value.languageCode;
 

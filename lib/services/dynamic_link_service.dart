@@ -1,14 +1,11 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/infrastructure/routing/route_paths_fortunica.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/global.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';

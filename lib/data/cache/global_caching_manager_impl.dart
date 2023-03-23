@@ -1,14 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/global.dart';
-import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
-import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
-import 'package:shared_advisor_interface/services/check_permission_service.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
+import 'package:shared_advisor_interface/services/check_permission_service.dart';
 
 import 'global_caching_manager.dart';
 
@@ -50,7 +47,8 @@ class GlobalCachingManagerImpl implements GlobalCachingManager {
   }
 
   @override
-  StreamSubscription listenCurrentBrandStream(ValueChanged<BaseBrand> callback) {
+  StreamSubscription listenCurrentBrandStream(
+      ValueChanged<BaseBrand> callback) {
     return Hive.box(_brandsBoxKey).watch(key: _brandKey).listen((event) {
       callback(BrandManager.brandFromAlias(event.value));
     });

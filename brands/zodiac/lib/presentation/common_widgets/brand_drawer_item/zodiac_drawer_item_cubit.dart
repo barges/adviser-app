@@ -10,7 +10,6 @@ import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_auth_repository.dart';
-import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/brand_drawer_item/zodiac_drawer_item_state.dart';
 import 'package:zodiac/zodiac.dart';
 
@@ -20,8 +19,6 @@ class ZodiacDrawerItemCubit extends Cubit<ZodiacDrawerItemState> {
 
   final ZodiacCachingManager _zodiacCachingManager;
   final WebSocketManager _webSocketManager;
-
-  final router = zodiacGetIt.get<AppRouter>();
 
   // late final UserStatus? userStatus;
 
@@ -40,12 +37,12 @@ class ZodiacDrawerItemCubit extends Cubit<ZodiacDrawerItemState> {
     if (response?.status == true) {
       await _webSocketManager.close();
       await _zodiacCachingManager.logout();
-      router.replaceAll(context, [const ZodiacAuth()]);
+      context.replaceAll([const ZodiacAuth()]);
     }
   }
 
   void changeCurrentBrand(BuildContext context) {
     _globalCachingManager.saveCurrentBrand(ZodiacBrand());
-    router.pop(context);
+    context.pop();
   }
 }

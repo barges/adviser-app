@@ -12,7 +12,6 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
@@ -45,7 +44,7 @@ class FortunicaDrawerItem extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             if (isCurrent) {
-              globalGetIt.get<AppRouter>().pop(context);
+              context.pop();
             } else {
               cubit.changeCurrentBrand(context);
             }
@@ -143,7 +142,7 @@ class FortunicaDrawerItem extends StatelessWidget {
                         } else if (!isCurrent) {
                           cubit.changeCurrentBrand(context);
                         } else {
-                          globalGetIt.get<AppRouter>().pop(context);
+                          context.pop();
                         }
                       },
                       child: SvgPicture.asset(

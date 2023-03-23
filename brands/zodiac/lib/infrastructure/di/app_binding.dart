@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:zodiac/data/app_info.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager_impl.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
@@ -27,10 +26,6 @@ class AppBinding {
     //  final dio = await _injectDioForNetworking();
     final baseUrl = globalGetIt.get<FlavorConfig>().baseUrl;
     log("BaseUrl from inject: $baseUrl");
-  }
-
-  static _injectNavigation(AppRouter navigationService) {
-    zodiacGetIt.registerSingleton(navigationService, instanceName: 'fortunica');
   }
 
   ///prepare flavor config depending on the selected passed [flavor]

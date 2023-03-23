@@ -32,7 +32,7 @@ class ZodiacBrand implements BaseBrand {
   String get brandAlias => alias;
 
   @override
-  String get iconPath => Assets.vectors.fortunica.path;
+  String get iconPath => Assets.vectors.zodiacTouch.path;
 
   @override
   String get name => _name;

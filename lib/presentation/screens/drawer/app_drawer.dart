@@ -141,9 +141,8 @@ class AppDrawer extends StatelessWidget {
 class BrandItem extends StatelessWidget {
   final BaseBrand brand;
   final GlobalKey<ScaffoldState> scaffoldKey;
-  final router = globalGetIt.get<AppRouter>();
 
-  BrandItem({
+  const BrandItem({
     Key? key,
     required this.brand,
     required this.scaffoldKey,
@@ -161,7 +160,7 @@ class BrandItem extends StatelessWidget {
               okButtonText: S.of(context).logOut,
               okOnTap: () {
                 callback(fortunicaContext).then((value) {
-                  router.pop(context);
+                  context.pop();
                   scaffoldKey.currentState?.openEndDrawer();
                 });
               },
@@ -175,7 +174,7 @@ class BrandItem extends StatelessWidget {
               okButtonText: S.of(context).logOut,
               okOnTap: () {
                 callback(zodiacContext).then((value) {
-                  router.pop(context);
+                  context.pop();
                   scaffoldKey.currentState?.openEndDrawer();
                 });
               },

@@ -12,8 +12,6 @@ import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart'
     as _i12;
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart'
     as _i4;
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
-    as _i3;
 import 'package:shared_advisor_interface/main_cubit.dart' as _i13;
 import 'package:shared_advisor_interface/services/check_permission_service.dart'
     as _i5;
@@ -62,7 +60,6 @@ Future<_i1.GetIt> $initGetIt(
   );
   final servicesModule = _$ServicesModule();
   final apiModule = _$ApiModule();
-  gh.singleton<_i3.AppRouter>(servicesModule.navigationService);
   gh.singleton<_i4.BrandManager>(servicesModule.brandManager);
   gh.singleton<_i5.CheckPermissionService>(
       servicesModule.checkPermissionService);

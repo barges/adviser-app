@@ -12,8 +12,6 @@ import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart'
     as _i7;
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart'
     as _i5;
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
-    as _i3;
 import 'package:shared_advisor_interface/main_cubit.dart' as _i8;
 import 'package:shared_advisor_interface/services/connectivity_service.dart'
     as _i6;
@@ -58,7 +56,6 @@ Future<_i1.GetIt> $initGetIt(
   );
   final servicesModule = _$ServicesModule();
   final apiModule = _$ApiModule();
-  gh.singleton<_i3.AppRouter>(servicesModule.navigationService);
   gh.factory<_i4.AuthenticationServices>(() => _i4.AuthenticationServices());
   gh.singleton<_i5.BrandManager>(servicesModule.brandManager);
   gh.singleton<_i6.ConnectivityService>(servicesModule.connectivityService);
