@@ -511,6 +511,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `No reviews, yet`
+  String get noReviewsYetZodiac {
+    return Intl.message(
+      'No reviews, yet',
+      name: 'noReviewsYetZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reviews from your clients will appear here`
+  String get reviewsFromYourClientsWillAppearHereZodiac {
+    return Intl.message(
+      'Reviews from your clients will appear here',
+      name: 'reviewsFromYourClientsWillAppearHereZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

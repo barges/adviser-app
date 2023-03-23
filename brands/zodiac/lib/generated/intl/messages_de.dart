@@ -62,6 +62,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Keine Internetverbindung."),
         "noNotificationsYetZodiac":
             MessageLookupByLibrary.simpleMessage("No notifications, yet"),
+        "noReviewsYetZodiac":
+            MessageLookupByLibrary.simpleMessage("No reviews, yet"),
         "noSessionsYetZodiac":
             MessageLookupByLibrary.simpleMessage("Noch keine Sitzungen"),
         "notificationsZodiac":
@@ -78,6 +80,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "pricePerMinZodiac": m0,
         "resetPasswordZodiac":
             MessageLookupByLibrary.simpleMessage("Passwort zurücksetzen"),
+        "reviewsFromYourClientsWillAppearHereZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Reviews from your clients will appear here"),
         "reviewsZodiac": MessageLookupByLibrary.simpleMessage("Bewertungen"),
         "salesZodiac": MessageLookupByLibrary.simpleMessage("Sales"),
         "searchZodiac": MessageLookupByLibrary.simpleMessage("Suche"),

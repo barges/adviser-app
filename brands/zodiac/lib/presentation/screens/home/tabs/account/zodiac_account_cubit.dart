@@ -53,6 +53,10 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     );
   }
 
+  void goToReviews(BuildContext context) {
+    context.push(route: const ZodiacReviews());
+  }
+
   Future<void> getUserInfo() async {
     try {
       int? userId = _cacheManager.getUid();

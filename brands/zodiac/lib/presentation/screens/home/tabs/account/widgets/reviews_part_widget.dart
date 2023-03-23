@@ -15,6 +15,8 @@ class ReviewsPartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ZodiacAccountCubit zodiacAccountCubit =
+        context.read<ZodiacAccountCubit>();
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
@@ -28,9 +30,7 @@ class ReviewsPartWidget extends StatelessWidget {
             TileWidget(
               title: SZodiac.of(context).reviewsZodiac,
               iconSVGPath: Assets.zodiac.reviewsIcon.path,
-              onTap: () {
-                ///TODO add
-              },
+              onTap: () => zodiacAccountCubit.goToReviews(context),
               widget: const _ReviewRatingWidget(),
             ),
             const Divider(
@@ -48,8 +48,7 @@ class ReviewsPartWidget extends StatelessWidget {
               final int unreadedCount = context.select(
                   (ZodiacAccountCubit cubit) =>
                       cubit.state.unreadedNotificationsCount);
-              final ZodiacAccountCubit zodiacAccountCubit =
-                  context.read<ZodiacAccountCubit>();
+
               return TileWidget(
                 title: SZodiac.of(context).notificationsZodiac,
                 iconSVGPath: Assets.vectors.notification.path,

@@ -1,5 +1,6 @@
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
@@ -33,11 +34,11 @@ class ScrollableAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     const Brand currentBrand = Brand.fortunica;
 
     return BlocProvider(
-      create: (_) => ScrollableAppBarCubit(fortunicaGetIt.get<FortunicaMainCubit>()),
+      create: (_) =>
+          ScrollableAppBarCubit(fortunicaGetIt.get<FortunicaMainCubit>()),
       child: Builder(builder: (context) {
         final ScrollableAppBarCubit scrollableAppBarCubit =
             context.read<ScrollableAppBarCubit>();
@@ -83,39 +84,43 @@ class ScrollableAppBar extends StatelessWidget {
                             onTap: context.popRoute,
                           ),
                           Expanded(
-                              child: GestureDetector(
-                                onTap: context.read<MainHomeScreenCubit>().openDrawer,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: AppConstants.iconSize,
-                                      width: AppConstants.iconSize,
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 3.0),
-                                      margin: const EdgeInsets.only(
-                                        left: 8.0,
-                                        right: 4.0,
-                                      ),
-                                      child: SvgPicture.asset(
-                                        currentBrand.icon,
-                                      ),
+                            child: GestureDetector(
+                              onTap: context
+                                  .read<MainHomeScreenCubit>()
+                                  .openDrawer,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: AppConstants.iconSize,
+                                    width: AppConstants.iconSize,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 3.0),
+                                    margin: const EdgeInsets.only(
+                                      left: 8.0,
+                                      right: 4.0,
                                     ),
-                                    Text(currentBrand.name,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelMedium
-                                            ?.copyWith(
-                                                fontWeight: FontWeight.w500,
-                                                color: Theme.of(context)
-                                                    .primaryColor)),
-                                    const SizedBox(width: 4.0),
-                                    Assets.vectors.swap.svg(
-                                      color: Theme.of(context).primaryColor,
+                                    child: SvgPicture.asset(
+                                      currentBrand.icon,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  Text(
+                                      currentBrand.name.capitalize ??
+                                          currentBrand.name,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium
+                                          ?.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                              color: Theme.of(context)
+                                                  .primaryColor)),
+                                  const SizedBox(width: 4.0),
+                                  Assets.vectors.swap.svg(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ],
                               ),
                             ),
+                          ),
                           if (actionOnClick != null)
                             Opacity(
                               opacity: isOnline ? 1.0 : 0.4,
@@ -135,8 +140,8 @@ class ScrollableAppBar extends StatelessWidget {
             preferredSize: const Size.fromHeight(_minHeight),
             child: Builder(
               builder: (context) {
-                final AppError appError =
-                    context.select((FortunicaMainCubit cubit) => cubit.state.appError);
+                final AppError appError = context
+                    .select((FortunicaMainCubit cubit) => cubit.state.appError);
                 return Stack(
                   clipBehavior: Clip.none,
                   children: [
@@ -233,7 +238,8 @@ class ScrollableAppBar extends StatelessWidget {
                           height: _errorHeight,
                           errorMessage: isOnline
                               ? ''
-                              : SFortunica.of(context).noInternetConnectionFortunica,
+                              : SFortunica.of(context)
+                                  .noInternetConnectionFortunica,
                           isRequired: true,
                         ),
                       ),
