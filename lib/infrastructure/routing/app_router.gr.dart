@@ -53,6 +53,8 @@ import 'package:shared_advisor_interface/presentation/screens/force_update/force
     as _i2;
 import 'package:shared_advisor_interface/presentation/screens/home_screen/main_home_screen.dart'
     as _i1;
+import 'package:zodiac/presentation/screens/article_detail_screen/article_detail_screen.dart'
+    as _i25;
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart'
     as _i5;
 import 'package:zodiac/presentation/screens/forgot_password/forgot_password_screen.dart'
@@ -62,8 +64,6 @@ import 'package:zodiac/presentation/screens/gallery/gallery_pictures_screen.dart
 import 'package:zodiac/presentation/screens/home/home_screen.dart' as _i24;
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_screen.dart'
     as _i32;
-import 'package:zodiac/presentation/screens/home/tabs/articles/article_details_screen.dart'
-    as _i25;
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_screen.dart'
     as _i33;
 import 'package:zodiac/presentation/screens/home/tabs/dashboard/dashboard_screen.dart'
@@ -282,7 +282,7 @@ class MainAppRouter extends _i34.RootStackRouter {
       final args = routeData.argsAs<ZodiacArticlesDetailsArgs>();
       return _i34.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: _i25.ArticleDetailsScreen(
+        child: _i25.ArticleDetailScreen(
           key: args.key,
           articleId: args.articleId,
         ),
@@ -1131,7 +1131,7 @@ class ZodiacHomeArgs {
 }
 
 /// generated route for
-/// [_i25.ArticleDetailsScreen]
+/// [_i25.ArticleDetailScreen]
 class ZodiacArticlesDetails
     extends _i34.PageRouteInfo<ZodiacArticlesDetailsArgs> {
   ZodiacArticlesDetails({

@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/models/articles/article.dart';
-import 'package:zodiac/data/models/articles/article_content.dart';
-import 'package:zodiac/data/network/requests/article_content_request.dart';
 import 'package:zodiac/data/network/requests/articles_request.dart';
-import 'package:zodiac/data/network/responses/article_content_response.dart';
 import 'package:zodiac/data/network/responses/articles_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_state.dart';
 
-@lazySingleton
 class ArticlesCubit extends Cubit<ArticlesState> {
   final int _limit = 3;
   int _offset = 0;
@@ -70,29 +65,6 @@ class ArticlesCubit extends Cubit<ArticlesState> {
       _isLoading = false;
     } catch (e) {
       _isLoading = false;
-      logger.d(e);
-    }
-  }
-
-  Future<void> getArticleContent(int articleId) async {
-    emit(
-      state.copyWith(
-        articleContent: null,
-      ),
-    );
-
-    try {
-      final ArticleContentResponse? response =
-          await _articlesRepository.getArticleContent(
-              request: ArticleContentRequest(articleId: articleId));
-      ArticleContent? result = response?.result;
-
-      emit(
-        state.copyWith(
-          articleContent: result,
-        ),
-      );
-    } catch (e) {
       logger.d(e);
     }
   }

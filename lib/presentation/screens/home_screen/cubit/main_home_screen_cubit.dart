@@ -1,3 +1,4 @@
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -14,6 +15,7 @@ class MainHomeScreenCubit extends Cubit<MainHomeScreenState> {
   late final List<PageRouteInfo> routes;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final PublishSubject<bool> articleCountUpdateTrigger = PublishSubject();
 
   MainHomeScreenCubit(this._globalCachingManager)
       : super(const MainHomeScreenState()) {
@@ -35,5 +37,9 @@ class MainHomeScreenCubit extends Cubit<MainHomeScreenState> {
       case Brand.zodiac:
         return const Zodiac();
     }
+  }
+
+  void updateArticleCount() {
+    articleCountUpdateTrigger.add(true);
   }
 }

@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/network/requests/article_count_request.dart';
 import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
@@ -10,7 +12,6 @@ import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/presentation/screens/home/home_state.dart';
 import 'package:zodiac/presentation/screens/home/tabs_types.dart';
 
-@lazySingleton
 class HomeCubit extends Cubit<HomeState> {
   static final List<TabsTypes> tabsList = [
     TabsTypes.dashboard,
@@ -26,6 +27,9 @@ class HomeCubit extends Cubit<HomeState> {
   //late final StreamSubscription _userStatusSubscription;
   late final List<PageRouteInfo> routes;
 
+  MainHomeScreenCubit? _mainHomeScreenCubit;
+  StreamSubscription<bool>? _updateArticleCountSubscription;
+
   HomeCubit(
       this._cacheManager, this._webSocketManager, this._articlesRepository)
       : super(const HomeState()) {
@@ -38,6 +42,12 @@ class HomeCubit extends Cubit<HomeState> {
     }
 
     getArticleCount();
+  }
+
+  @override
+  Future<void> close() async {
+    _updateArticleCountSubscription?.cancel();
+    return super.close();
   }
 
   Future<void> getArticleCount() async {
@@ -80,5 +90,16 @@ class HomeCubit extends Cubit<HomeState> {
       case TabsTypes.articles:
         return const ZodiacArticles();
     }
+  }
+
+  set mainHomeScreenCubit(MainHomeScreenCubit mainHomeScreenCubit) {
+    _mainHomeScreenCubit = mainHomeScreenCubit;
+    _updateArticleCountSubscription?.cancel();
+    _updateArticleCountSubscription =
+        _mainHomeScreenCubit?.articleCountUpdateTrigger.listen(
+      (_) async {
+        getArticleCount();
+      },
+    );
   }
 }
