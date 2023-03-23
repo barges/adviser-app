@@ -1,8 +1,6 @@
-import 'package:shared_advisor_interface/data/cache/global_caching_manager_impl.dart';
-import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
-import 'package:shared_advisor_interface/infrastructure/brands/base_router.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:fortunica/data/cache/fortunica_caching_manager_impl.dart';
+import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
+
 import 'inject_config.dart';
 
 /// injecting app main dependencies so can be accessed from everywhere

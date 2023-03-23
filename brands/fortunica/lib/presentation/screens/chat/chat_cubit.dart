@@ -27,6 +27,7 @@ import 'package:fortunica/data/network/requests/answer_request.dart';
 import 'package:fortunica/data/network/responses/answer_validation_response.dart';
 import 'package:fortunica/data/network/responses/rituals_response.dart';
 import 'package:fortunica/domain/repositories/fortunica_chats_repository.dart';
+import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/fortunica_constants.dart';
 import 'package:fortunica/fortunica_main_cubit.dart';
 import 'package:fortunica/presentation/screens/chat/chat_screen.dart';
@@ -36,7 +37,6 @@ import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
@@ -521,7 +521,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     fortunicaMainCubit.updateSessions();
-    Configuration.fortunicaContext?.popForced();
+    FortunicaBrand().context?.popForced();
     _answerTimer?.cancel();
   }
 

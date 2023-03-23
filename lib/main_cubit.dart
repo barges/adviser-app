@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/main_state.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/services/fresh_chat_service.dart';
@@ -35,20 +35,23 @@ class MainCubit extends Cubit<MainState> {
       emit(state.copyWith(internetConnectionIsAvailable: event));
     });
 
-    emit(state.copyWith(
-        currentBrand: _cacheManager.getCurrentBrand()));
+    final BaseBrand currentBrand = _cacheManager.getCurrentBrand();
+
+    BrandManager.setIsCurrentForBrands(currentBrand);
+    emit(state.copyWith(currentBrand: currentBrand));
 
     _currentBrandSubscription = _cacheManager.listenCurrentBrandStream((value) {
+      BrandManager.setIsCurrentForBrands(currentBrand);
+
       emit(state.copyWith(
-          currentBrand: value,
-        ));
+        currentBrand: value,
+      ));
 
-        final String? languageCode = value.languageCode;
+      final String? languageCode = value.languageCode;
 
-        if (languageCode != null) {
-          _cacheManager.saveLanguageCode(languageCode);
-        }
-
+      if (languageCode != null) {
+        _cacheManager.saveLanguageCode(languageCode);
+      }
     });
 
     _localeSubscription = _cacheManager.listenLanguageCodeStream(changeLocale);
@@ -87,7 +90,6 @@ class MainCubit extends Cubit<MainState> {
     if (Platform.isAndroid) {
       globalGetIt.get<FreshChatService>().changeLocaleInvite();
     }
-
 
     logger.d(languageCode);
 

@@ -1,13 +1,14 @@
 library fortunica;
 
-import 'package:fortunica/data/cache/fortunica_caching_manager.dart';
-import 'package:fortunica/infrastructure/di/inject_config.dart';
-import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
-
+import 'package:fortunica/data/cache/fortunica_caching_manager.dart';
 import 'package:fortunica/infrastructure/di/app_initializer.dart';
+import 'package:fortunica/infrastructure/di/inject_config.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
+import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 
 class FortunicaBrand implements BaseBrand {
   static const alias = 'fortunica';
@@ -20,9 +21,8 @@ class FortunicaBrand implements BaseBrand {
   FortunicaBrand._internal();
 
   final bool _isActive = true;
+  bool _isCurrent = false;
   BuildContext? _context;
-
-  FortunicaBrand._();
 
   @override
   String get brandAlias => alias;
@@ -65,5 +65,16 @@ class FortunicaBrand implements BaseBrand {
   }
 
   @override
+  bool get isCurrent => _isCurrent;
+
+  @override
+  set isCurrent(bool isCurrent) {
+    _isCurrent = isCurrent;
+  }
+
+  @override
   String get url => '';
+
+  @override
+  PageRouteInfo get initRoute => const Fortunica();
 }

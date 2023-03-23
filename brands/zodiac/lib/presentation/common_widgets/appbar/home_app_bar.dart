@@ -1,13 +1,15 @@
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
+import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 import 'package:zodiac/presentation/common_widgets/buttons/change_locale_button.dart';
+import 'package:zodiac/zodiac.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -32,7 +34,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Brand currentBrand = Brand.zodiac;
+    final BaseBrand currentBrand = ZodiacBrand();
 
     return AppBar(
         automaticallyImplyLeading: false,
@@ -57,8 +59,8 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                               iconPath: iconPath!,
                             )
                           : _IconAndTitleWidget(
-                              title: currentBrand.title,
-                              iconPath: currentBrand.icon,
+                              title: currentBrand.name,
+                              iconPath: currentBrand.iconPath,
                               needIconColor: false,
                             ),
                     ),
@@ -115,16 +117,16 @@ class _AuthorizedBrandsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Brand currentBrand =
-        context.select((MainCubit cubit) => cubit.state.currentBrand);
-    final List<Brand> brands = Configuration.authorizedBrands(currentBrand);
+    final BaseBrand currentBrand =
+        context.select((MainCubit cubit) => cubit.state.currentBrand ?? ZodiacBrand());
+    final List<BaseBrand> brands = BrandManager.authorizedBrands(currentBrand);
 
     return Stack(
         textDirection: TextDirection.rtl,
         children: brands
             .mapIndexed((index, element) => _AuthorizedBrandWidget(
                   index: index,
-                  brandIcon: element.icon,
+                  brandIcon: element.iconPath,
                   isFirstBrand: index == brands.length - 1,
                 ))
             .toList());

@@ -1,18 +1,17 @@
 import 'dart:async';
 
-import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortunica/data/cache/fortunica_caching_manager.dart';
 import 'package:fortunica/data/models/user_info/user_status.dart';
 import 'package:fortunica/domain/repositories/fortunica_auth_repository.dart';
+import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/infrastructure/di/inject_config.dart';
 import 'package:fortunica/presentation/common_widgets/brand_drawer_item/fortunica_drawer_item_state.dart';
 import 'package:retrofit/dio.dart';
+import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 
 class FortunicaDrawerItemCubit extends Cubit<FortunicaDrawerItemState> {
   final FortunicaAuthRepository _authRepository;
@@ -40,7 +39,7 @@ class FortunicaDrawerItemCubit extends Cubit<FortunicaDrawerItemState> {
   }
 
   void changeCurrentBrand(BuildContext context) {
-    _globalCachingManager.saveCurrentBrand(Brand.fortunica);
+    _globalCachingManager.saveCurrentBrand(FortunicaBrand());
     router.pop(context);
   }
 }

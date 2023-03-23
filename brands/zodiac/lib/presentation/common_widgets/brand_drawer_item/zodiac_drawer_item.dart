@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart'
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
@@ -16,6 +17,7 @@ import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_auth_repository.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/brand_drawer_item/zodiac_drawer_item_cubit.dart';
+import 'package:zodiac/zodiac.dart';
 
 class ZodiacDrawerItem extends StatelessWidget {
   final Function(BuildContext, AsyncValueSetter<BuildContext>) openLogoutDialog;
@@ -37,9 +39,8 @@ class ZodiacDrawerItem extends StatelessWidget {
       child: Builder(builder: (context) {
         final ZodiacDrawerItemCubit cubit =
             context.read<ZodiacDrawerItemCubit>();
-        final Brand currentBrand = context.read<MainCubit>().state.currentBrand;
-        const Brand brand = Brand.zodiac;
-        final bool isCurrent = brand == currentBrand;
+        final BaseBrand brand = ZodiacBrand();
+        final bool isCurrent = brand.isCurrent;
         final bool isLoggedIn = brand.isAuth;
         final ThemeData theme = Theme.of(context);
         return GestureDetector(
@@ -51,7 +52,7 @@ class ZodiacDrawerItem extends StatelessWidget {
             }
           },
           child: Opacity(
-            opacity: brand.isEnabled ? 1.0 : 0.4,
+            opacity: brand.isActive ? 1.0 : 0.4,
             child: Container(
               height: 64.0,
               padding: const EdgeInsets.fromLTRB(4.0, 4.0, 12.0, 4.0),
@@ -80,7 +81,7 @@ class ZodiacDrawerItem extends StatelessWidget {
                         ),
                         child: Center(
                           child: SvgPicture.asset(
-                            brand.icon,
+                            brand.iconPath,
                             color: Utils.isDarkMode(context)
                                 ? theme.backgroundColor
                                 : null,
@@ -112,11 +113,11 @@ class ZodiacDrawerItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          brand.title,
+                          brand.name,
                           style: theme.textTheme.headlineMedium
                               ?.copyWith(fontSize: 16.0),
                         ),
-                        if (brand.url.isNotEmpty && brand.isEnabled)
+                        if (brand.url.isNotEmpty && brand.isActive)
                           Text(
                             brand.url,
                             style: theme.textTheme.bodySmall?.copyWith(
@@ -124,7 +125,7 @@ class ZodiacDrawerItem extends StatelessWidget {
                               color: theme.iconTheme.color,
                             ),
                           ),
-                        if (!brand.isEnabled)
+                        if (!brand.isActive)
                           Text(
                             S.of(context).comingSoon,
                             style: theme.textTheme.bodySmall?.copyWith(
@@ -135,7 +136,7 @@ class ZodiacDrawerItem extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (brand.isEnabled && (isCurrent || !isLoggedIn))
+                  if (brand.isActive && (isCurrent || !isLoggedIn))
                     GestureDetector(
                       onTap: () {
                         if (isCurrent && isLoggedIn) {

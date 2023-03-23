@@ -2,8 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
 
-export 'base_router.dart';
-
 abstract class BaseBrand {
 
   Future init(Flavor flavor);

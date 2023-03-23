@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/services/check_permission_service.dart';
 import 'package:flutter/material.dart';

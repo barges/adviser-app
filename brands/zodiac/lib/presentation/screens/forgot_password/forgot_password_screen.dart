@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbars/simple_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
@@ -18,6 +19,7 @@ import 'package:zodiac/presentation/common_widgets/no_connection_widget.dart';
 import 'package:zodiac/presentation/screens/forgot_password/forgot_password_cubit.dart';
 import 'package:zodiac/presentation/screens/forgot_password/widgets/email_part_widget.dart';
 import 'package:zodiac/presentation/screens/login/login_cubit.dart';
+import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
@@ -133,7 +135,6 @@ class _BrandLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Brand brand = Brand.zodiac;
     return GestureDetector(
       onDoubleTap: () {
         if (kDebugMode) {
@@ -153,7 +154,7 @@ class _BrandLogo extends StatelessWidget {
         ),
         child: Center(
           child: SvgPicture.asset(
-            brand.icon,
+            ZodiacBrand().iconPath,
             height: 72.0,
           ),
         ),

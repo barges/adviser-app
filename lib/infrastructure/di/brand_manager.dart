@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:fortunica/fortunica.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
@@ -36,16 +35,17 @@ class BrandManager {
     }
   }
 
-  static List<BaseBrand> authorizedBrands(String brandAlias) {
+  static List<BaseBrand> authorizedBrands(BaseBrand currentBrand) {
     final List<String> authBrandsAliases = [];
     for (BaseBrand b in brands) {
       if (b.isAuth) {
         authBrandsAliases.add(b.brandAlias);
       }
     }
-    if (authBrandsAliases.contains(brandAlias)) {
-      authBrandsAliases.removeWhere((element) => element == brandAlias);
-      authBrandsAliases.add(brandAlias);
+    if (authBrandsAliases.contains(currentBrand.brandAlias)) {
+      authBrandsAliases
+          .removeWhere((element) => element == currentBrand.brandAlias);
+      authBrandsAliases.add(currentBrand.brandAlias);
     }
 
     final List<BaseBrand> authBrands = [];
@@ -72,6 +72,16 @@ class BrandManager {
     return unAuthBrands;
   }
 
+  static void setIsCurrentForBrands(BaseBrand brand) {
+    for (BaseBrand b in brands) {
+      if (brand.brandAlias == b.brandAlias) {
+        b.isCurrent = true;
+      } else {
+        b.isCurrent = false;
+      }
+    }
+  }
+
   static void setBrandsLocales(String languageCode) {
     for (BaseBrand brand in brands) {
       if (brand.isActive) {
@@ -80,15 +90,18 @@ class BrandManager {
     }
   }
 
-  static List<BaseBrand> getBrandsWithFirstCurrent(String brandAlias) {
+  static List<BaseBrand> getActiveBrandsWithFirstCurrent(BaseBrand currentBrand) {
     final List<String> allBrandsAliases = [];
     for (BaseBrand brand in brands) {
-      allBrandsAliases.add(brand.brandAlias);
+      if (brand.isActive) {
+        allBrandsAliases.add(brand.brandAlias);
+      }
     }
 
-    if (allBrandsAliases.firstOrNull != brandAlias) {
-      allBrandsAliases.removeWhere((element) => element == brandAlias);
-      allBrandsAliases.add(brandAlias);
+    if (allBrandsAliases.firstOrNull != currentBrand.brandAlias) {
+      allBrandsAliases
+          .removeWhere((element) => element == currentBrand.brandAlias);
+      allBrandsAliases.add(currentBrand.brandAlias);
     }
 
     final List<BaseBrand> allBrands = [];

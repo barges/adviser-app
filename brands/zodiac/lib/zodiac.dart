@@ -1,9 +1,11 @@
 library zodiac;
 
+import 'package:auto_route/auto_route.dart';
 import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/infrastructure/di/app_initializer.dart';
@@ -23,9 +25,8 @@ class ZodiacBrand implements BaseBrand {
   ZodiacBrand._internal();
 
   final bool _isActive = true;
+   bool _isCurrent = false;
   BuildContext? _context;
-
-  ZodiacBrand._();
 
   @override
   String get brandAlias => alias;
@@ -67,4 +68,15 @@ class ZodiacBrand implements BaseBrand {
 
   @override
   String get url => ZodiacConstants.sideMenuUrl;
+
+  @override
+  bool get isCurrent => _isCurrent;
+
+  @override
+  set isCurrent(bool isCurrent) {
+    _isCurrent = isCurrent;
+  }
+
+  @override
+  PageRouteInfo get initRoute => const Zodiac();
 }
