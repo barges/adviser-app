@@ -8,6 +8,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/main_state.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/services/fresh_chat_service.dart';
@@ -62,7 +63,7 @@ class MainCubit extends Cubit<MainState> {
     return super.close();
   }
 
-  void changeCurrentBrand(Brand brand) {
+  void changeCurrentBrand(BaseBrand brand) {
     _cacheManager.saveCurrentBrand(brand);
   }
 

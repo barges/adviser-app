@@ -1,9 +1,11 @@
+import 'package:fortunica/fortunica.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
@@ -38,7 +40,7 @@ class FortunicaDrawerItem extends StatelessWidget {
             context.read<FortunicaDrawerItemCubit>();
 
         final Brand currentBrand = context.read<MainCubit>().state.currentBrand;
-        const Brand brand = Brand.fortunica;
+        final BaseBrand brand = FortunicaBrand();
         final bool isCurrent = brand == currentBrand;
         final bool isLoggedIn = brand.isAuth;
         final ThemeData theme = Theme.of(context);

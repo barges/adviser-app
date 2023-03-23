@@ -1,15 +1,19 @@
 import 'package:flutter/cupertino.dart';
+import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
 
 export 'base_router.dart';
 
-abstract class BaseBrand with ChangeNotifier {
-  BuildContext get context;
+abstract class BaseBrand {
 
-  set context(BuildContext context);
+  Future init(Flavor flavor);
 
-  String get languageCode;
+  BuildContext? get context;
 
-  set languageCode(String languageCode);
+  set context(BuildContext? context);
+
+  String? get languageCode;
+
+  set languageCode(String? languageCode);
 
   String get brandAlias;
 
@@ -20,4 +24,6 @@ abstract class BaseBrand with ChangeNotifier {
   bool get isActive;
 
   bool get isAuth;
+
+  String get url;
 }

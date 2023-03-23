@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/fortunica_main_cubit.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:fortunica/infrastructure/di/inject_config.dart';
@@ -24,6 +25,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/app_loading
 import 'package:shared_advisor_interface/themes/app_themes.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
+import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 import 'infrastructure/di/app_initializer.dart';
@@ -139,7 +141,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                     if (languageCode == null) {
                       final String code = newLocale.languageCode;
                       _cacheManager.saveLanguageCode(code);
-                      Configuration.setBrandsLocales(code);
+                      BrandManager.setBrandsLocales(code);
                     }
 
                     return newLocale;
@@ -217,10 +219,10 @@ class _AppNavigatorObserver extends AutoRouterObserver {
     if (currentContext != null) {
       final String path = currentContext.router.current.path;
       logger.d('context $path');
-      if (path.contains(Brand.fortunicaAlias)) {
-        Configuration.fortunicaContext = currentContext;
-      } else if (path.contains(Brand.zodiacAlias)) {
-        Configuration.zodiacContext = currentContext;
+      if (path.contains(FortunicaBrand.alias)) {
+        FortunicaBrand().context = currentContext;
+      } else if (path.contains(ZodiacBrand.alias)) {
+        ZodiacBrand().context = currentContext;
       }
     }
   }

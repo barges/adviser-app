@@ -1,6 +1,7 @@
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class BrandWidget extends StatelessWidget {
-  final Brand brand;
+  final BaseBrand brand;
   final bool isSelected;
 
   const BrandWidget({Key? key, required this.brand, required this.isSelected})
@@ -16,7 +17,7 @@ class BrandWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isEnabled = brand.isEnabled;
+    final bool isEnabled = brand.isActive;
     final ThemeData theme = Theme.of(context);
     return Opacity(
       opacity: isEnabled ? 1.0 : 0.4,
@@ -44,7 +45,7 @@ class BrandWidget extends StatelessWidget {
                   height: 12.0,
                 ),
                 SvgPicture.asset(
-                  brand.icon,
+                  brand.iconPath,
                   color:
                       Utils.isDarkMode(context) ? theme.backgroundColor : null,
                 ),
@@ -54,7 +55,7 @@ class BrandWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Text(
-                    isEnabled ? brand.title : S.of(context).comingSoon,
+                    isEnabled ? brand.name : S.of(context).comingSoon,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: isSelected
                           ? theme.primaryColor

@@ -1,28 +1,26 @@
 library fortunica;
 
+import 'package:fortunica/data/cache/fortunica_caching_manager.dart';
+import 'package:fortunica/infrastructure/di/inject_config.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
 import 'package:flutter/cupertino.dart';
 
-import './infrastructure/routing/app_router.gr.dart';
-import './infrastructure/di/app_initializer.dart';
+import 'package:fortunica/infrastructure/di/app_initializer.dart';
 
 class FortunicaBrand implements BaseBrand {
   static const alias = 'fortunica';
   static const _name = 'Fortunica';
-  static FortunicaBrand? _instance;
-  static FortunicaBrand get instance {
-    if (_instance != null) {
-      return _instance!;
-    } else {
-      _instance = FortunicaBrand._();
-      return _instance!;
-    }
-  }
 
-  bool _isActive = true;
+  static final FortunicaBrand _instance = FortunicaBrand._internal();
+
+  factory FortunicaBrand() => _instance;
+
+  FortunicaBrand._internal();
+
+  final bool _isActive = true;
+  BuildContext? _context;
 
   FortunicaBrand._();
 
@@ -36,41 +34,36 @@ class FortunicaBrand implements BaseBrand {
   String get name => _name;
 
   @override
-  int get countBadge => _countBadge;
-
-  @override
   bool get isActive => _isActive;
 
   @override
-  bool get isAuth => _isAuth;
+  bool get isAuth =>
+      fortunicaGetIt.get<FortunicaCachingManager>().getUserToken() != null;
 
   @override
-  set isAuth(bool auth) {
-    _isAuth = auth;
-    notifyListeners();
+  init(Flavor flavor) async {
+    await FortunicaAppInitializer.setupPrerequisites(Flavor.production);
   }
 
   @override
-  set isActive(bool active) {
-    _isActive = active;
-    notifyListeners();
+  BuildContext? get context => _context;
+
+  @override
+  set context(BuildContext? context) {
+    _context = context;
   }
 
   @override
-  set countBadge(int count) {
-    _countBadge = count;
-    notifyListeners();
+  String? get languageCode =>
+      fortunicaGetIt.get<FortunicaCachingManager>().getLanguageCode();
+
+  @override
+  set languageCode(String? languageCode) {
+    fortunicaGetIt
+        .get<FortunicaCachingManager>()
+        .saveLanguageCode(languageCode);
   }
 
   @override
-  init(IBrandRouterService navigationService) async {
-    await FortunicaAppInitializer.setupPrerequisites(
-        Flavor.production, navigationService
-    );
-  }
-
-  @override
-  RootStackRouter getRouter() {
-    return FortunicaAppRouter();
-  }
+  String get url => '';
 }

@@ -12,7 +12,7 @@ class AppBinding {
   ///The starting point
   ///The order of the called function is important
   static Future<void> setupInjection(
-      Flavor flavor, AppRouter navigationService) async {
+      Flavor flavor) async {
     ///injectable and get it configuration
     await ZodiacCachingManagerImpl.openBoxes();
     await configureDependenciesZodiac();

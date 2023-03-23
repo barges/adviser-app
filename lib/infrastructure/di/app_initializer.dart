@@ -45,7 +45,6 @@ class AppInitializer {
     ///dependencies injection
     await AppBinding.setupInjection(flavor);
 
-    final navigationService = globalGetIt<AppRouter>();
-    await globalGetIt<BrandManager>().initDi(flavor, navigationService);
+    await globalGetIt<BrandManager>().initDi(flavor);
   }
 }

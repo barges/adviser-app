@@ -23,17 +23,3 @@ import 'package:shared_advisor_interface/infrastructure/brands/base_router.dart'
   asExtension: false, // default
 )
 Future<void> configureDependencies() async => $initGetIt(globalGetIt);
-
-@module
-abstract class RegisterModule {
-  final brandManager = BrandManager(Configuration.brands, MainAppRouter());
-
-  @Injectable(as: Key)
-  UniqueKey get key;
-
-  // @singleton
-  // RootStackRouter get appRouter => brandManager.router;
-
-  @singleton
-  AppRouter get navigationService => AppRouterImpl();
-}

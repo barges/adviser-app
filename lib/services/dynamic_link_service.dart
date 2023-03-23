@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/infrastructure/routing/route_paths_fortunica.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/configuration.dart';
@@ -8,6 +9,8 @@ import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 
@@ -24,7 +27,7 @@ class DynamicLinkService {
   DynamicLinkService() {
     FirebaseDynamicLinks.instance.onLink.listen(
       (PendingDynamicLinkData dynamicLink) async {
-        final BuildContext? fortunicaContext = Configuration.fortunicaContext;
+        final BuildContext? fortunicaContext = FortunicaBrand().context;
 
         final String link = dynamicLink.link.toString();
         dynamicLinksStream.add(parseDynamicLink(link));
@@ -73,13 +76,13 @@ class DynamicLinkService {
     final String queriesString = link.split('?').lastOrNull ?? '';
     final Map<String, String> queriesMap = Uri.splitQueryString(queriesString);
     return DynamicLinkData(
-        brand: Brand.brandFromName(queriesMap[brandQueryKey]),
+        brand: BrandManager.brandFromAlias(queriesMap[brandQueryKey]),
         token: queriesMap[tokenQueryKey]);
   }
 }
 
 class DynamicLinkData {
-  final Brand brand;
+  final BaseBrand brand;
   final String? token;
 
   DynamicLinkData({

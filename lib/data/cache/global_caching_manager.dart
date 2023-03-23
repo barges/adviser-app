@@ -1,14 +1,15 @@
 import 'dart:async';
 
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/services/check_permission_service.dart';
 import 'package:flutter/material.dart';
 
 abstract class GlobalCachingManager {
 
-  Future<void> saveCurrentBrand(Brand currentBrand);
+  Future<void> saveCurrentBrand(BaseBrand currentBrand);
 
-  Brand getCurrentBrand();
+  BaseBrand getCurrentBrand();
 
   Future<void> saveLanguageCode(String? languageCode);
 
@@ -19,7 +20,7 @@ abstract class GlobalCachingManager {
   Future<void> saveFirstPermissionStatusesRequestsMap(
       PermissionType permissionType);
 
-  StreamSubscription listenCurrentBrandStream(ValueChanged<Brand> callback);
+  StreamSubscription listenCurrentBrandStream(ValueChanged<BaseBrand> callback);
 
   StreamSubscription listenLanguageCodeStream(ValueChanged<String> callback);
 

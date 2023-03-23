@@ -6,8 +6,8 @@ import 'app_binding.dart';
 
 ///Will have everything needs to be configured before the app run
 class FortunicaAppInitializer {
-  static Future setupPrerequisites(Flavor flavor, AppRouter navigationService) async {
+  static Future setupPrerequisites(Flavor flavor) async {
     ///dependencies injection
-    await AppBinding.setupInjection(flavor, navigationService);
+    await AppBinding.setupInjection(flavor);
   }
 }

@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/services/check_permission_service.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -32,8 +34,8 @@ class GlobalCachingManagerImpl implements GlobalCachingManager {
   }
 
   @override
-  Brand getCurrentBrand() {
-    return Brand.brandFromString(Hive.box(_brandsBoxKey).get(_brandKey));
+  BaseBrand getCurrentBrand() {
+    return BrandManager.brandFromAlias(Hive.box(_brandsBoxKey).get(_brandKey));
   }
 
   @override
@@ -48,9 +50,9 @@ class GlobalCachingManagerImpl implements GlobalCachingManager {
   }
 
   @override
-  StreamSubscription listenCurrentBrandStream(ValueChanged<Brand> callback) {
+  StreamSubscription listenCurrentBrandStream(ValueChanged<BaseBrand> callback) {
     return Hive.box(_brandsBoxKey).watch(key: _brandKey).listen((event) {
-      callback(Brand.brandFromString(event.value));
+      callback(BrandManager.brandFromAlias(event.value));
     });
   }
 
@@ -62,8 +64,8 @@ class GlobalCachingManagerImpl implements GlobalCachingManager {
   }
 
   @override
-  Future<void> saveCurrentBrand(Brand currentBrand) async {
-    await Hive.box(_brandsBoxKey).put(_brandKey, currentBrand.toString());
+  Future<void> saveCurrentBrand(BaseBrand currentBrand) async {
+    await Hive.box(_brandsBoxKey).put(_brandKey, currentBrand.brandAlias);
   }
 
   @override
