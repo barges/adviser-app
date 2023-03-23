@@ -1,23 +1,23 @@
-import 'package:shared_advisor_interface/configuration.dart';
+import 'package:fortunica/fortunica.dart';
 
 class RoutePathsFortunica {
-  static const mainScreen = '${Brand.fortunicaAlias}Main';
-  static const homeScreen = "${Brand.fortunicaAlias}Home";
-  static const authScreen = "${Brand.fortunicaAlias}Auth";
-  static const loginScreen = "${Brand.fortunicaAlias}Login";
-  static const dashboardScreen = "${Brand.fortunicaAlias}Dashboard";
-  static const chatsScreen = "${Brand.fortunicaAlias}Chats";
-  static const articlesScreen = "${Brand.fortunicaAlias}Articles";
-  static const accountScreen = "${Brand.fortunicaAlias}Account";
-  static const addGalleryPicturesScreen = "${Brand.fortunicaAlias}AddGalleryPictures";
-  static const addNoteScreen = "${Brand.fortunicaAlias}AddNote";
-  static const advisorPreviewScreen = "${Brand.fortunicaAlias}AdvisorPreview";
-  static const balanceAndTransactionsScreen = "${Brand.fortunicaAlias}BalanceAndTransactions";
-  static const chatScreen = "${Brand.fortunicaAlias}Chat";
-  static const customerProfileScreen = "${Brand.fortunicaAlias}CustomerProfile";
-  static const customerSessionsScreen = "${Brand.fortunicaAlias}CustomerSessions";
-  static const editProfileScreen = "${Brand.fortunicaAlias}EditProfile";
-  static const forgotPasswordScreen = "${Brand.fortunicaAlias}ForgotPassword";
-  static const galleryPicturesScreen = "${Brand.fortunicaAlias}GalleryPictures";
-  static const supportScreen = "${Brand.fortunicaAlias}Support";
+  static const mainScreen = '${FortunicaBrand.alias}Main';
+  static const homeScreen = "${FortunicaBrand.alias}Home";
+  static const authScreen = "${FortunicaBrand.alias}Auth";
+  static const loginScreen = "${FortunicaBrand.alias}Login";
+  static const dashboardScreen = "${FortunicaBrand.alias}Dashboard";
+  static const chatsScreen = "${FortunicaBrand.alias}Chats";
+  static const articlesScreen = "${FortunicaBrand.alias}Articles";
+  static const accountScreen = "${FortunicaBrand.alias}Account";
+  static const addGalleryPicturesScreen = "${FortunicaBrand.alias}AddGalleryPictures";
+  static const addNoteScreen = "${FortunicaBrand.alias}AddNote";
+  static const advisorPreviewScreen = "${FortunicaBrand.alias}AdvisorPreview";
+  static const balanceAndTransactionsScreen = "${FortunicaBrand.alias}BalanceAndTransactions";
+  static const chatScreen = "${FortunicaBrand.alias}Chat";
+  static const customerProfileScreen = "${FortunicaBrand.alias}CustomerProfile";
+  static const customerSessionsScreen = "${FortunicaBrand.alias}CustomerSessions";
+  static const editProfileScreen = "${FortunicaBrand.alias}EditProfile";
+  static const forgotPasswordScreen = "${FortunicaBrand.alias}ForgotPassword";
+  static const galleryPicturesScreen = "${FortunicaBrand.alias}GalleryPictures";
+  static const supportScreen = "${FortunicaBrand.alias}Support";
 }

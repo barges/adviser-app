@@ -1,19 +1,20 @@
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
+import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/fortunica_main_cubit.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:fortunica/infrastructure/di/inject_config.dart';
 import 'package:fortunica/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:fortunica/presentation/common_widgets/messages/app_error_widget.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
+import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 
 const double _maxHeight = AppConstants.appBarHeight * 2;
 const double _minHeight = AppConstants.appBarHeight;
@@ -34,7 +35,7 @@ class ScrollableAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    const Brand currentBrand = Brand.fortunica;
+    final BaseBrand currentBrand = FortunicaBrand();
 
     return BlocProvider(
       create: (_) => ScrollableAppBarCubit(fortunicaGetIt.get<FortunicaMainCubit>()),
@@ -97,7 +98,7 @@ class ScrollableAppBar extends StatelessWidget {
                                         right: 4.0,
                                       ),
                                       child: SvgPicture.asset(
-                                        currentBrand.icon,
+                                        currentBrand.iconPath,
                                       ),
                                     ),
                                     Text(currentBrand.name,
@@ -167,7 +168,7 @@ class ScrollableAppBar extends StatelessWidget {
                                             margin: const EdgeInsets.symmetric(
                                                 horizontal: 4.0),
                                             child: SvgPicture.asset(
-                                              currentBrand.icon,
+                                              currentBrand.iconPath,
                                             ),
                                           ),
                                           Text(

@@ -1,15 +1,13 @@
-import 'package:shared_advisor_interface/data/cache/global_caching_manager_impl.dart';
-import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
-import 'package:shared_advisor_interface/infrastructure/brands/base_router.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:fortunica/data/cache/fortunica_caching_manager_impl.dart';
+import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
+
 import 'inject_config.dart';
 
 /// injecting app main dependencies so can be accessed from everywhere
 class AppBinding {
   ///The starting point
   ///The order of the called function is important
-  static Future<void> setupInjection(Flavor flavor, AppRouter navigationService) async {
+  static Future<void> setupInjection(Flavor flavor) async {
 
     // fortunicaGetIt.registerSingleton<FortunicaCachingManager>(FortunicaCachingManagerImpl());
     // await fortunicaGetIt.get<FortunicaCachingManager>().openBoxes();

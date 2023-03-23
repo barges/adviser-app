@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/global.dart';
-import 'package:shared_advisor_interface/infrastructure/brands/base_router.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,7 +43,6 @@ class AppInitializer {
     ///dependencies injection
     await AppBinding.setupInjection(flavor);
 
-    final navigationService = globalGetIt<AppRouter>();
-    await globalGetIt<BrandManager>().initDi(flavor, navigationService);
+    await globalGetIt<BrandManager>().initDi(flavor);
   }
 }

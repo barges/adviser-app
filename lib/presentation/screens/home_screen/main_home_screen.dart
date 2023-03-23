@@ -40,31 +40,32 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
         final MainHomeScreenCubit homeScreenCubit =
             context.read<MainHomeScreenCubit>();
         return AutoTabsRouter(
-            routes: homeScreenCubit.routes,
-            duration: Duration.zero,
-            builder: (context, child, animation) {
-              final tabsRouter = AutoTabsRouter.of(context);
+          routes: homeScreenCubit.routes,
+          duration: Duration.zero,
+          builder: (context, child, animation) {
+            final tabsRouter = AutoTabsRouter.of(context);
 
-              return BlocListener<MainCubit, MainState>(
-                  listenWhen: (prev, current) =>
-                      prev.currentBrand != current.currentBrand,
-                  listener: (_, state) {
-                    tabsRouter.setActiveIndex(
-                      homeScreenCubit.brands.indexOf(state.currentBrand),
-                    );
-                  },
-                  child: Scaffold(
-                    key: homeScreenCubit.scaffoldKey,
-                    drawer: AppDrawer(
-                      scaffoldKey: homeScreenCubit.scaffoldKey,
-                    ),
-                    body: FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    ),
-                  ));
-            },
-          );
+            return BlocListener<MainCubit, MainState>(
+                listenWhen: (prev, current) =>
+                    prev.currentBrand != current.currentBrand,
+                listener: (_, state) {
+                  tabsRouter.setActiveIndex(
+                    homeScreenCubit.brands.indexWhere(
+                        (e) => state.currentBrand?.brandAlias == e.brandAlias),
+                  );
+                },
+                child: Scaffold(
+                  key: homeScreenCubit.scaffoldKey,
+                  drawer: AppDrawer(
+                    scaffoldKey: homeScreenCubit.scaffoldKey,
+                  ),
+                  body: FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  ),
+                ));
+          },
+        );
       }),
     );
   }

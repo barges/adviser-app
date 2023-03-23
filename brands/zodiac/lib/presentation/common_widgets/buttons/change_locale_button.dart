@@ -1,13 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/picker_modal_pop_up.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/picker_modal_pop_up.dart';
+import 'package:zodiac/zodiac.dart';
 
 class ChangeLocaleButton extends StatelessWidget {
   const ChangeLocaleButton({Key? key}) : super(key: key);
@@ -31,7 +31,7 @@ class ChangeLocaleButton extends StatelessWidget {
             zodiacGetIt
                 .get<GlobalCachingManager>()
                 .saveLanguageCode(languageCode);
-            Brand.zodiac.setLanguageCode(languageCode);
+            ZodiacBrand().languageCode = languageCode;
           },
           currentIndex: currentLocaleIndex,
           elements: locales.map((element) {

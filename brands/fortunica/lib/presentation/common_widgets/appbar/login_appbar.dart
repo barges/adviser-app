@@ -1,11 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:fortunica/presentation/common_widgets/buttons/change_locale_button.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:flutter/material.dart';
-import 'package:fortunica/infrastructure/di/inject_config.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
-import 'package:fortunica/presentation/common_widgets/buttons/change_locale_button.dart';
 
 class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
   const LoginAppBar({Key? key}) : super(key: key);
@@ -28,7 +27,7 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
               children: [
                 AppIconButton(
                   icon: Assets.vectors.arrowLeft.path,
-                  onTap: () => fortunicaGetIt.get<AppRouter>().pop(context),
+                  onTap: context.pop,
                 ),
                 const SizedBox(
                   width: 12.0,

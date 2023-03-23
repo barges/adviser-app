@@ -1,4 +1,3 @@
-import 'package:shared_advisor_interface/configuration.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:zodiac/infrastructure/routing/route_paths.dart';
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart';
@@ -12,11 +11,12 @@ import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_screen.d
 import 'package:zodiac/presentation/screens/login/login_screen.dart';
 import 'package:zodiac/presentation/screens/profile/profile.dart';
 import 'package:zodiac/presentation/wrappers/auth_wrapper/zodiac_auth_wrapper.dart';
+import 'package:zodiac/zodiac.dart';
 
 const zodiacRoute = AutoRoute(
   page: ZodiacBrandScreen,
-  path: Brand.zodiacAlias,
-  name: Brand.zodiacAlias,
+  path: ZodiacBrand.alias,
+  name: ZodiacBrand.alias,
   children: <AutoRoute>[
     AutoRoute(
         initial: true,

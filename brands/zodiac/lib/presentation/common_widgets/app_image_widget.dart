@@ -41,7 +41,7 @@ class AppImageWidget extends StatelessWidget {
       onTap: canBeOpenedInFullScreen
           ? () {
               context.push(
-                route: ZodiacGallery(
+                route: ZodiacGalleryPictures(
                   galleryPicturesScreenArguments:
                       GalleryPicturesScreenArguments(
                     pictures: [uri.toString()],
