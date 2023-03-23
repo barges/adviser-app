@@ -44,7 +44,7 @@ class AppConstants {
   static const String iosAppId = '1:986930839057:ios:931a04b3aeb905de5cbbb0';
 
   ///STAGE
-  static const String baseUrl = 'https://api-staging.fortunica-app.com';
+  static const String baseUrlStage = 'https://api-staging.fortunica-app.com';
   static const String webToolUrl = 'https://advisor-staging.fortunica-app.com';
 
   ///DEV
