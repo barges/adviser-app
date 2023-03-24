@@ -31,4 +31,8 @@ abstract class BaseBrand {
   bool get isAuth;
 
   String get url;
+
+  Color userStatusNameColor(BuildContext context);
+
+  Color userStatusBadgeColor(BuildContext context);
 }

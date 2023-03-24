@@ -8,4 +8,5 @@ class AppColors {
   static const Color reviews = Color(0xffEFB55F);
   static const Color error = Color(0xffED4F55);
   static const Color white = Color(0xFFFFFFFF);
+  static const Color orange = Color(0xFFFF902D);
 }

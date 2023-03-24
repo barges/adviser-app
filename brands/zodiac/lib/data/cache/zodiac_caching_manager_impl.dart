@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/data/models/user_info/user_info.dart';
 
@@ -12,6 +13,7 @@ const String _zodiacUserBoxKey = 'zodiacUserBoxKey';
 const String _zodiacLocaleBoxKey = 'zodiacLocaleBoxKey';
 
 const String _userTokenKey = 'userTokenKey';
+const String _userStatusKey = 'userStatusKey';
 const String _localeKey = 'localeKey';
 const String _userInfoKey = 'userInfoKey';
 const String _userIdKey = 'userIdKey';
@@ -106,7 +108,37 @@ class ZodiacCachingManagerImpl implements ZodiacCachingManager {
 
   @override
   Future<void> saveDetailedUserInfo(DetailedUserInfo? userInfo) async {
-    await Hive.box(_zodiacUserBoxKey)
-        .put(_detailedUserInfoKey, json.encode(userInfo?.toJson()));
+    if(userInfo != null) {
+      await Hive.box(_zodiacUserBoxKey)
+          .put(_detailedUserInfoKey, json.encode(userInfo.toJson()));
+    }
+  }
+
+  @override
+  ZodiacUserStatus? getUserStatus() {
+    ZodiacUserStatus? userStatus;
+    if (Hive.box(_zodiacUserBoxKey).containsKey(_userStatusKey)) {
+      userStatus = ZodiacUserStatus.statusFromString(
+          Hive.box(_zodiacUserBoxKey).get(_userStatusKey));
+    }
+    return userStatus;
+  }
+
+  @override
+  Future<void> saveUserStatus(ZodiacUserStatus? userStatus) async {
+    if(userStatus != null) {
+      await Hive.box(_zodiacUserBoxKey)
+          .put(_userStatusKey, userStatus.toString());
+    }
+  }
+
+  @override
+  StreamSubscription listenCurrentUserStatusStream(
+      ValueChanged<ZodiacUserStatus> callback) {
+    return Hive.box(_zodiacUserBoxKey)
+        .watch(key: _userStatusKey)
+        .listen((event) {
+      callback(ZodiacUserStatus.statusFromString(event.value));
+    });
   }
 }

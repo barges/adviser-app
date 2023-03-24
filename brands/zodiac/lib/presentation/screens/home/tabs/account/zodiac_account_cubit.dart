@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
@@ -63,13 +64,14 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
           UserDetails? userDetails = userInfo?.details;
 
           _cacheManager.saveDetailedUserInfo(userInfo);
+          _cacheManager.saveUserStatus(userDetails?.status);
           emit(state.copyWith(
             userInfo: userDetails,
             reviewsCount: userInfo?.reviews?.count,
             chatsEnabled: userDetails?.chatEnabled == 1,
             callsEnabled: userDetails?.callEnabled == 1,
             randomCallsEnabled: userDetails?.randomCallEnabled == 1,
-            userStatusOnline: userDetails?.status == 1,
+            userStatusOnline: userDetails?.status == ZodiacUserStatus.online,
           ));
 
           NotificationsResponse notificationsResponse =

@@ -14,6 +14,8 @@ class BrandManager {
     ZodiacBrand(),
   ];
 
+  static final BaseBrand defaultBrand = brands.first;
+
   final GlobalCachingManager _cachingManager;
 
   BrandManager(this._cachingManager);

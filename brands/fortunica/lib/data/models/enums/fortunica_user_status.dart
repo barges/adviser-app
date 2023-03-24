@@ -30,7 +30,7 @@ enum FortunicaUserStatus {
     }
   }
 
-  Color statusColor(BuildContext context) {
+  Color statusNameColor(BuildContext context) {
     switch (this) {
       case FortunicaUserStatus.live:
         return AppColors.online;
@@ -43,7 +43,7 @@ enum FortunicaUserStatus {
     }
   }
 
-  Color statusColorForBadge(BuildContext context) {
+  Color statusBadgeColor(BuildContext context) {
     switch (this) {
       case FortunicaUserStatus.live:
         return AppColors.online;

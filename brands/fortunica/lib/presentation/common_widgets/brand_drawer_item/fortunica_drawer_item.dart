@@ -92,7 +92,7 @@ class FortunicaDrawerItem extends StatelessWidget {
                               width: 12.0,
                               decoration: BoxDecoration(
                                 color: currentStatus?.status
-                                        ?.statusColorForBadge(context) ??
+                                        ?.statusBadgeColor(context) ??
                                     theme.shadowColor,
                                 shape: BoxShape.circle,
                                 border: Border.all(

@@ -1,16 +1,11 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:fortunica/data/models/enums/fortunica_user_status.dart';
-import 'package:fortunica/data/models/user_info/user_status.dart';
 import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/presentation/common_widgets/buttons/change_locale_button.dart';
 import 'package:fortunica/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
-import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/authorized_brands_app_bar_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 
@@ -68,7 +63,11 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                             ),
                     ),
                     withBrands
-                        ? const _AuthorizedBrandsWidget()
+                        ? Builder(builder: (context) {
+                            context.select(
+                                (HomeCubit cubit) => cubit.state.userStatus);
+                            return const AuthorizedBrandsWidget();
+                          })
                         : const ChangeLocaleButton(),
                   ],
                 ),
@@ -112,76 +111,5 @@ class _IconAndTitleWidget extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-class _AuthorizedBrandsWidget extends StatelessWidget {
-  const _AuthorizedBrandsWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final BaseBrand currentBrand = context.select(
-        (MainCubit cubit) => cubit.state.currentBrand ?? FortunicaBrand());
-    final List<BaseBrand> brands = BrandManager.authorizedBrands(currentBrand);
-
-    return Stack(
-        textDirection: TextDirection.rtl,
-        children: brands
-            .mapIndexed((index, element) => _AuthorizedBrandWidget(
-                  index: index,
-                  brandIcon: element.iconPath,
-                  isFirstBrand: index == brands.length - 1,
-                ))
-            .toList());
-  }
-}
-
-class _AuthorizedBrandWidget extends StatelessWidget {
-  final int index;
-  final bool isFirstBrand;
-  final String brandIcon;
-
-  const _AuthorizedBrandWidget(
-      {Key? key,
-      required this.index,
-      required this.isFirstBrand,
-      required this.brandIcon})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Builder(builder: (context) {
-      final UserStatus? currentStatus =
-          context.select((HomeCubit cubit) => cubit.state.userStatus);
-      return Container(
-        margin: EdgeInsets.only(right: 24.0 * index),
-        child: Stack(
-          alignment: Alignment.topRight,
-          children: [
-            Container(
-              height: AppConstants.iconButtonSize,
-              width: AppConstants.iconButtonSize,
-              padding: const EdgeInsets.all(4.0),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  borderRadius:
-                      BorderRadius.circular(AppConstants.buttonRadius)),
-              child: SvgPicture.asset(brandIcon),
-            ),
-            Container(
-              height: 12.0,
-              width: 12.0,
-              decoration: BoxDecoration(
-                color: currentStatus?.status?.statusColorForBadge(context) ??
-                    FortunicaUserStatus.offline.statusColorForBadge(context),
-                shape: BoxShape.circle,
-                border: Border.all(
-                    width: 2.0, color: Theme.of(context).canvasColor),
-              ),
-            ),
-          ],
-        ),
-      );
-    });
   }
 }
