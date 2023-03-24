@@ -8,10 +8,10 @@ import 'package:zodiac/data/network/responses/article_content_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/presentation/screens/article_detail_screen/article_detail_state.dart';
 
-class ArticlesDetailCubit extends Cubit<ArticlesDetailState> {
+class ArticleDetailCubit extends Cubit<ArticlesDetailState> {
   final ZodiacArticlesRepository _articlesRepository;
 
-  ArticlesDetailCubit(this._articlesRepository)
+  ArticleDetailCubit(this._articlesRepository)
       : super(const ArticlesDetailState());
 
   Future<void> getArticleContent(int articleId) async {

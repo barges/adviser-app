@@ -24,11 +24,11 @@ class ArticleDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) =>
-          ArticlesDetailCubit(zodiacGetIt.get<ZodiacArticlesRepository>())
+          ArticleDetailCubit(zodiacGetIt.get<ZodiacArticlesRepository>())
             ..getArticleContent(articleId),
       child: Builder(builder: (context) {
         final ArticleContent? articleContent = context
-            .select((ArticlesDetailCubit cubit) => cubit.state.articleContent);
+            .select((ArticleDetailCubit cubit) => cubit.state.articleContent);
         final MainHomeScreenCubit mainHomeScreenCubit =
             context.read<MainHomeScreenCubit>();
         return Scaffold(

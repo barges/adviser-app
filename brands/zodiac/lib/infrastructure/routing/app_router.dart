@@ -58,8 +58,8 @@ const zodiacRoute = AutoRoute(
         ]),
     AutoRoute(
       page: ArticleDetailScreen,
-      path: RoutePaths.articlesDeteilsScreen,
-      name: RoutePaths.articlesDeteilsScreen,
+      path: RoutePaths.articleDeteilScreen,
+      name: RoutePaths.articleDeteilScreen,
     ),
     AutoRoute(
         page: ProfileScreen,

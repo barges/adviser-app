@@ -278,8 +278,8 @@ class MainAppRouter extends _i34.RootStackRouter {
         ),
       );
     },
-    ZodiacArticlesDetails.name: (routeData) {
-      final args = routeData.argsAs<ZodiacArticlesDetailsArgs>();
+    ZodiacArticleDetail.name: (routeData) {
+      final args = routeData.argsAs<ZodiacArticleDetailArgs>();
       return _i34.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i25.ArticleDetailScreen(
@@ -527,8 +527,8 @@ class MainAppRouter extends _i34.RootStackRouter {
                   ],
                 ),
                 _i34.RouteConfig(
-                  ZodiacArticlesDetails.name,
-                  path: 'zodiacArticlesDetails',
+                  ZodiacArticleDetail.name,
+                  path: 'zodiacArticleDetail',
                   parent: Zodiac.name,
                 ),
                 _i34.RouteConfig(
@@ -1132,25 +1132,24 @@ class ZodiacHomeArgs {
 
 /// generated route for
 /// [_i25.ArticleDetailScreen]
-class ZodiacArticlesDetails
-    extends _i34.PageRouteInfo<ZodiacArticlesDetailsArgs> {
-  ZodiacArticlesDetails({
+class ZodiacArticleDetail extends _i34.PageRouteInfo<ZodiacArticleDetailArgs> {
+  ZodiacArticleDetail({
     _i35.Key? key,
     required int articleId,
   }) : super(
-          ZodiacArticlesDetails.name,
-          path: 'zodiacArticlesDetails',
-          args: ZodiacArticlesDetailsArgs(
+          ZodiacArticleDetail.name,
+          path: 'zodiacArticleDetail',
+          args: ZodiacArticleDetailArgs(
             key: key,
             articleId: articleId,
           ),
         );
 
-  static const String name = 'ZodiacArticlesDetails';
+  static const String name = 'ZodiacArticleDetail';
 }
 
-class ZodiacArticlesDetailsArgs {
-  const ZodiacArticlesDetailsArgs({
+class ZodiacArticleDetailArgs {
+  const ZodiacArticleDetailArgs({
     this.key,
     required this.articleId,
   });
@@ -1161,7 +1160,7 @@ class ZodiacArticlesDetailsArgs {
 
   @override
   String toString() {
-    return 'ZodiacArticlesDetailsArgs{key: $key, articleId: $articleId}';
+    return 'ZodiacArticleDetailArgs{key: $key, articleId: $articleId}';
   }
 }
 

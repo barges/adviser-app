@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/articles/article.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -18,6 +18,8 @@ class ListOfArticlesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MainHomeScreenCubit mainHomeScreenCubit =
+        context.read<MainHomeScreenCubit>();
     return Padding(
       padding: const EdgeInsets.all(AppConstants.horizontalScreenPadding),
       child: Builder(builder: (context) {
@@ -28,7 +30,10 @@ class ListOfArticlesWidget extends StatelessWidget {
           return const SizedBox.shrink();
         } else if (articleList.isNotEmpty) {
           return RefreshIndicator(
-            onRefresh: () => articlesCubit.getArticles(refresh: true),
+            onRefresh: () {
+              mainHomeScreenCubit.updateArticleCount();
+              return articlesCubit.getArticles(refresh: true);
+            },
             child: ListView.separated(
                 controller: articlesCubit.articlesScrollController,
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -44,7 +49,10 @@ class ListOfArticlesWidget extends StatelessWidget {
           );
         } else {
           return RefreshIndicator(
-            onRefresh: () => articlesCubit.getArticles(refresh: true),
+            onRefresh: () {
+              mainHomeScreenCubit.updateArticleCount();
+              return articlesCubit.getArticles(refresh: true);
+            },
             child: CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               slivers: [
@@ -52,11 +60,11 @@ class ListOfArticlesWidget extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Center(
                         child: EmptyListWidget(
-                          title: 'No articles yet',
-                          label: 'Here will appear articles',
+                          title: SZodiac.of(context).noArticlesYet,
+                          label: SZodiac.of(context).hereWillAppearArticles,
                         ),
                       ),
                     ],
@@ -83,7 +91,7 @@ class _ArticleWidget extends StatelessWidget {
       onTap: () async {
         if (article.id != null) {
           await context.push(
-              route: ZodiacArticlesDetails(articleId: article.id!));
+              route: ZodiacArticleDetail(articleId: article.id!));
           articlesCubit.markAsRead(article.id!);
         }
       },
