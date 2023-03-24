@@ -1,14 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/global.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
-import 'package:shared_advisor_interface/services/dynamic_link_service.dart';
-import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,8 +12,14 @@ import 'package:fortunica/data/network/responses/login_response.dart';
 import 'package:fortunica/domain/repositories/fortunica_auth_repository.dart';
 import 'package:fortunica/fortunica_main_cubit.dart';
 import 'package:fortunica/infrastructure/di/modules/api_module.dart';
-import 'package:fortunica/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'package:fortunica/presentation/screens/login/login_state.dart';
+import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/utils/utils.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   final FortunicaAuthRepository _repository;
@@ -30,7 +28,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   final FortunicaMainCubit _fortunicaMainCubit;
 
-  late final List<Brand> unauthorizedBrands;
+  late final List<BaseBrand> unauthorizedBrands;
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final FocusNode emailNode = FocusNode();
@@ -42,7 +40,7 @@ class LoginCubit extends Cubit<LoginState> {
     this._fortunicaMainCubit,
     this._dio,
   ) : super(const LoginState()) {
-    unauthorizedBrands = Configuration.unauthorizedBrands();
+    unauthorizedBrands = BrandManager.unauthorizedBrands();
 
     emailNode.addListener(() {
       emit(state.copyWith(emailHasFocus: emailNode.hasFocus));

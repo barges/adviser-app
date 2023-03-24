@@ -51,6 +51,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Enter your password"),
         "forgotPasswordZodiac":
             MessageLookupByLibrary.simpleMessage("Forgot password"),
+        "hereWillAppearArticles":
+            MessageLookupByLibrary.simpleMessage("Here will appear articles"),
         "imAvailableNowZodiac":
             MessageLookupByLibrary.simpleMessage("I\'m available now"),
         "loginZodiac": MessageLookupByLibrary.simpleMessage("Login"),
@@ -58,8 +60,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "newCustomersZodiac":
             MessageLookupByLibrary.simpleMessage("New customers"),
         "newZodiac": MessageLookupByLibrary.simpleMessage("New"),
+        "noArticlesYet":
+            MessageLookupByLibrary.simpleMessage("No articles, yet"),
         "noInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage("No internet connection."),
+        "noNotificationsYetZodiac":
+            MessageLookupByLibrary.simpleMessage("No notifications, yet"),
+        "noReviewsYetZodiac":
+            MessageLookupByLibrary.simpleMessage("No reviews, yet"),
         "noSessionsYetZodiac":
             MessageLookupByLibrary.simpleMessage("No sessions, yet."),
         "notificationsZodiac":
@@ -77,6 +85,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "pricePerMinZodiac": m0,
         "resetPasswordZodiac":
             MessageLookupByLibrary.simpleMessage("Reset password"),
+        "reviewsFromYourClientsWillAppearHereZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Reviews from your clients will appear here"),
         "reviewsZodiac": MessageLookupByLibrary.simpleMessage("Reviews"),
         "salesZodiac": MessageLookupByLibrary.simpleMessage("Sales"),
         "searchZodiac": MessageLookupByLibrary.simpleMessage("Search"),
@@ -99,6 +110,9 @@ class MessageLookup extends MessageLookupByLibrary {
                 "You can change price once per 24 h"),
         "yourClientSessionHistoryWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
-                "Your client session history will appear here")
+                "Your client session history will appear here"),
+        "yourNotificationsHistoryWillAppearHereZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Your notifications history will appear here")
       };
 }

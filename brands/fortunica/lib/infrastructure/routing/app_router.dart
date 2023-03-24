@@ -1,6 +1,7 @@
-import 'package:shared_advisor_interface/configuration.dart';
 import 'package:auto_route/annotations.dart';
+import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/infrastructure/routing/route_paths_fortunica.dart';
+import 'package:fortunica/presentation/screens/add_gallery_pictures/add_gallery_pictures_screen.dart';
 import 'package:fortunica/presentation/screens/add_note/add_note_screen.dart';
 import 'package:fortunica/presentation/screens/advisor_preview/advisor_preview_screen.dart';
 import 'package:fortunica/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
@@ -16,14 +17,13 @@ import 'package:fortunica/presentation/screens/home/tabs/account/account_screen.
 import 'package:fortunica/presentation/screens/home/tabs/dashboard_v1/dashboard_v1_screen.dart';
 import 'package:fortunica/presentation/screens/home/tabs/sessions/sessions_screen.dart';
 import 'package:fortunica/presentation/screens/login/login_screen.dart';
-import 'package:fortunica/presentation/screens/add_gallery_pictures/add_gallery_pictures_screen.dart';
 import 'package:fortunica/presentation/screens/support/support_screen.dart';
 import 'package:fortunica/presentation/wrappers/auth_wrapper/fortunica_auth_wrapper.dart';
 
 const fortunicaRoute = AutoRoute(
   page: FortunicaBrandScreen,
-  path: Brand.fortunicaAlias,
-  name: Brand.fortunicaAlias,
+  path: FortunicaBrand.alias,
+  name: FortunicaBrand.alias,
   children: <AutoRoute>[
     AutoRoute(
         page: FortunicaAuthWrapper,

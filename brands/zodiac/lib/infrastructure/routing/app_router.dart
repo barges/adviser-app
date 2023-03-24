@@ -1,4 +1,3 @@
-import 'package:shared_advisor_interface/configuration.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:zodiac/infrastructure/routing/route_paths.dart';
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart';
@@ -6,17 +5,21 @@ import 'package:zodiac/presentation/screens/forgot_password/forgot_password_scre
 import 'package:zodiac/presentation/screens/gallery/gallery_pictures_screen.dart';
 import 'package:zodiac/presentation/screens/home/home_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_screen.dart';
+import 'package:zodiac/presentation/screens/article_detail_screen/article_detail_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/dashboard/dashboard_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_screen.dart';
 import 'package:zodiac/presentation/screens/login/login_screen.dart';
+import 'package:zodiac/presentation/screens/notifications/notifications_screen.dart';
 import 'package:zodiac/presentation/screens/profile/profile.dart';
+import 'package:zodiac/presentation/screens/reviews/reviews_screen.dart';
 import 'package:zodiac/presentation/wrappers/auth_wrapper/zodiac_auth_wrapper.dart';
+import 'package:zodiac/zodiac.dart';
 
 const zodiacRoute = AutoRoute(
   page: ZodiacBrandScreen,
-  path: Brand.zodiacAlias,
-  name: Brand.zodiacAlias,
+  path: ZodiacBrand.alias,
+  name: ZodiacBrand.alias,
   children: <AutoRoute>[
     AutoRoute(
         initial: true,
@@ -50,10 +53,16 @@ const zodiacRoute = AutoRoute(
             name: RoutePaths.accountScreen,
           ),
           AutoRoute(
-              page: ArticlesScreen,
-              path: RoutePaths.articlesScreen,
-              name: RoutePaths.articlesScreen),
+            page: ArticlesScreen,
+            path: RoutePaths.articlesScreen,
+            name: RoutePaths.articlesScreen,
+          ),
         ]),
+    AutoRoute(
+      page: ArticleDetailScreen,
+      path: RoutePaths.articleDeteilScreen,
+      name: RoutePaths.articleDeteilScreen,
+    ),
     AutoRoute(
         page: ProfileScreen,
         path: RoutePaths.profileScreen,
@@ -66,6 +75,16 @@ const zodiacRoute = AutoRoute(
       page: ForgotPasswordScreen,
       path: RoutePaths.forgotPasswordScreen,
       name: RoutePaths.forgotPasswordScreen,
+    ),
+    AutoRoute(
+      page: NotificationsScreen,
+      path: RoutePaths.notificationsScreen,
+      name: RoutePaths.notificationsScreen,
+    ),
+    AutoRoute(
+      page: ReviewsScreen,
+      path: RoutePaths.reviewsScreen,
+      name: RoutePaths.reviewsScreen,
     ),
   ],
 );

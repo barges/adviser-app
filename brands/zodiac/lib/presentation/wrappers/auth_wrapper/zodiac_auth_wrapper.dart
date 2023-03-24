@@ -1,10 +1,9 @@
-import 'package:shared_advisor_interface/global.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:zodiac/infrastructure/di/inject_config.dart';
+import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:zodiac/presentation/wrappers/auth_wrapper/zodiac_auth_wrapper_cubit.dart';
 import 'package:zodiac/presentation/wrappers/auth_wrapper/zodiac_auth_wrapper_state.dart';
 
@@ -20,9 +19,7 @@ class ZodiacAuthWrapper extends StatelessWidget {
             listener: (_, state) {
               logger.d(state.isAuth);
               if (state.isAuth) {
-                zodiacGetIt
-                    .get<AppRouter>()
-                    .replaceAll(context, [ZodiacHome()]);
+                context.replaceAll([ZodiacHome()]);
               }
             },
             child: Builder(builder: (context) {

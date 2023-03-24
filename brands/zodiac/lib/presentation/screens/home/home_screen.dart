@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
@@ -27,6 +28,7 @@ class HomeScreen extends StatelessWidget {
           builder: (context) {
             final ThemeData theme = Theme.of(context);
             final HomeCubit cubit = context.read<HomeCubit>();
+            cubit.mainHomeScreenCubit = context.read<MainHomeScreenCubit>();
 
             return AutoTabsRouter(
               routes: cubit.routes,
@@ -63,25 +65,25 @@ class HomeScreen extends StatelessWidget {
                         return BottomNavigationBarItem(
                           icon: e == TabsTypes.articles
                               ? _ArticleIcon(
-                              child: SvgPicture.asset(
-                                e.iconPath,
-                                color: theme.shadowColor,
-                              ))
+                                  child: SvgPicture.asset(
+                                  e.iconPath,
+                                  color: theme.shadowColor,
+                                ))
                               : SvgPicture.asset(
-                            e.iconPath,
-                            color: theme.shadowColor,
-                          ),
+                                  e.iconPath,
+                                  color: theme.shadowColor,
+                                ),
                           activeIcon: e == TabsTypes.articles
                               ? _ArticleIcon(
-                            child: SvgPicture.asset(
-                              e.iconPath,
-                              color: theme.primaryColor,
-                            ),
-                          )
+                                  child: SvgPicture.asset(
+                                    e.iconPath,
+                                    color: theme.primaryColor,
+                                  ),
+                                )
                               : SvgPicture.asset(
-                            e.iconPath,
-                            color: theme.primaryColor,
-                          ),
+                                  e.iconPath,
+                                  color: theme.primaryColor,
+                                ),
                           label: e.tabName(context),
                         );
                       }).toList(),
@@ -102,15 +104,15 @@ class _ArticleIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(builder: (context) {
-      final int? count =
-          context.select((HomeCubit cubit) => cubit.state.articleCount);
-      return Stack(
-        clipBehavior: Clip.none,
-        children: [
-          child,
-          if (count != null)
-            Positioned(
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        child,
+        Builder(builder: (context) {
+          final int? count =
+              context.select((HomeCubit cubit) => cubit.state.articleCount);
+          if (count != null && count != 0) {
+            return Positioned(
               top: -2.0,
               right: -7.0,
               child: Container(
@@ -121,18 +123,23 @@ class _ArticleIcon extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: Center(
-                  child: Text(
-                    count.toString(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .displaySmall
-                        ?.copyWith(color: const Color(0xFFFFFFFF)),
-                  ),
+                  child: Builder(builder: (_) {
+                    return Text(
+                      count.toString(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .displaySmall
+                          ?.copyWith(color: const Color(0xFFFFFFFF)),
+                    );
+                  }),
                 ),
               ),
-            ),
-        ],
-      );
-    });
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        }),
+      ],
+    );
   }
 }

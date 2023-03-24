@@ -21,6 +21,8 @@
   "sessionsZodiac": "Sessões",
   "yourClientSessionHistoryWillAppearHereZodiac": "O histórico de ssessões de clientes aparecerá aqui",
   "noSessionsYetZodiac": "Ainda não há sessões.",
+  "noArticlesYet": "Ainda não há artigos",
+  "hereWillAppearArticles": "Aqui aparecerão artigos",
   "searchZodiac": "Procurar",
   "avgDailyEarningsZodiac": "Ganhos diários médios",
   "performanceOverviewAnalyticsZodiac": "Análise geral de desempenho",
@@ -42,11 +44,9 @@
   "newCustomersZodiac":"New customers",
   "salesZodiac": "Sales",
   "personalBalanceZodiac": "Personal Balance:",
-  "yesterdayZodiac": "Yesterday"
-
-
-
-
-
-
+  "yesterdayZodiac": "Yesterday",
+  "noNotificationsYetZodiac": "No notifications, yet",
+  "yourNotificationsHistoryWillAppearHereZodiac": "Your notifications history will appear here",
+  "noReviewsYetZodiac":"No reviews, yet",
+  "reviewsFromYourClientsWillAppearHereZodiac": "Reviews from your clients will appear here"
 }

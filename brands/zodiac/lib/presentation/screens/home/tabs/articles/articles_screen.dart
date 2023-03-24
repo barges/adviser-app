@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -17,9 +16,7 @@ class ArticlesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ArticlesCubit(
-        zodiacGetIt.get<ZodiacArticlesRepository>(),
-      ),
+      create: (_) => ArticlesCubit(zodiacGetIt.get<ZodiacArticlesRepository>()),
       child: Builder(builder: (BuildContext context) {
         final bool isOnline = context.select(
             (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
@@ -27,11 +24,6 @@ class ArticlesScreen extends StatelessWidget {
             appBar: HomeAppBar(
               title: SZodiac.of(context).articlesZodiac,
               iconPath: Assets.vectors.articles.path,
-              bottomWidget: Builder(builder: (context) {
-                return Opacity(
-                  opacity: isOnline ? 1.0 : 0.4,
-                );
-              }),
             ),
             body: Builder(builder: (context) {
               if (isOnline) {
