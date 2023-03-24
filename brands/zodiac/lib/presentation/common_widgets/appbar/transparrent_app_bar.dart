@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 
 class TransparentAppBar extends StatelessWidget {
-  const TransparentAppBar({Key? key}) : super(key: key);
+  final VoidCallback? onTap;
+  const TransparentAppBar({
+    Key? key,
+    this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +38,10 @@ class TransparentAppBar extends StatelessWidget {
           alignment: Alignment.bottomLeft,
           child: AppIconButton(
             icon: Assets.vectors.arrowLeft.path,
-            onTap: context.popRoute,
+            onTap: () {
+              context.popRoute();
+              onTap?.call();
+            },
           ),
         ),
       );
