@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/data/network/requests/article_count_request.dart';
@@ -26,6 +28,9 @@ class HomeCubit extends Cubit<HomeState> {
   late final StreamSubscription _userStatusSubscription;
   late final List<PageRouteInfo> routes;
 
+  MainHomeScreenCubit? _mainHomeScreenCubit;
+  StreamSubscription<bool>? _updateArticleCountSubscription;
+
   HomeCubit(
       this._cacheManager, this._webSocketManager, this._articlesRepository)
       : super(const HomeState()) {
@@ -48,17 +53,22 @@ class HomeCubit extends Cubit<HomeState> {
       emit(state.copyWith(userStatus: value));
     });
 
-    _getArticleCount();
+    getArticleCount();
   }
 
-  Future<void> _getArticleCount() async {
-    final articleCountResponse = await _articlesRepository.getArticleCount(
-        request: ArticleCountRequest(update: 0, isBadge: 1));
-    emit(state.copyWith(articleCount: articleCountResponse?.count));
+  Future<void> getArticleCount() async {
+    try {
+      final articleCountResponse = await _articlesRepository.getArticleCount(
+          request: ArticleCountRequest(update: 0, isBadge: 0));
+      emit(state.copyWith(articleCount: articleCountResponse?.count));
+    } catch (e) {
+      logger.d(e);
+    }
   }
 
   @override
   Future<void> close() {
+    _updateArticleCountSubscription?.cancel();
     _userStatusSubscription.cancel();
     return super.close();
   }
@@ -78,5 +88,16 @@ class HomeCubit extends Cubit<HomeState> {
       case TabsTypes.articles:
         return const ZodiacArticles();
     }
+  }
+
+  set mainHomeScreenCubit(MainHomeScreenCubit mainHomeScreenCubit) {
+    _mainHomeScreenCubit = mainHomeScreenCubit;
+    _updateArticleCountSubscription?.cancel();
+    _updateArticleCountSubscription =
+        _mainHomeScreenCubit?.articleCountUpdateTrigger.listen(
+      (_) async {
+        getArticleCount();
+      },
+    );
   }
 }

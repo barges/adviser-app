@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/requests/expert_details_request.dart';
+import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
 import 'package:zodiac/data/network/requests/reviews_request.dart';
@@ -11,6 +12,7 @@ import 'package:zodiac/data/network/requests/update_user_status_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/expert_details_response.dart';
 import 'package:zodiac/data/network/responses/notifications_response.dart';
+import 'package:zodiac/data/network/responses/payments_list_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
 import 'package:zodiac/data/network/responses/reviews_response.dart';
 import 'package:zodiac/data/network/responses/user_info_response.dart';
@@ -61,5 +63,10 @@ abstract class UserApi {
   @POST('/notifications')
   Future<NotificationsResponse> getNotificationsList(
     @Body() NotificationsRequest request,
+  );
+
+  @POST('/payments/list')
+  Future<PaymentsListResponse> getPaymentsList(
+    @Body() ListRequest request,
   );
 }

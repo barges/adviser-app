@@ -1,25 +1,23 @@
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fortunica/fortunica.dart';
-import 'package:fortunica/fortunica_main_cubit.dart';
-import 'package:fortunica/generated/l10n.dart';
-import 'package:fortunica/infrastructure/di/inject_config.dart';
-import 'package:fortunica/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar_cubit.dart';
-import 'package:fortunica/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
+import 'package:zodiac/data/models/app_error/app_error.dart';
+import 'package:zodiac/generated/l10n.dart';
+import 'package:zodiac/infrastructure/di/inject_config.dart';
+import 'package:zodiac/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar_cubit.dart';
+import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dart';
+import 'package:zodiac/zodiac.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 const double _maxHeight = AppConstants.appBarHeight * 2;
 const double _minHeight = AppConstants.appBarHeight;
@@ -39,11 +37,10 @@ class ScrollableAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BaseBrand currentBrand = FortunicaBrand();
+    final BaseBrand currentBrand = ZodiacBrand();
 
     return BlocProvider(
-      create: (_) =>
-          ScrollableAppBarCubit(fortunicaGetIt.get<FortunicaMainCubit>()),
+      create: (_) => ScrollableAppBarCubit(zodiacGetIt.get<ZodiacMainCubit>()),
       child: Builder(builder: (context) {
         final ScrollableAppBarCubit scrollableAppBarCubit =
             context.read<ScrollableAppBarCubit>();
@@ -86,44 +83,48 @@ class ScrollableAppBar extends StatelessWidget {
                         children: [
                           AppIconButton(
                             icon: Assets.vectors.arrowLeft.path,
-                            onTap: context.popRoute,
+                            onTap: context.pop,
                           ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: context
-                                  .read<MainHomeScreenCubit>()
-                                  .openDrawer,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: AppConstants.iconSize,
-                                    width: AppConstants.iconSize,
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 3.0),
-                                    margin: const EdgeInsets.only(
-                                      left: 8.0,
-                                      right: 4.0,
+                          Builder(builder: (context) {
+                            return Expanded(
+                              child: GestureDetector(
+                                onTap: context
+                                    .read<MainHomeScreenCubit>()
+                                    .openDrawer,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: AppConstants.iconSize,
+                                      width: AppConstants.iconSize,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 3.0),
+                                      margin: const EdgeInsets.only(
+                                        left: 8.0,
+                                        right: 4.0,
+                                      ),
+                                      child: SvgPicture.asset(
+                                        currentBrand.iconPath,
+                                      ),
                                     ),
-                                    child: SvgPicture.asset(
-                                      currentBrand.iconPath,
+                                    Text(
+                                        currentBrand.name.capitalize ??
+                                            currentBrand.name,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium
+                                            ?.copyWith(
+                                                fontWeight: FontWeight.w500,
+                                                color: Theme.of(context)
+                                                    .primaryColor)),
+                                    const SizedBox(width: 4.0),
+                                    Assets.vectors.swap.svg(
+                                      color: Theme.of(context).primaryColor,
                                     ),
-                                  ),
-                                  Text(currentBrand.name,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelMedium
-                                          ?.copyWith(
-                                              fontWeight: FontWeight.w500,
-                                              color: Theme.of(context)
-                                                  .primaryColor)),
-                                  const SizedBox(width: 4.0),
-                                  Assets.vectors.swap.svg(
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ),
+                            );
+                          }),
                           if (actionOnClick != null)
                             Opacity(
                               opacity: isOnline ? 1.0 : 0.4,
@@ -144,7 +145,7 @@ class ScrollableAppBar extends StatelessWidget {
             child: Builder(
               builder: (context) {
                 final AppError appError = context
-                    .select((FortunicaMainCubit cubit) => cubit.state.appError);
+                    .select((ZodiacMainCubit cubit) => cubit.state.appError);
                 return Stack(
                   clipBehavior: Clip.none,
                   children: [
@@ -160,7 +161,7 @@ class ScrollableAppBar extends StatelessWidget {
                                 children: [
                                   AppIconButton(
                                     icon: Assets.vectors.arrowLeft.path,
-                                    onTap: context.popRoute,
+                                    onTap: context.pop,
                                   ),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -241,8 +242,7 @@ class ScrollableAppBar extends StatelessWidget {
                           height: _errorHeight,
                           errorMessage: isOnline
                               ? ''
-                              : SFortunica.of(context)
-                                  .noInternetConnectionFortunica,
+                              : SZodiac.of(context).noInternetConnectionZodiac,
                           isRequired: true,
                         ),
                       ),

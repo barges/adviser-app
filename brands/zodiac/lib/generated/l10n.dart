@@ -272,6 +272,26 @@ class SZodiac {
     );
   }
 
+  /// `No articles, yet`
+  String get noArticlesYet {
+    return Intl.message(
+      'No articles, yet',
+      name: 'noArticlesYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Here will appear articles`
+  String get hereWillAppearArticles {
+    return Intl.message(
+      'Here will appear articles',
+      name: 'hereWillAppearArticles',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Search`
   String get searchZodiac {
     return Intl.message(
@@ -487,6 +507,46 @@ class SZodiac {
     return Intl.message(
       'Yesterday',
       name: 'yesterdayZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No notifications, yet`
+  String get noNotificationsYetZodiac {
+    return Intl.message(
+      'No notifications, yet',
+      name: 'noNotificationsYetZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your notifications history will appear here`
+  String get yourNotificationsHistoryWillAppearHereZodiac {
+    return Intl.message(
+      'Your notifications history will appear here',
+      name: 'yourNotificationsHistoryWillAppearHereZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No reviews, yet`
+  String get noReviewsYetZodiac {
+    return Intl.message(
+      'No reviews, yet',
+      name: 'noReviewsYetZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reviews from your clients will appear here`
+  String get reviewsFromYourClientsWillAppearHereZodiac {
+    return Intl.message(
+      'Reviews from your clients will appear here',
+      name: 'reviewsFromYourClientsWillAppearHereZodiac',
       desc: '',
       args: [],
     );

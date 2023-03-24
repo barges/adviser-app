@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
@@ -45,13 +48,17 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     super.close();
   }
 
-  void goToNotifications() {
-    ///TODO: need change
-    //Get.toNamed(AppRoutes.notifications);
+  void goToNotifications(BuildContext context) {
+    context.push(
+      route: const ZodiacNotifications(),
+    );
+  }
+
+  void goToReviews(BuildContext context) {
+    context.push(route: const ZodiacReviews());
   }
 
   Future<void> getUserInfo() async {
-
     try {
       int? userId = _cacheManager.getUid();
       logger.d('GET INFO');
