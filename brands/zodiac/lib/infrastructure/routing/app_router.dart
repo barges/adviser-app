@@ -10,7 +10,9 @@ import 'package:zodiac/presentation/screens/home/tabs/articles/articles_screen.d
 import 'package:zodiac/presentation/screens/home/tabs/dashboard/dashboard_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_screen.dart';
 import 'package:zodiac/presentation/screens/login/login_screen.dart';
+import 'package:zodiac/presentation/screens/notifications/notifications_screen.dart';
 import 'package:zodiac/presentation/screens/profile/profile.dart';
+import 'package:zodiac/presentation/screens/reviews/reviews_screen.dart';
 import 'package:zodiac/presentation/wrappers/auth_wrapper/zodiac_auth_wrapper.dart';
 import 'package:zodiac/zodiac.dart';
 
@@ -73,6 +75,16 @@ const zodiacRoute = AutoRoute(
       page: ForgotPasswordScreen,
       path: RoutePaths.forgotPasswordScreen,
       name: RoutePaths.forgotPasswordScreen,
+    ),
+    AutoRoute(
+      page: NotificationsScreen,
+      path: RoutePaths.notificationsScreen,
+      name: RoutePaths.notificationsScreen,
+    ),
+    AutoRoute(
+      page: ReviewsScreen,
+      path: RoutePaths.reviewsScreen,
+      name: RoutePaths.reviewsScreen,
     ),
   ],
 );

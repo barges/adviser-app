@@ -44,8 +44,9 @@
   "newCustomersZodiac":"New customers",
   "salesZodiac": "Sales",
   "personalBalanceZodiac": "Personal Balance:",
-  "yesterdayZodiac": "Yesterday"
-
-
-
+  "yesterdayZodiac": "Yesterday",
+  "noNotificationsYetZodiac": "No notifications, yet",
+  "yourNotificationsHistoryWillAppearHereZodiac": "Your notifications history will appear here",
+  "noReviewsYetZodiac":"No reviews, yet",
+  "reviewsFromYourClientsWillAppearHereZodiac": "Reviews from your clients will appear here"
 }
