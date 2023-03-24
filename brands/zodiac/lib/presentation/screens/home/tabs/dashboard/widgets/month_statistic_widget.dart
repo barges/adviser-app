@@ -49,21 +49,21 @@ class MonthStatisticWidget extends StatelessWidget {
                 const SizedBox(
                   height: 8.0,
                 ),
-                Row(
-                  children: [
-                    CategoryWithCounterWidget(
-                      count: 0,
-                      category: SZodiac.of(context).newCustomersZodiac,
-                    ),
-                    const SizedBox(
-                      width: 8.0,
-                    ),
-                    CategoryWithCounterWidget(
-                      count: 0,
-                      category: SZodiac.of(context).salesZodiac,
-                    ),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     CategoryWithCounterWidget(
+                //       count: 0,
+                //       category: SZodiac.of(context).newCustomersZodiac,
+                //     ),
+                //     const SizedBox(
+                //       width: 8.0,
+                //     ),
+                //     CategoryWithCounterWidget(
+                //       count: 0,
+                //       category: SZodiac.of(context).salesZodiac,
+                //     ),
+                //   ],
+                // ),
                 const Divider(
                   height: 33,
                 ),

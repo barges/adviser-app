@@ -491,6 +491,46 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `No notifications, yet`
+  String get noNotificationsYetZodiac {
+    return Intl.message(
+      'No notifications, yet',
+      name: 'noNotificationsYetZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your notifications history will appear here`
+  String get yourNotificationsHistoryWillAppearHereZodiac {
+    return Intl.message(
+      'Your notifications history will appear here',
+      name: 'yourNotificationsHistoryWillAppearHereZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No reviews, yet`
+  String get noReviewsYetZodiac {
+    return Intl.message(
+      'No reviews, yet',
+      name: 'noReviewsYetZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reviews from your clients will appear here`
+  String get reviewsFromYourClientsWillAppearHereZodiac {
+    return Intl.message(
+      'Reviews from your clients will appear here',
+      name: 'reviewsFromYourClientsWillAppearHereZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

@@ -61,6 +61,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "newZodiac": MessageLookupByLibrary.simpleMessage("Novo"),
         "noInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage("Sem conexão com a internet."),
+        "noNotificationsYetZodiac":
+            MessageLookupByLibrary.simpleMessage("No notifications, yet"),
+        "noReviewsYetZodiac":
+            MessageLookupByLibrary.simpleMessage("No reviews, yet"),
         "noSessionsYetZodiac":
             MessageLookupByLibrary.simpleMessage("Ainda não há sessões."),
         "notificationsZodiac":
@@ -77,6 +81,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "pricePerMinZodiac": m0,
         "resetPasswordZodiac":
             MessageLookupByLibrary.simpleMessage("Redefinir senha"),
+        "reviewsFromYourClientsWillAppearHereZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Reviews from your clients will appear here"),
         "reviewsZodiac": MessageLookupByLibrary.simpleMessage("Avaliações"),
         "salesZodiac": MessageLookupByLibrary.simpleMessage("Sales"),
         "searchZodiac": MessageLookupByLibrary.simpleMessage("Procurar"),
@@ -99,6 +106,9 @@ class MessageLookup extends MessageLookupByLibrary {
                 "You can change price once per 24 h"),
         "yourClientSessionHistoryWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
-                "O histórico de ssessões de clientes aparecerá aqui")
+                "O histórico de ssessões de clientes aparecerá aqui"),
+        "yourNotificationsHistoryWillAppearHereZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Your notifications history will appear here")
       };
 }
