@@ -1,20 +1,9 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/global.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbars/simple_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
-import 'package:shared_advisor_interface/services/dynamic_link_service.dart';
-import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:fortunica/domain/repositories/fortunica_auth_repository.dart';
+import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/fortunica_main_cubit.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:fortunica/infrastructure/di/inject_config.dart';
@@ -25,6 +14,14 @@ import 'package:fortunica/presentation/screens/forgot_password/widgets/email_par
 import 'package:fortunica/presentation/screens/forgot_password/widgets/reset_password_input_part.dart';
 import 'package:fortunica/presentation/screens/forgot_password/widgets/success_reset.dart';
 import 'package:fortunica/presentation/screens/login/login_cubit.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbars/simple_app_bar.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
+import 'package:shared_advisor_interface/services/dynamic_link_service.dart';
+import 'package:shared_advisor_interface/utils/utils.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   final String? resetToken;
@@ -195,7 +192,7 @@ class _BrandLogo extends StatelessWidget {
         ),
         child: Center(
           child: SvgPicture.asset(
-            Brand.fortunica.icon,
+            FortunicaBrand().iconPath,
             height: 72.0,
           ),
         ),

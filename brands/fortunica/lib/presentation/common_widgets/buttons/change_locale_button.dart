@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:fortunica/infrastructure/di/inject_config.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -31,7 +31,7 @@ class ChangeLocaleButton extends StatelessWidget {
             fortunicaGetIt
                 .get<GlobalCachingManager>()
                 .saveLanguageCode(languageCode);
-            Brand.fortunica.setLanguageCode(languageCode);
+            FortunicaBrand().languageCode = languageCode;
           },
           currentIndex: currentLocaleIndex,
           elements: locales.map((element) {

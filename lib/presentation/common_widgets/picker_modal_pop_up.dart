@@ -1,9 +1,8 @@
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/global.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 
 void showPickerModalPopUp({
   required BuildContext context,
@@ -11,8 +10,6 @@ void showPickerModalPopUp({
   required List<Widget> elements,
   int? currentIndex,
 }) {
-
-  final router = globalGetIt.get<AppRouter>();
   showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) {
@@ -35,7 +32,7 @@ void showPickerModalPopUp({
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap:() => router.pop(context),
+                      onTap: context.pop,
                       child: Container(
                         alignment: Alignment.center,
                         height: AppConstants.appBarHeight,
@@ -52,7 +49,7 @@ void showPickerModalPopUp({
                     GestureDetector(
                       onTap: () {
                         setIndex(controller.selectedItem);
-                        router.pop(context);
+                        context.pop();
                       },
                       child: Container(
                         alignment: Alignment.center,

@@ -1,4 +1,3 @@
-import 'package:shared_advisor_interface/configuration.dart';
 import 'package:fortunica/data/models/enums/validation_error_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

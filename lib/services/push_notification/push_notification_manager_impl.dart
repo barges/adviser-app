@@ -6,13 +6,13 @@ import 'dart:ui';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/fortunica_main_cubit.dart';
 import 'package:fortunica/infrastructure/di/inject_config.dart';
 import 'package:fortunica/infrastructure/routing/route_paths_fortunica.dart';
 import 'package:fortunica/presentation/screens/chat/chat_screen.dart';
 import 'package:fortunica/presentation/screens/home/tabs_types.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -44,7 +44,7 @@ class PushNotificationManagerImpl implements PushNotificationManager {
       _notificationPortChannel,
     );
     _receiveNotificationPort.listen((dynamic message) {
-      final BuildContext? fortunicaContext = Configuration.fortunicaContext;
+      final BuildContext? fortunicaContext = FortunicaBrand().context;
       logger.d(message);
       if (message is Map<String, dynamic>) {
         Map<String, dynamic> map = jsonDecode(message['meta'] ?? '{}');
@@ -159,7 +159,7 @@ class PushNotificationManagerImpl implements PushNotificationManager {
       logger.d(map['entityId']);
       logger.d('***********************');
 
-      final BuildContext? fortunicaContext = Configuration.fortunicaContext;
+      final BuildContext? fortunicaContext = FortunicaBrand().context;
 
       if (Platform.isAndroid) {
         showNotification(message);
@@ -205,9 +205,9 @@ Future<void> _backgroundMessageHandler(RemoteMessage message) async {
 }
 
 Future<void> _navigateToNextScreen(RemoteMessage? message) async {
-  final BuildContext? fortunicaContext = Configuration.fortunicaContext;
+  final BuildContext? fortunicaContext = FortunicaBrand().context;
 
-  if (Brand.fortunica.isAuth && fortunicaContext != null && message != null) {
+  if (FortunicaBrand().isAuth && fortunicaContext != null && message != null) {
     Map<String, dynamic> data = message.data;
 
     Map<String, dynamic> meta = json.decode(data['meta']);
