@@ -12,7 +12,7 @@ import 'package:zodiac/presentation/screens/reviews/reviews_cubit.dart';
 import 'package:zodiac/presentation/screens/reviews/widgets/review_card_widget.dart';
 
 class ReviewsScreen extends StatelessWidget {
-  const ReviewsScreen({super.key});
+  const ReviewsScreen({Key? key}):super(key:key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +34,7 @@ class ReviewsScreen extends StatelessWidget {
                 builder: (context) {
                   return RefreshIndicator(
                     onRefresh: reviewsCubit.refreshReviews,
-                    notificationPredicate: (_) =>
-                        !(reviewList?.isEmpty == true),
+                
                     edgeOffset: AppConstants.appBarHeight * 2 +
                         MediaQuery.of(context).padding.top,
                     child: CustomScrollView(
