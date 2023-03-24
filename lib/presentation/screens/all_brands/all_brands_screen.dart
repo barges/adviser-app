@@ -1,8 +1,8 @@
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbars/simple_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/appbars/simple_app_bar.dart';
 
 class AllBrandsScreen extends StatelessWidget {
   const AllBrandsScreen({Key? key}) : super(key: key);
@@ -52,7 +52,7 @@ class AllBrandsScreen extends StatelessWidget {
               shrinkWrap: true,
               padding:
                   const EdgeInsets.all(AppConstants.horizontalScreenPadding),
-              itemCount: Brand.allBrands.length,
+              itemCount: BrandManager.allBrands.length,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   height: kToolbarHeight,
@@ -65,7 +65,7 @@ class AllBrandsScreen extends StatelessWidget {
                     ),
                     image: DecorationImage(
                       image: AssetImage(
-                        Brand.allBrands[index],
+                        BrandManager.allBrands[index],
                       ),
                     ),
                   ),

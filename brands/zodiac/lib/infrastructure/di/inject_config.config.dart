@@ -10,15 +10,15 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart'
     as _i6;
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
-    as _i3;
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart'
+    as _i4;
 import 'package:shared_advisor_interface/main_cubit.dart' as _i7;
 import 'package:shared_advisor_interface/services/connectivity_service.dart'
     as _i5;
 
 import '../../data/cache/zodiac_caching_manager.dart' as _i8;
 import '../../data/cache/zodiac_caching_manager_impl.dart' as _i9;
-import '../../data/data_source/remote/authentication_services.dart' as _i4;
+import '../../data/data_source/remote/authentication_services.dart' as _i3;
 import '../../data/network/api/articles_api.dart' as _i19;
 import '../../data/network/api/auth_api.dart' as _i20;
 import '../../data/network/api/chats_api.dart' as _i21;
@@ -56,8 +56,8 @@ Future<_i1.GetIt> $initGetIt(
   );
   final servicesModule = _$ServicesModule();
   final apiModule = _$ApiModule();
-  gh.singleton<_i3.AppRouter>(servicesModule.navigationService);
-  gh.factory<_i4.AuthenticationServices>(() => _i4.AuthenticationServices());
+  gh.factory<_i3.AuthenticationServices>(() => _i3.AuthenticationServices());
+  gh.singleton<_i4.BrandManager>(servicesModule.brandManager);
   gh.singleton<_i5.ConnectivityService>(servicesModule.connectivityService);
   gh.singleton<_i6.GlobalCachingManager>(servicesModule.globalCachingManager);
   gh.singleton<_i7.MainCubit>(servicesModule.mainCubit);

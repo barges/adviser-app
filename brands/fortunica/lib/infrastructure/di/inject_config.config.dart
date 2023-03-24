@@ -10,7 +10,7 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart'
     as _i11;
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart'
     as _i3;
 import 'package:shared_advisor_interface/main_cubit.dart' as _i12;
 import 'package:shared_advisor_interface/services/check_permission_service.dart'
@@ -60,7 +60,7 @@ Future<_i1.GetIt> $initGetIt(
   );
   final servicesModule = _$ServicesModule();
   final apiModule = _$ApiModule();
-  gh.singleton<_i3.AppRouter>(servicesModule.navigationService);
+  gh.singleton<_i3.BrandManager>(servicesModule.brandManager);
   gh.singleton<_i4.CheckPermissionService>(
       servicesModule.checkPermissionService);
   gh.singleton<_i5.ConnectivityService>(servicesModule.connectivityService);

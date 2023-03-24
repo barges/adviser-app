@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -155,7 +154,7 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> goToForgotPassword(BuildContext context,
-      {Brand? brand, String? token}) async {
+      {String? token}) async {
     clearErrorMessage();
     clearSuccessMessage();
 

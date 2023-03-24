@@ -3,11 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fortunica/data/models/enums/chat_item_status_type.dart';
 import 'package:fortunica/data/models/enums/zodiac_sign.dart';
+import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:fortunica/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
@@ -35,7 +36,7 @@ class ChatConversationAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
 
-    const Brand selectedBrand = Brand.fortunica;
+    final BaseBrand selectedBrand = FortunicaBrand();
 
     return AppBar(
       automaticallyImplyLeading: false,
@@ -71,7 +72,7 @@ class ChatConversationAppBar extends StatelessWidget
                     if (questionStatus != ChatItemStatusType.taken)
                       AppIconButton(
                         icon: Assets.vectors.arrowLeft.path,
-                        onTap: Configuration.fortunicaContext?.pop,
+                        onTap: selectedBrand.context?.pop,
                       ),
                     Expanded(
                         child: Column(
@@ -84,7 +85,7 @@ class ChatConversationAppBar extends StatelessWidget
                                 children: [
                                   const SizedBox(width: 12.0),
                                   SvgPicture.asset(
-                                    selectedBrand.icon,
+                                    selectedBrand.iconPath,
                                     height: 17.0,
                                   ),
                                   const SizedBox(width: 12.0),

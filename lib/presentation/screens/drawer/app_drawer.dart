@@ -1,15 +1,17 @@
-import 'package:shared_advisor_interface/configuration.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortunica/fortunica.dart';
+import 'package:fortunica/presentation/common_widgets/brand_drawer_item/fortunica_drawer_item.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_bottom_sheet.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/drawer_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/widgets/bottom_section.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortunica/presentation/common_widgets/brand_drawer_item/fortunica_drawer_item.dart';
 import 'package:zodiac/presentation/common_widgets/brand_drawer_item/zodiac_drawer_item.dart';
+import 'package:zodiac/zodiac.dart';
 
 class AppDrawer extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -137,11 +139,10 @@ class AppDrawer extends StatelessWidget {
 }
 
 class BrandItem extends StatelessWidget {
-  final Brand brand;
+  final BaseBrand brand;
   final GlobalKey<ScaffoldState> scaffoldKey;
-  final router = globalGetIt.get<AppRouter>();
 
-  BrandItem({
+  const BrandItem({
     Key? key,
     required this.brand,
     required this.scaffoldKey,
@@ -150,8 +151,8 @@ class BrandItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
-      switch (brand) {
-        case Brand.fortunica:
+      switch (brand.brandAlias) {
+        case FortunicaBrand.alias:
           return FortunicaDrawerItem(
             openLogoutDialog: (fortunicaContext, callback) =>
                 showOkCancelBottomSheet(
@@ -159,13 +160,13 @@ class BrandItem extends StatelessWidget {
               okButtonText: S.of(context).logOut,
               okOnTap: () {
                 callback(fortunicaContext).then((value) {
-                  router.pop(context);
+                  context.pop();
                   scaffoldKey.currentState?.openEndDrawer();
                 });
               },
             ),
           );
-        case Brand.zodiac:
+        case ZodiacBrand.alias:
           return ZodiacDrawerItem(
             openLogoutDialog: (zodiacContext, callback) =>
                 showOkCancelBottomSheet(
@@ -173,12 +174,14 @@ class BrandItem extends StatelessWidget {
               okButtonText: S.of(context).logOut,
               okOnTap: () {
                 callback(zodiacContext).then((value) {
-                  router.pop(context);
+                  context.pop();
                   scaffoldKey.currentState?.openEndDrawer();
                 });
               },
             ),
           );
+        default:
+          return const SizedBox.shrink();
       }
     });
   }

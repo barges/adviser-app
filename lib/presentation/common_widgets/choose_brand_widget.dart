@@ -1,5 +1,6 @@
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/brand_widget.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class ChooseBrandWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.select((MainCubit cubit) => cubit.state.currentBrand);
-    final List<Brand> brands = Configuration.unauthorizedBrands();
+    final List<BaseBrand> brands = BrandManager.unauthorizedBrands();
 
     return Align(
       alignment: Alignment.topLeft,
@@ -26,7 +27,7 @@ class ChooseBrandWidget extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              Brand brand = brands[index];
+              BaseBrand brand = brands[index];
               return BrandWidget(
                 brand: brands[index],
                 isSelected:

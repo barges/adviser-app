@@ -1,36 +1,128 @@
-import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/infrastructure/brands/base_router.dart';
+import 'package:collection/collection.dart';
+import 'package:fortunica/fortunica.dart';
+import 'package:injectable/injectable.dart';
+import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:zodiac/zodiac.dart';
 
-class BrandManager with ChangeNotifier {
-  List<Brand> list = [];
-  // late RootStackRouter mainRouter;
-  // late BrandRouterManager brandRouterManager;
+@singleton
+class BrandManager {
+  static final List<BaseBrand> brands = [
+    FortunicaBrand(),
+    ZodiacBrand(),
+  ];
 
-  BrandManager(this.list, projectRouter);
-  //{
-    //brandRouterManager = BrandRouterManager(projectRouter);
+  final GlobalCachingManager _cachingManager;
 
-    // for (Brand brand in list) {
-    //   brandRouterManager.add(brand);
-    //   // brand.addListener(notifyListeners);
-    // }
+  BrandManager(this._cachingManager);
 
-    //mainRouter = brandRouterManager.getRouter();
-  // }
-
-  initDi(Flavor flavor, AppRouter navigationService) async {
-    for (Brand brand in list) {
-      await brand.init(flavor, navigationService);
+  initDi(Flavor flavor) async {
+    for (BaseBrand brand in brands) {
+      await brand.init(flavor);
     }
   }
 
-  // List<Brand> getActiveBrand() {
-  //   return list.where((element) => element.isEnabled).toList();
-  // }
+  static BaseBrand brandFromAlias(String? alias) {
+    switch (alias) {
+      case FortunicaBrand.alias:
+        return FortunicaBrand();
+      case ZodiacBrand.alias:
+        return ZodiacBrand();
+      default:
+        return FortunicaBrand();
+    }
+  }
 
-  // RootStackRouter get router => mainRouter;
+  static List<BaseBrand> authorizedBrands(BaseBrand currentBrand) {
+    final List<String> authBrandsAliases = [];
+    for (BaseBrand b in brands) {
+      if (b.isAuth) {
+        authBrandsAliases.add(b.brandAlias);
+      }
+    }
+    if (authBrandsAliases.contains(currentBrand.brandAlias)) {
+      authBrandsAliases
+          .removeWhere((element) => element == currentBrand.brandAlias);
+      authBrandsAliases.add(currentBrand.brandAlias);
+    }
+
+    final List<BaseBrand> authBrands = [];
+    for (String alias in authBrandsAliases) {
+      authBrands.add(brandFromAlias(alias));
+    }
+
+    return authBrands;
+  }
+
+  static List<BaseBrand> unauthorizedBrands() {
+    final List<String> unAuthBrandsAliases = [];
+    for (BaseBrand b in brands) {
+      if (!b.isAuth) {
+        unAuthBrandsAliases.add(b.brandAlias);
+      }
+    }
+
+    final List<BaseBrand> unAuthBrands = [];
+    for (String alias in unAuthBrandsAliases) {
+      unAuthBrands.add(brandFromAlias(alias));
+    }
+
+    return unAuthBrands;
+  }
+
+  static void setIsCurrentForBrands(BaseBrand brand) {
+    for (BaseBrand b in brands) {
+      if (brand.brandAlias == b.brandAlias) {
+        b.isCurrent = true;
+      } else {
+        b.isCurrent = false;
+      }
+    }
+  }
+
+  static void setBrandsLocales(String languageCode) {
+    for (BaseBrand brand in brands) {
+      if (brand.isActive) {
+        brand.languageCode = languageCode;
+      }
+    }
+  }
+
+  static List<BaseBrand> getActiveBrandsWithFirstCurrent(
+      BaseBrand currentBrand) {
+    final List<String> allBrandsAliases = [];
+    for (BaseBrand brand in brands) {
+      if (brand.isActive) {
+        allBrandsAliases.add(brand.brandAlias);
+      }
+    }
+
+    if (allBrandsAliases.firstOrNull != currentBrand.brandAlias) {
+      allBrandsAliases
+          .removeWhere((element) => element == currentBrand.brandAlias);
+      allBrandsAliases.add(currentBrand.brandAlias);
+    }
+
+    final List<BaseBrand> allBrands = [];
+    for (String alias in allBrandsAliases.reversed) {
+      allBrands.add(brandFromAlias(alias));
+    }
+    return allBrands;
+  }
+
+  BaseBrand getCurrentBrand() {
+    return _cachingManager.getCurrentBrand();
+  }
+
+  static List<String> allBrands = [
+    Assets.images.brands.bitWine.path,
+    Assets.images.brands.purpleGarden.path,
+    Assets.images.brands.purpleTides.path,
+    Assets.images.brands.purpleOcean.path,
+    Assets.images.brands.zodiacPsychics.path,
+    Assets.images.brands.theraPeer.path,
+    Assets.images.brands.fortunica.path,
+  ];
 }

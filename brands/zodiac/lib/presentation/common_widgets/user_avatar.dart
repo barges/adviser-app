@@ -1,15 +1,12 @@
 import 'dart:io';
 
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fortunica/generated/l10n.dart';
-import 'package:fortunica/presentation/screens/gallery/gallery_pictures_screen.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:zodiac/presentation/screens/gallery/gallery_pictures_screen.dart';
 
 class UserAvatar extends StatelessWidget {
   final String? avatarUrl;
@@ -70,7 +67,7 @@ class UserAvatar extends StatelessWidget {
                       : GestureDetector(
                           onTap: () => canOpenInFullScreen
                               ? context.push(
-                                  route: FortunicaGalleryPictures(
+                                  route: ZodiacGalleryPictures(
                                     galleryPicturesScreenArguments:
                                         GalleryPicturesScreenArguments(
                                       pictures: [avatarUrl!],
@@ -95,7 +92,7 @@ class UserAvatar extends StatelessWidget {
               : GestureDetector(
                   onTap: () => canOpenInFullScreen
                       ? context.push(
-                          route: FortunicaGalleryPictures(
+                          route: ZodiacGalleryPictures(
                             galleryPicturesScreenArguments:
                                 GalleryPicturesScreenArguments(
                               pictures: [imageFile!.path],
@@ -136,24 +133,24 @@ class UserAvatar extends StatelessWidget {
               ),
             ),
           ),
-        if (withError)
-          Positioned.fill(
-              bottom: withCameraBadge ? AppConstants.iconButtonSize : 0.0,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Align(
-                    alignment: withCameraBadge
-                        ? Alignment.bottomLeft
-                        : Alignment.centerLeft,
-                    child: AutoSizeText(
-                      SFortunica.of(context).photoIsRequiredFortunica,
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      minFontSize: 10.0,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontSize: 12.0, color: Theme.of(context).errorColor),
-                    )),
-              )),
+        // if (withError)
+        //   Positioned.fill(
+        //       bottom: withCameraBadge ? AppConstants.iconButtonSize : 0.0,
+        //       child: Padding(
+        //         padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        //         child: Align(
+        //             alignment: withCameraBadge
+        //                 ? Alignment.bottomLeft
+        //                 : Alignment.centerLeft,
+        //             child: AutoSizeText(
+        //               SFortunica.of(context).photoIsRequiredFortunica,
+        //               textAlign: TextAlign.center,
+        //               maxLines: 2,
+        //               minFontSize: 10.0,
+        //               style: Theme.of(context).textTheme.bodySmall?.copyWith(
+        //                   fontSize: 12.0, color: Theme.of(context).errorColor),
+        //             )),
+        //       )),
       ],
     );
   }

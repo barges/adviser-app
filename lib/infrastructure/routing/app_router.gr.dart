@@ -298,8 +298,8 @@ class MainAppRouter extends _i34.RootStackRouter {
         ),
       );
     },
-    ZodiacGallery.name: (routeData) {
-      final args = routeData.argsAs<ZodiacGalleryArgs>();
+    ZodiacGalleryPictures.name: (routeData) {
+      final args = routeData.argsAs<ZodiacGalleryPicturesArgs>();
       return _i34.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i27.GalleryPicturesScreen(
@@ -537,8 +537,8 @@ class MainAppRouter extends _i34.RootStackRouter {
                   parent: Zodiac.name,
                 ),
                 _i34.RouteConfig(
-                  ZodiacGallery.name,
-                  path: 'zodiacGallery',
+                  ZodiacGalleryPictures.name,
+                  path: 'zodiacGalleryPictures',
                   parent: Zodiac.name,
                 ),
                 _i34.RouteConfig(
@@ -1200,24 +1200,25 @@ class ZodiacProfileArgs {
 
 /// generated route for
 /// [_i27.GalleryPicturesScreen]
-class ZodiacGallery extends _i34.PageRouteInfo<ZodiacGalleryArgs> {
-  ZodiacGallery({
+class ZodiacGalleryPictures
+    extends _i34.PageRouteInfo<ZodiacGalleryPicturesArgs> {
+  ZodiacGalleryPictures({
     _i35.Key? key,
     required _i27.GalleryPicturesScreenArguments galleryPicturesScreenArguments,
   }) : super(
-          ZodiacGallery.name,
-          path: 'zodiacGallery',
-          args: ZodiacGalleryArgs(
+          ZodiacGalleryPictures.name,
+          path: 'zodiacGalleryPictures',
+          args: ZodiacGalleryPicturesArgs(
             key: key,
             galleryPicturesScreenArguments: galleryPicturesScreenArguments,
           ),
         );
 
-  static const String name = 'ZodiacGallery';
+  static const String name = 'ZodiacGalleryPictures';
 }
 
-class ZodiacGalleryArgs {
-  const ZodiacGalleryArgs({
+class ZodiacGalleryPicturesArgs {
+  const ZodiacGalleryPicturesArgs({
     this.key,
     required this.galleryPicturesScreenArguments,
   });
@@ -1228,7 +1229,7 @@ class ZodiacGalleryArgs {
 
   @override
   String toString() {
-    return 'ZodiacGalleryArgs{key: $key, galleryPicturesScreenArguments: $galleryPicturesScreenArguments}';
+    return 'ZodiacGalleryPicturesArgs{key: $key, galleryPicturesScreenArguments: $galleryPicturesScreenArguments}';
   }
 }
 
