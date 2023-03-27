@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:auto_route/auto_route.dart';
@@ -19,13 +20,12 @@ class HomeCubit extends Cubit<HomeState> {
 
   final FortunicaCachingManager _cacheManager;
   final TabsTypes? _initTab;
+  final ValueGetter<bool> _backButtonInterceptorFunc;
   late final StreamSubscription _userStatusSubscription;
   late final List<PageRouteInfo> routes;
 
-  HomeCubit(
-    this._cacheManager,
-    this._initTab,
-  ) : super(const HomeState()) {
+  HomeCubit(this._cacheManager, this._initTab, this._backButtonInterceptorFunc)
+      : super(const HomeState()) {
     routes = tabsList.map((e) => _getPage(e)).toList();
 
     if (_initTab != null && tabsList.contains(_initTab)) {
@@ -44,11 +44,14 @@ class HomeCubit extends Cubit<HomeState> {
       }
       emit(state.copyWith(userStatus: value));
     });
+
+    BackButtonInterceptor.add(_backButtonInterceptor);
   }
 
   @override
   Future<void> close() {
     _userStatusSubscription.cancel();
+    BackButtonInterceptor.remove(_backButtonInterceptor);
     return super.close();
   }
 
@@ -65,5 +68,9 @@ class HomeCubit extends Cubit<HomeState> {
       case TabsTypes.account:
         return const FortunicaAccount();
     }
+  }
+
+  bool _backButtonInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    return _backButtonInterceptorFunc();
   }
 }

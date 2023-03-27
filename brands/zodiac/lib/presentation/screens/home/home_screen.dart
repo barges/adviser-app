@@ -7,9 +7,11 @@ import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
+import 'package:zodiac/infrastructure/routing/route_paths.dart';
 import 'package:zodiac/presentation/screens/home/home_cubit.dart';
 import 'package:zodiac/presentation/screens/home/home_state.dart';
 import 'package:zodiac/presentation/screens/home/tabs_types.dart';
+import 'package:zodiac/zodiac.dart';
 
 class HomeScreen extends StatelessWidget {
   final TabsTypes? initTab;
@@ -18,11 +20,14 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final VoidCallback openDrawer =
+        context.read<MainHomeScreenCubit>().openDrawer;
     return BlocProvider(
         create: (_) => HomeCubit(
               zodiacGetIt.get<ZodiacCachingManager>(),
               zodiacGetIt.get<WebSocketManager>(),
               zodiacGetIt.get<ZodiacArticlesRepository>(),
+              () => _backButtonInterceptor(context, openDrawer),
             ),
         child: Builder(
           builder: (context) {
@@ -142,4 +147,14 @@ class _ArticleIcon extends StatelessWidget {
       ],
     );
   }
+}
+
+bool _backButtonInterceptor(BuildContext context, VoidCallback openDrawer) {
+  if (context.router.current.name.toUpperCase() ==
+          RoutePaths.homeScreen.toUpperCase() &&
+      ZodiacBrand().isCurrent) {
+    openDrawer();
+    return true;
+  }
+  return false;
 }

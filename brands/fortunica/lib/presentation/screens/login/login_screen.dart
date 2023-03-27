@@ -1,9 +1,12 @@
+import 'package:fortunica/fortunica.dart';
+import 'package:fortunica/infrastructure/routing/route_paths_fortunica.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/choose_brand_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 import 'package:shared_advisor_interface/services/dynamic_link_service.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:auto_route/auto_route.dart';
@@ -44,6 +47,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final VoidCallback openDrawer =
+        context.read<MainHomeScreenCubit>().openDrawer;
     return BlocProvider(
       create: (_) {
         fortunicaGetIt
@@ -55,6 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
             fortunicaGetIt.get<FortunicaCachingManager>(),
             fortunicaGetIt.get<FortunicaMainCubit>(),
             fortunicaGetIt.get<Dio>(),
+            () => _backButtonInterceptor(context, openDrawer),
           ),
         );
         return fortunicaGetIt.get<LoginCubit>();
@@ -64,7 +70,9 @@ class _LoginScreenState extends State<LoginScreen> {
         final bool isOnline = context.select(
             (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
         return Scaffold(
-          appBar: const LoginAppBar(),
+          appBar: LoginAppBar(
+            openDrawer: openDrawer,
+          ),
           body: SafeArea(
             child: isOnline
                 ? GestureDetector(
@@ -256,4 +264,14 @@ class _LoginScreenState extends State<LoginScreen> {
       }),
     );
   }
+}
+
+bool _backButtonInterceptor(BuildContext context, VoidCallback openDrawer) {
+  if (context.router.current.name.toUpperCase() ==
+          RoutePathsFortunica.loginScreen.toUpperCase() &&
+      FortunicaBrand().isCurrent) {
+    openDrawer();
+    return true;
+  }
+  return false;
 }

@@ -1,12 +1,15 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/choose_brand_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/app_success/app_success.dart';
@@ -15,6 +18,7 @@ import 'package:zodiac/domain/repositories/zodiac_auth_repository.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
+import 'package:zodiac/infrastructure/routing/route_paths.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/login_appbar.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_success_widget.dart';
@@ -23,6 +27,7 @@ import 'package:zodiac/presentation/common_widgets/text_fields/app_text_field.da
 import 'package:zodiac/presentation/common_widgets/text_fields/password_text_field.dart';
 import 'package:zodiac/presentation/screens/login/login_cubit.dart';
 import 'package:zodiac/presentation/screens/login/widgets/forgot_password_button_widget.dart';
+import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -41,14 +46,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    VoidCallback openDrawer = context.read<MainHomeScreenCubit>().openDrawer;
     return BlocProvider(
       create: (_) {
         zodiacGetIt.registerSingleton(LoginCubit(
           zodiacGetIt.get<ZodiacAuthRepository>(),
           zodiacGetIt.get<ZodiacCachingManager>(),
           zodiacGetIt.get<ZodiacMainCubit>(),
-
           zodiacGetIt.get<ZodiacUserRepository>(),
+          () => _backButtonInterceptor(context, openDrawer),
           //fortunicaGetIt.get<DynamicLinkService>(),
         ));
 
@@ -59,7 +65,9 @@ class _LoginScreenState extends State<LoginScreen> {
         final bool isOnline = context.select(
             (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
         return Scaffold(
-          appBar: const LoginAppBar(),
+          appBar: LoginAppBar(
+            openDrawer: openDrawer,
+          ),
           body: SafeArea(
             child: isOnline
                 ? GestureDetector(
@@ -243,4 +251,14 @@ class _LoginScreenState extends State<LoginScreen> {
       }),
     );
   }
+}
+
+bool _backButtonInterceptor(BuildContext context, VoidCallback openDrawer) {
+  if (context.router.current.name.toUpperCase() ==
+          RoutePaths.loginScreen.toUpperCase() &&
+      ZodiacBrand().isCurrent) {
+    openDrawer();
+    return true;
+  }
+  return false;
 }

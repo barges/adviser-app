@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,8 +24,8 @@ class LoginCubit extends Cubit<LoginState> {
   final ZodiacAuthRepository _repository;
   final ZodiacCachingManager _cachingManager;
   final ZodiacUserRepository _userRepository;
-
   final ZodiacMainCubit _zodiacMainCubit;
+  final ValueGetter<bool> _backButtonInterceptorFunc;
 
   //final DynamicLinkService _dynamicLinkService;
 
@@ -38,6 +39,8 @@ class LoginCubit extends Cubit<LoginState> {
     this._cachingManager,
     this._zodiacMainCubit,
     this._userRepository,
+    this._backButtonInterceptorFunc,
+
     //this._dynamicLinkService,
   ) : super(const LoginState()) {
     //_dynamicLinkService.checkLinkForResetPassword();
@@ -66,6 +69,7 @@ class LoginCubit extends Cubit<LoginState> {
           buttonIsActive: passwordController.text.isNotEmpty &&
               emailController.text.isNotEmpty));
     });
+    BackButtonInterceptor.add(_backButtonInterceptor);
   }
 
   @override
@@ -74,6 +78,8 @@ class LoginCubit extends Cubit<LoginState> {
     passwordController.dispose();
     emailNode.dispose();
     passwordNode.dispose();
+    BackButtonInterceptor.remove(_backButtonInterceptor);
+
     return super.close();
   }
 
@@ -163,13 +169,17 @@ class LoginCubit extends Cubit<LoginState> {
     context.replaceAll([ZodiacHome()]);
   }
 
-  Future<void> goToForgotPassword(BuildContext context, {String? token}) async {
+  void goToForgotPassword(BuildContext context) {
     clearErrorMessage();
     clearSuccessMessage();
 
     context.push(
       route: const ZodiacForgotPassword(),
     );
+  }
+
+  bool _backButtonInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    return _backButtonInterceptorFunc();
   }
 
   bool emailIsValid() => Utils.isEmail(emailController.text);
