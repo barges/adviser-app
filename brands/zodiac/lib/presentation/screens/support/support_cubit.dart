@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/services/fresh_chat_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/data/models/user_info/user_info.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/support/support_state.dart';
@@ -23,23 +24,8 @@ class SupportCubit extends Cubit<SupportState> {
     required this.userRepository,
   }) : super(const SupportState()) {
     locale = Intl.getCurrentLocale();
-    final UserInfo? userInfo = cachingManager.getUserInfo();
-
+    final DetailedUserInfo? userInfo = cachingManager.getDetailedUserInfo();
     _setUpFreshChat(userInfo);
-
-    if (userInfo?.freshchatInfo?.restoreId == null) {
-      _restoreSubscription =
-          freshChatService.onRestoreStream().listen((event) async {
-        final String? restoreId = await freshChatService.getRestoreId();
-        if (restoreId != null) {
-          userRepository.setFreshchatRestoreId(
-            RestoreFreshchatIdRequest(
-              restoreId: restoreId,
-            ),
-          );
-        }
-      });
-    }
   }
 
   @override
@@ -48,7 +34,13 @@ class SupportCubit extends Cubit<SupportState> {
     return super.close();
   }
 
-  Future<void> _setUpFreshChat(FreshChaUserInfo? userInfo) async {
+  Future<void> _setUpFreshChat(DetailedUserInfo? userInfo) async {
+    final details = userInfo?.details;
+    final FreshChaUserInfo freshChaUserInfo = FreshChaUserInfo(
+      userId: details?.id.toString(),
+      email: details?.email,
+      profileName: userInfo?.profile?.profileName,
+    );
     final bool configured =
         await freshChatService.setUpFortunicaFreshChat(userInfo);
     emit(state.copyWith(configured: configured));

@@ -936,10 +936,10 @@ packages:
     dependency: "direct main"
     description:
       name: freshchat_sdk
-      sha256: ba0988c476eddede4f0c0c13977937fd477334f52d4e16cfc9a07ff6bdce6336
+      sha256: "75fe4543592285fa280c398e56e05e01ff0b1ca39a4e31e28e3f3c3955778920"
       url: "https://pub.dev"
     source: hosted
-    version: "0.10.2"
+    version: "0.10.3"
   frontend_server_client:
     dependency: transitive
     description:

@@ -1,3 +1,5 @@
+import 'package:fortunica/fortunica.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/services/fresh_chat_service.dart';
 import 'package:flutter/material.dart';
@@ -26,12 +28,13 @@ class SupportScreen extends StatelessWidget {
         return BlocListener<SupportCubit, SupportState>(
           listenWhen: (prev, current) => prev.configured != current.configured,
           listener: (_, state) {
+            final locale = Intl.getCurrentLocale();
             if (state.configured) {
               context.pop();
               Freshchat.showFAQ(
                 faqFilterType: FaqFilterType.Category,
-                contactUsTags: supportCubit.getContactUsTags(),
-                faqTags: supportCubit.getCategories(),
+                contactUsTags: FortunicaBrand().freshChatTags(locale),
+                faqTags: FortunicaBrand().freshChatCategories(locale),
                 faqTitle: SFortunica.of(context).customerSupportFortunica,
                 showContactUsOnFaqScreens: false,
               );

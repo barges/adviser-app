@@ -16,8 +16,10 @@ abstract class ZodiacCachingManager {
 
   String? getLanguageCode();
 
-  Future<void> saveUserInfo(UserInfo? userInfo);
 
+  ///TODO: Do we need this method?
+  Future<void> saveUserInfo(UserInfo? userInfo);
+  ///TODO: Do we need this method?
   UserInfo? getUserInfo();
 
   Future<void> saveUid(int uid);
