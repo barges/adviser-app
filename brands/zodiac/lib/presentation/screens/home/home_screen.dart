@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
@@ -10,6 +9,7 @@ import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/screens/home/home_cubit.dart';
 import 'package:zodiac/presentation/screens/home/home_state.dart';
 import 'package:zodiac/presentation/screens/home/tabs_types.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
   final TabsTypes? initTab;
@@ -21,6 +21,7 @@ class HomeScreen extends StatelessWidget {
     return BlocProvider(
         create: (_) => HomeCubit(
               zodiacGetIt.get<ZodiacCachingManager>(),
+              zodiacGetIt.get<ZodiacMainCubit>(),
               zodiacGetIt.get<WebSocketManager>(),
               zodiacGetIt.get<ZodiacArticlesRepository>(),
             ),
@@ -28,7 +29,6 @@ class HomeScreen extends StatelessWidget {
           builder: (context) {
             final ThemeData theme = Theme.of(context);
             final HomeCubit cubit = context.read<HomeCubit>();
-            cubit.mainHomeScreenCubit = context.read<MainHomeScreenCubit>();
 
             return AutoTabsRouter(
               routes: cubit.routes,

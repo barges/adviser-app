@@ -1,11 +1,9 @@
 import 'dart:async';
 
-import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
-import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/zodiac_main_state.dart';
 
@@ -17,6 +15,7 @@ class ZodiacMainCubit extends Cubit<ZodiacMainState> {
   final PublishSubject<bool> sessionsUpdateTrigger = PublishSubject();
   final PublishSubject<bool> audioStopTrigger = PublishSubject();
   final PublishSubject<UserBalance> userBalanceUpdateTrigger = PublishSubject();
+  final PublishSubject<bool> articleCountUpdateTrigger = PublishSubject();
 
   ZodiacMainCubit()
       : super(const ZodiacMainState());
@@ -51,5 +50,9 @@ class ZodiacMainCubit extends Cubit<ZodiacMainState> {
 
   void updateUserBalance(UserBalance userBalance) {
     userBalanceUpdateTrigger.add(userBalance);
+  }
+
+  void updateArticleCount() {
+    articleCountUpdateTrigger.add(true);
   }
 }

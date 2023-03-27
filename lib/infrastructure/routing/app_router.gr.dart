@@ -53,7 +53,7 @@ import 'package:shared_advisor_interface/presentation/screens/force_update/force
     as _i2;
 import 'package:shared_advisor_interface/presentation/screens/home_screen/main_home_screen.dart'
     as _i1;
-import 'package:zodiac/presentation/screens/article_detail_screen/article_detail_screen.dart'
+import 'package:zodiac/presentation/screens/article_detail_screen/article_details_screen.dart'
     as _i25;
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart'
     as _i5;
@@ -282,11 +282,11 @@ class MainAppRouter extends _i36.RootStackRouter {
         ),
       );
     },
-    ZodiacArticleDetail.name: (routeData) {
-      final args = routeData.argsAs<ZodiacArticleDetailArgs>();
+    ZodiacArticleDetails.name: (routeData) {
+      final args = routeData.argsAs<ZodiacArticleDetailsArgs>();
       return _i36.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: _i25.ArticleDetailScreen(
+        child: _i25.ArticleDetailsScreen(
           key: args.key,
           articleId: args.articleId,
         ),
@@ -543,8 +543,8 @@ class MainAppRouter extends _i36.RootStackRouter {
                   ],
                 ),
                 _i36.RouteConfig(
-                  ZodiacArticleDetail.name,
-                  path: 'zodiacArticleDetail',
+                  ZodiacArticleDetails.name,
+                  path: 'zodiacArticleDetails',
                   parent: Zodiac.name,
                 ),
                 _i36.RouteConfig(
@@ -1157,25 +1157,26 @@ class ZodiacHomeArgs {
 }
 
 /// generated route for
-/// [_i25.ArticleDetailScreen]
-class ZodiacArticleDetail extends _i36.PageRouteInfo<ZodiacArticleDetailArgs> {
-  ZodiacArticleDetail({
+/// [_i25.ArticleDetailsScreen]
+class ZodiacArticleDetails
+    extends _i36.PageRouteInfo<ZodiacArticleDetailsArgs> {
+  ZodiacArticleDetails({
     _i37.Key? key,
     required int articleId,
   }) : super(
-          ZodiacArticleDetail.name,
-          path: 'zodiacArticleDetail',
-          args: ZodiacArticleDetailArgs(
+          ZodiacArticleDetails.name,
+          path: 'zodiacArticleDetails',
+          args: ZodiacArticleDetailsArgs(
             key: key,
             articleId: articleId,
           ),
         );
 
-  static const String name = 'ZodiacArticleDetail';
+  static const String name = 'ZodiacArticleDetails';
 }
 
-class ZodiacArticleDetailArgs {
-  const ZodiacArticleDetailArgs({
+class ZodiacArticleDetailsArgs {
+  const ZodiacArticleDetailsArgs({
     this.key,
     required this.articleId,
   });
@@ -1186,7 +1187,7 @@ class ZodiacArticleDetailArgs {
 
   @override
   String toString() {
-    return 'ZodiacArticleDetailArgs{key: $key, articleId: $articleId}';
+    return 'ZodiacArticleDetailsArgs{key: $key, articleId: $articleId}';
   }
 }
 

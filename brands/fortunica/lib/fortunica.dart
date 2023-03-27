@@ -3,6 +3,8 @@ library fortunica;
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fortunica/data/cache/fortunica_caching_manager.dart';
+import 'package:fortunica/data/models/enums/fortunica_user_status.dart';
+import 'package:fortunica/data/models/user_info/user_status.dart';
 import 'package:fortunica/infrastructure/di/app_initializer.dart';
 import 'package:fortunica/infrastructure/di/inject_config.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -77,4 +79,26 @@ class FortunicaBrand implements BaseBrand {
 
   @override
   PageRouteInfo get initRoute => const Fortunica();
+
+  @override
+  Color userStatusNameColor(BuildContext context) {
+    final UserStatus? userStatus =
+        fortunicaGetIt.get<FortunicaCachingManager>().getUserStatus();
+
+    final FortunicaUserStatus fortunicaUserStatus =
+        userStatus?.status ?? FortunicaUserStatus.offline;
+
+    return fortunicaUserStatus.statusNameColor(context);
+  }
+
+  @override
+  Color userStatusBadgeColor(BuildContext context) {
+    final UserStatus? userStatus =
+        fortunicaGetIt.get<FortunicaCachingManager>().getUserStatus();
+
+    final FortunicaUserStatus fortunicaUserStatus =
+        userStatus?.status ?? FortunicaUserStatus.offline;
+
+    return fortunicaUserStatus.statusBadgeColor(context);
+  }
 }
