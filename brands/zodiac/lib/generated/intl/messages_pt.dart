@@ -40,6 +40,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Verifique a sua conexão com a internet"),
         "chooseEmailAppZodiac":
             MessageLookupByLibrary.simpleMessage("Escolher email do app"),
+        "customerSupportZodiac":
+            MessageLookupByLibrary.simpleMessage("Suporte ao cliente"),
         "dashboardZodiac":
             MessageLookupByLibrary.simpleMessage("Painel de Controle"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("E-Mail"),

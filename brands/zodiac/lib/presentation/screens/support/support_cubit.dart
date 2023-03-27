@@ -1,20 +1,17 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
 import 'package:shared_advisor_interface/services/fresh_chat_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortunica/data/cache/fortunica_caching_manager.dart';
-import 'package:fortunica/data/models/user_info/user_info.dart';
-import 'package:fortunica/data/network/requests/restore_freshchat_id_request.dart';
-import 'package:fortunica/domain/repositories/fortunica_user_repository.dart';
-import 'package:fortunica/infrastructure/di/inject_config.dart';
-import 'package:fortunica/presentation/screens/support/support_state.dart';
 import 'package:intl/intl.dart';
+import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/user_info/user_info.dart';
+import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
+import 'package:zodiac/presentation/screens/support/support_state.dart';
 
 class SupportCubit extends Cubit<SupportState> {
-  final FortunicaCachingManager cachingManager;
+  final ZodiacCachingManager cachingManager;
   final FreshChatService freshChatService;
-  final FortunicaUserRepository userRepository;
+  final ZodiacUserRepository userRepository;
 
   StreamSubscription? _restoreSubscription;
 
@@ -51,16 +48,9 @@ class SupportCubit extends Cubit<SupportState> {
     return super.close();
   }
 
-  Future<void> _setUpFreshChat(UserInfo? userInfo) async {
-    final FreshChaUserInfo freshChaUserInfo = FreshChaUserInfo(
-      userId: userInfo?.id,
-      restoreId: userInfo?.freshchatInfo?.restoreId,
-      email: userInfo?.emails?.firstOrNull?.address,
-      profileName: userInfo?.profile?.profileName,
-    );
-
+  Future<void> _setUpFreshChat(FreshChaUserInfo? userInfo) async {
     final bool configured =
-        await freshChatService.setUpFortunicaFreshChat(freshChaUserInfo);
+        await freshChatService.setUpFortunicaFreshChat(userInfo);
     emit(state.copyWith(configured: configured));
   }
 

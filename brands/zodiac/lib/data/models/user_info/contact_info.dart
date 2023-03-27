@@ -19,16 +19,16 @@ class ContactInfo with _$ContactInfo {
     @JsonKey(name: 'country_code2') String? countryCode,
     String? state,
     dynamic phone, //Может прийти int или String
-    @JsonKey(name: 'alternative_email') String? alternativeEmail,
-    @JsonKey(name: 'first_name') String? firstName,
-    @JsonKey(name: 'last_name') String? lastName,
+    String? alternativeEmail,
+    String? firstName,
+    String? lastName,
     int? gender,
-    @JsonKey(name: 'birthday_time') String? birthdayTime,
-    @JsonKey(name: 'birthday_date') String? birthdayDate,
+    String? birthdayTime,
+    String? birthdayDate,
     int? birthday,
-    @JsonKey(name: 'is_subscriber') int? isSubscriber,
+    int? isSubscriber,
     String? avatar,
-    @JsonKey(name: 'zodiac_sign') int? zodiacSign,
+    int? zodiacSign,
   }) = _ContactInfo;
 
   factory ContactInfo.fromJson(Map<String, dynamic> json) =>

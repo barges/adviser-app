@@ -5,7 +5,7 @@ import 'package:eventify/eventify.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:web_socket_channel/io.dart';
-import 'package:zodiac/data/models/socket_message/commands.dart';
+import 'package:zodiac/data/network/websocket_manager/commands.dart';
 import 'package:zodiac/data/models/socket_message/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
