@@ -6,31 +6,32 @@ import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 import 'package:zodiac/data/models/articles/article_content.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/transparrent_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
-import 'package:zodiac/presentation/screens/article_detail_screen/articles_detail_cubit.dart';
+import 'package:zodiac/presentation/screens/article_detail_screen/article_details_cubit.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
-class ArticleDetailScreen extends StatelessWidget {
+class ArticleDetailsScreen extends StatelessWidget {
   final int articleId;
-  const ArticleDetailScreen({Key? key, required this.articleId})
+
+  const ArticleDetailsScreen({Key? key, required this.articleId})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-          ArticleDetailCubit(zodiacGetIt.get<ZodiacArticlesRepository>())
-            ..getArticleContent(articleId),
+      create: (_) => ArticleDetailsCubit(
+        zodiacGetIt.get<ZodiacArticlesRepository>(),
+        zodiacGetIt.get<ZodiacMainCubit>(),
+        articleId,
+      ),
       child: Builder(builder: (context) {
         final ArticleContent? articleContent = context
-            .select((ArticleDetailCubit cubit) => cubit.state.articleContent);
-        final MainHomeScreenCubit mainHomeScreenCubit =
-            context.read<MainHomeScreenCubit>();
+            .select((ArticleDetailsCubit cubit) => cubit.state.articleContent);
         return Scaffold(
           body: Stack(
             fit: StackFit.passthrough,
@@ -128,8 +129,7 @@ class ArticleDetailScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              TransparentAppBar(
-                  onTap: () => mainHomeScreenCubit.updateArticleCount())
+              const TransparentAppBar(),
             ],
           ),
         );

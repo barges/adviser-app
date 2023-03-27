@@ -6,13 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
-import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/data/network/requests/article_count_request.dart';
 import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/presentation/screens/home/home_state.dart';
 import 'package:zodiac/presentation/screens/home/tabs_types.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   static final List<TabsTypes> tabsList = [
@@ -25,16 +26,16 @@ class HomeCubit extends Cubit<HomeState> {
   final ZodiacArticlesRepository _articlesRepository;
 
   final ZodiacCachingManager _cacheManager;
+  final ZodiacMainCubit _mainCubit;
   final WebSocketManager _webSocketManager;
   final ValueGetter<bool> _backButtonInterceptorFunc;
-  //late final StreamSubscription _userStatusSubscription;
+  late final StreamSubscription _userStatusSubscription;
+  late final StreamSubscription<bool> _updateArticleCountSubscription;
   late final List<PageRouteInfo> routes;
-
-  MainHomeScreenCubit? _mainHomeScreenCubit;
-  StreamSubscription<bool>? _updateArticleCountSubscription;
 
   HomeCubit(
     this._cacheManager,
+    this._mainCubit,
     this._webSocketManager,
     this._articlesRepository,
     this._backButtonInterceptorFunc,
@@ -47,15 +48,26 @@ class HomeCubit extends Cubit<HomeState> {
       _webSocketManager.connect(authToken, userId);
     }
 
+    emit(
+      state.copyWith(
+        userStatus: _cacheManager.getUserStatus() ?? ZodiacUserStatus.offline,
+      ),
+    );
+
+    _userStatusSubscription =
+        _cacheManager.listenCurrentUserStatusStream((value) {
+      emit(state.copyWith(userStatus: value));
+    });
+
+    _updateArticleCountSubscription =
+        _mainCubit.articleCountUpdateTrigger.listen(
+      (_) async {
+        getArticleCount();
+      },
+    );
+
     getArticleCount();
     BackButtonInterceptor.add(_backButtonInterceptor);
-  }
-
-  @override
-  Future<void> close() async {
-    _updateArticleCountSubscription?.cancel();
-    BackButtonInterceptor.remove(_backButtonInterceptor);
-    return super.close();
   }
 
   Future<void> getArticleCount() async {
@@ -68,20 +80,13 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  // emit(state.copyWith(userStatus: _cacheManager.getUserStatus()));
-  // _userStatusSubscription =
-  //     _cacheManager.listenCurrentUserStatusStream((value) {
-  //       if (value.status != FortunicaUserStatus.live) {
-  //         changeTabIndex(tabsList.indexOf(TabsTypes.account));
-  //       }
-  //       emit(state.copyWith(userStatus: value));
-  //     });
-
-  // @override
-  // Future<void> close() {
-  //  // _userStatusSubscription.cancel();
-  //   return super.close();
-  // }
+  @override
+  Future<void> close() {
+    _updateArticleCountSubscription.cancel();
+    _userStatusSubscription.cancel();
+    BackButtonInterceptor.remove(_backButtonInterceptor);
+    return super.close();
+  }
 
   changeTabIndex(int index) {
     emit(state.copyWith(tabPositionIndex: index));
@@ -102,16 +107,5 @@ class HomeCubit extends Cubit<HomeState> {
 
   bool _backButtonInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
     return _backButtonInterceptorFunc();
-  }
-
-  set mainHomeScreenCubit(MainHomeScreenCubit mainHomeScreenCubit) {
-    _mainHomeScreenCubit = mainHomeScreenCubit;
-    _updateArticleCountSubscription?.cancel();
-    _updateArticleCountSubscription =
-        _mainHomeScreenCubit?.articleCountUpdateTrigger.listen(
-      (_) async {
-        getArticleCount();
-      },
-    );
   }
 }

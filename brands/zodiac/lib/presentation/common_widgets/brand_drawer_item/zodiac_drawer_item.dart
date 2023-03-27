@@ -90,9 +90,7 @@ class ZodiacDrawerItem extends StatelessWidget {
                               height: 12.0,
                               width: 12.0,
                               decoration: BoxDecoration(
-                                // color: currentStatus?.status
-                                //         ?.statusColorForBadge(context) ??
-                                //     theme.shadowColor,
+                                color: brand.userStatusBadgeColor(context),
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                     width: 2.0, color: theme.canvasColor),
