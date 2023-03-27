@@ -379,7 +379,7 @@ class _InputTextField extends StatelessWidget {
         thumbVisibility: true,
         child: TextField(
           scrollController: chatCubit.textInputScrollController,
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.multiline,
           textCapitalization: TextCapitalization.sentences,
           scrollPhysics: const ClampingScrollPhysics(),
           controller: chatCubit.textInputEditingController,
