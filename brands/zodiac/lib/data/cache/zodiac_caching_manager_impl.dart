@@ -108,7 +108,7 @@ class ZodiacCachingManagerImpl implements ZodiacCachingManager {
 
   @override
   Future<void> saveDetailedUserInfo(DetailedUserInfo? userInfo) async {
-    if(userInfo != null) {
+    if (userInfo != null) {
       await Hive.box(_zodiacUserBoxKey)
           .put(_detailedUserInfoKey, json.encode(userInfo.toJson()));
     }
@@ -126,9 +126,17 @@ class ZodiacCachingManagerImpl implements ZodiacCachingManager {
 
   @override
   Future<void> saveUserStatus(ZodiacUserStatus? userStatus) async {
-    if(userStatus != null) {
+    if (userStatus != null) {
       await Hive.box(_zodiacUserBoxKey)
           .put(_userStatusKey, userStatus.toString());
+
+      final DetailedUserInfo? detailedUserInfo = getDetailedUserInfo();
+      if(detailedUserInfo != null) {
+        await saveDetailedUserInfo(detailedUserInfo.copyWith(
+            details: detailedUserInfo.details?.copyWith(
+              status: userStatus,
+            )));
+      }
     }
   }
 

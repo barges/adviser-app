@@ -203,10 +203,14 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     try {
       BaseResponse response = await _userRepository.updateUserStatus(
         UpdateUserStatusRequest(
-          status: value ? 1 : 3,
+          status: value
+              ? ZodiacUserStatus.online.intFromStatus
+              : ZodiacUserStatus.offline.intFromStatus,
         ),
       );
       if (response.errorCode == 0) {
+        _cacheManager.saveUserStatus(
+            value ? ZodiacUserStatus.online : ZodiacUserStatus.offline);
         emit(state.copyWith(userStatusOnline: value));
       } else {
         _updateErrorMessage(response.getErrorMessage());

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fortunica/data/cache/fortunica_caching_manager.dart';
-import 'package:fortunica/data/models/user_info/user_status.dart';
 import 'package:fortunica/domain/repositories/fortunica_auth_repository.dart';
 import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/infrastructure/di/inject_config.dart';
@@ -63,7 +62,6 @@ class FortunicaDrawerItem extends StatelessWidget {
               child: Row(
                 children: [
                   Builder(builder: (context) {
-                    final UserStatus? currentStatus = cubit.userStatus;
                     return Stack(alignment: Alignment.bottomRight, children: [
                       Container(
                         height: 56.0,
@@ -91,9 +89,7 @@ class FortunicaDrawerItem extends StatelessWidget {
                               height: 12.0,
                               width: 12.0,
                               decoration: BoxDecoration(
-                                color: currentStatus?.status
-                                        ?.statusBadgeColor(context) ??
-                                    theme.shadowColor,
+                                color: brand.userStatusBadgeColor(context),
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                     width: 2.0, color: theme.canvasColor),

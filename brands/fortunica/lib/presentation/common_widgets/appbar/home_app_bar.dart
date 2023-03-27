@@ -66,7 +66,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                         ? Builder(builder: (context) {
                             context.select(
                                 (HomeCubit cubit) => cubit.state.userStatus);
-                            return const AuthorizedBrandsWidget();
+                            return AuthorizedBrandsAppBarWidget();
                           })
                         : const ChangeLocaleButton(),
                   ],

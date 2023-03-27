@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/payment/payment_information.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
@@ -19,7 +18,7 @@ class DashboardCubit extends Cubit<DashboardState> {
   late final StreamSubscription _userDetailsListener;
   late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
 
-  List<PaymentInformation> _paymentsList = [];
+  final List<PaymentInformation> _paymentsList = [];
 
   DashboardCubit(
     this._cacheManager,

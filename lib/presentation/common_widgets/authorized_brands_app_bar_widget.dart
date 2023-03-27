@@ -7,8 +7,10 @@ import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 
-class AuthorizedBrandsWidget extends StatelessWidget {
-  const AuthorizedBrandsWidget({Key? key}) : super(key: key);
+class AuthorizedBrandsAppBarWidget extends StatelessWidget {
+
+  ///Need not const for updates
+  AuthorizedBrandsAppBarWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
