@@ -11,14 +11,18 @@ import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/app_success/app_success.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 import 'package:zodiac/data/network/requests/login_request.dart';
+import 'package:zodiac/data/network/requests/update_locale_request.dart';
 import 'package:zodiac/data/network/responses/login_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_auth_repository.dart';
+import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/login/login_state.dart';
+import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   final ZodiacAuthRepository _repository;
   final ZodiacCachingManager _cachingManager;
+  final ZodiacUserRepository _userRepository;
 
   final ZodiacMainCubit _zodiacMainCubit;
 
@@ -33,6 +37,7 @@ class LoginCubit extends Cubit<LoginState> {
     this._repository,
     this._cachingManager,
     this._zodiacMainCubit,
+    this._userRepository,
     //this._dynamicLinkService,
   ) : super(const LoginState()) {
     //_dynamicLinkService.checkLinkForResetPassword();
@@ -97,11 +102,13 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> login(BuildContext context) async {
     if (emailIsValid() && passwordIsValid()) {
       try {
+        String languageCode = ZodiacBrand().languageCode ?? 'en';
         final LoginRequest loginRequest = LoginRequest(
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
+          locale: languageCode,
         );
-        logger.d(loginRequest);
+        logger.d('request: ${loginRequest.toJson()}');
         LoginResponse? response =
             await _repository.login(request: loginRequest);
 
@@ -111,6 +118,9 @@ class LoginCubit extends Cubit<LoginState> {
         if (response?.errorCode == 0 && token != null && userId != null) {
           await _cachingManager.saveUserToken(token);
           await _cachingManager.saveUid(userId);
+
+          await _userRepository
+              .updateLocale(UpdateLocaleRequest(locale: languageCode));
 
           goToHome(context);
         }
@@ -153,8 +163,7 @@ class LoginCubit extends Cubit<LoginState> {
     context.replaceAll([ZodiacHome()]);
   }
 
-  Future<void> goToForgotPassword(BuildContext context,
-      {String? token}) async {
+  Future<void> goToForgotPassword(BuildContext context, {String? token}) async {
     clearErrorMessage();
     clearSuccessMessage();
 
