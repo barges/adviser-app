@@ -10,6 +10,7 @@ import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/screens/home/home_cubit.dart';
 import 'package:zodiac/presentation/screens/home/home_state.dart';
 import 'package:zodiac/presentation/screens/home/tabs_types.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
   final TabsTypes? initTab;
@@ -23,12 +24,12 @@ class HomeScreen extends StatelessWidget {
               zodiacGetIt.get<ZodiacCachingManager>(),
               zodiacGetIt.get<WebSocketManager>(),
               zodiacGetIt.get<ZodiacArticlesRepository>(),
+              zodiacGetIt.get<ZodiacMainCubit>(),
             ),
         child: Builder(
           builder: (context) {
             final ThemeData theme = Theme.of(context);
             final HomeCubit cubit = context.read<HomeCubit>();
-            cubit.mainHomeScreenCubit = context.read<MainHomeScreenCubit>();
 
             return AutoTabsRouter(
               routes: cubit.routes,

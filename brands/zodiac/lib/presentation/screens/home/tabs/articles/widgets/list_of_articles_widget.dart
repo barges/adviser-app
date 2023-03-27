@@ -5,21 +5,20 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
-import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/articles/article.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
 import 'package:zodiac/presentation/common_widgets/empty_list_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_cubit.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ListOfArticlesWidget extends StatelessWidget {
   const ListOfArticlesWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final MainHomeScreenCubit mainHomeScreenCubit =
-        context.read<MainHomeScreenCubit>();
+    final ZodiacMainCubit zodiacMainCubit = context.read<ZodiacMainCubit>();
     return Padding(
       padding: const EdgeInsets.all(AppConstants.horizontalScreenPadding),
       child: Builder(builder: (context) {
@@ -28,7 +27,7 @@ class ListOfArticlesWidget extends StatelessWidget {
             context.select((ArticlesCubit cubit) => cubit.state.articleList);
         return RefreshIndicator(
           onRefresh: () {
-            mainHomeScreenCubit.updateArticleCount();
+            zodiacMainCubit.updateArticleCount();
             return articlesCubit.getArticles(refresh: true);
           },
           child: Builder(builder: (context) {
@@ -93,7 +92,7 @@ class _ArticleWidget extends StatelessWidget {
       onTap: () async {
         if (article.id != null) {
           await context.push(
-              route: ZodiacArticleDetail(articleId: article.id!));
+              route: ZodiacArticleDetails(articleId: article.id!));
           articlesCubit.markAsRead(article.id!);
         }
       },

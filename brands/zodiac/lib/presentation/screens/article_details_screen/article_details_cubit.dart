@@ -6,13 +6,21 @@ import 'package:zodiac/data/network/requests/article_content_request.dart';
 import 'package:zodiac/data/network/responses/article_content_response.dart';
 
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
-import 'package:zodiac/presentation/screens/article_detail_screen/article_detail_state.dart';
+import 'package:zodiac/presentation/screens/article_details_screen/article_details_state.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
-class ArticleDetailCubit extends Cubit<ArticlesDetailState> {
+class ArticleDetailsCubit extends Cubit<ArticleDetailsState> {
+  final int articleId;
   final ZodiacArticlesRepository _articlesRepository;
+  final ZodiacMainCubit _mainCubit;
 
-  ArticleDetailCubit(this._articlesRepository)
-      : super(const ArticlesDetailState());
+  ArticleDetailsCubit(
+    this.articleId,
+    this._articlesRepository,
+    this._mainCubit,
+  ) : super(const ArticleDetailsState()) {
+    getArticleContent(articleId).then((_) => _mainCubit.updateArticleCount());
+  }
 
   Future<void> getArticleContent(int articleId) async {
     try {

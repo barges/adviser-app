@@ -8,7 +8,7 @@ class RoutePaths {
   static const dashboardScreen = '${ZodiacBrand.alias}Dashboard';
   static const chatsScreen = '${ZodiacBrand.alias}Chats';
   static const articlesScreen = '${ZodiacBrand.alias}Articles';
-  static const articleDeteilScreen = '${ZodiacBrand.alias}ArticleDetail';
+  static const articleDetailsScreen = '${ZodiacBrand.alias}ArticleDetails';
   static const profileScreen = '${ZodiacBrand.alias}Profile';
   static const galleryScreen = '${ZodiacBrand.alias}GalleryPictures';
   static const accountScreen = '${ZodiacBrand.alias}Account';

@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:zodiac/infrastructure/routing/route_paths.dart';
+import 'package:zodiac/presentation/screens/article_details_screen/article_details_screen.dart';
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart';
 import 'package:zodiac/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'package:zodiac/presentation/screens/gallery/gallery_pictures_screen.dart';
 import 'package:zodiac/presentation/screens/home/home_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_screen.dart';
-import 'package:zodiac/presentation/screens/article_detail_screen/article_detail_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/dashboard/dashboard_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_screen.dart';
@@ -59,9 +59,9 @@ const zodiacRoute = AutoRoute(
           ),
         ]),
     AutoRoute(
-      page: ArticleDetailScreen,
-      path: RoutePaths.articleDeteilScreen,
-      name: RoutePaths.articleDeteilScreen,
+      page: ArticleDetailsScreen,
+      path: RoutePaths.articleDetailsScreen,
+      name: RoutePaths.articleDetailsScreen,
     ),
     AutoRoute(
         page: ProfileScreen,

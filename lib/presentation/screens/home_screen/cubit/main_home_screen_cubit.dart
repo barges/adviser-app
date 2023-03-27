@@ -15,7 +15,6 @@ class MainHomeScreenCubit extends Cubit<MainHomeScreenState> {
   late final List<PageRouteInfo> routes;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final PublishSubject<bool> articleCountUpdateTrigger = PublishSubject();
 
   MainHomeScreenCubit(this._globalCachingManager)
       : super(const MainHomeScreenState()) {
@@ -28,9 +27,5 @@ class MainHomeScreenCubit extends Cubit<MainHomeScreenState> {
 
   void openDrawer() {
     scaffoldKey.currentState?.openDrawer();
-  }
-
-  void updateArticleCount() {
-    articleCountUpdateTrigger.add(true);
   }
 }
