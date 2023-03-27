@@ -52,6 +52,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Insira sua senha"),
         "forgotPasswordZodiac":
             MessageLookupByLibrary.simpleMessage("Esqueceu a senha"),
+        "hereWillAppearArticles":
+            MessageLookupByLibrary.simpleMessage("Aqui aparecerão artigos"),
         "imAvailableNowZodiac":
             MessageLookupByLibrary.simpleMessage("Estou disponível agora"),
         "loginZodiac": MessageLookupByLibrary.simpleMessage("Conectar-se"),
@@ -59,6 +61,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "newCustomersZodiac":
             MessageLookupByLibrary.simpleMessage("New customers"),
         "newZodiac": MessageLookupByLibrary.simpleMessage("Novo"),
+        "noArticlesYet":
+            MessageLookupByLibrary.simpleMessage("Ainda não há artigos"),
         "noInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage("Sem conexão com a internet."),
         "noNotificationsYetZodiac":

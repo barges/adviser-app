@@ -272,6 +272,26 @@ class SZodiac {
     );
   }
 
+  /// `No articles, yet`
+  String get noArticlesYet {
+    return Intl.message(
+      'No articles, yet',
+      name: 'noArticlesYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Here will appear articles`
+  String get hereWillAppearArticles {
+    return Intl.message(
+      'Here will appear articles',
+      name: 'hereWillAppearArticles',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Search`
   String get searchZodiac {
     return Intl.message(

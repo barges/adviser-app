@@ -8,6 +8,5 @@ part 'articles_state.freezed.dart';
 class ArticlesState with _$ArticlesState {
   const factory ArticlesState({
     @Default([]) List<Article> articleList,
-    ArticleContent? articleContent,
   }) = _ArticlesState;
 }
