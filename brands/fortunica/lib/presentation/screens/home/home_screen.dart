@@ -23,63 +23,68 @@ class HomeScreen extends StatelessWidget {
       return HomeCubit(
         fortunicaGetIt.get<FortunicaCachingManager>(),
         initTab,
-        () => _backButtonInterceptor(context, openDrawer),
       );
     }, child: Builder(
       builder: (context) {
         final ThemeData theme = Theme.of(context);
         final HomeCubit cubit = context.read<HomeCubit>();
 
-        return AutoTabsRouter(
-          routes: cubit.routes,
-          lazyLoad: false,
-          builder: (context, child, animation) {
-            final tabsRouter = AutoTabsRouter.of(context);
-
-            return BlocListener<HomeCubit, HomeState>(
-              listenWhen: (prev, current) =>
-                  prev.tabPositionIndex != current.tabPositionIndex,
-              listener: (_, state) {
-                tabsRouter.setActiveIndex(
-                  state.tabPositionIndex,
-                );
-              },
-              child: Scaffold(
-                body: FadeTransition(
-                  opacity: animation,
-                  child: child,
-                ),
-                bottomNavigationBar: BottomNavigationBar(
-                  currentIndex: tabsRouter.activeIndex,
-                  type: BottomNavigationBarType.fixed,
-                  selectedIconTheme: theme.iconTheme.copyWith(
-                    color: theme.primaryColor,
-                  ),
-                  selectedLabelStyle: theme.textTheme.labelSmall,
-                  unselectedLabelStyle: theme.textTheme.labelSmall,
-                  unselectedItemColor: theme.iconTheme.color,
-                  showUnselectedLabels: true,
-                  onTap: cubit.changeTabIndex,
-                  selectedItemColor: theme.primaryColor,
-                  items: HomeCubit.tabsList
-                      .map(
-                        (e) => BottomNavigationBarItem(
-                          icon: SvgPicture.asset(
-                            e.iconPath,
-                            color: theme.shadowColor,
-                          ),
-                          activeIcon: SvgPicture.asset(
-                            e.iconPath,
-                            color: theme.primaryColor,
-                          ),
-                          label: e.tabName(context),
-                        ),
-                      )
-                      .toList(),
-                ),
-              ),
-            );
+        return WillPopScope(
+          onWillPop: () async {
+            openDrawer();
+            return false;
           },
+          child: AutoTabsRouter(
+            routes: cubit.routes,
+            lazyLoad: false,
+            builder: (context, child, animation) {
+              final tabsRouter = AutoTabsRouter.of(context);
+
+              return BlocListener<HomeCubit, HomeState>(
+                listenWhen: (prev, current) =>
+                    prev.tabPositionIndex != current.tabPositionIndex,
+                listener: (_, state) {
+                  tabsRouter.setActiveIndex(
+                    state.tabPositionIndex,
+                  );
+                },
+                child: Scaffold(
+                  body: FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  ),
+                  bottomNavigationBar: BottomNavigationBar(
+                    currentIndex: tabsRouter.activeIndex,
+                    type: BottomNavigationBarType.fixed,
+                    selectedIconTheme: theme.iconTheme.copyWith(
+                      color: theme.primaryColor,
+                    ),
+                    selectedLabelStyle: theme.textTheme.labelSmall,
+                    unselectedLabelStyle: theme.textTheme.labelSmall,
+                    unselectedItemColor: theme.iconTheme.color,
+                    showUnselectedLabels: true,
+                    onTap: cubit.changeTabIndex,
+                    selectedItemColor: theme.primaryColor,
+                    items: HomeCubit.tabsList
+                        .map(
+                          (e) => BottomNavigationBarItem(
+                            icon: SvgPicture.asset(
+                              e.iconPath,
+                              color: theme.shadowColor,
+                            ),
+                            activeIcon: SvgPicture.asset(
+                              e.iconPath,
+                              color: theme.primaryColor,
+                            ),
+                            label: e.tabName(context),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              );
+            },
+          ),
         );
       },
     ));
