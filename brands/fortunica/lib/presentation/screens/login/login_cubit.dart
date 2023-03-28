@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,7 +25,6 @@ class LoginCubit extends Cubit<LoginState> {
   final FortunicaAuthRepository _repository;
   final FortunicaCachingManager _cachingManager;
   final Dio _dio;
-  final ValueGetter<bool> _backButtonInterceptorFunc;
 
   final FortunicaMainCubit _fortunicaMainCubit;
 
@@ -41,7 +39,6 @@ class LoginCubit extends Cubit<LoginState> {
     this._cachingManager,
     this._fortunicaMainCubit,
     this._dio,
-    this._backButtonInterceptorFunc,
   ) : super(const LoginState()) {
     unauthorizedBrands = BrandManager.unauthorizedBrands();
 
@@ -69,7 +66,6 @@ class LoginCubit extends Cubit<LoginState> {
           buttonIsActive: passwordController.text.isNotEmpty &&
               emailController.text.isNotEmpty));
     });
-    BackButtonInterceptor.add(_backButtonInterceptor);
   }
 
   @override
@@ -78,7 +74,6 @@ class LoginCubit extends Cubit<LoginState> {
     passwordController.dispose();
     emailNode.dispose();
     passwordNode.dispose();
-    BackButtonInterceptor.remove(_backButtonInterceptor);
     return super.close();
   }
 
@@ -161,10 +156,6 @@ class LoginCubit extends Cubit<LoginState> {
     emit(
       state.copyWith(appSuccess: appSuccess),
     );
-  }
-
-  bool _backButtonInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
-    return _backButtonInterceptorFunc();
   }
 
   bool emailIsValid() => Utils.isEmail(emailController.text);

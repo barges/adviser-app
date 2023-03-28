@@ -41,8 +41,6 @@ dependencies:
   cached_network_image: 3.2.3
   flutter_widget_from_html_core: ^0.9.1
   flutter_rating_bar: ^4.0.1
-  back_button_interceptor: ^6.0.2
-
 
 
 dev_dependencies:

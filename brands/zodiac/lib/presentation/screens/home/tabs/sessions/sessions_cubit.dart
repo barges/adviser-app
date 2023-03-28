@@ -63,7 +63,8 @@ class SessionsCubit extends Cubit<SessionsState> {
         List<ZodiacChatsListItem>? chatsList = response.result;
         _chatsList.addAll(chatsList ?? []);
 
-        _hasMore = chatsList != null && chatsList.length < _count == false;
+        _hasMore = response.count != null &&
+            _chatsList.length < int.parse(response.count!);
 
         emit(state.copyWith(chatList: List.of(_chatsList)));
       }

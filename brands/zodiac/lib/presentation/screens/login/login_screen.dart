@@ -54,7 +54,6 @@ class _LoginScreenState extends State<LoginScreen> {
           zodiacGetIt.get<ZodiacCachingManager>(),
           zodiacGetIt.get<ZodiacMainCubit>(),
           zodiacGetIt.get<ZodiacUserRepository>(),
-          () => _backButtonInterceptor(context, openDrawer),
           //fortunicaGetIt.get<DynamicLinkService>(),
         ));
 
@@ -64,201 +63,205 @@ class _LoginScreenState extends State<LoginScreen> {
         final LoginCubit loginCubit = context.read<LoginCubit>();
         final bool isOnline = context.select(
             (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
-        return Scaffold(
-          appBar: LoginAppBar(
-            openDrawer: openDrawer,
-          ),
-          body: SafeArea(
-            child: isOnline
-                ? GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).unfocus();
-                      loginCubit.clearErrorMessage();
-                      loginCubit.clearSuccessMessage();
-                    },
-                    child: Column(
-                      children: [
-                        Builder(
-                          builder: (BuildContext context) {
-                            final AppError appError = context.select(
-                                (ZodiacMainCubit cubit) =>
-                                    cubit.state.appError);
-                            return AppErrorWidget(
-                              errorMessage: appError.getMessage(context),
-                              close: () {
-                                loginCubit.clearErrorMessage();
-                              },
-                            );
-                          },
-                        ),
-                        Builder(
-                          builder: (BuildContext context) {
-                            final AppSuccess appSuccess = context.select(
-                                (LoginCubit cubit) => cubit.state.appSuccess);
+        return WillPopScope(
+          onWillPop: () async {
+            openDrawer();
+            return false;
+          },
+          child: Scaffold(
+            appBar: LoginAppBar(
+              openDrawer: openDrawer,
+            ),
+            body: SafeArea(
+              child: isOnline
+                  ? GestureDetector(
+                      onTap: () {
+                        FocusScope.of(context).unfocus();
+                        loginCubit.clearErrorMessage();
+                        loginCubit.clearSuccessMessage();
+                      },
+                      child: Column(
+                        children: [
+                          Builder(
+                            builder: (BuildContext context) {
+                              final AppError appError = context.select(
+                                  (ZodiacMainCubit cubit) =>
+                                      cubit.state.appError);
+                              return AppErrorWidget(
+                                errorMessage: appError.getMessage(context),
+                                close: () {
+                                  loginCubit.clearErrorMessage();
+                                },
+                              );
+                            },
+                          ),
+                          Builder(
+                            builder: (BuildContext context) {
+                              final AppSuccess appSuccess = context.select(
+                                  (LoginCubit cubit) => cubit.state.appSuccess);
 
-                            return AppSuccessWidget(
-                              message: appSuccess.getMessage(context),
-                              needEmailButton: true,
-                              onClose: loginCubit.clearSuccessMessage,
-                            );
-                          },
-                        ),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 16.0,
-                                ),
-                                const ChooseBrandWidget(),
-                                const SizedBox(
-                                  height: 24.0,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal:
-                                        AppConstants.horizontalScreenPadding,
+                              return AppSuccessWidget(
+                                message: appSuccess.getMessage(context),
+                                needEmailButton: true,
+                                onClose: loginCubit.clearSuccessMessage,
+                              );
+                            },
+                          ),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 16.0,
                                   ),
-                                  child: Column(
-                                    children: [
-                                      Builder(builder: (BuildContext context) {
-                                        final ValidationErrorType
-                                            emailErrorType = context.select(
-                                                (LoginCubit cubit) =>
-                                                    cubit.state.emailErrorType);
-                                        context.select((LoginCubit cubit) =>
-                                            cubit.state.emailHasFocus);
-                                        return AppTextField(
-                                          errorType: emailErrorType,
-                                          label:
-                                              SZodiac.of(context).emailZodiac,
-                                          hintText: SZodiac.of(context)
-                                              .enterYourEmailZodiac,
-                                          focusNode: loginCubit.emailNode,
-                                          textInputType:
-                                              TextInputType.emailAddress,
-                                          textInputAction: TextInputAction.next,
-                                          nextFocusNode:
-                                              loginCubit.passwordNode,
-                                          controller:
-                                              loginCubit.emailController,
-                                        );
-                                      }),
-                                      const SizedBox(
-                                        height: 24.0,
-                                      ),
-                                      Builder(builder: (BuildContext context) {
-                                        final bool hiddenPassword =
-                                            context.select((LoginCubit cubit) =>
-                                                cubit.state.hiddenPassword);
-                                        context.select((LoginCubit cubit) =>
-                                            cubit.state.passwordHasFocus);
-                                        final ValidationErrorType
-                                            passwordErrorType =
-                                            context.select((LoginCubit cubit) =>
-                                                cubit.state.passwordErrorType);
-                                        return PasswordTextField(
-                                          controller:
-                                              loginCubit.passwordController,
-                                          focusNode: loginCubit.passwordNode,
-                                          label: SZodiac.of(context)
-                                              .passwordZodiac,
-                                          errorType: passwordErrorType,
-                                          hintText: SZodiac.of(context)
-                                              .enterYourPasswordZodiac,
-                                          textInputAction: TextInputAction.next,
-                                          onSubmitted: (_) => loginCubit.login,
-                                          hiddenPassword: hiddenPassword,
-                                          clickToHide:
-                                              loginCubit.showHidePassword,
-                                        );
-                                      }),
-                                      const SizedBox(
-                                        height: 24.0,
-                                      ),
-                                      Builder(builder: (context) {
-                                        final bool isActive = context.select(
-                                          (LoginCubit cubit) =>
-                                              cubit.state.buttonIsActive,
-                                        );
-                                        return AppElevatedButton(
-                                          title:
-                                              SZodiac.of(context).loginZodiac,
-                                          onPressed: isActive
-                                              ? () => loginCubit.login(context)
-                                              : null,
-                                        );
-                                      }),
-                                      const SizedBox(
-                                        height: 22.0,
-                                      ),
-                                      const ForgotPasswordButtonWidget(),
-                                    ],
+                                  const ChooseBrandWidget(),
+                                  const SizedBox(
+                                    height: 24.0,
                                   ),
-                                ),
-                                GestureDetector(
-                                  onLongPress: () {
-                                    // if (kDebugMode) {
-                                    //   context.read<LoginCubit>().emailController.text =
-                                    //   'primrose.test1@gmail.com';
-                                    //   context.read<LoginCubit>().passwordController.text = '1234567891';
-                                    // }
-                                  },
-                                  onDoubleTap: () {
-                                    if (kDebugMode) {
-                                      context
-                                          .read<LoginCubit>()
-                                          .emailController
-                                          .text = 'developmentree+2@gmail.com';
-                                      context
-                                          .read<LoginCubit>()
-                                          .passwordController
-                                          .text = '12345678';
-                                    }
-                                  },
-                                  child: Padding(
+                                  Padding(
                                     padding: const EdgeInsets.symmetric(
-                                      vertical: 24.0,
+                                      horizontal:
+                                          AppConstants.horizontalScreenPadding,
                                     ),
-                                    child: Utils.isDarkMode(context)
-                                        ? Assets.images.logos.loginLogoDark
-                                            .image(
-                                            height: AppConstants.logoSize,
-                                            width: AppConstants.logoSize,
-                                          )
-                                        : Assets.images.logos.loginLogo.image(
-                                            height: AppConstants.logoSize,
-                                            width: AppConstants.logoSize,
-                                          ),
+                                    child: Column(
+                                      children: [
+                                        Builder(
+                                            builder: (BuildContext context) {
+                                          final ValidationErrorType
+                                              emailErrorType = context.select(
+                                                  (LoginCubit cubit) => cubit
+                                                      .state.emailErrorType);
+                                          context.select((LoginCubit cubit) =>
+                                              cubit.state.emailHasFocus);
+                                          return AppTextField(
+                                            errorType: emailErrorType,
+                                            label:
+                                                SZodiac.of(context).emailZodiac,
+                                            hintText: SZodiac.of(context)
+                                                .enterYourEmailZodiac,
+                                            focusNode: loginCubit.emailNode,
+                                            textInputType:
+                                                TextInputType.emailAddress,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            nextFocusNode:
+                                                loginCubit.passwordNode,
+                                            controller:
+                                                loginCubit.emailController,
+                                          );
+                                        }),
+                                        const SizedBox(
+                                          height: 24.0,
+                                        ),
+                                        Builder(
+                                            builder: (BuildContext context) {
+                                          final bool hiddenPassword = context
+                                              .select((LoginCubit cubit) =>
+                                                  cubit.state.hiddenPassword);
+                                          context.select((LoginCubit cubit) =>
+                                              cubit.state.passwordHasFocus);
+                                          final ValidationErrorType
+                                              passwordErrorType =
+                                              context.select(
+                                                  (LoginCubit cubit) => cubit
+                                                      .state.passwordErrorType);
+                                          return PasswordTextField(
+                                            controller:
+                                                loginCubit.passwordController,
+                                            focusNode: loginCubit.passwordNode,
+                                            label: SZodiac.of(context)
+                                                .passwordZodiac,
+                                            errorType: passwordErrorType,
+                                            hintText: SZodiac.of(context)
+                                                .enterYourPasswordZodiac,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            onSubmitted: (_) =>
+                                                loginCubit.login,
+                                            hiddenPassword: hiddenPassword,
+                                            clickToHide:
+                                                loginCubit.showHidePassword,
+                                          );
+                                        }),
+                                        const SizedBox(
+                                          height: 24.0,
+                                        ),
+                                        Builder(builder: (context) {
+                                          final bool isActive = context.select(
+                                            (LoginCubit cubit) =>
+                                                cubit.state.buttonIsActive,
+                                          );
+                                          return AppElevatedButton(
+                                            title:
+                                                SZodiac.of(context).loginZodiac,
+                                            onPressed: isActive
+                                                ? () =>
+                                                    loginCubit.login(context)
+                                                : null,
+                                          );
+                                        }),
+                                        const SizedBox(
+                                          height: 22.0,
+                                        ),
+                                        const ForgotPasswordButtonWidget(),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  GestureDetector(
+                                    onLongPress: () {
+                                      // if (kDebugMode) {
+                                      //   context.read<LoginCubit>().emailController.text =
+                                      //   'primrose.test1@gmail.com';
+                                      //   context.read<LoginCubit>().passwordController.text = '1234567891';
+                                      // }
+                                    },
+                                    onDoubleTap: () {
+                                      if (kDebugMode) {
+                                        context
+                                                .read<LoginCubit>()
+                                                .emailController
+                                                .text =
+                                            'developmentree+2@gmail.com';
+                                        context
+                                            .read<LoginCubit>()
+                                            .passwordController
+                                            .text = '12345678';
+                                      }
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 24.0,
+                                      ),
+                                      child: Utils.isDarkMode(context)
+                                          ? Assets.images.logos.loginLogoDark
+                                              .image(
+                                              height: AppConstants.logoSize,
+                                              width: AppConstants.logoSize,
+                                            )
+                                          : Assets.images.logos.loginLogo.image(
+                                              height: AppConstants.logoSize,
+                                              width: AppConstants.logoSize,
+                                            ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
+                        ],
+                      ),
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        NoConnectionWidget(),
                       ],
                     ),
-                  )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      NoConnectionWidget(),
-                    ],
-                  ),
+            ),
           ),
         );
       }),
     );
   }
-}
-
-bool _backButtonInterceptor(BuildContext context, VoidCallback openDrawer) {
-  if (context.router.current.name.toUpperCase() ==
-          RoutePaths.loginScreen.toUpperCase() &&
-      ZodiacBrand().isCurrent) {
-    openDrawer();
-    return true;
-  }
-  return false;
 }

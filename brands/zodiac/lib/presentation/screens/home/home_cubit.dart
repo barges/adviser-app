@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:back_button_interceptor/back_button_interceptor.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -28,7 +26,6 @@ class HomeCubit extends Cubit<HomeState> {
   final ZodiacCachingManager _cacheManager;
   final ZodiacMainCubit _mainCubit;
   final WebSocketManager _webSocketManager;
-  final ValueGetter<bool> _backButtonInterceptorFunc;
   late final StreamSubscription _userStatusSubscription;
   late final StreamSubscription<bool> _updateArticleCountSubscription;
   late final List<PageRouteInfo> routes;
@@ -38,7 +35,6 @@ class HomeCubit extends Cubit<HomeState> {
     this._mainCubit,
     this._webSocketManager,
     this._articlesRepository,
-    this._backButtonInterceptorFunc,
   ) : super(const HomeState()) {
     routes = tabsList.map((e) => _getPage(e)).toList();
     final String? authToken = _cacheManager.getUserToken();
@@ -67,7 +63,6 @@ class HomeCubit extends Cubit<HomeState> {
     );
 
     getArticleCount();
-    BackButtonInterceptor.add(_backButtonInterceptor);
   }
 
   Future<void> getArticleCount() async {
@@ -84,7 +79,6 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> close() {
     _updateArticleCountSubscription.cancel();
     _userStatusSubscription.cancel();
-    BackButtonInterceptor.remove(_backButtonInterceptor);
     return super.close();
   }
 
@@ -103,9 +97,5 @@ class HomeCubit extends Cubit<HomeState> {
       case TabsTypes.articles:
         return const ZodiacArticles();
     }
-  }
-
-  bool _backButtonInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
-    return _backButtonInterceptorFunc();
   }
 }
