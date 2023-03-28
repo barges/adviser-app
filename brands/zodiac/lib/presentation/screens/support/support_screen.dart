@@ -24,7 +24,6 @@ class SupportScreen extends StatelessWidget {
         userRepository: zodiacGetIt.get<ZodiacUserRepository>(),
       ),
       child: Builder(builder: (context) {
-        final SupportCubit supportCubit = context.read<SupportCubit>();
         return BlocListener<SupportCubit, SupportState>(
           listenWhen: (prev, current) => prev.configured != current.configured,
           listener: (_, state) {

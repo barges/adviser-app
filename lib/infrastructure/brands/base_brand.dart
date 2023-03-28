@@ -39,4 +39,6 @@ abstract class BaseBrand {
   List<String> freshChatCategories(String languageCode);
 
   List<String> freshChatTags(String languageCode);
+
+  void goToSupport();
 }

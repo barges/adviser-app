@@ -3,6 +3,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/drawer_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,7 +43,7 @@ class BottomSection extends StatelessWidget {
                 text: S.of(context).customerSupport,
                 onTap: () {
                   context.pop();
-                  context.push(route: const FortunicaSupport());
+                  context.read<MainCubit>().state.currentBrand?.goToSupport();
                 },
               ),
               const SizedBox(

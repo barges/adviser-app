@@ -39,18 +39,10 @@ class SupportCubit extends Cubit<SupportState> {
     final FreshChaUserInfo freshChaUserInfo = FreshChaUserInfo(
       userId: details?.id.toString(),
       email: details?.email,
-      profileName: userInfo?.profile?.profileName,
+      profileName: details?.name,
     );
     final bool configured =
-        await freshChatService.setUpFortunicaFreshChat(userInfo);
+        await freshChatService.setUpFortunicaFreshChat(freshChaUserInfo);
     emit(state.copyWith(configured: configured));
-  }
-
-  List<String> getCategories() {
-    return freshChatService.categoriesByLocale(locale);
-  }
-
-  List<String> getContactUsTags() {
-    return freshChatService.tagsByLocale(locale);
   }
 }

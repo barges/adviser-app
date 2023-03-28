@@ -11,6 +11,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 
 class FortunicaBrand implements BaseBrand {
   static const alias = 'fortunica';
@@ -100,6 +101,11 @@ class FortunicaBrand implements BaseBrand {
         userStatus?.status ?? FortunicaUserStatus.offline;
 
     return fortunicaUserStatus.statusBadgeColor(context);
+  }
+
+  @override
+  void goToSupport(){
+    _context?.push(route: const FortunicaSupport());
   }
 
   @override
