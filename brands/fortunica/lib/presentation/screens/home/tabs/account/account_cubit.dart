@@ -8,7 +8,6 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.da
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortunica/data/cache/fortunica_caching_manager.dart';
@@ -34,7 +33,6 @@ class AccountCubit extends Cubit<AccountState> {
   final FortunicaUserRepository _userRepository;
   final ConnectivityService _connectivityService;
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final Future<bool> Function(bool needShowSettingsAlert) _handlePermission;
 
   final FortunicaCachingManager _cacheManager;
@@ -130,13 +128,10 @@ class AccountCubit extends Cubit<AccountState> {
         int milliseconds = 0;
 
         isPushNotificationPermissionGranted = await _handlePermission(false);
+        final UserInfo userInfo = await _userRepository.getUserInfo();
 
         if (isPushNotificationPermissionGranted == true) {
           _pushNotificationManager.registerForPushNotifications();
-        }
-
-        final UserInfo userInfo = await _userRepository.getUserInfo();
-        if (isPushNotificationPermissionGranted == true) {
           await _sendPushToken();
         }
 
@@ -281,7 +276,7 @@ class AccountCubit extends Cubit<AccountState> {
   Future<void> _sendPushToken() async {
     if (!_cacheManager.pushTokenIsSent) {
       if (await _connectivityService.checkConnection()) {
-        String? pushToken = await _firebaseMessaging.getToken();
+        String? pushToken = await _pushNotificationManager.getToken();
         if (pushToken != null) {
           final SetPushNotificationTokenRequest request =
               SetPushNotificationTokenRequest(
@@ -309,8 +304,6 @@ class AccountCubit extends Cubit<AccountState> {
   }
 
   Future<void> goToEditProfile(BuildContext context) async {
-
-
     final dynamic needUpdateInfo = await context.push(
         route: FortunicaEditProfile(isAccountTimeout: state.isTimeout));
 
@@ -320,12 +313,8 @@ class AccountCubit extends Cubit<AccountState> {
   }
 
   void goToAdvisorPreview(BuildContext context) {
-
-
-
     context.push(
         route: FortunicaAdvisorPreview(isAccountTimeout: state.isTimeout));
-
   }
 
   Future<void> openSettingsUrl(BuildContext context) async {

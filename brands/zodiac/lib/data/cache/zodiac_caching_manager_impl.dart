@@ -26,6 +26,16 @@ class ZodiacCachingManagerImpl implements ZodiacCachingManager {
     await Hive.openBox(_zodiacLocaleBoxKey);
   }
 
+  bool _pushTokenIsSent = false;
+
+  @override
+  bool get pushTokenIsSent => _pushTokenIsSent;
+
+  @override
+  set pushTokenIsSent(bool value) {
+    _pushTokenIsSent = value;
+  }
+
   @override
   String? getUserToken() {
     return Hive.box(_zodiacUserBoxKey).get(_userTokenKey);
@@ -39,6 +49,7 @@ class ZodiacCachingManagerImpl implements ZodiacCachingManager {
   @override
   Future<void> logout() async {
     await Hive.box(_zodiacUserBoxKey).clear();
+    _pushTokenIsSent = false;
   }
 
   @override
@@ -131,11 +142,11 @@ class ZodiacCachingManagerImpl implements ZodiacCachingManager {
           .put(_userStatusKey, userStatus.toString());
 
       final DetailedUserInfo? detailedUserInfo = getDetailedUserInfo();
-      if(detailedUserInfo != null) {
+      if (detailedUserInfo != null) {
         await saveDetailedUserInfo(detailedUserInfo.copyWith(
             details: detailedUserInfo.details?.copyWith(
-              status: userStatus,
-            )));
+          status: userStatus,
+        )));
       }
     }
   }
@@ -146,7 +157,9 @@ class ZodiacCachingManagerImpl implements ZodiacCachingManager {
     return Hive.box(_zodiacUserBoxKey)
         .watch(key: _userStatusKey)
         .listen((event) {
-      callback(ZodiacUserStatus.statusFromString(event.value));
+      if (event.value != null) {
+        callback(ZodiacUserStatus.statusFromString(event.value));
+      }
     });
   }
 }

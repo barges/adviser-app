@@ -42,7 +42,7 @@ class AppInfo {
     package = 'com.zodiactouch';
     version = packageInfo.version;
     locale = Intl.getCurrentLocale();
-    appsflyerId = '1469200336473-6162102739781632588';
+    appsflyerId = '9200336473-61621';
 
     if (Platform.isAndroid) {
       const AndroidId androidIdPlugin = AndroidId();
