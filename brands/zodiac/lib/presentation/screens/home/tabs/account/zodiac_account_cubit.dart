@@ -5,13 +5,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
+import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
 import 'package:zodiac/data/network/requests/expert_details_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
+import 'package:zodiac/data/network/requests/send_push_token_request.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
@@ -26,13 +30,21 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   final ZodiacMainCubit _mainCubit;
   final ZodiacUserRepository _userRepository;
   final ZodiacCachingManager _cacheManager;
+  final ConnectivityService _connectivityService;
+  final PushNotificationManager _pushNotificationManager;
+  final Future<bool> Function(bool needShowSettingsAlert) _handlePermission;
 
   late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
+  StreamSubscription<bool>? _connectivitySubscription;
+  bool? isPushNotificationPermissionGranted;
 
   ZodiacAccountCubit(
     this._mainCubit,
     this._userRepository,
     this._cacheManager,
+    this._connectivityService,
+    this._pushNotificationManager,
+    this._handlePermission,
   ) : super(const ZodiacAccountState()) {
     getUserInfo();
     _updateUserBalanceSubscription =
@@ -44,6 +56,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   @override
   Future<void> close() async {
     _updateUserBalanceSubscription.cancel();
+    _connectivitySubscription?.cancel();
     super.close();
   }
 
@@ -59,43 +72,78 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
 
   Future<void> getUserInfo() async {
     try {
-      int? userId = _cacheManager.getUid();
-      logger.d('GET INFO');
-      logger.d(userId);
-      if (userId != null) {
-        ExpertDetailsResponse response = await _userRepository
-            .getDetailedUserInfo(ExpertDetailsRequest(expertId: userId));
-        if (response.errorCode == 0) {
-          DetailedUserInfo? userInfo = response.result;
-          UserDetails? userDetails = userInfo?.details;
+      if (await _connectivityService.checkConnection()) {
+        isPushNotificationPermissionGranted = await _handlePermission(false);
 
-          _cacheManager.saveDetailedUserInfo(userInfo);
-          emit(state.copyWith(
-            userInfo: userDetails,
-            reviewsCount: userInfo?.reviews?.count,
-            chatsEnabled: userDetails?.chatEnabled == 1,
-            callsEnabled: userDetails?.callEnabled == 1,
-            randomCallsEnabled: userDetails?.randomCallEnabled == 1,
-            userStatusOnline: userDetails?.status == 1,
-          ));
+        if (isPushNotificationPermissionGranted == true) {
+          _pushNotificationManager.registerForPushNotifications();
+          await _sendPushToken();
+        }
 
-          NotificationsResponse notificationsResponse =
-              await _userRepository.getNotificationsList(
-            NotificationsRequest(count: 0, offset: 0),
-          );
-          if (notificationsResponse.errorCode == 0) {
+        int? userId = _cacheManager.getUid();
+        logger.d('userId --- $userId');
+        if (userId != null) {
+          ExpertDetailsResponse response = await _userRepository
+              .getDetailedUserInfo(ExpertDetailsRequest(expertId: userId));
+          if (response.errorCode == 0) {
+            DetailedUserInfo? userInfo = response.result;
+            UserDetails? userDetails = userInfo?.details;
+
+            _cacheManager.saveDetailedUserInfo(userInfo);
+            _cacheManager.saveUserStatus(userDetails?.status);
             emit(state.copyWith(
-                unreadedNotificationsCount:
-                    notificationsResponse.unreadedCount ?? 0));
+              userInfo: userDetails,
+              reviewsCount: userInfo?.reviews?.count,
+              chatsEnabled: userDetails?.chatEnabled == 1,
+              callsEnabled: userDetails?.callEnabled == 1,
+              randomCallsEnabled: userDetails?.randomCallEnabled == 1,
+              userStatusOnline: userDetails?.status == ZodiacUserStatus.online,
+            ));
+
+            NotificationsResponse notificationsResponse =
+                await _userRepository.getNotificationsList(
+              NotificationsRequest(count: 0, offset: 0),
+            );
+            if (notificationsResponse.errorCode == 0) {
+              emit(state.copyWith(
+                  unreadedNotificationsCount:
+                      notificationsResponse.unreadedCount ?? 0));
+            } else {
+              _updateErrorMessage(notificationsResponse.getErrorMessage());
+            }
           } else {
-            _updateErrorMessage(notificationsResponse.getErrorMessage());
+            _updateErrorMessage(response.getErrorMessage());
           }
-        } else {
-          _updateErrorMessage(response.getErrorMessage());
         }
       }
     } catch (e) {
       logger.d(e);
+    }
+  }
+
+  Future<void> _sendPushToken() async {
+    if (!_cacheManager.pushTokenIsSent) {
+      if (await _connectivityService.checkConnection()) {
+        String? pushToken = await _pushNotificationManager.getToken();
+        if (pushToken != null) {
+          final SendPushTokenRequest request = SendPushTokenRequest(
+            registrationId: pushToken,
+          );
+          final BaseResponse response =
+              await _userRepository.sendPushToken(request);
+          if (response.status == true) {
+            _cacheManager.pushTokenIsSent = true;
+          }
+        }
+        _connectivitySubscription?.cancel();
+      } else {
+        _connectivitySubscription =
+            _connectivityService.connectivityStream.listen((event) {
+          if (event) {
+            _sendPushToken();
+          }
+        });
+      }
     }
   }
 
@@ -201,10 +249,14 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     try {
       BaseResponse response = await _userRepository.updateUserStatus(
         UpdateUserStatusRequest(
-          status: value ? 1 : 3,
+          status: value
+              ? ZodiacUserStatus.online.intFromStatus
+              : ZodiacUserStatus.offline.intFromStatus,
         ),
       );
       if (response.errorCode == 0) {
+        _cacheManager.saveUserStatus(
+            value ? ZodiacUserStatus.online : ZodiacUserStatus.offline);
         emit(state.copyWith(userStatusOnline: value));
       } else {
         _updateErrorMessage(response.getErrorMessage());

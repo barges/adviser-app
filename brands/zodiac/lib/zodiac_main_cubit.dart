@@ -1,14 +1,15 @@
 import 'dart:async';
 
-import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/zodiac_main_state.dart';
 
 @singleton
 class ZodiacMainCubit extends Cubit<ZodiacMainState> {
+
   Timer? _errorTimer;
 
   final PublishSubject<bool> sessionsUpdateTrigger = PublishSubject();

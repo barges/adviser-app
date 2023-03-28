@@ -38,33 +38,24 @@ class PushNotificationManagerImpl implements PushNotificationManager {
     }
   }
 
+  @override
+  Future<String?> getToken() async {
+    return await messaging.getToken();
+  }
+
   Future<void> _configure() async {
     IsolateNameServer.registerPortWithName(
       _receiveNotificationPort.sendPort,
       _notificationPortChannel,
     );
     _receiveNotificationPort.listen((dynamic message) {
-      final BuildContext? fortunicaContext = FortunicaBrand().context;
-      logger.d(message);
+      logger.d('ISOLATE PUSH NOTIFICATION LISTENER');
       if (message is Map<String, dynamic>) {
         Map<String, dynamic> map = jsonDecode(message['meta'] ?? '{}');
-        final String? type = map['type'];
-        if (type != null) {
-          if (type == PushType.publicReturned.name) {
-            if (fortunicaContext != null &&
-                fortunicaContext.currentRoutePath ==
-                    RoutePathsFortunica.chatScreen) {
-              fortunicaContext
-                  .replaceAll([FortunicaAuth(initTab: TabsTypes.sessions)]);
-            } else {
-              fortunicaGetIt.get<FortunicaMainCubit>().updateSessions();
-            }
-          } else if (type != PushType.tips.name) {
-            fortunicaGetIt.get<FortunicaMainCubit>().updateSessions();
-          }
-        }
+        _messageTypeHandler(map);
       }
     });
+
     _configLocalNotification();
     await _setUpFirebaseMessaging();
   }
@@ -81,13 +72,6 @@ class PushNotificationManagerImpl implements PushNotificationManager {
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse: (response) async {
-      logger.d('+++++++++++++++++++++++');
-      logger.d(response.notificationResponseType);
-      logger.d(response.payload);
-      logger.d(response.id);
-      logger.d(response.actionId);
-      logger.d(response.input);
-      logger.d('+++++++++++++++++++++++');
       final Map<String, dynamic> message = json.decode(response.payload ?? '');
 
       _navigateToNextScreen(RemoteMessage(data: message));
@@ -150,39 +134,24 @@ class PushNotificationManagerImpl implements PushNotificationManager {
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      Map<String, dynamic> map = jsonDecode(message.data['meta'] ?? '');
-
       logger.d('***********************');
       logger.d(message.toMap());
-      logger.d(message.data);
-      logger.d(message.data['meta']);
-      logger.d(map['entityId']);
       logger.d('***********************');
 
-      final BuildContext? fortunicaContext = FortunicaBrand().context;
-
-      if (Platform.isAndroid) {
+      if (!Platform.isIOS) {
         showNotification(message);
       }
-
-      final String? type = map['type'];
-      if (type != null) {
-        if (type == PushType.publicReturned.name) {
-          if (fortunicaContext != null &&
-              fortunicaContext.currentRoutePath ==
-                  RoutePathsFortunica.chatScreen) {
-            fortunicaContext
-                .replaceAll([FortunicaAuth(initTab: TabsTypes.sessions)]);
-          } else {
-            fortunicaGetIt.get<FortunicaMainCubit>().updateSessions();
-          }
-        } else if (type != PushType.tips.name) {
-          fortunicaGetIt.get<FortunicaMainCubit>().updateSessions();
-        }
-      }
+      Map<String, dynamic> map = jsonDecode(message.data['meta'] ?? '{}');
+      _messageTypeHandler(map);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      Map<String, dynamic> meta = jsonDecode(message.data['meta'] ?? '{}');
+      final String? type = meta['type'];
+      if (type != null && type != PushType.tips.name) {
+        fortunicaGetIt.get<FortunicaMainCubit>().updateSessions();
+      }
+
       _navigateToNextScreen(message);
     });
 
@@ -194,14 +163,32 @@ class PushNotificationManagerImpl implements PushNotificationManager {
 Future<void> _backgroundMessageHandler(RemoteMessage message) async {
   logger.d('***********************');
   logger.d(message.toMap());
-  logger.d(message.data);
-  logger.d('On background');
   logger.d('***********************');
+  logger.d('On background');
 
   final SendPort? send =
       IsolateNameServer.lookupPortByName(_notificationPortChannel);
 
   send?.send(message.data);
+}
+
+void _messageTypeHandler(Map<String, dynamic> meta) {
+  final BuildContext? fortunicaContext = FortunicaBrand().context;
+
+  final String? type = meta['type'];
+  if (type != null) {
+    if (type == PushType.publicReturned.name) {
+      if (fortunicaContext != null &&
+          fortunicaContext.currentRoutePath == RoutePathsFortunica.chatScreen) {
+        fortunicaContext
+            .replaceAll([FortunicaAuth(initTab: TabsTypes.sessions)]);
+      } else {
+        fortunicaGetIt.get<FortunicaMainCubit>().updateSessions();
+      }
+    } else if (type != PushType.tips.name) {
+      fortunicaGetIt.get<FortunicaMainCubit>().updateSessions();
+    }
+  }
 }
 
 Future<void> _navigateToNextScreen(RemoteMessage? message) async {

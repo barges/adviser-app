@@ -10,16 +10,16 @@ import 'package:zodiac/presentation/screens/article_details_screen/article_detai
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ArticleDetailsCubit extends Cubit<ArticleDetailsState> {
-  final int articleId;
   final ZodiacArticlesRepository _articlesRepository;
   final ZodiacMainCubit _mainCubit;
+  final int _articleId;
 
   ArticleDetailsCubit(
-    this.articleId,
     this._articlesRepository,
     this._mainCubit,
+    this._articleId,
   ) : super(const ArticleDetailsState()) {
-    getArticleContent(articleId).then((_) => _mainCubit.updateArticleCount());
+    getArticleContent(_articleId).then((_) => _mainCubit.updateArticleCount());
   }
 
   Future<void> getArticleContent(int articleId) async {
@@ -27,6 +27,7 @@ class ArticleDetailsCubit extends Cubit<ArticleDetailsState> {
       final ArticleContentResponse? response =
           await _articlesRepository.getArticleContent(
               request: ArticleContentRequest(articleId: articleId));
+
       ArticleContent? result = response?.result;
 
       emit(

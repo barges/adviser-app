@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 
 class TransparentAppBar extends StatelessWidget {
@@ -36,7 +36,7 @@ class TransparentAppBar extends StatelessWidget {
           alignment: Alignment.bottomLeft,
           child: AppIconButton(
             icon: Assets.vectors.arrowLeft.path,
-            onTap: context.popRoute,
+            onTap: context.pop,
           ),
         ),
       );

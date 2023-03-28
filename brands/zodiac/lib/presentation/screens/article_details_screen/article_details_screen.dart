@@ -17,18 +17,17 @@ import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ArticleDetailsScreen extends StatelessWidget {
   final int articleId;
-  const ArticleDetailsScreen({
-    Key? key,
-    required this.articleId,
-  }) : super(key: key);
+
+  const ArticleDetailsScreen({Key? key, required this.articleId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ArticleDetailsCubit(
-        articleId,
         zodiacGetIt.get<ZodiacArticlesRepository>(),
         zodiacGetIt.get<ZodiacMainCubit>(),
+        articleId,
       ),
       child: Builder(builder: (context) {
         final ArticleContent? articleContent = context
@@ -130,7 +129,7 @@ class ArticleDetailsScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const TransparentAppBar()
+              const TransparentAppBar(),
             ],
           ),
         );

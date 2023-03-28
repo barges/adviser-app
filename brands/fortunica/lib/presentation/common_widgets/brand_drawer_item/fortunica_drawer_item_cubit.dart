@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortunica/data/cache/fortunica_caching_manager.dart';
-import 'package:fortunica/data/models/user_info/user_status.dart';
 import 'package:fortunica/domain/repositories/fortunica_auth_repository.dart';
 import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/presentation/common_widgets/brand_drawer_item/fortunica_drawer_item_state.dart';
@@ -17,15 +16,11 @@ class FortunicaDrawerItemCubit extends Cubit<FortunicaDrawerItemState> {
   final GlobalCachingManager _globalCachingManager;
   final FortunicaCachingManager _fortunicaCachingManager;
 
-  late final UserStatus? userStatus;
-
   FortunicaDrawerItemCubit(
     this._authRepository,
     this._globalCachingManager,
     this._fortunicaCachingManager,
-  ) : super(const FortunicaDrawerItemState()) {
-    userStatus = _fortunicaCachingManager.getUserStatus();
-  }
+  ) : super(const FortunicaDrawerItemState());
 
   Future<void> logout(BuildContext context) async {
     final HttpResponse response = await _authRepository.logout();

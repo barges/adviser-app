@@ -551,6 +551,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Customer Support`
+  String get customerSupportZodiac {
+    return Intl.message(
+      'Customer Support',
+      name: 'customerSupportZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

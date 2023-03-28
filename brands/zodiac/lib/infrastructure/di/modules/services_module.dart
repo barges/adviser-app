@@ -1,22 +1,20 @@
-
-
 import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
+import 'package:shared_advisor_interface/services/fresh_chat_service.dart';
+import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
 
 @module
 abstract class ServicesModule {
+  @singleton
+  BrandManager get brandManager => globalGetIt.get<BrandManager>();
 
   @singleton
-  BrandManager get brandManager =>
-      globalGetIt.get<BrandManager>();
-
-  @singleton
-  MainCubit get mainCubit =>
-      globalGetIt.get<MainCubit>();
+  MainCubit get mainCubit => globalGetIt.get<MainCubit>();
 
   @singleton
   GlobalCachingManager get globalCachingManager =>
@@ -25,13 +23,15 @@ abstract class ServicesModule {
   @singleton
   ConnectivityService get connectivityService =>
       globalGetIt.get<ConnectivityService>();
-    // fortunicaGetIt.registerLazySingleton<AuthRepository>(
-    //     () => AuthRepositoryImpl(fortunicaGetIt.get<AuthApi>()));
-    // fortunicaGetIt.registerLazySingleton<UserRepository>(() =>
-    //     UserRepositoryImpl(fortunicaGetIt.get<UserApi>(), fortunicaGetIt.get<FortunicaCachingManager>()));
-    // fortunicaGetIt.registerLazySingleton<ChatsRepository>(
-    //     () => ChatsRepositoryImpl(getIt.get<ChatsApi>()));
-    // fortunicaGetIt.registerLazySingleton<CustomerRepository>(
-    //     () => CustomerRepositoryImpl(getIt.get<CustomerApi>()));
 
+  @singleton
+  FreshChatService get freshChatService => globalGetIt.get<FreshChatService>();
+
+  @singleton
+  PushNotificationManager get pushNotificationManager =>
+      globalGetIt.get<PushNotificationManager>();
+
+  @singleton
+  CheckPermissionService get checkPermissionService =>
+      globalGetIt.get<CheckPermissionService>();
 }

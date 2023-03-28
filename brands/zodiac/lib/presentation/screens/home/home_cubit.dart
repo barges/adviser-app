@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/data/network/requests/article_count_request.dart';
 import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
@@ -21,20 +22,19 @@ class HomeCubit extends Cubit<HomeState> {
   ];
 
   final ZodiacArticlesRepository _articlesRepository;
-  final ZodiacMainCubit _zodiacMainCubit;
 
   final ZodiacCachingManager _cacheManager;
+  final ZodiacMainCubit _mainCubit;
   final WebSocketManager _webSocketManager;
-  //late final StreamSubscription _userStatusSubscription;
+  late final StreamSubscription _userStatusSubscription;
+  late final StreamSubscription<bool> _updateArticleCountSubscription;
   late final List<PageRouteInfo> routes;
-
-  StreamSubscription<bool>? _updateArticleCountSubscription;
 
   HomeCubit(
     this._cacheManager,
+    this._mainCubit,
     this._webSocketManager,
     this._articlesRepository,
-    this._zodiacMainCubit,
   ) : super(const HomeState()) {
     routes = tabsList.map((e) => _getPage(e)).toList();
     final String? authToken = _cacheManager.getUserToken();
@@ -44,20 +44,25 @@ class HomeCubit extends Cubit<HomeState> {
       _webSocketManager.connect(authToken, userId);
     }
 
+    emit(
+      state.copyWith(
+        userStatus: _cacheManager.getUserStatus() ?? ZodiacUserStatus.offline,
+      ),
+    );
+
+    _userStatusSubscription =
+        _cacheManager.listenCurrentUserStatusStream((value) {
+      emit(state.copyWith(userStatus: value));
+    });
+
     _updateArticleCountSubscription =
-        _zodiacMainCubit.articleCountUpdateTrigger.listen(
+        _mainCubit.articleCountUpdateTrigger.listen(
       (_) async {
         getArticleCount();
       },
     );
 
     getArticleCount();
-  }
-
-  @override
-  Future<void> close() async {
-    _updateArticleCountSubscription?.cancel();
-    return super.close();
   }
 
   Future<void> getArticleCount() async {
@@ -70,20 +75,12 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  // emit(state.copyWith(userStatus: _cacheManager.getUserStatus()));
-  // _userStatusSubscription =
-  //     _cacheManager.listenCurrentUserStatusStream((value) {
-  //       if (value.status != FortunicaUserStatus.live) {
-  //         changeTabIndex(tabsList.indexOf(TabsTypes.account));
-  //       }
-  //       emit(state.copyWith(userStatus: value));
-  //     });
-
-  // @override
-  // Future<void> close() {
-  //  // _userStatusSubscription.cancel();
-  //   return super.close();
-  // }
+  @override
+  Future<void> close() {
+    _updateArticleCountSubscription.cancel();
+    _userStatusSubscription.cancel();
+    return super.close();
+  }
 
   changeTabIndex(int index) {
     emit(state.copyWith(tabPositionIndex: index));

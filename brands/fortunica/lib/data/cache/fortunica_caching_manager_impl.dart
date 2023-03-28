@@ -76,6 +76,12 @@ class FortunicaCachingManagerImpl implements FortunicaCachingManager {
   }
 
   @override
+  Future<void> saveUserStatus(UserStatus? userStatus) async {
+    await Hive.box(_fortunicaUserBoxKey)
+        .put(_userStatusKey, json.encode(userStatus?.toJson()));
+  }
+
+  @override
   StreamSubscription listenCurrentUserStatusStream(
       ValueChanged<UserStatus> callback) {
     return Hive.box(_fortunicaUserBoxKey)
@@ -131,11 +137,6 @@ class FortunicaCachingManagerImpl implements FortunicaCachingManager {
         .put(_userProfileKey, json.encode(userProfile?.toJson()));
   }
 
-  @override
-  Future<void> saveUserStatus(UserStatus? userStatus) async {
-    await Hive.box(_fortunicaUserBoxKey)
-        .put(_userStatusKey, json.encode(userStatus?.toJson()));
-  }
 
   @override
   Future<void> updateUserProfileCoverPictures(

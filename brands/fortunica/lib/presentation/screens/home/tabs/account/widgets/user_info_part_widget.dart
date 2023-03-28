@@ -52,7 +52,7 @@ class UserInfoPartWidget extends StatelessWidget {
                     avatarUrl: userProfile?.profilePictures?.firstOrNull,
                     diameter: 72.0,
                     badgeColor:
-                        currentStatus.status?.statusColorForBadge(context),
+                        currentStatus.status?.statusBadgeColor(context),
                   ),
                   const SizedBox(
                     width: 16.0,
@@ -92,7 +92,7 @@ class UserInfoPartWidget extends StatelessWidget {
                               .bodyMedium
                               ?.copyWith(
                                 color:
-                                    currentStatus.status?.statusColor(context),
+                                    currentStatus.status?.statusNameColor(context),
                               ),
                         ),
                       ],
