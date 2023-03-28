@@ -29,22 +29,30 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   final ZodiacCachingManager _cacheManager;
 
   late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
+  late final StreamSubscription<bool> _updateAccountSubscription;
 
   ZodiacAccountCubit(
     this._mainCubit,
     this._userRepository,
     this._cacheManager,
   ) : super(const ZodiacAccountState()) {
-    getUserInfo();
+    refreshUserInfo();
     _updateUserBalanceSubscription =
         _mainCubit.userBalanceUpdateTrigger.listen((value) {
       emit(state.copyWith(userBalance: value));
     });
+
+    _updateAccountSubscription = _mainCubit.accountUpdateTrigger.listen(
+      (value) {
+        refreshUserInfo();
+      },
+    );
   }
 
   @override
   Future<void> close() async {
     _updateUserBalanceSubscription.cancel();
+    _updateAccountSubscription.cancel();
     super.close();
   }
 
@@ -58,7 +66,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     context.push(route: const ZodiacReviews());
   }
 
-  Future<void> getUserInfo() async {
+  Future<void> refreshUserInfo() async {
     try {
       int? userId = _cacheManager.getUid();
       logger.d('GET INFO');
