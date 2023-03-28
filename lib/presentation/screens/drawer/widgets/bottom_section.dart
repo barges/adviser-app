@@ -57,8 +57,8 @@ class BottomSection extends StatelessWidget {
 
                 return _BottomSectionItem(
                   icon: Assets.vectors.packageOpen.path,
-                  text: 'Version ${version ?? ''}',
-                  bottomText: copyButtonTapped ? 'Copied' : 'Tap to copy',
+                  text: '${S.of(context).version} ${version ?? ''}',
+                  bottomText: copyButtonTapped ? S.of(context).copied : S.of(context).tapToCopy,
                   onTap: cubit.tapToCopy,
                 );
               }),

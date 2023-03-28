@@ -38,6 +38,11 @@ class PushNotificationManagerImpl implements PushNotificationManager {
     }
   }
 
+  @override
+  Future<String?> getToken() async {
+    return await messaging.getToken();
+  }
+
   Future<void> _configure() async {
     IsolateNameServer.registerPortWithName(
       _receiveNotificationPort.sendPort,
@@ -57,7 +62,7 @@ class PushNotificationManagerImpl implements PushNotificationManager {
 
   void _configLocalNotification() {
     var initializationSettingsAndroid =
-    const AndroidInitializationSettings('mipmap/ic_launcher');
+        const AndroidInitializationSettings('mipmap/ic_launcher');
     var initializationSettingsIOS = const DarwinInitializationSettings(
       requestAlertPermission: false,
       requestBadgePermission: false,
@@ -67,10 +72,10 @@ class PushNotificationManagerImpl implements PushNotificationManager {
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse: (response) async {
-          final Map<String, dynamic> message = json.decode(response.payload ?? '');
+      final Map<String, dynamic> message = json.decode(response.payload ?? '');
 
-          _navigateToNextScreen(RemoteMessage(data: message));
-        });
+      _navigateToNextScreen(RemoteMessage(data: message));
+    });
   }
 
   static void showNotification(RemoteMessage message) async {
@@ -110,8 +115,8 @@ class PushNotificationManagerImpl implements PushNotificationManager {
     FirebaseMessaging.instance.getInitialMessage().then((message) async {
       if (message == null) {
         final NotificationAppLaunchDetails? notificationAppLaunchDetails =
-        await flutterLocalNotificationsPlugin
-            .getNotificationAppLaunchDetails();
+            await flutterLocalNotificationsPlugin
+                .getNotificationAppLaunchDetails();
         if (notificationAppLaunchDetails != null &&
             notificationAppLaunchDetails.didNotificationLaunchApp) {
           String? payload =
@@ -162,7 +167,7 @@ Future<void> _backgroundMessageHandler(RemoteMessage message) async {
   logger.d('On background');
 
   final SendPort? send =
-  IsolateNameServer.lookupPortByName(_notificationPortChannel);
+      IsolateNameServer.lookupPortByName(_notificationPortChannel);
 
   send?.send(message.data);
 }
@@ -174,8 +179,7 @@ void _messageTypeHandler(Map<String, dynamic> meta) {
   if (type != null) {
     if (type == PushType.publicReturned.name) {
       if (fortunicaContext != null &&
-          fortunicaContext.currentRoutePath ==
-              RoutePathsFortunica.chatScreen) {
+          fortunicaContext.currentRoutePath == RoutePathsFortunica.chatScreen) {
         fortunicaContext
             .replaceAll([FortunicaAuth(initTab: TabsTypes.sessions)]);
       } else {
