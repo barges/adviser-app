@@ -1,5 +1,3 @@
-import 'package:fortunica/fortunica.dart';
-import 'package:fortunica/infrastructure/routing/route_paths_fortunica.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -276,14 +274,4 @@ class _LoginScreenState extends State<LoginScreen> {
       }),
     );
   }
-}
-
-bool _backButtonInterceptor(BuildContext context, VoidCallback openDrawer) {
-  if (context.router.current.name.toUpperCase() ==
-          RoutePathsFortunica.loginScreen.toUpperCase() &&
-      FortunicaBrand().isCurrent) {
-    openDrawer();
-    return true;
-  }
-  return false;
 }
