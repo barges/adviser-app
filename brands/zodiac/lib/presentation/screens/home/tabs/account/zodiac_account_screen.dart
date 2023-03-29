@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/services/check_permission_service.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
+import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
@@ -24,49 +25,66 @@ class AccountScreen extends StatelessWidget {
         zodiacGetIt.get<ZodiacMainCubit>(),
         zodiacGetIt.get<ZodiacUserRepository>(),
         zodiacGetIt.get<ZodiacCachingManager>(),
+        zodiacGetIt.get<ConnectivityService>(),
+        zodiacGetIt.get<PushNotificationManager>(),
+        (value) => handlePermission(context, value),
       ),
       child: Scaffold(
           appBar: const HomeAppBar(),
-          body: SafeArea(
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      Builder(builder: (context) {
-                        final ZodiacAccountCubit zodiacAccountCubit =
-                            context.read<ZodiacAccountCubit>();
-                        final String errorMessage = context.select(
-                            (ZodiacAccountCubit cubit) =>
-                                cubit.state.errorMessage);
-                        return AppErrorWidget(
-                          errorMessage: errorMessage,
-                          close: zodiacAccountCubit.clearErrorMessage,
-                        );
-                      }),
-                      Padding(
-                        padding: const EdgeInsets.all(
-                            AppConstants.horizontalScreenPadding),
-                        child: Column(
-                          children: const [
-                            UserInfoPartWidget(),
-                            SizedBox(
-                              height: 24.0,
+          body: Builder(builder: (context) {
+            ZodiacAccountCubit accountCubit =
+                context.read<ZodiacAccountCubit>();
+            return SafeArea(
+              child: RefreshIndicator(
+                onRefresh: accountCubit.refreshUserInfo,
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          Builder(builder: (context) {
+                            final ZodiacAccountCubit zodiacAccountCubit =
+                                context.read<ZodiacAccountCubit>();
+                            final String errorMessage = context.select(
+                                (ZodiacAccountCubit cubit) =>
+                                    cubit.state.errorMessage);
+                            return AppErrorWidget(
+                              errorMessage: errorMessage,
+                              close: zodiacAccountCubit.clearErrorMessage,
+                            );
+                          }),
+                          Padding(
+                            padding: const EdgeInsets.all(
+                                AppConstants.horizontalScreenPadding),
+                            child: Column(
+                              children: const [
+                                UserInfoPartWidget(),
+                                SizedBox(
+                                  height: 24.0,
+                                ),
+                                UserFeePartWidget(),
+                                SizedBox(
+                                  height: 24.0,
+                                ),
+                                ReviewsPartWidget(),
+                              ],
                             ),
-                            UserFeePartWidget(),
-                            SizedBox(
-                              height: 24.0,
-                            ),
-                            ReviewsPartWidget(),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          )),
+              ),
+            );
+          })),
     );
+  }
+
+  Future<bool> handlePermission(
+      BuildContext context, bool needShowSettingsAlert) async {
+    return await zodiacGetIt.get<CheckPermissionService>().handlePermission(
+        context, PermissionType.notification,
+        needShowSettings: needShowSettingsAlert);
   }
 }

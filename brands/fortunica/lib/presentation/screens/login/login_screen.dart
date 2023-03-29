@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/choose_brand_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 import 'package:shared_advisor_interface/services/dynamic_link_service.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:auto_route/auto_route.dart';
@@ -44,6 +45,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final VoidCallback openDrawer =
+        context.read<MainHomeScreenCubit>().openDrawer;
     return BlocProvider(
       create: (_) {
         fortunicaGetIt
@@ -63,194 +66,209 @@ class _LoginScreenState extends State<LoginScreen> {
         final LoginCubit loginCubit = context.read<LoginCubit>();
         final bool isOnline = context.select(
             (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
-        return Scaffold(
-          appBar: const LoginAppBar(),
-          body: SafeArea(
-            child: isOnline
-                ? GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).unfocus();
-                      loginCubit.clearErrorMessage();
-                      loginCubit.clearSuccessMessage();
-                    },
-                    child: Column(
-                      children: [
-                        Builder(
-                          builder: (BuildContext context) {
-                            final AppError appError = context.select(
-                                (FortunicaMainCubit cubit) =>
-                                    cubit.state.appError);
+        return WillPopScope(
+          onWillPop: () async {
+            openDrawer();
+            return false;
+          },
+          child: Scaffold(
+            appBar: LoginAppBar(
+              openDrawer: openDrawer,
+            ),
+            body: SafeArea(
+              child: isOnline
+                  ? GestureDetector(
+                      onTap: () {
+                        FocusScope.of(context).unfocus();
+                        loginCubit.clearErrorMessage();
+                        loginCubit.clearSuccessMessage();
+                      },
+                      child: Column(
+                        children: [
+                          Builder(
+                            builder: (BuildContext context) {
+                              final AppError appError = context.select(
+                                  (FortunicaMainCubit cubit) =>
+                                      cubit.state.appError);
 
-                            return AppErrorWidget(
-                              errorMessage: appError.getMessage(context),
-                              close: () {
-                                loginCubit.clearErrorMessage();
-                              },
-                            );
-                          },
-                        ),
-                        Builder(
-                          builder: (BuildContext context) {
-                            final AppSuccess appSuccess = context.select(
-                                (LoginCubit cubit) => cubit.state.appSuccess);
+                              return AppErrorWidget(
+                                errorMessage: appError.getMessage(context),
+                                close: () {
+                                  loginCubit.clearErrorMessage();
+                                },
+                              );
+                            },
+                          ),
+                          Builder(
+                            builder: (BuildContext context) {
+                              final AppSuccess appSuccess = context.select(
+                                  (LoginCubit cubit) => cubit.state.appSuccess);
 
-                            return AppSuccessWidget(
-                              message: appSuccess.getMessage(context),
-                              needEmailButton: true,
-                              onClose: loginCubit.clearSuccessMessage,
-                            );
-                          },
-                        ),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 16.0,
-                                ),
-                                const ChooseBrandWidget(),
-                                const SizedBox(
-                                  height: 24.0,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal:
-                                        AppConstants.horizontalScreenPadding,
+                              return AppSuccessWidget(
+                                message: appSuccess.getMessage(context),
+                                needEmailButton: true,
+                                onClose: loginCubit.clearSuccessMessage,
+                              );
+                            },
+                          ),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 16.0,
                                   ),
-                                  child: Column(
-                                    children: [
-                                      Builder(builder: (BuildContext context) {
-                                        final ValidationErrorType
-                                            emailErrorType = context.select(
-                                                (LoginCubit cubit) =>
-                                                    cubit.state.emailErrorType);
-                                        context.select((LoginCubit cubit) =>
-                                            cubit.state.emailHasFocus);
-                                        return AppTextField(
-                                          errorType: emailErrorType,
-                                          label: SFortunica.of(context)
-                                              .emailFortunica,
-                                          hintText: SFortunica.of(context)
-                                              .enterYourEmailFortunica,
-                                          focusNode: loginCubit.emailNode,
-                                          textInputType:
-                                              TextInputType.emailAddress,
-                                          textInputAction: TextInputAction.next,
-                                          nextFocusNode:
-                                              loginCubit.passwordNode,
-                                          controller:
-                                              loginCubit.emailController,
-                                        );
-                                      }),
-                                      const SizedBox(
-                                        height: 24.0,
-                                      ),
-                                      Builder(builder: (BuildContext context) {
-                                        final bool hiddenPassword =
-                                            context.select((LoginCubit cubit) =>
-                                                cubit.state.hiddenPassword);
-                                        context.select((LoginCubit cubit) =>
-                                            cubit.state.passwordHasFocus);
-                                        final ValidationErrorType
-                                            passwordErrorType =
-                                            context.select((LoginCubit cubit) =>
-                                                cubit.state.passwordErrorType);
-                                        return PasswordTextField(
-                                          controller:
-                                              loginCubit.passwordController,
-                                          focusNode: loginCubit.passwordNode,
-                                          label: SFortunica.of(context)
-                                              .passwordFortunica,
-                                          errorType: passwordErrorType,
-                                          hintText: SFortunica.of(context)
-                                              .enterYourPasswordFortunica,
-                                          textInputAction: TextInputAction.next,
-                                          onSubmitted: (_) => loginCubit.login,
-                                          hiddenPassword: hiddenPassword,
-                                          clickToHide:
-                                              loginCubit.showHidePassword,
-                                        );
-                                      }),
-                                      const SizedBox(
-                                        height: 24.0,
-                                      ),
-                                      Builder(builder: (context) {
-                                        final bool isActive = context.select(
-                                          (LoginCubit cubit) =>
-                                              cubit.state.buttonIsActive,
-                                        );
-                                        return AppElevatedButton(
-                                          title: SFortunica.of(context)
-                                              .loginFortunica,
-                                          onPressed: isActive
-                                              ? () => loginCubit.login(context)
-                                              : null,
-                                        );
-                                      }),
-                                      const SizedBox(
-                                        height: 22.0,
-                                      ),
-                                      const ForgotPasswordButtonWidget(),
-                                    ],
+                                  const ChooseBrandWidget(),
+                                  const SizedBox(
+                                    height: 24.0,
                                   ),
-                                ),
-                                GestureDetector(
-                                  onLongPress: () {
-                                    if (kDebugMode) {
-                                      context
-                                          .read<LoginCubit>()
-                                          .emailController
-                                          .text = 'primrose.test1@gmail.com';
-                                      context
-                                          .read<LoginCubit>()
-                                          .passwordController
-                                          .text = '1234567891';
-                                    }
-                                  },
-                                  onDoubleTap: () {
-                                    logger.d(
-                                        context.router.routeCollection.routes);
-                                    if (kDebugMode) {
-                                      context
-                                          .read<LoginCubit>()
-                                          .emailController
-                                          .text = 'niskov.test@gmail.com';
-                                      context
-                                          .read<LoginCubit>()
-                                          .passwordController
-                                          .text = '00000000';
-                                    }
-                                  },
-                                  child: Padding(
+                                  Padding(
                                     padding: const EdgeInsets.symmetric(
-                                      vertical: 24.0,
+                                      horizontal:
+                                          AppConstants.horizontalScreenPadding,
                                     ),
-                                    child: Utils.isDarkMode(context)
-                                        ? Assets.images.logos.loginLogoDark
-                                            .image(
-                                            height: AppConstants.logoSize,
-                                            width: AppConstants.logoSize,
-                                          )
-                                        : Assets.images.logos.loginLogo.image(
-                                            height: AppConstants.logoSize,
-                                            width: AppConstants.logoSize,
-                                          ),
+                                    child: Column(
+                                      children: [
+                                        Builder(
+                                            builder: (BuildContext context) {
+                                          final ValidationErrorType
+                                              emailErrorType = context.select(
+                                                  (LoginCubit cubit) => cubit
+                                                      .state.emailErrorType);
+                                          context.select((LoginCubit cubit) =>
+                                              cubit.state.emailHasFocus);
+                                          return AppTextField(
+                                            errorType: emailErrorType,
+                                            label: SFortunica.of(context)
+                                                .emailFortunica,
+                                            hintText: SFortunica.of(context)
+                                                .enterYourEmailFortunica,
+                                            focusNode: loginCubit.emailNode,
+                                            textInputType:
+                                                TextInputType.emailAddress,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            nextFocusNode:
+                                                loginCubit.passwordNode,
+                                            controller:
+                                                loginCubit.emailController,
+                                          );
+                                        }),
+                                        const SizedBox(
+                                          height: 24.0,
+                                        ),
+                                        Builder(
+                                            builder: (BuildContext context) {
+                                          final bool hiddenPassword = context
+                                              .select((LoginCubit cubit) =>
+                                                  cubit.state.hiddenPassword);
+                                          context.select((LoginCubit cubit) =>
+                                              cubit.state.passwordHasFocus);
+                                          final ValidationErrorType
+                                              passwordErrorType =
+                                              context.select(
+                                                  (LoginCubit cubit) => cubit
+                                                      .state.passwordErrorType);
+                                          return PasswordTextField(
+                                            controller:
+                                                loginCubit.passwordController,
+                                            focusNode: loginCubit.passwordNode,
+                                            label: SFortunica.of(context)
+                                                .passwordFortunica,
+                                            errorType: passwordErrorType,
+                                            hintText: SFortunica.of(context)
+                                                .enterYourPasswordFortunica,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            onSubmitted: (_) =>
+                                                loginCubit.login,
+                                            hiddenPassword: hiddenPassword,
+                                            clickToHide:
+                                                loginCubit.showHidePassword,
+                                          );
+                                        }),
+                                        const SizedBox(
+                                          height: 24.0,
+                                        ),
+                                        Builder(builder: (context) {
+                                          final bool isActive = context.select(
+                                            (LoginCubit cubit) =>
+                                                cubit.state.buttonIsActive,
+                                          );
+                                          return AppElevatedButton(
+                                            title: SFortunica.of(context)
+                                                .loginFortunica,
+                                            onPressed: isActive
+                                                ? () =>
+                                                    loginCubit.login(context)
+                                                : null,
+                                          );
+                                        }),
+                                        const SizedBox(
+                                          height: 22.0,
+                                        ),
+                                        const ForgotPasswordButtonWidget(),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  GestureDetector(
+                                    onLongPress: () {
+                                      if (kDebugMode) {
+                                        context
+                                            .read<LoginCubit>()
+                                            .emailController
+                                            .text = 'primrose.test1@gmail.com';
+                                        context
+                                            .read<LoginCubit>()
+                                            .passwordController
+                                            .text = '1234567891';
+                                      }
+                                    },
+                                    onDoubleTap: () {
+                                      logger.d(context
+                                          .router.routeCollection.routes);
+                                      if (kDebugMode) {
+                                        context
+                                            .read<LoginCubit>()
+                                            .emailController
+                                            .text = 'niskov.test@gmail.com';
+                                        context
+                                            .read<LoginCubit>()
+                                            .passwordController
+                                            .text = '00000000';
+                                      }
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 24.0,
+                                      ),
+                                      child: Utils.isDarkMode(context)
+                                          ? Assets.images.logos.loginLogoDark
+                                              .image(
+                                              height: AppConstants.logoSize,
+                                              width: AppConstants.logoSize,
+                                            )
+                                          : Assets.images.logos.loginLogo.image(
+                                              height: AppConstants.logoSize,
+                                              width: AppConstants.logoSize,
+                                            ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
+                        ],
+                      ),
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        NoConnectionWidget(),
                       ],
                     ),
-                  )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      NoConnectionWidget(),
-                    ],
-                  ),
+            ),
           ),
         );
       }),

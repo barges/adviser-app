@@ -551,6 +551,28 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Customer Support`
+  String get customerSupportZodiac {
+    return Intl.message(
+      'Customer Support',
+      name: 'customerSupportZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `😱 Oops! Your login details seem to be incorrect. Give it another try, or tap Reset Password.`
+  String
+      get oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac {
+    return Intl.message(
+      '😱 Oops! Your login details seem to be incorrect. Give it another try, or tap Reset Password.',
+      name:
+          'oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

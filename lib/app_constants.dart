@@ -1,6 +1,8 @@
 class AppConstants {
   static const String fortunicaIosAppId = '1164888500';
 
+  static const String appPushIcon = 'ic_stat_reader_app_push';
+
   static const double textFieldsHeight = 48.0;
   static const double buttonRadius = 12.0;
   static const double iconSize = 24.0;

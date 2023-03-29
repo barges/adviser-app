@@ -58,7 +58,40 @@ android {
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+
+        /*Maybe we do not need this
+
+        for / couldn't find "libflutter.so"/  issue
+
+       ndk {
+           abiFilters "armeabi", "x86", "armeabi-v7a", "x86_64", "mips",
+                   "mips64", "arm64-v8a"
+       } */
     }
+
+/*
+      Maybe we do not need this
+
+    for / couldn't find "libflutter.so" / issue
+
+    splits {
+        // Configures multiple APKs based on ABI.
+        abi {
+            // Enables building multiple APKs per ABI.
+            enable true
+            // By default all ABIs are included, so use reset() and include to specify that we only
+            // want APKs for x86 and x86_64.
+            // Resets the list of ABIs that Gradle should create APKs for to none.
+            reset()
+            // Specifies a list of ABIs that Gradle should create APKs for.
+            include "x86", "x86_64", "armeabi", "armeabi-v7a", "arm64-v8a", "mips",
+                    "mips64"
+            // Specifies that we do not want to also generate a universal APK that includes all ABIs.
+            universalApk true
+        }
+    }
+ */
+
 
     signingConfigs {
         release {
@@ -84,7 +117,7 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation platform ("com.google.firebase:firebase-bom:26.4.0")
+    implementation platform("com.google.firebase:firebase-bom:26.4.0")
 }
 
 // This must appear at the bottom of the file

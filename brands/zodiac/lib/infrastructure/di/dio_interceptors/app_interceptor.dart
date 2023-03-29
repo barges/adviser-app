@@ -116,7 +116,11 @@ class AppInterceptor extends Interceptor {
 
     BaseResponse baseResponse = BaseResponse.fromJson(response.data);
 
-    if (baseResponse.errorCode != 0 &&
+    if (response.realUri.path.contains('login') &&
+        baseResponse.errorCode == 4) {
+      _zodiacMainCubit.updateErrorMessage(
+          UIError(uiErrorType: UIErrorType.loginDetailsSeemToBeIncorrect));
+    } else if (baseResponse.errorCode != 0 &&
         !response.realUri.path.contains('forgot-password')) {
       _zodiacMainCubit.updateErrorMessage(
         NetworkError(

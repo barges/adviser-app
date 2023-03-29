@@ -40,6 +40,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Check your internet connection"),
         "chooseEmailAppZodiac":
             MessageLookupByLibrary.simpleMessage("Choose email app"),
+        "customerSupportZodiac":
+            MessageLookupByLibrary.simpleMessage("Customer Support"),
         "dashboardZodiac": MessageLookupByLibrary.simpleMessage("Dashboard"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("Email"),
         "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac":
@@ -72,6 +74,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("No sessions, yet."),
         "notificationsZodiac":
             MessageLookupByLibrary.simpleMessage("Notifications"),
+        "oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "😱 Oops! Your login details seem to be incorrect. Give it another try, or tap Reset Password."),
         "openEmailZodiac": MessageLookupByLibrary.simpleMessage("Open email"),
         "passwordZodiac": MessageLookupByLibrary.simpleMessage("Password"),
         "perMinuteZodiac": MessageLookupByLibrary.simpleMessage("per minute"),

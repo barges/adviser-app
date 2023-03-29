@@ -8,7 +8,7 @@ import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_state.dart';
 
 class ArticlesCubit extends Cubit<ArticlesState> {
-  final int _limit = 3;
+  final int _limit = 10;
   int _offset = 0;
   int? _count;
   bool _isLoading = false;

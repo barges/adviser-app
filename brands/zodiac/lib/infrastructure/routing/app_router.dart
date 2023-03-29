@@ -5,7 +5,7 @@ import 'package:zodiac/presentation/screens/forgot_password/forgot_password_scre
 import 'package:zodiac/presentation/screens/gallery/gallery_pictures_screen.dart';
 import 'package:zodiac/presentation/screens/home/home_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_screen.dart';
-import 'package:zodiac/presentation/screens/article_detail_screen/article_detail_screen.dart';
+import 'package:zodiac/presentation/screens/article_detail_screen/article_details_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/dashboard/dashboard_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_screen.dart';
@@ -13,6 +13,7 @@ import 'package:zodiac/presentation/screens/login/login_screen.dart';
 import 'package:zodiac/presentation/screens/notifications/notifications_screen.dart';
 import 'package:zodiac/presentation/screens/profile/profile.dart';
 import 'package:zodiac/presentation/screens/reviews/reviews_screen.dart';
+import 'package:zodiac/presentation/screens/support/support_screen.dart';
 import 'package:zodiac/presentation/wrappers/auth_wrapper/zodiac_auth_wrapper.dart';
 import 'package:zodiac/zodiac.dart';
 
@@ -24,67 +25,72 @@ const zodiacRoute = AutoRoute(
     AutoRoute(
         initial: true,
         page: ZodiacAuthWrapper,
-        path: RoutePaths.authScreen,
-        name: RoutePaths.authScreen,
+        path: RoutePathsZodiac.authScreen,
+        name: RoutePathsZodiac.authScreen,
         children: [
           AutoRoute(
             initial: true,
             page: LoginScreen,
-            path: RoutePaths.loginScreen,
-            name: RoutePaths.loginScreen,
+            path: RoutePathsZodiac.loginScreen,
+            name: RoutePathsZodiac.loginScreen,
           )
         ]),
     AutoRoute(
         page: HomeScreen,
-        path: RoutePaths.homeScreen,
-        name: RoutePaths.homeScreen,
+        path: RoutePathsZodiac.homeScreen,
+        name: RoutePathsZodiac.homeScreen,
         children: [
           AutoRoute(
               page: DashboardScreen,
-              path: RoutePaths.dashboardScreen,
-              name: RoutePaths.dashboardScreen),
+              path: RoutePathsZodiac.dashboardScreen,
+              name: RoutePathsZodiac.dashboardScreen),
           AutoRoute(
               page: SessionsScreen,
-              path: RoutePaths.chatsScreen,
-              name: RoutePaths.chatsScreen),
+              path: RoutePathsZodiac.chatsScreen,
+              name: RoutePathsZodiac.chatsScreen),
           AutoRoute(
             page: AccountScreen,
-            path: RoutePaths.accountScreen,
-            name: RoutePaths.accountScreen,
+            path: RoutePathsZodiac.accountScreen,
+            name: RoutePathsZodiac.accountScreen,
           ),
           AutoRoute(
             page: ArticlesScreen,
-            path: RoutePaths.articlesScreen,
-            name: RoutePaths.articlesScreen,
+            path: RoutePathsZodiac.articlesScreen,
+            name: RoutePathsZodiac.articlesScreen,
           ),
         ]),
     AutoRoute(
-      page: ArticleDetailScreen,
-      path: RoutePaths.articleDeteilScreen,
-      name: RoutePaths.articleDeteilScreen,
+      page: ArticleDetailsScreen,
+      path: RoutePathsZodiac.articleDetailsScreen,
+      name: RoutePathsZodiac.articleDetailsScreen,
     ),
     AutoRoute(
         page: ProfileScreen,
-        path: RoutePaths.profileScreen,
-        name: RoutePaths.profileScreen),
+        path: RoutePathsZodiac.profileScreen,
+        name: RoutePathsZodiac.profileScreen),
     AutoRoute(
         page: GalleryPicturesScreen,
-        path: RoutePaths.galleryScreen,
-        name: RoutePaths.galleryScreen),
+        path: RoutePathsZodiac.galleryScreen,
+        name: RoutePathsZodiac.galleryScreen),
     AutoRoute(
       page: ForgotPasswordScreen,
-      path: RoutePaths.forgotPasswordScreen,
-      name: RoutePaths.forgotPasswordScreen,
+      path: RoutePathsZodiac.forgotPasswordScreen,
+      name: RoutePathsZodiac.forgotPasswordScreen,
     ),
     AutoRoute(
       page: NotificationsScreen,
-      path: RoutePaths.notificationsScreen,
-      name: RoutePaths.notificationsScreen,
+      path: RoutePathsZodiac.notificationsScreen,
+      name: RoutePathsZodiac.notificationsScreen,
     ),
     AutoRoute(
       page: ReviewsScreen,
-      path: RoutePaths.reviewsScreen,
-      name: RoutePaths.reviewsScreen,
+      path: RoutePathsZodiac.reviewsScreen,
+      name: RoutePathsZodiac.reviewsScreen,
+    ),
+    AutoRoute(
+      page: SupportScreen,
+      path: RoutePathsZodiac.supportScreen,
+      name: RoutePathsZodiac.supportScreen,
     ),
   ],
 );

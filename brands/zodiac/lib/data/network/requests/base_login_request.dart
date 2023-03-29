@@ -6,7 +6,7 @@ part 'base_login_request.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class BaseLoginRequest extends BaseRequest {
-  String locale = AppInfo.locale;
+  String locale;
   @JsonKey(name: 'device_id')
   String deviceId = AppInfo.deviceId ?? '';
   String? device = AppInfo.device;
@@ -16,7 +16,7 @@ class BaseLoginRequest extends BaseRequest {
   @JsonKey(name: 'appsflyer_id')
   String appsflyerID = AppInfo.appsflyerId;
 
-  BaseLoginRequest();
+  BaseLoginRequest({required this.locale});
 
   factory BaseLoginRequest.fromJson(Map<String, dynamic> json) =>
       _$BaseLoginRequestFromJson(json);

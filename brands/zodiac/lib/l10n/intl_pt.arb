@@ -48,5 +48,7 @@
   "noNotificationsYetZodiac": "No notifications, yet",
   "yourNotificationsHistoryWillAppearHereZodiac": "Your notifications history will appear here",
   "noReviewsYetZodiac":"No reviews, yet",
-  "reviewsFromYourClientsWillAppearHereZodiac": "Reviews from your clients will appear here"
+  "reviewsFromYourClientsWillAppearHereZodiac": "Reviews from your clients will appear here",
+  "customerSupportZodiac": "Suporte ao cliente",
+  "oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac": "😱 Opa! Seus dados de acesso parecem estar incorretos. Tente novamente ou toque em Redefinir senha."
 }
