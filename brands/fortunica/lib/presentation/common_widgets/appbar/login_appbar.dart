@@ -7,7 +7,12 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 
 class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const LoginAppBar({Key? key}) : super(key: key);
+  final VoidCallback openDrawer;
+
+  const LoginAppBar({
+    Key? key,
+    required this.openDrawer,
+  }) : super(key: key);
 
   @override
   Size get preferredSize => const Size.fromHeight(AppConstants.appBarHeight);
@@ -22,18 +27,17 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
       toolbarHeight: 72.0,
       title: Row(
         children: [
-          if (Navigator.of(context).canPop())
-            Row(
-              children: [
-                AppIconButton(
-                  icon: Assets.vectors.arrowLeft.path,
-                  onTap: context.pop,
-                ),
-                const SizedBox(
-                  width: 12.0,
-                ),
-              ],
-            ),
+          Row(
+            children: [
+              AppIconButton(
+                icon: Assets.vectors.home.path,
+                onTap: openDrawer,
+              ),
+              const SizedBox(
+                width: 12.0,
+              ),
+            ],
+          ),
           Expanded(
             child: Text(
               S.of(context).chooseBrand,

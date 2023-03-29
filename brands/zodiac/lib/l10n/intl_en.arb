@@ -49,5 +49,6 @@
   "yourNotificationsHistoryWillAppearHereZodiac": "Your notifications history will appear here",
   "noReviewsYetZodiac":"No reviews, yet",
   "reviewsFromYourClientsWillAppearHereZodiac": "Reviews from your clients will appear here",
-  "customerSupportZodiac": "Customer Support"
+  "customerSupportZodiac": "Customer Support",
+  "oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac": "😱 Oops! Your login details seem to be incorrect. Give it another try, or tap Reset Password."
 }

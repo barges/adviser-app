@@ -5,6 +5,8 @@ import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart'
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/picker_modal_pop_up.dart';
+import 'package:zodiac/data/network/requests/update_locale_request.dart';
+import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/zodiac.dart';
@@ -32,6 +34,11 @@ class ChangeLocaleButton extends StatelessWidget {
                 .get<GlobalCachingManager>()
                 .saveLanguageCode(languageCode);
             ZodiacBrand().languageCode = languageCode;
+            if (ZodiacBrand().isAuth) {
+              zodiacGetIt
+                  .get<ZodiacUserRepository>()
+                  .updateLocale(UpdateLocaleRequest(locale: languageCode));
+            }
           },
           currentIndex: currentLocaleIndex,
           elements: locales.map((element) {

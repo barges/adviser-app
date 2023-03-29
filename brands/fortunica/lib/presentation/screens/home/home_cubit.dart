@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortunica/data/cache/fortunica_caching_manager.dart';
 import 'package:fortunica/data/models/enums/fortunica_user_status.dart';
@@ -22,10 +20,7 @@ class HomeCubit extends Cubit<HomeState> {
   late final StreamSubscription _userStatusSubscription;
   late final List<PageRouteInfo> routes;
 
-  HomeCubit(
-    this._cacheManager,
-    this._initTab,
-  ) : super(const HomeState()) {
+  HomeCubit(this._cacheManager, this._initTab) : super(const HomeState()) {
     routes = tabsList.map((e) => _getPage(e)).toList();
 
     if (_initTab != null && tabsList.contains(_initTab)) {

@@ -5,6 +5,7 @@ import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/reviews_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
+import 'package:zodiac/data/network/requests/update_locale_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
@@ -77,5 +78,10 @@ class ZodiacUserRepositoryImpl implements ZodiacUserRepository {
   @override
   Future<BaseResponse> sendPushToken(SendPushTokenRequest request) async {
     return _userApi.sendPushToken(request);
+  }
+
+  @override
+  Future<BaseResponse> updateLocale(UpdateLocaleRequest request) async {
+    return await _userApi.updateLocale(request);
   }
 }

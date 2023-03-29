@@ -8,7 +8,8 @@ class LoginRequest extends BaseLoginRequest {
   final String password;
   final String email;
 
-  LoginRequest({required this.email, required this.password});
+  LoginRequest(
+      {required this.email, required this.password, required super.locale});
 
   factory LoginRequest.fromJson(Map<String, dynamic> json) =>
       _$LoginRequestFromJson(json);
