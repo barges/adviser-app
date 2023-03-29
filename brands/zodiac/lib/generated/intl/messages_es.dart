@@ -75,6 +75,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Aún no hay sesiones."),
         "notificationsZodiac":
             MessageLookupByLibrary.simpleMessage("Notificaciones"),
+        "oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "😱 ¡Ups! Tus datos de inicio de sesión parecen ser incorrectos. Inténtalo nuevamente o pulsa restablecer clave."),
         "openEmailZodiac": MessageLookupByLibrary.simpleMessage("Abrir email"),
         "passwordZodiac": MessageLookupByLibrary.simpleMessage("Contraseña"),
         "perMinuteZodiac": MessageLookupByLibrary.simpleMessage("per minute"),
