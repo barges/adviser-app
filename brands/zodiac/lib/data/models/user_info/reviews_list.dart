@@ -11,7 +11,7 @@ class ReviewsList with _$ReviewsList {
   const ReviewsList._();
 
   @JsonSerializable(
-      includeIfNull: false, createToJson: true, explicitToJson: true)
+      includeIfNull: false, explicitToJson: true)
   const factory ReviewsList({
     @JsonKey(name: 'list') List<ZodiacReviewItem>? reviewsList,
     int? count,

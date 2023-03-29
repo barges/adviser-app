@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/services/check_permission_service.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
+import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
@@ -24,6 +25,9 @@ class AccountScreen extends StatelessWidget {
         zodiacGetIt.get<ZodiacMainCubit>(),
         zodiacGetIt.get<ZodiacUserRepository>(),
         zodiacGetIt.get<ZodiacCachingManager>(),
+        zodiacGetIt.get<ConnectivityService>(),
+        zodiacGetIt.get<PushNotificationManager>(),
+        (value) => handlePermission(context, value),
       ),
       child: Scaffold(
           appBar: const HomeAppBar(),
@@ -75,5 +79,12 @@ class AccountScreen extends StatelessWidget {
             );
           })),
     );
+  }
+
+  Future<bool> handlePermission(
+      BuildContext context, bool needShowSettingsAlert) async {
+    return await zodiacGetIt.get<CheckPermissionService>().handlePermission(
+        context, PermissionType.notification,
+        needShowSettings: needShowSettingsAlert);
   }
 }

@@ -35,4 +35,10 @@ abstract class BaseBrand {
   Color userStatusNameColor(BuildContext context);
 
   Color userStatusBadgeColor(BuildContext context);
+
+  List<String> freshChatCategories(String languageCode);
+
+  List<String> freshChatTags(String languageCode);
+
+  void goToSupport();
 }

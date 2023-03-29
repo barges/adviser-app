@@ -54,6 +54,7 @@ dependencies:
   uuid: ^3.0.7
   storage_space: ^1.0.1+5
   smooth_page_indicator: ^1.0.0+2
+  freshchat_sdk: ^0.10.3
 
 
   ### Firebase
