@@ -37,6 +37,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
   StreamSubscription<bool>? _connectivitySubscription;
   bool? isPushNotificationPermissionGranted;
+  late final StreamSubscription<bool> _updateAccountSubscription;
 
   ZodiacAccountCubit(
     this._mainCubit,
@@ -46,17 +47,24 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     this._pushNotificationManager,
     this._handlePermission,
   ) : super(const ZodiacAccountState()) {
-    getUserInfo();
+    refreshUserInfo();
     _updateUserBalanceSubscription =
         _mainCubit.userBalanceUpdateTrigger.listen((value) {
       emit(state.copyWith(userBalance: value));
     });
+
+    _updateAccountSubscription = _mainCubit.accountUpdateTrigger.listen(
+      (value) {
+        refreshUserInfo();
+      },
+    );
   }
 
   @override
   Future<void> close() async {
     _updateUserBalanceSubscription.cancel();
     _connectivitySubscription?.cancel();
+    _updateAccountSubscription.cancel();
     super.close();
   }
 
@@ -70,7 +78,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     context.push(route: const ZodiacReviews());
   }
 
-  Future<void> getUserInfo() async {
+  Future<void> refreshUserInfo() async {
     try {
       if (await _connectivityService.checkConnection()) {
         isPushNotificationPermissionGranted = await _handlePermission(false);

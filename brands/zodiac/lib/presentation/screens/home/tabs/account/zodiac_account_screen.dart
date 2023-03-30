@@ -31,46 +31,53 @@ class AccountScreen extends StatelessWidget {
       ),
       child: Scaffold(
           appBar: const HomeAppBar(),
-          body: SafeArea(
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      Builder(builder: (context) {
-                        final ZodiacAccountCubit zodiacAccountCubit =
-                            context.read<ZodiacAccountCubit>();
-                        final String errorMessage = context.select(
-                            (ZodiacAccountCubit cubit) =>
-                                cubit.state.errorMessage);
-                        return AppErrorWidget(
-                          errorMessage: errorMessage,
-                          close: zodiacAccountCubit.clearErrorMessage,
-                        );
-                      }),
-                      Padding(
-                        padding: const EdgeInsets.all(
-                            AppConstants.horizontalScreenPadding),
-                        child: Column(
-                          children: const [
-                            UserInfoPartWidget(),
-                            SizedBox(
-                              height: 24.0,
+          body: Builder(builder: (context) {
+            ZodiacAccountCubit accountCubit =
+                context.read<ZodiacAccountCubit>();
+            return SafeArea(
+              child: RefreshIndicator(
+                onRefresh: accountCubit.refreshUserInfo,
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          Builder(builder: (context) {
+                            final ZodiacAccountCubit zodiacAccountCubit =
+                                context.read<ZodiacAccountCubit>();
+                            final String errorMessage = context.select(
+                                (ZodiacAccountCubit cubit) =>
+                                    cubit.state.errorMessage);
+                            return AppErrorWidget(
+                              errorMessage: errorMessage,
+                              close: zodiacAccountCubit.clearErrorMessage,
+                            );
+                          }),
+                          Padding(
+                            padding: const EdgeInsets.all(
+                                AppConstants.horizontalScreenPadding),
+                            child: Column(
+                              children: const [
+                                UserInfoPartWidget(),
+                                SizedBox(
+                                  height: 24.0,
+                                ),
+                                UserFeePartWidget(),
+                                SizedBox(
+                                  height: 24.0,
+                                ),
+                                ReviewsPartWidget(),
+                              ],
                             ),
-                            UserFeePartWidget(),
-                            SizedBox(
-                              height: 24.0,
-                            ),
-                            ReviewsPartWidget(),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          )),
+              ),
+            );
+          })),
     );
   }
 

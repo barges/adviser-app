@@ -9,13 +9,13 @@ import 'package:zodiac/zodiac_main_state.dart';
 
 @singleton
 class ZodiacMainCubit extends Cubit<ZodiacMainState> {
-
   Timer? _errorTimer;
 
   final PublishSubject<bool> sessionsUpdateTrigger = PublishSubject();
   final PublishSubject<bool> audioStopTrigger = PublishSubject();
   final PublishSubject<UserBalance> userBalanceUpdateTrigger = PublishSubject();
   final PublishSubject<bool> articleCountUpdateTrigger = PublishSubject();
+  final PublishSubject<bool> accountUpdateTrigger = PublishSubject();
 
   ZodiacMainCubit() : super(const ZodiacMainState());
 
@@ -53,5 +53,9 @@ class ZodiacMainCubit extends Cubit<ZodiacMainState> {
 
   void updateArticleCount() {
     articleCountUpdateTrigger.add(true);
+  }
+
+  void updateAccount() {
+    accountUpdateTrigger.add(true);
   }
 }

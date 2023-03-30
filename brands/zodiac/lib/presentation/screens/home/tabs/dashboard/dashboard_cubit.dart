@@ -44,6 +44,11 @@ class DashboardCubit extends Cubit<DashboardState> {
     super.close();
   }
 
+  Future<void> refreshDashboard() async {
+    _mainCubit.updateAccount();
+    getThisMonthPayments();
+  }
+
   Future<void> getThisMonthPayments() async {
     do {
       PaymentsListResponse response = await _userRepository.getPaymentsList(

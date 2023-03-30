@@ -7,7 +7,8 @@ enum UIErrorType {
   // youCantSendThisMessageBecauseItsLessThanXSeconds,
   // youVeReachTheXMinuteTimeLimit,
   // theMaximumSizeOfTheAttachmentsIsXMb,
-  checkYourInternetConnection;
+  checkYourInternetConnection,
+  loginDetailsSeemToBeIncorrect;
 
   String getErrorMessage(BuildContext context, List<Object>? args) {
     switch (this) {
@@ -29,6 +30,9 @@ enum UIErrorType {
       //       .theMaximumSizeOfTheAttachmentsIsXMb(args?[0] ?? '');
       case UIErrorType.checkYourInternetConnection:
         return SZodiac.of(context).checkYourInternetConnectionZodiac;
+      case UIErrorType.loginDetailsSeemToBeIncorrect:
+        return SZodiac.of(context)
+            .oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac;
     }
   }
 }

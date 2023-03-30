@@ -29,24 +29,31 @@ class DashboardScreen extends StatelessWidget {
           withBrands: true,
           iconPath: Assets.vectors.items.path,
         ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            child: Padding(
-              padding:
-                  const EdgeInsets.all(AppConstants.horizontalScreenPadding),
-              child: Column(
-                children: const [
-                  DashboardUserInfoPartWidget(),
-                  SizedBox(
-                    height: 16.0,
+        body: Builder(builder: (context) {
+          final DashboardCubit dashboardCubit = context.read<DashboardCubit>();
+          return SafeArea(
+            child: RefreshIndicator(
+              onRefresh: dashboardCubit.refreshDashboard,
+              child: SingleChildScrollView(
+                physics: const ClampingScrollPhysics()
+                    .applyTo(const AlwaysScrollableScrollPhysics()),
+                child: Padding(
+                  padding: const EdgeInsets.all(
+                      AppConstants.horizontalScreenPadding),
+                  child: Column(
+                    children: const [
+                      DashboardUserInfoPartWidget(),
+                      SizedBox(
+                        height: 16.0,
+                      ),
+                      MonthStatisticWidget()
+                    ],
                   ),
-                  MonthStatisticWidget()
-                ],
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        }),
       ),
     );
   }
