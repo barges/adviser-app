@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
-import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/articles/article.dart';
 import 'package:zodiac/data/network/requests/articles_request.dart';
 import 'package:zodiac/data/network/responses/articles_response.dart';
@@ -13,12 +12,10 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   int _offset = 0;
   int? _count;
   bool _isLoading = false;
-  final ZodiacCachingManager _cacheManager;
   final ScrollController articlesScrollController = ScrollController();
   final ZodiacArticlesRepository _articlesRepository;
 
   ArticlesCubit(
-    this._cacheManager,
     this._articlesRepository,
   ) : super(const ArticlesState()) {
     articlesScrollController.addListener(_scrollControllerListener);
@@ -85,10 +82,6 @@ class ArticlesCubit extends Cubit<ArticlesState> {
       emit(state.copyWith(
         articleList: articleList,
       ));
-      int? articlesUnreadCount = _cacheManager.getArticlesCount();
-      if (articlesUnreadCount != null && articlesUnreadCount != 0) {
-        _cacheManager.saveArticlesCount(--articlesUnreadCount);
-      }
     }
   }
 }

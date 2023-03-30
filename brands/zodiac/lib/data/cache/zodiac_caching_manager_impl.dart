@@ -11,7 +11,6 @@ import 'package:zodiac/data/models/user_info/my_details.dart';
 
 const String _zodiacUserBoxKey = 'zodiacUserBoxKey';
 const String _zodiacLocaleBoxKey = 'zodiacLocaleBoxKey';
-const String _zodiacCountBoxKey = 'zodiacCountBoxKey';
 
 const String _userTokenKey = 'userTokenKey';
 const String _userStatusKey = 'userStatusKey';
@@ -19,14 +18,12 @@ const String _localeKey = 'localeKey';
 const String _userInfoKey = 'userInfoKey';
 const String _userIdKey = 'userIdKey';
 const String _detailedUserInfoKey = 'detailedUserInfoKey';
-const String _articlesCountKey = 'articlesCountKey';
 
 @Injectable(as: ZodiacCachingManager)
 class ZodiacCachingManagerImpl implements ZodiacCachingManager {
   static Future<void> openBoxes() async {
     await Hive.openBox(_zodiacUserBoxKey);
     await Hive.openBox(_zodiacLocaleBoxKey);
-    await Hive.openBox(_zodiacCountBoxKey);
   }
 
   bool _pushTokenIsSent = false;
@@ -45,18 +42,8 @@ class ZodiacCachingManagerImpl implements ZodiacCachingManager {
   }
 
   @override
-  int? getArticlesCount() {
-    return Hive.box(_zodiacCountBoxKey).get(_articlesCountKey);
-  }
-
-  @override
   Future<void> saveUserToken(String userToken) async {
     await Hive.box(_zodiacUserBoxKey).put(_userTokenKey, userToken);
-  }
-
-  @override
-  Future<void> saveArticlesCount(int articlesCount) async {
-    await Hive.box(_zodiacCountBoxKey).put(_articlesCountKey, articlesCount);
   }
 
   @override

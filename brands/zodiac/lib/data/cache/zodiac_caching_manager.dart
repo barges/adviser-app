@@ -18,20 +18,17 @@ abstract class ZodiacCachingManager {
 
   Future<void> saveLanguageCode(String? languageCode);
 
-  Future<void> saveArticlesCount(int articlesCount);
-
   String? getLanguageCode();
 
   ///TODO: Do we need this method?
   Future<void> saveUserInfo(MyDetails? userInfo);
+
   ///TODO: Do we need this method?
   MyDetails? getUserInfo();
 
   Future<void> saveUid(int uid);
 
   int? getUid();
-
-  int? getArticlesCount();
 
   StreamSubscription listenUserInfo(ValueChanged<MyDetails> callback);
 

@@ -6,12 +6,14 @@ import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/empty_list_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_cubit.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/widgets/article_widget.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ListOfArticlesWidget extends StatelessWidget {
   const ListOfArticlesWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ZodiacMainCubit mainCubit = context.read<ZodiacMainCubit>();
     return Padding(
       padding: const EdgeInsets.all(AppConstants.horizontalScreenPadding),
       child: Builder(builder: (context) {
@@ -20,7 +22,9 @@ class ListOfArticlesWidget extends StatelessWidget {
             context.select((ArticlesCubit cubit) => cubit.state.articleList);
         return RefreshIndicator(
           onRefresh: () {
-            return articlesCubit.getArticles(refresh: true);
+            return articlesCubit
+                .getArticles(refresh: true)
+                .then((_) => mainCubit.updateArticleCount());
           },
           child: Builder(builder: (context) {
             if (articleList == null) {
