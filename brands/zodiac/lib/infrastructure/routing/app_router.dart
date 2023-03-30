@@ -11,7 +11,7 @@ import 'package:zodiac/presentation/screens/home/tabs/dashboard/dashboard_screen
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_screen.dart';
 import 'package:zodiac/presentation/screens/login/login_screen.dart';
 import 'package:zodiac/presentation/screens/notifications/notifications_screen.dart';
-import 'package:zodiac/presentation/screens/profile/profile.dart';
+import 'package:zodiac/presentation/screens/edit_profile/edit_profile_screen.dart';
 import 'package:zodiac/presentation/screens/reviews/reviews_screen.dart';
 import 'package:zodiac/presentation/screens/support/support_screen.dart';
 import 'package:zodiac/presentation/wrappers/auth_wrapper/zodiac_auth_wrapper.dart';
@@ -65,7 +65,7 @@ const zodiacRoute = AutoRoute(
       name: RoutePathsZodiac.articleDetailsScreen,
     ),
     AutoRoute(
-        page: ProfileScreen,
+        page: EditProfileScreen,
         path: RoutePathsZodiac.profileScreen,
         name: RoutePathsZodiac.profileScreen),
     AutoRoute(

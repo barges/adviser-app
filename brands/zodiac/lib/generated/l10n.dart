@@ -573,6 +573,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Edit profile`
+  String get editProfileZodiac {
+    return Intl.message(
+      'Edit profile',
+      name: 'editProfileZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

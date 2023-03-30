@@ -7,7 +7,7 @@ import 'package:injectable/injectable.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
-import 'package:zodiac/data/models/user_info/user_info.dart';
+import 'package:zodiac/data/models/user_info/my_details.dart';
 
 const String _zodiacUserBoxKey = 'zodiacUserBoxKey';
 const String _zodiacLocaleBoxKey = 'zodiacLocaleBoxKey';
@@ -63,19 +63,19 @@ class ZodiacCachingManagerImpl implements ZodiacCachingManager {
   }
 
   @override
-  UserInfo? getUserInfo() {
-    UserInfo? userInfo;
+  MyDetails? getUserInfo() {
+    MyDetails? myDetails;
     if (Hive.box(_zodiacUserBoxKey).containsKey(_userInfoKey)) {
-      userInfo = UserInfo.fromJson(
+      myDetails = MyDetails.fromJson(
           json.decode(Hive.box(_zodiacUserBoxKey).get(_userInfoKey)));
     }
-    return userInfo;
+    return myDetails;
   }
 
   @override
-  Future<void> saveUserInfo(UserInfo? userInfo) async {
+  Future<void> saveUserInfo(MyDetails? myDetails) async {
     await Hive.box(_zodiacUserBoxKey)
-        .put(_userInfoKey, json.encode(userInfo?.toJson()));
+        .put(_userInfoKey, json.encode(myDetails?.toJson()));
   }
 
   @override
@@ -89,9 +89,9 @@ class ZodiacCachingManagerImpl implements ZodiacCachingManager {
   }
 
   @override
-  StreamSubscription listenUserInfo(ValueChanged<UserInfo> callback) {
+  StreamSubscription listenUserInfo(ValueChanged<MyDetails> callback) {
     return Hive.box(_zodiacUserBoxKey).watch(key: _userInfoKey).listen((event) {
-      callback(UserInfo.fromJson(json.decode(event.value)));
+      callback(MyDetails.fromJson(json.decode(event.value)));
     });
   }
 

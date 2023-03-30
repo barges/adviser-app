@@ -9,7 +9,7 @@ class RoutePathsZodiac {
   static const chatsScreen = '${ZodiacBrand.alias}Chats';
   static const articlesScreen = '${ZodiacBrand.alias}Articles';
   static const articleDetailsScreen = '${ZodiacBrand.alias}ArticleDetails';
-  static const profileScreen = '${ZodiacBrand.alias}Profile';
+  static const profileScreen = '${ZodiacBrand.alias}EditProfile';
   static const galleryScreen = '${ZodiacBrand.alias}GalleryPictures';
   static const accountScreen = '${ZodiacBrand.alias}Account';
   static const forgotPasswordScreen = '${ZodiacBrand.alias}ForgotPassword';

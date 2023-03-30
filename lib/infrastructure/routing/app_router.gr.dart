@@ -57,6 +57,8 @@ import 'package:zodiac/presentation/screens/article_detail_screen/article_detail
     as _i25;
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart'
     as _i5;
+import 'package:zodiac/presentation/screens/edit_profile/edit_profile_screen.dart'
+    as _i26;
 import 'package:zodiac/presentation/screens/forgot_password/forgot_password_screen.dart'
     as _i28;
 import 'package:zodiac/presentation/screens/gallery/gallery_pictures_screen.dart'
@@ -74,7 +76,6 @@ import 'package:zodiac/presentation/screens/home/tabs_types.dart' as _i40;
 import 'package:zodiac/presentation/screens/login/login_screen.dart' as _i32;
 import 'package:zodiac/presentation/screens/notifications/notifications_screen.dart'
     as _i29;
-import 'package:zodiac/presentation/screens/profile/profile.dart' as _i26;
 import 'package:zodiac/presentation/screens/reviews/reviews_screen.dart'
     as _i30;
 import 'package:zodiac/presentation/screens/support/support_screen.dart'
@@ -294,14 +295,10 @@ class MainAppRouter extends _i37.RootStackRouter {
         ),
       );
     },
-    ZodiacProfile.name: (routeData) {
-      final args = routeData.argsAs<ZodiacProfileArgs>();
+    ZodiacEditProfile.name: (routeData) {
       return _i37.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: _i26.ProfileScreen(
-          key: args.key,
-          name: args.name,
-        ),
+        child: const _i26.EditProfileScreen(),
       );
     },
     ZodiacGalleryPictures.name: (routeData) {
@@ -556,8 +553,8 @@ class MainAppRouter extends _i37.RootStackRouter {
                   parent: Zodiac.name,
                 ),
                 _i37.RouteConfig(
-                  ZodiacProfile.name,
-                  path: 'zodiacProfile',
+                  ZodiacEditProfile.name,
+                  path: 'zodiacEditProfile',
                   parent: Zodiac.name,
                 ),
                 _i37.RouteConfig(
@@ -1205,37 +1202,15 @@ class ZodiacArticleDetailsArgs {
 }
 
 /// generated route for
-/// [_i26.ProfileScreen]
-class ZodiacProfile extends _i37.PageRouteInfo<ZodiacProfileArgs> {
-  ZodiacProfile({
-    _i38.Key? key,
-    required String name,
-  }) : super(
-          ZodiacProfile.name,
-          path: 'zodiacProfile',
-          args: ZodiacProfileArgs(
-            key: key,
-            name: name,
-          ),
+/// [_i26.EditProfileScreen]
+class ZodiacEditProfile extends _i37.PageRouteInfo<void> {
+  const ZodiacEditProfile()
+      : super(
+          ZodiacEditProfile.name,
+          path: 'zodiacEditProfile',
         );
 
-  static const String name = 'ZodiacProfile';
-}
-
-class ZodiacProfileArgs {
-  const ZodiacProfileArgs({
-    this.key,
-    required this.name,
-  });
-
-  final _i38.Key? key;
-
-  final String name;
-
-  @override
-  String toString() {
-    return 'ZodiacProfileArgs{key: $key, name: $name}';
-  }
+  static const String name = 'ZodiacEditProfile';
 }
 
 /// generated route for
