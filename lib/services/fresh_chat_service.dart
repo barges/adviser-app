@@ -19,6 +19,8 @@ abstract class FreshChatService {
   Future<String?> getRestoreId();
 
   void changeLocaleInvite();
+
+  bool get isInit;
 }
 
 @Singleton(as: FreshChatService)
@@ -27,6 +29,9 @@ class FreshChatServiceImpl extends FreshChatService {
   static const String freshChatKey = 'd77300c3-b490-46f6-86d9-226b4e79c737';
   static const String freshChatDomain = 'msdk.freshchat.com';
   bool _wasInit = false;
+
+  @override
+  bool get isInit => _wasInit;
 
   @override
   Future initFreshChat(bool isDarkMode) async {

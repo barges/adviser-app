@@ -88,7 +88,11 @@ class MainCubit extends Cubit<MainState> {
 
   void changeLocale(String languageCode) {
     if (Platform.isAndroid) {
-      globalGetIt.get<FreshChatService>().changeLocaleInvite();
+      final FreshChatService freshChatService =
+          globalGetIt.get<FreshChatService>();
+      if (freshChatService.isInit) {
+        freshChatService.changeLocaleInvite();
+      }
     }
 
     logger.d(languageCode);
