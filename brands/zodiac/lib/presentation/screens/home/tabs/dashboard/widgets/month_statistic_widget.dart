@@ -31,24 +31,24 @@ class MonthStatisticWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  SZodiac.of(context).thisMonthZodiac,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium
-                      ?.copyWith(fontSize: 17.0),
-                ),
-                const Divider(
-                  height: 33,
-                ),
-                Text(
-                    '$currencySymbol ${monthAmount.parseValueToCurrencyFormat}',
-                    style: Theme.of(context).textTheme.labelLarge),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                // Text(
+                //   SZodiac.of(context).thisMonthZodiac,
+                //   maxLines: 1,
+                //   overflow: TextOverflow.ellipsis,
+                //   style: Theme.of(context)
+                //       .textTheme
+                //       .headlineMedium
+                //       ?.copyWith(fontSize: 17.0),
+                // ),
+                // const Divider(
+                //   height: 33,
+                // ),
+                // Text(
+                //     '$currencySymbol ${monthAmount.parseValueToCurrencyFormat}',
+                //     style: Theme.of(context).textTheme.labelLarge),
+                // const SizedBox(
+                //   height: 8.0,
+                // ),
                 // Row(
                 //   children: [
                 //     CategoryWithCounterWidget(
@@ -64,9 +64,9 @@ class MonthStatisticWidget extends StatelessWidget {
                 //     ),
                 //   ],
                 // ),
-                const Divider(
-                  height: 33,
-                ),
+                // const Divider(
+                //   height: 33,
+                // ),
                 const ChartWidget()
               ],
             )),
