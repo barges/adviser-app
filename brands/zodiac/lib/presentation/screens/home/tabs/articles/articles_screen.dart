@@ -29,18 +29,20 @@ class ArticlesScreen extends StatelessWidget {
               title: SZodiac.of(context).articlesZodiac,
               iconPath: Assets.vectors.articles.path,
             ),
-            body: Builder(builder: (context) {
-              if (isOnline) {
-                return const ListOfArticlesWidget();
-              } else {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    NoConnectionWidget(),
-                  ],
-                );
-              }
-            }));
+            body: SafeArea(
+              child: Builder(builder: (context) {
+                if (isOnline) {
+                  return const ListOfArticlesWidget();
+                } else {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      NoConnectionWidget(),
+                    ],
+                  );
+                }
+              }),
+            ));
       }),
     );
   }

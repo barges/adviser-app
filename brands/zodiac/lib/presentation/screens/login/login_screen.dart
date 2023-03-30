@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/choose_brand_widget.dart';
@@ -88,6 +90,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 close: () {
                                   loginCubit.clearErrorMessage();
                                 },
+                                onTapUrl: () =>
+                                    context.push(route: const ZodiacSupport()),
                               );
                             },
                           ),

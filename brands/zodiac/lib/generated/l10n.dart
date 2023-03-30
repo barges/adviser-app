@@ -552,6 +552,16 @@ class SZodiac {
     );
   }
 
+  /// `Your account has been blocked.<br>Please contact <a href=''>Customer Support</a> to resolve the issue`
+  String get youWereBlocked {
+    return Intl.message(
+      'Your account has been blocked.<br>Please contact <a href=\'\'>Customer Support</a> to resolve the issue',
+      name: 'youWereBlocked',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Customer Support`
   String get customerSupportZodiac {
     return Intl.message(

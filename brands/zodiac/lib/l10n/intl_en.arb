@@ -51,5 +51,7 @@
   "reviewsFromYourClientsWillAppearHereZodiac": "Reviews from your clients will appear here",
   "customerSupportZodiac": "Customer Support",
   "oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac": "😱 Oops! Your login details seem to be incorrect. Give it another try, or tap Reset Password.",
-  "zodiacTeam": "Zodiac Team"
+  "zodiacTeam": "Zodiac Team",
+  "youWereBlocked": "Your account has been blocked.<br>Please contact <a href=''>Customer Support</a> to resolve the issue",
+  "customerSupportZodiac": "Customer Support"
 }

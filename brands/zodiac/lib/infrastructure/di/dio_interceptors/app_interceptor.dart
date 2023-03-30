@@ -122,11 +122,19 @@ class AppInterceptor extends Interceptor {
           UIError(uiErrorType: UIErrorType.loginDetailsSeemToBeIncorrect));
     } else if (baseResponse.errorCode != 0 &&
         !response.realUri.path.contains('forgot-password')) {
-      _zodiacMainCubit.updateErrorMessage(
-        NetworkError(
-          message: baseResponse.getErrorMessage(),
-        ),
-      );
+      if (baseResponse.errorCode == 15) {
+        _zodiacMainCubit.updateErrorMessage(
+          UIError(
+            uiErrorType: UIErrorType.youWhereBlocked,
+          ),
+        );
+      } else {
+        _zodiacMainCubit.updateErrorMessage(
+          NetworkError(
+            message: baseResponse.getErrorMessage(),
+          ),
+        );
+      }
     }
     // if (response.headers.value("verifyToken") != null) {
     //   //if the header is present, then compare it with the Shared Prefs key

@@ -50,5 +50,7 @@
   "noReviewsYetZodiac":"No reviews, yet",
   "reviewsFromYourClientsWillAppearHereZodiac": "Reviews from your clients will appear here",
   "customerSupportZodiac": "Kundensupport",
-  "zodiacTeam": "Zodiac Team"
+  "zodiacTeam": "Zodiac Team",
+  "youWereBlocked": "Ihr Konto wurde gesperrt.<br>Bitte wenden Sie sich an den <a href=''>Kundensupport</a>, um das Problem zu lösen",
+  "customerSupportZodiac": "Kundensupport"
 }

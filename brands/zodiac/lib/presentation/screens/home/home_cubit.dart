@@ -70,7 +70,7 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> getArticleCount() async {
     try {
       final articleCountResponse = await _articlesRepository.getArticleCount(
-          request: ArticleCountRequest(update: 0, isBadge: 2));
+          request: ArticleCountRequest(update: 0, isBadge: 1));
       if (articleCountResponse?.count != _articleUnreadCountPrev) {
         emit(state.copyWith(articlesUnreadCount: articleCountResponse?.count));
         _articleUnreadCountPrev = state.articlesUnreadCount;
