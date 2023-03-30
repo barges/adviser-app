@@ -30,9 +30,6 @@ import '../../data/network/api/auth_api.dart' as _i23;
 import '../../data/network/api/chats_api.dart' as _i24;
 import '../../data/network/api/services_api.dart' as _i16;
 import '../../data/network/api/user_api.dart' as _i17;
-import '../../data/network/websocket_manager/websocket_manager.dart' as _i18;
-import '../../data/network/websocket_manager/websocket_manager_impl.dart'
-    as _i19;
 import '../../data/repository_impl/zodiac_articles_repository_impl.dart'
     as _i26;
 import '../../data/repository_impl/zodiac_auth_repository_impl.dart' as _i28;
@@ -42,6 +39,8 @@ import '../../domain/repositories/zodiac_articles_repository.dart' as _i25;
 import '../../domain/repositories/zodiac_auth_repository.dart' as _i27;
 import '../../domain/repositories/zodiac_chats_repository.dart' as _i29;
 import '../../domain/repositories/zodiac_user_repository.dart' as _i20;
+import '../../services/websocket_manager/websocket_manager.dart' as _i18;
+import '../../services/websocket_manager/websocket_manager_impl.dart' as _i19;
 import '../../zodiac_main_cubit.dart' as _i13;
 import 'dio_interceptors/app_interceptor.dart' as _i14;
 import 'modules/api_module.dart' as _i32;
@@ -88,8 +87,8 @@ Future<_i1.GetIt> $initGetIt(
   );
   gh.factory<_i16.ServicesApi>(() => _i16.ServicesApi(get<_i15.Dio>()));
   gh.factory<_i17.UserApi>(() => _i17.UserApi(get<_i15.Dio>()));
-  gh.factory<_i18.WebSocketManager>(
-      () => _i19.WebSocketManagerImpl(get<_i13.ZodiacMainCubit>()));
+  gh.singleton<_i18.WebSocketManager>(
+      _i19.WebSocketManagerImpl(get<_i13.ZodiacMainCubit>()));
   gh.factory<_i20.ZodiacUserRepository>(
       () => _i21.ZodiacUserRepositoryImpl(get<_i17.UserApi>()));
   gh.factory<_i22.ArticlesApi>(() => _i22.ArticlesApi(get<_i15.Dio>()));

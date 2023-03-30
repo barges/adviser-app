@@ -7,7 +7,7 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.da
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/data/network/requests/article_count_request.dart';
-import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
+import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/presentation/screens/home/home_state.dart';
 import 'package:zodiac/presentation/screens/home/tabs_types.dart';

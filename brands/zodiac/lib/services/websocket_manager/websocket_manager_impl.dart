@@ -5,21 +5,21 @@ import 'package:eventify/eventify.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:web_socket_channel/io.dart';
-import 'package:zodiac/data/network/websocket_manager/commands.dart';
+import 'package:zodiac/services/websocket_manager/commands.dart';
 import 'package:zodiac/data/models/socket_message/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
-import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
+import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:zodiac/zodiac_constants.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
-@Injectable(as: WebSocketManager)
+@Singleton(as: WebSocketManager)
 class WebSocketManagerImpl implements WebSocketManager {
-  static WebSocketChannel? _channel;
+  WebSocketChannel? _channel;
 
   final ZodiacMainCubit _zodiacMainCubit;
 
-  static StreamSubscription? _socketStream;
+  StreamSubscription? _socketStream;
 
   final _emitter = EventEmitter();
 
