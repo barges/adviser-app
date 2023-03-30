@@ -14,10 +14,10 @@ import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/payments_list_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
 import 'package:zodiac/data/network/responses/reviews_response.dart';
-import 'package:zodiac/data/network/responses/user_info_response.dart';
+import 'package:zodiac/data/network/responses/my_details_response.dart';
 
 abstract class ZodiacUserRepository {
-  Future<UserInfoResponse> getUserInfo(AuthorizedRequest request);
+  Future<MyDetailsResponse> getMyDetails(AuthorizedRequest request);
 
   Future<PriceSettingsResponse> getPriceSettings(AuthorizedRequest request);
 

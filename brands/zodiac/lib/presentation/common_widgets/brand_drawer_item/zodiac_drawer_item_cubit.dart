@@ -35,7 +35,7 @@ class ZodiacDrawerItemCubit extends Cubit<ZodiacDrawerItemState> {
     final BaseResponse? response =
         await _authRepository.logout(request: AuthorizedRequest());
     if (response?.status == true) {
-      await _webSocketManager.close();
+      _webSocketManager.close();
       await _zodiacCachingManager.logout();
       context.replaceAll([const ZodiacAuth()]);
     }

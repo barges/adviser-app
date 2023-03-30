@@ -37,12 +37,11 @@ class HomeCubit extends Cubit<HomeState> {
     this._articlesRepository,
   ) : super(const HomeState()) {
     routes = tabsList.map((e) => _getPage(e)).toList();
-    final String? authToken = _cacheManager.getUserToken();
-    final int? userId = _cacheManager.getUid();
 
-    if (authToken != null && userId != null) {
-      _webSocketManager.connect(authToken, userId);
-    }
+
+
+      _webSocketManager.connect();
+
 
     emit(
       state.copyWith(

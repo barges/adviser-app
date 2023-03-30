@@ -5,25 +5,32 @@ import 'package:eventify/eventify.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:web_socket_channel/io.dart';
+import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/network/requests/authorized_request.dart';
+import 'package:zodiac/data/network/responses/my_details_response.dart';
 import 'package:zodiac/data/network/websocket_manager/commands.dart';
 import 'package:zodiac/data/models/socket_message/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
+import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/zodiac_constants.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
-@Injectable(as: WebSocketManager)
+@Singleton(as: WebSocketManager)
 class WebSocketManagerImpl implements WebSocketManager {
-  static WebSocketChannel? _channel;
+  WebSocketChannel? _channel;
 
+  final ZodiacCachingManager _zodiacCachingManager;
   final ZodiacMainCubit _zodiacMainCubit;
-
-  static StreamSubscription? _socketStream;
 
   final _emitter = EventEmitter();
 
-  WebSocketManagerImpl(this._zodiacMainCubit) {
+  WebSocketManagerImpl(
+    this._zodiacMainCubit,
+    this._zodiacCachingManager,
+  ) {
     //ping-pong
     _emitter.on(Commands.ping, this, (ev, _) => _send(SocketMessage.pong()));
 
@@ -135,32 +142,38 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   @override
-  Future connect(String authToken, int userId) async {
-    if (_channel != null) {
-      close();
+  Future connect() async {
+    final String? authToken = _zodiacCachingManager.getUserToken();
+    final int? userId = _zodiacCachingManager.getUid();
+
+    if(authToken != null && userId != null) {
+      if (_channel != null) {
+        close();
+      }
+      const host = ZodiacConstants.socketUrlZodiac;
+
+      final url = Uri(
+          scheme: "wss",
+          host: host,
+          path: "/wss",
+          queryParameters: {"authToken": authToken});
+
+      logger.d("Socket is connecting ...");
+      _channel = IOWebSocketChannel.connect(url);
+      _channel!.stream.listen((event) {
+        logger.d("Socket event: $event");
+
+        final message = SocketMessage.fromJson(json.decode(event));
+        _emitter.emit(message.action, this, message);
+      }, onDone: () {
+        logger.d("Socket is closed...");
+        _getDetails();
+      }, onError: (error) {
+        logger.d("Socket error: $error");
+        connect();
+      });
+      _onStart(userId);
     }
-    const host = ZodiacConstants.socketUrlZodiac;
-
-    final url = Uri(
-        scheme: "wss",
-        host: host,
-        path: "/wss",
-        queryParameters: {"authToken": authToken});
-
-    logger.d("Socket is connecting ...");
-    _channel = IOWebSocketChannel.connect(url);
-    _socketStream = _channel!.stream.listen((event) {
-      logger.d("Socket event: $event");
-
-      final message = SocketMessage.fromJson(json.decode(event));
-      _emitter.emit(message.action, this, message);
-    }, onDone: () {
-      logger.d("Socket is closed...");
-    }, onError: (error) {
-      logger.d("Socket error: $error");
-      connect(authToken, userId);
-    });
-    _onStart(userId);
   }
 
   @override
@@ -169,12 +182,16 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   @override
-  Future<void> close() async {
-    await _socketStream?.cancel();
-    _socketStream = null;
-    await _channel?.sink.close();
-    _channel = null;
-  }
+  void close() => _channel?.sink.close();
+
+  Future<void> _getDetails() async => Timer(const Duration(seconds: 1), () async {
+       final MyDetailsResponse response = await zodiacGetIt
+            .get<ZodiacUserRepository>()
+            .getMyDetails(AuthorizedRequest());
+       if(response.status == true){
+         connect();
+       }
+      });
 
   void _send(SocketMessage message) {
     //logger.d("WebSocketManager._send() - message: ${message.encoded}");
@@ -183,6 +200,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onStart(int userId) {
     _send(SocketMessage.advisorLogin(userId: userId));
+    _send(SocketMessage.getState());
   }
 
   void _onSyncUserInfo(Event event) {

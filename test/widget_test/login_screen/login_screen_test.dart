@@ -12,7 +12,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/cache/data_caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
+import 'package:shared_advisor_interface/data/models/user_info/my_details.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
 import 'package:shared_advisor_interface/data/repositories/zodiac_auth_repository_impl.dart';
 import 'package:shared_advisor_interface/domain/repositories/zodiac_auth_repository.dart';
@@ -104,7 +104,7 @@ void main() {
     dioAdapter = DioAdapter(dio: dio, matcher: const UrlRequestMatcher());
 
     mockUserRepository = MockUserRepositoryImpl();
-    when(mockUserRepository.getUserInfo())
+    when(mockUserRepository.getMyDetails())
         .thenAnswer((realInvocation) => Future.value(const UserInfo()));
     when(mockUserRepository.setPushEnabled(argThat(anything)))
         .thenAnswer((realInvocation) => Future.value(const UserInfo()));

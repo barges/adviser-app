@@ -16,7 +16,7 @@ import 'package:zodiac/data/network/responses/payments_list_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
 import 'package:zodiac/data/network/responses/reviews_response.dart';
-import 'package:zodiac/data/network/responses/user_info_response.dart';
+import 'package:zodiac/data/network/responses/my_details_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 
 @Injectable(as: ZodiacUserRepository)
@@ -26,8 +26,8 @@ class ZodiacUserRepositoryImpl implements ZodiacUserRepository {
   const ZodiacUserRepositoryImpl(this._userApi);
 
   @override
-  Future<UserInfoResponse> getUserInfo(AuthorizedRequest request) async {
-    return await _userApi.getUserInfo(request);
+  Future<MyDetailsResponse> getMyDetails(AuthorizedRequest request) async {
+    return await _userApi.getMyDetails(request);
   }
 
   @override

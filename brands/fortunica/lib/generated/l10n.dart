@@ -1611,10 +1611,10 @@ class SFortunica {
     );
   }
 
-  /// `Complete your profile to start work`
+  /// `Complete your edit_profile to start work`
   String get completeYourProfileToStartWorkFortunica {
     return Intl.message(
-      'Complete your profile to start work',
+      'Complete your edit_profile to start work',
       name: 'completeYourProfileToStartWorkFortunica',
       desc: '',
       args: [],
@@ -1631,11 +1631,11 @@ class SFortunica {
     );
   }
 
-  /// `Please ensure your profile is completed for all languages. Need help? Contact your manager.`
+  /// `Please ensure your edit_profile is completed for all languages. Need help? Contact your manager.`
   String
       get pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManagerFortunica {
     return Intl.message(
-      'Please ensure your profile is completed for all languages. Need help? Contact your manager.',
+      'Please ensure your edit_profile is completed for all languages. Need help? Contact your manager.',
       name:
           'pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManagerFortunica',
       desc: '',
@@ -1673,11 +1673,11 @@ class SFortunica {
     );
   }
 
-  /// `Change your status in your profile to make yourself visible to users.`
+  /// `Change your status in your edit_profile to make yourself visible to users.`
   String
       get changeYourStatusInYourProfileToMakeYourselfVisibleToUsersFortunica {
     return Intl.message(
-      'Change your status in your profile to make yourself visible to users.',
+      'Change your status in your edit_profile to make yourself visible to users.',
       name:
           'changeYourStatusInYourProfileToMakeYourselfVisibleToUsersFortunica',
       desc: '',

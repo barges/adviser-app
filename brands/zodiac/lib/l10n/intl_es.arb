@@ -50,5 +50,6 @@
   "noReviewsYetZodiac":"No reviews, yet",
   "reviewsFromYourClientsWillAppearHereZodiac": "Reviews from your clients will appear here",
   "customerSupportZodiac": "Soporte de Atención al Cliente",
-  "oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac": "😱 ¡Ups! Tus datos de inicio de sesión parecen ser incorrectos. Inténtalo nuevamente o pulsa restablecer clave."
+  "oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac": "😱 ¡Ups! Tus datos de inicio de sesión parecen ser incorrectos. Inténtalo nuevamente o pulsa restablecer clave.",
+  "editProfileZodiac": "Editar perfil"
 }
