@@ -108,8 +108,8 @@ class _ArticleIcon extends StatelessWidget {
       children: [
         child,
         Builder(builder: (context) {
-          final int? count =
-              context.select((HomeCubit cubit) => cubit.state.articleCount);
+          final int? count = context
+              .select((HomeCubit cubit) => cubit.state.articlesUnreadCount);
           if (count != null && count != 0) {
             return Positioned(
               top: -2.0,
@@ -121,17 +121,21 @@ class _ArticleIcon extends StatelessWidget {
                   color: Color(0xFFEA4E9D),
                   shape: BoxShape.circle,
                 ),
-                child: Center(
-                  child: Builder(builder: (_) {
-                    return Text(
-                      count.toString(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .displaySmall
-                          ?.copyWith(color: const Color(0xFFFFFFFF)),
-                    );
-                  }),
-                ),
+                child: Builder(builder: (_) {
+                  return FittedBox(
+                    child: Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Text(
+                        count.toString(),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .displaySmall
+                            ?.copyWith(color: const Color(0xFFFFFFFF)),
+                      ),
+                    ),
+                  );
+                }),
               ),
             );
           } else {

@@ -22,8 +22,7 @@ class ArticleWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         if (article.id != null) {
-          await context.push(
-              route: ZodiacArticleDetails(articleId: article.id!));
+          context.push(route: ZodiacArticleDetails(articleId: article.id!));
           articlesCubit.markAsRead(article.id!);
         }
       },
@@ -42,8 +41,6 @@ class ArticleWidget extends StatelessWidget {
                 Positioned(
                   left: 12.0,
                   top: 12.0,
-                  width: 40.0,
-                  height: 18.0,
                   child: _ArticleStatusWidget(
                       title: SZodiac.of(context).newZodiac,
                       backgroundColor: AppColors.promotion),
@@ -55,7 +52,7 @@ class ArticleWidget extends StatelessWidget {
             child: Text(
               DateFormat(dateFormat)
                   .format(DateTime.fromMillisecondsSinceEpoch(
-                  (article.dateCreate ?? 0) * 1000))
+                      (article.dateCreate ?? 0) * 1000))
                   .parseDateTimePattern2,
               style: Theme.of(context).textTheme.displaySmall?.copyWith(
                   fontWeight: FontWeight.w500,
@@ -99,15 +96,17 @@ class _ArticleStatusWidget extends StatelessWidget {
       decoration: BoxDecoration(
           color: backgroundColor,
           gradient:
-          gradient != null ? LinearGradient(colors: gradient ?? []) : null,
+              gradient != null ? LinearGradient(colors: gradient ?? []) : null,
           borderRadius: BorderRadius.circular(4.0)),
-      child: Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 6.0),
         child: Text(
           title.toUpperCase(),
+          textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
-            color: Theme.of(context).canvasColor,
-            fontSize: 12.0,
-          ),
+                color: Theme.of(context).canvasColor,
+                fontSize: 12.0,
+              ),
         ),
       ),
     );

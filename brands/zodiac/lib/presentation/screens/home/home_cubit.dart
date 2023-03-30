@@ -29,6 +29,7 @@ class HomeCubit extends Cubit<HomeState> {
   late final StreamSubscription _userStatusSubscription;
   late final StreamSubscription<bool> _updateArticleCountSubscription;
   late final List<PageRouteInfo> routes;
+  int? _articleUnreadCountPrev;
 
   HomeCubit(
     this._cacheManager,
@@ -37,6 +38,7 @@ class HomeCubit extends Cubit<HomeState> {
     this._articlesRepository,
   ) : super(const HomeState()) {
     routes = tabsList.map((e) => _getPage(e)).toList();
+    _articleUnreadCountPrev = _cacheManager.getArticlesCount();
     final String? authToken = _cacheManager.getUserToken();
     final int? userId = _cacheManager.getUid();
 
@@ -68,8 +70,12 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> getArticleCount() async {
     try {
       final articleCountResponse = await _articlesRepository.getArticleCount(
-          request: ArticleCountRequest(update: 0, isBadge: 0));
-      emit(state.copyWith(articleCount: articleCountResponse?.count));
+          request: ArticleCountRequest(update: 0, isBadge: 2));
+      if (articleCountResponse?.count != _articleUnreadCountPrev) {
+        emit(state.copyWith(articlesUnreadCount: articleCountResponse?.count));
+        _articleUnreadCountPrev = state.articlesUnreadCount;
+        _cacheManager.saveArticlesCount(_articleUnreadCountPrev!);
+      }
     } catch (e) {
       logger.d(e);
     }
@@ -83,7 +89,10 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   changeTabIndex(int index) {
-    emit(state.copyWith(tabPositionIndex: index));
+    emit(state.copyWith(
+        tabPositionIndex: index,
+        articlesUnreadCount:
+            index == TabsTypes.articles.index ? 0 : state.articlesUnreadCount));
   }
 
   PageRouteInfo _getPage(TabsTypes tab) {

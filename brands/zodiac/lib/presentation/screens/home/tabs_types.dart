@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_screen.dart';
@@ -46,8 +45,7 @@ enum TabsTypes {
       case TabsTypes.dashboard:
         return Navigator(
             onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    const DashboardScreen()));
+                builder: (BuildContext context) => const DashboardScreen()));
       case TabsTypes.articles:
         return Navigator(
             onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
@@ -55,13 +53,11 @@ enum TabsTypes {
       case TabsTypes.sessions:
         return Navigator(
             onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    const SessionsScreen()));
+                builder: (BuildContext context) => const SessionsScreen()));
       case TabsTypes.account:
         return Navigator(
             onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    const AccountScreen()));
+                builder: (BuildContext context) => const AccountScreen()));
     }
   }
 }

@@ -114,6 +114,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Der Sitzungsverlauf deines Kunden wird hier erscheinen"),
         "yourNotificationsHistoryWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
-                "Your notifications history will appear here")
+                "Your notifications history will appear here"),
+        "zodiacTeam": MessageLookupByLibrary.simpleMessage("Zodiac Team")
       };
 }
