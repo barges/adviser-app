@@ -44,6 +44,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Soporte de Atención al Cliente"),
         "dashboardZodiac":
             MessageLookupByLibrary.simpleMessage("Panel de Control"),
+        "editProfileZodiac":
+            MessageLookupByLibrary.simpleMessage("Editar perfil"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("Email"),
         "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(

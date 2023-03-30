@@ -16,7 +16,7 @@ import 'package:zodiac/zodiac_constants.dart';
 
 class ZodiacBrand implements BaseBrand {
   static const alias = 'zodiac';
-  static const _name = 'Zodiac Touch';
+  static const _name = 'Zodiac Psychics';
 
   static final ZodiacBrand _instance = ZodiacBrand._internal();
 

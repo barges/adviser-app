@@ -209,11 +209,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   GestureDetector(
                                     onLongPress: () {
-                                      // if (kDebugMode) {
-                                      //   context.read<LoginCubit>().emailController.text =
-                                      //   'primrose.test1@gmail.com';
-                                      //   context.read<LoginCubit>().passwordController.text = '1234567891';
-                                      // }
+                                      if (kDebugMode) {
+                                        context.read<LoginCubit>().emailController.text =
+                                        'niskov.test@gmail.com';
+                                        context.read<LoginCubit>().passwordController.text = '12345678';
+                                      }
                                     },
                                     onDoubleTap: () {
                                       if (kDebugMode) {

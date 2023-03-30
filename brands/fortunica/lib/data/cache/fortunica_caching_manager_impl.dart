@@ -8,6 +8,7 @@ import 'package:fortunica/data/models/user_info/user_profile.dart';
 import 'package:fortunica/data/models/user_info/user_status.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_advisor_interface/global.dart';
 
 import 'fortunica_caching_manager.dart';
 
@@ -57,9 +58,11 @@ class FortunicaCachingManagerImpl implements FortunicaCachingManager {
   UserProfile? getUserProfile() {
     UserProfile? userProfile;
     if (Hive.box(_fortunicaUserBoxKey).containsKey(_userProfileKey)) {
-      Map<String, dynamic> tokensMap =
+      Map<String, dynamic>? userProfileMap =
           json.decode(Hive.box(_fortunicaUserBoxKey).get(_userProfileKey));
-      userProfile = UserProfile.fromJson(tokensMap);
+      if(userProfileMap != null) {
+        userProfile = UserProfile.fromJson(userProfileMap);
+      }
     }
 
     return userProfile;
@@ -108,8 +111,11 @@ class FortunicaCachingManagerImpl implements FortunicaCachingManager {
     return Hive.box(_fortunicaUserBoxKey)
         .watch(key: _userProfileKey)
         .listen((event) {
+      logger.d('event value ${event.value != null}');
       if (event.value != null) {
-        callback(UserProfile.fromJson(json.decode(event.value)));
+        logger.d('event value ${event.value}');
+        logger.d('event value ${event.value != null}');
+        callback(UserProfile.fromJson(json.decode(event.value) ?? '{}'));
       }
     });
   }

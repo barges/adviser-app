@@ -19,12 +19,17 @@ class CustomBottomNavigationBar extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         const Divider(
-          height: 2.0,
+          height: 1.0,
         ),
         Container(
           color: backgroundColor,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            padding: EdgeInsets.fromLTRB(
+              0.0,
+              10.0,
+              0.0,
+             10.0 + MediaQuery.of(context).viewPadding.bottom,
+            ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -10,7 +10,7 @@ class CategoryInfo with _$CategoryInfo {
   const CategoryInfo._();
 
   @JsonSerializable(
-      includeIfNull: false, createToJson: true, explicitToJson: true)
+      includeIfNull: false, explicitToJson: true)
   const factory CategoryInfo({
     int? id,
     int? pid,

@@ -39,12 +39,8 @@ class HomeCubit extends Cubit<HomeState> {
   ) : super(const HomeState()) {
     routes = tabsList.map((e) => _getPage(e)).toList();
     _articleUnreadCountPrev = _cacheManager.getArticlesCount();
-    final String? authToken = _cacheManager.getUserToken();
-    final int? userId = _cacheManager.getUid();
+	_webSocketManager.connect();
 
-    if (authToken != null && userId != null) {
-      _webSocketManager.connect(authToken, userId);
-    }
 
     emit(
       state.copyWith(

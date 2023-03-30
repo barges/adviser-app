@@ -52,5 +52,6 @@
   "customerSupportZodiac": "Soporte de Atención al Cliente",
   "oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac": "😱 ¡Ups! Tus datos de inicio de sesión parecen ser incorrectos. Inténtalo nuevamente o pulsa restablecer clave.",
   "zodiacTeam": "Zodiac Equipo",
-  "youWereBlocked": "Su cuenta ha sido bloqueada.<br>Póngase en contacto con <a href=''>Atención al cliente</a> para resolver el problema"
+  "youWereBlocked": "Su cuenta ha sido bloqueada.<br>Póngase en contacto con <a href=''>Atención al cliente</a> para resolver el problema",
+  "editProfileZodiac": "Editar perfil"
 }

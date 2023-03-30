@@ -552,6 +552,28 @@ class SZodiac {
     );
   }
 
+  /// `😱 Oops! Your login details seem to be incorrect. Give it another try, or tap Reset Password.`
+  String
+      get oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac {
+    return Intl.message(
+      '😱 Oops! Your login details seem to be incorrect. Give it another try, or tap Reset Password.',
+      name:
+          'oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Zodiac Team`
+  String get zodiacTeam {
+    return Intl.message(
+      'Zodiac Team',
+      name: 'zodiacTeam',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Your account has been blocked.<br>Please contact <a href=''>Customer Support</a> to resolve the issue`
   String get youWereBlocked {
     return Intl.message(
@@ -572,23 +594,11 @@ class SZodiac {
     );
   }
 
-  /// `😱 Oops! Your login details seem to be incorrect. Give it another try, or tap Reset Password.`
-  String
-      get oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac {
+  /// `Edit profile`
+  String get editProfileZodiac {
     return Intl.message(
-      '😱 Oops! Your login details seem to be incorrect. Give it another try, or tap Reset Password.',
-      name:
-          'oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Zodiac Team`
-  String get zodiacTeam {
-    return Intl.message(
-      'Zodiac Team',
-      name: 'zodiacTeam',
+      'Edit profile',
+      name: 'editProfileZodiac',
       desc: '',
       args: [],
     );

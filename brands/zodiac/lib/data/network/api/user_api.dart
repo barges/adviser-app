@@ -17,7 +17,7 @@ import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/payments_list_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
 import 'package:zodiac/data/network/responses/reviews_response.dart';
-import 'package:zodiac/data/network/responses/user_info_response.dart';
+import 'package:zodiac/data/network/responses/my_details_response.dart';
 
 part 'user_api.g.dart';
 
@@ -28,7 +28,7 @@ abstract class UserApi {
   factory UserApi(Dio dio) = _UserApi;
 
   @POST('/my-details')
-  Future<UserInfoResponse> getUserInfo(
+  Future<MyDetailsResponse> getMyDetails(
     @Body() AuthorizedRequest request,
   );
 
