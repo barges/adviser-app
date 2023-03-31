@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
@@ -44,9 +43,9 @@ void main() async {
       runApp(const MyApp());
     },
     (error, stack) {
-      log("App Error with: $error");
+      logger.d("App Error with: $error");
 
-      log("App Error stack: $stack");
+      logger.d("App Error stack: $stack");
     },
   );
 }
@@ -56,9 +55,6 @@ class MyApp extends StatefulWidget {
 
   @override
   State<MyApp> createState() => _MyAppState();
-
-  static _MyAppState? of(BuildContext context) =>
-      context.findAncestorStateOfType<_MyAppState>();
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
@@ -92,7 +88,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

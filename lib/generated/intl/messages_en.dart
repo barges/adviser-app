@@ -35,6 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "logOut": MessageLookupByLibrary.simpleMessage("Log out"),
         "notificationsAreDisabled":
             MessageLookupByLibrary.simpleMessage("Notifications are disabled"),
+        "other": MessageLookupByLibrary.simpleMessage("Other"),
         "otherBrands": MessageLookupByLibrary.simpleMessage("Other brands"),
         "permissionNeeded":
             MessageLookupByLibrary.simpleMessage("Permission Needed"),
@@ -48,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "toEnableNotificationYoullNeedToAllowNotificationsInYour":
             MessageLookupByLibrary.simpleMessage(
                 "To enable notification, you’ll need to allow notifications in your phone settings"),
+        "today": MessageLookupByLibrary.simpleMessage("Today"),
         "unknownError": MessageLookupByLibrary.simpleMessage("Unknown error"),
         "update": MessageLookupByLibrary.simpleMessage("Update"),
         "version": MessageLookupByLibrary.simpleMessage("Version"),
