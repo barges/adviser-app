@@ -36,6 +36,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "logOut": MessageLookupByLibrary.simpleMessage("Abmelden"),
         "notificationsAreDisabled": MessageLookupByLibrary.simpleMessage(
             "Benachrichtigungen sind deaktiviert"),
+        "other": MessageLookupByLibrary.simpleMessage("Sonstige"),
         "otherBrands": MessageLookupByLibrary.simpleMessage("Andere Marken"),
         "permissionNeeded":
             MessageLookupByLibrary.simpleMessage("Erlaubnis notwendig"),
@@ -49,6 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "toEnableNotificationYoullNeedToAllowNotificationsInYour":
             MessageLookupByLibrary.simpleMessage(
                 "Um die Benachrichtigung zu aktivieren, muss man in den Einstellungen des Handys Benachrichtigungen zulassen"),
+        "today": MessageLookupByLibrary.simpleMessage("Heute"),
         "unknownError":
             MessageLookupByLibrary.simpleMessage("Unbekannter Fehler"),
         "update": MessageLookupByLibrary.simpleMessage("Aktualisierung"),

@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
-import 'package:zodiac/data/models/user_info/user_info.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/support/support_state.dart';
 
@@ -42,7 +41,7 @@ class SupportCubit extends Cubit<SupportState> {
       profileName: details?.name,
     );
     final bool configured =
-        await freshChatService.setUpFortunicaFreshChat(freshChaUserInfo);
+        await freshChatService.setUpFreshChat(freshChaUserInfo);
     emit(state.copyWith(configured: configured));
   }
 }

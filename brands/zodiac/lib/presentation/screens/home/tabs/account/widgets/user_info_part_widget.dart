@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -25,11 +27,11 @@ class UserInfoPartWidget extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(16.0, 16.0, 0.0, 0.0),
             child: Column(
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(
-                      right: AppConstants.horizontalScreenPadding),
-                  child: _UserInfoWidget(),
-                ),
+                GestureDetector(
+                    onTap: (){
+                      context.push(route: const ZodiacEditProfile());
+                    },
+                    child: const _UserInfoWidget()),
                 const SizedBox(
                   height: 16.0,
                 ),
@@ -70,43 +72,47 @@ class _UserInfoWidget extends StatelessWidget {
         context.select((ZodiacAccountCubit cubit) => cubit.state.userInfo);
     final bool userOnline = context
         .select((ZodiacAccountCubit cubit) => cubit.state.userStatusOnline);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        UserAvatar(
-          avatarUrl: userInfo?.avatar,
-          diameter: 72.0,
-          badgeColor: userOnline ? AppColors.online : theme.shadowColor,
-        ),
-        const SizedBox(width: 16.0),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                userInfo?.name ?? '',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  fontSize: 17.0,
-                ),
-              ),
-              Text(
-                userInfo?.specializing ?? '',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.shadowColor,
-                ),
-              ),
-            ],
+    return Padding(
+      padding: const EdgeInsets.only(
+          right: AppConstants.horizontalScreenPadding),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          UserAvatar(
+            avatarUrl: userInfo?.avatar,
+            diameter: 72.0,
+            badgeColor: userOnline ? AppColors.online : theme.shadowColor,
           ),
-        ),
-        Assets.vectors.arrowRight.svg(
-          width: AppConstants.iconSize,
-          height: AppConstants.iconSize,
-        )
-      ],
+          const SizedBox(width: 16.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  userInfo?.name ?? '',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.headlineMedium?.copyWith(
+                    fontSize: 17.0,
+                  ),
+                ),
+                Text(
+                  userInfo?.specializing ?? '',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.shadowColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Assets.vectors.arrowRight.svg(
+            width: AppConstants.iconSize,
+            height: AppConstants.iconSize,
+          )
+        ],
+      ),
     );
   }
 }

@@ -44,6 +44,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Soporte de Atención al Cliente"),
         "dashboardZodiac":
             MessageLookupByLibrary.simpleMessage("Panel de Control"),
+        "editProfileZodiac":
+            MessageLookupByLibrary.simpleMessage("Editar perfil"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("Email"),
         "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(
@@ -114,11 +116,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "youCanChangePriceOncePer24HZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "You can change price once per 24 h"),
+        "youWereBlocked": MessageLookupByLibrary.simpleMessage(
+            "Su cuenta ha sido bloqueada.<br>Póngase en contacto con <a href=\'\'>Atención al cliente</a> para resolver el problema"),
         "yourClientSessionHistoryWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Aquí aparecerá el historial de sesiones de tu cliente"),
         "yourNotificationsHistoryWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
-                "Your notifications history will appear here")
+                "Your notifications history will appear here"),
+        "zodiacTeam": MessageLookupByLibrary.simpleMessage("Zodiac Equipo")
       };
 }

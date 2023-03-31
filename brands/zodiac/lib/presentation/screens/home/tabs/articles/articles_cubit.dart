@@ -15,7 +15,9 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   final ScrollController articlesScrollController = ScrollController();
   final ZodiacArticlesRepository _articlesRepository;
 
-  ArticlesCubit(this._articlesRepository) : super(const ArticlesState()) {
+  ArticlesCubit(
+    this._articlesRepository,
+  ) : super(const ArticlesState()) {
     articlesScrollController.addListener(_scrollControllerListener);
     _loadData();
   }

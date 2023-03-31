@@ -8,7 +8,7 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.da
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
-import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
+import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_auth_repository.dart';
 import 'package:zodiac/presentation/common_widgets/brand_drawer_item/zodiac_drawer_item_state.dart';
 import 'package:zodiac/zodiac.dart';
@@ -35,7 +35,7 @@ class ZodiacDrawerItemCubit extends Cubit<ZodiacDrawerItemState> {
     final BaseResponse? response =
         await _authRepository.logout(request: AuthorizedRequest());
     if (response?.status == true) {
-      await _webSocketManager.close();
+      _webSocketManager.close();
       await _zodiacCachingManager.logout();
       context.replaceAll([const ZodiacAuth()]);
     }

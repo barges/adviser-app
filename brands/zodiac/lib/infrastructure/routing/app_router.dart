@@ -1,17 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:zodiac/infrastructure/routing/route_paths.dart';
+import 'package:zodiac/presentation/screens/article_details_screen/article_details_screen.dart';
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart';
 import 'package:zodiac/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'package:zodiac/presentation/screens/gallery/gallery_pictures_screen.dart';
 import 'package:zodiac/presentation/screens/home/home_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_screen.dart';
-import 'package:zodiac/presentation/screens/article_detail_screen/article_details_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/dashboard/dashboard_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_screen.dart';
 import 'package:zodiac/presentation/screens/login/login_screen.dart';
 import 'package:zodiac/presentation/screens/notifications/notifications_screen.dart';
-import 'package:zodiac/presentation/screens/profile/profile.dart';
+import 'package:zodiac/presentation/screens/edit_profile/edit_profile_screen.dart';
 import 'package:zodiac/presentation/screens/reviews/reviews_screen.dart';
 import 'package:zodiac/presentation/screens/support/support_screen.dart';
 import 'package:zodiac/presentation/wrappers/auth_wrapper/zodiac_auth_wrapper.dart';
@@ -65,7 +65,7 @@ const zodiacRoute = AutoRoute(
       name: RoutePathsZodiac.articleDetailsScreen,
     ),
     AutoRoute(
-        page: ProfileScreen,
+        page: EditProfileScreen,
         path: RoutePathsZodiac.profileScreen,
         name: RoutePathsZodiac.profileScreen),
     AutoRoute(

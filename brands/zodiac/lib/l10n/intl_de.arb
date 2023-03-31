@@ -49,5 +49,9 @@
   "yourNotificationsHistoryWillAppearHereZodiac": "Your notifications history will appear here",
   "noReviewsYetZodiac":"No reviews, yet",
   "reviewsFromYourClientsWillAppearHereZodiac": "Reviews from your clients will appear here",
-  "customerSupportZodiac": "Kundensupport"
+  "customerSupportZodiac": "Kundensupport",
+  "zodiacTeam": "Zodiac Team",
+  "youWereBlocked": "Ihr Konto wurde gesperrt.<br>Bitte wenden Sie sich an den <a href=''>Kundensupport</a>, um das Problem zu lösen",
+  "customerSupportZodiac": "Kundensupport",
+  "editProfileZodiac": "Profil bearbeiten"
 }
