@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
+import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
@@ -103,6 +104,7 @@ class _ArticleIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -118,7 +120,7 @@ class _ArticleIcon extends StatelessWidget {
                 width: 16.0,
                 height: 16.0,
                 decoration: const BoxDecoration(
-                  color: Color(0xFFEA4E9D),
+                  color: AppColors.promotion,
                   shape: BoxShape.circle,
                 ),
                 child: Builder(builder: (_) {
@@ -131,7 +133,7 @@ class _ArticleIcon extends StatelessWidget {
                         style: Theme.of(context)
                             .textTheme
                             .displaySmall
-                            ?.copyWith(color: const Color(0xFFFFFFFF)),
+                            ?.copyWith(color: theme.backgroundColor),
                       ),
                     ),
                   );
