@@ -13,8 +13,7 @@ class ListOfArticlesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ZodiacMainCubit mainCubit =
-        context.read<ZodiacMainCubit>();
+    final ZodiacMainCubit mainCubit = context.read<ZodiacMainCubit>();
     return Padding(
       padding: const EdgeInsets.all(AppConstants.horizontalScreenPadding),
       child: Builder(builder: (context) {
@@ -23,8 +22,9 @@ class ListOfArticlesWidget extends StatelessWidget {
             context.select((ArticlesCubit cubit) => cubit.state.articleList);
         return RefreshIndicator(
           onRefresh: () {
-            mainCubit.updateArticleCount();
-            return articlesCubit.getArticles(refresh: true);
+            return articlesCubit
+                .getArticles(refresh: true)
+                .then((_) => mainCubit.updateArticleCount());
           },
           child: Builder(builder: (context) {
             if (articleList == null) {

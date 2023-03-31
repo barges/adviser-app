@@ -3,6 +3,8 @@ class Commands {
 
   static String get pong => 'pong';
 
+  static String get event => 'event';
+
   static String get advisorLogin => 'advisorLogin';
 
   static String get expertLogin => 'expertLogin';

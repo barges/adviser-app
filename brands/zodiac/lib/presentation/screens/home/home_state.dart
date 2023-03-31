@@ -8,6 +8,6 @@ class HomeState with _$HomeState {
   const factory HomeState({
     @Default(0) int tabPositionIndex,
     @Default(ZodiacUserStatus.offline) ZodiacUserStatus userStatus,
-    int? articleCount,
+    int? articlesUnreadCount,
   }) = _HomeState;
 }

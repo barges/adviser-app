@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zodiac/generated/l10n.dart';
 
 enum UIErrorType {
-  // blocked,
+  youWhereBlocked,
   wrongUsernameAndOrPassword,
   // youCantSendThisMessageBecauseItsLessThanXSeconds,
   // youVeReachTheXMinuteTimeLimit,
@@ -12,10 +12,8 @@ enum UIErrorType {
 
   String getErrorMessage(BuildContext context, List<Object>? args) {
     switch (this) {
-      // case UIErrorType.blocked:
-      //   return SFortunica
-      //       .of(context)
-      //       .yourAccountHasBeenBlockedPleaseContactYourAdvisorManager;
+      case UIErrorType.youWhereBlocked:
+        return SZodiac.of(context).youWereBlocked;
       case UIErrorType.wrongUsernameAndOrPassword:
         return SZodiac.of(context).wrongUsernameAndOrPasswordZodiac;
       // case UIErrorType.youCantSendThisMessageBecauseItsLessThanXSeconds:

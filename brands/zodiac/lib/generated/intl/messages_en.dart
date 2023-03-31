@@ -115,11 +115,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "youCanChangePriceOncePer24HZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "You can change price once per 24 h"),
+        "youWereBlocked": MessageLookupByLibrary.simpleMessage(
+            "Your account has been blocked.<br>Please contact <a href=\'\'>Customer Support</a> to resolve the issue"),
         "yourClientSessionHistoryWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Your client session history will appear here"),
         "yourNotificationsHistoryWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
-                "Your notifications history will appear here")
+                "Your notifications history will appear here"),
+        "zodiacTeam": MessageLookupByLibrary.simpleMessage("Zodiac Team")
       };
 }

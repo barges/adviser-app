@@ -53,7 +53,7 @@ import 'package:shared_advisor_interface/presentation/screens/force_update/force
     as _i2;
 import 'package:shared_advisor_interface/presentation/screens/home_screen/main_home_screen.dart'
     as _i1;
-import 'package:zodiac/presentation/screens/article_detail_screen/article_details_screen.dart'
+import 'package:zodiac/presentation/screens/article_details_screen/article_details_screen.dart'
     as _i25;
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart'
     as _i5;

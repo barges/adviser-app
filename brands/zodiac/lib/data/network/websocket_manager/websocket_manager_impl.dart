@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:eventify/eventify.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
@@ -13,8 +15,9 @@ import 'package:zodiac/data/models/socket_message/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
+import 'package:zodiac/zodiac.dart';
+import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/zodiac_constants.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
@@ -33,6 +36,9 @@ class WebSocketManagerImpl implements WebSocketManager {
   ) {
     //ping-pong
     _emitter.on(Commands.ping, this, (ev, _) => _send(SocketMessage.pong()));
+
+    //event
+    _emitter.on(Commands.event, this, (event, _) => _onEvent(event));
 
     //advisorLogin
     _emitter.on(Commands.expertLogin, this, (ev, _) {});
@@ -201,6 +207,21 @@ class WebSocketManagerImpl implements WebSocketManager {
   void _onStart(int userId) {
     _send(SocketMessage.advisorLogin(userId: userId));
     _send(SocketMessage.getState());
+  }
+
+  void _onEvent(Event event) {
+    SocketMessage message = (event.eventData as SocketMessage);
+    int messageType = message.params?['type'];
+    String location = message.params?['location'];
+    if (messageType == 6 && location == '/logout') {
+      final zodiacBrand = ZodiacBrand();
+      if (zodiacBrand.isCurrent) {
+        zodiacGetIt
+            .get<ZodiacCachingManager>()
+            .logout()
+            .then((_) => zodiacBrand.context?.replaceAll([const ZodiacAuth()]));
+      }
+    }
   }
 
   void _onSyncUserInfo(Event event) {
