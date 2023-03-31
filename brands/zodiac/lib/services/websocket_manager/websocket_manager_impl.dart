@@ -23,12 +23,13 @@ import 'package:zodiac/zodiac_main_cubit.dart';
 
 @Singleton(as: WebSocketManager)
 class WebSocketManagerImpl implements WebSocketManager {
-  WebSocketChannel? _channel;
-
   final ZodiacCachingManager _zodiacCachingManager;
   final ZodiacMainCubit _zodiacMainCubit;
 
-  final _emitter = EventEmitter();
+  final EventEmitter _emitter = EventEmitter();
+
+  WebSocketChannel? _channel;
+  StreamSubscription? _socketSubscription;
 
   WebSocketManagerImpl(
     this._zodiacMainCubit,
@@ -152,7 +153,7 @@ class WebSocketManagerImpl implements WebSocketManager {
     final String? authToken = _zodiacCachingManager.getUserToken();
     final int? userId = _zodiacCachingManager.getUid();
 
-    if(authToken != null && userId != null) {
+    if (authToken != null && userId != null) {
       if (_channel != null) {
         close();
       }
@@ -166,14 +167,14 @@ class WebSocketManagerImpl implements WebSocketManager {
 
       logger.d("Socket is connecting ...");
       _channel = IOWebSocketChannel.connect(url);
-      _channel!.stream.listen((event) {
+      _socketSubscription = _channel!.stream.listen((event) {
         logger.d("Socket event: $event");
 
         final message = SocketMessage.fromJson(json.decode(event));
         _emitter.emit(message.action, this, message);
       }, onDone: () {
         logger.d("Socket is closed...");
-        _getDetails();
+        _authCheckOnBackend();
       }, onError: (error) {
         logger.d("Socket error: $error");
         connect();
@@ -188,15 +189,19 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   @override
-  void close() => _channel?.sink.close();
+  void close() {
+    _socketSubscription?.cancel();
+    _channel?.sink.close();
+  }
 
-  Future<void> _getDetails() async => Timer(const Duration(seconds: 1), () async {
-       final MyDetailsResponse response = await zodiacGetIt
+  Future<void> _authCheckOnBackend() async =>
+      Timer(const Duration(seconds: 1), () async {
+        final MyDetailsResponse response = await zodiacGetIt
             .get<ZodiacUserRepository>()
             .getMyDetails(AuthorizedRequest());
-       if(response.status == true){
-         connect();
-       }
+        if (response.status == true) {
+          connect();
+        }
       });
 
   void _send(SocketMessage message) {
