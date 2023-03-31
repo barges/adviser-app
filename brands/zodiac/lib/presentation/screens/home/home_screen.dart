@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
-import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
+import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/screens/home/home_cubit.dart';
