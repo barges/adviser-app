@@ -5,6 +5,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 
 const String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 const String datePattern1 = 'MMM d, yyyy';
@@ -53,7 +54,7 @@ extension StringExt on String {
       case 'pt':
         return AppConstants.ptLanguageName;
       default:
-        return 'Other';
+        return S.of(context).other;
     }
   }
 
@@ -168,7 +169,7 @@ extension DateTimeExt on DateTime {
             .difference(DateTime(now.year, now.month, now.day))
             .inDays;
     if (timeDifference == 0) {
-      return 'Today';
+      return S.of(context).today;
     }
     if (localTime.year != now.year) {
       return DateFormat(dateFormat).format(this).parseDateTimePattern9;

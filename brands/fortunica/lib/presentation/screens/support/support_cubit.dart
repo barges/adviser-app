@@ -59,7 +59,7 @@ class SupportCubit extends Cubit<SupportState> {
     );
 
     final bool configured =
-        await freshChatService.setUpFortunicaFreshChat(freshChaUserInfo);
+        await freshChatService.setUpFreshChat(freshChaUserInfo);
     emit(state.copyWith(configured: configured));
   }
 }

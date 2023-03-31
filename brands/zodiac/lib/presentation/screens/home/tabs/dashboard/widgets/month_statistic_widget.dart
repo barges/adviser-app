@@ -13,8 +13,6 @@ class MonthStatisticWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
-      final double monthAmount =
-          context.select((DashboardCubit cubit) => cubit.state.monthAmount);
       final String currencySymbol =
           context.select((DashboardCubit cubit) => cubit.state.currencySymbol);
       return Container(
@@ -30,25 +28,23 @@ class MonthStatisticWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  SZodiac.of(context).thisMonthZodiac,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium
-                      ?.copyWith(fontSize: 17.0),
-                ),
-                const Divider(
-                  height: 33,
-                ),
-                Text(
-                    '$currencySymbol ${monthAmount.parseValueToCurrencyFormat}',
-                    style: Theme.of(context).textTheme.labelLarge),
-                const SizedBox(
-                  height: 8.0,
-                ),
+              children: const [
+                // Text(
+                //   SZodiac.of(context).thisMonthZodiac,
+                //   maxLines: 1,
+                //   overflow: TextOverflow.ellipsis,
+                //   style: Theme.of(context)
+                //       .textTheme
+                //       .headlineMedium
+                //       ?.copyWith(fontSize: 17.0),
+                // ),
+
+                // Text(
+                //     '$currencySymbol ${monthAmount.parseValueToCurrencyFormat}',
+                //     style: Theme.of(context).textTheme.labelLarge),
+                // const SizedBox(
+                //   height: 8.0,
+                // ),
                 // Row(
                 //   children: [
                 //     CategoryWithCounterWidget(
@@ -64,10 +60,7 @@ class MonthStatisticWidget extends StatelessWidget {
                 //     ),
                 //   ],
                 // ),
-                const Divider(
-                  height: 33,
-                ),
-                const ChartWidget()
+                ChartWidget()
               ],
             )),
       );

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:zodiac/data/network/websocket_manager/commands.dart';
+import 'package:zodiac/services/websocket_manager/commands.dart';
 
 class SocketMessage {
   late String action;

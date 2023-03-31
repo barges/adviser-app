@@ -21,7 +21,6 @@ class DashboardScreen extends StatelessWidget {
       create: (_) => DashboardCubit(
         zodiacGetIt.get<ZodiacCachingManager>(),
         zodiacGetIt.get<ZodiacMainCubit>(),
-        zodiacGetIt.get<ZodiacUserRepository>(),
       ),
       child: Scaffold(
         appBar: HomeAppBar(

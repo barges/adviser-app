@@ -7,7 +7,7 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.da
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/data/network/requests/article_count_request.dart';
-import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
+import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/presentation/screens/home/home_state.dart';
 import 'package:zodiac/presentation/screens/home/tabs_types.dart';
@@ -29,7 +29,7 @@ class HomeCubit extends Cubit<HomeState> {
   late final StreamSubscription _userStatusSubscription;
   late final StreamSubscription<bool> _updateArticleCountSubscription;
   late final List<PageRouteInfo> routes;
-  bool _updatedAsRead = false;
+  bool _firstOpenArticlesTab = true;
 
   HomeCubit(
     this._cacheManager,
@@ -80,9 +80,9 @@ class HomeCubit extends Cubit<HomeState> {
 
   changeTabIndex(int index) {
     emit(state.copyWith(tabPositionIndex: index));
-    if (!_updatedAsRead && index == TabsTypes.articles.index) {
+    if (_firstOpenArticlesTab && index == TabsTypes.articles.index) {
       getArticleCount(update: 1);
-      _updatedAsRead = true;
+      _firstOpenArticlesTab = false;
     }
   }
 
