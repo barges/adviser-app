@@ -29,6 +29,7 @@ class HomeCubit extends Cubit<HomeState> {
   late final StreamSubscription _userStatusSubscription;
   late final StreamSubscription<bool> _updateArticleCountSubscription;
   late final List<PageRouteInfo> routes;
+  bool _updatedAsRead = false;
 
   HomeCubit(
     this._cacheManager,
@@ -37,11 +38,7 @@ class HomeCubit extends Cubit<HomeState> {
     this._articlesRepository,
   ) : super(const HomeState()) {
     routes = tabsList.map((e) => _getPage(e)).toList();
-
-
-
-      _webSocketManager.connect();
-
+    _webSocketManager.connect();
 
     emit(
       state.copyWith(
@@ -57,18 +54,18 @@ class HomeCubit extends Cubit<HomeState> {
     _updateArticleCountSubscription =
         _mainCubit.articleCountUpdateTrigger.listen(
       (_) async {
-        getArticleCount();
+        getArticleCount(update: 1);
       },
     );
 
     getArticleCount();
   }
 
-  Future<void> getArticleCount() async {
+  Future<void> getArticleCount({update = 0}) async {
     try {
       final articleCountResponse = await _articlesRepository.getArticleCount(
-          request: ArticleCountRequest(update: 0, isBadge: 0));
-      emit(state.copyWith(articleCount: articleCountResponse?.count));
+          request: ArticleCountRequest(update: update, isBadge: 1));
+      emit(state.copyWith(articlesUnreadCount: articleCountResponse?.count));
     } catch (e) {
       logger.d(e);
     }
@@ -83,6 +80,10 @@ class HomeCubit extends Cubit<HomeState> {
 
   changeTabIndex(int index) {
     emit(state.copyWith(tabPositionIndex: index));
+    if (!_updatedAsRead && index == TabsTypes.articles.index) {
+      getArticleCount(update: 1);
+      _updatedAsRead = true;
+    }
   }
 
   PageRouteInfo _getPage(TabsTypes tab) {

@@ -131,6 +131,10 @@ extension StringExt on String {
     final NumberFormat format = NumberFormat.simpleCurrency(name: this);
     return format.currencySymbol;
   }
+
+  bool get isHtml {
+    return RegExp(r'<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)</\1>').hasMatch(this);
+  }
 }
 
 extension DoubleExt on double {
