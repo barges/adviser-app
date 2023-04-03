@@ -37,6 +37,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "logOut": MessageLookupByLibrary.simpleMessage("Sair"),
         "notificationsAreDisabled": MessageLookupByLibrary.simpleMessage(
             "As notificações estão desativadas"),
+        "other": MessageLookupByLibrary.simpleMessage("Outro"),
         "otherBrands": MessageLookupByLibrary.simpleMessage("Outras marcas"),
         "permissionNeeded":
             MessageLookupByLibrary.simpleMessage("Permissão Necessária"),
@@ -50,6 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "toEnableNotificationYoullNeedToAllowNotificationsInYour":
             MessageLookupByLibrary.simpleMessage(
                 "Para habilitar notificações, você precisa permitir notificações nas configurações do seu telefone"),
+        "today": MessageLookupByLibrary.simpleMessage("Hoje"),
         "unknownError":
             MessageLookupByLibrary.simpleMessage("Erro desconhecido"),
         "update": MessageLookupByLibrary.simpleMessage("Atualizar"),

@@ -12,7 +12,7 @@ import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/app_error/app_error.dart';
 import 'package:zodiac/data/models/app_error/ui_error_type.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
-import 'package:zodiac/data/network/websocket_manager/websocket_manager.dart';
+import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 

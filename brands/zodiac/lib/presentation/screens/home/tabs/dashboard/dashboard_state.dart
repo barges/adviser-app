@@ -7,7 +7,6 @@ part 'dashboard_state.freezed.dart';
 @freezed
 class DashboardState with _$DashboardState {
   const factory DashboardState({
-    @Default(0.0) double monthAmount,
     @Default('\$') String currencySymbol,
     UserDetails? userPersonalInfo,
     UserBalance? userBalance,
