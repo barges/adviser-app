@@ -16,6 +16,7 @@ class AdvisorPreviewAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     final AdvisorPreviewCubit advisorPreviewCubit =
         context.read<AdvisorPreviewCubit>();
+    context.select((AdvisorPreviewCubit cubit) => cubit.state.updateInfo);
     return AppBar(
       backgroundColor: AdvisorPreviewConstants.primary,
       centerTitle: true,
@@ -33,42 +34,43 @@ class AdvisorPreviewAppBar extends StatelessWidget
       ),
       title: Text(advisorPreviewCubit.userProfile.profileName ?? ''),
       actions: [
-        GestureDetector(
-          onTap: advisorPreviewCubit.languages.length > 1
-              ? () {
-                  advisorPreviewCubit.onOpen();
-                  flagsBottomSheet(
-                      context: context,
-                      onApply: advisorPreviewCubit.onApply,
-                      onSelectLanguage:
-                          advisorPreviewCubit.updateActiveLanguagesInUI,
-                      activeLanguages: advisorPreviewCubit.languages,
-                      advisorPreviewCubit: advisorPreviewCubit);
-                }
-              : null,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: AppConstants.horizontalScreenPadding,
-                vertical: 8.0),
-            child: Row(
-              children: [
-                Builder(
-                  builder: (context) {
-                    final int index = context.select(
-                        (AdvisorPreviewCubit cubit) =>
-                            cubit.state.currentIndex);
-                    return Image.asset(
-                      advisorPreviewCubit.languages[index].flagImagePath,
-                    );
-                  },
-                ),
-                advisorPreviewCubit.languages.length > 1
-                    ? Assets.vectors.arrowDropDown.svg()
-                    : const SizedBox.shrink(),
-              ],
+        if (advisorPreviewCubit.languages.isNotEmpty)
+          GestureDetector(
+            onTap: advisorPreviewCubit.languages.length > 1
+                ? () {
+                    advisorPreviewCubit.onOpen();
+                    flagsBottomSheet(
+                        context: context,
+                        onApply: advisorPreviewCubit.onApply,
+                        onSelectLanguage:
+                            advisorPreviewCubit.updateActiveLanguagesInUI,
+                        activeLanguages: advisorPreviewCubit.languages,
+                        advisorPreviewCubit: advisorPreviewCubit);
+                  }
+                : null,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppConstants.horizontalScreenPadding,
+                  vertical: 8.0),
+              child: Row(
+                children: [
+                  Builder(
+                    builder: (context) {
+                      final int index = context.select(
+                          (AdvisorPreviewCubit cubit) =>
+                              cubit.state.currentIndex);
+                      return Image.asset(
+                        advisorPreviewCubit.languages[index].flagImagePath,
+                      );
+                    },
+                  ),
+                  advisorPreviewCubit.languages.length > 1
+                      ? Assets.vectors.arrowDropDown.svg()
+                      : const SizedBox.shrink(),
+                ],
+              ),
             ),
-          ),
-        )
+          )
       ],
     );
   }

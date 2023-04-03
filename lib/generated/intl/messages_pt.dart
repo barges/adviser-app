@@ -59,7 +59,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "all": MessageLookupByLibrary.simpleMessage("Todos"),
         "allMarkets": MessageLookupByLibrary.simpleMessage("Todos os mercados"),
         "allOurBrands":
-            MessageLookupByLibrary.simpleMessage("Todas as nossas marcas"),
+            MessageLookupByLibrary.simpleMessage("Todas las marcas"),
         "areYouSureThatYouWantToChangeYourStatus":
             MessageLookupByLibrary.simpleMessage(
                 "Tem certeza de que deseja alterar seu status para Offline?"),
@@ -162,6 +162,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "messageIsNotSent":
             MessageLookupByLibrary.simpleMessage("A mensagem não foi enviada"),
         "myGallery": MessageLookupByLibrary.simpleMessage("Minha galeria"),
+        "nameCanBeChangedOnlyOnAdvisorTool":
+            MessageLookupByLibrary.simpleMessage(
+                "O nome pode ser alterado somente no Advisor Tool"),
         "newLabel": MessageLookupByLibrary.simpleMessage("Novo"),
         "newMandatoryArticleIsAvailable": MessageLookupByLibrary.simpleMessage(
             "Novo artigo obrigatório está disponível!"),
@@ -197,7 +200,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "otherBrands": MessageLookupByLibrary.simpleMessage("Outras marcas"),
         "palmReading": MessageLookupByLibrary.simpleMessage("Leitura de Mão"),
         "password": MessageLookupByLibrary.simpleMessage("Senha"),
-        "perfomanceOverviewAnalytics":
+        "performanceOverviewAnalytics":
             MessageLookupByLibrary.simpleMessage("Análise geral de desempenho"),
         "permissionNeeded":
             MessageLookupByLibrary.simpleMessage("Permissão Necessária"),
@@ -252,7 +255,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Redefinir senha"),
         "resources": MessageLookupByLibrary.simpleMessage("Recursos"),
         "returnToQueue":
-            MessageLookupByLibrary.simpleMessage("RETORNAR\n À FILA"),
+            MessageLookupByLibrary.simpleMessage("RETORNAR\nÀ FILA"),
         "return_": MessageLookupByLibrary.simpleMessage("Voltar"),
         "reviews": MessageLookupByLibrary.simpleMessage("Avaliações"),
         "ritual": MessageLookupByLibrary.simpleMessage("Ritual"),
@@ -349,8 +352,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Você tem algumas sessões ativas"),
         "youHaveAPrivateMessage": MessageLookupByLibrary.simpleMessage(
             "Você tem uma mensagem privada"),
-        "youHaveARitualRequest":
-            MessageLookupByLibrary.simpleMessage("Você tem um pedido ritual"),
+        "youHaveAnActiveSession":
+            MessageLookupByLibrary.simpleMessage("Você tem uma sessão ativa"),
         "youHaveNotCompletedAnySessionsYet":
             MessageLookupByLibrary.simpleMessage(
                 "Você ainda não concluiu nenhuma sessão"),

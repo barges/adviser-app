@@ -29,8 +29,7 @@ class ChatItemFooterWidget extends StatelessWidget {
     return isSent
         ? Row(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 4.0),
+              Expanded(
                 child: Text(
                   isRitual
                       ? ritualIdentifier?.sessionName(context) ?? ''
@@ -38,9 +37,15 @@ class ChatItemFooterWidget extends StatelessWidget {
                           '',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: color,
-                        fontSize: 12.0,
+                        fontSize: 14.0,
                       ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.end,
                 ),
+              ),
+              const SizedBox(
+                width: 4.0,
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
@@ -55,12 +60,13 @@ class ChatItemFooterWidget extends StatelessWidget {
                 createdAt.chatListTime,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: color,
-                      fontSize: 12.0,
+                      fontSize: 14.0,
                     ),
               ),
             ],
           )
         : Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Padding(
                 padding: const EdgeInsets.only(right: 4.0),

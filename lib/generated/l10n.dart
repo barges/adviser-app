@@ -260,6 +260,16 @@ class S {
     );
   }
 
+  /// `Name can be changed only on Advisor Tool`
+  String get nameCanBeChangedOnlyOnAdvisorTool {
+    return Intl.message(
+      'Name can be changed only on Advisor Tool',
+      name: 'nameCanBeChangedOnlyOnAdvisorTool',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Status Text`
   String get statusText {
     return Intl.message(
@@ -320,10 +330,10 @@ class S {
     );
   }
 
-  /// `All our brands`
+  /// `All brands`
   String get allOurBrands {
     return Intl.message(
-      'All our brands',
+      'All brands',
       name: 'allOurBrands',
       desc: '',
       args: [],
@@ -940,11 +950,11 @@ class S {
     );
   }
 
-  /// `Perfomance Overview Analytics`
-  String get perfomanceOverviewAnalytics {
+  /// `Performance Overview Analytics`
+  String get performanceOverviewAnalytics {
     return Intl.message(
-      'Perfomance Overview Analytics',
-      name: 'perfomanceOverviewAnalytics',
+      'Performance Overview Analytics',
+      name: 'performanceOverviewAnalytics',
       desc: '',
       args: [],
     );
@@ -1535,11 +1545,11 @@ class S {
     );
   }
 
-  /// `You have a ritual request`
-  String get youHaveARitualRequest {
+  /// `You have an active session`
+  String get youHaveAnActiveSession {
     return Intl.message(
-      'You have a ritual request',
-      name: 'youHaveARitualRequest',
+      'You have an active session',
+      name: 'youHaveAnActiveSession',
       desc: '',
       args: [],
     );
@@ -1819,10 +1829,10 @@ class S {
     );
   }
 
-  /// `RETURN\n TO QUEUE`
+  /// `RETURN\nTO QUEUE`
   String get returnToQueue {
     return Intl.message(
-      'RETURN\n TO QUEUE',
+      'RETURN\nTO QUEUE',
       name: 'returnToQueue',
       desc: '',
       args: [],

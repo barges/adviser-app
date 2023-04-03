@@ -1,7 +1,6 @@
 @GenerateMocks([
   DynamicLinkService,
   PushNotificationManagerImpl,
-  UserRepositoryImpl,
 ], customMocks: [
   MockSpec<DataCachingManager>(
     as: #MockDataCachingManager,
@@ -35,10 +34,19 @@
     as: #MockCheckPermissionService,
     onMissingStub: OnMissingStub.returnDefault,
   ),
+  MockSpec<UserRepositoryImpl>(
+    as: #MockUserRepositoryImpl,
+    onMissingStub: OnMissingStub.returnDefault,
+  ),
+  MockSpec<AuthRepositoryImpl>(
+    as: #MockAuthRepositoryImpl,
+    onMissingStub: OnMissingStub.returnDefault,
+  ),
 ])
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:mockito/annotations.dart';
 import 'package:shared_advisor_interface/data/cache/data_caching_manager.dart';
+import 'package:shared_advisor_interface/data/repositories/auth_repository_impl.dart';
 import 'package:shared_advisor_interface/data/repositories/chats_repository_impl.dart';
 import 'package:shared_advisor_interface/data/repositories/customer_repository_impl.dart';
 import 'package:shared_advisor_interface/data/repositories/user_repository_impl.dart';

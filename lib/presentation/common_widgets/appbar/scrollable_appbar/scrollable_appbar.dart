@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_advisor_interface/configuration.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
@@ -32,7 +34,7 @@ class ScrollableAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ScrollableAppBarCubit(),
+      create: (_) => ScrollableAppBarCubit(getIt.get<MainCubit>()),
       child: Builder(builder: (context) {
         final ScrollableAppBarCubit scrollableAppBarCubit =
             context.read<ScrollableAppBarCubit>();
@@ -136,6 +138,8 @@ class ScrollableAppBar extends StatelessWidget {
               builder: (context) {
                 final Brand currentBrand = context
                     .select((MainCubit cubit) => cubit.state.currentBrand);
+                final AppError appError =
+                    context.select((MainCubit cubit) => cubit.state.appError);
                 return Stack(
                   clipBehavior: Clip.none,
                   children: [
@@ -234,6 +238,15 @@ class ScrollableAppBar extends StatelessWidget {
                               ? ''
                               : S.of(context).noInternetConnection,
                           isRequired: true,
+                        ),
+                      ),
+                    if (isOnline)
+                      Positioned(
+                        top: _minHeight,
+                        child: AppErrorWidget(
+                          height: _errorHeight,
+                          errorMessage: appError.getMessage(context),
+                          close: scrollableAppBarCubit.closeErrorWidget,
                         ),
                       ),
                   ],

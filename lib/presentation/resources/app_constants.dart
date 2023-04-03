@@ -9,6 +9,8 @@ class AppConstants {
   static const double horizontalScreenPadding = 16.0;
   static const double appBarHeight = 52.0;
 
+  static const int minNickNameLength = 3;
+
   static const int millisecondsInHour = 3600000;
   static const int questionsLimit = 20;
 
@@ -16,20 +18,20 @@ class AppConstants {
   static const int minAttachedPictures = 1;
 
   static const int minRecordDurationInSec = 15;
-  static const int maxRecordDurationInSec = 180;
+  static const int maxRecordDurationInSec = 360;
 
   static const int minTextLength = 250;
   static const int maxTextLength = 2000;
   static const int minTextLengthRitual = 1000;
   static const int maxTextLengthRitual = 20000;
 
-  static const int tillShowAnswerTimingMessagesInSec = 25 * 60;
-  static const int afterShowAnswerTimingMessagesInSec = 5 * 60;
+  static const int minuteInSec = 60;
+  static const int tillShowAnswerTimingMessagesInSec = 25 * minuteInSec;
+  static const int afterShowAnswerTimingMessagesInSec = 5 * minuteInSec;
 
-  static const int maxAttachmentSizeInBytes = 20000000;
+  static const int bytesInKilobyte = 1024;
+  static const int maxAttachmentSizeInBytes = 26214400;
   static const int minFreeSpaceInMb = 3;
-
-  static const String startMSS = '0:00';
 
   static const String enBrandName = 'English';
   static const String esBrandName = 'Español';
@@ -42,7 +44,7 @@ class AppConstants {
   static const String iosAppId = '1:986930839057:ios:931a04b3aeb905de5cbbb0';
 
   ///STAGE
-  static const String baseUrl = 'https://api-staging.fortunica-app.com';
+  static const String baseUrlStage = 'https://api-staging.fortunica-app.com';
   static const String webToolUrl = 'https://advisor-staging.fortunica-app.com';
 
   ///DEV

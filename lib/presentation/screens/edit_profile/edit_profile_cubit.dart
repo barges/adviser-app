@@ -19,6 +19,7 @@ import 'package:shared_advisor_interface/domain/repositories/user_repository.dar
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
@@ -39,11 +40,13 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final ConnectivityService _connectivityService =
       getIt.get<ConnectivityService>();
 
-  late final UserProfile? userProfile;
-  late final List<MarketsType> activeLanguages;
-  late final List<GlobalKey> activeLanguagesGlobalKeys;
-  late final Map<String, dynamic> _oldPropertiesMap;
-  late final VoidCallback disposeCoverPicturesListen;
+  UserProfile? userProfile;
+  late List<MarketsType> activeLanguages;
+  late List<GlobalKey> activeLanguagesGlobalKeys;
+  late Map<String, dynamic> _oldPropertiesMap;
+  late VoidCallback disposeCoverPicturesListen;
+
+  late bool needRefresh;
 
   final ScrollController languagesScrollController = ScrollController();
   final PageController picturesPageController = PageController();
@@ -56,31 +59,18 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   int? initialLanguageIndexIfHasError;
 
   EditProfileCubit() : super(EditProfileState()) {
+    EditProfileScreenArguments arguments =
+        Get.arguments as EditProfileScreenArguments;
+    needRefresh = arguments.isAccountTimeout;
+
     userProfile = _cacheManager.getUserProfile();
-    activeLanguages = userProfile?.activeLanguages ?? [];
-    activeLanguagesGlobalKeys =
-        activeLanguages.map((e) => GlobalKey()).toList();
-    nicknameController.text = userProfile?.profileName ?? '';
-
-    _oldPropertiesMap = userProfile?.localizedProperties?.toJson() ?? {};
-
-    createTextControllersNodesAndErrorsMap();
-
-    _checkNickName();
-
-    _checkEmptyFields();
-
-    emit(
-      state.copyWith(
-        coverPictures: userProfile?.coverPictures ?? [],
-        chosenLanguageIndex: initialLanguageIndexIfHasError ?? 0,
-      ),
-    );
-
-    _addListenersToTextControllers();
-    _addListenersToFocusNodes();
+    setUpScreenForUserProfile();
 
     disposeCoverPicturesListen = _cacheManager.listenUserProfile((value) {
+      if (userProfile == null) {
+        userProfile = value;
+        setUpScreenForUserProfile();
+      }
       emit(state.copyWith(coverPictures: value.coverPictures ?? []));
     });
   }
@@ -107,6 +97,39 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     picturesPageController.dispose();
     disposeCoverPicturesListen.call();
     return super.close();
+  }
+
+  Future<void> refreshUserProfile() async {
+    mainCubit.updateAccount();
+  }
+
+  void setUpScreenForUserProfile() {
+    activeLanguages = userProfile?.activeLanguages ?? [];
+    activeLanguagesGlobalKeys =
+        activeLanguages.map((e) => GlobalKey()).toList();
+    nicknameController.text = userProfile?.profileName ?? '';
+
+    _oldPropertiesMap = userProfile?.localizedProperties?.toJson() ?? {};
+
+    createTextControllersNodesAndErrorsMap();
+
+    _checkNickName();
+
+    _checkEmptyFields();
+
+    emit(
+      state.copyWith(
+        coverPictures: userProfile?.coverPictures ?? [],
+        chosenLanguageIndex: initialLanguageIndexIfHasError ?? 0,
+      ),
+    );
+
+    if (userProfile != null) {
+      emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
+    }
+
+    _addListenersToTextControllers();
+    _addListenersToFocusNodes();
   }
 
   void createTextControllersNodesAndErrorsMap() {
@@ -157,15 +180,20 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   void _addListenersToTextControllers() {
     nicknameController.addListener(() {
-      emit(state.copyWith(nicknameErrorType: ValidationErrorType.empty));
+      if (_checkNickName(false)) {
+        emit(state.copyWith(nicknameErrorType: ValidationErrorType.empty));
+      }
     });
 
     for (var entry in textControllersMap.entries) {
-      final statusController = entry.value.firstOrNull;
-      statusController?.addListener(() {
-        if (statusController.text.length > 300) {
+      final statusTextController = entry.value.firstOrNull;
+      statusTextController?.addListener(() {
+        if (statusTextController.text.length > 300) {
           errorTextsMap[entry.key]?.first =
               ValidationErrorType.statusTextMayNotExceed300Characters;
+          emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
+        } else if (statusTextController.text.isEmpty) {
+          errorTextsMap[entry.key]?.first = ValidationErrorType.requiredField;
           emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
         } else {
           errorTextsMap[entry.key]?.first = ValidationErrorType.empty;
@@ -260,21 +288,24 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     return isOk;
   }
 
-  bool _checkNickName() {
+  bool _checkNickName([bool animate = true]) {
     bool isValid = true;
-    if (nicknameController.text.length < 3) {
+    if (nicknameController.text.length < AppConstants.minNickNameLength) {
       isValid = false;
-      Utils.animateToWidget(nicknameFieldKey);
+      if (animate) {
+        Utils.animateToWidget(nicknameFieldKey);
+      }
       if (checkUserAvatar()) {
         nicknameFocusNode.requestFocus();
       }
-
-      emit(
-        state.copyWith(
-            nicknameErrorType: nicknameController.text.isEmpty
-                ? ValidationErrorType.requiredField
-                : ValidationErrorType.pleaseEnterAtLeast3Characters),
-      );
+      Future.delayed(Duration(milliseconds: animate ? 500 : 0)).then((value) {
+        emit(
+          state.copyWith(
+              nicknameErrorType: nicknameController.text.isEmpty
+                  ? ValidationErrorType.requiredField
+                  : ValidationErrorType.pleaseEnterAtLeast3Characters),
+        );
+      });
     }
     return isValid;
   }

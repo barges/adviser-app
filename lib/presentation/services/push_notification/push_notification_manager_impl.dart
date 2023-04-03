@@ -37,23 +37,13 @@ class PushNotificationManagerImpl implements PushNotificationManager {
       _notificationPortChannel,
     );
     _receiveNotificationPort.listen((dynamic message) {
-      logger.d(message);
+      logger.d('ISOLATE PUSH NOTIFICATION LISTENER');
       if (message is Map<String, dynamic>) {
         Map<String, dynamic> map = jsonDecode(message['meta'] ?? '{}');
-        if (map['type'] != null &&
-            map['type'] == PushType.publicReturned.name) {
-          if (Get.currentRoute == AppRoutes.chat) {
-            Get.offNamedUntil(
-              AppRoutes.home,
-              (route) => false,
-              arguments: HomeScreenArguments(initTab: TabsTypes.sessions),
-            );
-          } else {
-            getIt.get<MainCubit>().updateSessions();
-          }
-        }
+        _messageTypeHandler(map);
       }
     });
+
     _configLocalNotification();
     await _setUpFirebaseMessaging();
   }
@@ -70,13 +60,6 @@ class PushNotificationManagerImpl implements PushNotificationManager {
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse: (response) async {
-      logger.d('+++++++++++++++++++++++');
-      logger.d(response.notificationResponseType);
-      logger.d(response.payload);
-      logger.d(response.id);
-      logger.d(response.actionId);
-      logger.d(response.input);
-      logger.d('+++++++++++++++++++++++');
       final Map<String, dynamic> message = json.decode(response.payload ?? '');
 
       _navigateToNextScreen(RemoteMessage(data: message));
@@ -141,49 +124,59 @@ class PushNotificationManagerImpl implements PushNotificationManager {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       logger.d('***********************');
       logger.d(message.toMap());
-      logger.d(message.data);
-      logger.d(message.data['meta']);
-      Map<String, dynamic> map = jsonDecode(message.data['meta'] ?? '');
-      logger.d(map['entityId']);
       logger.d('***********************');
 
-      if (Platform.isAndroid) {
+      if (!Platform.isIOS) {
         showNotification(message);
       }
-      if (map['type'] != null && map['type'] == PushType.publicReturned.name) {
-        if (Get.currentRoute == AppRoutes.chat) {
-          Get.offNamedUntil(
-            AppRoutes.home,
-            (route) => false,
-            arguments: HomeScreenArguments(initTab: TabsTypes.sessions),
-          );
-        } else {
-          getIt.get<MainCubit>().updateSessions();
-        }
-      }
+      Map<String, dynamic> map = jsonDecode(message.data['meta'] ?? '{}');
+      _messageTypeHandler(map);
     });
 
-    FirebaseMessaging.onMessageOpenedApp.listen(_navigateToNextScreen);
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      Map<String, dynamic> meta = jsonDecode(message.data['meta'] ?? '{}');
+      final String? type = meta['type'];
+      if (type != null && type != PushType.tips.name) {
+        getIt.get<MainCubit>().updateSessions();
+      }
+
+      _navigateToNextScreen(message);
+    });
 
     FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
   }
 }
 
+@pragma('vm:entry-point')
 Future<void> _backgroundMessageHandler(RemoteMessage message) async {
   logger.d('***********************');
   logger.d(message.toMap());
-  logger.d(message.data);
-  logger.d(message.data['meta']);
-  Map<String, dynamic> map = jsonDecode(message.data['meta'] ?? '');
-  logger.d(map['entityId']);
   logger.d('***********************');
-
   logger.d('On background');
 
   final SendPort? send =
       IsolateNameServer.lookupPortByName(_notificationPortChannel);
 
   send?.send(message.data);
+}
+
+void _messageTypeHandler(Map<String, dynamic> meta) {
+  final String? type = meta['type'];
+  if (type != null) {
+    if (type == PushType.publicReturned.name) {
+      if (Get.currentRoute == AppRoutes.chat) {
+        Get.offNamedUntil(
+          AppRoutes.home,
+          (route) => false,
+          arguments: HomeScreenArguments(initTab: TabsTypes.sessions),
+        );
+      } else {
+        getIt.get<MainCubit>().updateSessions();
+      }
+    } else if (type != PushType.tips.name) {
+      getIt.get<MainCubit>().updateSessions();
+    }
+  }
 }
 
 Future<void> _navigateToNextScreen(RemoteMessage? message) async {

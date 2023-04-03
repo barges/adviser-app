@@ -22,22 +22,21 @@ class SupportCubit extends Cubit<SupportState> {
   SupportCubit(this._cachingManager) : super(const SupportState()) {
     locale = Intl.getCurrentLocale();
     final UserInfo? userInfo = _cachingManager.getUserInfo();
-    if (userInfo != null) {
-      _setUpFreshChat(userInfo);
 
-      if (userInfo.freshchatInfo?.restoreId == null) {
-        _restoreSubscription =
-            _freshChatService.onRestoreStream().listen((event) async {
-          final String? restoreId = await _freshChatService.getRestoreId();
-          if (restoreId != null) {
-            _userRepository.setFreshchatRestoreId(
-              RestoreFreshchatIdRequest(
-                restoreId: restoreId,
-              ),
-            );
-          }
-        });
-      }
+    _setUpFreshChat(userInfo);
+
+    if (userInfo?.freshchatInfo?.restoreId == null) {
+      _restoreSubscription =
+          _freshChatService.onRestoreStream().listen((event) async {
+        final String? restoreId = await _freshChatService.getRestoreId();
+        if (restoreId != null) {
+          _userRepository.setFreshchatRestoreId(
+            RestoreFreshchatIdRequest(
+              restoreId: restoreId,
+            ),
+          );
+        }
+      });
     }
   }
 
@@ -47,7 +46,7 @@ class SupportCubit extends Cubit<SupportState> {
     return super.close();
   }
 
-  Future<void> _setUpFreshChat(UserInfo userInfo) async {
+  Future<void> _setUpFreshChat(UserInfo? userInfo) async {
     final bool configured = await _freshChatService.setUpFreshChat(userInfo);
     emit(state.copyWith(configured: configured));
   }

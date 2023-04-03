@@ -57,6 +57,8 @@ class SessionsCubit extends Cubit<SessionsState> {
     this._repository,
     this._mainCubit,
   ) : super(const SessionsState()) {
+    emit(state.copyWith(userMarkets: [MarketsType.all]));
+
     publicQuestionsScrollController.addListener(() {
       if (!_isPublicLoading &&
           publicQuestionsScrollController.position.extentAfter <=
@@ -90,7 +92,10 @@ class SessionsCubit extends Cubit<SessionsState> {
     _updateSessionsSubscription = _mainCubit.sessionsUpdateTrigger.listen(
       (value) {
         getQuestions().then((value) => SchedulerBinding.instance.endOfFrame
-            .then((value) => publicQuestionsScrollController.jumpTo(0.0)));
+            .then((value) {
+              conversationsScrollController.jumpTo(0.0);
+              publicQuestionsScrollController.jumpTo(0.0);
+            }));
       },
     );
   }
@@ -187,6 +192,10 @@ class SessionsCubit extends Cubit<SessionsState> {
         ),
       );
     }
+  }
+
+  void closeErrorWidget() {
+    _mainCubit.clearErrorMessage();
   }
 
   Future<void> getPublicQuestions(
@@ -293,31 +302,4 @@ class SessionsCubit extends Cubit<SessionsState> {
       }
     }
   }
-
-// Future<void> getHistoryList(
-//     {FortunicaUserStatus? status, isFirstRequest = false}) async {
-//   if (_historyHasMore &&
-//       await _connectivityService.checkConnection() &&
-//       (status ?? cacheManager.getUserStatus()?.status) ==
-//           FortunicaUserStatus.live) {
-//     final QuestionsListResponse result = await _repository.getHistoryList(
-//       limit: questionsLimit,
-//       page: _historyPage++,
-//     );
-//
-//     _historyHasMore = result.hasMore ?? true;
-//
-//     _privateQuestionsWithHistory.addAll(result.questions ?? const []);
-//
-//     if (!isFirstRequest) {
-//       emit(
-//         state.copyWith(
-//           privateQuestionsWithHistory: List.of(
-//             _privateQuestionsWithHistory,
-//           ),
-//         ),
-//       );
-//     }
-//   }
-// }
 }

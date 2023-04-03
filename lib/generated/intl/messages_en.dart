@@ -58,7 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addNote": MessageLookupByLibrary.simpleMessage("Add Note"),
         "all": MessageLookupByLibrary.simpleMessage("All"),
         "allMarkets": MessageLookupByLibrary.simpleMessage("All Markets"),
-        "allOurBrands": MessageLookupByLibrary.simpleMessage("All our brands"),
+        "allOurBrands": MessageLookupByLibrary.simpleMessage("All brands"),
         "areYouSureThatYouWantToChangeYourStatus":
             MessageLookupByLibrary.simpleMessage(
                 "Are you sure that you want to change your status to Offline?"),
@@ -160,6 +160,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "messageIsNotSent":
             MessageLookupByLibrary.simpleMessage("Message is not sent"),
         "myGallery": MessageLookupByLibrary.simpleMessage("My Gallery"),
+        "nameCanBeChangedOnlyOnAdvisorTool":
+            MessageLookupByLibrary.simpleMessage(
+                "Name can be changed only on Advisor Tool"),
         "newLabel": MessageLookupByLibrary.simpleMessage("New"),
         "newMandatoryArticleIsAvailable": MessageLookupByLibrary.simpleMessage(
             "New mandatory article is available!"),
@@ -194,8 +197,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "otherBrands": MessageLookupByLibrary.simpleMessage("Other brands"),
         "palmReading": MessageLookupByLibrary.simpleMessage("Palm Reading"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
-        "perfomanceOverviewAnalytics": MessageLookupByLibrary.simpleMessage(
-            "Perfomance Overview Analytics"),
+        "performanceOverviewAnalytics": MessageLookupByLibrary.simpleMessage(
+            "Performance Overview Analytics"),
         "permissionNeeded":
             MessageLookupByLibrary.simpleMessage("Permission Needed"),
         "personalDetails":
@@ -246,7 +249,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "resetPassword": MessageLookupByLibrary.simpleMessage("Reset password"),
         "resources": MessageLookupByLibrary.simpleMessage("Resources"),
         "returnToQueue":
-            MessageLookupByLibrary.simpleMessage("RETURN\n TO QUEUE"),
+            MessageLookupByLibrary.simpleMessage("RETURN\nTO QUEUE"),
         "return_": MessageLookupByLibrary.simpleMessage("Return"),
         "reviews": MessageLookupByLibrary.simpleMessage("Reviews"),
         "ritual": MessageLookupByLibrary.simpleMessage("Ritual"),
@@ -339,8 +342,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "You have a few active sessions"),
         "youHaveAPrivateMessage":
             MessageLookupByLibrary.simpleMessage("You have a private message"),
-        "youHaveARitualRequest":
-            MessageLookupByLibrary.simpleMessage("You have a ritual request"),
+        "youHaveAnActiveSession":
+            MessageLookupByLibrary.simpleMessage("You have an active session"),
         "youHaveNotCompletedAnySessionsYet":
             MessageLookupByLibrary.simpleMessage(
                 "You have not completed any sessions yet"),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
@@ -18,13 +20,15 @@ class AddNoteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AddNoteCubit(),
+      create: (_) => AddNoteCubit(getIt.get<MainCubit>()),
       child: Builder(builder: (context) {
         AddNoteCubit addNoteCubit = context.read<AddNoteCubit>();
         bool isNoteNew =
             context.select((AddNoteCubit cubit) => cubit.state.isNoteNew);
         final bool isOnline = context.select(
             (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
+        final AppError appError =
+            context.select((MainCubit cubit) => cubit.state.appError);
 
         return Scaffold(
           backgroundColor: Theme.of(context).canvasColor,
@@ -49,6 +53,11 @@ class AddNoteScreen extends StatelessWidget {
                     : S.of(context).youDontHaveAnInternetConnection,
                 isRequired: true,
               ),
+              if (isOnline)
+                AppErrorWidget(
+                  errorMessage: appError.getMessage(context),
+                  close: addNoteCubit.closeErrorWidget,
+                ),
               Expanded(
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,6 +79,7 @@ class AddNoteScreen extends StatelessWidget {
                             autofocus: true,
                             scrollPadding: EdgeInsets.zero,
                             cursorColor: Theme.of(context).hoverColor,
+                            textCapitalization: TextCapitalization.sentences,
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               focusedBorder: InputBorder.none,

@@ -6,7 +6,7 @@ import 'package:freshchat_sdk/freshchat_user.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/main.dart';
 
-const String appName = 'Psychic Union';
+const String appName = 'Fortunica';
 
 abstract class FreshChatService {
   Future<bool> setUpFreshChat(UserInfo? userInfo);

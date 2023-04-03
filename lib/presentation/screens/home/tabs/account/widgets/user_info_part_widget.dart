@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
@@ -10,7 +9,6 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/error_badge.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/change_status_comment_bottom_sheet.dart';
@@ -26,7 +24,8 @@ class UserInfoPartWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final AccountCubit accountCubit = context.read<AccountCubit>();
     final UserStatus currentStatus =
-        context.select((HomeCubit cubit) => cubit.state.userStatus);
+        context.select((HomeCubit cubit) => cubit.state.userStatus) ??
+            const UserStatus();
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
@@ -139,6 +138,9 @@ class UserInfoPartWidget extends StatelessWidget {
               builder: (context) {
                 final int secondsForTimer = context.select(
                     (AccountCubit cubit) => cubit.state.secondsForTimer);
+                final HomeCubit homeCubit = context.read<HomeCubit>();
+                final bool isTimeout = context
+                    .select((AccountCubit cubit) => cubit.state.isTimeout);
 
                 return TileWidget(
                   title: S.of(context).imAvailableNow,
@@ -161,8 +163,11 @@ class UserInfoPartWidget extends StatelessWidget {
                       );
                     }
                   },
-                  isDisable: currentStatus.status != FortunicaUserStatus.live &&
-                      currentStatus.status != FortunicaUserStatus.offline,
+                  isDisable: isTimeout ||
+                      (currentStatus.status != FortunicaUserStatus.live &&
+                          currentStatus.status !=
+                              FortunicaUserStatus.offline) ||
+                      homeCubit.state.userStatus == null,
                   initSwitcherValue:
                       currentStatus.status == FortunicaUserStatus.live,
                   timerWidget: secondsForTimer > 0
@@ -180,10 +185,14 @@ class UserInfoPartWidget extends StatelessWidget {
               builder: (context) {
                 final bool enableNotifications = context.select(
                     (AccountCubit cubit) => cubit.state.enableNotifications);
+                final HomeCubit homeCubit = context.read<HomeCubit>();
+                final bool isTimeout = context
+                    .select((AccountCubit cubit) => cubit.state.isTimeout);
                 return TileWidget(
                   initSwitcherValue: enableNotifications,
                   title: S.of(context).notifications,
                   iconSVGPath: Assets.vectors.notification.path,
+                  isDisable: isTimeout || homeCubit.state.userStatus == null,
                   onChanged: (value) =>
                       accountCubit.updateEnableNotificationsValue(value),
                 );
@@ -193,12 +202,11 @@ class UserInfoPartWidget extends StatelessWidget {
               height: 1.0,
             ),
             TileWidget(
-              isDisable: currentStatus.status != FortunicaUserStatus.live,
+              isDisable: currentStatus.status != FortunicaUserStatus.live &&
+                  currentStatus.status != FortunicaUserStatus.offline,
               iconSVGPath: Assets.vectors.eye.path,
               title: S.of(context).previewAccount,
-              onTap: () {
-                Get.toNamed(AppRoutes.advisorPreview);
-              },
+              onTap: accountCubit.goToAdvisorPreview,
             )
           ]),
         )

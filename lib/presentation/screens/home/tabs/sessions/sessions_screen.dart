@@ -41,10 +41,11 @@ class SessionsScreen extends StatelessWidget {
 
         final bool isOnline = context.select(
             (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
-        final UserStatus userStatus =
+        final UserStatus? userStatus =
             context.select((HomeCubit cubit) => cubit.state.userStatus);
 
-        final bool statusIsLive = userStatus.status == FortunicaUserStatus.live;
+        final bool statusIsLive =
+            (userStatus?.status == FortunicaUserStatus.live) == true;
 
         return Stack(
           fit: StackFit.expand,
@@ -108,7 +109,7 @@ class SessionsScreen extends StatelessWidget {
                     return const ListOfQuestions();
                   } else {
                     return NotLiveStatusWidget(
-                      status: userStatus.status ?? FortunicaUserStatus.offline,
+                      status: userStatus?.status ?? FortunicaUserStatus.offline,
                     );
                   }
                 } else {
