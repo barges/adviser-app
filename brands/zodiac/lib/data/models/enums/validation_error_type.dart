@@ -1,3 +1,4 @@
+import 'package:zodiac/generated/l10n.dart';
 
 enum ValidationErrorType {
   pleaseInsertCorrectEmail,
@@ -10,15 +11,15 @@ enum ValidationErrorType {
   String text(context) {
     switch (this) {
       case ValidationErrorType.pleaseInsertCorrectEmail:
-        return 'Please, insert correct email';
+        return SZodiac.of(context).pleaseInsertCorrectEmailZodiac;
       case ValidationErrorType.pleaseEnterAtLeast8Characters:
-        return 'Please enter at least 8 characters';
+        return SZodiac.of(context).pleaseEnterAtLeast8CharactersZodiac;
       case ValidationErrorType.requiredField:
-        return 'Required field';
+        return SZodiac.of(context).requiredFieldZodiac;
       case ValidationErrorType.pleaseEnterAtLeast3Characters:
-        return 'Please enter at least 3 characters';
+        return SZodiac.of(context).pleaseEnterAtLeast3CharactersZodiac;
       case ValidationErrorType.thePasswordsMustMatch:
-        return 'The passwords must match';
+        return SZodiac.of(context).thePasswordsMustMatchZodiac;
       case ValidationErrorType.empty:
         return '';
     }

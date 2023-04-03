@@ -89,9 +89,19 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Análisis General de Desempeño"),
         "personalBalanceZodiac":
             MessageLookupByLibrary.simpleMessage("Saldo Personal:"),
+        "pleaseEnterAtLeast3CharactersZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Por favor, ingresa al menos 3 caracteres"),
+        "pleaseEnterAtLeast8CharactersZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Por favor, ingresa al menos 8 caracteres"),
+        "pleaseInsertCorrectEmailZodiac": MessageLookupByLibrary.simpleMessage(
+            "Por favor, ingresa el email correcto"),
         "previewAccountZodiac":
             MessageLookupByLibrary.simpleMessage("Vista previa de la cuenta"),
         "pricePerMinZodiac": m0,
+        "requiredFieldZodiac":
+            MessageLookupByLibrary.simpleMessage("Campo obligatorio"),
         "resetPasswordZodiac":
             MessageLookupByLibrary.simpleMessage("Restablecer contraseña"),
         "reviewsFromYourClientsWillAppearHereZodiac":
@@ -104,6 +114,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sesiones"),
         "templatesContentZodiac":
             MessageLookupByLibrary.simpleMessage("Plantillas y contenido"),
+        "thePasswordsMustMatchZodiac": MessageLookupByLibrary.simpleMessage(
+            "Las contraseñas deben coincidir"),
         "thisMonthZodiac": MessageLookupByLibrary.simpleMessage("Este Mes"),
         "todayZodiac": MessageLookupByLibrary.simpleMessage("Hoy"),
         "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainZodiac":

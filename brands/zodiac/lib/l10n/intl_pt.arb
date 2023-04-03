@@ -53,5 +53,10 @@
   "oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac": "😱 Opa! Seus dados de acesso parecem estar incorretos. Tente novamente ou toque em Redefinir senha.",
   "zodiacTeam": "Zodiac Equipe",
   "youWereBlocked": "Sua conta foi bloqueada.<br>Entre em contato com o <a href=''>Suporte ao cliente</a> para resolver o problema",
-  "editProfileZodiac": "Editar Perfil"
+  "editProfileZodiac": "Editar Perfil",
+  "pleaseEnterAtLeast8CharactersZodiac": "Por favor insira pelo menos 8 caracteres",
+  "pleaseInsertCorrectEmailZodiac": "Por favor, insira o e-mail correto",
+  "requiredFieldZodiac": "Campo obrigatório",
+  "pleaseEnterAtLeast3CharactersZodiac": "Por favor insira pelo menos 3 caracteres",
+  "thePasswordsMustMatchZodiac": "As senhas devem coincidir"
 }

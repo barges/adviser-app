@@ -603,6 +603,56 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Please enter at least 8 characters`
+  String get pleaseEnterAtLeast8CharactersZodiac {
+    return Intl.message(
+      'Please enter at least 8 characters',
+      name: 'pleaseEnterAtLeast8CharactersZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please, insert correct email`
+  String get pleaseInsertCorrectEmailZodiac {
+    return Intl.message(
+      'Please, insert correct email',
+      name: 'pleaseInsertCorrectEmailZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Required field`
+  String get requiredFieldZodiac {
+    return Intl.message(
+      'Required field',
+      name: 'requiredFieldZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter at least 3 characters`
+  String get pleaseEnterAtLeast3CharactersZodiac {
+    return Intl.message(
+      'Please enter at least 3 characters',
+      name: 'pleaseEnterAtLeast3CharactersZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The passwords must match`
+  String get thePasswordsMustMatchZodiac {
+    return Intl.message(
+      'The passwords must match',
+      name: 'thePasswordsMustMatchZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {
