@@ -16,7 +16,9 @@ class ArticlesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ArticlesCubit(zodiacGetIt.get<ZodiacArticlesRepository>()),
+      create: (_) => ArticlesCubit(
+        zodiacGetIt.get<ZodiacArticlesRepository>(),
+      ),
       child: Builder(builder: (BuildContext context) {
         final bool isOnline = context.select(
             (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
@@ -25,18 +27,20 @@ class ArticlesScreen extends StatelessWidget {
               title: SZodiac.of(context).articlesZodiac,
               iconPath: Assets.vectors.articles.path,
             ),
-            body: Builder(builder: (context) {
-              if (isOnline) {
-                return const ListOfArticlesWidget();
-              } else {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    NoConnectionWidget(),
-                  ],
-                );
-              }
-            }));
+            body: SafeArea(
+              child: Builder(builder: (context) {
+                if (isOnline) {
+                  return const ListOfArticlesWidget();
+                } else {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      NoConnectionWidget(),
+                    ],
+                  );
+                }
+              }),
+            ));
       }),
     );
   }

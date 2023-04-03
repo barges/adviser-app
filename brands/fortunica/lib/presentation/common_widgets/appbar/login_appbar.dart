@@ -3,7 +3,6 @@ import 'package:fortunica/presentation/common_widgets/buttons/change_locale_butt
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 
 class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {

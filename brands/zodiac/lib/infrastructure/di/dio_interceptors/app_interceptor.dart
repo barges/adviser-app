@@ -1,13 +1,19 @@
 import 'dart:async';
 
-import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
+import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/app_error/app_error.dart';
 import 'package:zodiac/data/models/app_error/ui_error_type.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
+import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
+import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 const String _messageKey = 'message';
@@ -22,9 +28,15 @@ const String _moreLinkKey = 'more_link';
 class AppInterceptor extends Interceptor {
   final MainCubit _mainCubit;
   final ZodiacMainCubit _zodiacMainCubit;
-  final GlobalCachingManager _cachingManager;
+  final ZodiacCachingManager _cachingManager;
+  final WebSocketManager _webSocketManager;
 
-  AppInterceptor(this._mainCubit, this._zodiacMainCubit, this._cachingManager);
+  AppInterceptor(
+    this._mainCubit,
+    this._zodiacMainCubit,
+    this._cachingManager,
+    this._webSocketManager,
+  );
 
   @override
   FutureOr<dynamic> onRequest(
@@ -114,33 +126,36 @@ class AppInterceptor extends Interceptor {
       Response response, ResponseInterceptorHandler handler) async {
     _mainCubit.updateIsLoading(false);
 
+    final BuildContext? context = ZodiacBrand().context;
+
     BaseResponse baseResponse = BaseResponse.fromJson(response.data);
 
-    if (response.realUri.path.contains('login') &&
+    logger.d('error  ${baseResponse.errorCode}');
+
+    if (baseResponse.errorCode == 5) {
+      _webSocketManager.close();
+      await _cachingManager.logout();
+      context?.replaceAll([const ZodiacAuth()]);
+    } else if (response.realUri.path.contains('login') &&
         baseResponse.errorCode == 4) {
       _zodiacMainCubit.updateErrorMessage(
           UIError(uiErrorType: UIErrorType.loginDetailsSeemToBeIncorrect));
     } else if (baseResponse.errorCode != 0 &&
         !response.realUri.path.contains('forgot-password')) {
-      _zodiacMainCubit.updateErrorMessage(
-        NetworkError(
-          message: baseResponse.getErrorMessage(),
-        ),
-      );
+      if (baseResponse.errorCode == 15) {
+        _zodiacMainCubit.updateErrorMessage(
+          UIError(
+            uiErrorType: UIErrorType.youWhereBlocked,
+          ),
+        );
+      } else {
+        _zodiacMainCubit.updateErrorMessage(
+          NetworkError(
+            message: baseResponse.getErrorMessage(),
+          ),
+        );
+      }
     }
-    // if (response.headers.value("verifyToken") != null) {
-    //   //if the header is present, then compare it with the Shared Prefs key
-    //   SharedPreferences prefs = await SharedPreferences.getInstance();
-    //   var verifyToken = prefs.get("VerifyToken");
-    //
-    //   // if the value is the same as the header, continue with the request
-    //   if (response.headers.value("verifyToken") == verifyToken) {
-    //     return response;
-    //   }
-    // }
-    //
-    // return DioError(
-    //     request: response.request, message: "User is no longer active");
     return super.onResponse(response, handler);
   }
 }

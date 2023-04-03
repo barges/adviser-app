@@ -13,7 +13,7 @@ import 'package:shared_advisor_interface/data/models/user_info/contracts.dart';
 import 'package:shared_advisor_interface/data/models/user_info/freshchat_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/localized_properties/localized_properties.dart';
 import 'package:shared_advisor_interface/data/models/user_info/localized_properties/property_by_language.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
+import 'package:shared_advisor_interface/data/models/user_info/my_details.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/data/network/responses/reports_response.dart';

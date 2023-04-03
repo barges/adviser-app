@@ -7,23 +7,23 @@ import 'package:zodiac/data/models/user_info/fee_info.dart';
 import 'package:zodiac/data/models/user_info/personal_info.dart';
 import 'package:zodiac/data/models/user_info/sign_in_info.dart';
 
-part 'user_info.g.dart';
-part 'user_info.freezed.dart';
+part 'my_details.g.dart';
+part 'my_details.freezed.dart';
 
 @freezed
-class UserInfo with _$UserInfo {
-  const UserInfo._();
+class MyDetails with _$MyDetails {
+  const MyDetails._();
 
   @JsonSerializable(
-      includeIfNull: false, createToJson: true, explicitToJson: true)
-  const factory UserInfo({
+      includeIfNull: false, explicitToJson: true)
+  const factory MyDetails({
     @JsonKey(name: 'sign_in') SignInInfo? signInInfo,
     PersonalInfo? personal,
     ContactInfo? contact,
     FeeInfo? fee,
     List<CategoryInfo>? category,
-  }) = _UserInfo;
+  }) = _MyDetails;
 
-  factory UserInfo.fromJson(Map<String, dynamic> json) =>
-      _$UserInfoFromJson(json);
+  factory MyDetails.fromJson(Map<String, dynamic> json) =>
+      _$MyDetailsFromJson(json);
 }

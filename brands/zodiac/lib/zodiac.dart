@@ -16,7 +16,7 @@ import 'package:zodiac/zodiac_constants.dart';
 
 class ZodiacBrand implements BaseBrand {
   static const alias = 'zodiac';
-  static const _name = 'Zodiac Touch';
+  static const _name = 'Zodiac Psychics';
 
   static final ZodiacBrand _instance = ZodiacBrand._internal();
 
@@ -101,12 +101,12 @@ class ZodiacBrand implements BaseBrand {
   }
 
   @override
-  void goToSupport(){
+  void goToSupport() {
     _context?.push(route: const ZodiacSupport());
   }
 
   @override
-  List<String> freshChatCategories(String languageCode){
+  List<String> freshChatCategories(String languageCode) {
     List<String> categories = [
       'general_zd_advisor',
       'payments_zd_advisor',
@@ -140,7 +140,7 @@ class ZodiacBrand implements BaseBrand {
   }
 
   @override
-  List<String> freshChatTags(String languageCode){
+  List<String> freshChatTags(String languageCode) {
     List<String> tags = [
       'support',
     ];

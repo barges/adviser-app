@@ -5,6 +5,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 
 const String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 const String datePattern1 = 'MMM d, yyyy';
@@ -34,8 +35,7 @@ extension StringExt on String {
   String? get capitalize {
     if (length > 1) {
       return this[0].toUpperCase() + substring(1).toLowerCase();
-    }
-    else if (length == 1) {
+    } else if (length == 1) {
       return this[0].toUpperCase();
     } else {
       return null;
@@ -54,7 +54,7 @@ extension StringExt on String {
       case 'pt':
         return AppConstants.ptLanguageName;
       default:
-        return 'Other';
+        return S.of(context).other;
     }
   }
 
@@ -131,6 +131,10 @@ extension StringExt on String {
     final NumberFormat format = NumberFormat.simpleCurrency(name: this);
     return format.currencySymbol;
   }
+
+  bool get isHtml {
+    return RegExp(r'<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)</\1>').hasMatch(this);
+  }
 }
 
 extension DoubleExt on double {
@@ -149,18 +153,12 @@ extension DateTimeExt on DateTime {
             .difference(DateTime(now.year, now.month, now.day))
             .inDays;
     if (timeDifference == 0) {
-      return DateFormat(dateFormat)
-          .format(this)
-          .parseDateTimePattern7;
+      return DateFormat(dateFormat).format(this).parseDateTimePattern7;
     }
     if (localTime.year != now.year) {
-      return DateFormat(dateFormat)
-          .format(this)
-          .parseDateTimePattern9;
+      return DateFormat(dateFormat).format(this).parseDateTimePattern9;
     }
-    return DateFormat(dateFormat)
-        .format(this)
-        .parseDateTimePattern8;
+    return DateFormat(dateFormat).format(this).parseDateTimePattern8;
   }
 
   String historyListTime(BuildContext context) {
@@ -171,16 +169,12 @@ extension DateTimeExt on DateTime {
             .difference(DateTime(now.year, now.month, now.day))
             .inDays;
     if (timeDifference == 0) {
-      return 'Today';
+      return S.of(context).today;
     }
     if (localTime.year != now.year) {
-      return DateFormat(dateFormat)
-          .format(this)
-          .parseDateTimePattern9;
+      return DateFormat(dateFormat).format(this).parseDateTimePattern9;
     }
-    return DateFormat(dateFormat)
-        .format(this)
-        .parseDateTimePattern8;
+    return DateFormat(dateFormat).format(this).parseDateTimePattern8;
   }
 }
 
@@ -194,9 +188,7 @@ extension DurationExt on Duration {
   String get formatMMSS {
     final minutes = inMinutes.remainder(60);
     final seconds = inSeconds.remainder(60);
-    return "${minutes < 10 ? '0$minutes' : '$minutes'}:${seconds < 10
-        ? '0$seconds'
-        : '$seconds'}";
+    return "${minutes < 10 ? '0$minutes' : '$minutes'}:${seconds < 10 ? '0$seconds' : '$seconds'}";
   }
 }
 

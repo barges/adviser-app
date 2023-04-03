@@ -10,7 +10,7 @@ import 'package:shared_advisor_interface/global.dart';
 const String appName = 'Advisor Shared Interface';
 
 abstract class FreshChatService {
-  Future<bool> setUpFortunicaFreshChat(FreshChaUserInfo? userInfo);
+  Future<bool> setUpFreshChat(FreshChaUserInfo? userInfo);
 
   Future<void> initFreshChat(bool isDarkMode);
 
@@ -42,7 +42,7 @@ class FreshChatServiceImpl extends FreshChatService {
   }
 
   @override
-  Future<bool> setUpFortunicaFreshChat(FreshChaUserInfo? userInfo) async {
+  Future<bool> setUpFreshChat(FreshChaUserInfo? userInfo) async {
     if (!_wasInit) {
       throw Exception([
         'Fresh Chat Manager was not init. Pleas use initFreshChat() before setUpFreshChat.'
@@ -60,6 +60,10 @@ class FreshChatServiceImpl extends FreshChatService {
     }
 
     final String? userId = userInfo?.userId;
+    Freshchat.identifyUser(
+      externalId: userId ?? '',
+    );
+
     final String restoreId = userInfo?.restoreId ?? await getRestoreId() ?? '';
     final String? profileName = userInfo?.profileName;
     final String? email = userInfo?.email;

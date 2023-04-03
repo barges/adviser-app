@@ -13,8 +13,6 @@ class MonthStatisticWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
-      final double monthAmount =
-          context.select((DashboardCubit cubit) => cubit.state.monthAmount);
       final String currencySymbol =
           context.select((DashboardCubit cubit) => cubit.state.currencySymbol);
       return Container(
@@ -30,7 +28,7 @@ class MonthStatisticWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
-              children: [
+              children: const [
                 // Text(
                 //   SZodiac.of(context).thisMonthZodiac,
                 //   maxLines: 1,
@@ -40,9 +38,7 @@ class MonthStatisticWidget extends StatelessWidget {
                 //       .headlineMedium
                 //       ?.copyWith(fontSize: 17.0),
                 // ),
-                // const Divider(
-                //   height: 33,
-                // ),
+
                 // Text(
                 //     '$currencySymbol ${monthAmount.parseValueToCurrencyFormat}',
                 //     style: Theme.of(context).textTheme.labelLarge),

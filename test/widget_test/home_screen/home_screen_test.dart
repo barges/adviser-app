@@ -130,7 +130,7 @@ void main() {
     when(mockConnectivityService.connectivityStream)
         .thenAnswer((realInvocation) => Stream.value(true));
 
-    when(mockUserRepository.getUserInfo()).thenAnswer(
+    when(mockUserRepository.getMyDetails()).thenAnswer(
         (realInvocation) => Future.value(HomeScreenTestConstants.userInfo));
     when(mockUserRepository.getUserReports()).thenAnswer((realInvocation) =>
         Future.value(HomeScreenTestConstants.reportsResponse));
@@ -351,7 +351,7 @@ void main() {
           findsOneWidget);
       expect(
           find.widgetWithText(NotLiveStatusWidget,
-              'Change your status in your profile to make yourself visible to users.'),
+              'Change your status in your edit_profile to make yourself visible to users.'),
           findsOneWidget);
     });
 
@@ -395,7 +395,7 @@ void main() {
           findsOneWidget);
       expect(
           find.widgetWithText(NotLiveStatusWidget,
-              'Please ensure your profile is completed for all languages. Need help? Contact your manager.'),
+              'Please ensure your edit_profile is completed for all languages. Need help? Contact your manager.'),
           findsOneWidget);
     });
 
@@ -531,7 +531,7 @@ void main() {
 
     testWidgets(
         'should be displayed "Your Username text"'
-        ' if advisor profile name is null', (tester) async {
+        ' if advisor edit_profile name is null', (tester) async {
       when(mockCachingManager.listenUserProfile(argThat(anything)))
           .thenAnswer((realInvocation) {
         Function(UserProfile) callback = realInvocation.positionalArguments[0];
@@ -589,7 +589,7 @@ void main() {
     });
 
     testWidgets(
-        'should redirect to Edit profile screen'
+        'should redirect to Edit edit_profile screen'
         ' if user clicks on UserAvatar', (tester) async {
       await pumpHomeScreen(tester: tester);
       await tester.pumpAndSettle();

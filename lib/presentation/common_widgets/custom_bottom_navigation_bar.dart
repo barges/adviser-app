@@ -15,33 +15,36 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Divider(
-            height: 2.0,
-          ),
-          Container(
-            color: backgroundColor,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: items
-                    .mapIndexed(
-                      (index, child) => InkWell(
-                        onTap: () => onTap(index),
-                        child: child,
-                      ),
-                    )
-                    .toList(),
-              ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Divider(
+          height: 1.0,
+        ),
+        Container(
+          color: backgroundColor,
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+              0.0,
+              10.0,
+              0.0,
+              10.0 + MediaQuery.of(context).viewPadding.bottom,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: items
+                  .mapIndexed(
+                    (index, child) => InkWell(
+                      onTap: () => onTap(index),
+                      child: child,
+                    ),
+                  )
+                  .toList(),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
