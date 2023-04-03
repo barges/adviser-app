@@ -110,6 +110,7 @@ class _ReviewRatingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return RatingBar(
       initialRating: rating.toDouble(),
+      ignoreGestures: true,
       direction: Axis.horizontal,
       itemSize: 16,
       allowHalfRating: true,
