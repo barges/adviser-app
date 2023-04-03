@@ -60,7 +60,10 @@ class MonthStatisticWidget extends StatelessWidget {
                 //     ),
                 //   ],
                 // ),
-                ChartWidget()
+                // const Divider(
+                //   height: 33,
+                // ),
+                const ChartWidget()
               ],
             )),
       );

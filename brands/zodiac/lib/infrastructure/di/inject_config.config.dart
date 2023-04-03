@@ -29,9 +29,6 @@ import '../../data/network/api/auth_api.dart' as _i22;
 import '../../data/network/api/chats_api.dart' as _i23;
 import '../../data/network/api/services_api.dart' as _i17;
 import '../../data/network/api/user_api.dart' as _i18;
-import '../../services/websocket_manager/websocket_manager.dart' as _i13;
-import '../../services/websocket_manager/websocket_manager_impl.dart'
-    as _i14;
 import '../../data/repository_impl/zodiac_articles_repository_impl.dart'
     as _i25;
 import '../../data/repository_impl/zodiac_auth_repository_impl.dart' as _i27;
@@ -41,6 +38,8 @@ import '../../domain/repositories/zodiac_articles_repository.dart' as _i24;
 import '../../domain/repositories/zodiac_auth_repository.dart' as _i26;
 import '../../domain/repositories/zodiac_chats_repository.dart' as _i28;
 import '../../domain/repositories/zodiac_user_repository.dart' as _i19;
+import '../../services/websocket_manager/websocket_manager.dart' as _i13;
+import '../../services/websocket_manager/websocket_manager_impl.dart' as _i14;
 import '../../zodiac_main_cubit.dart' as _i12;
 import 'dio_interceptors/app_interceptor.dart' as _i15;
 import 'modules/api_module.dart' as _i31;
