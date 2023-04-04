@@ -23,7 +23,6 @@ build-ios:
     - flutter --version
     - sh pubs.sh
   script:
-    - rm -rf /Users/appbuster2/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision
     - flutter build ipa --release --export-method development
   artifacts:
     paths:
