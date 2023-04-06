@@ -70,7 +70,7 @@ class _ReviewCustomerInfoWidget extends StatelessWidget {
     return Row(
       children: [
         UserAvatar(
-            diameter: 32.0, withBorder: false, avatarUrl: item.avatar ?? ''),
+            diameter: 32.0, avatarUrl: item.avatar ?? ''),
         const SizedBox(
           width: AppConstants.horizontalScreenPadding / 2,
         ),

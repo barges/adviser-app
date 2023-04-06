@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/models/notification/notification_item.dart';
-import 'package:zodiac/data/network/requests/notifications_request.dart';
+import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/notifications/notifications_state.dart';
@@ -40,7 +40,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       if (_hasMore) {
         NotificationsResponse response =
             await _userRepository.getNotificationsList(
-          NotificationsRequest(
+          ListRequest(
             count: _count,
             offset: _notificationsList.length,
           ),

@@ -25,5 +25,7 @@
   "toEnableNotificationYoullNeedToAllowNotificationsInYour": "Um die Benachrichtigung zu aktivieren, muss man in den Einstellungen des Handys Benachrichtigungen zulassen",
   "notificationsAreDisabled": "Benachrichtigungen sind deaktiviert",
   "today": "Heute",
-  "other": "Sonstige"
+  "other": "Sonstige",
+  "choosePhotoFromLibrary": "Foto aus Bibliothek wählen",
+  "takeAPhoto": "Foto aufnehmen"
 }

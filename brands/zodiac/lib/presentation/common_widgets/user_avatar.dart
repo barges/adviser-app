@@ -49,7 +49,7 @@ class UserAvatar extends StatelessWidget {
                     width: 2.0,
                     color: withError
                         ? Theme.of(context).errorColor
-                        : Theme.of(context).canvasColor)
+                        : Theme.of(context).scaffoldBackgroundColor)
                 : null,
           ),
           child: imageFile == null

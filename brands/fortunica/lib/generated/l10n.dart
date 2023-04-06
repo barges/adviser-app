@@ -671,16 +671,6 @@ class SFortunica {
     );
   }
 
-  /// `Take a photo`
-  String get takeAPhotoFortunica {
-    return Intl.message(
-      'Take a photo',
-      name: 'takeAPhotoFortunica',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Will be available in`
   String get willBeAvailableInFortunica {
     return Intl.message(
@@ -1611,10 +1601,10 @@ class SFortunica {
     );
   }
 
-  /// `Complete your edit_profile to start work`
+  /// `Complete your profile to start work`
   String get completeYourProfileToStartWorkFortunica {
     return Intl.message(
-      'Complete your edit_profile to start work',
+      'Complete your profile to start work',
       name: 'completeYourProfileToStartWorkFortunica',
       desc: '',
       args: [],
@@ -1631,11 +1621,11 @@ class SFortunica {
     );
   }
 
-  /// `Please ensure your edit_profile is completed for all languages. Need help? Contact your manager.`
+  /// `Please ensure your profile is completed for all languages. Need help? Contact your manager.`
   String
       get pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManagerFortunica {
     return Intl.message(
-      'Please ensure your edit_profile is completed for all languages. Need help? Contact your manager.',
+      'Please ensure your profile is completed for all languages. Need help? Contact your manager.',
       name:
           'pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManagerFortunica',
       desc: '',
@@ -1673,11 +1663,11 @@ class SFortunica {
     );
   }
 
-  /// `Change your status in your edit_profile to make yourself visible to users.`
+  /// `Change your status in your profile to make yourself visible to users.`
   String
       get changeYourStatusInYourProfileToMakeYourselfVisibleToUsersFortunica {
     return Intl.message(
-      'Change your status in your edit_profile to make yourself visible to users.',
+      'Change your status in your profile to make yourself visible to users.',
       name:
           'changeYourStatusInYourProfileToMakeYourselfVisibleToUsersFortunica',
       desc: '',
@@ -1803,16 +1793,6 @@ class SFortunica {
     return Intl.message(
       'When someone asks a public question, you\'ll see them on this list',
       name: 'whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisListFortunica',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Choose photo from library`
-  String get choosePhotoFromLibraryFortunica {
-    return Intl.message(
-      'Choose photo from library',
-      name: 'choosePhotoFromLibraryFortunica',
       desc: '',
       args: [],
     );

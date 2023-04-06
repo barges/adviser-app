@@ -25,5 +25,7 @@
   "toEnableNotificationYoullNeedToAllowNotificationsInYour": "Para activar las notificaciones, tendrás que permitir las notificaciones desde los ajustes de tu teléfono",
   "notificationsAreDisabled": "Las notificaciones están desactivadas",
   "today": "Hoy",
-  "other": "Otro"
+  "other": "Otro",
+  "choosePhotoFromLibrary": "Elige una foto de la biblioteca de fotos",
+  "takeAPhoto": "Tomar una foto"
 }

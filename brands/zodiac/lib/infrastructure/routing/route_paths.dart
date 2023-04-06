@@ -16,4 +16,5 @@ class RoutePathsZodiac {
   static const notificationsScreen = '${ZodiacBrand.alias}Notifications';
   static const reviewsScreen = '${ZodiacBrand.alias}Reviews';
   static const supportScreen = '${ZodiacBrand.alias}Support';
+  static const specialitiesListScreen = '${ZodiacBrand.alias}SpecialitiesList';
 }

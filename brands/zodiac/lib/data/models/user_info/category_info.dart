@@ -13,7 +13,7 @@ class CategoryInfo with _$CategoryInfo {
       includeIfNull: false, explicitToJson: true)
   const factory CategoryInfo({
     int? id,
-    int? pid,
+    @JsonKey(name: 'pid') int? parentId,
     String? name,
     String? alias,
     String? icon,

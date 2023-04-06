@@ -100,8 +100,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Escolher uma marca"),
         "chooseEmailAppFortunica":
             MessageLookupByLibrary.simpleMessage("Escolher email do app"),
-        "choosePhotoFromLibraryFortunica": MessageLookupByLibrary.simpleMessage(
-            "Escolha a foto da biblioteca de fotos"),
         "comingSoonFortunica":
             MessageLookupByLibrary.simpleMessage("Em breve!"),
         "completeYourProfileToStartWorkFortunica":
@@ -302,8 +300,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "statusTextMayNotExceed300CharactersFortunica":
             MessageLookupByLibrary.simpleMessage(
                 "O texto de status não pode exceder 300 caracteres"),
-        "takeAPhotoFortunica":
-            MessageLookupByLibrary.simpleMessage("Tirar uma foto"),
         "takeMeThereFortunica": MessageLookupByLibrary.simpleMessage("Acessar"),
         "takeQuestionFortunica":
             MessageLookupByLibrary.simpleMessage("Tomar a pergunta"),

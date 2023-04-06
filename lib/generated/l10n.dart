@@ -319,6 +319,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Choose photo from library`
+  String get choosePhotoFromLibrary {
+    return Intl.message(
+      'Choose photo from library',
+      name: 'choosePhotoFromLibrary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Take a photo`
+  String get takeAPhoto {
+    return Intl.message(
+      'Take a photo',
+      name: 'takeAPhoto',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

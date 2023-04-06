@@ -2,7 +2,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortunica/presentation/common_widgets/show_pick_image_alert.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:fortunica/presentation/screens/add_note/add_note_cubit.dart';
 
 class AttachNewPictureCircleButtonWidget extends StatelessWidget {

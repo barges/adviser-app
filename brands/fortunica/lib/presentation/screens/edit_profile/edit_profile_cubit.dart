@@ -43,7 +43,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   late List<MarketsType> activeLanguages;
   late List<GlobalKey> activeLanguagesGlobalKeys;
   late Map<String, dynamic> _oldPropertiesMap;
-  late final StreamSubscription coverPicturesSubscription;
+  late final StreamSubscription userProfileSubscription;
 
   final ScrollController languagesScrollController = ScrollController();
   final PageController picturesPageController = PageController();
@@ -64,7 +64,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     userProfile = cacheManager.getUserProfile();
     setUpScreenForUserProfile();
 
-    coverPicturesSubscription = cacheManager.listenUserProfileStream((value) {
+    userProfileSubscription = cacheManager.listenUserProfileStream((value) {
       if (userProfile == null) {
         userProfile = value;
         setUpScreenForUserProfile();
@@ -93,7 +93,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     nicknameController.dispose();
     nicknameFocusNode.dispose();
     picturesPageController.dispose();
-    coverPicturesSubscription.cancel();
+    userProfileSubscription.cancel();
     return super.close();
   }
 
@@ -211,13 +211,12 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     });
 
     for (var entry in focusNodesMap.entries) {
-      entry.value.firstOrNull?.addListener(() {
-        hasFocusNotifiersMap[entry.key]?.first.value =
-            entry.value.first.hasFocus;
-      });
-      entry.value.lastOrNull?.addListener(() {
-        hasFocusNotifiersMap[entry.key]?.last.value = entry.value.last.hasFocus;
-      });
+      for(int i = 0; i < entry.value.length; i++){
+        entry.value[i].addListener(() {
+        hasFocusNotifiersMap[entry.key]?[i].value =
+            entry.value[i].hasFocus;
+        });
+      }
     }
   }
 

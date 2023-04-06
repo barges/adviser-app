@@ -9,11 +9,12 @@ import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
+import 'package:zodiac/data/models/user_info/category_info.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
-import 'package:zodiac/data/network/requests/expert_details_request.dart';
-import 'package:zodiac/data/network/requests/notifications_request.dart';
+import 'package:zodiac/data/network/requests/authorized_request.dart';
+import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
@@ -22,6 +23,7 @@ import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/expert_details_response.dart';
 import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
+import 'package:zodiac/data/network/responses/specializations_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_state.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
@@ -88,44 +90,63 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
           await _sendPushToken();
         }
 
-        int? userId = _cacheManager.getUid();
-        logger.d('userId --- $userId');
-        if (userId != null) {
-          ExpertDetailsResponse response = await _userRepository
-              .getDetailedUserInfo(ExpertDetailsRequest(expertId: userId));
-          if (response.errorCode == 0) {
-            DetailedUserInfo? userInfo = response.result;
-            UserDetails? userDetails = userInfo?.details;
+        await _getAllCategories();
 
-            _cacheManager.saveDetailedUserInfo(userInfo);
-            _cacheManager.saveUserStatus(userDetails?.status);
+        ExpertDetailsResponse response =
+            await _userRepository.getDetailedUserInfo(AuthorizedRequest());
+        if (response.errorCode == 0) {
+          DetailedUserInfo? userInfo = response.result;
+          UserDetails? userDetails = userInfo?.details;
+
+          _cacheManager.saveDetailedUserInfo(
+              userInfo?.copyWith(locales: response.locales));
+          _cacheManager.saveUserStatus(userDetails?.status);
+          emit(state.copyWith(
+            userInfo: userDetails,
+            reviewsCount: userInfo?.reviews?.count,
+            chatsEnabled: userDetails?.chatEnabled == 1,
+            callsEnabled: userDetails?.callEnabled == 1,
+            randomCallsEnabled: userDetails?.randomCallEnabled == 1,
+            userStatusOnline: userDetails?.status == ZodiacUserStatus.online,
+          ));
+
+          NotificationsResponse notificationsResponse =
+              await _userRepository.getNotificationsList(
+            ListRequest(count: 0, offset: 0),
+          );
+          if (notificationsResponse.errorCode == 0) {
             emit(state.copyWith(
-              userInfo: userDetails,
-              reviewsCount: userInfo?.reviews?.count,
-              chatsEnabled: userDetails?.chatEnabled == 1,
-              callsEnabled: userDetails?.callEnabled == 1,
-              randomCallsEnabled: userDetails?.randomCallEnabled == 1,
-              userStatusOnline: userDetails?.status == ZodiacUserStatus.online,
-            ));
-
-            NotificationsResponse notificationsResponse =
-                await _userRepository.getNotificationsList(
-              NotificationsRequest(count: 0, offset: 0),
-            );
-            if (notificationsResponse.errorCode == 0) {
-              emit(state.copyWith(
-                  unreadedNotificationsCount:
-                      notificationsResponse.unreadedCount ?? 0));
-            } else {
-              _updateErrorMessage(notificationsResponse.getErrorMessage());
-            }
+                unreadedNotificationsCount:
+                    notificationsResponse.unreadedCount ?? 0));
           } else {
-            _updateErrorMessage(response.getErrorMessage());
+            _updateErrorMessage(notificationsResponse.getErrorMessage());
           }
+        } else {
+          _updateErrorMessage(response.getErrorMessage());
         }
       }
     } catch (e) {
       logger.d(e);
+    }
+  }
+
+  Future<void> _getAllCategories() async {
+    final SpecializationsResponse response =
+        await _userRepository.getSpecializations(AuthorizedRequest());
+    final List<CategoryInfo>? responseCategories = response.result;
+    if (responseCategories != null) {
+      final List<CategoryInfo> categories = [];
+
+      for (CategoryInfo categoryInfo in responseCategories) {
+        categories.add(categoryInfo);
+        List<CategoryInfo>? sublist = categoryInfo.sublist;
+        if (sublist != null) {
+          for (CategoryInfo subCategoryInfo in sublist) {
+            categories.add(subCategoryInfo);
+          }
+        }
+      }
+      _cacheManager.saveAllCategories(categories);
     }
   }
 

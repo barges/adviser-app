@@ -25,6 +25,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "allOurBrands": MessageLookupByLibrary.simpleMessage("All brands"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chooseBrand": MessageLookupByLibrary.simpleMessage("Choose brand"),
+        "choosePhotoFromLibrary":
+            MessageLookupByLibrary.simpleMessage("Choose photo from library"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon!"),
         "copied": MessageLookupByLibrary.simpleMessage("Copied!"),
         "customerSupport":
@@ -42,6 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseUpdateTheApp":
             MessageLookupByLibrary.simpleMessage("Please update the app"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+        "takeAPhoto": MessageLookupByLibrary.simpleMessage("Take a photo"),
         "tapToCopy": MessageLookupByLibrary.simpleMessage("Tap to copy"),
         "thisVersionOfTheAppIsNoLongerSupported":
             MessageLookupByLibrary.simpleMessage(
