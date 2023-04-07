@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/transparrent_app_bar.dart';
@@ -52,17 +53,23 @@ class NotificationDetailsScreen extends StatelessWidget {
                               (controller, navigationAction) async {
                             Uri? url = navigationAction.request.url;
                             logger.d(url);
-
-                            if (url.toString().startsWith('zodiac://')) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text('Host: ${url?.host}\n'
-                                    'Query parameters: ${url?.queryParameters}'),
-                              ));
-                              return NavigationActionPolicy.CANCEL;
-                            } else {
-                              return NavigationActionPolicy.ALLOW;
+                            if (url != null) {
+                              if (url.scheme.startsWith('http')) {
+                                launchUrl(
+                                  url,
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              } else if (url.scheme == 'zodiac') {
+                                final NotificationDetailsCubit
+                                    notificationDetailsCubit =
+                                    context.read<NotificationDetailsCubit>();
+                                notificationDetailsCubit
+                                    .navigateFromNotification(
+                                        context, url.host, url.queryParameters);
+                              }
                             }
+
+                            return NavigationActionPolicy.CANCEL;
                           },
                         )
                       : const SizedBox.shrink();

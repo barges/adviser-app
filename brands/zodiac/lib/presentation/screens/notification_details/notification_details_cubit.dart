@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:zodiac/data/models/enums/deep_link_action.dart';
 import 'package:zodiac/data/network/requests/notification_details_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/notification_details_response.dart';
@@ -43,5 +45,12 @@ class NotificationDetailsCubit extends Cubit<NotificationDetailsState> {
     } catch (e) {
       logger.d(e);
     }
+  }
+
+  void navigateFromNotification(BuildContext context, String linkAction,
+      Map<String, String> queryParameters) {
+    DeepLinkAction deepLinkAction = DeepLinkAction.fromAlias(linkAction);
+
+    deepLinkAction.redirectToScreen(context, queryParameters);
   }
 }
