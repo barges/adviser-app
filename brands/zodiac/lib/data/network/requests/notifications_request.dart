@@ -3,14 +3,16 @@ import 'package:zodiac/data/network/requests/authorized_request.dart';
 
 part 'notifications_request.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class NotificationsRequest extends AuthorizedRequest {
   final int count;
   final int offset;
+  final bool fromScreen;
 
   NotificationsRequest({
     required this.count,
     required this.offset,
+    this.fromScreen = false,
   }) : super();
 
   factory NotificationsRequest.fromJson(Map<String, dynamic> json) =>

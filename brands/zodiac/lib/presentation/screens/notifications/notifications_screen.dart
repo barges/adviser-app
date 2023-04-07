@@ -9,6 +9,7 @@ import 'package:zodiac/presentation/common_widgets/appbar/scrollable_appbar/scro
 import 'package:zodiac/presentation/common_widgets/empty_list_widget.dart';
 import 'package:zodiac/presentation/screens/notifications/notifications_cubit.dart';
 import 'package:zodiac/presentation/screens/notifications/widgets/notifications_list_tile_widget.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 class NotificationsScreen extends StatelessWidget {
   const NotificationsScreen({Key? key}) : super(key: key);
@@ -19,6 +20,7 @@ class NotificationsScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => NotificationsCubit(
         zodiacGetIt.get<ZodiacUserRepository>(),
+        zodiacGetIt.get<ZodiacMainCubit>(),
         screenHeight,
       ),
       child: Builder(builder: (context) {

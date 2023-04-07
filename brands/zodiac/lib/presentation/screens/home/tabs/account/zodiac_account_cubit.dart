@@ -38,6 +38,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   StreamSubscription<bool>? _connectivitySubscription;
   bool? isPushNotificationPermissionGranted;
   late final StreamSubscription<bool> _updateAccountSubscription;
+  late final StreamSubscription<bool> _updateUnreadNotificationsCounter;
 
   ZodiacAccountCubit(
     this._mainCubit,
@@ -58,6 +59,11 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
         refreshUserInfo();
       },
     );
+
+    _updateUnreadNotificationsCounter =
+        _mainCubit.unreadNotificationsCounterUpdateTrigger.listen((value) {
+      _getUnreadNotificationsCount();
+    });
   }
 
   @override
@@ -65,6 +71,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     _updateUserBalanceSubscription.cancel();
     _connectivitySubscription?.cancel();
     _updateAccountSubscription.cancel();
+    _updateUnreadNotificationsCounter.cancel();
     super.close();
   }
 
@@ -108,17 +115,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
               userStatusOnline: userDetails?.status == ZodiacUserStatus.online,
             ));
 
-            NotificationsResponse notificationsResponse =
-                await _userRepository.getNotificationsList(
-              NotificationsRequest(count: 0, offset: 0),
-            );
-            if (notificationsResponse.errorCode == 0) {
-              emit(state.copyWith(
-                  unreadedNotificationsCount:
-                      notificationsResponse.unreadedCount ?? 0));
-            } else {
-              _updateErrorMessage(notificationsResponse.getErrorMessage());
-            }
+            _getUnreadNotificationsCount();
           } else {
             _updateErrorMessage(response.getErrorMessage());
           }
@@ -126,6 +123,20 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
       }
     } catch (e) {
       logger.d(e);
+    }
+  }
+
+  Future<void> _getUnreadNotificationsCount() async {
+    NotificationsResponse notificationsResponse =
+        await _userRepository.getNotificationsList(
+      NotificationsRequest(count: 1, offset: 0),
+    );
+    if (notificationsResponse.errorCode == 0) {
+      logger.d(notificationsResponse.unreadCount);
+      emit(state.copyWith(
+          unreadedNotificationsCount: notificationsResponse.unreadCount ?? 0));
+    } else {
+      _updateErrorMessage(notificationsResponse.getErrorMessage());
     }
   }
 
