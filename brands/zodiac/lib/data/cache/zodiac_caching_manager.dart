@@ -9,6 +9,7 @@ import 'package:zodiac/data/models/user_info/my_details.dart';
 
 abstract class ZodiacCachingManager {
   bool get haveLocales;
+  bool get haveCategories;
 
   bool get pushTokenIsSent;
 

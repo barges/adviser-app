@@ -33,7 +33,7 @@ class ZodiacUserRepositoryImpl implements ZodiacUserRepository {
   const ZodiacUserRepositoryImpl(this._userApi);
 
   @override
-  Future<LocalesResponse> getPreferredLocales(AuthorizedRequest request) async {
+  Future<LocalesResponse> getAllLocales(AuthorizedRequest request) async {
     return await _userApi.getPreferredLocales(request);
   }
 
@@ -137,6 +137,13 @@ class ZodiacUserRepositoryImpl implements ZodiacUserRepository {
     AddRemoveLocaleRequest request,
   ) async {
     return await _userApi.addLocaleAdvisor(request);
+  }
+
+  @override
+  Future<BaseResponse> updateLocaleAdvisor(
+    AddRemoveLocaleRequest request,
+  ) async {
+    return await _userApi.updateLocaleAdvisor(request);
   }
 
   @override

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
@@ -35,6 +36,10 @@ class ZodiacCachingManagerImpl implements ZodiacCachingManager {
   @override
   bool get haveLocales =>
       Hive.box(_zodiacSettingsBoxKey).containsKey(_allLocalesKey);
+
+  @override
+  bool get haveCategories =>
+      Hive.box(_zodiacSettingsBoxKey).containsKey(_allCategoriesKey);
 
   @override
   bool get pushTokenIsSent => _pushTokenIsSent;

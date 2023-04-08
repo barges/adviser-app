@@ -135,17 +135,9 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
         await _userRepository.getSpecializations(AuthorizedRequest());
     final List<CategoryInfo>? responseCategories = response.result;
     if (responseCategories != null) {
-      final List<CategoryInfo> categories = [];
+      final List<CategoryInfo> categories =
+          CategoryInfo.normalizeList(responseCategories);
 
-      for (CategoryInfo categoryInfo in responseCategories) {
-        categories.add(categoryInfo);
-        List<CategoryInfo>? sublist = categoryInfo.sublist;
-        if (sublist != null) {
-          for (CategoryInfo subCategoryInfo in sublist) {
-            categories.add(subCategoryInfo);
-          }
-        }
-      }
       _cacheManager.saveAllCategories(categories);
     }
   }

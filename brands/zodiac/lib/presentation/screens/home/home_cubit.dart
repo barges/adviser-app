@@ -72,7 +72,7 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> checkAndSaveAllLocales() async {
      if (!_cacheManager.haveLocales) {
       final LocalesResponse response =
-          await _userRepository.getPreferredLocales(AuthorizedRequest());
+          await _userRepository.getAllLocales(AuthorizedRequest());
       if (response.status == true) {
         List<LocaleModel>? locales = response.result;
         if (locales?.isNotEmpty == true) {

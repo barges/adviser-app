@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
@@ -9,7 +10,6 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
-import 'package:zodiac/data/models/enums/brands.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
@@ -17,7 +17,6 @@ import 'package:zodiac/data/models/user_info/locale_descriptions.dart';
 import 'package:zodiac/data/models/user_info/locale_model.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/requests/locale_descriptions_request.dart';
-import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/locale_descriptions_response.dart';
 import 'package:zodiac/data/network/responses/main_specialization_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
@@ -25,6 +24,11 @@ import 'package:zodiac/presentation/screens/edit_profile/edit_profile_state.dart
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 const int _textFieldsCount = 4;
+
+const int nickNameIndex = 0;
+const int aboutIndex = 1;
+const int experienceIndex = 2;
+const int helloMessageIndex = 3;
 
 class EditProfileCubit extends Cubit<EditProfileState> {
   final ZodiacMainCubit _mainCubit;
@@ -48,6 +52,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   DetailedUserInfo? detailedUserInfo;
   final List<String> _newLocales = [];
 
+  bool _wasFocusRequest = false;
+
   EditProfileCubit(
     this._mainCubit,
     this._cachingManager,
@@ -59,19 +65,10 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     final List<String> locales = userInfoFromCache?.locales ?? [];
     localesGlobalKeys = locales.map((e) => GlobalKey()).toList();
 
-    final List<CategoryInfo> categories = [];
     final List<CategoryInfo>? advisorCategories = userInfoFromCache?.category;
-
+    List<CategoryInfo>? categories = [];
     if (advisorCategories != null) {
-      for (CategoryInfo categoryInfo in advisorCategories) {
-        categories.add(categoryInfo);
-        List<CategoryInfo>? sublist = categoryInfo.sublist;
-        if (sublist != null) {
-          for (CategoryInfo subCategoryInfo in sublist) {
-            categories.add(subCategoryInfo);
-          }
-        }
-      }
+      categories = CategoryInfo.normalizeList(advisorCategories);
     }
 
     emit(state.copyWith(
@@ -174,6 +171,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
 
     _addListenersToFocusNodes();
+    _addListenersToTextControllers();
   }
 
   void _addListenersToFocusNodes() {
@@ -182,6 +180,22 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         entry.value[i].addListener(() {
           hasFocusNotifiersMap[entry.key]?[i].value = entry.value[i].hasFocus;
         });
+      }
+    }
+  }
+
+  void _addListenersToTextControllers() {
+    final List<String> locales = state.advisorLocales;
+    for (String localeCode in locales) {
+      final List<TextEditingController>? controllersByLocale =
+          textControllersMap[localeCode];
+      if (controllersByLocale != null) {
+        for (int i = 0; i < controllersByLocale.length; i++) {
+          controllersByLocale[i].addListener(() {
+            errorTextsMap[localeCode]?[i] = ValidationErrorType.empty;
+            emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
+          });
+        }
       }
     }
   }
@@ -207,46 +221,66 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     );
   }
 
-  void addLocaleLocally(LocaleModel localeModel) {
-    final String? localeCode = localeModel.code;
-    if (localeCode != null) {
-      final List<String> locales = List.from(state.advisorLocales);
-      locales.add(localeCode);
-      _newLocales.add(localeCode);
-      _setNewLocaleProperties(localeCode);
+  Future<void> goToAddNewLocale(BuildContext context) async {
+    context.push(
+      route: ZodiacLocalesList(
+        title: 'Language',
+        unnecessaryLocalesCodes: state.advisorLocales,
+        returnCallback: (locale) {
+          addLocaleLocally(locale);
+        },
+      ),
+    );
+  }
 
-      emit(state.copyWith(advisorLocales: locales));
+  void addLocaleLocally(String localeCode) {
+    final List<String> locales = List.from(state.advisorLocales);
+    locales.add(localeCode);
+    _newLocales.add(localeCode);
+    _setNewLocaleProperties(localeCode);
 
-      final codeIndex = locales.indexOf(localeCode);
-      if (codeIndex != -1) {
-        changeLocaleIndex(codeIndex);
-      }
+    emit(state.copyWith(advisorLocales: locales));
+
+    final codeIndex = locales.indexOf(localeCode);
+    if (codeIndex != -1) {
+      changeLocaleIndex(codeIndex);
     }
   }
 
-  void _setNewLocaleProperties(String locale) {
-    textControllersMap[locale] = List<TextEditingController>.generate(
+  void _setNewLocaleProperties(String localeCode) {
+    textControllersMap[localeCode] = List<TextEditingController>.generate(
       _textFieldsCount,
       (index) => TextEditingController(),
     );
-    focusNodesMap[locale] = List<FocusNode>.generate(
+    focusNodesMap[localeCode] = List<FocusNode>.generate(
       _textFieldsCount,
       (index) => FocusNode(),
     );
-    hasFocusNotifiersMap[locale] = List<ValueNotifier>.generate(
+    hasFocusNotifiersMap[localeCode] = List<ValueNotifier>.generate(
       _textFieldsCount,
       (index) => ValueNotifier(false),
     );
-    errorTextsMap[locale] = List<ValidationErrorType>.generate(
+    errorTextsMap[localeCode] = List<ValidationErrorType>.generate(
       _textFieldsCount,
       (index) => ValidationErrorType.empty,
     );
 
-    final List<FocusNode>? nodes = focusNodesMap[locale];
+    final List<FocusNode>? nodes = focusNodesMap[localeCode];
     if (nodes != null) {
       for (int i = 0; i < nodes.length; i++) {
         nodes[i].addListener(() {
-          hasFocusNotifiersMap[locale]?[i].value = nodes[i].hasFocus;
+          hasFocusNotifiersMap[localeCode]?[i].value = nodes[i].hasFocus;
+        });
+      }
+    }
+
+    final List<TextEditingController>? controllersByLocale =
+        textControllersMap[localeCode];
+    if (controllersByLocale != null) {
+      for (int i = 0; i < controllersByLocale.length; i++) {
+        controllersByLocale[i].addListener(() {
+          errorTextsMap[localeCode]?[i] = ValidationErrorType.empty;
+          emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
         });
       }
     }
@@ -254,13 +288,93 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   Future<void> saveInfo() async {
-    if (state.avatar != null) {
-      final BaseResponse response = await _userRepository.uploadAvatar(
-        request: AuthorizedRequest(),
-        brandId: Brands.zodiac.id,
-        avatar: state.avatar!,
-      );
+    checkTextFields();
+
+    // if (state.avatar != null) {
+    //   final BaseResponse response = await _userRepository.uploadAvatar(
+    //     request: AuthorizedRequest(),
+    //     brandId: Brands.zodiac.id,
+    //     avatar: state.avatar!,
+    //   );
+    // }
+  }
+
+  bool checkTextFields() {
+    bool isValid = true;
+    int? firstLanguageWithErrorIndex;
+    final List<String> locales = state.advisorLocales;
+    for (String localeCode in locales) {
+      final List<TextEditingController>? controllersByLocale =
+          textControllersMap[localeCode];
+      if (controllersByLocale != null) {
+        for (int i = 0; i < controllersByLocale.length; i++) {
+          if (i == nickNameIndex) {
+            if (!_checkNickName(localeCode)) {
+              firstLanguageWithErrorIndex ??= locales.indexOf(localeCode);
+              _wasFocusRequest = true;
+              isValid = false;
+            }
+          } else {
+            if (!_checkTextField(localeCode, i)) {
+              firstLanguageWithErrorIndex ??= locales.indexOf(localeCode);
+              _wasFocusRequest = true;
+              isValid = false;
+            }
+          }
+          if (localeCode == locales.lastOrNull &&
+              i == controllersByLocale.length - 1) {
+            _wasFocusRequest = false;
+          }
+        }
+      }
     }
+    emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
+    if (firstLanguageWithErrorIndex != null) {
+      changeLocaleIndex(firstLanguageWithErrorIndex);
+    }
+    return isValid;
+  }
+
+  bool _checkNickName(String localeCode) {
+    bool isValid = true;
+    final String nickName =
+        textControllersMap[localeCode]?[nickNameIndex].text.trim() ?? '';
+    final bool isShort = nickName.length < 3;
+    final bool isLong = nickName.length > 250;
+    if (isShort || isLong) {
+      isValid = false;
+
+      ///TODO: add 250 chars error
+      errorTextsMap[localeCode]?[nickNameIndex] = isShort
+          ? ValidationErrorType.pleaseEnterAtLeast3Characters
+          : ValidationErrorType.pleaseEnterAtLeast3Characters;
+
+      if (!_wasFocusRequest) {
+        focusNodesMap[localeCode]?[nickNameIndex].requestFocus();
+      }
+    }
+    return isValid;
+  }
+
+  bool _checkTextField(String localeCode, int index) {
+    bool isValid = true;
+    final String text =
+        textControllersMap[localeCode]?[index].text.trim() ?? '';
+    final bool isShort = text.isEmpty;
+    final bool isLong = text.length > 65000;
+    if (isShort || isLong) {
+      isValid = false;
+
+      ///TODO: add 65000 chars error
+      errorTextsMap[localeCode]?[index] = isShort
+          ? ValidationErrorType.requiredField
+          : ValidationErrorType.pleaseEnterAtLeast3Characters;
+
+      if (!_wasFocusRequest) {
+        focusNodesMap[localeCode]?[index].requestFocus();
+      }
+    }
+    return isValid;
   }
 
   void updateMainCategory(List<CategoryInfo> mainCategory) {

@@ -9,6 +9,7 @@ import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_scr
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/dashboard/dashboard_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_screen.dart';
+import 'package:zodiac/presentation/screens/locales_list/locales_list_screen.dart';
 import 'package:zodiac/presentation/screens/login/login_screen.dart';
 import 'package:zodiac/presentation/screens/notifications/notifications_screen.dart';
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_screen.dart';
@@ -97,6 +98,11 @@ const zodiacRoute = AutoRoute(
       page: SpecialitiesListScreen,
       path: RoutePathsZodiac.specialitiesListScreen,
       name: RoutePathsZodiac.specialitiesListScreen,
+    ),
+    AutoRoute(
+      page: LocalesListScreen,
+      path: RoutePathsZodiac.localesListScreen,
+      name: RoutePathsZodiac.localesListScreen,
     ),
   ],
 );

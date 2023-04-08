@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
@@ -21,26 +24,23 @@ class SpecialitiesListCubit extends Cubit<SpecialitiesListState> {
   }
 
   Future<void> getAllCategories() async {
-    final List<CategoryInfo>? responseCategories =
-        _cachingManager.getAllCategories() ??
-            ((await _userRepository.getSpecializations(AuthorizedRequest()))
-                .result);
+     List<CategoryInfo>? responseCategories;
+
+
+     if(_cachingManager.haveCategories){
+       responseCategories = _cachingManager.getAllCategories();
+     } else {
+       responseCategories = (await _userRepository.getSpecializations(AuthorizedRequest()))
+           .result;
+       if (responseCategories != null) {
+         responseCategories = CategoryInfo.normalizeList(responseCategories);
+         _cachingManager.saveAllCategories(responseCategories);
+       }
+     }
 
     if (responseCategories != null) {
-      final List<CategoryInfo> categories = [];
-
-      for (CategoryInfo categoryInfo in responseCategories) {
-        categories.add(categoryInfo);
-        List<CategoryInfo>? sublist = categoryInfo.sublist;
-        if (sublist != null) {
-          for (CategoryInfo subCategoryInfo in sublist) {
-            categories.add(subCategoryInfo);
-          }
-        }
-      }
-
       emit(state.copyWith(
-        categories: categories,
+        categories: responseCategories,
         selectedCategories: _oldSelectedCategories,
       ));
     }

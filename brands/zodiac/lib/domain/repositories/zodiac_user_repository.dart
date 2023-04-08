@@ -24,7 +24,7 @@ import 'package:zodiac/data/network/responses/my_details_response.dart';
 import 'package:zodiac/data/network/responses/specializations_response.dart';
 
 abstract class ZodiacUserRepository {
-  Future<LocalesResponse> getPreferredLocales(AuthorizedRequest request);
+  Future<LocalesResponse> getAllLocales(AuthorizedRequest request);
 
   Future<MyDetailsResponse> getMyDetails(AuthorizedRequest request);
 
@@ -72,6 +72,10 @@ abstract class ZodiacUserRepository {
   );
 
   Future<BaseResponse> addLocaleAdvisor(
+    AddRemoveLocaleRequest request,
+  );
+
+  Future<BaseResponse> updateLocaleAdvisor(
     AddRemoveLocaleRequest request,
   );
 
