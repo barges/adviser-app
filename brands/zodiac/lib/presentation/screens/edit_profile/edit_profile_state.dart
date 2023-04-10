@@ -13,6 +13,7 @@ class EditProfileState with _$EditProfileState {
     @Default(false) bool updateTextsFlag,
     DetailedUserInfo? detailedUserInfo,
     @Default([]) List<String> advisorLocales,
+    @Default('') String advisorMainLocale,
     @Default([]) List<CategoryInfo> advisorCategories,
     @Default([]) List<CategoryInfo> advisorMainCategory,
     File? avatar,

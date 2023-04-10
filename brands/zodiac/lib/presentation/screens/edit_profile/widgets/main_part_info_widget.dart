@@ -86,10 +86,17 @@ class MainPartInfoWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TileMenuButton(
-                  label: 'Main language',
-                  title: editProfileCubit.localeNativeName(
-                      detailedUserInfo?.details?.locale ?? 'en'),
+                Builder(
+                  builder: (context) {
+                    final String mainLocaleCode = context.select(
+                            (EditProfileCubit cubit) =>
+                        cubit.state.advisorMainLocale);
+
+                    return TileMenuButton(
+                      label: 'Main language',
+                      title: editProfileCubit.localeNativeName(mainLocaleCode),
+                    );
+                  }
                 ),
                 const SizedBox(
                   height: 24.0,
@@ -98,7 +105,6 @@ class MainPartInfoWidget extends StatelessWidget {
                   final List<CategoryInfo> mainCategory = context.select(
                       (EditProfileCubit cubit) =>
                           cubit.state.advisorMainCategory);
-                  logger.d(mainCategory.firstOrNull?.name);
                   return TileMenuButton(
                     label: 'Main specialty',
                     title:

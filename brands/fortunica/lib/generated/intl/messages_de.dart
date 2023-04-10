@@ -118,7 +118,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Die Kunden wollen wissen, dass du ein echter Mensch bist. Je mehr Fotos du hinzufügst, desto mehr Vertrauen kannst du aufbauen."),
         "dashboardFortunica": MessageLookupByLibrary.simpleMessage("Dashboard"),
-        "deleteFortunica": MessageLookupByLibrary.simpleMessage("Löschen"),
         "doYouWantToDeleteImageFortunica": MessageLookupByLibrary.simpleMessage(
             "Möchtest du das Bild löschen?"),
         "doYouWantToDeleteThisAudioMessageFortunica":

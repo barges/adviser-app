@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "copied": MessageLookupByLibrary.simpleMessage("Kopiert!"),
         "customerSupport":
             MessageLookupByLibrary.simpleMessage("Kundensupport"),
+        "delete": MessageLookupByLibrary.simpleMessage("Löschen"),
         "done": MessageLookupByLibrary.simpleMessage("Fertig"),
         "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
         "learnMore": MessageLookupByLibrary.simpleMessage("Mehr erfahren"),

@@ -73,6 +73,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
     emit(state.copyWith(
       detailedUserInfo: userInfoFromCache,
+      advisorMainLocale: userInfoFromCache?.details?.locale ?? 'en',
       advisorLocales: locales,
       advisorCategories: categories,
     ));
@@ -113,7 +114,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         await _userRepository.getMainSpeciality(AuthorizedRequest());
     final CategoryInfo? mainCategory = response.result;
     if (mainCategory != null) {
-      updateMainCategory([mainCategory]);
+      changeMainCategory([mainCategory]);
     }
   }
 
@@ -216,7 +217,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           oldSelectedCategories: state.advisorMainCategory,
           returnCallback: (categories) {
             logger.d(categories.first.name);
-            updateMainCategory(categories);
+            changeMainCategory(categories);
           }),
     );
   }
@@ -287,8 +288,56 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     localesGlobalKeys.add(GlobalKey());
   }
 
+  Future<void> removeLocale(String localeCode) async {
+    if (_newLocales.contains(localeCode)) {
+      _removeLocaleLocally(localeCode);
+    } else {
+      ///TODO: remove from server
+    }
+  }
+
+  void _removeLocaleLocally(String localeCode) {
+    final List<String> locales = List.from(state.advisorLocales);
+    final codeIndex = locales.indexOf(localeCode);
+    int newLocaleIndex = state.currentLocaleIndex;
+
+    if (codeIndex != -1 && codeIndex == locales.length - 1) {
+      final int index = locales.length - 2;
+      newLocaleIndex = index < 0 ? 0 : index;
+    }
+
+    _removeLocaleProperties(localeCode);
+    locales.remove(localeCode);
+    _newLocales.remove(localeCode);
+
+    emit(state.copyWith(
+      advisorLocales: locales,
+      currentLocaleIndex: newLocaleIndex,
+    ));
+  }
+
+  void _removeLocaleProperties(String localeCode) {
+    for (TextEditingController element
+        in textControllersMap[localeCode] ?? []) {
+      element.dispose();
+    }
+    for (FocusNode element in focusNodesMap[localeCode] ?? []) {
+      element.dispose();
+    }
+    for (ValueNotifier element in hasFocusNotifiersMap[localeCode] ?? []) {
+      element.dispose();
+    }
+
+    textControllersMap.remove(localeCode);
+    focusNodesMap.remove(localeCode);
+    hasFocusNotifiersMap.remove(localeCode);
+    errorTextsMap.remove(localeCode);
+
+    localesGlobalKeys.removeAt(state.advisorLocales.indexOf(localeCode));
+  }
+
   Future<void> saveInfo() async {
-    checkTextFields();
+    _checkTextFields();
 
     // if (state.avatar != null) {
     //   final BaseResponse response = await _userRepository.uploadAvatar(
@@ -299,7 +348,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     // }
   }
 
-  bool checkTextFields() {
+  bool _checkTextFields() {
     bool isValid = true;
     int? firstLanguageWithErrorIndex;
     final List<String> locales = state.advisorLocales;
@@ -377,7 +426,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     return isValid;
   }
 
-  void updateMainCategory(List<CategoryInfo> mainCategory) {
+  void changeMainCategory(List<CategoryInfo> mainCategory) {
     emit(state.copyWith(advisorMainCategory: mainCategory));
   }
 }

@@ -350,16 +350,6 @@ class SFortunica {
     );
   }
 
-  /// `Delete`
-  String get deleteFortunica {
-    return Intl.message(
-      'Delete',
-      name: 'deleteFortunica',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Choose email app`
   String get chooseEmailAppFortunica {
     return Intl.message(

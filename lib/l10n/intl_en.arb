@@ -27,5 +27,6 @@
   "today": "Today",
   "other": "Other",
   "choosePhotoFromLibrary": "Choose photo from library",
-  "takeAPhoto": "Take a photo"
+  "takeAPhoto": "Take a photo",
+  "delete": "Delete"
 }

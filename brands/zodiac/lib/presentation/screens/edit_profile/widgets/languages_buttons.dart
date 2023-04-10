@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_cubit.dart';
 
 class LanguagesButtons extends StatelessWidget {
@@ -35,14 +36,17 @@ class LanguagesButtons extends StatelessWidget {
               (index, element) {
                 final bool isSelected = index == currentLocaleIndex;
                 final GlobalKey key = editProfileCubit.localesGlobalKeys[index];
+                final bool isMainLocale = element == editProfileCubit.state.advisorMainLocale;
 
                 if (index < locales.length - 1) {
                   return Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: _LanguageButton(
                       key: key,
-                      title: editProfileCubit.localeNativeName(element),
+                      editProfileCubit: editProfileCubit,
+                      localeCode: element,
                       isSelected: isSelected,
+                      isMain: isMainLocale,
                       onTap: isSelected ? null : () => onTapToLocale(index),
                     ),
                   );
@@ -51,8 +55,10 @@ class LanguagesButtons extends StatelessWidget {
                     children: [
                       _LanguageButton(
                         key: key,
+                        editProfileCubit: editProfileCubit,
                         onTap: isSelected ? null : () => onTapToLocale(index),
-                        title: editProfileCubit.localeNativeName(element),
+                        localeCode: element,
+                        isMain: isMainLocale,
                         isSelected: isSelected,
                       ),
                       const SizedBox(
@@ -88,15 +94,17 @@ class LanguagesButtons extends StatelessWidget {
 }
 
 class _LanguageButton extends StatelessWidget {
+  final EditProfileCubit editProfileCubit;
   final VoidCallback? onTap;
-  final String title;
+  final String localeCode;
   final bool isSelected;
   final bool isMain;
 
   const _LanguageButton({
     Key? key,
+    required this.editProfileCubit,
     required this.onTap,
-    required this.title,
+    required this.localeCode,
     required this.isSelected,
     this.isMain = false,
   }) : super(key: key);
@@ -104,30 +112,74 @@ class _LanguageButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final String localeName =
+    editProfileCubit.localeNativeName(localeCode);
     return GestureDetector(
       onTap: onTap,
       child: Container(
         height: 38.0,
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-          color: isSelected
-              ? theme.primaryColorLight
-              : theme.canvasColor,
+          color: isSelected ? theme.primaryColorLight : theme.canvasColor,
         ),
-        child: Text(
-          title,
-          style: isSelected
-              ? theme.textTheme.labelMedium?.copyWith(
-                    color: theme.primaryColor,
-                    fontSize: 15.0,
-                  )
-              : theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.textTheme.bodyMedium?.color,
+        child: Row(
+          children: [
+            const SizedBox(
+              width: 24.0,
+            ),
+            Text(
+              localeName,
+              style: isSelected
+                  ? theme.textTheme.labelMedium?.copyWith(
+                      color: theme.primaryColor,
+                      fontSize: 15.0,
+                    )
+                  : theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.textTheme.bodyMedium?.color,
+                    ),
+            ),
+            const SizedBox(
+              width: 24.0,
+            ),
+            if(!isMain)
+            GestureDetector(
+              onTap: () async {
+                final bool? needDelete = await _deleteLocaleAlert(context,
+                    localeName);
+                if(needDelete == true){
+                  editProfileCubit.removeLocale(localeCode);
+                }
+              },
+              child: Row(
+                children: [
+                  const VerticalDivider(
+                    width: 1.0,
+                    thickness: 1.0,
                   ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                    ),
+                    child: Assets.vectors.delete.svg(
+                      height: AppConstants.iconSize,
+                      width: AppConstants.iconSize,
+                      color:
+                          isSelected ? theme.primaryColor : theme.iconTheme.color,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  Future<bool?> _deleteLocaleAlert(
+      BuildContext context, String localeName) async {
+    return await showDeleteAlert(
+        context, 'Do you really want to delete "$localeName" from your list?');
   }
 }

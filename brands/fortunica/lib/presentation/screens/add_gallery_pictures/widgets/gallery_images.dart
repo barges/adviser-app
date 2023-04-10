@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:fortunica/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
-import 'package:fortunica/presentation/common_widgets/show_delete_alert.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:fortunica/presentation/screens/add_gallery_pictures/add_gallery_pictures_cubit.dart';
 import 'package:fortunica/presentation/screens/add_gallery_pictures/widgets/add_more_images_from_gallery_widget.dart';
