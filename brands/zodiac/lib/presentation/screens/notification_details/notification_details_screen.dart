@@ -36,42 +36,59 @@ class NotificationDetailsScreen extends StatelessWidget {
             children: [
               Positioned.fill(
                 child: Builder(builder: (context) {
-                  String? notificationContent = context.select(
+                  final String? notificationContent = context.select(
                       (NotificationDetailsCubit cubit) =>
                           cubit.state.notificationContent);
-                  logger.d(notificationContent);
+                  final bool loadStopped = context.select(
+                      (NotificationDetailsCubit cubit) =>
+                          cubit.state.loadStopped);
 
                   return notificationContent != null
-                      ? InAppWebView(
-                          initialData: InAppWebViewInitialData(
-                            data: notificationContent,
-                          ),
-                          initialOptions: InAppWebViewGroupOptions(
+                      ? IndexedStack(index: loadStopped ? 0 : 1, children: [
+                          InAppWebView(
+                            initialData: InAppWebViewInitialData(
+                              data: notificationContent,
+                            ),
+                            initialOptions: InAppWebViewGroupOptions(
                               crossPlatform: InAppWebViewOptions(
-                                  useShouldOverrideUrlLoading: true)),
-                          shouldOverrideUrlLoading:
-                              (controller, navigationAction) async {
-                            Uri? url = navigationAction.request.url;
-                            logger.d(url);
-                            if (url != null) {
-                              if (url.scheme.startsWith('http')) {
-                                launchUrl(
-                                  url,
-                                  mode: LaunchMode.externalApplication,
-                                );
-                              } else if (url.scheme == 'zodiac') {
-                                final NotificationDetailsCubit
-                                    notificationDetailsCubit =
-                                    context.read<NotificationDetailsCubit>();
-                                notificationDetailsCubit
-                                    .navigateFromNotification(
-                                        context, url.host, url.queryParameters);
-                              }
-                            }
+                                useShouldOverrideUrlLoading: true,
+                                supportZoom: false,
+                              ),
+                            ),
+                            onLoadStop: (_, __) {
+                              final NotificationDetailsCubit
+                                  notificationDetailsCubit =
+                                  context.read<NotificationDetailsCubit>();
 
-                            return NavigationActionPolicy.CANCEL;
-                          },
-                        )
+                              notificationDetailsCubit.stopLoading();
+                            },
+                            shouldOverrideUrlLoading:
+                                (controller, navigationAction) async {
+                              Uri? url = navigationAction.request.url;
+                              logger.d(url);
+                              if (url != null) {
+                                if (url.scheme.startsWith('http')) {
+                                  launchUrl(
+                                    url,
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                } else if (url.scheme == 'zodiac') {
+                                  final NotificationDetailsCubit
+                                      notificationDetailsCubit =
+                                      context.read<NotificationDetailsCubit>();
+                                  notificationDetailsCubit
+                                      .navigateFromNotification(context,
+                                          url.host, url.queryParameters);
+                                }
+                              }
+
+                              return NavigationActionPolicy.CANCEL;
+                            },
+                          ),
+                          Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        ])
                       : const SizedBox.shrink();
                 }),
               ),
