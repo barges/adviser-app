@@ -26,28 +26,13 @@ class ReviewCardWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _ReviewCustomerInfoWidget(
-                  item: item,
-                ),
-                Column(
-                  children: [
-                    _ReviewRatingWidget(rating: item.rating ?? 0),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                  ],
-                ),
-              ],
+            _ReviewCustomerInfoWidget(
+              item: item,
             ),
             if (item.text != null && item.text!.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 12.0),
                 child: Text(item.text!,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall
@@ -74,25 +59,39 @@ class _ReviewCustomerInfoWidget extends StatelessWidget {
         const SizedBox(
           width: AppConstants.horizontalScreenPadding / 2,
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(item.fakeName ?? '',
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      item.fakeName ?? '',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(fontWeight: FontWeight.w600),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  _ReviewRatingWidget(rating: item.rating ?? 0),
+                ],
+              ),
+              Text(
+                DateFormat(dateFormat)
+                    .format(DateTime.fromMillisecondsSinceEpoch(
+                        (item.dateCreate ?? 0) * 1000))
+                    .parseDateTimePattern4,
                 style: Theme.of(context)
                     .textTheme
-                    .bodyMedium
-                    ?.copyWith(fontWeight: FontWeight.w600)),
-            Text(
-              DateFormat(dateFormat)
-                  .format(DateTime.fromMillisecondsSinceEpoch(
-                      (item.dateCreate ?? 0) * 1000))
-                  .parseDateTimePattern4,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Theme.of(context).shadowColor),
-            )
-          ],
+                    .bodySmall
+                    ?.copyWith(color: Theme.of(context).shadowColor),
+              )
+            ],
+          ),
         ),
       ],
     );
