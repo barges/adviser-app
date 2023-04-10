@@ -6,7 +6,7 @@ part 'article_content_request.g.dart';
 @JsonSerializable()
 class ArticleContentRequest extends AuthorizedRequest {
   @JsonKey(name: 'article_id')
-  final int? articleId;
+  final int articleId;
 
   ArticleContentRequest({required this.articleId}) : super();
 

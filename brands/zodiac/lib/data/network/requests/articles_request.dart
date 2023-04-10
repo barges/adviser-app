@@ -5,8 +5,8 @@ part 'articles_request.g.dart';
 
 @JsonSerializable()
 class ArticlesRequest extends AuthorizedRequest {
-  final int? count;
-  final int? offset;
+  final int count;
+  final int offset;
 
   ArticlesRequest({required this.count, required this.offset}) : super();
 

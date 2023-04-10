@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:shared_advisor_interface/main.dart';
 
 part 'base_response.g.dart';
 

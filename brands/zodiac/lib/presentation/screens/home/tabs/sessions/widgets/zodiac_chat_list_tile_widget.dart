@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/chats/chat_item_zodiac.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:zodiac/zodiac_extensions.dart';
 
 class ZodiacChatListTileWidget extends StatelessWidget {

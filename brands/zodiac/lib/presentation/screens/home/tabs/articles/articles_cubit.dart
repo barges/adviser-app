@@ -57,8 +57,9 @@ class ArticlesCubit extends Cubit<ArticlesState> {
       _count = response?.count ?? 0;
       _offset = _offset + _limit;
 
-      final List<Article> articleList =
-          refresh ? <Article>[] : List.of(state.articleList);
+      final List<Article> articleList = refresh || state.articleList == null
+          ? <Article>[]
+          : List.of(state.articleList!);
       articleList.addAll(result);
 
       emit(state.copyWith(
@@ -72,16 +73,19 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   }
 
   void markAsRead(int articleId) {
-    final List<Article> articleList = List.of(state.articleList);
-    final Article article =
-        articleList.firstWhere((article) => article.id == articleId);
-    if (!article.isRead) {
-      final Article articleAsRead = article.copyWith(isRead: true);
-      final replaceIndex = articleList.indexOf(article);
-      articleList.replaceRange(replaceIndex, replaceIndex + 1, [articleAsRead]);
-      emit(state.copyWith(
-        articleList: articleList,
-      ));
+    if (state.articleList != null) {
+      final List<Article> articleList = state.articleList!;
+      final Article article =
+          articleList.firstWhere((article) => article.id == articleId);
+      if (!article.isRead) {
+        final Article articleAsRead = article.copyWith(isRead: true);
+        final replaceIndex = articleList.indexOf(article);
+        articleList
+            .replaceRange(replaceIndex, replaceIndex + 1, [articleAsRead]);
+        emit(state.copyWith(
+          articleList: articleList,
+        ));
+      }
     }
   }
 }

@@ -75,6 +75,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("No reviews, yet"),
         "noSessionsYetZodiac":
             MessageLookupByLibrary.simpleMessage("Ainda não há sessões."),
+        "noTransactionsYetZodiac":
+            MessageLookupByLibrary.simpleMessage("No transactions, yet"),
         "notificationsZodiac":
             MessageLookupByLibrary.simpleMessage("Notificações"),
         "oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac":
@@ -123,6 +125,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "yourNotificationsHistoryWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Your notifications history will appear here"),
+        "yourTransactionsHistoryWillAppearHereZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Your transactions history will appear here"),
         "zodiacTeam": MessageLookupByLibrary.simpleMessage("Zodiac Equipe")
       };
 }

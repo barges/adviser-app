@@ -11,6 +11,7 @@ import 'package:zodiac/data/network/requests/send_push_token_request.dart';
 import 'package:zodiac/data/network/requests/update_locale_request.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
+import 'package:zodiac/data/network/responses/balance_response.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/expert_details_response.dart';
 import 'package:zodiac/data/network/responses/notifications_response.dart';
@@ -76,6 +77,10 @@ abstract class UserApi {
   Future<PaymentsListResponse> getPaymentsList(
     @Body() ListRequest request,
   );
+
+  @POST('/get-balance')
+  Future<BalanceResponse> getBalance(
+      {@Body() required AuthorizedRequest request});
 
   @POST('/locale/update')
   Future<BaseResponse> updateLocale(
