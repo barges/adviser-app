@@ -46,7 +46,7 @@ class ReviewsCubit extends Cubit<ReviewsState> {
   }
 
   Future<void> _getReviews({bool refresh = false}) async {
-    if (_count != null && _offset >= _count!) {
+    if (_count != null && _offset >= _count! && !refresh) {
       return;
     }
 
