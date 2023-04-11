@@ -27,6 +27,7 @@ build-ios:
   artifacts:
     paths:
       - build/ios/ipa/*
+    expire_in: 2 days
   tags:
     - macmini
   only:
@@ -43,6 +44,7 @@ build-android:
   artifacts:
     paths:
       - build/app/outputs/bundle/release/app-release.aab
+    expire_in: 2 days
   tags:
     - macmini
   only:

@@ -11,6 +11,7 @@ import 'package:zodiac/presentation/screens/home/tabs/articles/articles_screen.d
 import 'package:zodiac/presentation/screens/home/tabs/dashboard/dashboard_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_screen.dart';
 import 'package:zodiac/presentation/screens/login/login_screen.dart';
+import 'package:zodiac/presentation/screens/notification_details/notification_details_screen.dart';
 import 'package:zodiac/presentation/screens/notifications/notifications_screen.dart';
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_screen.dart';
 import 'package:zodiac/presentation/screens/reviews/reviews_screen.dart';
@@ -98,6 +99,11 @@ const zodiacRoute = AutoRoute(
       path: RoutePathsZodiac.supportScreen,
       name: RoutePathsZodiac.supportScreen,
     ),
+    AutoRoute(
+      page: NotificationDetailsScreen,
+      path: RoutePathsZodiac.notificationDetailsScreen,
+      name: RoutePathsZodiac.notificationDetailsScreen,
+    )
   ],
 );
 

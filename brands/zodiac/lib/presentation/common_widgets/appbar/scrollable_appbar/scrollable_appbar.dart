@@ -114,7 +114,7 @@ class ScrollableAppBar extends StatelessWidget {
                                             .textTheme
                                             .labelMedium
                                             ?.copyWith(
-                                                fontWeight: FontWeight.w500,
+                                                fontSize: 17.0,
                                                 color: Theme.of(context)
                                                     .primaryColor)),
                                     const SizedBox(width: 4.0),

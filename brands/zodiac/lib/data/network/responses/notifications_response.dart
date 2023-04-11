@@ -4,11 +4,10 @@ import 'package:zodiac/data/network/responses/base_response.dart';
 
 part 'notifications_response.g.dart';
 
-@JsonSerializable(includeIfNull: false)
+@JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)
 class NotificationsResponse extends BaseResponse {
   final int? count;
-  @JsonKey(name: 'unreaded_count')
-  final int? unreadedCount;
+  final int? unreadCount;
   final List<NotificationItem>? result;
 
   const NotificationsResponse({
@@ -17,7 +16,7 @@ class NotificationsResponse extends BaseResponse {
     super.errorMsg,
     super.message,
     this.count,
-    this.unreadedCount,
+    this.unreadCount,
     this.result,
   });
 

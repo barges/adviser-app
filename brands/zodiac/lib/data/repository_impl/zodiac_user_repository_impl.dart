@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:zodiac/data/network/api/user_api.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/requests/list_request.dart';
+import 'package:zodiac/data/network/requests/notification_details_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/reviews_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
@@ -12,6 +13,7 @@ import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
 import 'package:zodiac/data/network/responses/expert_details_response.dart';
 import 'package:zodiac/data/network/requests/expert_details_request.dart';
+import 'package:zodiac/data/network/responses/notification_details_response.dart';
 import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/payments_list_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
@@ -89,5 +91,17 @@ class ZodiacUserRepositoryImpl implements ZodiacUserRepository {
   @override
   Future<BaseResponse> updateLocale(UpdateLocaleRequest request) async {
     return await _userApi.updateLocale(request);
+  }
+
+  @override
+  Future<NotificationDetailsResponse> getNotificationDetails(
+      NotificationDetailsRequest request) async {
+    return await _userApi.getNotificationDetails(request);
+  }
+
+  @override
+  Future<BaseResponse> notifyPushClick(
+      NotificationDetailsRequest request) async {
+    return await _userApi.notifyPushClick(request);
   }
 }
