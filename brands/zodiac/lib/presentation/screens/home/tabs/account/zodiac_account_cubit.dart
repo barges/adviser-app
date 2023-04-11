@@ -14,7 +14,7 @@ import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
-import 'package:zodiac/data/network/requests/list_request.dart';
+import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
@@ -119,10 +119,9 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
             userStatusOnline: userDetails?.status == ZodiacUserStatus.online,
           ));
 
-            _getUnreadNotificationsCount();
-          } else {
-            _updateErrorMessage(response.getErrorMessage());
-          }
+          _getUnreadNotificationsCount();
+        } else {
+          _updateErrorMessage(response.getErrorMessage());
         }
       }
     } catch (e) {

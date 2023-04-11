@@ -79,7 +79,7 @@ abstract class UserApi {
 
   @POST('/notifications')
   Future<NotificationsResponse> getNotificationsList(
-    @Body() ListRequest request,
+    @Body() NotificationsRequest request,
   );
 
   @POST('/save-registration-id')

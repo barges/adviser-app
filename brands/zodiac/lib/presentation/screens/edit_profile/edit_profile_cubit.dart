@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:html/dom.dart';
+import 'package:html/parser.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
@@ -168,19 +170,19 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           final List<String> texts = [];
           texts.insert(
             nickNameIndex,
-            descriptions.nickname?.toString().trim() ?? '',
+            _parseHtmlString(descriptions.nickname?.toString().trim()),
           );
           texts.insert(
             aboutIndex,
-            descriptions.about?.toString().trim() ?? '',
+            _parseHtmlString(descriptions.about?.toString().trim()),
           );
           texts.insert(
             experienceIndex,
-            descriptions.experience?.toString().trim() ?? '',
+            _parseHtmlString(descriptions.experience?.toString().trim()),
           );
           texts.insert(
             helloMessageIndex,
-            descriptions.helloMessage?.toString().trim() ?? '',
+            _parseHtmlString(descriptions.helloMessage?.toString().trim()),
           );
 
           _oldTextsMap[locale] = texts;
@@ -205,6 +207,14 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     _addListenersToTextControllers();
 
     return isOk;
+  }
+
+  String _parseHtmlString(String? htmlString) {
+    final Document document = parse(htmlString);
+    final String parsedString =
+        parse(document.body?.text).documentElement?.text ?? '';
+
+    return parsedString;
   }
 
   void _addListenersToFocusNodes() {

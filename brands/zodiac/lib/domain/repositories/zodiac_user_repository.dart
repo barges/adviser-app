@@ -42,7 +42,7 @@ abstract class ZodiacUserRepository {
 
   Future<BaseResponse> updateUserStatus(UpdateUserStatusRequest request);
 
-  Future<NotificationsResponse> getNotificationsList(ListRequest request);
+  Future<NotificationsResponse> getNotificationsList(NotificationsRequest request);
 
   Future<ReviewsResponse?> getReviews(ListRequest request);
 

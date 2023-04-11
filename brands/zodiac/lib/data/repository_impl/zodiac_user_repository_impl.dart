@@ -10,7 +10,6 @@ import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/requests/locale_descriptions_request.dart';
 import 'package:zodiac/data/network/requests/notification_details_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
-import 'package:zodiac/data/network/requests/reviews_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
 import 'package:zodiac/data/network/requests/update_locale_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
@@ -20,7 +19,6 @@ import 'package:zodiac/data/network/responses/expert_details_response.dart';
 import 'package:zodiac/data/network/responses/locale_descriptions_response.dart';
 import 'package:zodiac/data/network/responses/locales_response.dart';
 import 'package:zodiac/data/network/responses/main_specialization_response.dart';
-import 'package:zodiac/data/network/requests/expert_details_request.dart';
 import 'package:zodiac/data/network/responses/notification_details_response.dart';
 import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/payments_list_response.dart';
@@ -78,7 +76,7 @@ class ZodiacUserRepositoryImpl implements ZodiacUserRepository {
 
   @override
   Future<NotificationsResponse> getNotificationsList(
-      ListRequest request) async {
+      NotificationsRequest request) async {
     return await _userApi.getNotificationsList(request);
   }
 
