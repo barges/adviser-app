@@ -6,7 +6,11 @@ import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
+import 'package:zodiac/data/models/user_info/locale_model.dart';
 import 'package:zodiac/data/network/requests/article_count_request.dart';
+import 'package:zodiac/data/network/requests/authorized_request.dart';
+import 'package:zodiac/data/network/responses/locales_response.dart';
+import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/presentation/screens/home/home_state.dart';
@@ -22,6 +26,7 @@ class HomeCubit extends Cubit<HomeState> {
   ];
 
   final ZodiacArticlesRepository _articlesRepository;
+  final ZodiacUserRepository _userRepository;
 
   final ZodiacCachingManager _cacheManager;
   final ZodiacMainCubit _mainCubit;
@@ -36,9 +41,12 @@ class HomeCubit extends Cubit<HomeState> {
     this._mainCubit,
     this._webSocketManager,
     this._articlesRepository,
+    this._userRepository,
   ) : super(const HomeState()) {
     routes = tabsList.map((e) => _getPage(e)).toList();
     _webSocketManager.connect();
+
+    checkAndSaveAllLocales();
 
     emit(
       state.copyWith(
@@ -59,6 +67,19 @@ class HomeCubit extends Cubit<HomeState> {
     );
 
     getArticleCount();
+  }
+
+  Future<void> checkAndSaveAllLocales() async {
+     if (!_cacheManager.haveLocales) {
+      final LocalesResponse response =
+          await _userRepository.getAllLocales(AuthorizedRequest());
+      if (response.status == true) {
+        List<LocaleModel>? locales = response.result;
+        if (locales?.isNotEmpty == true) {
+          _cacheManager.saveAllLocales(locales!);
+        }
+      }
+     }
   }
 
   Future<void> getArticleCount({update = 0}) async {

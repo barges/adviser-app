@@ -96,7 +96,7 @@ Future<_i1.GetIt> $initGetIt(
   gh.factory<_i22.AuthApi>(() => _i22.AuthApi(get<_i16.Dio>()));
   gh.factory<_i23.ChatsApi>(() => _i23.ChatsApi(get<_i16.Dio>()));
   gh.factory<_i24.ZodiacArticlesRepository>(
-      () => _i25.ZodiacAuthRepositoryImpl(get<_i21.ArticlesApi>()));
+      () => _i25.ZodiacArticlesRepositoryImpl(get<_i21.ArticlesApi>()));
   gh.factory<_i26.ZodiacAuthRepository>(
       () => _i27.ZodiacAuthRepositoryImpl(get<_i22.AuthApi>()));
   gh.factory<_i28.ZodiacChatsRepository>(

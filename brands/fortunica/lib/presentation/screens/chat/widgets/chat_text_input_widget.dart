@@ -11,7 +11,7 @@ import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:fortunica/data/models/enums/message_content_type.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:fortunica/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
-import 'package:fortunica/presentation/common_widgets/show_pick_image_alert.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:fortunica/presentation/screens/chat/chat_cubit.dart';
 import 'package:fortunica/presentation/screens/chat/widgets/attached_pictures.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';

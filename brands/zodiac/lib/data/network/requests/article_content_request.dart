@@ -3,9 +3,8 @@ import 'package:zodiac/data/network/requests/authorized_request.dart';
 
 part 'article_content_request.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class ArticleContentRequest extends AuthorizedRequest {
-  @JsonKey(name: 'article_id')
   final int? articleId;
 
   ArticleContentRequest({required this.articleId}) : super();

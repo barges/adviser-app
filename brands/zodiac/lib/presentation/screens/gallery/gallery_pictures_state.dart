@@ -4,5 +4,5 @@ part 'gallery_pictures_state.freezed.dart';
 
 @freezed
 class GalleryPicturesState with _$GalleryPicturesState {
-  factory GalleryPicturesState() = _GalleryPicturesState;
+ const factory GalleryPicturesState() = _GalleryPicturesState;
 }

@@ -8,6 +8,7 @@ part 'expert_details_response.g.dart';
 class ExpertDetailsResponse extends BaseResponse {
   final int? count;
   final DetailedUserInfo? result;
+  final List<String>? locales;
 
   const ExpertDetailsResponse({
     super.status,
@@ -16,6 +17,7 @@ class ExpertDetailsResponse extends BaseResponse {
     super.message,
     this.count,
     this.result,
+    this.locales,
   });
 
   factory ExpertDetailsResponse.fromJson(Map<String, dynamic> json) =>

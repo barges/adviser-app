@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fortunica/generated/l10n.dart';
 
 Future<bool?> showDeleteAlert(
   BuildContext context,
@@ -26,7 +26,7 @@ Future<bool?> showDeleteAlert(
               CupertinoDialogAction(
                 isDefaultAction: true,
                 onPressed: () => Navigator.pop(context, true),
-                child: Text(SFortunica.of(context).deleteFortunica,
+                child: Text(S.of(context).delete,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.errorColor,
                       fontSize: 17.0,
@@ -37,7 +37,7 @@ Future<bool?> showDeleteAlert(
                 isDefaultAction: true,
                 onPressed: () => context.popForced(false),
                 child: Text(
-                  SFortunica.of(context).cancelFortunica,
+                  S.of(context).cancel,
                   style: theme.textTheme.displayLarge?.copyWith(
                     color: theme.primaryColor,
                     fontSize: 17.0,
@@ -76,8 +76,8 @@ Future<bool?> showDeleteAlert(
                       children: [
                         TextButton(
                           child: Text(
-                              SFortunica.of(context)
-                                  .cancelFortunica
+                              S.of(context)
+                                  .cancel
                                   .toUpperCase(),
                               style: theme.textTheme.displayLarge?.copyWith(
                                 fontSize: 14.0,
@@ -87,8 +87,8 @@ Future<bool?> showDeleteAlert(
                         ),
                         TextButton(
                           child: Text(
-                              SFortunica.of(context)
-                                  .deleteFortunica
+                              S.of(context)
+                                  .delete
                                   .toUpperCase(),
                               style: theme.textTheme.displayLarge?.copyWith(
                                 fontSize: 14.0,

@@ -44,7 +44,8 @@ class ZodiacBrand implements BaseBrand {
 
   @override
   bool get isAuth =>
-      zodiacGetIt.get<ZodiacCachingManager>().getUserToken() != null;
+      zodiacGetIt.get<ZodiacCachingManager>().getUserToken() != null &&
+      zodiacGetIt.get<ZodiacCachingManager>().getUid() != null;
 
   @override
   init(Flavor flavor) async {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/models/articles/article.dart';
-import 'package:zodiac/data/network/requests/articles_request.dart';
+import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/responses/articles_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_state.dart';
@@ -52,7 +52,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
       _offset = refresh ? 0 : _offset;
       final ArticlesResponse? response =
           await _articlesRepository.getArticleList(
-              request: ArticlesRequest(count: _limit, offset: _offset));
+              request: ListRequest(count: _limit, offset: _offset));
       List<Article>? result = response?.result ?? [];
       _count = response?.count ?? 0;
       _offset = _offset + _limit;
