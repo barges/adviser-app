@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/transparrent_app_bar.dart';
@@ -35,48 +35,58 @@ class NotificationDetailsScreen extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               Positioned.fill(
-                child: Builder(builder: (context) {
-                  String? notificationContent = context.select(
-                      (NotificationDetailsCubit cubit) =>
-                          cubit.state.notificationContent);
-                  logger.d(notificationContent);
+                child: Builder(
+                  builder: (context) {
+                    final String? notificationContent = context.select(
+                        (NotificationDetailsCubit cubit) =>
+                            cubit.state.notificationContent);
 
-                  return notificationContent != null
-                      ? InAppWebView(
-                          initialData: InAppWebViewInitialData(
-                            data: notificationContent,
-                          ),
-                          initialOptions: InAppWebViewGroupOptions(
-                              crossPlatform: InAppWebViewOptions(
-                                  useShouldOverrideUrlLoading: true)),
-                          shouldOverrideUrlLoading:
-                              (controller, navigationAction) async {
-                            Uri? url = navigationAction.request.url;
-                            logger.d(url);
-                            if (url != null) {
-                              if (url.scheme.startsWith('http')) {
-                                launchUrl(
-                                  url,
-                                  mode: LaunchMode.externalApplication,
-                                );
-                              } else if (url.scheme == 'zodiac') {
-                                final NotificationDetailsCubit
-                                    notificationDetailsCubit =
-                                    context.read<NotificationDetailsCubit>();
-                                notificationDetailsCubit
-                                    .navigateFromNotification(
-                                        context, url.host, url.queryParameters);
-                              }
-                            }
+                    return notificationContent != null
+                        ? WebViewWidget(
+                            controller: WebViewController()
+                              ..setJavaScriptMode(JavaScriptMode.unrestricted)
+                              ..enableZoom(false)
+                              ..setNavigationDelegate(
+                                NavigationDelegate(
+                                  onNavigationRequest:
+                                      (NavigationRequest request) {
+                                    Uri? url = Uri.parse(request.url);
+                                    logger.d(url);
 
-                            return NavigationActionPolicy.CANCEL;
-                          },
-                        )
-                      : const SizedBox.shrink();
-                }),
+                                    if (request.url == 'about:blank') {
+                                      return NavigationDecision.navigate;
+                                    }
+
+                                    if (url.scheme.startsWith('http')) {
+                                      launchUrl(
+                                        url,
+                                        mode: LaunchMode.externalApplication,
+                                      );
+                                    } else if (url.scheme == 'zodiac') {
+                                      final NotificationDetailsCubit
+                                          notificationDetailsCubit = context
+                                              .read<NotificationDetailsCubit>();
+                                      notificationDetailsCubit
+                                          .navigateFromNotification(context,
+                                              url.host, url.queryParameters);
+                                    }
+
+                                    return NavigationDecision.prevent;
+                                  },
+                                ),
+                              )
+                              ..loadHtmlString(notificationContent),
+                          )
+                        : const SizedBox.shrink();
+                  },
+                ),
               ),
               const Positioned(
-                  top: 0.0, right: 0.0, left: 0.0, child: TransparentAppBar()),
+                top: 0.0,
+                right: 0.0,
+                left: 0.0,
+                child: TransparentAppBar(),
+              ),
             ],
           ),
         ),
