@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:zodiac/data/models/notification/notification_item.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -23,6 +24,7 @@ class NotificationsScreen extends StatelessWidget {
       create: (context) => NotificationsCubit(
         zodiacGetIt.get<ZodiacUserRepository>(),
         zodiacGetIt.get<ZodiacMainCubit>(),
+        zodiacGetIt.get<ConnectivityService>(),
         screenHeight,
       ),
       child: Builder(builder: (context) {
@@ -41,9 +43,11 @@ class NotificationsScreen extends StatelessWidget {
                   notificationsCubit.getNotifications(refresh: true),
               edgeOffset: (AppConstants.appBarHeight * 2) +
                   MediaQuery.of(context).padding.top,
+              notificationPredicate: (_) => internetConnectionIsAvailable,
               child: CustomScrollView(
                 controller: notificationsCubit.scrollController,
-                physics: notifications?.isEmpty == true
+                physics: notifications?.isEmpty == true ||
+                        !internetConnectionIsAvailable
                     ? const NeverScrollableScrollPhysics()
                     : null,
                 slivers: [
