@@ -98,6 +98,8 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
           DetailedUserInfo? userInfo = response.result;
           UserDetails? userDetails = userInfo?.details;
 
+          logger.d(userDetails?.phone.runtimeType);
+
           _cacheManager.saveDetailedUserInfo(
               userInfo?.copyWith(locales: response.locales));
           _cacheManager.saveUserStatus(userDetails?.status);

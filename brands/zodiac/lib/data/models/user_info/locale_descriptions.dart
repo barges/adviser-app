@@ -16,12 +16,12 @@ class LocaleDescriptions with _$LocaleDescriptions {
     fieldRename: FieldRename.snake,
   )
   const factory LocaleDescriptions({
-    String? nickname,
-    String? shortDescr,
-    String? about,
-    String? experience,
-    String? helloMessage,
-    String? avatar,
+    dynamic nickname,
+    dynamic shortDescr,
+    dynamic about,
+    dynamic experience,
+    dynamic helloMessage,
+    dynamic avatar,
   }) = _LocaleDescriptions;
 
   factory LocaleDescriptions.fromJson(Map<String, dynamic> json) =>

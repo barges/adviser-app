@@ -11,7 +11,7 @@ part 'add_remove_locale_request.g.dart';
 )
 class AddRemoveLocaleRequest extends AuthorizedRequest {
   @JsonKey(name: 'lang_id')
-  String? brandId;
+  int? brandId;
   String? localeCode;
   LocaleDescriptions? data;
 

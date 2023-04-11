@@ -140,10 +140,10 @@ class ZodiacUserRepositoryImpl implements ZodiacUserRepository {
   }
 
   @override
-  Future<BaseResponse> updateLocaleAdvisor(
+  Future<BaseResponse> updateLocaleDescriptionsAdvisor(
     AddRemoveLocaleRequest request,
   ) async {
-    return await _userApi.updateLocaleAdvisor(request);
+    return await _userApi.updateLocaleDescriptionsAdvisor(request);
   }
 
   @override

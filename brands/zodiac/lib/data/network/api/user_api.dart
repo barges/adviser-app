@@ -124,8 +124,8 @@ abstract class UserApi {
     @Body() AddRemoveLocaleRequest request,
   );
 
-  @POST('.locale/update-locale-advisor')
-  Future<BaseResponse> updateLocaleAdvisor(
+  @POST('/locale/update-locale-advisor')
+  Future<BaseResponse> updateLocaleDescriptionsAdvisor(
     @Body() AddRemoveLocaleRequest request,
   );
 

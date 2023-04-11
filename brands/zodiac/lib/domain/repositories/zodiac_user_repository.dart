@@ -75,7 +75,7 @@ abstract class ZodiacUserRepository {
     AddRemoveLocaleRequest request,
   );
 
-  Future<BaseResponse> updateLocaleAdvisor(
+  Future<BaseResponse> updateLocaleDescriptionsAdvisor(
     AddRemoveLocaleRequest request,
   );
 

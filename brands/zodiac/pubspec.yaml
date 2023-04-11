@@ -43,7 +43,6 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   freshchat_sdk: ^0.10.3
   url_launcher: ^6.1.6
-  html_editor_enhanced: ^2.5.1
 
 
 dev_dependencies:
