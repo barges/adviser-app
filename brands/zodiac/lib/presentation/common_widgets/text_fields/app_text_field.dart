@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 
 class AppTextField extends StatelessWidget {
-  final TextEditingController controller;
+
   final String label;
   final ValidationErrorType errorType;
+  final TextEditingController? controller;
   final FocusNode focusNode;
   final FocusNode? nextFocusNode;
   final TextInputType? textInputType;
@@ -16,9 +17,9 @@ class AppTextField extends StatelessWidget {
 
   const AppTextField({
     Key? key,
-    required this.controller,
     required this.label,
     required this.focusNode,
+    this.controller,
     this.nextFocusNode,
     this.textInputType,
     this.textInputAction,

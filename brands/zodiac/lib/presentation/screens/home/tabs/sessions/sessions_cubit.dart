@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/models/chats/chat_item_zodiac.dart';
-import 'package:zodiac/data/network/requests/chat_entities_request.dart';
+import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/responses/chat_entities_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_chats_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_state.dart';
@@ -54,7 +54,7 @@ class SessionsCubit extends Cubit<SessionsState> {
       if (_hasMore) {
         final ChatEntitiesResponse response =
             await _chatsRepository.getChatsList(
-          ChatEntitiesRequest(
+              ListRequest(
             count: _count,
             offset: _chatsList.length,
           ),

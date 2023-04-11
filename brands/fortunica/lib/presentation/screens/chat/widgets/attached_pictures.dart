@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:fortunica/presentation/common_widgets/app_image_widget.dart';
-import 'package:fortunica/presentation/common_widgets/show_delete_alert.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:fortunica/presentation/screens/chat/chat_cubit.dart';
 
 class AttachedPictures extends StatelessWidget {

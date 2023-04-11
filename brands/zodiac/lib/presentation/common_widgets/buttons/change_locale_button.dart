@@ -10,6 +10,7 @@ import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/zodiac.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ChangeLocaleButton extends StatelessWidget {
   const ChangeLocaleButton({Key? key}) : super(key: key);
@@ -28,16 +29,18 @@ class ChangeLocaleButton extends StatelessWidget {
       child: InkResponse(
         onTap: () => showPickerModalPopUp(
           context: context,
-          setIndex: (index) {
+          setIndex: (index) async {
             final String languageCode = locales[index];
             zodiacGetIt
                 .get<GlobalCachingManager>()
                 .saveLanguageCode(languageCode);
             ZodiacBrand().languageCode = languageCode;
             if (ZodiacBrand().isAuth) {
-              zodiacGetIt
+             await zodiacGetIt
                   .get<ZodiacUserRepository>()
                   .updateLocale(UpdateLocaleRequest(locale: languageCode));
+              zodiacGetIt
+                  .get<ZodiacMainCubit>().updateAccount();
             }
           },
           currentIndex: currentLocaleIndex,

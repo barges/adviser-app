@@ -100,8 +100,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Escolher uma marca"),
         "chooseEmailAppFortunica":
             MessageLookupByLibrary.simpleMessage("Escolher email do app"),
-        "choosePhotoFromLibraryFortunica": MessageLookupByLibrary.simpleMessage(
-            "Escolha a foto da biblioteca de fotos"),
         "comingSoonFortunica":
             MessageLookupByLibrary.simpleMessage("Em breve!"),
         "completeYourProfileToStartWorkFortunica":
@@ -122,7 +120,6 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Os clientes querem saber que você é uma pessoa real. Quanto mais fotos você adiciona, mais confiança com seus clientes você contrói."),
         "dashboardFortunica":
             MessageLookupByLibrary.simpleMessage("Painel de Controle"),
-        "deleteFortunica": MessageLookupByLibrary.simpleMessage("Excluir"),
         "doYouWantToDeleteImageFortunica":
             MessageLookupByLibrary.simpleMessage("Deseja excluir a imagem?"),
         "doYouWantToDeleteThisAudioMessageFortunica":
@@ -302,8 +299,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "statusTextMayNotExceed300CharactersFortunica":
             MessageLookupByLibrary.simpleMessage(
                 "O texto de status não pode exceder 300 caracteres"),
-        "takeAPhotoFortunica":
-            MessageLookupByLibrary.simpleMessage("Tirar uma foto"),
         "takeMeThereFortunica": MessageLookupByLibrary.simpleMessage("Acessar"),
         "takeQuestionFortunica":
             MessageLookupByLibrary.simpleMessage("Tomar a pergunta"),

@@ -7,7 +7,7 @@ class GalleryPicturesCubit extends Cubit<GalleryPicturesState> {
 
   late final PageController pageController;
 
-  GalleryPicturesCubit({this.initPage}) : super(GalleryPicturesState()) {
+  GalleryPicturesCubit({this.initPage}) : super(const GalleryPicturesState()) {
     pageController = PageController(initialPage: initPage?.toInt() ?? 0);
   }
 

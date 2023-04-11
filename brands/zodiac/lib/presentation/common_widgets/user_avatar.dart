@@ -18,12 +18,14 @@ class UserAvatar extends StatelessWidget {
   final bool withCameraBadge;
   final bool isZodiac;
   final bool canOpenInFullScreen;
+  final VoidCallback? onTap;
 
   const UserAvatar({
     Key? key,
     this.avatarUrl,
     this.imageFile,
     this.badgeColor,
+    this.onTap,
     this.diameter = 86.0,
     this.withBorder = false,
     this.withError = false,
@@ -49,7 +51,7 @@ class UserAvatar extends StatelessWidget {
                     width: 2.0,
                     color: withError
                         ? Theme.of(context).errorColor
-                        : Theme.of(context).canvasColor)
+                        : Theme.of(context).scaffoldBackgroundColor)
                 : null,
           ),
           child: imageFile == null
@@ -65,15 +67,15 @@ class UserAvatar extends StatelessWidget {
                           width: diameter,
                         )
                       : GestureDetector(
-                          onTap: () => canOpenInFullScreen
-                              ? context.push(
-                                  route: ZodiacGalleryPictures(
-                                    galleryPicturesScreenArguments:
-                                        GalleryPicturesScreenArguments(
-                                      pictures: [avatarUrl!],
+                          onTap: canOpenInFullScreen
+                              ? () => context.push(
+                                    route: ZodiacGalleryPictures(
+                                      galleryPicturesScreenArguments:
+                                          GalleryPicturesScreenArguments(
+                                        pictures: [avatarUrl!],
+                                      ),
                                     ),
-                                  ),
-                                )
+                                  )
                               : null,
                           child: Container(
                             decoration: BoxDecoration(
@@ -90,15 +92,15 @@ class UserAvatar extends StatelessWidget {
                           ),
                         )
               : GestureDetector(
-                  onTap: () => canOpenInFullScreen
-                      ? context.push(
-                          route: ZodiacGalleryPictures(
-                            galleryPicturesScreenArguments:
-                                GalleryPicturesScreenArguments(
-                              pictures: [imageFile!.path],
+                  onTap: canOpenInFullScreen
+                      ? () => context.push(
+                            route: ZodiacGalleryPictures(
+                              galleryPicturesScreenArguments:
+                                  GalleryPicturesScreenArguments(
+                                pictures: [imageFile!.path],
+                              ),
                             ),
-                          ),
-                        )
+                          )
                       : null,
                   child: Container(
                     decoration: BoxDecoration(

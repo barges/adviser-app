@@ -1,6 +1,10 @@
+import 'package:collection/collection.dart';
 import 'package:shared_advisor_interface/themes/app_colors_dark.dart';
 import 'package:shared_advisor_interface/themes/app_colors_light.dart';
 import 'package:flutter/material.dart';
+
+Function unorderedDeepListEquals =
+    const DeepCollectionEquality.unordered().equals;
 
 class Utils {
   static bool isDarkMode(BuildContext context) =>
@@ -36,8 +40,7 @@ class Utils {
     return isDarkMode(context) ? AppColorsDark.overlay : AppColorsLight.overlay;
   }
 
-
-/// Checks if string is URL.
+  /// Checks if string is URL.
   static bool isURL(String s) => hasMatch(s,
       r"^((((H|h)(T|t)|(F|f))(T|t)(P|p)((S|s)?))\://)?(www.|[a-zA-Z0-9].)[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,6}(\:[0-9]{1,5})*(/($|[a-zA-Z0-9\.\,\;\?\'\\\+&amp;%\$#\=~_\-]+))*$");
 

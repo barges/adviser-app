@@ -26,12 +26,14 @@ const double _errorHeight = 36.0;
 class ScrollableAppBar extends StatelessWidget {
   final String title;
   final VoidCallback? actionOnClick;
+  final VoidCallback? backOnTap;
   final bool needShowError;
 
   const ScrollableAppBar({
     Key? key,
     required this.title,
     this.actionOnClick,
+    this.backOnTap,
     this.needShowError = false,
   }) : super(key: key);
 
@@ -83,7 +85,10 @@ class ScrollableAppBar extends StatelessWidget {
                         children: [
                           AppIconButton(
                             icon: Assets.vectors.arrowLeft.path,
-                            onTap: context.pop,
+                            onTap: () {
+                              context.pop();
+                              backOnTap?.call();
+                            },
                           ),
                           Builder(builder: (context) {
                             return Expanded(
@@ -161,7 +166,10 @@ class ScrollableAppBar extends StatelessWidget {
                                 children: [
                                   AppIconButton(
                                     icon: Assets.vectors.arrowLeft.path,
-                                    onTap: context.pop,
+                                    onTap: () {
+                                      context.pop();
+                                      backOnTap?.call();
+                                    },
                                   ),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,

@@ -68,15 +68,15 @@ class UserAvatar extends StatelessWidget {
                           width: diameter,
                         )
                       : GestureDetector(
-                          onTap: () => canOpenInFullScreen
-                              ? context.push(
-                                  route: FortunicaGalleryPictures(
-                                    galleryPicturesScreenArguments:
-                                        GalleryPicturesScreenArguments(
-                                      pictures: [avatarUrl!],
+                          onTap: canOpenInFullScreen
+                              ? () => context.push(
+                                    route: FortunicaGalleryPictures(
+                                      galleryPicturesScreenArguments:
+                                          GalleryPicturesScreenArguments(
+                                        pictures: [avatarUrl!],
+                                      ),
                                     ),
-                                  ),
-                                )
+                                  )
                               : null,
                           child: Container(
                             decoration: BoxDecoration(
@@ -93,15 +93,15 @@ class UserAvatar extends StatelessWidget {
                           ),
                         )
               : GestureDetector(
-                  onTap: () => canOpenInFullScreen
-                      ? context.push(
-                          route: FortunicaGalleryPictures(
-                            galleryPicturesScreenArguments:
-                                GalleryPicturesScreenArguments(
-                              pictures: [imageFile!.path],
+                  onTap: canOpenInFullScreen
+                      ? () => context.push(
+                            route: FortunicaGalleryPictures(
+                              galleryPicturesScreenArguments:
+                                  GalleryPicturesScreenArguments(
+                                pictures: [imageFile!.path],
+                              ),
                             ),
-                          ),
-                        )
+                          )
                       : null,
                   child: Container(
                     decoration: BoxDecoration(

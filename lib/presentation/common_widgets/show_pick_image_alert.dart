@@ -4,10 +4,9 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fortunica/generated/l10n.dart';
-import 'package:fortunica/infrastructure/di/inject_config.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/services/check_permission_service.dart';
@@ -33,7 +32,7 @@ Future<void> showPickImageAlert(
               width: MediaQuery.of(context).size.width,
               child: Center(
                   child: Text(
-                SFortunica.of(context).choosePhotoFromLibraryFortunica,
+                S.of(context).choosePhotoFromLibrary,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
@@ -47,7 +46,7 @@ Future<void> showPickImageAlert(
               width: MediaQuery.of(context).size.width,
               child: Center(
                   child: Text(
-                SFortunica.of(context).takeAPhotoFortunica,
+                S.of(context).takeAPhoto,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
@@ -65,7 +64,7 @@ Future<void> showPickImageAlert(
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.only(top: 16.0, bottom: 32.0),
               child: Center(
-                child: Text(SFortunica.of(context).cancelFortunica,
+                child: Text(S.of(context).cancel,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).primaryColor,
@@ -84,13 +83,13 @@ Future<void> showPickImageAlert(
               actions: <Widget>[
                 CupertinoActionSheetAction(
                   child: Text(
-                    SFortunica.of(context).takeAPhotoFortunica,
+                    S.of(context).takeAPhoto,
                   ),
                   onPressed: () => context.popRoot(ImageSource.camera),
                 ),
                 CupertinoActionSheetAction(
                   child: Text(
-                    SFortunica.of(context).choosePhotoFromLibraryFortunica,
+                    S.of(context).choosePhotoFromLibrary,
                   ),
                   onPressed: () => context.popRoot(ImageSource.gallery),
                 ),
@@ -105,7 +104,7 @@ Future<void> showPickImageAlert(
                   }
                 },
                 child: Text(
-                  SFortunica.of(context).cancelFortunica,
+                  S.of(context).cancel,
                 ),
               ),
             ));
@@ -123,7 +122,7 @@ Future<void> showPickImageAlert(
 
 Future<void> _pickImage(BuildContext context, ImageSource imageSource,
     ValueChanged<File> setImage) async {
-  await fortunicaGetIt.get<CheckPermissionService>().handlePermission(
+  await globalGetIt.get<CheckPermissionService>().handlePermission(
       context, PermissionType.getPermissionTypeByImageSource(imageSource));
   File? image;
 
