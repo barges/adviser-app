@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_cubit.dart';
 
 class LanguagesButtons extends StatelessWidget {
@@ -36,7 +37,8 @@ class LanguagesButtons extends StatelessWidget {
               (index, element) {
                 final bool isSelected = index == currentLocaleIndex;
                 final GlobalKey key = editProfileCubit.localesGlobalKeys[index];
-                final bool isMainLocale = element == editProfileCubit.state.advisorMainLocale;
+                final bool isMainLocale =
+                    element == editProfileCubit.state.advisorMainLocale;
 
                 if (index < locales.length - 1) {
                   return Padding(
@@ -112,8 +114,7 @@ class _LanguageButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final String localeName =
-    editProfileCubit.localeNativeName(localeCode);
+    final String localeName = editProfileCubit.localeNativeName(localeCode);
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -142,35 +143,36 @@ class _LanguageButton extends StatelessWidget {
             const SizedBox(
               width: 24.0,
             ),
-            if(!isMain)
-            GestureDetector(
-              onTap: () async {
-                final bool? needDelete = await _deleteLocaleAlert(context,
-                    localeName);
-                if(needDelete == true){
-                  editProfileCubit.removeLocale(localeCode);
-                }
-              },
-              child: Row(
-                children: [
-                  const VerticalDivider(
-                    width: 1.0,
-                    thickness: 1.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8.0,
+            if (!isMain)
+              GestureDetector(
+                onTap: () async {
+                  final bool? needDelete =
+                      await _deleteLocaleAlert(context, localeName);
+                  if (needDelete == true) {
+                    editProfileCubit.removeLocale(localeCode);
+                  }
+                },
+                child: Row(
+                  children: [
+                    const VerticalDivider(
+                      width: 1.0,
+                      thickness: 1.0,
                     ),
-                    child: Assets.vectors.delete.svg(
-                      height: AppConstants.iconSize,
-                      width: AppConstants.iconSize,
-                      color:
-                          isSelected ? theme.primaryColor : theme.iconTheme.color,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                      ),
+                      child: Assets.vectors.delete.svg(
+                        height: AppConstants.iconSize,
+                        width: AppConstants.iconSize,
+                        color: isSelected
+                            ? theme.primaryColor
+                            : theme.iconTheme.color,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),
@@ -180,6 +182,9 @@ class _LanguageButton extends StatelessWidget {
   Future<bool?> _deleteLocaleAlert(
       BuildContext context, String localeName) async {
     return await showDeleteAlert(
-        context, 'Do you really want to delete "$localeName" from your list?');
+      context,
+      SZodiac.of(context)
+          .doYouReallyWantToDeleteLocaleNameFromYourListZodiac(localeName),
+    );
   }
 }

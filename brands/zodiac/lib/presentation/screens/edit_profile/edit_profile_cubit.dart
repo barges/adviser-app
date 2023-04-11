@@ -2,12 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/brands.dart';
@@ -25,8 +24,8 @@ import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/locale_descriptions_response.dart';
 import 'package:zodiac/data/network/responses/main_specialization_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_state.dart';
-import 'package:zodiac/zodiac_main_cubit.dart';
 
 const int _textFieldsCount = 4;
 
@@ -38,8 +37,9 @@ const int helloMessageIndex = 3;
 class EditProfileCubit extends Cubit<EditProfileState> {
   final ZodiacCachingManager _cachingManager;
   final ZodiacUserRepository _userRepository;
+  final ConnectivityService _connectivityService;
 
-  late final StreamSubscription userInfoSubscription;
+  late final StreamSubscription<bool> internetConnectionSubscription;
   late List<GlobalKey> localesGlobalKeys;
 
   final Map<String, List<TextEditingController>> textControllersMap = {};
@@ -51,7 +51,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   final GlobalKey profileAvatarKey = GlobalKey();
 
-  DetailedUserInfo? detailedUserInfo;
   final List<String> _newLocales = [];
   final List<String> _oldLocales = [];
   late List<CategoryInfo> _oldCategories;
@@ -64,10 +63,10 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   EditProfileCubit(
     this._cachingManager,
     this._userRepository,
+    this._connectivityService,
   ) : super(const EditProfileState()) {
     final DetailedUserInfo? userInfoFromCache =
         _cachingManager.getDetailedUserInfo();
-
     final List<String> locales = userInfoFromCache?.locales ?? [];
     _oldLocales.addAll(locales);
     localesGlobalKeys = locales.map((e) => GlobalKey()).toList();
@@ -86,14 +85,14 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       advisorCategories: categories,
     ));
 
-    userInfoSubscription = _cachingManager.listenDetailedUserInfo((value) {
-      detailedUserInfo ??= value;
-      emit(state.copyWith(
-        detailedUserInfo: value,
-      ));
+    internetConnectionSubscription =
+        _connectivityService.connectivityStream.listen((event) {
+      if (event) {
+        getData();
+      }
     });
-    _getMainSpeciality();
-    _setUpLocalesDescriptions();
+
+    getData();
   }
 
   @override
@@ -113,18 +112,30 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         element.dispose();
       }
     }
-    userInfoSubscription.cancel();
+    internetConnectionSubscription.cancel();
     return super.close();
   }
 
-  Future<void> _getMainSpeciality() async {
+  Future<void> getData() async {
+    final bool mainIsDone = await _getMainSpeciality();
+    final bool localesDescriptionsIsDone = await _setUpLocalesDescriptions();
+
+    if (mainIsDone && localesDescriptionsIsDone) {
+      internetConnectionSubscription.cancel();
+    }
+  }
+
+  Future<bool> _getMainSpeciality() async {
+    bool isOk = false;
     final MainSpecializationResponse response =
         await _userRepository.getMainSpeciality(AuthorizedRequest());
     final CategoryInfo? mainCategory = response.result;
     if (mainCategory != null) {
       _oldCategory = mainCategory;
       _changeMainCategory([mainCategory]);
+      isOk = true;
     }
+    return isOk;
   }
 
   void setAvatar(File avatar) {
@@ -143,7 +154,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     Utils.animateToWidget(localesGlobalKeys[newIndex]);
   }
 
-  Future<void> _setUpLocalesDescriptions() async {
+  Future<bool> _setUpLocalesDescriptions() async {
+    bool isOk = true;
     final List<String> locales = state.advisorLocales;
     for (String locale in locales) {
       final LocaleDescriptionsResponse response =
@@ -151,34 +163,38 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         LocaleDescriptionsRequest(locale: locale),
       );
       final LocaleDescriptions? descriptions = response.result;
-      if (response.status == true && descriptions != null) {
-        final List<String> texts = [];
-        texts.insert(
-          nickNameIndex,
-          descriptions.nickname?.toString().trim() ?? '',
-        );
-        texts.insert(
-          aboutIndex,
-          descriptions.about?.toString().trim() ?? '',
-        );
-        texts.insert(
-          experienceIndex,
-          descriptions.experience?.toString().trim() ?? '',
-        );
-        texts.insert(
-          helloMessageIndex,
-          descriptions.helloMessage?.toString().trim() ?? '',
-        );
+      if (response.status == true) {
+        if (descriptions != null) {
+          final List<String> texts = [];
+          texts.insert(
+            nickNameIndex,
+            descriptions.nickname?.toString().trim() ?? '',
+          );
+          texts.insert(
+            aboutIndex,
+            descriptions.about?.toString().trim() ?? '',
+          );
+          texts.insert(
+            experienceIndex,
+            descriptions.experience?.toString().trim() ?? '',
+          );
+          texts.insert(
+            helloMessageIndex,
+            descriptions.helloMessage?.toString().trim() ?? '',
+          );
 
-        _oldTextsMap[locale] = texts;
+          _oldTextsMap[locale] = texts;
 
-        textControllersMap[locale] =
-            texts.map((e) => TextEditingController()..text = e).toList();
-        focusNodesMap[locale] = texts.map((e) => FocusNode()).toList();
-        hasFocusNotifiersMap[locale] =
-            texts.map((e) => ValueNotifier(false)).toList();
-        errorTextsMap[locale] =
-            texts.map((e) => ValidationErrorType.empty).toList();
+          textControllersMap[locale] =
+              texts.map((e) => TextEditingController()..text = e).toList();
+          focusNodesMap[locale] = texts.map((e) => FocusNode()).toList();
+          hasFocusNotifiersMap[locale] =
+              texts.map((e) => ValueNotifier(false)).toList();
+          errorTextsMap[locale] =
+              texts.map((e) => ValidationErrorType.empty).toList();
+        }
+      } else {
+        isOk = false;
       }
     }
     if (_oldTextsMap.isNotEmpty) {
@@ -187,6 +203,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
     _addListenersToFocusNodes();
     _addListenersToTextControllers();
+
+    return isOk;
   }
 
   void _addListenersToFocusNodes() {
@@ -230,7 +248,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           isMultiselect: false,
           oldSelectedCategories: state.advisorMainCategory,
           returnCallback: (categories) {
-            logger.d(categories.first.name);
             _changeMainCategory(categories);
           }),
     );
@@ -239,7 +256,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   Future<void> goToAddNewLocale(BuildContext context) async {
     context.push(
       route: ZodiacLocalesList(
-        title: 'Language',
+        title: SZodiac.of(context).languageZodiac,
         unnecessaryLocalesCodes: state.advisorLocales,
         returnCallback: (locale) {
           _addLocaleLocally(locale);
@@ -251,9 +268,11 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   Future<bool?> saveInfo() async {
     bool? isOk;
 
+    final bool isOnline = await _connectivityService.checkConnection();
+
     final bool isChecked = _checkTextFields();
 
-    if (isChecked) {
+    if (isOnline && isChecked) {
       final int? newMainCategoryId = state.advisorMainCategory.firstOrNull?.id;
       if (newMainCategoryId != null && newMainCategoryId != _oldCategory?.id) {
         final BaseResponse response = await _userRepository
@@ -288,25 +307,23 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         }
       }
 
-      ///TODO: Separate this
+      for (String localeCode in _oldLocales) {
+        final bool? isUpdated = await _updateAdvisorLocale(localeCode);
+        if (isUpdated == false) {
+          isOk = false;
+          return isOk;
+        } else if (isUpdated == true) {
+          isOk = true;
+        }
+      }
 
-      for (String localeCode in state.advisorLocales) {
-        if (_newLocales.contains(localeCode)) {
-          final bool isAdded = await _addAdvisorLocale(localeCode);
-          if (isAdded == false) {
-            isOk = false;
-            return isOk;
-          } else if (isAdded == true) {
-            isOk = true;
-          }
-        } else {
-          final bool? isUpdated = await _updateAdvisorLocale(localeCode);
-          if (isUpdated == false) {
-            isOk = false;
-            return isOk;
-          } else if (isUpdated == true) {
-            isOk ??= true;
-          }
+      for (String localeCode in List.from(_newLocales)) {
+        final bool isAdded = await _addAdvisorLocale(localeCode);
+        if (isAdded == false) {
+          isOk = false;
+          return isOk;
+        } else if (isAdded == true) {
+          isOk = true;
         }
       }
 
@@ -600,10 +617,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     if (isShort || isLong) {
       isValid = false;
 
-      ///TODO: add 250 chars error
       errorTextsMap[localeCode]?[nickNameIndex] = isShort
-          ? ValidationErrorType.pleaseEnterAtLeast3Characters
-          : ValidationErrorType.pleaseEnterAtLeast3Characters;
+          ? ValidationErrorType.theNicknameIsInvalidMustBe3to250Symbols
+          : ValidationErrorType.characterLimitExceeded;
 
       if (!_wasFocusRequest) {
         focusNodesMap[localeCode]?[nickNameIndex].requestFocus();
@@ -621,10 +637,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     if (isShort || isLong) {
       isValid = false;
 
-      ///TODO: add 65000 chars error
       errorTextsMap[localeCode]?[index] = isShort
           ? ValidationErrorType.requiredField
-          : ValidationErrorType.pleaseEnterAtLeast3Characters;
+          : ValidationErrorType.characterLimitExceeded;
 
       if (!_wasFocusRequest) {
         focusNodesMap[localeCode]?[index].requestFocus();

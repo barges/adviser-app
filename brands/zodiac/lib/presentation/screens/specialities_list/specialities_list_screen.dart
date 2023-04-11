@@ -8,6 +8,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/checkbox_tile_widget.dart';
@@ -42,7 +43,9 @@ class SpecialitiesListScreen extends StatelessWidget {
             backgroundColor: Theme.of(context).canvasColor,
             appBar: WideAppBar(
               bottomWidget: Text(
-                isMultiselect ? 'All specialities' : 'Main speciality',
+                isMultiselect
+                    ? SZodiac.of(context).allSpecialitiesZodiac
+                    : SZodiac.of(context).mainSpecialtyZodiac,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               topRightWidget: AppIconButton(
@@ -71,7 +74,8 @@ class SpecialitiesListScreen extends StatelessWidget {
                   children: categories.mapIndexed((index, element) {
                     return CheckboxTileWidget(
                       isMultiselect: isMultiselect,
-                      isSelected: selectedCategories.any((e) => e.id == element.id),
+                      isSelected:
+                          selectedCategories.any((e) => e.id == element.id),
                       title: element.name ?? '',
                       onTap: () => specialitiesListCubit.tapToCategory(index),
                     );

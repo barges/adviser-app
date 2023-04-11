@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_cubit.dart';
 import 'package:zodiac/presentation/screens/edit_profile/widgets/tile_menu_button.dart';
@@ -86,18 +86,16 @@ class MainPartInfoWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Builder(
-                  builder: (context) {
-                    final String mainLocaleCode = context.select(
-                            (EditProfileCubit cubit) =>
-                        cubit.state.advisorMainLocale);
+                Builder(builder: (context) {
+                  final String mainLocaleCode = context.select(
+                      (EditProfileCubit cubit) =>
+                          cubit.state.advisorMainLocale);
 
-                    return TileMenuButton(
-                      label: 'Main language',
-                      title: editProfileCubit.localeNativeName(mainLocaleCode),
-                    );
-                  }
-                ),
+                  return TileMenuButton(
+                    label: SZodiac.of(context).mainLanguageZodiac,
+                    title: editProfileCubit.localeNativeName(mainLocaleCode),
+                  );
+                }),
                 const SizedBox(
                   height: 24.0,
                 ),
@@ -106,10 +104,9 @@ class MainPartInfoWidget extends StatelessWidget {
                       (EditProfileCubit cubit) =>
                           cubit.state.advisorMainCategory);
                   return TileMenuButton(
-                    label: 'Main specialty',
-                    title:
-                        mainCategory.firstOrNull?.name ??
-                            detailedUserInfo?.details?.specializing ??
+                    label: SZodiac.of(context).mainSpecialtyZodiac,
+                    title: mainCategory.firstOrNull?.name ??
+                        detailedUserInfo?.details?.specializing ??
                         '',
                     onTap: () =>
                         editProfileCubit.goToSelectMainCategory(context),
@@ -123,7 +120,7 @@ class MainPartInfoWidget extends StatelessWidget {
                       (EditProfileCubit cubit) =>
                           cubit.state.advisorCategories);
                   return TileMenuButton(
-                    label: 'My specialties',
+                    label: SZodiac.of(context).mySpecialtiesZodiac,
                     title: categories.map((e) => e.name).toList().join(', '),
                     onTap: () =>
                         editProfileCubit.goToSelectAllCategories(context),

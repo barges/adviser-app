@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_cubit.dart';
 import 'package:zodiac/presentation/screens/edit_profile/widgets/languages_buttons.dart';
@@ -59,7 +60,7 @@ class LocalesDescriptionsPartWidget extends StatelessWidget {
                             controller: entry.value[nickNameIndex],
                             focusNode: editProfileCubit
                                 .focusNodesMap[entry.key]![nickNameIndex],
-                            label: 'Nickname',
+                            label: SZodiac.of(context).nicknameZodiac,
                             errorType: editProfileCubit.errorTextsMap[entry.key]
                                     ?[nickNameIndex] ??
                                 ValidationErrorType.empty,
@@ -79,7 +80,7 @@ class LocalesDescriptionsPartWidget extends StatelessWidget {
                             errorType: editProfileCubit.errorTextsMap[entry.key]
                                     ?[aboutIndex] ??
                                 ValidationErrorType.empty,
-                            label: 'About',
+                            label: SZodiac.of(context).aboutZodiac,
                             textInputType: TextInputType.multiline,
                             isBig: true,
                           );
@@ -98,7 +99,7 @@ class LocalesDescriptionsPartWidget extends StatelessWidget {
                             errorType: editProfileCubit.errorTextsMap[entry.key]
                                     ?[experienceIndex] ??
                                 ValidationErrorType.empty,
-                            label: 'Experience',
+                            label: SZodiac.of(context).experienceZodiac,
                             textInputType: TextInputType.multiline,
                             isBig: true,
                           );
@@ -117,7 +118,7 @@ class LocalesDescriptionsPartWidget extends StatelessWidget {
                             errorType: editProfileCubit.errorTextsMap[entry.key]
                                     ?[helloMessageIndex] ??
                                 ValidationErrorType.empty,
-                            label: 'Chat start greeting',
+                            label: SZodiac.of(context).chatStartGreetingZodiac,
                             textInputType: TextInputType.multiline,
                             isBig: true,
                           );

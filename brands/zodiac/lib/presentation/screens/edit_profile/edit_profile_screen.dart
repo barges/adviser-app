@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
@@ -26,6 +27,7 @@ class EditProfileScreen extends StatelessWidget {
       create: (_) => EditProfileCubit(
         zodiacGetIt.get<ZodiacCachingManager>(),
         zodiacGetIt.get<ZodiacUserRepository>(),
+        zodiacGetIt.get<ConnectivityService>(),
       ),
       child: Builder(builder: (context) {
         final EditProfileCubit editProfileCubit =
@@ -50,7 +52,7 @@ class EditProfileScreen extends StatelessWidget {
                       title: SZodiac.of(context).editProfileZodiac,
                       needShowError: true,
                       actionOnClick: () async {
-                       await confirmChanges(
+                        await confirmChanges(
                           context,
                           editProfileCubit,
                           zodiacMainCubit,
@@ -63,16 +65,17 @@ class EditProfileScreen extends StatelessWidget {
                       },
                     ),
                     SliverToBoxAdapter(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        MainPartInfoWidget(
-                          detailedUserInfo: detailedUserInfo,
-                        ),
-                        if (detailedUserInfo?.locales?.isNotEmpty == true)
-                          const LocalesDescriptionsPartWidget()
-                      ],
-                    )),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          MainPartInfoWidget(
+                            detailedUserInfo: detailedUserInfo,
+                          ),
+                          if (detailedUserInfo?.locales?.isNotEmpty == true)
+                            const LocalesDescriptionsPartWidget()
+                        ],
+                      ),
+                    ),
                   ],
                 );
               }),
@@ -94,10 +97,9 @@ class EditProfileScreen extends StatelessWidget {
     if (isSaved == true) {
       final bool? isOk = await showOkCancelAlert(
         context: context,
-        title: 'Save',
-        description: 'Your changes are accepted and will be reviewed shortly.'
-            ' You will be notified when it is completed',
-        okText: 'Close',
+        title: SZodiac.of(context).saveZodiac,
+        description: SZodiac.of(context).yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac,
+        okText: SZodiac.of(context).closeZodiac,
         allowBarrierClick: false,
         isCancelEnabled: false,
       );
