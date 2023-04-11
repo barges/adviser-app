@@ -5,6 +5,8 @@ import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/requests/change_advisor_specializations_request.dart';
 import 'package:zodiac/data/network/requests/change_main_specialization_request.dart';
 import 'package:zodiac/data/network/requests/list_request.dart';
+import 'package:zodiac/data/network/requests/notification_details_request.dart';
+import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/locale_descriptions_request.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
@@ -13,6 +15,7 @@ import 'package:zodiac/data/network/requests/update_random_call_enabled_request.
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/expert_details_response.dart';
+import 'package:zodiac/data/network/responses/notification_details_response.dart';
 import 'package:zodiac/data/network/responses/locale_descriptions_response.dart';
 import 'package:zodiac/data/network/responses/locales_response.dart';
 import 'package:zodiac/data/network/responses/main_specialization_response.dart';
@@ -88,4 +91,9 @@ abstract class ZodiacUserRepository {
     required int brandId,
     required File avatar,
   });
+
+  Future<NotificationDetailsResponse> getNotificationDetails(
+      NotificationDetailsRequest request);
+
+  Future<BaseResponse> notifyPushClick(NotificationDetailsRequest request);
 }

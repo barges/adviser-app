@@ -8,6 +8,9 @@ import 'package:zodiac/data/network/requests/change_advisor_specializations_requ
 import 'package:zodiac/data/network/requests/change_main_specialization_request.dart';
 import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/requests/locale_descriptions_request.dart';
+import 'package:zodiac/data/network/requests/notification_details_request.dart';
+import 'package:zodiac/data/network/requests/notifications_request.dart';
+import 'package:zodiac/data/network/requests/reviews_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
 import 'package:zodiac/data/network/requests/update_locale_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
@@ -17,6 +20,8 @@ import 'package:zodiac/data/network/responses/expert_details_response.dart';
 import 'package:zodiac/data/network/responses/locale_descriptions_response.dart';
 import 'package:zodiac/data/network/responses/locales_response.dart';
 import 'package:zodiac/data/network/responses/main_specialization_response.dart';
+import 'package:zodiac/data/network/requests/expert_details_request.dart';
+import 'package:zodiac/data/network/responses/notification_details_response.dart';
 import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/payments_list_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
@@ -167,5 +172,17 @@ class ZodiacUserRepositoryImpl implements ZodiacUserRepository {
       brandId: brandId,
       avatar: avatar,
     );
+  }
+
+  @override
+  Future<NotificationDetailsResponse> getNotificationDetails(
+      NotificationDetailsRequest request) async {
+    return await _userApi.getNotificationDetails(request);
+  }
+
+  @override
+  Future<BaseResponse> notifyPushClick(
+      NotificationDetailsRequest request) async {
+    return await _userApi.notifyPushClick(request);
   }
 }

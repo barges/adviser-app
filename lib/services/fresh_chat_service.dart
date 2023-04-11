@@ -102,7 +102,9 @@ class FreshChatServiceImpl extends FreshChatService {
 
   @override
   void changeLocaleInvite() {
-    Freshchat.notifyAppLocaleChange();
+    if (_wasInit) {
+      Freshchat.notifyAppLocaleChange();
+    }
   }
 
   @override

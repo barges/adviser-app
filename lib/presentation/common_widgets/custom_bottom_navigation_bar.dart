@@ -28,7 +28,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               0.0,
               10.0,
               0.0,
-             10.0 + MediaQuery.of(context).viewPadding.bottom,
+              10.0 + MediaQuery.of(context).viewPadding.bottom,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
