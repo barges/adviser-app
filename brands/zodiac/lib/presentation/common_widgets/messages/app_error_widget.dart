@@ -52,10 +52,11 @@ class AppErrorWidget extends StatelessWidget {
                               errorMessage,
                               textStyle: Theme.of(context)
                                   .textTheme
-                                  .bodyMedium
+                                  .titleMedium
                                   ?.copyWith(
                                     fontWeight: FontWeight.w500,
                                     color: Theme.of(context).backgroundColor,
+                                    fontSize: 15.0,
                                   ),
                               customStylesBuilder: (element) {
                                 if (element.toString().contains("<html a>")) {
@@ -72,10 +73,11 @@ class AppErrorWidget extends StatelessWidget {
                               errorMessage,
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyMedium
+                                  .titleMedium
                                   ?.copyWith(
                                     fontWeight: FontWeight.w500,
                                     color: Theme.of(context).backgroundColor,
+                                    fontSize: 15.0,
                                   ),
                             ),
                     ),
