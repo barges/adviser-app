@@ -11,6 +11,7 @@ import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
 import 'package:zodiac/presentation/common_widgets/empty_list_widget.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_cubit.dart';
+import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/label_widget.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/time_item_widget.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/transition_statistic_widget.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/transitions_tile_widget.dart';
@@ -43,6 +44,7 @@ class BalanceAndTransactionsScreen extends StatelessWidget {
               edgeOffset: (AppConstants.appBarHeight * 2) +
                   MediaQuery.of(context).padding.top,
               child: Stack(
+                alignment: AlignmentDirectional.center,
                 children: [
                   CustomScrollView(
                     controller: balanceAndTransactionsCubit.scrollController,
@@ -141,13 +143,16 @@ class BalanceAndTransactionsScreen extends StatelessWidget {
                     ],
                   ),
                   Builder(builder: (context) {
-                    final DateTime? monthLabel = context.select(
+                    final DateTime? dateCreate = context.select(
                         (BalanceAndTransactionsCubit cubit) =>
-                            cubit.state.monthLabel);
-                    return monthLabel != null
+                            cubit.state.dateCreate);
+                    final double? appBarHeight = context.select(
+                        (BalanceAndTransactionsCubit cubit) =>
+                            cubit.state.appBarHeight);
+                    return dateCreate != null && appBarHeight != null
                         ? Positioned(
-                            top: 8,
-                            child: TimeItemWidget(dateTime: monthLabel),
+                            top: appBarHeight + 8.0,
+                            child: LabelWidget(dateTime: dateCreate),
                           )
                         : const SizedBox.shrink();
                   }),

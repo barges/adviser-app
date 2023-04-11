@@ -16,6 +16,7 @@ class ZodiacMainCubit extends Cubit<ZodiacMainState> {
   final PublishSubject<UserBalance> userBalanceUpdateTrigger = PublishSubject();
   final PublishSubject<bool> articleCountUpdateTrigger = PublishSubject();
   final PublishSubject<bool> accountUpdateTrigger = PublishSubject();
+  final BehaviorSubject<double> appBarHeightTrigger = BehaviorSubject();
 
   ZodiacMainCubit() : super(const ZodiacMainState());
 
@@ -57,5 +58,9 @@ class ZodiacMainCubit extends Cubit<ZodiacMainState> {
 
   void updateAccount() {
     accountUpdateTrigger.add(true);
+  }
+
+  void updateAppBarHeight(double height) {
+    appBarHeightTrigger.add(height);
   }
 }

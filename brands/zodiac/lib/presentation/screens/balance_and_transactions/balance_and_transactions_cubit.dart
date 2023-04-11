@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/models/payment/payment_information.dart';
 import 'package:zodiac/data/models/payment/transaction_ui_model.dart';
@@ -22,6 +23,8 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   bool _isLoading = false;
   final ScrollController scrollController = ScrollController();
   late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
+  late final StreamSubscription<double> _appBarHeightSubscription;
+  final List<PaymentInformation> _transactionsListData = [];
   final _tilePositions = <DateTime, _TilePosition>{};
 
   BalanceAndTransactionsCubit(
@@ -32,6 +35,13 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
         _mainCubit.userBalanceUpdateTrigger.listen((value) {
       emit(state.copyWith(userBalance: value));
     });
+
+    _appBarHeightSubscription = _mainCubit.appBarHeightTrigger.listen((value) {
+      if (value != state.appBarHeight) {
+        emit(state.copyWith(appBarHeight: value));
+      }
+    });
+
     scrollController.addListener(_scrollControllerListener);
     _loadData();
   }
@@ -56,8 +66,8 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
     }
 
     emit(state.copyWith(
-      monthLabel:
-          _getCurrentScrollingMonth(scrollController.position.extentBefore),
+      dateCreate: _getCurrentScrollingDateCreate(
+          scrollController.position.extentBefore),
     ));
   }
 
@@ -70,6 +80,7 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   @override
   Future<void> close() async {
     _updateUserBalanceSubscription.cancel();
+    _appBarHeightSubscription.cancel();
     super.close();
   }
 
@@ -80,6 +91,7 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
 
     if (refresh) {
       _tilePositions.clear();
+      _transactionsListData.clear();
     }
 
     try {
@@ -89,34 +101,18 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
       final PaymentsListResponse response = await _userRepository
           .getPaymentsList(ListRequest(count: _limit, offset: _offset));
 
-      // For test
-      /*const jsonData =
-          '{"status":true,"error_code":0,"error_msg":"","count":"49","result":[{"id":2016271,"date_create":1656574785,"source":2,"fee":1.99,"amount":2.2,"length":301,"note":"Mobile Customer","avatar":"https://d1lj31fhs0ywmr.cloudfront.net/dev/users/default/simple/tiny_list.png"},{"id":2016171,"date_create":1656437948,"source":2,"fee":12.99,"amount":7.44,"length":123,"note":"Removed by GDPR","avatar":"https://d1lj31fhs0ywmr.cloudfront.net/dev/users/default/simple/tiny_list.png"},{"id":1976725,"date_create":1599548789,"source":0,"fee":0,"amount":-186.84,"length":0,"note":"Withdrawal September (Paypal)","avatar":"https://d1lj31fhs0ywmr.cloudfront.net/dev/users/default/simple/tiny_list.png"},{"id":1862452,"date_create":1542358044,"source":6,"fee":12.99,"amount":2.8,"length":74,"note":"Received tip","avatar":"https://d1lj31fhs0ywmr.cloudfront.net/dev/users/default/simple/tiny_list.png"},{"id":1862448,"date_create":1542358026,"source":1,"fee":12.99,"amount":4.47,"length":74,"note":"Chat Session with user_UCRXMO","avatar":"https://d1lj31fhs0ywmr.cloudfront.net/dev/users/default/simple/tiny_list.png"},{"id":1858898,"date_create":1542201931,"source":1,"fee":12.99,"amount":7.26,"length":120,"note":"Chat Session with Customer","avatar":"https://d1lj31fhs0ywmr.cloudfront.net/dev/users/default/simple/tiny_list.png"},{"id":1858894,"date_create":1542201619,"source":1,"fee":12.99,"amount":3.63,"length":120,"note":"Chat Session with Customer (amount correcting)","avatar":"https://d1lj31fhs0ywmr.cloudfront.net/dev/users/default/simple/tiny_list.png"},{"id":1858491,"date_create":1542196656,"source":1,"fee":12.99,"amount":4.59,"length":76,"note":"Chat Session with user_UCRXMO","avatar":"https://d1lj31fhs0ywmr.cloudfront.net/dev/users/default/simple/tiny_list.png"},{"id":1857755,"date_create":1542112243,"source":1,"fee":12.99,"amount":10.23,"length":169,"note":"Chat Session with user_UCRXMO","avatar":"https://d1lj31fhs0ywmr.cloudfront.net/dev/users/default/simple/tiny_list.png"},{"id":1857749,"date_create":1542111089,"source":1,"fee":1.99,"amount":1.54,"length":168,"note":"Chat Session with user_UCRXMO","avatar":"https://d1lj31fhs0ywmr.cloudfront.net/dev/users/default/simple/tiny_list.png"}]}';
-      final parsedJson = jsonDecode(jsonData);
-      final PaymentsListResponse response =
-          PaymentsListResponse.fromJson(parsedJson);*/
-
-      List<PaymentInformation>? result = response.result ?? [];
       _count = response.count ?? 0;
       _offset = _offset + _limit;
 
+      _transactionsListData.addAll(response.result ?? []);
       final Map<DateTime, List<PaymentInformation>> transactionsMap =
-          _toTransactionsMapItem(result);
+          _toTransactionsMapItem(_transactionsListData);
       final List<TransactionUiModel> transactionUiModelsList =
           _toTransactionUiModels(transactionsMap);
-      final List<TransactionUiModel> stateTransactionUiModelsList =
-          refresh || state.transactionsList == null
-              ? <TransactionUiModel>[]
-              : List.of(state.transactionsList!);
-      final List<TransactionUiModel> transactionsList =
-          stateTransactionUiModelsList.isEmpty
-              ? transactionUiModelsList
-              : _jointData(
-                  stateTransactionUiModelsList, transactionUiModelsList);
-      setTilePositions(transactionsList);
+      setTilePositions(transactionUiModelsList);
 
       emit(state.copyWith(
-        transactionsList: transactionsList,
+        transactionsList: transactionUiModelsList,
       ));
       _isLoading = false;
     } catch (e) {
@@ -155,45 +151,16 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
     return uiModelItems;
   }
 
-  List<TransactionUiModel> _jointData(
-      List<TransactionUiModel> left, List<TransactionUiModel> right) {
-    final DateTime? leftDateTime = left[left.length - 2]
-        .when(data: (data) => null, separator: (dateCreate) => dateCreate);
-    final DateTime? rightDateTime = right.first
-        .when(data: (_) => null, separator: (dateCreate) => dateCreate);
-    if (leftDateTime?.month == rightDateTime?.month &&
-        leftDateTime?.year == rightDateTime?.year) {
-      final List<PaymentInformation>? rightItems =
-          right[1].when(data: (data) => data, separator: (_) => null);
-      final TransactionUiModel leftLast = left.last.map(
-          data: (data) => data.copyWith(items: [...data.items, ...rightItems!]),
-          separator: (dateCreate) => dateCreate);
-      left.replaceRange(left.length - 1, left.length, [leftLast]);
-      right.removeRange(0, 2);
-    }
-    return left..addAll(right);
-  }
-
   void setTilePositions(List<TransactionUiModel> items) {
-    final entriesTilePositions = _tilePositions.entries.toList();
-    final startIndexItems =
-        entriesTilePositions.isEmpty ? 0 : entriesTilePositions.length * 2 - 3;
-    final startIndexPositions =
-        entriesTilePositions.isEmpty ? 0 : entriesTilePositions.length - 2;
-    int position = entriesTilePositions.isEmpty
-        ? 333
-        : entriesTilePositions[startIndexPositions].value.start;
-    DateTime? date = entriesTilePositions.isEmpty
-        ? null
-        : _tilePositions.keys.toList()[startIndexPositions];
-    TransactionUiModel item;
-    for (var i = startIndexItems; i < items.length; i++) {
-      item = items[i];
+    int position = 333;
+    DateTime? date;
+    for (var item in items) {
       item.when(
         data: (data) {
-          final itemWidth = _getTileWidth(data.length);
-          _tilePositions[date!] = _TilePosition(position, position + itemWidth);
-          position = position + itemWidth + 23 + 24;
+          final itemHeight = _getTileHeight(data.length);
+          _tilePositions[date!] =
+              _TilePosition(position, position + itemHeight);
+          position = position + itemHeight + 23 + 24;
           return null;
         },
         separator: (dateCreate) {
@@ -204,15 +171,19 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
     }
   }
 
-  DateTime? _getCurrentScrollingMonth(double extentBefore) {
+  DateTime? _getCurrentScrollingDateCreate(double extentBefore) {
+    final bool isAppBarHeightMax = state.appBarHeight != null
+        ? state.appBarHeight! >= AppConstants.appBarHeight * 2
+        : false;
     final MapEntry<DateTime, _TilePosition>? entry = _tilePositions.entries
         .toList()
-        .lastWhereOrNull(
-            (e) => e.value.start < extentBefore && extentBefore < e.value.end);
+        .lastWhereOrNull((e) =>
+            e.value.start - (isAppBarHeightMax ? 55 : 0) < extentBefore &&
+            extentBefore < e.value.end + (isAppBarHeightMax ? -65 : -12));
     return entry?.key;
   }
 
-  int _getTileWidth(int count) {
+  int _getTileHeight(int count) {
     return count == 1 ? 80 : 56 * 2 + (count - 2) * 64 + 32;
   }
 }

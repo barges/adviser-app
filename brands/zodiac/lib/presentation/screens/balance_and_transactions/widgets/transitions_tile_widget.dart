@@ -5,63 +5,6 @@ import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/payment/payment_information.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
 
-/*class TransitionsTileWidget extends StatefulWidget {
-  final List<PaymentInformation> items;
-  final BalanceAndTransactionsCubit cubit;
-  const TransitionsTileWidget({
-    super.key,
-    required this.items,
-    required this.cubit,
-  });
-
-  @override
-  State<TransitionsTileWidget> createState() => _TransitionsTileWidgetState();
-}
-
-class _TransitionsTileWidgetState extends State<TransitionsTileWidget> {
-  @override
-  void initState() {
-    if (widget.items.first.dateCreate != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) =>
-          widget.cubit.addTilePosition(widget.items.first.dateCreate!, 0.0));
-    }
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    if (widget.items.first.dateCreate != null) {
-      widget.cubit.deleteTilePosition(widget.items.first.dateCreate!);
-    }
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-          horizontal: AppConstants.horizontalScreenPadding,
-          vertical: AppConstants.horizontalScreenPadding),
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-          color: Theme.of(context).canvasColor),
-      child: Column(
-        children: List.generate(
-          widget.items.length,
-          (int index) => _TransitionWidget(
-            title: widget.items[index].note,
-            amount: widget.items[index].amount,
-            dateCreate: widget.items[index].dateCreate,
-            avatar: widget.items[index].avatar,
-            isDivider: widget.items[index] != widget.items.last,
-          ),
-        ),
-      ),
-    );
-  }
-}*/
-
 class TransitionsTileWidget extends StatelessWidget {
   final List<PaymentInformation> items;
   const TransitionsTileWidget({super.key, required this.items});
