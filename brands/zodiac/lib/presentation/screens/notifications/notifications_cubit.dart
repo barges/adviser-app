@@ -12,7 +12,7 @@ import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/notifications/notifications_state.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
-const int _count = 10;
+const int _count = 20;
 
 class NotificationsCubit extends Cubit<NotificationsState> {
   final ZodiacUserRepository _userRepository;
@@ -42,6 +42,12 @@ class NotificationsCubit extends Cubit<NotificationsState> {
         _zodiacMainCubit.updateNotificationsListTrigger.listen((value) {
       getNotifications(refresh: true);
     });
+  }
+
+  @override
+  Future<void> close() async {
+    _updateNotificationsListSubscription.cancel();
+    super.close();
   }
 
   Future<void> _getFirstNotifications() async {

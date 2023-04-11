@@ -37,6 +37,7 @@ class NotificationsScreen extends StatelessWidget {
               edgeOffset: (AppConstants.appBarHeight * 2) +
                   MediaQuery.of(context).padding.top,
               child: CustomScrollView(
+                controller: notificationsCubit.scrollController,
                 physics: notifications?.isEmpty == true
                     ? const NeverScrollableScrollPhysics()
                     : null,
