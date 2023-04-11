@@ -6,6 +6,5 @@ part 'notification_details_state.freezed.dart';
 class NotificationDetailsState with _$NotificationDetailsState {
   const factory NotificationDetailsState({
     String? notificationContent,
-    @Default(false) bool loadStopped,
   }) = _NotificationDetailsState;
 }

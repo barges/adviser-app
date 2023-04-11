@@ -53,8 +53,4 @@ class NotificationDetailsCubit extends Cubit<NotificationDetailsState> {
 
     deepLinkAction.redirectToScreen(context, queryParameters);
   }
-
-  void stopLoading() {
-    emit(state.copyWith(loadStopped: true));
-  }
 }

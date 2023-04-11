@@ -40,62 +40,42 @@ class NotificationDetailsScreen extends StatelessWidget {
                     final String? notificationContent = context.select(
                         (NotificationDetailsCubit cubit) =>
                             cubit.state.notificationContent);
-                    final bool loadStopped = context.select(
-                        (NotificationDetailsCubit cubit) =>
-                            cubit.state.loadStopped);
 
                     return notificationContent != null
-                        ? IndexedStack(
-                            index: loadStopped ? 0 : 1,
-                            children: [
-                              WebViewWidget(
-                                controller: WebViewController()
-                                  ..setJavaScriptMode(
-                                      JavaScriptMode.unrestricted)
-                                  ..enableZoom(false)
-                                  ..setNavigationDelegate(
-                                    NavigationDelegate(
-                                      onPageFinished: (url) {
-                                        final NotificationDetailsCubit
-                                            notificationDetailsCubit =
-                                            context.read<
-                                                NotificationDetailsCubit>();
+                        ? WebViewWidget(
+                            controller: WebViewController()
+                              ..setJavaScriptMode(JavaScriptMode.unrestricted)
+                              ..enableZoom(false)
+                              ..setNavigationDelegate(
+                                NavigationDelegate(
+                                  onNavigationRequest:
+                                      (NavigationRequest request) {
+                                    Uri? url = Uri.parse(request.url);
+                                    logger.d(url);
 
-                                        notificationDetailsCubit.stopLoading();
-                                      },
-                                      onNavigationRequest:
-                                          (NavigationRequest request) {
-                                        Uri? url = Uri.parse(request.url);
-                                        logger.d(url);
+                                    if (request.url == 'about:blank') {
+                                      return NavigationDecision.navigate;
+                                    }
 
-                                        if (url.scheme.startsWith('http')) {
-                                          launchUrl(
-                                            url,
-                                            mode:
-                                                LaunchMode.externalApplication,
-                                          );
-                                        } else if (url.scheme == 'zodiac') {
-                                          final NotificationDetailsCubit
-                                              notificationDetailsCubit =
-                                              context.read<
-                                                  NotificationDetailsCubit>();
-                                          notificationDetailsCubit
-                                              .navigateFromNotification(
-                                                  context,
-                                                  url.host,
-                                                  url.queryParameters);
-                                        }
+                                    if (url.scheme.startsWith('http')) {
+                                      launchUrl(
+                                        url,
+                                        mode: LaunchMode.externalApplication,
+                                      );
+                                    } else if (url.scheme == 'zodiac') {
+                                      final NotificationDetailsCubit
+                                          notificationDetailsCubit = context
+                                              .read<NotificationDetailsCubit>();
+                                      notificationDetailsCubit
+                                          .navigateFromNotification(context,
+                                              url.host, url.queryParameters);
+                                    }
 
-                                        return NavigationDecision.prevent;
-                                      },
-                                    ),
-                                  )
-                                  ..loadHtmlString(notificationContent),
-                              ),
-                              const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            ],
+                                    return NavigationDecision.prevent;
+                                  },
+                                ),
+                              )
+                              ..loadHtmlString(notificationContent),
                           )
                         : const SizedBox.shrink();
                   },
