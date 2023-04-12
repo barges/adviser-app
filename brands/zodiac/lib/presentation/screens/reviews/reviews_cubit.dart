@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/user_info/review_item_zodiac.dart';
 import 'package:zodiac/data/network/requests/list_request.dart';
@@ -13,17 +16,37 @@ class ReviewsCubit extends Cubit<ReviewsState> {
   int _offset = 0;
   int? _count;
   bool _isLoading = false;
+  bool _firstLoaded = false;
   final List<ZodiacReviewItem> _reviewList = [];
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   final ScrollController reviewScrollController = ScrollController();
 
   final ZodiacUserRepository _userRepository;
   final ZodiacCachingManager _zodiacCacheManager;
+  final ConnectivityService _connectivityService;
 
-  ReviewsCubit(this._userRepository, this._zodiacCacheManager)
-      : super(const ReviewsState()) {
+  late final StreamSubscription<bool> _internetConnectionSubscription;
+
+  ReviewsCubit(
+    this._userRepository,
+    this._zodiacCacheManager,
+    this._connectivityService,
+  ) : super(const ReviewsState()) {
     reviewScrollController.addListener(_scrollControllerListener);
     _loadData();
+    _internetConnectionSubscription =
+        _connectivityService.connectivityStream.listen((event) {
+      if (event && !_firstLoaded) {
+        _loadData();
+      }
+    });
+  }
+
+  @override
+  Future<void> close() async {
+    reviewScrollController.dispose();
+    _internetConnectionSubscription.cancel();
+    super.close();
   }
 
   Future<void> _loadData() async {
@@ -53,7 +76,7 @@ class ReviewsCubit extends Cubit<ReviewsState> {
     try {
       _isLoading = true;
       int? expertId = _zodiacCacheManager.getUid();
-      if (expertId != null) {
+      if (expertId != null && await _connectivityService.checkConnection()) {
         if (refresh) {
           _reviewList.clear();
           _count = null;
@@ -72,6 +95,7 @@ class ReviewsCubit extends Cubit<ReviewsState> {
         emit(state.copyWith(
           reviewList: List.from(_reviewList),
         ));
+        _firstLoaded = true;
       }
     } catch (e) {
       logger.d(e);
