@@ -102,13 +102,12 @@ class BrandManager {
     }
 
     if (allBrandsAliases.firstOrNull != currentBrand.brandAlias) {
-      allBrandsAliases
-          .removeWhere((element) => element == currentBrand.brandAlias);
-      allBrandsAliases.add(currentBrand.brandAlias);
+      allBrandsAliases.remove(currentBrand.brandAlias);
+      allBrandsAliases.insert(0, currentBrand.brandAlias);
     }
 
     final List<BaseBrand> allBrands = [];
-    for (String alias in allBrandsAliases.reversed) {
+    for (String alias in allBrandsAliases) {
       allBrands.add(brandFromAlias(alias));
     }
     return allBrands;
