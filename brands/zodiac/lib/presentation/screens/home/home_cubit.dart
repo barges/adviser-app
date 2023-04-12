@@ -4,6 +4,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/data/models/user_info/locale_model.dart';
@@ -29,18 +31,27 @@ class HomeCubit extends Cubit<HomeState> {
   final ZodiacUserRepository _userRepository;
 
   final ZodiacCachingManager _cacheManager;
-  final ZodiacMainCubit _mainCubit;
+  final ZodiacMainCubit _zodiacMainCubit;
+  final MainCubit _globalMainCubit;
   final WebSocketManager _webSocketManager;
+  final ConnectivityService _connectivityService;
+
   late final StreamSubscription _userStatusSubscription;
   late final StreamSubscription<bool> _updateArticleCountSubscription;
+  late final StreamSubscription<bool> _appLifecycleSubscription;
+  late final StreamSubscription<bool> _connectivitySubscription;
   late final List<PageRouteInfo> routes;
+
   bool _firstOpenArticlesTab = true;
+  bool _appInForeground = true;
 
   HomeCubit(
     this._cacheManager,
-    this._mainCubit,
+    this._zodiacMainCubit,
     this._webSocketManager,
     this._articlesRepository,
+    this._globalMainCubit,
+    this._connectivityService,
     this._userRepository,
   ) : super(const HomeState()) {
     routes = tabsList.map((e) => _getPage(e)).toList();
@@ -60,17 +71,37 @@ class HomeCubit extends Cubit<HomeState> {
     });
 
     _updateArticleCountSubscription =
-        _mainCubit.articleCountUpdateTrigger.listen(
+        _zodiacMainCubit.articleCountUpdateTrigger.listen(
       (_) async {
         getArticleCount(update: 1);
       },
     );
 
+    _appLifecycleSubscription =
+        _globalMainCubit.changeAppLifecycleStream.listen(
+      (value) {
+        _appInForeground = value;
+
+        if (value) {
+          _webSocketManager.connect();
+        } else {
+          _webSocketManager.close();
+        }
+      },
+    );
+
+    _connectivitySubscription =
+        _connectivityService.connectivityStream.listen((event) {
+      if (_appInForeground && event) {
+        _webSocketManager.connect();
+      }
+    });
+
     getArticleCount();
   }
 
   Future<void> checkAndSaveAllLocales() async {
-     if (!_cacheManager.haveLocales) {
+    if (!_cacheManager.haveLocales) {
       final LocalesResponse response =
           await _userRepository.getAllLocales(AuthorizedRequest());
       if (response.status == true) {
@@ -79,7 +110,7 @@ class HomeCubit extends Cubit<HomeState> {
           _cacheManager.saveAllLocales(locales!);
         }
       }
-     }
+    }
   }
 
   Future<void> getArticleCount({update = 0}) async {
@@ -96,6 +127,8 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> close() {
     _updateArticleCountSubscription.cancel();
     _userStatusSubscription.cancel();
+    _appLifecycleSubscription.cancel();
+    _connectivitySubscription.cancel();
     return super.close();
   }
 

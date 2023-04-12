@@ -8,7 +8,6 @@ import 'package:fortunica/domain/repositories/fortunica_chats_repository.dart';
 import 'package:fortunica/fortunica_constants.dart';
 import 'package:fortunica/presentation/screens/customer_sessions/customer_sessions_screen.dart';
 import 'package:fortunica/presentation/screens/home/tabs/sessions/widgets/search/search_list_state.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -20,14 +19,9 @@ class SearchListCubit extends Cubit<SearchListState> {
   final VoidCallback _closeSearch;
   final ConnectivityService _connectivityService;
 
-  final BehaviorSubject _searchStream = BehaviorSubject<String>();
-
-  final TextEditingController searchTextController = TextEditingController();
   final ScrollController conversationsScrollController = ScrollController();
 
   final List<ChatItem> _conversationsList = [];
-
-  late final StreamSubscription _searchSubscription;
 
   String? _conversationsLastItem;
   bool _conversationsHasMore = true;
@@ -39,14 +33,7 @@ class SearchListCubit extends Cubit<SearchListState> {
     this._screenHeight,
     this._closeSearch,
   ) : super(const SearchListState()) {
-    _searchSubscription = _searchStream
-        .debounceTime(const Duration(milliseconds: 500))
-        .listen((event) async {
-      getConversations(refresh: true);
-    });
-
     conversationsScrollController.addListener(() {
-      ///TODO: Remove context
       if (!_isLoading &&
           conversationsScrollController.position.extentAfter <= _screenHeight) {
         getConversations();
@@ -58,19 +45,15 @@ class SearchListCubit extends Cubit<SearchListState> {
 
   @override
   Future<void> close() {
-    _searchStream.close();
-    _searchSubscription.cancel();
-    searchTextController.dispose();
     conversationsScrollController.dispose();
 
     return super.close();
   }
 
-  void changeText(String text) {
-    _searchStream.add(text);
-  }
-
-  Future<void> getConversations({bool refresh = false}) async {
+  Future<void> getConversations({
+    String? searchText,
+    bool refresh = false,
+  }) async {
     _isLoading = true;
     try {
       if (refresh) {
@@ -84,9 +67,7 @@ class SearchListCubit extends Cubit<SearchListState> {
             await _repository.getConversationsList(
           limit: FortunicaConstants.questionsLimit,
           lastItem: _conversationsLastItem,
-          search: searchTextController.text.isNotEmpty
-              ? searchTextController.text
-              : null,
+          search: searchText?.isNotEmpty == true ? searchText : null,
         );
 
         _conversationsHasMore = result.hasMore ?? true;
