@@ -11,6 +11,8 @@ class LocalesListCubit extends Cubit<LocalesListState> {
   final String? _oldSelectedLocaleCode;
   final List<String>? unnecessaryLocalesCodes;
 
+  late final List<LocaleModel> _locales;
+
   LocalesListCubit(
     this._userRepository,
     this._cachingManager,
@@ -39,12 +41,24 @@ class LocalesListCubit extends Cubit<LocalesListState> {
           responseLocales.removeWhere((element) => element.code == code);
         }
       }
-
+      _locales = responseLocales;
       emit(state.copyWith(
         locales: responseLocales,
         selectedLocaleCode: _oldSelectedLocaleCode,
       ));
     }
+  }
+
+  void search(String text) {
+    List<LocaleModel> locales = _locales
+        .where((element) =>
+            element.nameNative?.toLowerCase().startsWith(text.toLowerCase()) ??
+            false)
+        .toList();
+
+    emit(state.copyWith(
+      locales: locales,
+    ));
   }
 
   void tapToLocale(int index) {

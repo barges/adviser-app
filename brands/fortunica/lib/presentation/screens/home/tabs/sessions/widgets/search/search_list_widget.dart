@@ -1,9 +1,3 @@
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/main_state.dart';
-import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortunica/data/models/chats/chat_item.dart';
@@ -12,11 +6,16 @@ import 'package:fortunica/domain/repositories/fortunica_chats_repository.dart';
 import 'package:fortunica/fortunica_main_cubit.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:fortunica/infrastructure/di/inject_config.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:fortunica/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:fortunica/presentation/common_widgets/user_avatar.dart';
 import 'package:fortunica/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
 import 'package:fortunica/presentation/screens/home/tabs/sessions/widgets/search/search_list_cubit.dart';
+import 'package:fortunica/presentation/screens/home/tabs/sessions/widgets/search/widgets/search_widget.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/main_state.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
 
 class SearchListWidget extends StatelessWidget {
   final VoidCallback closeOnTap;
@@ -50,35 +49,12 @@ class SearchListWidget extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Container(
-                  alignment: Alignment.center,
-                  color: Theme.of(context).canvasColor,
-                  height: AppConstants.appBarHeight,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppConstants.horizontalScreenPadding,
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: _SearchFieldWidget(
-                          controller: searchListCubit.searchTextController,
-                          onChanged: searchListCubit.changeText,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 8.0,
-                      ),
-                      AppIconButton(
-                        icon: Assets.vectors.close.path,
-                        onTap: closeOnTap,
-                      )
-                    ],
-                  ),
-                ),
-                const Divider(
-                  height: 1.0,
-                ),
+                SearchWidget(
+                    onChanged: (text) {
+                      searchListCubit.getConversations(
+                          searchText: text, refresh: true);
+                    },
+                    closeOnTap: closeOnTap),
                 Builder(
                   builder: (context) {
                     final AppError appError = context.select(
@@ -177,72 +153,6 @@ class SearchListWidget extends StatelessWidget {
             ),
           );
         }),
-      ),
-    );
-  }
-}
-
-class _SearchFieldWidget extends StatelessWidget {
-  final TextEditingController controller;
-  final ValueChanged<String> onChanged;
-
-  const _SearchFieldWidget({
-    Key? key,
-    required this.controller,
-    required this.onChanged,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 32.0,
-      decoration: BoxDecoration(
-        color: Theme.of(context).hintColor,
-        borderRadius: BorderRadius.circular(
-          AppConstants.buttonRadius,
-        ),
-      ),
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 12.0,
-              right: 8.0,
-            ),
-            child: Assets.vectors.search.svg(
-              color: Theme.of(context).shadowColor,
-            ),
-          ),
-          Expanded(
-            child: TextField(
-              controller: controller,
-              onChanged: onChanged,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontSize: 17.0,
-                  ),
-              decoration: InputDecoration(
-                hintText: SFortunica.of(context).searchFortunica,
-                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontSize: 17.0,
-                      color: Theme.of(context).shadowColor,
-                    ),
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 6.0,
-                  horizontal: 4.0,
-                ),
-                border: const OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                ),
-                enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
