@@ -10,11 +10,13 @@ import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_scr
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/dashboard/dashboard_screen.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_screen.dart';
+import 'package:zodiac/presentation/screens/locales_list/locales_list_screen.dart';
 import 'package:zodiac/presentation/screens/login/login_screen.dart';
 import 'package:zodiac/presentation/screens/notification_details/notification_details_screen.dart';
 import 'package:zodiac/presentation/screens/notifications/notifications_screen.dart';
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_screen.dart';
 import 'package:zodiac/presentation/screens/reviews/reviews_screen.dart';
+import 'package:zodiac/presentation/screens/specialities_list/specialities_list_screen.dart';
 import 'package:zodiac/presentation/screens/support/support_screen.dart';
 import 'package:zodiac/presentation/wrappers/auth_wrapper/zodiac_auth_wrapper.dart';
 import 'package:zodiac/zodiac.dart';
@@ -98,6 +100,16 @@ const zodiacRoute = AutoRoute(
       page: SupportScreen,
       path: RoutePathsZodiac.supportScreen,
       name: RoutePathsZodiac.supportScreen,
+    ),
+    AutoRoute(
+      page: SpecialitiesListScreen,
+      path: RoutePathsZodiac.specialitiesListScreen,
+      name: RoutePathsZodiac.specialitiesListScreen,
+    ),
+    AutoRoute(
+      page: LocalesListScreen,
+      path: RoutePathsZodiac.localesListScreen,
+      name: RoutePathsZodiac.localesListScreen,
     ),
     AutoRoute(
       page: NotificationDetailsScreen,

@@ -4,7 +4,8 @@ enum ValidationErrorType {
   pleaseInsertCorrectEmail,
   pleaseEnterAtLeast8Characters,
   requiredField,
-  pleaseEnterAtLeast3Characters,
+  theNicknameIsInvalidMustBe3to250Symbols,
+  characterLimitExceeded,
   thePasswordsMustMatch,
   empty;
 
@@ -16,8 +17,10 @@ enum ValidationErrorType {
         return SZodiac.of(context).pleaseEnterAtLeast8CharactersZodiac;
       case ValidationErrorType.requiredField:
         return SZodiac.of(context).requiredFieldZodiac;
-      case ValidationErrorType.pleaseEnterAtLeast3Characters:
-        return SZodiac.of(context).pleaseEnterAtLeast3CharactersZodiac;
+      case ValidationErrorType.theNicknameIsInvalidMustBe3to250Symbols:
+        return SZodiac.of(context).theNicknameIsInvalidMustBe3to250SymbolsZodiac;
+      case ValidationErrorType.characterLimitExceeded:
+        return SZodiac.of(context).characterLimitExceededZodiac;
       case ValidationErrorType.thePasswordsMustMatch:
         return SZodiac.of(context).thePasswordsMustMatchZodiac;
       case ValidationErrorType.empty:

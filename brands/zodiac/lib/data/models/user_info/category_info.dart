@@ -13,7 +13,7 @@ class CategoryInfo with _$CategoryInfo {
       includeIfNull: false, explicitToJson: true)
   const factory CategoryInfo({
     int? id,
-    int? pid,
+    @JsonKey(name: 'pid') int? parentId,
     String? name,
     String? alias,
     String? icon,
@@ -24,4 +24,19 @@ class CategoryInfo with _$CategoryInfo {
 
   factory CategoryInfo.fromJson(Map<String, dynamic> json) =>
       _$CategoryInfoFromJson(json);
+
+  static List<CategoryInfo> normalizeList(List<CategoryInfo> list){
+    final List<CategoryInfo> categories = [];
+    for (CategoryInfo categoryInfo in list) {
+
+      List<CategoryInfo>? sublist = categoryInfo.sublist;
+      if (sublist != null && sublist.isNotEmpty) {
+        categories.add(categoryInfo.copyWith(sublist: null));
+        categories.addAll(sublist);
+      } else {
+        categories.add(categoryInfo);
+      }
+    }
+    return categories;
+  }
 }

@@ -624,21 +624,152 @@ class SZodiac {
     );
   }
 
-  /// `Please enter at least 8 characters`
-  String get pleaseEnterAtLeast8CharactersZodiac {
+  /// `Do you really want to delete {localeName} from your list?`
+  String doYouReallyWantToDeleteLocaleNameFromYourListZodiac(
+      Object localeName) {
     return Intl.message(
-      'Please enter at least 8 characters',
-      name: 'pleaseEnterAtLeast8CharactersZodiac',
+      'Do you really want to delete $localeName from your list?',
+      name: 'doYouReallyWantToDeleteLocaleNameFromYourListZodiac',
+      desc: '',
+      args: [localeName],
+    );
+  }
+
+  /// `Nickname`
+  String get nicknameZodiac {
+    return Intl.message(
+      'Nickname',
+      name: 'nicknameZodiac',
       desc: '',
       args: [],
     );
   }
 
-  /// `Please, insert correct email`
-  String get pleaseInsertCorrectEmailZodiac {
+  /// `About`
+  String get aboutZodiac {
     return Intl.message(
-      'Please, insert correct email',
-      name: 'pleaseInsertCorrectEmailZodiac',
+      'About',
+      name: 'aboutZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Experience`
+  String get experienceZodiac {
+    return Intl.message(
+      'Experience',
+      name: 'experienceZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat start greeting`
+  String get chatStartGreetingZodiac {
+    return Intl.message(
+      'Chat start greeting',
+      name: 'chatStartGreetingZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Main language`
+  String get mainLanguageZodiac {
+    return Intl.message(
+      'Main language',
+      name: 'mainLanguageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Main specialty`
+  String get mainSpecialtyZodiac {
+    return Intl.message(
+      'Main specialty',
+      name: 'mainSpecialtyZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My specialties`
+  String get mySpecialtiesZodiac {
+    return Intl.message(
+      'My specialties',
+      name: 'mySpecialtiesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your changes are accepted and will be reviewed shortly. You will be notified when it is completed`
+  String get yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac {
+    return Intl.message(
+      'Your changes are accepted and will be reviewed shortly. You will be notified when it is completed',
+      name: 'yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get saveZodiac {
+    return Intl.message(
+      'Save',
+      name: 'saveZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Close`
+  String get closeZodiac {
+    return Intl.message(
+      'Close',
+      name: 'closeZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Language`
+  String get languageZodiac {
+    return Intl.message(
+      'Language',
+      name: 'languageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All specialities`
+  String get allSpecialitiesZodiac {
+    return Intl.message(
+      'All specialities',
+      name: 'allSpecialitiesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The nickname is invalid. Must be 3 to 250 symbols.`
+  String get theNicknameIsInvalidMustBe3to250SymbolsZodiac {
+    return Intl.message(
+      'The nickname is invalid. Must be 3 to 250 symbols.',
+      name: 'theNicknameIsInvalidMustBe3to250SymbolsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Character limit exceeded.`
+  String get characterLimitExceededZodiac {
+    return Intl.message(
+      'Character limit exceeded.',
+      name: 'characterLimitExceededZodiac',
       desc: '',
       args: [],
     );
@@ -654,21 +785,31 @@ class SZodiac {
     );
   }
 
-  /// `Please enter at least 3 characters`
-  String get pleaseEnterAtLeast3CharactersZodiac {
-    return Intl.message(
-      'Please enter at least 3 characters',
-      name: 'pleaseEnterAtLeast3CharactersZodiac',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `The passwords must match`
   String get thePasswordsMustMatchZodiac {
     return Intl.message(
       'The passwords must match',
       name: 'thePasswordsMustMatchZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter at least 8 characters`
+  String get pleaseEnterAtLeast8CharactersZodiac {
+    return Intl.message(
+      'Please enter at least 8 characters',
+      name: 'pleaseEnterAtLeast8CharactersZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please, insert correct email`
+  String get pleaseInsertCorrectEmailZodiac {
+    return Intl.message(
+      'Please, insert correct email',
+      name: 'pleaseInsertCorrectEmailZodiac',
       desc: '',
       args: [],
     );

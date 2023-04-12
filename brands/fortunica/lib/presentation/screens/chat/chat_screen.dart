@@ -15,7 +15,7 @@ import 'package:fortunica/presentation/common_widgets/buttons/choose_option_widg
 import 'package:fortunica/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
 import 'package:fortunica/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:fortunica/presentation/common_widgets/messages/app_success_widget.dart';
-import 'package:fortunica/presentation/common_widgets/show_delete_alert.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:fortunica/presentation/screens/chat/chat_cubit.dart';
 import 'package:fortunica/presentation/screens/chat/chat_state.dart';
 import 'package:fortunica/presentation/screens/chat/widgets/active_chat_input_field_widget.dart';

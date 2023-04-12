@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortunica/data/models/enums/attachment_type.dart';
 import 'package:fortunica/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
-import 'package:fortunica/presentation/common_widgets/show_pick_image_alert.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:fortunica/presentation/screens/chat/chat_cubit.dart';
 import 'package:fortunica/presentation/screens/chat/widgets/attached_pictures.dart';
 import 'package:fortunica/presentation/screens/chat/widgets/audio_players/chat_audio_player_cubit.dart';

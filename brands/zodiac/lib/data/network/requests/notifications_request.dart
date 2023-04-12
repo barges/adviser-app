@@ -1,17 +1,15 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:zodiac/data/network/requests/authorized_request.dart';
+import 'package:zodiac/data/network/requests/list_request.dart';
 
 part 'notifications_request.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class NotificationsRequest extends AuthorizedRequest {
-  final int count;
-  final int offset;
+class NotificationsRequest extends ListRequest {
   final bool fromScreen;
 
   NotificationsRequest({
-    required this.count,
-    required this.offset,
+    required super.count,
+    required super.offset,
     this.fromScreen = false,
   }) : super();
 

@@ -5,9 +5,10 @@ import 'package:zodiac/infrastructure/di/inject_config.dart';
 
 part 'authorized_request.g.dart';
 
-@JsonSerializable(includeIfNull: false)
+@JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake,)
 class AuthorizedRequest extends BaseRequest {
   String? auth = zodiacGetIt.get<ZodiacCachingManager>().getUserToken();
+  int? expertId = zodiacGetIt.get<ZodiacCachingManager>().getUid();
 
   AuthorizedRequest();
 

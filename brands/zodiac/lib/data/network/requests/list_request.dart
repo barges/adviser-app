@@ -3,7 +3,10 @@ import 'package:zodiac/data/network/requests/authorized_request.dart';
 
 part 'list_request.g.dart';
 
-@JsonSerializable(includeIfNull: false)
+@JsonSerializable(
+  includeIfNull: false,
+  fieldRename: FieldRename.snake,
+)
 class ListRequest extends AuthorizedRequest {
   final int count;
   final int offset;

@@ -3,7 +3,7 @@ import 'package:zodiac/data/network/requests/authorized_request.dart';
 
 part 'article_count_request.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake,)
 class ArticleCountRequest extends AuthorizedRequest {
   final int update;
   @JsonKey(name: 'is_badge')

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/user_info/review_item_zodiac.dart';
-import 'package:zodiac/data/network/requests/reviews_request.dart';
+import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/responses/reviews_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/reviews/reviews_state.dart';
@@ -13,7 +13,7 @@ class ReviewsCubit extends Cubit<ReviewsState> {
   int _offset = 0;
   int? _count;
   bool _isLoading = false;
-  List<ZodiacReviewItem> _reviewList = [];
+  final List<ZodiacReviewItem> _reviewList = [];
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   final ScrollController reviewScrollController = ScrollController();
 
@@ -59,8 +59,7 @@ class ReviewsCubit extends Cubit<ReviewsState> {
           _count = null;
           _offset = 0;
         }
-        final reviewsRequest = ReviewsRequest(
-            expertId: expertId.toString(), count: _limit, offset: _offset);
+        final reviewsRequest = ListRequest(count: _limit, offset: _offset);
         ReviewsResponse? response =
             await _userRepository.getReviews(reviewsRequest);
         List<ZodiacReviewItem>? result = response?.result ?? [];

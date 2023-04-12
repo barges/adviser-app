@@ -44,6 +44,7 @@ dependencies:
   freshchat_sdk: ^0.10.3
   url_launcher: ^6.1.6
   webview_flutter: ^4.0.7
+  html: ^0.15.2
 
 
 dev_dependencies:

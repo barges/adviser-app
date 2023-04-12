@@ -9,10 +9,10 @@ import 'package:zodiac/data/network/responses/articles_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 
 @Injectable(as: ZodiacArticlesRepository)
-class ZodiacAuthRepositoryImpl implements ZodiacArticlesRepository {
+class ZodiacArticlesRepositoryImpl implements ZodiacArticlesRepository {
   final ArticlesApi _api;
 
-  ZodiacAuthRepositoryImpl(this._api);
+  ZodiacArticlesRepositoryImpl(this._api);
 
   @override
   Future<ArticlesResponse?> getArticleList(
