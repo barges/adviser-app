@@ -11,6 +11,5 @@ class BalanceAndTransactionsState with _$BalanceAndTransactionsState {
     List<TransactionUiModel>? transactionsList,
     @Default(false) bool isVisibleUpButton,
     DateTime? dateCreate,
-    double? appBarHeight,
   }) = _BalanceAndTransactionsState;
 }

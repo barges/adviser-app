@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/models/articles/article.dart';
-import 'package:zodiac/data/network/requests/articles_request.dart';
+import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/responses/articles_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_state.dart';
@@ -14,6 +14,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   bool _isLoading = false;
   final ScrollController articlesScrollController = ScrollController();
   final ZodiacArticlesRepository _articlesRepository;
+  final List<Article> _articleList = [];
 
   ArticlesCubit(
     this._articlesRepository,
@@ -24,7 +25,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
 
   Future<void> _loadData() async {
     await getArticles();
-    WidgetsBinding.instance.scheduleFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (articlesScrollController.hasClients) {
         _checkIfNeedAndLoadData();
       }
@@ -46,24 +47,24 @@ class ArticlesCubit extends Cubit<ArticlesState> {
       return;
     }
 
+    if (refresh) {
+      _articleList.clear();
+      _count = null;
+      _offset = 0;
+    }
+
     try {
       _isLoading = true;
 
-      _offset = refresh ? 0 : _offset;
-      final ArticlesResponse? response =
-          await _articlesRepository.getArticleList(
-              request: ArticlesRequest(count: _limit, offset: _offset));
-      List<Article>? result = response?.result ?? [];
+      final ArticlesResponse? response = await _articlesRepository
+          .getArticleList(request: ListRequest(count: _limit, offset: _offset));
       _count = response?.count ?? 0;
       _offset = _offset + _limit;
 
-      final List<Article> articleList = refresh || state.articleList == null
-          ? <Article>[]
-          : List.of(state.articleList!);
-      articleList.addAll(result);
+      _articleList.addAll(response?.result ?? []);
 
       emit(state.copyWith(
-        articleList: articleList,
+        articleList: List.of(_articleList),
       ));
       _isLoading = false;
     } catch (e) {
@@ -73,19 +74,15 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   }
 
   void markAsRead(int articleId) {
-    if (state.articleList != null) {
-      final List<Article> articleList = state.articleList!;
-      final Article article =
-          articleList.firstWhere((article) => article.id == articleId);
-      if (!article.isRead) {
-        final Article articleAsRead = article.copyWith(isRead: true);
-        final replaceIndex = articleList.indexOf(article);
-        articleList
-            .replaceRange(replaceIndex, replaceIndex + 1, [articleAsRead]);
-        emit(state.copyWith(
-          articleList: articleList,
-        ));
-      }
+    final List<Article> articleList = List.of(state.articleList!);
+    final Article article =
+        articleList.firstWhere((article) => article.id == articleId);
+    if (!article.isRead) {
+      articleList[articleList.indexOf(article)] =
+          article.copyWith(isRead: true);
+      emit(state.copyWith(
+        articleList: articleList,
+      ));
     }
   }
 }

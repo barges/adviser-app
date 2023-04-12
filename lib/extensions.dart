@@ -18,6 +18,7 @@ const String datePattern7 = 'HH:mm';
 const String datePattern8 = 'MMM dd';
 const String datePattern9 = 'MMM dd, yyyy';
 const String datePattern10 = 'MMM. dd, yyyy HH:mm';
+const String datePattern11 = 'MMMM, yyyy';
 
 const String currencyPattern = '#,##0.00';
 

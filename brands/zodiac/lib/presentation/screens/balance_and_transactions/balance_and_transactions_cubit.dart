@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/models/payment/payment_information.dart';
 import 'package:zodiac/data/models/payment/transaction_ui_model.dart';
@@ -11,21 +11,40 @@ import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/responses/payments_list_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
+import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_state.dart';
+import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/label_widget.dart';
+import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/time_item_widget.dart';
+import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/transaction_statistic_widget.dart';
+import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/transaction_tile_widget.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
+
+const double appBarExtension = 52.0;
+const double startTilePosition = appBarExtension +
+    labelWidgetHeight +
+    paddingBottomTimeItem +
+    statisticWidgetHeight +
+    paddingottomStatisticWidget +
+    paddingTopTimeItem +
+    timeItemHeight +
+    paddingBottomTimeItem;
+const double internalItemTileHeight =
+    userAvatarDiameter + paddingBottomTile * 2;
+const double singleItemTileHeight = userAvatarDiameter + paddingTile * 2;
+const double correctionTilePositionEnd = 12.0;
 
 class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   final ZodiacMainCubit _mainCubit;
   final ZodiacUserRepository _userRepository;
+  final ScrollController scrollController = ScrollController();
+  late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
+  final List<PaymentInformation> _transactionsListData = [];
+  final _tilePositions = <DateTime, _TilePosition>{};
   final int _limit = 20;
   int _offset = 0;
   int? _count;
   bool _isLoading = false;
-  final ScrollController scrollController = ScrollController();
-  late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
-  late final StreamSubscription<double> _appBarHeightSubscription;
-  final List<PaymentInformation> _transactionsListData = [];
-  final _tilePositions = <DateTime, _TilePosition>{};
+  bool _isScrollUp = false;
 
   BalanceAndTransactionsCubit(
     this._mainCubit,
@@ -34,12 +53,6 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
     _updateUserBalanceSubscription =
         _mainCubit.userBalanceUpdateTrigger.listen((value) {
       emit(state.copyWith(userBalance: value));
-    });
-
-    _appBarHeightSubscription = _mainCubit.appBarHeightTrigger.listen((value) {
-      if (value != state.appBarHeight) {
-        emit(state.copyWith(appBarHeight: value));
-      }
     });
 
     scrollController.addListener(_scrollControllerListener);
@@ -65,6 +78,9 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
       ));
     }
 
+    _isScrollUp = scrollController.position.userScrollDirection ==
+        ScrollDirection.forward;
+
     emit(state.copyWith(
       dateCreate: _getCurrentScrollingDateCreate(
           scrollController.position.extentBefore),
@@ -80,7 +96,6 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   @override
   Future<void> close() async {
     _updateUserBalanceSubscription.cancel();
-    _appBarHeightSubscription.cancel();
     super.close();
   }
 
@@ -152,7 +167,7 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   }
 
   void setTilePositions(List<TransactionUiModel> items) {
-    int position = 333;
+    double position = startTilePosition;
     DateTime? date;
     for (var item in items) {
       item.when(
@@ -160,7 +175,11 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
           final itemHeight = _getTileHeight(data.length);
           _tilePositions[date!] =
               _TilePosition(position, position + itemHeight);
-          position = position + itemHeight + 23 + 24;
+          position = position +
+              itemHeight +
+              paddingTopTimeItem +
+              timeItemHeight +
+              paddingBottomTimeItem;
           return null;
         },
         separator: (dateCreate) {
@@ -172,24 +191,27 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   }
 
   DateTime? _getCurrentScrollingDateCreate(double extentBefore) {
-    final bool isAppBarHeightMax = state.appBarHeight != null
-        ? state.appBarHeight! >= AppConstants.appBarHeight * 2
-        : false;
+    double correctedExtentBefore =
+        extentBefore + (_isScrollUp ? appBarExtension : 0.0);
     final MapEntry<DateTime, _TilePosition>? entry = _tilePositions.entries
         .toList()
         .lastWhereOrNull((e) =>
-            e.value.start - (isAppBarHeightMax ? 55 : 0) < extentBefore &&
-            extentBefore < e.value.end + (isAppBarHeightMax ? -65 : -12));
+            e.value.start < correctedExtentBefore &&
+            correctedExtentBefore < e.value.end - correctionTilePositionEnd);
     return entry?.key;
   }
 
-  int _getTileHeight(int count) {
-    return count == 1 ? 80 : 56 * 2 + (count - 2) * 64 + 32;
+  double _getTileHeight(int count) {
+    return count == 1
+        ? singleItemTileHeight
+        : (userAvatarDiameter + paddingBottomTile) * 2 +
+            (count - 2) * internalItemTileHeight +
+            paddingTile * 2;
   }
 }
 
 class _TilePosition {
-  final int start;
-  final int end;
+  final double start;
+  final double end;
   const _TilePosition(this.start, this.end);
 }

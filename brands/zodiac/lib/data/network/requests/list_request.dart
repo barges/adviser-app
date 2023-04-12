@@ -5,8 +5,8 @@ part 'list_request.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class ListRequest extends AuthorizedRequest {
-  int count;
-  int offset;
+  final int count;
+  final int offset;
 
   ListRequest({required this.count, required this.offset}) : super();
 

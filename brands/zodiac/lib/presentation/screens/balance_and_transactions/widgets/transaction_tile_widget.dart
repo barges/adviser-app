@@ -5,9 +5,13 @@ import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/payment/payment_information.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
 
-class TransitionsTileWidget extends StatelessWidget {
+const paddingTile = AppConstants.horizontalScreenPadding;
+const paddingBottomTile = 8.0;
+const userAvatarDiameter = 48.0;
+
+class TransactionsTileWidget extends StatelessWidget {
   final List<PaymentInformation> items;
-  const TransitionsTileWidget({super.key, required this.items});
+  const TransactionsTileWidget({super.key, required this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +26,7 @@ class TransitionsTileWidget extends StatelessWidget {
       child: Column(
         children: List.generate(
           items.length,
-          (int index) => _TransitionWidget(
+          (int index) => _TransactionWidget(
             title: items[index].note,
             amount: items[index].amount,
             dateCreate: items[index].dateCreate,
@@ -35,14 +39,14 @@ class TransitionsTileWidget extends StatelessWidget {
   }
 }
 
-class _TransitionWidget extends StatelessWidget {
+class _TransactionWidget extends StatelessWidget {
   final String? title;
   final String? avatar;
   final double? amount;
   final DateTime? dateCreate;
   final bool isDivider;
 
-  const _TransitionWidget({
+  const _TransactionWidget({
     Key? key,
     this.title,
     this.amount,
@@ -58,7 +62,9 @@ class _TransitionWidget extends StatelessWidget {
         Row(
           children: [
             UserAvatar(
-                diameter: 48.0, withBorder: false, avatarUrl: avatar ?? ''),
+                diameter: userAvatarDiameter,
+                withBorder: false,
+                avatarUrl: avatar ?? ''),
             const SizedBox(
               width: 20.0,
             ),
@@ -115,7 +121,7 @@ class _TransitionWidget extends StatelessWidget {
         ),
         if (isDivider)
           const Divider(
-            height: 16.0,
+            height: paddingBottomTile * 2,
           ),
       ],
     );

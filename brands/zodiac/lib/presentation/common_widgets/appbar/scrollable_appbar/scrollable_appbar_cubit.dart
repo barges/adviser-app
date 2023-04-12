@@ -11,10 +11,6 @@ class ScrollableAppBarCubit extends Cubit<ScrollableAppBarState> {
     emit(state.copyWith(isWideAppBar: isWide));
   }
 
-  void setAppbarHeight(double height) {
-    _mainCubit.updateAppBarHeight(height);
-  }
-
   void closeErrorWidget() {
     _mainCubit.clearErrorMessage();
   }

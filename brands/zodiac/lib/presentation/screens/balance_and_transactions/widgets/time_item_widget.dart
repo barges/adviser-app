@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:zodiac/zodiac_extensions.dart';
 
+const timeItemHeight = 22.0;
+
 class TimeItemWidget extends StatelessWidget {
   final DateTime dateTime;
   const TimeItemWidget({
@@ -13,6 +15,7 @@ class TimeItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
+        height: timeItemHeight,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
             color: Theme.of(context).canvasColor),

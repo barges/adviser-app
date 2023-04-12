@@ -19,7 +19,6 @@ class ZodiacMainCubit extends Cubit<ZodiacMainState> {
   final PublishSubject<bool> unreadNotificationsCounterUpdateTrigger =
       PublishSubject();
   final PublishSubject<bool> updateNotificationsListTrigger = PublishSubject();
-  final BehaviorSubject<double> appBarHeightTrigger = BehaviorSubject();
 
   ZodiacMainCubit() : super(const ZodiacMainState());
 
@@ -69,9 +68,5 @@ class ZodiacMainCubit extends Cubit<ZodiacMainState> {
 
   void updateNotificationsList() {
     updateNotificationsListTrigger.add(true);
-  }
-
-  void updateAppBarHeight(double height) {
-    appBarHeightTrigger.add(height);
   }
 }

@@ -62,7 +62,6 @@ class ScrollableAppBar extends StatelessWidget {
           scrolledUnderElevation: 0.2,
           flexibleSpace: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
-            scrollableAppBarCubit.setAppbarHeight(constraints.maxHeight);
             scrollableAppBarCubit.setIsWideAppbar(constraints.maxHeight -
                         MediaQuery.of(context).padding.top >
                     _maxHeight - 1.0 &&

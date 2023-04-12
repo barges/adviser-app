@@ -13,9 +13,13 @@ import 'package:zodiac/presentation/common_widgets/empty_list_widget.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_cubit.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/label_widget.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/time_item_widget.dart';
-import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/transition_statistic_widget.dart';
-import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/transitions_tile_widget.dart';
+import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/transaction_statistic_widget.dart';
+import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/transaction_tile_widget.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
+
+const paddingTopTimeItem = 16.0;
+const paddingBottomTimeItem = 8.0;
+const paddingottomStatisticWidget = 24.0 - paddingTopTimeItem;
 
 class BalanceAndTransactionsScreen extends StatelessWidget {
   final UserBalance userBalance;
@@ -71,25 +75,10 @@ class BalanceAndTransactionsScreen extends StatelessWidget {
                           );
                         }),
                       ),
-                      Builder(builder: (context) {
-                        final List<TransactionUiModel>? transactionsList =
-                            context.select(
-                                (BalanceAndTransactionsCubit cubit) =>
-                                    cubit.state.transactionsList);
-                        if (transactionsList == null ||
-                            transactionsList.isEmpty) {
-                          return const SliverToBoxAdapter(
-                            child: SizedBox.shrink(),
-                          );
-                        } else {
-                          return const SliverPadding(
-                            padding: EdgeInsets.only(top: 16.0, bottom: 8.0),
-                            sliver: SliverToBoxAdapter(
-                              child: TransitionStatisticWidget(),
-                            ),
-                          );
-                        }
-                      }),
+                      SliverPersistentHeader(
+                        delegate: _DelegateLabelWidget(),
+                        pinned: true,
+                      ),
                       Builder(builder: (context) {
                         final List<TransactionUiModel>? transactionsList =
                             context.select(
@@ -108,18 +97,26 @@ class BalanceAndTransactionsScreen extends StatelessWidget {
                             sliver: SliverList(
                               delegate: SliverChildBuilderDelegate(
                                 (BuildContext context, int index) {
-                                  return transactionsList[index].when(
-                                      data: (data) => TransitionsTileWidget(
+                                  if (index == 0) {
+                                    return const Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom: paddingottomStatisticWidget),
+                                      child: TransactionStatisticWidget(),
+                                    );
+                                  }
+                                  return transactionsList[index - 1].when(
+                                      data: (data) => TransactionsTileWidget(
                                             items: data,
                                           ),
                                       separator: (dateCreate) => Padding(
                                             padding: const EdgeInsets.only(
-                                                top: 16.0, bottom: 8.0),
+                                                top: paddingTopTimeItem,
+                                                bottom: paddingBottomTimeItem),
                                             child: TimeItemWidget(
                                                 dateTime: dateCreate!),
                                           ));
                                 },
-                                childCount: transactionsList.length,
+                                childCount: transactionsList.length + 1,
                               ),
                             ),
                           );
@@ -142,20 +139,6 @@ class BalanceAndTransactionsScreen extends StatelessWidget {
                       }),
                     ],
                   ),
-                  Builder(builder: (context) {
-                    final DateTime? dateCreate = context.select(
-                        (BalanceAndTransactionsCubit cubit) =>
-                            cubit.state.dateCreate);
-                    final double? appBarHeight = context.select(
-                        (BalanceAndTransactionsCubit cubit) =>
-                            cubit.state.appBarHeight);
-                    return dateCreate != null && appBarHeight != null
-                        ? Positioned(
-                            top: appBarHeight + 8.0,
-                            child: LabelWidget(dateTime: dateCreate),
-                          )
-                        : const SizedBox.shrink();
-                  }),
                 ],
               ),
             ),
@@ -192,8 +175,10 @@ class _FloatingActionButton extends StatelessWidget {
                   ),
                 ),
                 child: const _UpButtonIcon(),
-                onPressed: () =>
-                    balanceAndTransactionsCubit.scrollController.jumpTo(0.0),
+                onPressed: () => balanceAndTransactionsCubit.scrollController
+                    .animateTo(0.0,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.linear),
               ),
             )
           : const SizedBox.shrink();
@@ -212,6 +197,37 @@ class _UpButtonIcon extends StatelessWidget {
         width: 24.0,
         Assets.vectors.arrowDown.path,
       ),
+    );
+  }
+}
+
+class _DelegateLabelWidget extends SliverPersistentHeaderDelegate {
+  final double _extent = labelWidgetHeight + paddingBottomTimeItem;
+
+  @override
+  double get maxExtent => _extent;
+
+  @override
+  double get minExtent => _extent;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
+  }
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      alignment: Alignment.bottomCenter,
+      height: maxExtent,
+      child: Builder(builder: (context) {
+        final DateTime? dateCreate = context.select(
+            (BalanceAndTransactionsCubit cubit) => cubit.state.dateCreate);
+        return dateCreate != null
+            ? LabelWidget(dateTime: dateCreate)
+            : const SizedBox.shrink();
+      }),
     );
   }
 }
