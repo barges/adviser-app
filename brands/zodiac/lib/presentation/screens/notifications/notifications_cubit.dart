@@ -23,9 +23,11 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   final ScrollController scrollController = ScrollController();
 
   late final StreamSubscription<bool> _updateNotificationsListSubscription;
+  late final StreamSubscription<bool> _internetConnectionSubscription;
 
   bool _isLoading = false;
   bool _hasMore = true;
+  bool _firstLoaded = false;
   List<NotificationItem> _notificationsList = [];
 
   NotificationsCubit(this._userRepository, this._zodiacMainCubit,
@@ -44,17 +46,27 @@ class NotificationsCubit extends Cubit<NotificationsState> {
         _zodiacMainCubit.updateNotificationsListTrigger.listen((value) {
       getNotifications(refresh: true);
     });
+
+    _internetConnectionSubscription =
+        _connectivityService.connectivityStream.listen((event) {
+      if (event && !_firstLoaded) {
+        _getFirstNotifications();
+      }
+    });
   }
 
   @override
   Future<void> close() async {
     _updateNotificationsListSubscription.cancel();
+    _internetConnectionSubscription.cancel();
     super.close();
   }
 
   Future<void> _getFirstNotifications() async {
     await getNotifications();
-    _zodiacMainCubit.updateUnreadNotificationsCounter();
+    if (_firstLoaded) {
+      _zodiacMainCubit.updateUnreadNotificationsCounter();
+    }
   }
 
   Future<void> getNotifications({bool refresh = false}) async {
@@ -81,6 +93,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
             emit(state.copyWith(notifications: List.of(_notificationsList)));
           }
         }
+        _firstLoaded = true;
       }
     } catch (e) {
       logger.d(e);
