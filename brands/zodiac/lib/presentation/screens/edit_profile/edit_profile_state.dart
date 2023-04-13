@@ -16,6 +16,7 @@ class EditProfileState with _$EditProfileState {
     @Default('') String advisorMainLocale,
     @Default([]) List<CategoryInfo> advisorCategories,
     @Default([]) List<CategoryInfo> advisorMainCategory,
+    @Default(true) bool canRefresh,
     File? avatar,
   }) = _EditProfileState;
 }
