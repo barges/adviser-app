@@ -51,11 +51,6 @@ class ReviewsCubit extends Cubit<ReviewsState> {
 
   Future<void> _loadData() async {
     await _getReviews();
-    WidgetsBinding.instance.scheduleFrameCallback((_) {
-      if (reviewScrollController.hasClients) {
-        _checkIfNeedAndLoadData();
-      }
-    });
   }
 
   void _scrollControllerListener() {
@@ -74,28 +69,30 @@ class ReviewsCubit extends Cubit<ReviewsState> {
     }
 
     try {
-      _isLoading = true;
-      int? expertId = _zodiacCacheManager.getUid();
-      if (expertId != null && await _connectivityService.checkConnection()) {
-        if (refresh) {
-          _reviewList.clear();
-          _count = null;
-          _offset = 0;
+      if (!_isLoading) {
+        _isLoading = true;
+        int? expertId = _zodiacCacheManager.getUid();
+        if (expertId != null && await _connectivityService.checkConnection()) {
+          if (refresh) {
+            _reviewList.clear();
+            _count = null;
+            _offset = 0;
+          }
+          final reviewsRequest = ListRequest(count: _limit, offset: _offset);
+          ReviewsResponse? response =
+              await _userRepository.getReviews(reviewsRequest);
+          List<ZodiacReviewItem>? result = response?.result ?? [];
+
+          _count = response?.count ?? 0;
+          _offset = _offset + _limit;
+
+          _reviewList.addAll(result);
+
+          emit(state.copyWith(
+            reviewList: List.from(_reviewList),
+          ));
+          _firstLoaded = true;
         }
-        final reviewsRequest = ListRequest(count: _limit, offset: _offset);
-        ReviewsResponse? response =
-            await _userRepository.getReviews(reviewsRequest);
-        List<ZodiacReviewItem>? result = response?.result ?? [];
-
-        _count = response?.count ?? 0;
-        _offset = _offset + _limit;
-
-        _reviewList.addAll(result);
-
-        emit(state.copyWith(
-          reviewList: List.from(_reviewList),
-        ));
-        _firstLoaded = true;
       }
     } catch (e) {
       logger.d(e);

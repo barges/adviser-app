@@ -36,74 +36,56 @@ class ReviewsScreen extends StatelessWidget {
               top: false,
               child: Builder(
                 builder: (context) {
-                  final bool internetConnectionIsAvailable = context.select(
-                      (MainCubit cubit) =>
-                          cubit.state.internetConnectionIsAvailable);
                   return RefreshIndicator(
                     onRefresh: reviewsCubit.refreshReviews,
                     edgeOffset: AppConstants.appBarHeight * 2 +
                         MediaQuery.of(context).padding.top,
                     child: CustomScrollView(
                       controller: reviewsCubit.reviewScrollController,
-                      physics: internetConnectionIsAvailable
-                          ? const ClampingScrollPhysics()
-                              .applyTo(const AlwaysScrollableScrollPhysics())
-                          : const NeverScrollableScrollPhysics(),
+                      physics: const ClampingScrollPhysics()
+                          .applyTo(const AlwaysScrollableScrollPhysics()),
                       slivers: [
                         ScrollableAppBar(
                           title: SZodiac.of(context).reviewsZodiac,
+                          needShowError: true,
                         ),
                         Builder(builder: (context) {
-                          if (!internetConnectionIsAvailable) {
+                          if (reviewList != null && reviewList.isNotEmpty) {
+                            return SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (BuildContext context, int index) {
+                                  return Padding(
+                                    padding: EdgeInsets.fromLTRB(
+                                        16.0,
+                                        index == 0 ? 16.0 : 0.0,
+                                        16.0,
+                                        index != (reviewList.length - 1)
+                                            ? 8.0
+                                            : 16.0),
+                                    child: ReviewCardWidget(
+                                        item: reviewList[index]),
+                                  );
+                                },
+                                childCount: reviewList.length,
+                              ),
+                            );
+                          } else if (reviewList?.isEmpty == true) {
                             return SliverFillRemaining(
-                              hasScrollBody: false,
                               child: Column(
+                                mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
-                                  NoConnectionWidget(),
+                                children: [
+                                  EmptyListWidget(
+                                    title:
+                                        SZodiac.of(context).noReviewsYetZodiac,
+                                    label: SZodiac.of(context)
+                                        .reviewsFromYourClientsWillAppearHereZodiac,
+                                  ),
                                 ],
                               ),
                             );
                           } else {
-                            if (reviewList != null && reviewList.isNotEmpty) {
-                              return SliverList(
-                                delegate: SliverChildBuilderDelegate(
-                                  (BuildContext context, int index) {
-                                    return Padding(
-                                      padding: EdgeInsets.fromLTRB(
-                                          16.0,
-                                          index == 0 ? 16.0 : 0.0,
-                                          16.0,
-                                          index != (reviewList.length - 1)
-                                              ? 8.0
-                                              : 16.0),
-                                      child: ReviewCardWidget(
-                                          item: reviewList[index]),
-                                    );
-                                  },
-                                  childCount: reviewList.length,
-                                ),
-                              );
-                            } else if (reviewList?.isEmpty == true) {
-                              return SliverFillRemaining(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    EmptyListWidget(
-                                      title: SZodiac.of(context)
-                                          .noReviewsYetZodiac,
-                                      label: SZodiac.of(context)
-                                          .reviewsFromYourClientsWillAppearHereZodiac,
-                                    ),
-                                  ],
-                                ),
-                              );
-                            } else {
-                              return const SliverFillRemaining(
-                                  child: SizedBox());
-                            }
+                            return const SliverFillRemaining(child: SizedBox());
                           }
                         })
                       ],
