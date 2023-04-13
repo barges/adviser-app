@@ -54,12 +54,9 @@ class FreshChatServiceImpl extends FreshChatService {
       deviceId = iosInfo.identifierForVendor;
     }
 
-    final String? userId = userInfo?.userId;
-    Freshchat.identifyUser(
-      externalId: userId ?? '',
-    );
-
     final String restoreId = userInfo?.restoreId ?? await getRestoreId() ?? '';
+    final String? userId = userInfo?.userId;
+
     final String? profileName = userInfo?.profileName;
     final String? email = userInfo?.email;
 

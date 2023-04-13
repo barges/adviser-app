@@ -117,6 +117,10 @@ class BrandManager {
     return _cachingManager.getCurrentBrand();
   }
 
+  Future<void> setCurrentBrand(BaseBrand brand) async {
+   await _cachingManager.saveCurrentBrand(brand);
+  }
+
   static List<String> allBrands = [
     Assets.images.brands.bitWine.path,
     Assets.images.brands.purpleGarden.path,
