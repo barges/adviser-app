@@ -108,8 +108,11 @@ class MainPartInfoWidget extends StatelessWidget {
                     title: mainCategory.firstOrNull?.name ??
                         detailedUserInfo?.details?.specializing ??
                         '',
-                    onTap: () =>
-                        editProfileCubit.goToSelectMainCategory(context),
+                    onTap: mainCategory.isNotEmpty
+                        ? () {
+                            editProfileCubit.goToSelectMainCategory(context);
+                          }
+                        : null,
                   );
                 }),
                 const SizedBox(
