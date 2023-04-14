@@ -101,6 +101,12 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     );
   }
 
+  void goToBalanceAndTransactions(BuildContext context) {
+    context.push(
+      route: ZodiacBalanceAndTransactions(userBalance: state.userBalance),
+    );
+  }
+
   void goToReviews(BuildContext context) {
     context.push(route: const ZodiacReviews());
   }
@@ -148,16 +154,21 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   }
 
   Future<void> _getUnreadNotificationsCount() async {
-    NotificationsResponse notificationsResponse =
-        await _userRepository.getNotificationsList(
-      NotificationsRequest(count: 1, offset: 0),
-    );
-    if (notificationsResponse.errorCode == 0) {
-      logger.d(notificationsResponse.unreadCount);
-      emit(state.copyWith(
-          unreadedNotificationsCount: notificationsResponse.unreadCount ?? 0));
-    } else {
-      _updateErrorMessage(notificationsResponse.getErrorMessage());
+    try {
+      NotificationsResponse notificationsResponse =
+          await _userRepository.getNotificationsList(
+        NotificationsRequest(count: 1, offset: 0),
+      );
+      if (notificationsResponse.errorCode == 0) {
+        logger.d(notificationsResponse.unreadCount);
+        emit(state.copyWith(
+            unreadedNotificationsCount:
+                notificationsResponse.unreadCount ?? 0));
+      } else {
+        _updateErrorMessage(notificationsResponse.getErrorMessage());
+      }
+    } catch (e) {
+      logger.d(e);
     }
   }
 

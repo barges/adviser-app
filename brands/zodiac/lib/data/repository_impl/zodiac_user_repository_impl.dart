@@ -13,6 +13,7 @@ import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
 import 'package:zodiac/data/network/requests/update_locale_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
+import 'package:zodiac/data/network/responses/balance_response.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
 import 'package:zodiac/data/network/responses/expert_details_response.dart';
@@ -88,6 +89,11 @@ class ZodiacUserRepositoryImpl implements ZodiacUserRepository {
   @override
   Future<PaymentsListResponse> getPaymentsList(ListRequest request) async {
     return await _userApi.getPaymentsList(request);
+  }
+
+  @override
+  Future<BalanceResponse> getBalance(AuthorizedRequest request) async {
+    return await _userApi.getBalance(request: request);
   }
 
   @override

@@ -26,10 +26,12 @@ class ScrollableAppBar extends StatelessWidget {
   final VoidCallback? actionOnClick;
   final VoidCallback? backOnTap;
   final bool needShowError;
+  final Widget? label;
 
   const ScrollableAppBar({
     Key? key,
     required this.title,
+    this.label,
     this.actionOnClick,
     this.backOnTap,
     this.needShowError = false,
@@ -128,6 +130,7 @@ class ScrollableAppBar extends StatelessWidget {
                               ),
                             );
                           }),
+                          if (label != null) label!,
                           if (actionOnClick != null)
                             Opacity(
                               opacity: isOnline ? 1.0 : 0.4,
@@ -179,11 +182,12 @@ class ScrollableAppBar extends StatelessWidget {
                                             width: AppConstants.iconSize,
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 3.0),
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 4.0),
                                             child: SvgPicture.asset(
                                               currentBrand.iconPath,
                                             ),
+                                          ),
+                                          const SizedBox(
+                                            width: 4.0,
                                           ),
                                           Text(
                                             title,

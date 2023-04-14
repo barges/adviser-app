@@ -12,7 +12,7 @@ class PaymentInformation with _$PaymentInformation {
   @JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)
   const factory PaymentInformation({
     int? id,
-    int? dateCreate,
+    @JsonKey(fromJson: _toDateTime) DateTime? dateCreate,
     int? source,
     double? fee,
     double? amount,
@@ -24,3 +24,6 @@ class PaymentInformation with _$PaymentInformation {
   factory PaymentInformation.fromJson(Map<String, dynamic> json) =>
       _$PaymentInformationFromJson(json);
 }
+
+DateTime? _toDateTime(int? value) =>
+    value != null ? DateTime.fromMillisecondsSinceEpoch(value * 1000) : null;

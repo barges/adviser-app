@@ -124,6 +124,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
     if (mainIsDone && localesDescriptionsIsDone) {
       _internetConnectionSubscription.cancel();
+      emit(state.copyWith(canRefresh: false));
     }
   }
 
