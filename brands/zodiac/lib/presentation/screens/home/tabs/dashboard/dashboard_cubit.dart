@@ -20,6 +20,7 @@ class DashboardCubit extends Cubit<DashboardState> {
     _userDetailsListener = _cacheManager.listenDetailedUserInfo((value) {
       emit(state.copyWith(userPersonalInfo: value.details));
     });
+
     _updateUserBalanceSubscription =
         _mainCubit.userBalanceUpdateTrigger.listen((value) {
       emit(state.copyWith(userBalance: value));

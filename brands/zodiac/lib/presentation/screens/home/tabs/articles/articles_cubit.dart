@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:zodiac/data/models/articles/article.dart';
 import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/responses/articles_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_state.dart';
+import 'package:zodiac/zodiac.dart';
 
 class ArticlesCubit extends Cubit<ArticlesState> {
   final int _limit = 10;
@@ -14,18 +18,36 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   bool _isLoading = false;
   final ScrollController articlesScrollController = ScrollController();
   final ZodiacArticlesRepository _articlesRepository;
+  final BrandManager _brandManager;
+
+  StreamSubscription? _currentBrandSubscription;
   final List<Article> _articleList = [];
 
   ArticlesCubit(
     this._articlesRepository,
+    this._brandManager,
   ) : super(const ArticlesState()) {
+
+    if (_brandManager.getCurrentBrand().brandAlias == ZodiacBrand.alias) {
+      _loadData();
+    } else {
+      _currentBrandSubscription =
+          _brandManager.listenCurrentBrandStream((value) async {
+            if(value.brandAlias == ZodiacBrand.alias) {
+              await _loadData();
+              _currentBrandSubscription?.cancel();
+            }
+          });
+    }
+
     articlesScrollController.addListener(_scrollControllerListener);
-    _loadData();
+
   }
 
   @override
   Future<void> close() async {
     articlesScrollController.dispose();
+    _currentBrandSubscription?.cancel();
     super.close();
   }
 

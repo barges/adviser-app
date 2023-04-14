@@ -61,7 +61,7 @@ class EditProfileScreen extends StatelessWidget {
                         title: SZodiac.of(context).editProfileZodiac,
                         needShowError: true,
                         actionOnClick: () async {
-                          await confirmChanges(
+                          await _confirmChanges(
                             context,
                             editProfileCubit,
                             zodiacMainCubit,
@@ -96,7 +96,7 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 
-  Future<void> confirmChanges(
+  Future<void> _confirmChanges(
     BuildContext context,
     EditProfileCubit editProfileCubit,
     ZodiacMainCubit zodiacMainCubit,
@@ -120,6 +120,11 @@ class EditProfileScreen extends StatelessWidget {
       }
     } else if (isSaved == false) {
       editProfileCubit.needUpdateAccount = true;
+    } else {
+      context.pop();
+      if (editProfileCubit.needUpdateAccount) {
+        zodiacMainCubit.updateAccount();
+      }
     }
   }
 }

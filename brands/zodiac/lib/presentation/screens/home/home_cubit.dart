@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
@@ -17,6 +18,7 @@ import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/presentation/screens/home/home_state.dart';
 import 'package:zodiac/presentation/screens/home/tabs_types.dart';
+import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -30,11 +32,14 @@ class HomeCubit extends Cubit<HomeState> {
   final ZodiacArticlesRepository _articlesRepository;
   final ZodiacUserRepository _userRepository;
 
+  final BrandManager _brandManager;
   final ZodiacCachingManager _cacheManager;
   final ZodiacMainCubit _zodiacMainCubit;
   final MainCubit _globalMainCubit;
   final WebSocketManager _webSocketManager;
   final ConnectivityService _connectivityService;
+
+  StreamSubscription? _currentBrandSubscription;
 
   late final StreamSubscription _userStatusSubscription;
   late final StreamSubscription<bool> _updateArticleCountSubscription;
@@ -46,6 +51,7 @@ class HomeCubit extends Cubit<HomeState> {
   bool _appInForeground = true;
 
   HomeCubit(
+    this._brandManager,
     this._cacheManager,
     this._zodiacMainCubit,
     this._webSocketManager,
@@ -57,7 +63,19 @@ class HomeCubit extends Cubit<HomeState> {
     routes = tabsList.map((e) => _getPage(e)).toList();
     _webSocketManager.connect();
 
-    checkAndSaveAllLocales();
+    if (_brandManager.getCurrentBrand().brandAlias == ZodiacBrand.alias) {
+      checkAndSaveAllLocales();
+      getArticleCount();
+    } else {
+      _currentBrandSubscription =
+          _brandManager.listenCurrentBrandStream((value) async {
+        if (value.brandAlias == ZodiacBrand.alias) {
+          await checkAndSaveAllLocales();
+          await getArticleCount();
+          _currentBrandSubscription?.cancel();
+        }
+      });
+    }
 
     emit(
       state.copyWith(
@@ -96,8 +114,6 @@ class HomeCubit extends Cubit<HomeState> {
         _webSocketManager.connect();
       }
     });
-
-    getArticleCount();
   }
 
   Future<void> checkAndSaveAllLocales() async {
@@ -125,6 +141,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   @override
   Future<void> close() {
+    _currentBrandSubscription?.cancel();
     _updateArticleCountSubscription.cancel();
     _userStatusSubscription.cancel();
     _appLifecycleSubscription.cancel();
@@ -134,7 +151,9 @@ class HomeCubit extends Cubit<HomeState> {
 
   changeTabIndex(int index) {
     emit(state.copyWith(tabPositionIndex: index));
-    if (_firstOpenArticlesTab && index == TabsTypes.articles.index) {
+    if (_firstOpenArticlesTab &&
+        index == TabsTypes.articles.index &&
+        (state.articlesUnreadCount ?? 0) > 0) {
       getArticleCount(update: 1);
       _firstOpenArticlesTab = false;
     }

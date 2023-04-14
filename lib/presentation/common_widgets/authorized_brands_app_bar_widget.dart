@@ -3,20 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 
 class AuthorizedBrandsAppBarWidget extends StatelessWidget {
-
   ///Need not const for updates
   AuthorizedBrandsAppBarWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final BaseBrand currentBrand = context.select((MainCubit cubit) =>
+    context.select((MainCubit cubit) =>
         cubit.state.currentBrand ?? BrandManager.defaultBrand);
-    final List<BaseBrand> brands = BrandManager.authorizedBrands(currentBrand);
+    final List<BaseBrand> brands =
+        globalGetIt.get<BrandManager>().authorizedBrands();
 
     return Stack(
         textDirection: TextDirection.rtl,
