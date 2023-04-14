@@ -23,6 +23,12 @@ class ArticlesCubit extends Cubit<ArticlesState> {
     _loadData();
   }
 
+  @override
+  Future<void> close() async {
+    articlesScrollController.dispose();
+    super.close();
+  }
+
   Future<void> _loadData() async {
     await getArticles();
     WidgetsBinding.instance.addPostFrameCallback((_) {

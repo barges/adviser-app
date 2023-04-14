@@ -1,9 +1,12 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/models/payment/payment_information.dart';
 import 'package:zodiac/data/models/payment/transaction_ui_model.dart';
@@ -19,7 +22,7 @@ import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/tra
 import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/transaction_tile_widget.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
-const double appBarExtension = 52.0;
+const double appBarExtension = AppConstants.appBarHeight;
 const double startTilePosition = appBarExtension +
     labelWidgetHeight +
     paddingBottomTimeItem +
@@ -38,6 +41,8 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   final ZodiacUserRepository _userRepository;
   final ScrollController scrollController = ScrollController();
   late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
+  late final BehaviorSubject _scrollStream = BehaviorSubject<double>();
+  late final StreamSubscription _scrollSubscription;
   final List<PaymentInformation> _transactionsListData = [];
   final _tilePositions = <DateTime, _TilePosition>{};
   final int _limit = 20;
@@ -56,6 +61,17 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
     });
 
     scrollController.addListener(_scrollControllerListener);
+
+    _scrollSubscription = _scrollStream
+        .debounceTime(const Duration(milliseconds: 50))
+        .listen((extentBefore) async {
+      DateTime? dateCreate = await compute(_getCurrentScrollingDateCreate,
+          [extentBefore, _tilePositions, _isScrollUp]);
+      emit(state.copyWith(
+        dateCreate: dateCreate,
+      ));
+    });
+
     _loadData();
   }
 
@@ -81,10 +97,7 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
     _isScrollUp = scrollController.position.userScrollDirection ==
         ScrollDirection.forward;
 
-    emit(state.copyWith(
-      dateCreate: _getCurrentScrollingDateCreate(
-          scrollController.position.extentBefore),
-    ));
+    _scrollStream.add(scrollController.position.extentBefore);
   }
 
   void _checkIfNeedAndLoadData() {
@@ -96,6 +109,8 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   @override
   Future<void> close() async {
     _updateUserBalanceSubscription.cancel();
+    _scrollSubscription.cancel();
+    scrollController.dispose();
     super.close();
   }
 
@@ -120,10 +135,9 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
       _offset = _offset + _limit;
 
       _transactionsListData.addAll(response.result ?? []);
-      final Map<DateTime, List<PaymentInformation>> transactionsMap =
-          _toTransactionsMapItem(_transactionsListData);
       final List<TransactionUiModel> transactionUiModelsList =
-          _toTransactionUiModels(transactionsMap);
+          await compute(_toTransactionUiModels, _transactionsListData);
+
       setTilePositions(transactionUiModelsList);
 
       emit(state.copyWith(
@@ -134,36 +148,6 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
       _isLoading = false;
       logger.d(e);
     }
-  }
-
-  Map<DateTime, List<PaymentInformation>> _toTransactionsMapItem(
-      List<PaymentInformation> data) {
-    final Map<DateTime, List<PaymentInformation>> transactions = {};
-    DateTime? dateCreate;
-    List<PaymentInformation> items = [];
-    for (var item in data) {
-      if (item.dateCreate == null) continue;
-
-      if (dateCreate?.day != item.dateCreate?.day ||
-          dateCreate?.month != item.dateCreate?.month ||
-          dateCreate?.year != item.dateCreate?.year) {
-        items = [];
-        dateCreate = item.dateCreate;
-        transactions[dateCreate!] = items;
-      }
-      items.add(item);
-    }
-    return transactions;
-  }
-
-  List<TransactionUiModel> _toTransactionUiModels(
-      Map<DateTime, List<PaymentInformation>> items) {
-    final uiModelItems = <TransactionUiModel>[];
-    for (var entry in items.entries) {
-      uiModelItems.add(TransactionUiModel.separator(entry.key));
-      uiModelItems.add(TransactionUiModel.data(entry.value));
-    }
-    return uiModelItems;
   }
 
   void setTilePositions(List<TransactionUiModel> items) {
@@ -190,17 +174,6 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
     }
   }
 
-  DateTime? _getCurrentScrollingDateCreate(double extentBefore) {
-    double correctedExtentBefore =
-        extentBefore + (_isScrollUp ? appBarExtension : 0.0);
-    final MapEntry<DateTime, _TilePosition>? entry = _tilePositions.entries
-        .toList()
-        .lastWhereOrNull((e) =>
-            e.value.start < correctedExtentBefore &&
-            correctedExtentBefore < e.value.end - correctionTilePositionEnd);
-    return entry?.key;
-  }
-
   double _getTileHeight(int count) {
     return count == 1
         ? singleItemTileHeight
@@ -214,4 +187,41 @@ class _TilePosition {
   final double start;
   final double end;
   const _TilePosition(this.start, this.end);
+}
+
+List<TransactionUiModel> _toTransactionUiModels(List<PaymentInformation> data) {
+  final uiModelItems = <TransactionUiModel>[];
+  DateTime? dateCreate;
+  List<PaymentInformation> items = [];
+  for (var item in data) {
+    if (item.dateCreate == null) continue;
+
+    if (dateCreate?.day != item.dateCreate?.day ||
+        dateCreate?.month != item.dateCreate?.month ||
+        dateCreate?.year != item.dateCreate?.year) {
+      items = [];
+      dateCreate = item.dateCreate;
+      uiModelItems.add(TransactionUiModel.separator(dateCreate));
+      uiModelItems.add(TransactionUiModel.data(items));
+    }
+    items.add(item);
+  }
+  return uiModelItems;
+}
+
+DateTime? _getCurrentScrollingDateCreate(List<dynamic> params) {
+  double extentBefore = params[0];
+  Map<DateTime, _TilePosition> tilePositions = params[1];
+  bool isScrollUp = params[2];
+  double correctedExtentBefore =
+      extentBefore + (isScrollUp ? appBarExtension : 0.0);
+  if (correctedExtentBefore < startTilePosition) {
+    return null;
+  }
+  final MapEntry<DateTime, _TilePosition>? entry = tilePositions.entries
+      .toList()
+      .lastWhereOrNull((e) =>
+          e.value.start < correctedExtentBefore &&
+          correctedExtentBefore < e.value.end - correctionTilePositionEnd);
+  return entry?.key;
 }
