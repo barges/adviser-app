@@ -41,7 +41,7 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   final ZodiacUserRepository _userRepository;
   final ScrollController scrollController = ScrollController();
   late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
-  late final BehaviorSubject _scrollStream = BehaviorSubject<double>();
+  late final PublishSubject _scrollStream = PublishSubject<double>();
   late final StreamSubscription _scrollSubscription;
   final List<PaymentInformation> _transactionsListData = [];
   final _tilePositions = <DateTime, _TilePosition>{};
@@ -63,7 +63,7 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
     scrollController.addListener(_scrollControllerListener);
 
     _scrollSubscription = _scrollStream
-        .debounceTime(const Duration(milliseconds: 50))
+        .throttleTime(const Duration(milliseconds: 500), trailing: true)
         .listen((extentBefore) async {
       DateTime? dateCreate = await compute(_getCurrentScrollingDateCreate,
           [extentBefore, _tilePositions, _isScrollUp]);
