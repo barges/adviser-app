@@ -552,6 +552,26 @@ class SZodiac {
     );
   }
 
+  /// `No transactions, yet`
+  String get noTransactionsYetZodiac {
+    return Intl.message(
+      'No transactions, yet',
+      name: 'noTransactionsYetZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your transactions history will appear here`
+  String get yourTransactionsHistoryWillAppearHereZodiac {
+    return Intl.message(
+      'Your transactions history will appear here',
+      name: 'yourTransactionsHistoryWillAppearHereZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `😱 Oops! Your login details seem to be incorrect. Give it another try, or tap Reset Password.`
   String
       get oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac {

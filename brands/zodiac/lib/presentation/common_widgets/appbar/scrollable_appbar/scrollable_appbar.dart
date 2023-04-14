@@ -5,13 +5,11 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
-import 'package:zodiac/data/models/app_error/app_error.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar_cubit.dart';
@@ -28,10 +26,12 @@ class ScrollableAppBar extends StatelessWidget {
   final VoidCallback? actionOnClick;
   final VoidCallback? backOnTap;
   final bool needShowError;
+  final Widget? label;
 
   const ScrollableAppBar({
     Key? key,
     required this.title,
+    this.label,
     this.actionOnClick,
     this.backOnTap,
     this.needShowError = false,
@@ -130,6 +130,7 @@ class ScrollableAppBar extends StatelessWidget {
                               ),
                             );
                           }),
+                          if (label != null) label!,
                           if (actionOnClick != null)
                             Opacity(
                               opacity: isOnline ? 1.0 : 0.4,
@@ -181,11 +182,12 @@ class ScrollableAppBar extends StatelessWidget {
                                             width: AppConstants.iconSize,
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 3.0),
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 4.0),
                                             child: SvgPicture.asset(
                                               currentBrand.iconPath,
                                             ),
+                                          ),
+                                          const SizedBox(
+                                            width: 4.0,
                                           ),
                                           Text(
                                             title,

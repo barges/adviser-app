@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:zodiac/infrastructure/routing/route_paths.dart';
 import 'package:zodiac/presentation/screens/article_details_screen/article_details_screen.dart';
+import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart';
 import 'package:zodiac/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'package:zodiac/presentation/screens/gallery/gallery_pictures_screen.dart';
@@ -89,6 +90,11 @@ const zodiacRoute = AutoRoute(
       page: ReviewsScreen,
       path: RoutePathsZodiac.reviewsScreen,
       name: RoutePathsZodiac.reviewsScreen,
+    ),
+    AutoRoute(
+      page: BalanceAndTransactionsScreen,
+      path: RoutePathsZodiac.balanceAndTransactionsScreen,
+      name: RoutePathsZodiac.balanceAndTransactionsScreen,
     ),
     AutoRoute(
       page: SupportScreen,

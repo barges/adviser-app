@@ -86,7 +86,8 @@ class ReviewsPartWidget extends StatelessWidget {
               return TileWidget(
                 title: SZodiac.of(context).balanceTransactionsZodiac,
                 iconSVGPath: Assets.zodiac.transactionsIcon.path,
-                onTap: () {},
+                onTap: () =>
+                    zodiacAccountCubit.goToBalanceAndTransactions(context),
                 widget: Text(
                   userBalance.toString(),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(

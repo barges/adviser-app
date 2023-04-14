@@ -92,7 +92,7 @@ class NotificationsScreen extends StatelessWidget {
                                     ),
                                   ),
                                 )
-                          : const SliverToBoxAdapter(
+                          : const SliverFillRemaining(
                               child: SizedBox.shrink(),
                             )
                       : SliverFillRemaining(
