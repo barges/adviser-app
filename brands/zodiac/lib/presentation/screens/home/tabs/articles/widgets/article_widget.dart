@@ -54,9 +54,10 @@ class ArticleWidget extends StatelessWidget {
                   .format(DateTime.fromMillisecondsSinceEpoch(
                       (article.dateCreate ?? 0) * 1000))
                   .parseDateTimePattern2,
-              style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: Theme.of(context).shadowColor),
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    fontSize: 12.0,
+                    color: Theme.of(context).shadowColor,
+                  ),
             ),
           ),
           Padding(

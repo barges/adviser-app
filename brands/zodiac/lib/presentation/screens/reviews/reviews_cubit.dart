@@ -28,7 +28,7 @@ class ReviewsCubit extends Cubit<ReviewsState> {
 
   Future<void> _loadData() async {
     await _getReviews();
-    WidgetsBinding.instance.scheduleFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (reviewScrollController.hasClients) {
         _checkIfNeedAndLoadData();
       }
