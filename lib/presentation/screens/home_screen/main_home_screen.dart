@@ -1,16 +1,16 @@
-import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/main_state.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
 import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 import 'package:shared_advisor_interface/services/fresh_chat_service.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class MainHomeScreen extends StatefulWidget {
   const MainHomeScreen({Key? key}) : super(key: key);
@@ -34,7 +34,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => MainHomeScreenCubit(
-        globalGetIt.get<GlobalCachingManager>(),
+        globalGetIt.get<BrandManager>(),
       ),
       child: Builder(builder: (context) {
         final MainHomeScreenCubit homeScreenCubit =

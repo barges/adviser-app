@@ -8,10 +8,10 @@ import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/infrastructure/di/inject_config.dart';
 import 'package:fortunica/presentation/common_widgets/brand_drawer_item/fortunica_drawer_item_cubit.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 
@@ -28,7 +28,7 @@ class FortunicaDrawerItem extends StatelessWidget {
     return BlocProvider(
       create: (_) => FortunicaDrawerItemCubit(
         fortunicaGetIt.get<FortunicaAuthRepository>(),
-        fortunicaGetIt.get<GlobalCachingManager>(),
+        fortunicaGetIt.get<BrandManager>(),
         fortunicaGetIt.get<FortunicaCachingManager>(),
       ),
       child: Builder(builder: (context) {

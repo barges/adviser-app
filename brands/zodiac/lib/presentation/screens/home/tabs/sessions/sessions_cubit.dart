@@ -1,16 +1,23 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:zodiac/data/models/chats/chat_item_zodiac.dart';
 import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/responses/chat_entities_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_chats_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_state.dart';
+import 'package:zodiac/zodiac.dart';
 
 const int _count = 20;
 
 class SessionsCubit extends Cubit<SessionsState> {
   final ZodiacChatsRepository _chatsRepository;
+  final BrandManager _brandManager;
+
+  StreamSubscription? _currentBrandSubscription;
 
   final ScrollController chatsListScrollController = ScrollController();
   final TextEditingController searchEditingController = TextEditingController();
@@ -21,22 +28,35 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   SessionsCubit(
     this._chatsRepository,
+    this._brandManager,
     double screenHeight,
   ) : super(const SessionsState()) {
+
+    if (_brandManager.getCurrentBrand().brandAlias == ZodiacBrand.alias) {
+      _getChatsList();
+    } else {
+      _currentBrandSubscription =
+          _brandManager.listenCurrentBrandStream((value) async {
+            if(value.brandAlias == ZodiacBrand.alias) {
+              await _getChatsList();
+              _currentBrandSubscription?.cancel();
+            }
+          });
+    }
+
+
     chatsListScrollController.addListener(() {
       if (!_isLoading &&
           chatsListScrollController.position.extentAfter <= screenHeight) {
         _getChatsList();
       }
     });
-
-    _getChatsList();
   }
 
   @override
   Future<void> close() async {
     chatsListScrollController.dispose();
-
+    _currentBrandSubscription?.cancel();
     super.close();
   }
 

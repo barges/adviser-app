@@ -1,15 +1,14 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/drawer_state.dart';
-import 'package:flutter/services.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 class DrawerCubit extends Cubit<DrawerState> {
-  final GlobalCachingManager _cacheManager;
+  final BrandManager _brandManager;
 
   late final List<BaseBrand> authorizedBrands;
   late final List<BaseBrand> unauthorizedBrands;
@@ -17,13 +16,10 @@ class DrawerCubit extends Cubit<DrawerState> {
   Timer? _copyTimer;
 
   DrawerCubit(
-    this._cacheManager,
+    this._brandManager,
   ) : super(const DrawerState()) {
     getVersion();
-    authorizedBrands =
-        BrandManager.authorizedBrands(_cacheManager.getCurrentBrand())
-            .reversed
-            .toList();
+    authorizedBrands = _brandManager.authorizedBrands().reversed.toList();
     unauthorizedBrands = BrandManager.unauthorizedBrands();
   }
 

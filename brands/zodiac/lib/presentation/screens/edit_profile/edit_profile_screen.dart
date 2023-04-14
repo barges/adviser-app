@@ -52,7 +52,7 @@ class EditProfileScreen extends StatelessWidget {
                       title: SZodiac.of(context).editProfileZodiac,
                       needShowError: true,
                       actionOnClick: () async {
-                        await confirmChanges(
+                        await _confirmChanges(
                           context,
                           editProfileCubit,
                           zodiacMainCubit,
@@ -86,7 +86,7 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 
-  Future<void> confirmChanges(
+  Future<void> _confirmChanges(
     BuildContext context,
     EditProfileCubit editProfileCubit,
     ZodiacMainCubit zodiacMainCubit,
@@ -98,7 +98,8 @@ class EditProfileScreen extends StatelessWidget {
       final bool? isOk = await showOkCancelAlert(
         context: context,
         title: SZodiac.of(context).saveZodiac,
-        description: SZodiac.of(context).yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac,
+        description: SZodiac.of(context)
+            .yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac,
         okText: SZodiac.of(context).closeZodiac,
         allowBarrierClick: false,
         isCancelEnabled: false,
@@ -109,6 +110,11 @@ class EditProfileScreen extends StatelessWidget {
       }
     } else if (isSaved == false) {
       editProfileCubit.needUpdateAccount = true;
+    } else {
+      context.pop();
+      if (editProfileCubit.needUpdateAccount) {
+        zodiacMainCubit.updateAccount();
+      }
     }
   }
 }

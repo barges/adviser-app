@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
@@ -26,15 +27,19 @@ import 'package:zodiac/data/network/responses/price_settings_response.dart';
 import 'package:zodiac/data/network/responses/specializations_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_state.dart';
+import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
+  final BrandManager _brandManager;
   final ZodiacMainCubit _mainCubit;
   final ZodiacUserRepository _userRepository;
   final ZodiacCachingManager _cacheManager;
   final ConnectivityService _connectivityService;
   final PushNotificationManager _pushNotificationManager;
   final Future<bool> Function(bool needShowSettingsAlert) _handlePermission;
+
+  StreamSubscription? _currentBrandSubscription;
 
   late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
   StreamSubscription<bool>? _connectivitySubscription;
@@ -43,6 +48,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   late final StreamSubscription<bool> _updateUnreadNotificationsCounter;
 
   ZodiacAccountCubit(
+    this._brandManager,
     this._mainCubit,
     this._userRepository,
     this._cacheManager,
@@ -50,7 +56,18 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     this._pushNotificationManager,
     this._handlePermission,
   ) : super(const ZodiacAccountState()) {
-    refreshUserInfo();
+    if (_brandManager.getCurrentBrand().brandAlias == ZodiacBrand.alias) {
+      refreshUserInfo();
+    } else {
+      _currentBrandSubscription =
+          _brandManager.listenCurrentBrandStream((value) async {
+            if(value.brandAlias == ZodiacBrand.alias) {
+              await refreshUserInfo();
+              _currentBrandSubscription?.cancel();
+            }
+      });
+    }
+
     _updateUserBalanceSubscription =
         _mainCubit.userBalanceUpdateTrigger.listen((value) {
       emit(state.copyWith(userBalance: value));
@@ -74,6 +91,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     _connectivitySubscription?.cancel();
     _updateAccountSubscription.cancel();
     _updateUnreadNotificationsCounter.cancel();
+    _currentBrandSubscription?.cancel();
     super.close();
   }
 

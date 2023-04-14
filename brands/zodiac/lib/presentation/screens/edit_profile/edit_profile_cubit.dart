@@ -41,7 +41,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final ZodiacUserRepository _userRepository;
   final ConnectivityService _connectivityService;
 
-  late final StreamSubscription<bool> internetConnectionSubscription;
+  late final StreamSubscription<bool> _internetConnectionSubscription;
   late List<GlobalKey> localesGlobalKeys;
 
   final Map<String, List<TextEditingController>> textControllersMap = {};
@@ -87,7 +87,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       advisorCategories: categories,
     ));
 
-    internetConnectionSubscription =
+    _internetConnectionSubscription =
         _connectivityService.connectivityStream.listen((event) {
       if (event) {
         getData();
@@ -114,7 +114,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         element.dispose();
       }
     }
-    internetConnectionSubscription.cancel();
+    _internetConnectionSubscription.cancel();
     return super.close();
   }
 
@@ -123,7 +123,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     final bool localesDescriptionsIsDone = await _setUpLocalesDescriptions();
 
     if (mainIsDone && localesDescriptionsIsDone) {
-      internetConnectionSubscription.cancel();
+      _internetConnectionSubscription.cancel();
     }
   }
 
@@ -198,8 +198,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       } else {
         isOk = false;
       }
-    }
-    if (_oldTextsMap.isNotEmpty) {
       emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
     }
 
@@ -350,6 +348,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           isOk = true;
         }
       }
+    } else {
+      isOk = false;
     }
     return isOk;
   }
@@ -537,6 +537,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       ));
 
       if (response.status == true) {
+        needUpdateAccount = true;
         _removeLocaleLocally(localeCode);
       }
     }
