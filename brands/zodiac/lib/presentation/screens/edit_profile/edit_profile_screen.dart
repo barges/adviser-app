@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
@@ -45,38 +46,47 @@ class EditProfileScreen extends StatelessWidget {
               child: Builder(builder: (context) {
                 final DetailedUserInfo? detailedUserInfo = context.select(
                     (EditProfileCubit cubit) => cubit.state.detailedUserInfo);
-                return CustomScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  slivers: [
-                    ScrollableAppBar(
-                      title: SZodiac.of(context).editProfileZodiac,
-                      needShowError: true,
-                      actionOnClick: () async {
-                        await confirmChanges(
-                          context,
-                          editProfileCubit,
-                          zodiacMainCubit,
-                        );
-                      },
-                      backOnTap: () {
-                        if (editProfileCubit.needUpdateAccount) {
-                          zodiacMainCubit.updateAccount();
-                        }
-                      },
-                    ),
-                    SliverToBoxAdapter(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          MainPartInfoWidget(
-                            detailedUserInfo: detailedUserInfo,
-                          ),
-                          if (detailedUserInfo?.locales?.isNotEmpty == true)
-                            const LocalesDescriptionsPartWidget()
-                        ],
+                final bool canRefresh = context
+                    .select((EditProfileCubit cubit) => cubit.state.canRefresh);
+
+                return RefreshIndicator(
+                  onRefresh: editProfileCubit.getData,
+                  notificationPredicate: (_) => canRefresh,
+                  edgeOffset: (AppConstants.appBarHeight * 2) +
+                      MediaQuery.of(context).padding.top,
+                  child: CustomScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    slivers: [
+                      ScrollableAppBar(
+                        title: SZodiac.of(context).editProfileZodiac,
+                        needShowError: true,
+                        actionOnClick: () async {
+                          await confirmChanges(
+                            context,
+                            editProfileCubit,
+                            zodiacMainCubit,
+                          );
+                        },
+                        backOnTap: () {
+                          if (editProfileCubit.needUpdateAccount) {
+                            zodiacMainCubit.updateAccount();
+                          }
+                        },
                       ),
-                    ),
-                  ],
+                      SliverToBoxAdapter(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            MainPartInfoWidget(
+                              detailedUserInfo: detailedUserInfo,
+                            ),
+                            if (detailedUserInfo?.locales?.isNotEmpty == true)
+                              const LocalesDescriptionsPartWidget()
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               }),
             ),
@@ -98,7 +108,8 @@ class EditProfileScreen extends StatelessWidget {
       final bool? isOk = await showOkCancelAlert(
         context: context,
         title: SZodiac.of(context).saveZodiac,
-        description: SZodiac.of(context).yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac,
+        description: SZodiac.of(context)
+            .yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac,
         okText: SZodiac.of(context).closeZodiac,
         allowBarrierClick: false,
         isCancelEnabled: false,
