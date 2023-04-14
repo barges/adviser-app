@@ -83,6 +83,12 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     );
   }
 
+  void goToBalanceAndTransactions(BuildContext context) {
+    context.push(
+      route: ZodiacBalanceAndTransactions(userBalance: state.userBalance),
+    );
+  }
+
   void goToReviews(BuildContext context) {
     context.push(route: const ZodiacReviews());
   }

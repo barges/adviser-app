@@ -6,7 +6,8 @@ part 'payments_list_response.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class PaymentsListResponse extends BaseResponse {
-  final dynamic count;
+  @JsonKey(fromJson: _toInt)
+  final int? count;
   final List<PaymentInformation>? result;
 
   const PaymentsListResponse({
@@ -24,3 +25,5 @@ class PaymentsListResponse extends BaseResponse {
   @override
   Map<String, dynamic> toJson() => _$PaymentsListResponseToJson(this);
 }
+
+int? _toInt(String? value) => value != null ? int.tryParse(value) : null;

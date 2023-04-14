@@ -50,18 +50,22 @@ class ReviewsScreen extends StatelessWidget {
                           needShowError: true,
                         ),
                         Builder(builder: (context) {
+                          const horizontalScreenPadding =
+                              AppConstants.horizontalScreenPadding;
                           if (reviewList != null && reviewList.isNotEmpty) {
                             return SliverList(
                               delegate: SliverChildBuilderDelegate(
                                 (BuildContext context, int index) {
                                   return Padding(
                                     padding: EdgeInsets.fromLTRB(
-                                        16.0,
-                                        index == 0 ? 16.0 : 0.0,
-                                        16.0,
+                                        horizontalScreenPadding,
+                                        index == 0
+                                            ? horizontalScreenPadding
+                                            : 0.0,
+                                        horizontalScreenPadding,
                                         index != (reviewList.length - 1)
                                             ? 8.0
-                                            : 16.0),
+                                            : horizontalScreenPadding),
                                     child: ReviewCardWidget(
                                         item: reviewList[index]),
                                   );
