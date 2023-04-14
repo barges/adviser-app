@@ -182,11 +182,12 @@ class ScrollableAppBar extends StatelessWidget {
                                             width: AppConstants.iconSize,
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 3.0),
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 4.0),
                                             child: SvgPicture.asset(
                                               currentBrand.iconPath,
                                             ),
+                                          ),
+                                          const SizedBox(
+                                            width: 4.0,
                                           ),
                                           Text(
                                             title,
