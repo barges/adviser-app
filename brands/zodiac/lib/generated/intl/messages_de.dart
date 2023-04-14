@@ -51,8 +51,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "chooseEmailAppZodiac":
             MessageLookupByLibrary.simpleMessage("E-Mail-App auswählen"),
         "closeZodiac": MessageLookupByLibrary.simpleMessage("Schließen"),
-        "customerSupportZodiac":
-            MessageLookupByLibrary.simpleMessage("Kundensupport"),
         "dashboardZodiac": MessageLookupByLibrary.simpleMessage("Dashboard"),
         "doYouReallyWantToDeleteLocaleNameFromYourListZodiac": m0,
         "editProfileZodiac":

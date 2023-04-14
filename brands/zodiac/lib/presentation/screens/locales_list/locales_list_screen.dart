@@ -12,7 +12,7 @@ import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/checkbox_tile_widget.dart';
 import 'package:zodiac/presentation/screens/locales_list/locales_list_cubit.dart';
-import 'package:zodiac/presentation/screens/locales_list/widgets/search_widget.dart';
+import 'package:zodiac/presentation/common_widgets/search_widget.dart';
 
 class LocalesListScreen extends StatelessWidget {
   final ValueChanged<String> returnCallback;

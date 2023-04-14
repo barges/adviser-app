@@ -16,6 +16,7 @@ import 'package:shared_advisor_interface/services/fresh_chat_service.dart';
 @singleton
 class MainCubit extends Cubit<MainState> {
   final GlobalCachingManager _cacheManager;
+  final BrandManager _brandManager;
 
   late final StreamSubscription _currentBrandSubscription;
   late final StreamSubscription _localeSubscription;
@@ -28,6 +29,7 @@ class MainCubit extends Cubit<MainState> {
 
   MainCubit(
     this._cacheManager,
+    this._brandManager,
     this._connectivityService,
   ) : super(const MainState()) {
     _connectivitySubscription =
@@ -35,13 +37,13 @@ class MainCubit extends Cubit<MainState> {
       emit(state.copyWith(internetConnectionIsAvailable: event));
     });
 
-    final BaseBrand currentBrand = _cacheManager.getCurrentBrand();
+    final BaseBrand currentBrand = _brandManager.getCurrentBrand();
 
     BrandManager.setIsCurrentForBrands(currentBrand);
 
     emit(state.copyWith(currentBrand: currentBrand));
 
-    _currentBrandSubscription = _cacheManager.listenCurrentBrandStream((value) {
+    _currentBrandSubscription = _brandManager.listenCurrentBrandStream((value) {
       emit(state.copyWith(
         currentBrand: value,
       ));
@@ -67,7 +69,7 @@ class MainCubit extends Cubit<MainState> {
   }
 
   void changeCurrentBrand(BaseBrand brand) {
-    _cacheManager.saveCurrentBrand(brand);
+    _brandManager.setCurrentBrand(brand);
   }
 
   void updateIsLoading(bool isLoading) {

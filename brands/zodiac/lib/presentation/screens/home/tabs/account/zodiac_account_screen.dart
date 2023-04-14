@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
@@ -22,6 +23,7 @@ class AccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ZodiacAccountCubit(
+        zodiacGetIt.get<BrandManager>(),
         zodiacGetIt.get<ZodiacMainCubit>(),
         zodiacGetIt.get<ZodiacUserRepository>(),
         zodiacGetIt.get<ZodiacCachingManager>(),
