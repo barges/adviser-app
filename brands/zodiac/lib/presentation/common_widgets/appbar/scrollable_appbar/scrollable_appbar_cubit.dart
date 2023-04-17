@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar_state.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
@@ -13,5 +14,9 @@ class ScrollableAppBarCubit extends Cubit<ScrollableAppBarState> {
 
   void closeErrorWidget() {
     _mainCubit.clearErrorMessage();
+  }
+
+  void setAppBarHeight(double height) {
+    emit(state.copyWith(appBarHeight: height));
   }
 }

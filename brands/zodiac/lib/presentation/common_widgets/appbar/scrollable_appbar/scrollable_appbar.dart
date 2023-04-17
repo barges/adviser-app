@@ -17,7 +17,7 @@ import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dar
 import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
-const double _maxHeight = AppConstants.appBarHeight * 2;
+const double maxHeight = AppConstants.appBarHeight * 2;
 const double _minHeight = AppConstants.appBarHeight;
 const double _errorHeight = 36.0;
 
@@ -56,7 +56,7 @@ class ScrollableAppBar extends StatelessWidget {
           automaticallyImplyLeading: false,
           forceElevated: true,
           backgroundColor: Theme.of(context).canvasColor,
-          expandedHeight: _maxHeight,
+          expandedHeight: maxHeight,
           centerTitle: true,
           pinned: true,
           snap: true,
@@ -66,9 +66,11 @@ class ScrollableAppBar extends StatelessWidget {
               builder: (BuildContext context, BoxConstraints constraints) {
             scrollableAppBarCubit.setIsWideAppbar(constraints.maxHeight -
                         MediaQuery.of(context).padding.top >
-                    _maxHeight - 1.0 &&
+                    maxHeight - 1.0 &&
                 constraints.maxHeight - MediaQuery.of(context).padding.top <=
-                    _maxHeight);
+                    maxHeight);
+
+            scrollableAppBarCubit.setAppBarHeight(constraints.maxHeight);
 
             return isWide
                 ? Padding(
@@ -148,130 +150,181 @@ class ScrollableAppBar extends StatelessWidget {
           //title:
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(_minHeight),
-            child: Builder(
-              builder: (context) {
-                final AppError appError = context
-                    .select((ZodiacMainCubit cubit) => cubit.state.appError);
-                return Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    SizedBox(
-                      height: _minHeight,
-                      child: !isWide
-                          ? Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                SizedBox(
+                  height: _minHeight,
+                  child: !isWide
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              AppIconButton(
+                                icon: Assets.vectors.arrowLeft.path,
+                                onTap: () {
+                                  context.pop();
+                                  backOnTap?.call();
+                                },
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  AppIconButton(
-                                    icon: Assets.vectors.arrowLeft.path,
-                                    onTap: () {
-                                      context.pop();
-                                      backOnTap?.call();
-                                    },
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                  Row(
                                     children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            height: AppConstants.iconSize,
-                                            width: AppConstants.iconSize,
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 3.0),
-                                            child: SvgPicture.asset(
-                                              currentBrand.iconPath,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 4.0,
-                                          ),
-                                          Text(
-                                            title,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headlineMedium
-                                                ?.copyWith(
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 17.0,
-                                                ),
-                                          ),
-                                        ],
+                                      Container(
+                                        height: AppConstants.iconSize,
+                                        width: AppConstants.iconSize,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 3.0),
+                                        child: SvgPicture.asset(
+                                          currentBrand.iconPath,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 4.0,
                                       ),
                                       Text(
-                                        currentBrand.name,
+                                        title,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodySmall
+                                            .headlineMedium
                                             ?.copyWith(
-                                              fontSize: 12.0,
-                                              color: Theme.of(context)
-                                                  .iconTheme
-                                                  .color,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 17.0,
                                             ),
                                       ),
                                     ],
                                   ),
-                                  actionOnClick != null
-                                      ? Opacity(
-                                          opacity: isOnline ? 1.0 : 0.4,
-                                          child: AppIconButton(
-                                            icon: Assets.vectors.check.path,
-                                            onTap: actionOnClick,
-                                          ))
-                                      : const SizedBox(
-                                          width: AppConstants.iconButtonSize,
-                                        ),
-                                ],
-                              ),
-                            )
-                          : Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 10.0,
-                                    horizontal: 16.0,
-                                  ),
-                                  child: Text(
-                                    title,
+                                  Text(
+                                    currentBrand.name,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .headlineMedium,
+                                        .bodySmall
+                                        ?.copyWith(
+                                          fontSize: 12.0,
+                                          color:
+                                              Theme.of(context).iconTheme.color,
+                                        ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                              actionOnClick != null
+                                  ? Opacity(
+                                      opacity: isOnline ? 1.0 : 0.4,
+                                      child: AppIconButton(
+                                        icon: Assets.vectors.check.path,
+                                        onTap: actionOnClick,
+                                      ))
+                                  : const SizedBox(
+                                      width: AppConstants.iconButtonSize,
+                                    ),
+                            ],
+                          ),
+                        )
+                      : Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 10.0,
+                                horizontal: 16.0,
+                              ),
+                              child: Text(
+                                title,
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
+                              ),
                             ),
+                          ],
+                        ),
+                ),
+                if (needShowError)
+                  Positioned(
+                    top: _minHeight,
+                    child: AppErrorWidget(
+                      height: _errorHeight,
+                      errorMessage: isOnline
+                          ? ''
+                          : SZodiac.of(context).noInternetConnectionZodiac,
+                      isRequired: true,
                     ),
-                    if (needShowError)
-                      Positioned(
-                        top: _minHeight,
-                        child: AppErrorWidget(
-                          height: _errorHeight,
-                          errorMessage: isOnline
-                              ? ''
-                              : SZodiac.of(context).noInternetConnectionZodiac,
-                          isRequired: true,
-                        ),
-                      ),
-                    if (isOnline)
-                      Positioned(
-                        top: _minHeight,
-                        child: AppErrorWidget(
-                          height: _errorHeight,
-                          errorMessage: appError.getMessage(context),
-                          close: scrollableAppBarCubit.closeErrorWidget,
-                        ),
-                      ),
-                  ],
-                );
-              },
+                  ),
+                Builder(builder: (context) {
+                  final double appBarHeight = context.select(
+                      (ScrollableAppBarCubit cubit) =>
+                          cubit.state.appBarHeight);
+                  return OverlayAppError(
+                    parentHeight: appBarHeight,
+                    onClose: scrollableAppBarCubit.closeErrorWidget,
+                  );
+                }),
+              ],
             ),
           ),
         );
       }),
+    );
+  }
+}
+
+class OverlayAppError extends StatefulWidget {
+  const OverlayAppError({
+    Key? key,
+    required this.parentHeight,
+    this.onClose,
+  }) : super(key: key);
+  final double parentHeight;
+  final VoidCallback? onClose;
+
+  @override
+  State<OverlayAppError> createState() => _OverlayAppErrorState();
+}
+
+class _OverlayAppErrorState extends State<OverlayAppError> {
+  OverlayEntry? overlay;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppError appError =
+        context.select((ZodiacMainCubit cubit) => cubit.state.appError);
+    Future(() => addOverlay(appError));
+    return Container();
+  }
+
+  void addOverlay(AppError appError) {
+    removeOverlay();
+
+    overlay = _overlayEntryBuilder(appError);
+    Overlay.of(context).insert(overlay!);
+  }
+
+  void removeOverlay() {
+    overlay?.remove();
+  }
+
+  OverlayEntry _overlayEntryBuilder(AppError appError) {
+    return OverlayEntry(
+      maintainState: true,
+      builder: (context) {
+        return Column(
+          children: [
+            SizedBox(
+              height: widget.parentHeight,
+            ),
+            AppErrorWidget(
+              height: _errorHeight,
+              errorMessage: appError.getMessage(context),
+              close: widget.onClose != null
+                  ? () {
+                      widget.onClose!();
+                      removeOverlay();
+                    }
+                  : null,
+            ),
+          ],
+        );
+      },
     );
   }
 }
