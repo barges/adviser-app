@@ -205,6 +205,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     _addListenersToFocusNodes();
     _addListenersToTextControllers();
 
+    emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
     return isOk;
   }
 
@@ -247,19 +248,38 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         route: ZodiacSpecialitiesList(
             oldSelectedCategories: state.advisorCategories,
             returnCallback: (categories) {
+              if(categories.isNotEmpty) {
+                final int? mainCategoryId =
+                    state.advisorMainCategory?.firstOrNull?.id;
+                if (
+                mainCategoryId != null &&
+                    !categories
+                        .map((e) => e.id)
+                        .toList()
+                        .contains(mainCategoryId)) {
+                  _changeMainCategory([categories.first]);
+                }
+              }
+
               emit(state.copyWith(advisorCategories: categories));
             }));
   }
 
   Future<void> goToSelectMainCategory(BuildContext context) async {
-    context.push(
-      route: ZodiacSpecialitiesList(
-          isMultiselect: false,
-          oldSelectedCategories: state.advisorMainCategory,
-          returnCallback: (categories) {
-            _changeMainCategory(categories);
-          }),
-    );
+    final List<CategoryInfo>? mainCategory = state.advisorMainCategory;
+    final List<CategoryInfo> advisorCategories = state.advisorCategories;
+
+    if (mainCategory != null && advisorCategories.isNotEmpty) {
+      context.push(
+        route: ZodiacSpecialitiesList(
+            isMultiselect: false,
+            allCategories: advisorCategories,
+            oldSelectedCategories: mainCategory,
+            returnCallback: (categories) {
+              _changeMainCategory(categories);
+            }),
+      );
+    }
   }
 
   Future<void> goToAddNewLocale(BuildContext context) async {
@@ -282,7 +302,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     final bool isChecked = _checkTextFields();
 
     if (isOnline && isChecked) {
-      final int? newMainCategoryId = state.advisorMainCategory.firstOrNull?.id;
+      final int? newMainCategoryId = state.advisorMainCategory?.firstOrNull?.id;
       if (newMainCategoryId != null && newMainCategoryId != _oldCategory?.id) {
         final BaseResponse response = await _userRepository
             .changeMainSpecialization(ChangeMainSpecializationRequest(
@@ -292,7 +312,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           isOk = false;
           return isOk;
         } else {
-          _oldCategory = state.advisorMainCategory.firstOrNull;
+          _oldCategory = state.advisorMainCategory?.firstOrNull;
           isOk = true;
         }
       }
