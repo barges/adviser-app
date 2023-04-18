@@ -37,6 +37,7 @@ class ZodiacDrawerItemCubit extends Cubit<ZodiacDrawerItemState> {
     if (response?.status == true) {
       _webSocketManager.close();
       await _zodiacCachingManager.logout();
+      await _brandManager.saveAuthorizedBrands();
       context.replaceAll([const ZodiacAuth()]);
     }
   }

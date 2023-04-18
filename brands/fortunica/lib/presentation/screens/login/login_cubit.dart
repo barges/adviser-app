@@ -25,6 +25,7 @@ class LoginCubit extends Cubit<LoginState> {
   final FortunicaAuthRepository _repository;
   final FortunicaCachingManager _cachingManager;
   final Dio _dio;
+  final BrandManager _brandManager;
 
   final FortunicaMainCubit _fortunicaMainCubit;
 
@@ -39,6 +40,7 @@ class LoginCubit extends Cubit<LoginState> {
     this._cachingManager,
     this._fortunicaMainCubit,
     this._dio,
+    this._brandManager,
   ) : super(const LoginState()) {
     unauthorizedBrands = BrandManager.unauthorizedBrands();
 
@@ -106,6 +108,7 @@ class LoginCubit extends Cubit<LoginState> {
           String jvtToken = 'JWT $token';
           await _cachingManager.saveUserToken(jvtToken);
           _dio.addAuthorizationToHeader(jvtToken);
+          await _brandManager.saveAuthorizedBrands();
           goToHome(context);
         }
       } on DioError catch (e) {

@@ -40,7 +40,7 @@ class BrandManager {
     }
   }
 
-   List<BaseBrand> authorizedBrands() {
+  List<BaseBrand> authorizedBrands() {
     final List<String> authBrandsAliases = [];
     for (BaseBrand b in brands) {
       if (b.isAuth) {
@@ -122,7 +122,7 @@ class BrandManager {
   }
 
   Future<void> setCurrentBrand(BaseBrand brand) async {
-   await _cachingManager.saveCurrentBrand(brand);
+    await _cachingManager.saveCurrentBrand(brand);
   }
 
   StreamSubscription listenCurrentBrandStream(
@@ -130,6 +130,34 @@ class BrandManager {
     return _cachingManager.listenCurrentBrandStream(callback);
   }
 
+  Future<void> saveAuthorizedBrands() async {
+    List<BaseBrand> authorizedBrands = this.authorizedBrands();
+    List<String> authorizedBrandsAliases =
+        authorizedBrands.map((e) => e.brandAlias).toList();
+
+    await _cachingManager.saveAuthorizedBrandsAliases(authorizedBrandsAliases);
+  }
+
+  BaseBrand getAuthorizedOrCurrentBrand() {
+    List<String>? authorizedBrandsAliases =
+        _cachingManager.getAuthorizedBrandsAliases();
+
+    BaseBrand currentBrand = getCurrentBrand();
+
+    BaseBrand resultBrand;
+
+    if (authorizedBrandsAliases != null && authorizedBrandsAliases.isNotEmpty) {
+      if (authorizedBrandsAliases.contains(currentBrand.brandAlias)) {
+        resultBrand = currentBrand;
+      } else {
+        resultBrand = brandFromAlias(authorizedBrandsAliases[0]);
+        setCurrentBrand(resultBrand);
+      }
+    } else {
+      resultBrand = currentBrand;
+    }
+    return resultBrand;
+  }
 
   static List<String> allBrands = [
     Assets.images.brands.bitWine.path,

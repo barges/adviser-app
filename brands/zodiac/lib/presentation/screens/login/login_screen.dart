@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -52,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
           zodiacGetIt.get<ZodiacCachingManager>(),
           zodiacGetIt.get<ZodiacMainCubit>(),
           zodiacGetIt.get<ZodiacUserRepository>(),
+          zodiacGetIt.get<BrandManager>(),
           //fortunicaGetIt.get<DynamicLinkService>(),
         ));
 
@@ -210,9 +212,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                   GestureDetector(
                                     onLongPress: () {
                                       if (kDebugMode) {
-                                        context.read<LoginCubit>().emailController.text =
-                                        'niskov.test@gmail.com';
-                                        context.read<LoginCubit>().passwordController.text = '12345678';
+                                        context
+                                            .read<LoginCubit>()
+                                            .emailController
+                                            .text = 'niskov.test@gmail.com';
+                                        context
+                                            .read<LoginCubit>()
+                                            .passwordController
+                                            .text = '12345678';
                                       }
                                     },
                                     onDoubleTap: () {

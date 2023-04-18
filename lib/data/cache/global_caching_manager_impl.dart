@@ -17,6 +17,7 @@ const String _tokensMapKey = 'tokensMapKey';
 const String _brandKey = 'brandKey';
 const String _localeKey = 'localeKey';
 const String _firstPermissionStatusesKey = 'firstPermissionStatusesKey';
+const String _authorizedBrandsKey = 'authorizedBrandsKey';
 
 @Injectable(as: GlobalCachingManager)
 class GlobalCachingManagerImpl implements GlobalCachingManager {
@@ -81,5 +82,17 @@ class GlobalCachingManagerImpl implements GlobalCachingManager {
   @override
   Future<void> saveLanguageCode(String? languageCode) async {
     await Hive.box(_localeBoxKey).put(_localeKey, languageCode);
+  }
+
+  @override
+  Future<void> saveAuthorizedBrandsAliases(
+      List<String> authorizedBrandsAliases) async {
+    await Hive.box(_brandsBoxKey)
+        .put(_authorizedBrandsKey, authorizedBrandsAliases);
+  }
+
+  @override
+  List<String>? getAuthorizedBrandsAliases() {
+    return Hive.box(_brandsBoxKey).get(_authorizedBrandsKey);
   }
 }

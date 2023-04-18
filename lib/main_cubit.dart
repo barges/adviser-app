@@ -37,7 +37,7 @@ class MainCubit extends Cubit<MainState> {
       emit(state.copyWith(internetConnectionIsAvailable: event));
     });
 
-    final BaseBrand currentBrand = _brandManager.getCurrentBrand();
+    final BaseBrand currentBrand = _brandManager.getAuthorizedOrCurrentBrand();
 
     BrandManager.setIsCurrentForBrands(currentBrand);
 

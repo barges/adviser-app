@@ -2,6 +2,7 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/choose_brand_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
@@ -58,6 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
             fortunicaGetIt.get<FortunicaCachingManager>(),
             fortunicaGetIt.get<FortunicaMainCubit>(),
             fortunicaGetIt.get<Dio>(),
+            fortunicaGetIt.get<BrandManager>(),
           ),
         );
         return fortunicaGetIt.get<LoginCubit>();

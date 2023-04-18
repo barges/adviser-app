@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:eventify/eventify.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:web_socket_channel/io.dart';
@@ -221,10 +222,11 @@ class WebSocketManagerImpl implements WebSocketManager {
     if (messageType == 6 && location == '/logout') {
       final zodiacBrand = ZodiacBrand();
       if (zodiacBrand.isCurrent) {
-        zodiacGetIt
-            .get<ZodiacCachingManager>()
-            .logout()
-            .then((_) => zodiacBrand.context?.replaceAll([const ZodiacAuth()]));
+        zodiacGetIt.get<ZodiacCachingManager>().logout().then((_) => zodiacGetIt
+            .get<BrandManager>()
+            .saveAuthorizedBrands()
+            .then(
+                (_) => zodiacBrand.context?.replaceAll([const ZodiacAuth()])));
       }
     }
   }

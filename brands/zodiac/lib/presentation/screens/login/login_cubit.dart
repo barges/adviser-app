@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
@@ -24,6 +25,7 @@ class LoginCubit extends Cubit<LoginState> {
   final ZodiacCachingManager _cachingManager;
   final ZodiacUserRepository _userRepository;
   final ZodiacMainCubit _zodiacMainCubit;
+  final BrandManager _brandManager;
 
   //final DynamicLinkService _dynamicLinkService;
 
@@ -37,7 +39,7 @@ class LoginCubit extends Cubit<LoginState> {
     this._cachingManager,
     this._zodiacMainCubit,
     this._userRepository,
-
+    this._brandManager,
     //this._dynamicLinkService,
   ) : super(const LoginState()) {
     //_dynamicLinkService.checkLinkForResetPassword();
@@ -121,6 +123,8 @@ class LoginCubit extends Cubit<LoginState> {
 
           await _userRepository
               .updateLocale(UpdateLocaleRequest(locale: languageCode));
+
+          await _brandManager.saveAuthorizedBrands();
 
           goToHome(context);
         }
