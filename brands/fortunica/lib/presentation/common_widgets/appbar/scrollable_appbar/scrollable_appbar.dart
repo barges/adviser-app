@@ -247,7 +247,8 @@ class ScrollableAppBar extends StatelessWidget {
                         child: AppErrorWidget(
                           height: _errorHeight,
                           errorMessage: appError.getMessage(context),
-                          close: scrollableAppBarCubit.closeErrorWidget,
+                          //close: scrollableAppBarCubit.closeErrorWidget,
+                          isRequired: true,
                         ),
                       ),
                   ],
