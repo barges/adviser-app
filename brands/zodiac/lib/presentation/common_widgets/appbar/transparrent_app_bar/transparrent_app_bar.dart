@@ -69,7 +69,6 @@ class TransparentAppBar extends StatelessWidget {
               } else {
                 return AppErrorWidget(
                   errorMessage: SZodiac.of(context).noInternetConnectionZodiac,
-                  isRequired: true,
                 );
               }
             })

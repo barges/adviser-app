@@ -257,20 +257,16 @@ class ScrollableAppBar extends StatelessWidget {
                       Positioned(
                         top: _minHeight,
                         child: AppErrorWidget(
-                          height: _errorHeight,
                           errorMessage: isOnline
                               ? ''
                               : SZodiac.of(context).noInternetConnectionZodiac,
-                          isRequired: true,
                         ),
                       ),
                     if (isOnline)
                       Positioned(
                         top: _minHeight,
                         child: AppErrorWidget(
-                          height: _errorHeight,
                           errorMessage: appError.getMessage(context),
-                          isRequired: true,
                           //  close: scrollableAppBarCubit.closeErrorWidget,
                         ),
                       ),
