@@ -44,6 +44,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   late final StreamSubscription<bool> _internetConnectionSubscription;
   late List<GlobalKey> localesGlobalKeys;
 
+  // final GlobalKey firstNicknameGlobalKey = GlobalKey();
+
   final Map<String, List<TextEditingController>> textControllersMap = {};
   final Map<String, List<FocusNode>> focusNodesMap = {};
   final Map<String, List<ValueNotifier>> hasFocusNotifiersMap = {};
@@ -74,16 +76,14 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     localesGlobalKeys = locales.map((e) => GlobalKey()).toList();
 
     final List<CategoryInfo>? advisorCategories = userInfoFromCache?.category;
-    List<CategoryInfo>? categories = [];
+    List<CategoryInfo> categories = [];
     if (advisorCategories != null) {
       categories = CategoryInfo.normalizeList(advisorCategories);
       _oldCategories = categories;
     }
-
     emit(state.copyWith(
       detailedUserInfo: userInfoFromCache,
       advisorMainLocale: userInfoFromCache?.details?.locale ?? 'en',
-      advisorLocales: locales,
       advisorCategories: categories,
     ));
 
@@ -124,8 +124,29 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
     if (mainIsDone && localesDescriptionsIsDone) {
       _internetConnectionSubscription.cancel();
-      emit(state.copyWith(canRefresh: false));
+      emit(state.copyWith(
+        canRefresh: false,
+        advisorLocales: [..._oldLocales],
+      ));
     }
+  }
+
+  // void _checkIsVisibleNickname() {
+  //   final RenderObject? box =
+  //       firstNicknameGlobalKey.currentContext?.findRenderObject();
+  //
+  //   if (box == null) {
+  //     Future.delayed(const Duration(milliseconds: 500)).then((value) {
+  //       logger.d('not wisible');
+  //       _updateTextsFlag();
+  //       _checkIsVisibleNickname();
+  //     });
+  //   }
+  // }
+
+  void _updateTextsFlag() {
+    bool flag = state.updateTextsFlag;
+    emit(state.copyWith(updateTextsFlag: !flag));
   }
 
   Future<bool> _getMainSpeciality() async {
@@ -148,7 +169,10 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   String localeNativeName(String code) {
     List<LocaleModel>? locales = _cachingManager.getAllLocales();
 
-    return locales?.firstWhere((element) => element.code == code).nameNative ??
+    return locales
+            ?.firstWhere((element) => element.code == code,
+                orElse: () => const LocaleModel())
+            .nameNative ??
         '';
   }
 
@@ -159,8 +183,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   Future<bool> _setUpLocalesDescriptions() async {
     bool isOk = true;
-    final List<String> locales = state.advisorLocales;
-    for (String locale in locales) {
+    for (String locale in _oldLocales) {
       final LocaleDescriptionsResponse response =
           await _userRepository.getLocaleDescriptions(
         LocaleDescriptionsRequest(locale: locale),
@@ -199,13 +222,11 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       } else {
         isOk = false;
       }
-      emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
     }
 
     _addListenersToFocusNodes();
     _addListenersToTextControllers();
 
-    emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
     return isOk;
   }
 
@@ -236,7 +257,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         for (int i = 0; i < controllersByLocale.length; i++) {
           controllersByLocale[i].addListener(() {
             errorTextsMap[localeCode]?[i] = ValidationErrorType.empty;
-            emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
+            _updateTextsFlag();
           });
         }
       }
@@ -248,11 +269,10 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         route: ZodiacSpecialitiesList(
             oldSelectedCategories: state.advisorCategories,
             returnCallback: (categories) {
-              if(categories.isNotEmpty) {
+              if (categories.isNotEmpty) {
                 final int? mainCategoryId =
                     state.advisorMainCategory?.firstOrNull?.id;
-                if (
-                mainCategoryId != null &&
+                if (mainCategoryId != null &&
                     !categories
                         .map((e) => e.id)
                         .toList()
@@ -540,7 +560,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       for (int i = 0; i < controllersByLocale.length; i++) {
         controllersByLocale[i].addListener(() {
           errorTextsMap[localeCode]?[i] = ValidationErrorType.empty;
-          emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
+          _updateTextsFlag();
         });
       }
     }
@@ -565,21 +585,20 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   void _removeLocaleLocally(String localeCode) {
-    final List<String> locales = List.from(state.advisorLocales);
+    final List<String> locales = List.of(state.advisorLocales);
     final codeIndex = locales.indexOf(localeCode);
     int newLocaleIndex = state.currentLocaleIndex;
 
     if (codeIndex <= newLocaleIndex) {
       newLocaleIndex = newLocaleIndex - 1;
     }
-
     _removeLocaleProperties(localeCode);
-    locales.remove(localeCode);
+
     _newLocales.remove(localeCode);
     _oldLocales.remove(localeCode);
 
     emit(state.copyWith(
-      advisorLocales: locales,
+      advisorLocales: [..._oldLocales, ..._newLocales],
       currentLocaleIndex: newLocaleIndex,
     ));
   }
@@ -633,7 +652,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         }
       }
     }
-    emit(state.copyWith(updateTextsFlag: !state.updateTextsFlag));
+    _updateTextsFlag();
     if (firstLanguageWithErrorIndex != null) {
       changeLocaleIndex(firstLanguageWithErrorIndex);
     }
