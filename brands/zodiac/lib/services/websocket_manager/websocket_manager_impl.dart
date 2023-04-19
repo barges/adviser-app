@@ -168,7 +168,7 @@ class WebSocketManagerImpl implements WebSocketManager {
       logger.d("Socket is connecting ...");
       _channel = IOWebSocketChannel.connect(url);
       _socketSubscription = _channel!.stream.listen((event) {
-        logger.d("Socket event: $event");
+        logger.d("SUB Socket event: $event");
 
         final message = SocketMessage.fromJson(json.decode(event));
         _emitter.emit(message.action, this, message);
@@ -185,7 +185,10 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   @override
   void sendStatus() {
+    final int? userId = _zodiacCachingManager.getUid();
     _send(SocketMessage.getUnreadChats());
+    _send(SocketMessage.entities(id: userId ?? 0));
+    _send(SocketMessage.chatLogin(id: userId ?? 0));
   }
 
   @override
@@ -205,7 +208,7 @@ class WebSocketManagerImpl implements WebSocketManager {
       });
 
   void _send(SocketMessage message) {
-    //logger.d("WebSocketManager._send() - message: ${message.encoded}");
+    logger.d('PUB message: ${message.encoded}');
     _channel?.sink.add(message.encoded);
   }
 

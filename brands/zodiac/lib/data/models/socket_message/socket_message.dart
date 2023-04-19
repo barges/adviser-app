@@ -4,7 +4,7 @@ import 'package:zodiac/services/websocket_manager/commands.dart';
 
 class SocketMessage {
   late String action;
-  Map<String, dynamic>? params;
+  dynamic params;
   int? opponentId;
 
   SocketMessage({required this.action, this.params});

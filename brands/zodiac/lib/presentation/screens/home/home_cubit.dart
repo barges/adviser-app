@@ -151,11 +151,12 @@ class HomeCubit extends Cubit<HomeState> {
 
   changeTabIndex(int index) {
     emit(state.copyWith(tabPositionIndex: index));
-    if (_firstOpenArticlesTab &&
-        index == TabsTypes.articles.index &&
-        (state.articlesUnreadCount ?? 0) > 0) {
-      getArticleCount(update: 1);
-      _firstOpenArticlesTab = false;
+    if (index == TabsTypes.articles.index) {
+      _zodiacMainCubit.updateArticle();
+      if (_firstOpenArticlesTab) {
+        getArticleCount(update: 1);
+        _firstOpenArticlesTab = false;
+      }
     }
   }
 

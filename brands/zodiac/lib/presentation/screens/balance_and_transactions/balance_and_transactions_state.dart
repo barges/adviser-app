@@ -10,6 +10,7 @@ class BalanceAndTransactionsState with _$BalanceAndTransactionsState {
     UserBalance? userBalance,
     List<TransactionUiModel>? transactionsList,
     @Default(false) bool isVisibleUpButton,
-    DateTime? dateCreate,
+    @Default(false) bool isVisibleDateLabel,
+    DateTime? dateLabel,
   }) = _BalanceAndTransactionsState;
 }

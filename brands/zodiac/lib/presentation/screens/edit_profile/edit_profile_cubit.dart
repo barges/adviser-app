@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
+import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
@@ -128,6 +129,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         canRefresh: false,
         advisorLocales: [..._oldLocales],
       ));
+      _updateTextsFlag();
     }
   }
 
@@ -137,7 +139,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   //
   //   if (box == null) {
   //     Future.delayed(const Duration(milliseconds: 500)).then((value) {
-  //       logger.d('not wisible');
+  //       logger.d('not visible');
   //       _updateTextsFlag();
   //       _checkIsVisibleNickname();
   //     });
@@ -211,22 +213,32 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
           _oldTextsMap[locale] = texts;
 
-          textControllersMap[locale] =
-              texts.map((e) => TextEditingController()..text = e).toList();
-          focusNodesMap[locale] = texts.map((e) => FocusNode()).toList();
           hasFocusNotifiersMap[locale] =
-              texts.map((e) => ValueNotifier(false)).toList();
+              texts.map((text) => ValueNotifier(false)).toList();
           errorTextsMap[locale] =
               texts.map((e) => ValidationErrorType.empty).toList();
+
+          textControllersMap[locale] = texts.mapIndexed((index, text) {
+            final TextEditingController controller = TextEditingController();
+            controller.text = text;
+            controller.addListener(() {
+              errorTextsMap[locale]?[index] = ValidationErrorType.empty;
+              _updateTextsFlag();
+            });
+            return controller;
+          }).toList();
+          focusNodesMap[locale] = texts.mapIndexed((index, text) {
+            final FocusNode node = FocusNode();
+            node.addListener(() {
+              hasFocusNotifiersMap[locale]?[index].value = node.hasFocus;
+            });
+            return node;
+          }).toList();
         }
       } else {
         isOk = false;
       }
     }
-
-    _addListenersToFocusNodes();
-    _addListenersToTextControllers();
-
     return isOk;
   }
 
@@ -236,32 +248,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         parse(document.body?.text).documentElement?.text ?? '';
 
     return parsedString;
-  }
-
-  void _addListenersToFocusNodes() {
-    for (var entry in focusNodesMap.entries) {
-      for (int i = 0; i < entry.value.length; i++) {
-        entry.value[i].addListener(() {
-          hasFocusNotifiersMap[entry.key]?[i].value = entry.value[i].hasFocus;
-        });
-      }
-    }
-  }
-
-  void _addListenersToTextControllers() {
-    final List<String> locales = state.advisorLocales;
-    for (String localeCode in locales) {
-      final List<TextEditingController>? controllersByLocale =
-          textControllersMap[localeCode];
-      if (controllersByLocale != null) {
-        for (int i = 0; i < controllersByLocale.length; i++) {
-          controllersByLocale[i].addListener(() {
-            errorTextsMap[localeCode]?[i] = ValidationErrorType.empty;
-            _updateTextsFlag();
-          });
-        }
-      }
-    }
   }
 
   Future<void> goToSelectAllCategories(BuildContext context) async {
@@ -390,6 +376,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         }
       }
     } else {
+      _updateTextsFlag();
       isOk = false;
     }
     return isOk;
@@ -467,6 +454,10 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     final String? newHelloMessage =
         textControllersMap[localeCode]?[helloMessageIndex].text.trim();
 
+    logger.d(oldNickName);
+    logger.d(newNickName);
+    logger.d(oldNickName != newNickName);
+
     if (oldNickName != newNickName ||
         oldAbout != newAbout ||
         oldExperience != newExperience ||
@@ -528,42 +519,38 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   void _setNewLocaleProperties(String localeCode) {
-    textControllersMap[localeCode] = List<TextEditingController>.generate(
-      _textFieldsCount,
-      (index) => TextEditingController(),
-    );
-    focusNodesMap[localeCode] = List<FocusNode>.generate(
-      _textFieldsCount,
-      (index) => FocusNode(),
-    );
     hasFocusNotifiersMap[localeCode] = List<ValueNotifier>.generate(
       _textFieldsCount,
       (index) => ValueNotifier(false),
     );
     errorTextsMap[localeCode] = List<ValidationErrorType>.generate(
       _textFieldsCount,
-      (index) => ValidationErrorType.empty,
+      (index) => index == nickNameIndex
+          ? ValidationErrorType.theNicknameIsInvalidMustBe3to250Symbols
+          : ValidationErrorType.requiredField,
     );
 
-    final List<FocusNode>? nodes = focusNodesMap[localeCode];
-    if (nodes != null) {
-      for (int i = 0; i < nodes.length; i++) {
-        nodes[i].addListener(() {
-          hasFocusNotifiersMap[localeCode]?[i].value = nodes[i].hasFocus;
+    textControllersMap[localeCode] = List<TextEditingController>.generate(
+      _textFieldsCount,
+      (index) {
+        return TextEditingController()
+          ..addListener(() {
+            errorTextsMap[localeCode]?[index] = ValidationErrorType.empty;
+            _updateTextsFlag();
+          });
+      },
+    );
+    focusNodesMap[localeCode] = List<FocusNode>.generate(
+      _textFieldsCount,
+      (index) {
+        final node = FocusNode();
+        node.addListener(() {
+          hasFocusNotifiersMap[localeCode]?[index].value = node.hasFocus;
         });
-      }
-    }
+        return node;
+      },
+    );
 
-    final List<TextEditingController>? controllersByLocale =
-        textControllersMap[localeCode];
-    if (controllersByLocale != null) {
-      for (int i = 0; i < controllersByLocale.length; i++) {
-        controllersByLocale[i].addListener(() {
-          errorTextsMap[localeCode]?[i] = ValidationErrorType.empty;
-          _updateTextsFlag();
-        });
-      }
-    }
     localesGlobalKeys.add(GlobalKey());
   }
 
@@ -626,7 +613,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   bool _checkTextFields() {
     bool isValid = true;
     int? firstLanguageWithErrorIndex;
-    final List<String> locales = state.advisorLocales;
+    final List<String> locales = List.from(state.advisorLocales);
     for (String localeCode in locales) {
       final List<TextEditingController>? controllersByLocale =
           textControllersMap[localeCode];
@@ -652,7 +639,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         }
       }
     }
-    _updateTextsFlag();
     if (firstLanguageWithErrorIndex != null) {
       changeLocaleIndex(firstLanguageWithErrorIndex);
     }
