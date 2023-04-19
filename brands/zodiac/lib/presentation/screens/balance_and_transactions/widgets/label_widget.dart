@@ -7,15 +7,15 @@ import 'package:shared_advisor_interface/themes/app_colors.dart';
 const labelWidgetHeight = 22.0;
 
 class LabelWidget extends StatelessWidget {
-  final DateTime dateTime;
+  final DateTime dateLabel;
   const LabelWidget({
     super.key,
-    required this.dateTime,
+    required this.dateLabel,
   });
 
   @override
   Widget build(BuildContext context) {
-    final String monthYear = DateFormat(datePattern11).format(dateTime);
+    final String monthYear = DateFormat(datePattern11).format(dateLabel);
     final style = Theme.of(context).textTheme.displaySmall?.copyWith(
           fontSize: 14.0,
           color: AppColors.white,

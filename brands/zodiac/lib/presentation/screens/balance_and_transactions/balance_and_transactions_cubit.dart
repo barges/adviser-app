@@ -23,18 +23,15 @@ import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/tra
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 const double appBarExtension = AppConstants.appBarHeight;
-const double startTilePosition = appBarExtension +
+const double startTilesPosition = appBarExtension +
+    paddingTopLabelWidget +
     labelWidgetHeight +
-    paddingBottomTimeItem +
     statisticWidgetHeight +
     paddingottomStatisticWidget +
-    paddingTopTimeItem +
-    timeItemHeight +
-    paddingBottomTimeItem;
+    paddingTopTimeItem;
 const double internalItemTileHeight =
     userAvatarDiameter + paddingBottomTile * 2;
 const double singleItemTileHeight = userAvatarDiameter + paddingTile * 2;
-const double correctionTilePositionEnd = 12.0;
 
 class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   final ZodiacMainCubit _mainCubit;
@@ -50,6 +47,7 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   int? _count;
   bool _isLoading = false;
   bool _isScrollUp = false;
+  Timer? _timerHideDateLabel;
 
   BalanceAndTransactionsCubit(
     this._mainCubit,
@@ -65,23 +63,13 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
     _scrollSubscription = _scrollStream
         .throttleTime(const Duration(milliseconds: 500), trailing: true)
         .listen((extentBefore) async {
-      DateTime? dateCreate = await compute(_getCurrentScrollingDateCreate,
-          [extentBefore, _tilePositions, _isScrollUp]);
+      DateTime? dateLabel = _getCurrentScrollingDateLabel(extentBefore);
       emit(state.copyWith(
-        dateCreate: dateCreate,
+        dateLabel: dateLabel,
       ));
     });
 
-    _loadData();
-  }
-
-  Future<void> _loadData() async {
-    await getPaymentsList();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (scrollController.hasClients) {
-        _checkIfNeedAndLoadData();
-      }
-    });
+    getPaymentsList();
   }
 
   void _scrollControllerListener() {
@@ -98,6 +86,22 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
         ScrollDirection.forward;
 
     _scrollStream.add(scrollController.position.extentBefore);
+
+    if (!state.isVisibleDateLabel) {
+      emit(state.copyWith(
+        isVisibleDateLabel: true,
+      ));
+    }
+
+    _timerHideDateLabel?.cancel();
+    _timerHideDateLabel = Timer(
+      const Duration(seconds: 2),
+      () => emit(
+        state.copyWith(
+          isVisibleDateLabel: false,
+        ),
+      ),
+    );
   }
 
   void _checkIfNeedAndLoadData() {
@@ -111,6 +115,7 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
     _updateUserBalanceSubscription.cancel();
     _scrollSubscription.cancel();
     scrollController.dispose();
+    _timerHideDateLabel?.cancel();
     super.close();
   }
 
@@ -151,19 +156,19 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   }
 
   void setTilePositions(List<TransactionUiModel> items) {
-    double position = startTilePosition;
+    double startPosition = startTilesPosition;
     DateTime? date;
     for (var item in items) {
       item.when(
         data: (data) {
-          final itemHeight = _getTileHeight(data.length);
-          _tilePositions[date!] =
-              _TilePosition(position, position + itemHeight);
-          position = position +
-              itemHeight +
-              paddingTopTimeItem +
+          final tileHeight = _getTileHeight(data.length);
+          final endPosition = startPosition +
               timeItemHeight +
-              paddingBottomTimeItem;
+              paddingBottomTimeItem +
+              tileHeight +
+              paddingTopTimeItem;
+          _tilePositions[date!] = _TilePosition(startPosition, endPosition);
+          startPosition = endPosition;
           return null;
         },
         separator: (dateCreate) {
@@ -172,6 +177,20 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
         },
       );
     }
+  }
+
+  DateTime? _getCurrentScrollingDateLabel(double extentBefore) {
+    double correctedExtentBefore =
+        extentBefore + (_isScrollUp ? appBarExtension : 0.0);
+    if (correctedExtentBefore < startTilesPosition) {
+      return null;
+    }
+    final MapEntry<DateTime, _TilePosition>? entry = _tilePositions.entries
+        .toList()
+        .lastWhereOrNull((e) =>
+            e.value.start < correctedExtentBefore &&
+            correctedExtentBefore < e.value.end);
+    return entry?.key;
   }
 
   double _getTileHeight(int count) {
@@ -207,21 +226,4 @@ List<TransactionUiModel> _toTransactionUiModels(List<PaymentInformation> data) {
     items.add(item);
   }
   return uiModelItems;
-}
-
-DateTime? _getCurrentScrollingDateCreate(List<dynamic> params) {
-  double extentBefore = params[0];
-  Map<DateTime, _TilePosition> tilePositions = params[1];
-  bool isScrollUp = params[2];
-  double correctedExtentBefore =
-      extentBefore + (isScrollUp ? appBarExtension : 0.0);
-  if (correctedExtentBefore < startTilePosition) {
-    return null;
-  }
-  final MapEntry<DateTime, _TilePosition>? entry = tilePositions.entries
-      .toList()
-      .lastWhereOrNull((e) =>
-          e.value.start < correctedExtentBefore &&
-          correctedExtentBefore < e.value.end - correctionTilePositionEnd);
-  return entry?.key;
 }
