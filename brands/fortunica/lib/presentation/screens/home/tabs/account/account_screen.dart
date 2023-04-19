@@ -1,4 +1,5 @@
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/main_state.dart';
 import 'package:shared_advisor_interface/services/check_permission_service.dart';
@@ -29,6 +30,7 @@ class AccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => AccountCubit(
+        fortunicaGetIt.get<BrandManager>(),
         fortunicaGetIt.get<FortunicaCachingManager>(),
         fortunicaGetIt.get<MainCubit>(),
         fortunicaGetIt.get<FortunicaMainCubit>(),
@@ -58,15 +60,14 @@ class AccountScreen extends StatelessWidget {
                   context.select((HomeCubit cubit) => cubit.state.userStatus);
               final String? statusErrorText =
                   currentStatus?.status?.errorText(context);
-              final AppError appError =
-                  context.select((FortunicaMainCubit cubit) => cubit.state.appError);
+              final AppError appError = context
+                  .select((FortunicaMainCubit cubit) => cubit.state.appError);
 
               if (isOnline) {
                 return Column(
                   children: [
                     AppErrorWidget(
                       errorMessage: statusErrorText ?? '',
-                      isRequired: true,
                     ),
                     if (statusErrorText == null ||
                         statusErrorText.isEmpty == true)

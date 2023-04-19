@@ -3,6 +3,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
@@ -29,6 +30,7 @@ class HomeScreen extends StatelessWidget {
         context.read<MainHomeScreenCubit>().openDrawer;
     return BlocProvider(
         create: (_) => HomeCubit(
+              zodiacGetIt.get<BrandManager>(),
               zodiacGetIt.get<ZodiacCachingManager>(),
               zodiacGetIt.get<ZodiacMainCubit>(),
               zodiacGetIt.get<WebSocketManager>(),

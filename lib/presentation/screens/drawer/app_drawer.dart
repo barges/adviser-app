@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/presentation/common_widgets/brand_drawer_item/fortunica_drawer_item.dart';
-import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_bottom_sheet.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/drawer_cubit.dart';
@@ -26,7 +26,7 @@ class AppDrawer extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     return BlocProvider(
       create: (_) => DrawerCubit(
-        globalGetIt.get<GlobalCachingManager>(),
+        globalGetIt.get<BrandManager>(),
       ),
       child: Builder(builder: (context) {
         final DrawerCubit cubit = context.read<DrawerCubit>();

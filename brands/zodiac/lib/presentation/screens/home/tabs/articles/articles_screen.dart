@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -20,6 +21,7 @@ class ArticlesScreen extends StatelessWidget {
       create: (_) => ArticlesCubit(
         zodiacGetIt.get<ZodiacArticlesRepository>(),
         zodiacGetIt.get<ZodiacMainCubit>(),
+        zodiacGetIt.get<BrandManager>(),
       ),
       child: Builder(builder: (BuildContext context) {
         final bool isOnline = context.select(

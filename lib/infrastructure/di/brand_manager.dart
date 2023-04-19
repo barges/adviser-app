@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:fortunica/fortunica.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
@@ -37,13 +40,14 @@ class BrandManager {
     }
   }
 
-  static List<BaseBrand> authorizedBrands(BaseBrand currentBrand) {
+   List<BaseBrand> authorizedBrands() {
     final List<String> authBrandsAliases = [];
     for (BaseBrand b in brands) {
       if (b.isAuth) {
         authBrandsAliases.add(b.brandAlias);
       }
     }
+    final BaseBrand currentBrand = getCurrentBrand();
     if (authBrandsAliases.contains(currentBrand.brandAlias)) {
       authBrandsAliases
           .removeWhere((element) => element == currentBrand.brandAlias);
@@ -116,6 +120,16 @@ class BrandManager {
   BaseBrand getCurrentBrand() {
     return _cachingManager.getCurrentBrand();
   }
+
+  Future<void> setCurrentBrand(BaseBrand brand) async {
+   await _cachingManager.saveCurrentBrand(brand);
+  }
+
+  StreamSubscription listenCurrentBrandStream(
+      ValueChanged<BaseBrand> callback) {
+    return _cachingManager.listenCurrentBrandStream(callback);
+  }
+
 
   static List<String> allBrands = [
     Assets.images.brands.bitWine.path,

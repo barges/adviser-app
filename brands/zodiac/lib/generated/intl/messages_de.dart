@@ -51,8 +51,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "chooseEmailAppZodiac":
             MessageLookupByLibrary.simpleMessage("E-Mail-App auswählen"),
         "closeZodiac": MessageLookupByLibrary.simpleMessage("Schließen"),
-        "customerSupportZodiac":
-            MessageLookupByLibrary.simpleMessage("Kundensupport"),
         "dashboardZodiac": MessageLookupByLibrary.simpleMessage("Dashboard"),
         "doYouReallyWantToDeleteLocaleNameFromYourListZodiac": m0,
         "editProfileZodiac":
@@ -151,7 +149,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Ihr Konto wurde gesperrt.<br>Bitte wenden Sie sich an den <a href=\'\'>Kundensupport</a>, um das Problem zu lösen"),
         "yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac":
             MessageLookupByLibrary.simpleMessage(
-                "Ihre Änderungen werden akzeptiert und in Kürze überprüft. Sie werden benachrichtigt, wenn es abgeschlossen ist"),
+                "Ihre Änderungen werden akzeptiert und in Kürze überprüft. Alle Updates sind danach für Clients sichtbar"),
         "yourClientSessionHistoryWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Der Sitzungsverlauf deines Kunden wird hier erscheinen"),

@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:zodiac/data/models/chats/chat_item_zodiac.dart';
 import 'package:zodiac/domain/repositories/zodiac_chats_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/empty_list_widget.dart';
-import 'package:zodiac/presentation/screens/home/tabs/sessions/widgets/zodiac_chat_list_tile_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
+import 'package:zodiac/presentation/screens/home/tabs/sessions/widgets/zodiac_chat_list_tile_widget.dart';
 
 class SessionsScreen extends StatelessWidget {
   const SessionsScreen({Key? key}) : super(key: key);
@@ -19,17 +20,17 @@ class SessionsScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => SessionsCubit(
         zodiacGetIt.get<ZodiacChatsRepository>(),
+        zodiacGetIt.get<BrandManager>(),
         MediaQuery.of(context).size.height,
       ),
       child: Builder(builder: (context) {
-        final SessionsCubit zodiacSessionsCubit =
-            context.read<SessionsCubit>();
+        final SessionsCubit zodiacSessionsCubit = context.read<SessionsCubit>();
         return Scaffold(
           backgroundColor: Theme.of(context).canvasColor,
           appBar: const HomeAppBar(withBrands: true),
           body: SafeArea(child: Builder(builder: (context) {
-            final List<ZodiacChatsListItem>? chatsList = context
-                .select((SessionsCubit cubit) => cubit.state.chatList);
+            final List<ZodiacChatsListItem>? chatsList =
+                context.select((SessionsCubit cubit) => cubit.state.chatList);
 
             return chatsList != null
                 ? chatsList.isNotEmpty
@@ -112,8 +113,7 @@ class _SearchTextField extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    final SessionsCubit zodiacSessionsCubit =
-        context.read<SessionsCubit>();
+    final SessionsCubit zodiacSessionsCubit = context.read<SessionsCubit>();
     final double height = maxExtent - shrinkOffset - 21.0;
     return Column(
       children: [

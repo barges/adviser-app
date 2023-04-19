@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
-import 'package:zodiac/presentation/common_widgets/appbar/transparrent_app_bar.dart';
+import 'package:zodiac/presentation/common_widgets/appbar/transparrent_app_bar/transparrent_app_bar.dart';
 import 'package:zodiac/presentation/screens/gallery/gallery_pictures_cubit.dart';
 
 class GalleryPicturesScreen extends StatelessWidget {
   final GalleryPicturesScreenArguments galleryPicturesScreenArguments;
   const GalleryPicturesScreen({
-    Key? key, required this.galleryPicturesScreenArguments,
+    Key? key,
+    required this.galleryPicturesScreenArguments,
   }) : super(key: key);
 
   @override
@@ -18,7 +19,8 @@ class GalleryPicturesScreen extends StatelessWidget {
       child: Builder(builder: (context) {
         final GalleryPicturesCubit galleryPicturesCubit =
             context.read<GalleryPicturesCubit>();
-        final List<String> coverPictures = galleryPicturesScreenArguments.pictures;
+        final List<String> coverPictures =
+            galleryPicturesScreenArguments.pictures;
         return Scaffold(
           body: Stack(
             children: [

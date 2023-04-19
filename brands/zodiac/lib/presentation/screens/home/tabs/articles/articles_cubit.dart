@@ -2,13 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:zodiac/data/models/articles/article.dart';
 import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/responses/articles_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_state.dart';
+import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ArticlesCubit extends Cubit<ArticlesState> {
@@ -19,13 +20,29 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   final ScrollController articlesScrollController = ScrollController();
   final ZodiacArticlesRepository _articlesRepository;
   final ZodiacMainCubit _zodiacMainCubit;
+  final BrandManager _brandManager;
+
+  StreamSubscription? _currentBrandSubscription;
   final List<Article> _articleList = [];
   late final StreamSubscription<bool> _updateArticleSubscription;
 
   ArticlesCubit(
     this._articlesRepository,
     this._zodiacMainCubit,
+    this._brandManager,
   ) : super(const ArticlesState()) {
+    if (_brandManager.getCurrentBrand().brandAlias == ZodiacBrand.alias) {
+      getArticles();
+    } else {
+      _currentBrandSubscription =
+          _brandManager.listenCurrentBrandStream((value) async {
+        if (value.brandAlias == ZodiacBrand.alias) {
+          await getArticles();
+          _currentBrandSubscription?.cancel();
+        }
+      });
+    }
+
     articlesScrollController.addListener(_scrollControllerListener);
     _updateArticleSubscription = _zodiacMainCubit.articleUpdateTrigger.listen(
       (_) {
@@ -40,6 +57,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   Future<void> close() async {
     _updateArticleSubscription.cancel();
     articlesScrollController.dispose();
+    _currentBrandSubscription?.cancel();
     super.close();
   }
 

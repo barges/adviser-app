@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:fortunica/data/models/user_info/user_status.dart';
+import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/fortunica_constants.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -25,17 +28,17 @@ import 'package:fortunica/presentation/screens/home/tabs/account/account_state.d
 import 'package:url_launcher/url_launcher.dart';
 
 class AccountCubit extends Cubit<AccountState> {
-  final TextEditingController commentController = TextEditingController();
-  final FocusNode commentNode = FocusNode();
-
+  final BrandManager _brandManager;
+  final FortunicaCachingManager _cacheManager;
   final FortunicaMainCubit _fortunicaMainCubit;
   final MainCubit _mainCubit;
   final FortunicaUserRepository _userRepository;
   final ConnectivityService _connectivityService;
 
-  final Future<bool> Function(bool needShowSettingsAlert) _handlePermission;
+  final TextEditingController commentController = TextEditingController();
+  final FocusNode commentNode = FocusNode();
 
-  final FortunicaCachingManager _cacheManager;
+  final Future<bool> Function(bool needShowSettingsAlert) _handlePermission;
 
   final PushNotificationManager _pushNotificationManager;
 
@@ -45,6 +48,7 @@ class AccountCubit extends Cubit<AccountState> {
   late final StreamSubscription<bool> _appOnResumeSubscription;
   late final StreamSubscription<bool> _updateAccountSubscription;
   StreamSubscription<bool>? _connectivitySubscription;
+  StreamSubscription? _currentBrandSubscription;
 
   bool? isPushNotificationPermissionGranted;
   Timer? _timer;
@@ -52,6 +56,7 @@ class AccountCubit extends Cubit<AccountState> {
   bool isTimeout = false;
 
   AccountCubit(
+    this._brandManager,
     this._cacheManager,
     this._mainCubit,
     this._fortunicaMainCubit,
@@ -63,6 +68,18 @@ class AccountCubit extends Cubit<AccountState> {
     final UserProfile? userProfile = _cacheManager.getUserProfile();
 
     emit(state.copyWith(userProfile: userProfile));
+
+    if (_brandManager.getCurrentBrand().brandAlias == FortunicaBrand.alias) {
+      firstGetUserInfo();
+    } else {
+      _currentBrandSubscription =
+          _brandManager.listenCurrentBrandStream((value) async {
+        if (value.brandAlias == FortunicaBrand.alias) {
+          await firstGetUserInfo();
+          _currentBrandSubscription?.cancel();
+        }
+      });
+    }
 
     _userProfileSubscription = _cacheManager.listenUserProfileStream((value) {
       emit(state.copyWith(userProfile: value));
@@ -100,13 +117,12 @@ class AccountCubit extends Cubit<AccountState> {
         refreshUserinfo();
       },
     );
-
-    firstGetUserInfo();
   }
 
   @override
   Future<void> close() async {
     _timer?.cancel();
+    _currentBrandSubscription?.cancel();
     _appOnResumeSubscription.cancel();
     _connectivitySubscription?.cancel();
     _updateAccountSubscription.cancel();
@@ -191,21 +207,28 @@ class AccountCubit extends Cubit<AccountState> {
     await _cacheManager.saveUserProfile(userInfo.profile);
     await _cacheManager.saveUserId(userInfo.id);
 
-    if (userInfo.contracts?.updates?.isNotEmpty == true) {
-      await _cacheManager.saveUserStatus(userInfo.status?.copyWith(
-        status: FortunicaUserStatus.legalBlock,
-      ));
-    } else {
-      if (checkPropertiesMapIfHasEmpty(userInfo) ||
-          (userInfo.profile?.profileName?.length ?? 0) <
-              FortunicaConstants.minNickNameLength ||
-          userInfo.profile?.profilePictures?.isNotEmpty != true) {
-        await _cacheManager.saveUserStatus(userInfo.status?.copyWith(
-          status: FortunicaUserStatus.incomplete,
+    final UserStatus? userStatus = userInfo.status;
+
+    if (userStatus?.status == FortunicaUserStatus.live ||
+        userStatus?.status == FortunicaUserStatus.offline) {
+      if (userInfo.contracts?.updates?.isNotEmpty == true) {
+        await _cacheManager.saveUserStatus(userStatus?.copyWith(
+          status: FortunicaUserStatus.legalBlock,
         ));
       } else {
-        await _cacheManager.saveUserStatus(userInfo.status);
+        if (checkPropertiesMapIfHasEmpty(userInfo) ||
+            (userInfo.profile?.profileName?.length ?? 0) <
+                FortunicaConstants.minNickNameLength ||
+            userInfo.profile?.profilePictures?.isNotEmpty != true) {
+          await _cacheManager.saveUserStatus(userStatus?.copyWith(
+            status: FortunicaUserStatus.incomplete,
+          ));
+        } else {
+          await _cacheManager.saveUserStatus(userStatus);
+        }
       }
+    } else {
+      await _cacheManager.saveUserStatus(userStatus);
     }
   }
 

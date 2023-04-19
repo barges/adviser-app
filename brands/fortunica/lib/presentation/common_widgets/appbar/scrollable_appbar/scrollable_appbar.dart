@@ -1,8 +1,3 @@
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -243,7 +238,6 @@ class ScrollableAppBar extends StatelessWidget {
                               ? ''
                               : SFortunica.of(context)
                                   .noInternetConnectionFortunica,
-                          isRequired: true,
                         ),
                       ),
                     if (isOnline)
@@ -252,7 +246,7 @@ class ScrollableAppBar extends StatelessWidget {
                         child: AppErrorWidget(
                           height: _errorHeight,
                           errorMessage: appError.getMessage(context),
-                          close: scrollableAppBarCubit.closeErrorWidget,
+                          //close: scrollableAppBarCubit.closeErrorWidget,
                         ),
                       ),
                   ],
