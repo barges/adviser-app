@@ -363,6 +363,7 @@ class MainAppRouter extends _i41.RootStackRouter {
           key: args.key,
           oldSelectedCategories: args.oldSelectedCategories,
           returnCallback: args.returnCallback,
+          allCategories: args.allCategories,
           isMultiselect: args.isMultiselect,
         ),
       );
@@ -1415,6 +1416,7 @@ class ZodiacSpecialitiesList
     _i42.Key? key,
     required List<_i46.CategoryInfo> oldSelectedCategories,
     required void Function(List<_i46.CategoryInfo>) returnCallback,
+    List<_i46.CategoryInfo>? allCategories,
     bool isMultiselect = true,
   }) : super(
           ZodiacSpecialitiesList.name,
@@ -1423,6 +1425,7 @@ class ZodiacSpecialitiesList
             key: key,
             oldSelectedCategories: oldSelectedCategories,
             returnCallback: returnCallback,
+            allCategories: allCategories,
             isMultiselect: isMultiselect,
           ),
         );
@@ -1435,6 +1438,7 @@ class ZodiacSpecialitiesListArgs {
     this.key,
     required this.oldSelectedCategories,
     required this.returnCallback,
+    this.allCategories,
     this.isMultiselect = true,
   });
 
@@ -1444,11 +1448,13 @@ class ZodiacSpecialitiesListArgs {
 
   final void Function(List<_i46.CategoryInfo>) returnCallback;
 
+  final List<_i46.CategoryInfo>? allCategories;
+
   final bool isMultiselect;
 
   @override
   String toString() {
-    return 'ZodiacSpecialitiesListArgs{key: $key, oldSelectedCategories: $oldSelectedCategories, returnCallback: $returnCallback, isMultiselect: $isMultiselect}';
+    return 'ZodiacSpecialitiesListArgs{key: $key, oldSelectedCategories: $oldSelectedCategories, returnCallback: $returnCallback, allCategories: $allCategories, isMultiselect: $isMultiselect}';
   }
 }
 

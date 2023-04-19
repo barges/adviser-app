@@ -16,6 +16,7 @@ import 'package:zodiac/presentation/screens/specialities_list/specialities_list_
 
 class SpecialitiesListScreen extends StatelessWidget {
   final List<CategoryInfo> oldSelectedCategories;
+  final List<CategoryInfo>? allCategories;
   final ValueChanged<List<CategoryInfo>> returnCallback;
   final bool isMultiselect;
 
@@ -23,6 +24,7 @@ class SpecialitiesListScreen extends StatelessWidget {
     Key? key,
     required this.oldSelectedCategories,
     required this.returnCallback,
+    this.allCategories,
     this.isMultiselect = true,
   }) : super(key: key);
 
@@ -33,12 +35,14 @@ class SpecialitiesListScreen extends StatelessWidget {
               zodiacGetIt.get<ZodiacUserRepository>(),
               zodiacGetIt.get<ZodiacCachingManager>(),
               oldSelectedCategories,
+              allCategories,
               isMultiselect,
             ),
         child: Builder(builder: (context) {
           final SpecialitiesListCubit specialitiesListCubit =
               context.read<SpecialitiesListCubit>();
-
+          final List<CategoryInfo> selectedCategories = context.select(
+              (SpecialitiesListCubit cubit) => cubit.state.selectedCategories);
           return Scaffold(
             backgroundColor: Theme.of(context).canvasColor,
             appBar: WideAppBar(
@@ -48,21 +52,20 @@ class SpecialitiesListScreen extends StatelessWidget {
                     : SZodiac.of(context).mainSpecialtyZodiac,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              topRightWidget: AppIconButton(
-                icon: Assets.vectors.check.path,
-                onTap: () {
-                  context.pop();
-                  returnCallback(
-                      specialitiesListCubit.state.selectedCategories);
-                },
-              ),
+              topRightWidget: selectedCategories.isNotEmpty
+                  ? AppIconButton(
+                      icon: Assets.vectors.check.path,
+                      onTap: () {
+                        context.pop();
+                        returnCallback(
+                            specialitiesListCubit.state.selectedCategories);
+                      },
+                    )
+                  : const SizedBox.shrink(),
             ),
             body: Builder(builder: (context) {
               final List<CategoryInfo> categories = context.select(
                   (SpecialitiesListCubit cubit) => cubit.state.categories);
-              final List<CategoryInfo> selectedCategories = context.select(
-                  (SpecialitiesListCubit cubit) =>
-                      cubit.state.selectedCategories);
               return SingleChildScrollView(
                 padding: EdgeInsets.fromLTRB(
                   AppConstants.horizontalScreenPadding,

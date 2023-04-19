@@ -20,8 +20,8 @@ class LocalesDescriptionsPartWidget extends StatelessWidget {
 
     final int currentLocaleIndex = context
         .select((EditProfileCubit cubit) => cubit.state.currentLocaleIndex);
-    context.select((EditProfileCubit cubit) => cubit.state.updateTextsFlag);
-
+    context.select<EditProfileCubit, bool>(
+        (EditProfileCubit cubit) => cubit.state.updateTextsFlag);
     return Padding(
       padding: EdgeInsets.fromLTRB(
         0.0,
@@ -57,6 +57,9 @@ class LocalesDescriptionsPartWidget extends StatelessWidget {
                             .hasFocusNotifiersMap[entry.key]![nickNameIndex],
                         builder: (context, value, child) {
                           return AppTextField(
+                            // key: entry.key == locales.firstOrNull
+                            //     ? editProfileCubit.firstNicknameGlobalKey
+                            //     : null,
                             controller: entry.value[nickNameIndex],
                             focusNode: editProfileCubit
                                 .focusNodesMap[entry.key]![nickNameIndex],

@@ -100,19 +100,22 @@ class MainPartInfoWidget extends StatelessWidget {
                   height: 24.0,
                 ),
                 Builder(builder: (context) {
-                  final List<CategoryInfo> mainCategory = context.select(
+                  final List<CategoryInfo>? mainCategory = context.select(
                       (EditProfileCubit cubit) =>
                           cubit.state.advisorMainCategory);
+                  final String? mainSpecialtyName =
+                      detailedUserInfo?.details?.specializing;
                   return TileMenuButton(
                     label: SZodiac.of(context).mainSpecialtyZodiac,
-                    title: mainCategory.firstOrNull?.name ??
-                        detailedUserInfo?.details?.specializing ??
+                    title: mainCategory?.firstOrNull?.name ??
+                        mainSpecialtyName ??
                         '',
-                    onTap: mainCategory.isNotEmpty
-                        ? () {
-                            editProfileCubit.goToSelectMainCategory(context);
-                          }
-                        : null,
+                    onTap: () {
+                      if (mainCategory?.isNotEmpty == true) {
+                        editProfileCubit.goToSelectMainCategory(context);
+                      }
+                    },
+                    isError: mainCategory?.isEmpty == true,
                   );
                 }),
                 const SizedBox(
@@ -123,11 +126,11 @@ class MainPartInfoWidget extends StatelessWidget {
                       (EditProfileCubit cubit) =>
                           cubit.state.advisorCategories);
                   return TileMenuButton(
-                    label: SZodiac.of(context).mySpecialtiesZodiac,
-                    title: categories.map((e) => e.name).toList().join(', '),
-                    onTap: () =>
-                        editProfileCubit.goToSelectAllCategories(context),
-                  );
+                      label: SZodiac.of(context).mySpecialtiesZodiac,
+                      title: categories.map((e) => e.name).toList().join(', '),
+                      onTap: () =>
+                          editProfileCubit.goToSelectAllCategories(context),
+                      isError: categories.isEmpty);
                 }),
               ],
             ),

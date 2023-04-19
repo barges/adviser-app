@@ -705,10 +705,10 @@ class SZodiac {
     );
   }
 
-  /// `Your changes are accepted and will be reviewed shortly. You will be notified when it is completed`
+  /// `Your changes are accepted and will be reviewed shortly. All updates will be visible to clients after that`
   String get yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac {
     return Intl.message(
-      'Your changes are accepted and will be reviewed shortly. You will be notified when it is completed',
+      'Your changes are accepted and will be reviewed shortly. All updates will be visible to clients after that',
       name: 'yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac',
       desc: '',
       args: [],

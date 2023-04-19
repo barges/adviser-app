@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
-import 'package:shared_advisor_interface/global.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/app_error/app_error.dart';
 import 'package:zodiac/data/models/app_error/ui_error_type.dart';
@@ -130,8 +129,6 @@ class AppInterceptor extends Interceptor {
     final BuildContext? context = ZodiacBrand().context;
 
     BaseResponse baseResponse = BaseResponse.fromJson(response.data);
-
-    logger.d('error  ${baseResponse.errorCode}');
 
     if (baseResponse.errorCode == 5) {
       _webSocketManager.close();
