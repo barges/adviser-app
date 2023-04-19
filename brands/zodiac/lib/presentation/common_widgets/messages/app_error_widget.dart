@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class AppErrorWidget extends StatelessWidget {
   final String errorMessage;
   final VoidCallback? close;
-  final bool isRequired;
+
   final double? height;
   final VoidCallback? onTapUrl;
 
@@ -16,7 +16,6 @@ class AppErrorWidget extends StatelessWidget {
     required this.errorMessage,
     this.close,
     this.height,
-    this.isRequired = false,
     this.onTapUrl,
   }) : super(key: key);
 
@@ -46,7 +45,7 @@ class AppErrorWidget extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(
-                          16.0, 8.0, isRequired ? 16.0 : 0.0, 8.0),
+                          16.0, 8.0, close == null ? 16.0 : 0.0, 8.0),
                       child: errorMessage.isHtml
                           ? HtmlWidget(
                               errorMessage,
@@ -82,7 +81,7 @@ class AppErrorWidget extends StatelessWidget {
                             ),
                     ),
                   ),
-                  if (!isRequired)
+                  if (close != null)
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 22.0),
                       child: GestureDetector(

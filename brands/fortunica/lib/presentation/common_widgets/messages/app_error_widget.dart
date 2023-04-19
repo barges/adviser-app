@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 class AppErrorWidget extends StatelessWidget {
   final String errorMessage;
   final VoidCallback? close;
-  final bool isRequired;
   final double? height;
 
   const AppErrorWidget({
@@ -13,7 +12,6 @@ class AppErrorWidget extends StatelessWidget {
     required this.errorMessage,
     this.close,
     this.height,
-    this.isRequired = false,
   }) : super(key: key);
 
   @override
@@ -42,7 +40,7 @@ class AppErrorWidget extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(
-                          16.0, 8.0, isRequired ? 16.0 : 0.0, 8.0),
+                          16.0, 8.0, close == null ? 16.0 : 0.0, 8.0),
                       child: Text(
                         errorMessage,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -52,7 +50,7 @@ class AppErrorWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (!isRequired)
+                  if (close != null)
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 22.0),
                       child: GestureDetector(

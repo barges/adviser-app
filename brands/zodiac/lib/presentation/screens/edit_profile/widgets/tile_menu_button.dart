@@ -6,12 +6,14 @@ class TileMenuButton extends StatelessWidget {
   final String label;
   final String title;
   final VoidCallback? onTap;
+  final bool isError;
 
   const TileMenuButton({
     Key? key,
     required this.label,
     required this.title,
     this.onTap,
+    this.isError = false,
   }) : super(key: key);
 
   @override
@@ -36,7 +38,7 @@ class TileMenuButton extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-              color: Theme.of(context).hintColor,
+              color: isError ? Theme.of(context).errorColor : Theme.of(context).hintColor,
             ),
             child: Container(
               margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
