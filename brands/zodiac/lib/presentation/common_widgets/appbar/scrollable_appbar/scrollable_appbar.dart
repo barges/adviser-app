@@ -201,17 +201,25 @@ class ScrollableAppBar extends StatelessWidget {
                                           ),
                                         ],
                                       ),
-                                      Text(
-                                        currentBrand.name,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall
-                                            ?.copyWith(
-                                              fontSize: 12.0,
-                                              color: Theme.of(context)
-                                                  .iconTheme
-                                                  .color,
-                                            ),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const SizedBox(
+                                            width: 4.0,
+                                          ),
+                                          Text(
+                                            currentBrand.name,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall
+                                                ?.copyWith(
+                                                  fontSize: 12.0,
+                                                  color: Theme.of(context)
+                                                      .iconTheme
+                                                      .color,
+                                                ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -249,20 +257,17 @@ class ScrollableAppBar extends StatelessWidget {
                       Positioned(
                         top: _minHeight,
                         child: AppErrorWidget(
-                          height: _errorHeight,
                           errorMessage: isOnline
                               ? ''
                               : SZodiac.of(context).noInternetConnectionZodiac,
-                          isRequired: true,
                         ),
                       ),
                     if (isOnline)
                       Positioned(
                         top: _minHeight,
                         child: AppErrorWidget(
-                          height: _errorHeight,
                           errorMessage: appError.getMessage(context),
-                          close: scrollableAppBarCubit.closeErrorWidget,
+                          //  close: scrollableAppBarCubit.closeErrorWidget,
                         ),
                       ),
                   ],

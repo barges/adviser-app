@@ -65,7 +65,6 @@ class AddNoteScreen extends StatelessWidget {
                     ? ''
                     : SFortunica.of(context)
                         .youDontHaveAnInternetConnectionFortunica,
-                isRequired: true,
               ),
               if (isOnline)
                 AppErrorWidget(

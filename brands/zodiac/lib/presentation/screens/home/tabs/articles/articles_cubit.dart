@@ -10,6 +10,7 @@ import 'package:zodiac/data/network/responses/articles_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_state.dart';
 import 'package:zodiac/zodiac.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ArticlesCubit extends Cubit<ArticlesState> {
   final int _limit = 10;
@@ -18,53 +19,49 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   bool _isLoading = false;
   final ScrollController articlesScrollController = ScrollController();
   final ZodiacArticlesRepository _articlesRepository;
+  final ZodiacMainCubit _zodiacMainCubit;
   final BrandManager _brandManager;
 
   StreamSubscription? _currentBrandSubscription;
   final List<Article> _articleList = [];
+  late final StreamSubscription<bool> _updateArticleSubscription;
 
   ArticlesCubit(
     this._articlesRepository,
+    this._zodiacMainCubit,
     this._brandManager,
   ) : super(const ArticlesState()) {
-
     if (_brandManager.getCurrentBrand().brandAlias == ZodiacBrand.alias) {
-      _loadData();
+      getArticles();
     } else {
       _currentBrandSubscription =
           _brandManager.listenCurrentBrandStream((value) async {
-            if(value.brandAlias == ZodiacBrand.alias) {
-              await _loadData();
-              _currentBrandSubscription?.cancel();
-            }
-          });
+        if (value.brandAlias == ZodiacBrand.alias) {
+          await getArticles();
+          _currentBrandSubscription?.cancel();
+        }
+      });
     }
 
     articlesScrollController.addListener(_scrollControllerListener);
-
+    _updateArticleSubscription = _zodiacMainCubit.articleUpdateTrigger.listen(
+      (_) {
+        articlesScrollController.jumpTo(0.0);
+        getArticles(refresh: true);
+      },
+    );
+    getArticles();
   }
 
   @override
   Future<void> close() async {
+    _updateArticleSubscription.cancel();
     articlesScrollController.dispose();
     _currentBrandSubscription?.cancel();
     super.close();
   }
 
-  Future<void> _loadData() async {
-    await getArticles();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (articlesScrollController.hasClients) {
-        _checkIfNeedAndLoadData();
-      }
-    });
-  }
-
   void _scrollControllerListener() {
-    _checkIfNeedAndLoadData();
-  }
-
-  void _checkIfNeedAndLoadData() {
     if (!_isLoading && articlesScrollController.position.extentAfter <= 300) {
       getArticles();
     }

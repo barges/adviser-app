@@ -12,7 +12,7 @@ import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
-import 'package:zodiac/presentation/common_widgets/appbar/transparrent_app_bar.dart';
+import 'package:zodiac/presentation/common_widgets/appbar/transparrent_app_bar/transparrent_app_bar.dart';
 import 'package:zodiac/presentation/screens/article_details_screen/article_details_cubit.dart';
 import 'package:zodiac/zodiac.dart';
 

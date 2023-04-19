@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
-import 'package:zodiac/presentation/common_widgets/appbar/transparrent_app_bar.dart';
+import 'package:zodiac/presentation/common_widgets/appbar/transparrent_app_bar/transparrent_app_bar.dart';
 import 'package:zodiac/presentation/screens/notification_details/notification_details_cubit.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
