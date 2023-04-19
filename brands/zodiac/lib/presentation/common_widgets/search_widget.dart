@@ -34,7 +34,9 @@ class _SearchWidgetState extends State<SearchWidget> {
 
   @override
   void dispose() {
+    _searchTextController.dispose();
     _searchSubscription.cancel();
+    _searchStream.close();
     super.dispose();
   }
 
