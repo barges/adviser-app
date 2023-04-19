@@ -238,7 +238,6 @@ class ScrollableAppBar extends StatelessWidget {
                               ? ''
                               : SFortunica.of(context)
                                   .noInternetConnectionFortunica,
-                          isRequired: true,
                         ),
                       ),
                     if (isOnline)
@@ -247,7 +246,7 @@ class ScrollableAppBar extends StatelessWidget {
                         child: AppErrorWidget(
                           height: _errorHeight,
                           errorMessage: appError.getMessage(context),
-                          close: scrollableAppBarCubit.closeErrorWidget,
+                          //close: scrollableAppBarCubit.closeErrorWidget,
                         ),
                       ),
                   ],
