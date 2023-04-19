@@ -156,7 +156,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Sua conta foi bloqueada.<br>Entre em contato com o <a href=\'\'>Suporte ao cliente</a> para resolver o problema"),
         "yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac":
             MessageLookupByLibrary.simpleMessage(
-                "Suas alterações foram aceitas e serão analisadas em breve. Você será notificado quando for concluído"),
+                "Suas alterações foram aceitas e serão analisadas em breve. Todas as atualizações ficarão visíveis para os clientes depois disso"),
         "yourClientSessionHistoryWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "O histórico de ssessões de clientes aparecerá aqui"),
