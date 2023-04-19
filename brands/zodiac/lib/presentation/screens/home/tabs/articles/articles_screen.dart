@@ -9,6 +9,7 @@ import 'package:zodiac/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/no_connection_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_cubit.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/widgets/list_of_articles_widget.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ArticlesScreen extends StatelessWidget {
   const ArticlesScreen({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class ArticlesScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => ArticlesCubit(
         zodiacGetIt.get<ZodiacArticlesRepository>(),
+        zodiacGetIt.get<ZodiacMainCubit>(),
       ),
       child: Builder(builder: (BuildContext context) {
         final bool isOnline = context.select(
