@@ -23,6 +23,7 @@ import 'package:zodiac/zodiac_main_cubit.dart';
 const paddingTopTimeItem = 16.0;
 const paddingBottomTimeItem = 8.0;
 const paddingottomStatisticWidget = 24.0 - paddingTopTimeItem;
+const paddingTopLabelWidget = 8.0;
 
 class BalanceAndTransactionsScreen extends StatelessWidget {
   final UserBalance userBalance;
@@ -221,7 +222,7 @@ class _UpButtonIcon extends StatelessWidget {
 }
 
 class _DelegateLabelWidget extends SliverPersistentHeaderDelegate {
-  final double _extent = labelWidgetHeight + paddingBottomTimeItem;
+  final double _extent = paddingTopLabelWidget + labelWidgetHeight;
 
   @override
   double get maxExtent => _extent;
@@ -241,10 +242,13 @@ class _DelegateLabelWidget extends SliverPersistentHeaderDelegate {
       alignment: Alignment.bottomCenter,
       height: maxExtent,
       child: Builder(builder: (context) {
-        final DateTime? dateCreate = context.select(
-            (BalanceAndTransactionsCubit cubit) => cubit.state.dateCreate);
-        return dateCreate != null
-            ? LabelWidget(dateTime: dateCreate)
+        final DateTime? dateLabel = context.select(
+            (BalanceAndTransactionsCubit cubit) => cubit.state.dateLabel);
+        final bool isVisibleDateLabel = context.select(
+            (BalanceAndTransactionsCubit cubit) =>
+                cubit.state.isVisibleDateLabel);
+        return isVisibleDateLabel && dateLabel != null
+            ? LabelWidget(dateLabel: dateLabel)
             : const SizedBox.shrink();
       }),
     );

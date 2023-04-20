@@ -18,6 +18,7 @@ class ZodiacMainCubit extends Cubit<ZodiacMainState> {
   final PublishSubject<bool> audioStopTrigger = PublishSubject();
   final PublishSubject<UserBalance> userBalanceUpdateTrigger = PublishSubject();
   final PublishSubject<bool> articleCountUpdateTrigger = PublishSubject();
+  final PublishSubject<bool> articleUpdateTrigger = PublishSubject();
   final PublishSubject<bool> accountUpdateTrigger = PublishSubject();
   final PublishSubject<bool> unreadNotificationsCounterUpdateTrigger =
       PublishSubject();
@@ -69,6 +70,10 @@ class ZodiacMainCubit extends Cubit<ZodiacMainState> {
 
   void updateArticleCount() {
     articleCountUpdateTrigger.add(true);
+  }
+
+  void updateArticle() {
+    articleUpdateTrigger.add(true);
   }
 
   void updateAccount() {
