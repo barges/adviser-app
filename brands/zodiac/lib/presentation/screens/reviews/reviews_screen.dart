@@ -30,6 +30,8 @@ class ReviewsScreen extends StatelessWidget {
           final ReviewsCubit reviewsCubit = context.read<ReviewsCubit>();
           final List<ZodiacReviewItem>? reviewList =
               context.select((ReviewsCubit cubit) => cubit.state.reviewList);
+          final bool internetConnectionIsAvailable = context.select(
+              (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
           return Scaffold(
             key: reviewsCubit.scaffoldKey,
             body: SafeArea(
@@ -47,7 +49,7 @@ class ReviewsScreen extends StatelessWidget {
                       slivers: [
                         ScrollableAppBar(
                           title: SZodiac.of(context).reviewsZodiac,
-                          needShowError: true,
+                          needShowError: reviewList != null,
                         ),
                         Builder(builder: (context) {
                           const horizontalScreenPadding =
@@ -85,6 +87,17 @@ class ReviewsScreen extends StatelessWidget {
                                     label: SZodiac.of(context)
                                         .reviewsFromYourClientsWillAppearHereZodiac,
                                   ),
+                                ],
+                              ),
+                            );
+                          } else if (reviewList == null &&
+                              !internetConnectionIsAvailable) {
+                            return SliverFillRemaining(
+                              hasScrollBody: false,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  NoConnectionWidget(),
                                 ],
                               ),
                             );
