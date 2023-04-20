@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:zodiac/data/models/payment/payment_information.dart';
 import 'package:zodiac/data/models/payment/transaction_ui_model.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
@@ -39,10 +40,13 @@ const double correctionTilePositionEnd = 12.0;
 class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   final ZodiacMainCubit _mainCubit;
   final ZodiacUserRepository _userRepository;
+  final ConnectivityService _connectivityService;
+
   final ScrollController scrollController = ScrollController();
   late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
   late final PublishSubject _scrollStream = PublishSubject<double>();
   late final StreamSubscription _scrollSubscription;
+  late final StreamSubscription _connectivitySubscription;
   final List<PaymentInformation> _transactionsListData = [];
   final _tilePositions = <DateTime, _TilePosition>{};
   final int _limit = 20;
@@ -50,10 +54,12 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   int? _count;
   bool _isLoading = false;
   bool _isScrollUp = false;
+  bool _firstLoad = true;
 
   BalanceAndTransactionsCubit(
     this._mainCubit,
     this._userRepository,
+    this._connectivityService,
   ) : super(const BalanceAndTransactionsState()) {
     _updateUserBalanceSubscription =
         _mainCubit.userBalanceUpdateTrigger.listen((value) {
@@ -71,6 +77,14 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
         dateCreate: dateCreate,
       ));
     });
+
+    _connectivitySubscription = _connectivityService.connectivityStream.listen(
+      (event) {
+        if (event && _firstLoad) {
+          _loadData();
+        }
+      },
+    );
 
     _loadData();
   }
@@ -111,6 +125,7 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
     _updateUserBalanceSubscription.cancel();
     _scrollSubscription.cancel();
     scrollController.dispose();
+    _connectivitySubscription.cancel();
     super.close();
   }
 
@@ -126,27 +141,29 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
 
     try {
       _isLoading = true;
+      if (await _connectivityService.checkConnection()) {
+        _offset = refresh ? 0 : _offset;
+        final PaymentsListResponse response = await _userRepository
+            .getPaymentsList(ListRequest(count: _limit, offset: _offset));
 
-      _offset = refresh ? 0 : _offset;
-      final PaymentsListResponse response = await _userRepository
-          .getPaymentsList(ListRequest(count: _limit, offset: _offset));
+        _count = response.count ?? 0;
+        _offset = _offset + _limit;
 
-      _count = response.count ?? 0;
-      _offset = _offset + _limit;
+        _transactionsListData.addAll(response.result ?? []);
+        final List<TransactionUiModel> transactionUiModelsList =
+            await compute(_toTransactionUiModels, _transactionsListData);
 
-      _transactionsListData.addAll(response.result ?? []);
-      final List<TransactionUiModel> transactionUiModelsList =
-          await compute(_toTransactionUiModels, _transactionsListData);
+        setTilePositions(transactionUiModelsList);
 
-      setTilePositions(transactionUiModelsList);
-
-      emit(state.copyWith(
-        transactionsList: transactionUiModelsList,
-      ));
+        emit(state.copyWith(
+          transactionsList: transactionUiModelsList,
+        ));
+        _firstLoad = false;
+      }
       _isLoading = false;
     } catch (e) {
-      _isLoading = false;
       logger.d(e);
+      _isLoading = false;
     }
   }
 
