@@ -4,11 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/zodiac_main_state.dart';
 
 @singleton
 class ZodiacMainCubit extends Cubit<ZodiacMainState> {
+  final ConnectivityService _connectivityService;
+
   Timer? _errorTimer;
 
   final PublishSubject<bool> sessionsUpdateTrigger = PublishSubject();
@@ -20,11 +23,21 @@ class ZodiacMainCubit extends Cubit<ZodiacMainState> {
       PublishSubject();
   final PublishSubject<bool> updateNotificationsListTrigger = PublishSubject();
 
-  ZodiacMainCubit() : super(const ZodiacMainState());
+  late final StreamSubscription _connectivitySubscription;
+
+  ZodiacMainCubit(this._connectivityService) : super(const ZodiacMainState()) {
+    _connectivitySubscription =
+        _connectivityService.connectivityStream.listen((event) {
+      if (!event) {
+        clearErrorMessage();
+      }
+    });
+  }
 
   @override
   Future<void> close() {
     _errorTimer?.cancel();
+    _connectivitySubscription.cancel();
     return super.close();
   }
 
