@@ -19,13 +19,11 @@ class NotificationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
     return BlocProvider(
       create: (context) => NotificationsCubit(
         zodiacGetIt.get<ZodiacUserRepository>(),
         zodiacGetIt.get<ZodiacMainCubit>(),
         zodiacGetIt.get<ConnectivityService>(),
-        screenHeight,
       ),
       child: Builder(builder: (context) {
         final NotificationsCubit notificationsCubit =
@@ -54,19 +52,24 @@ class NotificationsScreen extends StatelessWidget {
                   ScrollableAppBar(
                     title: SZodiac.of(context).notificationsZodiac,
                   ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 16.0,
-                    ),
-                  ),
                   internetConnectionIsAvailable
                       ? notifications != null
                           ? notifications.isNotEmpty
                               ? SliverList(
                                   delegate: SliverChildBuilderDelegate(
-                                    (context, index) =>
-                                        NotificationsListTileWidget(
-                                            item: notifications[index]),
+                                    (context, index) => Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                        0,
+                                        index == 0 ? 16.0 : 0.0,
+                                        0.0,
+                                        index == notifications.length - 1
+                                            ? 8.0
+                                            : 0.0,
+                                      ),
+                                      child: NotificationsListTileWidget(
+                                        item: notifications[index],
+                                      ),
+                                    ),
                                     childCount: notifications.length,
                                   ),
                                 )
@@ -104,11 +107,6 @@ class NotificationsScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 8.0,
-                    ),
-                  ),
                 ],
               ),
             ),
