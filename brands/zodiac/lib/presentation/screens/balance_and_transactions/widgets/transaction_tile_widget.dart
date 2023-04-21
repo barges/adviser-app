@@ -247,7 +247,7 @@ class _PaymentSourceIcon extends StatelessWidget {
         border: Border.all(
           width: 2.0,
           color: theme.canvasColor,
-          strokeAlign: StrokeAlign.outside,
+          strokeAlign: BorderSide.strokeAlignOutside,
         ),
       ),
       child: SvgPicture.asset(paymentSource.iconPath!),
