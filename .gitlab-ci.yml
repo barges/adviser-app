@@ -22,9 +22,9 @@ build-ios:
   before_script:
     - flutter --version
     - sh pubs.sh
-    - cd ios
-    - pod repo update
-    - cd ..
+#    - cd ios
+#    - pod repo update
+#    - cd ..
   script:
     - flutter build ipa --release --export-method development
   artifacts:
