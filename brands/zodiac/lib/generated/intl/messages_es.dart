@@ -39,12 +39,15 @@ class MessageLookup extends MessageLookupByLibrary {
             "Promedio de Ganancias Diarias"),
         "balanceTransactionsZodiac":
             MessageLookupByLibrary.simpleMessage("Saldo y Transacciones"),
+        "bonusZodiac": MessageLookupByLibrary.simpleMessage("Prima"),
+        "callZodiac": MessageLookupByLibrary.simpleMessage("Llamar:"),
         "cancelZodiac": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "changeZodiac": MessageLookupByLibrary.simpleMessage("Cambiar"),
         "characterLimitExceededZodiac":
             MessageLookupByLibrary.simpleMessage("Character limit exceeded."),
         "chatStartGreetingZodiac":
             MessageLookupByLibrary.simpleMessage("Saludo de inicio de chat"),
+        "chatZodiac": MessageLookupByLibrary.simpleMessage("Charlar:"),
         "checkYourInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Revisa tu conexión a internet"),
@@ -55,6 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Soporte de Atención al Cliente"),
         "dashboardZodiac":
             MessageLookupByLibrary.simpleMessage("Panel de Control"),
+        "daysZodiac": MessageLookupByLibrary.simpleMessage("dias"),
         "doYouReallyWantToDeleteLocaleNameFromYourListZodiac": m0,
         "editProfileZodiac":
             MessageLookupByLibrary.simpleMessage("Editar perfil"),
@@ -71,6 +75,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Olvidaste tu contraseña"),
         "hereWillAppearArticles":
             MessageLookupByLibrary.simpleMessage("Aquí aparecerán artículos"),
+        "hoursZodiac": MessageLookupByLibrary.simpleMessage("horas"),
         "imAvailableNowZodiac":
             MessageLookupByLibrary.simpleMessage("Estoy disponible ahora"),
         "languageZodiac": MessageLookupByLibrary.simpleMessage("Idioma"),
@@ -81,6 +86,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Lenguaje principal"),
         "mainSpecialtyZodiac":
             MessageLookupByLibrary.simpleMessage("Especialidad principal"),
+        "minutesZodiac": MessageLookupByLibrary.simpleMessage("min"),
         "mySpecialtiesZodiac":
             MessageLookupByLibrary.simpleMessage("Mis especialidades"),
         "newCustomersZodiac":
@@ -101,6 +107,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "No hay transacciones, todavía"),
         "notificationsZodiac":
             MessageLookupByLibrary.simpleMessage("Notificaciones"),
+        "offlineServiceZodiac":
+            MessageLookupByLibrary.simpleMessage("Servicio fuera de línea:"),
+        "onlineServicesZodiac":
+            MessageLookupByLibrary.simpleMessage("Servicios en línea:"),
         "oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "😱 ¡Ups! Tus datos de inicio de sesión parecen ser incorrectos. Inténtalo nuevamente o pulsa restablecer clave."),
@@ -124,6 +134,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Campo obligatorio"),
         "resetPasswordZodiac":
             MessageLookupByLibrary.simpleMessage("Restablecer contraseña"),
+        "returnZodiac": MessageLookupByLibrary.simpleMessage("Devolver"),
         "reviewsFromYourClientsWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Las reseñas de tus clientes aparecerán aquí"),
@@ -131,6 +142,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "salesZodiac": MessageLookupByLibrary.simpleMessage("Ventas"),
         "saveZodiac": MessageLookupByLibrary.simpleMessage("Ahorrar"),
         "searchZodiac": MessageLookupByLibrary.simpleMessage("Buscar"),
+        "secondsZodiac": MessageLookupByLibrary.simpleMessage("seg"),
+        "serviceZodiac": MessageLookupByLibrary.simpleMessage("Servicio"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Servicios"),
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sesiones"),
         "templatesContentZodiac":
@@ -141,11 +154,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "thePasswordsMustMatchZodiac": MessageLookupByLibrary.simpleMessage(
             "Las contraseñas deben coincidir"),
         "thisMonthZodiac": MessageLookupByLibrary.simpleMessage("Este Mes"),
+        "tipZodiac": MessageLookupByLibrary.simpleMessage("Consejo"),
         "todayZodiac": MessageLookupByLibrary.simpleMessage("Hoy"),
+        "topUpZodiac": MessageLookupByLibrary.simpleMessage("Completar"),
         "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Uh-oh. Parece que has perdido la conexión. Por favor, inténtalo de nuevo"),
         "weVeSentPasswordResetInstructionsToEmailZodiac": m2,
+        "withdrawalZodiac": MessageLookupByLibrary.simpleMessage("Retiro"),
         "wrongUsernameAndOrPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Nombre de usuario y/o contraseña incorrectos"),

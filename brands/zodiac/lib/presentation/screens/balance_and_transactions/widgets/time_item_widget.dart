@@ -23,8 +23,7 @@ class TimeItemWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 12.0),
           child: Text(
             dateTime.listTime(context),
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  fontSize: 14.0,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   color: Theme.of(context).shadowColor,
                 ),
           ),
