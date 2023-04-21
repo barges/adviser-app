@@ -72,5 +72,19 @@
   "requiredFieldZodiac": "Pflichtfeld",
   "thePasswordsMustMatchZodiac": "Die Passwörter müssen übereinstimmen",
   "pleaseEnterAtLeast8CharactersZodiac": "Bitte mindestens 8 Zeichen eingeben",
-  "pleaseInsertCorrectEmailZodiac": "Bitte korrekte E-Mail eingeben"
+  "pleaseInsertCorrectEmailZodiac": "Bitte korrekte E-Mail eingeben",
+  "topUpZodiac": "Nachfüllen",
+  "chatZodiac": "Plaudern:",
+  "callZodiac": "Forderung:",
+  "bonusZodiac": "Bonus",
+  "returnZodiac": "Zurückkehren",
+  "tipZodiac": "Spitze",
+  "serviceZodiac": "Service",
+  "withdrawalZodiac": "Rückzug",
+  "onlineServicesZodiac": "Online Dienste:",
+  "offlineServiceZodiac": "Offline Dienst:",
+  "daysZodiac": "tage",
+  "hoursZodiac": "stunden",
+  "minutesZodiac": "min",
+  "secondsZodiac": "sek"
 }

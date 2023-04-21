@@ -814,6 +814,146 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Top Up`
+  String get topUpZodiac {
+    return Intl.message(
+      'Top Up',
+      name: 'topUpZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat:`
+  String get chatZodiac {
+    return Intl.message(
+      'Chat:',
+      name: 'chatZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Call:`
+  String get callZodiac {
+    return Intl.message(
+      'Call:',
+      name: 'callZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bonus`
+  String get bonusZodiac {
+    return Intl.message(
+      'Bonus',
+      name: 'bonusZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Return`
+  String get returnZodiac {
+    return Intl.message(
+      'Return',
+      name: 'returnZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tip`
+  String get tipZodiac {
+    return Intl.message(
+      'Tip',
+      name: 'tipZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Service`
+  String get serviceZodiac {
+    return Intl.message(
+      'Service',
+      name: 'serviceZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Withdrawal`
+  String get withdrawalZodiac {
+    return Intl.message(
+      'Withdrawal',
+      name: 'withdrawalZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Online services:`
+  String get onlineServicesZodiac {
+    return Intl.message(
+      'Online services:',
+      name: 'onlineServicesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Offline service:`
+  String get offlineServiceZodiac {
+    return Intl.message(
+      'Offline service:',
+      name: 'offlineServiceZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `days`
+  String get daysZodiac {
+    return Intl.message(
+      'days',
+      name: 'daysZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `hours`
+  String get hoursZodiac {
+    return Intl.message(
+      'hours',
+      name: 'hoursZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `min`
+  String get minutesZodiac {
+    return Intl.message(
+      'min',
+      name: 'minutesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `sec`
+  String get secondsZodiac {
+    return Intl.message(
+      'sec',
+      name: 'secondsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {
