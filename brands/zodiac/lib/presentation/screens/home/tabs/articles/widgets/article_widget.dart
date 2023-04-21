@@ -52,7 +52,8 @@ class ArticleWidget extends StatelessWidget {
             child: Text(
               DateFormat(dateFormat)
                   .format(DateTime.fromMillisecondsSinceEpoch(
-                      (article.dateCreate ?? 0) * 1000))
+                      ((article.dateCreate ?? 0) * 1000),
+                      isUtc: true))
                   .parseDateTimePattern2,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     fontSize: 12.0,
