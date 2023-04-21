@@ -15,6 +15,10 @@ class Commands {
 
   static String get syncUserInfo => 'syncUserInfo';
 
+  static String get startCall => 'startCall';
+
+  static String get cancelCall => 'cancelCall';
+
   static String get setAfk => 'setAfk';
 
   static String get afk => 'afk';
