@@ -8,6 +8,8 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/app_error/app_error.dart';
+import 'package:zodiac/data/models/app_error/ui_error_type.dart';
 import 'package:zodiac/data/models/app_success/app_success.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 import 'package:zodiac/data/network/requests/login_request.dart';
@@ -114,15 +116,24 @@ class LoginCubit extends Cubit<LoginState> {
 
         String? token = response?.result?.authToken;
         int? userId = response?.result?.id;
+        int? profilesId =
+            response?.result?.profilesId; //1 - admin, 2 - client, 3 - advisor
 
-        if (response?.errorCode == 0 && token != null && userId != null) {
-          await _cachingManager.saveUserToken(token);
-          await _cachingManager.saveUid(userId);
+        if (response?.errorCode == 0) {
+          if (profilesId == 3) {
+            if (token != null && userId != null) {
+              await _cachingManager.saveUserToken(token);
+              await _cachingManager.saveUid(userId);
 
-          await _userRepository
-              .updateLocale(UpdateLocaleRequest(locale: languageCode));
+              await _userRepository
+                  .updateLocale(UpdateLocaleRequest(locale: languageCode));
 
-          goToHome(context);
+              goToHome(context);
+            }
+          } else {
+            _zodiacMainCubit.updateErrorMessage(UIError(
+                uiErrorType: UIErrorType.loginDetailsSeemToBeIncorrect));
+          }
         }
       } on DioError catch (e) {
         logger.d(e);
