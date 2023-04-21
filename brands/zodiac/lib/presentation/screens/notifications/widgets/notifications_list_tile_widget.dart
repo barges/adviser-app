@@ -70,7 +70,8 @@ class NotificationsListTileWidget extends StatelessWidget {
                       Text(
                         item.dateCreate != null
                             ? DateTime.fromMillisecondsSinceEpoch(
-                                    item.dateCreate! * 1000)
+                                    (item.dateCreate! * 1000),
+                                    isUtc: true)
                                 .listTime(context)
                             : '',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
