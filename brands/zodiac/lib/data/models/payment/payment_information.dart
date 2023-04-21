@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:zodiac/data/models/enums/payment_source.dart';
 
 part 'payment_information.g.dart';
 part 'payment_information.freezed.dart';
@@ -13,10 +14,12 @@ class PaymentInformation with _$PaymentInformation {
   const factory PaymentInformation({
     int? id,
     @JsonKey(fromJson: _toDateTime) DateTime? dateCreate,
-    int? source,
+    @JsonKey(fromJson: _sourceFromJson)
+    @Default(PaymentSource.none)
+        PaymentSource source,
     double? fee,
     double? amount,
-    int? length,
+    @JsonKey(fromJson: _toDuration) Duration? length,
     String? note,
     String? avatar,
   }) = _PaymentInformation;
@@ -26,5 +29,12 @@ class PaymentInformation with _$PaymentInformation {
 }
 
 DateTime? _toDateTime(int? value) => value != null
-    ? DateTime.fromMillisecondsSinceEpoch((value * 1000), isUtc: true)
+    ? DateTime.fromMillisecondsSinceEpoch(value * 1000, isUtc: true)
     : null;
+
+PaymentSource _sourceFromJson(int? value) {
+  return PaymentSource.fromInt(value);
+}
+
+Duration? _toDuration(int? value) =>
+    value != null ? Duration(seconds: value) : null;
