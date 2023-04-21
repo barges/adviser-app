@@ -25,5 +25,6 @@ class PaymentInformation with _$PaymentInformation {
       _$PaymentInformationFromJson(json);
 }
 
-DateTime? _toDateTime(int? value) =>
-    value != null ? DateTime.fromMillisecondsSinceEpoch(value * 1000) : null;
+DateTime? _toDateTime(int? value) => value != null
+    ? DateTime.fromMillisecondsSinceEpoch((value * 1000), isUtc: true)
+    : null;

@@ -54,8 +54,7 @@ class _ReviewCustomerInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        UserAvatar(
-            diameter: 32.0, avatarUrl: item.avatar ?? ''),
+        UserAvatar(diameter: 32.0, avatarUrl: item.avatar ?? ''),
         const SizedBox(
           width: AppConstants.horizontalScreenPadding / 2,
         ),
@@ -82,8 +81,11 @@ class _ReviewCustomerInfoWidget extends StatelessWidget {
               ),
               Text(
                 DateFormat(dateFormat)
-                    .format(DateTime.fromMillisecondsSinceEpoch(
-                        (item.dateCreate ?? 0) * 1000))
+                    .format(
+                      DateTime.fromMillisecondsSinceEpoch(
+                          ((item.dateCreate ?? 0) * 1000),
+                          isUtc: true),
+                    )
                     .parseDateTimePattern4,
                 style: Theme.of(context)
                     .textTheme
