@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
-import 'package:zodiac/presentation/common_widgets/appbar/transparrent_app_bar/transparrent_app_bar.dart';
+import 'package:zodiac/presentation/common_widgets/appbar/transparrent_app_bar.dart';
 import 'package:zodiac/presentation/screens/gallery/gallery_pictures_cubit.dart';
 
 class GalleryPicturesScreen extends StatelessWidget {

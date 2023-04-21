@@ -70,7 +70,8 @@ Future<_i1.GetIt> $initGetIt(
   gh.singleton<_i9.PushNotificationManager>(
       servicesModule.pushNotificationManager);
   gh.factory<_i10.ZodiacCachingManager>(() => _i11.ZodiacCachingManagerImpl());
-  gh.singleton<_i12.ZodiacMainCubit>(_i12.ZodiacMainCubit());
+  gh.singleton<_i12.ZodiacMainCubit>(
+      _i12.ZodiacMainCubit(get<_i5.ConnectivityService>()));
   gh.singleton<_i13.WebSocketManager>(_i14.WebSocketManagerImpl(
     get<_i12.ZodiacMainCubit>(),
     get<_i10.ZodiacCachingManager>(),

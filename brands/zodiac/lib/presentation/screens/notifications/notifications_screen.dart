@@ -19,13 +19,11 @@ class NotificationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
     return BlocProvider(
       create: (context) => NotificationsCubit(
         zodiacGetIt.get<ZodiacUserRepository>(),
         zodiacGetIt.get<ZodiacMainCubit>(),
         zodiacGetIt.get<ConnectivityService>(),
-        screenHeight,
       ),
       child: Builder(builder: (context) {
         final NotificationsCubit notificationsCubit =
@@ -53,62 +51,67 @@ class NotificationsScreen extends StatelessWidget {
                 slivers: [
                   ScrollableAppBar(
                     title: SZodiac.of(context).notificationsZodiac,
+                    needShowError: notifications != null,
                   ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 16.0,
-                    ),
-                  ),
-                  internetConnectionIsAvailable
-                      ? notifications != null
-                          ? notifications.isNotEmpty
-                              ? SliverList(
-                                  delegate: SliverChildBuilderDelegate(
-                                    (context, index) =>
-                                        NotificationsListTileWidget(
-                                            item: notifications[index]),
-                                    childCount: notifications.length,
-                                  ),
-                                )
-                              : SliverFillRemaining(
-                                  hasScrollBody: false,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal:
-                                          AppConstants.horizontalScreenPadding,
-                                    ),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        const Spacer(flex: 1),
-                                        EmptyListWidget(
-                                          title: SZodiac.of(context)
-                                              .noNotificationsYetZodiac,
-                                          label: SZodiac.of(context)
-                                              .yourNotificationsHistoryWillAppearHereZodiac,
-                                        ),
-                                        const Spacer(flex: 2)
-                                      ],
-                                    ),
-                                  ),
-                                )
-                          : const SliverFillRemaining(
-                              child: SizedBox.shrink(),
-                            )
-                      : SliverFillRemaining(
-                          hasScrollBody: false,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              NoConnectionWidget(),
-                            ],
-                          ),
+                  Builder(builder: (context) {
+                    if (!internetConnectionIsAvailable &&
+                        notifications == null) {
+                      return SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            NoConnectionWidget(),
+                          ],
                         ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 8.0,
-                    ),
-                  ),
+                      );
+                    } else if (notifications != null) {
+                      if (notifications.isNotEmpty) {
+                        return SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) => Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                0,
+                                index == 0 ? 16.0 : 0.0,
+                                0.0,
+                                index == notifications.length - 1 ? 8.0 : 0.0,
+                              ),
+                              child: NotificationsListTileWidget(
+                                item: notifications[index],
+                              ),
+                            ),
+                            childCount: notifications.length,
+                          ),
+                        );
+                      } else {
+                        return SliverFillRemaining(
+                          hasScrollBody: false,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppConstants.horizontalScreenPadding,
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                const Spacer(flex: 1),
+                                EmptyListWidget(
+                                  title: SZodiac.of(context)
+                                      .noNotificationsYetZodiac,
+                                  label: SZodiac.of(context)
+                                      .yourNotificationsHistoryWillAppearHereZodiac,
+                                ),
+                                const Spacer(flex: 2)
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                    } else {
+                      return const SliverFillRemaining(
+                        child: SizedBox.shrink(),
+                      );
+                    }
+                  }),
                 ],
               ),
             ),

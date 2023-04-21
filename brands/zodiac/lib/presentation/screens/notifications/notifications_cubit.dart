@@ -30,14 +30,13 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   bool _firstLoaded = false;
   List<NotificationItem> _notificationsList = [];
 
-  NotificationsCubit(this._userRepository, this._zodiacMainCubit,
-      this._connectivityService, double screenHeight)
+  NotificationsCubit(
+      this._userRepository, this._zodiacMainCubit, this._connectivityService)
       : super(const NotificationsState()) {
     _getFirstNotifications();
 
     scrollController.addListener(() {
-      if (!_isLoading &&
-          scrollController.position.extentAfter <= screenHeight) {
+      if (!_isLoading && scrollController.position.extentAfter <= 200) {
         getNotifications();
       }
     });
@@ -71,8 +70,8 @@ class NotificationsCubit extends Cubit<NotificationsState> {
 
   Future<void> getNotifications({bool refresh = false}) async {
     try {
-      _isLoading = true;
-      if (await _connectivityService.checkConnection()) {
+      if (await _connectivityService.checkConnection() && !_isLoading) {
+        _isLoading = true;
         if (refresh) {
           _notificationsList.clear();
           _hasMore = true;
@@ -94,10 +93,10 @@ class NotificationsCubit extends Cubit<NotificationsState> {
           }
         }
         _firstLoaded = true;
+        _isLoading = false;
       }
     } catch (e) {
       logger.d(e);
-    } finally {
       _isLoading = false;
     }
   }

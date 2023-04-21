@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:zodiac/data/models/payment/transaction_ui_model.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
@@ -10,6 +12,7 @@ import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
 import 'package:zodiac/presentation/common_widgets/empty_list_widget.dart';
+import 'package:zodiac/presentation/common_widgets/no_connection_widget.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_cubit.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/label_widget.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/time_item_widget.dart';
@@ -35,10 +38,17 @@ class BalanceAndTransactionsScreen extends StatelessWidget {
       create: (context) => BalanceAndTransactionsCubit(
         zodiacGetIt.get<ZodiacMainCubit>(),
         zodiacGetIt.get<ZodiacUserRepository>(),
+        zodiacGetIt.get<ConnectivityService>(),
       ),
       child: Builder(builder: (context) {
         final BalanceAndTransactionsCubit balanceAndTransactionsCubit =
             context.read<BalanceAndTransactionsCubit>();
+        final List<TransactionUiModel>? transactionsList = context.select(
+            (BalanceAndTransactionsCubit cubit) =>
+                cubit.state.transactionsList);
+        final bool internetConnectionIsAvailable = context.select(
+            (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
+
         return Scaffold(
           floatingActionButton: const _FloatingActionButton(),
           body: SafeArea(
@@ -48,6 +58,7 @@ class BalanceAndTransactionsScreen extends StatelessWidget {
                   balanceAndTransactionsCubit.getPaymentsList(refresh: true),
               edgeOffset: (AppConstants.appBarHeight * 2) +
                   MediaQuery.of(context).padding.top,
+              notificationPredicate: (_) => internetConnectionIsAvailable,
               child: Stack(
                 alignment: AlignmentDirectional.center,
                 children: [
@@ -58,6 +69,7 @@ class BalanceAndTransactionsScreen extends StatelessWidget {
                     slivers: [
                       ScrollableAppBar(
                         title: SZodiac.of(context).balanceTransactionsZodiac,
+                        needShowError: transactionsList != null,
                         label: Builder(builder: (context) {
                           final UserBalance? balance = context.select(
                               (BalanceAndTransactionsCubit cubit) =>
@@ -81,11 +93,18 @@ class BalanceAndTransactionsScreen extends StatelessWidget {
                         pinned: true,
                       ),
                       Builder(builder: (context) {
-                        final List<TransactionUiModel>? transactionsList =
-                            context.select(
-                                (BalanceAndTransactionsCubit cubit) =>
-                                    cubit.state.transactionsList);
-                        if (transactionsList == null) {
+                        if (transactionsList == null &&
+                            !internetConnectionIsAvailable) {
+                          return SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                NoConnectionWidget(),
+                              ],
+                            ),
+                          );
+                        } else if (transactionsList == null) {
                           return const SliverToBoxAdapter(
                             child: SizedBox.shrink(),
                           );

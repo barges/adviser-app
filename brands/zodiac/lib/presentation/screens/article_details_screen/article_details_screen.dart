@@ -6,13 +6,14 @@ import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zodiac/data/models/articles/article_content.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
-import 'package:zodiac/presentation/common_widgets/appbar/transparrent_app_bar/transparrent_app_bar.dart';
+import 'package:zodiac/presentation/common_widgets/appbar/transparrent_app_bar.dart';
 import 'package:zodiac/presentation/screens/article_details_screen/article_details_cubit.dart';
 import 'package:zodiac/zodiac.dart';
 
@@ -27,6 +28,7 @@ class ArticleDetailsScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => ArticleDetailsCubit(
         zodiacGetIt.get<ZodiacArticlesRepository>(),
+        zodiacGetIt.get<ConnectivityService>(),
         articleId,
       ),
       child: Builder(builder: (context) {
@@ -153,7 +155,9 @@ class ArticleDetailsScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const TransparentAppBar(),
+              TransparentAppBar(
+                needShowInternetError: articleContent == null,
+              ),
             ],
           ),
         );

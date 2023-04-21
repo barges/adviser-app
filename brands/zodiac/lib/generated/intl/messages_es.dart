@@ -43,8 +43,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "callZodiac": MessageLookupByLibrary.simpleMessage("Llamar:"),
         "cancelZodiac": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "changeZodiac": MessageLookupByLibrary.simpleMessage("Cambiar"),
-        "characterLimitExceededZodiac":
-            MessageLookupByLibrary.simpleMessage("Character limit exceeded."),
+        "characterLimitExceededZodiac": MessageLookupByLibrary.simpleMessage(
+            "Se excedió el límite de caracteres."),
         "chatStartGreetingZodiac":
             MessageLookupByLibrary.simpleMessage("Saludo de inicio de chat"),
         "chatZodiac": MessageLookupByLibrary.simpleMessage("Charlar:"),
@@ -150,7 +150,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Plantillas y contenido"),
         "theNicknameIsInvalidMustBe3to250SymbolsZodiac":
             MessageLookupByLibrary.simpleMessage(
-                "The nickname is invalid. Must be 3 to 250 symbols."),
+                "El apodo no es válido. Debe tener entre 3 y 250 símbolos."),
         "thePasswordsMustMatchZodiac": MessageLookupByLibrary.simpleMessage(
             "Las contraseñas deben coincidir"),
         "thisMonthZodiac": MessageLookupByLibrary.simpleMessage("Este Mes"),
