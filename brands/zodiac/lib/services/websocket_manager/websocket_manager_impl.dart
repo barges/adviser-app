@@ -294,6 +294,14 @@ class WebSocketManagerImpl implements WebSocketManager {
     ///TODO - Implements onEndCall
   }
 
+  void _onLogouted(Event event) {
+    SocketMessage message = (event.eventData as SocketMessage);
+    CallData logoutedData = CallData.fromJson(message.params ?? {});
+    logger.d('Logouted CALL');
+    logger.d(message.params);
+    ///TODO - Implements onLogouted
+  }
+
   void _onRoomLogin(Event event) {
     ///TODO - Implements onRoomLogin
   }
@@ -411,14 +419,6 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onFuncActions(Event event) {
     ///TODO - Implements onFuncActions
-  }
-
-  void _onLogouted(Event event) {
-    SocketMessage message = (event.eventData as SocketMessage);
-    CallData logoutedData = CallData.fromJson(message.params ?? {});
-    logger.d('Logouted CALL');
-    logger.d(message.params);
-    ///TODO - Implements onLogouted
   }
 
   void _onStoproom(Event event) {
