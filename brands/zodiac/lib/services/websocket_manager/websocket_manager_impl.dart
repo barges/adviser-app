@@ -8,10 +8,11 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/chat/call_data.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
 import 'package:zodiac/services/websocket_manager/commands.dart';
-import 'package:zodiac/data/models/socket_message/socket_message.dart';
+import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -56,6 +57,14 @@ class WebSocketManagerImpl implements WebSocketManager {
     //syncUserInfo
     _emitter.on(
         Commands.syncUserInfo, this, (event, _) => _onSyncUserInfo(event));
+
+    //startCall(chat)
+    _emitter.on(
+        Commands.startCall, this, (event, _) => _onStartCall(event));
+
+    //cancelCall(chat)
+    _emitter.on(
+        Commands.cancelCall, this, (event, _) => _onCancelCall(event));
 
     //chatLogin
     _emitter.on(Commands.chatLogin, this, (event, _) => _onChatLogin(event));
@@ -238,6 +247,20 @@ class WebSocketManagerImpl implements WebSocketManager {
     _zodiacMainCubit.updateUserBalance(userBalance);
   }
 
+  void _onStartCall(Event event) {
+    SocketMessage message = (event.eventData as SocketMessage);
+    CallData startCallData = CallData.fromJson(message.params ?? {});
+    logger.d('START CALL');
+    logger.d(message.params);
+  }
+
+  void _onCancelCall(Event event) {
+    SocketMessage message = (event.eventData as SocketMessage);
+    CallData cancelCallData = CallData.fromJson(message.params ?? {});
+    logger.d('Cancel CALL');
+    logger.d(message.params);
+  }
+
   void _onAfk(Event event) {
     ///TODO - If (event.eventData as SocketMessage).params['popup'] != null
     ///show afk popup
@@ -264,7 +287,19 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onEndCall(Event event) {
+    SocketMessage message = (event.eventData as SocketMessage);
+    CallData endCallData = CallData.fromJson(message.params ?? {});
+    logger.d('End CALL');
+    logger.d(message.params);
     ///TODO - Implements onEndCall
+  }
+
+  void _onLogouted(Event event) {
+    SocketMessage message = (event.eventData as SocketMessage);
+    CallData logoutedData = CallData.fromJson(message.params ?? {});
+    logger.d('Logouted CALL');
+    logger.d(message.params);
+    ///TODO - Implements onLogouted
   }
 
   void _onRoomLogin(Event event) {
@@ -385,10 +420,6 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onFuncActions(Event event) {
     ///TODO - Implements onFuncActions
-  }
-
-  void _onLogouted(Event event) {
-    ///TODO - Implements onLogouted
   }
 
   void _onStoproom(Event event) {

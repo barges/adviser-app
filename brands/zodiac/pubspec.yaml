@@ -45,6 +45,7 @@ dependencies:
   url_launcher: ^6.1.6
   webview_flutter: ^4.0.7
   html: ^0.15.2
+  avatar_glow: ^2.0.2
 
 
 dev_dependencies:
