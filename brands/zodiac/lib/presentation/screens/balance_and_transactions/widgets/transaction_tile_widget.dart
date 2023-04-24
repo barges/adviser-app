@@ -146,7 +146,7 @@ class _TransactionWidget extends StatelessWidget {
                       ),
                       Text(
                         dateCreate != null
-                            ? DateFormat.jm().format(dateCreate!)
+                            ? DateFormat.jm().format(dateCreate!.toLocal())
                             : '',
                         textAlign: TextAlign.right,
                         style: theme.textTheme.labelMedium?.copyWith(
