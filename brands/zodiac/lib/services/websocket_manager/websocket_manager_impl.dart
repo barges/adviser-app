@@ -293,6 +293,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onMessage(Event event) {
     _send(SocketMessage.msgDelivered());
+    _zodiacMainCubit.updateSessions();
 
     ///TODO - Implements onMessage
     SocketMessage message = (event.eventData as SocketMessage);

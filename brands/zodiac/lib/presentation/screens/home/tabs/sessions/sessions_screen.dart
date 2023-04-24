@@ -11,6 +11,7 @@ import 'package:zodiac/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/empty_list_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/widgets/zodiac_chat_list_tile_widget.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 class SessionsScreen extends StatelessWidget {
   const SessionsScreen({Key? key}) : super(key: key);
@@ -21,6 +22,7 @@ class SessionsScreen extends StatelessWidget {
       create: (_) => SessionsCubit(
         zodiacGetIt.get<ZodiacChatsRepository>(),
         zodiacGetIt.get<BrandManager>(),
+        zodiacGetIt.get<ZodiacMainCubit>(),
         MediaQuery.of(context).size.height,
       ),
       child: Builder(builder: (context) {
