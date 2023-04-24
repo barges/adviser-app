@@ -13,6 +13,7 @@ import 'package:zodiac/data/network/requests/notification_details_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
+import 'package:zodiac/data/network/requests/settings_request.dart';
 import 'package:zodiac/data/network/requests/update_locale_request.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
@@ -28,6 +29,7 @@ import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/payments_list_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
 import 'package:zodiac/data/network/responses/reviews_response.dart';
+import 'package:zodiac/data/network/responses/settings_response.dart';
 import 'package:zodiac/data/network/responses/specializations_response.dart';
 
 part 'user_api.g.dart';
@@ -161,5 +163,10 @@ abstract class UserApi {
   @POST('/push-mark-as-read')
   Future<BaseResponse> notifyPushClick(
     @Body() NotificationDetailsRequest request,
+  );
+
+  @POST('/settings')
+  Future<SettingsResponse> geSettings(
+    @Body() SettingsRequest request,
   );
 }
