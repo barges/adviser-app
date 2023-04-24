@@ -143,6 +143,10 @@ extension DoubleExt on double {
     final currencyFormatter = NumberFormat(currencyPattern, 'ID');
     return currencyFormatter.format(this).replaceAll('.', ' ');
   }
+
+  String toCurrencyFormat(String currency) {
+    return isNegative ? '-$currency${abs()}' : '$currency$this';
+  }
 }
 
 extension DateTimeExt on DateTime {
