@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/enums/payment_source.dart';
@@ -68,7 +69,7 @@ class _TransactionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isAmountNegative = amount != null ? amount! < 0 : false;
+    final isAmountNegative = amount != null ? amount!.isNegative : false;
     String paymentLabel = paymentSource != null
         ? paymentSource!.toTranslationString(context)
         : '';
@@ -111,7 +112,7 @@ class _TransactionWidget extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 10.0),
                         child: Text(
-                          amount != null ? '\$$amount' : '',
+                          amount != null ? amount!.toCurrencyFormat('\$') : '',
                           textAlign: TextAlign.right,
                           style: theme.textTheme.labelLarge?.copyWith(
                               fontSize: 16.0,
@@ -219,11 +220,14 @@ class _Avatar extends StatelessWidget {
                   : Assets.vectors.placeholderProfileImage
                       .svg(color: theme.canvasColor)),
         ),
-        if (paymentSource != null && paymentSource!.iconPath != null)
+        if (paymentSource != null && paymentSource!.iconPath != null ||
+            isMinusIcon)
           Positioned(
             left: 36.0,
             top: 24.0,
-            child: _PaymentSourceIcon(paymentSource!),
+            child: isMinusIcon
+                ? const _PaymentSourceIcon(PaymentSource.withdrawal)
+                : _PaymentSourceIcon(paymentSource!),
           )
       ],
     );
