@@ -9,6 +9,7 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.da
 import 'package:web_socket_channel/io.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/chat/call_data.dart';
+import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
 import 'package:zodiac/services/websocket_manager/commands.dart';
@@ -59,12 +60,10 @@ class WebSocketManagerImpl implements WebSocketManager {
         Commands.syncUserInfo, this, (event, _) => _onSyncUserInfo(event));
 
     //startCall(chat)
-    _emitter.on(
-        Commands.startCall, this, (event, _) => _onStartCall(event));
+    _emitter.on(Commands.startCall, this, (event, _) => _onStartCall(event));
 
     //cancelCall(chat)
-    _emitter.on(
-        Commands.cancelCall, this, (event, _) => _onCancelCall(event));
+    _emitter.on(Commands.cancelCall, this, (event, _) => _onCancelCall(event));
 
     //chatLogin
     _emitter.on(Commands.chatLogin, this, (event, _) => _onChatLogin(event));
@@ -194,10 +193,25 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   @override
   void sendStatus() {
-    final int? userId = _zodiacCachingManager.getUid();
     _send(SocketMessage.getUnreadChats());
-    _send(SocketMessage.entities(id: userId ?? 0));
-    _send(SocketMessage.chatLogin(id: userId ?? 0));
+  }
+
+  @override
+  void reloadMessages(int userId, {int? maxId}) {
+    _send(SocketMessage.chatLogin(
+      id: userId,
+    ));
+    _send(SocketMessage.entities(
+      userId: userId,
+      maxId: maxId,
+    ));
+  }
+
+  @override
+  void logoutChat(int chatId) {
+    _send(SocketMessage.chatLogout(
+      chatId: chatId,
+    ));
   }
 
   @override
@@ -275,6 +289,15 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onEntities(Event event) {
+    SocketMessage message = (event.eventData as SocketMessage);
+    List<dynamic> mapList = message.params;
+    List<ChatMessageModel> list =
+        mapList.map((e) => ChatMessageModel.fromJson(e as Map<String, dynamic>)).toList();
+
+    for (ChatMessageModel element in list) {
+      logger.d(element);
+    }
+
     ///TODO - Implement onEntities
   }
 
@@ -291,6 +314,7 @@ class WebSocketManagerImpl implements WebSocketManager {
     CallData endCallData = CallData.fromJson(message.params ?? {});
     logger.d('End CALL');
     logger.d(message.params);
+
     ///TODO - Implements onEndCall
   }
 
@@ -299,6 +323,7 @@ class WebSocketManagerImpl implements WebSocketManager {
     CallData logoutedData = CallData.fromJson(message.params ?? {});
     logger.d('Logouted CALL');
     logger.d(message.params);
+
     ///TODO - Implements onLogouted
   }
 

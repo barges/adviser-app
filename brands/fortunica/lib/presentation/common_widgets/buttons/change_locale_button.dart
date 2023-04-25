@@ -28,10 +28,13 @@ class ChangeLocaleButton extends StatelessWidget {
           context: context,
           setIndex: (index) {
             final String languageCode = locales[index];
-            fortunicaGetIt
-                .get<GlobalCachingManager>()
-                .saveLanguageCode(languageCode);
-            FortunicaBrand().languageCode = languageCode;
+            if(languageCode != fortunicaGetIt
+                .get<GlobalCachingManager>().getLanguageCode()) {
+              fortunicaGetIt
+                  .get<GlobalCachingManager>()
+                  .saveLanguageCode(languageCode);
+              FortunicaBrand().languageCode = languageCode;
+            }
           },
           currentIndex: currentLocaleIndex,
           elements: locales.map((element) {
