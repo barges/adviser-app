@@ -112,7 +112,9 @@ class _TransactionWidget extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 10.0),
                         child: Text(
-                          amount != null ? amount!.toCurrencyFormat('\$') : '',
+                          amount != null
+                              ? amount!.toCurrencyFormat('\$', 2)
+                              : '',
                           textAlign: TextAlign.right,
                           style: theme.textTheme.labelLarge?.copyWith(
                               fontSize: 16.0,

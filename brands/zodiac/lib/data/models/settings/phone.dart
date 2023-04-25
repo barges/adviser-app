@@ -9,11 +9,14 @@ part 'phone.freezed.dart';
 class Phone with _$Phone {
   const Phone._();
 
-  @JsonSerializable(includeIfNull: false)
+  @JsonSerializable(
+    includeIfNull: false,
+    fieldRename: FieldRename.snake,
+  )
   const factory Phone({
     int? code,
     int? number,
-    @JsonKey(name: 'is_verified') bool? isVerified,
+    bool? isVerified,
   }) = _Phone;
 
   factory Phone.fromJson(Map<String, dynamic> json) => _$PhoneFromJson(json);

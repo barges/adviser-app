@@ -144,8 +144,9 @@ extension DoubleExt on double {
     return currencyFormatter.format(this).replaceAll('.', ' ');
   }
 
-  String toCurrencyFormat(String currency) {
-    return isNegative ? '-$currency${abs()}' : '$currency$this';
+  String toCurrencyFormat(String currency, int fractionDigits) {
+    final String value = abs().toStringAsFixed(fractionDigits);
+    return isNegative ? '-$currency$value' : '$currency$value';
   }
 }
 
