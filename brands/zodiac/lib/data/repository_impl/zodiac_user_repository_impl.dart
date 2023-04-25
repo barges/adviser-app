@@ -11,6 +11,7 @@ import 'package:zodiac/data/network/requests/locale_descriptions_request.dart';
 import 'package:zodiac/data/network/requests/notification_details_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
+import 'package:zodiac/data/network/requests/settings_request.dart';
 import 'package:zodiac/data/network/requests/update_locale_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
 import 'package:zodiac/data/network/responses/balance_response.dart';
@@ -27,6 +28,7 @@ import 'package:zodiac/data/network/responses/price_settings_response.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
 import 'package:zodiac/data/network/responses/reviews_response.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
+import 'package:zodiac/data/network/responses/settings_response.dart';
 import 'package:zodiac/data/network/responses/specializations_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 
@@ -188,5 +190,10 @@ class ZodiacUserRepositoryImpl implements ZodiacUserRepository {
   Future<BaseResponse> notifyPushClick(
       NotificationDetailsRequest request) async {
     return await _userApi.notifyPushClick(request);
+  }
+
+  @override
+  Future<SettingsResponse> geSettings(SettingsRequest request) async {
+    return await _userApi.geSettings(request);
   }
 }
