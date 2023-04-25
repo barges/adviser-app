@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:zodiac/data/models/chats/chat_item_zodiac.dart';
 import 'package:zodiac/domain/repositories/zodiac_chats_repository.dart';
@@ -11,6 +12,7 @@ import 'package:zodiac/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/empty_list_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/widgets/zodiac_chat_list_tile_widget.dart';
+import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 
 class SessionsScreen extends StatelessWidget {
   const SessionsScreen({Key? key}) : super(key: key);
@@ -55,9 +57,27 @@ class SessionsScreen extends StatelessWidget {
                                     physics:
                                         const NeverScrollableScrollPhysics(),
                                     itemCount: chatsList.length,
-                                    itemBuilder: (context, index) =>
-                                        ZodiacChatListTileWidget(
-                                            item: chatsList[index]),
+                                    itemBuilder: (context, index) {
+                                      final ZodiacChatsListItem item =
+                                          chatsList[index];
+
+
+
+                                      return GestureDetector(
+                                        onTap: () {
+                                          logger.d(item);
+                                          zodiacGetIt
+                                              .get<WebSocketManager>()
+                                              .reloadMessages(item.userId ?? 0);
+                                          zodiacGetIt
+                                              .get<WebSocketManager>()
+                                              .logoutChat(item.id ?? 0);
+                                        },
+                                        child: ZodiacChatListTileWidget(
+                                          item: item,
+                                        ),
+                                      );
+                                    },
                                     separatorBuilder: (context, index) =>
                                         const Divider(height: 25.0),
                                   ),

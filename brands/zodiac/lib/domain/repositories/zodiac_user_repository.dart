@@ -10,6 +10,7 @@ import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/locale_descriptions_request.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
+import 'package:zodiac/data/network/requests/settings_request.dart';
 import 'package:zodiac/data/network/requests/update_locale_request.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
@@ -25,6 +26,7 @@ import 'package:zodiac/data/network/responses/payments_list_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
 import 'package:zodiac/data/network/responses/reviews_response.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
+import 'package:zodiac/data/network/responses/settings_response.dart';
 import 'package:zodiac/data/network/responses/specializations_response.dart';
 
 abstract class ZodiacUserRepository {
@@ -43,7 +45,8 @@ abstract class ZodiacUserRepository {
 
   Future<BaseResponse> updateUserStatus(UpdateUserStatusRequest request);
 
-  Future<NotificationsResponse> getNotificationsList(NotificationsRequest request);
+  Future<NotificationsResponse> getNotificationsList(
+      NotificationsRequest request);
 
   Future<ReviewsResponse?> getReviews(ListRequest request);
 
@@ -99,4 +102,6 @@ abstract class ZodiacUserRepository {
       NotificationDetailsRequest request);
 
   Future<BaseResponse> notifyPushClick(NotificationDetailsRequest request);
+
+  Future<SettingsResponse> geSettings(SettingsRequest request);
 }
