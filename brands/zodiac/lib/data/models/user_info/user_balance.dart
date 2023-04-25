@@ -21,6 +21,6 @@ class UserBalance with _$UserBalance {
 
   @override
   String toString() {
-    return balance != null ? balance!.toCurrencyFormat(currency ?? '') : '';
+    return balance != null ? balance!.toCurrencyFormat(currency ?? '', 2) : '';
   }
 }
