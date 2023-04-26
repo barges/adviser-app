@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/requests/list_request.dart';
+import 'package:zodiac/data/network/responses/advice_tips_response.dart';
 import 'package:zodiac/data/network/responses/chat_entities_response.dart';
 
 part 'chats_api.g.dart';
@@ -15,5 +17,10 @@ abstract class ChatsApi {
   @POST('/entities')
   Future<ChatEntitiesResponse> getChatsList(
     @Body() ListRequest request,
+  );
+
+  @POST('/advice-tips')
+  Future<AdviceTipsResponse> getAdviceTips(
+    @Body() AuthorizedRequest request,
   );
 }

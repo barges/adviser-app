@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:eventify/eventify.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -28,6 +29,7 @@ class WebSocketManagerImpl implements WebSocketManager {
   final ZodiacMainCubit _zodiacMainCubit;
 
   final EventEmitter _emitter = EventEmitter();
+  final PublishSubject<bool> _endChatTrigger = PublishSubject();
 
   WebSocketChannel? _channel;
   StreamSubscription? _socketSubscription;
@@ -59,12 +61,10 @@ class WebSocketManagerImpl implements WebSocketManager {
         Commands.syncUserInfo, this, (event, _) => _onSyncUserInfo(event));
 
     //startCall(chat)
-    _emitter.on(
-        Commands.startCall, this, (event, _) => _onStartCall(event));
+    _emitter.on(Commands.startCall, this, (event, _) => _onStartCall(event));
 
     //cancelCall(chat)
-    _emitter.on(
-        Commands.cancelCall, this, (event, _) => _onCancelCall(event));
+    _emitter.on(Commands.cancelCall, this, (event, _) => _onCancelCall(event));
 
     //chatLogin
     _emitter.on(Commands.chatLogin, this, (event, _) => _onChatLogin(event));
@@ -158,6 +158,9 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   @override
+  PublishSubject<bool> get endChatTrigger => _endChatTrigger;
+
+  @override
   Future connect() async {
     final String? authToken = _zodiacCachingManager.getUserToken();
     final int? userId = _zodiacCachingManager.getUid();
@@ -201,9 +204,18 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   @override
+  void sendDeclineCall({int? opponentId}) {
+    _send(SocketMessage.declineCall(opponentId: opponentId));
+  }
+
+  @override
   void close() {
     _socketSubscription?.cancel();
     _channel?.sink.close();
+  }
+
+  void endChat() {
+    _endChatTrigger.add(true);
   }
 
   Future<void> _authCheckOnBackend() async =>
@@ -252,6 +264,9 @@ class WebSocketManagerImpl implements WebSocketManager {
     CallData startCallData = CallData.fromJson(message.params ?? {});
     logger.d('START CALL');
     logger.d(message.params);
+    ZodiacBrand()
+        .context
+        ?.push(route: ZodiacStartingChat(callData: startCallData));
   }
 
   void _onCancelCall(Event event) {
@@ -259,6 +274,7 @@ class WebSocketManagerImpl implements WebSocketManager {
     CallData cancelCallData = CallData.fromJson(message.params ?? {});
     logger.d('Cancel CALL');
     logger.d(message.params);
+    endChat();
   }
 
   void _onAfk(Event event) {
@@ -284,6 +300,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onDeclineCall(Event event) {
     ///TODO - Implement onDeclineCall
+    endChat();
   }
 
   void _onEndCall(Event event) {
@@ -291,6 +308,8 @@ class WebSocketManagerImpl implements WebSocketManager {
     CallData endCallData = CallData.fromJson(message.params ?? {});
     logger.d('End CALL');
     logger.d(message.params);
+    endChat();
+
     ///TODO - Implements onEndCall
   }
 
@@ -299,6 +318,7 @@ class WebSocketManagerImpl implements WebSocketManager {
     CallData logoutedData = CallData.fromJson(message.params ?? {});
     logger.d('Logouted CALL');
     logger.d(message.params);
+
     ///TODO - Implements onLogouted
   }
 

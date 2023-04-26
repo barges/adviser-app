@@ -954,6 +954,36 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Start Chat`
+  String get startChatZodiac {
+    return Intl.message(
+      'Start Chat',
+      name: 'startChatZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Decline`
+  String get declineZodiac {
+    return Intl.message(
+      'Decline',
+      name: 'declineZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat request...`
+  String get chatRequestZodiac {
+    return Intl.message(
+      'Chat request...',
+      name: 'chatRequestZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

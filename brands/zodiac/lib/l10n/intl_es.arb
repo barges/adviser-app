@@ -88,5 +88,8 @@
   "daysZodiac": "dias",
   "hoursZodiac": "horas",
   "minutesZodiac": "min",
-  "secondsZodiac": "seg"
+  "secondsZodiac": "seg",
+  "startChatZodiac": "Comenzar chat",
+  "declineZodiac": "Rechazar",
+  "chatRequestZodiac": "Solicitud de chat..."
 }

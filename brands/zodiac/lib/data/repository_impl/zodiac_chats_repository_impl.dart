@@ -1,6 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:zodiac/data/network/api/chats_api.dart';
+import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/requests/list_request.dart';
+import 'package:zodiac/data/network/responses/advice_tips_response.dart';
 import 'package:zodiac/data/network/responses/chat_entities_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_chats_repository.dart';
 
@@ -13,5 +15,10 @@ class ZodiacChatsRepositoryImpl implements ZodiacChatsRepository {
   @override
   Future<ChatEntitiesResponse> getChatsList(ListRequest request) async {
     return await _chatsApi.getChatsList(request);
+  }
+
+  @override
+  Future<AdviceTipsResponse> getAdviceTips(AuthorizedRequest request) async {
+    return await _chatsApi.getAdviceTips(request);
   }
 }

@@ -45,6 +45,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "changeZodiac": MessageLookupByLibrary.simpleMessage("Cambiar"),
         "characterLimitExceededZodiac": MessageLookupByLibrary.simpleMessage(
             "Se excedió el límite de caracteres."),
+        "chatRequestZodiac":
+            MessageLookupByLibrary.simpleMessage("Solicitud de chat..."),
         "chatStartGreetingZodiac":
             MessageLookupByLibrary.simpleMessage("Saludo de inicio de chat"),
         "chatZodiac": MessageLookupByLibrary.simpleMessage("Charlar:"),
@@ -59,6 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dashboardZodiac":
             MessageLookupByLibrary.simpleMessage("Panel de Control"),
         "daysZodiac": MessageLookupByLibrary.simpleMessage("dias"),
+        "declineZodiac": MessageLookupByLibrary.simpleMessage("Rechazar"),
         "doYouReallyWantToDeleteLocaleNameFromYourListZodiac": m0,
         "editProfileZodiac":
             MessageLookupByLibrary.simpleMessage("Editar perfil"),
@@ -146,6 +149,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Servicio"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Servicios"),
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sesiones"),
+        "startChatZodiac":
+            MessageLookupByLibrary.simpleMessage("Comenzar chat"),
         "templatesContentZodiac":
             MessageLookupByLibrary.simpleMessage("Plantillas y contenido"),
         "theNicknameIsInvalidMustBe3to250SymbolsZodiac":
