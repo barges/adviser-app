@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:eventify/eventify.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -32,6 +33,9 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   WebSocketChannel? _channel;
   StreamSubscription? _socketSubscription;
+
+  final PublishSubject<List<ChatMessageModel>> _entitiesStream =
+      PublishSubject();
 
   WebSocketManagerImpl(
     this._zodiacMainCubit,
@@ -157,6 +161,9 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   @override
+  Stream<List<ChatMessageModel>> get entitiesStream => _entitiesStream.stream;
+
+  @override
   Future connect() async {
     final String? authToken = _zodiacCachingManager.getUserToken();
     final int? userId = _zodiacCachingManager.getUid();
@@ -207,7 +214,7 @@ class WebSocketManagerImpl implements WebSocketManager {
     ));
   }
 
-  @override
+
   void logoutChat(int chatId) {
     _send(SocketMessage.chatLogout(
       chatId: chatId,
@@ -291,14 +298,11 @@ class WebSocketManagerImpl implements WebSocketManager {
   void _onEntities(Event event) {
     SocketMessage message = (event.eventData as SocketMessage);
     List<dynamic> mapList = message.params;
-    List<ChatMessageModel> list =
-        mapList.map((e) => ChatMessageModel.fromJson(e as Map<String, dynamic>)).toList();
+    List<ChatMessageModel> list = mapList
+        .map((e) => ChatMessageModel.fromJson(e as Map<String, dynamic>))
+        .toList();
 
-    for (ChatMessageModel element in list) {
-      logger.d(element);
-    }
-
-    ///TODO - Implement onEntities
+    _entitiesStream.add(list);
   }
 
   void _onEnterRoom(Event event) {

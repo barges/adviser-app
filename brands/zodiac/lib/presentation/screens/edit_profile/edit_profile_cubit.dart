@@ -45,8 +45,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   late final StreamSubscription<bool> _internetConnectionSubscription;
   late List<GlobalKey> localesGlobalKeys;
 
-  // final GlobalKey firstNicknameGlobalKey = GlobalKey();
-
   final Map<String, List<TextEditingController>> textControllersMap = {};
   final Map<String, List<FocusNode>> focusNodesMap = {};
   final Map<String, List<ValueNotifier>> hasFocusNotifiersMap = {};
@@ -133,19 +131,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
   }
 
-  // void _checkIsVisibleNickname() {
-  //   final RenderObject? box =
-  //       firstNicknameGlobalKey.currentContext?.findRenderObject();
-  //
-  //   if (box == null) {
-  //     Future.delayed(const Duration(milliseconds: 500)).then((value) {
-  //       logger.d('not visible');
-  //       _updateTextsFlag();
-  //       _checkIsVisibleNickname();
-  //     });
-  //   }
-  // }
-
   void _updateTextsFlag() {
     bool flag = state.updateTextsFlag;
     emit(state.copyWith(updateTextsFlag: !flag));
@@ -196,19 +181,19 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           final List<String> texts = [];
           texts.insert(
             nickNameIndex,
-            _parseHtmlString(descriptions.nickname?.toString().trim()),
+            descriptions.nickname?.toString().trim() ?? '',
           );
           texts.insert(
             aboutIndex,
-            _parseHtmlString(descriptions.about?.toString().trim()),
+            _parseHtmlString(descriptions.about?.toString().trim() ?? ''),
           );
           texts.insert(
             experienceIndex,
-            _parseHtmlString(descriptions.experience?.toString().trim()),
+            _parseHtmlString(descriptions.experience?.toString().trim() ?? ''),
           );
           texts.insert(
             helloMessageIndex,
-            _parseHtmlString(descriptions.helloMessage?.toString().trim()),
+            descriptions.helloMessage?.toString().trim() ?? '',
           );
 
           _oldTextsMap[locale] = texts;
