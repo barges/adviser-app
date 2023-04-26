@@ -1,30 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fortunica/data/models/enums/chat_item_status_type.dart';
-import 'package:fortunica/data/models/enums/zodiac_sign.dart';
-import 'package:fortunica/fortunica.dart';
-import 'package:fortunica/generated/l10n.dart';
-import 'package:fortunica/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
+import 'package:zodiac/data/models/chat/user_data.dart';
+import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
+import 'package:zodiac/zodiac.dart';
 
 class ChatConversationAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  final String? title;
-  final ZodiacSign? zodiacSign;
-  final VoidCallback? returnInQueueButtonOnTap;
-  final String? publicQuestionId;
+  final UserData userData;
+  final VoidCallback? endChatButtonOnTap;
 
   const ChatConversationAppBar({
     Key? key,
-    this.title,
-    this.zodiacSign,
-    this.returnInQueueButtonOnTap,
-    this.publicQuestionId,
+   required this.userData,
+    this.endChatButtonOnTap,
   }) : super(key: key);
 
   @override
@@ -33,7 +26,7 @@ class ChatConversationAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
 
-    final BaseBrand selectedBrand = FortunicaBrand();
+    final BaseBrand selectedBrand = ZodiacBrand();
 
     return AppBar(
       automaticallyImplyLeading: false,
@@ -41,11 +34,7 @@ class ChatConversationAppBar extends StatelessWidget
       titleSpacing: 0.0,
       elevation: 0.0,
       title: Builder(builder: (context) {
-        final ChatItemStatusType? questionStatus = returnInQueueButtonOnTap !=
-            null
-            ? context.select((ChatCubit cubit) => cubit.state.questionStatus) ??
-            ChatItemStatusType.open
-            : null;
+
         return SizedBox(
           height: AppConstants.appBarHeight,
           width: MediaQuery.of(context).size.width,
@@ -55,16 +44,15 @@ class ChatConversationAppBar extends StatelessWidget
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (publicQuestionId != null &&
-                    questionStatus == ChatItemStatusType.taken)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 2.0),
-                    child: AppIconButton(
-                      onTap: returnInQueueButtonOnTap,
-                      icon: Assets.vectors.arrowReturn.path,
-                    ),
-                  ),
-                if (questionStatus != ChatItemStatusType.taken)
+                // if (publicQuestionId != null &&
+                //     questionStatus == ChatItemStatusType.taken)
+                //   Padding(
+                //     padding: const EdgeInsets.only(right: 2.0),
+                //     child: AppIconButton(
+                //       onTap: returnInQueueButtonOnTap,
+                //       icon: Assets.vectors.arrowReturn.path,
+                //     ),
+                //   ),
                   AppIconButton(
                     icon: Assets.vectors.arrowLeft.path,
                     onTap: selectedBrand.context?.pop,
@@ -86,7 +74,7 @@ class ChatConversationAppBar extends StatelessWidget
                               const SizedBox(width: 12.0),
                               Expanded(
                                 child: Text(
-                                  title ?? SFortunica.of(context).notSpecifiedFortunica,
+                                  userData.name ?? '',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.start,
@@ -111,14 +99,10 @@ class ChatConversationAppBar extends StatelessWidget
                       ],
                     ),
                   ),
-                // if (publicQuestionId != null &&
-                //     questionStatus == ChatItemStatusType.taken)
-                //   const Spacer(),
-                if (zodiacSign != null)
-                  SvgPicture.asset(
-                    zodiacSign!.imagePath(context),
-                    width: 28.0,
-                  ),
+                UserAvatar(
+                  diameter: 32.0,
+                  avatarUrl: userData.avatar,
+                ),
               ],
             ),
           ),

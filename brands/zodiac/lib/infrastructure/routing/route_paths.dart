@@ -22,4 +22,6 @@ class RoutePathsZodiac {
   static const localesListScreen = '${ZodiacBrand.alias}LocalesList';
   static const notificationDetailsScreen =
       '${ZodiacBrand.alias}NotificationDetails';
+  static const chatScreen =
+      '${ZodiacBrand.alias}Chat';
 }
