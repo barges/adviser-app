@@ -36,6 +36,7 @@ class StartingChatScreen extends StatelessWidget {
             backgroundColor: theme.canvasColor,
             body: SafeArea(
               child: CustomScrollView(
+                physics: const ClampingScrollPhysics(),
                 slivers: [
                   SliverFillRemaining(
                     hasScrollBody: false,
