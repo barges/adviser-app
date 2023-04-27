@@ -143,6 +143,11 @@ extension DoubleExt on double {
     final currencyFormatter = NumberFormat(currencyPattern, 'ID');
     return currencyFormatter.format(this).replaceAll('.', ' ');
   }
+
+  String toCurrencyFormat(String currency, int fractionDigits) {
+    final String value = abs().toStringAsFixed(fractionDigits);
+    return isNegative ? '-$currency$value' : '$currency$value';
+  }
 }
 
 extension DateTimeExt on DateTime {

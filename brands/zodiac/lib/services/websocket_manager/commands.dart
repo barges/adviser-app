@@ -27,6 +27,8 @@ class Commands {
 
   static String get chatLogin => 'chatLogin';
 
+  static String get chatLogout => 'chatLogout';
+
   static String get entities => 'entities';
 
   static String get createRoom => 'createRoom';

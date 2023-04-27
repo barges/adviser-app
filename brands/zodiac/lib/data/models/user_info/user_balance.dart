@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 
 part 'user_balance.g.dart';
 part 'user_balance.freezed.dart';
@@ -20,6 +21,6 @@ class UserBalance with _$UserBalance {
 
   @override
   String toString() {
-    return '$currency$balance';
+    return balance != null ? balance!.toCurrencyFormat(currency ?? '', 2) : '';
   }
 }

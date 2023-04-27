@@ -16,7 +16,6 @@ class UserAvatar extends StatelessWidget {
   final bool withBorder;
   final bool withError;
   final bool withCameraBadge;
-  final bool isZodiac;
   final bool canOpenInFullScreen;
   final VoidCallback? onTap;
   final double badgeDiameter;
@@ -32,7 +31,6 @@ class UserAvatar extends StatelessWidget {
     this.withBorder = false,
     this.withError = false,
     this.withCameraBadge = false,
-    this.isZodiac = false,
     this.canOpenInFullScreen = false,
     this.badgeDiameter = 18.0,
     this.badgeBorderWidth = 3.0,
@@ -46,9 +44,7 @@ class UserAvatar extends StatelessWidget {
           height: diameter,
           width: diameter,
           decoration: BoxDecoration(
-            color: isZodiac && avatarUrl != null
-                ? null
-                : Theme.of(context).hintColor,
+            color: Colors.transparent,
             shape: BoxShape.circle,
             border: withBorder
                 ? Border.all(
@@ -64,13 +60,7 @@ class UserAvatar extends StatelessWidget {
                       child: Assets.vectors.placeholderProfileImage
                           .svg(color: Theme.of(context).canvasColor),
                     )
-                  : isZodiac
-                      ? SvgPicture.asset(
-                          avatarUrl!,
-                          height: diameter,
-                          width: diameter,
-                        )
-                      : GestureDetector(
+                  : GestureDetector(
                           onTap: canOpenInFullScreen
                               ? () => context.push(
                                     route: ZodiacGalleryPictures(

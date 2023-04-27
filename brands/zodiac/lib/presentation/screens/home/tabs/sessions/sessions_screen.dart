@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:zodiac/data/models/chat/user_data.dart';
 import 'package:zodiac/data/models/chats/chat_item_zodiac.dart';
 import 'package:zodiac/domain/repositories/zodiac_chats_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -57,9 +60,19 @@ class SessionsScreen extends StatelessWidget {
                                     physics:
                                         const NeverScrollableScrollPhysics(),
                                     itemCount: chatsList.length,
-                                    itemBuilder: (context, index) =>
-                                        ZodiacChatListTileWidget(
-                                            item: chatsList[index]),
+                                    itemBuilder: (context, index) {
+                                      final ZodiacChatsListItem item =
+                                          chatsList[index];
+
+                                      return GestureDetector(
+                                        onTap: () {
+                                          _goToChatHistory(context, item);
+                                        },
+                                        child: ZodiacChatListTileWidget(
+                                          item: item,
+                                        ),
+                                      );
+                                    },
                                     separatorBuilder: (context, index) =>
                                         const Divider(height: 25.0),
                                   ),
@@ -95,6 +108,18 @@ class SessionsScreen extends StatelessWidget {
           })),
         );
       }),
+    );
+  }
+
+  void _goToChatHistory(BuildContext context, ZodiacChatsListItem item) {
+    context.push(
+      route: ZodiacChat(
+        userData: UserData(
+          id: item.userId,
+          avatar: item.avatar,
+          name: item.name,
+        ),
+      ),
     );
   }
 }

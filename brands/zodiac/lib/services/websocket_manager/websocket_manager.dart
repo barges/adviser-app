@@ -1,6 +1,10 @@
+import 'package:zodiac/data/models/chat/chat_message_model.dart';
+
 import 'package:rxdart/rxdart.dart';
 
 abstract class WebSocketManager {
+  Stream<List<ChatMessageModel>> get entitiesStream;
+
   PublishSubject<bool> get endChatTrigger;
 
   Future connect();
@@ -8,6 +12,10 @@ abstract class WebSocketManager {
   void close();
 
   void sendStatus();
+
+  void reloadMessages(int userId, {int? maxId});
+
+  void logoutChat(int chatId);
 
   void sendDeclineCall({int? opponentId});
 }

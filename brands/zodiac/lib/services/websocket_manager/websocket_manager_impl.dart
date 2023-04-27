@@ -10,6 +10,7 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.da
 import 'package:web_socket_channel/io.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/chat/call_data.dart';
+import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
 import 'package:zodiac/presentation/screens/starting_chat/starting_chat_screen.dart';
@@ -34,6 +35,9 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   WebSocketChannel? _channel;
   StreamSubscription? _socketSubscription;
+
+  final PublishSubject<List<ChatMessageModel>> _entitiesStream =
+      PublishSubject();
 
   WebSocketManagerImpl(
     this._zodiacMainCubit,
@@ -159,6 +163,9 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   @override
+  Stream<List<ChatMessageModel>> get entitiesStream => _entitiesStream.stream;
+
+  @override
   PublishSubject<bool> get endChatTrigger => _endChatTrigger;
 
   @override
@@ -198,10 +205,24 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   @override
   void sendStatus() {
-    final int? userId = _zodiacCachingManager.getUid();
     _send(SocketMessage.getUnreadChats());
-    _send(SocketMessage.entities(id: userId ?? 0));
-    _send(SocketMessage.chatLogin(id: userId ?? 0));
+  }
+
+  @override
+  void reloadMessages(int userId, {int? maxId}) {
+    _send(SocketMessage.chatLogin(
+      id: userId,
+    ));
+    _send(SocketMessage.entities(
+      userId: userId,
+      maxId: maxId,
+    ));
+  }
+
+  void logoutChat(int chatId) {
+    _send(SocketMessage.chatLogout(
+      chatId: chatId,
+    ));
   }
 
   @override
@@ -295,7 +316,13 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onEntities(Event event) {
-    ///TODO - Implement onEntities
+    SocketMessage message = (event.eventData as SocketMessage);
+    List<dynamic> mapList = message.params;
+    List<ChatMessageModel> list = mapList
+        .map((e) => ChatMessageModel.fromJson(e as Map<String, dynamic>))
+        .toList();
+
+    _entitiesStream.add(list);
   }
 
   void _onEnterRoom(Event event) {

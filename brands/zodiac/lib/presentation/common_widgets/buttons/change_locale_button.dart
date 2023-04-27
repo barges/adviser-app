@@ -31,16 +31,20 @@ class ChangeLocaleButton extends StatelessWidget {
           context: context,
           setIndex: (index) async {
             final String languageCode = locales[index];
-            zodiacGetIt
-                .get<GlobalCachingManager>()
-                .saveLanguageCode(languageCode);
-            ZodiacBrand().languageCode = languageCode;
-            if (ZodiacBrand().isAuth) {
-             await zodiacGetIt
-                  .get<ZodiacUserRepository>()
-                  .updateLocale(UpdateLocaleRequest(locale: languageCode));
+            final String? oldLanguageCode = zodiacGetIt
+                .get<GlobalCachingManager>().getLanguageCode();
+            if(languageCode != oldLanguageCode) {
               zodiacGetIt
-                  .get<ZodiacMainCubit>().updateAccount();
+                  .get<GlobalCachingManager>()
+                  .saveLanguageCode(languageCode);
+              ZodiacBrand().languageCode = languageCode;
+              if (ZodiacBrand().isAuth) {
+                await zodiacGetIt
+                    .get<ZodiacUserRepository>()
+                    .updateLocale(UpdateLocaleRequest(locale: languageCode));
+                zodiacGetIt
+                    .get<ZodiacMainCubit>().updateAccount();
+              }
             }
           },
           currentIndex: currentLocaleIndex,

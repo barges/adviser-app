@@ -54,7 +54,7 @@ class DashboardUserInfoPartWidget extends StatelessWidget {
                   ),
                   if (userBalance != null)
                     Text(
-                      '${userBalance.currency ?? '\$'} ${NumberFormat('###,###,##0.00', 'en').format(userBalance.balance ?? 0.0).replaceAll(',', ' ').replaceAll('.', ',')}',
+                      '${userBalance.balance != null && userBalance.balance!.isNegative ? '-' : ''}${userBalance.currency ?? '\$'}${NumberFormat('###,###,##0.00', 'en').format(userBalance.balance != null ? userBalance.balance!.abs() : 0.0).replaceAll(',', ' ').replaceAll('.', ',')}',
                       style:
                           Theme.of(context).textTheme.headlineMedium?.copyWith(
                                 fontSize: 17.0,
