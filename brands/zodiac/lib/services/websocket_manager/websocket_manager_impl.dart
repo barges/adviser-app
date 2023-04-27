@@ -12,6 +12,7 @@ import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/chat/call_data.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
+import 'package:zodiac/presentation/screens/starting_chat/starting_chat_screen.dart';
 import 'package:zodiac/services/websocket_manager/commands.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
@@ -264,9 +265,12 @@ class WebSocketManagerImpl implements WebSocketManager {
     CallData startCallData = CallData.fromJson(message.params ?? {});
     logger.d('START CALL');
     logger.d(message.params);
-    ZodiacBrand()
-        .context
-        ?.push(route: ZodiacStartingChat(callData: startCallData));
+    if (ZodiacBrand().context != null) {
+      showStartingChat(ZodiacBrand().context!, startCallData);
+    }
+    // ZodiacBrand()
+    //     .context
+    //     ?.push(route: ZodiacStartingChat(callData: startCallData));
   }
 
   void _onCancelCall(Event event) {
