@@ -19,6 +19,8 @@ class UserAvatar extends StatelessWidget {
   final bool isZodiac;
   final bool canOpenInFullScreen;
   final VoidCallback? onTap;
+  final double badgeDiameter;
+  final double badgeBorderWidth;
 
   const UserAvatar({
     Key? key,
@@ -32,6 +34,8 @@ class UserAvatar extends StatelessWidget {
     this.withCameraBadge = false,
     this.isZodiac = false,
     this.canOpenInFullScreen = false,
+    this.badgeDiameter = 18.0,
+    this.badgeBorderWidth = 3.0,
   }) : super(key: key);
 
   @override
@@ -122,13 +126,13 @@ class UserAvatar extends StatelessWidget {
             child: Align(
               alignment: Alignment.bottomRight,
               child: Container(
-                height: 18.0,
-                width: 18.0,
+                height: badgeDiameter,
+                width: badgeDiameter,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: badgeColor,
                   border: Border.all(
-                    width: 3.0,
+                    width: badgeBorderWidth,
                     color: Theme.of(context).canvasColor,
                   ),
                 ),

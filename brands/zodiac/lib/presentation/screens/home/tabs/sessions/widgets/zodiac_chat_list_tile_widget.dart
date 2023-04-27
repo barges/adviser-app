@@ -19,6 +19,9 @@ class ZodiacChatListTileWidget extends StatelessWidget {
             UserAvatar(
               avatarUrl: item.avatar,
               diameter: 48.0,
+              badgeColor: item.status?.statusBadgeColor(context),
+              badgeDiameter: 12.0,
+              badgeBorderWidth: 2.0,
             ),
             const SizedBox(
               width: 12.0,
