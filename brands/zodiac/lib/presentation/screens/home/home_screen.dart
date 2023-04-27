@@ -72,23 +72,37 @@ class HomeScreen extends StatelessWidget {
                         backgroundColor: theme.canvasColor,
                         onTap: cubit.changeTabIndex,
                         items: HomeCubit.tabsList.mapIndexed((index, e) {
+                          final Widget iconWidget = SvgPicture.asset(
+                            e.iconPath,
+                            color: index == cubit.state.tabPositionIndex
+                                ? theme.primaryColor
+                                : theme.shadowColor,
+                          );
+
                           return CustomBottomNavigationItem(
                             activeColor: theme.primaryColor,
                             inactiveColor: theme.shadowColor,
                             icon: e == TabsTypes.articles
-                                ? _ArticleIcon(
-                                    child: SvgPicture.asset(
-                                    e.iconPath,
-                                    color: index == cubit.state.tabPositionIndex
-                                        ? theme.primaryColor
-                                        : theme.shadowColor,
-                                  ))
-                                : SvgPicture.asset(
-                                    e.iconPath,
-                                    color: index == cubit.state.tabPositionIndex
-                                        ? theme.primaryColor
-                                        : theme.shadowColor,
-                                  ),
+                                ? Builder(builder: (context) {
+                                    final int? count = context.select(
+                                        (HomeCubit cubit) =>
+                                            cubit.state.articlesUnreadCount);
+                                    return _IconWithCounter(
+                                      count: count,
+                                      child: iconWidget,
+                                    );
+                                  })
+                                : e == TabsTypes.sessions
+                                    ? Builder(builder: (context) {
+                                        final int? count = context.select(
+                                            (HomeCubit cubit) =>
+                                                cubit.state.chatsUnreadCount);
+                                        return _IconWithCounter(
+                                          count: count,
+                                          child: iconWidget,
+                                        );
+                                      })
+                                    : iconWidget,
                             label: e.tabName(context),
                             labelStyle: theme.textTheme.labelSmall,
                             isSelected: index == cubit.state.tabPositionIndex,
@@ -105,10 +119,15 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class _ArticleIcon extends StatelessWidget {
+class _IconWithCounter extends StatelessWidget {
   final Widget child;
+  final int? count;
 
-  const _ArticleIcon({Key? key, required this.child}) : super(key: key);
+  const _IconWithCounter({
+    Key? key,
+    required this.child,
+    this.count,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -117,41 +136,34 @@ class _ArticleIcon extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         child,
-        Builder(builder: (context) {
-          final int? count = context
-              .select((HomeCubit cubit) => cubit.state.articlesUnreadCount);
-          if (count != null && count != 0) {
-            return Positioned(
-              top: -2.0,
-              right: -7.0,
-              child: Container(
-                width: 16.0,
-                height: 16.0,
-                decoration: const BoxDecoration(
-                  color: AppColors.promotion,
-                  shape: BoxShape.circle,
-                ),
-                child: Builder(builder: (_) {
-                  return FittedBox(
-                    child: Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Text(
-                        count.toString(),
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .displaySmall
-                            ?.copyWith(color: theme.backgroundColor),
-                      ),
-                    ),
-                  );
-                }),
+        if (count != null && count != 0)
+          Positioned(
+            top: -2.0,
+            right: -7.0,
+            child: Container(
+              width: 16.0,
+              height: 16.0,
+              decoration: const BoxDecoration(
+                color: AppColors.promotion,
+                shape: BoxShape.circle,
               ),
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        }),
+              child: Builder(builder: (_) {
+                return FittedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Text(
+                      count.toString(),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context)
+                          .textTheme
+                          .displaySmall
+                          ?.copyWith(color: theme.backgroundColor),
+                    ),
+                  ),
+                );
+              }),
+            ),
+          ),
       ],
     );
   }

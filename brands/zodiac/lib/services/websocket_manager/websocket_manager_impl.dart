@@ -419,7 +419,11 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onUnreadChats(Event event) {
-    ///TODO - Implements onUnreadChats
+    SocketMessage message = (event.eventData as SocketMessage);
+    int? count = message.params['count'];
+    if (count != null) {
+      _zodiacMainCubit.updateUnreadChats(count);
+    }
   }
 
   void _onReadMessage(Event event) {

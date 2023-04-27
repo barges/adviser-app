@@ -45,6 +45,7 @@ class HomeCubit extends Cubit<HomeState> {
   late final StreamSubscription<bool> _updateArticleCountSubscription;
   late final StreamSubscription<bool> _appLifecycleSubscription;
   late final StreamSubscription<bool> _connectivitySubscription;
+  late final StreamSubscription<int> _updateUnreadChatsCountSubscription;
   late final List<PageRouteInfo> routes;
 
   bool _firstOpenArticlesTab = true;
@@ -113,6 +114,11 @@ class HomeCubit extends Cubit<HomeState> {
       if (_appInForeground && event) {
         _webSocketManager.connect();
       }
+    });
+
+    _updateUnreadChatsCountSubscription =
+        _zodiacMainCubit.updateUnreadChatsTrigger.listen((value) {
+      emit(state.copyWith(chatsUnreadCount: value));
     });
   }
 
