@@ -155,8 +155,8 @@ class StartingChatScreen extends StatelessWidget {
                             ),
                             child: AppElevatedButton(
                               title: SZodiac.of(context).startChatZodiac,
-                              onPressed: () =>
-                                  startingChatCubit.startChat(context),
+                              onPressed: () => startingChatCubit.startChat(
+                                  context, callData.userData),
                             ),
                           ),
                           const SizedBox(
