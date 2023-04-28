@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
+import 'package:zodiac/data/models/enums/chat_message_type.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/missed_message_widget.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -35,18 +37,27 @@ class ChatScreen extends StatelessWidget {
           appBar: ChatConversationAppBar(
             userData: userData,
           ),
-          body: ListView(
+          body: ListView.separated(
             shrinkWrap: true,
             reverse: true,
-            children: messages.map((e) {
-              return SizedBox(
-                height: 48,
-                width: MediaQuery.of(context).size.width,
-                child: Center(
-                  child: Text(e.type.name),
-                ),
-              );
-            }).toList(),
+            itemCount: messages.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 4.0),
+            itemBuilder: (context, index) {
+              if (messages[index].type == ChatMessageType.missed) {
+                return MissedMessageWidget(
+                  message: messages[index],
+                  clientName: userData.name ?? '',
+                );
+              } else {
+                return SizedBox(
+                  height: 48,
+                  width: MediaQuery.of(context).size.width,
+                  child: Center(
+                    child: Text(messages[index].type.name),
+                  ),
+                );
+              }
+            },
           ),
         );
       }),

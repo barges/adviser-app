@@ -91,5 +91,8 @@
   "secondsZodiac": "sec",
   "startChatZodiac": "Start Chat",
   "declineZodiac": "Decline",
-  "chatRequestZodiac": "Chat request..."
+  "chatRequestZodiac": "Chat request...",
+  "youMissedCallFromZodiac": "You missed call\n from {clientName}.",
+  "youMissedChatFromZodiac": "You missed chat \n from {clientName}.",
+  "replyZodiac": "Reply"
 }

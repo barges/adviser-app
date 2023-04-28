@@ -91,5 +91,8 @@
   "secondsZodiac": "seg",
   "startChatZodiac": "Iniciar bate-papo",
   "declineZodiac": "Declínio",
-  "chatRequestZodiac": "Solicitação de bate-papo..."
+  "chatRequestZodiac": "Solicitação de bate-papo...",
+  "youMissedCallFromZodiac": "Você perdeu uma chamada \n de {clientName}.",
+  "youMissedChatFromZodiac": "Você perdeu o bate-papo \n de {clientName}.",
+  "replyZodiac": "Responder"
 }

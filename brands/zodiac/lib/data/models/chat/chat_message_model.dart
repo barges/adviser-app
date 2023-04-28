@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:zodiac/data/models/chat/product_box.dart';
 import 'package:zodiac/data/models/chat/replied_message.dart';
 import 'package:zodiac/data/models/enums/chat_message_type.dart';
+import 'package:zodiac/data/models/enums/missed_message_action.dart';
 
 part 'chat_message_model.g.dart';
 
@@ -50,7 +51,8 @@ class ChatMessageModel with _$ChatMessageModel {
     @JsonKey(fromJson: _boolFromInt, toJson: _boolToInt)
     @Default(false)
         bool fromAdvisor,
-    String? action,
+    @JsonKey(unknownEnumValue: MissedMessageAction.none)
+        MissedMessageAction? action,
     @JsonKey(name: 'main') String? mainImage,
     String? thumbnail,
     String? couponImage,

@@ -984,6 +984,36 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `You missed call\n from {clientName}.`
+  String youMissedCallFromZodiac(Object clientName) {
+    return Intl.message(
+      'You missed call\n from $clientName.',
+      name: 'youMissedCallFromZodiac',
+      desc: '',
+      args: [clientName],
+    );
+  }
+
+  /// `You missed chat \n from {clientName}.`
+  String youMissedChatFromZodiac(Object clientName) {
+    return Intl.message(
+      'You missed chat \n from $clientName.',
+      name: 'youMissedChatFromZodiac',
+      desc: '',
+      args: [clientName],
+    );
+  }
+
+  /// `Reply`
+  String get replyZodiac {
+    return Intl.message(
+      'Reply',
+      name: 'replyZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

@@ -28,6 +28,10 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m2(email) =>
       "We\'ve sent password reset instructions to ${email}.";
 
+  static String m3(clientName) => "You missed call\n from ${clientName}.";
+
+  static String m4(clientName) => "You missed chat \n from ${clientName}.";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "aboutZodiac": MessageLookupByLibrary.simpleMessage("About"),
@@ -131,6 +135,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "previewAccountZodiac":
             MessageLookupByLibrary.simpleMessage("Preview account"),
         "pricePerMinZodiac": m1,
+        "replyZodiac": MessageLookupByLibrary.simpleMessage("Reply"),
         "requiredFieldZodiac":
             MessageLookupByLibrary.simpleMessage("Required field"),
         "resetPasswordZodiac":
@@ -171,6 +176,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "youCanChangePriceOncePer24HZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "You can change price once per 24 h"),
+        "youMissedCallFromZodiac": m3,
+        "youMissedChatFromZodiac": m4,
         "youWereBlocked": MessageLookupByLibrary.simpleMessage(
             "Your account has been blocked.<br>Please contact <a href=\'\'>Customer Support</a> to resolve the issue"),
         "yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac":
