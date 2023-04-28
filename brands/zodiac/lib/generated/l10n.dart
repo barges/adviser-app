@@ -1014,6 +1014,46 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Chat started`
+  String get chatStartedZodiac {
+    return Intl.message(
+      'Chat started',
+      name: 'chatStartedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat ended`
+  String get chatEndedZodiac {
+    return Intl.message(
+      'Chat ended',
+      name: 'chatEndedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Call started`
+  String get callStartedZodiac {
+    return Intl.message(
+      'Call started',
+      name: 'callStartedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Call ended`
+  String get callEndedZodiac {
+    return Intl.message(
+      'Call ended',
+      name: 'callEndedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

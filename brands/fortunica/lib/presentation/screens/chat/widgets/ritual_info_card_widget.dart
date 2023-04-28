@@ -1,15 +1,13 @@
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortunica/data/models/chats/rirual_card_info.dart';
+import 'package:fortunica/fortunica_extensions.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:fortunica/presentation/common_widgets/app_image_widget.dart';
-import 'package:fortunica/presentation/screens/chat/chat_cubit.dart';
 import 'package:fortunica/presentation/screens/gallery/gallery_pictures_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 
 class RitualInfoCardWidget extends StatelessWidget {
   final RitualCardInfo? ritualCardInfo;
@@ -59,13 +57,15 @@ class RitualInfoCardWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  DateFormat(datePattern1)
-                      .format(ritualCardInfo?.birthdate ?? DateTime.now()),
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.shadowColor,
+                if (ritualCardInfo?.birthdate != null)
+                  Text(
+                    DateFormat(datePattern1).format(
+                      ritualCardInfo!.birthdate!.toLocal(),
+                    ),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.shadowColor,
+                    ),
                   ),
-                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Container(

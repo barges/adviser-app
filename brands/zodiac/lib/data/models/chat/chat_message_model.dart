@@ -24,7 +24,8 @@ class ChatMessageModel with _$ChatMessageModel {
     @Default(ChatMessageType.simple)
         ChatMessageType type,
     int? id,
-    int? utc,
+    @JsonKey(fromJson: _dateFromSeconds, toJson: _dateToSeconds)
+    DateTime? utc,
     int? timerReal,
     int? timerUser,
     int? chatId,
@@ -79,3 +80,20 @@ int _typeToJson(ChatMessageType value) {
 bool _boolFromInt(num? value) => value == 1;
 
 int _boolToInt(bool value) => value ? 1 : 0;
+
+DateTime? _dateFromSeconds(num? value) {
+  if(value != null) {
+    return DateTime.fromMillisecondsSinceEpoch(value.toInt() * 1000,
+        isUtc: true);
+  } else {
+    return null;
+  }
+}
+
+int? _dateToSeconds(DateTime? value) {
+  if(value != null) {
+    return value.millisecondsSinceEpoch ~/ 1000;
+  } else {
+    return null;
+  }
+}

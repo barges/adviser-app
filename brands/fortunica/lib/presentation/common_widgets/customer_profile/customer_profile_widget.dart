@@ -1,3 +1,6 @@
+import 'package:fortunica/data/models/enums/gender.dart';
+import 'package:fortunica/fortunica_extensions.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:flutter/material.dart';
@@ -59,85 +62,96 @@ class CustomerProfileWidget extends StatelessWidget {
                     .applyTo(const ClampingScrollPhysics()),
                 child: Builder(
                   builder: (context) {
-                    return (customerInfo == null)
-                        ? ListView(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            children: [
-                              SizedBox(
-                                height: MediaQuery.of(context).size.height,
-                              )
-                            ],
+                    if (customerInfo == null) {
+                      return ListView(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height,
                           )
-                        : Column(
-                            children: [
-                              Container(
-                                color: theme.canvasColor,
-                                width: MediaQuery.of(context).size.width,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal:
-                                        AppConstants.horizontalScreenPadding,
-                                    vertical: 24.0),
-                                child: Column(children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 4.0),
-                                    child: Stack(
-                                      alignment: Alignment.bottomCenter,
-                                      children: [
-                                        UserAvatar(
-                                          avatarUrl: customerInfo.zodiac
-                                              ?.imagePath(context),
-                                          diameter: 96.0,
-                                          isZodiac: true,
-                                        ),
-                                      ],
+                        ],
+                      );
+                    } else {
+
+                      final Gender? gender = customerInfo.gender;
+                      final DateTime? birthdate = customerInfo.birthdate;
+                      return Column(
+                        children: [
+                          Container(
+                            color: theme.canvasColor,
+                            width: MediaQuery.of(context).size.width,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal:
+                                AppConstants.horizontalScreenPadding,
+                                vertical: 24.0),
+                            child: Column(children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4.0),
+                                child: Stack(
+                                  alignment: Alignment.bottomCenter,
+                                  children: [
+                                    UserAvatar(
+                                      avatarUrl: customerInfo.zodiac
+                                          ?.imagePath(context),
+                                      diameter: 96.0,
+                                      isZodiac: true,
                                     ),
-                                  ),
-                                  Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: AppConstants
-                                              .horizontalScreenPadding),
-                                      child: Column(
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: AppConstants
+                                          .horizontalScreenPadding),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 12.0,
+                                        ),
+                                        child: Builder(builder: (context) {
+                                          final String? firstName =
+                                              customerInfo.firstName;
+                                          final String? lastName =
+                                              customerInfo.lastName;
+                                          return Text(
+                                            firstName != null &&
+                                                lastName != null
+                                                ? '$firstName $lastName'
+                                                : SFortunica.of(context)
+                                                .notSpecifiedFortunica,
+                                            textAlign: TextAlign.center,
+                                            style: theme
+                                                .textTheme.headlineMedium,
+                                          );
+                                        }),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 12.0,
+                                          if (birthdate !=
+                                              null)
+                                            Text(
+                                              DateFormat(datePattern5)
+                                                  .format(
+                                                birthdate
+                                                    .toLocal(),
+                                              )
+                                                  .capitalize ??
+                                                  '',
+                                              style: theme
+                                                  .textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                color: theme.shadowColor,
+                                              ),
                                             ),
-                                            child: Builder(builder: (context) {
-                                              final String? firstName =
-                                                  customerInfo.firstName;
-                                              final String? lastName =
-                                                  customerInfo.lastName;
-                                              return Text(
-                                                firstName != null &&
-                                                        lastName != null
-                                                    ? '$firstName $lastName'
-                                                    : SFortunica.of(context)
-                                                        .notSpecifiedFortunica,
-                                                textAlign: TextAlign.center,
-                                                style: theme
-                                                    .textTheme.headlineMedium,
-                                              );
-                                            }),
-                                          ),
-                                          if (customerInfo.gender != null ||
-                                              customerInfo.birthdate != null)
+                                          if (gender != null ||
+                                              birthdate !=
+                                                  null)
                                             Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
                                               children: [
-                                                Text(
-                                                  customerInfo
-                                                          .birthdate
-                                                          ?.parseDateTimePattern9
-                                                          .capitalize ??
-                                                      '',
-                                                  style: theme
-                                                      .textTheme.bodyMedium
-                                                      ?.copyWith(
-                                                    color: theme.shadowColor,
-                                                  ),
-                                                ),
                                                 const SizedBox(
                                                   width: 8.0,
                                                 ),
@@ -146,68 +160,72 @@ class CustomerProfileWidget extends StatelessWidget {
                                                   height: 4.0,
                                                   decoration: BoxDecoration(
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              90.0),
-                                                      color: theme.hintColor),
+                                                      BorderRadius
+                                                          .circular(
+                                                          90.0),
+                                                      color:
+                                                      theme.hintColor),
                                                 ),
                                                 const SizedBox(
                                                   width: 8.0,
                                                 ),
-                                                Text(
-                                                  customerInfo.gender
-                                                          ?.name(context) ??
-                                                      '',
-                                                  style: theme
-                                                      .textTheme.bodyMedium
-                                                      ?.copyWith(
-                                                    color: theme.shadowColor,
-                                                  ),
-                                                )
                                               ],
                                             ),
+                                          if (gender != null)
+                                            Text(
+                                              gender.name(context),
+                                              style: theme
+                                                  .textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                color: theme.shadowColor,
+                                              ),
+                                            )
                                         ],
-                                      )),
-                                  Builder(builder: (context) {
-                                    final List<String>? questionProperties =
-                                        customerInfo.advisorMatch?.values
-                                            .toList();
-                                    return (questionProperties != null &&
-                                            questionProperties.isNotEmpty)
-                                        ? Column(
-                                            children: [
-                                              const SizedBox(
-                                                  height: AppConstants
-                                                      .horizontalScreenPadding),
-                                              Wrap(
-                                                runSpacing: 8.0,
-                                                children: [
-                                                  QuestionPropertiesWidget(
-                                                    properties:
-                                                        questionProperties,
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          )
-                                        : const SizedBox.shrink();
-                                  }),
-                                ]),
-                              ),
-                              Builder(builder: (context) {
-                                final List<Note>? notes = context.select(
-                                    (CustomerProfileCubit cubit) =>
-                                        cubit.state.notes);
-                                return NotesWidget(
-                                  notes: notes,
-                                  images: const [
-                                    [
-                                      //'https://cdn.shopify.com/s/files/1/0275/3318/0970/products/AgendaNotebook-2_800x.jpg'
+                                      ),
                                     ],
+                                  )),
+                              Builder(builder: (context) {
+                                final List<String>? questionProperties =
+                                customerInfo.advisorMatch?.values
+                                    .toList();
+                                return (questionProperties != null &&
+                                    questionProperties.isNotEmpty)
+                                    ? Column(
+                                  children: [
+                                    const SizedBox(
+                                        height: AppConstants
+                                            .horizontalScreenPadding),
+                                    Wrap(
+                                      runSpacing: 8.0,
+                                      children: [
+                                        QuestionPropertiesWidget(
+                                          properties:
+                                          questionProperties,
+                                        )
+                                      ],
+                                    )
                                   ],
-                                );
-                              })
-                            ],
-                          );
+                                )
+                                    : const SizedBox.shrink();
+                              }),
+                            ]),
+                          ),
+                          Builder(builder: (context) {
+                            final List<Note>? notes = context.select(
+                                    (CustomerProfileCubit cubit) =>
+                                cubit.state.notes);
+                            return NotesWidget(
+                              notes: notes,
+                              images: const [
+                                [
+                                  //'https://cdn.shopify.com/s/files/1/0275/3318/0970/products/AgendaNotebook-2_800x.jpg'
+                                ],
+                              ],
+                            );
+                          })
+                        ],
+                      );
+                    }
                   },
                 ),
               ),

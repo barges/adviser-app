@@ -92,5 +92,9 @@
   "chatRequestZodiac": "Chat-Anfrage...",
   "youMissedCallFromZodiac": "Sie haben den Anruf \n von {clientName} verpasst.",
   "youMissedChatFromZodiac": "Sie haben den Chat \n von {clientName} verpasst.",
-  "replyZodiac": "Antwort"
+  "replyZodiac": "Antwort",
+  "chatStartedZodiac": "Chat gestartet",
+  "chatEndedZodiac": "Chat beendet",
+  "callStartedZodiac": "Anruf gestartet",
+  "callEndedZodiac": "Anruf beendet"
 }
