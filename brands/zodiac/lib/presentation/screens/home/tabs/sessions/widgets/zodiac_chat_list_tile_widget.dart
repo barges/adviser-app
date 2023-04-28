@@ -45,7 +45,7 @@ class ZodiacChatListTileWidget extends StatelessWidget {
                               ? DateTime.fromMillisecondsSinceEpoch(
                                       (item.dateLastUpdate! * 1000),
                                       isUtc: true)
-                                  .listTime(context)
+                                  .sessionsListTime(context)
                               : '',
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(

@@ -209,7 +209,7 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   @override
-  void reloadMessages(int userId, {int? maxId}) {
+  void reloadMessages({required int userId, int? maxId}) {
     _send(SocketMessage.chatLogin(
       id: userId,
     ));

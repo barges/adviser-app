@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -7,18 +8,18 @@ import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/enums/missed_message_action.dart';
 import 'package:zodiac/generated/l10n.dart';
+import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 
 class MissedMessageWidget extends StatelessWidget {
-  final ChatMessageModel message;
-  final String clientName;
+  final ChatMessageModel chatMessageModel;
 
-  const MissedMessageWidget(
-      {Key? key, required this.message, required this.clientName})
+  const MissedMessageWidget({Key? key, required this.chatMessageModel})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final String? clientName = context.read<ChatCubit>().userData.name;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -34,10 +35,10 @@ class MissedMessageWidget extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  if (message.action != null &&
-                      message.action != MissedMessageAction.none)
+                  if (chatMessageModel.action != null &&
+                      chatMessageModel.action != MissedMessageAction.none)
                     SvgPicture.asset(
-                      message.action!.iconPath,
+                      chatMessageModel.action!.iconPath,
                       width: AppConstants.iconSize,
                       height: AppConstants.iconSize,
                       color: AppColors.error,
@@ -45,10 +46,11 @@ class MissedMessageWidget extends StatelessWidget {
                   const SizedBox(
                     width: 12.0,
                   ),
-                  if (message.action != null &&
-                      message.action != MissedMessageAction.none)
+                  if (chatMessageModel.action != null &&
+                      chatMessageModel.action != MissedMessageAction.none)
                     Text(
-                      message.action!.getDescription(context, clientName),
+                      chatMessageModel.action!
+                          .getDescription(context, clientName ?? ''),
                       style: theme.textTheme.labelMedium
                           ?.copyWith(color: AppColors.error),
                     )
@@ -59,7 +61,7 @@ class MissedMessageWidget extends StatelessWidget {
                 children: [
                   Text(
                     DateTime.fromMillisecondsSinceEpoch(
-                            (message.utc ?? 0) * 1000,
+                            (chatMessageModel.utc ?? 0) * 1000,
                             isUtc: true)
                         .chatListTime,
                     style: theme.textTheme.bodySmall?.copyWith(
