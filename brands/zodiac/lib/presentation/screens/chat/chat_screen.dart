@@ -6,7 +6,9 @@ import 'package:zodiac/data/models/chat/user_data.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/chat_message_widget.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
+import 'package:zodiac/zodiac_constants.dart';
 
 class ChatScreen extends StatelessWidget {
   final UserData userData;
@@ -35,18 +37,25 @@ class ChatScreen extends StatelessWidget {
           appBar: ChatConversationAppBar(
             userData: userData,
           ),
-          body: ListView(
-            shrinkWrap: true,
-            reverse: true,
-            children: messages.map((e) {
-              return SizedBox(
-                height: 48,
-                width: MediaQuery.of(context).size.width,
-                child: Center(
-                  child: Text(e.type.name),
-                ),
-              );
-            }).toList(),
+          body: SafeArea(
+            child: ListView.separated(
+              padding: const EdgeInsets.all(
+                ZodiacConstants.chatHorizontalPadding,
+              ),
+              shrinkWrap: true,
+              reverse: true,
+              itemCount: messages.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ChatMessageWidget(
+                  chatMessageModel: messages[index],
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const SizedBox(
+                  height: 4.0,
+                );
+              },
+            ),
           ),
         );
       }),

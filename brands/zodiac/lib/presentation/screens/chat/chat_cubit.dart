@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
@@ -11,18 +11,23 @@ class ChatCubit extends Cubit<ChatState> {
   final WebSocketManager _webSocketManager;
   final UserData _userData;
 
-
   late final StreamSubscription<List<ChatMessageModel>> _messagesStream;
 
-  ChatCubit(
-      this._webSocketManager,
-      this._userData,
-      ) : super(const ChatState()) {
-          _messagesStream = _webSocketManager.entitiesStream.listen((event) {
-              emit(state.copyWith(messages: event));
-          });
+  final ScrollController messageListScrollController = ScrollController();
 
-          _webSocketManager.reloadMessages(_userData.id ?? 0);
+  final List<ChatMessageModel> _messages = [];
+
+  ChatCubit(
+    this._webSocketManager,
+    this._userData,
+  ) : super(const ChatState()) {
+    _messagesStream = _webSocketManager.entitiesStream.listen((event) {
+      _messages.addAll(event);
+
+      emit(state.copyWith(messages: _messages));
+    });
+
+    reloadMessage();
   }
 
   @override
@@ -31,4 +36,13 @@ class ChatCubit extends Cubit<ChatState> {
     return super.close();
   }
 
+  void reloadMessage({int? maxId}) {
+    if (maxId == null) {
+      _messages.clear();
+    }
+    _webSocketManager.reloadMessages(
+      userId: _userData.id ?? 0,
+      maxId: maxId,
+    );
+  }
 }

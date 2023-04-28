@@ -4,7 +4,7 @@ import 'package:shared_advisor_interface/extensions.dart';
 import 'package:zodiac/generated/l10n.dart';
 
 extension DateTimeExt on DateTime {
-  String listTime(BuildContext context) {
+  String sessionsListTime(BuildContext context) {
     DateTime now = DateTime.now();
     DateTime localTime = toLocal();
     int timeDifference =
@@ -16,6 +16,22 @@ extension DateTimeExt on DateTime {
     }
     if (timeDifference == -1) {
       return SZodiac.of(context).yesterdayZodiac;
+    }
+    if (localTime.year != now.year) {
+      return DateFormat(dateFormat).format(this).parseDateTimePattern9;
+    }
+    return DateFormat(dateFormat).format(this).parseDateTimePattern8;
+  }
+
+  String get chatListTime {
+    DateTime now = DateTime.now();
+    DateTime localTime = toLocal();
+    int timeDifference =
+        DateTime(localTime.year, localTime.month, localTime.day)
+            .difference(DateTime(now.year, now.month, now.day))
+            .inDays;
+    if (timeDifference == 0) {
+      return DateFormat(dateFormat).format(this).parseDateTimePattern7;
     }
     if (localTime.year != now.year) {
       return DateFormat(dateFormat).format(this).parseDateTimePattern9;
