@@ -5,7 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:zodiac/data/models/chats/chat_item_zodiac.dart';
+import 'package:zodiac/data/network/requests/hide_chat_request.dart';
 import 'package:zodiac/data/network/requests/list_request.dart';
+import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/chat_entities_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_chats_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_state.dart';
@@ -104,6 +106,17 @@ class SessionsCubit extends Cubit<SessionsState> {
       logger.d(e);
 
       _isLoading = false;
+    }
+  }
+
+  Future<void> hideChat(int? chatId) async {
+    if (chatId != null) {
+      try {
+        BaseResponse response =
+            await _chatsRepository.hideChat(HideChatRequest(chatId: chatId));
+      } catch (e) {
+        logger.d(e);
+      }
     }
   }
 }
