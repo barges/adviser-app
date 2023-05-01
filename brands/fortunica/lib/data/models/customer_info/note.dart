@@ -5,7 +5,7 @@ part 'note.g.dart';
 @JsonSerializable(includeIfNull: false)
 class Note {
   final String? content;
-  final String? updatedAt;
+  final DateTime? updatedAt;
 
   const Note(this.content, this.updatedAt);
 

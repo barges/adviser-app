@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/enums/missed_message_action.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
+import 'package:zodiac/zodiac_extensions.dart';
 
 class MissedMessageWidget extends StatelessWidget {
   final ChatMessageModel chatMessageModel;
@@ -27,7 +27,9 @@ class MissedMessageWidget extends StatelessWidget {
           width: 262.0,
           padding: const EdgeInsets.all(12.0),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.0),
+            borderRadius: BorderRadius.circular(
+              AppConstants.buttonRadius,
+            ),
             color: theme.canvasColor,
           ),
           child: Column(
@@ -59,16 +61,14 @@ class MissedMessageWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    DateTime.fromMillisecondsSinceEpoch(
-                            (chatMessageModel.utc ?? 0) * 1000,
-                            isUtc: true)
-                        .chatListTime,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontSize: 11.0,
-                      color: theme.shadowColor,
-                    ),
-                  )
+                  if (chatMessageModel.utc != null)
+                    Text(
+                      chatMessageModel.utc!.chatListTime,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontSize: 11.0,
+                        color: theme.shadowColor,
+                      ),
+                    )
                 ],
               ),
               const Divider(

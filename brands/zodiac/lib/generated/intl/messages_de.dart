@@ -46,15 +46,22 @@ class MessageLookup extends MessageLookupByLibrary {
         "balanceTransactionsZodiac":
             MessageLookupByLibrary.simpleMessage("Guthaben & Transaktionen"),
         "bonusZodiac": MessageLookupByLibrary.simpleMessage("Bonus"),
+        "callEndedZodiac":
+            MessageLookupByLibrary.simpleMessage("Anruf beendet"),
+        "callStartedZodiac":
+            MessageLookupByLibrary.simpleMessage("Anruf gestartet"),
         "callZodiac": MessageLookupByLibrary.simpleMessage("Forderung:"),
         "cancelZodiac": MessageLookupByLibrary.simpleMessage("Abbrechen"),
         "changeZodiac": MessageLookupByLibrary.simpleMessage("Change"),
         "characterLimitExceededZodiac": MessageLookupByLibrary.simpleMessage(
             "Zeichenbegrenzung überschritten."),
+        "chatEndedZodiac": MessageLookupByLibrary.simpleMessage("Chat beendet"),
         "chatRequestZodiac":
             MessageLookupByLibrary.simpleMessage("Chat-Anfrage..."),
         "chatStartGreetingZodiac":
             MessageLookupByLibrary.simpleMessage("Chat-Start-Begrüßung"),
+        "chatStartedZodiac":
+            MessageLookupByLibrary.simpleMessage("Chat gestartet"),
         "chatZodiac": MessageLookupByLibrary.simpleMessage("Plaudern:"),
         "checkYourInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage(

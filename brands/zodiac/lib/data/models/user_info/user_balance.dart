@@ -1,10 +1,10 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/extensions.dart';
+import 'package:zodiac/zodiac_extensions.dart';
 
-part 'user_balance.g.dart';
 part 'user_balance.freezed.dart';
+part 'user_balance.g.dart';
 
 @freezed
 class UserBalance with _$UserBalance {

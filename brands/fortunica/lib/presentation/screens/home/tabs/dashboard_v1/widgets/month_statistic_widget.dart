@@ -1,12 +1,15 @@
 // ignore_for_file: unused_element
 
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:fortunica/presentation/screens/home/tabs/dashboard_v1/dashboard_v1_cubit.dart';
 import 'package:fortunica/presentation/screens/home/tabs/dashboard_v1/widgets/chart_widget.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
+
+const String _currencyPattern = '#,##0.00';
+
 class MonthStatisticWidget extends StatelessWidget {
   const MonthStatisticWidget({super.key});
 
@@ -47,7 +50,7 @@ class MonthStatisticWidget extends StatelessWidget {
                       height: 2,
                     )),
                 Text(
-                    '$currencySymbol ${monthAmount.parseValueToCurrencyFormat}',
+                    '$currencySymbol ${_parseValueToCurrencyFormat(monthAmount)}',
                     style: Theme.of(context).textTheme.labelLarge),
                 const SizedBox(
                   height: 8.0,
@@ -63,6 +66,11 @@ class MonthStatisticWidget extends StatelessWidget {
             )),
       );
     });
+  }
+
+  String _parseValueToCurrencyFormat(double amount) {
+    final currencyFormatter = NumberFormat(_currencyPattern, 'ID');
+    return currencyFormatter.format(amount).replaceAll('.', ' ');
   }
 }
 

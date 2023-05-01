@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:zodiac/data/models/user_info/review_item_zodiac.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
+import 'package:zodiac/zodiac_extensions.dart';
 
 class ReviewCardWidget extends StatelessWidget {
   final ZodiacReviewItem item;
+
   const ReviewCardWidget({super.key, required this.item});
 
   @override
@@ -47,6 +48,7 @@ class ReviewCardWidget extends StatelessWidget {
 
 class _ReviewCustomerInfoWidget extends StatelessWidget {
   final ZodiacReviewItem item;
+
   const _ReviewCustomerInfoWidget({Key? key, required this.item})
       : super(key: key);
 
@@ -79,19 +81,19 @@ class _ReviewCustomerInfoWidget extends StatelessWidget {
                   _ReviewRatingWidget(rating: item.rating ?? 0),
                 ],
               ),
-              Text(
-                DateFormat(dateFormat)
-                    .format(
-                      DateTime.fromMillisecondsSinceEpoch(
-                          ((item.dateCreate ?? 0) * 1000),
-                          isUtc: true),
-                    )
-                    .parseDateTimePattern4,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(color: Theme.of(context).shadowColor),
-              )
+              if (item.dateCreate != null)
+                Text(
+                  DateFormat(datePattern9).format(
+                    DateTime.fromMillisecondsSinceEpoch(
+                            (item.dateCreate! * 1000),
+                            isUtc: true)
+                        .toLocal(),
+                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: Theme.of(context).shadowColor),
+                )
             ],
           ),
         ),
@@ -102,6 +104,7 @@ class _ReviewCustomerInfoWidget extends StatelessWidget {
 
 class _ReviewRatingWidget extends StatelessWidget {
   final int rating;
+
   const _ReviewRatingWidget({
     Key? key,
     required this.rating,

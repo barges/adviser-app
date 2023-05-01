@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
@@ -10,6 +9,7 @@ import 'package:zodiac/data/models/articles/article.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_cubit.dart';
+import 'package:zodiac/zodiac_extensions.dart';
 
 class ArticleWidget extends StatelessWidget {
   final Article article;
@@ -47,20 +47,21 @@ class ArticleWidget extends StatelessWidget {
                 ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 12.0),
-            child: Text(
-              DateFormat(dateFormat)
-                  .format(DateTime.fromMillisecondsSinceEpoch(
-                      ((article.dateCreate ?? 0) * 1000),
-                      isUtc: true))
-                  .parseDateTimePattern2,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    fontSize: 12.0,
-                    color: Theme.of(context).shadowColor,
-                  ),
+          if (article.dateCreate != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 12.0),
+              child: Text(
+                DateFormat(datePattern8).format(
+                    DateTime.fromMillisecondsSinceEpoch(
+                            (article.dateCreate! * 1000),
+                            isUtc: true)
+                        .toLocal()),
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      fontSize: 12.0,
+                      color: Theme.of(context).shadowColor,
+                    ),
+              ),
             ),
-          ),
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(article.name ?? '',

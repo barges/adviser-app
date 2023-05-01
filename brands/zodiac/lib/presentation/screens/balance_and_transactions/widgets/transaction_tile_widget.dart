@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/enums/payment_source.dart';
 import 'package:zodiac/data/models/payment/payment_information.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/zodiac_extensions.dart';
 
 const paddingTile = AppConstants.horizontalScreenPadding;
@@ -16,6 +16,7 @@ const userAvatarDiameter = 48.0;
 
 class TransactionsTileWidget extends StatelessWidget {
   final List<PaymentInformation> items;
+
   const TransactionsTileWidget({super.key, required this.items});
 
   @override
@@ -79,7 +80,7 @@ class _TransactionWidget extends StatelessWidget {
         paymentSource == PaymentSource.chat ||
         paymentSource == PaymentSource.online ||
         paymentSource == PaymentSource.offline) {
-      paymentLabel = ' $paymentLabel ${length!.formatDHMS(context)}';
+      paymentLabel = ' $paymentLabel ${_formatDHMS(context, length!)}';
     }
     return Column(
       children: [
@@ -171,6 +172,14 @@ class _TransactionWidget extends StatelessWidget {
       ],
     );
   }
+
+  String _formatDHMS(BuildContext context, Duration duration) {
+    final days = duration.inDays;
+    final hours = duration.inHours.remainder(24);
+    final minutes = duration.inMinutes.remainder(60);
+    final seconds = duration.inSeconds.remainder(60);
+    return "${days > 0 ? '$days ${SZodiac.of(context).daysZodiac} ' : ''}${hours > 0 ? '$hours ${SZodiac.of(context).hoursZodiac} ' : ''}${minutes > 0 ? '$minutes ${SZodiac.of(context).minutesZodiac} ' : ''}${seconds > 0 ? '$seconds ${SZodiac.of(context).secondsZodiac}' : ''}";
+  }
 }
 
 class _Avatar extends StatelessWidget {
@@ -178,6 +187,7 @@ class _Avatar extends StatelessWidget {
   final PaymentSource? paymentSource;
   final double diameter;
   final bool isMinusIcon;
+
   const _Avatar({
     required this.avatarUrl,
     required this.paymentSource,
@@ -238,6 +248,7 @@ class _Avatar extends StatelessWidget {
 
 class _PaymentSourceIcon extends StatelessWidget {
   final PaymentSource paymentSource;
+
   const _PaymentSourceIcon(this.paymentSource);
 
   @override

@@ -34,9 +34,6 @@ class AppImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double widgetHeight = height ?? MediaQuery.of(context).size.height;
-    double widgetWidth = width ?? MediaQuery.of(context).size.width;
-
     return GestureDetector(
       onTap: canBeOpenedInFullScreen
           ? () {
@@ -58,12 +55,12 @@ class AppImageWidget extends StatelessWidget {
                 memCacheHeight:
                     memCacheHeight != null ? memCacheHeight! * 2 : null,
                 imageUrl: uri.toString(),
-                width: widgetWidth,
-                height: widgetHeight,
+                width: width,
+                height: height,
                 fit: fit,
                 placeholder: (context, url) => Container(
-                  width: widgetWidth,
-                  height: widgetHeight,
+                  width: width,
+                  height: height,
                   color: backgroundColor,
                   child: Center(
                     child: SizedBox(
@@ -80,8 +77,8 @@ class AppImageWidget extends StatelessWidget {
                 ),
                 errorWidget: (context, url, error) {
                   return Container(
-                    width: widgetWidth,
-                    height: widgetHeight,
+                    width: width,
+                    height: height,
                     color: backgroundColor,
                     child: Center(
                       child: Assets.vectors.imageError.svg(
@@ -96,8 +93,8 @@ class AppImageWidget extends StatelessWidget {
             : Image.file(
                 File(uri.toFilePath()),
                 fit: fit,
-                width: widgetWidth,
-                height: widgetHeight,
+                width: width,
+                height: height,
               ),
       ),
     );
