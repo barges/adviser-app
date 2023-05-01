@@ -1014,6 +1014,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Hide chat`
+  String get hideChatZodiac {
+    return Intl.message(
+      'Hide chat',
+      name: 'hideChatZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

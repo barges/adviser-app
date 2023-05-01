@@ -94,5 +94,6 @@
   "chatRequestZodiac": "Chat request...",
   "youMissedCallFromZodiac": "You missed call\n from {clientName}.",
   "youMissedChatFromZodiac": "You missed chat \n from {clientName}.",
-  "replyZodiac": "Reply"
+  "replyZodiac": "Reply",
+  "hideChatZodiac": "Hide chat"
 }

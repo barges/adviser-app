@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
@@ -41,7 +42,8 @@ class SessionsScreen extends StatelessWidget {
                 ? chatsList.isNotEmpty
                     ? RefreshIndicator(
                         onRefresh: zodiacSessionsCubit.refreshChatsList,
-                        child: CustomScrollView(
+                        child: SlidableAutoCloseBehavior(
+                          child: CustomScrollView(
                             shrinkWrap: true,
                             controller:
                                 zodiacSessionsCubit.chatsListScrollController,
@@ -51,34 +53,35 @@ class SessionsScreen extends StatelessWidget {
                               const SliverPersistentHeader(
                                 delegate: _SearchTextField(),
                               ),
-                              SliverToBoxAdapter(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(
-                                      AppConstants.horizontalScreenPadding),
-                                  child: ListView.separated(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: chatsList.length,
-                                    itemBuilder: (context, index) {
-                                      final ZodiacChatsListItem item =
-                                          chatsList[index];
+                              SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  childCount: chatsList.length,
+                                  (context, index) {
+                                    final ZodiacChatsListItem item =
+                                        chatsList[index];
 
-                                      return GestureDetector(
-                                        onTap: () {
-                                          _goToChatHistory(context, item);
-                                        },
-                                        child: ZodiacChatListTileWidget(
-                                          item: item,
+                                    return Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            _goToChatHistory(context, item);
+                                          },
+                                          child: ZodiacChatListTileWidget(
+                                            item: item,
+                                          ),
                                         ),
-                                      );
-                                    },
-                                    separatorBuilder: (context, index) =>
-                                        const Divider(height: 25.0),
-                                  ),
+                                        const SizedBox(
+                                          height: 12.0,
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 ),
                               ),
-                            ]),
+                            ],
+                          ),
+                        ),
                       )
                     : CustomScrollView(
                         slivers: [

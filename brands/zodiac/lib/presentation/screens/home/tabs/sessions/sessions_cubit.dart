@@ -114,6 +114,12 @@ class SessionsCubit extends Cubit<SessionsState> {
       try {
         BaseResponse response =
             await _chatsRepository.hideChat(HideChatRequest(chatId: chatId));
+        if (response.status == true) {
+          List<ZodiacChatsListItem> newChatsList =
+              List.from(state.chatList ?? []);
+          newChatsList.removeWhere((element) => element.id == chatId);
+          emit(state.copyWith(chatList: newChatsList));
+        }
       } catch (e) {
         logger.d(e);
       }

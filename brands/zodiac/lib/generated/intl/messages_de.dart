@@ -81,6 +81,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Passwort vergessen"),
         "hereWillAppearArticles":
             MessageLookupByLibrary.simpleMessage("Hier erscheinen Artikel"),
+        "hideChatZodiac":
+            MessageLookupByLibrary.simpleMessage("Chat verstecken"),
         "hoursZodiac": MessageLookupByLibrary.simpleMessage("stunden"),
         "imAvailableNowZodiac":
             MessageLookupByLibrary.simpleMessage("Ich bin jetzt verfügbar"),
