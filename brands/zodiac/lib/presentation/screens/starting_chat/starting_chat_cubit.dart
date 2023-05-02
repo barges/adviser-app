@@ -63,13 +63,15 @@ class StartingChatCubit extends Cubit<StartingChatState> {
     _webSocketManager.sendDeclineCall(opponentId: opponentId);
   }
 
-  void startChat(BuildContext context, UserData? userData) {
+  void startChat(BuildContext context, UserData userData) {
     if (_brandManager.getCurrentBrand() is! ZodiacBrand) {
       _brandManager.setCurrentBrand(ZodiacBrand());
     }
-    if (userData != null) {
-      ZodiacBrand().context?.push(route: ZodiacChat(userData: userData));
-    }
-    context.popForced();
+    ZodiacBrand().context?.push(
+            route: ZodiacChat(
+          userData: userData,
+          fromStartingChat: true,
+        ));
+    context.popForced(true);
   }
 }

@@ -9,6 +9,7 @@ import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 
 class ChatCubit extends Cubit<ChatState> {
   final WebSocketManager _webSocketManager;
+  final bool _fromStartingChat;
   final UserData userData;
 
   late final StreamSubscription<List<ChatMessageModel>> _messagesStream;
@@ -19,15 +20,19 @@ class ChatCubit extends Cubit<ChatState> {
 
   ChatCubit(
     this._webSocketManager,
+    this._fromStartingChat,
     this.userData,
   ) : super(const ChatState()) {
+
     _messagesStream = _webSocketManager.entitiesStream.listen((event) {
       _messages.addAll(event);
 
       emit(state.copyWith(messages: _messages));
     });
 
-    reloadMessage();
+    if(!_fromStartingChat){
+      _webSocketManager.chatLogin(opponentId: userData.id ?? 0);
+    }
   }
 
   @override
@@ -36,12 +41,9 @@ class ChatCubit extends Cubit<ChatState> {
     return super.close();
   }
 
-  void reloadMessage({int? maxId}) {
-    if (maxId == null) {
-      _messages.clear();
-    }
+  void getMessageWithPagination({int? maxId}) {
     _webSocketManager.reloadMessages(
-      userId: userData.id ?? 0,
+      opponentId: userData.id ?? 0,
       maxId: maxId,
     );
   }

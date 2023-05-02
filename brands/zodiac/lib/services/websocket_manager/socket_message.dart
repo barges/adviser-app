@@ -22,6 +22,7 @@ class SocketMessage {
   String get encoded {
     Map<String, dynamic> data = {};
     data['a'] = action;
+    data['app'] = 'touch';
     if (params != null) {
       data['data'] = params;
     }
@@ -55,8 +56,8 @@ class SocketMessage {
   static SocketMessage chatLogout({required int chatId}) =>
       SocketMessage(action: Commands.chatLogout, params: {'chat_id': chatId});
 
-  static SocketMessage entities({required int userId, int? maxId}) =>
-      SocketMessage(action: Commands.entities, params: {'opponent_id': userId,
+  static SocketMessage entities({required int opponentId, int? maxId}) =>
+      SocketMessage(action: Commands.entities, params: {'opponent_id': opponentId,
       if(maxId != null)  'filters': {
         'max_id': maxId,
       }

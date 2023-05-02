@@ -7,5 +7,6 @@ part 'chat_state.freezed.dart';
 class ChatState with _$ChatState {
   const factory ChatState({
     @Default([]) List<ChatMessageModel> messages,
+    @Default(false) bool isVisibleTextField,
 }) = _ChatState;
 }
