@@ -1,13 +1,13 @@
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortunica/data/models/chats/chat_item.dart';
+import 'package:fortunica/fortunica_extensions.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:fortunica/presentation/common_widgets/list_tile_content_widget.dart';
 import 'package:fortunica/presentation/common_widgets/user_avatar.dart';
 import 'package:fortunica/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/themes/app_colors.dart';
 
 class PrivateChatsListTileWidget extends StatelessWidget {
   final ChatItem question;
@@ -56,21 +56,22 @@ class PrivateChatsListTileWidget extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          question.clientName ?? SFortunica.of(context).notSpecifiedFortunica,
+                          question.clientName ??
+                              SFortunica.of(context).notSpecifiedFortunica,
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.labelMedium?.copyWith(
                             fontSize: 15.0,
                           ),
                         ),
                       ),
-                      Text(
-                        question.updatedAt?.chatListTime ??
-                            DateTime.now().chatListTime,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.shadowColor,
-                          fontSize: 12.0,
-                        ),
-                      )
+                      if (question.updatedAt != null)
+                        Text(
+                          question.updatedAt!.chatListTime,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.shadowColor,
+                            fontSize: 12.0,
+                          ),
+                        )
                     ],
                   ),
                   const SizedBox(height: 4.0),

@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:zodiac/generated/l10n.dart';
 
+const String datePattern1 = 'dd MMM, h:mm a';
+const String datePattern2 = 'dd MMM yy, h:mm a';
+const String datePattern3 = 'h:mm a';
+const String datePattern4 = 'MMM dd';
+const String datePattern5 = 'MMM dd, yyyy';
+const String datePattern6 = 'MMM d, yyyy';
+const String datePattern7 = 'MMMM, yyyy';
+const String datePattern8 = 'MMM. d, yyyy';
+const String datePattern9 = 'h:mm a MMM d yyyy';
+
 extension DateTimeExt on DateTime {
-  String listTime(BuildContext context) {
+  String sessionsListTime(BuildContext context) {
     DateTime now = DateTime.now();
     DateTime localTime = toLocal();
     int timeDifference =
@@ -18,18 +27,31 @@ extension DateTimeExt on DateTime {
       return SZodiac.of(context).yesterdayZodiac;
     }
     if (localTime.year != now.year) {
-      return DateFormat(dateFormat).format(this).parseDateTimePattern9;
+      return DateFormat(datePattern5).format(localTime);
     }
-    return DateFormat(dateFormat).format(this).parseDateTimePattern8;
+    return DateFormat(datePattern4).format(localTime);
+  }
+
+  String get chatListTime {
+    DateTime now = DateTime.now();
+    DateTime localTime = toLocal();
+    int timeDifference =
+        DateTime(localTime.year, localTime.month, localTime.day)
+            .difference(DateTime(now.year, now.month, now.day))
+            .inDays;
+    if (timeDifference == 0) {
+      return DateFormat(datePattern3).format(localTime);
+    }
+    if (localTime.year != now.year) {
+      return DateFormat(datePattern2).format(localTime);
+    }
+    return DateFormat(datePattern1).format(localTime);
   }
 }
 
-extension DurationExt on Duration {
-  String formatDHMS(BuildContext context) {
-    final days = inDays;
-    final hours = inHours.remainder(24);
-    final minutes = inMinutes.remainder(60);
-    final seconds = inSeconds.remainder(60);
-    return "${days > 0 ? '$days ${SZodiac.of(context).daysZodiac} ' : ''}${hours > 0 ? '$hours ${SZodiac.of(context).hoursZodiac} ' : ''}${minutes > 0 ? '$minutes ${SZodiac.of(context).minutesZodiac} ' : ''}${seconds > 0 ? '$seconds ${SZodiac.of(context).secondsZodiac}' : ''}";
+extension DoubleExt on double {
+  String toCurrencyFormat(String currency, int fractionDigits) {
+    final String value = abs().toStringAsFixed(fractionDigits);
+    return isNegative ? '-$currency$value' : '$currency$value';
   }
 }

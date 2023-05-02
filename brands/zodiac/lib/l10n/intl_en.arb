@@ -88,5 +88,18 @@
   "daysZodiac": "days",
   "hoursZodiac": "hours",
   "minutesZodiac": "min",
-  "secondsZodiac": "sec"
+  "secondsZodiac": "sec",
+  "startChatZodiac": "Start Chat",
+  "declineZodiac": "Decline",
+  "chatRequestZodiac": "Chat request...",
+  "youMissedCallFromZodiac": "You missed call\n from {clientName}.",
+  "youMissedChatFromZodiac": "You missed chat \n from {clientName}.",
+  "replyZodiac": "Reply",
+  "chatStartedZodiac": "Chat started",
+  "chatEndedZodiac": "Chat ended",
+  "callStartedZodiac": "Call started",
+  "callEndedZodiac": "Call ended",
+  "hideChatZodiac": "Hide chat",
+  "preferredLanguageZodiac": "Preferred language: ",
+  "freebieSeeker": "Freebie seeker"
 }

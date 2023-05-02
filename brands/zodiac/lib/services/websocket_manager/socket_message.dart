@@ -165,4 +165,12 @@ class SocketMessage {
         "msg": messageId,
         "opponent_id": opponentId,
       });
+
+  static SocketMessage declineCall({int? opponentId}) =>
+      SocketMessage(action: Commands.declineCall, params: {
+        "message": "",
+        "userData": {
+          "id": opponentId ?? 0,
+        },
+      });
 }

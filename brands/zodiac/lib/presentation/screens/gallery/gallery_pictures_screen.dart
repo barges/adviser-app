@@ -45,6 +45,8 @@ class GalleryPicturesScreen extends StatelessWidget {
                         child: AppImageWidget(
                           uri: uri,
                           fit: BoxFit.contain,
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
                         ));
                   },
                 ),

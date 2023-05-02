@@ -107,18 +107,18 @@ class ChatCubit extends Cubit<ChatState> {
   static List<AnswerLimitation> _answerLimitations = [];
 
   ChatCubit({
-   required this.chatsRepository,
-   required this.connectivityService,
-   required this.mainCubit,
-   required this.fortunicaMainCubit,
-   required this.audioRecorder,
-   required this.audioPlayer,
-   required this.checkPermissionService,
-   required this.showErrorAlert,
-   required this.confirmSendAnswerAlert,
-   required this.deleteAudioMessageAlert,
-   required this.recordingIsNotPossibleAlert,
-   required this.chatScreenArguments,
+    required this.chatsRepository,
+    required this.connectivityService,
+    required this.mainCubit,
+    required this.fortunicaMainCubit,
+    required this.audioRecorder,
+    required this.audioPlayer,
+    required this.checkPermissionService,
+    required this.showErrorAlert,
+    required this.confirmSendAnswerAlert,
+    required this.deleteAudioMessageAlert,
+    required this.recordingIsNotPossibleAlert,
+    required this.chatScreenArguments,
   }) : super(const ChatState()) {
     textInputEditingController.addListener(textInputEditingControllerListener);
 
@@ -167,12 +167,12 @@ class ChatCubit extends Cubit<ChatState> {
         emit(state.copyWith(isTextInputCollapsed: true));
       }
 
-        Future.delayed(const Duration(milliseconds: 500)).then((value) {
-          emit(state.copyWith(keyboardOpened: !state.keyboardOpened));
-          if (visible) {
-            scrollChatDown();
-          }
-        }).onError((error, stackTrace) {});
+      Future.delayed(const Duration(milliseconds: 500)).then((value) {
+        emit(state.copyWith(keyboardOpened: !state.keyboardOpened));
+        if (visible) {
+          scrollChatDown();
+        }
+      }).onError((error, stackTrace) {});
     });
 
     _stopAudioSubscription = mainCubit.audioStopTrigger.listen((value) {
@@ -263,7 +263,7 @@ class ChatCubit extends Cubit<ChatState> {
         try {
           controller.snapToPosition(SnappingPosition.pixels(
               positionPixels: height + grabbingHeight * 2));
-        } catch (e){
+        } catch (e) {
           logger.d('method -> updateHiddenInputHeight in ChatCubit: \n$e');
         }
         scrollChatDown();
@@ -307,7 +307,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     if (chatScreenArguments.ritualID != null) {
-     await _getRituals(chatScreenArguments.ritualID!).then((_) async {
+      await _getRituals(chatScreenArguments.ritualID!).then((_) async {
         scrollChatDown();
       });
     } else {
@@ -323,12 +323,12 @@ class ChatCubit extends Cubit<ChatState> {
     _afterShowMessagesInSec =
         answerLimitationContent?.questionRemindMinutes != null
             ? answerLimitationContent!.questionRemindMinutes! *
-            FortunicaConstants.minuteInSec
+                FortunicaConstants.minuteInSec
             : FortunicaConstants.afterShowAnswerTimingMessagesInSec;
     _tillShowMessagesInSec =
         answerLimitationContent?.questionReturnMinutes != null
             ? answerLimitationContent!.questionReturnMinutes! *
-            FortunicaConstants.minuteInSec -
+                    FortunicaConstants.minuteInSec -
                 _afterShowMessagesInSec
             : FortunicaConstants.tillShowAnswerTimingMessagesInSec;
 
@@ -648,7 +648,8 @@ class ChatCubit extends Cubit<ChatState> {
     _tryStartAnswerSend();
 
     final List<File> images = List.of(state.attachedPictures);
-    if (image != null && images.length < FortunicaConstants.maxAttachedPictures) {
+    if (image != null &&
+        images.length < FortunicaConstants.maxAttachedPictures) {
       images.add(image);
     } else {
       return;
@@ -765,7 +766,8 @@ class ChatCubit extends Cubit<ChatState> {
   void clearSuccessMessage() {
     if (state.appSuccess is! EmptySuccess) {
       _counterMessageCleared = state.appSuccess.uiSuccessType ==
-          UISuccessMessagesType.thisQuestionWillBeReturnedToTheGeneralListAfterCounter;
+          UISuccessMessagesType
+              .thisQuestionWillBeReturnedToTheGeneralListAfterCounter;
       emit(state.copyWith(appSuccess: const EmptySuccess()));
     }
   }
@@ -784,8 +786,8 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> _startAnswer(String questionId) async {
     try {
-      final ChatItem question =
-          await chatsRepository.startAnswer(AnswerRequest(questionID: questionId));
+      final ChatItem question = await chatsRepository
+          .startAnswer(AnswerRequest(questionID: questionId));
       emit(
         state.copyWith(
           questionFromDB: state.questionFromDB
@@ -847,10 +849,13 @@ class ChatCubit extends Cubit<ChatState> {
           tillEnd = tillEnd - tick;
           if (tillEnd.inSeconds > FortunicaConstants.minuteInSec) {
             if (!_counterMessageCleared) {
-              updateSuccessMessage(UISuccess.withArguments(
+              updateSuccessMessage(
+                UISuccess.withArguments(
                   UISuccessMessagesType
                       .thisQuestionWillBeReturnedToTheGeneralListAfterCounter,
-                  tillEnd.formatMMSS));
+                  _formatMMSS(tillEnd),
+                ),
+              );
             }
           } else if (tillEnd.inSeconds == FortunicaConstants.minuteInSec) {
             _setAnswerIsNotPossible();
@@ -862,6 +867,12 @@ class ChatCubit extends Cubit<ChatState> {
         });
       });
     }
+  }
+
+  String _formatMMSS(Duration duration) {
+    final minutes = duration.inMinutes.remainder(60);
+    final seconds = duration.inSeconds.remainder(60);
+    return "${minutes < 10 ? '0$minutes' : '$minutes'}:${seconds < 10 ? '0$seconds' : '$seconds'}";
   }
 
   _setAnswerIsNotPossible() {
@@ -964,7 +975,8 @@ class ChatCubit extends Cubit<ChatState> {
       await audioPlayer.stop();
 
       if (_answerRequest != null) {
-        final ChatItem answer = await chatsRepository.sendAnswer(_answerRequest!);
+        final ChatItem answer =
+            await chatsRepository.sendAnswer(_answerRequest!);
         logger.i('send text response:$answer');
         _answerRequest = null;
 

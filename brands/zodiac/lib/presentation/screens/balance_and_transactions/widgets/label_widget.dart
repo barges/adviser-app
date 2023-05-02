@@ -1,13 +1,14 @@
 import 'package:blur/blur.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
+import 'package:zodiac/zodiac_extensions.dart';
 
 const labelWidgetHeight = 22.0;
 
 class LabelWidget extends StatelessWidget {
   final DateTime dateLabel;
+
   const LabelWidget({
     super.key,
     required this.dateLabel,
@@ -15,7 +16,8 @@ class LabelWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String monthYear = DateFormat(datePattern11).format(dateLabel);
+    final String monthYear =
+        DateFormat(datePattern7).format(dateLabel.toLocal());
     final style = Theme.of(context).textTheme.displaySmall?.copyWith(
           fontSize: 14.0,
           color: AppColors.white,
