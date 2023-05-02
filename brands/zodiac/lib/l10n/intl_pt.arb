@@ -99,5 +99,7 @@
   "chatEndedZodiac": "Bate-papo encerrado",
   "callStartedZodiac": "Chamada iniciada",
   "callEndedZodiac": "Chamada finalizada",
-  "hideChatZodiac": "Ocultar bate-papo"
+  "hideChatZodiac": "Ocultar bate-papo",
+  "preferredLanguageZodiac": "Idioma preferido: ",
+  "freebieSeeker": "candidato a brinde"
 }

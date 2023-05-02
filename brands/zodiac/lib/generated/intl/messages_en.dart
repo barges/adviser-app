@@ -85,6 +85,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "experienceZodiac": MessageLookupByLibrary.simpleMessage("Experience"),
         "forgotPasswordZodiac":
             MessageLookupByLibrary.simpleMessage("Forgot password"),
+        "freebieSeeker": MessageLookupByLibrary.simpleMessage("Freebie seeker"),
         "hereWillAppearArticles":
             MessageLookupByLibrary.simpleMessage("Here will appear articles"),
         "hideChatZodiac": MessageLookupByLibrary.simpleMessage("Hide chat"),
@@ -139,6 +140,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Please enter at least 8 characters"),
         "pleaseInsertCorrectEmailZodiac": MessageLookupByLibrary.simpleMessage(
             "Please, insert correct email"),
+        "preferredLanguageZodiac":
+            MessageLookupByLibrary.simpleMessage("Preferred language: "),
         "previewAccountZodiac":
             MessageLookupByLibrary.simpleMessage("Preview account"),
         "pricePerMinZodiac": m1,

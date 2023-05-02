@@ -1064,6 +1064,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Preferred language: `
+  String get preferredLanguageZodiac {
+    return Intl.message(
+      'Preferred language: ',
+      name: 'preferredLanguageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Freebie seeker`
+  String get freebieSeeker {
+    return Intl.message(
+      'Freebie seeker',
+      name: 'freebieSeeker',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

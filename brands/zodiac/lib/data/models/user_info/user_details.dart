@@ -2,6 +2,7 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
+import 'package:zodiac/data/models/user_info/preferred_locale.dart';
 import 'package:zodiac/data/models/user_info/video_info.dart';
 
 part 'user_details.g.dart';
@@ -54,6 +55,8 @@ class UserDetails with _$UserDetails {
     int? chatCount,
     int? inchatservice,
     dynamic notifications,
+    PreferredLocale? preferredLocale,
+    bool? isFreeBeerDrinker,
   }) = _UserDetails;
 
   factory UserDetails.fromJson(Map<String, dynamic> json) =>

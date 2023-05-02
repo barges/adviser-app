@@ -97,5 +97,7 @@
   "chatEndedZodiac": "Chat beendet",
   "callStartedZodiac": "Anruf gestartet",
   "callEndedZodiac": "Anruf beendet",
-  "hideChatZodiac": "Chat verstecken"
+  "hideChatZodiac": "Chat verstecken",
+  "preferredLanguageZodiac": "Bevorzugte Sprache: ",
+  "freebieSeeker": "Freebie-Sucher"
 }
