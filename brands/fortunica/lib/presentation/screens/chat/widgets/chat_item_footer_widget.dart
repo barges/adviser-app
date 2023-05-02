@@ -1,11 +1,11 @@
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fortunica/data/models/enums/chat_item_type.dart';
 import 'package:fortunica/data/models/enums/sessions_types.dart';
+import 'package:fortunica/fortunica_extensions.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 
 class ChatItemFooterWidget extends StatelessWidget {
   final ChatItemType? type;
@@ -13,6 +13,7 @@ class ChatItemFooterWidget extends StatelessWidget {
   final SessionsTypes? ritualIdentifier;
   final Color color;
   final bool isSent;
+
   const ChatItemFooterWidget({
     super.key,
     required this.type,

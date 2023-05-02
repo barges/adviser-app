@@ -13,6 +13,7 @@ import 'package:zodiac/data/models/chat/call_data.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
+import 'package:zodiac/presentation/screens/starting_chat/starting_chat_screen.dart';
 import 'package:zodiac/services/websocket_manager/commands.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
@@ -30,6 +31,7 @@ class WebSocketManagerImpl implements WebSocketManager {
   final ZodiacMainCubit _zodiacMainCubit;
 
   final EventEmitter _emitter = EventEmitter();
+  final PublishSubject<bool> _endChatTrigger = PublishSubject();
 
   WebSocketChannel? _channel;
   StreamSubscription? _socketSubscription;
@@ -164,6 +166,9 @@ class WebSocketManagerImpl implements WebSocketManager {
   Stream<List<ChatMessageModel>> get entitiesStream => _entitiesStream.stream;
 
   @override
+  PublishSubject<bool> get endChatTrigger => _endChatTrigger;
+
+  @override
   Future connect() async {
     final String? authToken = _zodiacCachingManager.getUserToken();
     final int? userId = _zodiacCachingManager.getUid();
@@ -204,7 +209,7 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   @override
-  void reloadMessages(int userId, {int? maxId}) {
+  void reloadMessages({required int userId, int? maxId}) {
     _send(SocketMessage.chatLogin(
       id: userId,
     ));
@@ -214,7 +219,6 @@ class WebSocketManagerImpl implements WebSocketManager {
     ));
   }
 
-
   void logoutChat(int chatId) {
     _send(SocketMessage.chatLogout(
       chatId: chatId,
@@ -222,9 +226,18 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   @override
+  void sendDeclineCall({int? opponentId}) {
+    _send(SocketMessage.declineCall(opponentId: opponentId));
+  }
+
+  @override
   void close() {
     _socketSubscription?.cancel();
     _channel?.sink.close();
+  }
+
+  void endChat() {
+    _endChatTrigger.add(true);
   }
 
   Future<void> _authCheckOnBackend() async =>
@@ -273,6 +286,12 @@ class WebSocketManagerImpl implements WebSocketManager {
     CallData startCallData = CallData.fromJson(message.params ?? {});
     logger.d('START CALL');
     logger.d(message.params);
+    if (ZodiacBrand().context != null) {
+      showStartingChat(ZodiacBrand().context!, startCallData);
+    }
+    // ZodiacBrand()
+    //     .context
+    //     ?.push(route: ZodiacStartingChat(callData: startCallData));
   }
 
   void _onCancelCall(Event event) {
@@ -280,6 +299,7 @@ class WebSocketManagerImpl implements WebSocketManager {
     CallData cancelCallData = CallData.fromJson(message.params ?? {});
     logger.d('Cancel CALL');
     logger.d(message.params);
+    endChat();
   }
 
   void _onAfk(Event event) {
@@ -311,6 +331,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onDeclineCall(Event event) {
     ///TODO - Implement onDeclineCall
+    endChat();
   }
 
   void _onEndCall(Event event) {
@@ -318,6 +339,7 @@ class WebSocketManagerImpl implements WebSocketManager {
     CallData endCallData = CallData.fromJson(message.params ?? {});
     logger.d('End CALL');
     logger.d(message.params);
+    endChat();
 
     ///TODO - Implements onEndCall
   }
@@ -357,6 +379,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onMessage(Event event) {
     _send(SocketMessage.msgDelivered());
+    _zodiacMainCubit.updateSessions();
 
     ///TODO - Implements onMessage
     SocketMessage message = (event.eventData as SocketMessage);
@@ -423,7 +446,11 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onUnreadChats(Event event) {
-    ///TODO - Implements onUnreadChats
+    SocketMessage message = (event.eventData as SocketMessage);
+    int? count = message.params['count'];
+    if (count != null) {
+      _zodiacMainCubit.updateUnreadChats(count);
+    }
   }
 
   void _onReadMessage(Event event) {

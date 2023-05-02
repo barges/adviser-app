@@ -125,7 +125,7 @@ class AddNoteScreen extends StatelessWidget {
 class AddNoteScreenArguments {
   final String customerId;
   final String? oldNote;
-  final String? updatedAt;
+  final DateTime? updatedAt;
   final VoidCallback noteChanged;
 
   AddNoteScreenArguments({

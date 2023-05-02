@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:zodiac/data/models/chat/product_box.dart';
 import 'package:zodiac/data/models/chat/replied_message.dart';
 import 'package:zodiac/data/models/enums/chat_message_type.dart';
+import 'package:zodiac/data/models/enums/missed_message_action.dart';
 
 part 'chat_message_model.g.dart';
 
@@ -23,7 +24,8 @@ class ChatMessageModel with _$ChatMessageModel {
     @Default(ChatMessageType.simple)
         ChatMessageType type,
     int? id,
-    int? utc,
+    @JsonKey(fromJson: _dateFromSeconds, toJson: _dateToSeconds)
+    DateTime? utc,
     int? timerReal,
     int? timerUser,
     int? chatId,
@@ -50,7 +52,8 @@ class ChatMessageModel with _$ChatMessageModel {
     @JsonKey(fromJson: _boolFromInt, toJson: _boolToInt)
     @Default(false)
         bool fromAdvisor,
-    String? action,
+    @JsonKey(unknownEnumValue: MissedMessageAction.none)
+        MissedMessageAction? action,
     @JsonKey(name: 'main') String? mainImage,
     String? thumbnail,
     String? couponImage,
@@ -77,3 +80,20 @@ int _typeToJson(ChatMessageType value) {
 bool _boolFromInt(num? value) => value == 1;
 
 int _boolToInt(bool value) => value ? 1 : 0;
+
+DateTime? _dateFromSeconds(num? value) {
+  if(value != null) {
+    return DateTime.fromMillisecondsSinceEpoch(value.toInt() * 1000,
+        isUtc: true);
+  } else {
+    return null;
+  }
+}
+
+int? _dateToSeconds(DateTime? value) {
+  if(value != null) {
+    return value.millisecondsSinceEpoch ~/ 1000;
+  } else {
+    return null;
+  }
+}

@@ -1,14 +1,15 @@
 import 'dart:math';
 
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortunica/data/models/customer_info/note.dart';
+import 'package:fortunica/fortunica_extensions.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:fortunica/presentation/common_widgets/customer_profile/customer_profile_cubit.dart';
 import 'package:fortunica/presentation/common_widgets/empty_list_widget.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 
 class NotesWidget extends StatelessWidget {
   final List<Note>? notes;
@@ -48,7 +49,8 @@ class NotesWidget extends StatelessWidget {
                         Assets.vectors.plus.svg(),
                         const SizedBox(width: 4.0),
                         GestureDetector(
-                          onTap: () => customerProfileCubit.createNewNote(context),
+                          onTap: () =>
+                              customerProfileCubit.createNewNote(context),
                           child: Text(
                             SFortunica.of(context).addNewFortunica,
                             style: Theme.of(context)
@@ -76,9 +78,10 @@ class NotesWidget extends StatelessWidget {
                       itemBuilder: (_, index) {
                         final Note note = notes![index];
                         return _OneNoteWidget(
-                            onTap: () => customerProfileCubit.updateNote(context, note),
+                            onTap: () =>
+                                customerProfileCubit.updateNote(context, note),
                             text: note.content ?? '',
-                            updatedAt: note.updatedAt ?? '',
+                            updatedAt: note.updatedAt,
                             images:
                                 images.isNotEmpty ? images[index] : const []);
                       },
@@ -86,9 +89,9 @@ class NotesWidget extends StatelessWidget {
                       itemCount: min(notes!.length, images.length),
                     )
                   : EmptyListWidget(
-                      title: SFortunica.of(context).youDoNotHaveAnyNotesYetFortunica,
-                      label: SFortunica
-                          .of(context)
+                      title: SFortunica.of(context)
+                          .youDoNotHaveAnyNotesYetFortunica,
+                      label: SFortunica.of(context)
                           .addAnyInformationYouWantToRememberAboutThisClientFortunica,
                     )
               : const SizedBox.shrink(),
@@ -102,7 +105,7 @@ class _OneNoteWidget extends StatelessWidget {
   final String text;
   final List<String> images;
   final VoidCallback? onTap;
-  final String updatedAt;
+  final DateTime? updatedAt;
 
   const _OneNoteWidget(
       {Key? key,
@@ -142,7 +145,12 @@ class _OneNoteWidget extends StatelessWidget {
                       color: Theme.of(context).shadowColor),
                   child: Row(
                     children: [
-                      Text(updatedAt.parseDateTimePattern6),
+                      if (updatedAt != null)
+                        Text(
+                          DateFormat(datePattern2).format(
+                            updatedAt!.toLocal(),
+                          ),
+                        ),
                       if (images.isNotEmpty)
                         Row(
                           mainAxisSize: MainAxisSize.min,

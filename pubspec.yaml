@@ -149,6 +149,7 @@ flutter:
     - assets/vectors/horoscopes/
     - assets/vectors/sessions_types/
     - assets/vectors/user_performance/
+    - assets/audios/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

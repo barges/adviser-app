@@ -45,6 +45,7 @@ class HomeCubit extends Cubit<HomeState> {
   late final StreamSubscription<bool> _updateArticleCountSubscription;
   late final StreamSubscription<bool> _appLifecycleSubscription;
   late final StreamSubscription<bool> _connectivitySubscription;
+  late final StreamSubscription<int> _updateUnreadChatsCountSubscription;
   late final List<PageRouteInfo> routes;
 
   bool _firstOpenArticlesTab = true;
@@ -114,6 +115,11 @@ class HomeCubit extends Cubit<HomeState> {
         _webSocketManager.connect();
       }
     });
+
+    _updateUnreadChatsCountSubscription =
+        _zodiacMainCubit.updateUnreadChatsTrigger.listen((value) {
+      emit(state.copyWith(chatsUnreadCount: value));
+    });
   }
 
   Future<void> checkAndSaveAllLocales() async {
@@ -146,6 +152,7 @@ class HomeCubit extends Cubit<HomeState> {
     _userStatusSubscription.cancel();
     _appLifecycleSubscription.cancel();
     _connectivitySubscription.cancel();
+    _updateUnreadChatsCountSubscription.cancel();
     return super.close();
   }
 
@@ -157,6 +164,8 @@ class HomeCubit extends Cubit<HomeState> {
         getArticleCount(update: 1);
         _firstOpenArticlesTab = false;
       }
+    } else if (index == TabsTypes.sessions.index) {
+      _zodiacMainCubit.updateSessions();
     }
   }
 

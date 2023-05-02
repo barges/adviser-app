@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,6 +15,7 @@ import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/transparrent_app_bar.dart';
 import 'package:zodiac/presentation/screens/article_details_screen/article_details_cubit.dart';
 import 'package:zodiac/zodiac.dart';
+import 'package:zodiac/zodiac_extensions.dart';
 
 class ArticleDetailsScreen extends StatelessWidget {
   final int articleId;
@@ -105,13 +105,13 @@ class ArticleDetailsScreen extends StatelessWidget {
                                               if (articleContent.dateCreate !=
                                                   null)
                                                 Text(
-                                                  DateFormat(dateFormat)
+                                                  DateFormat(datePattern6)
                                                       .format(DateTime
                                                           .fromMillisecondsSinceEpoch(
-                                                              (articleContent
-                                                                      .dateCreate!) *
-                                                                  1000))
-                                                      .parseDateTimePattern1,
+                                                    articleContent.dateCreate! *
+                                                        1000,
+                                                    isUtc: true,
+                                                  ).toLocal()),
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .bodyMedium

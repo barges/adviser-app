@@ -46,6 +46,9 @@ dependencies:
   webview_flutter: ^4.0.7
   html: ^0.15.2
   avatar_glow: ^2.0.2
+  vibration: ^1.7.6
+  assets_audio_player: ^3.0.6
+  flutter_slidable: ^3.0.0
 
 
 dev_dependencies:

@@ -88,5 +88,18 @@
   "daysZodiac": "dias",
   "hoursZodiac": "horas",
   "minutesZodiac": "min",
-  "secondsZodiac": "seg"
+  "secondsZodiac": "seg",
+  "startChatZodiac": "Comenzar chat",
+  "declineZodiac": "Rechazar",
+  "chatRequestZodiac": "Solicitud de chat...",
+  "youMissedCallFromZodiac": "Perdiste una llamada \n de {clientName}.",
+  "youMissedChatFromZodiac": "Te perdiste el chat \n de {clientName}.",
+  "replyZodiac": "Responder",
+  "chatStartedZodiac": "Chat iniciado",
+  "chatEndedZodiac": "Chat finalizado",
+  "callStartedZodiac": "Llamada iniciada",
+  "callEndedZodiac": "Llamada terminada",
+  "hideChatZodiac": "Ocultar chat",
+  "preferredLanguageZodiac": "Idioma preferido: ",
+  "freebieSeeker": "Buscador de obsequios"
 }
