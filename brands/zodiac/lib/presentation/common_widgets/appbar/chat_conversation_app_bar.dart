@@ -13,11 +13,13 @@ class ChatConversationAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   final UserData userData;
   final VoidCallback? endChatButtonOnTap;
+  final VoidCallback? onTap;
 
   const ChatConversationAppBar({
     Key? key,
-   required this.userData,
+    required this.userData,
     this.endChatButtonOnTap,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -25,7 +27,6 @@ class ChatConversationAppBar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-
     final BaseBrand selectedBrand = ZodiacBrand();
 
     return AppBar(
@@ -34,30 +35,31 @@ class ChatConversationAppBar extends StatelessWidget
       titleSpacing: 0.0,
       elevation: 0.0,
       title: Builder(builder: (context) {
-
-        return SizedBox(
-          height: AppConstants.appBarHeight,
-          width: MediaQuery.of(context).size.width,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: AppConstants.horizontalScreenPadding),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // if (publicQuestionId != null &&
-                //     questionStatus == ChatItemStatusType.taken)
-                //   Padding(
-                //     padding: const EdgeInsets.only(right: 2.0),
-                //     child: AppIconButton(
-                //       onTap: returnInQueueButtonOnTap,
-                //       icon: Assets.vectors.arrowReturn.path,
-                //     ),
-                //   ),
+        return GestureDetector(
+          onTap: onTap,
+          child: SizedBox(
+            height: AppConstants.appBarHeight,
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppConstants.horizontalScreenPadding),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // if (publicQuestionId != null &&
+                  //     questionStatus == ChatItemStatusType.taken)
+                  //   Padding(
+                  //     padding: const EdgeInsets.only(right: 2.0),
+                  //     child: AppIconButton(
+                  //       onTap: returnInQueueButtonOnTap,
+                  //       icon: Assets.vectors.arrowReturn.path,
+                  //     ),
+                  //   ),
                   AppIconButton(
                     icon: Assets.vectors.arrowLeft.path,
                     onTap: selectedBrand.context?.pop,
                   ),
-                Expanded(
+                  Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -99,11 +101,12 @@ class ChatConversationAppBar extends StatelessWidget
                       ],
                     ),
                   ),
-                UserAvatar(
-                  diameter: 32.0,
-                  avatarUrl: userData.avatar,
-                ),
-              ],
+                  UserAvatar(
+                    diameter: 32.0,
+                    avatarUrl: userData.avatar,
+                  ),
+                ],
+              ),
             ),
           ),
         );

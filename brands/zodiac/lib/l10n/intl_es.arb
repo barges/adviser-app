@@ -98,5 +98,8 @@
   "chatStartedZodiac": "Chat iniciado",
   "chatEndedZodiac": "Chat finalizado",
   "callStartedZodiac": "Llamada iniciada",
-  "callEndedZodiac": "Llamada terminada"
+  "callEndedZodiac": "Llamada terminada",
+  "hideChatZodiac": "Ocultar chat",
+  "preferredLanguageZodiac": "Idioma preferido: ",
+  "freebieSeeker": "Buscador de obsequios"
 }

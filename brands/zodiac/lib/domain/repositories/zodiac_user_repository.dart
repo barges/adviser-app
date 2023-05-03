@@ -9,6 +9,7 @@ import 'package:zodiac/data/network/requests/notification_details_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/locale_descriptions_request.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
+import 'package:zodiac/data/network/requests/profile_details_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
 import 'package:zodiac/data/network/requests/settings_request.dart';
 import 'package:zodiac/data/network/requests/update_locale_request.dart';
@@ -24,6 +25,7 @@ import 'package:zodiac/data/network/responses/main_specialization_response.dart'
 import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/payments_list_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
+import 'package:zodiac/data/network/responses/profile_details_response.dart';
 import 'package:zodiac/data/network/responses/reviews_response.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
 import 'package:zodiac/data/network/responses/settings_response.dart';
@@ -104,4 +106,7 @@ abstract class ZodiacUserRepository {
   Future<BaseResponse> notifyPushClick(NotificationDetailsRequest request);
 
   Future<SettingsResponse> geSettings(SettingsRequest request);
+
+  Future<ProfileDetailsResponse> getProfileDetails(
+      ProfileDetailsRequest request);
 }

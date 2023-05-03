@@ -10,6 +10,7 @@ import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/requests/locale_descriptions_request.dart';
 import 'package:zodiac/data/network/requests/notification_details_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
+import 'package:zodiac/data/network/requests/profile_details_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
 import 'package:zodiac/data/network/requests/settings_request.dart';
 import 'package:zodiac/data/network/requests/update_locale_request.dart';
@@ -26,6 +27,7 @@ import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/payments_list_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
+import 'package:zodiac/data/network/responses/profile_details_response.dart';
 import 'package:zodiac/data/network/responses/reviews_response.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
 import 'package:zodiac/data/network/responses/settings_response.dart';
@@ -195,5 +197,11 @@ class ZodiacUserRepositoryImpl implements ZodiacUserRepository {
   @override
   Future<SettingsResponse> geSettings(SettingsRequest request) async {
     return await _userApi.geSettings(request);
+  }
+
+  @override
+  Future<ProfileDetailsResponse> getProfileDetails(
+      ProfileDetailsRequest request) async {
+    return await _userApi.getProfileDetails(request);
   }
 }
