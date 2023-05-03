@@ -6,6 +6,7 @@ import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/coupon_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/end_chat_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/missed_message_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/messages/review_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/simple_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/start_chat_message_widget.dart';
 
@@ -29,7 +30,9 @@ class ChatMessageWidget extends StatelessWidget {
           chatMessageModel: chatMessageModel,
         );
       case ChatMessageType.review:
-        return Text(chatMessageModel.type.name);
+        return ReviewMessageWidget(
+          chatMessageModel: chatMessageModel,
+        );
       case ChatMessageType.products:
         return Text(chatMessageModel.type.name);
       case ChatMessageType.system:
