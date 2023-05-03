@@ -56,6 +56,7 @@ class ChatMessageWidget extends StatelessWidget {
           iconPath: Assets.zodiac.chatFee.path,
           date: chatMessageModel.utc,
           isOutgoing: chatMessageModel.isOutgoing,
+          chatDuration: Duration(seconds: chatMessageModel.timerReal ?? 0),
         );
       case ChatMessageType.startCall:
         return StartChatMessageWidget(
@@ -68,6 +69,7 @@ class ChatMessageWidget extends StatelessWidget {
           iconPath: Assets.zodiac.callFee.path,
           date: chatMessageModel.utc,
           isOutgoing: chatMessageModel.isOutgoing,
+          chatDuration: Duration(seconds: chatMessageModel.timerReal ?? 0),
         );
       case ChatMessageType.advisorMessages:
         return SimpleMessageWidget(
