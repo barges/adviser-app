@@ -48,8 +48,9 @@ class ReviewMessageWidget extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(top: ratingIsNotNull ? 8.0 : 0.0),
                 child: Text(
-                  chatMessageModel.message!,
+                  '"${chatMessageModel.message!}"',
                   style: theme.textTheme.bodySmall?.copyWith(fontSize: 14.0),
+                  textAlign: TextAlign.center,
                 ),
               )
           ],
