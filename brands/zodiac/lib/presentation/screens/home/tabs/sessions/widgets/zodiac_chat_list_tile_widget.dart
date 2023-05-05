@@ -40,19 +40,13 @@ class ZodiacChatListTileWidget extends StatelessWidget {
         extentRatio: (tp.width + 32.0) / MediaQuery.of(context).size.width,
         dragDismissible: false,
         children: [
-          GestureDetector(
-            onTap: () => sessionsCubit.hideChat(item.id),
-            child: Expanded(
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                color: AppColors.error,
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Center(
-                  child: Text(
-                    SZodiac.of(context).hideChatZodiac,
-                    style: style,
-                  ),
-                ),
+          CustomSlidableAction(
+            backgroundColor: AppColors.error,
+            onPressed: (_) => sessionsCubit.hideChat(item.id),
+            child: Center(
+              child: Text(
+                SZodiac.of(context).hideChatZodiac,
+                style: style,
               ),
             ),
           )
