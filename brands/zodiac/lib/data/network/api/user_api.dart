@@ -166,7 +166,7 @@ abstract class UserApi {
   );
 
   @POST('/settings')
-  Future<SettingsResponse> geSettings(
+  Future<SettingsResponse> getSettings(
     @Body() SettingsRequest request,
   );
 }

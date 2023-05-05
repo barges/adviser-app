@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "aboutZodiac": MessageLookupByLibrary.simpleMessage("Acerca de"),
         "accountZodiac": MessageLookupByLibrary.simpleMessage("Cuenta"),
+        "addZodiac": MessageLookupByLibrary.simpleMessage("Agregar"),
         "allSpecialitiesZodiac":
             MessageLookupByLibrary.simpleMessage("Todas las especialidades"),
         "articlesZodiac": MessageLookupByLibrary.simpleMessage("Artículos"),
@@ -122,6 +123,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Análisis General de Desempeño"),
         "personalBalanceZodiac":
             MessageLookupByLibrary.simpleMessage("Saldo Personal:"),
+        "phoneNumberZodiac":
+            MessageLookupByLibrary.simpleMessage("Número de teléfono"),
         "pleaseEnterAtLeast8CharactersZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Por favor, ingresa al menos 8 caracteres"),
@@ -160,6 +163,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Uh-oh. Parece que has perdido la conexión. Por favor, inténtalo de nuevo"),
+        "unverifiedZodiac":
+            MessageLookupByLibrary.simpleMessage("Inconfirmado"),
         "weVeSentPasswordResetInstructionsToEmailZodiac": m2,
         "withdrawalZodiac": MessageLookupByLibrary.simpleMessage("Retiro"),
         "wrongUsernameAndOrPasswordZodiac":

@@ -193,7 +193,7 @@ class ZodiacUserRepositoryImpl implements ZodiacUserRepository {
   }
 
   @override
-  Future<SettingsResponse> geSettings(SettingsRequest request) async {
-    return await _userApi.geSettings(request);
+  Future<SettingsResponse> getSettings(SettingsRequest request) async {
+    return await _userApi.getSettings(request);
   }
 }

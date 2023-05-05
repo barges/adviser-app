@@ -103,5 +103,5 @@ abstract class ZodiacUserRepository {
 
   Future<BaseResponse> notifyPushClick(NotificationDetailsRequest request);
 
-  Future<SettingsResponse> geSettings(SettingsRequest request);
+  Future<SettingsResponse> getSettings(SettingsRequest request);
 }

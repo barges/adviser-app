@@ -28,10 +28,14 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m2(email) =>
       "We\'ve sent password reset instructions to ${email}.";
 
+  static String m3(attempts) =>
+      "You have ${attempts} verification attempts per day";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "aboutZodiac": MessageLookupByLibrary.simpleMessage("About"),
         "accountZodiac": MessageLookupByLibrary.simpleMessage("Account"),
+        "addZodiac": MessageLookupByLibrary.simpleMessage("Add"),
         "allSpecialitiesZodiac":
             MessageLookupByLibrary.simpleMessage("All specialities"),
         "articlesZodiac": MessageLookupByLibrary.simpleMessage("Articles"),
@@ -120,6 +124,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Performance Overview Analytics"),
         "personalBalanceZodiac":
             MessageLookupByLibrary.simpleMessage("Personal Balance:"),
+        "phoneNumberZodiac":
+            MessageLookupByLibrary.simpleMessage("Phone number"),
         "pleaseEnterAtLeast8CharactersZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Please enter at least 8 characters"),
@@ -158,6 +164,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Uh-oh. It looks like you\'ve lost your connection. Please try again."),
+        "unverifiedZodiac": MessageLookupByLibrary.simpleMessage("Unverified"),
         "weVeSentPasswordResetInstructionsToEmailZodiac": m2,
         "withdrawalZodiac": MessageLookupByLibrary.simpleMessage("Withdrawal"),
         "wrongUsernameAndOrPasswordZodiac":
@@ -167,6 +174,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "youCanChangePriceOncePer24HZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "You can change price once per 24 h"),
+        "youHaveVerificationAttemptsPerDayZodiac": m3,
         "youWereBlocked": MessageLookupByLibrary.simpleMessage(
             "Your account has been blocked.<br>Please contact <a href=\'\'>Customer Support</a> to resolve the issue"),
         "yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac":

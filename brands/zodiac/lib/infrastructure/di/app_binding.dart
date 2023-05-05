@@ -5,17 +5,18 @@ import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dar
 import 'package:zodiac/data/app_info.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager_impl.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
+import 'package:zodiac/services/phone_country_codes.dart';
 
 /// injecting app main dependencies so can be accessed from everywhere
 class AppBinding {
   ///The starting point
   ///The order of the called function is important
-  static Future<void> setupInjection(
-      Flavor flavor) async {
+  static Future<void> setupInjection(Flavor flavor) async {
     ///injectable and get it configuration
     await ZodiacCachingManagerImpl.openBoxes();
     await configureDependenciesZodiac();
     await AppInfo.init();
+    await PhoneCountryCodes.init();
     // _injectFlavor(flavor);
     // await _injectNetworkingDependencies();
     //_injectNavigation(navigationService);

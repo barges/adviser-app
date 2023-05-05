@@ -22,4 +22,9 @@ class RoutePathsZodiac {
   static const localesListScreen = '${ZodiacBrand.alias}LocalesList';
   static const notificationDetailsScreen =
       '${ZodiacBrand.alias}NotificationDetails';
+  static const phoneNumberScreen = '${ZodiacBrand.alias}PhoneNumber';
+  static const phoneCodeSearchScreen = '${ZodiacBrand.alias}PhoneCodeSearch';
+  static const smsVerificationScreen = '${ZodiacBrand.alias}SMSVerification';
+  static const phoneNumberVerifiedScreen =
+      '${ZodiacBrand.alias}PhoneNumberVerified';
 }

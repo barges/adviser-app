@@ -18,12 +18,14 @@ import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
+import 'package:zodiac/data/network/requests/settings_request.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/expert_details_response.dart';
 import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
+import 'package:zodiac/data/network/responses/settings_response.dart';
 import 'package:zodiac/data/network/responses/specializations_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_state.dart';
@@ -61,10 +63,10 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     } else {
       _currentBrandSubscription =
           _brandManager.listenCurrentBrandStream((value) async {
-            if(value.brandAlias == ZodiacBrand.alias) {
-              await refreshUserInfo();
-              _currentBrandSubscription?.cancel();
-            }
+        if (value.brandAlias == ZodiacBrand.alias) {
+          await refreshUserInfo();
+          _currentBrandSubscription?.cancel();
+        }
       });
     }
 
@@ -107,6 +109,12 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     );
   }
 
+  void goToPhoneNumber(BuildContext context) {
+    context.push(
+      route: ZodiacPhoneNumber(phoneNumber: state.phone),
+    );
+  }
+
   void goToReviews(BuildContext context) {
     context.push(route: const ZodiacReviews());
   }
@@ -122,6 +130,8 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
         }
 
         await _getAllCategories();
+
+        await _getSettings();
 
         ExpertDetailsResponse response =
             await _userRepository.getDetailedUserInfo(AuthorizedRequest());
@@ -182,6 +192,14 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
 
       _cacheManager.saveAllCategories(categories);
     }
+  }
+
+  Future<void> _getSettings() async {
+    final SettingsResponse response =
+        await _userRepository.getSettings(SettingsRequest());
+    emit(state.copyWith(
+      phone: response.phone,
+    ));
   }
 
   Future<void> _sendPushToken() async {

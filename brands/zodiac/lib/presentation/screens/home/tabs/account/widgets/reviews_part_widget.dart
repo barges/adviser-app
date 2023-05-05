@@ -4,6 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
+import 'package:zodiac/data/models/settings/phone.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -92,6 +93,37 @@ class ReviewsPartWidget extends StatelessWidget {
                   userBalance.toString(),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Theme.of(context).shadowColor,
+                      ),
+                ),
+              );
+            }),
+            const Divider(
+              height: 1.0,
+            ),
+            Builder(builder: (context) {
+              final Phone? phone = context
+                  .select((ZodiacAccountCubit cubit) => cubit.state.phone);
+              String text = '';
+              Color color = Theme.of(context).shadowColor;
+              if (phone != null) {
+                if (phone.code == null || phone.number == null) {
+                  text = SZodiac.of(context).addZodiac;
+                  color = Theme.of(context).primaryColor;
+                } else if (phone.isVerified == true) {
+                  text = phone.toString();
+                } else {
+                  text = SZodiac.of(context).unverifiedZodiac;
+                  color = Theme.of(context).errorColor;
+                }
+              }
+              return TileWidget(
+                title: SZodiac.of(context).phoneNumberZodiac,
+                iconSVGPath: Assets.zodiac.call.path,
+                onTap: () => zodiacAccountCubit.goToPhoneNumber(context),
+                widget: Text(
+                  text,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: color,
                       ),
                 ),
               );
