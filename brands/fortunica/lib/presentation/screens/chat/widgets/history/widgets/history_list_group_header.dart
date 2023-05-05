@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/extensions.dart';
+import 'package:fortunica/fortunica_extensions.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fortunica/data/models/chats/chat_item.dart';
 

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:zodiac/data/models/chat/user_data.dart';
 import 'package:zodiac/data/models/chats/chat_item_zodiac.dart';
 import 'package:zodiac/domain/repositories/zodiac_chats_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -11,6 +15,7 @@ import 'package:zodiac/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/empty_list_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/widgets/zodiac_chat_list_tile_widget.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 class SessionsScreen extends StatelessWidget {
   const SessionsScreen({Key? key}) : super(key: key);
@@ -21,6 +26,7 @@ class SessionsScreen extends StatelessWidget {
       create: (_) => SessionsCubit(
         zodiacGetIt.get<ZodiacChatsRepository>(),
         zodiacGetIt.get<BrandManager>(),
+        zodiacGetIt.get<ZodiacMainCubit>(),
         MediaQuery.of(context).size.height,
       ),
       child: Builder(builder: (context) {
@@ -36,7 +42,8 @@ class SessionsScreen extends StatelessWidget {
                 ? chatsList.isNotEmpty
                     ? RefreshIndicator(
                         onRefresh: zodiacSessionsCubit.refreshChatsList,
-                        child: CustomScrollView(
+                        child: SlidableAutoCloseBehavior(
+                          child: CustomScrollView(
                             shrinkWrap: true,
                             controller:
                                 zodiacSessionsCubit.chatsListScrollController,
@@ -46,24 +53,35 @@ class SessionsScreen extends StatelessWidget {
                               const SliverPersistentHeader(
                                 delegate: _SearchTextField(),
                               ),
-                              SliverToBoxAdapter(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(
-                                      AppConstants.horizontalScreenPadding),
-                                  child: ListView.separated(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: chatsList.length,
-                                    itemBuilder: (context, index) =>
-                                        ZodiacChatListTileWidget(
-                                            item: chatsList[index]),
-                                    separatorBuilder: (context, index) =>
-                                        const Divider(height: 25.0),
-                                  ),
+                              SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  childCount: chatsList.length,
+                                  (context, index) {
+                                    final ZodiacChatsListItem item =
+                                        chatsList[index];
+
+                                    return Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            _goToChatHistory(context, item);
+                                          },
+                                          child: ZodiacChatListTileWidget(
+                                            item: item,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 12.0,
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 ),
                               ),
-                            ]),
+                            ],
+                          ),
+                        ),
                       )
                     : CustomScrollView(
                         slivers: [
@@ -93,6 +111,18 @@ class SessionsScreen extends StatelessWidget {
           })),
         );
       }),
+    );
+  }
+
+  void _goToChatHistory(BuildContext context, ZodiacChatsListItem item) {
+    context.push(
+      route: ZodiacChat(
+        userData: UserData(
+          id: item.userId,
+          avatar: item.avatar,
+          name: item.name,
+        ),
+      ),
     );
   }
 }

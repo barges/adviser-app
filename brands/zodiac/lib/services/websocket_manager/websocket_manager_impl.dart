@@ -3,15 +3,19 @@ import 'dart:convert';
 
 import 'package:eventify/eventify.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/chat/call_data.dart';
+import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
+import 'package:zodiac/presentation/screens/starting_chat/starting_chat_screen.dart';
 import 'package:zodiac/services/websocket_manager/commands.dart';
-import 'package:zodiac/data/models/socket_message/socket_message.dart';
+import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -27,9 +31,13 @@ class WebSocketManagerImpl implements WebSocketManager {
   final ZodiacMainCubit _zodiacMainCubit;
 
   final EventEmitter _emitter = EventEmitter();
+  final PublishSubject<bool> _endChatTrigger = PublishSubject();
 
   WebSocketChannel? _channel;
   StreamSubscription? _socketSubscription;
+
+  final PublishSubject<List<ChatMessageModel>> _entitiesStream =
+      PublishSubject();
 
   WebSocketManagerImpl(
     this._zodiacMainCubit,
@@ -56,6 +64,12 @@ class WebSocketManagerImpl implements WebSocketManager {
     //syncUserInfo
     _emitter.on(
         Commands.syncUserInfo, this, (event, _) => _onSyncUserInfo(event));
+
+    //startCall(chat)
+    _emitter.on(Commands.startCall, this, (event, _) => _onStartCall(event));
+
+    //cancelCall(chat)
+    _emitter.on(Commands.cancelCall, this, (event, _) => _onCancelCall(event));
 
     //chatLogin
     _emitter.on(Commands.chatLogin, this, (event, _) => _onChatLogin(event));
@@ -149,6 +163,12 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   @override
+  Stream<List<ChatMessageModel>> get entitiesStream => _entitiesStream.stream;
+
+  @override
+  PublishSubject<bool> get endChatTrigger => _endChatTrigger;
+
+  @override
   Future connect() async {
     final String? authToken = _zodiacCachingManager.getUserToken();
     final int? userId = _zodiacCachingManager.getUid();
@@ -185,16 +205,39 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   @override
   void sendStatus() {
-    final int? userId = _zodiacCachingManager.getUid();
     _send(SocketMessage.getUnreadChats());
-    _send(SocketMessage.entities(id: userId ?? 0));
-    _send(SocketMessage.chatLogin(id: userId ?? 0));
+  }
+
+  @override
+  void reloadMessages({required int userId, int? maxId}) {
+    _send(SocketMessage.chatLogin(
+      id: userId,
+    ));
+    _send(SocketMessage.entities(
+      userId: userId,
+      maxId: maxId,
+    ));
+  }
+
+  void logoutChat(int chatId) {
+    _send(SocketMessage.chatLogout(
+      chatId: chatId,
+    ));
+  }
+
+  @override
+  void sendDeclineCall({int? opponentId}) {
+    _send(SocketMessage.declineCall(opponentId: opponentId));
   }
 
   @override
   void close() {
     _socketSubscription?.cancel();
     _channel?.sink.close();
+  }
+
+  void endChat() {
+    _endChatTrigger.add(true);
   }
 
   Future<void> _authCheckOnBackend() async =>
@@ -238,6 +281,27 @@ class WebSocketManagerImpl implements WebSocketManager {
     _zodiacMainCubit.updateUserBalance(userBalance);
   }
 
+  void _onStartCall(Event event) {
+    SocketMessage message = (event.eventData as SocketMessage);
+    CallData startCallData = CallData.fromJson(message.params ?? {});
+    logger.d('START CALL');
+    logger.d(message.params);
+    if (ZodiacBrand().context != null) {
+      showStartingChat(ZodiacBrand().context!, startCallData);
+    }
+    // ZodiacBrand()
+    //     .context
+    //     ?.push(route: ZodiacStartingChat(callData: startCallData));
+  }
+
+  void _onCancelCall(Event event) {
+    SocketMessage message = (event.eventData as SocketMessage);
+    CallData cancelCallData = CallData.fromJson(message.params ?? {});
+    logger.d('Cancel CALL');
+    logger.d(message.params);
+    endChat();
+  }
+
   void _onAfk(Event event) {
     ///TODO - If (event.eventData as SocketMessage).params['popup'] != null
     ///show afk popup
@@ -252,7 +316,13 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onEntities(Event event) {
-    ///TODO - Implement onEntities
+    SocketMessage message = (event.eventData as SocketMessage);
+    List<dynamic> mapList = message.params;
+    List<ChatMessageModel> list = mapList
+        .map((e) => ChatMessageModel.fromJson(e as Map<String, dynamic>))
+        .toList();
+
+    _entitiesStream.add(list);
   }
 
   void _onEnterRoom(Event event) {
@@ -261,10 +331,26 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onDeclineCall(Event event) {
     ///TODO - Implement onDeclineCall
+    endChat();
   }
 
   void _onEndCall(Event event) {
+    SocketMessage message = (event.eventData as SocketMessage);
+    CallData endCallData = CallData.fromJson(message.params ?? {});
+    logger.d('End CALL');
+    logger.d(message.params);
+    endChat();
+
     ///TODO - Implements onEndCall
+  }
+
+  void _onLogouted(Event event) {
+    SocketMessage message = (event.eventData as SocketMessage);
+    CallData logoutedData = CallData.fromJson(message.params ?? {});
+    logger.d('Logouted CALL');
+    logger.d(message.params);
+
+    ///TODO - Implements onLogouted
   }
 
   void _onRoomLogin(Event event) {
@@ -293,6 +379,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onMessage(Event event) {
     _send(SocketMessage.msgDelivered());
+    _zodiacMainCubit.updateSessions();
 
     ///TODO - Implements onMessage
     SocketMessage message = (event.eventData as SocketMessage);
@@ -359,7 +446,11 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onUnreadChats(Event event) {
-    ///TODO - Implements onUnreadChats
+    SocketMessage message = (event.eventData as SocketMessage);
+    int? count = message.params['count'];
+    if (count != null) {
+      _zodiacMainCubit.updateUnreadChats(count);
+    }
   }
 
   void _onReadMessage(Event event) {
@@ -384,10 +475,6 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onFuncActions(Event event) {
     ///TODO - Implements onFuncActions
-  }
-
-  void _onLogouted(Event event) {
-    ///TODO - Implements onLogouted
   }
 
   void _onStoproom(Event event) {

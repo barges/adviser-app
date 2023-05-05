@@ -110,5 +110,18 @@
   "weveSentYouNewCodeZodiac":"We’ve sent you a new code",
   "okZodiac":"Ok",
   "limitReachedZodiac":"Limit reached",
-  "youveReachedLimitPhoneVerificationAttemptsZodiac":"You’ve reached the limit of phone verification attempts. Please contact support."
+  "youveReachedLimitPhoneVerificationAttemptsZodiac":"You’ve reached the limit of phone verification attempts. Please contact support.",
+  "startChatZodiac": "Start Chat",
+  "declineZodiac": "Decline",
+  "chatRequestZodiac": "Chat request...",
+  "youMissedCallFromZodiac": "You missed call\n from {clientName}.",
+  "youMissedChatFromZodiac": "You missed chat \n from {clientName}.",
+  "replyZodiac": "Reply",
+  "chatStartedZodiac": "Chat started",
+  "chatEndedZodiac": "Chat ended",
+  "callStartedZodiac": "Call started",
+  "callEndedZodiac": "Call ended",
+  "hideChatZodiac": "Hide chat",
+  "preferredLanguageZodiac": "Preferred language: ",
+  "freebieSeeker": "Freebie seeker"
 }

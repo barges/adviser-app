@@ -27,4 +27,5 @@ class RoutePathsZodiac {
   static const smsVerificationScreen = '${ZodiacBrand.alias}SMSVerification';
   static const phoneNumberVerifiedScreen =
       '${ZodiacBrand.alias}PhoneNumberVerified';
+  static const chatScreen = '${ZodiacBrand.alias}Chat';
 }

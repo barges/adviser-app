@@ -110,6 +110,18 @@
   "weveSentYouNewCodeZodiac":"Te hemos enviado un nuevo código",
   "okZodiac":"Ok",
   "limitReachedZodiac":"Límite alcanzado",
-  "youveReachedLimitPhoneVerificationAttemptsZodiac":"Has alcanzado el límite de intentos de verificación telefónica. Póngase en contacto con el soporte."
-}
+  "youveReachedLimitPhoneVerificationAttemptsZodiac":"Has alcanzado el límite de intentos de verificación telefónica. Póngase en contacto con el soporte.",
+  "startChatZodiac": "Comenzar chat",
+  "declineZodiac": "Rechazar",
+  "chatRequestZodiac": "Solicitud de chat...",
+  "youMissedCallFromZodiac": "Perdiste una llamada \n de {clientName}.",
+  "youMissedChatFromZodiac": "Te perdiste el chat \n de {clientName}.",
+  "replyZodiac": "Responder",
+  "chatStartedZodiac": "Chat iniciado",
+  "chatEndedZodiac": "Chat finalizado",
+  "callStartedZodiac": "Llamada iniciada",
+  "callEndedZodiac": "Llamada terminada",
+  "hideChatZodiac": "Ocultar chat",
+  "preferredLanguageZodiac": "Idioma preferido: ",
+  "freebieSeeker": "Buscador de obsequios"
 }

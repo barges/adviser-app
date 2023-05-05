@@ -1,25 +1,30 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 
 part 'chat_item_zodiac.g.dart';
+
 part 'chat_item_zodiac.freezed.dart';
 
 @freezed
 class ZodiacChatsListItem with _$ZodiacChatsListItem {
   const ZodiacChatsListItem._();
 
-  @JsonSerializable(includeIfNull: false)
+  @JsonSerializable(
+    includeIfNull: false,
+    fieldRename: FieldRename.snake,
+  )
   const factory ZodiacChatsListItem({
-    @JsonKey(name: 'user_id') int? userId,
-    @JsonKey(name: 'last_message') String? lastMessage,
-    @JsonKey(name: 'is_banned') String? isBanned,
-    @JsonKey(name: 'unread_count') int? unreadCount,
-    @JsonKey(name: 'last_message_type') String? lastMessageType,
-    @JsonKey(name: 'date_last_update') int? dateLastUpdate,
+    int? userId,
+    String? lastMessage,
+    String? isBanned,
+    int? unreadCount,
+    String? lastMessageType,
+    int? dateLastUpdate,
     int? id,
     String? name,
-    int? status,
+    @JsonKey(fromJson: _statusFromJson) ZodiacUserStatus? status,
     String? avatar,
   }) = _ZodiacChatsListItem;
 
@@ -29,4 +34,9 @@ class ZodiacChatsListItem with _$ZodiacChatsListItem {
   bool get isMissed => lastMessageType == '17';
 
   bool get haveUnreadedMessages => unreadCount != null && unreadCount! > 0;
+}
+
+ZodiacUserStatus _statusFromJson(num? value) {
+  int? status = value?.toInt();
+  return ZodiacUserStatus.statusFromInt(status);
 }

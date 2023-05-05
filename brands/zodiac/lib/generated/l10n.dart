@@ -1174,6 +1174,136 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Start Chat`
+  String get startChatZodiac {
+    return Intl.message(
+      'Start Chat',
+      name: 'startChatZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Decline`
+  String get declineZodiac {
+    return Intl.message(
+      'Decline',
+      name: 'declineZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat request...`
+  String get chatRequestZodiac {
+    return Intl.message(
+      'Chat request...',
+      name: 'chatRequestZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You missed call\n from {clientName}.`
+  String youMissedCallFromZodiac(Object clientName) {
+    return Intl.message(
+      'You missed call\n from $clientName.',
+      name: 'youMissedCallFromZodiac',
+      desc: '',
+      args: [clientName],
+    );
+  }
+
+  /// `You missed chat \n from {clientName}.`
+  String youMissedChatFromZodiac(Object clientName) {
+    return Intl.message(
+      'You missed chat \n from $clientName.',
+      name: 'youMissedChatFromZodiac',
+      desc: '',
+      args: [clientName],
+    );
+  }
+
+  /// `Reply`
+  String get replyZodiac {
+    return Intl.message(
+      'Reply',
+      name: 'replyZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat started`
+  String get chatStartedZodiac {
+    return Intl.message(
+      'Chat started',
+      name: 'chatStartedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat ended`
+  String get chatEndedZodiac {
+    return Intl.message(
+      'Chat ended',
+      name: 'chatEndedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Call started`
+  String get callStartedZodiac {
+    return Intl.message(
+      'Call started',
+      name: 'callStartedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Call ended`
+  String get callEndedZodiac {
+    return Intl.message(
+      'Call ended',
+      name: 'callEndedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hide chat`
+  String get hideChatZodiac {
+    return Intl.message(
+      'Hide chat',
+      name: 'hideChatZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Preferred language: `
+  String get preferredLanguageZodiac {
+    return Intl.message(
+      'Preferred language: ',
+      name: 'preferredLanguageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Freebie seeker`
+  String get freebieSeeker {
+    return Intl.message(
+      'Freebie seeker',
+      name: 'freebieSeeker',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

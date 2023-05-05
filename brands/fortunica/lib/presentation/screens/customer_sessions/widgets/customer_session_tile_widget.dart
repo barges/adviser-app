@@ -1,5 +1,5 @@
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/extensions.dart';
+import 'package:fortunica/fortunica_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -71,15 +71,16 @@ class CustomerSessionListTileWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Text(
-                        question.createdAt?.chatListTime ??
-                            question.updatedAt?.chatListTime ??
-                            DateTime.now().toUtc().chatListTime,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.shadowColor,
-                          fontSize: 12.0,
-                        ),
-                      )
+                      if (question.createdAt != null ||
+                          question.updatedAt != null)
+                        Text(
+                          question.createdAt?.chatListTime ??
+                              question.updatedAt!.chatListTime,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.shadowColor,
+                            fontSize: 12.0,
+                          ),
+                        )
                     ],
                   ),
                   const SizedBox(height: 4.0),

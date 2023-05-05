@@ -47,6 +47,10 @@ dependencies:
   html: ^0.15.2
   pin_code_fields: ^7.4.0
   phone_numbers_parser: ^7.0.2
+  avatar_glow: ^2.0.2
+  vibration: ^1.7.6
+  assets_audio_player: ^3.0.6
+  flutter_slidable: ^3.0.0
 
 
 dev_dependencies:

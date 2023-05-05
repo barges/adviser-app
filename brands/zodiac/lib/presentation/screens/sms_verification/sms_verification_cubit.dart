@@ -6,7 +6,7 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
   final codeTextFieldFocus = FocusNode();
   SMSVerificationCubitCubit() : super(const SMSVerificationState()) {
     codeTextFieldFocus.addListener(() {
-      print(codeTextFieldFocus.hasPrimaryFocus);
+      //print(codeTextFieldFocus.hasPrimaryFocus);
     });
 
     /*emit(state.copyWith(

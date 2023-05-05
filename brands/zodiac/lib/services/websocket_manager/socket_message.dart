@@ -52,8 +52,15 @@ class SocketMessage {
   static SocketMessage chatLogin({required int id}) =>
       SocketMessage(action: Commands.chatLogin, params: {'id': id});
 
-  static SocketMessage entities({required int id}) =>
-      SocketMessage(action: Commands.entities, params: {'opponent_id': id});
+  static SocketMessage chatLogout({required int chatId}) =>
+      SocketMessage(action: Commands.chatLogout, params: {'chat_id': chatId});
+
+  static SocketMessage entities({required int userId, int? maxId}) =>
+      SocketMessage(action: Commands.entities, params: {'opponent_id': userId,
+      if(maxId != null)  'filters': {
+        'max_id': maxId,
+      }
+      });
 
   static SocketMessage createRoom(
           {required int clientId, required double expertFee}) =>
@@ -157,5 +164,13 @@ class SocketMessage {
         "type": "chat",
         "msg": messageId,
         "opponent_id": opponentId,
+      });
+
+  static SocketMessage declineCall({int? opponentId}) =>
+      SocketMessage(action: Commands.declineCall, params: {
+        "message": "",
+        "userData": {
+          "id": opponentId ?? 0,
+        },
       });
 }

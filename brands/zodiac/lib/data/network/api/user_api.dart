@@ -14,6 +14,7 @@ import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/phone_number_request.dart';
 import 'package:zodiac/data/network/requests/phone_number_verify_request.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
+import 'package:zodiac/data/network/requests/profile_details_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
 import 'package:zodiac/data/network/requests/settings_request.dart';
 import 'package:zodiac/data/network/requests/update_locale_request.dart';
@@ -32,6 +33,7 @@ import 'package:zodiac/data/network/responses/payments_list_response.dart';
 import 'package:zodiac/data/network/responses/phone_number_response.dart';
 import 'package:zodiac/data/network/responses/phone_number_verify_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
+import 'package:zodiac/data/network/responses/profile_details_response.dart';
 import 'package:zodiac/data/network/responses/reviews_response.dart';
 import 'package:zodiac/data/network/responses/settings_response.dart';
 import 'package:zodiac/data/network/responses/specializations_response.dart';
@@ -187,5 +189,10 @@ abstract class UserApi {
   @POST('/resend-phone-verification')
   Future<BaseResponse> resendPhoneVerification(
     @Body() PhoneNumberVerifyRequest request,
+  );
+  
+  @POST('/profile/details')
+  Future<ProfileDetailsResponse> getProfileDetails(
+    @Body() ProfileDetailsRequest request,
   );
 }

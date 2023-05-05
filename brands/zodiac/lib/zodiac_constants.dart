@@ -1,5 +1,7 @@
 class ZodiacConstants {
 
+  static const double chatHorizontalPadding = 12.0;
+
   static const String sideMenuUrl = 'www.zodiacpsychics.com';
 
   ///STAGE
