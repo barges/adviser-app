@@ -24,8 +24,7 @@ class ChatMessageModel with _$ChatMessageModel {
     @Default(ChatMessageType.simple)
         ChatMessageType type,
     int? id,
-    @JsonKey(fromJson: _dateFromSeconds, toJson: _dateToSeconds)
-    DateTime? utc,
+    @JsonKey(fromJson: _dateFromSeconds, toJson: _dateToSeconds) DateTime? utc,
     int? timerReal,
     int? timerUser,
     int? chatId,
@@ -35,7 +34,7 @@ class ChatMessageModel with _$ChatMessageModel {
         bool isRead,
     int? roomId,
     @JsonKey(name: 'productBox') ProductBox? productBox,
-    double? price,
+    String? price,
     int? status,
     String? icon,
     double? rating,
@@ -82,7 +81,7 @@ bool _boolFromInt(num? value) => value == 1;
 int _boolToInt(bool value) => value ? 1 : 0;
 
 DateTime? _dateFromSeconds(num? value) {
-  if(value != null) {
+  if (value != null) {
     return DateTime.fromMillisecondsSinceEpoch(value.toInt() * 1000,
         isUtc: true);
   } else {
@@ -91,7 +90,7 @@ DateTime? _dateFromSeconds(num? value) {
 }
 
 int? _dateToSeconds(DateTime? value) {
-  if(value != null) {
+  if (value != null) {
     return value.millisecondsSinceEpoch ~/ 1000;
   } else {
     return null;
