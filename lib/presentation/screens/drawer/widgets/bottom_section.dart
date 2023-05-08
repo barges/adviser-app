@@ -25,14 +25,6 @@ class BottomSection extends StatelessWidget {
           child: Column(
             children: [
               _BottomSectionItem(
-                icon: Assets.vectors.bookOpen.path,
-                text: S.of(context).allOurBrands,
-                onTap: cubit.goToAllBrands,
-              ),
-              const SizedBox(
-                height: 16.0,
-              ),
-              _BottomSectionItem(
                 icon: Assets.vectors.questionMark.path,
                 text: S.of(context).customerSupport,
                 onTap: cubit.goToCustomerSupport,

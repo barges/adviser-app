@@ -75,7 +75,7 @@ class SessionsScreen extends StatelessWidget {
                             child: ChooseOptionWidget(
                               options: [
                                 S.of(context).public,
-                                S.of(context).forMe,
+                                S.of(context).private,
                               ],
                               currentIndex: currentIndex,
                               disabledIndexes: disabledIndexes,
