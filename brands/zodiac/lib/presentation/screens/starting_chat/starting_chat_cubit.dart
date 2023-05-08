@@ -5,7 +5,6 @@ import 'package:audible_mode/audible_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -91,13 +90,15 @@ class StartingChatCubit extends Cubit<StartingChatState> {
     _webSocketManager.sendDeclineCall(opponentId: opponentId);
   }
 
-  void startChat(BuildContext context, UserData? userData) {
+  void startChat(BuildContext context, UserData userData) {
     if (_brandManager.getCurrentBrand() is! ZodiacBrand) {
       _brandManager.setCurrentBrand(ZodiacBrand());
     }
-    if (userData != null) {
-      ZodiacBrand().context?.push(route: ZodiacChat(userData: userData));
-    }
-    context.popForced();
+    ZodiacBrand().context?.push(
+            route: ZodiacChat(
+          userData: userData,
+          fromStartingChat: true,
+        ));
+    context.popForced(true);
   }
 }

@@ -8,7 +8,10 @@ part 'chat_state.freezed.dart';
 class ChatState with _$ChatState {
   const factory ChatState({
     @Default([]) List<ChatMessageModel> messages,
+    @Default(false) bool isVisibleTextField,
     @Default(false) bool clientInformationWidgetOpened,
+    @Default(false) bool needShowDownButton,
+    @Default(false) bool needShowTypingIndicator,
     UserDetails? clientInformation,
   }) = _ChatState;
 }

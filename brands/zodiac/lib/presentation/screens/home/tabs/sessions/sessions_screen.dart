@@ -31,84 +31,88 @@ class SessionsScreen extends StatelessWidget {
       ),
       child: Builder(builder: (context) {
         final SessionsCubit zodiacSessionsCubit = context.read<SessionsCubit>();
-        return Scaffold(
-          backgroundColor: Theme.of(context).canvasColor,
-          appBar: const HomeAppBar(withBrands: true),
-          body: SafeArea(child: Builder(builder: (context) {
-            final List<ZodiacChatsListItem>? chatsList =
-                context.select((SessionsCubit cubit) => cubit.state.chatList);
+        return GestureDetector(
+          onTap: FocusScope.of(context).unfocus,
+          child: Scaffold(
+            backgroundColor: Theme.of(context).canvasColor,
+            appBar: const HomeAppBar(withBrands: true),
+            body: SafeArea(child: Builder(builder: (context) {
+              final List<ZodiacChatsListItem>? chatsList =
+                  context.select((SessionsCubit cubit) => cubit.state.chatList);
 
-            return chatsList != null
-                ? chatsList.isNotEmpty
-                    ? RefreshIndicator(
-                        onRefresh: zodiacSessionsCubit.refreshChatsList,
-                        child: SlidableAutoCloseBehavior(
-                          child: CustomScrollView(
-                            shrinkWrap: true,
-                            controller:
-                                zodiacSessionsCubit.chatsListScrollController,
-                            physics: const ClampingScrollPhysics()
-                                .applyTo(const AlwaysScrollableScrollPhysics()),
-                            slivers: [
-                              const SliverPersistentHeader(
-                                delegate: _SearchTextField(),
-                              ),
-                              SliverList(
-                                delegate: SliverChildBuilderDelegate(
-                                  childCount: chatsList.length,
-                                  (context, index) {
-                                    final ZodiacChatsListItem item =
-                                        chatsList[index];
+              return chatsList != null
+                  ? chatsList.isNotEmpty
+                      ? RefreshIndicator(
+                          onRefresh: zodiacSessionsCubit.refreshChatsList,
+                          child: SlidableAutoCloseBehavior(
+                            child: CustomScrollView(
+                              shrinkWrap: true,
+                              controller:
+                                  zodiacSessionsCubit.chatsListScrollController,
+                              physics: const ClampingScrollPhysics().applyTo(
+                                  const AlwaysScrollableScrollPhysics()),
+                              slivers: [
+                                const SliverPersistentHeader(
+                                  delegate: _SearchTextField(),
+                                ),
+                                SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                    childCount: chatsList.length,
+                                    (context, index) {
+                                      final ZodiacChatsListItem item =
+                                          chatsList[index];
 
-                                    return Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            _goToChatHistory(context, item);
-                                          },
-                                          child: ZodiacChatListTileWidget(
-                                            item: item,
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              FocusScope.of(context).unfocus();
+                                              _goToChatHistory(context, item);
+                                            },
+                                            child: ZodiacChatListTileWidget(
+                                              item: item,
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          height: 12.0,
-                                        ),
-                                      ],
-                                    );
-                                  },
+                                          const SizedBox(
+                                            height: 12.0,
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : CustomScrollView(
+                          slivers: [
+                            SliverFillRemaining(
+                              hasScrollBody: false,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal:
+                                        AppConstants.horizontalScreenPadding),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    EmptyListWidget(
+                                      title: SZodiac.of(context)
+                                          .noSessionsYetZodiac,
+                                      label: SZodiac.of(context)
+                                          .yourClientSessionHistoryWillAppearHereZodiac,
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      )
-                    : CustomScrollView(
-                        slivers: [
-                          SliverFillRemaining(
-                            hasScrollBody: false,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal:
-                                      AppConstants.horizontalScreenPadding),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  EmptyListWidget(
-                                    title:
-                                        SZodiac.of(context).noSessionsYetZodiac,
-                                    label: SZodiac.of(context)
-                                        .yourClientSessionHistoryWillAppearHereZodiac,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      )
-                : const SizedBox.shrink();
-          })),
+                            )
+                          ],
+                        )
+                  : const SizedBox.shrink();
+            })),
+          ),
         );
       }),
     );
