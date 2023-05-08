@@ -49,7 +49,7 @@ dependencies:
   vibration: ^1.7.6
   assets_audio_player: ^3.0.6
   flutter_slidable: ^3.0.0
-
+  audible_mode: ^1.0.1
 
 dev_dependencies:
   flutter_test:
