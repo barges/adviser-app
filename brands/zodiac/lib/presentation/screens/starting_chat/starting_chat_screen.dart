@@ -77,6 +77,7 @@ class StartingChatScreen extends StatelessWidget {
                                       glowColor: theme.primaryColorDark,
                                       child: UserAvatar(
                                         avatarUrl: callData.userData?.avatar,
+                                        backgroundColor: theme.canvasColor,
                                       ),
                                     ),
                                     Positioned(

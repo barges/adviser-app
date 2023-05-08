@@ -52,6 +52,7 @@ dependencies:
   visibility_detector: ^0.4.0+2
   scrollview_observer: ^1.10.1
 
+  audible_mode: ^1.0.1
 
 dev_dependencies:
   flutter_test:
