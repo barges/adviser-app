@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -20,6 +19,7 @@ class UserAvatar extends StatelessWidget {
   final VoidCallback? onTap;
   final double badgeDiameter;
   final double badgeBorderWidth;
+  final Color backgroundColor;
 
   const UserAvatar({
     Key? key,
@@ -34,6 +34,7 @@ class UserAvatar extends StatelessWidget {
     this.canOpenInFullScreen = false,
     this.badgeDiameter = 18.0,
     this.badgeBorderWidth = 3.0,
+    this.backgroundColor = Colors.transparent,
   }) : super(key: key);
 
   @override
@@ -44,7 +45,7 @@ class UserAvatar extends StatelessWidget {
           height: diameter,
           width: diameter,
           decoration: BoxDecoration(
-            color: Colors.transparent,
+            color: backgroundColor,
             shape: BoxShape.circle,
             border: withBorder
                 ? Border.all(
@@ -61,30 +62,30 @@ class UserAvatar extends StatelessWidget {
                           .svg(color: Theme.of(context).canvasColor),
                     )
                   : GestureDetector(
-                          onTap: canOpenInFullScreen
-                              ? () => context.push(
-                                    route: ZodiacGalleryPictures(
-                                      galleryPicturesScreenArguments:
-                                          GalleryPicturesScreenArguments(
-                                        pictures: [avatarUrl!],
-                                      ),
-                                    ),
-                                  )
-                              : null,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: CachedNetworkImageProvider(
-                                  avatarUrl!,
-                                  maxHeight: diameter.toInt() * 2,
-                                  maxWidth: diameter.toInt() * 2,
+                      onTap: canOpenInFullScreen
+                          ? () => context.push(
+                                route: ZodiacGalleryPictures(
+                                  galleryPicturesScreenArguments:
+                                      GalleryPicturesScreenArguments(
+                                    pictures: [avatarUrl!],
+                                  ),
                                 ),
-                              ),
+                              )
+                          : null,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: CachedNetworkImageProvider(
+                              avatarUrl!,
+                              maxHeight: diameter.toInt() * 2,
+                              maxWidth: diameter.toInt() * 2,
                             ),
                           ),
-                        )
+                        ),
+                      ),
+                    )
               : GestureDetector(
                   onTap: canOpenInFullScreen
                       ? () => context.push(

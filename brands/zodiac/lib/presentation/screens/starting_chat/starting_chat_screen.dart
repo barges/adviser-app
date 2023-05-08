@@ -8,15 +8,15 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/chat/call_data.dart';
-import 'package:zodiac/domain/repositories/zodiac_chats_repository.dart';
+import 'package:zodiac/data/models/chat/user_data.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
 import 'package:zodiac/presentation/screens/starting_chat/starting_chat_cubit.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 
-void showStartingChat(BuildContext context, CallData callData) {
-  showDialog(
+Future<bool?> showStartingChat(BuildContext context, CallData callData) async {
+  return await showDialog(
       context: context,
       useSafeArea: false,
       builder: (context) => StartingChatScreen(callData: callData));
@@ -77,6 +77,7 @@ class StartingChatScreen extends StatelessWidget {
                                       glowColor: theme.primaryColorDark,
                                       child: UserAvatar(
                                         avatarUrl: callData.userData?.avatar,
+                                        backgroundColor: theme.canvasColor,
                                       ),
                                     ),
                                     Positioned(
@@ -155,8 +156,13 @@ class StartingChatScreen extends StatelessWidget {
                             ),
                             child: AppElevatedButton(
                               title: SZodiac.of(context).startChatZodiac,
-                              onPressed: () => startingChatCubit.startChat(
-                                  context, callData.userData),
+                              onPressed: () {
+                                final UserData? userData = callData.userData;
+                                if (userData != null) {
+                                  startingChatCubit.startChat(
+                                      context, userData);
+                                }
+                              },
                             ),
                           ),
                           const SizedBox(

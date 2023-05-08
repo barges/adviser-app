@@ -81,6 +81,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.0"
+  audible_mode:
+    dependency: transitive
+    description:
+      name: audible_mode
+      sha256: eaeb9df86d28860e4461fbfc8befd54d7abb796f8a7189e82187296b0c0ac78e
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   audio_session:
     dependency: "direct main"
     description:
@@ -529,6 +537,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.6"
+  enum_to_string:
+    dependency: transitive
+    description:
+      name: enum_to_string
+      sha256: bd9e83a33b754cb43a75b36a9af2a0b92a757bfd9847d2621ca0b1bed45f8e7a
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   equatable:
     dependency: "direct main"
     description:
@@ -1564,6 +1580,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
+  scrollview_observer:
+    dependency: transitive
+    description:
+      name: scrollview_observer
+      sha256: ad49c7277f4e169fc2a46b99f9739b6a8fb11514b31b866b076ef56fa21e26af
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.10.1"
   share_plus:
     dependency: "direct main"
     description:
@@ -1793,6 +1817,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  system_date_time_format:
+    dependency: "direct main"
+    description:
+      name: system_date_time_format
+      sha256: e5d42be622123f4f0fe0c4dfb2eee7a390d1fa04541d77cb7a529353f8375024
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.0"
   term_glyph:
     dependency: transitive
     description:
@@ -1937,6 +1969,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.7.6"
+  visibility_detector:
+    dependency: transitive
+    description:
+      name: visibility_detector
+      sha256: dd5cc11e13494f432d15939c3aa8ae76844c42b723398643ce9addb88a5ed420
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.0+2"
   watcher:
     dependency: transitive
     description:
@@ -2033,5 +2073,5 @@ packages:
     source: path
     version: "0.0.1"
 sdks:
-  dart: ">=2.18.2 <3.0.0"
+  dart: ">=2.18.6 <3.0.0"
   flutter: ">=3.7.0"

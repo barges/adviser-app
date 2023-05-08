@@ -19,7 +19,7 @@ class MissedMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final String? clientName = context.read<ChatCubit>().userData.name;
+    final String? clientName = context.read<ChatCubit>().clientData.name;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [

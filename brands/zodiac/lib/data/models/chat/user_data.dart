@@ -12,7 +12,6 @@ class UserData with _$UserData {
 
   @JsonSerializable(
     includeIfNull: false,
-    explicitToJson: true,
     fieldRename: FieldRename.snake,
   )
   const factory UserData({
@@ -20,6 +19,10 @@ class UserData with _$UserData {
     int? profilesId,
     String? name,
     String? avatar,
+    String? timezone,
+    int? haveCards,
+    String? helloMessage,
+    int? firstChatFlag,
     double? fee,
   }) = _UserData;
 
