@@ -74,11 +74,6 @@ class DrawerCubit extends Cubit<DrawerState> {
   //   }
   // }
 
-  void goToAllBrands() {
-    Get.back();
-    Get.toNamed(AppRoutes.allBrands);
-  }
-
   void goToCustomerSupport() {
     Get.back();
     Get.toNamed(AppRoutes.support);

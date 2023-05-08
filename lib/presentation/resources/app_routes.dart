@@ -4,7 +4,6 @@ import 'package:shared_advisor_interface/presentation/screens/force_update/force
 import 'package:shared_advisor_interface/presentation/screens/gallery/gallery_pictures_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_screen.dart';
-import 'package:shared_advisor_interface/presentation/screens/all_brands/all_brands_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/article_details/article_details_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_screen.dart';
@@ -24,7 +23,6 @@ class AppRoutes {
   static const home = '/home_screen';
   static const support = '/support_screen';
   static const forgotPassword = '/forgot_password_screen';
-  static const allBrands = '/all_brands_screen';
   static const editProfile = '/edit_profile_screen';
   static const galleryPictures = '/gallery_pictures_screen';
   static const articleDetails = '/article_details_screen';
@@ -54,10 +52,6 @@ class AppRoutes {
     GetPage(
       name: forgotPassword,
       page: () => const ForgotPasswordScreen(),
-    ),
-    GetPage(
-      name: allBrands,
-      page: () => const AllBrandsScreen(),
     ),
     GetPage(
       name: editProfile,

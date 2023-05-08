@@ -150,10 +150,10 @@ class S {
     );
   }
 
-  /// `Choose brand`
+  /// `Select brand`
   String get chooseBrand {
     return Intl.message(
-      'Choose brand',
+      'Select brand',
       name: 'chooseBrand',
       desc: '',
       args: [],
@@ -250,10 +250,10 @@ class S {
     );
   }
 
-  /// `Nickname`
+  /// `Pseudonym/Profile Name`
   String get nickname {
     return Intl.message(
-      'Nickname',
+      'Pseudonym/Profile Name',
       name: 'nickname',
       desc: '',
       args: [],
@@ -290,10 +290,10 @@ class S {
     );
   }
 
-  /// `Add Gallery Pictures`
+  /// `Add photos`
   String get addGalleryPictures {
     return Intl.message(
-      'Add Gallery Pictures',
+      'Add photos',
       name: 'addGalleryPictures',
       desc: '',
       args: [],
@@ -325,16 +325,6 @@ class S {
     return Intl.message(
       'Other brands',
       name: 'otherBrands',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `All brands`
-  String get allOurBrands {
-    return Intl.message(
-      'All brands',
-      name: 'allOurBrands',
       desc: '',
       args: [],
     );
@@ -430,16 +420,6 @@ class S {
     );
   }
 
-  /// `For me`
-  String get forMe {
-    return Intl.message(
-      'For me',
-      name: 'forMe',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Search`
   String get search {
     return Intl.message(
@@ -470,10 +450,10 @@ class S {
     );
   }
 
-  /// `Preview account`
+  /// `Profile Preview`
   String get previewAccount {
     return Intl.message(
-      'Preview account',
+      'Profile Preview',
       name: 'previewAccount',
       desc: '',
       args: [],
@@ -490,10 +470,10 @@ class S {
     );
   }
 
-  /// `Balance & Transactions`
+  /// `Services`
   String get balanceTransactions {
     return Intl.message(
-      'Balance & Transactions',
+      'Services',
       name: 'balanceTransactions',
       desc: '',
       args: [],
@@ -800,10 +780,10 @@ class S {
     );
   }
 
-  /// `Total markets`
+  /// `All Markets`
   String get totalMarkets {
     return Intl.message(
-      'Total markets',
+      'All Markets',
       name: 'totalMarkets',
       desc: '',
       args: [],
@@ -830,10 +810,10 @@ class S {
     );
   }
 
-  /// `Quick Answers`
+  /// `Live Questions`
   String get quickAnswers {
     return Intl.message(
-      'Quick Answers',
+      'Live Questions',
       name: 'quickAnswers',
       desc: '',
       args: [],
@@ -930,10 +910,10 @@ class S {
     );
   }
 
-  /// `You have not yet completed this month's sessions`
+  /// `The month is not over yet`
   String get youHaveNotYetCompletedThisMonthsSessions {
     return Intl.message(
-      'You have not yet completed this month\'s sessions',
+      'The month is not over yet',
       name: 'youHaveNotYetCompletedThisMonthsSessions',
       desc: '',
       args: [],
@@ -1050,10 +1030,10 @@ class S {
     );
   }
 
-  /// `You will be able to change your status back in 1 hour`
+  /// `You can change the status again in 1 hour.`
   String get youWillBeAbleToChangeYourStatusBackIn {
     return Intl.message(
-      'You will be able to change your status back in 1 hour',
+      'You can change the status again in 1 hour.',
       name: 'youWillBeAbleToChangeYourStatusBackIn',
       desc: '',
       args: [],
@@ -1070,10 +1050,10 @@ class S {
     );
   }
 
-  /// `Your account has been blocked. Please contact your advisor manager.`
+  /// `Your account has been banned. Please contact Advisor Management.`
   String get yourAccountHasBeenBlockedPleaseContactYourAdvisorManager {
     return Intl.message(
-      'Your account has been blocked. Please contact your advisor manager.',
+      'Your account has been banned. Please contact Advisor Management.',
       name: 'yourAccountHasBeenBlockedPleaseContactYourAdvisorManager',
       desc: '',
       args: [],
@@ -1090,10 +1070,10 @@ class S {
     );
   }
 
-  /// `Sessions`
+  /// `News`
   String get sessions {
     return Intl.message(
-      'Sessions',
+      'News',
       name: 'sessions',
       desc: '',
       args: [],
@@ -1719,10 +1699,10 @@ class S {
     );
   }
 
-  /// `Tell our team when you plan to return:`
+  /// `Leave a note when you'll be available again.`
   String get tellOurTeamWhenYouPlanToReturn {
     return Intl.message(
-      'Tell our team when you plan to return:',
+      'Leave a note when you\'ll be available again.',
       name: 'tellOurTeamWhenYouPlanToReturn',
       desc: '',
       args: [],
@@ -1839,10 +1819,10 @@ class S {
     );
   }
 
-  /// `No sessions found with this filter`
+  /// `No messages found with this filter.`
   String get noSessionsFoundWithThisFilter {
     return Intl.message(
-      'No sessions found with this filter',
+      'No messages found with this filter.',
       name: 'noSessionsFoundWithThisFilter',
       desc: '',
       args: [],
@@ -2126,6 +2106,96 @@ class S {
     return Intl.message(
       'New password',
       name: 'newPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private Question`
+  String get privateQuestion {
+    return Intl.message(
+      'Private Question',
+      name: 'privateQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Public Question`
+  String get publicQuestion {
+    return Intl.message(
+      'Public Question',
+      name: 'publicQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Soulmate Reading Sessions`
+  String get soulmateReadingSessions {
+    return Intl.message(
+      'Soulmate Reading Sessions',
+      name: 'soulmateReadingSessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Love Crush Reading Sessions`
+  String get loveCrushReadingSessions {
+    return Intl.message(
+      'Love Crush Reading Sessions',
+      name: 'loveCrushReadingSessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Palm Reading Sessions`
+  String get palmReadingSessions {
+    return Intl.message(
+      'Palm Reading Sessions',
+      name: 'palmReadingSessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `360° Reading Sessions`
+  String get reading360Sessions {
+    return Intl.message(
+      '360° Reading Sessions',
+      name: 'reading360Sessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ritual Sessions`
+  String get ritualSessions {
+    return Intl.message(
+      'Ritual Sessions',
+      name: 'ritualSessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Astrology Sessions`
+  String get astrologySessions {
+    return Intl.message(
+      'Astrology Sessions',
+      name: 'astrologySessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tarot Sessions`
+  String get tarotSessions {
+    return Intl.message(
+      'Tarot Sessions',
+      name: 'tarotSessions',
       desc: '',
       args: [],
     );

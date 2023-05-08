@@ -36,7 +36,7 @@ enum Brand {
   String get name {
     switch (this) {
       case Brand.fortunica:
-        return 'Fortunica';
+        return 'fortunica';
       case Brand.zodiacPsychics:
         return 'Zodiac Psychics';
     }
