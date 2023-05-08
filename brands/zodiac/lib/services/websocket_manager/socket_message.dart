@@ -57,10 +57,12 @@ class SocketMessage {
       SocketMessage(action: Commands.chatLogout, params: {'chat_id': chatId});
 
   static SocketMessage entities({required int opponentId, int? maxId}) =>
-      SocketMessage(action: Commands.entities, params: {'opponent_id': opponentId,
-      if(maxId != null)  'filters': {
-        'max_id': maxId,
-      }
+      SocketMessage(action: Commands.entities, params: {
+        'opponent_id': opponentId,
+        if (maxId != null)
+          'filters': {
+            'max_id': maxId,
+          }
       });
 
   static SocketMessage createRoom(
@@ -98,16 +100,22 @@ class SocketMessage {
         'mid': generateMessageId(userId)
       });
 
-  static SocketMessage msgDelivered() =>
-      SocketMessage(action: Commands.msgDelivered);
+  static SocketMessage msgDelivered({String? mid}) => SocketMessage(
+        action: Commands.msgDelivered,
+        params: mid != null
+            ? {
+                'mid': mid,
+              }
+            : null,
+      );
 
   static SocketMessage getUnreadChats() =>
       SocketMessage(action: Commands.getUnreadChats, params: {});
 
   static SocketMessage readMessage(
-          {required List<int> ids, required int opponentId}) =>
+          {required int messageId, required int opponentId}) =>
       SocketMessage(action: Commands.readMessage, params: {
-        'id': ids,
+        'id': messageId,
         'opponent_id': opponentId,
       });
 

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:eventify/eventify.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -39,6 +40,18 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   final PublishSubject<List<ChatMessageModel>> _entitiesStream =
       PublishSubject();
+
+  final PublishSubject<ChatMessageModel> _oneMessageStream = PublishSubject();
+
+  final BehaviorSubject<EnterRoomData> _enterRoomDataStream = BehaviorSubject();
+
+  final PublishSubject<ChatMessageModel> _updateMessageIdStream =
+      PublishSubject();
+  final PublishSubject<ChatMessageModel> _updateMessageIsDeliveredStream =
+      PublishSubject();
+  final PublishSubject<int> _updateMessageIsReadStream = PublishSubject();
+
+  final PublishSubject<int> _updateWriteStatusStream = PublishSubject();
 
   WebSocketManagerImpl(
     this._zodiacMainCubit,
@@ -104,7 +117,11 @@ class WebSocketManagerImpl implements WebSocketManager {
         Commands.writeStatus, this, (event, _) => _onWriteStatus(event));
 
     //chatMessage && productMessage && privateMessage
-    _emitter.on(Commands.msgCreated, this, (ev, _) => _onMsgCreated());
+    _emitter.on(Commands.msgCreated, this, (event, _) => _onMsgCreated(event));
+
+    //msgDelivered
+    _emitter.on(
+        Commands.msgDelivered, this, (event, _) => _onMsgDelivered(event));
 
     //message
     _emitter.on(Commands.message, this, (event, _) => _onMessage(event));
@@ -167,6 +184,28 @@ class WebSocketManagerImpl implements WebSocketManager {
   Stream<List<ChatMessageModel>> get entitiesStream => _entitiesStream.stream;
 
   @override
+  Stream<ChatMessageModel> get oneMessageStream => _oneMessageStream.stream;
+
+  @override
+  Stream<ChatMessageModel> get updateMessageIdStream =>
+      _updateMessageIdStream.stream;
+
+  @override
+  Stream<ChatMessageModel> get updateMessageIsDeliveredStream =>
+      _updateMessageIsDeliveredStream.stream;
+
+  @override
+  Stream<int> get updateMessageIsReadStream =>
+      _updateMessageIsReadStream.stream;
+
+  @override
+  Stream<int> get updateWriteStatusStream => _updateWriteStatusStream.stream;
+
+  @override
+  ValueStream<EnterRoomData> get enterRoomDataStream =>
+      _enterRoomDataStream.stream;
+
+  @override
   PublishSubject<bool> get endChatTrigger => _endChatTrigger;
 
   @override
@@ -213,11 +252,34 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   @override
   void chatLogin({required int opponentId}) {
-      _send(
-        SocketMessage.chatLogin(
-          id: opponentId,
-        ),
-      );
+    _send(
+      SocketMessage.chatLogin(
+        id: opponentId,
+      ),
+    );
+  }
+
+  @override
+  void sendWriteStatus({required int opponentId, required String roomId}) {
+    _send(
+      SocketMessage.writeStatus(
+        opponentId: opponentId,
+        roomId: roomId,
+      ),
+    );
+  }
+
+  @override
+  void sendReadMessage({
+    required int messageId,
+    required int opponentId,
+  }) {
+    _send(
+      SocketMessage.readMessage(
+        messageId: messageId,
+        opponentId: opponentId,
+      ),
+    );
   }
 
   @override
@@ -356,17 +418,18 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onEnterRoom(Event event) {
-    final SocketMessage message = (event.eventData as SocketMessage);
-    final EnterRoomData enterRoomData =
-        EnterRoomData.fromJson(message.params ?? {});
+    (event.eventData as SocketMessage).let((data) {
+      final EnterRoomData enterRoomData =
+          EnterRoomData.fromJson(data.params ?? {});
 
-    chatLogin(opponentId: enterRoomData.userData?.id ?? 0);
+      chatLogin(opponentId: enterRoomData.userData?.id ?? 0);
 
-    _send(SocketMessage.enterRoom(
-      opponentId: enterRoomData.userData?.id ?? 0,
-      activeChat: enterRoomData.activeChat,
-      roomId: enterRoomData.roomData?.id,
-    ));
+      _send(SocketMessage.enterRoom(
+        opponentId: enterRoomData.userData?.id ?? 0,
+        activeChat: enterRoomData.activeChat,
+        roomId: enterRoomData.roomData?.id,
+      ));
+    });
   }
 
   void _onDeclineCall(Event event) {
@@ -407,79 +470,107 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onWriteStatus(Event event) {
-    ///TODO - Implements onWriteStatus
+    (event.eventData as SocketMessage).let((data) {
+      (data.opponentId as int)
+          .let((id) => _updateWriteStatusStream.add(id));
+    });
   }
 
-  void _onMsgCreated() {
-    ///TODO - Implements onMsgCreated
+  void _onMsgCreated(Event event) {
+    (event.eventData as SocketMessage).let((data) {
+      final message = ChatMessageModel.fromJson(data.params ?? {});
+      _updateMessageIdStream.add(message);
+    });
+  }
+
+  void _onMsgDelivered(Event event) {
+    (event.eventData as SocketMessage).let((data) {
+      final message = ChatMessageModel.fromJson(data.params ?? {});
+      _updateMessageIsDeliveredStream.add(message);
+    });
+  }
+
+  void _onReadMessage(Event event) {
+    (event.eventData as SocketMessage).let((data) {
+      (data.params['id'] as int)
+          .let((id) => _updateMessageIsReadStream.add(id));
+    });
   }
 
   void _onMessage(Event event) {
-    _send(SocketMessage.msgDelivered());
-    _zodiacMainCubit.updateSessions();
+    // _zodiacMainCubit.updateSessions();
+
+    (event.eventData as SocketMessage).let((data) {
+      _send(SocketMessage.msgDelivered(mid: data.params['mid']));
+
+      final message = ChatMessageModel.fromJson(data.params ?? {});
+
+      int messageType = data.params?['type'];
+      switch (messageType) {
+        case 3:
+          // - Simple message
+          break;
+        case 4:
+          // - Coupon message
+          break;
+        case 5:
+          // - Review message
+          break;
+        case 6:
+          // - Products message
+          break;
+        case 7:
+          // - System message
+          break;
+        case 8:
+          // - Private message
+          break;
+        case 9:
+          // - Tips message
+          break;
+        case 10:
+          // - Image message
+          break;
+        case 11:
+          // - Start chat message
+          break;
+        case 12:
+          // - End chat message
+          break;
+        case 13:
+          // - Start call message
+          break;
+        case 14:
+          // - End call message
+          break;
+        case 15:
+          // - Advisor messages message
+          break;
+        case 16:
+          // - Extend message
+          break;
+        case 17:
+          // - Missed message
+          break;
+        case 18:
+          // - Coupon after session message
+          break;
+        case 19:
+          // - Translated message
+          break;
+        case 20:
+          // - Product list message
+          break;
+        case 21:
+          // - Audio message
+          break;
+      }
+
+      _oneMessageStream.add(message);
+    });
 
     ///TODO - Implements onMessage
     SocketMessage message = (event.eventData as SocketMessage);
-    int messageType = message.params?['type'];
-    switch (messageType) {
-      case 3:
-        // - Simple message
-        break;
-      case 4:
-        // - Coupon message
-        break;
-      case 5:
-        // - Review message
-        break;
-      case 6:
-        // - Products message
-        break;
-      case 7:
-        // - System message
-        break;
-      case 8:
-        // - Private message
-        break;
-      case 9:
-        // - Tips message
-        break;
-      case 10:
-        // - Image message
-        break;
-      case 11:
-        // - Start chat message
-        break;
-      case 12:
-        // - End chat message
-        break;
-      case 13:
-        // - Start call message
-        break;
-      case 14:
-        // - End call message
-        break;
-      case 15:
-        // - Advisor messages message
-        break;
-      case 16:
-        // - Extend message
-        break;
-      case 17:
-        // - Missed message
-        break;
-      case 18:
-        // - Coupon after session message
-        break;
-      case 19:
-        // - Translated message
-        break;
-      case 20:
-        // - Product list message
-        break;
-      case 21:
-        // - Audio message
-        break;
-    }
   }
 
   void _onUnreadChats(Event event) {
@@ -488,10 +579,6 @@ class WebSocketManagerImpl implements WebSocketManager {
     if (count != null) {
       _zodiacMainCubit.updateUnreadChats(count);
     }
-  }
-
-  void _onReadMessage(Event event) {
-    ///TODO - Implements onReadMessage
   }
 
   void _onUnderageConfirm(Event event) {

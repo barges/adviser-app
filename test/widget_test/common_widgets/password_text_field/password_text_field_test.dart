@@ -10,7 +10,7 @@ void main() {
       await tester.pumpWidget(MaterialApp(
         home: Scaffold(
           body: PasswordTextField(
-              controller: TextEditingController(),
+              observerController: TextEditingController(),
               focusNode: FocusNode(),
               hintText: 'Enter a password'),
         ),
@@ -26,7 +26,7 @@ void main() {
       await tester.pumpWidget(MaterialApp(
         home: Scaffold(
           body: PasswordTextField(
-              controller: TextEditingController(),
+              observerController: TextEditingController(),
               focusNode: FocusNode(),
               hintText: 'Enter your password'),
         ),
@@ -39,7 +39,7 @@ void main() {
       await tester.pumpWidget(MaterialApp(
         home: Scaffold(
           body: PasswordTextField(
-              controller: TextEditingController(),
+              observerController: TextEditingController(),
               focusNode: FocusNode(),
               hintText: 'Enter your password'),
         ),
@@ -56,7 +56,7 @@ void main() {
             return MaterialApp(
               home: Scaffold(
                 body: PasswordTextField(
-                  controller: TextEditingController(),
+                  observerController: TextEditingController(),
                   focusNode: FocusNode(),
                   hintText: 'Enter your password',
                 ),
@@ -79,7 +79,7 @@ void main() {
             return MaterialApp(
               home: Scaffold(
                 body: PasswordTextField(
-                  controller: TextEditingController(),
+                  observerController: TextEditingController(),
                   focusNode: FocusNode(),
                   hintText: 'Enter your password',
                   hiddenPassword: false,

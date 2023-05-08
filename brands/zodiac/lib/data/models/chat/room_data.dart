@@ -17,7 +17,7 @@ class RoomData with _$RoomData {
   const factory RoomData({
     String? id,
     String? type,
-    double? fee,
+    dynamic fee,
     int? startTimer,
     @Default(false)
     bool trial,

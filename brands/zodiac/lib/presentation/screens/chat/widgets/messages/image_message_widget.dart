@@ -3,6 +3,7 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/is_delivered_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/reaction_widget.dart';
 import 'package:zodiac/zodiac_extensions.dart';
 
@@ -83,12 +84,21 @@ class _ImageWidget extends StatelessWidget {
               ),
               color: AppColors.black.withOpacity(0.4),
             ),
-            child: Center(
-              child: Text(chatMessageModel.utc?.chatListTime ?? '',
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  chatMessageModel.utc?.chatListTime ?? '',
                   style: theme.textTheme.bodySmall?.copyWith(
                     fontSize: 12.0,
                     color: theme.backgroundColor,
-                  )),
+                  ),
+                ),
+                IsDeliveredWidget(
+                  chatMessageModel: chatMessageModel,
+                  color: theme.backgroundColor,
+                ),
+              ],
             ),
           ),
         )

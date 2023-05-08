@@ -49,6 +49,8 @@ dependencies:
   vibration: ^1.7.6
   assets_audio_player: ^3.0.6
   flutter_slidable: ^3.0.0
+  visibility_detector: ^0.4.0+2
+  scrollview_observer: ^1.10.1
 
 
 dev_dependencies:
