@@ -12,8 +12,6 @@ import 'package:zodiac/presentation/common_widgets/text_fields/app_text_field.da
 import 'package:zodiac/presentation/screens/phone_number/phone_number_cubit.dart';
 import 'package:zodiac/presentation/screens/phone_number/widgets/country_code_widget.dart';
 
-const pnoneNumberMaxLength = 15;
-
 class PhoneNumberScreen extends StatelessWidget {
   final Phone? phoneNumber;
   const PhoneNumberScreen({
@@ -107,8 +105,11 @@ class PhoneNumberScreen extends StatelessWidget {
                               child: Builder(builder: (context) {
                                 context.select((PhoneNumberCubit cubit) =>
                                     cubit.state.isPhoneNumberInputFocused);
+                                final maxLength = context.select(
+                                    (PhoneNumberCubit cubit) =>
+                                        cubit.state.phoneNumberMaxLength);
                                 return AppTextField(
-                                  maxLength: pnoneNumberMaxLength,
+                                  maxLength: maxLength ?? pnoneNumberMaxLength,
                                   textInputType: TextInputType.number,
                                   focusNode:
                                       phoneNumberCubit.phoneNumberInputFocus,

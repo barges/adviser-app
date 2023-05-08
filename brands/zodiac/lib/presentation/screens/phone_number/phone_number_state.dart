@@ -8,6 +8,7 @@ class PhoneNumberState with _$PhoneNumberState {
   const factory PhoneNumberState({
     @Default(false) bool isPhoneNumberInputFocused,
     @Default(false) bool isSendCodeButtonEnabled,
-    @Default(Phone) phone,
+    @Default(Phone()) phone,
+    int? phoneNumberMaxLength,
   }) = _PhoneNumberState;
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
@@ -7,6 +8,8 @@ import 'package:zodiac/data/models/settings/phone_country_code.dart';
 import 'package:zodiac/presentation/screens/phone_number/phone_number_state.dart';
 import 'package:zodiac/services/phone_country_codes.dart';
 
+const pnoneNumberMaxLength = 15;
+
 class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   Phone phoneNumber;
   final FocusNode phoneNumberInputFocus = FocusNode();
@@ -14,6 +17,10 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
       TextEditingController();
 
   PhoneNumberCubit(this.phoneNumber) : super(const PhoneNumberState()) {
+    _init();
+  }
+
+  _init() async {
     WidgetsBinding.instance
         .addPostFrameCallback((_) => setTextInputFocus(true));
 
@@ -21,11 +28,18 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
       phoneNumberInputController.text = phoneNumber.number.toString();
     }
     if (phoneNumber.code != null) {
+      int? phoneNumberMaxLength =
+          await compute(_getPhoneNumberMaxLength, phoneNumber.code!);
+      if (phoneNumberMaxLength != null) {
+        _correctPhoneNumberDigitCount(phoneNumberMaxLength);
+      }
       emit(state.copyWith(
         phone: phoneNumber.copyWith(
             country: (phoneNumber.country == null && phoneNumber.code != null)
                 ? _getCountryNameByCode(phoneNumber.code!)
                 : ''),
+        isSendCodeButtonEnabled: isPhoneNumberValidLength,
+        phoneNumberMaxLength: phoneNumberMaxLength,
       ));
     }
 
@@ -47,14 +61,22 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
     return super.close();
   }
 
-  void setPhoneCountryCode(PhoneCountryCode phoneCountryCode) {
+  Future<void> setPhoneCountryCode(PhoneCountryCode phoneCountryCode) async {
     phoneNumber = phoneNumber.copyWith(
       code: phoneCountryCode.toCodeInt(),
       country: phoneCountryCode.name,
     );
+
+    int? phoneNumberMaxLength = phoneNumber.code != null
+        ? await compute(_getPhoneNumberMaxLength, phoneNumber.code!)
+        : null;
+    if (phoneNumberMaxLength != null) {
+      _correctPhoneNumberDigitCount(phoneNumberMaxLength);
+    }
     emit(state.copyWith(
       phone: phoneNumber,
       isSendCodeButtonEnabled: isPhoneNumberValidLength,
+      phoneNumberMaxLength: phoneNumberMaxLength,
     ));
   }
 
@@ -62,6 +84,15 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
     emit(state.copyWith(isPhoneNumberInputFocused: value));
     if (value) {
       phoneNumberInputFocus.requestFocus();
+    }
+  }
+
+  void _correctPhoneNumberDigitCount(int maxLength) {
+    if (phoneNumberInputController.text.length > maxLength) {
+      phoneNumberInputController.text =
+          phoneNumberInputController.text.substring(0, maxLength);
+      phoneNumberInputController.selection = TextSelection.collapsed(
+          offset: phoneNumberInputController.text.length);
     }
   }
 
@@ -73,4 +104,21 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
     final phoneNumberParsed = PhoneNumber.parse(phoneNumber.toString());
     return phoneNumberParsed.isValidLength();
   }
+}
+
+int _getPhoneNumberMaxLength(int code) {
+  final List<String> splittedNumber = '111111111111111'.split('');
+  String testNumber = '';
+  bool isValidLengthPrev = false;
+  for (var item in splittedNumber) {
+    testNumber += item;
+    final isValidLength =
+        PhoneNumber.parse('+$code$testNumber').isValidLength();
+    if (isValidLengthPrev && !isValidLength) {
+      return testNumber.length - 1;
+    }
+    isValidLengthPrev = isValidLength;
+  }
+
+  return pnoneNumberMaxLength;
 }
