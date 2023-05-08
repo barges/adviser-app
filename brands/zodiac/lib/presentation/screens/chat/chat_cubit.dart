@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
+import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
@@ -21,6 +23,8 @@ class ChatCubit extends Cubit<ChatState> {
   final bool _fromStartingChat;
   final UserData clientData;
   final ZodiacUserRepository _userRepository;
+  final double _screenHeight;
+
   final TextEditingController textFieldController = TextEditingController();
   final ScrollController messagesScrollController = ScrollController();
 
@@ -45,6 +49,8 @@ class ChatCubit extends Cubit<ChatState> {
   late final StreamSubscription<int> _updateWriteStatusSubscription;
 
   bool triggerOnTextChanged = true;
+  bool _isRefresh = false;
+  bool _isLoadingMessages = false;
 
   final List<ChatMessageModel> _messages = [];
   EnterRoomData? enterRoomData;
@@ -54,11 +60,23 @@ class ChatCubit extends Cubit<ChatState> {
     this._fromStartingChat,
     this.clientData,
     this._userRepository,
+    this._screenHeight,
   ) : super(const ChatState()) {
     _messagesSubscription = _webSocketManager.entitiesStream.listen((event) {
+      if (_isRefresh) {
+        _isRefresh = false;
+        _messages.clear();
+      }
+
       _messages.addAll(event);
 
       _updateMessages(_messages);
+
+      logger.d(_messages.length);
+
+      if (event.length == 50) {
+        _isLoadingMessages = false;
+      }
 
       _oneMessageSubscription ??=
           _webSocketManager.oneMessageStream.listen((event) {
@@ -130,6 +148,16 @@ class ChatCubit extends Cubit<ChatState> {
 
     messagesScrollController.addListener(() {
       _showDownButtonStream.add(messagesScrollController.position.pixels);
+
+      if (messagesScrollController.position.extentAfter <= _screenHeight) {
+        if (!_isLoadingMessages) {
+          _isLoadingMessages = true;
+          final int? maxId = _messages.lastOrNull?.id;
+          maxId.let((id) {
+            getMessageWithPagination(maxId: maxId);
+          });
+        }
+      }
     });
 
     textFieldController.addListener(() {
@@ -190,9 +218,9 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   void animateToStartChat() {
-    observerController.animateTo(
-      index: 0,
-      duration: const Duration(milliseconds: 500),
+    messagesScrollController.animateTo(
+      0.0,
+      duration: const Duration(milliseconds: 300),
       curve: Curves.linear,
     );
   }

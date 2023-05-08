@@ -35,11 +35,13 @@ class SystemMessageWidget extends StatelessWidget {
           const SizedBox(
             width: 8.0,
           ),
-          Text(
-            chatMessageModel.message ?? '',
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: AppColors.orange,
-                ),
+          Expanded(
+            child: Text(
+              chatMessageModel.message ?? '',
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: AppColors.orange,
+                  ),
+            ),
           )
         ],
       ),

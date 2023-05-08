@@ -10,6 +10,7 @@ import 'package:zodiac/presentation/screens/chat/widgets/messages/missed_message
 import 'package:zodiac/presentation/screens/chat/widgets/messages/review_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/simple_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/start_chat_message_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/messages/system_message_widget.dart';
 
 class ChatMessageWidget extends StatelessWidget {
   final ChatMessageModel chatMessageModel;
@@ -37,7 +38,9 @@ class ChatMessageWidget extends StatelessWidget {
       case ChatMessageType.products:
         return Text(chatMessageModel.type.name);
       case ChatMessageType.system:
-        return Text(chatMessageModel.type.name);
+        return SystemMessageWidget(
+          chatMessageModel: chatMessageModel,
+        );
       case ChatMessageType.private:
         return SimpleMessageWidget(
           chatMessageModel: chatMessageModel,

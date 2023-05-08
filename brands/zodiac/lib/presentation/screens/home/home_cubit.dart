@@ -13,11 +13,11 @@ import 'package:zodiac/data/models/user_info/locale_model.dart';
 import 'package:zodiac/data/network/requests/article_count_request.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/locales_response.dart';
-import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
-import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_articles_repository.dart';
+import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/home/home_state.dart';
 import 'package:zodiac/presentation/screens/home/tabs_types.dart';
+import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
@@ -157,14 +157,17 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   changeTabIndex(int index) {
+    final previousIndex = state.tabPositionIndex;
     emit(state.copyWith(tabPositionIndex: index));
-    if (index == TabsTypes.articles.index) {
+    if (previousIndex != TabsTypes.articles.index &&
+        index == TabsTypes.articles.index) {
       _zodiacMainCubit.updateArticle();
       if (_firstOpenArticlesTab) {
         getArticleCount(update: 1);
         _firstOpenArticlesTab = false;
       }
-    } else if (index == TabsTypes.sessions.index) {
+    } else if (previousIndex != TabsTypes.sessions.index &&
+        index == TabsTypes.sessions.index) {
       _zodiacMainCubit.updateSessions();
     }
   }

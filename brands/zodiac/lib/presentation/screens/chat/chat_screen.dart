@@ -33,13 +33,10 @@ class ChatScreen extends StatelessWidget {
         fromStartingChat,
         userData,
         zodiacGetIt.get<ZodiacUserRepository>(),
+        MediaQuery.of(context).size.height,
       ),
       child: Builder(builder: (context) {
         final ChatCubit chatCubit = context.read<ChatCubit>();
-
-        // for (var element in messages) {
-        //   logger.d(element);
-        // }
 
         return Scaffold(
           appBar: ChatConversationAppBar(
@@ -56,6 +53,10 @@ class ChatScreen extends StatelessWidget {
                       child: Builder(builder: (context) {
                         final List<ChatMessageModel> messages = context
                             .select((ChatCubit cubit) => cubit.state.messages);
+
+                        // for (var element in messages) {
+                        //   logger.d(element);
+                        // }
 
                         final int unreadCount = messages
                             .where((element) =>
