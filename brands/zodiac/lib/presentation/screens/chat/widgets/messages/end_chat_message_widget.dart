@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/zodiac_extensions.dart';
 
 class EndChatMessageWidget extends StatelessWidget {
@@ -8,12 +9,14 @@ class EndChatMessageWidget extends StatelessWidget {
   final String iconPath;
   final DateTime? date;
   final bool isOutgoing;
+  final Duration chatDuration;
 
   const EndChatMessageWidget({
     Key? key,
     required this.title,
     required this.iconPath,
     required this.date,
+    required this.chatDuration,
     this.isOutgoing = false,
   }) : super(key: key);
 
@@ -52,24 +55,30 @@ class EndChatMessageWidget extends StatelessWidget {
                 ],
               ),
               if (date != null)
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 4.0,
-                        ),
-                        child: Text(
-                          date!.chatListTime,
-                          textAlign: TextAlign.right,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            fontSize: 11.0,
-                            color: theme.shadowColor,
-                          ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 4.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        _parseChatDuration(chatDuration, context),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontSize: 11.0,
+                          color: theme.shadowColor,
                         ),
                       ),
-                    ),
-                  ],
+                      Text(
+                        date!.chatListTime,
+                        textAlign: TextAlign.right,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontSize: 11.0,
+                          color: theme.shadowColor,
+                        ),
+                      ),
+                    ],
+                  ),
                 )
             ],
           ),
@@ -77,5 +86,24 @@ class EndChatMessageWidget extends StatelessWidget {
         isOutgoing ? const SizedBox.shrink() : const Spacer(),
       ],
     );
+  }
+
+  String _parseChatDuration(Duration duration, BuildContext context) {
+    String result = '';
+    SZodiac s = SZodiac.of(context);
+
+    String hours = '${duration.inHours} ${s.hoursZodiac}';
+    String minutes = '${duration.inMinutes.remainder(60)} ${s.minutesZodiac}';
+    String seconds = '${duration.inSeconds.remainder(60)} ${s.secondsZodiac}';
+
+    if (duration.inHours > 0) {
+      result = '$hours $minutes $seconds, ';
+    } else if (duration.inMinutes > 0) {
+      result = '$minutes $seconds, ';
+    } else {
+      result = '$seconds, ';
+    }
+
+    return result;
   }
 }
