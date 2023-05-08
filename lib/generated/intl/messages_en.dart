@@ -142,7 +142,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "imAvailableNow":
             MessageLookupByLibrary.simpleMessage("I\'m available now"),
         "incomplete": MessageLookupByLibrary.simpleMessage("Incomplete"),
-        "ingenio": MessageLookupByLibrary.simpleMessage("Ingenio"),
         "itWillGoBackIntoTheGeneralQueue": MessageLookupByLibrary.simpleMessage(
             "It will go back into the general queue."),
         "learnMore": MessageLookupByLibrary.simpleMessage("Learn More"),
@@ -332,9 +331,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "weNeedPermissionToAccessYourMicrophone":
             MessageLookupByLibrary.simpleMessage(
                 "We need permission to access your microphone"),
-        "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
-            MessageLookupByLibrary.simpleMessage(
-                "We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others"),
         "weVeSentPasswordResetInstructionsToEmail": m3,
         "whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisList":
             MessageLookupByLibrary.simpleMessage(
