@@ -8,7 +8,6 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/chat/call_data.dart';
-import 'package:zodiac/domain/repositories/zodiac_chats_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
@@ -77,6 +76,7 @@ class StartingChatScreen extends StatelessWidget {
                                       glowColor: theme.primaryColorDark,
                                       child: UserAvatar(
                                         avatarUrl: callData.userData?.avatar,
+                                        backgroundColor: theme.canvasColor,
                                       ),
                                     ),
                                     Positioned(
