@@ -1070,10 +1070,10 @@ class S {
     );
   }
 
-  /// `News`
+  /// `Sessions`
   String get sessions {
     return Intl.message(
-      'News',
+      'Sessions',
       name: 'sessions',
       desc: '',
       args: [],

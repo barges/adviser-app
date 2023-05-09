@@ -101,7 +101,7 @@
   "resetPassword": "Passwort zurücksetzen",
   "yourAccountHasBeenBlockedPleaseContactYourAdvisorManager": "Dein Account wurde gesperrt. Bitte wende dich an das Beratermanagement.",
   "account": "Account",
-  "sessions": "Nachrichten",
+  "sessions": "Sitzungen",
   "fromXsecToYmin": "von {minRecordDurationInSec} Sekunden bis {maxRecordDurationInMinutes} Minuten",
   "doYouWantToDeleteAudioMessage": "Möchtest du diese Audionachricht löschen?",
   "doYouWantToDeleteImage": "Möchtest du das Bild löschen?",
