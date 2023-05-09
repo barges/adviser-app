@@ -125,4 +125,8 @@ class SessionsCubit extends Cubit<SessionsState> {
       }
     }
   }
+
+  void clearErrorMessage() {
+    _zodiacMainCubit.clearErrorMessage();
+  }
 }
