@@ -11,12 +11,18 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
 import 'package:hive/hive.dart';
+import 'package:system_date_time_format/system_date_time_format.dart';
 import 'app_binding.dart';
 import 'brand_manager.dart';
 
 class AppInitializer {
   static Future setupPrerequisites(Flavor flavor) async {
     WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
+    final format = SystemDateTimeFormat();
+
+    final String? timePattern = await format.getTimePattern();
+
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
     if (Platform.isIOS) {
       await Firebase.initializeApp(
@@ -42,6 +48,10 @@ class AppInitializer {
 
     ///dependencies injection
     await AppBinding.setupInjection(flavor);
+
+    if(timePattern != null) {
+      BrandManager.timeFormat = timePattern;
+    }
 
     await globalGetIt<BrandManager>().initDi(flavor);
   }

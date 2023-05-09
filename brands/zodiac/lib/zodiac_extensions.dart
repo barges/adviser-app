@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:zodiac/generated/l10n.dart';
 
-const String datePattern1 = 'dd MMM, h:mm a';
-const String datePattern2 = 'dd MMM yy, h:mm a';
-const String datePattern3 = 'h:mm a';
 const String datePattern4 = 'MMM dd';
 const String datePattern5 = 'MMM dd, yyyy';
 const String datePattern6 = 'MMM d, yyyy';
 const String datePattern7 = 'MMMM, yyyy';
 const String datePattern8 = 'MMM. d, yyyy';
-const String datePattern9 = 'h:mm a MMM d yyyy';
 
 extension DateTimeExt on DateTime {
   String sessionsListTime(BuildContext context) {
@@ -40,12 +37,24 @@ extension DateTimeExt on DateTime {
             .difference(DateTime(now.year, now.month, now.day))
             .inDays;
     if (timeDifference == 0) {
-      return DateFormat(datePattern3).format(localTime);
+      return DateFormat(
+        BrandManager.timeFormat,
+      ).format(localTime);
     }
     if (localTime.year != now.year) {
-      return DateFormat(datePattern2).format(localTime);
+      return DateFormat(
+        'dd MMM yy, ${BrandManager.timeFormat}',
+      ).format(localTime);
     }
-    return DateFormat(datePattern1).format(localTime);
+    return DateFormat(
+      'dd MMM, ${BrandManager.timeFormat}',
+    ).format(localTime);
+  }
+
+  String get reviewCardTime {
+    return DateFormat(
+      '${BrandManager.timeFormat} MMM d yyyy',
+    ).format(toLocal());
   }
 }
 

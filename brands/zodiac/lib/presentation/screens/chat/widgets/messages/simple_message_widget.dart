@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/is_delivered_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/reaction_widget.dart';
 import 'package:zodiac/zodiac_constants.dart';
 import 'package:zodiac/zodiac_extensions.dart';
@@ -90,13 +91,22 @@ class _MessageContainer extends StatelessWidget {
                 padding: const EdgeInsets.only(
                   top: 4.0,
                 ),
-                child: Text(
-                  date,
-                  textAlign: TextAlign.right,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    fontSize: 11.0,
-                    color: Colors.transparent,
-                  ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      date,
+                      textAlign: TextAlign.right,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontSize: 11.0,
+                        color: Colors.transparent,
+                      ),
+                    ),
+                    IsDeliveredWidget(
+                      chatMessageModel: chatMessageModel,
+                      color: Colors.transparent,
+                    ),
+                  ],
                 ),
               )
             ],
@@ -105,18 +115,26 @@ class _MessageContainer extends StatelessWidget {
         Positioned(
           bottom: 12.0,
           right: 12.0,
-          child: Text(
-            date,
-            textAlign: TextAlign.right,
-            style: theme.textTheme.bodySmall?.copyWith(
-              fontSize: 11.0,
-              color: isOutgoing ? theme.primaryColorLight : theme.shadowColor,
-            ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                date,
+                textAlign: TextAlign.right,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontSize: 11.0,
+                  color:
+                      isOutgoing ? theme.primaryColorLight : theme.shadowColor,
+                ),
+              ),
+              IsDeliveredWidget(
+                chatMessageModel: chatMessageModel,
+                color: theme.primaryColorLight,
+              ),
+            ],
           ),
         )
       ],
     );
   }
 }
-
-

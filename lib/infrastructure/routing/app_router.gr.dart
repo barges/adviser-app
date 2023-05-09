@@ -445,6 +445,7 @@ class MainAppRouter extends _i46.RootStackRouter {
         child: _i40.ChatScreen(
           key: args.key,
           userData: args.userData,
+          fromStartingChat: args.fromStartingChat,
         ),
       );
     },
@@ -1727,12 +1728,14 @@ class ZodiacChat extends _i46.PageRouteInfo<ZodiacChatArgs> {
   ZodiacChat({
     _i47.Key? key,
     required _i54.UserData userData,
+    bool fromStartingChat = false,
   }) : super(
           ZodiacChat.name,
           path: 'zodiacChat',
           args: ZodiacChatArgs(
             key: key,
             userData: userData,
+            fromStartingChat: fromStartingChat,
           ),
         );
 
@@ -1743,15 +1746,18 @@ class ZodiacChatArgs {
   const ZodiacChatArgs({
     this.key,
     required this.userData,
+    this.fromStartingChat = false,
   });
 
   final _i47.Key? key;
 
   final _i54.UserData userData;
 
+  final bool fromStartingChat;
+
   @override
   String toString() {
-    return 'ZodiacChatArgs{key: $key, userData: $userData}';
+    return 'ZodiacChatArgs{key: $key, userData: $userData, fromStartingChat: $fromStartingChat}';
   }
 }
 
