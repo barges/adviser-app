@@ -68,14 +68,4 @@ enum Brand {
         return false;
     }
   }
-
-  static List<String> allBrands = [
-    Assets.images.brands.bitWine.path,
-    Assets.images.brands.purpleGarden.path,
-    Assets.images.brands.purpleTides.path,
-    Assets.images.brands.purpleOcean.path,
-    Assets.images.brands.zodiacPsychics.path,
-    Assets.images.brands.theraPeer.path,
-    Assets.images.brands.fortunica.path,
-  ];
 }

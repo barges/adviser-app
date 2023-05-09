@@ -340,16 +340,6 @@ class S {
     );
   }
 
-  /// `We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others`
-  String get wePrideOurselvesToOfferAdvisorsASafePlaceTo {
-    return Intl.message(
-      'We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others',
-      name: 'wePrideOurselvesToOfferAdvisorsASafePlaceTo',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Cancel`
   String get cancel {
     return Intl.message(
@@ -385,16 +375,6 @@ class S {
     return Intl.message(
       'Log out',
       name: 'logOut',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Ingenio`
-  String get ingenio {
-    return Intl.message(
-      'Ingenio',
-      name: 'ingenio',
       desc: '',
       args: [],
     );
