@@ -298,7 +298,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tarot": MessageLookupByLibrary.simpleMessage("Tarot"),
         "tarotSessions": MessageLookupByLibrary.simpleMessage("Tarot Sesiones"),
         "tellOurTeamWhenYouPlanToReturn": MessageLookupByLibrary.simpleMessage(
-            "Hazle saber  a nuestro equipo cuándo tienes previsto volver:"),
+            "Deja una nota con la fecha de tu regreso."),
         "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m":
             MessageLookupByLibrary.simpleMessage(
                 "La respuesta no es posible, esta pregunta volverá a la lista general en ~ 1m"),
@@ -386,7 +386,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "youVeReachTheXMinuteTimeLimit": m6,
         "youWillBeAbleToChangeYourStatusBackIn":
             MessageLookupByLibrary.simpleMessage(
-                "Deja una nota con la fecha de tu regreso."),
+                "Puedes volver a cambiar tu estado tras 1h."),
         "yourAccountHasBeenBlockedPleaseContactYourAdvisorManager":
             MessageLookupByLibrary.simpleMessage(
                 "Tu cuenta ha sido bloqueada. Por favor, contacta a tu gerente."),

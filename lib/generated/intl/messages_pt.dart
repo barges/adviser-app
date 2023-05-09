@@ -245,7 +245,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "question": MessageLookupByLibrary.simpleMessage("Pergunta"),
         "questions": MessageLookupByLibrary.simpleMessage("Perguntas"),
         "quickAnswers":
-            MessageLookupByLibrary.simpleMessage("Respostas Express"),
+            MessageLookupByLibrary.simpleMessage("Respostas express"),
         "reading360": MessageLookupByLibrary.simpleMessage("Leitura 360°"),
         "reading360Sessions":
             MessageLookupByLibrary.simpleMessage("Leitura 360°"),

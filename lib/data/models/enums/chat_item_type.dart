@@ -60,11 +60,11 @@ enum ChatItemType {
   String typeName(BuildContext context) {
     switch (this) {
       case ChatItemType.private:
-        return '${S.of(context).private} ${S.of(context).question}';
+        return S.of(context).privateQuestion;
       case ChatItemType.ritual:
         return '${S.of(context).ritual} ${S.of(context).session}';
       case ChatItemType.public:
-        return '${S.of(context).public} ${S.of(context).question}';
+        return S.of(context).publicQuestion;
       default:
         return '';
     }

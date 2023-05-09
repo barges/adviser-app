@@ -99,7 +99,7 @@
   "resetPassword": "Reset password",
   "yourAccountHasBeenBlockedPleaseContactYourAdvisorManager": "Your account has been banned. Please contact Advisor Management.",
   "account": "Account",
-  "sessions": "News",
+  "sessions": "Sessions",
   "fromXsecToYmin": "from {minRecordDurationInSec} sec to {maxRecordDurationInMinutes} min",
   "doYouWantToDeleteImage": "Do you want to delete image?",
   "tryAgain": "Try again",

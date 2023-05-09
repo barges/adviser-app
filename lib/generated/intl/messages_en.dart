@@ -269,7 +269,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "seeMore": MessageLookupByLibrary.simpleMessage("See more"),
         "services": MessageLookupByLibrary.simpleMessage("services"),
         "session": MessageLookupByLibrary.simpleMessage("Session"),
-        "sessions": MessageLookupByLibrary.simpleMessage("News"),
+        "sessions": MessageLookupByLibrary.simpleMessage("Sessions"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
         "similarArticles":
