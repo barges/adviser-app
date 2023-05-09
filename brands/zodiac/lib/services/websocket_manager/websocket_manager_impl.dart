@@ -312,6 +312,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void endChat() {
     _endChatTrigger.add(true);
+    _send(SocketMessage.getUnreadChats());
   }
 
   Future<void> _authCheckOnBackend() async =>
@@ -471,8 +472,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onWriteStatus(Event event) {
     (event.eventData as SocketMessage).let((data) {
-      (data.opponentId as int)
-          .let((id) => _updateWriteStatusStream.add(id));
+      (data.opponentId as int).let((id) => _updateWriteStatusStream.add(id));
     });
   }
 
@@ -591,6 +591,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onEndChat(Event event) {
     ///TODO - Implements onEndChat
+    endChat();
   }
 
   void _onOfflineSessionStart(Event event) {
