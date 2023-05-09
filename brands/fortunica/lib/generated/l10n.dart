@@ -150,10 +150,10 @@ class SFortunica {
     );
   }
 
-  /// `Choose brand`
+  /// `Select brand`
   String get chooseBrandFortunica {
     return Intl.message(
-      'Choose brand',
+      'Select brand',
       name: 'chooseBrandFortunica',
       desc: '',
       args: [],
@@ -250,10 +250,10 @@ class SFortunica {
     );
   }
 
-  /// `Nickname`
+  /// `Pseudonym/Profile Name`
   String get nicknameFortunica {
     return Intl.message(
-      'Nickname',
+      'Pseudonym/Profile Name',
       name: 'nicknameFortunica',
       desc: '',
       args: [],
@@ -290,10 +290,10 @@ class SFortunica {
     );
   }
 
-  /// `Add Gallery Pictures`
+  /// `Add photos`
   String get addGalleryPicturesFortunica {
     return Intl.message(
-      'Add Gallery Pictures',
+      'Add photos',
       name: 'addGalleryPicturesFortunica',
       desc: '',
       args: [],
@@ -380,16 +380,6 @@ class SFortunica {
     );
   }
 
-  /// `For me`
-  String get forMeFortunica {
-    return Intl.message(
-      'For me',
-      name: 'forMeFortunica',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Search`
   String get searchFortunica {
     return Intl.message(
@@ -420,10 +410,10 @@ class SFortunica {
     );
   }
 
-  /// `Preview account`
+  /// `Profile Preview`
   String get previewAccountFortunica {
     return Intl.message(
-      'Preview account',
+      'Profile Preview',
       name: 'previewAccountFortunica',
       desc: '',
       args: [],
@@ -440,10 +430,10 @@ class SFortunica {
     );
   }
 
-  /// `Balance & Transactions`
+  /// `Services`
   String get balanceTransactionsFortunica {
     return Intl.message(
-      'Balance & Transactions',
+      'Services',
       name: 'balanceTransactionsFortunica',
       desc: '',
       args: [],
@@ -731,10 +721,10 @@ class SFortunica {
     );
   }
 
-  /// `Total markets`
+  /// `All Markets`
   String get totalMarketsFortunica {
     return Intl.message(
-      'Total markets',
+      'All Markets',
       name: 'totalMarketsFortunica',
       desc: '',
       args: [],
@@ -761,10 +751,10 @@ class SFortunica {
     );
   }
 
-  /// `Quick Answers`
+  /// `Live Questions`
   String get quickAnswersFortunica {
     return Intl.message(
-      'Quick Answers',
+      'Live Questions',
       name: 'quickAnswersFortunica',
       desc: '',
       args: [],
@@ -861,10 +851,10 @@ class SFortunica {
     );
   }
 
-  /// `You have not yet completed this month's sessions`
+  /// `The month is not over yet`
   String get youHaveNotYetCompletedThisMonthsSessionsFortunica {
     return Intl.message(
-      'You have not yet completed this month\'s sessions',
+      'The month is not over yet',
       name: 'youHaveNotYetCompletedThisMonthsSessionsFortunica',
       desc: '',
       args: [],
@@ -981,10 +971,10 @@ class SFortunica {
     );
   }
 
-  /// `You will be able to change your status back in 1 hour`
+  /// `You can change the status again in 1 hour.`
   String get youWillBeAbleToChangeYourStatusBackInFortunica {
     return Intl.message(
-      'You will be able to change your status back in 1 hour',
+      'You can change the status again in 1 hour.',
       name: 'youWillBeAbleToChangeYourStatusBackInFortunica',
       desc: '',
       args: [],
@@ -1001,10 +991,10 @@ class SFortunica {
     );
   }
 
-  /// `Your account has been blocked. Please contact your advisor manager.`
+  /// `Your account has been banned. Please contact Advisor Management.`
   String get yourAccountHasBeenBlockedPleaseContactYourAdvisorManagerFortunica {
     return Intl.message(
-      'Your account has been blocked. Please contact your advisor manager.',
+      'Your account has been banned. Please contact Advisor Management.',
       name: 'yourAccountHasBeenBlockedPleaseContactYourAdvisorManagerFortunica',
       desc: '',
       args: [],
@@ -1031,10 +1021,10 @@ class SFortunica {
     );
   }
 
-  /// `Sessions`
+  /// `News`
   String get sessionsFortunica {
     return Intl.message(
-      'Sessions',
+      'News',
       name: 'sessionsFortunica',
       desc: '',
       args: [],
@@ -1665,10 +1655,10 @@ class SFortunica {
     );
   }
 
-  /// `Tell our team when you plan to return:`
+  /// `TLeave a note when you'll be available again.`
   String get tellOurTeamWhenYouPlanToReturnFortunica {
     return Intl.message(
-      'Tell our team when you plan to return:',
+      'TLeave a note when you\'ll be available again.',
       name: 'tellOurTeamWhenYouPlanToReturnFortunica',
       desc: '',
       args: [],
@@ -1768,10 +1758,10 @@ class SFortunica {
     );
   }
 
-  /// `No sessions found with this filter`
+  /// `No messages found with this filter.`
   String get noSessionsFoundWithThisFilterFortunica {
     return Intl.message(
-      'No sessions found with this filter',
+      'No messages found with this filter.',
       name: 'noSessionsFoundWithThisFilterFortunica',
       desc: '',
       args: [],
@@ -1935,6 +1925,96 @@ class SFortunica {
     return Intl.message(
       'New password',
       name: 'newPasswordFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private Question`
+  String get privateQuestionFortunica {
+    return Intl.message(
+      'Private Question',
+      name: 'privateQuestionFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Public Question`
+  String get publicQuestionFortunica {
+    return Intl.message(
+      'Public Question',
+      name: 'publicQuestionFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Soulmate Reading Sessions`
+  String get soulmateReadingSessionsFortunica {
+    return Intl.message(
+      'Soulmate Reading Sessions',
+      name: 'soulmateReadingSessionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Love Crush Reading Sessions`
+  String get loveCrushReadingSessionsFortunica {
+    return Intl.message(
+      'Love Crush Reading Sessions',
+      name: 'loveCrushReadingSessionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Palm Reading Sessions`
+  String get palmReadingSessionsFortunica {
+    return Intl.message(
+      'Palm Reading Sessions',
+      name: 'palmReadingSessionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `360° Reading Sessions`
+  String get reading360SessionsFortunica {
+    return Intl.message(
+      '360° Reading Sessions',
+      name: 'reading360SessionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ritual Sessions`
+  String get ritualSessionsFortunica {
+    return Intl.message(
+      'Ritual Sessions',
+      name: 'ritualSessionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Astrology Sessions`
+  String get astrologySessionsFortunica {
+    return Intl.message(
+      'Astrology Sessions',
+      name: 'astrologySessionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tarot Sessions`
+  String get tarotSessionsFortunica {
+    return Intl.message(
+      'Tarot Sessions',
+      name: 'tarotSessionsFortunica',
       desc: '',
       args: [],
     );
