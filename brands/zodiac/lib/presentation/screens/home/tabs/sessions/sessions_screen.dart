@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
 import 'package:zodiac/data/models/chats/chat_item_zodiac.dart';
 import 'package:zodiac/domain/repositories/zodiac_chats_repository.dart';
@@ -13,6 +14,7 @@ import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/empty_list_widget.dart';
+import 'package:zodiac/presentation/common_widgets/no_connection_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/widgets/zodiac_chat_list_tile_widget.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
@@ -39,78 +41,93 @@ class SessionsScreen extends StatelessWidget {
             body: SafeArea(child: Builder(builder: (context) {
               final List<ZodiacChatsListItem>? chatsList =
                   context.select((SessionsCubit cubit) => cubit.state.chatList);
+              final bool isOnline = context.select((MainCubit cubit) =>
+                  cubit.state.internetConnectionIsAvailable);
 
-              return chatsList != null
-                  ? chatsList.isNotEmpty
-                      ? RefreshIndicator(
-                          onRefresh: zodiacSessionsCubit.refreshChatsList,
-                          child: SlidableAutoCloseBehavior(
-                            child: CustomScrollView(
-                              shrinkWrap: true,
-                              controller:
-                                  zodiacSessionsCubit.chatsListScrollController,
-                              physics: const ClampingScrollPhysics().applyTo(
-                                  const AlwaysScrollableScrollPhysics()),
-                              slivers: [
-                                const SliverPersistentHeader(
-                                  delegate: _SearchTextField(),
-                                ),
-                                SliverList(
-                                  delegate: SliverChildBuilderDelegate(
-                                    childCount: chatsList.length,
-                                    (context, index) {
-                                      final ZodiacChatsListItem item =
-                                          chatsList[index];
-
-                                      return Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              FocusScope.of(context).unfocus();
-                                              _goToChatHistory(context, item);
-                                            },
-                                            child: ZodiacChatListTileWidget(
-                                              item: item,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 12.0,
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
+              if (!isOnline) {
+                return CustomScrollView(slivers: [
+                  SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          NoConnectionWidget(),
+                        ],
+                      )),
+                ]);
+              } else if (chatsList != null) {
+                if (chatsList.isNotEmpty) {
+                  return RefreshIndicator(
+                    onRefresh: zodiacSessionsCubit.refreshChatsList,
+                    child: SlidableAutoCloseBehavior(
+                      child: CustomScrollView(
+                        shrinkWrap: true,
+                        controller:
+                            zodiacSessionsCubit.chatsListScrollController,
+                        physics: const ClampingScrollPhysics()
+                            .applyTo(const AlwaysScrollableScrollPhysics()),
+                        slivers: [
+                          const SliverPersistentHeader(
+                            delegate: _SearchTextField(),
                           ),
-                        )
-                      : CustomScrollView(
-                          slivers: [
-                            SliverFillRemaining(
-                              hasScrollBody: false,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal:
-                                        AppConstants.horizontalScreenPadding),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              childCount: chatsList.length,
+                              (context, index) {
+                                final ZodiacChatsListItem item =
+                                    chatsList[index];
+
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    EmptyListWidget(
-                                      title: SZodiac.of(context)
-                                          .noSessionsYetZodiac,
-                                      label: SZodiac.of(context)
-                                          .yourClientSessionHistoryWillAppearHereZodiac,
+                                    GestureDetector(
+                                      onTap: () {
+                                        FocusScope.of(context).unfocus();
+                                        _goToChatHistory(context, item);
+                                      },
+                                      child: ZodiacChatListTileWidget(
+                                        item: item,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 12.0,
                                     ),
                                   ],
-                                ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                } else {
+                  return CustomScrollView(
+                    slivers: [
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: AppConstants.horizontalScreenPadding),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              EmptyListWidget(
+                                title: SZodiac.of(context).noSessionsYetZodiac,
+                                label: SZodiac.of(context)
+                                    .yourClientSessionHistoryWillAppearHereZodiac,
                               ),
-                            )
-                          ],
-                        )
-                  : const SizedBox.shrink();
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                }
+              } else {
+                return const SizedBox.shrink();
+              }
             })),
           ),
         );
