@@ -96,7 +96,7 @@
   "yourAccountHasBeenBlockedPleaseContactYourAdvisorManagerFortunica": "Your account has been banned. Please contact Advisor Management.",
   "accountFortunica": "Account",
   "articlesFortunica": "Articles",
-  "sessionsFortunica": "News",
+  "sessionsFortunica": "Sessions",
   "fromXsecToYminFortunica": "from {minRecordDurationInSec} sec to {maxRecordDurationInMinutes} min",
   "doYouWantToDeleteImageFortunica": "Do you want to delete image?",
   "tryAgainFortunica": "Try again",

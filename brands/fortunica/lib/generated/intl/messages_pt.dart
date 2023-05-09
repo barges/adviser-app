@@ -270,7 +270,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "questionFortunica": MessageLookupByLibrary.simpleMessage("Pergunta"),
         "questionsFortunica": MessageLookupByLibrary.simpleMessage("Perguntas"),
         "quickAnswersFortunica":
-            MessageLookupByLibrary.simpleMessage("Respostas Express"),
+            MessageLookupByLibrary.simpleMessage("Respostas express"),
         "reading360Fortunica":
             MessageLookupByLibrary.simpleMessage("Leitura 360°"),
         "reading360SessionsFortunica":

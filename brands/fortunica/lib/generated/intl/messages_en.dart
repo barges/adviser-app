@@ -291,7 +291,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "seeMoreFortunica": MessageLookupByLibrary.simpleMessage("See more"),
         "servicesFortunica": MessageLookupByLibrary.simpleMessage("services"),
         "sessionFortunica": MessageLookupByLibrary.simpleMessage("Session"),
-        "sessionsFortunica": MessageLookupByLibrary.simpleMessage("News"),
+        "sessionsFortunica": MessageLookupByLibrary.simpleMessage("Sessions"),
         "settingsFortunica": MessageLookupByLibrary.simpleMessage("Settings"),
         "signInFortunica": MessageLookupByLibrary.simpleMessage("Sign in"),
         "similarArticlesFortunica":

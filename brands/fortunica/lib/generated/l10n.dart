@@ -1021,10 +1021,10 @@ class SFortunica {
     );
   }
 
-  /// `News`
+  /// `Sessions`
   String get sessionsFortunica {
     return Intl.message(
-      'News',
+      'Sessions',
       name: 'sessionsFortunica',
       desc: '',
       args: [],

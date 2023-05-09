@@ -324,7 +324,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Tarot Sesiones"),
         "tellOurTeamWhenYouPlanToReturnFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Hazle saber  a nuestro equipo cuándo tienes previsto volver:"),
+                "Deja una nota con la fecha de tu regreso."),
         "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1mFortunica":
             MessageLookupByLibrary.simpleMessage(
                 "La respuesta no es posible, esta pregunta volverá a la lista general en ~ 1m"),
@@ -406,7 +406,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "youVeReachTheXMinuteTimeLimitFortunica": m6,
         "youWillBeAbleToChangeYourStatusBackInFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Deja una nota con la fecha de tu regreso."),
+                "Puedes volver a cambiar tu estado tras 1h."),
         "yourAccountHasBeenBlockedPleaseContactYourAdvisorManagerFortunica":
             MessageLookupByLibrary.simpleMessage(
                 "Tu cuenta ha sido bloqueada. Por favor, contacta a tu gerente."),
