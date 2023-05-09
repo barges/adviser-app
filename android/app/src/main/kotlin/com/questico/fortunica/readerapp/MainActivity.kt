@@ -13,12 +13,12 @@ class MainActivity : FlutterActivity() {
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        //Pigeon.RecaptchaApi.setup(flutterEngine.dartExecutor.binaryMessenger, RecaptchaApiImp);
         val channel = context.packageName
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channel).setMethodCallHandler { call, result ->
             if (call.method == "uuidFromBytes") {
                 val deviceUuid = uuidFromBytes()
                 result.success(deviceUuid)
-
             }
         }
 

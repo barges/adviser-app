@@ -5,10 +5,10 @@ packages:
     dependency: transitive
     description:
       name: _fe_analyzer_shared
-      sha256: "4897882604d919befd350648c7f91926a9d5de99e67b455bf0917cc2362f4bb8"
+      sha256: "8880b4cfe7b5b17d57c052a5a3a8cc1d4f546261c7cc8fbd717bd53f48db0568"
       url: "https://pub.dev"
     source: hosted
-    version: "47.0.0"
+    version: "59.0.0"
   _flutterfire_internals:
     dependency: transitive
     description:
@@ -21,10 +21,10 @@ packages:
     dependency: transitive
     description:
       name: analyzer
-      sha256: "690e335554a8385bc9d787117d9eb52c0c03ee207a607e593de3c9d71b1cfe80"
+      sha256: a89627f49b0e70e068130a36571409726b04dab12da7e5625941d2c8ec278b96
       url: "https://pub.dev"
     source: hosted
-    version: "4.7.0"
+    version: "5.11.1"
   android_id:
     dependency: "direct main"
     description:
@@ -157,10 +157,10 @@ packages:
     dependency: "direct dev"
     description:
       name: auto_route_generator
-      sha256: c66eaa20dbba3211cac656037f88ba836a633dda953d9f4f9f9f5809b57e4278
+      sha256: de5bfbc02ae4eebb339dd90d325749ae7536e903f6513ef72b88954072d72b0e
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.2"
+    version: "5.0.3"
   auto_size_text:
     dependency: "direct main"
     description:
@@ -746,18 +746,18 @@ packages:
     dependency: transitive
     description:
       name: flutter_gen_core
-      sha256: f22863d36b4775d153c5b23f86091115b2f12c4020f6fefb5823bafe59940293
+      sha256: e8637dd6a59860f89e5e71be0a27101ec32dad1a0ed7fd879fd23b6e91d5004d
       url: "https://pub.dev"
     source: hosted
-    version: "4.3.0"
+    version: "5.3.1"
   flutter_gen_runner:
     dependency: "direct dev"
     description:
       name: flutter_gen_runner
-      sha256: "16adc8aa4f7bab75630e6cab209b9b1db8ac8ac5db3f586e41d70a2867c575d6"
+      sha256: "7de1bf4fc0439be0fef3178b6423d5c7f1f9f3a38a7c6fafe75d7f70ff4856d7"
       url: "https://pub.dev"
     source: hosted
-    version: "4.3.0"
+    version: "5.3.1"
   flutter_keyboard_size:
     dependency: "direct main"
     description:
@@ -1500,6 +1500,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.2"
+  pigeon:
+    dependency: "direct dev"
+    description:
+      name: pigeon
+      sha256: da0447df2790718101dfda5d14abbbf9179f42fd553e1833d899572d5f3d3131
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.0.0"
   pin_code_fields:
     dependency: transitive
     description:
@@ -2065,5 +2073,5 @@ packages:
     source: path
     version: "0.0.1"
 sdks:
-  dart: ">=2.18.2 <3.0.0"
+  dart: ">=2.19.0 <3.0.0"
   flutter: ">=3.7.0"
