@@ -47,4 +47,8 @@ abstract class WebSocketManager {
   void logoutChat(int chatId);
 
   void sendDeclineCall({int? opponentId});
+
+  void sendUnreadChats();
+
+  void sendCreateRoom({int? clientId, double? expertFee});
 }
