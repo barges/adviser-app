@@ -13,5 +13,22 @@ class ChatState with _$ChatState {
     @Default(false) bool needShowDownButton,
     @Default(false) bool needShowTypingIndicator,
     UserDetails? clientInformation,
+
+    @Default(0)
+    int inputTextLength,
+    @Default(false)
+    bool isSendButtonEnabled,
+    @Default(true)
+    bool isTextInputCollapsed,
+    @Default(18.0)
+    double textInputHeight,
+    @Default(false)
+    bool textInputFocused,
+    @Default(false)
+    bool isStretchedTextField,
+    @Default(false)
+    bool keyboardOpened,
+    @Default(96.0)
+    double bottomTextAreaHeight,
   }) = _ChatState;
 }
