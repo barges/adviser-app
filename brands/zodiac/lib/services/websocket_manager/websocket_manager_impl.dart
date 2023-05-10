@@ -305,6 +305,23 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   @override
+  void sendUnreadChats() {
+    _send(SocketMessage.getUnreadChats());
+  }
+
+  @override
+  void sendCreateRoom({int? clientId, double? expertFee}) {
+    if (clientId != null && expertFee != null) {
+      _send(
+        SocketMessage.createRoom(
+          clientId: clientId,
+          expertFee: expertFee,
+        ),
+      );
+    }
+  }
+
+  @override
   void close() {
     _socketSubscription?.cancel();
     _channel?.sink.close();
@@ -363,20 +380,7 @@ class WebSocketManagerImpl implements WebSocketManager {
     final CallData startCallData = CallData.fromJson(message.params ?? {});
     logger.d(message.params);
     if (ZodiacBrand().context != null) {
-      final dynamic needStartedChat =
-          await showStartingChat(ZodiacBrand().context!, startCallData);
-      if (needStartedChat == true) {
-        final clientId = startCallData.userData?.id;
-        final expertFee = startCallData.expertData?.fee;
-        if (clientId != null && expertFee != null) {
-          _send(
-            SocketMessage.createRoom(
-              clientId: clientId,
-              expertFee: expertFee,
-            ),
-          );
-        }
-      }
+      showStartingChat(ZodiacBrand().context!, startCallData);
     }
   }
 
