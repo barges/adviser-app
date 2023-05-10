@@ -11,6 +11,7 @@ import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/chat_entities_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_chats_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_state.dart';
+import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
@@ -20,6 +21,7 @@ class SessionsCubit extends Cubit<SessionsState> {
   final ZodiacChatsRepository _chatsRepository;
   final BrandManager _brandManager;
   final ZodiacMainCubit _zodiacMainCubit;
+  final WebSocketManager _webSocketManager;
 
   StreamSubscription? _currentBrandSubscription;
   StreamSubscription? _updateSessionsSubscription;
@@ -35,6 +37,7 @@ class SessionsCubit extends Cubit<SessionsState> {
     this._chatsRepository,
     this._brandManager,
     this._zodiacMainCubit,
+    this._webSocketManager,
     double screenHeight,
   ) : super(const SessionsState()) {
     if (_brandManager.getCurrentBrand().brandAlias == ZodiacBrand.alias) {
@@ -72,6 +75,7 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   Future<void> refreshChatsList() async {
     await _getChatsList(refresh: true);
+    _webSocketManager.sendUnreadChats();
   }
 
   Future<void> _getChatsList({bool refresh = false}) async {

@@ -19,6 +19,7 @@ import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dar
 import 'package:zodiac/presentation/common_widgets/no_connection_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/widgets/zodiac_chat_list_tile_widget.dart';
+import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class SessionsScreen extends StatelessWidget {
@@ -31,6 +32,7 @@ class SessionsScreen extends StatelessWidget {
         zodiacGetIt.get<ZodiacChatsRepository>(),
         zodiacGetIt.get<BrandManager>(),
         zodiacGetIt.get<ZodiacMainCubit>(),
+        zodiacGetIt.get<WebSocketManager>(),
         MediaQuery.of(context).size.height,
       ),
       child: Builder(builder: (context) {
