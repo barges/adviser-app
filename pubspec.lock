@@ -82,7 +82,7 @@ packages:
     source: hosted
     version: "2.10.0"
   audible_mode:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: audible_mode
       sha256: eaeb9df86d28860e4461fbfc8befd54d7abb796f8a7189e82187296b0c0ac78e
