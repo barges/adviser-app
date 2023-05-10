@@ -96,7 +96,7 @@
   "yourAccountHasBeenBlockedPleaseContactYourAdvisorManagerFortunica": "Tu cuenta ha sido bloqueada. Por favor, contacta a tu gerente.",
   "accountFortunica": "Cuenta",
   "articlesFortunica": "Artículos",
-  "sessionsFortunica": "Mensajes",
+  "sessionsFortunica": "Sesiones",
   "fromXsecToYminFortunica": "de {minRecordDurationInSec} segundos a {maxRecordDurationInMinutes} minutos",
   "doYouWantToDeleteAudioMessageFortunica": "¿Deseas borrar este mensaje de audio?",
   "doYouWantToDeleteImageFortunica": "¿Deseas eliminar la imagen?",

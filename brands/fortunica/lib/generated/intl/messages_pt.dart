@@ -68,7 +68,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Tem certeza de que deseja alterar seu status para Offline?"),
         "articlesFortunica": MessageLookupByLibrary.simpleMessage("Artigos"),
         "astrologyFortunica":
-            MessageLookupByLibrary.simpleMessage("Astrologia"),
+            MessageLookupByLibrary.simpleMessage("Consulta Astrológica"),
         "astrologySessionsFortunica":
             MessageLookupByLibrary.simpleMessage("Consulta Astrológica"),
         "audioMessageFortunica":
@@ -291,7 +291,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "returnToQueueFortunica":
             MessageLookupByLibrary.simpleMessage("RETORNAR\nÀ FILA"),
         "reviewsFortunica": MessageLookupByLibrary.simpleMessage("Avaliações"),
-        "ritualFortunica": MessageLookupByLibrary.simpleMessage("Ritual"),
+        "ritualFortunica":
+            MessageLookupByLibrary.simpleMessage("Sessão de Ritual"),
         "ritualSessionsFortunica":
             MessageLookupByLibrary.simpleMessage("Sessão de Ritual"),
         "saveFortunica": MessageLookupByLibrary.simpleMessage("Salvar"),
@@ -318,7 +319,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "takeMeThereFortunica": MessageLookupByLibrary.simpleMessage("Acessar"),
         "takeQuestionFortunica":
             MessageLookupByLibrary.simpleMessage("Responder a pergunta"),
-        "tarotFortunica": MessageLookupByLibrary.simpleMessage("Tarot"),
+        "tarotFortunica":
+            MessageLookupByLibrary.simpleMessage("Leitura de Cartas Especial"),
         "tarotSessionsFortunica":
             MessageLookupByLibrary.simpleMessage("Leitura de Cartas Especial"),
         "tellOurTeamWhenYouPlanToReturnFortunica":
