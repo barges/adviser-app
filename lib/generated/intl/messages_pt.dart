@@ -62,7 +62,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Tem certeza de que deseja alterar seu status para Offline?"),
         "articles": MessageLookupByLibrary.simpleMessage("Artigos"),
-        "astrology": MessageLookupByLibrary.simpleMessage("Astrologia"),
+        "astrology":
+            MessageLookupByLibrary.simpleMessage("Consulta Astrológica"),
         "astrologySessions":
             MessageLookupByLibrary.simpleMessage("Consulta Astrológica"),
         "audioMessage":
@@ -265,7 +266,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("RETORNAR\nÀ FILA"),
         "return_": MessageLookupByLibrary.simpleMessage("Voltar"),
         "reviews": MessageLookupByLibrary.simpleMessage("Avaliações"),
-        "ritual": MessageLookupByLibrary.simpleMessage("Ritual"),
+        "ritual": MessageLookupByLibrary.simpleMessage("Sessão de Ritual"),
         "ritualSessions":
             MessageLookupByLibrary.simpleMessage("Sessão de Ritual"),
         "save": MessageLookupByLibrary.simpleMessage("Salvar"),
@@ -292,7 +293,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "takeQuestion":
             MessageLookupByLibrary.simpleMessage("Responder a pergunta"),
         "tapToCopy": MessageLookupByLibrary.simpleMessage("Toque para copiar"),
-        "tarot": MessageLookupByLibrary.simpleMessage("Tarot"),
+        "tarot":
+            MessageLookupByLibrary.simpleMessage("Leitura de Cartas Especial"),
         "tarotSessions":
             MessageLookupByLibrary.simpleMessage("Leitura de Cartas Especial"),
         "tellOurTeamWhenYouPlanToReturn": MessageLookupByLibrary.simpleMessage(

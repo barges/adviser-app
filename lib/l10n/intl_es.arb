@@ -99,7 +99,7 @@
   "resetPassword": "Restablecer contraseña",
   "yourAccountHasBeenBlockedPleaseContactYourAdvisorManager": "Tu cuenta ha sido bloqueada. Por favor, contacta a tu gerente.",
   "account": "Cuenta",
-  "sessions": "Mensajes",
+  "sessions": "Sesiones",
   "fromXsecToYmin": "de {minRecordDurationInSec} segundos a {maxRecordDurationInMinutes} minutos",
   "doYouWantToDeleteAudioMessage": "¿Deseas borrar este mensaje de audio?",
   "doYouWantToDeleteImage": "¿Deseas eliminar la imagen?",
