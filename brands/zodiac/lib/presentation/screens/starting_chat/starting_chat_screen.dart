@@ -69,30 +69,19 @@ class StartingChatScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const SizedBox(height: 10.0),
-                              Stack(
-                                children: [
-                                  AvatarGlow(
-                                    endRadius: 81,
-                                    duration:
-                                        const Duration(milliseconds: 4000),
-                                    glowColor: theme.primaryColorDark,
-                                    child: UserAvatar(
-                                      avatarUrl: callData.userData?.avatar,
-                                      backgroundColor: theme.canvasColor,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    left: 0,
-                                    right: 0,
-                                    bottom: 0,
-                                    child: Center(
-                                      child: Text(
-                                        callData.userData?.name ?? '',
-                                        style: theme.textTheme.titleMedium,
-                                      ),
-                                    ),
-                                  )
-                                ],
+                              AvatarGlow(
+                                endRadius: 80,
+                                duration: const Duration(milliseconds: 4000),
+                                glowColor: theme.primaryColorDark,
+                                child: UserAvatar(
+                                  avatarUrl: callData.userData?.avatar,
+                                  backgroundColor: theme.canvasColor,
+                                ),
+                              ),
+                              Text(
+                                callData.userData?.name ?? '',
+                                style: theme.textTheme.titleMedium,
+                                textAlign: TextAlign.center,
                               ),
                               const SizedBox(
                                 height: 2.0,
