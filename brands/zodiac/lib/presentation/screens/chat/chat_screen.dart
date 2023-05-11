@@ -60,8 +60,7 @@ class ChatScreen extends StatelessWidget {
                           fromStartingChat: fromStartingChat,
                         ),
                       ),
-                      if (fromStartingChat &&
-                          (chatIsActive || offlineSessionIsActive))
+                      if (chatIsActive || offlineSessionIsActive)
                         Builder(builder: (context) {
                           final double focusedTextInputHeight = context.select(
                               (ChatCubit cubit) => cubit.state.textInputHeight);
@@ -94,7 +93,7 @@ class ChatScreen extends StatelessWidget {
                 ],
               ),
             ),
-            if (fromStartingChat && (chatIsActive || offlineSessionIsActive))
+            if (chatIsActive || offlineSessionIsActive)
               KeyboardSizeProvider(
                 child: Builder(builder: (context) {
                   final bool needBarrierColor = context.select(
