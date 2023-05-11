@@ -27,8 +27,8 @@ dependencies:
   rxdart: ^0.27.5
   injectable: ^1.5.3
   get_it: ^7.2.0
-  device_info_plus: ^4.1.2
-  package_info_plus: ^1.4.3+1
+  device_info_plus: ^9.0.0
+  package_info_plus: ^4.0.0
   android_id: ^0.0.7
   open_mail_app: ^0.4.5
   flutter_bloc: ^8.1.2
