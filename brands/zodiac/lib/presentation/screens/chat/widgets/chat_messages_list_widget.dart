@@ -35,88 +35,91 @@ class ChatMessagesListWidget extends StatelessWidget {
 
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
-      child: ListViewObserver(
-        controller: chatCubit.observerController,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            ListView.separated(
-              physics: ChatObserverClampingScrollPhysics(
-                observer: chatCubit.chatObserver,
-              ),
-              shrinkWrap:
-              chatCubit.chatObserver.isShrinkWrap,
-              controller:
-              chatCubit.messagesScrollController,
-              padding: const EdgeInsets.all(
-                ZodiacConstants.chatHorizontalPadding,
-              ),
-              reverse: true,
-              itemCount: messages.length,
-              itemBuilder:
-                  (BuildContext context, int index) {
-                if (index == 0) {
-                  return Builder(builder: (context) {
-                    return needShowTypingIndicator
-                        ? const Align(
-                      alignment:
-                      Alignment.bottomLeft,
-                      child: TypingIndicator(),
-                    )
-                        : const SizedBox.shrink();
-                  });
-                } else {
-                  final ChatMessageModel messageModel =
-                  messages[index - 1];
-                  if (messageModel.isOutgoing ||
-                      messageModel.isRead) {
-                    return ChatMessageWidget(
-                      chatMessageModel: messageModel,
-                    );
-                  } else {
-                    return VisibilityDetector(
-                      key:
-                      Key(messageModel.id.toString()),
-                      onVisibilityChanged:
-                          (visibilityInfo) {
-                        if (visibilityInfo
-                            .visibleFraction ==
-                            1) {
-                          chatCubit.sendReadMessage(
-                              messageModel.id);
-                        }
-                      },
-                      child: ChatMessageWidget(
-                        chatMessageModel: messageModel,
-                      ),
-                    );
-                  }
-                }
-              },
-              separatorBuilder:
-                  (BuildContext context, int index) {
-                return const SizedBox(
-                  height: 4.0,
-                );
-              },
-            ),
-            Builder(builder: (context) {
-              final bool needShowDownButton =
-              context.select((ChatCubit cubit) =>
-              cubit.state.needShowDownButton);
-              return needShowDownButton
-                  ? Positioned(
-                right: ZodiacConstants
-                    .chatHorizontalPadding,
-                bottom: ZodiacConstants
-                    .chatHorizontalPadding,
-                child: DownButtonWidget(
-                  unreadCount: unreadCount,
+      child: Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: ListViewObserver(
+          controller: chatCubit.observerController,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              ListView.separated(
+                physics: ChatObserverClampingScrollPhysics(
+                  observer: chatCubit.chatObserver,
                 ),
-              )
-                  : const SizedBox.shrink();
-            }),
-          ],
+                shrinkWrap:
+                chatCubit.chatObserver.isShrinkWrap,
+                controller:
+                chatCubit.messagesScrollController,
+                padding: const EdgeInsets.all(
+                  ZodiacConstants.chatHorizontalPadding,
+                ),
+                reverse: true,
+                itemCount: messages.length,
+                itemBuilder:
+                    (BuildContext context, int index) {
+                  if (index == 0) {
+                    return Builder(builder: (context) {
+                      return needShowTypingIndicator
+                          ? const Align(
+                        alignment:
+                        Alignment.bottomLeft,
+                        child: TypingIndicator(),
+                      )
+                          : const SizedBox.shrink();
+                    });
+                  } else {
+                    final ChatMessageModel messageModel =
+                    messages[index - 1];
+                    if (messageModel.isOutgoing ||
+                        messageModel.isRead) {
+                      return ChatMessageWidget(
+                        chatMessageModel: messageModel,
+                      );
+                    } else {
+                      return VisibilityDetector(
+                        key:
+                        Key(messageModel.id.toString()),
+                        onVisibilityChanged:
+                            (visibilityInfo) {
+                          if (visibilityInfo
+                              .visibleFraction ==
+                              1) {
+                            chatCubit.sendReadMessage(
+                                messageModel.id);
+                          }
+                        },
+                        child: ChatMessageWidget(
+                          chatMessageModel: messageModel,
+                        ),
+                      );
+                    }
+                  }
+                },
+                separatorBuilder:
+                    (BuildContext context, int index) {
+                  return const SizedBox(
+                    height: 4.0,
+                  );
+                },
+              ),
+              Builder(builder: (context) {
+                final bool needShowDownButton =
+                context.select((ChatCubit cubit) =>
+                cubit.state.needShowDownButton);
+                return needShowDownButton
+                    ? Positioned(
+                  right: ZodiacConstants
+                      .chatHorizontalPadding,
+                  bottom: ZodiacConstants
+                      .chatHorizontalPadding,
+                  child: DownButtonWidget(
+                    unreadCount: unreadCount,
+                  ),
+                )
+                    : const SizedBox.shrink();
+              }),
+            ],
+          ),
         ),
       ),
     );

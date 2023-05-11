@@ -13,7 +13,7 @@ dependencies:
   shared_advisor_interface:
     path: ../..
   hive: ^2.2.3
-  intl: ^0.17.0
+  intl: ^0.18.0
  # intl_utils: ^2.8.2
   freezed: ^2.1.0+1
   freezed_annotation: ^2.1.0

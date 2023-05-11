@@ -22,7 +22,7 @@ dependencies:
   freezed: ^2.1.0+1
   freezed_annotation: ^2.1.0
   json_annotation: ^4.7.0
-  intl: ^0.17.0
+  intl: ^0.18.0
   #intl_utils: ^2.8.2
   rxdart: ^0.27.5
   connectivity_plus: ^2.3.9
@@ -37,7 +37,6 @@ dependencies:
   flutter_bloc: ^8.1.2 #app state management
   auto_route: ^5.0.2
   equatable: ^2.0.5
-  multiple_localization: ^0.3.0
   audioplayers: ^2.0.0
   flutter_sound: ^9.2.13
   audio_session: ^0.1.13
@@ -91,11 +90,6 @@ dependencies:
   charts_painter: ^2.0.0+2
   snapping_sheet: ^3.1.0
   system_date_time_format: ^0.7.0
-
-
-
-
-
   injectable: ^1.5.3
 
 dev_dependencies:
