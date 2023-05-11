@@ -7,6 +7,7 @@ import 'package:shared_advisor_interface/services/check_permission_service.dart'
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/services/fresh_chat_service.dart';
 import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
+import 'package:shared_advisor_interface/services/silent_mode_service.dart';
 
 @module
 abstract class ServicesModule {
@@ -34,4 +35,8 @@ abstract class ServicesModule {
   @singleton
   CheckPermissionService get checkPermissionService =>
       globalGetIt.get<CheckPermissionService>();
+
+  @singleton
+  SilentModeService get silentModeService =>
+      globalGetIt.get<SilentModeService>();
 }

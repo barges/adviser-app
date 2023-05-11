@@ -125,5 +125,6 @@
   "callEndedZodiac": "Llamada terminada",
   "hideChatZodiac": "Ocultar chat",
   "preferredLanguageZodiac": "Idioma preferido: ",
-  "freebieSeeker": "Buscador de obsequios"
+  "freebieSeeker": "Buscador de obsequios",
+  "typeMessageZodiac": "Escribe un mensaje"
 }

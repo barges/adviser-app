@@ -13,7 +13,7 @@ dependencies:
   shared_advisor_interface:
     path: ../..
   hive: ^2.2.3
-  intl: ^0.17.0
+  intl: ^0.18.0
  # intl_utils: ^2.8.2
   freezed: ^2.1.0+1
   freezed_annotation: ^2.1.0
@@ -23,8 +23,8 @@ dependencies:
   rxdart: ^0.27.5
   injectable: ^1.5.3
   get_it: ^7.2.0
-  device_info_plus: ^4.1.2
-  package_info_plus: ^1.4.3+1
+  device_info_plus: ^9.0.0
+  package_info_plus: ^4.0.0
   android_id: ^0.0.7
   open_mail_app: ^0.4.5
   flutter_bloc: ^8.1.2
@@ -53,6 +53,9 @@ dependencies:
   flutter_slidable: ^3.0.0
   visibility_detector: ^0.4.0+2
   scrollview_observer: ^1.10.1
+  snapping_sheet: ^3.1.0
+  flutter_keyboard_visibility: ^5.4.0
+  flutter_keyboard_size: ^1.0.1
 
   audible_mode: ^1.0.1
 

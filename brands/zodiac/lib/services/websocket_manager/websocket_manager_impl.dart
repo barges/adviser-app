@@ -49,6 +49,8 @@ class WebSocketManagerImpl implements WebSocketManager {
       PublishSubject();
   final PublishSubject<ChatMessageModel> _updateMessageIsDeliveredStream =
       PublishSubject();
+  final PublishSubject<int> _chatIsActiveStream = PublishSubject();
+
   final PublishSubject<int> _updateMessageIsReadStream = PublishSubject();
 
   final PublishSubject<int> _updateWriteStatusStream = PublishSubject();
@@ -195,6 +197,10 @@ class WebSocketManagerImpl implements WebSocketManager {
       _updateMessageIsDeliveredStream.stream;
 
   @override
+  Stream<int> get chatIsActiveStream =>
+      _chatIsActiveStream.stream;
+
+@override
   Stream<int> get updateMessageIsReadStream =>
       _updateMessageIsReadStream.stream;
 
@@ -280,6 +286,7 @@ class WebSocketManagerImpl implements WebSocketManager {
         opponentId: opponentId,
       ),
     );
+    _updateMessageIsReadStream.add(messageId);
   }
 
   @override
@@ -305,6 +312,23 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   @override
+  void sendUnreadChats() {
+    _send(SocketMessage.getUnreadChats());
+  }
+
+  @override
+  void sendCreateRoom({int? clientId, double? expertFee}) {
+    if (clientId != null && expertFee != null) {
+      _send(
+        SocketMessage.createRoom(
+          clientId: clientId,
+          expertFee: expertFee,
+        ),
+      );
+    }
+  }
+
+  @override
   void close() {
     _socketSubscription?.cancel();
     _channel?.sink.close();
@@ -312,6 +336,8 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void endChat() {
     _endChatTrigger.add(true);
+    _send(SocketMessage.getUnreadChats());
+    _zodiacMainCubit.updateSessions();
   }
 
   Future<void> _authCheckOnBackend() async =>
@@ -362,20 +388,7 @@ class WebSocketManagerImpl implements WebSocketManager {
     final CallData startCallData = CallData.fromJson(message.params ?? {});
     logger.d(message.params);
     if (ZodiacBrand().context != null) {
-      final dynamic needStartedChat =
-          await showStartingChat(ZodiacBrand().context!, startCallData);
-      if (needStartedChat == true) {
-        final clientId = startCallData.userData?.id;
-        final expertFee = startCallData.expertData?.fee;
-        if (clientId != null && expertFee != null) {
-          _send(
-            SocketMessage.createRoom(
-              clientId: clientId,
-              expertFee: expertFee,
-            ),
-          );
-        }
-      }
+      showStartingChat(ZodiacBrand().context!, startCallData);
     }
   }
 
@@ -421,6 +434,8 @@ class WebSocketManagerImpl implements WebSocketManager {
     (event.eventData as SocketMessage).let((data) {
       final EnterRoomData enterRoomData =
           EnterRoomData.fromJson(data.params ?? {});
+
+      _enterRoomDataStream.add(enterRoomData);
 
       chatLogin(opponentId: enterRoomData.userData?.id ?? 0);
 
@@ -471,8 +486,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onWriteStatus(Event event) {
     (event.eventData as SocketMessage).let((data) {
-      (data.opponentId as int)
-          .let((id) => _updateWriteStatusStream.add(id));
+      (data.opponentId as int).let((id) => _updateWriteStatusStream.add(id));
     });
   }
 
@@ -591,6 +605,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onEndChat(Event event) {
     ///TODO - Implements onEndChat
+    endChat();
   }
 
   void _onOfflineSessionStart(Event event) {

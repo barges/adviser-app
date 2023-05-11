@@ -72,7 +72,7 @@ class NotificationsListTileWidget extends StatelessWidget {
                             ? DateTime.fromMillisecondsSinceEpoch(
                                     (item.dateCreate! * 1000),
                                     isUtc: true)
-                                .sessionsListTime(context)
+                                .transactionsListTime(context)
                             : '',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               fontSize: 12.0,

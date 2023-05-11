@@ -174,6 +174,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tipZodiac": MessageLookupByLibrary.simpleMessage("Tip"),
         "todayZodiac": MessageLookupByLibrary.simpleMessage("Today"),
         "topUpZodiac": MessageLookupByLibrary.simpleMessage("Top Up"),
+        "typeMessageZodiac":
+            MessageLookupByLibrary.simpleMessage("Type message"),
         "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Uh-oh. It looks like you\'ve lost your connection. Please try again."),

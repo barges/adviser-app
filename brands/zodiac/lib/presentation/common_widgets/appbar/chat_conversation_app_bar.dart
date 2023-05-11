@@ -13,6 +13,7 @@ class ChatConversationAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   final UserData userData;
   final VoidCallback? endChatButtonOnTap;
+  final VoidCallback? backButtonOnTap;
   final VoidCallback? onTap;
 
   const ChatConversationAppBar({
@@ -20,6 +21,7 @@ class ChatConversationAppBar extends StatelessWidget
     required this.userData,
     this.endChatButtonOnTap,
     this.onTap,
+    this.backButtonOnTap,
   }) : super(key: key);
 
   @override
@@ -57,7 +59,7 @@ class ChatConversationAppBar extends StatelessWidget
                   //   ),
                   AppIconButton(
                     icon: Assets.vectors.arrowLeft.path,
-                    onTap: selectedBrand.context?.pop,
+                    onTap: backButtonOnTap ?? selectedBrand.context?.pop,
                   ),
                   Expanded(
                     child: Column(

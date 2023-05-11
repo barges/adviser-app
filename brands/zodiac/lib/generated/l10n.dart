@@ -1324,6 +1324,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Type message`
+  String get typeMessageZodiac {
+    return Intl.message(
+      'Type message',
+      name: 'typeMessageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

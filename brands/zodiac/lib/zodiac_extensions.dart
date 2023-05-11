@@ -10,7 +10,25 @@ const String datePattern7 = 'MMMM, yyyy';
 const String datePattern8 = 'MMM. d, yyyy';
 
 extension DateTimeExt on DateTime {
-  String sessionsListTime(BuildContext context) {
+  String get sessionsListTime {
+    DateTime now = DateTime.now();
+    DateTime localTime = toLocal();
+    int timeDifference =
+        DateTime(localTime.year, localTime.month, localTime.day)
+            .difference(DateTime(now.year, now.month, now.day))
+            .inDays;
+    if (timeDifference == 0) {
+      return DateFormat(
+        BrandManager.timeFormat,
+      ).format(localTime);
+    }
+    if (localTime.year != now.year) {
+      return DateFormat(datePattern5).format(localTime);
+    }
+    return DateFormat(datePattern4).format(localTime);
+  }
+
+  String transactionsListTime(BuildContext context) {
     DateTime now = DateTime.now();
     DateTime localTime = toLocal();
     int timeDifference =
