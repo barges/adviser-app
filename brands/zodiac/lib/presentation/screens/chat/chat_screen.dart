@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
@@ -14,6 +15,7 @@ import 'package:zodiac/presentation/screens/chat/widgets/chat_text_input_widget.
 import 'package:zodiac/presentation/screens/chat/widgets/client_information_widget.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac_constants.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ChatScreen extends StatelessWidget {
   final UserData userData;
@@ -33,6 +35,7 @@ class ChatScreen extends StatelessWidget {
         fromStartingChat,
         userData,
         zodiacGetIt.get<ZodiacUserRepository>(),
+        zodiacGetIt.get<ZodiacMainCubit>(),
         MediaQuery.of(context).size.height,
       ),
       child: Builder(builder: (context) {
@@ -45,6 +48,10 @@ class ChatScreen extends StatelessWidget {
               appBar: ChatConversationAppBar(
                 userData: userData,
                 onTap: chatCubit.changeClientInformationWidgetOpened,
+                backButtonOnTap: () {
+                  chatCubit.updateSessions();
+                  context.pop();
+                },
               ),
               body: SafeArea(
                 child: Stack(

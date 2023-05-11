@@ -19,6 +19,7 @@ import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/chat/chat_state.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 const Duration _typingIndicatorDuration = Duration(milliseconds: 5000);
 
@@ -27,10 +28,13 @@ class ChatCubit extends Cubit<ChatState> {
   final bool _fromStartingChat;
   final UserData clientData;
   final ZodiacUserRepository _userRepository;
+  final ZodiacMainCubit _zodiacMainCubit;
   final double _screenHeight;
 
-  final SnappingSheetController snappingSheetController = SnappingSheetController();
-  final TextEditingController textInputEditingController = TextEditingController();
+  final SnappingSheetController snappingSheetController =
+      SnappingSheetController();
+  final TextEditingController textInputEditingController =
+      TextEditingController();
   final ScrollController textInputScrollController = ScrollController();
   final ScrollController messagesScrollController = ScrollController();
 
@@ -72,6 +76,7 @@ class ChatCubit extends Cubit<ChatState> {
     this._fromStartingChat,
     this.clientData,
     this._userRepository,
+    this._zodiacMainCubit,
     this._screenHeight,
   ) : super(const ChatState()) {
     _messagesSubscription = _webSocketManager.entitiesStream.listen((event) {
@@ -168,7 +173,7 @@ class ChatCubit extends Cubit<ChatState> {
     });
 
     textInputEditingController.addListener(() {
-      if(textInputEditingController.text.isNotEmpty){
+      if (textInputEditingController.text.isNotEmpty) {
         emit(state.copyWith(
           inputTextLength: textInputEditingController.text.length,
           isSendButtonEnabled: true,
@@ -191,15 +196,15 @@ class ChatCubit extends Cubit<ChatState> {
 
     _keyboardSubscription =
         KeyboardVisibilityController().onChange.listen((bool visible) {
-          if (!visible) {
-            textInputFocusNode.unfocus();
-            emit(state.copyWith(isTextInputCollapsed: true));
-          }
+      if (!visible) {
+        textInputFocusNode.unfocus();
+        emit(state.copyWith(isTextInputCollapsed: true));
+      }
 
-          Future.delayed(const Duration(milliseconds: 500)).then((value) {
-            emit(state.copyWith(keyboardOpened: !state.keyboardOpened));
-          }).onError((error, stackTrace) {});
-        });
+      Future.delayed(const Duration(milliseconds: 500)).then((value) {
+        emit(state.copyWith(keyboardOpened: !state.keyboardOpened));
+      }).onError((error, stackTrace) {});
+    });
 
     textInputFocusNode.addListener(() {
       final bool isFocused = textInputFocusNode.hasFocus;
@@ -279,7 +284,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   void animateToStartChat() {
-    if(messagesScrollController.hasClients) {
+    if (messagesScrollController.hasClients) {
       SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
         messagesScrollController.animateTo(
           0.0,
@@ -294,7 +299,7 @@ class ChatCubit extends Cubit<ChatState> {
     WidgetsBinding.instance.endOfFrame.then((value) {
       if (bottomTextAreaKey.currentContext != null) {
         final RenderBox? box =
-        bottomTextAreaKey.currentContext!.findRenderObject() as RenderBox?;
+            bottomTextAreaKey.currentContext!.findRenderObject() as RenderBox?;
 
         if (box != null) {
           emit(state.copyWith(bottomTextAreaHeight: box.size.height));
@@ -338,5 +343,9 @@ class ChatCubit extends Cubit<ChatState> {
             .jumpTo(textInputScrollController.position.maxScrollExtent);
       }
     });
+  }
+
+  void updateSessions() {
+    _zodiacMainCubit.updateSessions();
   }
 }
