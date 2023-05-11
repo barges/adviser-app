@@ -1,11 +1,9 @@
-import 'dart:ui';
-
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -15,6 +13,7 @@ import 'package:zodiac/presentation/screens/chat/chat_state.dart';
 const grabbingHeight = 16.0;
 const stretchedTextFieldTopPaddingF = 21.0;
 const scrollbarThickness = 4.0;
+const bottomPartTextInputHeight = AppConstants.appBarHeight;
 
 class ChatTextInputWidget extends StatelessWidget {
   const ChatTextInputWidget({
@@ -53,9 +52,6 @@ class ChatTextInputWidget extends StatelessWidget {
 
         context.select((ChatCubit cubit) => cubit.state.keyboardOpened);
 
-        final double bottomTextAreaHeight = context
-            .select((ChatCubit cubit) => cubit.state.bottomTextAreaHeight);
-
         return Consumer<ScreenHeight>(builder: (context, _res, child) {
           return Column(
             mainAxisSize: MainAxisSize.min,
@@ -66,9 +62,13 @@ class ChatTextInputWidget extends StatelessWidget {
                       .select((ChatCubit cubit) => cubit.state.textInputHeight);
 
                   final double h = size.height -
-                      MediaQueryData.fromWindow(window).viewPadding.top -
-                      MediaQueryData.fromWindow(window).viewInsets.bottom -
-                      bottomTextAreaHeight -
+                      MediaQueryData.fromView(View.of(context))
+                          .viewPadding
+                          .top -
+                      MediaQueryData.fromView(View.of(context))
+                          .viewInsets
+                          .bottom -
+                      bottomPartTextInputHeight -
                       (AppConstants.appBarHeight / 2) -
                       stretchedTextFieldTopPaddingF;
 
@@ -151,11 +151,15 @@ class ChatTextInputWidget extends StatelessWidget {
                 }),
               Container(
                 color: theme.canvasColor,
+                height: bottomPartTextInputHeight +
+                    (textInputFocused
+                        ? 0.0
+                        : MediaQuery.of(context).padding.bottom),
                 child: Column(
-                  key: chatCubit.bottomTextAreaKey,
                   children: [
                     Builder(builder: (context) {
-                      return Padding(
+                      return Container(
+                        height: bottomPartTextInputHeight,
                         padding: EdgeInsets.fromLTRB(
                           AppConstants.horizontalScreenPadding,
                           textInputFocused ? 0.0 : 10.0,
@@ -289,7 +293,7 @@ class ChatTextInputWidget extends StatelessWidget {
                           ],
                         ),
                       );
-                    })
+                    }),
                   ],
                 ),
               ),

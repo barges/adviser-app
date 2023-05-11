@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:rxdart/rxdart.dart';
@@ -40,7 +39,6 @@ class ChatCubit extends Cubit<ChatState> {
 
   final FocusNode textInputFocusNode = FocusNode();
   final GlobalKey textInputKey = GlobalKey();
-  final GlobalKey bottomTextAreaKey = GlobalKey();
 
   final PublishSubject<double> _showDownButtonStream = PublishSubject();
   late final StreamSubscription<double> _showDownButtonSubscription;
@@ -105,7 +103,9 @@ class ChatCubit extends Cubit<ChatState> {
             (event.mid != null && element.mid == event.mid));
         if (!contains) {
           _messages.insert(0, event);
-          chatObserver.standby();
+          if (state.needShowDownButton) {
+            chatObserver.standby();
+          }
           _updateMessages(_messages);
           if (!event.isOutgoing) {
             _updateWriteStatus(false);
@@ -153,11 +153,7 @@ class ChatCubit extends Cubit<ChatState> {
     _updateOfflineSessionIsActiveSubscription =
         _webSocketManager.offlineSessionIsActiveStream.listen((event) {
       if (event.clientId == clientData.id) {
-        if (event.isActive) {
-          offlineSessionTimeout = event.timeout ?? 0;
-        } else {
-          offlineSessionTimeout = 0;
-        }
+        offlineSessionTimeout = event.timeout ?? 0;
         emit(state.copyWith(offlineSessionIsActive: event.isActive));
       }
     });
@@ -209,7 +205,7 @@ class ChatCubit extends Cubit<ChatState> {
           isSendButtonEnabled: false,
         ));
       }
-      if (triggerOnTextChanged) {
+      if (state.chatIsActive && triggerOnTextChanged) {
         triggerOnTextChanged = false;
         Future.delayed(_typingIndicatorDuration)
             .then((value) => triggerOnTextChanged = true);
@@ -237,10 +233,8 @@ class ChatCubit extends Cubit<ChatState> {
       if (!isFocused) {
         setTextInputFocus(false);
       }
-      getBottomTextAreaHeight();
     });
 
-    getBottomTextAreaHeight();
     getClientInformation();
   }
 
@@ -312,27 +306,12 @@ class ChatCubit extends Cubit<ChatState> {
 
   void animateToStartChat() {
     if (messagesScrollController.hasClients) {
-      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-        messagesScrollController.animateTo(
-          0.0,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.linear,
-        );
-      });
+      messagesScrollController.animateTo(
+        0.0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.linear,
+      );
     }
-  }
-
-  void getBottomTextAreaHeight() {
-    WidgetsBinding.instance.endOfFrame.then((value) {
-      if (bottomTextAreaKey.currentContext != null) {
-        final RenderBox? box =
-            bottomTextAreaKey.currentContext!.findRenderObject() as RenderBox?;
-
-        if (box != null) {
-          emit(state.copyWith(bottomTextAreaHeight: box.size.height));
-        }
-      }
-    });
   }
 
   void setTextInputFocus(bool value) {

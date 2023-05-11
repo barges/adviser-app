@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
@@ -37,6 +35,11 @@ class ChatScreen extends StatelessWidget {
       ),
       child: Builder(builder: (context) {
         final ChatCubit chatCubit = context.read<ChatCubit>();
+        final bool chatIsActive =
+            context.select((ChatCubit cubit) => cubit.state.chatIsActive);
+
+        final bool offlineSessionIsActive = context
+            .select((ChatCubit cubit) => cubit.state.offlineSessionIsActive);
 
         return Stack(
           alignment: Alignment.bottomCenter,
@@ -52,40 +55,34 @@ class ChatScreen extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      const Expanded(
-                        child: ChatMessagesListWidget(),
+                      Expanded(
+                        child: ChatMessagesListWidget(
+                          fromStartingChat: fromStartingChat,
+                        ),
                       ),
-                      Builder(builder: (context) {
-                        final double bottomTextAreaHeight = context.select(
-                            (ChatCubit cubit) =>
-                                cubit.state.bottomTextAreaHeight);
+                      if (fromStartingChat &&
+                          (chatIsActive || offlineSessionIsActive))
+                        Builder(builder: (context) {
+                          final double focusedTextInputHeight = context.select(
+                              (ChatCubit cubit) => cubit.state.textInputHeight);
 
-                        final double textInputHeight = context.select(
-                            (ChatCubit cubit) => cubit.state.textInputHeight);
+                          context.select((ChatCubit cubit) =>
+                              cubit.state.textInputFocused);
 
-                        final double bottomPadding =
-                            (MediaQueryData.fromWindow(window)
-                                            .viewPadding
-                                            .bottom >
-                                        0.0
-                                    ? chatCubit.state.textInputFocused
-                                        ? 12.0
-                                        : MediaQueryData.fromWindow(window)
-                                            .viewPadding
-                                            .bottom
-                                    : chatCubit.state.textInputFocused
-                                        ? 12.0
-                                        : 0.0) +
-                                bottomTextAreaHeight +
-                                (chatCubit.state.textInputFocused
-                                    ? grabbingHeight +
-                                        ZodiacConstants.chatHorizontalPadding +
-                                        textInputHeight
-                                    : 0.0);
-                        return SizedBox(
-                          height: bottomPadding,
-                        );
-                      }),
+                          final double bottomPadding =
+                              bottomPartTextInputHeight +
+                                  (chatCubit.state.textInputFocused
+                                      ? grabbingHeight +
+                                          12.0 +
+                                          ZodiacConstants
+                                              .chatHorizontalPadding +
+                                          focusedTextInputHeight
+                                      : MediaQuery.of(context).padding.bottom);
+                          return Container(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            height: bottomPadding,
+                          );
+                        }),
                     ],
                   ),
                   const Positioned(
@@ -97,27 +94,29 @@ class ChatScreen extends StatelessWidget {
                 ],
               ),
             ),
-            KeyboardSizeProvider(
-              child: Builder(builder: (context) {
-                final bool needBarrierColor = context.select(
-                    (ChatCubit cubit) => cubit.state.isStretchedTextField);
-                return SafeArea(
-                  child: Material(
-                    type: needBarrierColor
-                        ? MaterialType.canvas
-                        : MaterialType.transparency,
-                    color: needBarrierColor
-                        ? Utils.getOverlayColor(context)
-                        : Colors.transparent,
-                    child: Builder(
-                      builder: (context) {
-                        return const ChatTextInputWidget();
-                      },
+            if (fromStartingChat && (chatIsActive || offlineSessionIsActive))
+              KeyboardSizeProvider(
+                child: Builder(builder: (context) {
+                  final bool needBarrierColor = context.select(
+                      (ChatCubit cubit) => cubit.state.isStretchedTextField);
+                  return SafeArea(
+                    bottom: false,
+                    child: Material(
+                      type: needBarrierColor
+                          ? MaterialType.canvas
+                          : MaterialType.transparency,
+                      color: needBarrierColor
+                          ? Utils.getOverlayColor(context)
+                          : Colors.transparent,
+                      child: Builder(
+                        builder: (context) {
+                          return const ChatTextInputWidget();
+                        },
+                      ),
                     ),
-                  ),
-                );
-              }),
-            ),
+                  );
+                }),
+              ),
           ],
         );
       }),

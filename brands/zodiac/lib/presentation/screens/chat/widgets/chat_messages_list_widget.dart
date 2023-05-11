@@ -10,28 +10,30 @@ import 'package:zodiac/presentation/screens/chat/widgets/typing_indicator.dart';
 import 'package:zodiac/zodiac_constants.dart';
 
 class ChatMessagesListWidget extends StatelessWidget {
-  const ChatMessagesListWidget({Key? key}) : super(key: key);
+  final bool fromStartingChat;
+
+  const ChatMessagesListWidget({
+    Key? key,
+    required this.fromStartingChat,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ChatCubit chatCubit = context.read<ChatCubit>();
 
     final List<ChatMessageModel> messages =
-    context.select(
-            (ChatCubit cubit) => cubit.state.messages);
+        context.select((ChatCubit cubit) => cubit.state.messages);
 
     // for (var element in messages) {
     //   logger.d(element);
     // }
 
     final int unreadCount = messages
-        .where((element) =>
-    !element.isOutgoing && !element.isRead)
+        .where((element) => !element.isOutgoing && !element.isRead)
         .length;
 
-    final bool needShowTypingIndicator = context.select(
-            (ChatCubit cubit) =>
-        cubit.state.needShowTypingIndicator);
+    final bool needShowTypingIndicator = context
+        .select((ChatCubit cubit) => cubit.state.needShowTypingIndicator);
 
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
@@ -46,46 +48,42 @@ class ChatMessagesListWidget extends StatelessWidget {
                 physics: ChatObserverClampingScrollPhysics(
                   observer: chatCubit.chatObserver,
                 ),
-                shrinkWrap:
-                chatCubit.chatObserver.isShrinkWrap,
-                controller:
-                chatCubit.messagesScrollController,
-                padding: const EdgeInsets.all(
+                shrinkWrap: chatCubit.chatObserver.isShrinkWrap,
+                controller: chatCubit.messagesScrollController,
+                padding: EdgeInsets.fromLTRB(
                   ZodiacConstants.chatHorizontalPadding,
+                  ZodiacConstants.chatHorizontalPadding,
+                  ZodiacConstants.chatHorizontalPadding,
+                  ZodiacConstants.chatHorizontalPadding +
+                      (chatCubit.state.chatIsActive ||
+                              chatCubit.state.offlineSessionIsActive
+                          ? 0.0
+                          : MediaQuery.of(context).padding.bottom),
                 ),
                 reverse: true,
                 itemCount: messages.length,
-                itemBuilder:
-                    (BuildContext context, int index) {
+                itemBuilder: (BuildContext context, int index) {
                   if (index == 0) {
                     return Builder(builder: (context) {
                       return needShowTypingIndicator
                           ? const Align(
-                        alignment:
-                        Alignment.bottomLeft,
-                        child: TypingIndicator(),
-                      )
+                              alignment: Alignment.bottomLeft,
+                              child: TypingIndicator(),
+                            )
                           : const SizedBox.shrink();
                     });
                   } else {
-                    final ChatMessageModel messageModel =
-                    messages[index - 1];
-                    if (messageModel.isOutgoing ||
-                        messageModel.isRead) {
+                    final ChatMessageModel messageModel = messages[index - 1];
+                    if (messageModel.isOutgoing || messageModel.isRead) {
                       return ChatMessageWidget(
                         chatMessageModel: messageModel,
                       );
                     } else {
                       return VisibilityDetector(
-                        key:
-                        Key(messageModel.id.toString()),
-                        onVisibilityChanged:
-                            (visibilityInfo) {
-                          if (visibilityInfo
-                              .visibleFraction ==
-                              1) {
-                            chatCubit.sendReadMessage(
-                                messageModel.id);
+                        key: Key(messageModel.id.toString()),
+                        onVisibilityChanged: (visibilityInfo) {
+                          if (visibilityInfo.visibleFraction == 1) {
+                            chatCubit.sendReadMessage(messageModel.id);
                           }
                         },
                         child: ChatMessageWidget(
@@ -95,27 +93,27 @@ class ChatMessagesListWidget extends StatelessWidget {
                     }
                   }
                 },
-                separatorBuilder:
-                    (BuildContext context, int index) {
+                separatorBuilder: (BuildContext context, int index) {
                   return const SizedBox(
                     height: 4.0,
                   );
                 },
               ),
               Builder(builder: (context) {
-                final bool needShowDownButton =
-                context.select((ChatCubit cubit) =>
-                cubit.state.needShowDownButton);
+                final bool needShowDownButton = context.select(
+                    (ChatCubit cubit) => cubit.state.needShowDownButton);
                 return needShowDownButton
                     ? Positioned(
-                  right: ZodiacConstants
-                      .chatHorizontalPadding,
-                  bottom: ZodiacConstants
-                      .chatHorizontalPadding,
-                  child: DownButtonWidget(
-                    unreadCount: unreadCount,
-                  ),
-                )
+                        right: ZodiacConstants.chatHorizontalPadding,
+                        bottom: (chatCubit.state.chatIsActive ||
+                                chatCubit.state.offlineSessionIsActive
+                            ? ZodiacConstants.chatHorizontalPadding
+                            : MediaQuery.of(context).padding.bottom +
+                                ZodiacConstants.chatHorizontalPadding),
+                        child: DownButtonWidget(
+                          unreadCount: unreadCount,
+                        ),
+                      )
                     : const SizedBox.shrink();
               }),
             ],
