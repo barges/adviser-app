@@ -75,6 +75,8 @@ class Commands {
 
   static String get offlineSessionStart => 'offlineSessionStart';
 
+  static String get offlineSessionEnd => 'offlineSessionEnd';
+
   static String get funcActions => 'funcActions';
 
   static String get privateMessage => 'privateMessage';

@@ -12,6 +12,8 @@ class ChatState with _$ChatState {
     @Default(false) bool clientInformationWidgetOpened,
     @Default(false) bool needShowDownButton,
     @Default(false) bool needShowTypingIndicator,
+    @Default(false) bool chatIsActive,
+    @Default(false) bool offlineSessionIsActive,
     UserDetails? clientInformation,
 
     @Default(0)

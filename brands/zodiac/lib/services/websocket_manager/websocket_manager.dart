@@ -1,6 +1,8 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
+import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
+import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 
 abstract class WebSocketManager {
   Stream<List<ChatMessageModel>> get entitiesStream;
@@ -11,7 +13,9 @@ abstract class WebSocketManager {
 
   Stream<ChatMessageModel> get updateMessageIsDeliveredStream;
 
-  Stream<int> get chatIsActiveStream;
+  Stream<ActiveChatEvent> get chatIsActiveStream;
+
+  Stream<OfflineSessionEvent> get offlineSessionIsActiveStream;
 
   Stream<int> get updateMessageIsReadStream;
 

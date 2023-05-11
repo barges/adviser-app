@@ -18,6 +18,8 @@ import 'package:zodiac/data/network/responses/profile_details_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/chat/chat_state.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_text_input_widget.dart';
+import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
+import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 
 const Duration _typingIndicatorDuration = Duration(milliseconds: 5000);
@@ -60,6 +62,12 @@ class ChatCubit extends Cubit<ChatState> {
   late final StreamSubscription<int> _updateMessageIsReadSubscription;
   late final StreamSubscription<int> _updateWriteStatusSubscription;
 
+  late final StreamSubscription<ActiveChatEvent>
+      _updateChatIsActiveSubscription;
+
+  late final StreamSubscription<OfflineSessionEvent>
+      _updateOfflineSessionIsActiveSubscription;
+
   late final StreamSubscription<bool> _keyboardSubscription;
 
   bool triggerOnTextChanged = true;
@@ -68,6 +76,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   final List<ChatMessageModel> _messages = [];
   EnterRoomData? enterRoomData;
+  int offlineSessionTimeout = 0;
 
   ChatCubit(
     this._webSocketManager,
@@ -131,6 +140,25 @@ class ChatCubit extends Cubit<ChatState> {
           isRead: true,
         );
         _updateMessages(_messages);
+      }
+    });
+
+    _updateChatIsActiveSubscription =
+        _webSocketManager.chatIsActiveStream.listen((event) {
+      if (event.clientId == clientData.id) {
+        emit(state.copyWith(chatIsActive: event.isActive));
+      }
+    });
+
+    _updateOfflineSessionIsActiveSubscription =
+        _webSocketManager.offlineSessionIsActiveStream.listen((event) {
+      if (event.clientId == clientData.id) {
+        if (event.isActive) {
+          offlineSessionTimeout = event.timeout ?? 0;
+        } else {
+          offlineSessionTimeout = 0;
+        }
+        emit(state.copyWith(offlineSessionIsActive: event.isActive));
       }
     });
 
@@ -228,6 +256,8 @@ class ChatCubit extends Cubit<ChatState> {
     _showDownButtonSubscription.cancel();
     _showDownButtonStream.close();
     _keyboardSubscription.cancel();
+    _updateChatIsActiveSubscription.cancel();
+    _updateOfflineSessionIsActiveSubscription.cancel();
     return super.close();
   }
 

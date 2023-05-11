@@ -12,11 +12,14 @@ import 'package:web_socket_channel/io.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/chat/call_data.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
+import 'package:zodiac/data/models/chat/end_chat_data.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
 import 'package:zodiac/presentation/screens/starting_chat/starting_chat_screen.dart';
+import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
 import 'package:zodiac/services/websocket_manager/commands.dart';
+import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
@@ -49,7 +52,10 @@ class WebSocketManagerImpl implements WebSocketManager {
       PublishSubject();
   final PublishSubject<ChatMessageModel> _updateMessageIsDeliveredStream =
       PublishSubject();
-  final PublishSubject<int> _chatIsActiveStream = PublishSubject();
+  final PublishSubject<ActiveChatEvent> _chatIsActiveStream = PublishSubject();
+
+  final PublishSubject<OfflineSessionEvent> _offlineSessionIsActiveStream =
+      PublishSubject();
 
   final PublishSubject<int> _updateMessageIsReadStream = PublishSubject();
 
@@ -151,6 +157,10 @@ class WebSocketManagerImpl implements WebSocketManager {
     _emitter.on(Commands.offlineSessionStart, this,
         (event, _) => _onOfflineSessionStart(event));
 
+    //offlineSessionEnd
+    _emitter.on(Commands.offlineSessionEnd, this,
+        (event, _) => _onOfflineSessionEnd(event));
+
     //funcActions
     _emitter.on(
         Commands.funcActions, this, (event, _) => _onFuncActions(event));
@@ -197,10 +207,13 @@ class WebSocketManagerImpl implements WebSocketManager {
       _updateMessageIsDeliveredStream.stream;
 
   @override
-  Stream<int> get chatIsActiveStream =>
-      _chatIsActiveStream.stream;
+  Stream<ActiveChatEvent> get chatIsActiveStream => _chatIsActiveStream.stream;
 
-@override
+  @override
+  Stream<OfflineSessionEvent> get offlineSessionIsActiveStream =>
+      _offlineSessionIsActiveStream.stream;
+
+  @override
   Stream<int> get updateMessageIsReadStream =>
       _updateMessageIsReadStream.stream;
 
@@ -474,7 +487,16 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onAllInRoom(Event event) {
-    ///TODO - Implements onAllInRoom
+    (event.eventData as SocketMessage).let((data) {
+      (data.opponentId as int).let(
+        (id) => _chatIsActiveStream.add(
+          ActiveChatEvent(
+            isActive: true,
+            clientId: id,
+          ),
+        ),
+      );
+    });
   }
 
   void _onProductList(Event event) {
@@ -601,12 +623,55 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onEndChat(Event event) {
-    ///TODO - Implements onEndChat
+    (event.eventData as SocketMessage).let((data) {
+      final EndChatData endChatData = EndChatData.fromJson(data.params);
+
+      (data.opponentId as int).let(
+        (id) => _chatIsActiveStream.add(
+          ActiveChatEvent(
+            isActive: false,
+            clientId: id,
+          ),
+        ),
+      );
+    });
     endChat();
   }
 
   void _onOfflineSessionStart(Event event) {
-    ///TODO - Implements onOfflineSessionStart
+    (event.eventData as SocketMessage).let((data) {
+      (data.opponentId as int).let(
+        (id) {
+          final int? timeout = data.params['timeout'];
+
+          _offlineSessionIsActiveStream.add(
+            OfflineSessionEvent(
+              isActive: true,
+              clientId: id,
+              timeout: timeout,
+            ),
+          );
+        },
+      );
+    });
+  }
+
+  void _onOfflineSessionEnd(Event event) {
+    (event.eventData as SocketMessage).let((data) {
+      (data.opponentId as int).let(
+        (id) {
+          _offlineSessionIsActiveStream.add(
+            OfflineSessionEvent(
+              isActive: false,
+              clientId: id,
+            ),
+          );
+          _send(SocketMessage.funcActions(
+            opponentId: id,
+          ));
+        },
+      );
+    });
   }
 
   void _onFuncActions(Event event) {
