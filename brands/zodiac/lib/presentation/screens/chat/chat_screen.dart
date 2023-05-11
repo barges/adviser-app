@@ -1,19 +1,21 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:scrollview_observer/scrollview_observer.dart';
-import 'package:visibility_detector/visibility_detector.dart';
-import 'package:zodiac/data/models/chat/chat_message_model.dart';
+import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/chat_message_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/chat_messages_list_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/client_information_widget.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/down_button_widget.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/typing_indicator.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac_constants.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ChatScreen extends StatelessWidget {
   final UserData userData;
@@ -33,130 +35,97 @@ class ChatScreen extends StatelessWidget {
         fromStartingChat,
         userData,
         zodiacGetIt.get<ZodiacUserRepository>(),
+        zodiacGetIt.get<ZodiacMainCubit>(),
         MediaQuery.of(context).size.height,
       ),
       child: Builder(builder: (context) {
         final ChatCubit chatCubit = context.read<ChatCubit>();
 
-        return Scaffold(
-          appBar: ChatConversationAppBar(
-            userData: userData,
-            onTap: chatCubit.changeClientInformationWidgetOpened,
-          ),
-          body: SafeArea(
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Column(
-                  children: [
-                    Expanded(
-                      child: Builder(builder: (context) {
-                        final List<ChatMessageModel> messages = context
-                            .select((ChatCubit cubit) => cubit.state.messages);
-
-                        // for (var element in messages) {
-                        //   logger.d(element);
-                        // }
-
-                        final int unreadCount = messages
-                            .where((element) =>
-                                !element.isOutgoing && !element.isRead)
-                            .length;
-
-                        final bool needShowTypingIndicator = context.select(
+        return Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Scaffold(
+              backgroundColor: Theme.of(context).canvasColor,
+              appBar: ChatConversationAppBar(
+                userData: userData,
+                onTap: chatCubit.changeClientInformationWidgetOpened,
+                backButtonOnTap: () {
+                  chatCubit.updateSessions();
+                  context.pop();
+                },
+              ),
+              body: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Column(
+                    children: [
+                      const Expanded(
+                        child: ChatMessagesListWidget(),
+                      ),
+                      Builder(builder: (context) {
+                        final double bottomTextAreaHeight = context.select(
                             (ChatCubit cubit) =>
-                                cubit.state.needShowTypingIndicator);
+                                cubit.state.bottomTextAreaHeight);
 
-                        return ListViewObserver(
-                          controller: chatCubit.observerController,
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              ListView.separated(
-                                physics: ChatObserverClampingScrollPhysics(
-                                  observer: chatCubit.chatObserver,
-                                ),
-                                shrinkWrap: chatCubit.chatObserver.isShrinkWrap,
-                                controller: chatCubit.messagesScrollController,
-                                padding: const EdgeInsets.all(
-                                  ZodiacConstants.chatHorizontalPadding,
-                                ),
-                                reverse: true,
-                                itemCount: messages.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  if (index == 0) {
-                                    return Builder(builder: (context) {
-                                      return needShowTypingIndicator
-                                          ? const Align(
-                                              alignment: Alignment.bottomLeft,
-                                              child: TypingIndicator(),
-                                            )
-                                          : const SizedBox.shrink();
-                                    });
-                                  } else {
-                                    final ChatMessageModel messageModel =
-                                        messages[index - 1];
-                                    if (messageModel.isOutgoing ||
-                                        messageModel.isRead) {
-                                      return ChatMessageWidget(
-                                        chatMessageModel: messageModel,
-                                      );
-                                    } else {
-                                      return VisibilityDetector(
-                                        key: Key(messageModel.id.toString()),
-                                        onVisibilityChanged: (visibilityInfo) {
-                                          if (visibilityInfo.visibleFraction ==
-                                              1) {
-                                            chatCubit.sendReadMessage(
-                                                messageModel.id);
-                                          }
-                                        },
-                                        child: ChatMessageWidget(
-                                          chatMessageModel: messageModel,
-                                        ),
-                                      );
-                                    }
-                                  }
-                                },
-                                separatorBuilder:
-                                    (BuildContext context, int index) {
-                                  return const SizedBox(
-                                    height: 4.0,
-                                  );
-                                },
-                              ),
-                              Builder(builder: (context) {
-                                final bool needShowDownButton = context.select(
-                                    (ChatCubit cubit) =>
-                                        cubit.state.needShowDownButton);
-                                return needShowDownButton
-                                    ? Positioned(
-                                        right: ZodiacConstants
-                                            .chatHorizontalPadding,
-                                        bottom: ZodiacConstants
-                                            .chatHorizontalPadding,
-                                        child: DownButtonWidget(
-                                          unreadCount: unreadCount,
-                                        ),
-                                      )
-                                    : const SizedBox.shrink();
-                              }),
-                            ],
-                          ),
+                        final double textInputHeight = context.select(
+                            (ChatCubit cubit) => cubit.state.textInputHeight);
+
+                        final double bottomPadding =
+                            (MediaQueryData.fromWindow(window)
+                                            .viewPadding
+                                            .bottom >
+                                        0.0
+                                    ? chatCubit.state.textInputFocused
+                                        ? 12.0
+                                        : MediaQueryData.fromWindow(window)
+                                            .viewPadding
+                                            .bottom
+                                    : chatCubit.state.textInputFocused
+                                        ? 12.0
+                                        : 0.0) +
+                                bottomTextAreaHeight +
+                                (chatCubit.state.textInputFocused
+                                    ? grabbingHeight +
+                                        ZodiacConstants.chatHorizontalPadding +
+                                        textInputHeight
+                                    : 0.0);
+                        return SizedBox(
+                          height: bottomPadding,
                         );
                       }),
-                    ),
-                  ],
-                ),
-                const Positioned(
-                  top: 0.0,
-                  right: 0.0,
-                  left: 0.0,
-                  child: ClientInformationWidget(),
-                ),
-              ],
+                    ],
+                  ),
+                  const Positioned(
+                    top: 0.0,
+                    right: 0.0,
+                    left: 0.0,
+                    child: ClientInformationWidget(),
+                  ),
+                ],
+              ),
             ),
-          ),
+            KeyboardSizeProvider(
+              child: Builder(builder: (context) {
+                final bool needBarrierColor = context.select(
+                    (ChatCubit cubit) => cubit.state.isStretchedTextField);
+                return SafeArea(
+                  child: Material(
+                    type: needBarrierColor
+                        ? MaterialType.canvas
+                        : MaterialType.transparency,
+                    color: needBarrierColor
+                        ? Utils.getOverlayColor(context)
+                        : Colors.transparent,
+                    child: Builder(
+                      builder: (context) {
+                        return const ChatTextInputWidget();
+                      },
+                    ),
+                  ),
+                );
+              }),
+            ),
+          ],
         );
       }),
     );

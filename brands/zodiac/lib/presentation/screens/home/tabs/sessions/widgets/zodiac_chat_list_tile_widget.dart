@@ -126,25 +126,28 @@ class ZodiacChatListTileWidget extends StatelessWidget {
                               ),
                             ),
                             item.haveUnreadedMessages
-                                ? Container(
-                                    height: 18.0,
-                                    width: 18.0,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: item.isMissed
-                                          ? Theme.of(context).errorColor
-                                          : Theme.of(context).primaryColor,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        item.unreadCount.toString(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall
-                                            ?.copyWith(
-                                              color: Theme.of(context)
-                                                  .backgroundColor,
-                                            ),
+                                ? Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Container(
+                                      height: 18.0,
+                                      width: 18.0,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: item.isMissed
+                                            ? Theme.of(context).errorColor
+                                            : Theme.of(context).primaryColor,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          item.unreadCount.toString(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall
+                                              ?.copyWith(
+                                                color: Theme.of(context)
+                                                    .backgroundColor,
+                                              ),
+                                        ),
                                       ),
                                     ),
                                   )
