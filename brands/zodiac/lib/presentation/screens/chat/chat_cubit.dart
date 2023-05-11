@@ -140,6 +140,7 @@ class ChatCubit extends Cubit<ChatState> {
     _enterRoomDataSubscription =
         _webSocketManager.enterRoomDataStream.listen((event) {
       if (event.userData?.id == clientData.id) {
+        _isRefresh = true;
         enterRoomData = event;
       }
     });
