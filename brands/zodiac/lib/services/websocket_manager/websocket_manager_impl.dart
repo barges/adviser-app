@@ -49,6 +49,8 @@ class WebSocketManagerImpl implements WebSocketManager {
       PublishSubject();
   final PublishSubject<ChatMessageModel> _updateMessageIsDeliveredStream =
       PublishSubject();
+  final PublishSubject<int> _chatIsActiveStream = PublishSubject();
+
   final PublishSubject<int> _updateMessageIsReadStream = PublishSubject();
 
   final PublishSubject<int> _updateWriteStatusStream = PublishSubject();
@@ -195,6 +197,10 @@ class WebSocketManagerImpl implements WebSocketManager {
       _updateMessageIsDeliveredStream.stream;
 
   @override
+  Stream<int> get chatIsActiveStream =>
+      _chatIsActiveStream.stream;
+
+@override
   Stream<int> get updateMessageIsReadStream =>
       _updateMessageIsReadStream.stream;
 
@@ -280,6 +286,7 @@ class WebSocketManagerImpl implements WebSocketManager {
         opponentId: opponentId,
       ),
     );
+    _updateMessageIsReadStream.add(messageId);
   }
 
   @override
@@ -330,6 +337,7 @@ class WebSocketManagerImpl implements WebSocketManager {
   void endChat() {
     _endChatTrigger.add(true);
     _send(SocketMessage.getUnreadChats());
+    _zodiacMainCubit.updateSessions();
   }
 
   Future<void> _authCheckOnBackend() async =>
@@ -426,6 +434,8 @@ class WebSocketManagerImpl implements WebSocketManager {
     (event.eventData as SocketMessage).let((data) {
       final EnterRoomData enterRoomData =
           EnterRoomData.fromJson(data.params ?? {});
+
+      _enterRoomDataStream.add(enterRoomData);
 
       chatLogin(opponentId: enterRoomData.userData?.id ?? 0);
 

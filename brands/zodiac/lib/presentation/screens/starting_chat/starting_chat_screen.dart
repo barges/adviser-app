@@ -78,10 +78,15 @@ class StartingChatScreen extends StatelessWidget {
                                   backgroundColor: theme.canvasColor,
                                 ),
                               ),
-                              Text(
-                                callData.userData?.name ?? '',
-                                style: theme.textTheme.titleMedium,
-                                textAlign: TextAlign.center,
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal:
+                                        AppConstants.horizontalScreenPadding),
+                                child: Text(
+                                  callData.userData?.name ?? '',
+                                  style: theme.textTheme.titleMedium,
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                               const SizedBox(
                                 height: 2.0,
@@ -105,6 +110,7 @@ class StartingChatScreen extends StatelessWidget {
                           ),
                           child: AppElevatedButton(
                             title: SZodiac.of(context).startChatZodiac,
+                            iconPath: Assets.zodiac.chatFee.path,
                             onPressed: () {
                               final UserData? userData = callData.userData;
                               if (userData != null) {

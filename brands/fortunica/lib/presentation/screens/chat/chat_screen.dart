@@ -16,13 +16,10 @@ import 'package:fortunica/presentation/common_widgets/customer_profile/customer_
 import 'package:fortunica/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:fortunica/presentation/common_widgets/messages/app_success_widget.dart';
 import 'package:fortunica/presentation/screens/chat/chat_cubit.dart';
-import 'package:fortunica/presentation/screens/chat/chat_state.dart';
 import 'package:fortunica/presentation/screens/chat/widgets/active_chat_input_field_widget.dart';
 import 'package:fortunica/presentation/screens/chat/widgets/active_chat_widget.dart';
-import 'package:fortunica/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:fortunica/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:fortunica/presentation/screens/customer_profile/customer_profile_screen.dart';
-import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -61,27 +58,7 @@ class ChatScreen extends StatelessWidget {
         chatScreenArguments: chatScreenArguments,
       ),
       child: Builder(builder: (context) {
-        return BlocListener<ChatCubit, ChatState>(
-            listenWhen: (prev, current) =>
-                prev.inputTextLength != current.inputTextLength,
-            listener: (context, state) {
-              final theme = Theme.of(context);
-              final ChatCubit chatCubit = context.read<ChatCubit>();
-              final double maxWidth = MediaQuery.of(context).size.width -
-                  scrollbarThickness -
-                  AppConstants.horizontalScreenPadding * 2;
-              final TextStyle? style = theme.textTheme.bodySmall?.copyWith(
-                color: theme.hoverColor,
-                fontSize: 15.0,
-                height: 1.2,
-              );
-              chatCubit.updateHiddenInputHeight(
-                Utils.getTextHeight(
-                    chatCubit.textInputEditingController.text, style, maxWidth),
-                Utils.getTextHeight('\n\n\n\n', style, maxWidth),
-              );
-            },
-            child: const ChatContentWidget());
+        return const ChatContentWidget();
       }),
     );
   }

@@ -15,17 +15,51 @@ class UserData with _$UserData {
     fieldRename: FieldRename.snake,
   )
   const factory UserData({
-    int? id,
-    int? profilesId,
+    @JsonKey(fromJson: _stringToIntFromJson) int? id,
+    @JsonKey(fromJson: _stringToIntFromJson) int? profilesId,
     String? name,
     String? avatar,
     String? timezone,
     int? haveCards,
     String? helloMessage,
-    int? firstChatFlag,
-    double? fee,
+    @JsonKey(fromJson: _firstChatFlagFromJson) bool? firstChatFlag,
+    @JsonKey(fromJson: _stringToDoubleFromJson) double? fee,
   }) = _UserData;
 
   factory UserData.fromJson(Map<String, dynamic> json) =>
       _$UserDataFromJson(json);
+}
+
+bool? _firstChatFlagFromJson(dynamic value) {
+  if (value is bool) {
+    return value;
+  } else if (value is int) {
+    if (value == 0) {
+      return false;
+    } else {
+      return true;
+    }
+  } else {
+    return null;
+  }
+}
+
+int? _stringToIntFromJson(dynamic value) {
+  if (value is int) {
+    return value;
+  } else if (value is String) {
+    return int.parse(value);
+  } else {
+    return null;
+  }
+}
+
+double? _stringToDoubleFromJson(dynamic value) {
+  if (value is double) {
+    return value;
+  } else if (value is String) {
+    return double.parse(value);
+  } else {
+    return null;
+  }
 }

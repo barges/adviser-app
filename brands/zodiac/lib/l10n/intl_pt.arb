@@ -101,5 +101,6 @@
   "callEndedZodiac": "Chamada finalizada",
   "hideChatZodiac": "Ocultar bate-papo",
   "preferredLanguageZodiac": "Idioma preferido: ",
-  "freebieSeeker": "candidato a brinde"
+  "freebieSeeker": "candidato a brinde",
+  "typeMessageZodiac": "Digite a mensagem"
 }

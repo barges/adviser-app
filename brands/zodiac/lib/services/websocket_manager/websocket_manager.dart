@@ -11,6 +11,8 @@ abstract class WebSocketManager {
 
   Stream<ChatMessageModel> get updateMessageIsDeliveredStream;
 
+  Stream<int> get chatIsActiveStream;
+
   Stream<int> get updateMessageIsReadStream;
 
   Stream<int> get updateWriteStatusStream;
