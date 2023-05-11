@@ -1,4 +1,4 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 
 part 'phone_number_request.g.dart';

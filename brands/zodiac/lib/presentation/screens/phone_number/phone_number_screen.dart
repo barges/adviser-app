@@ -1,29 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:zodiac/data/models/settings/phone.dart';
 import 'package:zodiac/data/models/settings/phone_country_code.dart';
+import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
+import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/phone_number_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:zodiac/presentation/screens/phone_number/phone_number_cubit.dart';
 import 'package:zodiac/presentation/screens/phone_number/widgets/country_code_widget.dart';
 
 class PhoneNumberScreen extends StatelessWidget {
-  final Phone? phoneNumber;
+  final Phone? phone;
   const PhoneNumberScreen({
     super.key,
-    required this.phoneNumber,
+    required this.phone,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return BlocProvider(
-      create: (_) => PhoneNumberCubit(phoneNumber ?? const Phone()),
+      create: (_) => PhoneNumberCubit(
+        phone ?? const Phone(),
+        zodiacGetIt.get<ZodiacUserRepository>(),
+        zodiacGetIt.get<ConnectivityService>(),
+        zodiacGetIt.get<GlobalCachingManager>(),
+      ),
       child: Builder(builder: (context) {
         PhoneNumberCubit phoneNumberCubit = context.read<PhoneNumberCubit>();
         return Scaffold(
@@ -123,30 +132,38 @@ class PhoneNumberScreen extends StatelessWidget {
                         ),
                         const Spacer(),
                         Builder(builder: (context) {
-                          const String attempts = '0/3';
+                          final verificationCodeAttempts = context.select(
+                              (PhoneNumberCubit cubit) =>
+                                  cubit.state.verificationCodeAttempts);
+                          final attempts =
+                              '$verificationCodeAttempts/$verificationCodeAttemptsPer24HoursMax';
                           final List<String> youHaveVerificationAttemptsPerDay =
                               SZodiac.of(context)
                                   .youHaveVerificationAttemptsPerDayZodiac(
                                       attempts)
                                   .split(attempts);
-                          return Text.rich(
-                            TextSpan(
-                              text: youHaveVerificationAttemptsPerDay.first,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                fontSize: 16.0,
-                                color: theme.shadowColor,
-                              ),
-                              children: <TextSpan>[
-                                const TextSpan(
-                                    text: attempts,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                TextSpan(
+                          return verificationCodeAttempts != 0
+                              ? Text.rich(
+                                  TextSpan(
                                     text:
-                                        youHaveVerificationAttemptsPerDay.last),
-                              ],
-                            ),
-                          );
+                                        youHaveVerificationAttemptsPerDay.first,
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      fontSize: 16.0,
+                                      color: theme.shadowColor,
+                                    ),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: attempts,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                      TextSpan(
+                                          text:
+                                              youHaveVerificationAttemptsPerDay
+                                                  .last),
+                                    ],
+                                  ),
+                                )
+                              : const SizedBox.shrink();
                         }),
                         const SizedBox(
                           height: 16.0,
@@ -158,11 +175,16 @@ class PhoneNumberScreen extends StatelessWidget {
                           return AppElevatedButton(
                             title: SZodiac.of(context).sendCodeZodiac,
                             onPressed: isSendCodeButtonEnabled
-                                ? () => context.push(
-                                      route: ZodiacSMSVerification(
-                                          phoneNumber:
-                                              phoneNumberCubit.state.phone),
-                                    )
+                                ? () async {
+                                    if (await phoneNumberCubit.sendCode()) {
+                                      // ignore: use_build_context_synchronously
+                                      context.push(
+                                        route: ZodiacSMSVerification(
+                                            phoneNumber:
+                                                phoneNumberCubit.phone),
+                                      );
+                                    }
+                                  }
                                 : null,
                           );
                         }),

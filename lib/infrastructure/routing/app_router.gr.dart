@@ -367,7 +367,7 @@ class MainAppRouter extends _i46.RootStackRouter {
         routeData: routeData,
         child: _i32.PhoneNumberScreen(
           key: args.key,
-          phoneNumber: args.phoneNumber,
+          phone: args.phone,
         ),
       );
     },
@@ -1483,13 +1483,13 @@ class ZodiacBalanceAndTransactionsArgs {
 class ZodiacPhoneNumber extends _i46.PageRouteInfo<ZodiacPhoneNumberArgs> {
   ZodiacPhoneNumber({
     _i47.Key? key,
-    required _i52.Phone? phoneNumber,
+    required _i52.Phone? phone,
   }) : super(
           ZodiacPhoneNumber.name,
           path: 'zodiacPhoneNumber',
           args: ZodiacPhoneNumberArgs(
             key: key,
-            phoneNumber: phoneNumber,
+            phone: phone,
           ),
         );
 
@@ -1499,16 +1499,16 @@ class ZodiacPhoneNumber extends _i46.PageRouteInfo<ZodiacPhoneNumberArgs> {
 class ZodiacPhoneNumberArgs {
   const ZodiacPhoneNumberArgs({
     this.key,
-    required this.phoneNumber,
+    required this.phone,
   });
 
   final _i47.Key? key;
 
-  final _i52.Phone? phoneNumber;
+  final _i52.Phone? phone;
 
   @override
   String toString() {
-    return 'ZodiacPhoneNumberArgs{key: $key, phoneNumber: $phoneNumber}';
+    return 'ZodiacPhoneNumberArgs{key: $key, phone: $phone}';
   }
 }
 

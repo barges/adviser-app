@@ -5,12 +5,12 @@ part 'phone_number_verify_request.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class PhoneNumberVerifyRequest extends AuthorizedRequest {
-  final int? code;
   final String? captchaResponse;
+  final int? code;
 
   PhoneNumberVerifyRequest({
-    required this.code,
     required this.captchaResponse,
+    this.code,
   }) : super();
 
   factory PhoneNumberVerifyRequest.fromJson(Map<String, dynamic> json) =>

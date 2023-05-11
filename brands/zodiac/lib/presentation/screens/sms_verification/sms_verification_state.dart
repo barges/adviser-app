@@ -6,5 +6,7 @@ part 'sms_verification_state.freezed.dart';
 class SMSVerificationState with _$SMSVerificationState {
   const factory SMSVerificationState({
     @Default(false) bool isError,
+    @Default(false) bool isVerifyButtonEnabled,
+    @Default(true) bool isResendCodeButtonEnabled,
   }) = _SMSVerificationState;
 }

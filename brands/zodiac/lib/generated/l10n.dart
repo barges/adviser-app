@@ -1045,6 +1045,16 @@ class SZodiac {
     );
   }
 
+  /// `Incorrect code`
+  String get incorrectCodeZodiac {
+    return Intl.message(
+      'Incorrect code',
+      name: 'incorrectCodeZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `SMS verification`
   String get SMSverificationZodiac {
     return Intl.message(
@@ -1092,6 +1102,16 @@ class SZodiac {
       name: 'resendCodeZodiac',
       desc: '',
       args: [attempts],
+    );
+  }
+
+  /// `Next attempt in {seconds}s`
+  String nextAttemptInZodiac(Object seconds) {
+    return Intl.message(
+      'Next attempt in ${seconds}s',
+      name: 'nextAttemptInZodiac',
+      desc: '',
+      args: [seconds],
     );
   }
 
