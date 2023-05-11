@@ -42,59 +42,59 @@ class ChatScreen extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           children: [
             Scaffold(
+              backgroundColor: Theme.of(context).canvasColor,
               appBar: ChatConversationAppBar(
                 userData: userData,
                 onTap: chatCubit.changeClientInformationWidgetOpened,
               ),
-              body: SafeArea(
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Column(
-                      children: [
-                        const Expanded(
-                          child: ChatMessagesListWidget(),
-                        ),
-                        Builder(builder: (context) {
-                          final double bottomTextAreaHeight = context.select(
-                              (ChatCubit cubit) =>
-                                  cubit.state.bottomTextAreaHeight);
+              body: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Column(
+                    children: [
+                      const Expanded(
+                        child: ChatMessagesListWidget(),
+                      ),
+                      Builder(builder: (context) {
+                        final double bottomTextAreaHeight = context.select(
+                            (ChatCubit cubit) =>
+                                cubit.state.bottomTextAreaHeight);
 
-                          final double textInputHeight = context.select(
-                              (ChatCubit cubit) => cubit.state.textInputHeight);
+                        final double textInputHeight = context.select(
+                            (ChatCubit cubit) => cubit.state.textInputHeight);
 
-                          final double bottomPadding =
-                              (MediaQueryData.fromWindow(window)
-                                              .viewPadding
-                                              .bottom >
-                                          0.0
-                                      ? MediaQueryData.fromWindow(window)
-                                          .viewPadding
-                                          .bottom
-                                      : chatCubit.state.textInputFocused
-                                          ? 12.0
-                                          : 0.0) +
-                                  bottomTextAreaHeight +
-                                  (chatCubit.state.textInputFocused
-                                      ? grabbingHeight +
-                                          ZodiacConstants
-                                              .chatHorizontalPadding +
-                                          textInputHeight
-                                      : 0.0);
-                          return SizedBox(
-                            height: bottomPadding,
-                          );
-                        }),
-                      ],
-                    ),
-                    const Positioned(
-                      top: 0.0,
-                      right: 0.0,
-                      left: 0.0,
-                      child: ClientInformationWidget(),
-                    ),
-                  ],
-                ),
+                        final double bottomPadding =
+                            (MediaQueryData.fromWindow(window)
+                                            .viewPadding
+                                            .bottom >
+                                        0.0
+                                    ? chatCubit.state.textInputFocused
+                                        ? 12.0
+                                        : MediaQueryData.fromWindow(window)
+                                            .viewPadding
+                                            .bottom
+                                    : chatCubit.state.textInputFocused
+                                        ? 12.0
+                                        : 0.0) +
+                                bottomTextAreaHeight +
+                                (chatCubit.state.textInputFocused
+                                    ? grabbingHeight +
+                                        ZodiacConstants.chatHorizontalPadding +
+                                        textInputHeight
+                                    : 0.0);
+                        return SizedBox(
+                          height: bottomPadding,
+                        );
+                      }),
+                    ],
+                  ),
+                  const Positioned(
+                    top: 0.0,
+                    right: 0.0,
+                    left: 0.0,
+                    child: ClientInformationWidget(),
+                  ),
+                ],
               ),
             ),
             KeyboardSizeProvider(

@@ -49,6 +49,8 @@ class WebSocketManagerImpl implements WebSocketManager {
       PublishSubject();
   final PublishSubject<ChatMessageModel> _updateMessageIsDeliveredStream =
       PublishSubject();
+  final PublishSubject<int> _chatIsActiveStream = PublishSubject();
+
   final PublishSubject<int> _updateMessageIsReadStream = PublishSubject();
 
   final PublishSubject<int> _updateWriteStatusStream = PublishSubject();
@@ -195,6 +197,10 @@ class WebSocketManagerImpl implements WebSocketManager {
       _updateMessageIsDeliveredStream.stream;
 
   @override
+  Stream<int> get chatIsActiveStream =>
+      _chatIsActiveStream.stream;
+
+@override
   Stream<int> get updateMessageIsReadStream =>
       _updateMessageIsReadStream.stream;
 
