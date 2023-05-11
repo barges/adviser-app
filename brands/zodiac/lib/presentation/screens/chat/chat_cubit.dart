@@ -29,8 +29,10 @@ class ChatCubit extends Cubit<ChatState> {
   final ZodiacUserRepository _userRepository;
   final double _screenHeight;
 
-  final SnappingSheetController snappingSheetController = SnappingSheetController();
-  final TextEditingController textInputEditingController = TextEditingController();
+  final SnappingSheetController snappingSheetController =
+      SnappingSheetController();
+  final TextEditingController textInputEditingController =
+      TextEditingController();
   final ScrollController textInputScrollController = ScrollController();
   final ScrollController messagesScrollController = ScrollController();
 
@@ -121,7 +123,7 @@ class ChatCubit extends Cubit<ChatState> {
     });
 
     _updateMessageIsReadSubscription =
-        _webSocketManager.updateMessageIsReadStream.listen((event) {
+        _webSocketManager.updateMessageIsReadStream.distinct().listen((event) {
       final int index = _messages.indexWhere((element) => element.id == event);
       if (index > -1) {
         final ChatMessageModel model = _messages[index];
@@ -168,7 +170,7 @@ class ChatCubit extends Cubit<ChatState> {
     });
 
     textInputEditingController.addListener(() {
-      if(textInputEditingController.text.isNotEmpty){
+      if (textInputEditingController.text.isNotEmpty) {
         emit(state.copyWith(
           inputTextLength: textInputEditingController.text.length,
           isSendButtonEnabled: true,
@@ -191,15 +193,15 @@ class ChatCubit extends Cubit<ChatState> {
 
     _keyboardSubscription =
         KeyboardVisibilityController().onChange.listen((bool visible) {
-          if (!visible) {
-            textInputFocusNode.unfocus();
-            emit(state.copyWith(isTextInputCollapsed: true));
-          }
+      if (!visible) {
+        textInputFocusNode.unfocus();
+        emit(state.copyWith(isTextInputCollapsed: true));
+      }
 
-          Future.delayed(const Duration(milliseconds: 500)).then((value) {
-            emit(state.copyWith(keyboardOpened: !state.keyboardOpened));
-          }).onError((error, stackTrace) {});
-        });
+      Future.delayed(const Duration(milliseconds: 500)).then((value) {
+        emit(state.copyWith(keyboardOpened: !state.keyboardOpened));
+      }).onError((error, stackTrace) {});
+    });
 
     textInputFocusNode.addListener(() {
       final bool isFocused = textInputFocusNode.hasFocus;
@@ -279,7 +281,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   void animateToStartChat() {
-    if(messagesScrollController.hasClients) {
+    if (messagesScrollController.hasClients) {
       SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
         messagesScrollController.animateTo(
           0.0,
@@ -294,7 +296,7 @@ class ChatCubit extends Cubit<ChatState> {
     WidgetsBinding.instance.endOfFrame.then((value) {
       if (bottomTextAreaKey.currentContext != null) {
         final RenderBox? box =
-        bottomTextAreaKey.currentContext!.findRenderObject() as RenderBox?;
+            bottomTextAreaKey.currentContext!.findRenderObject() as RenderBox?;
 
         if (box != null) {
           emit(state.copyWith(bottomTextAreaHeight: box.size.height));
