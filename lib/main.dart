@@ -29,12 +29,12 @@ import 'infrastructure/di/app_initializer.dart';
 import 'infrastructure/di/brand_manager.dart';
 
 void main() async {
-  await AppInitializer.setupPrerequisites(
-    Flavor.production,
-  );
-
   runZonedGuarded(
     () async {
+      await AppInitializer.setupPrerequisites(
+        Flavor.production,
+      );
+
       await SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,

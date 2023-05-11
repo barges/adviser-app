@@ -7,7 +7,7 @@ part 'base_request.g.dart';
 class BaseRequest {
   String secret = AppInfo.secret;
   String package = AppInfo.package;
-  String version = '2.6'; //AppInfo.version;
+  String version = '5.6'; //AppInfo.version;
 
   BaseRequest();
 
