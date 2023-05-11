@@ -126,7 +126,7 @@ class ChatCubit extends Cubit<ChatState> {
     });
 
     _updateMessageIsReadSubscription =
-        _webSocketManager.updateMessageIsReadStream.listen((event) {
+        _webSocketManager.updateMessageIsReadStream.distinct().listen((event) {
       final int index = _messages.indexWhere((element) => element.id == event);
       if (index > -1) {
         final ChatMessageModel model = _messages[index];

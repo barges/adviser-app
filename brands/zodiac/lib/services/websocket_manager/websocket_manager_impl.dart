@@ -132,9 +132,9 @@ class WebSocketManagerImpl implements WebSocketManager {
     _emitter.on(
         Commands.unreadChats, this, (event, _) => _onUnreadChats(event));
 
-    // //readMessage
-    // _emitter.on(
-    //     Commands.readMessage, this, (event, _) => _onReadMessage(event));
+    //readMessage
+    _emitter.on(
+        Commands.readMessage, this, (event, _) => _onReadMessage(event));
 
     //underageConfirm
     _emitter.on(Commands.underageConfirm, this,
@@ -504,12 +504,12 @@ class WebSocketManagerImpl implements WebSocketManager {
     });
   }
 
-  // void _onReadMessage(Event event) {
-  //   (event.eventData as SocketMessage).let((data) {
-  //     (data.params['id'] as int)
-  //         .let((id) => _updateMessageIsReadStream.add(id));
-  //   });
-  // }
+  void _onReadMessage(Event event) {
+    (event.eventData as SocketMessage).let((data) {
+      (data.params['id'] as int)
+          .let((id) => _updateMessageIsReadStream.add(id));
+    });
+  }
 
   void _onMessage(Event event) {
     // _zodiacMainCubit.updateSessions();
