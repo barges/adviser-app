@@ -22,6 +22,7 @@ import 'package:zodiac/services/websocket_manager/commands.dart';
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
+import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
@@ -60,6 +61,8 @@ class WebSocketManagerImpl implements WebSocketManager {
   final PublishSubject<int> _updateMessageIsReadStream = PublishSubject();
 
   final PublishSubject<int> _updateWriteStatusStream = PublishSubject();
+
+  final PublishSubject<UpdateTimerEvent> _updateTimerStream = PublishSubject();
 
   WebSocketManagerImpl(
     this._zodiacMainCubit,
@@ -190,6 +193,13 @@ class WebSocketManagerImpl implements WebSocketManager {
     //sendUserMessage
     _emitter.on(Commands.sendUserMessage, this,
         (event, _) => _onSendUserMessage(event));
+
+    //startTimer
+    _emitter.on(Commands.startTimer, this, (event, _) => _onStartTimer(event));
+
+    //timerCorrect
+    _emitter.on(
+        Commands.timerCorrect, this, (event, _) => _onTimerCorrect(event));
   }
 
   @override
@@ -226,6 +236,9 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   @override
   PublishSubject<bool> get endChatTrigger => _endChatTrigger;
+
+  @override
+  Stream<UpdateTimerEvent> get updateTimerStream => _updateTimerStream.stream;
 
   @override
   Future connect() async {
@@ -683,7 +696,16 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onStartroom(Event event) {
-    ///TODO - Implements onStartroom
+    (event.eventData as SocketMessage).let((data) {
+      logger.d(data.params['time']);
+      if (data.params is Map &&
+          data.params['time'] != null &&
+          data.opponentId != null) {
+        _updateTimerStream.add(UpdateTimerEvent(
+            value: Duration(milliseconds: data.params['time']),
+            clientId: data.opponentId!));
+      }
+    });
   }
 
   void _onPaidfree(Event event) {
@@ -706,5 +728,29 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onSendUserMessage(Event event) {
     ///TODO - Implements onSendUserMessage
+  }
+
+  void _onStartTimer(Event event) {
+    (event.eventData as SocketMessage).let((data) {
+      (data.opponentId as int).let(
+        (id) {
+          _updateTimerStream.add(UpdateTimerEvent(
+              value: const Duration(seconds: 0), clientId: id));
+        },
+      );
+    });
+  }
+
+  void _onTimerCorrect(Event event) {
+    (event.eventData as SocketMessage).let((data) {
+      logger.d(data.params['time']);
+      if (data.params is Map &&
+          data.params['time'] != null &&
+          data.opponentId != null) {
+        _updateTimerStream.add(UpdateTimerEvent(
+            value: Duration(milliseconds: data.params['time']),
+            clientId: data.opponentId!));
+      }
+    });
   }
 }

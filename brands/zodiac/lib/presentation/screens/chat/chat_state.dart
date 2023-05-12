@@ -22,5 +22,6 @@ class ChatState with _$ChatState {
     @Default(false) bool textInputFocused,
     @Default(false) bool isStretchedTextField,
     @Default(false) bool keyboardOpened,
+    Duration? timerValue,
   }) = _ChatState;
 }

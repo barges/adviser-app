@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -7,7 +8,9 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
+import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/zodiac.dart';
+import 'package:zodiac/zodiac_extensions.dart';
 
 class ChatConversationAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -90,14 +93,30 @@ class ChatConversationAppBar extends StatelessWidget
                             ],
                           ),
                         ),
-                        Text(
-                          selectedBrand.name,
-                          style: TextStyle(
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w200,
-                            color: Theme.of(context).shadowColor,
-                          ),
-                        ),
+                        Builder(builder: (context) {
+                          final Duration? timerValue = context.select(
+                              (ChatCubit cubit) => cubit.state.timerValue);
+
+                          if (timerValue != null) {
+                            return Text(
+                              timerValue.timerFormat,
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w400,
+                                color: Theme.of(context).shadowColor,
+                              ),
+                            );
+                          } else {
+                            return Text(
+                              selectedBrand.name,
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w200,
+                                color: Theme.of(context).shadowColor,
+                              ),
+                            );
+                          }
+                        })
                       ],
                     ),
                   ),

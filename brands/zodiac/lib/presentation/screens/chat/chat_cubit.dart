@@ -19,6 +19,7 @@ import 'package:zodiac/presentation/screens/chat/chat_state.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
+import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 
 const Duration _typingIndicatorDuration = Duration(milliseconds: 5000);
@@ -59,6 +60,7 @@ class ChatCubit extends Cubit<ChatState> {
       _updateMessageIsDeliveredSubscription;
   late final StreamSubscription<int> _updateMessageIsReadSubscription;
   late final StreamSubscription<int> _updateWriteStatusSubscription;
+  late final StreamSubscription<UpdateTimerEvent> _updateTimerSubscription;
 
   late final StreamSubscription<ActiveChatEvent>
       _updateChatIsActiveSubscription;
@@ -75,6 +77,8 @@ class ChatCubit extends Cubit<ChatState> {
   final List<ChatMessageModel> _messages = [];
   EnterRoomData? enterRoomData;
   int offlineSessionTimeout = 0;
+
+  Timer? _chatTimer;
 
   ChatCubit(
     this._webSocketManager,
@@ -147,6 +151,10 @@ class ChatCubit extends Cubit<ChatState> {
         _webSocketManager.chatIsActiveStream.listen((event) {
       if (event.clientId == clientData.id) {
         emit(state.copyWith(chatIsActive: event.isActive));
+        if (!event.isActive) {
+          _chatTimer?.cancel();
+          emit(state.copyWith(timerValue: null));
+        }
       }
     });
 
@@ -235,6 +243,24 @@ class ChatCubit extends Cubit<ChatState> {
       }
     });
 
+    _updateTimerSubscription = _webSocketManager.updateTimerStream.listen(
+      (event) {
+        if (event.clientId == clientData.id) {
+          logger.d(
+              '${state.timerValue?.inSeconds} ==== ${event.value.inSeconds}');
+          if (state.timerValue?.inSeconds != event.value.inSeconds) {
+            _chatTimer?.cancel();
+            emit(state.copyWith(timerValue: event.value));
+            _chatTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+              emit(state.copyWith(
+                  timerValue: Duration(
+                      seconds: (state.timerValue?.inSeconds ?? 0) + 1)));
+            });
+          }
+        }
+      },
+    );
+
     getClientInformation();
   }
 
@@ -252,6 +278,8 @@ class ChatCubit extends Cubit<ChatState> {
     _keyboardSubscription.cancel();
     _updateChatIsActiveSubscription.cancel();
     _updateOfflineSessionIsActiveSubscription.cancel();
+    _updateTimerSubscription.cancel();
+    _chatTimer?.cancel();
     return super.close();
   }
 

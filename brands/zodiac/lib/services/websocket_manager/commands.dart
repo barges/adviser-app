@@ -98,4 +98,8 @@ class Commands {
   static String get roomUnpaused => 'roomUnpaused';
 
   static String get sendUserMessage => 'sendUserMessage';
+
+  static String get startTimer => 'startTimer';
+
+  static String get timerCorrect => 'timerCorrect';
 }
