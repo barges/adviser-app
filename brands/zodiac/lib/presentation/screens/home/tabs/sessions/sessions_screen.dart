@@ -78,6 +78,11 @@ class SessionsScreen extends StatelessWidget {
                                 const SliverPersistentHeader(
                                   delegate: _SearchTextField(),
                                 ),
+                                const SliverToBoxAdapter(
+                                  child: SizedBox(
+                                    height: 12.0,
+                                  ),
+                                ),
                                 SliverList(
                                   delegate: SliverChildBuilderDelegate(
                                     childCount: chatsList.length,

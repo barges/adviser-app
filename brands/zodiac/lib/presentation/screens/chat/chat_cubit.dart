@@ -21,6 +21,7 @@ import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 const Duration _typingIndicatorDuration = Duration(milliseconds: 5000);
 
@@ -29,6 +30,7 @@ class ChatCubit extends Cubit<ChatState> {
   final bool _fromStartingChat;
   final UserData clientData;
   final ZodiacUserRepository _userRepository;
+  final ZodiacMainCubit _zodiacMainCubit;
   final double _screenHeight;
 
   final SnappingSheetController snappingSheetController =
@@ -85,6 +87,7 @@ class ChatCubit extends Cubit<ChatState> {
     this._fromStartingChat,
     this.clientData,
     this._userRepository,
+    this._zodiacMainCubit,
     this._screenHeight,
   ) : super(const ChatState()) {
     _messagesSubscription = _webSocketManager.entitiesStream.listen((event) {
@@ -169,6 +172,7 @@ class ChatCubit extends Cubit<ChatState> {
     _enterRoomDataSubscription =
         _webSocketManager.enterRoomDataStream.listen((event) {
       if (event.userData?.id == clientData.id) {
+        _isRefresh = true;
         enterRoomData = event;
       }
     });
@@ -377,5 +381,9 @@ class ChatCubit extends Cubit<ChatState> {
             .jumpTo(textInputScrollController.position.maxScrollExtent);
       }
     });
+  }
+
+  void updateSessions() {
+    _zodiacMainCubit.updateSessions();
   }
 }

@@ -363,6 +363,7 @@ class WebSocketManagerImpl implements WebSocketManager {
   void endChat() {
     _endChatTrigger.add(true);
     _send(SocketMessage.getUnreadChats());
+    _zodiacMainCubit.updateSessions();
   }
 
   Future<void> _authCheckOnBackend() async =>
@@ -459,6 +460,8 @@ class WebSocketManagerImpl implements WebSocketManager {
     (event.eventData as SocketMessage).let((data) {
       final EnterRoomData enterRoomData =
           EnterRoomData.fromJson(data.params ?? {});
+
+      _enterRoomDataStream.add(enterRoomData);
 
       chatLogin(opponentId: enterRoomData.userData?.id ?? 0);
 
