@@ -10,7 +10,7 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.da
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
 import 'package:zodiac/data/models/chats/chat_item_zodiac.dart';
-import 'package:zodiac/domain/repositories/zodiac_chats_repository.dart';
+import 'package:zodiac/domain/repositories/zodiac_sessions_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/home_app_bar.dart';
@@ -29,7 +29,7 @@ class SessionsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => SessionsCubit(
-        zodiacGetIt.get<ZodiacChatsRepository>(),
+        zodiacGetIt.get<ZodiacSessionsRepository>(),
         zodiacGetIt.get<BrandManager>(),
         zodiacGetIt.get<ZodiacMainCubit>(),
         zodiacGetIt.get<WebSocketManager>(),
