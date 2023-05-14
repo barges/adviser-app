@@ -61,7 +61,7 @@ class ChatMessagesListWidget extends StatelessWidget {
                           : MediaQuery.of(context).padding.bottom),
                 ),
                 reverse: true,
-                itemCount: messages.length,
+                itemCount: messages.length + 1,
                 itemBuilder: (BuildContext context, int index) {
                   if (index == 0) {
                     return Builder(builder: (context) {
