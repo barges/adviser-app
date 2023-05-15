@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/infrastructure/routing/route_paths.dart';
 import 'package:zodiac/presentation/screens/article_details_screen/article_details_screen.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
@@ -17,6 +18,7 @@ import 'package:zodiac/presentation/screens/notification_details/notification_de
 import 'package:zodiac/presentation/screens/notifications/notifications_screen.dart';
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_screen.dart';
 import 'package:zodiac/presentation/screens/reviews/reviews_screen.dart';
+import 'package:zodiac/presentation/screens/send_image/send_image_screen.dart';
 import 'package:zodiac/presentation/screens/specialities_list/specialities_list_screen.dart';
 import 'package:zodiac/presentation/screens/support/support_screen.dart';
 import 'package:zodiac/presentation/wrappers/auth_wrapper/zodiac_auth_wrapper.dart';
@@ -121,6 +123,11 @@ const zodiacRoute = AutoRoute(
       page: ChatScreen,
       path: RoutePathsZodiac.chatScreen,
       name: RoutePathsZodiac.chatScreen,
+    ),
+    AutoRoute<ChatMessageModel?>(
+      page: SendImageScreen,
+      path: RoutePathsZodiac.sendImageScreen,
+      name: RoutePathsZodiac.sendImageScreen,
     ),
   ],
 );

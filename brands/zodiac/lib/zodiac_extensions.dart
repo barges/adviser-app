@@ -82,3 +82,10 @@ extension DoubleExt on double {
     return isNegative ? '-$currency$value' : '$currency$value';
   }
 }
+
+extension DurationExt on Duration {
+  String get timerFormat {
+    return DateFormat.Hms().format(
+        DateTime.fromMillisecondsSinceEpoch(inMilliseconds, isUtc: true));
+  }
+}

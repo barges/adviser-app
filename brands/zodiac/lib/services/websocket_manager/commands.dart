@@ -75,6 +75,8 @@ class Commands {
 
   static String get offlineSessionStart => 'offlineSessionStart';
 
+  static String get offlineSessionEnd => 'offlineSessionEnd';
+
   static String get funcActions => 'funcActions';
 
   static String get privateMessage => 'privateMessage';
@@ -96,4 +98,8 @@ class Commands {
   static String get roomUnpaused => 'roomUnpaused';
 
   static String get sendUserMessage => 'sendUserMessage';
+
+  static String get startTimer => 'startTimer';
+
+  static String get timerCorrect => 'timerCorrect';
 }

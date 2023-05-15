@@ -11,12 +11,12 @@ import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/services/check_permission_service.dart';
 
-Future<void> showPickImageAlert(
-    {required BuildContext context,
-    required ValueChanged<File> setImage,
-    ValueChanged<List<File>>? setMultiImage,
-    VoidCallback? cancelOnTap,
-    bool mounted = true}) async {
+Future<void> showPickImageAlert({
+  required BuildContext context,
+  required ValueChanged<File> setImage,
+  ValueChanged<List<File>>? setMultiImage,
+  VoidCallback? cancelOnTap,
+}) async {
   ImageSource? source;
 
   if (Platform.isAndroid) {
@@ -109,13 +109,10 @@ Future<void> showPickImageAlert(
               ),
             ));
   }
-  if (mounted &&
-      ((source != null && setMultiImage == null) ||
-          (source == ImageSource.camera && setMultiImage != null))) {
+  if ((source != null && setMultiImage == null) ||
+      (source == ImageSource.camera && setMultiImage != null)) {
     await _pickImage(context, source!, setImage);
-  } else if (mounted &&
-      source == ImageSource.gallery &&
-      setMultiImage != null) {
+  } else if (source == ImageSource.gallery && setMultiImage != null) {
     await _pickMultiImage(context, source!, setMultiImage);
   }
 }

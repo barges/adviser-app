@@ -92,7 +92,7 @@ class StartingChatScreen extends StatelessWidget {
                                 height: 2.0,
                               ),
                               Text(
-                                SZodiac.of(context).chatRequestZodiac,
+                                SZodiac.of(context).incomingChatZodiac,
                                 style: theme.textTheme.labelMedium?.copyWith(
                                   fontSize: 15.0,
                                   color: theme.shadowColor,
