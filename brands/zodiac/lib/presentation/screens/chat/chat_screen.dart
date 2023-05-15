@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
@@ -58,6 +60,22 @@ class ChatScreen extends StatelessWidget {
                   chatCubit.updateSessions();
                   context.pop();
                 },
+                endChatButtonOnTap: chatIsActive
+                    ? () async {
+                        bool? endChat = await showOkCancelAlert(
+                          context: context,
+                          title: SZodiac.of(context)
+                              .doYouReallyWantToEndTheChatZodiac,
+                          okText: SZodiac.of(context).yesZodiac,
+                          cancelText: SZodiac.of(context).noZodiac,
+                          allowBarrierClick: true,
+                          isCancelEnabled: true,
+                        );
+                        if (endChat == true) {
+                          chatCubit.endChat();
+                        }
+                      }
+                    : null,
               ),
               body: Stack(
                 clipBehavior: Clip.none,

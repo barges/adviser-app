@@ -72,9 +72,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "daysZodiac": MessageLookupByLibrary.simpleMessage("days"),
         "declineZodiac": MessageLookupByLibrary.simpleMessage("Decline"),
         "doYouReallyWantToDeleteLocaleNameFromYourListZodiac": m0,
+        "doYouReallyWantToEndTheChatZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Do you really want to end the chat?"),
         "editProfileZodiac":
             MessageLookupByLibrary.simpleMessage("Edit profile"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("Email"),
+        "endChatZodiac": MessageLookupByLibrary.simpleMessage("End\nchat"),
         "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Enter your email address and we\'ll send you instructions to create a new password"),
@@ -118,6 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("No sessions, yet."),
         "noTransactionsYetZodiac":
             MessageLookupByLibrary.simpleMessage("No transactions, yet"),
+        "noZodiac": MessageLookupByLibrary.simpleMessage("No"),
         "notificationsZodiac":
             MessageLookupByLibrary.simpleMessage("Notifications"),
         "offlineServiceZodiac":
@@ -186,6 +191,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "wrongUsernameAndOrPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Wrong username and/or password."),
+        "yesZodiac": MessageLookupByLibrary.simpleMessage("Yes"),
         "yesterdayZodiac": MessageLookupByLibrary.simpleMessage("Yesterday"),
         "youCanChangePriceOncePer24HZodiac":
             MessageLookupByLibrary.simpleMessage(

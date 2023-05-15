@@ -69,4 +69,6 @@ abstract class WebSocketManager {
   void sendUnreadChats();
 
   void sendCreateRoom({int? clientId, double? expertFee});
+
+  void sendEndChat({required String roomId});
 }

@@ -456,4 +456,10 @@ class ChatCubit extends Cubit<ChatState> {
   void updateSessions() {
     _zodiacMainCubit.updateSessions();
   }
+
+  void endChat() {
+    if (enterRoomData?.roomData?.id != null) {
+      _webSocketManager.sendEndChat(roomId: enterRoomData!.roomData!.id!);
+    }
+  }
 }

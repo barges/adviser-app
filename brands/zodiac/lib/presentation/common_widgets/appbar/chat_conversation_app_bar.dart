@@ -52,19 +52,35 @@ class ChatConversationAppBar extends StatelessWidget
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // if (publicQuestionId != null &&
-                  //     questionStatus == ChatItemStatusType.taken)
-                  //   Padding(
-                  //     padding: const EdgeInsets.only(right: 2.0),
-                  //     child: AppIconButton(
-                  //       onTap: returnInQueueButtonOnTap,
-                  //       icon: Assets.vectors.arrowReturn.path,
-                  //     ),
-                  //   ),
-                  AppIconButton(
-                    icon: Assets.vectors.arrowLeft.path,
-                    onTap: backButtonOnTap ?? selectedBrand.context?.pop,
-                  ),
+                  if (endChatButtonOnTap != null)
+                    GestureDetector(
+                      onTap: endChatButtonOnTap,
+                      child: Row(
+                        children: [
+                          AppIconButton(
+                            icon: Assets.vectors.cross.path,
+                          ),
+                          const SizedBox(
+                            width: 8.0,
+                          ),
+                          Text(
+                            SZodiac.of(context).endChatZodiac.toUpperCase(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall
+                                ?.copyWith(
+                                  fontSize: 12.0,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                          )
+                        ],
+                      ),
+                    )
+                  else
+                    AppIconButton(
+                      icon: Assets.vectors.arrowLeft.path,
+                      onTap: backButtonOnTap ?? selectedBrand.context?.pop,
+                    ),
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

@@ -374,6 +374,10 @@ class WebSocketManagerImpl implements WebSocketManager {
       ));
 
   @override
+  void sendEndChat({required String roomId}) =>
+      _send(SocketMessage.saveChat(roomId: roomId));
+
+  @override
   void close() {
     _socketSubscription?.cancel();
     _channel?.sink.close();
@@ -566,7 +570,7 @@ class WebSocketManagerImpl implements WebSocketManager {
   void _onMsgDelivered(Event event) {
     (event.eventData as SocketMessage).let((data) {
       (data.opponentId as int).let(
-            (clientId) {
+        (clientId) {
           final String? mid = data.params['mid'];
 
           _updateMessageIsDeliveredStream.add(

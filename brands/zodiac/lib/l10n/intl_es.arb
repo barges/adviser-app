@@ -103,5 +103,9 @@
   "preferredLanguageZodiac": "Idioma preferido: ",
   "freebieSeeker": "Buscador de obsequios",
   "typeMessageZodiac": "Escribe un mensaje",
-  "reconnectingZodiac": "Reconectar..."
+  "reconnectingZodiac": "Reconectar...",
+  "endChatZodiac": "Finalizar\nchat",
+  "doYouReallyWantToEndTheChatZodiac": "¿De verdad quieres terminar el chat?",
+  "yesZodiac": "Sí",
+  "noZodiac": "No"
 }
