@@ -2,6 +2,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
 import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
+import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
 
@@ -10,9 +11,9 @@ abstract class WebSocketManager {
 
   Stream<ChatMessageModel> get oneMessageStream;
 
-  Stream<ChatMessageModel> get updateMessageIdStream;
+  Stream<CreatedDeliveredEvent> get updateMessageIdStream;
 
-  Stream<ChatMessageModel> get updateMessageIsDeliveredStream;
+  Stream<CreatedDeliveredEvent> get updateMessageIsDeliveredStream;
 
   Stream<ActiveChatEvent> get chatIsActiveStream;
 
@@ -37,6 +38,12 @@ abstract class WebSocketManager {
   void sendStatus();
 
   void chatLogin({
+    required int opponentId,
+  });
+
+  sendMessageToChat({
+    required ChatMessageModel message,
+    required String roomId,
     required int opponentId,
   });
 

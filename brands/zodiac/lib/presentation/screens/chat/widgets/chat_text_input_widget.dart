@@ -252,8 +252,7 @@ class ChatTextInputWidget extends StatelessWidget {
                                   (ChatCubit cubit) =>
                                       cubit.state.isSendButtonEnabled);
 
-                              if (chatCubit.textInputEditingController.text
-                                      .isEmpty &&
+                              if (!isSendButtonEnabled &&
                                   chatCubit.enterRoomData
                                           ?.isAvailableAudioMessage ==
                                       true &&
@@ -275,11 +274,7 @@ class ChatTextInputWidget extends StatelessWidget {
                                   child: AppIconGradientButton(
                                     onTap: () {
                                       if (isSendButtonEnabled) {
-                                        FocusScope.of(context).unfocus();
-
-                                        ///TODO: Send message to chat
-                                        // chatCubit
-                                        //     .sendAnswer(ChatContentType.textMedia);
+                                        chatCubit.sendMessageToChat();
                                       }
                                     },
                                     icon: Assets.vectors.send.path,

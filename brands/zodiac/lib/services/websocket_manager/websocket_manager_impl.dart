@@ -19,6 +19,7 @@ import 'package:zodiac/data/network/responses/my_details_response.dart';
 import 'package:zodiac/presentation/screens/starting_chat/starting_chat_screen.dart';
 import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
 import 'package:zodiac/services/websocket_manager/commands.dart';
+import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
@@ -49,9 +50,9 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   final BehaviorSubject<EnterRoomData> _enterRoomDataStream = BehaviorSubject();
 
-  final PublishSubject<ChatMessageModel> _updateMessageIdStream =
+  final PublishSubject<CreatedDeliveredEvent> _updateMessageIdStream =
       PublishSubject();
-  final PublishSubject<ChatMessageModel> _updateMessageIsDeliveredStream =
+  final PublishSubject<CreatedDeliveredEvent> _updateMessageIsDeliveredStream =
       PublishSubject();
   final PublishSubject<ActiveChatEvent> _chatIsActiveStream = PublishSubject();
 
@@ -211,11 +212,11 @@ class WebSocketManagerImpl implements WebSocketManager {
   Stream<ChatMessageModel> get oneMessageStream => _oneMessageStream.stream;
 
   @override
-  Stream<ChatMessageModel> get updateMessageIdStream =>
+  Stream<CreatedDeliveredEvent> get updateMessageIdStream =>
       _updateMessageIdStream.stream;
 
   @override
-  Stream<ChatMessageModel> get updateMessageIsDeliveredStream =>
+  Stream<CreatedDeliveredEvent> get updateMessageIsDeliveredStream =>
       _updateMessageIsDeliveredStream.stream;
 
   @override
@@ -358,6 +359,19 @@ class WebSocketManagerImpl implements WebSocketManager {
       );
     }
   }
+
+  @override
+  sendMessageToChat({
+    required ChatMessageModel message,
+    required String roomId,
+    required int opponentId,
+  }) =>
+      _send(SocketMessage.chatMessage(
+        message: message.message ?? '',
+        roomId: roomId,
+        opponentId: opponentId,
+        mid: message.mid ?? '',
+      ));
 
   @override
   void close() {
@@ -532,15 +546,37 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onMsgCreated(Event event) {
     (event.eventData as SocketMessage).let((data) {
-      final message = ChatMessageModel.fromJson(data.params ?? {});
-      _updateMessageIdStream.add(message);
+      (data.opponentId as int).let(
+        (clientId) {
+          final String? mid = data.params['mid'];
+          final int? id = data.params['id'];
+
+          _updateMessageIdStream.add(
+            CreatedDeliveredEvent(
+              mid: mid ?? '',
+              clientId: clientId,
+              id: id,
+            ),
+          );
+        },
+      );
     });
   }
 
   void _onMsgDelivered(Event event) {
     (event.eventData as SocketMessage).let((data) {
-      final message = ChatMessageModel.fromJson(data.params ?? {});
-      _updateMessageIsDeliveredStream.add(message);
+      (data.opponentId as int).let(
+            (clientId) {
+          final String? mid = data.params['mid'];
+
+          _updateMessageIsDeliveredStream.add(
+            CreatedDeliveredEvent(
+              mid: mid ?? '',
+              clientId: clientId,
+            ),
+          );
+        },
+      );
     });
   }
 
