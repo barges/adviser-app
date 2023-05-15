@@ -7,6 +7,7 @@ import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/zodiac.dart';
@@ -99,7 +100,20 @@ class ChatConversationAppBar extends StatelessWidget
                           final Duration? timerValue = context.select(
                               (ChatCubit cubit) => cubit.state.timerValue);
 
-                          if (timerValue != null) {
+                          final bool isChatReconnecting = context.select(
+                              (ChatCubit cubit) =>
+                                  cubit.state.isChatReconnecting);
+
+                          if (isChatReconnecting) {
+                            return Text(
+                              SZodiac.of(context).reconnectingZodiac,
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w400,
+                                color: Theme.of(context).shadowColor,
+                              ),
+                            );
+                          } else if (timerValue != null) {
                             return Text(
                               timerValue.timerFormat,
                               style: TextStyle(

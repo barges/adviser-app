@@ -102,5 +102,6 @@
   "hideChatZodiac": "Hide chat",
   "preferredLanguageZodiac": "Preferred language: ",
   "freebieSeeker": "Freebie seeker",
-  "typeMessageZodiac": "Type message"
+  "typeMessageZodiac": "Type message",
+  "reconnectingZodiac": "Reconnecting..."
 }

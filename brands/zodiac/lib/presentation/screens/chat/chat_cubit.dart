@@ -63,6 +63,7 @@ class ChatCubit extends Cubit<ChatState> {
   late final StreamSubscription<int> _updateMessageIsReadSubscription;
   late final StreamSubscription<int> _updateWriteStatusSubscription;
   late final StreamSubscription<UpdateTimerEvent> _updateTimerSubscription;
+  late final StreamSubscription<bool> _stopRoomSubscription;
 
   late final StreamSubscription<ActiveChatEvent>
       _updateChatIsActiveSubscription;
@@ -252,6 +253,7 @@ class ChatCubit extends Cubit<ChatState> {
         if (event.clientId == clientData.id) {
           logger.d(
               '${state.timerValue?.inSeconds} ==== ${event.value.inSeconds}');
+          emit(state.copyWith(isChatReconnecting: false));
           if (state.timerValue?.inSeconds != event.value.inSeconds) {
             _chatTimer?.cancel();
             emit(state.copyWith(timerValue: event.value));
@@ -263,6 +265,10 @@ class ChatCubit extends Cubit<ChatState> {
           }
         }
       },
+    );
+
+    _stopRoomSubscription = _webSocketManager.stopRoomStream.listen(
+      (event) => emit(state.copyWith(isChatReconnecting: true)),
     );
 
     getClientInformation();
@@ -284,6 +290,7 @@ class ChatCubit extends Cubit<ChatState> {
     _updateOfflineSessionIsActiveSubscription.cancel();
     _updateTimerSubscription.cancel();
     _chatTimer?.cancel();
+    _stopRoomSubscription.cancel();
     return super.close();
   }
 

@@ -23,5 +23,6 @@ class ChatState with _$ChatState {
     @Default(false) bool isStretchedTextField,
     @Default(false) bool keyboardOpened,
     Duration? timerValue,
+    @Default(false) bool isChatReconnecting,
   }) = _ChatState;
 }

@@ -1094,6 +1094,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Reconnecting...`
+  String get reconnectingZodiac {
+    return Intl.message(
+      'Reconnecting...',
+      name: 'reconnectingZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

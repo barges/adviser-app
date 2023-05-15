@@ -143,6 +143,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "previewAccountZodiac":
             MessageLookupByLibrary.simpleMessage("Vorschau Konto"),
         "pricePerMinZodiac": m1,
+        "reconnectingZodiac":
+            MessageLookupByLibrary.simpleMessage("Wieder verbinden..."),
         "replyZodiac": MessageLookupByLibrary.simpleMessage("Antwort"),
         "requiredFieldZodiac":
             MessageLookupByLibrary.simpleMessage("Pflichtfeld"),

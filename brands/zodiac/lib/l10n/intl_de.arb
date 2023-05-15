@@ -100,5 +100,6 @@
   "hideChatZodiac": "Chat verstecken",
   "preferredLanguageZodiac": "Bevorzugte Sprache: ",
   "freebieSeeker": "Freebie-Sucher",
-  "typeMessageZodiac": "Schreibe eine Nachricht"
+  "typeMessageZodiac": "Schreibe eine Nachricht",
+  "reconnectingZodiac": "Wieder verbinden..."
 }

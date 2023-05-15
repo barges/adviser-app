@@ -102,5 +102,6 @@
   "hideChatZodiac": "Ocultar bate-papo",
   "preferredLanguageZodiac": "Idioma preferido: ",
   "freebieSeeker": "candidato a brinde",
-  "typeMessageZodiac": "Digite a mensagem"
+  "typeMessageZodiac": "Digite a mensagem",
+  "reconnectingZodiac": "Reconecte..."
 }

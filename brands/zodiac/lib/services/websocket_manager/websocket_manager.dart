@@ -28,6 +28,8 @@ abstract class WebSocketManager {
 
   Stream<UpdateTimerEvent> get updateTimerStream;
 
+  Stream<bool> get stopRoomStream;
+
   Future connect();
 
   void close();

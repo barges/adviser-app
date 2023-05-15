@@ -64,6 +64,8 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   final PublishSubject<UpdateTimerEvent> _updateTimerStream = PublishSubject();
 
+  final PublishSubject<bool> _stopRoomTrigger = PublishSubject();
+
   WebSocketManagerImpl(
     this._zodiacMainCubit,
     this._zodiacCachingManager,
@@ -239,6 +241,9 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   @override
   Stream<UpdateTimerEvent> get updateTimerStream => _updateTimerStream.stream;
+
+  @override
+  Stream<bool> get stopRoomStream => _stopRoomTrigger.stream;
 
   @override
   Future connect() async {
@@ -695,7 +700,7 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onStoproom(Event event) {
-    ///TODO - Implements onStoproom
+    _stopRoomTrigger.add(true);
   }
 
   void _onStartroom(Event event) {
