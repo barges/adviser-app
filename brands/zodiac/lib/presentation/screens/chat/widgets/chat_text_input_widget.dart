@@ -3,7 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -192,6 +195,26 @@ class ChatTextInputWidget extends StatelessWidget {
                                     ),
                                   ),
                                 ),
+                                const SizedBox(
+                                  width: 12.0,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    showPickImageAlert(
+                                      context: context,
+                                      setImage: (image) {
+                                        context.push(
+                                            route:
+                                                ZodiacSendImage(image: image));
+                                      },
+                                    );
+                                  },
+                                  child: Assets.vectors.gallery.svg(
+                                    width: AppConstants.iconSize,
+                                    height: AppConstants.iconSize,
+                                    color: theme.iconTheme.color,
+                                  ),
+                                )
                               ],
                             ),
                             if (!textInputFocused)

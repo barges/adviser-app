@@ -166,6 +166,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "saveZodiac": MessageLookupByLibrary.simpleMessage("Save"),
         "searchZodiac": MessageLookupByLibrary.simpleMessage("Search"),
         "secondsZodiac": MessageLookupByLibrary.simpleMessage("sec"),
+        "selectedPhotoZodiac":
+            MessageLookupByLibrary.simpleMessage("Selected photo"),
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Service"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Services"),
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sessions"),

@@ -1095,6 +1095,16 @@ class SZodiac {
     );
   }
 
+  /// `Selected photo`
+  String get selectedPhotoZodiac {
+    return Intl.message(
+      'Selected photo',
+      name: 'selectedPhotoZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Reconnecting...`
   String get reconnectingZodiac {
     return Intl.message(
