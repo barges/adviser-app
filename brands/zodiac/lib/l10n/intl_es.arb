@@ -91,7 +91,7 @@
   "secondsZodiac": "seg",
   "startChatZodiac": "Comenzar chat",
   "declineZodiac": "Rechazar",
-  "chatRequestZodiac": "Solicitud de chat...",
+  "incomingChatZodiac": "Chat ENTRANTE",
   "youMissedCallFromZodiac": "Perdiste una llamada \n de {clientName}.",
   "youMissedChatFromZodiac": "Te perdiste el chat \n de {clientName}.",
   "replyZodiac": "Responder",

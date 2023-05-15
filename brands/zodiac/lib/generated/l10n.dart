@@ -975,11 +975,11 @@ class SZodiac {
     );
   }
 
-  /// `Chat request...`
-  String get chatRequestZodiac {
+  /// `INCOMING Chat`
+  String get incomingChatZodiac {
     return Intl.message(
-      'Chat request...',
-      name: 'chatRequestZodiac',
+      'INCOMING Chat',
+      name: 'incomingChatZodiac',
       desc: '',
       args: [],
     );

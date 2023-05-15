@@ -55,8 +55,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Se excedió el límite de caracteres."),
         "chatEndedZodiac":
             MessageLookupByLibrary.simpleMessage("Chat finalizado"),
-        "chatRequestZodiac":
-            MessageLookupByLibrary.simpleMessage("Solicitud de chat..."),
         "chatStartGreetingZodiac":
             MessageLookupByLibrary.simpleMessage("Saludo de inicio de chat"),
         "chatStartedZodiac":
@@ -101,6 +99,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "hoursZodiac": MessageLookupByLibrary.simpleMessage("horas"),
         "imAvailableNowZodiac":
             MessageLookupByLibrary.simpleMessage("Estoy disponible ahora"),
+        "incomingChatZodiac":
+            MessageLookupByLibrary.simpleMessage("Chat ENTRANTE"),
         "languageZodiac": MessageLookupByLibrary.simpleMessage("Idioma"),
         "loginZodiac": MessageLookupByLibrary.simpleMessage("Iniciar sesión"),
         "lowestRateZodiac":
