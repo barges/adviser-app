@@ -1094,6 +1094,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Selected photo`
+  String get selectedPhotoZodiac {
+    return Intl.message(
+      'Selected photo',
+      name: 'selectedPhotoZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {
