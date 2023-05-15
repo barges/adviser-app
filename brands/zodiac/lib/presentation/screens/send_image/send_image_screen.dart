@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
@@ -13,10 +12,12 @@ import 'package:zodiac/presentation/screens/send_image/send_image_cubit.dart';
 
 class SendImageScreen extends StatelessWidget {
   final File image;
+  final String clientId;
 
   const SendImageScreen({
     Key? key,
     required this.image,
+    required this.clientId,
   }) : super(key: key);
 
   @override
@@ -26,6 +27,7 @@ class SendImageScreen extends StatelessWidget {
         zodiacGetIt.get<ZodiacCachingManager>(),
         zodiacGetIt.get<ZodiacChatRepository>(),
         image,
+        clientId,
       ),
       child: Builder(builder: (context) {
         final SendImageCubit sendImageCubit = context.read<SendImageCubit>();
@@ -33,10 +35,7 @@ class SendImageScreen extends StatelessWidget {
         return Scaffold(
           appBar: SimpleAppBar(
             title: SZodiac.of(context).selectedPhotoZodiac,
-            actionOnClick: () async {
-              sendImageCubit.sendImageToChat();
-              context.popRoute();
-            },
+            actionOnClick: () => sendImageCubit.sendImageToChat(context),
           ),
           body: Container(
             color: Theme.of(context).canvasColor,

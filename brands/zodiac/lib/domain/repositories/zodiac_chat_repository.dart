@@ -1,12 +1,13 @@
 import 'dart:io';
 
 import 'package:zodiac/data/network/requests/authorized_request.dart';
-import 'package:zodiac/data/network/responses/base_response.dart';
+import 'package:zodiac/data/network/responses/send_image_response.dart';
 
 abstract class ZodiacChatRepository {
-  Future<BaseResponse> sendImageToChat({
+  Future<SendImageResponse> sendImageToChat({
     required AuthorizedRequest request,
     required String mid,
     required File image,
+    required String clientId,
   });
 }

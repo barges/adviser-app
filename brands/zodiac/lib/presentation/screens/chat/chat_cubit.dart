@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
@@ -460,6 +463,22 @@ class ChatCubit extends Cubit<ChatState> {
   void endChat() {
     if (enterRoomData?.roomData?.id != null) {
       _webSocketManager.sendEndChat(roomId: enterRoomData!.roomData!.id!);
+    }
+  }
+
+  Future<void> sendImage(BuildContext context, File image) async {
+    ChatMessageModel? message = await context.push<ChatMessageModel?>(
+      route: ZodiacSendImage(
+        image: image,
+        clientId: clientData.id.toString(),
+      ),
+    );
+
+    logger.d(message);
+
+    if (message != null) {
+      _messages.insert(0, message);
+      _updateMessages();
     }
   }
 }
