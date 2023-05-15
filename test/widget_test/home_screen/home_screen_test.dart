@@ -15,10 +15,10 @@ import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status
 import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
-import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
-import 'package:shared_advisor_interface/data/repositories/zodiac_chats_repository_impl.dart';
+import 'package:shared_advisor_interface/data/network/api/sessions_api.dart';
+import 'package:shared_advisor_interface/data/repositories/zodiac_sessions_repository_impl.dart';
 import 'package:shared_advisor_interface/domain/repositories/zodiac_auth_repository.dart';
-import 'package:shared_advisor_interface/domain/repositories/zodiac_chats_repository.dart';
+import 'package:shared_advisor_interface/domain/repositories/zodiac_sessions_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/zodiac_user_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';

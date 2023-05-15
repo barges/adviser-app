@@ -12,13 +12,18 @@ import 'package:web_socket_channel/io.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/chat/call_data.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
+import 'package:zodiac/data/models/chat/end_chat_data.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
 import 'package:zodiac/presentation/screens/starting_chat/starting_chat_screen.dart';
+import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
 import 'package:zodiac/services/websocket_manager/commands.dart';
+import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
+import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
+import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
@@ -45,15 +50,22 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   final BehaviorSubject<EnterRoomData> _enterRoomDataStream = BehaviorSubject();
 
-  final PublishSubject<ChatMessageModel> _updateMessageIdStream =
+  final PublishSubject<CreatedDeliveredEvent> _updateMessageIdStream =
       PublishSubject();
-  final PublishSubject<ChatMessageModel> _updateMessageIsDeliveredStream =
+  final PublishSubject<CreatedDeliveredEvent> _updateMessageIsDeliveredStream =
       PublishSubject();
-  final PublishSubject<int> _chatIsActiveStream = PublishSubject();
+  final PublishSubject<ActiveChatEvent> _chatIsActiveStream = PublishSubject();
+
+  final PublishSubject<OfflineSessionEvent> _offlineSessionIsActiveStream =
+      PublishSubject();
 
   final PublishSubject<int> _updateMessageIsReadStream = PublishSubject();
 
   final PublishSubject<int> _updateWriteStatusStream = PublishSubject();
+
+  final PublishSubject<UpdateTimerEvent> _updateTimerStream = PublishSubject();
+
+  final PublishSubject<bool> _stopRoomTrigger = PublishSubject();
 
   WebSocketManagerImpl(
     this._zodiacMainCubit,
@@ -151,6 +163,10 @@ class WebSocketManagerImpl implements WebSocketManager {
     _emitter.on(Commands.offlineSessionStart, this,
         (event, _) => _onOfflineSessionStart(event));
 
+    //offlineSessionEnd
+    _emitter.on(Commands.offlineSessionEnd, this,
+        (event, _) => _onOfflineSessionEnd(event));
+
     //funcActions
     _emitter.on(
         Commands.funcActions, this, (event, _) => _onFuncActions(event));
@@ -180,6 +196,13 @@ class WebSocketManagerImpl implements WebSocketManager {
     //sendUserMessage
     _emitter.on(Commands.sendUserMessage, this,
         (event, _) => _onSendUserMessage(event));
+
+    //startTimer
+    _emitter.on(Commands.startTimer, this, (event, _) => _onStartTimer(event));
+
+    //timerCorrect
+    _emitter.on(
+        Commands.timerCorrect, this, (event, _) => _onTimerCorrect(event));
   }
 
   @override
@@ -189,18 +212,21 @@ class WebSocketManagerImpl implements WebSocketManager {
   Stream<ChatMessageModel> get oneMessageStream => _oneMessageStream.stream;
 
   @override
-  Stream<ChatMessageModel> get updateMessageIdStream =>
+  Stream<CreatedDeliveredEvent> get updateMessageIdStream =>
       _updateMessageIdStream.stream;
 
   @override
-  Stream<ChatMessageModel> get updateMessageIsDeliveredStream =>
+  Stream<CreatedDeliveredEvent> get updateMessageIsDeliveredStream =>
       _updateMessageIsDeliveredStream.stream;
 
   @override
-  Stream<int> get chatIsActiveStream =>
-      _chatIsActiveStream.stream;
+  Stream<ActiveChatEvent> get chatIsActiveStream => _chatIsActiveStream.stream;
 
-@override
+  @override
+  Stream<OfflineSessionEvent> get offlineSessionIsActiveStream =>
+      _offlineSessionIsActiveStream.stream;
+
+  @override
   Stream<int> get updateMessageIsReadStream =>
       _updateMessageIsReadStream.stream;
 
@@ -213,6 +239,12 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   @override
   PublishSubject<bool> get endChatTrigger => _endChatTrigger;
+
+  @override
+  Stream<UpdateTimerEvent> get updateTimerStream => _updateTimerStream.stream;
+
+  @override
+  Stream<bool> get stopRoomStream => _stopRoomTrigger.stream;
 
   @override
   Future connect() async {
@@ -327,6 +359,23 @@ class WebSocketManagerImpl implements WebSocketManager {
       );
     }
   }
+
+  @override
+  sendMessageToChat({
+    required ChatMessageModel message,
+    required String roomId,
+    required int opponentId,
+  }) =>
+      _send(SocketMessage.chatMessage(
+        message: message.message ?? '',
+        roomId: roomId,
+        opponentId: opponentId,
+        mid: message.mid ?? '',
+      ));
+
+  @override
+  void sendEndChat({required String roomId}) =>
+      _send(SocketMessage.saveChat(roomId: roomId));
 
   @override
   void close() {
@@ -477,7 +526,16 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onAllInRoom(Event event) {
-    ///TODO - Implements onAllInRoom
+    (event.eventData as SocketMessage).let((data) {
+      (data.opponentId as int).let(
+        (id) => _chatIsActiveStream.add(
+          ActiveChatEvent(
+            isActive: true,
+            clientId: id,
+          ),
+        ),
+      );
+    });
   }
 
   void _onProductList(Event event) {
@@ -492,15 +550,37 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onMsgCreated(Event event) {
     (event.eventData as SocketMessage).let((data) {
-      final message = ChatMessageModel.fromJson(data.params ?? {});
-      _updateMessageIdStream.add(message);
+      (data.opponentId as int).let(
+        (clientId) {
+          final String? mid = data.params['mid'];
+          final int? id = data.params['id'];
+
+          _updateMessageIdStream.add(
+            CreatedDeliveredEvent(
+              mid: mid ?? '',
+              clientId: clientId,
+              id: id,
+            ),
+          );
+        },
+      );
     });
   }
 
   void _onMsgDelivered(Event event) {
     (event.eventData as SocketMessage).let((data) {
-      final message = ChatMessageModel.fromJson(data.params ?? {});
-      _updateMessageIsDeliveredStream.add(message);
+      (data.opponentId as int).let(
+        (clientId) {
+          final String? mid = data.params['mid'];
+
+          _updateMessageIsDeliveredStream.add(
+            CreatedDeliveredEvent(
+              mid: mid ?? '',
+              clientId: clientId,
+            ),
+          );
+        },
+      );
     });
   }
 
@@ -604,12 +684,55 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onEndChat(Event event) {
-    ///TODO - Implements onEndChat
+    (event.eventData as SocketMessage).let((data) {
+      final EndChatData endChatData = EndChatData.fromJson(data.params);
+
+      (data.opponentId as int).let(
+        (id) => _chatIsActiveStream.add(
+          ActiveChatEvent(
+            isActive: false,
+            clientId: id,
+          ),
+        ),
+      );
+    });
     endChat();
   }
 
   void _onOfflineSessionStart(Event event) {
-    ///TODO - Implements onOfflineSessionStart
+    (event.eventData as SocketMessage).let((data) {
+      (data.opponentId as int).let(
+        (id) {
+          final int? timeout = data.params['timeout'];
+
+          _offlineSessionIsActiveStream.add(
+            OfflineSessionEvent(
+              isActive: true,
+              clientId: id,
+              timeout: timeout,
+            ),
+          );
+        },
+      );
+    });
+  }
+
+  void _onOfflineSessionEnd(Event event) {
+    (event.eventData as SocketMessage).let((data) {
+      (data.opponentId as int).let(
+        (id) {
+          _offlineSessionIsActiveStream.add(
+            OfflineSessionEvent(
+              isActive: false,
+              clientId: id,
+            ),
+          );
+          _send(SocketMessage.funcActions(
+            opponentId: id,
+          ));
+        },
+      );
+    });
   }
 
   void _onFuncActions(Event event) {
@@ -617,11 +740,20 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onStoproom(Event event) {
-    ///TODO - Implements onStoproom
+    _stopRoomTrigger.add(true);
   }
 
   void _onStartroom(Event event) {
-    ///TODO - Implements onStartroom
+    (event.eventData as SocketMessage).let((data) {
+      logger.d(data.params['time']);
+      if (data.params is Map &&
+          data.params['time'] != null &&
+          data.opponentId != null) {
+        _updateTimerStream.add(UpdateTimerEvent(
+            value: Duration(milliseconds: data.params['time']),
+            clientId: data.opponentId!));
+      }
+    });
   }
 
   void _onPaidfree(Event event) {
@@ -644,5 +776,29 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onSendUserMessage(Event event) {
     ///TODO - Implements onSendUserMessage
+  }
+
+  void _onStartTimer(Event event) {
+    (event.eventData as SocketMessage).let((data) {
+      (data.opponentId as int).let(
+        (id) {
+          _updateTimerStream.add(UpdateTimerEvent(
+              value: const Duration(seconds: 0), clientId: id));
+        },
+      );
+    });
+  }
+
+  void _onTimerCorrect(Event event) {
+    (event.eventData as SocketMessage).let((data) {
+      logger.d(data.params['time']);
+      if (data.params is Map &&
+          data.params['time'] != null &&
+          data.opponentId != null) {
+        _updateTimerStream.add(UpdateTimerEvent(
+            value: Duration(milliseconds: data.params['time']),
+            clientId: data.opponentId!));
+      }
+    });
   }
 }

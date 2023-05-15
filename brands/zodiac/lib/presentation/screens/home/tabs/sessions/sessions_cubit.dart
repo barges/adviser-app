@@ -9,7 +9,7 @@ import 'package:zodiac/data/network/requests/hide_chat_request.dart';
 import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/chat_entities_response.dart';
-import 'package:zodiac/domain/repositories/zodiac_chats_repository.dart';
+import 'package:zodiac/domain/repositories/zodiac_sessions_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_state.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac.dart';
@@ -18,7 +18,7 @@ import 'package:zodiac/zodiac_main_cubit.dart';
 const int _count = 20;
 
 class SessionsCubit extends Cubit<SessionsState> {
-  final ZodiacChatsRepository _chatsRepository;
+  final ZodiacSessionsRepository _chatsRepository;
   final BrandManager _brandManager;
   final ZodiacMainCubit _zodiacMainCubit;
   final WebSocketManager _webSocketManager;

@@ -1,29 +1,38 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
+import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
+import 'package:zodiac/data/models/enums/chat_message_type.dart';
 import 'package:zodiac/data/network/requests/profile_details_request.dart';
 import 'package:zodiac/data/network/responses/profile_details_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/chat/chat_state.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_text_input_widget.dart';
+import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
+import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
+import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
+import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 const Duration _typingIndicatorDuration = Duration(milliseconds: 5000);
 
 class ChatCubit extends Cubit<ChatState> {
+  final ZodiacCachingManager _cachingManager;
   final WebSocketManager _webSocketManager;
   final bool _fromStartingChat;
   final UserData clientData;
@@ -40,7 +49,6 @@ class ChatCubit extends Cubit<ChatState> {
 
   final FocusNode textInputFocusNode = FocusNode();
   final GlobalKey textInputKey = GlobalKey();
-  final GlobalKey bottomTextAreaKey = GlobalKey();
 
   final PublishSubject<double> _showDownButtonStream = PublishSubject();
   late final StreamSubscription<double> _showDownButtonSubscription;
@@ -56,11 +64,20 @@ class ChatCubit extends Cubit<ChatState> {
 
   late final StreamSubscription<List<ChatMessageModel>> _messagesSubscription;
   late final StreamSubscription<EnterRoomData> _enterRoomDataSubscription;
-  late final StreamSubscription<ChatMessageModel> _updateMessageIdSubscription;
-  late final StreamSubscription<ChatMessageModel>
+  late final StreamSubscription<CreatedDeliveredEvent>
+      _updateMessageIdSubscription;
+  late final StreamSubscription<CreatedDeliveredEvent>
       _updateMessageIsDeliveredSubscription;
   late final StreamSubscription<int> _updateMessageIsReadSubscription;
   late final StreamSubscription<int> _updateWriteStatusSubscription;
+  late final StreamSubscription<UpdateTimerEvent> _updateTimerSubscription;
+  late final StreamSubscription<bool> _stopRoomSubscription;
+
+  late final StreamSubscription<ActiveChatEvent>
+      _updateChatIsActiveSubscription;
+
+  late final StreamSubscription<OfflineSessionEvent>
+      _updateOfflineSessionIsActiveSubscription;
 
   late final StreamSubscription<bool> _keyboardSubscription;
 
@@ -70,8 +87,12 @@ class ChatCubit extends Cubit<ChatState> {
 
   final List<ChatMessageModel> _messages = [];
   EnterRoomData? enterRoomData;
+  int offlineSessionTimeout = 0;
+
+  Timer? _chatTimer;
 
   ChatCubit(
+    this._cachingManager,
     this._webSocketManager,
     this._fromStartingChat,
     this.clientData,
@@ -86,7 +107,7 @@ class ChatCubit extends Cubit<ChatState> {
       }
 
       _messages.addAll(event);
-      _updateMessages(_messages);
+      _updateMessages();
 
       if (event.length == 50) {
         _isLoadingMessages = false;
@@ -99,29 +120,47 @@ class ChatCubit extends Cubit<ChatState> {
             (event.mid != null && element.mid == event.mid));
         if (!contains) {
           _messages.insert(0, event);
-          chatObserver.standby();
-          _updateMessages(_messages);
+          if (state.needShowDownButton) {
+            chatObserver.standby();
+          }
+          _updateMessages();
           if (!event.isOutgoing) {
             _updateWriteStatus(false);
-          } else {
-            animateToStartChat();
           }
         }
       });
     });
 
     _updateMessageIdSubscription =
-        _webSocketManager.updateMessageIdStream.listen((event) {});
+        _webSocketManager.updateMessageIdStream.listen((event) {
+      if (clientData.id == event.clientId) {
+        final int index =
+            _messages.indexWhere((element) => element.mid == event.mid);
+        if (index > -1) {
+          final ChatMessageModel model = _messages[index];
+          _messages[index] = model.copyWith(
+            id: event.id,
+          );
+          _updateMessages();
+        }
+      }
+    });
 
     _updateMessageIsDeliveredSubscription =
-        _webSocketManager.updateMessageIsDeliveredStream.listen((event) {});
+        _webSocketManager.updateMessageIsDeliveredStream.listen((event) {
+      if (clientData.id == event.clientId) {
+        final int index =
+            _messages.indexWhere((element) => element.mid == event.mid);
 
-    _updateWriteStatusSubscription =
-        _webSocketManager.updateWriteStatusStream.listen((event) {
-      if (event == clientData.id && !state.needShowTypingIndicator) {
-        _updateWriteStatus(true);
-        Future.delayed(_typingIndicatorDuration)
-            .then((value) => _updateWriteStatus(false));
+        if (index > -1) {
+          final ChatMessageModel model = _messages[index];
+          logger.d(model);
+          _messages[index] = model.copyWith(
+            isDelivered: true,
+          );
+          logger.d(_messages[index]);
+          _updateMessages();
+        }
       }
     });
 
@@ -133,7 +172,35 @@ class ChatCubit extends Cubit<ChatState> {
         _messages[index] = model.copyWith(
           isRead: true,
         );
-        _updateMessages(_messages);
+        _updateMessages();
+      }
+    });
+
+    _updateWriteStatusSubscription =
+        _webSocketManager.updateWriteStatusStream.listen((event) {
+      if (event == clientData.id && !state.needShowTypingIndicator) {
+        _updateWriteStatus(true);
+        Future.delayed(_typingIndicatorDuration)
+            .then((value) => _updateWriteStatus(false));
+      }
+    });
+
+    _updateChatIsActiveSubscription =
+        _webSocketManager.chatIsActiveStream.listen((event) {
+      if (event.clientId == clientData.id) {
+        emit(state.copyWith(chatIsActive: event.isActive));
+        if (!event.isActive) {
+          _chatTimer?.cancel();
+          emit(state.copyWith(timerValue: null));
+        }
+      }
+    });
+
+    _updateOfflineSessionIsActiveSubscription =
+        _webSocketManager.offlineSessionIsActiveStream.listen((event) {
+      if (event.clientId == clientData.id) {
+        offlineSessionTimeout = event.timeout ?? 0;
+        emit(state.copyWith(offlineSessionIsActive: event.isActive));
       }
     });
 
@@ -174,10 +241,11 @@ class ChatCubit extends Cubit<ChatState> {
     });
 
     textInputEditingController.addListener(() {
-      if (textInputEditingController.text.isNotEmpty) {
+      final String text = textInputEditingController.text;
+      if (text.isNotEmpty) {
         emit(state.copyWith(
-          inputTextLength: textInputEditingController.text.length,
-          isSendButtonEnabled: true,
+          inputTextLength: text.length,
+          isSendButtonEnabled: text.trim().isNotEmpty,
         ));
       } else {
         emit(state.copyWith(
@@ -185,7 +253,7 @@ class ChatCubit extends Cubit<ChatState> {
           isSendButtonEnabled: false,
         ));
       }
-      if (triggerOnTextChanged) {
+      if (state.chatIsActive && triggerOnTextChanged) {
         triggerOnTextChanged = false;
         Future.delayed(_typingIndicatorDuration)
             .then((value) => triggerOnTextChanged = true);
@@ -213,15 +281,40 @@ class ChatCubit extends Cubit<ChatState> {
       if (!isFocused) {
         setTextInputFocus(false);
       }
-      getBottomTextAreaHeight();
     });
 
-    getBottomTextAreaHeight();
+    _updateTimerSubscription = _webSocketManager.updateTimerStream.listen(
+      (event) {
+        if (event.clientId == clientData.id) {
+          logger.d(
+              '${state.timerValue?.inSeconds} ==== ${event.value.inSeconds}');
+          emit(state.copyWith(isChatReconnecting: false));
+          if (state.timerValue?.inSeconds != event.value.inSeconds) {
+            _chatTimer?.cancel();
+            emit(state.copyWith(timerValue: event.value));
+            _chatTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+              emit(state.copyWith(
+                  timerValue: Duration(
+                      seconds: (state.timerValue?.inSeconds ?? 0) + 1)));
+            });
+          }
+        }
+      },
+    );
+
+    _stopRoomSubscription = _webSocketManager.stopRoomStream.listen(
+      (event) => emit(state.copyWith(isChatReconnecting: true)),
+    );
+
     getClientInformation();
   }
 
   @override
   Future<void> close() {
+    textInputEditingController.dispose();
+    textInputScrollController.dispose();
+    messagesScrollController.dispose();
+    textInputFocusNode.dispose();
     _messagesSubscription.cancel();
     _oneMessageSubscription?.cancel();
     _enterRoomDataSubscription.cancel();
@@ -232,7 +325,34 @@ class ChatCubit extends Cubit<ChatState> {
     _showDownButtonSubscription.cancel();
     _showDownButtonStream.close();
     _keyboardSubscription.cancel();
+    _updateChatIsActiveSubscription.cancel();
+    _updateOfflineSessionIsActiveSubscription.cancel();
+    _updateTimerSubscription.cancel();
+    _chatTimer?.cancel();
+    _stopRoomSubscription.cancel();
     return super.close();
+  }
+
+  void sendMessageToChat() {
+    final ChatMessageModel chatMessageModel = ChatMessageModel(
+      utc: DateTime.now().toUtc(),
+      type: ChatMessageType.simple,
+      isOutgoing: true,
+      isDelivered: false,
+      mid: _generateMessageId(),
+      message: textInputEditingController.text.trim(),
+    );
+    if (state.needShowDownButton) {
+      animateToStartChat();
+    }
+    _messages.insert(0, chatMessageModel);
+    _updateMessages();
+    textInputEditingController.clear();
+    _webSocketManager.sendMessageToChat(
+      message: chatMessageModel,
+      roomId: enterRoomData?.roomData?.id ?? '',
+      opponentId: clientData.id ?? 0,
+    );
   }
 
   void sendReadMessage(int? messageId) {
@@ -286,27 +406,12 @@ class ChatCubit extends Cubit<ChatState> {
 
   void animateToStartChat() {
     if (messagesScrollController.hasClients) {
-      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-        messagesScrollController.animateTo(
-          0.0,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.linear,
-        );
-      });
+      messagesScrollController.animateTo(
+        0.0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.linear,
+      );
     }
-  }
-
-  void getBottomTextAreaHeight() {
-    WidgetsBinding.instance.endOfFrame.then((value) {
-      if (bottomTextAreaKey.currentContext != null) {
-        final RenderBox? box =
-            bottomTextAreaKey.currentContext!.findRenderObject() as RenderBox?;
-
-        if (box != null) {
-          emit(state.copyWith(bottomTextAreaHeight: box.size.height));
-        }
-      }
-    });
   }
 
   void setTextInputFocus(bool value) {
@@ -327,7 +432,7 @@ class ChatCubit extends Cubit<ChatState> {
     emit(state.copyWith(isStretchedTextField: value));
   }
 
-  void _updateMessages(List<ChatMessageModel> messages) {
+  void _updateMessages() {
     emit(state.copyWith(messages: List.from(_messages)));
   }
 
@@ -346,7 +451,34 @@ class ChatCubit extends Cubit<ChatState> {
     });
   }
 
+  String _generateMessageId() {
+    final expertId = _cachingManager.getUid();
+    return '${expertId}_${DateTime.now().millisecondsSinceEpoch ~/ 1000}';
+  }
+
   void updateSessions() {
     _zodiacMainCubit.updateSessions();
+  }
+
+  void endChat() {
+    if (enterRoomData?.roomData?.id != null) {
+      _webSocketManager.sendEndChat(roomId: enterRoomData!.roomData!.id!);
+    }
+  }
+
+  Future<void> sendImage(BuildContext context, File image) async {
+    ChatMessageModel? message = await context.push<ChatMessageModel?>(
+      route: ZodiacSendImage(
+        image: image,
+        clientId: clientData.id.toString(),
+      ),
+    );
+
+    logger.d(message);
+
+    if (message != null) {
+      _messages.insert(0, message);
+      _updateMessages();
+    }
   }
 }

@@ -32,10 +32,6 @@ class SocketMessage {
     return json.encode(data);
   }
 
-  static String generateMessageId(int userId) {
-    return '${userId}_${DateTime.now().millisecondsSinceEpoch / 1000}';
-  }
-
   static SocketMessage pong() => SocketMessage(action: Commands.pong);
 
   static SocketMessage advisorLogin({required int userId}) =>
@@ -91,13 +87,14 @@ class SocketMessage {
           {required String message,
           required String roomId,
           required int opponentId,
-          required int userId}) =>
+          required String mid,
+          }) =>
       SocketMessage(action: Commands.chatMessage, params: {
         'message': message,
         'view': 0,
         'room_id': roomId,
         'opponent_id': opponentId,
-        'mid': generateMessageId(userId)
+        'mid': mid,
       });
 
   static SocketMessage msgDelivered({String? mid}) => SocketMessage(
@@ -132,10 +129,11 @@ class SocketMessage {
           required double price,
           required int productId,
           required String roomId,
-          required int userId}) =>
+          required String mid,
+          }) =>
       SocketMessage(action: Commands.productMessage, params: {
         "message": serviceName,
-        "mid": generateMessageId(userId),
+        "mid": mid,
         "price": price,
         "product_id": productId,
         "room_id": roomId,
@@ -154,9 +152,10 @@ class SocketMessage {
   static SocketMessage privateMessage(
           {required int messageId,
           required int opponentId,
-          required int userId}) =>
+            required String mid,
+          }) =>
       SocketMessage(action: Commands.privateMessage, params: {
-        "mid": generateMessageId(userId),
+        "mid": mid,
         "message_id": messageId,
         "opponent_id": opponentId
       });

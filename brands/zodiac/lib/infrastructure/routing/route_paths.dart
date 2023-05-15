@@ -24,4 +24,6 @@ class RoutePathsZodiac {
       '${ZodiacBrand.alias}NotificationDetails';
   static const chatScreen =
       '${ZodiacBrand.alias}Chat';
+  static const sendImageScreen =
+      '${ZodiacBrand.alias}SendImage';
 }
