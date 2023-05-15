@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortunica/data/cache/fortunica_caching_manager.dart';
 import 'package:fortunica/data/models/app_success/app_success.dart';
@@ -29,16 +28,12 @@ import 'package:shared_advisor_interface/services/connectivity_service.dart';
 class SessionsCubit extends Cubit<SessionsState> {
   final FortunicaCachingManager cacheManager;
 
-  final ScrollController publicQuestionsScrollController = ScrollController();
-  final ScrollController conversationsScrollController = ScrollController();
   final FortunicaMainCubit mainCubit;
   final FortunicaChatsRepository chatsRepository;
   final ConnectivityService connectivityService;
 
-  late final StreamSubscription<bool> _updateSessionsSubscription;
   late final StreamSubscription _userStatusSubscription;
   late final StreamSubscription _userProfileSubscription;
-  final double screenHeight;
 
   final List<ChatItem> _publicQuestions = [];
   final List<ChatItem> _conversationsList = [];
@@ -49,32 +44,17 @@ class SessionsCubit extends Cubit<SessionsState> {
   bool _publicHasMore = true;
   String? _conversationsLastItem;
   bool _conversationsHasMore = true;
-  bool _isPublicLoading = false;
-  bool _isConversationsLoading = false;
+  bool isPublicLoading = false;
+  bool isConversationsLoading = false;
 
   SessionsCubit({
-   required this.cacheManager,
-    required this.screenHeight,
-    required  this.connectivityService,
+    required this.cacheManager,
+    required this.connectivityService,
     required this.chatsRepository,
     required this.mainCubit,
   }) : super(const SessionsState()) {
     emit(state.copyWith(userMarkets: [MarketsType.all]));
 
-    publicQuestionsScrollController.addListener(() {
-      if (!_isPublicLoading &&
-          publicQuestionsScrollController.position.extentAfter <=
-              screenHeight) {
-        getPublicQuestions();
-      }
-    });
-    conversationsScrollController.addListener(() {
-      if (!_isConversationsLoading &&
-          conversationsScrollController.position.extentAfter <=
-              screenHeight) {
-        getConversations();
-      }
-    });
     _userStatusSubscription =
         cacheManager.listenCurrentUserStatusStream((value) {
       if (previousStatus != value) {
@@ -92,20 +72,10 @@ class SessionsCubit extends Cubit<SessionsState> {
       ];
       emit(state.copyWith(userMarkets: userMarkets));
     });
-
-    _updateSessionsSubscription = mainCubit.sessionsUpdateTrigger.listen(
-      (value) {
-        getQuestions().then((value) => SchedulerBinding.instance.endOfFrame
-            .then((value) => publicQuestionsScrollController.jumpTo(0.0)));
-      },
-    );
   }
 
   @override
   Future<void> close() async {
-    publicQuestionsScrollController.dispose();
-    conversationsScrollController.dispose();
-    _updateSessionsSubscription.cancel();
     _userProfileSubscription.cancel();
     _userStatusSubscription.cancel();
     return super.close();
@@ -166,7 +136,8 @@ class SessionsCubit extends Cubit<SessionsState> {
     }
   }
 
-  Future<void> goToChatForPublic(BuildContext context, ChatItem question) async {
+  Future<void> goToChatForPublic(
+      BuildContext context, ChatItem question) async {
     if (question.clientID != null) {
       context.push(
         route: FortunicaChat(
@@ -205,8 +176,8 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   Future<void> getPublicQuestions(
       {FortunicaUserStatus? status, bool refresh = false}) async {
-    if (!_isPublicLoading) {
-      _isPublicLoading = true;
+    if (!isPublicLoading) {
+      isPublicLoading = true;
       try {
         if (refresh) {
           _publicHasMore = true;
@@ -253,15 +224,15 @@ class SessionsCubit extends Cubit<SessionsState> {
       } catch (e) {
         logger.d(e);
       } finally {
-        _isPublicLoading = false;
+        isPublicLoading = false;
       }
     }
   }
 
   Future<void> getConversations(
       {FortunicaUserStatus? status, bool refresh = false}) async {
-    if (!_isConversationsLoading) {
-      _isConversationsLoading = true;
+    if (!isConversationsLoading) {
+      isConversationsLoading = true;
       try {
         if (refresh) {
           _conversationsHasMore = true;
@@ -303,7 +274,7 @@ class SessionsCubit extends Cubit<SessionsState> {
       } catch (e) {
         logger.d(e);
       } finally {
-        _isConversationsLoading = false;
+        isConversationsLoading = false;
       }
     }
   }
