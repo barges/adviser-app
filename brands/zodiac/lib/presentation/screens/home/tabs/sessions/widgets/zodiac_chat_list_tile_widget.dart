@@ -83,12 +83,19 @@ class ZodiacChatListTileWidget extends StatelessWidget {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                item.name ?? '',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelMedium
-                                    ?.copyWith(fontSize: 15.0),
+                              Expanded(
+                                child: Text(
+                                  item.name ?? '',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium
+                                      ?.copyWith(fontSize: 15.0),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 8.0,
                               ),
                               Text(
                                 item.dateLastUpdate != null
