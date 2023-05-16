@@ -5,7 +5,9 @@ import 'package:shared_advisor_interface/app_constants.dart';
 
 final globalGetIt = GetIt.instance;
 
-final Logger simpleLogger = Logger(printer: SimplePrinter());
+final Logger simpleLogger = Logger(
+    filter: _MyLoggerFilter(),
+    printer: SimplePrinter());
 
 final logger = Logger(
   filter: _MyLoggerFilter(),
