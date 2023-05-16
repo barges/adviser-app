@@ -352,8 +352,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Cuando ayudes a tu primer cliente, verás tu historial de sesiones aquí."),
         "willBeAvailableIn":
             MessageLookupByLibrary.simpleMessage("Disponible en"),
-        "workspaces":
-            MessageLookupByLibrary.simpleMessage("Espacios de trabajo"),
+        "workspaces": MessageLookupByLibrary.simpleMessage("Marcas"),
         "wrongUsernameAndOrPassword": MessageLookupByLibrary.simpleMessage(
             "Correo y/o contraseña incorrecta"),
         "yesImSure": MessageLookupByLibrary.simpleMessage("Sí, estoy seguro"),
