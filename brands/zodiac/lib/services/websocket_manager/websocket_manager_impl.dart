@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:eventify/eventify.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -267,8 +268,12 @@ class WebSocketManagerImpl implements WebSocketManager {
       _channel = IOWebSocketChannel.connect(url);
       _socketSubscription = _channel!.stream.listen((event) {
         final message = SocketMessage.fromJson(json.decode(event));
-        if (message.action != Commands.ping &&
-            message.action != Commands.syncUserInfo) {
+        if (kDebugMode) {
+          if (message.action != Commands.ping &&
+              message.action != Commands.syncUserInfo) {
+            logger.d("SUB Socket event: $event");
+          }
+        } else {
           logger.d("SUB Socket event: $event");
         }
         _emitter.emit(message.action, this, message);
@@ -400,7 +405,11 @@ class WebSocketManagerImpl implements WebSocketManager {
       });
 
   void _send(SocketMessage message) {
-    if (message.action != Commands.pong) {
+    if (kDebugMode) {
+      if (message.action != Commands.pong) {
+        logger.d('PUB message: ${message.encoded}');
+      }
+    } else {
       logger.d('PUB message: ${message.encoded}');
     }
     _channel?.sink.add(message.encoded);

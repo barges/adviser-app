@@ -93,8 +93,6 @@ class MainCubit extends Cubit<MainState> {
       globalGetIt.get<FreshChatService>().changeLocaleInvite();
     }
 
-    logger.d(languageCode);
-
     emit(state.copyWith(
         locale: Locale(languageCode, languageCode.toUpperCase())));
   }
