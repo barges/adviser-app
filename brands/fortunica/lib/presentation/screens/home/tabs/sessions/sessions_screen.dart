@@ -1,6 +1,8 @@
+import 'dart:async';
+
+import 'package:flutter/scheduler.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:flutter/material.dart';
@@ -22,21 +24,61 @@ import 'package:fortunica/presentation/screens/home/tabs/sessions/widgets/list_o
 import 'package:fortunica/presentation/screens/home/tabs/sessions/widgets/search/search_list_widget.dart';
 import 'package:fortunica/presentation/screens/home/tabs/sessions/widgets/status_not_live_widget.dart';
 
-class SessionsScreen extends StatelessWidget {
+class SessionsScreen extends StatefulWidget {
   const SessionsScreen({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<SessionsScreen> createState() => _SessionsScreenState();
+}
+
+class _SessionsScreenState extends State<SessionsScreen> {
+  final ScrollController publicQuestionsScrollController = ScrollController();
+  final ScrollController conversationsScrollController = ScrollController();
+
+  late final StreamSubscription<bool> _updateSessionsSubscription;
+
+  @override
   Widget build(BuildContext context) {
+    final double screenHeight = MediaQuery.of(context).size.height;
+
     return BlocProvider(
-      create: (_) => SessionsCubit(
-        cacheManager: fortunicaGetIt.get<FortunicaCachingManager>(),
-        connectivityService: fortunicaGetIt.get<ConnectivityService>(),
-        chatsRepository: fortunicaGetIt.get<FortunicaChatsRepository>(),
-        mainCubit: fortunicaGetIt.get<FortunicaMainCubit>(),
-        screenHeight: MediaQuery.of(context).size.height,
-      ),
+      create: (_) {
+        final FortunicaMainCubit mainCubit =
+            fortunicaGetIt.get<FortunicaMainCubit>();
+        final SessionsCubit sessionsCubit = SessionsCubit(
+          cacheManager: fortunicaGetIt.get<FortunicaCachingManager>(),
+          connectivityService: fortunicaGetIt.get<ConnectivityService>(),
+          chatsRepository: fortunicaGetIt.get<FortunicaChatsRepository>(),
+          mainCubit: fortunicaGetIt.get<FortunicaMainCubit>(),
+        );
+
+        _updateSessionsSubscription = mainCubit.sessionsUpdateTrigger.listen(
+          (value) {
+            sessionsCubit.getQuestions().then((value) => SchedulerBinding
+                .instance.endOfFrame
+                .then((value) => publicQuestionsScrollController.jumpTo(0.0)));
+          },
+        );
+
+        publicQuestionsScrollController.addListener(() {
+          if (!sessionsCubit.isPublicLoading &&
+              publicQuestionsScrollController.position.extentAfter <=
+                  screenHeight) {
+            sessionsCubit.getPublicQuestions();
+          }
+        });
+        conversationsScrollController.addListener(() {
+          if (!sessionsCubit.isConversationsLoading &&
+              conversationsScrollController.position.extentAfter <=
+                  screenHeight) {
+            sessionsCubit.getConversations();
+          }
+        });
+
+        return sessionsCubit;
+      },
       child: Builder(builder: (BuildContext context) {
         final SessionsCubit sessionsCubit = context.read<SessionsCubit>();
 
@@ -107,21 +149,26 @@ class SessionsScreen extends StatelessWidget {
               body: Builder(builder: (context) {
                 if (isOnline) {
                   if (statusIsLive) {
-                    return const ListOfQuestions();
+                    return ListOfQuestions(
+                      publicQuestionsScrollController:
+                          publicQuestionsScrollController,
+                      conversationsScrollController:
+                          conversationsScrollController,
+                    );
                   } else {
                     return NotLiveStatusWidget(
                       status: userStatus?.status ?? FortunicaUserStatus.offline,
                     );
                   }
                 } else {
-                  return CustomScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
+                  return const CustomScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
                     slivers: [
                       SliverFillRemaining(
                         hasScrollBody: false,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             NoConnectionWidget(),
                           ],
                         ),
@@ -146,5 +193,13 @@ class SessionsScreen extends StatelessWidget {
         );
       }),
     );
+  }
+
+  @override
+  void dispose() {
+    publicQuestionsScrollController.dispose();
+    conversationsScrollController.dispose();
+    _updateSessionsSubscription.cancel();
+    super.dispose();
   }
 }
