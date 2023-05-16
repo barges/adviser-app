@@ -10,6 +10,7 @@ import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
 import 'package:shared_advisor_interface/data/models/user_info/localized_properties/property_by_language.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
 import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
+import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
 import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/set_push_notification_token_request.dart';
 import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
@@ -191,21 +192,28 @@ class AccountCubit extends Cubit<AccountState> {
     await _cacheManager.saveUserProfile(userInfo.profile);
     await _cacheManager.saveUserId(userInfo.id);
 
-    if (userInfo.contracts?.updates?.isNotEmpty == true) {
-      await _cacheManager.saveUserStatus(userInfo.status?.copyWith(
-        status: FortunicaUserStatus.legalBlock,
-      ));
-    } else {
-      if (checkPropertiesMapIfHasEmpty(userInfo) ||
-          (userInfo.profile?.profileName?.length ?? 0) <
-              AppConstants.minNickNameLength ||
-          userInfo.profile?.profilePictures?.isNotEmpty != true) {
-        await _cacheManager.saveUserStatus(userInfo.status?.copyWith(
-          status: FortunicaUserStatus.incomplete,
+    final UserStatus? userStatus = userInfo.status;
+
+    if (userStatus?.status == FortunicaUserStatus.live ||
+        userStatus?.status == FortunicaUserStatus.offline) {
+      if (userInfo.contracts?.updates?.isNotEmpty == true) {
+        await _cacheManager.saveUserStatus(userStatus?.copyWith(
+          status: FortunicaUserStatus.legalBlock,
         ));
       } else {
-        await _cacheManager.saveUserStatus(userInfo.status);
+        if (checkPropertiesMapIfHasEmpty(userInfo) ||
+            (userInfo.profile?.profileName?.length ?? 0) <
+                AppConstants.minNickNameLength ||
+            userInfo.profile?.profilePictures?.isNotEmpty != true) {
+          await _cacheManager.saveUserStatus(userStatus?.copyWith(
+            status: FortunicaUserStatus.incomplete,
+          ));
+        } else {
+          await _cacheManager.saveUserStatus(userStatus);
+        }
       }
+    } else {
+      await _cacheManager.saveUserStatus(userStatus);
     }
   }
 

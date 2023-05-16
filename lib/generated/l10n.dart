@@ -150,10 +150,10 @@ class S {
     );
   }
 
-  /// `Choose brand`
+  /// `Select brand`
   String get chooseBrand {
     return Intl.message(
-      'Choose brand',
+      'Select brand',
       name: 'chooseBrand',
       desc: '',
       args: [],
@@ -250,10 +250,10 @@ class S {
     );
   }
 
-  /// `Nickname`
+  /// `Pseudonym/Profile Name`
   String get nickname {
     return Intl.message(
-      'Nickname',
+      'Pseudonym/Profile Name',
       name: 'nickname',
       desc: '',
       args: [],
@@ -290,10 +290,10 @@ class S {
     );
   }
 
-  /// `Add Gallery Pictures`
+  /// `Add photos`
   String get addGalleryPictures {
     return Intl.message(
-      'Add Gallery Pictures',
+      'Add photos',
       name: 'addGalleryPictures',
       desc: '',
       args: [],
@@ -310,10 +310,10 @@ class S {
     );
   }
 
-  /// `Workspaces`
+  /// `Brands`
   String get workspaces {
     return Intl.message(
-      'Workspaces',
+      'Brands',
       name: 'workspaces',
       desc: '',
       args: [],
@@ -330,31 +330,11 @@ class S {
     );
   }
 
-  /// `All brands`
-  String get allOurBrands {
-    return Intl.message(
-      'All brands',
-      name: 'allOurBrands',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Customer Support`
   String get customerSupport {
     return Intl.message(
       'Customer Support',
       name: 'customerSupport',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others`
-  String get wePrideOurselvesToOfferAdvisorsASafePlaceTo {
-    return Intl.message(
-      'We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others',
-      name: 'wePrideOurselvesToOfferAdvisorsASafePlaceTo',
       desc: '',
       args: [],
     );
@@ -400,16 +380,6 @@ class S {
     );
   }
 
-  /// `Ingenio`
-  String get ingenio {
-    return Intl.message(
-      'Ingenio',
-      name: 'ingenio',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Choose email app`
   String get chooseEmailApp {
     return Intl.message(
@@ -420,21 +390,11 @@ class S {
     );
   }
 
-  /// `Public`
+  /// `Quick Question`
   String get public {
     return Intl.message(
-      'Public',
+      'Quick Question',
       name: 'public',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `For me`
-  String get forMe {
-    return Intl.message(
-      'For me',
-      name: 'forMe',
       desc: '',
       args: [],
     );
@@ -470,10 +430,10 @@ class S {
     );
   }
 
-  /// `Preview account`
+  /// `Profile Preview`
   String get previewAccount {
     return Intl.message(
-      'Preview account',
+      'Profile Preview',
       name: 'previewAccount',
       desc: '',
       args: [],
@@ -490,10 +450,10 @@ class S {
     );
   }
 
-  /// `Balance & Transactions`
+  /// `Balance`
   String get balanceTransactions {
     return Intl.message(
-      'Balance & Transactions',
+      'Balance',
       name: 'balanceTransactions',
       desc: '',
       args: [],
@@ -560,10 +520,10 @@ class S {
     );
   }
 
-  /// `New mandatory article is available!`
+  /// `New article is available!`
   String get newMandatoryArticleIsAvailable {
     return Intl.message(
-      'New mandatory article is available!',
+      'New article is available!',
       name: 'newMandatoryArticleIsAvailable',
       desc: '',
       args: [],
@@ -690,20 +650,20 @@ class S {
     );
   }
 
-  /// `New Users`
+  /// `New Customers`
   String get newUsers {
     return Intl.message(
-      'New Users',
+      'New Customers',
       name: 'newUsers',
       desc: '',
       args: [],
     );
   }
 
-  /// `Loyal Users`
+  /// `Loyal Customers`
   String get loyalUsers {
     return Intl.message(
-      'Loyal Users',
+      'Loyal Customers',
       name: 'loyalUsers',
       desc: '',
       args: [],
@@ -800,10 +760,10 @@ class S {
     );
   }
 
-  /// `Total markets`
+  /// `All Markets`
   String get totalMarkets {
     return Intl.message(
-      'Total markets',
+      'All Markets',
       name: 'totalMarkets',
       desc: '',
       args: [],
@@ -830,10 +790,10 @@ class S {
     );
   }
 
-  /// `Quick Answers`
+  /// `Quick Questions`
   String get quickAnswers {
     return Intl.message(
-      'Quick Answers',
+      'Quick Questions',
       name: 'quickAnswers',
       desc: '',
       args: [],
@@ -870,10 +830,10 @@ class S {
     );
   }
 
-  /// `services`
+  /// `Balance`
   String get services {
     return Intl.message(
-      'services',
+      'Balance',
       name: 'services',
       desc: '',
       args: [],
@@ -930,10 +890,10 @@ class S {
     );
   }
 
-  /// `You have not yet completed this month's sessions`
+  /// `The month is not over yet`
   String get youHaveNotYetCompletedThisMonthsSessions {
     return Intl.message(
-      'You have not yet completed this month\'s sessions',
+      'The month is not over yet',
       name: 'youHaveNotYetCompletedThisMonthsSessions',
       desc: '',
       args: [],
@@ -1010,10 +970,10 @@ class S {
     );
   }
 
-  /// `Only Premium Products`
+  /// `Only Premium Sessions`
   String get onlyPremiumProducts {
     return Intl.message(
-      'Only Premium Products',
+      'Only Premium Sessions',
       name: 'onlyPremiumProducts',
       desc: '',
       args: [],
@@ -1050,10 +1010,10 @@ class S {
     );
   }
 
-  /// `You will be able to change your status back in 1 hour`
+  /// `You can change the status again in 1 hour.`
   String get youWillBeAbleToChangeYourStatusBackIn {
     return Intl.message(
-      'You will be able to change your status back in 1 hour',
+      'You can change the status again in 1 hour.',
       name: 'youWillBeAbleToChangeYourStatusBackIn',
       desc: '',
       args: [],
@@ -1070,10 +1030,10 @@ class S {
     );
   }
 
-  /// `Your account has been blocked. Please contact your advisor manager.`
+  /// `Your account has been banned. Please contact Advisor Management.`
   String get yourAccountHasBeenBlockedPleaseContactYourAdvisorManager {
     return Intl.message(
-      'Your account has been blocked. Please contact your advisor manager.',
+      'Your account has been banned. Please contact Advisor Management.',
       name: 'yourAccountHasBeenBlockedPleaseContactYourAdvisorManager',
       desc: '',
       args: [],
@@ -1381,10 +1341,10 @@ class S {
     );
   }
 
-  /// `Tarot`
+  /// `Card Reading`
   String get tarot {
     return Intl.message(
-      'Tarot',
+      'Card Reading',
       name: 'tarot',
       desc: '',
       args: [],
@@ -1401,10 +1361,10 @@ class S {
     );
   }
 
-  /// `Astrology`
+  /// `Astral Chart`
   String get astrology {
     return Intl.message(
-      'Astrology',
+      'Astral Chart',
       name: 'astrology',
       desc: '',
       args: [],
@@ -1441,10 +1401,10 @@ class S {
     );
   }
 
-  /// `Ritual`
+  /// `Ritual Session`
   String get ritual {
     return Intl.message(
-      'Ritual',
+      'Ritual Session',
       name: 'ritual',
       desc: '',
       args: [],
@@ -1522,22 +1482,22 @@ class S {
     );
   }
 
-  /// `This question will be returned to the general list after {counter}`
+  /// `This question will be returned to the queue after {counter}`
   String thisQuestionWillBeReturnedToTheGeneralListAfterCounter(
       Object counter) {
     return Intl.message(
-      'This question will be returned to the general list after $counter',
+      'This question will be returned to the queue after $counter',
       name: 'thisQuestionWillBeReturnedToTheGeneralListAfterCounter',
       desc: '',
       args: [counter],
     );
   }
 
-  /// `The answer is not possible, this question will be returned to the general list in ~ 1m`
+  /// `The answer is not possible, this question will be returned to the queue in ~ 1 min`
   String
       get theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m {
     return Intl.message(
-      'The answer is not possible, this question will be returned to the general list in ~ 1m',
+      'The answer is not possible, this question will be returned to the queue in ~ 1 min',
       name:
           'theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m',
       desc: '',
@@ -1719,10 +1679,10 @@ class S {
     );
   }
 
-  /// `Tell our team when you plan to return:`
+  /// `Leave a note when you'll be available again.`
   String get tellOurTeamWhenYouPlanToReturn {
     return Intl.message(
-      'Tell our team when you plan to return:',
+      'Leave a note when you\'ll be available again.',
       name: 'tellOurTeamWhenYouPlanToReturn',
       desc: '',
       args: [],
@@ -1799,20 +1759,20 @@ class S {
     );
   }
 
-  /// `Do you want to reject this question?`
+  /// `Do you want to return this question?`
   String get doYouWantToRejectThisQuestion {
     return Intl.message(
-      'Do you want to reject this question?',
+      'Do you want to return this question?',
       name: 'doYouWantToRejectThisQuestion',
       desc: '',
       args: [],
     );
   }
 
-  /// `It will go back into the general queue.`
+  /// `It will go back into the queue.`
   String get itWillGoBackIntoTheGeneralQueue {
     return Intl.message(
-      'It will go back into the general queue.',
+      'It will go back into the queue.',
       name: 'itWillGoBackIntoTheGeneralQueue',
       desc: '',
       args: [],
@@ -1839,20 +1799,20 @@ class S {
     );
   }
 
-  /// `No sessions found with this filter`
+  /// `No messages found with this filter.`
   String get noSessionsFoundWithThisFilter {
     return Intl.message(
-      'No sessions found with this filter',
+      'No messages found with this filter.',
       name: 'noSessionsFoundWithThisFilter',
       desc: '',
       args: [],
     );
   }
 
-  /// `When someone asks a public question, you'll see them on this list`
+  /// `When someone asks a quick question, you'll see it on this list`
   String get whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisList {
     return Intl.message(
-      'When someone asks a public question, you\'ll see them on this list',
+      'When someone asks a quick question, you\'ll see it on this list',
       name: 'whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisList',
       desc: '',
       args: [],
@@ -1911,10 +1871,10 @@ class S {
     );
   }
 
-  /// `Wrong username and/or password.`
+  /// `Wrong email and/or password.`
   String get wrongUsernameAndOrPassword {
     return Intl.message(
-      'Wrong username and/or password.',
+      'Wrong email and/or password.',
       name: 'wrongUsernameAndOrPassword',
       desc: '',
       args: [],
@@ -2126,6 +2086,96 @@ class S {
     return Intl.message(
       'New password',
       name: 'newPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private Question`
+  String get privateQuestion {
+    return Intl.message(
+      'Private Question',
+      name: 'privateQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quick Question`
+  String get publicQuestion {
+    return Intl.message(
+      'Quick Question',
+      name: 'publicQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Soulmate Reading`
+  String get soulmateReadingSessions {
+    return Intl.message(
+      'Soulmate Reading',
+      name: 'soulmateReadingSessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Love Crush Reading`
+  String get loveCrushReadingSessions {
+    return Intl.message(
+      'Love Crush Reading',
+      name: 'loveCrushReadingSessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Palm Reading`
+  String get palmReadingSessions {
+    return Intl.message(
+      'Palm Reading',
+      name: 'palmReadingSessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `360° Reading`
+  String get reading360Sessions {
+    return Intl.message(
+      '360° Reading',
+      name: 'reading360Sessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ritual Session`
+  String get ritualSessions {
+    return Intl.message(
+      'Ritual Session',
+      name: 'ritualSessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Astral Chart`
+  String get astrologySessions {
+    return Intl.message(
+      'Astral Chart',
+      name: 'astrologySessions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Card Reading`
+  String get tarotSessions {
+    return Intl.message(
+      'Card Reading',
+      name: 'tarotSessions',
       desc: '',
       args: [],
     );

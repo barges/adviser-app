@@ -45,7 +45,7 @@ class AppConstants {
 
   ///STAGE
   static const String baseUrlStage = 'https://api-staging.fortunica-app.com';
-  static const String webToolUrl = 'https://advisor-staging.fortunica-app.com';
+  static const String webToolUrlStage = 'https://advisor-staging.fortunica-app.com';
 
   ///DEV
   static const String baseUrlDev =

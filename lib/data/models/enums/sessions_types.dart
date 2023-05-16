@@ -51,16 +51,23 @@ enum SessionsTypes {
   String sessionNameForStatistics(context) {
     switch (this) {
       case SessionsTypes.public:
+        return S.of(context).publicQuestion;
       case SessionsTypes.private:
-        return '${sessionName(context)} ${S.of(context).questions}';
+        return S.of(context).privateQuestion;
       case SessionsTypes.tarot:
+        return S.of(context).tarotSessions;
       case SessionsTypes.palmreading:
+        return S.of(context).palmReadingSessions;
       case SessionsTypes.astrology:
+        return S.of(context).astrologySessions;
       case SessionsTypes.reading360:
+        return S.of(context).reading360Sessions;
       case SessionsTypes.aurareading:
+        return S.of(context).soulmateReadingSessions;
       case SessionsTypes.lovecrushreading:
+        return S.of(context).loveCrushReadingSessions;
       case SessionsTypes.ritual:
-        return '${sessionName(context)} ${S.of(context).sessions}';
+        return S.of(context).ritualSessions;
       case SessionsTypes.tipsLow:
       case SessionsTypes.tipsMedium:
       case SessionsTypes.tipsHigh:
