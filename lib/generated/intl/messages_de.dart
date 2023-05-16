@@ -27,7 +27,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "chooseBrand":
             MessageLookupByLibrary.simpleMessage("Auswahl einer Marke"),
         "choosePhotoFromLibrary":
-            MessageLookupByLibrary.simpleMessage("Foto aus Bibliothek wählen"),
+            MessageLookupByLibrary.simpleMessage("Foto aus Galerie wählen"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("Kommt bald!"),
         "copied": MessageLookupByLibrary.simpleMessage("Kopiert!"),
         "customerSupport":
@@ -40,7 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notificationsAreDisabled": MessageLookupByLibrary.simpleMessage(
             "Benachrichtigungen sind deaktiviert"),
         "other": MessageLookupByLibrary.simpleMessage("Sonstige"),
-        "otherBrands": MessageLookupByLibrary.simpleMessage("Andere Marken"),
+        "otherBrands": MessageLookupByLibrary.simpleMessage("Andere Brands"),
         "permissionNeeded":
             MessageLookupByLibrary.simpleMessage("Erlaubnis notwendig"),
         "pleaseUpdateTheApp":
@@ -50,10 +50,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "tapToCopy": MessageLookupByLibrary.simpleMessage("Tippe zum Kopieren"),
         "thisVersionOfTheAppIsNoLongerSupported":
             MessageLookupByLibrary.simpleMessage(
-                "Diese Version der App wird nicht mehr unterstützt. Um zu all deinen Unterhaltungen zurückzukehren, installiere die neueste Version"),
+                "Diese Version der App wird nicht mehr unterstützt. Um zu deinen Sessions zurückzukehren, installiere die neueste Version"),
         "toEnableNotificationYoullNeedToAllowNotificationsInYour":
             MessageLookupByLibrary.simpleMessage(
-                "Um die Benachrichtigung zu aktivieren, muss man in den Einstellungen des Handys Benachrichtigungen zulassen"),
+                "Um Benachrichtigung zu aktivieren, muss man in den Einstellungen des Handys Benachrichtigungen zulassen"),
         "today": MessageLookupByLibrary.simpleMessage("Heute"),
         "unknownError":
             MessageLookupByLibrary.simpleMessage("Unbekannter Fehler"),
@@ -68,6 +68,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "Wir sind stolz darauf, Beratern einen sicheren Ort zu bieten, an dem sie Kunden betreuen und sich beruflich weiterentwickeln können. Wenn du bei einer unserer Marken gute Arbeit leistest, öffnet das Türen zu anderen."),
-        "workspaces": MessageLookupByLibrary.simpleMessage("Arbeitsbereiche")
+        "workspaces": MessageLookupByLibrary.simpleMessage("Brands")
       };
 }

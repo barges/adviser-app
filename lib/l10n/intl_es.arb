@@ -2,7 +2,7 @@
   "ingenio": "Ingenio",
   "chooseBrand": "Elegir una marca",
   "comingSoon": "En breve",
-  "workspaces": "Espacios de trabajo",
+  "workspaces": "Marcas",
   "allOurBrands": "Todas marcas",
   "wePrideOurselvesToOfferAdvisorsASafePlaceTo": "Tenemos el orgullo de ofrecer un lugar seguro a los asesores para que atiendan a los clientes y se desarrollen profesionalmente. Hacer un buen trabajo en una de nuestras marcas les abrirá las puertas a otras",
   "customerSupport": "Soporte de Atención al Cliente",
@@ -26,7 +26,7 @@
   "notificationsAreDisabled": "Las notificaciones están desactivadas",
   "today": "Hoy",
   "other": "Otro",
-  "choosePhotoFromLibrary": "Elige una foto de la biblioteca de fotos",
+  "choosePhotoFromLibrary": "Elige una foto de la biblioteca de imágenes",
   "takeAPhoto": "Tomar una foto",
   "delete": "Eliminar"
 }

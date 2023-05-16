@@ -310,10 +310,10 @@ class SFortunica {
     );
   }
 
-  /// `Workspaces`
+  /// `Brands`
   String get workspacesFortunica {
     return Intl.message(
-      'Workspaces',
+      'Brands',
       name: 'workspacesFortunica',
       desc: '',
       args: [],
@@ -370,10 +370,10 @@ class SFortunica {
     );
   }
 
-  /// `Public`
+  /// `Quick Question`
   String get publicFortunica {
     return Intl.message(
-      'Public',
+      'Quick Question',
       name: 'publicFortunica',
       desc: '',
       args: [],
@@ -430,10 +430,10 @@ class SFortunica {
     );
   }
 
-  /// `Services`
+  /// `Balance`
   String get balanceTransactionsFortunica {
     return Intl.message(
-      'Services',
+      'Balance',
       name: 'balanceTransactionsFortunica',
       desc: '',
       args: [],
@@ -490,10 +490,10 @@ class SFortunica {
     );
   }
 
-  /// `New mandatory article is available!`
+  /// `New article is available!`
   String get newMandatoryArticleIsAvailableFortunica {
     return Intl.message(
-      'New mandatory article is available!',
+      'New article is available!',
       name: 'newMandatoryArticleIsAvailableFortunica',
       desc: '',
       args: [],
@@ -621,20 +621,20 @@ class SFortunica {
     );
   }
 
-  /// `New Users`
+  /// `New Customers`
   String get newUsersFortunica {
     return Intl.message(
-      'New Users',
+      'New Customers',
       name: 'newUsersFortunica',
       desc: '',
       args: [],
     );
   }
 
-  /// `Loyal Users`
+  /// `Loyal Customers`
   String get loyalUsersFortunica {
     return Intl.message(
-      'Loyal Users',
+      'Loyal Customers',
       name: 'loyalUsersFortunica',
       desc: '',
       args: [],
@@ -751,10 +751,10 @@ class SFortunica {
     );
   }
 
-  /// `Live Questions`
+  /// `Quick Questions`
   String get quickAnswersFortunica {
     return Intl.message(
-      'Live Questions',
+      'Quick Questions',
       name: 'quickAnswersFortunica',
       desc: '',
       args: [],
@@ -791,10 +791,10 @@ class SFortunica {
     );
   }
 
-  /// `services`
+  /// `Balance`
   String get servicesFortunica {
     return Intl.message(
-      'services',
+      'Balance',
       name: 'servicesFortunica',
       desc: '',
       args: [],
@@ -931,10 +931,10 @@ class SFortunica {
     );
   }
 
-  /// `Only Premium Products`
+  /// `Only Premium Sessions`
   String get onlyPremiumProductsFortunica {
     return Intl.message(
-      'Only Premium Products',
+      'Only Premium Sessions',
       name: 'onlyPremiumProductsFortunica',
       desc: '',
       args: [],
@@ -1312,10 +1312,10 @@ class SFortunica {
     );
   }
 
-  /// `Tarot`
+  /// `Card Reading`
   String get tarotFortunica {
     return Intl.message(
-      'Tarot',
+      'Card Reading',
       name: 'tarotFortunica',
       desc: '',
       args: [],
@@ -1332,10 +1332,10 @@ class SFortunica {
     );
   }
 
-  /// `Astrology`
+  /// `Astral Chart`
   String get astrologyFortunica {
     return Intl.message(
-      'Astrology',
+      'Astral Chart',
       name: 'astrologyFortunica',
       desc: '',
       args: [],
@@ -1372,10 +1372,10 @@ class SFortunica {
     );
   }
 
-  /// `Ritual`
+  /// `Ritual Session`
   String get ritualFortunica {
     return Intl.message(
-      'Ritual',
+      'Ritual Session',
       name: 'ritualFortunica',
       desc: '',
       args: [],
@@ -1454,22 +1454,22 @@ class SFortunica {
     );
   }
 
-  /// `This question will be returned to the general list after {counter}`
+  /// `This question will be returned to the queue after {counter}`
   String thisQuestionWillBeReturnedToTheGeneralListAfterCounterFortunica(
       Object counter) {
     return Intl.message(
-      'This question will be returned to the general list after $counter',
+      'This question will be returned to the queue after $counter',
       name: 'thisQuestionWillBeReturnedToTheGeneralListAfterCounterFortunica',
       desc: '',
       args: [counter],
     );
   }
 
-  /// `The answer is not possible, this question will be returned to the general list in ~ 1m`
+  /// `The answer is not possible, this question will be returned to the queue in ~ 1 min`
   String
       get theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1mFortunica {
     return Intl.message(
-      'The answer is not possible, this question will be returned to the general list in ~ 1m',
+      'The answer is not possible, this question will be returned to the queue in ~ 1 min',
       name:
           'theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1mFortunica',
       desc: '',
@@ -1716,20 +1716,20 @@ class SFortunica {
     );
   }
 
-  /// `Do you want to reject this question?`
+  /// `Do you want to return this question?`
   String get doYouWantToRejectThisQuestionFortunica {
     return Intl.message(
-      'Do you want to reject this question?',
+      'Do you want to return this question?',
       name: 'doYouWantToRejectThisQuestionFortunica',
       desc: '',
       args: [],
     );
   }
 
-  /// `It will go back into the general queue.`
+  /// `It will go back into the queue.`
   String get itWillGoBackIntoTheGeneralQueueFortunica {
     return Intl.message(
-      'It will go back into the general queue.',
+      'It will go back into the queue.',
       name: 'itWillGoBackIntoTheGeneralQueueFortunica',
       desc: '',
       args: [],
@@ -1768,10 +1768,10 @@ class SFortunica {
     );
   }
 
-  /// `When someone asks a public question, you'll see them on this list`
+  /// `When someone asks a quick question, you'll see it on this list`
   String get whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisListFortunica {
     return Intl.message(
-      'When someone asks a public question, you\'ll see them on this list',
+      'When someone asks a quick question, you\'ll see it on this list',
       name: 'whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisListFortunica',
       desc: '',
       args: [],
@@ -1810,10 +1810,10 @@ class SFortunica {
     );
   }
 
-  /// `Wrong username and/or password.`
+  /// `Wrong email and/or password.`
   String get wrongUsernameAndOrPasswordFortunica {
     return Intl.message(
-      'Wrong username and/or password.',
+      'Wrong email and/or password.',
       name: 'wrongUsernameAndOrPasswordFortunica',
       desc: '',
       args: [],
@@ -1940,80 +1940,80 @@ class SFortunica {
     );
   }
 
-  /// `Public Question`
+  /// `Quick Question`
   String get publicQuestionFortunica {
     return Intl.message(
-      'Public Question',
+      'Quick Question',
       name: 'publicQuestionFortunica',
       desc: '',
       args: [],
     );
   }
 
-  /// `Soulmate Reading Sessions`
+  /// `Soulmate Reading`
   String get soulmateReadingSessionsFortunica {
     return Intl.message(
-      'Soulmate Reading Sessions',
+      'Soulmate Reading',
       name: 'soulmateReadingSessionsFortunica',
       desc: '',
       args: [],
     );
   }
 
-  /// `Love Crush Reading Sessions`
+  /// `Love Crush Reading`
   String get loveCrushReadingSessionsFortunica {
     return Intl.message(
-      'Love Crush Reading Sessions',
+      'Love Crush Reading',
       name: 'loveCrushReadingSessionsFortunica',
       desc: '',
       args: [],
     );
   }
 
-  /// `Palm Reading Sessions`
+  /// `Palm Reading`
   String get palmReadingSessionsFortunica {
     return Intl.message(
-      'Palm Reading Sessions',
+      'Palm Reading',
       name: 'palmReadingSessionsFortunica',
       desc: '',
       args: [],
     );
   }
 
-  /// `360° Reading Sessions`
+  /// `360° Reading`
   String get reading360SessionsFortunica {
     return Intl.message(
-      '360° Reading Sessions',
+      '360° Reading',
       name: 'reading360SessionsFortunica',
       desc: '',
       args: [],
     );
   }
 
-  /// `Ritual Sessions`
+  /// `Ritual Session`
   String get ritualSessionsFortunica {
     return Intl.message(
-      'Ritual Sessions',
+      'Ritual Session',
       name: 'ritualSessionsFortunica',
       desc: '',
       args: [],
     );
   }
 
-  /// `Astrology Sessions`
+  /// `Astral Chart`
   String get astrologySessionsFortunica {
     return Intl.message(
-      'Astrology Sessions',
+      'Astral Chart',
       name: 'astrologySessionsFortunica',
       desc: '',
       args: [],
     );
   }
 
-  /// `Tarot Sessions`
+  /// `Card Reading`
   String get tarotSessionsFortunica {
     return Intl.message(
-      'Tarot Sessions',
+      'Card Reading',
       name: 'tarotSessionsFortunica',
       desc: '',
       args: [],
