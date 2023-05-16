@@ -87,7 +87,7 @@ class DrawerCubit extends Cubit<DrawerState> {
   }
 
   void tapToCopy() async {
-    await Clipboard.setData(ClipboardData(text: state.version));
+    await Clipboard.setData(ClipboardData(text: state.version ?? ''));
     if (_copyTimer == null || _copyTimer?.isActive == false) {
       emit(state.copyWith(copyButtonTapped: true));
       _copyTimer = Timer(const Duration(seconds: 2), () {

@@ -30,10 +30,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    await precachePicture(
-      splashLogo.pictureProvider,
-      context,
-    );
     FlutterNativeSplash.remove();
   }
 

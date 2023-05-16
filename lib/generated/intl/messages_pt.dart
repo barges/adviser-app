@@ -33,7 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Enviamos instruções de redefinição de senha para ${email}.";
 
   static String m4(minRecordDurationInSec) =>
-      "Você não pode enviar esta mensagem porque leva menos de ${minRecordDurationInSec} segundos";
+      "Você não pode enviar esta mensagem porque levou menos de ${minRecordDurationInSec} segundos";
 
   static String m5(count) =>
       "Você tem ${count} dias para lê-lo antes que sua conta seja bloqueada!";
@@ -62,13 +62,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Tem certeza de que deseja alterar seu status para Offline?"),
         "articles": MessageLookupByLibrary.simpleMessage("Artigos"),
-        "astrology": MessageLookupByLibrary.simpleMessage("Astrologia"),
+        "astrology":
+            MessageLookupByLibrary.simpleMessage("Consulta Astrológica"),
         "astrologySessions":
             MessageLookupByLibrary.simpleMessage("Consulta Astrológica"),
         "audioMessage":
             MessageLookupByLibrary.simpleMessage("Mensagem de áudio"),
         "avgDailyEarnings":
-            MessageLookupByLibrary.simpleMessage("Ganhos diários médios"),
+            MessageLookupByLibrary.simpleMessage("Média de ganhos diários"),
         "back": MessageLookupByLibrary.simpleMessage("Voltar"),
         "balanceTransactions": MessageLookupByLibrary.simpleMessage("Ganhos"),
         "blocked": MessageLookupByLibrary.simpleMessage("Bloqueado"),
@@ -89,7 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "chooseBrand":
             MessageLookupByLibrary.simpleMessage("Selecione uma marca"),
         "chooseEmailApp":
-            MessageLookupByLibrary.simpleMessage("Escolher email do app"),
+            MessageLookupByLibrary.simpleMessage("Escolher e-mail do app"),
         "choosePhotoFromLibrary": MessageLookupByLibrary.simpleMessage(
             "Escolha a foto da biblioteca de fotos"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("Em breve!"),
@@ -117,12 +118,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Deseja excluir esta mensagem de áudio?"),
         "doYouWantToRejectThisQuestion": MessageLookupByLibrary.simpleMessage(
-            "Deseja recusar esta pergunta?"),
+            "Deseja devolver esta pergunta?"),
         "done": MessageLookupByLibrary.simpleMessage("Feito"),
         "earned": MessageLookupByLibrary.simpleMessage("Não recebido"),
-        "editNote": MessageLookupByLibrary.simpleMessage("Editar Nota"),
-        "editProfile": MessageLookupByLibrary.simpleMessage("Editar Perfil"),
-        "email": MessageLookupByLibrary.simpleMessage("E-Mail"),
+        "editNote": MessageLookupByLibrary.simpleMessage("Editar nota"),
+        "editProfile": MessageLookupByLibrary.simpleMessage("Editar perfil"),
+        "email": MessageLookupByLibrary.simpleMessage("E-mail"),
         "enterNewPassword":
             MessageLookupByLibrary.simpleMessage("Insira nova senha"),
         "enterYourEmail":
@@ -134,9 +135,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Insira sua senha"),
         "female": MessageLookupByLibrary.simpleMessage("Feminino"),
         "forgotPassword":
-            MessageLookupByLibrary.simpleMessage("Esqueceu a senha"),
+            MessageLookupByLibrary.simpleMessage("Esqueci a senha"),
         "forgotYourPassword":
-            MessageLookupByLibrary.simpleMessage("Esqueceu sua senha"),
+            MessageLookupByLibrary.simpleMessage("Esqueci a senha"),
         "fromXsecToYmin": m0,
         "goToAccount": MessageLookupByLibrary.simpleMessage("Ir para conta"),
         "history": MessageLookupByLibrary.simpleMessage("Histórico"),
@@ -147,9 +148,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "Ela voltará para a lista geral."),
         "learnMore": MessageLookupByLibrary.simpleMessage("Saiba mais"),
         "legalBlock": MessageLookupByLibrary.simpleMessage("Bloqueio legal"),
-        "live": MessageLookupByLibrary.simpleMessage("Disponível"),
+        "live": MessageLookupByLibrary.simpleMessage("Online"),
         "logOut": MessageLookupByLibrary.simpleMessage("Sair"),
-        "login": MessageLookupByLibrary.simpleMessage("Conectar-se"),
+        "login": MessageLookupByLibrary.simpleMessage("Fazer login"),
         "loveCrushReading": MessageLookupByLibrary.simpleMessage(
             "Leitura de Compatibilidade Amorosa"),
         "loveCrushReadingSessions": MessageLookupByLibrary.simpleMessage(
@@ -166,7 +167,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "O nome pode ser alterado somente na Advisor Tool"),
         "newLabel": MessageLookupByLibrary.simpleMessage("Novo"),
         "newMandatoryArticleIsAvailable": MessageLookupByLibrary.simpleMessage(
-            "Novo artigo obrigatório está disponível!"),
+            "Novo artigo está disponível!"),
         "newPassword": MessageLookupByLibrary.simpleMessage("Nova senha"),
         "newUsers": MessageLookupByLibrary.simpleMessage("Novos usuários"),
         "nickname": MessageLookupByLibrary.simpleMessage("Nome"),
@@ -175,7 +176,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noInternetConnection":
             MessageLookupByLibrary.simpleMessage("Sem conexão com a internet."),
         "noQuestionsYet":
-            MessageLookupByLibrary.simpleMessage("Sem perguntas, ainda."),
+            MessageLookupByLibrary.simpleMessage("Sem perguntas ainda."),
         "noSessionsFoundWithThisFilter": MessageLookupByLibrary.simpleMessage(
             "Nenhum atendimento foi encontrado com este filtro."),
         "noSessionsYet":
@@ -204,7 +205,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "performanceOverviewAnalytics":
             MessageLookupByLibrary.simpleMessage("Análise geral de desempenho"),
         "permissionNeeded":
-            MessageLookupByLibrary.simpleMessage("Permissão Necessária"),
+            MessageLookupByLibrary.simpleMessage("Permissão necessária"),
         "personalDetails":
             MessageLookupByLibrary.simpleMessage("DETALHES PESSOAIS"),
         "photoIsRequired":
@@ -214,11 +215,11 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Confirme se sua resposta está pronta para ser enviada"),
         "pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManager":
             MessageLookupByLibrary.simpleMessage(
-                "Certifique-se de que seu perfil esteja completo para todos os idiomas. Precisa de ajuda? Entre em contato com seu gerente."),
+                "Certifique-se de que seu perfil esteja completo para todos os idiomas que atenderá. Precisa de ajuda? Entre em contato com seu gerente."),
         "pleaseEnterAtLeast3Characters": MessageLookupByLibrary.simpleMessage(
-            "Por favor insira pelo menos 3 caracteres"),
+            "Por favor, insira pelo menos 3 caracteres"),
         "pleaseEnterAtLeast6Characters": MessageLookupByLibrary.simpleMessage(
-            "Por favor insira pelo menos 6 caracteres"),
+            "Por favor, insira pelo menos 6 caracteres"),
         "pleaseInsertCorrectEmail": MessageLookupByLibrary.simpleMessage(
             "Por favor, insira o e-mail correto"),
         "pleaseLoginToTheWebVersionOfYourAccount":
@@ -227,7 +228,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseUpdateTheApp":
             MessageLookupByLibrary.simpleMessage("Por favor, atualize o app"),
         "preferNotToAnswer":
-            MessageLookupByLibrary.simpleMessage("Prefere não responder"),
+            MessageLookupByLibrary.simpleMessage("Prefiro não responder"),
         "preferredTopics":
             MessageLookupByLibrary.simpleMessage("Tópicos preferidos"),
         "previewAccount":
@@ -245,13 +246,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "question": MessageLookupByLibrary.simpleMessage("Pergunta"),
         "questions": MessageLookupByLibrary.simpleMessage("Perguntas"),
         "quickAnswers":
-            MessageLookupByLibrary.simpleMessage("Respostas express"),
+            MessageLookupByLibrary.simpleMessage("Respostas Express"),
         "reading360": MessageLookupByLibrary.simpleMessage("Leitura 360°"),
         "reading360Sessions":
             MessageLookupByLibrary.simpleMessage("Leitura 360°"),
         "recordingIsNotPossibleAllocateSpaceOnTheDevice":
             MessageLookupByLibrary.simpleMessage(
-                "A gravação não é possível, adquira espaço no dispositivo"),
+                "A gravação não é possível, libere espaço no dispositivo"),
         "repeatNewPassword":
             MessageLookupByLibrary.simpleMessage("Repita a nova senha"),
         "requestNewPassword":
@@ -265,17 +266,17 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("RETORNAR\nÀ FILA"),
         "return_": MessageLookupByLibrary.simpleMessage("Voltar"),
         "reviews": MessageLookupByLibrary.simpleMessage("Avaliações"),
-        "ritual": MessageLookupByLibrary.simpleMessage("Ritual"),
+        "ritual": MessageLookupByLibrary.simpleMessage("Sessão de Ritual"),
         "ritualSessions":
             MessageLookupByLibrary.simpleMessage("Sessão de Ritual"),
         "save": MessageLookupByLibrary.simpleMessage("Salvar"),
         "search": MessageLookupByLibrary.simpleMessage("Procurar"),
         "seeMore": MessageLookupByLibrary.simpleMessage("Ver mais"),
-        "services": MessageLookupByLibrary.simpleMessage("Serviços"),
+        "services": MessageLookupByLibrary.simpleMessage("Ganhos"),
         "session": MessageLookupByLibrary.simpleMessage("Sessão"),
         "sessions": MessageLookupByLibrary.simpleMessage("Sessões"),
         "settings": MessageLookupByLibrary.simpleMessage("Configurações"),
-        "signIn": MessageLookupByLibrary.simpleMessage("Conectar-se"),
+        "signIn": MessageLookupByLibrary.simpleMessage("Cadastrar-se"),
         "similarArticles":
             MessageLookupByLibrary.simpleMessage("Artigos similares"),
         "soulmateReading":
@@ -283,7 +284,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "soulmateReadingSessions":
             MessageLookupByLibrary.simpleMessage("Leitura de Alma Gêmea"),
         "stats": MessageLookupByLibrary.simpleMessage("Estatísticas"),
-        "statusText": MessageLookupByLibrary.simpleMessage("Texto de Status"),
+        "statusText": MessageLookupByLibrary.simpleMessage("Texto de status"),
         "statusTextMayNotExceed300Characters":
             MessageLookupByLibrary.simpleMessage(
                 "O texto de status não pode exceder 300 caracteres"),
@@ -292,14 +293,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "takeQuestion":
             MessageLookupByLibrary.simpleMessage("Responder a pergunta"),
         "tapToCopy": MessageLookupByLibrary.simpleMessage("Toque para copiar"),
-        "tarot": MessageLookupByLibrary.simpleMessage("Tarot"),
+        "tarot":
+            MessageLookupByLibrary.simpleMessage("Leitura de Cartas Especial"),
         "tarotSessions":
             MessageLookupByLibrary.simpleMessage("Leitura de Cartas Especial"),
         "tellOurTeamWhenYouPlanToReturn": MessageLookupByLibrary.simpleMessage(
             "Notifique nossa equipe sobre sua data de retorno:"),
         "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m":
             MessageLookupByLibrary.simpleMessage(
-                "A resposta não é possível, esta pergunta retornará à lista geral em ~ 1m"),
+                "Não é possível responder, esta pergunta retornará à lista geral em ~ 1m"),
         "theMaximumSizeOfTheAttachmentsIsXMb": m1,
         "thePasswordsMustMatch":
             MessageLookupByLibrary.simpleMessage("As senhas devem coincidir"),
@@ -309,9 +311,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "thisQuestionWillBeReturnedToTheGeneralListAfterCounter": m2,
         "thisVersionOfTheAppIsNoLongerSupported":
             MessageLookupByLibrary.simpleMessage(
-                "Esta versão do app não está atualizada. Para acessar todas as suas conversas, instale a versão mais recente."),
+                "Esta versão do app não está atualizada. Para acessar todos os seus atendimentos, instale a versão mais recente."),
         "thisWeek": MessageLookupByLibrary.simpleMessage("Esta semana"),
-        "tips": MessageLookupByLibrary.simpleMessage("Conselhos"),
+        "tips": MessageLookupByLibrary.simpleMessage("Gorjetas"),
         "title": MessageLookupByLibrary.simpleMessage("Título"),
         "toEnableNotificationYoullNeedToAllowNotificationsInYour":
             MessageLookupByLibrary.simpleMessage(
@@ -343,16 +345,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "weVeSentPasswordResetInstructionsToEmail": m3,
         "whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisList":
             MessageLookupByLibrary.simpleMessage(
-                "Quando alguém fizer uma pergunta pública, você a verá nesta lista"),
+                "Quando alguém fizer uma Pergunta Express, você a verá nesta lista"),
         "whenYouHelpYourFirstClientYouWillSeeYourSessionHistoryHere":
             MessageLookupByLibrary.simpleMessage(
-                "Ao ajudar seu primeiro cliente, você verá o histórico de suas sessões aqui."),
+                "Ao ajudar seu primeiro cliente, você verá o histórico dos atendimentos aqui."),
         "willBeAvailableIn":
             MessageLookupByLibrary.simpleMessage("Disponível em"),
-        "workspaces":
-            MessageLookupByLibrary.simpleMessage("Espaços de trabalho"),
+        "workspaces": MessageLookupByLibrary.simpleMessage("Áreas de trabalho"),
         "wrongUsernameAndOrPassword": MessageLookupByLibrary.simpleMessage(
-            "Nome de usuário e/ou senha incorretos."),
+            "E-mail e/ou senha incorretos"),
         "yesImSure": MessageLookupByLibrary.simpleMessage("Sim, tenho certeza"),
         "youCantSendThisMessageBecauseItsLessThanXSeconds": m4,
         "youDoNotHaveAnyNotesYet":
@@ -360,11 +361,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "youDontHaveAnInternetConnection": MessageLookupByLibrary.simpleMessage(
             "Você não tem conexão com a Internet"),
         "youHaveAFewActiveSessions": MessageLookupByLibrary.simpleMessage(
-            "Você tem algumas sessões ativas"),
+            "Você tem alguns atendimentos ativos"),
         "youHaveAPrivateMessage": MessageLookupByLibrary.simpleMessage(
-            "Você tem uma mensagem privada"),
-        "youHaveAnActiveSession":
-            MessageLookupByLibrary.simpleMessage("Você tem uma sessão ativa"),
+            "Você tem uma Pergunta Privada"),
+        "youHaveAnActiveSession": MessageLookupByLibrary.simpleMessage(
+            "Você tem uma Sessão de Ritual"),
         "youHaveNotCompletedAnySessionsYet":
             MessageLookupByLibrary.simpleMessage(
                 "Você ainda não concluiu nenhuma sessão"),
@@ -374,14 +375,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "youHaveXdaystoReadItBeforeYourAccountWillGetBlocked": m5,
         "youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse":
             MessageLookupByLibrary.simpleMessage(
-                "Você deve responder à sua pergunta pública ativa antes de poder atender a outra pessoa."),
+                "Você deve responder à sua Pergunta Express ativa antes de poder atender outra pessoa."),
         "youNeedToAcceptTheAdvisorContract":
             MessageLookupByLibrary.simpleMessage(
                 "Você precisa aceitar o contrato de consultor"),
         "youReCurrentlyOffline": MessageLookupByLibrary.simpleMessage(
-            "Você está off-line no momento"),
+            "Você está offline no momento"),
         "youReNotLiveOnThePlatform": MessageLookupByLibrary.simpleMessage(
-            "Você não está ao vivo na plataforma"),
+            "Você não está online na plataforma"),
         "youVeReachTheXMinuteTimeLimit": m6,
         "youWillBeAbleToChangeYourStatusBackIn":
             MessageLookupByLibrary.simpleMessage(
@@ -391,7 +392,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Sua conta foi bloqueada. Por favor, contate seu gerente."),
         "yourClientSessionHistoryWillAppearHere":
             MessageLookupByLibrary.simpleMessage(
-                "O histórico de ssessões de clientes aparecerá aqui"),
+                "O histórico de atendimentos dos clientes aparecerá aqui"),
         "yourUsername":
             MessageLookupByLibrary.simpleMessage("Seu nome de usuário")
       };
