@@ -91,7 +91,7 @@
   "secondsZodiac": "seg",
   "startChatZodiac": "Iniciar bate-papo",
   "declineZodiac": "Declínio",
-  "chatRequestZodiac": "Solicitação de bate-papo...",
+  "incomingChatZodiac": "Bate-papo RECEBENDO",
   "youMissedCallFromZodiac": "Você perdeu uma chamada \n de {clientName}.",
   "youMissedChatFromZodiac": "Você perdeu o bate-papo \n de {clientName}.",
   "replyZodiac": "Responder",
@@ -101,5 +101,12 @@
   "callEndedZodiac": "Chamada finalizada",
   "hideChatZodiac": "Ocultar bate-papo",
   "preferredLanguageZodiac": "Idioma preferido: ",
-  "freebieSeeker": "candidato a brinde"
+  "freebieSeeker": "candidato a brinde",
+  "typeMessageZodiac": "Digite a mensagem",
+  "selectedPhotoZodiac": "Foto selecionada",
+  "reconnectingZodiac": "Reconecte...",
+  "endChatZodiac": "Encerrar\nbate-papo",
+  "doYouReallyWantToEndTheChatZodiac": "Você realmente deseja encerrar o bate-papo?",
+  "yesZodiac": "Sim",
+  "noZodiac": "Não"
 }

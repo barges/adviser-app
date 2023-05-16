@@ -10,7 +10,6 @@ import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/fortunica_main_cubit.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:fortunica/infrastructure/di/inject_config.dart';
-import 'package:multiple_localization/multiple_localization.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/generated/intl/messages_all.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -18,6 +17,7 @@ import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/multiple_localization/multiple_localization.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_loading_indicator.dart';
 import 'package:shared_advisor_interface/themes/app_themes.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -29,12 +29,12 @@ import 'infrastructure/di/app_initializer.dart';
 import 'infrastructure/di/brand_manager.dart';
 
 void main() async {
-  await AppInitializer.setupPrerequisites(
-    Flavor.production,
-  );
-
   runZonedGuarded(
     () async {
+      await AppInitializer.setupPrerequisites(
+        Flavor.production,
+      );
+
       await SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,

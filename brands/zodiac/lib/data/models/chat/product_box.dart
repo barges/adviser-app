@@ -1,8 +1,6 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:zodiac/data/models/chat/message_context.dart';
-import 'package:zodiac/data/models/enums/chat_message_type.dart';
 
 part 'product_box.g.dart';
 

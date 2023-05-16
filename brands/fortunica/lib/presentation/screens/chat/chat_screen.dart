@@ -15,21 +15,17 @@ import 'package:fortunica/presentation/common_widgets/buttons/choose_option_widg
 import 'package:fortunica/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
 import 'package:fortunica/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:fortunica/presentation/common_widgets/messages/app_success_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:fortunica/presentation/screens/chat/chat_cubit.dart';
-import 'package:fortunica/presentation/screens/chat/chat_state.dart';
 import 'package:fortunica/presentation/screens/chat/widgets/active_chat_input_field_widget.dart';
 import 'package:fortunica/presentation/screens/chat/widgets/active_chat_widget.dart';
-import 'package:fortunica/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:fortunica/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:fortunica/presentation/screens/customer_profile/customer_profile_screen.dart';
-import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
-import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/main_state.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/services/audio/audio_player_service.dart';
 import 'package:shared_advisor_interface/services/audio/audio_recorder_service.dart';
 import 'package:shared_advisor_interface/services/check_permission_service.dart';
@@ -62,27 +58,7 @@ class ChatScreen extends StatelessWidget {
         chatScreenArguments: chatScreenArguments,
       ),
       child: Builder(builder: (context) {
-        return BlocListener<ChatCubit, ChatState>(
-            listenWhen: (prev, current) =>
-                prev.inputTextLength != current.inputTextLength,
-            listener: (context, state) {
-              final theme = Theme.of(context);
-              final ChatCubit chatCubit = context.read<ChatCubit>();
-              final double maxWidth = MediaQuery.of(context).size.width -
-                  scrollbarThickness -
-                  AppConstants.horizontalScreenPadding * 2;
-              final TextStyle? style = theme.textTheme.bodySmall?.copyWith(
-                color: theme.hoverColor,
-                fontSize: 15.0,
-                height: 1.2,
-              );
-              chatCubit.updateHiddenInputHeight(
-                Utils.getTextHeight(
-                    chatCubit.textInputEditingController.text, style, maxWidth),
-                Utils.getTextHeight('\n\n\n\n', style, maxWidth),
-              );
-            },
-            child: const ChatContentWidget());
+        return const ChatContentWidget();
       }),
     );
   }
@@ -130,9 +106,6 @@ class ChatContentWidget extends StatelessWidget {
                   publicQuestionId:
                       chatCubit.chatScreenArguments.publicQuestionId,
                   returnInQueueButtonOnTap: () async {
-
-
-
                     final dynamic needReturn = await showOkCancelAlert(
                       context: context,
                       title: s.doYouWantToRejectThisQuestionFortunica,
@@ -141,8 +114,6 @@ class ChatContentWidget extends StatelessWidget {
                       allowBarrierClick: false,
                       isCancelEnabled: true,
                     );
-
-                    logger.d(needReturn);
 
                     if (needReturn == true) {
                       await chatCubit.returnQuestion();
@@ -153,9 +124,11 @@ class ChatContentWidget extends StatelessWidget {
                 child: Builder(builder: (context) {
                   final List<String> tabsTitles = [];
                   if (chatCubit.needActiveChatTab()) {
-                    tabsTitles.add(chatCubit.isPublicChat()
-                        ? SFortunica.of(context).questionFortunica
-                        : SFortunica.of(context).activeChatFortunica,);
+                    tabsTitles.add(
+                      chatCubit.isPublicChat()
+                          ? SFortunica.of(context).questionFortunica
+                          : SFortunica.of(context).activeChatFortunica,
+                    );
                   }
                   tabsTitles.addAll([
                     SFortunica.of(context).historyFortunica,
@@ -200,7 +173,8 @@ class ChatContentWidget extends StatelessWidget {
                       Builder(
                         builder: (context) {
                           final AppError appError = context.select(
-                              (FortunicaMainCubit cubit) => cubit.state.appError);
+                              (FortunicaMainCubit cubit) =>
+                                  cubit.state.appError);
 
                           return AppErrorWidget(
                             errorMessage: appError.getMessage(context),
@@ -331,8 +305,8 @@ Future<bool?> confirmSendAnswerAlert(BuildContext context) async {
 }
 
 Future<bool?> deleteAudioMessageAlert(BuildContext context) async {
-  return await showDeleteAlert(
-      context, SFortunica.of(context).doYouWantToDeleteThisAudioMessageFortunica);
+  return await showDeleteAlert(context,
+      SFortunica.of(context).doYouWantToDeleteThisAudioMessageFortunica);
 }
 
 Future<bool?> recordingIsNotPossibleAlert(BuildContext context) async {

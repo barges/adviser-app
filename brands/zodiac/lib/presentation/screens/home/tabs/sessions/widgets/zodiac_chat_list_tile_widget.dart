@@ -83,19 +83,26 @@ class ZodiacChatListTileWidget extends StatelessWidget {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                item.name ?? '',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelMedium
-                                    ?.copyWith(fontSize: 15.0),
+                              Expanded(
+                                child: Text(
+                                  item.name ?? '',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium
+                                      ?.copyWith(fontSize: 15.0),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 8.0,
                               ),
                               Text(
                                 item.dateLastUpdate != null
                                     ? DateTime.fromMillisecondsSinceEpoch(
                                             (item.dateLastUpdate! * 1000),
                                             isUtc: true)
-                                        .sessionsListTime(context)
+                                        .sessionsListTime
                                     : '',
                                 style: Theme.of(context)
                                     .textTheme
@@ -126,25 +133,28 @@ class ZodiacChatListTileWidget extends StatelessWidget {
                               ),
                             ),
                             item.haveUnreadedMessages
-                                ? Container(
-                                    height: 18.0,
-                                    width: 18.0,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: item.isMissed
-                                          ? Theme.of(context).errorColor
-                                          : Theme.of(context).primaryColor,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        item.unreadCount.toString(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall
-                                            ?.copyWith(
-                                              color: Theme.of(context)
-                                                  .backgroundColor,
-                                            ),
+                                ? Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Container(
+                                      height: 18.0,
+                                      width: 18.0,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: item.isMissed
+                                            ? Theme.of(context).errorColor
+                                            : Theme.of(context).primaryColor,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          item.unreadCount.toString(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall
+                                              ?.copyWith(
+                                                color: Theme.of(context)
+                                                    .backgroundColor,
+                                              ),
+                                        ),
                                       ),
                                     ),
                                   )

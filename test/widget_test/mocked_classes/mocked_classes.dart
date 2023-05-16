@@ -47,7 +47,7 @@
 // import 'package:mockito/annotations.dart';
 // import 'package:shared_advisor_interface/data/cache/data_caching_manager.dart';
 // import 'package:shared_advisor_interface/data/repositories/zodiac_auth_repository_impl.dart';
-// import 'package:shared_advisor_interface/data/repositories/zodiac_chats_repository_impl.dart';
+// import 'package:shared_advisor_interface/data/repositories/zodiac_sessions_repository_impl.dart';
 // import 'package:shared_advisor_interface/data/repositories/customer_repository_impl.dart';
 // import 'package:shared_advisor_interface/data/repositories/zodiac_user_repository_impl.dart';
 // import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';

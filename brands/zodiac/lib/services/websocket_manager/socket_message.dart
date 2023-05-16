@@ -22,6 +22,7 @@ class SocketMessage {
   String get encoded {
     Map<String, dynamic> data = {};
     data['a'] = action;
+    data['app'] = 'touch';
     if (params != null) {
       data['data'] = params;
     }
@@ -29,10 +30,6 @@ class SocketMessage {
       data['opponent_id'] = opponentId;
     }
     return json.encode(data);
-  }
-
-  static String generateMessageId(int userId) {
-    return '${userId}_${DateTime.now().millisecondsSinceEpoch / 1000}';
   }
 
   static SocketMessage pong() => SocketMessage(action: Commands.pong);
@@ -55,11 +52,13 @@ class SocketMessage {
   static SocketMessage chatLogout({required int chatId}) =>
       SocketMessage(action: Commands.chatLogout, params: {'chat_id': chatId});
 
-  static SocketMessage entities({required int userId, int? maxId}) =>
-      SocketMessage(action: Commands.entities, params: {'opponent_id': userId,
-      if(maxId != null)  'filters': {
-        'max_id': maxId,
-      }
+  static SocketMessage entities({required int opponentId, int? maxId}) =>
+      SocketMessage(action: Commands.entities, params: {
+        'opponent_id': opponentId,
+        if (maxId != null)
+          'filters': {
+            'max_id': maxId,
+          }
       });
 
   static SocketMessage createRoom(
@@ -88,25 +87,32 @@ class SocketMessage {
           {required String message,
           required String roomId,
           required int opponentId,
-          required int userId}) =>
+          required String mid,
+          }) =>
       SocketMessage(action: Commands.chatMessage, params: {
         'message': message,
         'view': 0,
         'room_id': roomId,
         'opponent_id': opponentId,
-        'mid': generateMessageId(userId)
+        'mid': mid,
       });
 
-  static SocketMessage msgDelivered() =>
-      SocketMessage(action: Commands.msgDelivered);
+  static SocketMessage msgDelivered({String? mid}) => SocketMessage(
+        action: Commands.msgDelivered,
+        params: mid != null
+            ? {
+                'mid': mid,
+              }
+            : null,
+      );
 
   static SocketMessage getUnreadChats() =>
       SocketMessage(action: Commands.getUnreadChats, params: {});
 
   static SocketMessage readMessage(
-          {required List<int> ids, required int opponentId}) =>
+          {required int messageId, required int opponentId}) =>
       SocketMessage(action: Commands.readMessage, params: {
-        'id': ids,
+        'id': messageId,
         'opponent_id': opponentId,
       });
 
@@ -123,10 +129,11 @@ class SocketMessage {
           required double price,
           required int productId,
           required String roomId,
-          required int userId}) =>
+          required String mid,
+          }) =>
       SocketMessage(action: Commands.productMessage, params: {
         "message": serviceName,
-        "mid": generateMessageId(userId),
+        "mid": mid,
         "price": price,
         "product_id": productId,
         "room_id": roomId,
@@ -145,9 +152,10 @@ class SocketMessage {
   static SocketMessage privateMessage(
           {required int messageId,
           required int opponentId,
-          required int userId}) =>
+            required String mid,
+          }) =>
       SocketMessage(action: Commands.privateMessage, params: {
-        "mid": generateMessageId(userId),
+        "mid": mid,
         "message_id": messageId,
         "opponent_id": opponentId
       });
