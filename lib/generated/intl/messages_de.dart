@@ -64,7 +64,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "articles": MessageLookupByLibrary.simpleMessage("Artikel"),
         "astrology": MessageLookupByLibrary.simpleMessage("Astrologie"),
         "astrologySessions": MessageLookupByLibrary.simpleMessage("Astrologie"),
-        "audioMessage": MessageLookupByLibrary.simpleMessage("Audionachricht"),
+        "audioMessage": MessageLookupByLibrary.simpleMessage("Audio-Nachricht"),
         "avgDailyEarnings": MessageLookupByLibrary.simpleMessage(
             "Durchschnittliches Tageseinkommen"),
         "back": MessageLookupByLibrary.simpleMessage("Zurück"),
@@ -202,7 +202,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Handlesen"),
         "password": MessageLookupByLibrary.simpleMessage("Passwort"),
         "performanceOverviewAnalytics":
-            MessageLookupByLibrary.simpleMessage("Allgemeine Leistungsanalyse"),
+            MessageLookupByLibrary.simpleMessage("Leistungsstatistik"),
         "permissionNeeded":
             MessageLookupByLibrary.simpleMessage("Erlaubnis notwendig"),
         "personalDetails":
@@ -317,7 +317,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Schreibe eine Nachricht"),
         "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgain":
             MessageLookupByLibrary.simpleMessage(
-                "Oh, oh! Die  Internet-Verbindung war weg. Bitte versuche es erneut."),
+                "Oh, oh! Die Internet-Verbindung war weg. Bitte versuche es erneut."),
         "unknownError":
             MessageLookupByLibrary.simpleMessage("Fehler unbekannt"),
         "update": MessageLookupByLibrary.simpleMessage("Aktualisierung"),
