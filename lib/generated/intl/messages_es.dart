@@ -77,8 +77,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "born": MessageLookupByLibrary.simpleMessage("Fecha de nacimiento"),
         "calls": MessageLookupByLibrary.simpleMessage("Llamadas"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
-        "cancelSending":
-            MessageLookupByLibrary.simpleMessage("Cancelar el envío"),
+        "cancelSending": MessageLookupByLibrary.simpleMessage("Cancelar envío"),
         "changeCoverPicture":
             MessageLookupByLibrary.simpleMessage("Cambiar foto de portada"),
         "changePassword":
@@ -241,7 +240,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Preguntas Privadas"),
         "profile": MessageLookupByLibrary.simpleMessage("Perfil"),
         "profileText": MessageLookupByLibrary.simpleMessage("Texto de Perfil"),
-        "public": MessageLookupByLibrary.simpleMessage("Preguntas express"),
+        "public": MessageLookupByLibrary.simpleMessage("Express"),
         "publicQuestion":
             MessageLookupByLibrary.simpleMessage("Pregunta Express"),
         "question": MessageLookupByLibrary.simpleMessage("Pregunta"),
