@@ -28,9 +28,11 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m2(email) =>
       "Te enviamos las instrucciones para restablecer la contraseña a ${email}.";
 
-  static String m3(clientName) => "Perdiste una llamada \n de ${clientName}.";
+  static String m3(timer) => "Puedes escribir en ${timer}";
 
-  static String m4(clientName) => "Te perdiste el chat \n de ${clientName}.";
+  static String m4(clientName) => "Perdiste una llamada \n de ${clientName}.";
+
+  static String m5(clientName) => "Te perdiste el chat \n de ${clientName}.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -202,11 +204,12 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Nombre de usuario y/o contraseña incorrectos"),
         "yesZodiac": MessageLookupByLibrary.simpleMessage("Sí"),
         "yesterdayZodiac": MessageLookupByLibrary.simpleMessage("Ayer"),
+        "youAreAbleToWriteWithinZodiac": m3,
         "youCanChangePriceOncePer24HZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Puedes cambiar el precio una vez cada 24 h"),
-        "youMissedCallFromZodiac": m3,
-        "youMissedChatFromZodiac": m4,
+        "youMissedCallFromZodiac": m4,
+        "youMissedChatFromZodiac": m5,
         "youWereBlocked": MessageLookupByLibrary.simpleMessage(
             "Su cuenta ha sido bloqueada.<br>Póngase en contacto con <a href=\'\'>Atención al cliente</a> para resolver el problema"),
         "yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac":

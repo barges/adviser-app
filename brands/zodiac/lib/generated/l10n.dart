@@ -1154,6 +1154,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `You are able to write within {timer}`
+  String youAreAbleToWriteWithinZodiac(Object timer) {
+    return Intl.message(
+      'You are able to write within $timer',
+      name: 'youAreAbleToWriteWithinZodiac',
+      desc: '',
+      args: [timer],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

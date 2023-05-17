@@ -1,7 +1,7 @@
 class OfflineSessionEvent {
   final bool isActive;
   final int clientId;
-  final int? timeout;
+  final Duration? timeout;
 
   OfflineSessionEvent({
     required this.isActive,

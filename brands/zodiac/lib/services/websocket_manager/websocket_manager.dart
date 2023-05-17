@@ -27,7 +27,7 @@ abstract class WebSocketManager {
 
   PublishSubject<bool> get endChatTrigger;
 
-  Stream<UpdateTimerEvent> get updateTimerStream;
+  Stream<UpdateTimerEvent> get updateChatTimerStream;
 
   Stream<bool> get stopRoomStream;
 

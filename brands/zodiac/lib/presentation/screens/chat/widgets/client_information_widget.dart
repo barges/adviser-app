@@ -27,76 +27,86 @@ class ClientInformationWidget extends StatelessWidget {
             preferredLocale != null ||
             isFreeBeerDrinker == true);
 
-    return AnimatedSlide(
-      offset: shouldOpenWidget ? const Offset(0, 0) : const Offset(0, -1),
+    return AnimatedSwitcher(
       duration: const Duration(milliseconds: 500),
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
-        decoration: BoxDecoration(
-          color: theme.canvasColor,
-          border: Border(
-            bottom: BorderSide(color: theme.hintColor),
-            top: BorderSide(color: theme.hintColor),
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (shortDescription?.isNotEmpty == true)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Text(
-                  shortDescription!,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.shadowColor,
-                  ),
+      transitionBuilder: (child, animation) {
+        return SizeTransition(
+          sizeFactor: animation,
+          axisAlignment: 1,
+          child: child,
+        );
+      },
+      child: shouldOpenWidget
+          ? Container(
+              padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+              decoration: BoxDecoration(
+                color: theme.canvasColor,
+                border: Border(
+                  bottom: BorderSide(color: theme.hintColor),
+                  top: BorderSide(color: theme.hintColor),
                 ),
               ),
-            if (preferredLocale != null)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Row(
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                          text: SZodiac.of(context).preferredLanguageZodiac,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.shadowColor,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (shortDescription?.isNotEmpty == true)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Text(
+                        shortDescription!,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.shadowColor,
+                        ),
+                      ),
+                    ),
+                  if (preferredLocale != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Row(
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                                text:
+                                    SZodiac.of(context).preferredLanguageZodiac,
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.shadowColor,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: preferredLocale.nameNative ??
+                                        preferredLocale.codeAsTitle ??
+                                        preferredLocale.code ??
+                                        '',
+                                    style:
+                                        theme.textTheme.labelMedium?.copyWith(
+                                      fontSize: 13.0,
+                                      color: theme.shadowColor,
+                                    ),
+                                  )
+                                ]),
                           ),
-                          children: [
-                            TextSpan(
-                              text: preferredLocale.nameNative ??
-                                  preferredLocale.codeAsTitle ??
-                                  preferredLocale.code ??
-                                  '',
-                              style: theme.textTheme.labelMedium?.copyWith(
-                                fontSize: 13.0,
-                                color: theme.shadowColor,
-                              ),
+                          const SizedBox(
+                            width: 4.0,
+                          ),
+                          if (preferredLocale.flagIcon?.isNotEmpty == true)
+                            CachedNetworkImage(
+                              imageUrl: preferredLocale.flagIcon!,
+                              height: 16.0,
+                              width: 16.0,
                             )
-                          ]),
+                        ],
+                      ),
                     ),
-                    const SizedBox(
-                      width: 4.0,
-                    ),
-                    if (preferredLocale.flagIcon?.isNotEmpty == true)
-                      CachedNetworkImage(
-                        imageUrl: preferredLocale.flagIcon!,
-                        height: 16.0,
-                        width: 16.0,
-                      )
-                  ],
-                ),
+                  if (isFreeBeerDrinker == true)
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 8.0),
+                      child: _FreebieSeekerWidget(),
+                    )
+                ],
               ),
-            if (isFreeBeerDrinker == true)
-              const Padding(
-                padding: EdgeInsets.only(bottom: 8.0),
-                child: _FreebieSeekerWidget(),
-              )
-          ],
-        ),
-      ),
+            )
+          : const SizedBox.shrink(),
     );
   }
 }

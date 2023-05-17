@@ -108,5 +108,6 @@
   "endChatZodiac": "Encerrar\nbate-papo",
   "doYouReallyWantToEndTheChatZodiac": "Você realmente deseja encerrar o bate-papo?",
   "yesZodiac": "Sim",
-  "noZodiac": "Não"
+  "noZodiac": "Não",
+  "youAreAbleToWriteWithinZodiac": "Você é capaz de escrever em {timer}"
 }

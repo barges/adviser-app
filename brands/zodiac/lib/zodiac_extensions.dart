@@ -84,8 +84,14 @@ extension DoubleExt on double {
 }
 
 extension DurationExt on Duration {
-  String get timerFormat {
+  String get chatTimerFormat {
     return DateFormat.Hms().format(
         DateTime.fromMillisecondsSinceEpoch(inMilliseconds, isUtc: true));
+  }
+
+  String offlineSessionTimerFormat(BuildContext context) {
+    final int minutes = inMinutes.remainder(60);
+    final int seconds = inSeconds.remainder(60);
+    return '$minutes${SZodiac.of(context).minutesZodiac[0]} ${seconds >= 10 ? seconds : '0$seconds'}${SZodiac.of(context).secondsZodiac[0]}';
   }
 }

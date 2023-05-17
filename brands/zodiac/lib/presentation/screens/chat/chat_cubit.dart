@@ -70,7 +70,7 @@ class ChatCubit extends Cubit<ChatState> {
       _updateMessageIsDeliveredSubscription;
   late final StreamSubscription<int> _updateMessageIsReadSubscription;
   late final StreamSubscription<int> _updateWriteStatusSubscription;
-  late final StreamSubscription<UpdateTimerEvent> _updateTimerSubscription;
+  late final StreamSubscription<UpdateTimerEvent> _updateChatTimerSubscription;
   late final StreamSubscription<bool> _stopRoomSubscription;
 
   late final StreamSubscription<ActiveChatEvent>
@@ -87,9 +87,9 @@ class ChatCubit extends Cubit<ChatState> {
 
   final List<ChatMessageModel> _messages = [];
   EnterRoomData? enterRoomData;
-  int offlineSessionTimeout = 0;
 
   Timer? _chatTimer;
+  Timer? _offlineSessionTimer;
 
   ChatCubit(
     this._cachingManager,
@@ -191,7 +191,7 @@ class ChatCubit extends Cubit<ChatState> {
         emit(state.copyWith(chatIsActive: event.isActive));
         if (!event.isActive) {
           _chatTimer?.cancel();
-          emit(state.copyWith(timerValue: null));
+          emit(state.copyWith(chatTimerValue: null));
         }
       }
     });
@@ -199,8 +199,22 @@ class ChatCubit extends Cubit<ChatState> {
     _updateOfflineSessionIsActiveSubscription =
         _webSocketManager.offlineSessionIsActiveStream.listen((event) {
       if (event.clientId == clientData.id) {
-        offlineSessionTimeout = event.timeout ?? 0;
         emit(state.copyWith(offlineSessionIsActive: event.isActive));
+        if (event.timeout != null && event.isActive) {
+          emit(state.copyWith(
+              showOfflineSessionsMessage: true,
+              offlineSessionTimerValue: event.timeout));
+          _offlineSessionTimer?.cancel();
+          _offlineSessionTimer =
+              Timer.periodic(const Duration(seconds: 1), (timer) {
+            emit(state.copyWith(
+                offlineSessionTimerValue: Duration(
+                    seconds:
+                        (state.offlineSessionTimerValue?.inSeconds ?? 0) - 1)));
+          });
+        } else if (!event.isActive) {
+          emit(state.copyWith(showOfflineSessionsMessage: false));
+        }
       }
     });
 
@@ -283,19 +297,18 @@ class ChatCubit extends Cubit<ChatState> {
       }
     });
 
-    _updateTimerSubscription = _webSocketManager.updateTimerStream.listen(
+    _updateChatTimerSubscription =
+        _webSocketManager.updateChatTimerStream.listen(
       (event) {
         if (event.clientId == clientData.id) {
-          logger.d(
-              '${state.timerValue?.inSeconds} ==== ${event.value.inSeconds}');
           emit(state.copyWith(isChatReconnecting: false));
-          if (state.timerValue?.inSeconds != event.value.inSeconds) {
+          if (state.chatTimerValue?.inSeconds != event.value.inSeconds) {
             _chatTimer?.cancel();
-            emit(state.copyWith(timerValue: event.value));
+            emit(state.copyWith(chatTimerValue: event.value));
             _chatTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
               emit(state.copyWith(
-                  timerValue: Duration(
-                      seconds: (state.timerValue?.inSeconds ?? 0) + 1)));
+                  chatTimerValue: Duration(
+                      seconds: (state.chatTimerValue?.inSeconds ?? 0) + 1)));
             });
           }
         }
@@ -327,9 +340,10 @@ class ChatCubit extends Cubit<ChatState> {
     _keyboardSubscription.cancel();
     _updateChatIsActiveSubscription.cancel();
     _updateOfflineSessionIsActiveSubscription.cancel();
-    _updateTimerSubscription.cancel();
+    _updateChatTimerSubscription.cancel();
     _chatTimer?.cancel();
     _stopRoomSubscription.cancel();
+    _offlineSessionTimer?.cancel();
     return super.close();
   }
 
@@ -480,5 +494,10 @@ class ChatCubit extends Cubit<ChatState> {
       _messages.insert(0, message);
       _updateMessages();
     }
+  }
+
+  void closeOfflineSessionsMessage() {
+    _offlineSessionTimer?.cancel();
+    emit(state.copyWith(showOfflineSessionsMessage: false));
   }
 }

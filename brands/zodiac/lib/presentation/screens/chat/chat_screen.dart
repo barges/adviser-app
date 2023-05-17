@@ -10,12 +10,14 @@ import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
+import 'package:zodiac/presentation/common_widgets/messages/app_success_widget.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_messages_list_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/client_information_widget.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac_constants.dart';
+import 'package:zodiac/zodiac_extensions.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -111,11 +113,35 @@ class ChatScreen extends StatelessWidget {
                         }),
                     ],
                   ),
-                  const Positioned(
+                  Positioned(
                     top: 0.0,
                     right: 0.0,
                     left: 0.0,
-                    child: ClientInformationWidget(),
+                    child: Column(
+                      children: [
+                        const ClientInformationWidget(),
+                        Builder(builder: (context) {
+                          final bool showOfflineSessionsMessage =
+                              context.select((ChatCubit cubit) =>
+                                  cubit.state.showOfflineSessionsMessage);
+                          final Duration? offlineSessionTimerValue =
+                              context.select((ChatCubit cubit) =>
+                                  cubit.state.offlineSessionTimerValue);
+
+                          return AppSuccessWidget(
+                            title: SZodiac.of(context).chatEndedZodiac,
+                            message: showOfflineSessionsMessage &&
+                                    offlineSessionTimerValue != null
+                                ? SZodiac.of(context)
+                                    .youAreAbleToWriteWithinZodiac(
+                                        offlineSessionTimerValue
+                                            .offlineSessionTimerFormat(context))
+                                : '',
+                            onClose: chatCubit.closeOfflineSessionsMessage,
+                          );
+                        }),
+                      ],
+                    ),
                   ),
                 ],
               ),
