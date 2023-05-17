@@ -21,7 +21,7 @@ import 'package:shared_advisor_interface/services/fresh_chat_service.dart'
     as _i6;
 import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart'
     as _i9;
-import 'package:shared_advisor_interface/services/silent_mode_service.dart'
+import 'package:shared_advisor_interface/services/sound_mode_service.dart'
     as _i10;
 
 import '../../data/cache/zodiac_caching_manager.dart' as _i11;
@@ -75,7 +75,7 @@ Future<_i1.GetIt> $initGetIt(
   gh.singleton<_i8.MainCubit>(servicesModule.mainCubit);
   gh.singleton<_i9.PushNotificationManager>(
       servicesModule.pushNotificationManager);
-  gh.singleton<_i10.SilentModeService>(servicesModule.silentModeService);
+  gh.singleton<_i10.SoundModeService>(servicesModule.silentModeService);
   gh.factory<_i11.ZodiacCachingManager>(() => _i12.ZodiacCachingManagerImpl());
   gh.singleton<_i13.ZodiacMainCubit>(
       _i13.ZodiacMainCubit(get<_i5.ConnectivityService>()));
