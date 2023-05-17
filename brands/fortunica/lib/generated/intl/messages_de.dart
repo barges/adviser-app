@@ -72,7 +72,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "astrologySessionsFortunica":
             MessageLookupByLibrary.simpleMessage("Astrologie"),
         "audioMessageFortunica":
-            MessageLookupByLibrary.simpleMessage("Audionachricht"),
+            MessageLookupByLibrary.simpleMessage("Audio-Nachricht"),
         "avgDailyEarningsFortunica": MessageLookupByLibrary.simpleMessage(
             "Durchschnittliches Tageseinkommen"),
         "backFortunica": MessageLookupByLibrary.simpleMessage("Zurück"),
@@ -222,7 +222,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Handlesen"),
         "passwordFortunica": MessageLookupByLibrary.simpleMessage("Passwort"),
         "performanceOverviewAnalyticsFortunica":
-            MessageLookupByLibrary.simpleMessage("Allgemeine Leistungsanalyse"),
+            MessageLookupByLibrary.simpleMessage("Leistungsstatistik"),
         "personalDetailsFortunica":
             MessageLookupByLibrary.simpleMessage("PERSONAL DETAILS"),
         "photoIsRequiredFortunica":
@@ -347,7 +347,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Schreibe eine Nachricht"),
         "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Oh, oh! Die  Internet-Verbindung war weg. Bitte versuche es erneut."),
+                "Oh, oh! Die Internet-Verbindung war weg. Bitte versuche es erneut."),
         "unknownErrorFortunica":
             MessageLookupByLibrary.simpleMessage("Fehler unbekannt"),
         "useYourNewPasswordToLoginFortunica":

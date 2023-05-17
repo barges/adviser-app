@@ -83,7 +83,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "callsFortunica": MessageLookupByLibrary.simpleMessage("Llamadas"),
         "cancelFortunica": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "cancelSendingFortunica":
-            MessageLookupByLibrary.simpleMessage("Cancelar el envío"),
+            MessageLookupByLibrary.simpleMessage("Cancelar envío"),
         "changeCoverPictureFortunica":
             MessageLookupByLibrary.simpleMessage("Cambiar foto de portada"),
         "changePasswordFortunica":
@@ -263,8 +263,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "profileFortunica": MessageLookupByLibrary.simpleMessage("Perfil"),
         "profileTextFortunica":
             MessageLookupByLibrary.simpleMessage("Texto de Perfil"),
-        "publicFortunica":
-            MessageLookupByLibrary.simpleMessage("Preguntas express"),
+        "publicFortunica": MessageLookupByLibrary.simpleMessage("Express"),
         "publicQuestionFortunica":
             MessageLookupByLibrary.simpleMessage("Pregunta Express"),
         "questionFortunica": MessageLookupByLibrary.simpleMessage("Pregunta"),
