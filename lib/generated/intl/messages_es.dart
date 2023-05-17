@@ -240,7 +240,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Preguntas Privadas"),
         "profile": MessageLookupByLibrary.simpleMessage("Perfil"),
         "profileText": MessageLookupByLibrary.simpleMessage("Texto de Perfil"),
-        "public": MessageLookupByLibrary.simpleMessage("Preguntas express"),
+        "public": MessageLookupByLibrary.simpleMessage("Express"),
         "publicQuestion":
             MessageLookupByLibrary.simpleMessage("Pregunta Express"),
         "question": MessageLookupByLibrary.simpleMessage("Pregunta"),
