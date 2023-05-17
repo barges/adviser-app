@@ -6,7 +6,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
-import 'package:shared_advisor_interface/services/silent_mode_service.dart';
+import 'package:shared_advisor_interface/services/sound_mode_service.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/chat/call_data.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
@@ -39,7 +39,7 @@ class StartingChatScreen extends StatelessWidget {
         zodiacGetIt.get<WebSocketManager>(),
         zodiacGetIt.get<BrandManager>(),
         zodiacGetIt.get<MainCubit>(),
-        zodiacGetIt.get<SilentModeService>(),
+        zodiacGetIt.get<SoundModeService>(),
         callData,
         context,
       ),
