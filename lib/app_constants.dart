@@ -13,7 +13,6 @@ class AppConstants {
 
   static const int millisecondsInHour = 3600000;
 
-
   static const int bytesInKilobyte = 1024;
   static const int minFreeSpaceInMb = 3;
 
@@ -30,10 +29,10 @@ class AppConstants {
   static const String iosAppId = '1:986930839057:ios:931a04b3aeb905de5cbbb0';
 
   ///STAGE
+  ///TODO: Needs to be commented out for release!!!
   static const bool needPrintLogs = true;
 
-
   ///PROD
-  //  static const bool needPrintLogs = false;
-
+  ///TODO: Needs to be uncommented for release!!!
+  //static const bool needPrintLogs = false;
 }
