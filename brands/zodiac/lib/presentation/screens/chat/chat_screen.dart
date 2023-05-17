@@ -50,126 +50,133 @@ class ChatScreen extends StatelessWidget {
         final bool offlineSessionIsActive = context
             .select((ChatCubit cubit) => cubit.state.offlineSessionIsActive);
 
-        return Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Scaffold(
-              backgroundColor: Theme.of(context).canvasColor,
-              appBar: ChatConversationAppBar(
-                userData: userData,
-                onTap: chatCubit.changeClientInformationWidgetOpened,
-                backButtonOnTap: () {
-                  chatCubit.updateSessions();
-                  context.pop();
-                },
-                endChatButtonOnTap: chatIsActive
-                    ? () async {
-                        bool? endChat = await showOkCancelAlert(
-                          context: context,
-                          title: SZodiac.of(context)
-                              .doYouReallyWantToEndTheChatZodiac,
-                          okText: SZodiac.of(context).yesZodiac,
-                          cancelText: SZodiac.of(context).noZodiac,
-                          allowBarrierClick: true,
-                          isCancelEnabled: true,
-                        );
-                        if (endChat == true) {
-                          chatCubit.endChat();
+        return WillPopScope(
+          onWillPop: () async => (!chatIsActive && !offlineSessionIsActive),
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Scaffold(
+                backgroundColor: Theme.of(context).canvasColor,
+                appBar: ChatConversationAppBar(
+                  userData: userData,
+                  onTap: chatCubit.changeClientInformationWidgetOpened,
+                  backButtonOnTap: () {
+                    chatCubit.updateSessions();
+                    context.popForced();
+                  },
+                  endChatButtonOnTap: chatIsActive
+                      ? () async {
+                          bool? endChat = await showOkCancelAlert(
+                            context: context,
+                            title: SZodiac.of(context)
+                                .doYouReallyWantToEndTheChatZodiac,
+                            okText: SZodiac.of(context).yesZodiac,
+                            cancelText: SZodiac.of(context).noZodiac,
+                            allowBarrierClick: true,
+                            isCancelEnabled: true,
+                          );
+                          if (endChat == true) {
+                            chatCubit.endChat();
+                          }
                         }
-                      }
-                    : null,
-              ),
-              body: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Column(
-                    children: [
-                      Expanded(
-                        child: ChatMessagesListWidget(
-                          fromStartingChat: fromStartingChat,
-                        ),
-                      ),
-                      if (chatIsActive || offlineSessionIsActive)
-                        Builder(builder: (context) {
-                          final double focusedTextInputHeight = context.select(
-                              (ChatCubit cubit) => cubit.state.textInputHeight);
-
-                          context.select((ChatCubit cubit) =>
-                              cubit.state.textInputFocused);
-
-                          final double bottomPadding =
-                              bottomPartTextInputHeight +
-                                  (chatCubit.state.textInputFocused
-                                      ? grabbingHeight +
-                                          12.0 +
-                                          ZodiacConstants
-                                              .chatHorizontalPadding +
-                                          focusedTextInputHeight
-                                      : MediaQuery.of(context).padding.bottom);
-                          return Container(
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            height: bottomPadding,
-                          );
-                        }),
-                    ],
-                  ),
-                  Positioned(
-                    top: 0.0,
-                    right: 0.0,
-                    left: 0.0,
-                    child: Column(
+                      : null,
+                ),
+                body: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Column(
                       children: [
-                        const ClientInformationWidget(),
-                        Builder(builder: (context) {
-                          final bool showOfflineSessionsMessage =
-                              context.select((ChatCubit cubit) =>
-                                  cubit.state.showOfflineSessionsMessage);
-                          final Duration? offlineSessionTimerValue =
-                              context.select((ChatCubit cubit) =>
-                                  cubit.state.offlineSessionTimerValue);
+                        Expanded(
+                          child: ChatMessagesListWidget(
+                            fromStartingChat: fromStartingChat,
+                          ),
+                        ),
+                        if (chatIsActive || offlineSessionIsActive)
+                          Builder(builder: (context) {
+                            final double focusedTextInputHeight =
+                                context.select((ChatCubit cubit) =>
+                                    cubit.state.textInputHeight);
 
-                          return AppSuccessWidget(
-                            title: SZodiac.of(context).chatEndedZodiac,
-                            message: showOfflineSessionsMessage &&
-                                    offlineSessionTimerValue != null
-                                ? SZodiac.of(context)
-                                    .youAreAbleToWriteWithinZodiac(
-                                        offlineSessionTimerValue
-                                            .offlineSessionTimerFormat(context))
-                                : '',
-                            onClose: chatCubit.closeOfflineSessionsMessage,
-                          );
-                        }),
+                            context.select((ChatCubit cubit) =>
+                                cubit.state.textInputFocused);
+
+                            final double bottomPadding =
+                                bottomPartTextInputHeight +
+                                    (chatCubit.state.textInputFocused
+                                        ? grabbingHeight +
+                                            12.0 +
+                                            ZodiacConstants
+                                                .chatHorizontalPadding +
+                                            focusedTextInputHeight
+                                        : MediaQuery.of(context)
+                                            .padding
+                                            .bottom);
+                            return Container(
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              height: bottomPadding,
+                            );
+                          }),
                       ],
                     ),
-                  ),
-                ],
-              ),
-            ),
-            if (chatIsActive || offlineSessionIsActive)
-              KeyboardSizeProvider(
-                child: Builder(builder: (context) {
-                  final bool needBarrierColor = context.select(
-                      (ChatCubit cubit) => cubit.state.isStretchedTextField);
-                  return SafeArea(
-                    bottom: false,
-                    child: Material(
-                      type: needBarrierColor
-                          ? MaterialType.canvas
-                          : MaterialType.transparency,
-                      color: needBarrierColor
-                          ? Utils.getOverlayColor(context)
-                          : Colors.transparent,
-                      child: Builder(
-                        builder: (context) {
-                          return const ChatTextInputWidget();
-                        },
+                    Positioned(
+                      top: 0.0,
+                      right: 0.0,
+                      left: 0.0,
+                      child: Column(
+                        children: [
+                          const ClientInformationWidget(),
+                          Builder(builder: (context) {
+                            final bool showOfflineSessionsMessage =
+                                context.select((ChatCubit cubit) =>
+                                    cubit.state.showOfflineSessionsMessage);
+                            final Duration? offlineSessionTimerValue =
+                                context.select((ChatCubit cubit) =>
+                                    cubit.state.offlineSessionTimerValue);
+
+                            return AppSuccessWidget(
+                              title: SZodiac.of(context).chatEndedZodiac,
+                              message: showOfflineSessionsMessage &&
+                                      offlineSessionTimerValue != null
+                                  ? SZodiac.of(context)
+                                      .youAreAbleToWriteWithinZodiac(
+                                          offlineSessionTimerValue
+                                              .offlineSessionTimerFormat(
+                                                  context))
+                                  : '',
+                              onClose: chatCubit.closeOfflineSessionsMessage,
+                            );
+                          }),
+                        ],
                       ),
                     ),
-                  );
-                }),
+                  ],
+                ),
               ),
-          ],
+              if (chatIsActive || offlineSessionIsActive)
+                KeyboardSizeProvider(
+                  child: Builder(builder: (context) {
+                    final bool needBarrierColor = context.select(
+                        (ChatCubit cubit) => cubit.state.isStretchedTextField);
+                    return SafeArea(
+                      bottom: false,
+                      child: Material(
+                        type: needBarrierColor
+                            ? MaterialType.canvas
+                            : MaterialType.transparency,
+                        color: needBarrierColor
+                            ? Utils.getOverlayColor(context)
+                            : Colors.transparent,
+                        child: Builder(
+                          builder: (context) {
+                            return const ChatTextInputWidget();
+                          },
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+            ],
+          ),
         );
       }),
     );
