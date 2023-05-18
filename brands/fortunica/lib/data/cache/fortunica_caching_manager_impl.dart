@@ -21,7 +21,7 @@ const String _userIdKey = 'userIdKey';
 const String _userTokenKey = 'userTokenKey';
 const String _localeKey = 'localeKey';
 
-@Injectable(as: FortunicaCachingManager)
+@Singleton(as: FortunicaCachingManager)
 class FortunicaCachingManagerImpl implements FortunicaCachingManager {
   static Future<void> openBoxes() async {
     await Hive.openBox(_fortunicaUserBoxKey);
