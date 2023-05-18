@@ -19,6 +19,7 @@ import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
 import 'package:zodiac/presentation/screens/starting_chat/starting_chat_screen.dart';
 import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
+import 'package:zodiac/services/websocket_manager/chat_login_event.dart';
 import 'package:zodiac/services/websocket_manager/commands.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
@@ -68,6 +69,8 @@ class WebSocketManagerImpl implements WebSocketManager {
       PublishSubject();
 
   final PublishSubject<bool> _stopRoomTrigger = PublishSubject();
+
+  final PublishSubject<ChatLoginEvent> _chatLoginStream = PublishSubject();
 
   WebSocketManagerImpl(
     this._zodiacMainCubit,
@@ -248,6 +251,9 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   @override
   Stream<bool> get stopRoomStream => _stopRoomTrigger.stream;
+
+  @override
+  Stream<ChatLoginEvent> get chatLoginStream => _chatLoginStream.stream;
 
   @override
   Future connect() async {
@@ -471,12 +477,17 @@ class WebSocketManagerImpl implements WebSocketManager {
   void _onChatLogin(Event event) {
     final SocketMessage message = (event.eventData as SocketMessage);
     final int? opponentId = message.params['opponent_id'];
+    final int? chatId = message.params['chat_id'];
     if (opponentId != null) {
       _send(
         SocketMessage.entities(
           opponentId: opponentId,
         ),
       );
+      if (chatId != null) {
+        _chatLoginStream
+            .add(ChatLoginEvent(chatId: chatId, opponentId: opponentId));
+      }
     }
   }
 

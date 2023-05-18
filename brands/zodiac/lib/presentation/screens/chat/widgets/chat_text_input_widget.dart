@@ -293,6 +293,11 @@ class ChatTextInputWidget extends StatelessWidget {
                                     onTap: () {
                                       if (isSendButtonEnabled) {
                                         chatCubit.sendMessageToChat();
+                                        if (!chatCubit.state.chatIsActive &&
+                                            !chatCubit
+                                                .state.offlineSessionIsActive) {
+                                          FocusScope.of(context).unfocus();
+                                        }
                                       }
                                     },
                                     icon: Assets.vectors.send.path,

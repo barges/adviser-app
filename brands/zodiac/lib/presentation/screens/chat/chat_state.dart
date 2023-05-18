@@ -23,6 +23,7 @@ class ChatState with _$ChatState {
     @Default(false) bool keyboardOpened,
     @Default(false) bool isChatReconnecting,
     @Default(false) bool showOfflineSessionsMessage,
+    @Default(false) bool shouldShowInput,
     UserDetails? clientInformation,
     Duration? chatTimerValue,
     Duration? offlineSessionTimerValue,

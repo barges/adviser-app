@@ -23,6 +23,7 @@ import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/chat/chat_state.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
+import 'package:zodiac/services/websocket_manager/chat_login_event.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
@@ -72,6 +73,7 @@ class ChatCubit extends Cubit<ChatState> {
   late final StreamSubscription<int> _updateWriteStatusSubscription;
   late final StreamSubscription<UpdateTimerEvent> _updateChatTimerSubscription;
   late final StreamSubscription<bool> _stopRoomSubscription;
+  late final StreamSubscription<ChatLoginEvent> _chatLoginSubscription;
 
   late final StreamSubscription<ActiveChatEvent>
       _updateChatIsActiveSubscription;
@@ -90,6 +92,10 @@ class ChatCubit extends Cubit<ChatState> {
 
   Timer? _chatTimer;
   Timer? _offlineSessionTimer;
+
+  int? chatId;
+
+  bool chatHaveOfflineSession = false;
 
   ChatCubit(
     this._cachingManager,
@@ -188,7 +194,8 @@ class ChatCubit extends Cubit<ChatState> {
     _updateChatIsActiveSubscription =
         _webSocketManager.chatIsActiveStream.listen((event) {
       if (event.clientId == clientData.id) {
-        emit(state.copyWith(chatIsActive: event.isActive));
+        emit(state.copyWith(
+            chatIsActive: event.isActive, shouldShowInput: event.isActive));
         if (!event.isActive) {
           _chatTimer?.cancel();
           emit(state.copyWith(chatTimerValue: null));
@@ -199,6 +206,7 @@ class ChatCubit extends Cubit<ChatState> {
     _updateOfflineSessionIsActiveSubscription =
         _webSocketManager.offlineSessionIsActiveStream.listen((event) {
       if (event.clientId == clientData.id) {
+        chatHaveOfflineSession = true;
         emit(state.copyWith(offlineSessionIsActive: event.isActive));
         if (event.timeout != null && event.isActive) {
           emit(state.copyWith(
@@ -319,6 +327,14 @@ class ChatCubit extends Cubit<ChatState> {
       (event) => emit(state.copyWith(isChatReconnecting: true)),
     );
 
+    _chatLoginSubscription = _webSocketManager.chatLoginStream.listen(
+      (event) {
+        if (clientData.id == event.opponentId) {
+          chatId = event.chatId;
+        }
+      },
+    );
+
     getClientInformation();
   }
 
@@ -344,6 +360,7 @@ class ChatCubit extends Cubit<ChatState> {
     _chatTimer?.cancel();
     _stopRoomSubscription.cancel();
     _offlineSessionTimer?.cancel();
+    _chatLoginSubscription.cancel();
     return super.close();
   }
 
@@ -499,5 +516,13 @@ class ChatCubit extends Cubit<ChatState> {
   void closeOfflineSessionsMessage() {
     _offlineSessionTimer?.cancel();
     emit(state.copyWith(showOfflineSessionsMessage: false));
+  }
+
+  void logoutChat(BuildContext context) {
+    updateSessions();
+    if (chatId != null) {
+      _webSocketManager.logoutChat(chatId!);
+    }
+    context.popForced();
   }
 }

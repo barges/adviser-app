@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
@@ -60,10 +59,7 @@ class ChatScreen extends StatelessWidget {
                 appBar: ChatConversationAppBar(
                   userData: userData,
                   onTap: chatCubit.changeClientInformationWidgetOpened,
-                  backButtonOnTap: () {
-                    chatCubit.updateSessions();
-                    context.popForced();
-                  },
+                  backButtonOnTap: () => chatCubit.logoutChat(context),
                   endChatButtonOnTap: chatIsActive
                       ? () async {
                           bool? endChat = await showOkCancelAlert(
@@ -152,7 +148,11 @@ class ChatScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              if (chatIsActive || offlineSessionIsActive)
+              if (chatIsActive ||
+                  offlineSessionIsActive ||
+                  (chatCubit.chatHaveOfflineSession &&
+                      !offlineSessionIsActive &&
+                      chatCubit.textInputEditingController.text.isNotEmpty))
                 KeyboardSizeProvider(
                   child: Builder(builder: (context) {
                     final bool needBarrierColor = context.select(
