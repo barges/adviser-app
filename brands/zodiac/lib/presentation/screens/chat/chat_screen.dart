@@ -4,9 +4,7 @@ import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
-import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
-import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
@@ -14,9 +12,7 @@ import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_messages_list_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/client_information_widget.dart';
-import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac_constants.dart';
-import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ChatScreen extends StatelessWidget {
   final UserData userData;
@@ -31,14 +27,9 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ChatCubit(
-        zodiacGetIt.get<ZodiacCachingManager>(),
-        zodiacGetIt.get<WebSocketManager>(),
-        fromStartingChat,
-        userData,
-        zodiacGetIt.get<ZodiacUserRepository>(),
-        zodiacGetIt.get<ZodiacMainCubit>(),
-        MediaQuery.of(context).size.height,
+      create: (_) => zodiacGetIt.get<ChatCubit>(
+        param1: userData,
+        param2: fromStartingChat,
       ),
       child: Builder(builder: (context) {
         final ChatCubit chatCubit = context.read<ChatCubit>();

@@ -5,6 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -31,6 +32,7 @@ import 'package:zodiac/zodiac_main_cubit.dart';
 
 const Duration _typingIndicatorDuration = Duration(milliseconds: 5000);
 
+@injectable
 class ChatCubit extends Cubit<ChatState> {
   final ZodiacCachingManager _cachingManager;
   final WebSocketManager _webSocketManager;
@@ -38,7 +40,6 @@ class ChatCubit extends Cubit<ChatState> {
   final UserData clientData;
   final ZodiacUserRepository _userRepository;
   final ZodiacMainCubit _zodiacMainCubit;
-  final double _screenHeight;
 
   final SnappingSheetController snappingSheetController =
       SnappingSheetController();
@@ -92,13 +93,14 @@ class ChatCubit extends Cubit<ChatState> {
   Timer? _chatTimer;
 
   ChatCubit(
+      @factoryParam
+      this.clientData,
+      @factoryParam
+      this._fromStartingChat,
     this._cachingManager,
     this._webSocketManager,
-    this._fromStartingChat,
-    this.clientData,
     this._userRepository,
     this._zodiacMainCubit,
-    this._screenHeight,
   ) : super(const ChatState()) {
     _messagesSubscription = _webSocketManager.entitiesStream.listen((event) {
       if (_isRefresh) {
@@ -229,7 +231,7 @@ class ChatCubit extends Cubit<ChatState> {
     messagesScrollController.addListener(() {
       _showDownButtonStream.add(messagesScrollController.position.pixels);
 
-      if (messagesScrollController.position.extentAfter <= _screenHeight) {
+      if (messagesScrollController.position.extentAfter <= 400) {
         if (!_isLoadingMessages) {
           _isLoadingMessages = true;
           final int? maxId = _messages.lastOrNull?.id;
