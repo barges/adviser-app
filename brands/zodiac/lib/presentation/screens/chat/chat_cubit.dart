@@ -5,6 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -34,15 +35,27 @@ import 'package:zodiac/zodiac_main_cubit.dart';
 const Duration _typingIndicatorDuration = Duration(milliseconds: 5000);
 typedef UnderageConfirmDialog = Future<bool?> Function(String message);
 
+class ChatCubitParams {
+  final bool fromStartingChat;
+  final UserData clientData;
+  final UnderageConfirmDialog underageConfirmDialog;
+
+  ChatCubitParams({
+    required this.fromStartingChat,
+    required this.clientData,
+    required this.underageConfirmDialog,
+  });
+}
+
+@injectable
 class ChatCubit extends Cubit<ChatState> {
   final ZodiacCachingManager _cachingManager;
   final WebSocketManager _webSocketManager;
-  final bool _fromStartingChat;
-  final UserData clientData;
+  late final bool _fromStartingChat;
+  late final UserData clientData;
   final ZodiacUserRepository _userRepository;
   final ZodiacMainCubit _zodiacMainCubit;
-  final double _screenHeight;
-  final UnderageConfirmDialog _underageConfirmDialog;
+  late final UnderageConfirmDialog _underageConfirmDialog;
 
   final SnappingSheetController snappingSheetController =
       SnappingSheetController();
@@ -101,15 +114,16 @@ class ChatCubit extends Cubit<ChatState> {
   int? _chatId;
 
   ChatCubit(
+    @factoryParam ChatCubitParams chatCubitParams,
     this._cachingManager,
     this._webSocketManager,
-    this._fromStartingChat,
-    this.clientData,
     this._userRepository,
     this._zodiacMainCubit,
-    this._screenHeight,
-    this._underageConfirmDialog,
   ) : super(const ChatState()) {
+    _fromStartingChat = chatCubitParams.fromStartingChat;
+    clientData = chatCubitParams.clientData;
+    _underageConfirmDialog = chatCubitParams.underageConfirmDialog;
+
     _messagesSubscription = _webSocketManager.entitiesStream.listen((event) {
       if (_isRefresh) {
         _isRefresh = false;
@@ -277,7 +291,7 @@ class ChatCubit extends Cubit<ChatState> {
     messagesScrollController.addListener(() {
       _showDownButtonStream.add(messagesScrollController.position.pixels);
 
-      if (messagesScrollController.position.extentAfter <= _screenHeight) {
+      if (messagesScrollController.position.extentAfter <= 400) {
         if (!_isLoadingMessages) {
           _isLoadingMessages = true;
           final int? maxId = _messages.lastOrNull?.id;

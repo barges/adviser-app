@@ -11,12 +11,10 @@ import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 
 class ClientInformationWidget extends StatelessWidget {
   final bool chatIsActive;
-  final bool offlineSessionIsActive;
 
   const ClientInformationWidget({
     Key? key,
     required this.chatIsActive,
-    required this.offlineSessionIsActive,
   }) : super(key: key);
 
   @override
@@ -117,8 +115,7 @@ class ClientInformationWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (chatIsActive || offlineSessionIsActive)
-                  const _UnderageReportWidget(),
+                if (chatIsActive) const _UnderageReportWidget(),
               ],
             )
           : const SizedBox.shrink(),

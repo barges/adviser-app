@@ -18,7 +18,7 @@ const String _brandKey = 'brandKey';
 const String _localeKey = 'localeKey';
 const String _firstPermissionStatusesKey = 'firstPermissionStatusesKey';
 
-@Injectable(as: GlobalCachingManager)
+@Singleton(as: GlobalCachingManager)
 class GlobalCachingManagerImpl implements GlobalCachingManager {
   GlobalCachingManagerImpl() {
     openBoxes();
