@@ -26,7 +26,6 @@ import 'package:shared_advisor_interface/services/sound_mode_service.dart'
 
 import '../../data/cache/zodiac_caching_manager.dart' as _i11;
 import '../../data/cache/zodiac_caching_manager_impl.dart' as _i12;
-import '../../data/models/chat/user_data.dart' as _i29;
 import '../../data/network/api/articles_api.dart' as _i25;
 import '../../data/network/api/auth_api.dart' as _i26;
 import '../../data/network/api/chat_api.dart' as _i27;
@@ -34,15 +33,15 @@ import '../../data/network/api/services_api.dart' as _i18;
 import '../../data/network/api/sessions_api.dart' as _i19;
 import '../../data/network/api/user_api.dart' as _i20;
 import '../../data/repository_impl/zodiac_articles_repository_impl.dart'
-    as _i31;
-import '../../data/repository_impl/zodiac_auth_repository_impl.dart' as _i33;
-import '../../data/repository_impl/zodiac_chat_repository_impl.dart' as _i35;
+    as _i30;
+import '../../data/repository_impl/zodiac_auth_repository_impl.dart' as _i32;
+import '../../data/repository_impl/zodiac_chat_repository_impl.dart' as _i34;
 import '../../data/repository_impl/zodiac_sessions_repository_impl.dart'
     as _i22;
 import '../../data/repository_impl/zodiac_user_repository_impl.dart' as _i24;
-import '../../domain/repositories/zodiac_articles_repository.dart' as _i30;
-import '../../domain/repositories/zodiac_auth_repository.dart' as _i32;
-import '../../domain/repositories/zodiac_chat_repository.dart' as _i34;
+import '../../domain/repositories/zodiac_articles_repository.dart' as _i29;
+import '../../domain/repositories/zodiac_auth_repository.dart' as _i31;
+import '../../domain/repositories/zodiac_chat_repository.dart' as _i33;
 import '../../domain/repositories/zodiac_sessions_repository.dart' as _i21;
 import '../../domain/repositories/zodiac_user_repository.dart' as _i23;
 import '../../presentation/screens/chat/chat_cubit.dart' as _i28;
@@ -50,9 +49,9 @@ import '../../services/websocket_manager/websocket_manager.dart' as _i14;
 import '../../services/websocket_manager/websocket_manager_impl.dart' as _i15;
 import '../../zodiac_main_cubit.dart' as _i13;
 import 'dio_interceptors/app_interceptor.dart' as _i16;
-import 'modules/api_module.dart' as _i37;
+import 'modules/api_module.dart' as _i36;
 import 'modules/services_module.dart'
-    as _i36; // ignore_for_file: unnecessary_lambdas
+    as _i35; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -108,27 +107,26 @@ Future<_i1.GetIt> $initGetIt(
   gh.factory<_i25.ArticlesApi>(() => _i25.ArticlesApi(get<_i17.Dio>()));
   gh.factory<_i26.AuthApi>(() => _i26.AuthApi(get<_i17.Dio>()));
   gh.factory<_i27.ChatApi>(() => _i27.ChatApi(get<_i17.Dio>()));
-  gh.factoryParam<_i28.ChatCubit, _i29.UserData, bool>((
-    clientData,
-    _fromStartingChat,
+  gh.factoryParam<_i28.ChatCubit, _i28.ChatCubitParams, dynamic>((
+    chatCubitParams,
+    _,
   ) =>
       _i28.ChatCubit(
-        clientData,
-        _fromStartingChat,
+        chatCubitParams,
         get<_i11.ZodiacCachingManager>(),
         get<_i14.WebSocketManager>(),
         get<_i23.ZodiacUserRepository>(),
         get<_i13.ZodiacMainCubit>(),
       ));
-  gh.factory<_i30.ZodiacArticlesRepository>(
-      () => _i31.ZodiacArticlesRepositoryImpl(get<_i25.ArticlesApi>()));
-  gh.factory<_i32.ZodiacAuthRepository>(
-      () => _i33.ZodiacAuthRepositoryImpl(get<_i26.AuthApi>()));
-  gh.factory<_i34.ZodiacChatRepository>(
-      () => _i35.ZodiacChatRepositoryImpl(get<_i27.ChatApi>()));
+  gh.factory<_i29.ZodiacArticlesRepository>(
+      () => _i30.ZodiacArticlesRepositoryImpl(get<_i25.ArticlesApi>()));
+  gh.factory<_i31.ZodiacAuthRepository>(
+      () => _i32.ZodiacAuthRepositoryImpl(get<_i26.AuthApi>()));
+  gh.factory<_i33.ZodiacChatRepository>(
+      () => _i34.ZodiacChatRepositoryImpl(get<_i27.ChatApi>()));
   return get;
 }
 
-class _$ServicesModule extends _i36.ServicesModule {}
+class _$ServicesModule extends _i35.ServicesModule {}
 
-class _$ApiModule extends _i37.ApiModule {}
+class _$ApiModule extends _i36.ApiModule {}

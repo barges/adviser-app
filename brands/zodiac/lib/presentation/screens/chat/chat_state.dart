@@ -14,7 +14,6 @@ class ChatState with _$ChatState {
     @Default(false) bool needShowTypingIndicator,
     @Default(false) bool chatIsActive,
     @Default(false) bool offlineSessionIsActive,
-    UserDetails? clientInformation,
     @Default(0) int inputTextLength,
     @Default(false) bool isSendButtonEnabled,
     @Default(true) bool isTextInputCollapsed,
@@ -22,7 +21,11 @@ class ChatState with _$ChatState {
     @Default(false) bool textInputFocused,
     @Default(false) bool isStretchedTextField,
     @Default(false) bool keyboardOpened,
-    Duration? timerValue,
     @Default(false) bool isChatReconnecting,
+    @Default(false) bool showOfflineSessionsMessage,
+    @Default(false) bool shouldShowInput,
+    UserDetails? clientInformation,
+    Duration? chatTimerValue,
+    Duration? offlineSessionTimerValue,
   }) = _ChatState;
 }

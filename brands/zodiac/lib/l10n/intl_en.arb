@@ -108,6 +108,8 @@
   "endChatZodiac": "End\nchat",
   "doYouReallyWantToEndTheChatZodiac": "Do you really want to end the chat?",
   "yesZodiac": "Yes",
-  "noZodiac": "No"
-
+  "noZodiac": "No",
+  "youAreAbleToWriteWithinZodiac": "You are able to write within {timer}",
+  "reportUnderageUserZodiac": "Report underage user",
+  "reportZodiac": "Report"
 }

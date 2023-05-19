@@ -28,10 +28,12 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m2(email) =>
       "Enviamos instruções de redefinição de senha para ${email}.";
 
-  static String m3(clientName) =>
-      "Você perdeu uma chamada \n de ${clientName}.";
+  static String m3(timer) => "Você é capaz de escrever em ${timer}";
 
   static String m4(clientName) =>
+      "Você perdeu uma chamada \n de ${clientName}.";
+
+  static String m5(clientName) =>
       "Você perdeu o bate-papo \n de ${clientName}.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -161,6 +163,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "reconnectingZodiac":
             MessageLookupByLibrary.simpleMessage("Reconecte..."),
         "replyZodiac": MessageLookupByLibrary.simpleMessage("Responder"),
+        "reportUnderageUserZodiac": MessageLookupByLibrary.simpleMessage(
+            "Denunciar usuário menor de idade"),
+        "reportZodiac": MessageLookupByLibrary.simpleMessage("Relatório"),
         "requiredFieldZodiac":
             MessageLookupByLibrary.simpleMessage("Campo obrigatório"),
         "resetPasswordZodiac":
@@ -205,11 +210,12 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Nome de usuário e/ou senha incorretos."),
         "yesZodiac": MessageLookupByLibrary.simpleMessage("Sim"),
         "yesterdayZodiac": MessageLookupByLibrary.simpleMessage("Ontem"),
+        "youAreAbleToWriteWithinZodiac": m3,
         "youCanChangePriceOncePer24HZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Você pode alterar o preço uma vez a cada 24 h"),
-        "youMissedCallFromZodiac": m3,
-        "youMissedChatFromZodiac": m4,
+        "youMissedCallFromZodiac": m4,
+        "youMissedChatFromZodiac": m5,
         "youWereBlocked": MessageLookupByLibrary.simpleMessage(
             "Sua conta foi bloqueada.<br>Entre em contato com o <a href=\'\'>Suporte ao cliente</a> para resolver o problema"),
         "yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac":
