@@ -204,6 +204,25 @@ class ChatCubit extends Cubit<ChatState> {
           _chatTimer?.cancel();
           emit(state.copyWith(chatTimerValue: null));
         }
+        if (event.isActive) {
+          final String? helloMessage = enterRoomData?.expertData?.helloMessage;
+          if (helloMessage?.isNotEmpty == true) {
+            final ChatMessageModel chatMessageModel = ChatMessageModel(
+              utc: DateTime.now().toUtc(),
+              type: ChatMessageType.simple,
+              isOutgoing: true,
+              isDelivered: false,
+              mid: _generateMessageId(),
+              message: helloMessage,
+            );
+            _messages.insert(0, chatMessageModel);
+            _updateMessages();
+            _webSocketManager.sendMessageToChat(
+                message: chatMessageModel,
+                roomId: enterRoomData?.roomData?.id ?? '',
+                opponentId: clientData.id ?? 0);
+          }
+        }
       }
     });
 
