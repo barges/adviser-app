@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
@@ -24,7 +23,7 @@ const String _userInfoKey = 'userInfoKey';
 const String _userIdKey = 'userIdKey';
 const String _detailedUserInfoKey = 'detailedUserInfoKey';
 
-@Injectable(as: ZodiacCachingManager)
+@Singleton(as: ZodiacCachingManager)
 class ZodiacCachingManagerImpl implements ZodiacCachingManager {
   static Future<void> openBoxes() async {
     await Hive.openBox(_zodiacUserBoxKey);

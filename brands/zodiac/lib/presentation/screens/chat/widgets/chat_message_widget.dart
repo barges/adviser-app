@@ -11,6 +11,7 @@ import 'package:zodiac/presentation/screens/chat/widgets/messages/review_message
 import 'package:zodiac/presentation/screens/chat/widgets/messages/simple_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/start_chat_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/system_message_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/messages/tips_message_widget.dart';
 
 class ChatMessageWidget extends StatelessWidget {
   final ChatMessageModel chatMessageModel;
@@ -46,7 +47,7 @@ class ChatMessageWidget extends StatelessWidget {
           chatMessageModel: chatMessageModel,
         );
       case ChatMessageType.tips:
-        return Text(chatMessageModel.type.name);
+        return TipsMessageWidget(chatMessageModel: chatMessageModel);
       case ChatMessageType.image:
         return ImageMessageWidget(
           chatMessageModel: chatMessageModel,

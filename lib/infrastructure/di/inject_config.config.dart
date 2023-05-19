@@ -36,7 +36,7 @@ _i1.GetIt $initGetIt(
   gh.singleton<_i3.ConnectivityService>(_i3.ConnectivityService());
   gh.singleton<_i4.DynamicLinkService>(_i4.DynamicLinkService());
   gh.singleton<_i5.FreshChatService>(_i5.FreshChatServiceImpl());
-  gh.factory<_i6.GlobalCachingManager>(() => _i7.GlobalCachingManagerImpl());
+  gh.singleton<_i6.GlobalCachingManager>(_i7.GlobalCachingManagerImpl());
   gh.singleton<_i8.PushNotificationManager>(_i9.PushNotificationManagerImpl());
   gh.singleton<_i10.SoundModeService>(_i10.SoundModeService());
   gh.singleton<_i11.BrandManager>(

@@ -19,11 +19,13 @@ import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
 import 'package:zodiac/presentation/screens/starting_chat/starting_chat_screen.dart';
 import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
+import 'package:zodiac/services/websocket_manager/chat_login_event.dart';
 import 'package:zodiac/services/websocket_manager/commands.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
+import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
 import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -64,9 +66,15 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   final PublishSubject<int> _updateWriteStatusStream = PublishSubject();
 
-  final PublishSubject<UpdateTimerEvent> _updateTimerStream = PublishSubject();
+  final PublishSubject<UpdateTimerEvent> _updateChatTimerStream =
+      PublishSubject();
 
   final PublishSubject<bool> _stopRoomTrigger = PublishSubject();
+
+  final PublishSubject<ChatLoginEvent> _chatLoginStream = PublishSubject();
+
+  final PublishSubject<UnderageConfirmEvent> _underageConfirmStream =
+      PublishSubject();
 
   WebSocketManagerImpl(
     this._zodiacMainCubit,
@@ -242,10 +250,18 @@ class WebSocketManagerImpl implements WebSocketManager {
   PublishSubject<bool> get endChatTrigger => _endChatTrigger;
 
   @override
-  Stream<UpdateTimerEvent> get updateTimerStream => _updateTimerStream.stream;
+  Stream<UpdateTimerEvent> get updateChatTimerStream =>
+      _updateChatTimerStream.stream;
 
   @override
   Stream<bool> get stopRoomStream => _stopRoomTrigger.stream;
+
+  @override
+  Stream<ChatLoginEvent> get chatLoginStream => _chatLoginStream.stream;
+
+  @override
+  Stream<UnderageConfirmEvent> get underageConfirmStream =>
+      _underageConfirmStream.stream;
 
   @override
   Future connect() async {
@@ -383,6 +399,16 @@ class WebSocketManagerImpl implements WebSocketManager {
       _send(SocketMessage.saveChat(roomId: roomId));
 
   @override
+  void sendUnderageConfirm({required String roomId}) {
+    _send(SocketMessage.underageConfirm(roomId: roomId));
+  }
+
+  @override
+  void sendUnderageReport({required String roomId}) {
+    _send(SocketMessage.underageReport(roomId: roomId));
+  }
+
+  @override
   void close() {
     _socketSubscription?.cancel();
     _channel?.sink.close();
@@ -469,12 +495,17 @@ class WebSocketManagerImpl implements WebSocketManager {
   void _onChatLogin(Event event) {
     final SocketMessage message = (event.eventData as SocketMessage);
     final int? opponentId = message.params['opponent_id'];
+    final int? chatId = message.params['chat_id'];
     if (opponentId != null) {
       _send(
         SocketMessage.entities(
           opponentId: opponentId,
         ),
       );
+      if (chatId != null) {
+        _chatLoginStream
+            .add(ChatLoginEvent(chatId: chatId, opponentId: opponentId));
+      }
     }
   }
 
@@ -685,7 +716,13 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onUnderageConfirm(Event event) {
-    ///TODO - Implements onUnderageConfirm
+    (event.eventData as SocketMessage).let((data) {
+      final String? message = data.params['message'];
+      if (data.opponentId != null && message != null) {
+        _underageConfirmStream.add(UnderageConfirmEvent(
+            opponentId: data.opponentId!, message: message));
+      }
+    });
   }
 
   void _onUnderageReport() {
@@ -718,7 +755,7 @@ class WebSocketManagerImpl implements WebSocketManager {
             OfflineSessionEvent(
               isActive: true,
               clientId: id,
-              timeout: timeout,
+              timeout: timeout != null ? Duration(seconds: timeout) : null,
             ),
           );
         },
@@ -758,7 +795,7 @@ class WebSocketManagerImpl implements WebSocketManager {
       if (data.params is Map &&
           data.params['time'] != null &&
           data.opponentId != null) {
-        _updateTimerStream.add(UpdateTimerEvent(
+        _updateChatTimerStream.add(UpdateTimerEvent(
             value: Duration(milliseconds: data.params['time']),
             clientId: data.opponentId!));
       }
@@ -791,7 +828,7 @@ class WebSocketManagerImpl implements WebSocketManager {
     (event.eventData as SocketMessage).let((data) {
       (data.opponentId as int).let(
         (id) {
-          _updateTimerStream.add(UpdateTimerEvent(
+          _updateChatTimerStream.add(UpdateTimerEvent(
               value: const Duration(seconds: 0), clientId: id));
         },
       );
@@ -804,7 +841,7 @@ class WebSocketManagerImpl implements WebSocketManager {
       if (data.params is Map &&
           data.params['time'] != null &&
           data.opponentId != null) {
-        _updateTimerStream.add(UpdateTimerEvent(
+        _updateChatTimerStream.add(UpdateTimerEvent(
             value: Duration(milliseconds: data.params['time']),
             clientId: data.opponentId!));
       }

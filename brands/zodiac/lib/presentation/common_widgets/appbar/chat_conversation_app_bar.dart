@@ -114,7 +114,7 @@ class ChatConversationAppBar extends StatelessWidget
                         ),
                         Builder(builder: (context) {
                           final Duration? timerValue = context.select(
-                              (ChatCubit cubit) => cubit.state.timerValue);
+                              (ChatCubit cubit) => cubit.state.chatTimerValue);
 
                           final bool isChatReconnecting = context.select(
                               (ChatCubit cubit) =>
@@ -131,7 +131,7 @@ class ChatConversationAppBar extends StatelessWidget
                             );
                           } else if (timerValue != null) {
                             return Text(
-                              timerValue.timerFormat,
+                              timerValue.chatTimerFormat,
                               style: TextStyle(
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.w400,
