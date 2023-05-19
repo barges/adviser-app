@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
@@ -40,6 +41,7 @@ class ChatScreen extends StatelessWidget {
         zodiacGetIt.get<ZodiacUserRepository>(),
         zodiacGetIt.get<ZodiacMainCubit>(),
         MediaQuery.of(context).size.height,
+        (message) => _showUnderageConfirmDialog(context, message),
       ),
       child: Builder(builder: (context) {
         final ChatCubit chatCubit = context.read<ChatCubit>();
@@ -120,7 +122,10 @@ class ChatScreen extends StatelessWidget {
                       left: 0.0,
                       child: Column(
                         children: [
-                          const ClientInformationWidget(),
+                          ClientInformationWidget(
+                            chatIsActive: chatIsActive,
+                            offlineSessionIsActive: offlineSessionIsActive,
+                          ),
                           Builder(builder: (context) {
                             final bool showOfflineSessionsMessage =
                                 context.select((ChatCubit cubit) =>
@@ -148,11 +153,7 @@ class ChatScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              if (chatIsActive ||
-                  offlineSessionIsActive ||
-                  (chatCubit.chatHaveOfflineSession &&
-                      !offlineSessionIsActive &&
-                      chatCubit.textInputEditingController.text.isNotEmpty))
+              if (chatIsActive || offlineSessionIsActive)
                 KeyboardSizeProvider(
                   child: Builder(builder: (context) {
                     final bool needBarrierColor = context.select(
@@ -181,4 +182,10 @@ class ChatScreen extends StatelessWidget {
       }),
     );
   }
+}
+
+Future<bool?> _showUnderageConfirmDialog(
+    BuildContext context, String message) async {
+  return showDeleteAlert(context, message,
+      deleteText: SZodiac.of(context).reportZodiac);
 }

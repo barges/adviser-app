@@ -25,6 +25,7 @@ import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
+import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
 import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -71,6 +72,9 @@ class WebSocketManagerImpl implements WebSocketManager {
   final PublishSubject<bool> _stopRoomTrigger = PublishSubject();
 
   final PublishSubject<ChatLoginEvent> _chatLoginStream = PublishSubject();
+
+  final PublishSubject<UnderageConfirmEvent> _underageConfirmStream =
+      PublishSubject();
 
   WebSocketManagerImpl(
     this._zodiacMainCubit,
@@ -256,6 +260,10 @@ class WebSocketManagerImpl implements WebSocketManager {
   Stream<ChatLoginEvent> get chatLoginStream => _chatLoginStream.stream;
 
   @override
+  Stream<UnderageConfirmEvent> get underageConfirmStream =>
+      _underageConfirmStream.stream;
+
+  @override
   Future connect() async {
     final String? authToken = _zodiacCachingManager.getUserToken();
     final int? advisorId = _zodiacCachingManager.getUid();
@@ -389,6 +397,16 @@ class WebSocketManagerImpl implements WebSocketManager {
   @override
   void sendEndChat({required String roomId}) =>
       _send(SocketMessage.saveChat(roomId: roomId));
+
+  @override
+  void sendUnderageConfirm({required String roomId}) {
+    _send(SocketMessage.underageConfirm(roomId: roomId));
+  }
+
+  @override
+  void sendUnderageReport({required String roomId}) {
+    _send(SocketMessage.underageReport(roomId: roomId));
+  }
 
   @override
   void close() {
@@ -698,7 +716,13 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onUnderageConfirm(Event event) {
-    ///TODO - Implements onUnderageConfirm
+    (event.eventData as SocketMessage).let((data) {
+      final String? message = data.params['message'];
+      if (data.opponentId != null && message != null) {
+        _underageConfirmStream.add(UnderageConfirmEvent(
+            opponentId: data.opponentId!, message: message));
+      }
+    });
   }
 
   void _onUnderageReport() {

@@ -107,5 +107,7 @@
   "doYouReallyWantToEndTheChatZodiac": "Möchten Sie den Chat wirklich beenden?",
   "yesZodiac": "Ja",
   "noZodiac": "Nein",
-  "youAreAbleToWriteWithinZodiac": "Sie können innerhalb von {timer} schreiben"
+  "youAreAbleToWriteWithinZodiac": "Sie können innerhalb von {timer} schreiben",
+  "reportUnderageUserZodiac": "Minderjährigen Benutzer melden",
+  "reportZodiac": "Bericht"
 }

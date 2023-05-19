@@ -1164,6 +1164,26 @@ class SZodiac {
       args: [timer],
     );
   }
+
+  /// `Report underage user`
+  String get reportUnderageUserZodiac {
+    return Intl.message(
+      'Report underage user',
+      name: 'reportUnderageUserZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Report`
+  String get reportZodiac {
+    return Intl.message(
+      'Report',
+      name: 'reportZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

@@ -8,8 +8,9 @@ import 'package:flutter/material.dart';
 
 Future<bool?> showDeleteAlert(
   BuildContext context,
-  String title,
-) {
+  String title, {
+  String? deleteText,
+}) {
   final ThemeData theme = Theme.of(context);
   return showDialog<bool>(
     context: context,
@@ -26,7 +27,7 @@ Future<bool?> showDeleteAlert(
               CupertinoDialogAction(
                 isDefaultAction: true,
                 onPressed: () => Navigator.pop(context, true),
-                child: Text(S.of(context).delete,
+                child: Text(deleteText ?? S.of(context).delete,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.errorColor,
                       fontSize: 17.0,
@@ -75,10 +76,7 @@ Future<bool?> showDeleteAlert(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         TextButton(
-                          child: Text(
-                              S.of(context)
-                                  .cancel
-                                  .toUpperCase(),
+                          child: Text(S.of(context).cancel.toUpperCase(),
                               style: theme.textTheme.displayLarge?.copyWith(
                                 fontSize: 14.0,
                                 color: theme.primaryColor,
@@ -86,10 +84,7 @@ Future<bool?> showDeleteAlert(
                           onPressed: () => context.popForced(false),
                         ),
                         TextButton(
-                          child: Text(
-                              S.of(context)
-                                  .delete
-                                  .toUpperCase(),
+                          child: Text(S.of(context).delete.toUpperCase(),
                               style: theme.textTheme.displayLarge?.copyWith(
                                 fontSize: 14.0,
                                 color: theme.errorColor,

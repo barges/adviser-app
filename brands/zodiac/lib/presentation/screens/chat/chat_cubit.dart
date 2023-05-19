@@ -26,11 +26,13 @@ import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
 import 'package:zodiac/services/websocket_manager/chat_login_event.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
+import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
 import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 const Duration _typingIndicatorDuration = Duration(milliseconds: 5000);
+typedef UnderageConfirmDialog = Future<bool?> Function(String message);
 
 class ChatCubit extends Cubit<ChatState> {
   final ZodiacCachingManager _cachingManager;
@@ -40,6 +42,7 @@ class ChatCubit extends Cubit<ChatState> {
   final ZodiacUserRepository _userRepository;
   final ZodiacMainCubit _zodiacMainCubit;
   final double _screenHeight;
+  final UnderageConfirmDialog _underageConfirmDialog;
 
   final SnappingSheetController snappingSheetController =
       SnappingSheetController();
@@ -74,6 +77,8 @@ class ChatCubit extends Cubit<ChatState> {
   late final StreamSubscription<UpdateTimerEvent> _updateChatTimerSubscription;
   late final StreamSubscription<bool> _stopRoomSubscription;
   late final StreamSubscription<ChatLoginEvent> _chatLoginSubscription;
+  late final StreamSubscription<UnderageConfirmEvent>
+      _underageConfirmSubscription;
 
   late final StreamSubscription<ActiveChatEvent>
       _updateChatIsActiveSubscription;
@@ -93,9 +98,7 @@ class ChatCubit extends Cubit<ChatState> {
   Timer? _chatTimer;
   Timer? _offlineSessionTimer;
 
-  int? chatId;
-
-  bool chatHaveOfflineSession = false;
+  int? _chatId;
 
   ChatCubit(
     this._cachingManager,
@@ -105,6 +108,7 @@ class ChatCubit extends Cubit<ChatState> {
     this._userRepository,
     this._zodiacMainCubit,
     this._screenHeight,
+    this._underageConfirmDialog,
   ) : super(const ChatState()) {
     _messagesSubscription = _webSocketManager.entitiesStream.listen((event) {
       if (_isRefresh) {
@@ -206,7 +210,6 @@ class ChatCubit extends Cubit<ChatState> {
     _updateOfflineSessionIsActiveSubscription =
         _webSocketManager.offlineSessionIsActiveStream.listen((event) {
       if (event.clientId == clientData.id) {
-        chatHaveOfflineSession = true;
         emit(state.copyWith(offlineSessionIsActive: event.isActive));
         if (event.timeout != null && event.isActive) {
           emit(state.copyWith(
@@ -215,6 +218,10 @@ class ChatCubit extends Cubit<ChatState> {
           _offlineSessionTimer?.cancel();
           _offlineSessionTimer =
               Timer.periodic(const Duration(seconds: 1), (timer) {
+            if (state.offlineSessionTimerValue?.inSeconds == 0) {
+              emit(state.copyWith(showOfflineSessionsMessage: false));
+              _offlineSessionTimer?.cancel();
+            }
             emit(state.copyWith(
                 offlineSessionTimerValue: Duration(
                     seconds:
@@ -275,7 +282,7 @@ class ChatCubit extends Cubit<ChatState> {
           isSendButtonEnabled: false,
         ));
       }
-      if (state.chatIsActive && triggerOnTextChanged) {
+      if (triggerOnTextChanged) {
         triggerOnTextChanged = false;
         Future.delayed(_typingIndicatorDuration)
             .then((value) => triggerOnTextChanged = true);
@@ -330,10 +337,24 @@ class ChatCubit extends Cubit<ChatState> {
     _chatLoginSubscription = _webSocketManager.chatLoginStream.listen(
       (event) {
         if (clientData.id == event.opponentId) {
-          chatId = event.chatId;
+          _chatId = event.chatId;
         }
       },
     );
+
+    _underageConfirmSubscription =
+        _webSocketManager.underageConfirmStream.listen((event) async {
+      if (event.opponentId == clientData.id) {
+        bool? reportConfirmed = await _underageConfirmDialog(event.message);
+
+        if (reportConfirmed == true) {
+          final String? roomId = enterRoomData?.roomData?.id;
+          if (roomId != null) {
+            _webSocketManager.sendUnderageReport(roomId: roomId);
+          }
+        }
+      }
+    });
 
     getClientInformation();
   }
@@ -361,6 +382,7 @@ class ChatCubit extends Cubit<ChatState> {
     _stopRoomSubscription.cancel();
     _offlineSessionTimer?.cancel();
     _chatLoginSubscription.cancel();
+    _underageConfirmSubscription.cancel();
     return super.close();
   }
 
@@ -520,9 +542,16 @@ class ChatCubit extends Cubit<ChatState> {
 
   void logoutChat(BuildContext context) {
     updateSessions();
-    if (chatId != null) {
-      _webSocketManager.logoutChat(chatId!);
+    if (_chatId != null) {
+      _webSocketManager.logoutChat(_chatId!);
     }
     context.popForced();
+  }
+
+  void underageConfirm() {
+    String? roomId = enterRoomData?.roomData?.id;
+    if (roomId != null) {
+      _webSocketManager.sendUnderageConfirm(roomId: roomId);
+    }
   }
 }

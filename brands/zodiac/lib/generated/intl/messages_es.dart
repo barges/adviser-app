@@ -161,6 +161,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "reconnectingZodiac":
             MessageLookupByLibrary.simpleMessage("Reconectar..."),
         "replyZodiac": MessageLookupByLibrary.simpleMessage("Responder"),
+        "reportUnderageUserZodiac": MessageLookupByLibrary.simpleMessage(
+            "Reportar usuario menor de edad"),
+        "reportZodiac": MessageLookupByLibrary.simpleMessage("Informe"),
         "requiredFieldZodiac":
             MessageLookupByLibrary.simpleMessage("Campo obligatorio"),
         "resetPasswordZodiac":
