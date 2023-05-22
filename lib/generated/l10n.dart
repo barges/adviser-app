@@ -80,10 +80,10 @@ class S {
     );
   }
 
-  /// `Workspaces`
+  /// `Brands`
   String get workspaces {
     return Intl.message(
-      'Workspaces',
+      'Brands',
       name: 'workspaces',
       desc: '',
       args: [],
