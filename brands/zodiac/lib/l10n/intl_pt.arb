@@ -111,5 +111,6 @@
   "noZodiac": "Não",
   "youAreAbleToWriteWithinZodiac": "Você é capaz de escrever em {timer}",
   "reportUnderageUserZodiac": "Denunciar usuário menor de idade",
-  "reportZodiac": "Relatório"
+  "reportZodiac": "Relatório",
+  "doYouReallyWantToCloseTheChatZodiac": "Deseja mesmo fechar o chat?"
 }
