@@ -50,11 +50,13 @@ class MissedMessageWidget extends StatelessWidget {
                   ),
                   if (chatMessageModel.action != null &&
                       chatMessageModel.action != MissedMessageAction.none)
-                    Text(
-                      chatMessageModel.action!
-                          .getDescription(context, clientName ?? ''),
-                      style: theme.textTheme.labelMedium
-                          ?.copyWith(color: AppColors.error),
+                    Expanded(
+                      child: Text(
+                        chatMessageModel.action!
+                            .getDescription(context, clientName ?? ''),
+                        style: theme.textTheme.labelMedium
+                            ?.copyWith(color: AppColors.error),
+                      ),
                     )
                 ],
               ),
