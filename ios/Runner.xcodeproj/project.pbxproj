@@ -27,7 +27,6 @@
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		9C1E4B7C2A152F93002A372E /* Pigeon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1E4B7B2A152F93002A372E /* Pigeon.swift */; };
-		9C1E4B9B2A15749E002A372E /* RecaptchaEnterprise in Frameworks */ = {isa = PBXBuildFile; productRef = 9C1E4B9A2A15749E002A372E /* RecaptchaEnterprise */; };
 		B4ED3902C835CDECD7C626C5 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80119012EA803ACB876DA148 /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
 
@@ -93,7 +92,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B4ED3902C835CDECD7C626C5 /* Pods_Runner.framework in Frameworks */,
-				9C1E4B9B2A15749E002A372E /* RecaptchaEnterprise in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,7 +198,6 @@
 			);
 			name = Runner;
 			packageProductDependencies = (
-				9C1E4B9A2A15749E002A372E /* RecaptchaEnterprise */,
 			);
 			productName = Runner;
 			productReference = 97C146EE1CF9000F007C117D /* Runner.app */;
@@ -234,7 +231,6 @@
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
 			packageReferences = (
-				9C1E4B992A15749E002A372E /* XCRemoteSwiftPackageReference "recaptcha-enterprise-mobile-sdk" */,
 			);
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
 			projectDirPath = "";
@@ -436,6 +432,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MACH_O_TYPE = mh_execute;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
@@ -596,7 +593,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_VERIFY_BITCODE = "";
 				LIBRARY_SEARCH_PATHS = "";
-				MACH_O_TYPE = mh_dylib;
+				MACH_O_TYPE = mh_execute;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
@@ -648,6 +645,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MACH_O_TYPE = mh_execute;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
@@ -884,25 +882,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		9C1E4B992A15749E002A372E /* XCRemoteSwiftPackageReference "recaptcha-enterprise-mobile-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/GoogleCloudPlatform/recaptcha-enterprise-mobile-sdk";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		9C1E4B9A2A15749E002A372E /* RecaptchaEnterprise */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 9C1E4B992A15749E002A372E /* XCRemoteSwiftPackageReference "recaptcha-enterprise-mobile-sdk" */;
-			productName = RecaptchaEnterprise;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 97C146E61CF9000F007C117D /* Project object */;
 }

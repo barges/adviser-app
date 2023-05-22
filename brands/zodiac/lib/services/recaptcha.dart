@@ -37,6 +37,7 @@ class Recaptcha {
   }
 
   static Future<void> _init(String siteKey) async {
-    await _recaptchaApi.initialize(siteKey);
+    final success = await _recaptchaApi.initialize(siteKey);
+    print('!!! success: $success');
   }
 }

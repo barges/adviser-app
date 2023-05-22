@@ -6,15 +6,14 @@ private class RecaptchaApiImp: NSObject, RecaptchaApi {
     var recaptchaClient: RecaptchaClient?
     func initialize(siteKey: String, completion: @escaping (Result<String, Error>) -> Void)
     {
-        Recaptcha.getClient(withSiteKey: siteKey) { client, error in
+        Recaptcha.getClient(siteKey: siteKey) { client, error in
             guard let client = client else {
                 completion(.failure(error!))
                 return
             }
             self.recaptchaClient = client
-            completion(.success(("success")))
+            completion(.success(("success from iphone")))
         }
-        completion(.success(("success")))
     }
     
     func execute(recaptchaCustomAction: String, completion: @escaping (Result<String, Error>) -> Void)
