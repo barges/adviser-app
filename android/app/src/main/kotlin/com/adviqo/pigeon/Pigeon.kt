@@ -45,6 +45,7 @@ class FlutterError (
 
 /** Generated interface from Pigeon that represents a handler of messages from Flutter. */
 interface RecaptchaApi {
+  fun initialize(siteKey: String, callback: (Result<String>) -> Unit)
   fun execute(recaptchaCustomAction: String, callback: (Result<String>) -> Unit)
 
   companion object {
@@ -55,6 +56,26 @@ interface RecaptchaApi {
     /** Sets up an instance of `RecaptchaApi` to handle messages through the `binaryMessenger`. */
     @Suppress("UNCHECKED_CAST")
     fun setUp(binaryMessenger: BinaryMessenger, api: RecaptchaApi?) {
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.RecaptchaApi.initialize", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val siteKeyArg = args[0] as String
+            api.initialize(siteKeyArg) { result: Result<String> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(wrapError(error))
+              } else {
+                val data = result.getOrNull()
+                reply.reply(wrapResult(data))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
       run {
         val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.RecaptchaApi.execute", codec)
         if (api != null) {

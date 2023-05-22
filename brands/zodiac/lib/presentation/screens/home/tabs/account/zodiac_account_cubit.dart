@@ -29,6 +29,7 @@ import 'package:zodiac/data/network/responses/settings_response.dart';
 import 'package:zodiac/data/network/responses/specializations_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_state.dart';
+import 'package:zodiac/services/recaptcha.dart';
 import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
@@ -200,6 +201,13 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     emit(state.copyWith(
       phone: response.phone,
     ));
+    print('!!!! _getSettings');
+    if (response.captcha?.scoreBased?.key != null &&
+        !await Recaptcha.isInitialized()) {
+      print('!!!!!! Recaptcha init');
+      await Recaptcha.init(response.captcha!.scoreBased!.key!);
+      //Recaptcha.init(response.captcha!.scoreBased!.key!);
+    }
   }
 
   Future<void> _sendPushToken() async {

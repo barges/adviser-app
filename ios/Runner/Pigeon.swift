@@ -36,6 +36,7 @@ private func nilOrValue<T>(_ value: Any?) -> T? {
 
 /// Generated protocol from Pigeon that represents a handler of messages from Flutter.
 protocol RecaptchaApi {
+  func initialize(siteKey: String, completion: @escaping (Result<String, Error>) -> Void)
   func execute(recaptchaCustomAction: String, completion: @escaping (Result<String, Error>) -> Void)
 }
 
@@ -44,6 +45,23 @@ class RecaptchaApiSetup {
   /// The codec used by RecaptchaApi.
   /// Sets up an instance of `RecaptchaApi` to handle messages through the `binaryMessenger`.
   static func setUp(binaryMessenger: FlutterBinaryMessenger, api: RecaptchaApi?) {
+    let initializeChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.RecaptchaApi.initialize", binaryMessenger: binaryMessenger)
+    if let api = api {
+      initializeChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let siteKeyArg = args[0] as! String
+        api.initialize(siteKey: siteKeyArg) { result in
+          switch result {
+            case .success(let res):
+              reply(wrapResult(res))
+            case .failure(let error):
+              reply(wrapError(error))
+          }
+        }
+      }
+    } else {
+      initializeChannel.setMessageHandler(nil)
+    }
     let executeChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.RecaptchaApi.execute", binaryMessenger: binaryMessenger)
     if let api = api {
       executeChannel.setMessageHandler { message, reply in

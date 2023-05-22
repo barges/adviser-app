@@ -158,11 +158,12 @@ class PhoneNumberScreen extends StatelessWidget {
                           return AppElevatedButton(
                             title: SZodiac.of(context).sendCodeZodiac,
                             onPressed: isSendCodeButtonEnabled
-                                ? () => context.push(
+                                ? () => phoneNumberCubit.sendCode()
+                                /*context.push(
                                       route: ZodiacSMSVerification(
                                           phoneNumber:
                                               phoneNumberCubit.state.phone),
-                                    )
+                                    )*/
                                 : null,
                           );
                         }),
