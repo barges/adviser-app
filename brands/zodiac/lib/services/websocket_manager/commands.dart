@@ -102,4 +102,6 @@ class Commands {
   static String get startTimer => 'startTimer';
 
   static String get timerCorrect => 'timerCorrect';
+
+  static String get closeOfflineChat => 'closeOfflineChat';
 }

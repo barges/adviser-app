@@ -41,6 +41,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "allSpecialitiesZodiac":
             MessageLookupByLibrary.simpleMessage("Todas las especialidades"),
         "articlesZodiac": MessageLookupByLibrary.simpleMessage("Artículos"),
+        "audioMessageZodiac":
+            MessageLookupByLibrary.simpleMessage("Mensaje de audio"),
         "avgDailyEarningsZodiac": MessageLookupByLibrary.simpleMessage(
             "Promedio de Ganancias Diarias"),
         "balanceTransactionsZodiac":
@@ -74,6 +76,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Panel de Control"),
         "daysZodiac": MessageLookupByLibrary.simpleMessage("dias"),
         "declineZodiac": MessageLookupByLibrary.simpleMessage("Rechazar"),
+        "doYouReallyWantToCloseTheChatZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "¿De verdad quieres cerrar el chat?"),
         "doYouReallyWantToDeleteLocaleNameFromYourListZodiac": m0,
         "doYouReallyWantToEndTheChatZodiac":
             MessageLookupByLibrary.simpleMessage(

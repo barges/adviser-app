@@ -1184,6 +1184,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Do you really want to close the chat?`
+  String get doYouReallyWantToCloseTheChatZodiac {
+    return Intl.message(
+      'Do you really want to close the chat?',
+      name: 'doYouReallyWantToCloseTheChatZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Audio message`
+  String get audioMessageZodiac {
+    return Intl.message(
+      'Audio message',
+      name: 'audioMessageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

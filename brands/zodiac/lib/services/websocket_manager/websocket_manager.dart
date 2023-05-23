@@ -81,4 +81,6 @@ abstract class WebSocketManager {
   void sendUnderageConfirm({required String roomId});
 
   void sendUnderageReport({required String roomId});
+
+  void sendCloseOfflineSession();
 }

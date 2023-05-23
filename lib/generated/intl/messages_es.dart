@@ -26,7 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "chooseBrand": MessageLookupByLibrary.simpleMessage("Elegir una marca"),
         "choosePhotoFromLibrary": MessageLookupByLibrary.simpleMessage(
-            "Elige una foto de la biblioteca de fotos"),
+            "Elige una foto de la biblioteca de imágenes"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("En breve"),
         "copied": MessageLookupByLibrary.simpleMessage("Copiado!"),
         "customerSupport": MessageLookupByLibrary.simpleMessage(
@@ -67,7 +67,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "Tenemos el orgullo de ofrecer un lugar seguro a los asesores para que atiendan a los clientes y se desarrollen profesionalmente. Hacer un buen trabajo en una de nuestras marcas les abrirá las puertas a otras"),
-        "workspaces":
-            MessageLookupByLibrary.simpleMessage("Espacios de trabajo")
+        "workspaces": MessageLookupByLibrary.simpleMessage("Marcas")
       };
 }

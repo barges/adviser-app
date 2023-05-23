@@ -83,12 +83,12 @@ class SocketMessage {
         'opponent_id': opponentId,
       });
 
-  static SocketMessage chatMessage(
-          {required String message,
-          required String roomId,
-          required int opponentId,
-          required String mid,
-          }) =>
+  static SocketMessage chatMessage({
+    required String message,
+    required String roomId,
+    required int opponentId,
+    required String mid,
+  }) =>
       SocketMessage(action: Commands.chatMessage, params: {
         'message': message,
         'view': 0,
@@ -124,13 +124,13 @@ class SocketMessage {
       SocketMessage(
           action: Commands.underageReport, params: {'room_id': roomId});
 
-  static SocketMessage productMessage(
-          {required String serviceName,
-          required double price,
-          required int productId,
-          required String roomId,
-          required String mid,
-          }) =>
+  static SocketMessage productMessage({
+    required String serviceName,
+    required double price,
+    required int productId,
+    required String roomId,
+    required String mid,
+  }) =>
       SocketMessage(action: Commands.productMessage, params: {
         "message": serviceName,
         "mid": mid,
@@ -149,11 +149,11 @@ class SocketMessage {
   static SocketMessage funcActions({required int opponentId}) => SocketMessage(
       action: Commands.funcActions, params: {"opponent_id": opponentId});
 
-  static SocketMessage privateMessage(
-          {required int messageId,
-          required int opponentId,
-            required String mid,
-          }) =>
+  static SocketMessage privateMessage({
+    required int messageId,
+    required int opponentId,
+    required String mid,
+  }) =>
       SocketMessage(action: Commands.privateMessage, params: {
         "mid": mid,
         "message_id": messageId,
@@ -181,4 +181,7 @@ class SocketMessage {
           "id": opponentId ?? 0,
         },
       });
+
+  static SocketMessage closeOfflineChat() =>
+      SocketMessage(action: Commands.closeOfflineChat);
 }

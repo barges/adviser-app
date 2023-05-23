@@ -587,4 +587,8 @@ class ChatCubit extends Cubit<ChatState> {
       _webSocketManager.sendUnderageConfirm(roomId: roomId);
     }
   }
+
+  void closeOfflineSession() {
+    _webSocketManager.sendCloseOfflineSession();
+  }
 }

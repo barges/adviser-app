@@ -409,6 +409,11 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   @override
+  void sendCloseOfflineSession() {
+    _send(SocketMessage.closeOfflineChat());
+  }
+
+  @override
   void close() {
     _socketSubscription?.cancel();
     _channel?.sink.close();
