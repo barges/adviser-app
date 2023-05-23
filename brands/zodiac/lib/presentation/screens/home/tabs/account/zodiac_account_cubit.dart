@@ -10,6 +10,7 @@ import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
+import 'package:zodiac/data/models/settings/captcha.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
@@ -132,7 +133,9 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
 
         await _getAllCategories();
 
-        await _getSettings();
+        SettingsResponse settingsResponse = await _getSettings();
+
+        await _initRecaptcha(settingsResponse.captcha);
 
         ExpertDetailsResponse response =
             await _userRepository.getDetailedUserInfo(AuthorizedRequest());
@@ -195,16 +198,19 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     }
   }
 
-  Future<void> _getSettings() async {
+  Future<SettingsResponse> _getSettings() async {
     final SettingsResponse response =
         await _userRepository.getSettings(SettingsRequest());
     emit(state.copyWith(
       phone: response.phone,
     ));
-    if (response.captcha?.scoreBased?.key != null &&
-        !await Recaptcha.isInitialized()) {
+    return response;
+  }
+
+  Future<void> _initRecaptcha(Captcha? captcha) async {
+    if (captcha?.scoreBased?.key != null && !await Recaptcha.isInitialized()) {
       try {
-        await Recaptcha.init(response.captcha!.scoreBased!.key!);
+        await Recaptcha.init(captcha!.scoreBased!.key!);
       } catch (e) {
         logger.d(e);
       }

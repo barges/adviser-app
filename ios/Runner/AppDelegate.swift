@@ -1,6 +1,15 @@
 import UIKit
 import Flutter
-import Foundation
+
+struct RecaptchaClientError {
+    let message: String
+    init(message: String) {
+        self.message = message
+    }
+}
+
+extension RecaptchaClientError: Error {
+}
     
 private class RecaptchaApiImp: NSObject, RecaptchaApi {
     var recaptchaClient: RecaptchaClient?
@@ -12,13 +21,23 @@ private class RecaptchaApiImp: NSObject, RecaptchaApi {
                 return
             }
             self.recaptchaClient = client
-            completion(.success(("success from iphone")))
+            completion(.success(("success")))
         }
     }
     
     func execute(recaptchaCustomAction: String, completion: @escaping (Result<String, Error>) -> Void)
     {
-        completion(.success(("success from ios")))
+        guard let recaptchaClient = recaptchaClient else {
+            completion(.failure(RecaptchaClientError(message:"Recaptcha client isn't initialized")))
+          return
+        }
+        recaptchaClient.execute(RecaptchaAction.init(customAction: recaptchaCustomAction)) { token, error in
+          if let token = token {
+              completion(.success(token.recaptchaToken))
+          } else {
+              completion(.failure(error!))
+          }
+        }
     }
     
 }
