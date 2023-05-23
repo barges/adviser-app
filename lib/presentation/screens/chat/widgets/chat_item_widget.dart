@@ -80,8 +80,11 @@ class _ChatItemWidgetState extends State<ChatItemWidget>
                 return const SizedBox();
               }).toList(),
             ),
-          const SizedBox(
-            height: 5.0,
+          SizedBox(
+            height: widget.item.attachments?.isNotEmpty == true &&
+                    widget.item.attachments![0].type == AttachmentType.audio
+                ? 14.0
+                : 5.0,
           ),
         ]),
         Positioned(
