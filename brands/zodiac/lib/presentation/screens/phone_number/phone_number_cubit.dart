@@ -8,7 +8,7 @@ import 'package:zodiac/data/models/settings/phone_country_code.dart';
 
 import 'package:zodiac/presentation/screens/phone_number/phone_number_state.dart';
 import 'package:zodiac/services/phone_country_codes.dart';
-import 'package:zodiac/services/recaptcha.dart';
+import 'package:zodiac/services/recaptcha/recaptcha.dart';
 
 const pnoneNumberMaxLength = 15;
 
@@ -17,8 +17,6 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   final FocusNode phoneNumberInputFocus = FocusNode();
   final TextEditingController phoneNumberInputController =
       TextEditingController();
-  //final RecaptchaApi recaptchaApi = RecaptchaApi();
-  //static bool _isRecaptchaItialized = false;
 
   PhoneNumberCubit(this.phoneNumber) : super(const PhoneNumberState()) {
     _init();
@@ -97,8 +95,9 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   }
 
   Future<void> sendCode() async {
-    //final result = await recaptchaApi.execute('phone_verify_number');
-    // print('!!!!! result: $result');
+    final result =
+        await Recaptcha.execute(RecaptchaCustomAction.phoneVerifyNumber);
+    //print('!!!!! result: $result');
   }
 
   void _correctPhoneNumberDigitCount(int maxLength) {
