@@ -110,5 +110,6 @@
   "youAreAbleToWriteWithinZodiac": "Sie können innerhalb von {timer} schreiben",
   "reportUnderageUserZodiac": "Minderjährigen Benutzer melden",
   "reportZodiac": "Bericht",
-  "doYouReallyWantToCloseTheChatZodiac": "Möchten Sie den Chat wirklich schließen?"
+  "doYouReallyWantToCloseTheChatZodiac": "Möchten Sie den Chat wirklich schließen?",
+  "audioMessageZodiac": "Audio-Nachricht"
 }

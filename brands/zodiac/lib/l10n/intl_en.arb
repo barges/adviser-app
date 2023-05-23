@@ -112,5 +112,6 @@
   "youAreAbleToWriteWithinZodiac": "You are able to write within {timer}",
   "reportUnderageUserZodiac": "Report underage user",
   "reportZodiac": "Report",
-  "doYouReallyWantToCloseTheChatZodiac": "Do you really want to close the chat?"
+  "doYouReallyWantToCloseTheChatZodiac": "Do you really want to close the chat?",
+  "audioMessageZodiac": "Audio message"
 }

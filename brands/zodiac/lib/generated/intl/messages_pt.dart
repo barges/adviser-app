@@ -43,6 +43,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "allSpecialitiesZodiac":
             MessageLookupByLibrary.simpleMessage("Todas as especialidades"),
         "articlesZodiac": MessageLookupByLibrary.simpleMessage("Artigos"),
+        "audioMessageZodiac":
+            MessageLookupByLibrary.simpleMessage("Mensagem de áudio"),
         "avgDailyEarningsZodiac":
             MessageLookupByLibrary.simpleMessage("Ganhos diários médios"),
         "balanceTransactionsZodiac":

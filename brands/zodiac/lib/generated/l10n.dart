@@ -1194,6 +1194,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Audio message`
+  String get audioMessageZodiac {
+    return Intl.message(
+      'Audio message',
+      name: 'audioMessageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {
