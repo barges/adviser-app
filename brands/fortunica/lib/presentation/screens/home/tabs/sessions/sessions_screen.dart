@@ -118,7 +118,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
                             child: ChooseOptionWidget(
                               options: [
                                 SFortunica.of(context).publicFortunica,
-                                SFortunica.of(context).forMeFortunica,
+                                SFortunica.of(context).privateFortunica,
                               ],
                               currentIndex: currentIndex,
                               disabledIndexes: disabledIndexes,

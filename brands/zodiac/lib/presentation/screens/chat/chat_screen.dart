@@ -44,7 +44,16 @@ class ChatScreen extends StatelessWidget {
             .select((ChatCubit cubit) => cubit.state.offlineSessionIsActive);
 
         return WillPopScope(
-          onWillPop: () async => (!chatIsActive && !offlineSessionIsActive),
+          onWillPop: () async {
+            if (chatIsActive) {
+              _endChat(context);
+            } else if (offlineSessionIsActive) {
+              _endOfflineSession(context);
+            } else {
+              chatCubit.logoutChat(context);
+            }
+            return false;
+          },
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
@@ -53,23 +62,15 @@ class ChatScreen extends StatelessWidget {
                 appBar: ChatConversationAppBar(
                   userData: userData,
                   onTap: chatCubit.changeClientInformationWidgetOpened,
-                  backButtonOnTap: () => chatCubit.logoutChat(context),
-                  endChatButtonOnTap: chatIsActive
-                      ? () async {
-                          bool? endChat = await showOkCancelAlert(
-                            context: context,
-                            title: SZodiac.of(context)
-                                .doYouReallyWantToEndTheChatZodiac,
-                            okText: SZodiac.of(context).yesZodiac,
-                            cancelText: SZodiac.of(context).noZodiac,
-                            allowBarrierClick: true,
-                            isCancelEnabled: true,
-                          );
-                          if (endChat == true) {
-                            chatCubit.endChat();
-                          }
-                        }
-                      : null,
+                  backButtonOnTap: () {
+                    if (offlineSessionIsActive) {
+                      _endOfflineSession(context);
+                    } else {
+                      chatCubit.logoutChat(context);
+                    }
+                  },
+                  endChatButtonOnTap:
+                      chatIsActive ? () => _endChat(context) : null,
                 ),
                 body: Stack(
                   clipBehavior: Clip.none,
@@ -172,6 +173,38 @@ class ChatScreen extends StatelessWidget {
         );
       }),
     );
+  }
+
+  Future<void> _endChat(BuildContext context) async {
+    final ChatCubit chatCubit = context.read<ChatCubit>();
+
+    bool? endChat = await showOkCancelAlert(
+      context: context,
+      title: SZodiac.of(context).doYouReallyWantToEndTheChatZodiac,
+      okText: SZodiac.of(context).yesZodiac,
+      cancelText: SZodiac.of(context).noZodiac,
+      allowBarrierClick: true,
+      isCancelEnabled: true,
+    );
+    if (endChat == true) {
+      chatCubit.endChat();
+    }
+  }
+
+  Future<void> _endOfflineSession(BuildContext context) async {
+    final ChatCubit chatCubit = context.read<ChatCubit>();
+
+    bool? endOfflineSession = await showOkCancelAlert(
+      context: context,
+      title: SZodiac.of(context).doYouReallyWantToCloseTheChatZodiac,
+      okText: SZodiac.of(context).yesZodiac,
+      cancelText: SZodiac.of(context).noZodiac,
+      allowBarrierClick: true,
+      isCancelEnabled: true,
+    );
+    if (endOfflineSession == true) {
+      chatCubit.closeOfflineSession();
+    }
   }
 }
 

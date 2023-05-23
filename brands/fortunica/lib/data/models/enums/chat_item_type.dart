@@ -60,11 +60,11 @@ enum ChatItemType {
   String typeName(BuildContext context) {
     switch (this) {
       case ChatItemType.private:
-        return '${SFortunica.of(context).privateFortunica} ${SFortunica.of(context).questionFortunica}';
+        return SFortunica.of(context).privateQuestionFortunica;
       case ChatItemType.ritual:
         return '${SFortunica.of(context).ritualFortunica} ${SFortunica.of(context).sessionFortunica}';
       case ChatItemType.public:
-        return '${SFortunica.of(context).publicFortunica} ${SFortunica.of(context).questionFortunica}';
+        return SFortunica.of(context).publicQuestionFortunica;
       default:
         return '';
     }

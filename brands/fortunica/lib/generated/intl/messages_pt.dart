@@ -33,7 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Enviamos instruções de redefinição de senha para ${email}.";
 
   static String m4(minRecordDurationInSec) =>
-      "Você não pode enviar esta mensagem porque leva menos de ${minRecordDurationInSec} segundos";
+      "Você não pode enviar esta mensagem porque levou menos de ${minRecordDurationInSec} segundos";
 
   static String m5(count) =>
       "Você tem ${count} dias para lê-lo antes que sua conta seja bloqueada!";
@@ -53,13 +53,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "addCoverPictureFortunica":
             MessageLookupByLibrary.simpleMessage("Adicionar foto de capa"),
         "addGalleryPicturesFortunica":
-            MessageLookupByLibrary.simpleMessage("Adicionar fotos da galeria"),
+            MessageLookupByLibrary.simpleMessage("Adicionar fotos"),
         "addMoreFortunica":
             MessageLookupByLibrary.simpleMessage("Adicionar mais"),
         "addNewFortunica":
-            MessageLookupByLibrary.simpleMessage("Adicionar novos"),
+            MessageLookupByLibrary.simpleMessage("Adicionar novas"),
         "addNoteFortunica":
-            MessageLookupByLibrary.simpleMessage("Adiconar Nota"),
+            MessageLookupByLibrary.simpleMessage("Adicionar nota"),
         "allFortunica": MessageLookupByLibrary.simpleMessage("Todos"),
         "allMarketsFortunica":
             MessageLookupByLibrary.simpleMessage("Todos os mercados"),
@@ -68,14 +68,16 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Tem certeza de que deseja alterar seu status para Offline?"),
         "articlesFortunica": MessageLookupByLibrary.simpleMessage("Artigos"),
         "astrologyFortunica":
-            MessageLookupByLibrary.simpleMessage("Astrologia"),
+            MessageLookupByLibrary.simpleMessage("Consulta Astrológica"),
+        "astrologySessionsFortunica":
+            MessageLookupByLibrary.simpleMessage("Consulta Astrológica"),
         "audioMessageFortunica":
             MessageLookupByLibrary.simpleMessage("Mensagem de áudio"),
         "avgDailyEarningsFortunica":
-            MessageLookupByLibrary.simpleMessage("Ganhos diários médios"),
+            MessageLookupByLibrary.simpleMessage("Média de ganhos diários"),
         "backFortunica": MessageLookupByLibrary.simpleMessage("Voltar"),
         "balanceTransactionsFortunica":
-            MessageLookupByLibrary.simpleMessage("Saldo e Transações"),
+            MessageLookupByLibrary.simpleMessage("Ganhos"),
         "blockedFortunica": MessageLookupByLibrary.simpleMessage("Bloqueado"),
         "bornFortunica":
             MessageLookupByLibrary.simpleMessage("Data de nascimento"),
@@ -97,9 +99,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Verifique a sua conexão com a internet"),
         "chooseBrandFortunica":
-            MessageLookupByLibrary.simpleMessage("Escolher uma marca"),
+            MessageLookupByLibrary.simpleMessage("Selecione uma marca"),
         "chooseEmailAppFortunica":
-            MessageLookupByLibrary.simpleMessage("Escolher email do app"),
+            MessageLookupByLibrary.simpleMessage("Escolher e-mail do app"),
         "comingSoonFortunica":
             MessageLookupByLibrary.simpleMessage("Em breve!"),
         "completeYourProfileToStartWorkFortunica":
@@ -127,14 +129,14 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Deseja excluir esta mensagem de áudio?"),
         "doYouWantToRejectThisQuestionFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Deseja recusar esta pergunta?"),
+                "Deseja devolver esta pergunta?"),
         "doneFortunica": MessageLookupByLibrary.simpleMessage("Feito"),
-        "earnedFortunica": MessageLookupByLibrary.simpleMessage("Recibido"),
+        "earnedFortunica": MessageLookupByLibrary.simpleMessage("Não recebido"),
         "editNoteFortunica":
-            MessageLookupByLibrary.simpleMessage("Editar Nota"),
+            MessageLookupByLibrary.simpleMessage("Editar nota"),
         "editProfileFortunica":
-            MessageLookupByLibrary.simpleMessage("Editar Perfil"),
-        "emailFortunica": MessageLookupByLibrary.simpleMessage("E-Mail"),
+            MessageLookupByLibrary.simpleMessage("Editar perfil"),
+        "emailFortunica": MessageLookupByLibrary.simpleMessage("E-mail"),
         "enterNewPasswordFortunica":
             MessageLookupByLibrary.simpleMessage("Insira nova senha"),
         "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordFortunica":
@@ -145,11 +147,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "enterYourPasswordFortunica":
             MessageLookupByLibrary.simpleMessage("Insira sua senha"),
         "femaleFortunica": MessageLookupByLibrary.simpleMessage("Feminino"),
-        "forMeFortunica": MessageLookupByLibrary.simpleMessage("Para mim"),
         "forgotPasswordFortunica":
-            MessageLookupByLibrary.simpleMessage("Esqueceu a senha"),
+            MessageLookupByLibrary.simpleMessage("Esqueci a senha"),
         "forgotYourPasswordFortunica":
-            MessageLookupByLibrary.simpleMessage("Esqueceu sua senha"),
+            MessageLookupByLibrary.simpleMessage("Esqueci a senha"),
         "fromXsecToYminFortunica": m0,
         "goToAccountFortunica":
             MessageLookupByLibrary.simpleMessage("Ir para conta"),
@@ -163,10 +164,13 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Ela voltará para a lista geral."),
         "legalBlockFortunica":
             MessageLookupByLibrary.simpleMessage("Bloqueio legal"),
-        "liveFortunica": MessageLookupByLibrary.simpleMessage("Ao vivo"),
-        "loginFortunica": MessageLookupByLibrary.simpleMessage("Conectar-se"),
+        "liveFortunica": MessageLookupByLibrary.simpleMessage("Online"),
+        "loginFortunica": MessageLookupByLibrary.simpleMessage("Fazer login"),
         "loveCrushReadingFortunica": MessageLookupByLibrary.simpleMessage(
             "Leitura de Compatibilidade Amorosa"),
+        "loveCrushReadingSessionsFortunica":
+            MessageLookupByLibrary.simpleMessage(
+                "Leitura de Compatibilidade Amorosa"),
         "loyalUsersFortunica":
             MessageLookupByLibrary.simpleMessage("Usuários leais"),
         "maleFortunica": MessageLookupByLibrary.simpleMessage("Masculino"),
@@ -179,25 +183,25 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Minha galeria"),
         "nameCanBeChangedOnlyOnAdvisorToolFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "O nome pode ser alterado somente no Advisor Tool"),
+                "O nome pode ser alterado somente na Advisor Tool"),
         "newFortunica": MessageLookupByLibrary.simpleMessage("Novo"),
         "newMandatoryArticleIsAvailableFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Novo artigo obrigatório está disponível!"),
+                "Novo artigo está disponível!"),
         "newPasswordFortunica":
             MessageLookupByLibrary.simpleMessage("Nova senha"),
         "newUsersFortunica":
             MessageLookupByLibrary.simpleMessage("Novos usuários"),
-        "nicknameFortunica": MessageLookupByLibrary.simpleMessage("Apelido"),
+        "nicknameFortunica": MessageLookupByLibrary.simpleMessage("Nome"),
         "noIChangedMyMindFortunica":
             MessageLookupByLibrary.simpleMessage("Não, mudei de idéia"),
         "noInternetConnectionFortunica":
             MessageLookupByLibrary.simpleMessage("Sem conexão com a internet."),
         "noQuestionsYetFortunica":
-            MessageLookupByLibrary.simpleMessage("Sem perguntas, ainda."),
+            MessageLookupByLibrary.simpleMessage("Sem perguntas ainda."),
         "noSessionsFoundWithThisFilterFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Nenhuma sessão encontrada com este filtro"),
+                "Nenhum atendimento foi encontrado com este filtro."),
         "noSessionsYetFortunica":
             MessageLookupByLibrary.simpleMessage("Ainda não há sessões."),
         "nonBinaryFortunica":
@@ -213,11 +217,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "offlineFortunica": MessageLookupByLibrary.simpleMessage("Offline"),
         "okFortunica": MessageLookupByLibrary.simpleMessage("Ok"),
         "onlyPremiumProductsFortunica":
-            MessageLookupByLibrary.simpleMessage("Somente Produtos Premium"),
+            MessageLookupByLibrary.simpleMessage("Somente Serviços Premium"),
         "openEmailFortunica":
             MessageLookupByLibrary.simpleMessage("Abrir e-mail"),
         "otherFortunica": MessageLookupByLibrary.simpleMessage("Outro"),
         "palmReadingFortunica":
+            MessageLookupByLibrary.simpleMessage("Leitura de Mão"),
+        "palmReadingSessionsFortunica":
             MessageLookupByLibrary.simpleMessage("Leitura de Mão"),
         "passwordFortunica": MessageLookupByLibrary.simpleMessage("Senha"),
         "performanceOverviewAnalyticsFortunica":
@@ -231,13 +237,13 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Confirme se sua resposta está pronta para ser enviada"),
         "pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManagerFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Certifique-se de que seu perfil esteja completo para todos os idiomas. Precisa de ajuda? Entre em contato com seu gerente."),
+                "Certifique-se de que seu perfil esteja completo para todos os idiomas que atenderá. Precisa de ajuda? Entre em contato com seu gerente"),
         "pleaseEnterAtLeast3CharactersFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Por favor insira pelo menos 3 caracteres"),
+                "Por favor, insira pelo menos 3 caracteres"),
         "pleaseEnterAtLeast6CharactersFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Por favor insira pelo menos 6 caracteres"),
+                "Por favor, insira pelo menos 6 caracteres"),
         "pleaseInsertCorrectEmailFortunica":
             MessageLookupByLibrary.simpleMessage(
                 "Por favor, insira o e-mail correto"),
@@ -245,27 +251,33 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Por favor, faça login na versão web de sua conta."),
         "preferNotToAnswerFortunica":
-            MessageLookupByLibrary.simpleMessage("Prefere não responder"),
+            MessageLookupByLibrary.simpleMessage("Prefiro não responder"),
         "preferredTopicsFortunica":
             MessageLookupByLibrary.simpleMessage("Tópicos preferidos"),
         "previewAccountFortunica":
-            MessageLookupByLibrary.simpleMessage("Visualizar conta"),
-        "privateFortunica": MessageLookupByLibrary.simpleMessage("Privado"),
+            MessageLookupByLibrary.simpleMessage("Pré-visualizar perfil"),
+        "privateFortunica": MessageLookupByLibrary.simpleMessage("Privadas"),
+        "privateQuestionFortunica":
+            MessageLookupByLibrary.simpleMessage("Pergunta Privada"),
         "privateQuestionsFortunica":
-            MessageLookupByLibrary.simpleMessage("Perguntas Privadas"),
+            MessageLookupByLibrary.simpleMessage("Pergunta Privada"),
         "profileFortunica": MessageLookupByLibrary.simpleMessage("Perfil"),
         "profileTextFortunica":
             MessageLookupByLibrary.simpleMessage("Texto de perfil"),
-        "publicFortunica": MessageLookupByLibrary.simpleMessage("Público"),
+        "publicFortunica": MessageLookupByLibrary.simpleMessage("Express"),
+        "publicQuestionFortunica":
+            MessageLookupByLibrary.simpleMessage("Pergunta Express"),
         "questionFortunica": MessageLookupByLibrary.simpleMessage("Pergunta"),
         "questionsFortunica": MessageLookupByLibrary.simpleMessage("Perguntas"),
         "quickAnswersFortunica":
-            MessageLookupByLibrary.simpleMessage("Respostas rápidas"),
+            MessageLookupByLibrary.simpleMessage("Respostas Express"),
         "reading360Fortunica":
+            MessageLookupByLibrary.simpleMessage("Leitura 360°"),
+        "reading360SessionsFortunica":
             MessageLookupByLibrary.simpleMessage("Leitura 360°"),
         "recordingIsNotPossibleAllocateSpaceOnTheDeviceFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "A gravação não é possível, adquira espaço no dispositivo"),
+                "A gravação não é possível, libere espaço no dispositivo"),
         "repeatNewPasswordFortunica":
             MessageLookupByLibrary.simpleMessage("Repita a nova senha"),
         "requestNewPasswordFortunica":
@@ -279,36 +291,44 @@ class MessageLookup extends MessageLookupByLibrary {
         "returnToQueueFortunica":
             MessageLookupByLibrary.simpleMessage("RETORNAR\nÀ FILA"),
         "reviewsFortunica": MessageLookupByLibrary.simpleMessage("Avaliações"),
-        "ritualFortunica": MessageLookupByLibrary.simpleMessage("Ritual"),
+        "ritualFortunica":
+            MessageLookupByLibrary.simpleMessage("Sessão de Ritual"),
+        "ritualSessionsFortunica":
+            MessageLookupByLibrary.simpleMessage("Sessão de Ritual"),
         "saveFortunica": MessageLookupByLibrary.simpleMessage("Salvar"),
         "searchFortunica": MessageLookupByLibrary.simpleMessage("Procurar"),
         "seeMoreFortunica": MessageLookupByLibrary.simpleMessage("Ver mais"),
-        "servicesFortunica": MessageLookupByLibrary.simpleMessage("Serviços"),
+        "servicesFortunica": MessageLookupByLibrary.simpleMessage("Ganhos"),
         "sessionFortunica": MessageLookupByLibrary.simpleMessage("Sessão"),
         "sessionsFortunica": MessageLookupByLibrary.simpleMessage("Sessões"),
         "settingsFortunica":
             MessageLookupByLibrary.simpleMessage("Configurações"),
-        "signInFortunica": MessageLookupByLibrary.simpleMessage("Conectar-se"),
+        "signInFortunica": MessageLookupByLibrary.simpleMessage("Cadastrar-se"),
         "similarArticlesFortunica":
             MessageLookupByLibrary.simpleMessage("Artigos similares"),
         "soulmateReadingFortunica":
             MessageLookupByLibrary.simpleMessage("Leitura de Alma Gêmea"),
+        "soulmateReadingSessionsFortunica":
+            MessageLookupByLibrary.simpleMessage("Leitura de Alma Gêmea"),
         "statsFortunica": MessageLookupByLibrary.simpleMessage("Estatísticas"),
         "statusTextFortunica":
-            MessageLookupByLibrary.simpleMessage("Texto de Estado"),
+            MessageLookupByLibrary.simpleMessage("Texto de status"),
         "statusTextMayNotExceed300CharactersFortunica":
             MessageLookupByLibrary.simpleMessage(
                 "O texto de status não pode exceder 300 caracteres"),
         "takeMeThereFortunica": MessageLookupByLibrary.simpleMessage("Acessar"),
         "takeQuestionFortunica":
-            MessageLookupByLibrary.simpleMessage("Tomar a pergunta"),
-        "tarotFortunica": MessageLookupByLibrary.simpleMessage("Tarot"),
+            MessageLookupByLibrary.simpleMessage("Responder a pergunta"),
+        "tarotFortunica":
+            MessageLookupByLibrary.simpleMessage("Leitura de Cartas Especial"),
+        "tarotSessionsFortunica":
+            MessageLookupByLibrary.simpleMessage("Leitura de Cartas Especial"),
         "tellOurTeamWhenYouPlanToReturnFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Avise nossa equipe quando pretende voltar:"),
+                "Notifique nossa equipe sobre sua data de retorno:"),
         "theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1mFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "A resposta não é possível, esta pergunta retornará à lista geral em ~ 1m"),
+                "Não é possível responder, esta pergunta retornará à lista geral em ~ 1m"),
         "theMaximumSizeOfTheAttachmentsIsXMbFortunica": m1,
         "thePasswordsMustMatchFortunica":
             MessageLookupByLibrary.simpleMessage("As senhas devem coincidir"),
@@ -318,11 +338,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "thisQuestionWillBeReturnedToTheGeneralListAfterCounterFortunica": m2,
         "thisWeekFortunica":
             MessageLookupByLibrary.simpleMessage("Esta semana"),
-        "tipsFortunica": MessageLookupByLibrary.simpleMessage("Conselhos"),
+        "tipsFortunica": MessageLookupByLibrary.simpleMessage("Gorjetas"),
         "titleFortunica": MessageLookupByLibrary.simpleMessage("Título"),
         "todayFortunica": MessageLookupByLibrary.simpleMessage("Hoje"),
         "totalFortunica": MessageLookupByLibrary.simpleMessage("Total"),
-        "totalMarketsFortunica": MessageLookupByLibrary.simpleMessage("Total"),
+        "totalMarketsFortunica":
+            MessageLookupByLibrary.simpleMessage("Total nos mercados"),
         "tryAgainFortunica":
             MessageLookupByLibrary.simpleMessage("Tente novamente"),
         "typeMessageFortunica":
@@ -340,17 +361,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "weVeSentPasswordResetInstructionsToEmailFortunica": m3,
         "whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisListFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Quando alguém fizer uma pergunta pública, você a verá nesta lista"),
+                "Quando alguém fizer uma Pergunta Express, você a verá nesta lista"),
         "whenYouHelpYourFirstClientYouWillSeeYourSessionHistoryHereFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Ao ajudar seu primeiro cliente, você verá o histórico de suas sessões aqui."),
+                "Ao ajudar seu primeiro cliente, você verá o histórico dos atendimentos aqui."),
         "willBeAvailableInFortunica":
             MessageLookupByLibrary.simpleMessage("Disponível em"),
         "workspacesFortunica":
-            MessageLookupByLibrary.simpleMessage("Espaços de trabalho"),
+            MessageLookupByLibrary.simpleMessage("Áreas de trabalho"),
         "wrongUsernameAndOrPasswordFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Nome de usuário e/ou senha incorretos."),
+                "E-mail e/ou senha incorretos"),
         "yesImSureFortunica":
             MessageLookupByLibrary.simpleMessage("Sim, tenho certeza"),
         "youCantSendThisMessageBecauseItsLessThanXSecondsFortunica": m4,
@@ -361,39 +382,39 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Você não tem conexão com a Internet"),
         "youHaveAFewActiveSessionsFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Você tem algumas sessões ativas"),
+                "Você tem alguns atendimentos ativos"),
         "youHaveAPrivateMessageFortunica": MessageLookupByLibrary.simpleMessage(
-            "Você tem uma mensagem privada"),
-        "youHaveAnActiveSessionFortunica":
-            MessageLookupByLibrary.simpleMessage("Você tem uma sessão ativa"),
+            "Você tem uma Pergunta Privada"),
+        "youHaveAnActiveSessionFortunica": MessageLookupByLibrary.simpleMessage(
+            "Você tem uma Sessão de Ritual"),
         "youHaveNotCompletedAnySessionsYetFortunica":
             MessageLookupByLibrary.simpleMessage(
                 "Você ainda não concluiu nenhuma sessão"),
         "youHaveNotYetCompletedThisMonthsSessionsFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Você ainda não concluiu as sessões deste mês"),
+                "Você não possui ganhos neste mês."),
         "youHaveXdaystoReadItBeforeYourAccountWillGetBlockedFortunica": m5,
         "youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElseFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Você deve responder à sua pergunta pública ativa antes de poder atender a outra pessoa."),
+                "Você deve responder à sua Pergunta Express ativa antes de poder atender outra pessoa."),
         "youNeedToAcceptTheAdvisorContractFortunica":
             MessageLookupByLibrary.simpleMessage(
                 "Você precisa aceitar o contrato de consultor"),
         "youReCurrentlyOfflineFortunica": MessageLookupByLibrary.simpleMessage(
-            "Você está off-line no momento"),
+            "Você está offline no momento"),
         "youReNotLiveOnThePlatformFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Você não está ao vivo na plataforma"),
+                "Você não está online na plataforma"),
         "youVeReachTheXMinuteTimeLimitFortunica": m6,
         "youWillBeAbleToChangeYourStatusBackInFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Você poderá alterar seu status de volta em 1 hora"),
+                "Você pode alterar seu status novamente após 1 hora."),
         "yourAccountHasBeenBlockedPleaseContactYourAdvisorManagerFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Sua conta foi bloqueada. Entre em contato com o gerente de consultores."),
+                "Sua conta foi bloqueada. Por favor, contate seu gerente."),
         "yourClientSessionHistoryWillAppearHereFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "O histórico de ssessões de clientes aparecerá aqui"),
+                "O histórico de atendimentos dos clientes aparecerá aqui"),
         "yourUsernameFortunica":
             MessageLookupByLibrary.simpleMessage("Seu nome de usuário")
       };
