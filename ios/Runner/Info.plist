@@ -90,6 +90,8 @@
 		<key>UIStatusBarHidden</key>
 		<false/>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
+		<true/>
+		<key>FLTEnableImpeller</key>
+  		<false />
 </dict>
 </plist>
