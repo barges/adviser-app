@@ -76,6 +76,7 @@ class ChatMessagesListWidget extends StatelessWidget {
                     final ChatMessageModel messageModel = messages[index - 1];
                     if (messageModel.isOutgoing || messageModel.isRead) {
                       return ChatMessageWidget(
+                        key: ValueKey(messageModel.mid),
                         chatMessageModel: messageModel,
                       );
                     } else {
@@ -87,6 +88,7 @@ class ChatMessagesListWidget extends StatelessWidget {
                           }
                         },
                         child: ChatMessageWidget(
+                          key: ValueKey(messageModel.mid),
                           chatMessageModel: messageModel,
                         ),
                       );

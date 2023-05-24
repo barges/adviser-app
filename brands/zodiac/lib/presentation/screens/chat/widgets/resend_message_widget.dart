@@ -5,7 +5,14 @@ import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/generated/l10n.dart';
 
 class ResendMessageWidget extends StatelessWidget {
-  const ResendMessageWidget({Key? key}) : super(key: key);
+  final VoidCallback onCancel;
+  final VoidCallback onTryAgain;
+
+  const ResendMessageWidget({
+    Key? key,
+    required this.onCancel,
+    required this.onTryAgain,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +21,17 @@ class ResendMessageWidget extends StatelessWidget {
         text: SZodiac.of(context).cancelSendingZodiac,
         iconPath: Assets.vectors.cross.path,
         color: AppColors.error,
+        onTap: onCancel,
       ),
       const SizedBox(
         width: 8.0,
       ),
       _ResendButtonWidget(
-          text: SZodiac.of(context).tryAgainZodiac,
-          iconPath: Assets.zodiac.refreshIcon.path,
-          color: Theme.of(context).primaryColor)
+        text: SZodiac.of(context).tryAgainZodiac,
+        iconPath: Assets.zodiac.refreshIcon.path,
+        color: Theme.of(context).primaryColor,
+        onTap: onTryAgain,
+      )
     ]);
   }
 }
