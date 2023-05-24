@@ -113,5 +113,6 @@
   "reportUnderageUserZodiac": "Denunciar usuário menor de idade",
   "reportZodiac": "Relatório",
   "doYouReallyWantToCloseTheChatZodiac": "Deseja mesmo fechar o chat?",
-  "audioMessageZodiac": "Mensagem de áudio"
+  "audioMessageZodiac": "Mensagem de áudio",
+  "cancelSendingZodiac": "Cancelar envio"
 }

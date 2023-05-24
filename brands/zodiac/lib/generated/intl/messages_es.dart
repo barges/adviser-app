@@ -53,6 +53,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "callStartedZodiac":
             MessageLookupByLibrary.simpleMessage("Llamada iniciada"),
         "callZodiac": MessageLookupByLibrary.simpleMessage("Llamar:"),
+        "cancelSendingZodiac":
+            MessageLookupByLibrary.simpleMessage("Cancelar envío"),
         "cancelZodiac": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "changeZodiac": MessageLookupByLibrary.simpleMessage("Cambiar"),
         "characterLimitExceededZodiac": MessageLookupByLibrary.simpleMessage(

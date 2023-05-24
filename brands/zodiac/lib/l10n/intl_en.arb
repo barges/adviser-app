@@ -113,5 +113,6 @@
   "reportUnderageUserZodiac": "Report underage user",
   "reportZodiac": "Report",
   "doYouReallyWantToCloseTheChatZodiac": "Do you really want to close the chat?",
-  "audioMessageZodiac": "Audio message"
+  "audioMessageZodiac": "Audio message",
+  "cancelSendingZodiac": "Cancel sending"
 }
