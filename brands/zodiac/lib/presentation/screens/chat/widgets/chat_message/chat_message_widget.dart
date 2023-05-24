@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/enums/chat_message_type.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -141,7 +142,15 @@ class ChatMessageWidget extends StatelessWidget {
                 bottom: 0.0,
                 right: 0.0,
                 child: ResendMessageWidget(
-                  onCancel: () => chatCubit.deleteMessage(chatMessageModel.mid),
+                  onCancel: () async {
+                    final bool? shouldDelete = await showDeleteAlert(
+                      context,
+                      SZodiac.of(context).doYouWantToDeleteThisMessageZodiac,
+                    );
+                    if (shouldDelete == true) {
+                      chatCubit.deleteMessage(chatMessageModel.mid);
+                    }
+                  },
                   onTryAgain: chatMessageCubit.resendChatMessage,
                 ),
               ),

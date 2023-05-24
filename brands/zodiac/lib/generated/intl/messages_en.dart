@@ -82,6 +82,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "doYouReallyWantToEndTheChatZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Do you really want to end the chat?"),
+        "doYouWantToDeleteThisMessageZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Do you want to delete this message?"),
         "editProfileZodiac":
             MessageLookupByLibrary.simpleMessage("Edit profile"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("Email"),

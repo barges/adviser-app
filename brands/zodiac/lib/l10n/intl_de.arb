@@ -113,5 +113,6 @@
   "doYouReallyWantToCloseTheChatZodiac": "Möchten Sie den Chat wirklich schließen?",
   "audioMessageZodiac": "Audio-Nachricht",
   "cancelSendingZodiac": "Senden abbrechen",
-  "tryAgainZodiac": "Erneut versuchen"
+  "tryAgainZodiac": "Erneut versuchen",
+  "doYouWantToDeleteThisMessageZodiac": "Möchten Sie diese Nachricht löschen?"
 }

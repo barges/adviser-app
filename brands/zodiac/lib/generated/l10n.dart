@@ -1224,6 +1224,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Do you want to delete this message?`
+  String get doYouWantToDeleteThisMessageZodiac {
+    return Intl.message(
+      'Do you want to delete this message?',
+      name: 'doYouWantToDeleteThisMessageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {
