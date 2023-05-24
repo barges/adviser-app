@@ -39,7 +39,6 @@ private class RecaptchaApiImp: NSObject, RecaptchaApi {
           }
         }
     }
-    
 }
 
 @UIApplicationMain
@@ -51,8 +50,7 @@ private class RecaptchaApiImp: NSObject, RecaptchaApi {
     GeneratedPluginRegistrant.register(with: self)
       
     let controller = window?.rootViewController as! FlutterViewController
-    let recaptchaApiImp = RecaptchaApiImp()
-    RecaptchaApiSetup.setUp(binaryMessenger: controller.binaryMessenger, api: recaptchaApiImp)
+    RecaptchaApiSetup.setUp(binaryMessenger: controller.binaryMessenger, api: RecaptchaApiImp())
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }

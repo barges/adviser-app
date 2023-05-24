@@ -11,7 +11,6 @@ import com.adviqo.pigeon.RecaptchaApi
 import com.google.android.recaptcha.Recaptcha
 import com.google.android.recaptcha.RecaptchaAction
 import com.google.android.recaptcha.RecaptchaClient
-import com.google.android.recaptcha.RecaptchaException
 import kotlinx.coroutines.launch
 
 class MainActivity : FlutterActivity() {
