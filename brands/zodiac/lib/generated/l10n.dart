@@ -1214,6 +1214,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Try again`
+  String get tryAgainZodiac {
+    return Intl.message(
+      'Try again',
+      name: 'tryAgainZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

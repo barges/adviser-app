@@ -114,5 +114,6 @@
   "reportZodiac": "Informe",
   "doYouReallyWantToCloseTheChatZodiac": "¿De verdad quieres cerrar el chat?",
   "audioMessageZodiac": "Mensaje de audio",
-  "cancelSendingZodiac": "Cancelar envío"
+  "cancelSendingZodiac": "Cancelar envío",
+  "tryAgainZodiac": "Intenta nuevamente"
 }
