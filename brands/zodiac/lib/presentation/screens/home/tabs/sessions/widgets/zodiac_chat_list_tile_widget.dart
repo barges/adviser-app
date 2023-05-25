@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/chats/chat_item_zodiac.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
-import 'package:zodiac/presentation/screens/home/tabs/sessions/widgets/audio_message_widget.dart';
 import 'package:zodiac/zodiac_extensions.dart';
 
 const String _groupTag = 'groupTag';
@@ -20,10 +20,12 @@ class ZodiacChatListTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle? style = Theme.of(context).textTheme.labelMedium?.copyWith(
-          fontSize: 15.0,
-          color: Theme.of(context).backgroundColor,
-        );
+    final ThemeData theme = Theme.of(context);
+
+    final TextStyle? style = theme.textTheme.labelMedium?.copyWith(
+      fontSize: 15.0,
+      color: theme.backgroundColor,
+    );
     final textSpan = TextSpan(
       text: SZodiac.of(context).hideChatZodiac,
       style: style,
@@ -87,9 +89,7 @@ class ZodiacChatListTileWidget extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   item.name ?? '',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelMedium
+                                  style: theme.textTheme.labelMedium
                                       ?.copyWith(fontSize: 15.0),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -105,36 +105,40 @@ class ZodiacChatListTileWidget extends StatelessWidget {
                                             isUtc: true)
                                         .sessionsListTime
                                     : '',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      fontSize: 12.0,
-                                      color: Theme.of(context).shadowColor,
-                                    ),
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  fontSize: 12.0,
+                                  color: theme.shadowColor,
+                                ),
                               )
                             ]),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            item.isAudio
-                                ? const AudioMessageWidget()
-                                : Expanded(
-                                    child: Text(
-                                      item.lastMessage ?? '',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(
-                                            fontSize: 14.0,
-                                            color: item.isMissed
-                                                ? AppColors.error
-                                                : Theme.of(context).shadowColor,
-                                          ),
-                                    ),
-                                  ),
+                            if (item.lastMessageType?.iconPath != null)
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: SvgPicture.asset(
+                                  item.lastMessageType!.iconPath!,
+                                  height: 18.0,
+                                  width: 18.0,
+                                  color: theme.primaryColor,
+                                ),
+                              ),
+                            Expanded(
+                              child: Text(
+                                item.isAudio
+                                    ? SZodiac.of(context).audioMessageZodiac
+                                    : item.lastMessage ?? '',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  fontSize: 14.0,
+                                  color: item.isMissed
+                                      ? AppColors.error
+                                      : theme.shadowColor,
+                                ),
+                              ),
+                            ),
                             item.haveUnreadedMessages
                                 ? Padding(
                                     padding: const EdgeInsets.only(left: 8.0),
@@ -144,19 +148,16 @@ class ZodiacChatListTileWidget extends StatelessWidget {
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: item.isMissed
-                                            ? Theme.of(context).errorColor
-                                            : Theme.of(context).primaryColor,
+                                            ? theme.errorColor
+                                            : theme.primaryColor,
                                       ),
                                       child: Center(
                                         child: Text(
                                           item.unreadCount.toString(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displaySmall
+                                          style: theme.textTheme.displaySmall
                                               ?.copyWith(
-                                                color: Theme.of(context)
-                                                    .backgroundColor,
-                                              ),
+                                            color: theme.backgroundColor,
+                                          ),
                                         ),
                                       ),
                                     ),

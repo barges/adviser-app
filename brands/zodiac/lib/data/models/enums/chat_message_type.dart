@@ -1,3 +1,5 @@
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+
 enum ChatMessageType {
   simple,
   coupon,
@@ -65,6 +67,10 @@ enum ChatMessageType {
     }
   }
 
+  static ChatMessageType typeFromString(String value) {
+    return typeFromInt(int.parse(value));
+  }
+
   int get intFromType {
     switch (this) {
       case ChatMessageType.simple:
@@ -105,6 +111,22 @@ enum ChatMessageType {
         return 20;
       case ChatMessageType.audio:
         return 21;
+    }
+  }
+
+  String? get iconPath {
+    switch (this) {
+      case ChatMessageType.audio:
+        return Assets.vectors.play.path;
+      case ChatMessageType.image:
+        return Assets.vectors.gallery.path;
+      case ChatMessageType.coupon:
+      case ChatMessageType.couponAfterSession:
+        return Assets.zodiac.couponInListIcon.path;
+      case ChatMessageType.products:
+        return Assets.zodiac.serviceInListIcon.path;
+      default:
+        return null;
     }
   }
 }
