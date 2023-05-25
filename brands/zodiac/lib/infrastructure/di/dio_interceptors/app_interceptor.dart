@@ -94,10 +94,10 @@ class AppInterceptor extends Interceptor {
       //     (route) => false);
     } else if (err.response?.statusCode == 413) {
       // Handele error 413 Request Entity Too Large in chat_cubit.dart
-    } else if (err.type == DioErrorType.connectTimeout ||
+    } else if (err.type == DioErrorType.connectionTimeout ||
         err.type == DioErrorType.receiveTimeout ||
         err.type == DioErrorType.sendTimeout ||
-        err.type == DioErrorType.other) {
+        err.type == DioErrorType.unknown) {
       _zodiacMainCubit.updateErrorMessage(
         UIError(
           uiErrorType: UIErrorType.checkYourInternetConnection,

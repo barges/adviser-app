@@ -93,10 +93,10 @@ class AppInterceptor extends Interceptor {
             FortunicaAuth(),
           ],
         );
-      } else if (err.type == DioErrorType.connectTimeout ||
+      } else if (err.type == DioErrorType.connectionTimeout ||
           err.type == DioErrorType.receiveTimeout ||
           err.type == DioErrorType.sendTimeout ||
-          err.type == DioErrorType.other) {
+          err.type == DioErrorType.unknown) {
         _fortunicaMainCubit.updateErrorMessage(
           UIError(
             uiErrorType: UIErrorType.checkYourInternetConnection,

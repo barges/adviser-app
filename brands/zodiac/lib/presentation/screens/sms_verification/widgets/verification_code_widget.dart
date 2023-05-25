@@ -53,7 +53,7 @@ class VerificationCodeWidget extends StatelessWidget {
                 inactiveFillColor: theme.canvasColor,
                 borderWidth: 1.0,
               ),
-              cursorColor: Theme.of(context).accentColor,
+              cursorColor: Theme.of(context).colorScheme.secondary,
               animationDuration: const Duration(milliseconds: 300),
               enableActiveFill: false,
               controller:

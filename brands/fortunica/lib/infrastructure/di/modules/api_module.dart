@@ -21,9 +21,9 @@ abstract class ApiModule {
     final dio = Dio();
     dio.options.baseUrl = FortunicaConstants.baseUrl;
     dio.options.headers = await _getHeaders(cacheManager);
-    dio.options.connectTimeout = 30000;
-    dio.options.receiveTimeout = 30000;
-    dio.options.sendTimeout = 30000;
+    dio.options.connectTimeout = const Duration(seconds: 30);
+    dio.options.receiveTimeout = const Duration(seconds: 30);
+    dio.options.sendTimeout = const Duration(seconds: 30);
     dio.interceptors.add(LogInterceptor(
         requestBody: true, responseBody: true, logPrint: simpleLogger.d));
 
