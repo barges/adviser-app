@@ -4,8 +4,6 @@ ARGUMENT="$1"
 
 PubGet() {
   if [ -z $ARGUMENT ]; then
-    flutter pub cache repair
-    flutter pub run build_runner clean
     flutter pub get
     dart run build_runner build --delete-conflicting-outputs
   elif [ $ARGUMENT = 'full' ]; then
@@ -25,7 +23,6 @@ PubGet() {
   echo "To analyze pubs please run 'pubs full'"
   echo "To upgrade pubs run 'pubs -u'"
   echo "To clean modules run 'pubs -c'"
-  flutter clean
   PubGet
   cd brands/fortunica || exit
   PubGet
