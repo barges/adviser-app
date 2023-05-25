@@ -4,6 +4,10 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
+// ignore_for_file: unnecessary_lambdas
+// ignore_for_file: lines_longer_than_80_chars
+// coverage:ignore-file
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
@@ -19,17 +23,18 @@ import '../../services/push_notification/push_notification_manager.dart' as _i8;
 import '../../services/push_notification/push_notification_manager_impl.dart'
     as _i9;
 import '../../services/sound_mode_service.dart' as _i10;
-import 'brand_manager.dart' as _i11; // ignore_for_file: unnecessary_lambdas
+import 'brand_manager.dart' as _i11;
 
+// ignore_for_file: unnecessary_lambdas
 // ignore_for_file: lines_longer_than_80_chars
-/// initializes the registration of provided dependencies inside of [GetIt]
+// initializes the registration of main-scope dependencies inside of GetIt
 _i1.GetIt $initGetIt(
-  _i1.GetIt get, {
+  _i1.GetIt getIt, {
   String? environment,
   _i2.EnvironmentFilter? environmentFilter,
 }) {
   final gh = _i2.GetItHelper(
-    get,
+    getIt,
     environment,
     environmentFilter,
   );
@@ -40,13 +45,13 @@ _i1.GetIt $initGetIt(
   gh.singleton<_i8.PushNotificationManager>(_i9.PushNotificationManagerImpl());
   gh.singleton<_i10.SoundModeService>(_i10.SoundModeService());
   gh.singleton<_i11.BrandManager>(
-      _i11.BrandManager(get<_i6.GlobalCachingManager>()));
+      _i11.BrandManager(gh<_i6.GlobalCachingManager>()));
   gh.singleton<_i12.CheckPermissionService>(
-      _i12.CheckPermissionService(get<_i6.GlobalCachingManager>()));
+      _i12.CheckPermissionService(gh<_i6.GlobalCachingManager>()));
   gh.singleton<_i13.MainCubit>(_i13.MainCubit(
-    get<_i6.GlobalCachingManager>(),
-    get<_i11.BrandManager>(),
-    get<_i3.ConnectivityService>(),
+    gh<_i6.GlobalCachingManager>(),
+    gh<_i11.BrandManager>(),
+    gh<_i3.ConnectivityService>(),
   ));
-  return get;
+  return getIt;
 }

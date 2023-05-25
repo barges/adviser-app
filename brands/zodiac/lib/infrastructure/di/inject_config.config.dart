@@ -4,6 +4,10 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
+// ignore_for_file: unnecessary_lambdas
+// ignore_for_file: lines_longer_than_80_chars
+// coverage:ignore-file
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:dio/dio.dart' as _i17;
 import 'package:get_it/get_it.dart' as _i1;
@@ -50,18 +54,18 @@ import '../../services/websocket_manager/websocket_manager_impl.dart' as _i15;
 import '../../zodiac_main_cubit.dart' as _i13;
 import 'dio_interceptors/app_interceptor.dart' as _i16;
 import 'modules/api_module.dart' as _i36;
-import 'modules/services_module.dart'
-    as _i35; // ignore_for_file: unnecessary_lambdas
+import 'modules/services_module.dart' as _i35;
 
+// ignore_for_file: unnecessary_lambdas
 // ignore_for_file: lines_longer_than_80_chars
-/// initializes the registration of provided dependencies inside of [GetIt]
+// initializes the registration of main-scope dependencies inside of GetIt
 Future<_i1.GetIt> $initGetIt(
-  _i1.GetIt get, {
+  _i1.GetIt getIt, {
   String? environment,
   _i2.EnvironmentFilter? environmentFilter,
 }) async {
   final gh = _i2.GetItHelper(
-    get,
+    getIt,
     environment,
     environmentFilter,
   );
@@ -79,52 +83,52 @@ Future<_i1.GetIt> $initGetIt(
   gh.singleton<_i10.SoundModeService>(servicesModule.silentModeService);
   gh.singleton<_i11.ZodiacCachingManager>(_i12.ZodiacCachingManagerImpl());
   gh.singleton<_i13.ZodiacMainCubit>(
-      _i13.ZodiacMainCubit(get<_i5.ConnectivityService>()));
+      _i13.ZodiacMainCubit(gh<_i5.ConnectivityService>()));
   gh.singleton<_i14.WebSocketManager>(_i15.WebSocketManagerImpl(
-    get<_i13.ZodiacMainCubit>(),
-    get<_i11.ZodiacCachingManager>(),
+    gh<_i13.ZodiacMainCubit>(),
+    gh<_i11.ZodiacCachingManager>(),
   ));
   gh.singleton<_i16.AppInterceptor>(_i16.AppInterceptor(
-    get<_i8.MainCubit>(),
-    get<_i13.ZodiacMainCubit>(),
-    get<_i11.ZodiacCachingManager>(),
-    get<_i14.WebSocketManager>(),
+    gh<_i8.MainCubit>(),
+    gh<_i13.ZodiacMainCubit>(),
+    gh<_i11.ZodiacCachingManager>(),
+    gh<_i14.WebSocketManager>(),
   ));
   await gh.singletonAsync<_i17.Dio>(
     () => apiModule.initDio(
-      get<_i7.GlobalCachingManager>(),
-      get<_i16.AppInterceptor>(),
+      gh<_i7.GlobalCachingManager>(),
+      gh<_i16.AppInterceptor>(),
     ),
     preResolve: true,
   );
-  gh.factory<_i18.ServicesApi>(() => _i18.ServicesApi(get<_i17.Dio>()));
-  gh.factory<_i19.SessionsApi>(() => _i19.SessionsApi(get<_i17.Dio>()));
-  gh.factory<_i20.UserApi>(() => _i20.UserApi(get<_i17.Dio>()));
+  gh.factory<_i18.ServicesApi>(() => _i18.ServicesApi(gh<_i17.Dio>()));
+  gh.factory<_i19.SessionsApi>(() => _i19.SessionsApi(gh<_i17.Dio>()));
+  gh.factory<_i20.UserApi>(() => _i20.UserApi(gh<_i17.Dio>()));
   gh.factory<_i21.ZodiacSessionsRepository>(
-      () => _i22.ZodiacChatsRepositoryImpl(get<_i19.SessionsApi>()));
+      () => _i22.ZodiacChatsRepositoryImpl(gh<_i19.SessionsApi>()));
   gh.factory<_i23.ZodiacUserRepository>(
-      () => _i24.ZodiacUserRepositoryImpl(get<_i20.UserApi>()));
-  gh.factory<_i25.ArticlesApi>(() => _i25.ArticlesApi(get<_i17.Dio>()));
-  gh.factory<_i26.AuthApi>(() => _i26.AuthApi(get<_i17.Dio>()));
-  gh.factory<_i27.ChatApi>(() => _i27.ChatApi(get<_i17.Dio>()));
+      () => _i24.ZodiacUserRepositoryImpl(gh<_i20.UserApi>()));
+  gh.factory<_i25.ArticlesApi>(() => _i25.ArticlesApi(gh<_i17.Dio>()));
+  gh.factory<_i26.AuthApi>(() => _i26.AuthApi(gh<_i17.Dio>()));
+  gh.factory<_i27.ChatApi>(() => _i27.ChatApi(gh<_i17.Dio>()));
   gh.factoryParam<_i28.ChatCubit, _i28.ChatCubitParams, dynamic>((
     chatCubitParams,
     _,
   ) =>
       _i28.ChatCubit(
         chatCubitParams,
-        get<_i11.ZodiacCachingManager>(),
-        get<_i14.WebSocketManager>(),
-        get<_i23.ZodiacUserRepository>(),
-        get<_i13.ZodiacMainCubit>(),
+        gh<_i11.ZodiacCachingManager>(),
+        gh<_i14.WebSocketManager>(),
+        gh<_i23.ZodiacUserRepository>(),
+        gh<_i13.ZodiacMainCubit>(),
       ));
   gh.factory<_i29.ZodiacArticlesRepository>(
-      () => _i30.ZodiacArticlesRepositoryImpl(get<_i25.ArticlesApi>()));
+      () => _i30.ZodiacArticlesRepositoryImpl(gh<_i25.ArticlesApi>()));
   gh.factory<_i31.ZodiacAuthRepository>(
-      () => _i32.ZodiacAuthRepositoryImpl(get<_i26.AuthApi>()));
+      () => _i32.ZodiacAuthRepositoryImpl(gh<_i26.AuthApi>()));
   gh.factory<_i33.ZodiacChatRepository>(
-      () => _i34.ZodiacChatRepositoryImpl(get<_i27.ChatApi>()));
-  return get;
+      () => _i34.ZodiacChatRepositoryImpl(gh<_i27.ChatApi>()));
+  return getIt;
 }
 
 class _$ServicesModule extends _i35.ServicesModule {}
