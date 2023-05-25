@@ -9,10 +9,12 @@ import 'package:zodiac/zodiac_extensions.dart';
 
 class ImageMessageWidget extends StatelessWidget {
   final ChatMessageModel chatMessageModel;
+  final bool hideLoader;
 
   const ImageMessageWidget({
     Key? key,
     required this.chatMessageModel,
+    this.hideLoader = false,
   }) : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class ImageMessageWidget extends StatelessWidget {
               ),
               _ImageWidget(
                 chatMessageModel: chatMessageModel,
+                hideLoader: hideLoader,
               ),
             ],
           )
@@ -37,6 +40,7 @@ class ImageMessageWidget extends StatelessWidget {
             children: [
               _ImageWidget(
                 chatMessageModel: chatMessageModel,
+                hideLoader: hideLoader,
               ),
               Expanded(
                 child: ReactionWidget(
@@ -50,10 +54,12 @@ class ImageMessageWidget extends StatelessWidget {
 
 class _ImageWidget extends StatelessWidget {
   final ChatMessageModel chatMessageModel;
+  final bool hideLoader;
 
   const _ImageWidget({
     Key? key,
     required this.chatMessageModel,
+    required this.hideLoader,
   }) : super(key: key);
 
   @override
@@ -97,6 +103,7 @@ class _ImageWidget extends StatelessWidget {
                 IsDeliveredWidget(
                   chatMessageModel: chatMessageModel,
                   color: theme.backgroundColor,
+                  hideLoader: hideLoader,
                 ),
               ],
             ),

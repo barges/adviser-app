@@ -55,6 +55,7 @@ class ChatMessageWidget extends StatelessWidget {
                     case ChatMessageType.simple:
                       return SimpleMessageWidget(
                         chatMessageModel: chatMessageModel,
+                        hideLoader: showResendWidget,
                       );
                     case ChatMessageType.coupon:
                       return CouponMessageWidget(
@@ -73,6 +74,7 @@ class ChatMessageWidget extends StatelessWidget {
                     case ChatMessageType.private:
                       return SimpleMessageWidget(
                         chatMessageModel: chatMessageModel,
+                        hideLoader: showResendWidget,
                       );
                     case ChatMessageType.tips:
                       return TipsMessageWidget(
@@ -80,6 +82,7 @@ class ChatMessageWidget extends StatelessWidget {
                     case ChatMessageType.image:
                       return ImageMessageWidget(
                         chatMessageModel: chatMessageModel,
+                        hideLoader: showResendWidget,
                       );
                     case ChatMessageType.startChat:
                       return StartChatMessageWidget(
@@ -112,6 +115,7 @@ class ChatMessageWidget extends StatelessWidget {
                     case ChatMessageType.advisorMessages:
                       return SimpleMessageWidget(
                         chatMessageModel: chatMessageModel,
+                        hideLoader: showResendWidget,
                       );
                     case ChatMessageType.extend:
                       return Text(chatMessageModel.type.name);
@@ -124,6 +128,7 @@ class ChatMessageWidget extends StatelessWidget {
                     case ChatMessageType.translated:
                       return SimpleMessageWidget(
                         chatMessageModel: chatMessageModel,
+                        hideLoader: showResendWidget,
                       );
                     case ChatMessageType.productList:
                       return Text(chatMessageModel.type.name);
