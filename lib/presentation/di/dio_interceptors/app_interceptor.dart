@@ -98,10 +98,10 @@ class AppInterceptor extends Interceptor {
             initTab: TabsTypes.account,
           ),
           (route) => false);
-    } else if (err.type == DioErrorType.connectTimeout ||
+    } else if (err.type == DioErrorType.connectionTimeout ||
         err.type == DioErrorType.receiveTimeout ||
         err.type == DioErrorType.sendTimeout ||
-        err.type == DioErrorType.other) {
+        err.type == DioErrorType.unknown) {
       _mainCubit.updateErrorMessage(
         UIError(
           uiErrorType: UIErrorType.checkYourInternetConnection,

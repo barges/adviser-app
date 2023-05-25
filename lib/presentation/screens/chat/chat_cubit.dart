@@ -952,7 +952,7 @@ class ChatCubit extends Cubit<ChatState> {
       _handleIfEntityTooLargeError(statusCode);
     }
 
-    if (statusCode != 413 && errorType != DioErrorType.other) {
+    if (statusCode != 413 && errorType != DioErrorType.unknown) {
       emit(state.copyWith(questionStatus: ChatItemStatusType.answered));
     }
 
@@ -1010,7 +1010,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<bool> _isConnectionProblem(DioErrorType errorType) async {
     return !await _connectivityService.checkConnection() ||
-        errorType == DioErrorType.connectTimeout ||
+        errorType == DioErrorType.connectionTimeout ||
         errorType == DioErrorType.sendTimeout ||
         errorType == DioErrorType.receiveTimeout;
   }
