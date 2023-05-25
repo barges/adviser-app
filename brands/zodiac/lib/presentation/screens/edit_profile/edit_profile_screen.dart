@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
@@ -102,7 +101,6 @@ class EditProfileScreen extends StatelessWidget {
     ZodiacMainCubit zodiacMainCubit,
   ) async {
     final bool? isSaved = await editProfileCubit.saveInfo();
-    logger.d(isSaved);
 
     if (isSaved == true) {
       final bool? isOk = await showOkCancelAlert(

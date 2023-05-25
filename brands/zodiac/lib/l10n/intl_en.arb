@@ -115,7 +115,7 @@
   "youveReachedLimitPhoneVerificationAttemptsZodiac":"You’ve reached the limit of phone verification attempts. Please contact support.",
   "startChatZodiac": "Start Chat",
   "declineZodiac": "Decline",
-  "chatRequestZodiac": "Chat request...",
+  "incomingChatZodiac": "INCOMING Chat",
   "youMissedCallFromZodiac": "You missed call\n from {clientName}.",
   "youMissedChatFromZodiac": "You missed chat \n from {clientName}.",
   "replyZodiac": "Reply",
@@ -126,5 +126,16 @@
   "hideChatZodiac": "Hide chat",
   "preferredLanguageZodiac": "Preferred language: ",
   "freebieSeeker": "Freebie seeker",
-  "typeMessageZodiac": "Type message"
+  "typeMessageZodiac": "Type message",
+  "selectedPhotoZodiac": "Selected photo",
+  "reconnectingZodiac": "Reconnecting...",
+  "endChatZodiac": "End\nchat",
+  "doYouReallyWantToEndTheChatZodiac": "Do you really want to end the chat?",
+  "yesZodiac": "Yes",
+  "noZodiac": "No",
+  "youAreAbleToWriteWithinZodiac": "You are able to write within {timer}",
+  "reportUnderageUserZodiac": "Report underage user",
+  "reportZodiac": "Report",
+  "doYouReallyWantToCloseTheChatZodiac": "Do you really want to close the chat?",
+  "audioMessageZodiac": "Audio message"
 }

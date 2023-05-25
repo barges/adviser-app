@@ -15,7 +15,7 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
 
 class FortunicaBrand implements BaseBrand {
   static const alias = 'fortunica';
-  static const _name = 'Fortunica';
+  static const _name = 'fortunica';
 
   static final FortunicaBrand _instance = FortunicaBrand._internal();
 
@@ -104,12 +104,12 @@ class FortunicaBrand implements BaseBrand {
   }
 
   @override
-  void goToSupport(){
+  void goToSupport() {
     _context?.push(route: const FortunicaSupport());
   }
 
   @override
-  List<String> freshChatCategories(String languageCode){
+  List<String> freshChatCategories(String languageCode) {
     List<String> categories = [
       'general_foen_advisor',
       'payments_foen_advisor',
@@ -157,7 +157,7 @@ class FortunicaBrand implements BaseBrand {
   }
 
   @override
-  List<String> freshChatTags(String languageCode){
+  List<String> freshChatTags(String languageCode) {
     List<String> tags = [
       'foen',
     ];

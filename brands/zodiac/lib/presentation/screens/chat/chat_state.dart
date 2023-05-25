@@ -12,23 +12,20 @@ class ChatState with _$ChatState {
     @Default(false) bool clientInformationWidgetOpened,
     @Default(false) bool needShowDownButton,
     @Default(false) bool needShowTypingIndicator,
+    @Default(false) bool chatIsActive,
+    @Default(false) bool offlineSessionIsActive,
+    @Default(0) int inputTextLength,
+    @Default(false) bool isSendButtonEnabled,
+    @Default(true) bool isTextInputCollapsed,
+    @Default(18.0) double textInputHeight,
+    @Default(false) bool textInputFocused,
+    @Default(false) bool isStretchedTextField,
+    @Default(false) bool keyboardOpened,
+    @Default(false) bool isChatReconnecting,
+    @Default(false) bool showOfflineSessionsMessage,
+    @Default(false) bool shouldShowInput,
     UserDetails? clientInformation,
-
-    @Default(0)
-    int inputTextLength,
-    @Default(false)
-    bool isSendButtonEnabled,
-    @Default(true)
-    bool isTextInputCollapsed,
-    @Default(18.0)
-    double textInputHeight,
-    @Default(false)
-    bool textInputFocused,
-    @Default(false)
-    bool isStretchedTextField,
-    @Default(false)
-    bool keyboardOpened,
-    @Default(96.0)
-    double bottomTextAreaHeight,
+    Duration? chatTimerValue,
+    Duration? offlineSessionTimerValue,
   }) = _ChatState;
 }

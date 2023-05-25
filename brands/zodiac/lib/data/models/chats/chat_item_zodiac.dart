@@ -34,6 +34,8 @@ class ZodiacChatsListItem with _$ZodiacChatsListItem {
   bool get isMissed => lastMessageType == '17';
 
   bool get haveUnreadedMessages => unreadCount != null && unreadCount! > 0;
+
+  bool get isAudio => lastMessageType == '21';
 }
 
 ZodiacUserStatus _statusFromJson(num? value) {

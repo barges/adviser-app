@@ -18,7 +18,7 @@ import '../../services/fresh_chat_service.dart' as _i5;
 import '../../services/push_notification/push_notification_manager.dart' as _i8;
 import '../../services/push_notification/push_notification_manager_impl.dart'
     as _i9;
-import '../../services/silent_mode_service.dart' as _i10;
+import '../../services/sound_mode_service.dart' as _i10;
 import 'brand_manager.dart' as _i11; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
@@ -36,9 +36,9 @@ _i1.GetIt $initGetIt(
   gh.singleton<_i3.ConnectivityService>(_i3.ConnectivityService());
   gh.singleton<_i4.DynamicLinkService>(_i4.DynamicLinkService());
   gh.singleton<_i5.FreshChatService>(_i5.FreshChatServiceImpl());
-  gh.factory<_i6.GlobalCachingManager>(() => _i7.GlobalCachingManagerImpl());
+  gh.singleton<_i6.GlobalCachingManager>(_i7.GlobalCachingManagerImpl());
   gh.singleton<_i8.PushNotificationManager>(_i9.PushNotificationManagerImpl());
-  gh.singleton<_i10.SilentModeService>(_i10.SilentModeService());
+  gh.singleton<_i10.SoundModeService>(_i10.SoundModeService());
   gh.singleton<_i11.BrandManager>(
       _i11.BrandManager(get<_i6.GlobalCachingManager>()));
   gh.singleton<_i12.CheckPermissionService>(

@@ -65,8 +65,7 @@ Future<_i1.GetIt> $initGetIt(
       servicesModule.checkPermissionService);
   gh.singleton<_i5.ConnectivityService>(servicesModule.connectivityService);
   gh.singleton<_i6.DynamicLinkService>(servicesModule.dynamicLinkService);
-  gh.factory<_i7.FortunicaCachingManager>(
-      () => _i8.FortunicaCachingManagerImpl());
+  gh.singleton<_i7.FortunicaCachingManager>(_i8.FortunicaCachingManagerImpl());
   gh.singleton<_i9.FortunicaMainCubit>(_i9.FortunicaMainCubit());
   gh.singleton<_i10.FreshChatService>(servicesModule.freshChatService);
   gh.singleton<_i11.GlobalCachingManager>(servicesModule.globalCachingManager);

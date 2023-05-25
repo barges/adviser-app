@@ -28,9 +28,11 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m2(email) =>
       "We\'ve sent password reset instructions to ${email}.";
 
-  static String m3(clientName) => "You missed call\n from ${clientName}.";
+  static String m3(timer) => "You are able to write within ${timer}";
 
-  static String m4(clientName) => "You missed chat \n from ${clientName}.";
+  static String m4(clientName) => "You missed call\n from ${clientName}.";
+
+  static String m5(clientName) => "You missed chat \n from ${clientName}.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -39,6 +41,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "allSpecialitiesZodiac":
             MessageLookupByLibrary.simpleMessage("All specialities"),
         "articlesZodiac": MessageLookupByLibrary.simpleMessage("Articles"),
+        "audioMessageZodiac":
+            MessageLookupByLibrary.simpleMessage("Audio message"),
         "avgDailyEarningsZodiac":
             MessageLookupByLibrary.simpleMessage("Avg Daily Earnings"),
         "balanceTransactionsZodiac":
@@ -53,8 +57,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "characterLimitExceededZodiac":
             MessageLookupByLibrary.simpleMessage("Character limit exceeded."),
         "chatEndedZodiac": MessageLookupByLibrary.simpleMessage("Chat ended"),
-        "chatRequestZodiac":
-            MessageLookupByLibrary.simpleMessage("Chat request..."),
         "chatStartGreetingZodiac":
             MessageLookupByLibrary.simpleMessage("Chat start greeting"),
         "chatStartedZodiac":
@@ -71,10 +73,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "dashboardZodiac": MessageLookupByLibrary.simpleMessage("Dashboard"),
         "daysZodiac": MessageLookupByLibrary.simpleMessage("days"),
         "declineZodiac": MessageLookupByLibrary.simpleMessage("Decline"),
+        "doYouReallyWantToCloseTheChatZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Do you really want to close the chat?"),
         "doYouReallyWantToDeleteLocaleNameFromYourListZodiac": m0,
+        "doYouReallyWantToEndTheChatZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Do you really want to end the chat?"),
         "editProfileZodiac":
             MessageLookupByLibrary.simpleMessage("Edit profile"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("Email"),
+        "endChatZodiac": MessageLookupByLibrary.simpleMessage("End\nchat"),
         "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Enter your email address and we\'ll send you instructions to create a new password"),
@@ -92,6 +101,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "hoursZodiac": MessageLookupByLibrary.simpleMessage("hours"),
         "imAvailableNowZodiac":
             MessageLookupByLibrary.simpleMessage("I\'m available now"),
+        "incomingChatZodiac":
+            MessageLookupByLibrary.simpleMessage("INCOMING Chat"),
         "languageZodiac": MessageLookupByLibrary.simpleMessage("Language"),
         "loginZodiac": MessageLookupByLibrary.simpleMessage("Login"),
         "lowestRateZodiac": MessageLookupByLibrary.simpleMessage("Lowest rate"),
@@ -118,6 +129,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("No sessions, yet."),
         "noTransactionsYetZodiac":
             MessageLookupByLibrary.simpleMessage("No transactions, yet"),
+        "noZodiac": MessageLookupByLibrary.simpleMessage("No"),
         "notificationsZodiac":
             MessageLookupByLibrary.simpleMessage("Notifications"),
         "offlineServiceZodiac":
@@ -145,7 +157,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "previewAccountZodiac":
             MessageLookupByLibrary.simpleMessage("Preview account"),
         "pricePerMinZodiac": m1,
+        "reconnectingZodiac":
+            MessageLookupByLibrary.simpleMessage("Reconnecting..."),
         "replyZodiac": MessageLookupByLibrary.simpleMessage("Reply"),
+        "reportUnderageUserZodiac":
+            MessageLookupByLibrary.simpleMessage("Report underage user"),
+        "reportZodiac": MessageLookupByLibrary.simpleMessage("Report"),
         "requiredFieldZodiac":
             MessageLookupByLibrary.simpleMessage("Required field"),
         "resetPasswordZodiac":
@@ -159,6 +176,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "saveZodiac": MessageLookupByLibrary.simpleMessage("Save"),
         "searchZodiac": MessageLookupByLibrary.simpleMessage("Search"),
         "secondsZodiac": MessageLookupByLibrary.simpleMessage("sec"),
+        "selectedPhotoZodiac":
+            MessageLookupByLibrary.simpleMessage("Selected photo"),
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Service"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Services"),
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sessions"),
@@ -184,12 +203,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "wrongUsernameAndOrPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Wrong username and/or password."),
+        "yesZodiac": MessageLookupByLibrary.simpleMessage("Yes"),
         "yesterdayZodiac": MessageLookupByLibrary.simpleMessage("Yesterday"),
+        "youAreAbleToWriteWithinZodiac": m3,
         "youCanChangePriceOncePer24HZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "You can change price once per 24 h"),
-        "youMissedCallFromZodiac": m3,
-        "youMissedChatFromZodiac": m4,
+        "youMissedCallFromZodiac": m4,
+        "youMissedChatFromZodiac": m5,
         "youWereBlocked": MessageLookupByLibrary.simpleMessage(
             "Your account has been blocked.<br>Please contact <a href=\'\'>Customer Support</a> to resolve the issue"),
         "yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac":

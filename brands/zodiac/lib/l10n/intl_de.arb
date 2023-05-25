@@ -113,7 +113,7 @@
   "youveReachedLimitPhoneVerificationAttemptsZodiac":"Sie haben das Limit für telefonische Bestätigungsversuche erreicht. Bitte wenden Sie sich an den Support.",
   "startChatZodiac": "Chat beginnen",
   "declineZodiac": "Abfall",
-  "chatRequestZodiac": "Chat-Anfrage...",
+  "incomingChatZodiac": "EINGEHENDER Chat",
   "youMissedCallFromZodiac": "Sie haben den Anruf \n von {clientName} verpasst.",
   "youMissedChatFromZodiac": "Sie haben den Chat \n von {clientName} verpasst.",
   "replyZodiac": "Antwort",
@@ -124,5 +124,16 @@
   "hideChatZodiac": "Chat verstecken",
   "preferredLanguageZodiac": "Bevorzugte Sprache: ",
   "freebieSeeker": "Freebie-Sucher",
-  "typeMessageZodiac": "Schreibe eine Nachricht"
+  "typeMessageZodiac": "Schreibe eine Nachricht",
+  "selectedPhotoZodiac": "Ausgewähltes Foto",
+  "reconnectingZodiac": "Wieder verbinden...",
+  "endChatZodiac": "Beende\nChat",
+  "doYouReallyWantToEndTheChatZodiac": "Möchten Sie den Chat wirklich beenden?",
+  "yesZodiac": "Ja",
+  "noZodiac": "Nein",
+  "youAreAbleToWriteWithinZodiac": "Sie können innerhalb von {timer} schreiben",
+  "reportUnderageUserZodiac": "Minderjährigen Benutzer melden",
+  "reportZodiac": "Bericht",
+  "doYouReallyWantToCloseTheChatZodiac": "Möchten Sie den Chat wirklich schließen?",
+  "audioMessageZodiac": "Audio-Nachricht"
 }

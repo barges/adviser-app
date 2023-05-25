@@ -1215,11 +1215,11 @@ class SZodiac {
     );
   }
 
-  /// `Chat request...`
-  String get chatRequestZodiac {
+  /// `INCOMING Chat`
+  String get incomingChatZodiac {
     return Intl.message(
-      'Chat request...',
-      name: 'chatRequestZodiac',
+      'INCOMING Chat',
+      name: 'incomingChatZodiac',
       desc: '',
       args: [],
     );
@@ -1330,6 +1330,116 @@ class SZodiac {
     return Intl.message(
       'Type message',
       name: 'typeMessageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Selected photo`
+  String get selectedPhotoZodiac {
+    return Intl.message(
+      'Selected photo',
+      name: 'selectedPhotoZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reconnecting...`
+  String get reconnectingZodiac {
+    return Intl.message(
+      'Reconnecting...',
+      name: 'reconnectingZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End\nchat`
+  String get endChatZodiac {
+    return Intl.message(
+      'End\nchat',
+      name: 'endChatZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you really want to end the chat?`
+  String get doYouReallyWantToEndTheChatZodiac {
+    return Intl.message(
+      'Do you really want to end the chat?',
+      name: 'doYouReallyWantToEndTheChatZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get yesZodiac {
+    return Intl.message(
+      'Yes',
+      name: 'yesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get noZodiac {
+    return Intl.message(
+      'No',
+      name: 'noZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You are able to write within {timer}`
+  String youAreAbleToWriteWithinZodiac(Object timer) {
+    return Intl.message(
+      'You are able to write within $timer',
+      name: 'youAreAbleToWriteWithinZodiac',
+      desc: '',
+      args: [timer],
+    );
+  }
+
+  /// `Report underage user`
+  String get reportUnderageUserZodiac {
+    return Intl.message(
+      'Report underage user',
+      name: 'reportUnderageUserZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Report`
+  String get reportZodiac {
+    return Intl.message(
+      'Report',
+      name: 'reportZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you really want to close the chat?`
+  String get doYouReallyWantToCloseTheChatZodiac {
+    return Intl.message(
+      'Do you really want to close the chat?',
+      name: 'doYouReallyWantToCloseTheChatZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Audio message`
+  String get audioMessageZodiac {
+    return Intl.message(
+      'Audio message',
+      name: 'audioMessageZodiac',
       desc: '',
       args: [],
     );

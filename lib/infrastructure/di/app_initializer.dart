@@ -26,11 +26,13 @@ class AppInitializer {
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
     if (Platform.isIOS) {
       await Firebase.initializeApp(
-          options: const FirebaseOptions(
-              apiKey: AppConstants.iosApiKey,
-              appId: AppConstants.iosAppId,
-              messagingSenderId: AppConstants.firebaseMessagingSenderId,
-              projectId: AppConstants.firebaseProjectId));
+        options: const FirebaseOptions(
+          apiKey: AppConstants.iosApiKey,
+          appId: AppConstants.iosAppId,
+          messagingSenderId: AppConstants.firebaseMessagingSenderId,
+          projectId: AppConstants.firebaseProjectId,
+        ),
+      );
     } else {
       await Firebase.initializeApp();
     }
@@ -49,7 +51,7 @@ class AppInitializer {
     ///dependencies injection
     await AppBinding.setupInjection(flavor);
 
-    if(timePattern != null) {
+    if (timePattern != null) {
       BrandManager.timeFormat = timePattern;
     }
 

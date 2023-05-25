@@ -10,7 +10,7 @@ import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/services/silent_mode_service.dart';
+import 'package:shared_advisor_interface/services/sound_mode_service.dart';
 import 'package:vibration/vibration.dart';
 import 'package:zodiac/data/models/chat/call_data.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
@@ -22,7 +22,7 @@ class StartingChatCubit extends Cubit<StartingChatState> {
   final WebSocketManager _webSocketManager;
   final BrandManager _brandManager;
   final MainCubit _mainCubit;
-  final SilentModeService _silentModeService;
+  final SoundModeService _soundModeService;
   final CallData _startCallData;
 
   final AssetsAudioPlayer _assetsAudioPlayer = AssetsAudioPlayer();
@@ -32,12 +32,13 @@ class StartingChatCubit extends Cubit<StartingChatState> {
   StreamSubscription? _silentModeSubscription;
 
   bool screenOpened = true;
+  bool? shouldVibrate;
 
   StartingChatCubit(
     this._webSocketManager,
     this._brandManager,
     this._mainCubit,
-    this._silentModeService,
+    this._soundModeService,
     this._startCallData,
     BuildContext context,
   ) : super(const StartingChatState()) {
@@ -59,12 +60,17 @@ class StartingChatCubit extends Cubit<StartingChatState> {
     });
 
     _silentModeSubscription =
-        _silentModeService.silentModeStream.listen((isSilent) async {
-      if (isSilent) {
-        _assetsAudioPlayer.setVolume(0.0);
-      } else {
+        _soundModeService.soundModeStream.listen((soundMode) async {
+      if (soundMode == DeviceSoundMode.normal) {
         final double currentVolume = await Audible.getCurrentVolume;
         _assetsAudioPlayer.setVolume(currentVolume);
+        shouldVibrate = true;
+      } else if (soundMode == DeviceSoundMode.vibrate) {
+        _assetsAudioPlayer.setVolume(0.0);
+        shouldVibrate = true;
+      } else {
+        _assetsAudioPlayer.setVolume(0.0);
+        shouldVibrate = false;
       }
     });
   }
@@ -80,8 +86,11 @@ class StartingChatCubit extends Cubit<StartingChatState> {
   }
 
   Future<void> _startVibration() async {
+    final DeviceSoundMode soundMode = await _soundModeService.soundMode;
+    shouldVibrate = soundMode != DeviceSoundMode.silent;
+
     if (await Vibration.hasVibrator() == true) {
-      while (screenOpened && !isClosed) {
+      while (shouldVibrate == true && screenOpened && !isClosed) {
         await Vibration.vibrate();
         await Future.delayed(const Duration(milliseconds: 1500));
       }
@@ -89,14 +98,16 @@ class StartingChatCubit extends Cubit<StartingChatState> {
   }
 
   Future<void> _startMelody() async {
-    final AudibleProfile? soundMode = await Audible.getAudibleProfile;
+    final DeviceSoundMode soundMode = await _soundModeService.soundMode;
+    logger.d(soundMode);
+
     final double currentVolume = await Audible.getCurrentVolume;
 
     _assetsAudioPlayer.open(
       Audio(Assets.audios.chatIncoming),
       loopMode: LoopMode.single,
       respectSilentMode: true,
-      volume: soundMode == AudibleProfile.SILENT_MODE ? 0.0 : currentVolume,
+      volume: soundMode == DeviceSoundMode.normal ? currentVolume : 0.0,
     );
   }
 

@@ -99,5 +99,7 @@
     		<key>NSAllowsArbitraryLoadsInWebContent</key>
     		<true/>
 		</dict>
+		<key>FLTEnableImpeller</key>
+  		<false />
 	</dict>
 </plist>

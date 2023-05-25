@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -6,8 +7,11 @@ import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
+import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/zodiac.dart';
+import 'package:zodiac/zodiac_extensions.dart';
 
 class ChatConversationAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -48,19 +52,35 @@ class ChatConversationAppBar extends StatelessWidget
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // if (publicQuestionId != null &&
-                  //     questionStatus == ChatItemStatusType.taken)
-                  //   Padding(
-                  //     padding: const EdgeInsets.only(right: 2.0),
-                  //     child: AppIconButton(
-                  //       onTap: returnInQueueButtonOnTap,
-                  //       icon: Assets.vectors.arrowReturn.path,
-                  //     ),
-                  //   ),
-                  AppIconButton(
-                    icon: Assets.vectors.arrowLeft.path,
-                    onTap: backButtonOnTap ?? selectedBrand.context?.pop,
-                  ),
+                  if (endChatButtonOnTap != null)
+                    GestureDetector(
+                      onTap: endChatButtonOnTap,
+                      child: Row(
+                        children: [
+                          AppIconButton(
+                            icon: Assets.vectors.cross.path,
+                          ),
+                          const SizedBox(
+                            width: 8.0,
+                          ),
+                          Text(
+                            SZodiac.of(context).endChatZodiac.toUpperCase(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall
+                                ?.copyWith(
+                                  fontSize: 12.0,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                          )
+                        ],
+                      ),
+                    )
+                  else
+                    AppIconButton(
+                      icon: Assets.vectors.arrowLeft.path,
+                      onTap: backButtonOnTap ?? selectedBrand.context?.pop,
+                    ),
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -92,14 +112,43 @@ class ChatConversationAppBar extends StatelessWidget
                             ],
                           ),
                         ),
-                        Text(
-                          selectedBrand.name,
-                          style: TextStyle(
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w200,
-                            color: Theme.of(context).shadowColor,
-                          ),
-                        ),
+                        Builder(builder: (context) {
+                          final Duration? timerValue = context.select(
+                              (ChatCubit cubit) => cubit.state.chatTimerValue);
+
+                          final bool isChatReconnecting = context.select(
+                              (ChatCubit cubit) =>
+                                  cubit.state.isChatReconnecting);
+
+                          if (isChatReconnecting) {
+                            return Text(
+                              SZodiac.of(context).reconnectingZodiac,
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w400,
+                                color: Theme.of(context).shadowColor,
+                              ),
+                            );
+                          } else if (timerValue != null) {
+                            return Text(
+                              timerValue.chatTimerFormat,
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w400,
+                                color: Theme.of(context).shadowColor,
+                              ),
+                            );
+                          } else {
+                            return Text(
+                              selectedBrand.name,
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w200,
+                                color: Theme.of(context).shadowColor,
+                              ),
+                            );
+                          }
+                        })
                       ],
                     ),
                   ),

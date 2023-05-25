@@ -32,10 +32,6 @@ class SocketMessage {
     return json.encode(data);
   }
 
-  static String generateMessageId(int userId) {
-    return '${userId}_${DateTime.now().millisecondsSinceEpoch / 1000}';
-  }
-
   static SocketMessage pong() => SocketMessage(action: Commands.pong);
 
   static SocketMessage advisorLogin({required int userId}) =>
@@ -87,17 +83,18 @@ class SocketMessage {
         'opponent_id': opponentId,
       });
 
-  static SocketMessage chatMessage(
-          {required String message,
-          required String roomId,
-          required int opponentId,
-          required int userId}) =>
+  static SocketMessage chatMessage({
+    required String message,
+    required String roomId,
+    required int opponentId,
+    required String mid,
+  }) =>
       SocketMessage(action: Commands.chatMessage, params: {
         'message': message,
         'view': 0,
         'room_id': roomId,
         'opponent_id': opponentId,
-        'mid': generateMessageId(userId)
+        'mid': mid,
       });
 
   static SocketMessage msgDelivered({String? mid}) => SocketMessage(
@@ -127,15 +124,16 @@ class SocketMessage {
       SocketMessage(
           action: Commands.underageReport, params: {'room_id': roomId});
 
-  static SocketMessage productMessage(
-          {required String serviceName,
-          required double price,
-          required int productId,
-          required String roomId,
-          required int userId}) =>
+  static SocketMessage productMessage({
+    required String serviceName,
+    required double price,
+    required int productId,
+    required String roomId,
+    required String mid,
+  }) =>
       SocketMessage(action: Commands.productMessage, params: {
         "message": serviceName,
-        "mid": generateMessageId(userId),
+        "mid": mid,
         "price": price,
         "product_id": productId,
         "room_id": roomId,
@@ -151,12 +149,13 @@ class SocketMessage {
   static SocketMessage funcActions({required int opponentId}) => SocketMessage(
       action: Commands.funcActions, params: {"opponent_id": opponentId});
 
-  static SocketMessage privateMessage(
-          {required int messageId,
-          required int opponentId,
-          required int userId}) =>
+  static SocketMessage privateMessage({
+    required int messageId,
+    required int opponentId,
+    required String mid,
+  }) =>
       SocketMessage(action: Commands.privateMessage, params: {
-        "mid": generateMessageId(userId),
+        "mid": mid,
         "message_id": messageId,
         "opponent_id": opponentId
       });
@@ -182,4 +181,7 @@ class SocketMessage {
           "id": opponentId ?? 0,
         },
       });
+
+  static SocketMessage closeOfflineChat() =>
+      SocketMessage(action: Commands.closeOfflineChat);
 }

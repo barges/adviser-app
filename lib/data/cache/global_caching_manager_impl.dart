@@ -24,7 +24,7 @@ const String _verificationCodeAttemptsKey = 'verificationCodeAttemptsKey';
 const String _attemptsToEnterRightCodeKey = 'attemptsToEnterRightCodeKey';
 const String _startTimeInactiveResendCodeKey = 'startTimeInactiveResendCodeKey';
 
-@Injectable(as: GlobalCachingManager)
+@Singleton(as: GlobalCachingManager)
 class GlobalCachingManagerImpl implements GlobalCachingManager {
   GlobalCachingManagerImpl() {
     openBoxes();

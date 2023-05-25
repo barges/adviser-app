@@ -14,6 +14,7 @@ Future<bool?> showOkCancelAlert({
   required bool allowBarrierClick,
   required bool isCancelEnabled,
   String? description,
+  String? cancelText,
 }) async {
   ThemeData theme = Theme.of(context);
   return await showDialog(
@@ -40,7 +41,7 @@ Future<bool?> showOkCancelAlert({
                   if (isCancelEnabled)
                     CupertinoDialogAction(
                       child: Text(
-                        S.of(context).cancel,
+                        cancelText ?? S.of(context).cancel,
                       ),
                       onPressed: () {
                         context.popForced(false);
@@ -97,7 +98,9 @@ Future<bool?> showOkCancelAlert({
                           children: [
                             if (isCancelEnabled)
                               TextButton(
-                                child: Text(S.of(context).cancel.toUpperCase(),
+                                child: Text(
+                                    cancelText ??
+                                        S.of(context).cancel.toUpperCase(),
                                     style:
                                         theme.textTheme.displayLarge?.copyWith(
                                       fontSize: 14.0,
