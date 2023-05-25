@@ -88,6 +88,7 @@ class SMSVerificationScreen extends StatelessWidget {
                                       attempts)
                                   .split(attempts);
                           return Text.rich(
+                            textAlign: TextAlign.center,
                             TextSpan(
                               text: youHaveAttemptsToEnterRightCode.first,
                               style: theme.textTheme.bodyMedium?.copyWith(

@@ -93,7 +93,7 @@
   "minutesZodiac": "min",
   "secondsZodiac": "seg",
   "confirmYourCountryCodeAndEnterYourPhoneNumberZodiac": "Confirme su número de teléfono e ingrese su número de teléfono",
-  "wellTextYouCodeToVerifyYourPhoneNumbersecondsZodiac": "Te enviaremos un código para verificar tu número de teléfono",
+  "wellTextYouCodeToVerifyYourPhoneNumberZodiac": "Te enviaremos un código para verificar tu número de teléfono",
   "youHaveVerificationAttemptsPerDayZodiac": "Tienes {attempts} intentos de verificación por día",
   "codeZodiac": "Código",
   "phoneZodiac": "Teléfono",
