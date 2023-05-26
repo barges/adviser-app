@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "RecaptchaEnterprise",
+        "repositoryURL": "https://github.com/GoogleCloudPlatform/recaptcha-enterprise-mobile-sdk",
+        "state": {
+          "branch": "main",
+          "revision": "27facfb9a8b9b976ed0a52721a72b4396b7a0708",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
