@@ -68,7 +68,14 @@ enum ChatMessageType {
   }
 
   static ChatMessageType typeFromString(String value) {
-    return typeFromInt(int.parse(value));
+    ChatMessageType type;
+    try {
+      type = typeFromInt(int.parse(value));
+    } catch (e) {
+      type = typeFromInt(null);
+    }
+
+    return type;
   }
 
   int get intFromType {
