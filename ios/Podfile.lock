@@ -209,6 +209,7 @@ PODS:
   - PromisesSwift (2.2.0):
     - PromisesObjC (= 2.2.0)
   - ReachabilitySwift (5.0.0)
+  - RecaptchaEnterprise (18.1.2)
   - share_plus (0.0.1):
     - Flutter
   - shared_preferences_foundation (0.0.1):
@@ -255,6 +256,7 @@ DEPENDENCIES:
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - RecaptchaEnterprise (= 18.1.2)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
@@ -289,6 +291,7 @@ SPEC REPOS:
     - PromisesObjC
     - PromisesSwift
     - ReachabilitySwift
+    - RecaptchaEnterprise
 
 EXTERNAL SOURCES:
   app_tracking_transparency:
@@ -410,6 +413,7 @@ SPEC CHECKSUMS:
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
   PromisesSwift: cf9eb58666a43bbe007302226e510b16c1e10959
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
+  RecaptchaEnterprise: 00418359622f3b3e0d56036be7d1544f174e9769
   share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
   shared_preferences_foundation: 986fc17f3d3251412d18b0265f9c64113a8c2472
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
@@ -419,6 +423,6 @@ SPEC CHECKSUMS:
   vibration: 7d883d141656a1c1a6d8d238616b2042a51a1241
   webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
 
-PODFILE CHECKSUM: c447ff5f8a583416cb0835cf5ccfa24282c643b0
+PODFILE CHECKSUM: eccb9a5315a8ca623c2c88e07e9b7ceaeae1891f
 
 COCOAPODS: 1.12.1
