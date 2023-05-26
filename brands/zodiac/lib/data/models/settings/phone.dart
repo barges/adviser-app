@@ -9,7 +9,10 @@ part 'phone.freezed.dart';
 class Phone with _$Phone {
   const Phone._();
 
-  @JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)
+  @JsonSerializable(
+    includeIfNull: false,
+    fieldRename: FieldRename.snake,
+  )
   const factory Phone({
     int? code,
     int? number,

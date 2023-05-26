@@ -7,7 +7,7 @@ part 'settings_request.g.dart';
 @JsonSerializable(includeIfNull: false)
 class SettingsRequest extends AuthorizedRequest {
   @JsonKey(name: 'device_type')
-  String deviceType = AppInfo.deviceType;
+  final String deviceType = AppInfo.deviceType;
 
   SettingsRequest();
 
