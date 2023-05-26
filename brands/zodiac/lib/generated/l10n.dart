@@ -1234,6 +1234,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `No messages, yet`
+  String get noMessagesYetZodiac {
+    return Intl.message(
+      'No messages, yet',
+      name: 'noMessagesYetZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your chat history will appear here`
+  String get yourChatHistoryWillAppearHereZodiac {
+    return Intl.message(
+      'Your chat history will appear here',
+      name: 'yourChatHistoryWillAppearHereZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

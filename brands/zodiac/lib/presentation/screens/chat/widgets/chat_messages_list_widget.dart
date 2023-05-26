@@ -11,18 +11,17 @@ import 'package:zodiac/zodiac_constants.dart';
 
 class ChatMessagesListWidget extends StatelessWidget {
   final bool fromStartingChat;
+  final List<ChatMessageModel> messages;
 
   const ChatMessagesListWidget({
     Key? key,
     required this.fromStartingChat,
+    required this.messages,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ChatCubit chatCubit = context.read<ChatCubit>();
-
-    final List<ChatMessageModel> messages =
-        context.select((ChatCubit cubit) => cubit.state.messages);
 
     // for (var element in messages) {
     //   logger.d(element);

@@ -116,5 +116,7 @@
   "audioMessageZodiac": "Mensaje de audio",
   "cancelSendingZodiac": "Cancelar envío",
   "tryAgainZodiac": "Intenta nuevamente",
-  "doYouWantToDeleteThisMessageZodiac": "¿Quieres borrar este mensaje?"
+  "doYouWantToDeleteThisMessageZodiac": "¿Quieres borrar este mensaje?",
+  "noMessagesYetZodiac": "No hay mensajes, todavía",
+  "yourChatHistoryWillAppearHereZodiac": "Su historial de chat aparecerá aquí."
 }

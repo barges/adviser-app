@@ -134,6 +134,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ainda não há artigos"),
         "noInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage("Sem conexão com a internet."),
+        "noMessagesYetZodiac":
+            MessageLookupByLibrary.simpleMessage("Nenhuma mensagem, ainda"),
         "noNotificationsYetZodiac":
             MessageLookupByLibrary.simpleMessage("Nenhuma notificação, ainda"),
         "noReviewsYetZodiac":
@@ -232,6 +234,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Suas alterações foram aceitas e serão analisadas em breve. Todas as atualizações ficarão visíveis para os clientes depois disso"),
+        "yourChatHistoryWillAppearHereZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Seu histórico de bate-papo aparecerá aqui"),
         "yourClientSessionHistoryWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "O histórico de ssessões de clientes aparecerá aqui"),
