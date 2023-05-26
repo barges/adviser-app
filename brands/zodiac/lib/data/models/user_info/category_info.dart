@@ -3,6 +3,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'category_info.g.dart';
+
 part 'category_info.freezed.dart';
 
 @freezed
@@ -10,7 +11,9 @@ class CategoryInfo with _$CategoryInfo {
   const CategoryInfo._();
 
   @JsonSerializable(
-      includeIfNull: false, explicitToJson: true)
+    includeIfNull: false,
+    explicitToJson: true,
+  )
   const factory CategoryInfo({
     int? id,
     @JsonKey(name: 'pid') int? parentId,
@@ -25,10 +28,9 @@ class CategoryInfo with _$CategoryInfo {
   factory CategoryInfo.fromJson(Map<String, dynamic> json) =>
       _$CategoryInfoFromJson(json);
 
-  static List<CategoryInfo> normalizeList(List<CategoryInfo> list){
+  static List<CategoryInfo> normalizeList(List<CategoryInfo> list) {
     final List<CategoryInfo> categories = [];
     for (CategoryInfo categoryInfo in list) {
-
       List<CategoryInfo>? sublist = categoryInfo.sublist;
       if (sublist != null && sublist.isNotEmpty) {
         categories.add(categoryInfo.copyWith(sublist: null));

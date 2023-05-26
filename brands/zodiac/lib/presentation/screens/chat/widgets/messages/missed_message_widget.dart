@@ -19,7 +19,7 @@ class MissedMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final String? clientName = context.read<ChatCubit>().userData.name;
+    final String? clientName = context.read<ChatCubit>().clientData.name;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -50,11 +50,13 @@ class MissedMessageWidget extends StatelessWidget {
                   ),
                   if (chatMessageModel.action != null &&
                       chatMessageModel.action != MissedMessageAction.none)
-                    Text(
-                      chatMessageModel.action!
-                          .getDescription(context, clientName ?? ''),
-                      style: theme.textTheme.labelMedium
-                          ?.copyWith(color: AppColors.error),
+                    Expanded(
+                      child: Text(
+                        chatMessageModel.action!
+                            .getDescription(context, clientName ?? ''),
+                        style: theme.textTheme.labelMedium
+                            ?.copyWith(color: AppColors.error),
+                      ),
                     )
                 ],
               ),

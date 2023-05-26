@@ -10,5 +10,6 @@ class PhoneNumberState with _$PhoneNumberState {
     @Default(false) bool isSendCodeButtonEnabled,
     @Default(Phone()) phone,
     int? phoneNumberMaxLength,
+    @Default(0) int verificationCodeAttempts,
   }) = _PhoneNumberState;
 }

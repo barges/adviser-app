@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/sms_verification/sms_verification_cubit.dart';
+import 'package:zodiac/presentation/screens/sms_verification/sms_verification_screen.dart';
 
 class VerificationCodeWidget extends StatelessWidget {
-  final bool isError;
   const VerificationCodeWidget({
     super.key,
-    this.isError = false,
   });
 
   @override
@@ -17,15 +17,20 @@ class VerificationCodeWidget extends StatelessWidget {
     return Builder(builder: (context) {
       SMSVerificationCubitCubit smsVerificationCubitCubit =
           context.read<SMSVerificationCubitCubit>();
+      final isError = context
+          .select((SMSVerificationCubitCubit cubit) => cubit.state.isError);
       return Column(
         children: [
           SizedBox(
-            width: 216.0,
+            width: verificationCodeInputFieldCount *
+                    AppConstants.textFieldsHeight +
+                (verificationCodeInputFieldCount - 1) * 8.0,
             height: 48,
             child: PinCodeTextField(
               appContext: context,
               autoFocus: true,
               autoUnfocus: false,
+              autoDisposeControllers: false,
               focusNode: smsVerificationCubitCubit.codeTextFieldFocus,
               textStyle: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.hoverColor,
@@ -33,16 +38,9 @@ class VerificationCodeWidget extends StatelessWidget {
               pastedTextStyle: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.hoverColor,
               ),
-              length: 4,
+              length: verificationCodeInputFieldCount,
               blinkWhenObscuring: true,
               animationType: AnimationType.none,
-              /*validator: (v) {
-                  if (v!.length < 3) {
-                    return "I'm from validator";
-                  } else {
-                    return null;
-                  }
-                },*/
               pinTheme: PinTheme(
                 shape: PinCodeFieldShape.box,
                 borderRadius: BorderRadius.circular(12.0),
@@ -55,21 +53,19 @@ class VerificationCodeWidget extends StatelessWidget {
                 inactiveFillColor: theme.canvasColor,
                 borderWidth: 1.0,
               ),
-              cursorColor: Theme.of(context).accentColor,
+              cursorColor: Theme.of(context).colorScheme.secondary,
               animationDuration: const Duration(milliseconds: 300),
               enableActiveFill: false,
-              //errorAnimationController: errorController,
-              //controller: textEditingController,
+              controller:
+                  smsVerificationCubitCubit.verificationCodeInputController,
               keyboardType: TextInputType.number,
-              onCompleted: (v) {
-                //print("Completed");
-              },
+              //onCompleted: onCompleted,
               /*onTap: () {
                    print("Pressed");
                  },*/
-              onChanged: (value) {
-                //print(value);
-              },
+              onChanged: (text) =>
+                  smsVerificationCubitCubit.updateVerifyButtonEnabled(
+                      text.length == verificationCodeInputFieldCount),
               beforeTextPaste: (text) {
                 //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
                 //but you can show anything you want here, like your pop up saying wrong paste format or etc
@@ -79,7 +75,7 @@ class VerificationCodeWidget extends StatelessWidget {
           ),
           if (isError)
             Text(
-              'Incorrect code',
+              SZodiac.of(context).incorrectCodeZodiac,
               textAlign: TextAlign.center,
               style: theme.textTheme.bodySmall?.copyWith(
                 fontSize: 12.0,

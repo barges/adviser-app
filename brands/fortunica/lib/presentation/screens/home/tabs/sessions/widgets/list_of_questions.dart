@@ -17,7 +17,14 @@ import 'package:fortunica/presentation/screens/home/tabs/sessions/sessions_cubit
 import 'package:fortunica/presentation/screens/home/tabs/sessions/widgets/list_tile/chats_list_tile_widget.dart';
 
 class ListOfQuestions extends StatelessWidget {
-  const ListOfQuestions({Key? key}) : super(key: key);
+  final ScrollController publicQuestionsScrollController;
+  final ScrollController conversationsScrollController;
+
+  const ListOfQuestions({
+    Key? key,
+    required this.publicQuestionsScrollController,
+    required this.conversationsScrollController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,16 +33,25 @@ class ListOfQuestions extends StatelessWidget {
 
     return IndexedStack(
       index: index,
-      children: const [
-        _PublicQuestionsListWidget(),
-        _PrivateQuestionsListWidget(),
+      children: [
+        _PublicQuestionsListWidget(
+          publicQuestionsScrollController: publicQuestionsScrollController,
+        ),
+        _PrivateQuestionsListWidget(
+          conversationsScrollController: conversationsScrollController,
+        ),
       ],
     );
   }
 }
 
 class _PublicQuestionsListWidget extends StatelessWidget {
-  const _PublicQuestionsListWidget({Key? key}) : super(key: key);
+  final ScrollController publicQuestionsScrollController;
+
+  const _PublicQuestionsListWidget({
+    Key? key,
+    required this.publicQuestionsScrollController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +74,8 @@ class _PublicQuestionsListWidget extends StatelessWidget {
           height: 1.0,
         ),
         Builder(builder: (context) {
-          final AppError appError =
-              context.select((FortunicaMainCubit cubit) => cubit.state.appError);
+          final AppError appError = context
+              .select((FortunicaMainCubit cubit) => cubit.state.appError);
           return AppErrorWidget(
             errorMessage: appError.getMessage(context),
             close: sessionsCubit.closeErrorWidget,
@@ -79,14 +95,13 @@ class _PublicQuestionsListWidget extends StatelessWidget {
                 .select((SessionsCubit cubit) => cubit.state.publicQuestions);
             return Expanded(
               child: _ListOfQuestionsWidget(
-                controller: sessionsCubit.publicQuestionsScrollController,
+                controller: publicQuestionsScrollController,
                 questions: publicQuestions,
                 onRefresh: () async {
                   sessionsCubit.getPublicQuestions(refresh: true);
                 },
                 emptyListTitle: SFortunica.of(context).noQuestionsYetFortunica,
-                emptyListLabel: SFortunica
-                    .of(context)
+                emptyListLabel: SFortunica.of(context)
                     .whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisListFortunica,
               ),
             );
@@ -98,7 +113,12 @@ class _PublicQuestionsListWidget extends StatelessWidget {
 }
 
 class _PrivateQuestionsListWidget extends StatelessWidget {
-  const _PrivateQuestionsListWidget({Key? key}) : super(key: key);
+  final ScrollController conversationsScrollController;
+
+  const _PrivateQuestionsListWidget({
+    Key? key,
+    required this.conversationsScrollController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -121,8 +141,8 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
           height: 1.0,
         ),
         Builder(builder: (context) {
-          final AppError appError =
-              context.select((FortunicaMainCubit cubit) => cubit.state.appError);
+          final AppError appError = context
+              .select((FortunicaMainCubit cubit) => cubit.state.appError);
           return AppErrorWidget(
             errorMessage: appError.getMessage(context),
             close: sessionsCubit.closeErrorWidget,
@@ -134,15 +154,15 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
                 .select((SessionsCubit cubit) => cubit.state.conversationsList);
             return Expanded(
               child: _ListOfQuestionsWidget(
-                controller: sessionsCubit.conversationsScrollController,
+                controller: conversationsScrollController,
                 questions: conversationsList,
                 isPublic: false,
                 onRefresh: () async {
                   sessionsCubit.getConversations(refresh: true);
                 },
                 emptyListTitle: SFortunica.of(context).noSessionsYetFortunica,
-                emptyListLabel:
-                    SFortunica.of(context).yourClientSessionHistoryWillAppearHereFortunica,
+                emptyListLabel: SFortunica.of(context)
+                    .yourClientSessionHistoryWillAppearHereFortunica,
               ),
             );
           },

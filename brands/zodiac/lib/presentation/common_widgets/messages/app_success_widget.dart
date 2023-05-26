@@ -5,6 +5,7 @@ import 'package:zodiac/presentation/common_widgets/buttons/open_email_button.dar
 
 class AppSuccessWidget extends StatelessWidget {
   final String message;
+  final String? title;
   final bool needEmailButton;
   final VoidCallback onClose;
 
@@ -12,11 +13,14 @@ class AppSuccessWidget extends StatelessWidget {
     Key? key,
     required this.message,
     required this.onClose,
+    this.title,
     this.needEmailButton = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 500),
       transitionBuilder: (child, animation) {
@@ -30,7 +34,7 @@ class AppSuccessWidget extends StatelessWidget {
           ? Container(
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColorLight,
+                  color: theme.primaryColorLight,
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(AppConstants.buttonRadius),
                     bottomRight: Radius.circular(AppConstants.buttonRadius),
@@ -44,15 +48,20 @@ class AppSuccessWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          if (title != null)
+                            Text(
+                              title!,
+                              style: theme.textTheme.displaySmall?.copyWith(
+                                fontSize: 16.0,
+                                color: theme.primaryColor,
+                              ),
+                            ),
                           Text(
                             message,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: Theme.of(context).primaryColor,
-                                ),
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w500,
+                              color: theme.primaryColor,
+                            ),
                           ),
                           if (needEmailButton)
                             const Padding(
@@ -69,7 +78,7 @@ class AppSuccessWidget extends StatelessWidget {
                     child: GestureDetector(
                       onTap: onClose,
                       child: Assets.vectors.close.svg(
-                        color: Theme.of(context).primaryColor,
+                        color: theme.primaryColor,
                       ),
                     ),
                   )

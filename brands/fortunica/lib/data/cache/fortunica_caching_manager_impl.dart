@@ -8,7 +8,6 @@ import 'package:fortunica/data/models/user_info/user_profile.dart';
 import 'package:fortunica/data/models/user_info/user_status.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared_advisor_interface/global.dart';
 
 import 'fortunica_caching_manager.dart';
 
@@ -22,7 +21,7 @@ const String _userIdKey = 'userIdKey';
 const String _userTokenKey = 'userTokenKey';
 const String _localeKey = 'localeKey';
 
-@Injectable(as: FortunicaCachingManager)
+@Singleton(as: FortunicaCachingManager)
 class FortunicaCachingManagerImpl implements FortunicaCachingManager {
   static Future<void> openBoxes() async {
     await Hive.openBox(_fortunicaUserBoxKey);
@@ -60,7 +59,7 @@ class FortunicaCachingManagerImpl implements FortunicaCachingManager {
     if (Hive.box(_fortunicaUserBoxKey).containsKey(_userProfileKey)) {
       Map<String, dynamic>? userProfileMap =
           json.decode(Hive.box(_fortunicaUserBoxKey).get(_userProfileKey));
-      if(userProfileMap != null) {
+      if (userProfileMap != null) {
         userProfile = UserProfile.fromJson(userProfileMap);
       }
     }
@@ -111,10 +110,7 @@ class FortunicaCachingManagerImpl implements FortunicaCachingManager {
     return Hive.box(_fortunicaUserBoxKey)
         .watch(key: _userProfileKey)
         .listen((event) {
-      logger.d('event value ${event.value != null}');
       if (event.value != null) {
-        logger.d('event value ${event.value}');
-        logger.d('event value ${event.value != null}');
         callback(UserProfile.fromJson(json.decode(event.value) ?? '{}'));
       }
     });
@@ -142,7 +138,6 @@ class FortunicaCachingManagerImpl implements FortunicaCachingManager {
     await Hive.box(_fortunicaUserBoxKey)
         .put(_userProfileKey, json.encode(userProfile?.toJson()));
   }
-
 
   @override
   Future<void> updateUserProfileCoverPictures(

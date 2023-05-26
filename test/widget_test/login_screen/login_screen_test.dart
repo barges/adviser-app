@@ -16,7 +16,7 @@ import 'package:shared_advisor_interface/data/models/user_info/my_details.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
 import 'package:shared_advisor_interface/data/repositories/zodiac_auth_repository_impl.dart';
 import 'package:shared_advisor_interface/domain/repositories/zodiac_auth_repository.dart';
-import 'package:shared_advisor_interface/domain/repositories/zodiac_chats_repository.dart';
+import 'package:shared_advisor_interface/domain/repositories/zodiac_sessions_repository.dart';
 import 'package:shared_advisor_interface/domain/repositories/zodiac_user_repository.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';

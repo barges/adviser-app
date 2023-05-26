@@ -43,7 +43,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "other": MessageLookupByLibrary.simpleMessage("Outro"),
         "otherBrands": MessageLookupByLibrary.simpleMessage("Outras marcas"),
         "permissionNeeded":
-            MessageLookupByLibrary.simpleMessage("Permissão Necessária"),
+            MessageLookupByLibrary.simpleMessage("Permissão necessária"),
         "pleaseUpdateTheApp":
             MessageLookupByLibrary.simpleMessage("Por favor, atualize o app"),
         "settings": MessageLookupByLibrary.simpleMessage("Configurações"),
@@ -51,7 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tapToCopy": MessageLookupByLibrary.simpleMessage("Toque para copiar"),
         "thisVersionOfTheAppIsNoLongerSupported":
             MessageLookupByLibrary.simpleMessage(
-                "Esta versão do app não está atualizada. Para acessar todas as suas conversas, instale a versão mais recente."),
+                "Esta versão do app não está atualizada. Para acessar todos os seus atendimentos, instale a versão mais recente."),
         "toEnableNotificationYoullNeedToAllowNotificationsInYour":
             MessageLookupByLibrary.simpleMessage(
                 "Para habilitar notificações, você precisa permitir notificações nas configurações do seu telefone"),
@@ -69,7 +69,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "wePrideOurselvesToOfferAdvisorsASafePlaceTo":
             MessageLookupByLibrary.simpleMessage(
                 "Temos orgulho de oferecer aos consultores um lugar seguro para atender os clientes e se desenvolver profissionalmente. Fazer um bom trabalho em uma de nossas marcas abrirá portas para outras."),
-        "workspaces":
-            MessageLookupByLibrary.simpleMessage("Espaços de trabalho")
+        "workspaces": MessageLookupByLibrary.simpleMessage("Áreas de trabalho")
       };
 }

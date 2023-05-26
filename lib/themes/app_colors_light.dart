@@ -19,4 +19,6 @@ class AppColorsLight {
   static const Color shade3 = Color(0xFF9396A3);
 
   static const Color overlay = Color.fromRGBO(40, 49, 58, 0.3);
+
+  static const Color primaryDark = Color(0xFF45B1FF);
 }

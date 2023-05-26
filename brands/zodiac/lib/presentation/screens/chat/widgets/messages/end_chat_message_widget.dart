@@ -62,13 +62,14 @@ class EndChatMessageWidget extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(
-                        _parseChatDuration(chatDuration, context),
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          fontSize: 11.0,
-                          color: theme.shadowColor,
+                      if (chatDuration.inSeconds > 0)
+                        Text(
+                          _parseChatDuration(chatDuration, context),
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            fontSize: 11.0,
+                            color: theme.shadowColor,
+                          ),
                         ),
-                      ),
                       Text(
                         date!.chatListTime,
                         textAlign: TextAlign.right,

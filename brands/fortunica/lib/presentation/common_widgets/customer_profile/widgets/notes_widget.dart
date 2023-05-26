@@ -7,7 +7,6 @@ import 'package:fortunica/fortunica_extensions.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:fortunica/presentation/common_widgets/customer_profile/customer_profile_cubit.dart';
 import 'package:fortunica/presentation/common_widgets/empty_list_widget.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 
@@ -147,9 +146,7 @@ class _OneNoteWidget extends StatelessWidget {
                     children: [
                       if (updatedAt != null)
                         Text(
-                          DateFormat(datePattern2).format(
-                            updatedAt!.toLocal(),
-                          ),
+                          updatedAt!.noteTime,
                         ),
                       if (images.isNotEmpty)
                         Row(

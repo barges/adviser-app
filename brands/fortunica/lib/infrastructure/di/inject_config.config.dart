@@ -4,6 +4,10 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
+// ignore_for_file: unnecessary_lambdas
+// ignore_for_file: lines_longer_than_80_chars
+// coverage:ignore-file
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:dio/dio.dart' as _i15;
 import 'package:get_it/get_it.dart' as _i1;
@@ -43,18 +47,18 @@ import '../../domain/repositories/fortunica_user_repository.dart' as _i26;
 import '../../fortunica_main_cubit.dart' as _i9;
 import 'dio_interceptors/app_interceptor.dart' as _i14;
 import 'modules/api_module.dart' as _i29;
-import 'modules/services_module.dart'
-    as _i28; // ignore_for_file: unnecessary_lambdas
+import 'modules/services_module.dart' as _i28;
 
+// ignore_for_file: unnecessary_lambdas
 // ignore_for_file: lines_longer_than_80_chars
-/// initializes the registration of provided dependencies inside of [GetIt]
+// initializes the registration of main-scope dependencies inside of GetIt
 Future<_i1.GetIt> $initGetIt(
-  _i1.GetIt get, {
+  _i1.GetIt getIt, {
   String? environment,
   _i2.EnvironmentFilter? environmentFilter,
 }) async {
   final gh = _i2.GetItHelper(
-    get,
+    getIt,
     environment,
     environmentFilter,
   );
@@ -65,8 +69,7 @@ Future<_i1.GetIt> $initGetIt(
       servicesModule.checkPermissionService);
   gh.singleton<_i5.ConnectivityService>(servicesModule.connectivityService);
   gh.singleton<_i6.DynamicLinkService>(servicesModule.dynamicLinkService);
-  gh.factory<_i7.FortunicaCachingManager>(
-      () => _i8.FortunicaCachingManagerImpl());
+  gh.singleton<_i7.FortunicaCachingManager>(_i8.FortunicaCachingManagerImpl());
   gh.singleton<_i9.FortunicaMainCubit>(_i9.FortunicaMainCubit());
   gh.singleton<_i10.FreshChatService>(servicesModule.freshChatService);
   gh.singleton<_i11.GlobalCachingManager>(servicesModule.globalCachingManager);
@@ -74,33 +77,33 @@ Future<_i1.GetIt> $initGetIt(
   gh.singleton<_i13.PushNotificationManager>(
       servicesModule.pushNotificationManager);
   gh.singleton<_i14.AppInterceptor>(_i14.AppInterceptor(
-    get<_i12.MainCubit>(),
-    get<_i9.FortunicaMainCubit>(),
-    get<_i7.FortunicaCachingManager>(),
+    gh<_i12.MainCubit>(),
+    gh<_i9.FortunicaMainCubit>(),
+    gh<_i7.FortunicaCachingManager>(),
   ));
   await gh.singletonAsync<_i15.Dio>(
     () => apiModule.initDio(
-      get<_i7.FortunicaCachingManager>(),
-      get<_i14.AppInterceptor>(),
+      gh<_i7.FortunicaCachingManager>(),
+      gh<_i14.AppInterceptor>(),
     ),
     preResolve: true,
   );
-  gh.factory<_i16.UserApi>(() => _i16.UserApi(get<_i15.Dio>()));
-  gh.factory<_i17.AuthApi>(() => _i17.AuthApi(get<_i15.Dio>()));
-  gh.factory<_i18.ChatsApi>(() => _i18.ChatsApi(get<_i15.Dio>()));
-  gh.factory<_i19.CustomerApi>(() => _i19.CustomerApi(get<_i15.Dio>()));
+  gh.factory<_i16.UserApi>(() => _i16.UserApi(gh<_i15.Dio>()));
+  gh.factory<_i17.AuthApi>(() => _i17.AuthApi(gh<_i15.Dio>()));
+  gh.factory<_i18.ChatsApi>(() => _i18.ChatsApi(gh<_i15.Dio>()));
+  gh.factory<_i19.CustomerApi>(() => _i19.CustomerApi(gh<_i15.Dio>()));
   gh.factory<_i20.FortunicaAuthRepository>(
-      () => _i21.FortunicaAuthRepositoryImpl(get<_i17.AuthApi>()));
+      () => _i21.FortunicaAuthRepositoryImpl(gh<_i17.AuthApi>()));
   gh.factory<_i22.FortunicaChatsRepository>(
-      () => _i23.FortunicaChatsRepositoryImpl(get<_i18.ChatsApi>()));
+      () => _i23.FortunicaChatsRepositoryImpl(gh<_i18.ChatsApi>()));
   gh.factory<_i24.FortunicaCustomerRepository>(
-      () => _i25.FortunicaCustomerRepositoryImpl(get<_i19.CustomerApi>()));
+      () => _i25.FortunicaCustomerRepositoryImpl(gh<_i19.CustomerApi>()));
   gh.factory<_i26.FortunicaUserRepository>(
       () => _i27.FortunicaUserRepositoryImpl(
-            get<_i16.UserApi>(),
-            get<_i7.FortunicaCachingManager>(),
+            gh<_i16.UserApi>(),
+            gh<_i7.FortunicaCachingManager>(),
           ));
-  return get;
+  return getIt;
 }
 
 class _$ServicesModule extends _i28.ServicesModule {}

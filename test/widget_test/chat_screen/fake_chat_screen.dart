@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/domain/repositories/zodiac_chats_repository.dart';
+import 'package:shared_advisor_interface/domain/repositories/zodiac_sessions_repository.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_screen.dart';

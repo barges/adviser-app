@@ -17,6 +17,8 @@ class BrandManager {
     ZodiacBrand(),
   ];
 
+  static String timeFormat = 'h:mm a';
+
   static final BaseBrand defaultBrand = brands.first;
 
   final GlobalCachingManager _cachingManager;

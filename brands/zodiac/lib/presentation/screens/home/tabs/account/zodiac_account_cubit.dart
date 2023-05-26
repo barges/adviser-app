@@ -113,7 +113,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
 
   void goToPhoneNumber(BuildContext context) {
     context.push(
-      route: ZodiacPhoneNumber(phoneNumber: state.phone),
+      route: ZodiacPhoneNumber(phone: state.phone),
     );
   }
 
@@ -142,8 +142,6 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
         if (response.errorCode == 0) {
           DetailedUserInfo? userInfo = response.result;
           UserDetails? userDetails = userInfo?.details;
-
-          logger.d(userDetails?.phone.runtimeType);
 
           _cacheManager.saveDetailedUserInfo(
               userInfo?.copyWith(locales: response.locales));
@@ -174,7 +172,6 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
         NotificationsRequest(count: 1, offset: 0),
       );
       if (notificationsResponse.errorCode == 0) {
-        logger.d(notificationsResponse.unreadCount);
         emit(state.copyWith(
             unreadedNotificationsCount:
                 notificationsResponse.unreadCount ?? 0));

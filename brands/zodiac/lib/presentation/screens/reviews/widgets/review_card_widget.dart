@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:zodiac/data/models/user_info/review_item_zodiac.dart';
@@ -83,12 +82,9 @@ class _ReviewCustomerInfoWidget extends StatelessWidget {
               ),
               if (item.dateCreate != null)
                 Text(
-                  DateFormat(datePattern9).format(
-                    DateTime.fromMillisecondsSinceEpoch(
-                            (item.dateCreate! * 1000),
-                            isUtc: true)
-                        .toLocal(),
-                  ),
+                  DateTime.fromMillisecondsSinceEpoch((item.dateCreate! * 1000),
+                          isUtc: true)
+                      .reviewCardTime,
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall

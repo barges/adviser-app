@@ -5,7 +5,7 @@ ARGUMENT="$1"
 PubGet() {
   if [ -z $ARGUMENT ]; then
     flutter pub get
-    flutter pub run build_runner build --delete-conflicting-outputs
+    dart run build_runner build --delete-conflicting-outputs
   elif [ $ARGUMENT = 'full' ]; then
     flutter pub get
     dart analyze
@@ -15,7 +15,7 @@ PubGet() {
     flutter clean
   else
     flutter pub get
-    flutter pub run build_runner build --delete-conflicting-outputs
+    dart run build_runner build --delete-conflicting-outputs
   fi
 }
 

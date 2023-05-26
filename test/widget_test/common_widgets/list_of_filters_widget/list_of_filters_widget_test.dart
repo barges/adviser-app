@@ -60,7 +60,6 @@ void main() {
 
       filters.forEachIndexed((index, element) {
         if (index != currentIndex) {
-          logger.d(index);
           expect(
               ((tester.firstWidget(
                               find.widgetWithText(Container, filters[index]))
