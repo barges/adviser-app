@@ -59,6 +59,9 @@ dependencies:
 
   audible_mode: ^1.0.1
 
+  recaptcha:
+    path: /Users/ozazhytskyi/Work/Webspark/recaptcha
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
