@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:io' hide SocketMessage;
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +27,7 @@ import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
 import 'package:zodiac/services/websocket_manager/chat_login_event.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
+import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
 import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
@@ -98,6 +99,8 @@ class ChatCubit extends Cubit<ChatState> {
 
   late final StreamSubscription<OfflineSessionEvent>
       _updateOfflineSessionIsActiveSubscription;
+
+  late final StreamSubscription<WebSocketState> _webSocketStateSubscription;
 
   late final StreamSubscription<bool> _keyboardSubscription;
 
@@ -262,6 +265,7 @@ class ChatCubit extends Cubit<ChatState> {
           });
         } else if (!event.isActive) {
           emit(state.copyWith(showOfflineSessionsMessage: false));
+          _offlineSessionTimer?.cancel();
         }
       }
     });
@@ -389,6 +393,17 @@ class ChatCubit extends Cubit<ChatState> {
       }
     });
 
+    _webSocketStateSubscription = _webSocketManager.webSocketStateStream.listen(
+      (event) {
+        if (event == WebSocketState.connected) {
+          _webSocketManager.chatLogin(opponentId: clientData.id ?? 0);
+          if (state.offlineSessionIsActive) {
+            closeOfflineSession();
+          }
+        }
+      },
+    );
+
     getClientInformation();
   }
 
@@ -416,6 +431,7 @@ class ChatCubit extends Cubit<ChatState> {
     _offlineSessionTimer?.cancel();
     _chatLoginSubscription.cancel();
     _underageConfirmSubscription.cancel();
+    _webSocketStateSubscription.cancel();
     return super.close();
   }
 
@@ -539,7 +555,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   String _generateMessageId() {
     final expertId = _cachingManager.getUid();
-    return '${expertId}_${DateTime.now().millisecondsSinceEpoch ~/ 1000}';
+    return SocketMessage.generateMessageId(expertId);
   }
 
   void updateSessions() {
@@ -590,5 +606,15 @@ class ChatCubit extends Cubit<ChatState> {
 
   void closeOfflineSession() {
     _webSocketManager.sendCloseOfflineSession();
+    emit(state.copyWith(
+      showOfflineSessionsMessage: false,
+      offlineSessionIsActive: false,
+    ));
+    _offlineSessionTimer?.cancel();
+  }
+
+  void deleteMessage(String? mid) {
+    _messages.removeWhere((element) => element.mid == mid);
+    emit(state.copyWith(messages: List.of(_messages)));
   }
 }

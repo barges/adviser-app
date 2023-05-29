@@ -7,7 +7,7 @@ part 'chat_state.freezed.dart';
 @freezed
 class ChatState with _$ChatState {
   const factory ChatState({
-    @Default([]) List<ChatMessageModel> messages,
+    List<ChatMessageModel>? messages,
     @Default(false) bool isVisibleTextField,
     @Default(false) bool clientInformationWidgetOpened,
     @Default(false) bool needShowDownButton,

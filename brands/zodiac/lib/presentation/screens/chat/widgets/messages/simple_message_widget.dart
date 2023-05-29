@@ -8,10 +8,12 @@ import 'package:zodiac/zodiac_extensions.dart';
 
 class SimpleMessageWidget extends StatelessWidget {
   final ChatMessageModel chatMessageModel;
+  final bool hideLoader;
 
   const SimpleMessageWidget({
     Key? key,
     required this.chatMessageModel,
+    this.hideLoader = false,
   }) : super(key: key);
 
   @override
@@ -27,6 +29,7 @@ class SimpleMessageWidget extends StatelessWidget {
               ),
               _MessageContainer(
                 chatMessageModel: chatMessageModel,
+                hideLoader: hideLoader,
               ),
             ],
           )
@@ -34,6 +37,7 @@ class SimpleMessageWidget extends StatelessWidget {
             children: [
               _MessageContainer(
                 chatMessageModel: chatMessageModel,
+                hideLoader: hideLoader,
               ),
               Expanded(
                 child: ReactionWidget(
@@ -47,10 +51,12 @@ class SimpleMessageWidget extends StatelessWidget {
 
 class _MessageContainer extends StatelessWidget {
   final ChatMessageModel chatMessageModel;
+  final bool hideLoader;
 
   const _MessageContainer({
     Key? key,
     required this.chatMessageModel,
+    required this.hideLoader,
   }) : super(key: key);
 
   @override
@@ -105,6 +111,7 @@ class _MessageContainer extends StatelessWidget {
                     IsDeliveredWidget(
                       chatMessageModel: chatMessageModel,
                       color: Colors.transparent,
+                      hideLoader: hideLoader,
                     ),
                   ],
                 ),
@@ -130,6 +137,7 @@ class _MessageContainer extends StatelessWidget {
               IsDeliveredWidget(
                 chatMessageModel: chatMessageModel,
                 color: theme.primaryColorLight,
+                hideLoader: hideLoader,
               ),
             ],
           ),

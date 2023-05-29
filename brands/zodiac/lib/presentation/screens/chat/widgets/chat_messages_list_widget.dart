@@ -4,25 +4,24 @@ import 'package:scrollview_observer/scrollview_observer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/chat_message_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/down_button_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/typing_indicator.dart';
 import 'package:zodiac/zodiac_constants.dart';
 
 class ChatMessagesListWidget extends StatelessWidget {
   final bool fromStartingChat;
+  final List<ChatMessageModel> messages;
 
   const ChatMessagesListWidget({
     Key? key,
     required this.fromStartingChat,
+    required this.messages,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ChatCubit chatCubit = context.read<ChatCubit>();
-
-    final List<ChatMessageModel> messages =
-        context.select((ChatCubit cubit) => cubit.state.messages);
 
     // for (var element in messages) {
     //   logger.d(element);
@@ -76,6 +75,7 @@ class ChatMessagesListWidget extends StatelessWidget {
                     final ChatMessageModel messageModel = messages[index - 1];
                     if (messageModel.isOutgoing || messageModel.isRead) {
                       return ChatMessageWidget(
+                        key: ValueKey(messageModel.mid),
                         chatMessageModel: messageModel,
                       );
                     } else {
@@ -87,6 +87,7 @@ class ChatMessagesListWidget extends StatelessWidget {
                           }
                         },
                         child: ChatMessageWidget(
+                          key: ValueKey(messageModel.mid),
                           chatMessageModel: messageModel,
                         ),
                       );
