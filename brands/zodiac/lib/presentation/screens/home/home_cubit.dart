@@ -102,7 +102,9 @@ class HomeCubit extends Cubit<HomeState> {
         _appInForeground = value;
 
         if (value) {
-          _webSocketManager.connect();
+          if (_webSocketManager.currentState == WebSocketState.closed) {
+            _webSocketManager.connect();
+          }
         } else {
           _webSocketManager.close();
         }

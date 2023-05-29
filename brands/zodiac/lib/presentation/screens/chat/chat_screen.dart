@@ -4,10 +4,12 @@ import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
+import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
+import 'package:zodiac/presentation/common_widgets/empty_list_widget.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_success_widget.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_messages_list_widget.dart';
@@ -78,9 +80,41 @@ class ChatScreen extends StatelessWidget {
                     Column(
                       children: [
                         Expanded(
-                          child: ChatMessagesListWidget(
-                            fromStartingChat: fromStartingChat,
-                          ),
+                          child: Builder(builder: (context) {
+                            final List<ChatMessageModel>? messages =
+                                context.select(
+                                    (ChatCubit cubit) => cubit.state.messages);
+                            if (messages != null) {
+                              if (messages.isNotEmpty) {
+                                return ChatMessagesListWidget(
+                                  fromStartingChat: fromStartingChat,
+                                  messages: messages,
+                                );
+                              } else {
+                                return CustomScrollView(
+                                  slivers: [
+                                    SliverFillRemaining(
+                                      hasScrollBody: false,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          EmptyListWidget(
+                                            title: SZodiac.of(context)
+                                                .noMessagesYetZodiac,
+                                            label: SZodiac.of(context)
+                                                .yourChatHistoryWillAppearHereZodiac,
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                );
+                              }
+                            } else {
+                              return const SizedBox.shrink();
+                            }
+                          }),
                         ),
                         if (chatIsActive || offlineSessionIsActive)
                           Builder(builder: (context) {
