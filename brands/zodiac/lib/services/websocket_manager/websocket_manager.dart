@@ -44,6 +44,8 @@ abstract class WebSocketManager {
 
   Stream<WebSocketState> get webSocketStateStream;
 
+  WebSocketState get currentState;
+
   Future connect();
 
   void close();
