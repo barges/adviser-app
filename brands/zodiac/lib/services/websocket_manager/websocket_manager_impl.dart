@@ -76,6 +76,8 @@ class WebSocketManagerImpl implements WebSocketManager {
   final PublishSubject<UnderageConfirmEvent> _underageConfirmStream =
       PublishSubject();
 
+  final PublishSubject<WebSocketState> _webSocketStateStream = PublishSubject();
+
   WebSocketManagerImpl(
     this._zodiacMainCubit,
     this._zodiacCachingManager,
@@ -264,6 +266,10 @@ class WebSocketManagerImpl implements WebSocketManager {
       _underageConfirmStream.stream;
 
   @override
+  Stream<WebSocketState> get webSocketStateStream =>
+      _webSocketStateStream.stream;
+
+  @override
   Future connect() async {
     final String? authToken = _zodiacCachingManager.getUserToken();
     final int? advisorId = _zodiacCachingManager.getUid();
@@ -282,6 +288,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
       logger.d("Socket is connecting ...");
       _channel = IOWebSocketChannel.connect(url);
+      _webSocketStateStream.add(WebSocketState.connected);
       _socketSubscription = _channel!.stream.listen((event) {
         final message = SocketMessage.fromJson(json.decode(event));
         if (kDebugMode) {
@@ -295,9 +302,11 @@ class WebSocketManagerImpl implements WebSocketManager {
         _emitter.emit(message.action, this, message);
       }, onDone: () {
         logger.d("Socket is closed...");
+        _webSocketStateStream.add(WebSocketState.closed);
         _authCheckOnBackend();
       }, onError: (error) {
         logger.d("Socket error: $error");
+        _webSocketStateStream.add(WebSocketState.closed);
         connect();
       });
       _onStart(advisorId);

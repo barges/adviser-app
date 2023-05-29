@@ -100,6 +100,8 @@ class ChatCubit extends Cubit<ChatState> {
   late final StreamSubscription<OfflineSessionEvent>
       _updateOfflineSessionIsActiveSubscription;
 
+  late final StreamSubscription<WebSocketState> _webSocketStateSubscription;
+
   late final StreamSubscription<bool> _keyboardSubscription;
 
   bool triggerOnTextChanged = true;
@@ -263,6 +265,7 @@ class ChatCubit extends Cubit<ChatState> {
           });
         } else if (!event.isActive) {
           emit(state.copyWith(showOfflineSessionsMessage: false));
+          _offlineSessionTimer?.cancel();
         }
       }
     });
@@ -390,6 +393,17 @@ class ChatCubit extends Cubit<ChatState> {
       }
     });
 
+    _webSocketStateSubscription = _webSocketManager.webSocketStateStream.listen(
+      (event) {
+        if (event == WebSocketState.connected) {
+          _webSocketManager.chatLogin(opponentId: clientData.id ?? 0);
+          if (state.offlineSessionIsActive) {
+            closeOfflineSession();
+          }
+        }
+      },
+    );
+
     getClientInformation();
   }
 
@@ -417,6 +431,7 @@ class ChatCubit extends Cubit<ChatState> {
     _offlineSessionTimer?.cancel();
     _chatLoginSubscription.cancel();
     _underageConfirmSubscription.cancel();
+    _webSocketStateSubscription.cancel();
     return super.close();
   }
 
@@ -591,6 +606,11 @@ class ChatCubit extends Cubit<ChatState> {
 
   void closeOfflineSession() {
     _webSocketManager.sendCloseOfflineSession();
+    emit(state.copyWith(
+      showOfflineSessionsMessage: false,
+      offlineSessionIsActive: false,
+    ));
+    _offlineSessionTimer?.cancel();
   }
 
   void deleteMessage(String? mid) {
