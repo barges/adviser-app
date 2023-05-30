@@ -100,6 +100,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "experienceZodiac": MessageLookupByLibrary.simpleMessage("Erfahrung"),
         "forgotPasswordZodiac":
             MessageLookupByLibrary.simpleMessage("Passwort vergessen"),
+        "freeChatZodiac":
+            MessageLookupByLibrary.simpleMessage("Kostenloser Chat"),
         "freebieSeeker": MessageLookupByLibrary.simpleMessage("Freebie-Sucher"),
         "hereWillAppearArticles":
             MessageLookupByLibrary.simpleMessage("Hier erscheinen Artikel"),
@@ -146,6 +148,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "onlineServicesZodiac":
             MessageLookupByLibrary.simpleMessage("Online Dienste:"),
         "openEmailZodiac": MessageLookupByLibrary.simpleMessage("Email öffnen"),
+        "paidChatZodiac":
+            MessageLookupByLibrary.simpleMessage("Bezahlter Chat"),
         "passwordZodiac": MessageLookupByLibrary.simpleMessage("Passwort"),
         "perMinuteZodiac": MessageLookupByLibrary.simpleMessage("per minute"),
         "performanceOverviewAnalyticsZodiac":

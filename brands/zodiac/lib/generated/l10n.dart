@@ -1254,6 +1254,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Paid chat`
+  String get paidChatZodiac {
+    return Intl.message(
+      'Paid chat',
+      name: 'paidChatZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Free chat`
+  String get freeChatZodiac {
+    return Intl.message(
+      'Free chat',
+      name: 'freeChatZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

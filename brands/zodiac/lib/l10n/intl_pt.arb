@@ -118,5 +118,7 @@
   "tryAgainZodiac": "Tente novamente",
   "doYouWantToDeleteThisMessageZodiac": "Deseja excluir esta mensagem?",
   "noMessagesYetZodiac": "Nenhuma mensagem, ainda",
-  "yourChatHistoryWillAppearHereZodiac": "Seu histórico de bate-papo aparecerá aqui"
+  "yourChatHistoryWillAppearHereZodiac": "Seu histórico de bate-papo aparecerá aqui",
+  "paidChatZodiac": "Chat pago",
+  "freeChatZodiac": "Bate-papo grátis"
 }

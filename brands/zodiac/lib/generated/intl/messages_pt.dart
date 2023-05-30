@@ -104,6 +104,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "experienceZodiac": MessageLookupByLibrary.simpleMessage("Experiência"),
         "forgotPasswordZodiac":
             MessageLookupByLibrary.simpleMessage("Esqueceu a senha"),
+        "freeChatZodiac":
+            MessageLookupByLibrary.simpleMessage("Bate-papo grátis"),
         "freebieSeeker":
             MessageLookupByLibrary.simpleMessage("candidato a brinde"),
         "hereWillAppearArticles":
@@ -155,6 +157,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "😱 Opa! Seus dados de acesso parecem estar incorretos. Tente novamente ou toque em Redefinir senha."),
         "openEmailZodiac": MessageLookupByLibrary.simpleMessage("Abrir e-mail"),
+        "paidChatZodiac": MessageLookupByLibrary.simpleMessage("Chat pago"),
         "passwordZodiac": MessageLookupByLibrary.simpleMessage("Senha"),
         "perMinuteZodiac": MessageLookupByLibrary.simpleMessage("por minuto"),
         "performanceOverviewAnalyticsZodiac":

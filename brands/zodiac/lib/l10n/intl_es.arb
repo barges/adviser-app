@@ -118,5 +118,7 @@
   "tryAgainZodiac": "Intenta nuevamente",
   "doYouWantToDeleteThisMessageZodiac": "¿Quieres borrar este mensaje?",
   "noMessagesYetZodiac": "No hay mensajes, todavía",
-  "yourChatHistoryWillAppearHereZodiac": "Su historial de chat aparecerá aquí."
+  "yourChatHistoryWillAppearHereZodiac": "Su historial de chat aparecerá aquí.",
+  "paidChatZodiac": "Chat pagado",
+  "freeChatZodiac": "Chat gratis"
 }
