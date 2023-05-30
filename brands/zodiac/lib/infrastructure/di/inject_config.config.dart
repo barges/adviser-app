@@ -37,18 +37,18 @@ import '../../data/network/api/services_api.dart' as _i18;
 import '../../data/network/api/sessions_api.dart' as _i19;
 import '../../data/network/api/user_api.dart' as _i20;
 import '../../data/repository_impl/zodiac_articles_repository_impl.dart'
-    as _i30;
-import '../../data/repository_impl/zodiac_auth_repository_impl.dart' as _i32;
-import '../../data/repository_impl/zodiac_chat_repository_impl.dart' as _i34;
+    as _i29;
+import '../../data/repository_impl/zodiac_auth_repository_impl.dart' as _i31;
+import '../../data/repository_impl/zodiac_chat_repository_impl.dart' as _i33;
 import '../../data/repository_impl/zodiac_sessions_repository_impl.dart'
     as _i22;
 import '../../data/repository_impl/zodiac_user_repository_impl.dart' as _i24;
-import '../../domain/repositories/zodiac_articles_repository.dart' as _i29;
-import '../../domain/repositories/zodiac_auth_repository.dart' as _i31;
-import '../../domain/repositories/zodiac_chat_repository.dart' as _i33;
+import '../../domain/repositories/zodiac_articles_repository.dart' as _i28;
+import '../../domain/repositories/zodiac_auth_repository.dart' as _i30;
+import '../../domain/repositories/zodiac_chat_repository.dart' as _i32;
 import '../../domain/repositories/zodiac_sessions_repository.dart' as _i21;
 import '../../domain/repositories/zodiac_user_repository.dart' as _i23;
-import '../../presentation/screens/chat/chat_cubit.dart' as _i28;
+import '../../presentation/screens/chat/chat_cubit.dart' as _i34;
 import '../../services/websocket_manager/websocket_manager.dart' as _i14;
 import '../../services/websocket_manager/websocket_manager_impl.dart' as _i15;
 import '../../zodiac_main_cubit.dart' as _i13;
@@ -111,23 +111,24 @@ Future<_i1.GetIt> $initGetIt(
   gh.factory<_i25.ArticlesApi>(() => _i25.ArticlesApi(gh<_i17.Dio>()));
   gh.factory<_i26.AuthApi>(() => _i26.AuthApi(gh<_i17.Dio>()));
   gh.factory<_i27.ChatApi>(() => _i27.ChatApi(gh<_i17.Dio>()));
-  gh.factoryParam<_i28.ChatCubit, _i28.ChatCubitParams, dynamic>((
+  gh.factory<_i28.ZodiacArticlesRepository>(
+      () => _i29.ZodiacArticlesRepositoryImpl(gh<_i25.ArticlesApi>()));
+  gh.factory<_i30.ZodiacAuthRepository>(
+      () => _i31.ZodiacAuthRepositoryImpl(gh<_i26.AuthApi>()));
+  gh.factory<_i32.ZodiacChatRepository>(
+      () => _i33.ZodiacChatRepositoryImpl(gh<_i27.ChatApi>()));
+  gh.factoryParam<_i34.ChatCubit, _i34.ChatCubitParams, dynamic>((
     chatCubitParams,
     _,
   ) =>
-      _i28.ChatCubit(
+      _i34.ChatCubit(
         chatCubitParams,
         gh<_i11.ZodiacCachingManager>(),
         gh<_i14.WebSocketManager>(),
         gh<_i23.ZodiacUserRepository>(),
         gh<_i13.ZodiacMainCubit>(),
+        gh<_i32.ZodiacChatRepository>(),
       ));
-  gh.factory<_i29.ZodiacArticlesRepository>(
-      () => _i30.ZodiacArticlesRepositoryImpl(gh<_i25.ArticlesApi>()));
-  gh.factory<_i31.ZodiacAuthRepository>(
-      () => _i32.ZodiacAuthRepositoryImpl(gh<_i26.AuthApi>()));
-  gh.factory<_i33.ZodiacChatRepository>(
-      () => _i34.ZodiacChatRepositoryImpl(gh<_i27.ChatApi>()));
   return getIt;
 }
 

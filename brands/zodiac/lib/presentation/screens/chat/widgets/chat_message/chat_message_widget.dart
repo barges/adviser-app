@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/enums/chat_message_type.dart';
+import 'package:zodiac/domain/repositories/zodiac_chat_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
@@ -22,9 +23,9 @@ import 'package:zodiac/presentation/screens/chat/widgets/resend_message_widget.d
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 
 class ChatMessageWidget extends StatelessWidget {
-  final ChatMessageModel chatMessageModel;
+  ChatMessageModel chatMessageModel;
 
-  const ChatMessageWidget({
+  ChatMessageWidget({
     Key? key,
     required this.chatMessageModel,
   }) : super(key: key);
@@ -39,6 +40,9 @@ class ChatMessageWidget extends StatelessWidget {
         chatCubit.enterRoomData?.roomData?.id,
         chatCubit.clientData.id,
         zodiacGetIt.get<WebSocketManager>(),
+        chatMessageModel.type == ChatMessageType.image,
+        chatCubit.imageIsDeliveredStream.stream,
+        zodiacGetIt.get<ZodiacChatRepository>(),
       ),
       child: Builder(builder: (context) {
         final ChatMessageCubit chatMessageCubit =
@@ -46,6 +50,13 @@ class ChatMessageWidget extends StatelessWidget {
 
         final bool showResendWidget = context
             .select((ChatMessageCubit cubit) => cubit.state.showResendWidget);
+
+        final bool updateMessageIdDelivered = context.select(
+            (ChatMessageCubit cubit) => cubit.state.updateMessageIsDelivered);
+        if (updateMessageIdDelivered) {
+          chatMessageModel = chatMessageModel.copyWith(isDelivered: true);
+        }
+
         return Stack(
           children: [
             Column(

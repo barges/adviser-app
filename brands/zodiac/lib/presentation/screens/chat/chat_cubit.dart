@@ -16,10 +16,14 @@ import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
+import 'package:zodiac/data/models/chat/image_is_delivered.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
 import 'package:zodiac/data/models/enums/chat_message_type.dart';
+import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/requests/profile_details_request.dart';
 import 'package:zodiac/data/network/responses/profile_details_response.dart';
+import 'package:zodiac/data/network/responses/send_image_response.dart';
+import 'package:zodiac/domain/repositories/zodiac_chat_repository.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/chat/chat_state.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_text_input_widget.dart';
@@ -58,6 +62,7 @@ class ChatCubit extends Cubit<ChatState> {
   final ZodiacUserRepository _userRepository;
   final ZodiacMainCubit _zodiacMainCubit;
   late final UnderageConfirmDialog _underageConfirmDialog;
+  final ZodiacChatRepository _chatRepository;
 
   final SnappingSheetController snappingSheetController =
       SnappingSheetController();
@@ -71,6 +76,8 @@ class ChatCubit extends Cubit<ChatState> {
 
   final PublishSubject<double> _showDownButtonStream = PublishSubject();
   late final StreamSubscription<double> _showDownButtonSubscription;
+  final PublishSubject<ImageIsDelivered> imageIsDeliveredStream =
+      PublishSubject();
 
   late final ListObserverController observerController =
       ListObserverController(controller: messagesScrollController)
@@ -125,6 +132,7 @@ class ChatCubit extends Cubit<ChatState> {
     this._webSocketManager,
     this._userRepository,
     this._zodiacMainCubit,
+    this._chatRepository,
   ) : super(const ChatState()) {
     _fromStartingChat = chatCubitParams.fromStartingChat;
     clientData = chatCubitParams.clientData;
@@ -580,18 +588,49 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> sendImage(BuildContext context, File image) async {
-    ChatMessageModel? message = await context.push<ChatMessageModel?>(
+    bool? shouldSend = await context.push<bool?>(
       route: ZodiacSendImage(
         image: image,
-        clientId: clientData.id.toString(),
       ),
     );
 
-    logger.d(message);
+    if (shouldSend == true) {
+      String mid = _generateMessageId();
 
-    if (message != null) {
+      ChatMessageModel message = ChatMessageModel(
+        type: ChatMessageType.image,
+        isOutgoing: true,
+        utc: DateTime.now().toUtc(),
+        fromAdvisor: true,
+        mainImage: image.path,
+        mid: mid,
+        isDelivered: false,
+      );
+
       _messages.insert(0, message);
       _updateMessages();
+
+      logger.d(message);
+
+      try {
+        SendImageResponse response = await _chatRepository.sendImageToChat(
+          request: AuthorizedRequest(),
+          mid: mid,
+          image: image,
+          clientId: clientData.id.toString(),
+        );
+
+        imageIsDeliveredStream.add(ImageIsDelivered(
+          mid: mid,
+          isDelivered: response.status == true,
+        ));
+      } catch (e) {
+        logger.d(e);
+        imageIsDeliveredStream.add(ImageIsDelivered(
+          mid: mid,
+          isDelivered: false,
+        ));
+      }
     }
   }
 
