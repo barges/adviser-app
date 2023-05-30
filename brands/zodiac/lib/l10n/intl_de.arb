@@ -136,5 +136,10 @@
   "reportUnderageUserZodiac": "Minderjährigen Benutzer melden",
   "reportZodiac": "Bericht",
   "doYouReallyWantToCloseTheChatZodiac": "Möchten Sie den Chat wirklich schließen?",
-  "audioMessageZodiac": "Audio-Nachricht"
+  "audioMessageZodiac": "Audio-Nachricht",
+  "cancelSendingZodiac": "Senden abbrechen",
+  "tryAgainZodiac": "Erneut versuchen",
+  "doYouWantToDeleteThisMessageZodiac": "Möchten Sie diese Nachricht löschen?",
+  "noMessagesYetZodiac": "Noch keine Nachrichten",
+  "yourChatHistoryWillAppearHereZodiac": "Ihr Chat-Verlauf wird hier angezeigt"
 }

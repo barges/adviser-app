@@ -69,6 +69,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "callStartedZodiac":
             MessageLookupByLibrary.simpleMessage("Llamada iniciada"),
         "callZodiac": MessageLookupByLibrary.simpleMessage("Llamar:"),
+        "cancelSendingZodiac":
+            MessageLookupByLibrary.simpleMessage("Cancelar envío"),
         "cancelZodiac": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "changeZodiac": MessageLookupByLibrary.simpleMessage("Cambiar"),
         "characterLimitExceededZodiac": MessageLookupByLibrary.simpleMessage(
@@ -103,6 +105,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "doYouReallyWantToEndTheChatZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "¿De verdad quieres terminar el chat?"),
+        "doYouWantToDeleteThisMessageZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "¿Quieres borrar este mensaje?"),
         "editProfileZodiac":
             MessageLookupByLibrary.simpleMessage("Editar perfil"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("Email"),
@@ -153,6 +158,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Aún no hay artículos"),
         "noInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage("Sin conexión a internet."),
+        "noMessagesYetZodiac":
+            MessageLookupByLibrary.simpleMessage("No hay mensajes, todavía"),
         "noNotificationsYetZodiac": MessageLookupByLibrary.simpleMessage(
             "No hay notificaciones, todavía"),
         "noReviewsYetZodiac":
@@ -240,6 +247,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tipZodiac": MessageLookupByLibrary.simpleMessage("Consejo"),
         "todayZodiac": MessageLookupByLibrary.simpleMessage("Hoy"),
         "topUpZodiac": MessageLookupByLibrary.simpleMessage("Completar"),
+        "tryAgainZodiac":
+            MessageLookupByLibrary.simpleMessage("Intenta nuevamente"),
         "typeMessageZodiac":
             MessageLookupByLibrary.simpleMessage("Escribe un mensaje"),
         "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainZodiac":
@@ -273,6 +282,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Se aceptan sus cambios y se revisarán en breve. Todas las actualizaciones serán visibles para los clientes después de eso"),
+        "yourChatHistoryWillAppearHereZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Su historial de chat aparecerá aquí."),
         "yourClientSessionHistoryWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Aquí aparecerá el historial de sesiones de tu cliente"),

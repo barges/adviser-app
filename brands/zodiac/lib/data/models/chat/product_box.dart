@@ -19,15 +19,15 @@ class ProductBox with _$ProductBox {
     int? id,
     String? icon,
     String? name,
-    double? price,
-    int? prId,
+    dynamic price, //Can be String or double
+    dynamic prId, //Can  be String or double
     @JsonKey(
       name: 'status',
       fromJson: _boolFromInt,
       toJson: _boolToInt,
     )
     @Default(false)
-        bool isPaid,
+    bool isPaid,
   }) = _ProductBox;
 
   factory ProductBox.fromJson(Map<String, dynamic> json) =>

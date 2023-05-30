@@ -1454,6 +1454,56 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Cancel sending`
+  String get cancelSendingZodiac {
+    return Intl.message(
+      'Cancel sending',
+      name: 'cancelSendingZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Try again`
+  String get tryAgainZodiac {
+    return Intl.message(
+      'Try again',
+      name: 'tryAgainZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to delete this message?`
+  String get doYouWantToDeleteThisMessageZodiac {
+    return Intl.message(
+      'Do you want to delete this message?',
+      name: 'doYouWantToDeleteThisMessageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No messages, yet`
+  String get noMessagesYetZodiac {
+    return Intl.message(
+      'No messages, yet',
+      name: 'noMessagesYetZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your chat history will appear here`
+  String get yourChatHistoryWillAppearHereZodiac {
+    return Intl.message(
+      'Your chat history will appear here',
+      name: 'yourChatHistoryWillAppearHereZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

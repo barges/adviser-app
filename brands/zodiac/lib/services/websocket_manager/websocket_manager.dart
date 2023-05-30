@@ -8,6 +8,11 @@ import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
 import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
 
+enum WebSocketState {
+  connected,
+  closed;
+}
+
 abstract class WebSocketManager {
   Stream<List<ChatMessageModel>> get entitiesStream;
 
@@ -36,6 +41,10 @@ abstract class WebSocketManager {
   Stream<ChatLoginEvent> get chatLoginStream;
 
   Stream<UnderageConfirmEvent> get underageConfirmStream;
+
+  Stream<WebSocketState> get webSocketStateStream;
+
+  WebSocketState get currentState;
 
   Future connect();
 

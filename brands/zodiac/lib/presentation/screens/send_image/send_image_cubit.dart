@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:io' hide SocketMessage;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +10,7 @@ import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/send_image_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_chat_repository.dart';
 import 'package:zodiac/presentation/screens/send_image/send_image_state.dart';
+import 'package:zodiac/services/websocket_manager/socket_message.dart';
 
 class SendImageCubit extends Cubit<SendImageState> {
   final ZodiacCachingManager _cachingManager;
@@ -53,6 +54,6 @@ class SendImageCubit extends Cubit<SendImageState> {
 
   String _generateMessageId() {
     final expertId = _cachingManager.getUid();
-    return '${expertId}_${DateTime.now().millisecondsSinceEpoch ~/ 1000}';
+    return SocketMessage.generateMessageId(expertId);
   }
 }

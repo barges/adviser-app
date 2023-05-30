@@ -32,6 +32,10 @@ class SocketMessage {
     return json.encode(data);
   }
 
+  static String generateMessageId(int? expertId) {
+    return '${expertId}_${DateTime.now().millisecondsSinceEpoch ~/ 1000}';
+  }
+
   static SocketMessage pong() => SocketMessage(action: Commands.pong);
 
   static SocketMessage advisorLogin({required int userId}) =>

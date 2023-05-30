@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:zodiac/data/models/enums/chat_message_type.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 
 part 'chat_item_zodiac.g.dart';
@@ -20,7 +21,7 @@ class ZodiacChatsListItem with _$ZodiacChatsListItem {
     String? lastMessage,
     String? isBanned,
     int? unreadCount,
-    String? lastMessageType,
+    @JsonKey(fromJson: _typeFromJson) ChatMessageType? lastMessageType,
     int? dateLastUpdate,
     int? id,
     String? name,
@@ -31,14 +32,19 @@ class ZodiacChatsListItem with _$ZodiacChatsListItem {
   factory ZodiacChatsListItem.fromJson(Map<String, dynamic> json) =>
       _$ZodiacChatsListItemFromJson(json);
 
-  bool get isMissed => lastMessageType == '17';
+  bool get isMissed => lastMessageType == ChatMessageType.missed;
 
   bool get haveUnreadedMessages => unreadCount != null && unreadCount! > 0;
 
-  bool get isAudio => lastMessageType == '21';
+  bool get isAudio => lastMessageType == ChatMessageType.audio;
 }
 
 ZodiacUserStatus _statusFromJson(num? value) {
   int? status = value?.toInt();
   return ZodiacUserStatus.statusFromInt(status);
+}
+
+ChatMessageType _typeFromJson(dynamic value) {
+  String type = value.toString();
+  return ChatMessageType.typeFromString(type);
 }
