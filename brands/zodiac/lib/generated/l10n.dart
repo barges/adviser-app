@@ -985,20 +985,20 @@ class SZodiac {
     );
   }
 
-  /// `You missed call\n from {clientName}.`
+  /// `You missed a call from {clientName}.`
   String youMissedCallFromZodiac(Object clientName) {
     return Intl.message(
-      'You missed call\n from $clientName.',
+      'You missed a call from $clientName.',
       name: 'youMissedCallFromZodiac',
       desc: '',
       args: [clientName],
     );
   }
 
-  /// `You missed chat \n from {clientName}.`
+  /// `You missed a chat from {clientName}.`
   String youMissedChatFromZodiac(Object clientName) {
     return Intl.message(
-      'You missed chat \n from $clientName.',
+      'You missed a chat from $clientName.',
       name: 'youMissedChatFromZodiac',
       desc: '',
       args: [clientName],

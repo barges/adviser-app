@@ -31,10 +31,10 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m3(timer) => "Sie können innerhalb von ${timer} schreiben";
 
   static String m4(clientName) =>
-      "Sie haben den Anruf \n von ${clientName} verpasst.";
+      "Sie haben einen Anruf von ${clientName} verpasst.";
 
   static String m5(clientName) =>
-      "Sie haben den Chat \n von ${clientName} verpasst.";
+      "Sie haben einen Chat von ${clientName} verpasst.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{

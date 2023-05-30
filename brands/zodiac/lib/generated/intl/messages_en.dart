@@ -30,9 +30,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(timer) => "You are able to write within ${timer}";
 
-  static String m4(clientName) => "You missed call\n from ${clientName}.";
+  static String m4(clientName) => "You missed a call from ${clientName}.";
 
-  static String m5(clientName) => "You missed chat \n from ${clientName}.";
+  static String m5(clientName) => "You missed a chat from ${clientName}.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
