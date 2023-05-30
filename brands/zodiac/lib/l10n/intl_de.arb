@@ -111,6 +111,7 @@
   "okZodiac":"Ok",
   "limitReachedZodiac":"Limit erreicht",
   "youveReachedLimitPhoneVerificationAttemptsZodiac":"Sie haben das Limit für telefonische Bestätigungsversuche erreicht. Bitte wenden Sie sich an den Support.",
+  "phoneIsAlreadyExistZodiac": "Telefon ist bereits vorhanden",
   "startChatZodiac": "Chat beginnen",
   "declineZodiac": "Abfall",
   "incomingChatZodiac": "EINGEHENDER Chat",

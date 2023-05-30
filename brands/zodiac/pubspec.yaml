@@ -60,7 +60,8 @@ dependencies:
   audible_mode: ^1.0.1
 
   recaptcha:
-    path: /Users/ozazhytskyi/Work/Webspark/recaptcha
+   git:
+      url: git@github.com:barges/flutter-recaptcha.git
 
 dev_dependencies:
   flutter_test:

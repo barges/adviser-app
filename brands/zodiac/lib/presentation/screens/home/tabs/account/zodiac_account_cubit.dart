@@ -44,12 +44,13 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   final Future<bool> Function(bool needShowSettingsAlert) _handlePermission;
 
   StreamSubscription? _currentBrandSubscription;
-
-  late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
   StreamSubscription<bool>? _connectivitySubscription;
   bool? isPushNotificationPermissionGranted;
+
+  late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
   late final StreamSubscription<bool> _updateAccountSubscription;
   late final StreamSubscription<bool> _updateUnreadNotificationsCounter;
+  late final StreamSubscription<bool> _updateAccauntSettingsSubscription;
 
   ZodiacAccountCubit(
     this._brandManager,
@@ -87,6 +88,11 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
         _mainCubit.unreadNotificationsCounterUpdateTrigger.listen((value) {
       _getUnreadNotificationsCount();
     });
+
+    _updateAccauntSettingsSubscription =
+        _mainCubit.updateAccauntSettingsTrigger.listen((_) {
+      _getSettings();
+    });
   }
 
   @override
@@ -96,6 +102,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     _updateAccountSubscription.cancel();
     _updateUnreadNotificationsCounter.cancel();
     _currentBrandSubscription?.cancel();
+    _updateAccauntSettingsSubscription.cancel();
     super.close();
   }
 

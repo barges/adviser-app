@@ -19,18 +19,6 @@ abstract class GlobalCachingManager {
   Future<void> saveFirstPermissionStatusesRequestsMap(
       PermissionType permissionType);
 
-  Future<void> saveStartTimeVerificationAttempt(DateTime startTime);
-
-  DateTime? getStartTimeVerificationAttempt();
-
-  Future<void> saveVerificationCodeAttempts(int attempts);
-
-  int? getVerificationCodeAttempts();
-
-  Future<void> saveAttemptsToEnterRightCode(int attempts);
-
-  int? getAttemptsToEnterRightCode();
-
   Future<void> saveStartTimeInactiveResendCode(DateTime? startTime);
 
   DateTime? getStartTimeInactiveResendCode();

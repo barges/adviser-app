@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -6,19 +7,27 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/phone_number_app_bar.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 class PhoneNumberVerifiedScreen extends StatelessWidget {
   const PhoneNumberVerifiedScreen({
     super.key,
   });
 
+  void popAndUpdateAccountSettings(
+      BuildContext context, ZodiacMainCubit zodiacMainCubit) {
+    context.popUntilRoot();
+    zodiacMainCubit.updateAccauntSettings();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final ZodiacMainCubit zodiacMainCubit = context.read<ZodiacMainCubit>();
     final theme = Theme.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PhoneNumberAppBar(
-        onTap: () => context.popUntilRoot(),
+        onTap: () => popAndUpdateAccountSettings(context, zodiacMainCubit),
       ),
       backgroundColor: theme.canvasColor,
       body: SafeArea(
@@ -59,7 +68,8 @@ class PhoneNumberVerifiedScreen extends StatelessWidget {
                 const Spacer(),
                 AppElevatedButton(
                   title: SZodiac.of(context).gotItZodiac,
-                  onPressed: () => context.popUntilRoot(),
+                  onPressed: () =>
+                      popAndUpdateAccountSettings(context, zodiacMainCubit),
                 ),
                 const SizedBox(
                   height: 49.0,

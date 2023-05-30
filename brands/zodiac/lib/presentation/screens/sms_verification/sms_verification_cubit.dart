@@ -6,16 +6,20 @@ import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart'
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
+import 'package:zodiac/data/models/enums/recaptcha_custom_action.dart';
 import 'package:zodiac/data/network/requests/phone_number_verify_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/phone_number_verify_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/sms_verification/sms_verification_state.dart';
+import 'package:zodiac/services/recaptcha/recaptcha.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 const inactiveResendCodeDurationInSec = 30;
 
 class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
   final MainCubit _globalMainCubit;
+  final ZodiacMainCubit _zodiacMainCubit;
   final ZodiacUserRepository _zodiacUserRepository;
   final ConnectivityService _connectivityService;
   final GlobalCachingManager _cacheManager;
@@ -27,6 +31,7 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
   Timer? _inactiveResendCodeTimer;
   SMSVerificationCubitCubit(
     this._globalMainCubit,
+    this._zodiacMainCubit,
     this._zodiacUserRepository,
     this._connectivityService,
     this._cacheManager,
@@ -84,13 +89,16 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
     codeTextFieldFocus.unfocus();
     try {
       if (await _connectivityService.checkConnection()) {
+        final token =
+            await Recaptcha.execute(RecaptchaCustomAction.phoneVerifyCode);
+
         final PhoneNumberVerifyResponse response = await _zodiacUserRepository
             .verifyPhoneNumber(PhoneNumberVerifyRequest(
           code: int.parse(verificationCodeInputController.text),
-          captchaResponse: 'captcha_response_success',
+          captchaResponse: token,
         ));
 
-        if (response.status == false && response.errorCode != null) {
+        if (response.errorCode != null) {
           emit(state.copyWith(
             isError: true,
           ));
@@ -120,12 +128,19 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
     return isSuccess;
   }
 
+  void clearErrorMessage() {
+    _zodiacMainCubit.clearErrorMessage();
+  }
+
   Future<bool> _resendPhoneVerification() async {
     try {
       if (await _connectivityService.checkConnection()) {
+        final token =
+            await Recaptcha.execute(RecaptchaCustomAction.phoneResendCode);
+
         final BaseResponse response = await _zodiacUserRepository
             .resendPhoneVerification(PhoneNumberVerifyRequest(
-          captchaResponse: 'captcha_response_success',
+          captchaResponse: token,
         ));
 
         return response.status == true;

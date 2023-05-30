@@ -190,7 +190,7 @@ abstract class UserApi {
   Future<BaseResponse> resendPhoneVerification(
     @Body() PhoneNumberVerifyRequest request,
   );
-  
+
   @POST('/profile/details')
   Future<ProfileDetailsResponse> getProfileDetails(
     @Body() ProfileDetailsRequest request,

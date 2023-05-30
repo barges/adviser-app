@@ -172,6 +172,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Allgemeine Leistungsanalyse"),
         "personalBalanceZodiac":
             MessageLookupByLibrary.simpleMessage("Personal Balance:"),
+        "phoneIsAlreadyExistZodiac": MessageLookupByLibrary.simpleMessage(
+            "Telefon ist bereits vorhanden"),
         "phoneNumberVerifiedZodiac":
             MessageLookupByLibrary.simpleMessage("Telefonnummer verifiziert"),
         "phoneNumberZodiac":

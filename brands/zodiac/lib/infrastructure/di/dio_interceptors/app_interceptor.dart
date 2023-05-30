@@ -130,7 +130,13 @@ class AppInterceptor extends Interceptor {
 
     BaseResponse baseResponse = BaseResponse.fromJson(response.data);
 
-    if (baseResponse.errorCode == 5) {
+    if (baseResponse.errorCode == 3) {
+      _zodiacMainCubit.updateErrorMessage(
+        UIError(
+          uiErrorType: UIErrorType.phoneIsAlreadyExist,
+        ),
+      );
+    } else if (baseResponse.errorCode == 5) {
       _webSocketManager.close();
       await _cachingManager.logout();
       context?.replaceAll([const ZodiacAuth()]);
@@ -138,6 +144,13 @@ class AppInterceptor extends Interceptor {
         baseResponse.errorCode == 4) {
       _zodiacMainCubit.updateErrorMessage(
           UIError(uiErrorType: UIErrorType.loginDetailsSeemToBeIncorrect));
+    } else if (response.realUri.path.contains('edit-phone-number') &&
+        baseResponse.errorCode == 11) {
+      _zodiacMainCubit.updateErrorMessage(
+        UIError(
+          uiErrorType: UIErrorType.youveReachedLimitPhone,
+        ),
+      );
     } else if (baseResponse.errorCode != 0 &&
         !response.realUri.path.contains('forgot-password')) {
       if (baseResponse.errorCode == 15) {

@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
-import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
+import 'package:zodiac/data/models/enums/recaptcha_custom_action.dart';
 import 'package:zodiac/data/models/settings/phone.dart';
 import 'package:zodiac/data/models/settings/phone_country_code.dart';
 import 'package:zodiac/data/network/requests/phone_number_request.dart';
@@ -13,24 +13,26 @@ import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 
 import 'package:zodiac/presentation/screens/phone_number/phone_number_state.dart';
 import 'package:zodiac/services/phone_country_codes.dart';
+import 'package:zodiac/services/recaptcha/recaptcha.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 const pnoneNumberMaxLength = 15;
 const verificationCodeAttemptsPer24HoursMax = 3;
 
 class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   Phone _phone;
+  final ZodiacMainCubit _zodiacMainCubit;
   final ZodiacUserRepository _zodiacUserRepository;
   final ConnectivityService _connectivityService;
-  final GlobalCachingManager _cacheManager;
   final FocusNode phoneNumberInputFocus = FocusNode();
   final TextEditingController phoneNumberInputController =
       TextEditingController();
 
   PhoneNumberCubit(
     this._phone,
+    this._zodiacMainCubit,
     this._zodiacUserRepository,
     this._connectivityService,
-    this._cacheManager,
   ) : super(const PhoneNumberState()) {
     _init();
   }
@@ -77,31 +79,37 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   }
 
   Future<bool> sendCode() async {
-    bool isSuccess = await _editPhoneNumber();
+    final response = await _editPhoneNumber();
+    bool isSuccess = response != null
+        ? response.status == true && response.needVerification == true
+        : false;
     if (!isSuccess) {
       emit(state.copyWith(
-        isSendCodeButtonEnabled: false,
+        isSendCodeButtonEnabled: response?.errorCode == 3 ? true : isSuccess,
       ));
     }
     return isSuccess;
   }
 
-  Future<bool> _editPhoneNumber() async {
+  Future<PhoneNumberResponse?> _editPhoneNumber() async {
     try {
       if (await _connectivityService.checkConnection()) {
+        final token =
+            await Recaptcha.execute(RecaptchaCustomAction.phoneVerifyNumber);
+
         final PhoneNumberResponse response =
             await _zodiacUserRepository.editPhoneNumber(PhoneNumberRequest(
           phoneCode: _phone.code!,
           phoneNumber: _phone.number,
-          captchaResponse: 'captcha_response_success',
+          captchaResponse: token,
         ));
-        return response.status == true && response.needVerification == true;
+        return response;
       }
     } catch (e) {
       logger.d(e);
+      rethrow;
     }
-
-    return false;
+    return null;
   }
 
   Future<void> setPhoneCountryCode(PhoneCountryCode phoneCountryCode) async {
@@ -128,6 +136,10 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
     if (value) {
       phoneNumberInputFocus.requestFocus();
     }
+  }
+
+  void clearErrorMessage() {
+    _zodiacMainCubit.clearErrorMessage();
   }
 
   void _correctPhoneNumberDigitCount(int maxLength) {

@@ -54,12 +54,12 @@ class SessionsScreen extends StatelessWidget {
                         .select((SessionsCubit cubit) => cubit.state.chatList);
 
                     if (!isOnline) {
-                      return CustomScrollView(slivers: [
+                      return const CustomScrollView(slivers: [
                         SliverFillRemaining(
                             hasScrollBody: false,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
+                              children: [
                                 NoConnectionWidget(),
                               ],
                             )),

@@ -113,6 +113,7 @@
   "okZodiac":"Ok",
   "limitReachedZodiac":"Límite alcanzado",
   "youveReachedLimitPhoneVerificationAttemptsZodiac":"Has alcanzado el límite de intentos de verificación telefónica. Póngase en contacto con el soporte.",
+  "phoneIsAlreadyExistZodiac": "El teléfono ya existe",
   "startChatZodiac": "Comenzar chat",
   "declineZodiac": "Rechazar",
   "incomingChatZodiac": "Chat ENTRANTE",

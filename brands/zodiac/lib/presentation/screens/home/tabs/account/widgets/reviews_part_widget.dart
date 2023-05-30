@@ -120,11 +120,16 @@ class ReviewsPartWidget extends StatelessWidget {
                 title: SZodiac.of(context).phoneNumberZodiac,
                 iconSVGPath: Assets.zodiac.call.path,
                 onTap: () => zodiacAccountCubit.goToPhoneNumber(context),
-                widget: Text(
-                  text,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: color,
-                      ),
+                widget: SizedBox(
+                  width: 100.0,
+                  child: Text(
+                    text,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.end,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: color,
+                        ),
+                  ),
                 ),
               );
             }),

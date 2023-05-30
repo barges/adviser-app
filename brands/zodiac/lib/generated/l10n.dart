@@ -1195,6 +1195,16 @@ class SZodiac {
     );
   }
 
+  /// `Phone is already exist`
+  String get phoneIsAlreadyExistZodiac {
+    return Intl.message(
+      'Phone is already exist',
+      name: 'phoneIsAlreadyExistZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Start Chat`
   String get startChatZodiac {
     return Intl.message(

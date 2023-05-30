@@ -14,8 +14,7 @@ class Recaptcha {
     if (!await isInitialized()) {
       _completer = Completer<bool>();
       try {
-        final initialize = await RecaptchaEnterprise.initialize(siteKey);
-        print('!!!! initialize:$initialize');
+        await RecaptchaEnterprise.initialize(siteKey);
         _completer.complete(true);
       } on PlatformException catch (e) {
         _completer.complete(false);
