@@ -56,6 +56,7 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
         if (_chatMessageModel.mid == event.mid) {
           if (event.isDelivered) {
             emit(state.copyWith(updateMessageIsDelivered: true));
+            _imageIsDeliveredSubscription?.cancel();
           } else {
             emit(state.copyWith(showResendWidget: true));
           }
