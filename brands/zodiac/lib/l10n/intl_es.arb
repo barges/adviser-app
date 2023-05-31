@@ -92,8 +92,8 @@
   "startChatZodiac": "Comenzar chat",
   "declineZodiac": "Rechazar",
   "incomingChatZodiac": "Chat ENTRANTE",
-  "youMissedCallFromZodiac": "Perdiste una llamada \n de {clientName}.",
-  "youMissedChatFromZodiac": "Te perdiste el chat \n de {clientName}.",
+  "youMissedCallFromZodiac": "Perdiste una llamada de {clientName}.",
+  "youMissedChatFromZodiac": "Te perdiste un chat de {clientName}.",
   "replyZodiac": "Responder",
   "chatStartedZodiac": "Chat iniciado",
   "chatEndedZodiac": "Chat finalizado",
@@ -118,5 +118,8 @@
   "tryAgainZodiac": "Intenta nuevamente",
   "doYouWantToDeleteThisMessageZodiac": "¿Quieres borrar este mensaje?",
   "noMessagesYetZodiac": "No hay mensajes, todavía",
-  "yourChatHistoryWillAppearHereZodiac": "Su historial de chat aparecerá aquí."
+  "yourChatHistoryWillAppearHereZodiac": "Su historial de chat aparecerá aquí.",
+  "paidChatZodiac": "Chat pagado",
+  "freeChatZodiac": "Chat gratis",
+  "theMaximumImageSizeIs10MbZodiac": "El tamaño máximo de la imagen es de 10Mb."
 }

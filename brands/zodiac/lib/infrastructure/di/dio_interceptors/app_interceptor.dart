@@ -41,7 +41,10 @@ class AppInterceptor extends Interceptor {
   FutureOr<dynamic> onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     _zodiacMainCubit.clearErrorMessage();
-    _mainCubit.updateIsLoading(true);
+    if (!options.path.contains('/entities') &&
+        !options.path.contains("/images")) {
+      _mainCubit.updateIsLoading(true);
+    }
     return super.onRequest(options, handler);
   }
 

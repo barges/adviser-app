@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/infrastructure/routing/route_paths.dart';
 import 'package:zodiac/presentation/screens/article_details_screen/article_details_screen.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
@@ -124,7 +123,7 @@ const zodiacRoute = AutoRoute(
       path: RoutePathsZodiac.chatScreen,
       name: RoutePathsZodiac.chatScreen,
     ),
-    AutoRoute<ChatMessageModel?>(
+    AutoRoute<bool?>(
       page: SendImageScreen,
       path: RoutePathsZodiac.sendImageScreen,
       name: RoutePathsZodiac.sendImageScreen,

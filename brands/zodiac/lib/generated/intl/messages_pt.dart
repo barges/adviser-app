@@ -30,11 +30,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(timer) => "Você é capaz de escrever em ${timer}";
 
-  static String m4(clientName) =>
-      "Você perdeu uma chamada \n de ${clientName}.";
+  static String m4(clientName) => "Você perdeu uma chamada de ${clientName}.";
 
-  static String m5(clientName) =>
-      "Você perdeu o bate-papo \n de ${clientName}.";
+  static String m5(clientName) => "Você perdeu um bate-papo de ${clientName}.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -104,6 +102,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "experienceZodiac": MessageLookupByLibrary.simpleMessage("Experiência"),
         "forgotPasswordZodiac":
             MessageLookupByLibrary.simpleMessage("Esqueceu a senha"),
+        "freeChatZodiac":
+            MessageLookupByLibrary.simpleMessage("Bate-papo grátis"),
         "freebieSeeker":
             MessageLookupByLibrary.simpleMessage("candidato a brinde"),
         "hereWillAppearArticles":
@@ -155,6 +155,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "😱 Opa! Seus dados de acesso parecem estar incorretos. Tente novamente ou toque em Redefinir senha."),
         "openEmailZodiac": MessageLookupByLibrary.simpleMessage("Abrir e-mail"),
+        "paidChatZodiac": MessageLookupByLibrary.simpleMessage("Chat pago"),
         "passwordZodiac": MessageLookupByLibrary.simpleMessage("Senha"),
         "perMinuteZodiac": MessageLookupByLibrary.simpleMessage("por minuto"),
         "performanceOverviewAnalyticsZodiac":
@@ -199,6 +200,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Iniciar bate-papo"),
         "templatesContentZodiac":
             MessageLookupByLibrary.simpleMessage("Modelos e conteúdo"),
+        "theMaximumImageSizeIs10MbZodiac": MessageLookupByLibrary.simpleMessage(
+            "O tamanho máximo da imagem é de 10Mb."),
         "theNicknameIsInvalidMustBe3to250SymbolsZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "O apelido é inválido. Deve ter de 3 a 250 símbolos."),

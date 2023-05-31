@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:html/parser.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
@@ -37,7 +38,7 @@ class SystemMessageWidget extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              chatMessageModel.message ?? '',
+              parse(chatMessageModel.message).body?.text ?? '',
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
                     color: AppColors.orange,
                   ),
