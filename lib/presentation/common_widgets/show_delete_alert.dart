@@ -84,7 +84,8 @@ Future<bool?> showDeleteAlert(
                           onPressed: () => context.popForced(false),
                         ),
                         TextButton(
-                          child: Text(S.of(context).delete.toUpperCase(),
+                          child: Text(
+                              deleteText ?? S.of(context).delete.toUpperCase(),
                               style: theme.textTheme.displayLarge?.copyWith(
                                 fontSize: 14.0,
                                 color: theme.errorColor,

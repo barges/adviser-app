@@ -15,6 +15,7 @@ import 'package:zodiac/data/models/chat/call_data.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/end_chat_data.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
+import 'package:zodiac/data/models/enums/chat_payment_status.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
 import 'package:zodiac/presentation/screens/starting_chat/starting_chat_screen.dart';
@@ -23,6 +24,7 @@ import 'package:zodiac/services/websocket_manager/chat_login_event.dart';
 import 'package:zodiac/services/websocket_manager/commands.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
+import 'package:zodiac/services/websocket_manager/paid_free_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
@@ -79,6 +81,8 @@ class WebSocketManagerImpl implements WebSocketManager {
       PublishSubject();
 
   final PublishSubject<WebSocketState> _webSocketStateStream = PublishSubject();
+
+  final PublishSubject<PaidFreeEvent> _paidFreeStream = PublishSubject();
 
   WebSocketManagerImpl(
     this._zodiacMainCubit,
@@ -270,6 +274,9 @@ class WebSocketManagerImpl implements WebSocketManager {
   @override
   Stream<WebSocketState> get webSocketStateStream =>
       _webSocketStateStream.stream;
+
+  @override
+  Stream<PaidFreeEvent> get paidFreeStream => _paidFreeStream.stream;
 
   @override
   WebSocketState get currentState => _currentState;
@@ -826,7 +833,19 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onPaidfree(Event event) {
-    ///TODO - Implements onPaidfree
+    (event.eventData as SocketMessage).let((data) {
+      final int? statusCode = data.params["status"];
+      final ChatPaymentStatus? status =
+          ChatPaymentStatus.statusFromInt(statusCode);
+      if (status != null && data.opponentId != null) {
+        _paidFreeStream.add(
+          PaidFreeEvent(
+            status: status,
+            opponentId: data.opponentId!,
+          ),
+        );
+      }
+    });
   }
 
   void _onShowBtn(Event event) {

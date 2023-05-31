@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
+import 'package:zodiac/data/models/enums/chat_payment_status.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
 
 part 'chat_state.freezed.dart';
@@ -27,5 +28,6 @@ class ChatState with _$ChatState {
     UserDetails? clientInformation,
     Duration? chatTimerValue,
     Duration? offlineSessionTimerValue,
+    ChatPaymentStatus? chatPaymentStatus,
   }) = _ChatState;
 }

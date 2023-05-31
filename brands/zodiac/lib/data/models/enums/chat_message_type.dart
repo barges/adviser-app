@@ -132,6 +132,8 @@ enum ChatMessageType {
         return Assets.zodiac.couponInListIcon.path;
       case ChatMessageType.products:
         return Assets.zodiac.serviceInListIcon.path;
+      case ChatMessageType.tips:
+        return Assets.zodiac.dollarIcon.path;
       default:
         return null;
     }

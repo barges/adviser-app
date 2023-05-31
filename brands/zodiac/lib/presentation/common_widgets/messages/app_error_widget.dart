@@ -10,6 +10,7 @@ class AppErrorWidget extends StatelessWidget {
 
   final double? height;
   final VoidCallback? onTapUrl;
+  final bool roundedCorners;
 
   const AppErrorWidget({
     Key? key,
@@ -17,6 +18,7 @@ class AppErrorWidget extends StatelessWidget {
     this.close,
     this.height,
     this.onTapUrl,
+    this.roundedCorners = true,
   }) : super(key: key);
 
   @override
@@ -31,14 +33,17 @@ class AppErrorWidget extends StatelessWidget {
         );
       },
       child: errorMessage.isNotEmpty
-          ? Container(
+          ? AnimatedContainer(
+              duration: const Duration(milliseconds: 500),
               width: MediaQuery.of(context).size.width,
               height: height,
               decoration: BoxDecoration(
                   color: Theme.of(context).errorColor,
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(AppConstants.buttonRadius),
-                    bottomRight: Radius.circular(AppConstants.buttonRadius),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(
+                        roundedCorners ? AppConstants.buttonRadius : 0.0),
+                    bottomRight: Radius.circular(
+                        roundedCorners ? AppConstants.buttonRadius : 0.0),
                   )),
               child: Row(
                 children: [

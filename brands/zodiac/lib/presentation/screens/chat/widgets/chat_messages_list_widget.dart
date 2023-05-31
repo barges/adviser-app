@@ -87,7 +87,6 @@ class ChatMessagesListWidget extends StatelessWidget {
                           }
                         },
                         child: ChatMessageWidget(
-                          key: ValueKey(messageModel.mid),
                           chatMessageModel: messageModel,
                         ),
                       );
