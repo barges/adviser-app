@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
-import 'package:zodiac/data/models/chat/image_is_delivered.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/send_image_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_chat_repository.dart';
@@ -27,7 +26,6 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
   final ZodiacMainCubit _zodiacMainCubit;
 
   StreamSubscription<CreatedDeliveredEvent>? _messageDeliveredSubscription;
-  StreamSubscription<ImageIsDelivered>? _imageIsDeliveredSubscription;
 
   Timer? _resendTimer;
 
@@ -39,8 +37,8 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
     this._webSocketManager,
     this._zodiacMainCubit,
     this.isImage,
-    Stream<ImageIsDelivered> imageNotDeliveredStream,
     this._chatRepository,
+    BuildContext context,
   ) : super(const ChatMessageState()) {
     if (_chatMessageModel.isOutgoing &&
         !_chatMessageModel.isDelivered &&
@@ -58,16 +56,8 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
       });
     }
     if (isImage) {
-      _imageIsDeliveredSubscription = imageNotDeliveredStream.listen((event) {
-        if (_chatMessageModel.mid == event.mid) {
-          if (event.isDelivered) {
-            emit(state.copyWith(updateMessageIsDelivered: true));
-            _imageIsDeliveredSubscription?.cancel();
-          } else {
-            emit(state.copyWith(showResendWidget: true));
-          }
-        }
-      });
+      logger.d('CREATE image');
+      _resendImage(context);
     }
   }
 
@@ -75,7 +65,6 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
   Future<void> close() {
     _resendTimer?.cancel();
     _messageDeliveredSubscription?.cancel();
-    _imageIsDeliveredSubscription?.cancel();
     return super.close();
   }
 
