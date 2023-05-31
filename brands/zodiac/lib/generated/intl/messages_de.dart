@@ -194,6 +194,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Chat beginnen"),
         "templatesContentZodiac":
             MessageLookupByLibrary.simpleMessage("Templates & Content"),
+        "theMaximumImageSizeIs10MbZodiac": MessageLookupByLibrary.simpleMessage(
+            "Die maximale Bildgröße beträgt 10 MB."),
         "theNicknameIsInvalidMustBe3to250SymbolsZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Der Spitzname ist ungültig. Muss 3 bis 250 Symbole sein."),

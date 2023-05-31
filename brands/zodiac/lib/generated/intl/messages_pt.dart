@@ -200,6 +200,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Iniciar bate-papo"),
         "templatesContentZodiac":
             MessageLookupByLibrary.simpleMessage("Modelos e conteúdo"),
+        "theMaximumImageSizeIs10MbZodiac": MessageLookupByLibrary.simpleMessage(
+            "O tamanho máximo da imagem é de 10Mb."),
         "theNicknameIsInvalidMustBe3to250SymbolsZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "O apelido é inválido. Deve ter de 3 a 250 símbolos."),

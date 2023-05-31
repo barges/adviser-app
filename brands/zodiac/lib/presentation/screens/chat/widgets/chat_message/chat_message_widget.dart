@@ -21,6 +21,7 @@ import 'package:zodiac/presentation/screens/chat/widgets/messages/tips_message_w
 import 'package:zodiac/presentation/screens/chat/widgets/resend_message_widget.dart';
 
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ChatMessageWidget extends StatelessWidget {
   ChatMessageModel chatMessageModel;
@@ -40,6 +41,7 @@ class ChatMessageWidget extends StatelessWidget {
         chatCubit.enterRoomData?.roomData?.id,
         chatCubit.clientData.id,
         zodiacGetIt.get<WebSocketManager>(),
+        zodiacGetIt.get<ZodiacMainCubit>(),
         chatMessageModel.type == ChatMessageType.image,
         chatCubit.imageIsDeliveredStream.stream,
         zodiacGetIt.get<ZodiacChatRepository>(),
@@ -167,7 +169,7 @@ class ChatMessageWidget extends StatelessWidget {
                       chatCubit.deleteMessage(chatMessageModel.mid);
                     }
                   },
-                  onTryAgain: chatMessageCubit.resendChatMessage,
+                  onTryAgain: () => chatMessageCubit.resendChatMessage(context),
                 ),
               ),
           ],

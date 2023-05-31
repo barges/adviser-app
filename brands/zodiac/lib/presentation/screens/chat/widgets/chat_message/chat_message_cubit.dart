@@ -1,15 +1,19 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/image_is_delivered.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/send_image_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_chat_repository.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 import 'chat_message_state.dart';
 
@@ -20,6 +24,7 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
   final WebSocketManager _webSocketManager;
   final ZodiacChatRepository _chatRepository;
   final bool isImage;
+  final ZodiacMainCubit _zodiacMainCubit;
 
   StreamSubscription<CreatedDeliveredEvent>? _messageDeliveredSubscription;
   StreamSubscription<ImageIsDelivered>? _imageIsDeliveredSubscription;
@@ -32,6 +37,7 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
     this._roomId,
     this._opponentId,
     this._webSocketManager,
+    this._zodiacMainCubit,
     this.isImage,
     Stream<ImageIsDelivered> imageNotDeliveredStream,
     this._chatRepository,
@@ -73,11 +79,11 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
     return super.close();
   }
 
-  void resendChatMessage() {
+  void resendChatMessage(BuildContext context) {
     emit(state.copyWith(showResendWidget: false));
 
     if (isImage) {
-      _resendImage();
+      _resendImage(context);
     } else {
       _resendMessage();
       _resendCount = 0;
@@ -85,7 +91,7 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
     }
   }
 
-  Future<void> _resendImage() async {
+  Future<void> _resendImage(BuildContext context) async {
     if (_chatMessageModel.mid != null && _chatMessageModel.mainImage != null) {
       try {
         final SendImageResponse response =
@@ -99,6 +105,11 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
         if (response.status == true) {
           emit(state.copyWith(updateMessageIsDelivered: true));
         } else {
+          if (response.errorCode == 3) {
+            _zodiacMainCubit.updateErrorMessage(NetworkError(
+                message: SZodiac.of(context).theMaximumImageSizeIs10MbZodiac));
+          }
+
           emit(state.copyWith(showResendWidget: true));
         }
       } catch (e) {

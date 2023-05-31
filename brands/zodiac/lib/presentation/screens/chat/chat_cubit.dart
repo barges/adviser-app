@@ -8,6 +8,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
+import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
@@ -25,6 +26,7 @@ import 'package:zodiac/data/network/responses/profile_details_response.dart';
 import 'package:zodiac/data/network/responses/send_image_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_chat_repository.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/chat/chat_state.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
@@ -624,6 +626,13 @@ class ChatCubit extends Cubit<ChatState> {
           mid: mid,
           isDelivered: response.status == true,
         ));
+
+        if (response.status == false) {
+          if (response.errorCode == 3) {
+            _zodiacMainCubit.updateErrorMessage(NetworkError(
+                message: SZodiac.of(context).theMaximumImageSizeIs10MbZodiac));
+          }
+        }
       } catch (e) {
         logger.d(e);
         imageIsDeliveredStream.add(ImageIsDelivered(
@@ -666,5 +675,9 @@ class ChatCubit extends Cubit<ChatState> {
   void deleteMessage(String? mid) {
     _messages.removeWhere((element) => element.mid == mid);
     emit(state.copyWith(messages: List.of(_messages)));
+  }
+
+  void closeErrorMessage() {
+    _zodiacMainCubit.clearErrorMessage();
   }
 }

@@ -118,5 +118,6 @@
   "noMessagesYetZodiac": "Noch keine Nachrichten",
   "yourChatHistoryWillAppearHereZodiac": "Ihr Chat-Verlauf wird hier angezeigt",
   "paidChatZodiac": "Bezahlter Chat",
-  "freeChatZodiac": "Kostenloser Chat"
+  "freeChatZodiac": "Kostenloser Chat",
+  "theMaximumImageSizeIs10MbZodiac": "Die maximale Bildgröße beträgt 10 MB."
 }

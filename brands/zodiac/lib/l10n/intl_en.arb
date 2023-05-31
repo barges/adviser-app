@@ -120,5 +120,6 @@
   "noMessagesYetZodiac": "No messages, yet",
   "yourChatHistoryWillAppearHereZodiac": "Your chat history will appear here",
   "paidChatZodiac": "Paid chat",
-  "freeChatZodiac": "Free chat"
+  "freeChatZodiac": "Free chat",
+  "theMaximumImageSizeIs10MbZodiac": "The maximum image size is 10Mb."
 }

@@ -1274,6 +1274,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `The maximum image size is 10Mb.`
+  String get theMaximumImageSizeIs10MbZodiac {
+    return Intl.message(
+      'The maximum image size is 10Mb.',
+      name: 'theMaximumImageSizeIs10MbZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {
