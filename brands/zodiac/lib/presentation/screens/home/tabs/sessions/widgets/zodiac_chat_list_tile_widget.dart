@@ -121,7 +121,9 @@ class ZodiacChatListTileWidget extends StatelessWidget {
                                   item.lastMessageType!.iconPath!,
                                   height: 18.0,
                                   width: 18.0,
-                                  color: theme.primaryColor,
+                                  color: item.isMissed
+                                      ? AppColors.error
+                                      : theme.primaryColor,
                                 ),
                               ),
                             Expanded(
