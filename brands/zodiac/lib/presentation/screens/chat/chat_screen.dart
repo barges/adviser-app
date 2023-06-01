@@ -261,6 +261,10 @@ class ChatScreen extends StatelessWidget {
 
 Future<bool?> _showUnderageConfirmDialog(
     BuildContext context, String message) async {
-  return showDeleteAlert(context, message,
-      deleteText: SZodiac.of(context).reportZodiac);
+  return showDeleteAlert(
+    context,
+    message,
+    deleteText: SZodiac.of(context).reportZodiac,
+    swapButtonColorsForAndroid: true,
+  );
 }

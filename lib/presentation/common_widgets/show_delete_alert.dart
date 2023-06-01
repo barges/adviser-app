@@ -10,8 +10,11 @@ Future<bool?> showDeleteAlert(
   BuildContext context,
   String title, {
   String? deleteText,
+  bool swapButtonColorsForAndroid = false,
 }) {
   final ThemeData theme = Theme.of(context);
+  final String showDeleteText = deleteText ?? S.of(context).delete;
+
   return showDialog<bool>(
     context: context,
     builder: (context) => Platform.isIOS
@@ -27,7 +30,7 @@ Future<bool?> showDeleteAlert(
               CupertinoDialogAction(
                 isDefaultAction: true,
                 onPressed: () => Navigator.pop(context, true),
-                child: Text(deleteText ?? S.of(context).delete,
+                child: Text(showDeleteText,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.errorColor,
                       fontSize: 17.0,
@@ -79,16 +82,19 @@ Future<bool?> showDeleteAlert(
                           child: Text(S.of(context).cancel.toUpperCase(),
                               style: theme.textTheme.displayLarge?.copyWith(
                                 fontSize: 14.0,
-                                color: theme.primaryColor,
+                                color: swapButtonColorsForAndroid
+                                    ? theme.errorColor
+                                    : theme.primaryColor,
                               )),
                           onPressed: () => context.popForced(false),
                         ),
                         TextButton(
-                          child: Text(
-                              deleteText ?? S.of(context).delete.toUpperCase(),
+                          child: Text(showDeleteText.toUpperCase(),
                               style: theme.textTheme.displayLarge?.copyWith(
                                 fontSize: 14.0,
-                                color: theme.errorColor,
+                                color: swapButtonColorsForAndroid
+                                    ? theme.primaryColor
+                                    : theme.errorColor,
                               )),
                           onPressed: () => context.popForced(true),
                         )
