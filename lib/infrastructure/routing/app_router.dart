@@ -63,7 +63,7 @@ extension ContextExt on BuildContext {
     required RoutePredicate predicate,
     OnNavigationFailure? onFailure,
   }) async {
-   return await router.pushAndPopUntil(
+    return await router.pushAndPopUntil(
       route,
       predicate: predicate,
       onFailure: onFailure,

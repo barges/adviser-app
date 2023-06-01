@@ -278,6 +278,7 @@ class ChatCubit extends Cubit<ChatState> {
       if (event.userData?.id == clientData.id) {
         _isRefresh = true;
         enterRoomData = event;
+        emit(state.copyWith(chatIsActive: true));
       }
     });
 
@@ -406,7 +407,8 @@ class ChatCubit extends Cubit<ChatState> {
           if (!state.chatIsActive) {
             emit(state.copyWith(isChatReconnecting: false));
           } else {
-            emit(state.copyWith(chatIsActive: false));
+            emit(state.copyWith(chatIsActive: false, chatTimerValue: null));
+            _chatTimer?.cancel();
           }
         }
         if (event == WebSocketState.closed) {
