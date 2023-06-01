@@ -178,20 +178,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     _updateMessageIsDeliveredSubscription =
         _webSocketManager.updateMessageIsDeliveredStream.listen((event) {
-      if (clientData.id == event.clientId) {
-        final int index =
-            _messages.indexWhere((element) => element.mid == event.mid);
-
-        if (index > -1) {
-          final ChatMessageModel model = _messages[index];
-          logger.d(model);
-          _messages[index] = model.copyWith(
-            isDelivered: true,
-          );
-          logger.d(_messages[index]);
-          _updateMessages();
-        }
-      }
+      _updateMessageIsDelivered(event);
     });
 
     _updateMessageIsReadSubscription =
@@ -653,5 +640,26 @@ class ChatCubit extends Cubit<ChatState> {
 
   void closeErrorMessage() {
     _zodiacMainCubit.clearErrorMessage();
+  }
+
+  void updateImageIsDelivered(CreatedDeliveredEvent event) {
+    _updateMessageIsDelivered(event);
+  }
+
+  void _updateMessageIsDelivered(CreatedDeliveredEvent event) {
+    if (clientData.id == event.clientId) {
+      final int index =
+          _messages.indexWhere((element) => element.mid == event.mid);
+
+      if (index > -1) {
+        final ChatMessageModel model = _messages[index];
+        logger.d(model);
+        _messages[index] = model.copyWith(
+          isDelivered: true,
+        );
+        logger.d(_messages[index]);
+        _updateMessages();
+      }
+    }
   }
 }

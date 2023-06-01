@@ -24,6 +24,8 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
   final ZodiacChatRepository _chatRepository;
   final bool isImage;
   final ZodiacMainCubit _zodiacMainCubit;
+  final ValueSetter<String?> deleteMessage;
+  final ValueSetter<CreatedDeliveredEvent> updateImageIsDelivered;
 
   StreamSubscription<CreatedDeliveredEvent>? _messageDeliveredSubscription;
 
@@ -38,6 +40,8 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
     this._zodiacMainCubit,
     this.isImage,
     this._chatRepository,
+    this.deleteMessage,
+    this.updateImageIsDelivered,
     BuildContext context,
   ) : super(const ChatMessageState()) {
     if (_chatMessageModel.isOutgoing && !_chatMessageModel.isDelivered) {
@@ -90,11 +94,13 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
         );
 
         if (response.status == true) {
-          emit(state.copyWith(updateMessageIsDelivered: true));
+          updateImageIsDelivered(CreatedDeliveredEvent(
+              mid: _chatMessageModel.mid!, clientId: _opponentId ?? 0));
         } else {
           if (response.errorCode == 3) {
             _zodiacMainCubit.updateErrorMessage(NetworkError(
                 message: SZodiac.of(context).theMaximumImageSizeIs10MbZodiac));
+            deleteMessage(_chatMessageModel.mid);
           }
 
           emit(state.copyWith(showResendWidget: true));
