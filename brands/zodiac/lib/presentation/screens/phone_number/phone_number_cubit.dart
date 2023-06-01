@@ -12,8 +12,8 @@ import 'package:zodiac/data/network/responses/phone_number_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 
 import 'package:zodiac/presentation/screens/phone_number/phone_number_state.dart';
-import 'package:zodiac/services/phone_country_codes.dart';
-import 'package:zodiac/services/recaptcha/recaptcha.dart';
+import 'package:zodiac/services/phone_country_codes_service.dart';
+import 'package:zodiac/services/recaptcha/recaptcha_service.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 const pnoneNumberMaxLength = 15;
@@ -24,6 +24,7 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   final ZodiacMainCubit _zodiacMainCubit;
   final ZodiacUserRepository _zodiacUserRepository;
   final ConnectivityService _connectivityService;
+  final PhoneCountryCodesService _phoneCountryCodesService;
   final FocusNode phoneNumberInputFocus = FocusNode();
   final TextEditingController phoneNumberInputController =
       TextEditingController();
@@ -33,6 +34,7 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
     this._zodiacMainCubit,
     this._zodiacUserRepository,
     this._connectivityService,
+    this._phoneCountryCodesService,
   ) : super(const PhoneNumberState()) {
     _init();
   }
@@ -78,6 +80,29 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
     return super.close();
   }
 
+  void updatePhoneCodeSearchVisibility(bool isVisible) {
+    if (isVisible) {
+      searchPhoneCountryCodes('');
+    } else {
+      setTextInputFocus(true);
+    }
+    emit(
+      state.copyWith(
+        isPhoneCodeSearchVisible: isVisible,
+      ),
+    );
+  }
+
+  void searchPhoneCountryCodes(String text) {
+    final List<PhoneCountryCode> searchedPhoneCountryCodes =
+        _phoneCountryCodesService.searchPhoneCountryCodes(text);
+    emit(
+      state.copyWith(
+        searchedPhoneCountryCodes: searchedPhoneCountryCodes,
+      ),
+    );
+  }
+
   Future<bool> sendCode() async {
     final response = await _editPhoneNumber();
     bool isSuccess = response != null
@@ -94,8 +119,8 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   Future<PhoneNumberResponse?> _editPhoneNumber() async {
     try {
       if (await _connectivityService.checkConnection()) {
-        final token =
-            await Recaptcha.execute(RecaptchaCustomAction.phoneVerifyNumber);
+        final token = await RecaptchaService.execute(
+            RecaptchaCustomAction.phoneVerifyNumber);
 
         final PhoneNumberResponse response =
             await _zodiacUserRepository.editPhoneNumber(PhoneNumberRequest(
@@ -135,6 +160,8 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
     emit(state.copyWith(isPhoneNumberInputFocused: value));
     if (value) {
       phoneNumberInputFocus.requestFocus();
+    } else {
+      phoneNumberInputFocus.unfocus();
     }
   }
 
@@ -152,7 +179,7 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   }
 
   String? _getCountryNameByCode(int code) {
-    return PhoneCountryCodes.getCountryNameByCode(code);
+    return _phoneCountryCodesService.getCountryNameByCode(code);
   }
 
   bool get isPhoneNumberValidLength {

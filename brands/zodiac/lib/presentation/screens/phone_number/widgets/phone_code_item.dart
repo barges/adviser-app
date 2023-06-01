@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zodiac/data/models/settings/phone_country_code.dart';
+import 'package:zodiac/presentation/screens/phone_number/phone_number_cubit.dart';
 
 class PhoneCodeItem extends StatelessWidget {
   final PhoneCountryCode phoneCountryCode;
-  final bool isBottomDivider;
   const PhoneCodeItem({
     super.key,
     required this.phoneCountryCode,
-    this.isBottomDivider = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    PhoneNumberCubit phoneNumberCubit = context.read<PhoneNumberCubit>();
     final theme = Theme.of(context);
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: () => context.pop<PhoneCountryCode>(phoneCountryCode),
+      onTap: () {
+        phoneNumberCubit.updatePhoneCodeSearchVisibility(false);
+        phoneNumberCubit.setPhoneCountryCode(phoneCountryCode);
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -37,14 +40,6 @@ class PhoneCodeItem extends StatelessWidget {
               color: theme.hoverColor,
             ),
           ),
-          if (isBottomDivider)
-            const Padding(
-              padding: EdgeInsets.only(top: 9.0),
-              child: SizedBox(
-                height: 1.0,
-                child: Divider(),
-              ),
-            ),
         ],
       ),
     );

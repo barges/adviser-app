@@ -12,7 +12,7 @@ import 'package:zodiac/data/models/settings/phone.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
-import 'package:zodiac/presentation/common_widgets/appbar/phone_number_app_bar.dart';
+import 'package:zodiac/presentation/common_widgets/appbar/simple_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:zodiac/presentation/screens/sms_verification/sms_verification_cubit.dart';
 import 'package:zodiac/presentation/screens/sms_verification/widgets/resend_code_button.dart';
@@ -46,7 +46,9 @@ class SMSVerificationScreen extends StatelessWidget {
             context.select((ZodiacMainCubit cubit) => cubit.state.appError);
         return Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: const PhoneNumberAppBar(),
+          appBar: SimpleAppBar(
+            title: SZodiac.of(context).phoneNumberZodiac,
+          ),
           backgroundColor: theme.canvasColor,
           body: SafeArea(
             top: false,

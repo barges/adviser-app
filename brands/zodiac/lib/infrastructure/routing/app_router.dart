@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:zodiac/data/models/settings/phone_country_code.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/infrastructure/routing/route_paths.dart';
 import 'package:zodiac/presentation/screens/article_details_screen/article_details_screen.dart';
@@ -18,7 +17,6 @@ import 'package:zodiac/presentation/screens/login/login_screen.dart';
 import 'package:zodiac/presentation/screens/notification_details/notification_details_screen.dart';
 import 'package:zodiac/presentation/screens/notifications/notifications_screen.dart';
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_screen.dart';
-import 'package:zodiac/presentation/screens/phone_code_search/phone_code_search_screen.dart';
 import 'package:zodiac/presentation/screens/phone_number/phone_number_screen.dart';
 import 'package:zodiac/presentation/screens/reviews/reviews_screen.dart';
 import 'package:zodiac/presentation/screens/sms_verification/sms_verification_screen.dart';
@@ -108,12 +106,6 @@ const zodiacRoute = AutoRoute(
       page: PhoneNumberScreen,
       path: RoutePathsZodiac.phoneNumberScreen,
       name: RoutePathsZodiac.phoneNumberScreen,
-    ),
-    AutoRoute<PhoneCountryCode>(
-      fullscreenDialog: true,
-      page: PhoneCodeSearchScreen,
-      path: RoutePathsZodiac.phoneCodeSearchScreen,
-      name: RoutePathsZodiac.phoneCodeSearchScreen,
     ),
     AutoRoute(
       page: SMSVerificationScreen,

@@ -12,7 +12,7 @@ import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/phone_number_verify_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/sms_verification/sms_verification_state.dart';
-import 'package:zodiac/services/recaptcha/recaptcha.dart';
+import 'package:zodiac/services/recaptcha/recaptcha_service.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 const inactiveResendCodeDurationInSec = 30;
@@ -89,8 +89,8 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
     codeTextFieldFocus.unfocus();
     try {
       if (await _connectivityService.checkConnection()) {
-        final token =
-            await Recaptcha.execute(RecaptchaCustomAction.phoneVerifyCode);
+        final token = await RecaptchaService.execute(
+            RecaptchaCustomAction.phoneVerifyCode);
 
         final PhoneNumberVerifyResponse response = await _zodiacUserRepository
             .verifyPhoneNumber(PhoneNumberVerifyRequest(
@@ -135,8 +135,8 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
   Future<bool> _resendPhoneVerification() async {
     try {
       if (await _connectivityService.checkConnection()) {
-        final token =
-            await Recaptcha.execute(RecaptchaCustomAction.phoneResendCode);
+        final token = await RecaptchaService.execute(
+            RecaptchaCustomAction.phoneResendCode);
 
         final BaseResponse response = await _zodiacUserRepository
             .resendPhoneVerification(PhoneNumberVerifyRequest(

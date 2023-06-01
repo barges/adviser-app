@@ -5,8 +5,8 @@ import 'package:recaptcha/recaptcha_enterprise.dart';
 import 'package:zodiac/data/models/enums/recaptcha_custom_action.dart';
 import 'package:zodiac/services/recaptcha/recaptcha_error.dart';
 
-class Recaptcha {
-  Recaptcha._();
+class RecaptchaService {
+  RecaptchaService._();
 
   static Completer<bool> _completer = Completer<bool>()..complete(false);
 

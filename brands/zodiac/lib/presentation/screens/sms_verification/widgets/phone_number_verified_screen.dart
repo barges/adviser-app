@@ -6,7 +6,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:zodiac/generated/l10n.dart';
-import 'package:zodiac/presentation/common_widgets/appbar/phone_number_app_bar.dart';
+import 'package:zodiac/presentation/common_widgets/appbar/simple_app_bar.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class PhoneNumberVerifiedScreen extends StatelessWidget {
@@ -26,8 +26,10 @@ class PhoneNumberVerifiedScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: PhoneNumberAppBar(
-        onTap: () => popAndUpdateAccountSettings(context, zodiacMainCubit),
+      appBar: SimpleAppBar(
+        title: SZodiac.of(context).phoneNumberZodiac,
+        backOnClick: () =>
+            popAndUpdateAccountSettings(context, zodiacMainCubit),
       ),
       backgroundColor: theme.canvasColor,
       body: SafeArea(

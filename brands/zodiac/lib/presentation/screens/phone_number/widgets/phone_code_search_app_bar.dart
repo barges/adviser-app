@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:zodiac/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:zodiac/presentation/common_widgets/search_widget.dart';
+import 'package:zodiac/presentation/screens/phone_number/phone_number_cubit.dart';
 
 class PhoneCodeSearchAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -19,9 +20,10 @@ class PhoneCodeSearchAppBar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    PhoneNumberCubit phoneNumberCubit = context.read<PhoneNumberCubit>();
     return AppBar(
       automaticallyImplyLeading: false,
-      elevation: 0.5,
+      elevation: 1,
       toolbarHeight: AppConstants.appBarHeight,
       actions: [
         Container(
@@ -29,21 +31,18 @@ class PhoneCodeSearchAppBar extends StatelessWidget
           padding: const EdgeInsets.only(right: 16.0),
           child: AppIconButton(
             icon: Assets.vectors.close.path,
-            onTap: () {
-              context.pop();
-            },
+            onTap: () =>
+                phoneNumberCubit.updatePhoneCodeSearchVisibility(false),
           ),
         ),
       ],
-      flexibleSpace: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.only(right: 40.0),
-          alignment: Alignment.centerLeft,
-          child: SearchWidget(
-            autofocus: true,
-            isBorder: false,
-            onChanged: onChanged,
-          ),
+      flexibleSpace: Container(
+        padding: const EdgeInsets.only(right: 40.0),
+        alignment: Alignment.bottomLeft,
+        child: SearchWidget(
+          autofocus: true,
+          isBorder: false,
+          onChanged: onChanged,
         ),
       ),
     );

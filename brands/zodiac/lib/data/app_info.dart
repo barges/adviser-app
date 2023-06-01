@@ -40,9 +40,7 @@ class AppInfo {
     secret = '23d45b337ff85d0a326a79082f7c6f50';
 
     ///TODO: Need change on backend
-    package = Platform.isAndroid
-        ? 'com.questico.fortunica.readerapp'
-        : 'com.adviqo.readerapp';
+    package = packageInfo.packageName;
     version = '5.6';
     locale = Intl.getCurrentLocale();
     appsflyerId = '1469200336473-6162102739781632588';

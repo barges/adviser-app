@@ -2,31 +2,16 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
+import 'package:injectable/injectable.dart';
 import 'package:zodiac/data/models/settings/phone_country_code.dart';
 
 const countryPhoneCodesJsonPath = 'assets/country_phone_codes.json';
 
-class PhoneCountryCodes {
-  late final Future<bool> _initPhoneCountryCodes;
-  static final PhoneCountryCodes _instance = PhoneCountryCodes._internal();
+@lazySingleton
+class PhoneCountryCodesService {
   static final List<PhoneCountryCode> _phoneCountryCodes = [];
 
-  PhoneCountryCodes._internal() {
-    _initPhoneCountryCodes = Future<bool>(() async {
-      await _init();
-      return true;
-    });
-  }
-
-  static Future<bool> init() {
-    return PhoneCountryCodes()._initPhoneCountryCodes;
-  }
-
-  factory PhoneCountryCodes() {
-    return _instance;
-  }
-
-  Future<void> _init() async {
+  static Future<bool> init() async {
     if (_phoneCountryCodes.isEmpty) {
       final List<dynamic> jsonData = await _loadCountryPhoneCodesJson();
       final whitespaceRegExp = RegExp(r'\s+');
@@ -38,15 +23,16 @@ class PhoneCountryCodes {
                 .replaceFirst('+', '')));
       }
     }
+    return true;
   }
 
-  Future<List<dynamic>> _loadCountryPhoneCodesJson() async {
+  static Future<List<dynamic>> _loadCountryPhoneCodesJson() async {
     final String response =
         await rootBundle.loadString(countryPhoneCodesJsonPath);
     return await jsonDecode(response);
   }
 
-  static List<PhoneCountryCode> searchPhoneCountryCodes(String text) {
+  List<PhoneCountryCode> searchPhoneCountryCodes(String text) {
     final whitespaceRegExp = RegExp(r'\s+');
     String searchText = text.trim().toLowerCase();
     if (searchText.startsWith('+')) {
@@ -58,17 +44,17 @@ class PhoneCountryCodes {
         return true;
       }
 
-      String searchTextWirhoutWhitespace =
+      String searchTextWithoutWhitespace =
           searchText.replaceAll(whitespaceRegExp, '');
       if (item.code != null &&
-          item.code!.startsWith(searchTextWirhoutWhitespace)) {
+          item.code!.startsWith(searchTextWithoutWhitespace)) {
         return true;
       }
       return false;
     }).toList();
   }
 
-  static String? getCountryNameByCode(int code) {
+  String? getCountryNameByCode(int code) {
     return _phoneCountryCodes
         .firstWhereOrNull((item) => item.toCodeInt() == code)
         ?.name;
