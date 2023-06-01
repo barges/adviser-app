@@ -40,24 +40,22 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
     this._chatRepository,
     BuildContext context,
   ) : super(const ChatMessageState()) {
-    if (_chatMessageModel.isOutgoing &&
-        !_chatMessageModel.isDelivered &&
-        !isImage) {
-      logger.d('CREATE');
-      _setTimer();
-      _messageDeliveredSubscription =
-          _webSocketManager.updateMessageIdStream.listen((event) {
-        if (event.mid == _chatMessageModel.mid) {
-          _resendTimer?.cancel();
-          _resendCount = 0;
-          emit(state.copyWith(showResendWidget: false));
-          _messageDeliveredSubscription?.cancel();
-        }
-      });
-    }
-    if (isImage) {
-      logger.d('CREATE image');
-      _resendImage(context);
+    if (_chatMessageModel.isOutgoing && !_chatMessageModel.isDelivered) {
+      if (!isImage) {
+        _setTimer();
+        _messageDeliveredSubscription =
+            _webSocketManager.updateMessageIdStream.listen((event) {
+          if (event.mid == _chatMessageModel.mid) {
+            _resendTimer?.cancel();
+            _resendCount = 0;
+            emit(state.copyWith(showResendWidget: false));
+            _messageDeliveredSubscription?.cancel();
+          }
+        });
+      }
+      if (isImage) {
+        _resendImage(context);
+      }
     }
   }
 

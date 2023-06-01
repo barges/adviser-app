@@ -116,6 +116,9 @@ class HomeCubit extends Cubit<HomeState> {
       if (_appInForeground && event) {
         _webSocketManager.connect();
       }
+      if (!event) {
+        _webSocketManager.close();
+      }
     });
 
     _updateUnreadChatsCountSubscription =

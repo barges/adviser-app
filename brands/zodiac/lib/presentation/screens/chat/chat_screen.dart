@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
@@ -164,11 +165,19 @@ class ChatScreen extends StatelessWidget {
                               final AppError appError = context.select(
                                   (ZodiacMainCubit cubit) =>
                                       cubit.state.appError);
+                              final bool internetConnectionIsAvailable =
+                                  context.select((MainCubit cubit) => cubit
+                                      .state.internetConnectionIsAvailable);
 
                               return AppErrorWidget(
-                                errorMessage: appError.getMessage(context),
+                                errorMessage: !internetConnectionIsAvailable
+                                    ? SZodiac.of(context)
+                                        .noInternetConnectionZodiac
+                                    : appError.getMessage(context),
                                 roundedCorners: !showOfflineSessionsMessage,
-                                close: chatCubit.closeErrorMessage,
+                                close: internetConnectionIsAvailable
+                                    ? chatCubit.closeErrorMessage
+                                    : null,
                               );
                             }),
                             Builder(builder: (context) {

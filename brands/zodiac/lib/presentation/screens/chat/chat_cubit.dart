@@ -403,6 +403,15 @@ class ChatCubit extends Cubit<ChatState> {
           if (state.offlineSessionIsActive) {
             closeOfflineSession();
           }
+          if (!state.chatIsActive) {
+            emit(state.copyWith(isChatReconnecting: false));
+          } else {
+            emit(state.copyWith(chatIsActive: false));
+          }
+        }
+        if (event == WebSocketState.closed) {
+          emit(state.copyWith(isChatReconnecting: true));
+          logger.d('CLOSED');
         }
       },
     );
