@@ -121,5 +121,8 @@
   "yourChatHistoryWillAppearHereZodiac": "Your chat history will appear here",
   "paidChatZodiac": "Paid chat",
   "freeChatZodiac": "Free chat",
-  "theMaximumImageSizeIs10MbZodiac": "The maximum image size is 10Mb."
+  "theMaximumImageSizeIs10MbZodiac": "The maximum image size is 10Mb.",
+  "onlineZodiac": "Online",
+  "busyZodiac": "Busy",
+  "offlineZodiac": "Offline"
 }

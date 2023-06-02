@@ -131,6 +131,7 @@ class ChatCubit extends Cubit<ChatState> {
     _underageConfirmDialog = chatCubitParams.underageConfirmDialog;
 
     _messagesSubscription = _webSocketManager.entitiesStream.listen((event) {
+      logger.d('isRefresh: $_isRefresh');
       if (_isRefresh) {
         _isRefresh = false;
         _messages.clear();
@@ -151,7 +152,7 @@ class ChatCubit extends Cubit<ChatState> {
         if (!contains) {
           _messages.insert(0, event);
           if (state.needShowDownButton) {
-            chatObserver.standby();
+            //chatObserver.standby();
           }
           _updateMessages();
           if (!event.isOutgoing) {
@@ -178,20 +179,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     _updateMessageIsDeliveredSubscription =
         _webSocketManager.updateMessageIsDeliveredStream.listen((event) {
-      if (clientData.id == event.clientId) {
-        final int index =
-            _messages.indexWhere((element) => element.mid == event.mid);
-
-        if (index > -1) {
-          final ChatMessageModel model = _messages[index];
-          logger.d(model);
-          _messages[index] = model.copyWith(
-            isDelivered: true,
-          );
-          logger.d(_messages[index]);
-          _updateMessages();
-        }
-      }
+      _updateMessageIsDelivered(event);
     });
 
     _updateMessageIsReadSubscription =
@@ -278,6 +266,7 @@ class ChatCubit extends Cubit<ChatState> {
       if (event.userData?.id == clientData.id) {
         _isRefresh = true;
         enterRoomData = event;
+        emit(state.copyWith(chatIsActive: true));
       }
     });
 
@@ -399,10 +388,19 @@ class ChatCubit extends Cubit<ChatState> {
     _webSocketStateSubscription = _webSocketManager.webSocketStateStream.listen(
       (event) {
         if (event == WebSocketState.connected) {
-          _webSocketManager.chatLogin(opponentId: clientData.id ?? 0);
           if (state.offlineSessionIsActive) {
             closeOfflineSession();
+          } else if (!state.chatIsActive) {
+            _webSocketManager.chatLogin(opponentId: clientData.id ?? 0);
+            emit(state.copyWith(isChatReconnecting: false));
+          } else {
+            _isRefresh = true;
+            emit(state.copyWith(chatIsActive: false, chatTimerValue: null));
+            _chatTimer?.cancel();
           }
+        }
+        if (event == WebSocketState.closed) {
+          emit(state.copyWith(isChatReconnecting: true));
         }
       },
     );
@@ -642,5 +640,26 @@ class ChatCubit extends Cubit<ChatState> {
 
   void closeErrorMessage() {
     _zodiacMainCubit.clearErrorMessage();
+  }
+
+  void updateImageIsDelivered(CreatedDeliveredEvent event) {
+    _updateMessageIsDelivered(event);
+  }
+
+  void _updateMessageIsDelivered(CreatedDeliveredEvent event) {
+    if (clientData.id == event.clientId) {
+      final int index =
+          _messages.indexWhere((element) => element.mid == event.mid);
+
+      if (index > -1) {
+        final ChatMessageModel model = _messages[index];
+        logger.d(model);
+        _messages[index] = model.copyWith(
+          isDelivered: true,
+        );
+        logger.d(_messages[index]);
+        _updateMessages();
+      }
+    }
   }
 }

@@ -48,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "balanceTransactionsZodiac":
             MessageLookupByLibrary.simpleMessage("Saldo e Transações"),
         "bonusZodiac": MessageLookupByLibrary.simpleMessage("Bônus"),
+        "busyZodiac": MessageLookupByLibrary.simpleMessage("Ocupado"),
         "callEndedZodiac":
             MessageLookupByLibrary.simpleMessage("Chamada finalizada"),
         "callStartedZodiac":
@@ -149,8 +150,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Notificações"),
         "offlineServiceZodiac":
             MessageLookupByLibrary.simpleMessage("Serviço off-line:"),
+        "offlineZodiac": MessageLookupByLibrary.simpleMessage("Desligado"),
         "onlineServicesZodiac":
             MessageLookupByLibrary.simpleMessage("Serviços online:"),
+        "onlineZodiac": MessageLookupByLibrary.simpleMessage("On-line"),
         "oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "😱 Opa! Seus dados de acesso parecem estar incorretos. Tente novamente ou toque em Redefinir senha."),

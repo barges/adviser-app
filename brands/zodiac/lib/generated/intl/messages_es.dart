@@ -48,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "balanceTransactionsZodiac":
             MessageLookupByLibrary.simpleMessage("Saldo y Transacciones"),
         "bonusZodiac": MessageLookupByLibrary.simpleMessage("Prima"),
+        "busyZodiac": MessageLookupByLibrary.simpleMessage("Ocupado"),
         "callEndedZodiac":
             MessageLookupByLibrary.simpleMessage("Llamada terminada"),
         "callStartedZodiac":
@@ -148,8 +149,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Notificaciones"),
         "offlineServiceZodiac":
             MessageLookupByLibrary.simpleMessage("Servicio fuera de línea:"),
+        "offlineZodiac": MessageLookupByLibrary.simpleMessage("Desconectado"),
         "onlineServicesZodiac":
             MessageLookupByLibrary.simpleMessage("Servicios en línea:"),
+        "onlineZodiac": MessageLookupByLibrary.simpleMessage("En línea"),
         "oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "😱 ¡Ups! Tus datos de inicio de sesión parecen ser incorrectos. Inténtalo nuevamente o pulsa restablecer clave."),

@@ -14,6 +14,7 @@ import 'package:shared_advisor_interface/services/sound_mode_service.dart';
 import 'package:vibration/vibration.dart';
 import 'package:zodiac/data/models/chat/call_data.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
+import 'package:zodiac/infrastructure/routing/route_paths.dart';
 import 'package:zodiac/presentation/screens/starting_chat/starting_chat_state.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac.dart';
@@ -121,11 +122,20 @@ class StartingChatCubit extends Cubit<StartingChatState> {
     }
     context.popForced();
 
-    ZodiacBrand().context?.push(
-            route: ZodiacChat(
-          userData: userData,
-          fromStartingChat: true,
-        ));
+    if (ZodiacBrand().context?.currentRoutePath ==
+        RoutePathsZodiac.chatScreen) {
+      ZodiacBrand().context?.replace(
+              route: ZodiacChat(
+            userData: userData,
+            fromStartingChat: true,
+          ));
+    } else {
+      ZodiacBrand().context?.push(
+              route: ZodiacChat(
+            userData: userData,
+            fromStartingChat: true,
+          ));
+    }
 
     _webSocketManager.sendCreateRoom(
         clientId: _startCallData.userData?.id,
