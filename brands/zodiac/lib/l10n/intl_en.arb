@@ -117,8 +117,8 @@
   "startChatZodiac": "Start Chat",
   "declineZodiac": "Decline",
   "incomingChatZodiac": "INCOMING Chat",
-  "youMissedCallFromZodiac": "You missed call\n from {clientName}.",
-  "youMissedChatFromZodiac": "You missed chat \n from {clientName}.",
+  "youMissedCallFromZodiac": "You missed a call from {clientName}.",
+  "youMissedChatFromZodiac": "You missed a chat from {clientName}.",
   "replyZodiac": "Reply",
   "chatStartedZodiac": "Chat started",
   "chatEndedZodiac": "Chat ended",
@@ -143,5 +143,8 @@
   "tryAgainZodiac": "Try again",
   "doYouWantToDeleteThisMessageZodiac": "Do you want to delete this message?",
   "noMessagesYetZodiac": "No messages, yet",
-  "yourChatHistoryWillAppearHereZodiac": "Your chat history will appear here"
+  "yourChatHistoryWillAppearHereZodiac": "Your chat history will appear here",
+  "paidChatZodiac": "Paid chat",
+  "freeChatZodiac": "Free chat",
+  "theMaximumImageSizeIs10MbZodiac": "The maximum image size is 10Mb."
 }

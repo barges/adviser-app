@@ -11,7 +11,7 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:io' as _i55;
+import 'dart:io' as _i54;
 
 import 'package:auto_route/auto_route.dart' as _i46;
 import 'package:flutter/material.dart' as _i47;
@@ -43,7 +43,7 @@ import 'package:fortunica/presentation/screens/home/tabs/dashboard_v1/dashboard_
     as _i20;
 import 'package:fortunica/presentation/screens/home/tabs/sessions/sessions_screen.dart'
     as _i21;
-import 'package:fortunica/presentation/screens/home/tabs_types.dart' as _i49;
+import 'package:fortunica/presentation/screens/home/tabs_types.dart' as _i48;
 import 'package:fortunica/presentation/screens/login/login_screen.dart' as _i19;
 import 'package:fortunica/presentation/screens/support/support_screen.dart'
     as _i18;
@@ -55,11 +55,10 @@ import 'package:shared_advisor_interface/presentation/screens/force_update/force
     as _i2;
 import 'package:shared_advisor_interface/presentation/screens/home_screen/main_home_screen.dart'
     as _i1;
-import 'package:zodiac/data/models/chat/chat_message_model.dart' as _i48;
-import 'package:zodiac/data/models/chat/user_data.dart' as _i54;
-import 'package:zodiac/data/models/settings/phone.dart' as _i52;
-import 'package:zodiac/data/models/user_info/category_info.dart' as _i53;
-import 'package:zodiac/data/models/user_info/user_balance.dart' as _i51;
+import 'package:zodiac/data/models/chat/user_data.dart' as _i53;
+import 'package:zodiac/data/models/settings/phone.dart' as _i51;
+import 'package:zodiac/data/models/user_info/category_info.dart' as _i52;
+import 'package:zodiac/data/models/user_info/user_balance.dart' as _i50;
 import 'package:zodiac/presentation/screens/article_details_screen/article_details_screen.dart'
     as _i25;
 import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart'
@@ -82,7 +81,7 @@ import 'package:zodiac/presentation/screens/home/tabs/dashboard/dashboard_screen
     as _i42;
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_screen.dart'
     as _i43;
-import 'package:zodiac/presentation/screens/home/tabs_types.dart' as _i50;
+import 'package:zodiac/presentation/screens/home/tabs_types.dart' as _i49;
 import 'package:zodiac/presentation/screens/locales_list/locales_list_screen.dart'
     as _i37;
 import 'package:zodiac/presentation/screens/login/login_screen.dart' as _i41;
@@ -446,12 +445,11 @@ class MainAppRouter extends _i46.RootStackRouter {
     },
     ZodiacSendImage.name: (routeData) {
       final args = routeData.argsAs<ZodiacSendImageArgs>();
-      return _i46.AdaptivePage<_i48.ChatMessageModel?>(
+      return _i46.AdaptivePage<bool?>(
         routeData: routeData,
         child: _i40.SendImageScreen(
           key: args.key,
           image: args.image,
-          clientId: args.clientId,
         ),
       );
     },
@@ -852,7 +850,7 @@ class Zodiac extends _i46.PageRouteInfo<void> {
 class FortunicaAuth extends _i46.PageRouteInfo<FortunicaAuthArgs> {
   FortunicaAuth({
     _i47.Key? key,
-    _i49.TabsTypes? initTab,
+    _i48.TabsTypes? initTab,
     List<_i46.PageRouteInfo>? children,
   }) : super(
           FortunicaAuth.name,
@@ -875,7 +873,7 @@ class FortunicaAuthArgs {
 
   final _i47.Key? key;
 
-  final _i49.TabsTypes? initTab;
+  final _i48.TabsTypes? initTab;
 
   @override
   String toString() {
@@ -888,7 +886,7 @@ class FortunicaAuthArgs {
 class FortunicaHome extends _i46.PageRouteInfo<FortunicaHomeArgs> {
   FortunicaHome({
     _i47.Key? key,
-    _i49.TabsTypes? initTab,
+    _i48.TabsTypes? initTab,
     List<_i46.PageRouteInfo>? children,
   }) : super(
           FortunicaHome.name,
@@ -911,7 +909,7 @@ class FortunicaHomeArgs {
 
   final _i47.Key? key;
 
-  final _i49.TabsTypes? initTab;
+  final _i48.TabsTypes? initTab;
 
   @override
   String toString() {
@@ -1300,7 +1298,7 @@ class ZodiacAuth extends _i46.PageRouteInfo<void> {
 class ZodiacHome extends _i46.PageRouteInfo<ZodiacHomeArgs> {
   ZodiacHome({
     _i47.Key? key,
-    _i50.TabsTypes? initTab,
+    _i49.TabsTypes? initTab,
     List<_i46.PageRouteInfo>? children,
   }) : super(
           ZodiacHome.name,
@@ -1323,7 +1321,7 @@ class ZodiacHomeArgs {
 
   final _i47.Key? key;
 
-  final _i50.TabsTypes? initTab;
+  final _i49.TabsTypes? initTab;
 
   @override
   String toString() {
@@ -1455,7 +1453,7 @@ class ZodiacBalanceAndTransactions
     extends _i46.PageRouteInfo<ZodiacBalanceAndTransactionsArgs> {
   ZodiacBalanceAndTransactions({
     _i47.Key? key,
-    required _i51.UserBalance userBalance,
+    required _i50.UserBalance userBalance,
   }) : super(
           ZodiacBalanceAndTransactions.name,
           path: 'zodiacBalanceAndTransactions',
@@ -1476,7 +1474,7 @@ class ZodiacBalanceAndTransactionsArgs {
 
   final _i47.Key? key;
 
-  final _i51.UserBalance userBalance;
+  final _i50.UserBalance userBalance;
 
   @override
   String toString() {
@@ -1489,7 +1487,7 @@ class ZodiacBalanceAndTransactionsArgs {
 class ZodiacPhoneNumber extends _i46.PageRouteInfo<ZodiacPhoneNumberArgs> {
   ZodiacPhoneNumber({
     _i47.Key? key,
-    required _i52.Phone? phone,
+    required _i51.Phone? phone,
   }) : super(
           ZodiacPhoneNumber.name,
           path: 'zodiacPhoneNumber',
@@ -1510,7 +1508,7 @@ class ZodiacPhoneNumberArgs {
 
   final _i47.Key? key;
 
-  final _i52.Phone? phone;
+  final _i51.Phone? phone;
 
   @override
   String toString() {
@@ -1524,7 +1522,7 @@ class ZodiacSMSVerification
     extends _i46.PageRouteInfo<ZodiacSMSVerificationArgs> {
   ZodiacSMSVerification({
     _i47.Key? key,
-    _i52.Phone? phoneNumber,
+    _i51.Phone? phoneNumber,
   }) : super(
           ZodiacSMSVerification.name,
           path: 'zodiacSMSVerification',
@@ -1545,7 +1543,7 @@ class ZodiacSMSVerificationArgs {
 
   final _i47.Key? key;
 
-  final _i52.Phone? phoneNumber;
+  final _i51.Phone? phoneNumber;
 
   @override
   String toString() {
@@ -1583,9 +1581,9 @@ class ZodiacSpecialitiesList
     extends _i46.PageRouteInfo<ZodiacSpecialitiesListArgs> {
   ZodiacSpecialitiesList({
     _i47.Key? key,
-    required List<_i53.CategoryInfo> oldSelectedCategories,
-    required void Function(List<_i53.CategoryInfo>) returnCallback,
-    List<_i53.CategoryInfo>? allCategories,
+    required List<_i52.CategoryInfo> oldSelectedCategories,
+    required void Function(List<_i52.CategoryInfo>) returnCallback,
+    List<_i52.CategoryInfo>? allCategories,
     bool isMultiselect = true,
   }) : super(
           ZodiacSpecialitiesList.name,
@@ -1613,11 +1611,11 @@ class ZodiacSpecialitiesListArgs {
 
   final _i47.Key? key;
 
-  final List<_i53.CategoryInfo> oldSelectedCategories;
+  final List<_i52.CategoryInfo> oldSelectedCategories;
 
-  final void Function(List<_i53.CategoryInfo>) returnCallback;
+  final void Function(List<_i52.CategoryInfo>) returnCallback;
 
-  final List<_i53.CategoryInfo>? allCategories;
+  final List<_i52.CategoryInfo>? allCategories;
 
   final bool isMultiselect;
 
@@ -1721,7 +1719,7 @@ class ZodiacNotificationDetailsArgs {
 class ZodiacChat extends _i46.PageRouteInfo<ZodiacChatArgs> {
   ZodiacChat({
     _i47.Key? key,
-    required _i54.UserData userData,
+    required _i53.UserData userData,
     bool fromStartingChat = false,
   }) : super(
           ZodiacChat.name,
@@ -1745,7 +1743,7 @@ class ZodiacChatArgs {
 
   final _i47.Key? key;
 
-  final _i54.UserData userData;
+  final _i53.UserData userData;
 
   final bool fromStartingChat;
 
@@ -1760,15 +1758,13 @@ class ZodiacChatArgs {
 class ZodiacSendImage extends _i46.PageRouteInfo<ZodiacSendImageArgs> {
   ZodiacSendImage({
     _i47.Key? key,
-    required _i55.File image,
-    required String clientId,
+    required _i54.File image,
   }) : super(
           ZodiacSendImage.name,
           path: 'zodiacSendImage',
           args: ZodiacSendImageArgs(
             key: key,
             image: image,
-            clientId: clientId,
           ),
         );
 
@@ -1779,18 +1775,15 @@ class ZodiacSendImageArgs {
   const ZodiacSendImageArgs({
     this.key,
     required this.image,
-    required this.clientId,
   });
 
   final _i47.Key? key;
 
-  final _i55.File image;
-
-  final String clientId;
+  final _i54.File image;
 
   @override
   String toString() {
-    return 'ZodiacSendImageArgs{key: $key, image: $image, clientId: $clientId}';
+    return 'ZodiacSendImageArgs{key: $key, image: $image}';
   }
 }
 

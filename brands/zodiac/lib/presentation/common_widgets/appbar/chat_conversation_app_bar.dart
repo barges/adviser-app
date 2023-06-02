@@ -7,6 +7,7 @@ import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
+import 'package:zodiac/data/models/enums/chat_payment_status.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
@@ -120,6 +121,10 @@ class ChatConversationAppBar extends StatelessWidget
                               (ChatCubit cubit) =>
                                   cubit.state.isChatReconnecting);
 
+                          final ChatPaymentStatus? chatPaymentStatus =
+                              context.select((ChatCubit cubit) =>
+                                  cubit.state.chatPaymentStatus);
+
                           if (isChatReconnecting) {
                             return Text(
                               SZodiac.of(context).reconnectingZodiac,
@@ -131,7 +136,7 @@ class ChatConversationAppBar extends StatelessWidget
                             );
                           } else if (timerValue != null) {
                             return Text(
-                              timerValue.chatTimerFormat,
+                              '${chatPaymentStatus?.getLabel(context) ?? ''} ${timerValue.chatTimerFormat}',
                               style: TextStyle(
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.w400,

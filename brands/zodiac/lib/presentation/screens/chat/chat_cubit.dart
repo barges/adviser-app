@@ -27,6 +27,7 @@ import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
 import 'package:zodiac/services/websocket_manager/chat_login_event.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
+import 'package:zodiac/services/websocket_manager/paid_free_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
 import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
@@ -103,6 +104,8 @@ class ChatCubit extends Cubit<ChatState> {
   late final StreamSubscription<WebSocketState> _webSocketStateSubscription;
 
   late final StreamSubscription<bool> _keyboardSubscription;
+
+  late final StreamSubscription<PaidFreeEvent> _paidFreeChatSubscription;
 
   bool triggerOnTextChanged = true;
   bool _isRefresh = false;
@@ -404,6 +407,13 @@ class ChatCubit extends Cubit<ChatState> {
       },
     );
 
+    _paidFreeChatSubscription =
+        _webSocketManager.paidFreeStream.listen((event) {
+      if (event.opponentId == clientData.id) {
+        emit(state.copyWith(chatPaymentStatus: event.status));
+      }
+    });
+
     getClientInformation();
   }
 
@@ -432,6 +442,7 @@ class ChatCubit extends Cubit<ChatState> {
     _chatLoginSubscription.cancel();
     _underageConfirmSubscription.cancel();
     _webSocketStateSubscription.cancel();
+    _paidFreeChatSubscription.cancel();
     return super.close();
   }
 
@@ -569,18 +580,29 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> sendImage(BuildContext context, File image) async {
-    ChatMessageModel? message = await context.push<ChatMessageModel?>(
+    bool? shouldSend = await context.push<bool?>(
       route: ZodiacSendImage(
         image: image,
-        clientId: clientData.id.toString(),
       ),
     );
 
-    logger.d(message);
+    if (shouldSend == true) {
+      String mid = _generateMessageId();
 
-    if (message != null) {
+      ChatMessageModel message = ChatMessageModel(
+        type: ChatMessageType.image,
+        isOutgoing: true,
+        utc: DateTime.now().toUtc(),
+        fromAdvisor: true,
+        mainImage: image.path,
+        mid: mid,
+        isDelivered: false,
+      );
+
       _messages.insert(0, message);
       _updateMessages();
+
+      logger.d(message);
     }
   }
 
@@ -616,5 +638,9 @@ class ChatCubit extends Cubit<ChatState> {
   void deleteMessage(String? mid) {
     _messages.removeWhere((element) => element.mid == mid);
     emit(state.copyWith(messages: List.of(_messages)));
+  }
+
+  void closeErrorMessage() {
+    _zodiacMainCubit.clearErrorMessage();
   }
 }

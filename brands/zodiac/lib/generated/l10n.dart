@@ -1235,20 +1235,20 @@ class SZodiac {
     );
   }
 
-  /// `You missed call\n from {clientName}.`
+  /// `You missed a call from {clientName}.`
   String youMissedCallFromZodiac(Object clientName) {
     return Intl.message(
-      'You missed call\n from $clientName.',
+      'You missed a call from $clientName.',
       name: 'youMissedCallFromZodiac',
       desc: '',
       args: [clientName],
     );
   }
 
-  /// `You missed chat \n from {clientName}.`
+  /// `You missed a chat from {clientName}.`
   String youMissedChatFromZodiac(Object clientName) {
     return Intl.message(
-      'You missed chat \n from $clientName.',
+      'You missed a chat from $clientName.',
       name: 'youMissedChatFromZodiac',
       desc: '',
       args: [clientName],
@@ -1500,6 +1500,36 @@ class SZodiac {
     return Intl.message(
       'Your chat history will appear here',
       name: 'yourChatHistoryWillAppearHereZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Paid chat`
+  String get paidChatZodiac {
+    return Intl.message(
+      'Paid chat',
+      name: 'paidChatZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Free chat`
+  String get freeChatZodiac {
+    return Intl.message(
+      'Free chat',
+      name: 'freeChatZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The maximum image size is 10Mb.`
+  String get theMaximumImageSizeIs10MbZodiac {
+    return Intl.message(
+      'The maximum image size is 10Mb.',
+      name: 'theMaximumImageSizeIs10MbZodiac',
       desc: '',
       args: [],
     );

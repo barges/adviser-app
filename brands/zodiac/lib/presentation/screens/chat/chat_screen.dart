@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
+import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
@@ -10,6 +11,7 @@ import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/empty_list_widget.dart';
+import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_success_widget.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_messages_list_widget.dart';
@@ -17,6 +19,7 @@ import 'package:zodiac/presentation/screens/chat/widgets/chat_text_input_widget.
 import 'package:zodiac/presentation/screens/chat/widgets/client_information_widget.dart';
 import 'package:zodiac/zodiac_constants.dart';
 import 'package:zodiac/zodiac_extensions.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ChatScreen extends StatelessWidget {
   final UserData userData;
@@ -147,34 +150,48 @@ class ChatScreen extends StatelessWidget {
                       top: 0.0,
                       right: 0.0,
                       left: 0.0,
-                      child: Column(
-                        children: [
-                          ClientInformationWidget(
-                            chatIsActive: chatIsActive,
-                          ),
-                          Builder(builder: (context) {
-                            final bool showOfflineSessionsMessage =
-                                context.select((ChatCubit cubit) =>
-                                    cubit.state.showOfflineSessionsMessage);
-                            final Duration? offlineSessionTimerValue =
-                                context.select((ChatCubit cubit) =>
-                                    cubit.state.offlineSessionTimerValue);
+                      child: Builder(builder: (context) {
+                        final bool showOfflineSessionsMessage = context.select(
+                            (ChatCubit cubit) =>
+                                cubit.state.showOfflineSessionsMessage);
 
-                            return AppSuccessWidget(
-                              title: SZodiac.of(context).chatEndedZodiac,
-                              message: showOfflineSessionsMessage &&
-                                      offlineSessionTimerValue != null
-                                  ? SZodiac.of(context)
-                                      .youAreAbleToWriteWithinZodiac(
-                                          offlineSessionTimerValue
-                                              .offlineSessionTimerFormat(
-                                                  context))
-                                  : '',
-                              onClose: chatCubit.closeOfflineSessionsMessage,
-                            );
-                          }),
-                        ],
-                      ),
+                        return Column(
+                          children: [
+                            ClientInformationWidget(
+                              chatIsActive: chatIsActive,
+                            ),
+                            Builder(builder: (context) {
+                              final AppError appError = context.select(
+                                  (ZodiacMainCubit cubit) =>
+                                      cubit.state.appError);
+
+                              return AppErrorWidget(
+                                errorMessage: appError.getMessage(context),
+                                roundedCorners: !showOfflineSessionsMessage,
+                                close: chatCubit.closeErrorMessage,
+                              );
+                            }),
+                            Builder(builder: (context) {
+                              final Duration? offlineSessionTimerValue =
+                                  context.select((ChatCubit cubit) =>
+                                      cubit.state.offlineSessionTimerValue);
+
+                              return AppSuccessWidget(
+                                title: SZodiac.of(context).chatEndedZodiac,
+                                message: showOfflineSessionsMessage &&
+                                        offlineSessionTimerValue != null
+                                    ? SZodiac.of(context)
+                                        .youAreAbleToWriteWithinZodiac(
+                                            offlineSessionTimerValue
+                                                .offlineSessionTimerFormat(
+                                                    context))
+                                    : '',
+                                onClose: chatCubit.closeOfflineSessionsMessage,
+                              );
+                            }),
+                          ],
+                        );
+                      }),
                     ),
                   ],
                 ),
