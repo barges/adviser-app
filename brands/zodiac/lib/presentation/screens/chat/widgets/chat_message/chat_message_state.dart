@@ -6,6 +6,5 @@ part 'chat_message_state.freezed.dart';
 class ChatMessageState with _$ChatMessageState {
   const factory ChatMessageState({
     @Default(false) bool showResendWidget,
-    @Default(false) bool updateMessageIsDelivered,
   }) = _ChatMessageState;
 }

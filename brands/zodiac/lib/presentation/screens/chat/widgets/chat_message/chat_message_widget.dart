@@ -23,11 +23,10 @@ import 'package:zodiac/presentation/screens/chat/widgets/resend_message_widget.d
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
-// ignore: must_be_immutable
 class ChatMessageWidget extends StatelessWidget {
-  ChatMessageModel chatMessageModel;
+  final ChatMessageModel chatMessageModel;
 
-  ChatMessageWidget({
+  const ChatMessageWidget({
     Key? key,
     required this.chatMessageModel,
   }) : super(key: key);
@@ -45,6 +44,8 @@ class ChatMessageWidget extends StatelessWidget {
         zodiacGetIt.get<ZodiacMainCubit>(),
         chatMessageModel.type == ChatMessageType.image,
         zodiacGetIt.get<ZodiacChatRepository>(),
+        chatCubit.deleteMessage,
+        chatCubit.updateImageIsDelivered,
         context,
       ),
       child: Builder(builder: (context) {
@@ -53,12 +54,6 @@ class ChatMessageWidget extends StatelessWidget {
 
         final bool showResendWidget = context
             .select((ChatMessageCubit cubit) => cubit.state.showResendWidget);
-
-        final bool updateMessageIdDelivered = context.select(
-            (ChatMessageCubit cubit) => cubit.state.updateMessageIsDelivered);
-        if (updateMessageIdDelivered) {
-          chatMessageModel = chatMessageModel.copyWith(isDelivered: true);
-        }
 
         return Stack(
           children: [

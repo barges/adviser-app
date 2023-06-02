@@ -8,6 +8,7 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
 import 'package:zodiac/data/models/enums/chat_payment_status.dart';
+import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
@@ -35,6 +36,9 @@ class ChatConversationAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     final BaseBrand selectedBrand = ZodiacBrand();
+
+    final ZodiacUserStatus? clientStatus = context
+        .select((ChatCubit cubit) => cubit.state.clientInformation?.status);
 
     return AppBar(
       automaticallyImplyLeading: false,
@@ -143,6 +147,15 @@ class ChatConversationAppBar extends StatelessWidget
                                 color: Theme.of(context).shadowColor,
                               ),
                             );
+                          } else if (clientStatus != null) {
+                            return Text(
+                              clientStatus.statusText(context),
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w400,
+                                color: Theme.of(context).shadowColor,
+                              ),
+                            );
                           } else {
                             return Text(
                               selectedBrand.name,
@@ -160,6 +173,9 @@ class ChatConversationAppBar extends StatelessWidget
                   UserAvatar(
                     diameter: 32.0,
                     avatarUrl: userData.avatar,
+                    badgeColor: clientStatus?.statusBadgeColor(context),
+                    badgeDiameter: 12.0,
+                    badgeBorderWidth: 2.0,
                   ),
                 ],
               ),

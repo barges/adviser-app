@@ -52,7 +52,7 @@ dependencies:
   assets_audio_player: ^3.0.6
   flutter_slidable: ^3.0.0
   visibility_detector: ^0.4.0+2
-  scrollview_observer: ^1.10.1
+  scrollview_observer: ^1.13.0
   snapping_sheet: ^3.1.0
   flutter_keyboard_visibility: ^5.4.0
   flutter_keyboard_size: ^1.0.1

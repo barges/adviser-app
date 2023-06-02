@@ -55,7 +55,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   final PublishSubject<ChatMessageModel> _oneMessageStream = PublishSubject();
 
-  final BehaviorSubject<EnterRoomData> _enterRoomDataStream = BehaviorSubject();
+  final PublishSubject<EnterRoomData> _enterRoomDataStream = PublishSubject();
 
   final PublishSubject<CreatedDeliveredEvent> _updateMessageIdStream =
       PublishSubject();
@@ -251,8 +251,7 @@ class WebSocketManagerImpl implements WebSocketManager {
   Stream<int> get updateWriteStatusStream => _updateWriteStatusStream.stream;
 
   @override
-  ValueStream<EnterRoomData> get enterRoomDataStream =>
-      _enterRoomDataStream.stream;
+  Stream<EnterRoomData> get enterRoomDataStream => _enterRoomDataStream.stream;
 
   @override
   PublishSubject<bool> get endChatTrigger => _endChatTrigger;

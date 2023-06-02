@@ -50,6 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "balanceTransactionsZodiac":
             MessageLookupByLibrary.simpleMessage("Guthaben & Transaktionen"),
         "bonusZodiac": MessageLookupByLibrary.simpleMessage("Bonus"),
+        "busyZodiac": MessageLookupByLibrary.simpleMessage("Beschäftigt"),
         "callEndedZodiac":
             MessageLookupByLibrary.simpleMessage("Anruf beendet"),
         "callStartedZodiac":
@@ -145,8 +146,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Benachrichtigungen"),
         "offlineServiceZodiac":
             MessageLookupByLibrary.simpleMessage("Offline Dienst:"),
+        "offlineZodiac": MessageLookupByLibrary.simpleMessage("Offline"),
         "onlineServicesZodiac":
             MessageLookupByLibrary.simpleMessage("Online Dienste:"),
+        "onlineZodiac": MessageLookupByLibrary.simpleMessage("Online"),
         "openEmailZodiac": MessageLookupByLibrary.simpleMessage("Email öffnen"),
         "paidChatZodiac":
             MessageLookupByLibrary.simpleMessage("Bezahlter Chat"),
