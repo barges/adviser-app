@@ -75,7 +75,9 @@ class ChatMessagesListWidget extends StatelessWidget {
                     final ChatMessageModel messageModel = messages[index - 1];
                     if (messageModel.isOutgoing || messageModel.isRead) {
                       return ChatMessageWidget(
-                        key: ValueKey(messageModel.mid),
+                        key: messageModel.isOutgoing
+                            ? ValueKey(messageModel.mid)
+                            : null,
                         chatMessageModel: messageModel,
                       );
                     } else {

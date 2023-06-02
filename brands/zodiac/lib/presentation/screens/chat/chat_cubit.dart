@@ -131,6 +131,7 @@ class ChatCubit extends Cubit<ChatState> {
     _underageConfirmDialog = chatCubitParams.underageConfirmDialog;
 
     _messagesSubscription = _webSocketManager.entitiesStream.listen((event) {
+      logger.d('isRefresh: $_isRefresh');
       if (_isRefresh) {
         _isRefresh = false;
         _messages.clear();
@@ -151,7 +152,7 @@ class ChatCubit extends Cubit<ChatState> {
         if (!contains) {
           _messages.insert(0, event);
           if (state.needShowDownButton) {
-            chatObserver.standby();
+            //chatObserver.standby();
           }
           _updateMessages();
           if (!event.isOutgoing) {
@@ -387,20 +388,19 @@ class ChatCubit extends Cubit<ChatState> {
     _webSocketStateSubscription = _webSocketManager.webSocketStateStream.listen(
       (event) {
         if (event == WebSocketState.connected) {
-          _webSocketManager.chatLogin(opponentId: clientData.id ?? 0);
           if (state.offlineSessionIsActive) {
             closeOfflineSession();
-          }
-          if (!state.chatIsActive) {
+          } else if (!state.chatIsActive) {
+            _webSocketManager.chatLogin(opponentId: clientData.id ?? 0);
             emit(state.copyWith(isChatReconnecting: false));
           } else {
+            _isRefresh = true;
             emit(state.copyWith(chatIsActive: false, chatTimerValue: null));
             _chatTimer?.cancel();
           }
         }
         if (event == WebSocketState.closed) {
           emit(state.copyWith(isChatReconnecting: true));
-          logger.d('CLOSED');
         }
       },
     );
