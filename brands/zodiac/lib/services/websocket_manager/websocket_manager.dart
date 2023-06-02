@@ -31,7 +31,7 @@ abstract class WebSocketManager {
 
   Stream<int> get updateWriteStatusStream;
 
-  ValueStream<EnterRoomData> get enterRoomDataStream;
+  Stream<EnterRoomData> get enterRoomDataStream;
 
   PublishSubject<bool> get endChatTrigger;
 

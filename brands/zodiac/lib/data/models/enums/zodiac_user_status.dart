@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
+import 'package:zodiac/generated/l10n.dart';
 
 enum ZodiacUserStatus {
   online,
@@ -19,7 +20,7 @@ enum ZodiacUserStatus {
     }
   }
 
-    static ZodiacUserStatus statusFromInt(int? i) {
+  static ZodiacUserStatus statusFromInt(int? i) {
     switch (i) {
       case 1:
         return ZodiacUserStatus.online;
@@ -32,7 +33,7 @@ enum ZodiacUserStatus {
     }
   }
 
-  int get intFromStatus{
+  int get intFromStatus {
     switch (this) {
       case ZodiacUserStatus.online:
         return 1;
@@ -42,7 +43,6 @@ enum ZodiacUserStatus {
         return 3;
     }
   }
-
 
   Color statusNameColor(BuildContext context) {
     switch (this) {
@@ -66,4 +66,14 @@ enum ZodiacUserStatus {
     }
   }
 
+  String statusText(BuildContext context) {
+    switch (this) {
+      case ZodiacUserStatus.online:
+        return SZodiac.of(context).onlineZodiac;
+      case ZodiacUserStatus.busy:
+        return SZodiac.of(context).busyZodiac;
+      case ZodiacUserStatus.offline:
+        return SZodiac.of(context).offlineZodiac;
+    }
+  }
 }

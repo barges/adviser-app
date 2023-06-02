@@ -1284,6 +1284,36 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Online`
+  String get onlineZodiac {
+    return Intl.message(
+      'Online',
+      name: 'onlineZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Busy`
+  String get busyZodiac {
+    return Intl.message(
+      'Busy',
+      name: 'busyZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Offline`
+  String get offlineZodiac {
+    return Intl.message(
+      'Offline',
+      name: 'offlineZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {
