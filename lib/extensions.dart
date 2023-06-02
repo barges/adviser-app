@@ -83,12 +83,6 @@ extension StringExt on String {
     return DateFormat(datePattern5).format(datetime);
   }
 
-  String get parseDateTimePattern6 {
-    final DateTime inputData = DateTime.parse(
-        DateFormat(dateFormat).parse(this, true).toLocal().toString());
-    return DateFormat(datePattern6).format(inputData);
-  }
-
   String get parseDateTimePattern7 {
     final DateTime inputData = DateTime.parse(
         DateFormat(dateFormat).parse(this, true).toLocal().toString());

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/note.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -151,7 +152,7 @@ class _OneNoteWidget extends StatelessWidget {
                       color: Theme.of(context).shadowColor),
                   child: Row(
                     children: [
-                      Text(updatedAt.parseDateTimePattern6),
+                      Text(DateFormat(datePattern6).format(updatedAt)),
                       if (images.isNotEmpty)
                         Row(
                           mainAxisSize: MainAxisSize.min,
