@@ -5,12 +5,11 @@ part 'note.g.dart';
 @JsonSerializable(includeIfNull: false)
 class Note {
   final String? content;
-  final String? updatedAt;
+  final DateTime? updatedAt;
 
   const Note(this.content, this.updatedAt);
 
-  factory Note.fromJson(Map<String, dynamic> json) =>
-      _$NoteFromJson(json);
+  factory Note.fromJson(Map<String, dynamic> json) => _$NoteFromJson(json);
 
   Map<String, dynamic> toJson() => _$NoteToJson(this);
 }

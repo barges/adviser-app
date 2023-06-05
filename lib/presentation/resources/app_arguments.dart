@@ -49,7 +49,7 @@ class CustomerProfileScreenArguments {
 class AddNoteScreenArguments {
   final String customerID;
   final String? oldNote;
-  final String? updatedAt;
+  final DateTime? updatedAt;
   final VoidCallback noteChanged;
 
   AddNoteScreenArguments({

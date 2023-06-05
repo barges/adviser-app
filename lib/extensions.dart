@@ -48,32 +48,6 @@ extension StringExt on String {
     }
   }
 
-  String get parseDateTimePattern1 {
-    final DateTime inputDate = DateTime.parse(
-        DateFormat(dateFormat).parse(this, true).toLocal().toString());
-
-    return DateFormat(datePattern1).format(inputDate);
-  }
-
-  String get parseDateTimePattern2 {
-    final DateTime inputDate = DateTime.parse(
-        DateFormat(dateFormat).parse(this, true).toLocal().toString());
-
-    return DateFormat(datePattern2).format(inputDate);
-  }
-
-  String get parseDateTimePattern3 {
-    final DateTime inputDate = DateTime.parse(
-        DateFormat(dateFormat).parse(this, true).toLocal().toString());
-    return DateFormat(datePattern3).format(inputDate);
-  }
-
-  String get parseDateTimePattern4 {
-    final DateTime inputData = DateTime.parse(
-        DateFormat(dateFormat).parse(this, true).toLocal().toString());
-    return DateFormat(datePattern4).format(inputData);
-  }
-
   String get parseDateTimeChat {
     final datetime = DateTime.tryParse(this);
     if (datetime == null) {
@@ -81,30 +55,6 @@ extension StringExt on String {
     }
 
     return DateFormat(datePattern5).format(datetime);
-  }
-
-  String get parseDateTimePattern7 {
-    final DateTime inputData = DateTime.parse(
-        DateFormat(dateFormat).parse(this, true).toLocal().toString());
-    return DateFormat(datePattern7).format(inputData);
-  }
-
-  String get parseDateTimePattern8 {
-    final DateTime inputData = DateTime.parse(
-        DateFormat(dateFormat).parse(this, true).toLocal().toString());
-    return DateFormat(datePattern8).format(inputData);
-  }
-
-  String get parseDateTimePattern9 {
-    final DateTime inputData = DateTime.parse(
-        DateFormat(dateFormat).parse(this, true).toLocal().toString());
-    return DateFormat(datePattern9).format(inputData);
-  }
-
-  String get parseDateTimePattern10 {
-    final DateTime inputData = DateTime.parse(
-        DateFormat(dateFormat).parse(this, true).toLocal().toString());
-    return DateFormat(datePattern10).format(inputData);
   }
 
   String get removeSpacesAndNewLines {
@@ -133,12 +83,12 @@ extension DateTimeExt on DateTime {
             .difference(DateTime(now.year, now.month, now.day))
             .inDays;
     if (timeDifference == 0) {
-      return DateFormat(dateFormat).format(this).parseDateTimePattern7;
+      return DateFormat(datePattern7).format(localTime);
     }
     if (localTime.year != now.year) {
-      return DateFormat(dateFormat).format(this).parseDateTimePattern9;
+      return DateFormat(datePattern9).format(localTime);
     }
-    return DateFormat(dateFormat).format(this).parseDateTimePattern8;
+    return DateFormat(datePattern8).format(localTime);
   }
 
   String historyListTime(BuildContext context) {
@@ -152,9 +102,9 @@ extension DateTimeExt on DateTime {
       return S.of(context).today;
     }
     if (localTime.year != now.year) {
-      return DateFormat(dateFormat).format(this).parseDateTimePattern9;
+      return DateFormat(datePattern9).format(localTime);
     }
-    return DateFormat(dateFormat).format(this).parseDateTimePattern8;
+    return DateFormat(datePattern8).format(localTime);
   }
 }
 

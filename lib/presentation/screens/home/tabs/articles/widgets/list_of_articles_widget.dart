@@ -119,7 +119,7 @@ class ArticleWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      article.date.parseDateTimePattern2,
+                      article.date,
                       style: Theme.of(context).textTheme.displaySmall?.copyWith(
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).shadowColor),
