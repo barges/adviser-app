@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/note.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -87,7 +88,7 @@ class NotesWidget extends StatelessWidget {
                         return _OneNoteWidget(
                             onTap: () => customerProfileCubit.updateNote(note),
                             text: note.content ?? '',
-                            updatedAt: note.updatedAt ?? '',
+                            updatedAt: note.updatedAt ?? DateTime.now(),
                             images:
                                 images.isNotEmpty ? images[index] : const []);
                       },
@@ -111,7 +112,7 @@ class _OneNoteWidget extends StatelessWidget {
   final String text;
   final List<String> images;
   final VoidCallback? onTap;
-  final String updatedAt;
+  final DateTime updatedAt;
 
   const _OneNoteWidget(
       {Key? key,
@@ -151,7 +152,8 @@ class _OneNoteWidget extends StatelessWidget {
                       color: Theme.of(context).shadowColor),
                   child: Row(
                     children: [
-                      Text(updatedAt.parseDateTimePattern6),
+                      Text(
+                          DateFormat(datePattern6).format(updatedAt.toLocal())),
                       if (images.isNotEmpty)
                         Row(
                           mainAxisSize: MainAxisSize.min,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
 import 'package:shared_advisor_interface/data/models/customer_info/note.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -132,23 +133,25 @@ class CustomerProfileWidget extends StatelessWidget {
                                                 firstName != null &&
                                                         lastName != null
                                                     ? '$firstName $lastName'
-                                                    : S.of(context).notSpecified,
+                                                    : S
+                                                        .of(context)
+                                                        .notSpecified,
                                                 textAlign: TextAlign.center,
                                                 style: theme
                                                     .textTheme.headlineMedium,
                                               );
                                             }),
                                           ),
-                                          if (customerInfo.gender != null ||
-                                              customerInfo.birthdate != null)
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              if (customerInfo.birthdate !=
+                                                  null)
                                                 Text(
-                                                  customerInfo
-                                                          .birthdate
-                                                          ?.parseDateTimePattern9
+                                                  DateFormat(datePattern9)
+                                                          .format(customerInfo
+                                                              .birthdate!)
                                                           .capitalize ??
                                                       '',
                                                   style: theme
@@ -157,33 +160,33 @@ class CustomerProfileWidget extends StatelessWidget {
                                                     color: theme.shadowColor,
                                                   ),
                                                 ),
-                                                const SizedBox(
-                                                  width: 8.0,
-                                                ),
-                                                Container(
-                                                  width: 4.0,
-                                                  height: 4.0,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              90.0),
-                                                      color: theme.hintColor),
-                                                ),
-                                                const SizedBox(
-                                                  width: 8.0,
-                                                ),
+                                              const SizedBox(
+                                                width: 8.0,
+                                              ),
+                                              Container(
+                                                width: 4.0,
+                                                height: 4.0,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            90.0),
+                                                    color: theme.hintColor),
+                                              ),
+                                              const SizedBox(
+                                                width: 8.0,
+                                              ),
+                                              if (customerInfo.gender != null)
                                                 Text(
-                                                  customerInfo.gender
-                                                          ?.name(context) ??
-                                                      '',
+                                                  customerInfo.gender!
+                                                      .name(context),
                                                   style: theme
                                                       .textTheme.bodyMedium
                                                       ?.copyWith(
                                                     color: theme.shadowColor,
                                                   ),
                                                 )
-                                              ],
-                                            ),
+                                            ],
+                                          ),
                                         ],
                                       )),
                                   Builder(builder: (context) {

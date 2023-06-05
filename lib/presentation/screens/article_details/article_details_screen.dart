@@ -94,8 +94,7 @@ class ArticleDetailsScreen extends StatelessWidget with ShareMixin {
                                                         FontWeight.w500),
                                           ),
                                           Text(
-                                            '2022-09-19T10:05:38.697Z'
-                                                .parseDateTimePattern1,
+                                            '2022-09-19T10:05:38.697Z',
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .displaySmall
