@@ -6,6 +6,9 @@ stages:
 variables:
   LANG: "en_US.UTF-8"
 
+before_script:
+  - pod repo update
+
 upgrade_flutter:
   stage: upgrade_flutter
   script:
