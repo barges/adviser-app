@@ -60,7 +60,7 @@ class RitualInfoCardWidget extends StatelessWidget {
                 if (ritualCardInfo?.birthdate != null)
                   Text(
                     DateFormat(datePattern1).format(
-                      ritualCardInfo!.birthdate!.toLocal(),
+                      ritualCardInfo!.birthdate!,
                     ),
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.shadowColor,
