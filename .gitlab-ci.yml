@@ -9,7 +9,7 @@ variables:
 upgrade_flutter:
   stage: upgrade_flutter
   script:
-    - flutter upgrade
+    - flutter upgrade --force
     - flutter channel stable
     - flutter --version
   tags:
