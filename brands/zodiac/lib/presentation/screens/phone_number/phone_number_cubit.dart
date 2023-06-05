@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
@@ -12,10 +16,11 @@ import 'package:zodiac/data/network/responses/phone_number_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 
 import 'package:zodiac/presentation/screens/phone_number/phone_number_state.dart';
-import 'package:zodiac/services/phone_country_codes_service.dart';
 import 'package:zodiac/services/recaptcha/recaptcha_service.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
+const countryPhoneCodesJsonPath =
+    'assets/zodiac/files/country_phone_codes.json';
 const pnoneNumberMaxLength = 15;
 const verificationCodeAttemptsPer24HoursMax = 3;
 
@@ -24,22 +29,30 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   final ZodiacMainCubit _zodiacMainCubit;
   final ZodiacUserRepository _zodiacUserRepository;
   final ConnectivityService _connectivityService;
-  final PhoneCountryCodesService _phoneCountryCodesService;
   final FocusNode phoneNumberInputFocus = FocusNode();
   final TextEditingController phoneNumberInputController =
       TextEditingController();
+  final List<PhoneCountryCode> _phoneCountryCodes = [];
 
   PhoneNumberCubit(
     this._phone,
     this._zodiacMainCubit,
     this._zodiacUserRepository,
     this._connectivityService,
-    this._phoneCountryCodesService,
   ) : super(const PhoneNumberState()) {
     _init();
   }
 
+  @override
+  Future<void> close() async {
+    phoneNumberInputFocus.dispose();
+    phoneNumberInputController.dispose();
+    return super.close();
+  }
+
   _init() async {
+    await _loadCountryPhoneCodesJson();
+
     WidgetsBinding.instance
         .addPostFrameCallback((_) => setTextInputFocus(true));
 
@@ -73,16 +86,44 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
     });
   }
 
-  @override
-  Future<void> close() async {
-    phoneNumberInputFocus.dispose();
-    phoneNumberInputController.dispose();
-    return super.close();
+  Future<void> _loadCountryPhoneCodesJson() async {
+    final String response =
+        await rootBundle.loadString(countryPhoneCodesJsonPath);
+    final List<dynamic> jsonData = await jsonDecode(response);
+    for (var json in jsonData) {
+      _phoneCountryCodes.add(PhoneCountryCode.fromJson(json));
+    }
+  }
+
+  List<PhoneCountryCode> _searchPhoneCountryCodes(String text) {
+    String searchText = text.trim().toLowerCase();
+    return _phoneCountryCodes.where((item) {
+      if (item.name != null &&
+          item.name!.toLowerCase().startsWith(searchText)) {
+        return true;
+      }
+      if (item.code != null &&
+          item.code!.startsWith(
+              searchText.toLowerCase(), searchText.startsWith('+') ? 0 : 1)) {
+        return true;
+      }
+      return false;
+    }).toList();
+  }
+
+  String? _getCountryNameByCode(int code) {
+    return _phoneCountryCodes
+        .firstWhereOrNull((item) => item.toCodeInt() == code)
+        ?.name;
   }
 
   void updatePhoneCodeSearchVisibility(bool isVisible) {
     if (isVisible) {
-      searchPhoneCountryCodes('');
+      emit(
+        state.copyWith(
+          searchedPhoneCountryCodes: _phoneCountryCodes,
+        ),
+      );
     } else {
       setTextInputFocus(true);
     }
@@ -95,7 +136,7 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
 
   void searchPhoneCountryCodes(String text) {
     final List<PhoneCountryCode> searchedPhoneCountryCodes =
-        _phoneCountryCodesService.searchPhoneCountryCodes(text);
+        _searchPhoneCountryCodes(text);
     emit(
       state.copyWith(
         searchedPhoneCountryCodes: searchedPhoneCountryCodes,
@@ -176,10 +217,6 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
       phoneNumberInputController.selection = TextSelection.collapsed(
           offset: phoneNumberInputController.text.length);
     }
-  }
-
-  String? _getCountryNameByCode(int code) {
-    return _phoneCountryCodesService.getCountryNameByCode(code);
   }
 
   bool get isPhoneNumberValidLength {

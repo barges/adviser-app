@@ -141,10 +141,10 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - freshchat_sdk (0.10.4):
+  - freshchat_sdk (0.10.5):
     - Flutter
-    - FreshchatSDK (= 5.5.2)
-  - FreshchatSDK (5.5.2)
+    - FreshchatSDK (= 5.5.3)
+  - FreshchatSDK (5.5.3)
   - GoogleAppMeasurement (10.9.0):
     - GoogleAppMeasurement/AdIdSupport (= 10.9.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
@@ -403,8 +403,8 @@ SPEC CHECKSUMS:
   flutter_sound: c60effa2a350fb977885f0db2fbc4c1ad5160900
   flutter_sound_core: 26c10e5832e76aaacfae252d8925232281c486ae
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  freshchat_sdk: 4c65562d9ea7c0321b7e7a388318703b74201431
-  FreshchatSDK: 2834071940d0ac379c6eee4291c3d4ab1202e6c8
+  freshchat_sdk: 7c993af6aa083f9be04be291ff5464e53d74acc3
+  FreshchatSDK: ccbc777a18d4874587ad6bcb9f670ec077c421a8
   GoogleAppMeasurement: 373bcbead1bb6a85be7a64d5d8f96284b762ea9c
   GoogleDataTransport: f0308f5905a745f94fb91fea9c6cbaf3831cb1bd
   GoogleUtilities: 9aa0ad5a7bc171f8bae016300bfcfa3fb8425749

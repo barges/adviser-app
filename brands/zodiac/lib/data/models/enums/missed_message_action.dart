@@ -10,9 +10,9 @@ enum MissedMessageAction {
   String get iconPath {
     switch (this) {
       case chat:
-        return Assets.zodiac.chatFee.path;
+        return Assets.zodiac.vectors.chatFee.path;
       case call:
-        return Assets.zodiac.call.path;
+        return Assets.zodiac.vectors.call.path;
       case none:
         return '';
     }

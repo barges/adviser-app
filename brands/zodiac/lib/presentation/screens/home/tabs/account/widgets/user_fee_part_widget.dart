@@ -34,7 +34,7 @@ class UserFeePartWidget extends StatelessWidget {
               return TileWidget(
                 title: SZodiac.of(context)
                     .pricePerMinZodiac(userInfo?.chatFee ?? '0.0'),
-                iconSVGPath: Assets.zodiac.chatFee.path,
+                iconSVGPath: Assets.zodiac.vectors.chatFee.path,
                 onChanged: zodiacAccountCubit.updateChatsEnabled,
                 widget: GestureDetector(
                   onTap: () {
@@ -69,7 +69,7 @@ class UserFeePartWidget extends StatelessWidget {
               return TileWidget(
                 title: SZodiac.of(context)
                     .pricePerMinZodiac(userInfo?.callFee ?? '0.0'),
-                iconSVGPath: Assets.zodiac.call.path,
+                iconSVGPath: Assets.zodiac.vectors.call.path,
                 onChanged: zodiacAccountCubit.updateCallsEnabled,
                 widget: GestureDetector(
                   onTap: () {
@@ -105,7 +105,7 @@ class UserFeePartWidget extends StatelessWidget {
               return TileWidget(
                 title: SZodiac.of(context)
                     .pricePerMinZodiac(userInfo?.randomCallFee ?? '1.99'),
-                iconSVGPath: Assets.zodiac.call.path,
+                iconSVGPath: Assets.zodiac.vectors.call.path,
                 onChanged: zodiacAccountCubit.updateRandomCallsEnabled,
                 widget: Text(
                   SZodiac.of(context).lowestRateZodiac,

@@ -101,7 +101,7 @@ class ChatMessageWidget extends StatelessWidget {
                     case ChatMessageType.endChat:
                       return EndChatMessageWidget(
                         title: SZodiac.of(context).chatEndedZodiac,
-                        iconPath: Assets.zodiac.chatFee.path,
+                        iconPath: Assets.zodiac.vectors.chatFee.path,
                         date: chatMessageModel.utc,
                         isOutgoing: chatMessageModel.isOutgoing,
                         chatDuration:
@@ -115,7 +115,7 @@ class ChatMessageWidget extends StatelessWidget {
                     case ChatMessageType.endCall:
                       return EndChatMessageWidget(
                         title: SZodiac.of(context).callEndedZodiac,
-                        iconPath: Assets.zodiac.call.path,
+                        iconPath: Assets.zodiac.vectors.call.path,
                         date: chatMessageModel.utc,
                         isOutgoing: chatMessageModel.isOutgoing,
                         chatDuration:

@@ -33,7 +33,7 @@ class PhoneCodeItem extends StatelessWidget {
             ),
           ),
           Text(
-            phoneCountryCode.code != null ? '+${phoneCountryCode.code}' : '',
+            phoneCountryCode.code ?? '',
             textAlign: TextAlign.left,
             style: theme.textTheme.bodyMedium?.copyWith(
               fontSize: 12.0,

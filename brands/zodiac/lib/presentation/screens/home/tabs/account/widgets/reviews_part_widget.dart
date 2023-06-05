@@ -30,7 +30,7 @@ class ReviewsPartWidget extends StatelessWidget {
           children: [
             TileWidget(
               title: SZodiac.of(context).reviewsZodiac,
-              iconSVGPath: Assets.zodiac.reviewsIcon.path,
+              iconSVGPath: Assets.zodiac.vectors.reviewsIcon.path,
               onTap: () => zodiacAccountCubit.goToReviews(context),
               widget: const _ReviewRatingWidget(),
             ),
@@ -39,7 +39,7 @@ class ReviewsPartWidget extends StatelessWidget {
             ),
             TileWidget(
               title: SZodiac.of(context).templatesContentZodiac,
-              iconSVGPath: Assets.zodiac.couponIcon.path,
+              iconSVGPath: Assets.zodiac.vectors.couponIcon.path,
               onTap: () {},
             ),
             const Divider(
@@ -86,7 +86,7 @@ class ReviewsPartWidget extends StatelessWidget {
                   (ZodiacAccountCubit cubit) => cubit.state.userBalance);
               return TileWidget(
                 title: SZodiac.of(context).balanceTransactionsZodiac,
-                iconSVGPath: Assets.zodiac.transactionsIcon.path,
+                iconSVGPath: Assets.zodiac.vectors.transactionsIcon.path,
                 onTap: () =>
                     zodiacAccountCubit.goToBalanceAndTransactions(context),
                 widget: Text(
@@ -118,7 +118,7 @@ class ReviewsPartWidget extends StatelessWidget {
               }
               return TileWidget(
                 title: SZodiac.of(context).phoneNumberZodiac,
-                iconSVGPath: Assets.zodiac.call.path,
+                iconSVGPath: Assets.zodiac.vectors.call.path,
                 onTap: () => zodiacAccountCubit.goToPhoneNumber(context),
                 widget: SizedBox(
                   width: 100.0,
@@ -138,7 +138,7 @@ class ReviewsPartWidget extends StatelessWidget {
             ),
             TileWidget(
               title: SZodiac.of(context).servicesZodiac,
-              iconSVGPath: Assets.zodiac.servicesIcon.path,
+              iconSVGPath: Assets.zodiac.vectors.servicesIcon.path,
               onTap: () {},
             ),
           ],

@@ -14,73 +14,70 @@ class PhoneNumberVerifiedScreen extends StatelessWidget {
     super.key,
   });
 
-  void popAndUpdateAccountSettings(
-      BuildContext context, ZodiacMainCubit zodiacMainCubit) {
-    context.popUntilRoot();
-    zodiacMainCubit.updateAccauntSettings();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final ZodiacMainCubit zodiacMainCubit = context.read<ZodiacMainCubit>();
     final theme = Theme.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: SimpleAppBar(
         title: SZodiac.of(context).phoneNumberZodiac,
-        backOnClick: () =>
-            popAndUpdateAccountSettings(context, zodiacMainCubit),
+        backOnClick: () => popAndUpdateAccountSettings(context),
       ),
       backgroundColor: theme.canvasColor,
       body: SafeArea(
         top: false,
-        child: LayoutBuilder(builder: (context, constraints) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: AppConstants.horizontalScreenPadding),
-            child: Column(
-              children: [
-                const Spacer(),
-                SvgPicture.asset(
-                  Assets.zodiac.phoneNumberVerified.path,
-                  height: AppConstants.logoSize,
-                  width: AppConstants.logoSize,
+        child: Padding(
+          padding: const EdgeInsets.all(
+            AppConstants.horizontalScreenPadding,
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      Assets.zodiac.vectors.phoneNumberVerified.path,
+                      height: AppConstants.logoSize,
+                      width: AppConstants.logoSize,
+                    ),
+                    const SizedBox(
+                      height: 24.0,
+                    ),
+                    Text(
+                      SZodiac.of(context).phoneNumberVerifiedZodiac,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.headlineMedium?.copyWith(
+                        fontSize: 17.0,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    Text(
+                      SZodiac.of(context).nowYouCanReceiveCallsZodiac,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontSize: 16.0,
+                        color: theme.shadowColor,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  height: 24.0,
-                ),
-                Text(
-                  SZodiac.of(context).phoneNumberVerifiedZodiac,
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    fontSize: 17.0,
-                  ),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                Text(
-                  SZodiac.of(context).nowYouCanReceiveCallsZodiac,
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontSize: 16.0,
-                    color: theme.shadowColor,
-                  ),
-                ),
-                const Spacer(),
-                AppElevatedButton(
-                  title: SZodiac.of(context).gotItZodiac,
-                  onPressed: () =>
-                      popAndUpdateAccountSettings(context, zodiacMainCubit),
-                ),
-                const SizedBox(
-                  height: 49.0,
-                ),
-              ],
-            ),
-          );
-        }),
+              ),
+              AppElevatedButton(
+                title: SZodiac.of(context).gotItZodiac,
+                onPressed: () => popAndUpdateAccountSettings(context),
+              ),
+            ],
+          ),
+        ),
       ),
     );
+  }
+
+  void popAndUpdateAccountSettings(BuildContext context) {
+    context.popUntilRoot();
+    context.read<ZodiacMainCubit>().updateAccauntSettings();
   }
 }
