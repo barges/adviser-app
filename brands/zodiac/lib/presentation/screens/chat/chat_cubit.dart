@@ -152,7 +152,7 @@ class ChatCubit extends Cubit<ChatState> {
         if (!contains) {
           _messages.insert(0, event);
           if (state.needShowDownButton) {
-            //chatObserver.standby();
+            chatObserver.standby();
           }
           _updateMessages();
           if (!event.isOutgoing) {
