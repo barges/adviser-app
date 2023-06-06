@@ -200,8 +200,7 @@ class ChatTextInputWidget extends StatelessWidget {
                                   onTap: () {
                                     showPickImageAlert(
                                       context: context,
-                                      setImage: (image) =>
-                                          chatCubit.sendImage(context, image),
+                                      setImage: chatCubit.sendImage,
                                     );
                                   },
                                   child: Assets.vectors.gallery.svg(
@@ -259,7 +258,7 @@ class ChatTextInputWidget extends StatelessWidget {
                             if (!textInputFocused)
                               GestureDetector(
                                 onTap: () {},
-                                child: Assets.zodiac.emoji.svg(
+                                child: Assets.zodiac.vectors.emoji.svg(
                                   width: AppConstants.iconSize,
                                   height: AppConstants.iconSize,
                                   color: theme.iconTheme.color,

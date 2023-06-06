@@ -16,7 +16,10 @@ import 'package:zodiac/presentation/screens/login/login_screen.dart';
 import 'package:zodiac/presentation/screens/notification_details/notification_details_screen.dart';
 import 'package:zodiac/presentation/screens/notifications/notifications_screen.dart';
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_screen.dart';
+import 'package:zodiac/presentation/screens/phone_number/phone_number_screen.dart';
 import 'package:zodiac/presentation/screens/reviews/reviews_screen.dart';
+import 'package:zodiac/presentation/screens/sms_verification/sms_verification_screen.dart';
+import 'package:zodiac/presentation/screens/sms_verification/widgets/phone_number_verified_screen.dart';
 import 'package:zodiac/presentation/screens/send_image/send_image_screen.dart';
 import 'package:zodiac/presentation/screens/specialities_list/specialities_list_screen.dart';
 import 'package:zodiac/presentation/screens/support/support_screen.dart';
@@ -97,6 +100,21 @@ const zodiacRoute = AutoRoute(
       page: BalanceAndTransactionsScreen,
       path: RoutePathsZodiac.balanceAndTransactionsScreen,
       name: RoutePathsZodiac.balanceAndTransactionsScreen,
+    ),
+    AutoRoute(
+      page: PhoneNumberScreen,
+      path: RoutePathsZodiac.phoneNumberScreen,
+      name: RoutePathsZodiac.phoneNumberScreen,
+    ),
+    AutoRoute(
+      page: SMSVerificationScreen,
+      path: RoutePathsZodiac.smsVerificationScreen,
+      name: RoutePathsZodiac.smsVerificationScreen,
+    ),
+    AutoRoute(
+      page: PhoneNumberVerifiedScreen,
+      path: RoutePathsZodiac.phoneNumberVerifiedScreen,
+      name: RoutePathsZodiac.phoneNumberVerifiedScreen,
     ),
     AutoRoute(
       page: SupportScreen,

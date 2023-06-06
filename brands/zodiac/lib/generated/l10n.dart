@@ -422,6 +422,36 @@ class SZodiac {
     );
   }
 
+  /// `Phone number`
+  String get phoneNumberZodiac {
+    return Intl.message(
+      'Phone number',
+      name: 'phoneNumberZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unverified`
+  String get unverifiedZodiac {
+    return Intl.message(
+      'Unverified',
+      name: 'unverifiedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add`
+  String get addZodiac {
+    return Intl.message(
+      'Add',
+      name: 'addZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Templates & Content`
   String get templatesContentZodiac {
     return Intl.message(
@@ -950,6 +980,226 @@ class SZodiac {
     return Intl.message(
       'sec',
       name: 'secondsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm your country code and enter your phone number`
+  String get confirmYourCountryCodeAndEnterYourPhoneNumberZodiac {
+    return Intl.message(
+      'Confirm your country code and enter your phone number',
+      name: 'confirmYourCountryCodeAndEnterYourPhoneNumberZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We’ll text you a code to verify your phone number`
+  String get wellTextYouCodeToVerifyYourPhoneNumberZodiac {
+    return Intl.message(
+      'We’ll text you a code to verify your phone number',
+      name: 'wellTextYouCodeToVerifyYourPhoneNumberZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have {attempts} verification attempts per day`
+  String youHaveVerificationAttemptsPerDayZodiac(Object attempts) {
+    return Intl.message(
+      'You have $attempts verification attempts per day',
+      name: 'youHaveVerificationAttemptsPerDayZodiac',
+      desc: '',
+      args: [attempts],
+    );
+  }
+
+  /// `Code`
+  String get codeZodiac {
+    return Intl.message(
+      'Code',
+      name: 'codeZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone`
+  String get phoneZodiac {
+    return Intl.message(
+      'Phone',
+      name: 'phoneZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send code`
+  String get sendCodeZodiac {
+    return Intl.message(
+      'Send code',
+      name: 'sendCodeZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incorrect code`
+  String get incorrectCodeZodiac {
+    return Intl.message(
+      'Incorrect code',
+      name: 'incorrectCodeZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `SMS verification`
+  String get SMSverificationZodiac {
+    return Intl.message(
+      'SMS verification',
+      name: 'SMSverificationZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please type the verification code sent to \n {phoneNumber}`
+  String pleaseTypeTheVerificationCodeZodiac(Object phoneNumber) {
+    return Intl.message(
+      'Please type the verification code sent to \n $phoneNumber',
+      name: 'pleaseTypeTheVerificationCodeZodiac',
+      desc: '',
+      args: [phoneNumber],
+    );
+  }
+
+  /// `You have {attempts} attempts to enter the right code`
+  String youHaveAttemptsToEnterRightCodeZodiac(Object attempts) {
+    return Intl.message(
+      'You have $attempts attempts to enter the right code',
+      name: 'youHaveAttemptsToEnterRightCodeZodiac',
+      desc: '',
+      args: [attempts],
+    );
+  }
+
+  /// `Verify`
+  String get verifyZodiac {
+    return Intl.message(
+      'Verify',
+      name: 'verifyZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resend code {attempts}`
+  String resendCodeZodiac(Object attempts) {
+    return Intl.message(
+      'Resend code $attempts',
+      name: 'resendCodeZodiac',
+      desc: '',
+      args: [attempts],
+    );
+  }
+
+  /// `Next attempt in {seconds}s`
+  String nextAttemptInZodiac(Object seconds) {
+    return Intl.message(
+      'Next attempt in ${seconds}s',
+      name: 'nextAttemptInZodiac',
+      desc: '',
+      args: [seconds],
+    );
+  }
+
+  /// `Phone number verified`
+  String get phoneNumberVerifiedZodiac {
+    return Intl.message(
+      'Phone number verified',
+      name: 'phoneNumberVerifiedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Now you can receive calls`
+  String get nowYouCanReceiveCallsZodiac {
+    return Intl.message(
+      'Now you can receive calls',
+      name: 'nowYouCanReceiveCallsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Got it`
+  String get gotItZodiac {
+    return Intl.message(
+      'Got it',
+      name: 'gotItZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Success`
+  String get successZodiac {
+    return Intl.message(
+      'Success',
+      name: 'successZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We’ve sent you a new code`
+  String get weveSentYouNewCodeZodiac {
+    return Intl.message(
+      'We’ve sent you a new code',
+      name: 'weveSentYouNewCodeZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ok`
+  String get okZodiac {
+    return Intl.message(
+      'Ok',
+      name: 'okZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Limit reached`
+  String get limitReachedZodiac {
+    return Intl.message(
+      'Limit reached',
+      name: 'limitReachedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You’ve reached the limit of phone verification attempts. Please contact support.`
+  String get youveReachedLimitPhoneVerificationAttemptsZodiac {
+    return Intl.message(
+      'You’ve reached the limit of phone verification attempts. Please contact support.',
+      name: 'youveReachedLimitPhoneVerificationAttemptsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone is already exist`
+  String get phoneIsAlreadyExistZodiac {
+    return Intl.message(
+      'Phone is already exist',
+      name: 'phoneIsAlreadyExistZodiac',
       desc: '',
       args: [],
     );

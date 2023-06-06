@@ -4,6 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
+import 'package:zodiac/data/models/settings/phone.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -29,7 +30,7 @@ class ReviewsPartWidget extends StatelessWidget {
           children: [
             TileWidget(
               title: SZodiac.of(context).reviewsZodiac,
-              iconSVGPath: Assets.zodiac.reviewsIcon.path,
+              iconSVGPath: Assets.zodiac.vectors.reviewsIcon.path,
               onTap: () => zodiacAccountCubit.goToReviews(context),
               widget: const _ReviewRatingWidget(),
             ),
@@ -38,7 +39,7 @@ class ReviewsPartWidget extends StatelessWidget {
             ),
             TileWidget(
               title: SZodiac.of(context).templatesContentZodiac,
-              iconSVGPath: Assets.zodiac.couponIcon.path,
+              iconSVGPath: Assets.zodiac.vectors.couponIcon.path,
               onTap: () {},
             ),
             const Divider(
@@ -85,7 +86,7 @@ class ReviewsPartWidget extends StatelessWidget {
                   (ZodiacAccountCubit cubit) => cubit.state.userBalance);
               return TileWidget(
                 title: SZodiac.of(context).balanceTransactionsZodiac,
-                iconSVGPath: Assets.zodiac.transactionsIcon.path,
+                iconSVGPath: Assets.zodiac.vectors.transactionsIcon.path,
                 onTap: () =>
                     zodiacAccountCubit.goToBalanceAndTransactions(context),
                 widget: Text(
@@ -99,9 +100,45 @@ class ReviewsPartWidget extends StatelessWidget {
             const Divider(
               height: 1.0,
             ),
+            Builder(builder: (context) {
+              final Phone? phone = context
+                  .select((ZodiacAccountCubit cubit) => cubit.state.phone);
+              String text = '';
+              Color color = Theme.of(context).shadowColor;
+              if (phone != null) {
+                if (phone.code == null || phone.number == null) {
+                  text = SZodiac.of(context).addZodiac;
+                  color = Theme.of(context).primaryColor;
+                } else if (phone.isVerified == true) {
+                  text = phone.toString();
+                } else {
+                  text = SZodiac.of(context).unverifiedZodiac;
+                  color = Theme.of(context).errorColor;
+                }
+              }
+              return TileWidget(
+                title: SZodiac.of(context).phoneNumberZodiac,
+                iconSVGPath: Assets.zodiac.vectors.call.path,
+                onTap: () => zodiacAccountCubit.goToPhoneNumber(context),
+                widget: SizedBox(
+                  width: 100.0,
+                  child: Text(
+                    text,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.end,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: color,
+                        ),
+                  ),
+                ),
+              );
+            }),
+            const Divider(
+              height: 1.0,
+            ),
             TileWidget(
               title: SZodiac.of(context).servicesZodiac,
-              iconSVGPath: Assets.zodiac.servicesIcon.path,
+              iconSVGPath: Assets.zodiac.vectors.servicesIcon.path,
               onTap: () {},
             ),
           ],

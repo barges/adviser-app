@@ -25,7 +25,7 @@ class TipsMessageWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Assets.zodiac.dollarIcon.svg(
+          Assets.zodiac.vectors.dollarIcon.svg(
             height: AppConstants.iconSize,
             width: AppConstants.iconSize,
             color: theme.primaryColor,
