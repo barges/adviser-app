@@ -534,6 +534,11 @@ class WebSocketManagerImpl implements WebSocketManager {
           opponentId: opponentId,
         ),
       );
+      _send(
+        SocketMessage.funcActions(
+          opponentId: opponentId,
+        ),
+      );
       if (chatId != null) {
         _chatLoginStream
             .add(ChatLoginEvent(chatId: chatId, opponentId: opponentId));
