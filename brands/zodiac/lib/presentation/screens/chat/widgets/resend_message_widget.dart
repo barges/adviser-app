@@ -28,7 +28,7 @@ class ResendMessageWidget extends StatelessWidget {
       ),
       _ResendButtonWidget(
         text: SZodiac.of(context).tryAgainZodiac,
-        iconPath: Assets.zodiac.refreshIcon.path,
+        iconPath: Assets.zodiac.vectors.refreshIcon.path,
         color: Theme.of(context).primaryColor,
         onTap: onTryAgain,
       )

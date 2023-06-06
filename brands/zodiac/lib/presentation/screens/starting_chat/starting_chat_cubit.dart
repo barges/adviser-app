@@ -105,7 +105,7 @@ class StartingChatCubit extends Cubit<StartingChatState> {
     final double currentVolume = await Audible.getCurrentVolume;
 
     _assetsAudioPlayer.open(
-      Audio(Assets.audios.chatIncoming),
+      Audio(Assets.zodiac.audios.chatIncoming),
       loopMode: LoopMode.single,
       respectSilentMode: true,
       volume: soundMode == DeviceSoundMode.normal ? currentVolume : 0.0,

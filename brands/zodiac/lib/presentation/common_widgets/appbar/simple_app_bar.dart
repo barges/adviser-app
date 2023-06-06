@@ -9,11 +9,13 @@ import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app
 class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final VoidCallback? actionOnClick;
+  final VoidCallback? backOnClick;
 
   const SimpleAppBar({
     Key? key,
     required this.title,
     this.actionOnClick,
+    this.backOnClick,
   }) : super(key: key);
 
   @override
@@ -32,11 +34,8 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           AppIconButton(
-            icon: Assets.vectors.arrowLeft.path,
-            onTap: () {
-              context.popRoute();
-            },
-          ),
+              icon: Assets.vectors.arrowLeft.path,
+              onTap: backOnClick ?? () => context.popRoute()),
           Text(
             title,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(

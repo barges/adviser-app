@@ -8,7 +8,9 @@ enum UIErrorType {
   // youVeReachTheXMinuteTimeLimit,
   // theMaximumSizeOfTheAttachmentsIsXMb,
   checkYourInternetConnection,
-  loginDetailsSeemToBeIncorrect;
+  loginDetailsSeemToBeIncorrect,
+  youveReachedLimitPhone,
+  phoneIsAlreadyExist;
 
   String getErrorMessage(BuildContext context, List<Object>? args) {
     switch (this) {
@@ -31,6 +33,11 @@ enum UIErrorType {
       case UIErrorType.loginDetailsSeemToBeIncorrect:
         return SZodiac.of(context)
             .oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac;
+      case UIErrorType.youveReachedLimitPhone:
+        return SZodiac.of(context)
+            .youveReachedLimitPhoneVerificationAttemptsZodiac;
+      case UIErrorType.phoneIsAlreadyExist:
+        return SZodiac.of(context).phoneIsAlreadyExistZodiac;
     }
   }
 }

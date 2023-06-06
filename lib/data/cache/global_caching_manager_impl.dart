@@ -12,11 +12,13 @@ import 'global_caching_manager.dart';
 const String _brandsBoxKey = 'brandsBoxKey';
 const String _localeBoxKey = 'localeBoxKey';
 const String _permissionBoxKey = 'permissionBoxKey';
+const String _phoneBoxKey = 'phoneBoxKey';
 
 const String _tokensMapKey = 'tokensMapKey';
 const String _brandKey = 'brandKey';
 const String _localeKey = 'localeKey';
 const String _firstPermissionStatusesKey = 'firstPermissionStatusesKey';
+const String _startTimeInactiveResendCodeKey = 'startTimeInactiveResendCodeKey';
 
 @Singleton(as: GlobalCachingManager)
 class GlobalCachingManagerImpl implements GlobalCachingManager {
@@ -28,6 +30,7 @@ class GlobalCachingManagerImpl implements GlobalCachingManager {
     await Hive.openBox(_brandsBoxKey);
     await Hive.openBox(_localeBoxKey);
     await Hive.openBox(_permissionBoxKey);
+    await Hive.openBox(_phoneBoxKey);
   }
 
   @override
@@ -44,6 +47,11 @@ class GlobalCachingManagerImpl implements GlobalCachingManager {
   @override
   String? getLanguageCode() {
     return Hive.box(_localeBoxKey).get(_localeKey);
+  }
+
+  @override
+  DateTime? getStartTimeInactiveResendCode() {
+    return Hive.box(_phoneBoxKey).get(_startTimeInactiveResendCodeKey);
   }
 
   @override
@@ -81,5 +89,11 @@ class GlobalCachingManagerImpl implements GlobalCachingManager {
   @override
   Future<void> saveLanguageCode(String? languageCode) async {
     await Hive.box(_localeBoxKey).put(_localeKey, languageCode);
+  }
+
+  @override
+  Future<void> saveStartTimeInactiveResendCode(DateTime? startTime) async {
+    await Hive.box(_phoneBoxKey)
+        .put(_startTimeInactiveResendCodeKey, startTime);
   }
 }

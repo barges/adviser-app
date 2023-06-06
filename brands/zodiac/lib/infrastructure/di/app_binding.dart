@@ -10,8 +10,7 @@ import 'package:zodiac/infrastructure/di/inject_config.dart';
 class AppBinding {
   ///The starting point
   ///The order of the called function is important
-  static Future<void> setupInjection(
-      Flavor flavor) async {
+  static Future<void> setupInjection(Flavor flavor) async {
     ///injectable and get it configuration
     await ZodiacCachingManagerImpl.openBoxes();
     await configureDependenciesZodiac();

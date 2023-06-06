@@ -45,6 +45,8 @@ dependencies:
   url_launcher: ^6.1.6
   webview_flutter: ^4.0.7
   html: ^0.15.2
+  pin_code_fields: ^7.4.0
+  phone_numbers_parser: ^7.0.2
   avatar_glow: ^2.0.2
   vibration: ^1.7.6
   assets_audio_player: ^3.0.6
@@ -56,6 +58,9 @@ dependencies:
   flutter_keyboard_size: ^1.0.1
 
   audible_mode: ^1.0.1
+
+  recaptcha:
+   path: ../../recaptcha
 
 dev_dependencies:
   flutter_test:

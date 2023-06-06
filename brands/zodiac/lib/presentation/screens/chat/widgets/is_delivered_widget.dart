@@ -46,7 +46,7 @@ class _IsDeliveredWidgetState extends State<IsDeliveredWidget>
                 padding: const EdgeInsets.only(
                   left: 2.0,
                 ),
-                child: Assets.zodiac.isRead.svg(
+                child: Assets.zodiac.vectors.isRead.svg(
                   height: 12.0,
                   width: 12.0,
                   color: widget.color,
@@ -57,7 +57,7 @@ class _IsDeliveredWidgetState extends State<IsDeliveredWidget>
                     padding: const EdgeInsets.only(
                       left: 2.0,
                     ),
-                    child: Assets.zodiac.delivered.svg(
+                    child: Assets.zodiac.vectors.delivered.svg(
                       height: 12.0,
                       width: 12.0,
                       color: widget.color,
@@ -74,7 +74,7 @@ class _IsDeliveredWidgetState extends State<IsDeliveredWidget>
                             angle: loaderAnimationController.value * 2 * pi,
                             child: child,
                           ),
-                          child: Assets.zodiac.loaderIcon.svg(
+                          child: Assets.zodiac.vectors.loaderIcon.svg(
                             height: 12.0,
                             width: 12.0,
                             color: widget.color,

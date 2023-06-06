@@ -9,15 +9,22 @@ part 'phone.freezed.dart';
 class Phone with _$Phone {
   const Phone._();
 
-  @JsonSerializable(
-    includeIfNull: false,
-    fieldRename: FieldRename.snake,
-  )
+  @JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)
   const factory Phone({
     int? code,
     int? number,
+    String? country,
     bool? isVerified,
   }) = _Phone;
 
   factory Phone.fromJson(Map<String, dynamic> json) => _$PhoneFromJson(json);
+
+  @override
+  String toString() {
+    return '${code != null ? '+$code' : ''} ${number != null ? number.toString() : ''}';
+  }
+
+  String toCodeString() {
+    return code != null ? '+$code' : '';
+  }
 }

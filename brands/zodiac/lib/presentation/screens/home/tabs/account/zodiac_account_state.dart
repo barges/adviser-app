@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:zodiac/data/models/settings/phone.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
 
@@ -9,6 +10,7 @@ class ZodiacAccountState with _$ZodiacAccountState {
   const factory ZodiacAccountState({
     UserDetails? userInfo,
     int? reviewsCount,
+    Phone? phone,
     @Default(false)
         bool callsEnabled,
     @Default(false)

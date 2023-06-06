@@ -19,8 +19,11 @@ abstract class GlobalCachingManager {
   Future<void> saveFirstPermissionStatusesRequestsMap(
       PermissionType permissionType);
 
+  Future<void> saveStartTimeInactiveResendCode(DateTime? startTime);
+
+  DateTime? getStartTimeInactiveResendCode();
+
   StreamSubscription listenCurrentBrandStream(ValueChanged<BaseBrand> callback);
 
   StreamSubscription listenLanguageCodeStream(ValueChanged<String> callback);
-
 }

@@ -89,6 +89,10 @@ extension ContextExt on BuildContext {
     router.popForced(result);
   }
 
+  void popUntilRoot() {
+    router.popUntilRoot();
+  }
+
   String get currentRoutePath => router.current.path;
 
   String? get previousRoutePath {
