@@ -131,7 +131,6 @@ class ChatCubit extends Cubit<ChatState> {
     _underageConfirmDialog = chatCubitParams.underageConfirmDialog;
 
     _messagesSubscription = _webSocketManager.entitiesStream.listen((event) {
-      logger.d('isRefresh: $_isRefresh');
       if (_isRefresh) {
         _isRefresh = false;
         _messages.clear();

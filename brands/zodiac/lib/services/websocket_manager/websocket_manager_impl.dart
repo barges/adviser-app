@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:eventify/eventify.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -15,9 +16,11 @@ import 'package:zodiac/data/models/chat/call_data.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/end_chat_data.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
+import 'package:zodiac/data/models/chat/user_data.dart';
 import 'package:zodiac/data/models/enums/chat_payment_status.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
+import 'package:zodiac/infrastructure/routing/route_paths.dart';
 import 'package:zodiac/presentation/screens/starting_chat/starting_chat_screen.dart';
 import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
 import 'package:zodiac/services/websocket_manager/chat_login_event.dart';
@@ -553,7 +556,22 @@ class WebSocketManagerImpl implements WebSocketManager {
       final EnterRoomData enterRoomData =
           EnterRoomData.fromJson(data.params ?? {});
 
-      _enterRoomDataStream.add(enterRoomData);
+      final bool currentRouteIsChat = ZodiacBrand().context?.currentRoutePath ==
+          RoutePathsZodiac.chatScreen;
+
+      if (!currentRouteIsChat) {
+        ZodiacBrand().context?.push(
+                route: ZodiacChat(
+              userData: enterRoomData.userData ?? const UserData(),
+              fromStartingChat: true,
+            ));
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _enterRoomDataStream.add(enterRoomData);
+        });
+      } else {
+        _enterRoomDataStream.add(enterRoomData);
+      }
 
       chatLogin(opponentId: enterRoomData.userData?.id ?? 0);
 
