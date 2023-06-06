@@ -564,7 +564,11 @@ class WebSocketManagerImpl implements WebSocketManager {
       final bool currentRouteIsChat = ZodiacBrand().context?.currentRoutePath ==
           RoutePathsZodiac.chatScreen;
 
-      if (!currentRouteIsChat) {
+      final bool currentRouteIsSendImage =
+          ZodiacBrand().context?.currentRoutePath ==
+              RoutePathsZodiac.sendImageScreen;
+
+      if (!currentRouteIsChat && !currentRouteIsSendImage) {
         ZodiacBrand().context?.push(
                 route: ZodiacChat(
               userData: enterRoomData.userData ?? const UserData(),

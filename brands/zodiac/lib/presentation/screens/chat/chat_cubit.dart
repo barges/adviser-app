@@ -32,6 +32,7 @@ import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
 import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
+import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 const Duration _typingIndicatorDuration = Duration(milliseconds: 5000);
@@ -576,12 +577,12 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Future<void> sendImage(BuildContext context, File image) async {
-    bool? shouldSend = await context.push<bool?>(
-      route: ZodiacSendImage(
-        image: image,
-      ),
-    );
+  Future<void> sendImage(File image) async {
+    bool? shouldSend = await ZodiacBrand().context?.push<bool?>(
+          route: ZodiacSendImage(
+            image: image,
+          ),
+        );
 
     if (shouldSend == true) {
       String mid = _generateMessageId();
