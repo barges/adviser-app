@@ -55,11 +55,11 @@ class AccountScreen extends StatelessWidget {
                               close: zodiacAccountCubit.clearErrorMessage,
                             );
                           }),
-                          Padding(
-                            padding: const EdgeInsets.all(
+                          const Padding(
+                            padding: EdgeInsets.all(
                                 AppConstants.horizontalScreenPadding),
                             child: Column(
-                              children: const [
+                              children: [
                                 UserInfoPartWidget(),
                                 SizedBox(
                                   height: 24.0,

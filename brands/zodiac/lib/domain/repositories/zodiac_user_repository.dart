@@ -8,6 +8,8 @@ import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/requests/notification_details_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/locale_descriptions_request.dart';
+import 'package:zodiac/data/network/requests/phone_number_request.dart';
+import 'package:zodiac/data/network/requests/phone_number_verify_request.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
 import 'package:zodiac/data/network/requests/profile_details_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
@@ -24,6 +26,8 @@ import 'package:zodiac/data/network/responses/locales_response.dart';
 import 'package:zodiac/data/network/responses/main_specialization_response.dart';
 import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/payments_list_response.dart';
+import 'package:zodiac/data/network/responses/phone_number_response.dart';
+import 'package:zodiac/data/network/responses/phone_number_verify_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
 import 'package:zodiac/data/network/responses/profile_details_response.dart';
 import 'package:zodiac/data/network/responses/reviews_response.dart';
@@ -105,7 +109,15 @@ abstract class ZodiacUserRepository {
 
   Future<BaseResponse> notifyPushClick(NotificationDetailsRequest request);
 
-  Future<SettingsResponse> geSettings(SettingsRequest request);
+  Future<SettingsResponse> getSettings(SettingsRequest request);
+
+  Future<PhoneNumberResponse> editPhoneNumber(PhoneNumberRequest request);
+
+  Future<PhoneNumberVerifyResponse> verifyPhoneNumber(
+      PhoneNumberVerifyRequest request);
+
+  Future<BaseResponse> resendPhoneVerification(
+      PhoneNumberVerifyRequest request);
 
   Future<ProfileDetailsResponse> getProfileDetails(
       ProfileDetailsRequest request);

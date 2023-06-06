@@ -24,6 +24,7 @@ class ZodiacMainCubit extends Cubit<ZodiacMainState> {
       PublishSubject();
   final PublishSubject<bool> updateNotificationsListTrigger = PublishSubject();
   final PublishSubject<int> updateUnreadChatsTrigger = PublishSubject();
+  final PublishSubject<bool> updateAccauntSettingsTrigger = PublishSubject();
 
   late final StreamSubscription _connectivitySubscription;
 
@@ -91,5 +92,9 @@ class ZodiacMainCubit extends Cubit<ZodiacMainState> {
 
   void updateUnreadChats(int unreadCount) {
     updateUnreadChatsTrigger.add(unreadCount);
+  }
+
+  void updateAccauntSettings() {
+    updateAccauntSettingsTrigger.add(true);
   }
 }

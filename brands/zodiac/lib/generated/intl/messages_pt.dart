@@ -23,21 +23,37 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(localeName) =>
       "Você realmente deseja excluir ${localeName} da sua lista?";
 
-  static String m1(price) => "\$${price}/min";
+  static String m1(seconds) => "Próxima tentativa em ${seconds}s";
 
-  static String m2(email) =>
+  static String m2(phoneNumber) =>
+      "Por favor, escriba el código de verificación enviado a ${phoneNumber}";
+
+  static String m3(price) => "\$${price}/min";
+
+  static String m4(attempts) => "Reenviar codigo ${attempts}";
+
+  static String m5(email) =>
       "Enviamos instruções de redefinição de senha para ${email}.";
 
-  static String m3(timer) => "Você é capaz de escrever em ${timer}";
+  static String m6(timer) => "Você é capaz de escrever em ${timer}";
 
-  static String m4(clientName) => "Você perdeu uma chamada de ${clientName}.";
+  static String m7(attempts) =>
+      "Tienes ${attempts} intentos para ingresar el código correcto";
 
-  static String m5(clientName) => "Você perdeu um bate-papo de ${clientName}.";
+  static String m8(attempts) =>
+      "Você tem ${attempts} tentativas de verificação por dia";
+
+  static String m9(clientName) => "Você perdeu uma chamada de ${clientName}.";
+
+  static String m10(clientName) => "Você perdeu um bate-papo de ${clientName}.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "SMSverificationZodiac": MessageLookupByLibrary.simpleMessage(
+            "Verificación de mensajes de texto"),
         "aboutZodiac": MessageLookupByLibrary.simpleMessage("Sobre"),
         "accountZodiac": MessageLookupByLibrary.simpleMessage("Conta"),
+        "addZodiac": MessageLookupByLibrary.simpleMessage("Adicionar"),
         "allSpecialitiesZodiac":
             MessageLookupByLibrary.simpleMessage("Todas as especialidades"),
         "articlesZodiac": MessageLookupByLibrary.simpleMessage("Artigos"),
@@ -73,6 +89,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "chooseEmailAppZodiac":
             MessageLookupByLibrary.simpleMessage("Escolher email do app"),
         "closeZodiac": MessageLookupByLibrary.simpleMessage("Fechar"),
+        "codeZodiac": MessageLookupByLibrary.simpleMessage("Código"),
+        "confirmYourCountryCodeAndEnterYourPhoneNumberZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Confirme seu número de telefone e digite seu número de telefone"),
         "customerSupportZodiac":
             MessageLookupByLibrary.simpleMessage("Suporte ao cliente"),
         "dashboardZodiac":
@@ -107,6 +127,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Bate-papo grátis"),
         "freebieSeeker":
             MessageLookupByLibrary.simpleMessage("candidato a brinde"),
+        "gotItZodiac": MessageLookupByLibrary.simpleMessage("Entendi"),
         "hereWillAppearArticles":
             MessageLookupByLibrary.simpleMessage("Aqui aparecerão artigos"),
         "hideChatZodiac":
@@ -116,7 +137,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Estou disponível agora"),
         "incomingChatZodiac":
             MessageLookupByLibrary.simpleMessage("Bate-papo RECEBENDO"),
+        "incorrectCodeZodiac":
+            MessageLookupByLibrary.simpleMessage("Código incorreto"),
         "languageZodiac": MessageLookupByLibrary.simpleMessage("Linguagem"),
+        "limitReachedZodiac":
+            MessageLookupByLibrary.simpleMessage("Limite alcançado"),
         "loginZodiac": MessageLookupByLibrary.simpleMessage("Conectar-se"),
         "lowestRateZodiac":
             MessageLookupByLibrary.simpleMessage("Tarifa mais baixa"),
@@ -130,6 +155,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "newCustomersZodiac":
             MessageLookupByLibrary.simpleMessage("Novos clientes"),
         "newZodiac": MessageLookupByLibrary.simpleMessage("Novo"),
+        "nextAttemptInZodiac": m1,
         "nicknameZodiac": MessageLookupByLibrary.simpleMessage("Apelido"),
         "noArticlesYet":
             MessageLookupByLibrary.simpleMessage("Ainda não há artigos"),
@@ -148,9 +174,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "noZodiac": MessageLookupByLibrary.simpleMessage("Não"),
         "notificationsZodiac":
             MessageLookupByLibrary.simpleMessage("Notificações"),
+        "nowYouCanReceiveCallsZodiac": MessageLookupByLibrary.simpleMessage(
+            "Agora você pode receber chamadas"),
         "offlineServiceZodiac":
             MessageLookupByLibrary.simpleMessage("Serviço off-line:"),
         "offlineZodiac": MessageLookupByLibrary.simpleMessage("Desligado"),
+        "okZodiac": MessageLookupByLibrary.simpleMessage("Ok"),
         "onlineServicesZodiac":
             MessageLookupByLibrary.simpleMessage("Serviços online:"),
         "onlineZodiac": MessageLookupByLibrary.simpleMessage("On-line"),
@@ -165,16 +194,24 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Análise geral de desempenho"),
         "personalBalanceZodiac":
             MessageLookupByLibrary.simpleMessage("Saldo Pessoal:"),
+        "phoneIsAlreadyExistZodiac":
+            MessageLookupByLibrary.simpleMessage("O telefone já existe"),
+        "phoneNumberVerifiedZodiac": MessageLookupByLibrary.simpleMessage(
+            "Número de telefone verificado"),
+        "phoneNumberZodiac":
+            MessageLookupByLibrary.simpleMessage("Número de telefone"),
+        "phoneZodiac": MessageLookupByLibrary.simpleMessage("Telefone"),
         "pleaseEnterAtLeast8CharactersZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Por favor insira pelo menos 8 caracteres"),
         "pleaseInsertCorrectEmailZodiac": MessageLookupByLibrary.simpleMessage(
             "Por favor, insira o e-mail correto"),
+        "pleaseTypeTheVerificationCodeZodiac": m2,
         "preferredLanguageZodiac":
             MessageLookupByLibrary.simpleMessage("Idioma preferido: "),
         "previewAccountZodiac":
             MessageLookupByLibrary.simpleMessage("Visualizar conta"),
-        "pricePerMinZodiac": m1,
+        "pricePerMinZodiac": m3,
         "reconnectingZodiac":
             MessageLookupByLibrary.simpleMessage("Reconecte..."),
         "replyZodiac": MessageLookupByLibrary.simpleMessage("Responder"),
@@ -183,6 +220,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "reportZodiac": MessageLookupByLibrary.simpleMessage("Relatório"),
         "requiredFieldZodiac":
             MessageLookupByLibrary.simpleMessage("Campo obrigatório"),
+        "resendCodeZodiac": m4,
         "resetPasswordZodiac":
             MessageLookupByLibrary.simpleMessage("Redefinir senha"),
         "returnZodiac": MessageLookupByLibrary.simpleMessage("Retornar"),
@@ -196,11 +234,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "secondsZodiac": MessageLookupByLibrary.simpleMessage("seg"),
         "selectedPhotoZodiac":
             MessageLookupByLibrary.simpleMessage("Foto selecionada"),
+        "sendCodeZodiac": MessageLookupByLibrary.simpleMessage("Enviar código"),
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Serviço"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Serviços"),
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sessões"),
         "startChatZodiac":
             MessageLookupByLibrary.simpleMessage("Iniciar bate-papo"),
+        "successZodiac": MessageLookupByLibrary.simpleMessage("Sucesso"),
         "templatesContentZodiac":
             MessageLookupByLibrary.simpleMessage("Modelos e conteúdo"),
         "theMaximumImageSizeIs10MbZodiac": MessageLookupByLibrary.simpleMessage(
@@ -221,7 +261,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Uh-oh. Parece que você perdeu sua conexão. Por favor, tente novamente."),
-        "weVeSentPasswordResetInstructionsToEmailZodiac": m2,
+        "unverifiedZodiac":
+            MessageLookupByLibrary.simpleMessage("Não verificado"),
+        "verifyZodiac": MessageLookupByLibrary.simpleMessage("Verificar"),
+        "weVeSentPasswordResetInstructionsToEmailZodiac": m5,
+        "wellTextYouCodeToVerifyYourPhoneNumberZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Enviaremos um código para verificar seu número de telefone"),
+        "weveSentYouNewCodeZodiac":
+            MessageLookupByLibrary.simpleMessage("Enviamos um novo código"),
         "withdrawalZodiac":
             MessageLookupByLibrary.simpleMessage("Cancelamento"),
         "wrongUsernameAndOrPasswordZodiac":
@@ -229,12 +277,14 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Nome de usuário e/ou senha incorretos."),
         "yesZodiac": MessageLookupByLibrary.simpleMessage("Sim"),
         "yesterdayZodiac": MessageLookupByLibrary.simpleMessage("Ontem"),
-        "youAreAbleToWriteWithinZodiac": m3,
+        "youAreAbleToWriteWithinZodiac": m6,
         "youCanChangePriceOncePer24HZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Você pode alterar o preço uma vez a cada 24 h"),
-        "youMissedCallFromZodiac": m4,
-        "youMissedChatFromZodiac": m5,
+        "youHaveAttemptsToEnterRightCodeZodiac": m7,
+        "youHaveVerificationAttemptsPerDayZodiac": m8,
+        "youMissedCallFromZodiac": m9,
+        "youMissedChatFromZodiac": m10,
         "youWereBlocked": MessageLookupByLibrary.simpleMessage(
             "Sua conta foi bloqueada.<br>Entre em contato com o <a href=\'\'>Suporte ao cliente</a> para resolver o problema"),
         "yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac":
@@ -252,6 +302,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "yourTransactionsHistoryWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Seu histórico de transações aparecerá aqui"),
+        "youveReachedLimitPhoneVerificationAttemptsZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Você atingiu o limite de tentativas de verificação por telefone. Entre em contato com o suporte."),
         "zodiacTeam": MessageLookupByLibrary.simpleMessage("Zodiac Equipe")
       };
 }

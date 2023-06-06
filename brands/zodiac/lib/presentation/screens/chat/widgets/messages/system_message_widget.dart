@@ -28,7 +28,7 @@ class SystemMessageWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Assets.zodiac.infoSquareIcon.svg(
+          Assets.zodiac.vectors.infoSquareIcon.svg(
             height: 18.0,
             width: 18.0,
             color: AppColors.orange,

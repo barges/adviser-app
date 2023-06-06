@@ -129,11 +129,11 @@ enum ChatMessageType {
         return Assets.vectors.gallery.path;
       case ChatMessageType.coupon:
       case ChatMessageType.couponAfterSession:
-        return Assets.zodiac.couponInListIcon.path;
+        return Assets.zodiac.vectors.couponInListIcon.path;
       case ChatMessageType.products:
-        return Assets.zodiac.serviceInListIcon.path;
+        return Assets.zodiac.vectors.serviceInListIcon.path;
       case ChatMessageType.tips:
-        return Assets.zodiac.dollarIcon.path;
+        return Assets.zodiac.vectors.dollarIcon.path;
       default:
         return null;
     }

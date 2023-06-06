@@ -95,11 +95,11 @@ class BalanceAndTransactionsScreen extends StatelessWidget {
                       Builder(builder: (context) {
                         if (transactionsList == null &&
                             !internetConnectionIsAvailable) {
-                          return SliverFillRemaining(
+                          return const SliverFillRemaining(
                             hasScrollBody: false,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
+                              children: [
                                 NoConnectionWidget(),
                               ],
                             ),

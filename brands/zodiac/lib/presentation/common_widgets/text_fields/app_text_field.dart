@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 
 class AppTextField extends StatelessWidget {
-
-  final String label;
+  final String? label;
   final ValidationErrorType errorType;
   final TextEditingController? controller;
   final FocusNode focusNode;
@@ -12,17 +11,19 @@ class AppTextField extends StatelessWidget {
   final TextInputType? textInputType;
   final TextInputAction? textInputAction;
   final String hintText;
+  final int? maxLength;
   final bool isPassword;
   final bool isBig;
 
   const AppTextField({
     Key? key,
-    required this.label,
     required this.focusNode,
+    this.label,
     this.controller,
     this.nextFocusNode,
     this.textInputType,
     this.textInputAction,
+    this.maxLength,
     this.isPassword = false,
     this.isBig = false,
     this.errorType = ValidationErrorType.empty,
@@ -34,18 +35,17 @@ class AppTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            left: 12.0,
+        if (label != null)
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 12.0,
+              bottom: 4.0,
+            ),
+            child: Text(
+              label!,
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
           ),
-          child: Text(
-            label,
-            style: Theme.of(context).textTheme.labelMedium,
-          ),
-        ),
-        const SizedBox(
-          height: 4.0,
-        ),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
@@ -67,6 +67,7 @@ class AppTextField extends StatelessWidget {
               controller: controller,
               focusNode: focusNode,
               keyboardType: textInputType,
+              maxLength: maxLength,
               textInputAction: textInputAction,
               onSubmitted: (_) {
                 FocusScope.of(context).requestFocus(nextFocusNode);
@@ -80,6 +81,7 @@ class AppTextField extends StatelessWidget {
                 contentPadding: isBig
                     ? const EdgeInsets.all(12.0)
                     : const EdgeInsets.symmetric(horizontal: 12.0),
+                counterText: '',
               ),
               maxLines: isBig ? 10 : 1,
               style: Theme.of(context).textTheme.bodyMedium,

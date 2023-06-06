@@ -10,6 +10,8 @@ import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/requests/locale_descriptions_request.dart';
 import 'package:zodiac/data/network/requests/notification_details_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
+import 'package:zodiac/data/network/requests/phone_number_request.dart';
+import 'package:zodiac/data/network/requests/phone_number_verify_request.dart';
 import 'package:zodiac/data/network/requests/profile_details_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
 import 'package:zodiac/data/network/requests/settings_request.dart';
@@ -25,6 +27,8 @@ import 'package:zodiac/data/network/responses/main_specialization_response.dart'
 import 'package:zodiac/data/network/responses/notification_details_response.dart';
 import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/payments_list_response.dart';
+import 'package:zodiac/data/network/responses/phone_number_response.dart';
+import 'package:zodiac/data/network/responses/phone_number_verify_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
 import 'package:zodiac/data/network/responses/profile_details_response.dart';
@@ -195,8 +199,26 @@ class ZodiacUserRepositoryImpl implements ZodiacUserRepository {
   }
 
   @override
-  Future<SettingsResponse> geSettings(SettingsRequest request) async {
-    return await _userApi.geSettings(request);
+  Future<SettingsResponse> getSettings(SettingsRequest request) async {
+    return await _userApi.getSettings(request);
+  }
+
+  @override
+  Future<PhoneNumberResponse> editPhoneNumber(
+      PhoneNumberRequest request) async {
+    return await _userApi.editPhoneNumber(request);
+  }
+
+  @override
+  Future<PhoneNumberVerifyResponse> verifyPhoneNumber(
+      PhoneNumberVerifyRequest request) async {
+    return await _userApi.verifyPhoneNumber(request);
+  }
+
+  @override
+  Future<BaseResponse> resendPhoneVerification(
+      PhoneNumberVerifyRequest request) async {
+    return await _userApi.resendPhoneVerification(request);
   }
 
   @override

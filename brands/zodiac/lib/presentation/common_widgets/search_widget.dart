@@ -8,8 +8,15 @@ import 'package:zodiac/generated/l10n.dart';
 
 class SearchWidget extends StatefulWidget {
   final ValueChanged<String> onChanged;
+  final bool autofocus;
+  final bool isBorder;
 
-  const SearchWidget({Key? key, required this.onChanged}) : super(key: key);
+  const SearchWidget({
+    Key? key,
+    required this.onChanged,
+    this.autofocus = false,
+    this.isBorder = true,
+  }) : super(key: key);
 
   @override
   State<SearchWidget> createState() => _SearchWidgetState();
@@ -49,12 +56,14 @@ class _SearchWidgetState extends State<SearchWidget> {
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: theme.canvasColor,
-        border: Border(
-          bottom: BorderSide(
-            width: 1.0,
-            color: theme.hintColor,
-          ),
-        ),
+        border: widget.isBorder
+            ? Border(
+                bottom: BorderSide(
+                  width: 1.0,
+                  color: theme.hintColor,
+                ),
+              )
+            : null,
       ),
       child: Container(
         margin: const EdgeInsets.symmetric(
@@ -81,19 +90,20 @@ class _SearchWidgetState extends State<SearchWidget> {
             ),
             Expanded(
               child: TextField(
+                autofocus: widget.autofocus,
                 controller: _searchTextController,
                 onChanged: (text) {
                   _searchStream.add(text);
                 },
                 style: theme.textTheme.bodyMedium?.copyWith(
-                      fontSize: 17.0,
-                    ),
+                  fontSize: 17.0,
+                ),
                 decoration: InputDecoration(
                   hintText: SZodiac.of(context).searchZodiac,
                   hintStyle: theme.textTheme.bodyMedium?.copyWith(
-                        fontSize: 17.0,
-                        color: theme.shadowColor,
-                      ),
+                    fontSize: 17.0,
+                    color: theme.shadowColor,
+                  ),
                   contentPadding: const EdgeInsets.symmetric(
                     vertical: 6.0,
                     horizontal: 4.0,

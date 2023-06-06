@@ -166,7 +166,7 @@ class _UnderageReportWidget extends StatelessWidget {
         ),
         padding: const EdgeInsets.all(16.0),
         child: Row(children: [
-          Assets.zodiac.underageReportIcon.svg(
+          Assets.zodiac.vectors.underageReportIcon.svg(
             height: AppConstants.iconSize,
             width: AppConstants.iconSize,
             color: AppColors.error,

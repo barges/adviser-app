@@ -59,7 +59,7 @@ class StartingChatScreen extends StatelessWidget {
                         const SizedBox(
                           height: 68.0,
                         ),
-                        Assets.zodiac.zodiacPsychicsLogo.svg(
+                        Assets.zodiac.vectors.zodiacPsychicsLogo.svg(
                           width: 227.0,
                           height: 86.0,
                           color: AppColors.purple,
@@ -110,7 +110,7 @@ class StartingChatScreen extends StatelessWidget {
                           ),
                           child: AppElevatedButton(
                             title: SZodiac.of(context).startChatZodiac,
-                            iconPath: Assets.zodiac.chatFee.path,
+                            iconPath: Assets.zodiac.vectors.chatFee.path,
                             onPressed: () {
                               final UserData? userData = callData.userData;
                               if (userData != null) {

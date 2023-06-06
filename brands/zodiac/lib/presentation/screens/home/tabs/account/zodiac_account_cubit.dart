@@ -10,6 +10,7 @@ import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
+import 'package:zodiac/data/models/settings/captcha.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
@@ -18,15 +19,18 @@ import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
+import 'package:zodiac/data/network/requests/settings_request.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/expert_details_response.dart';
 import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
+import 'package:zodiac/data/network/responses/settings_response.dart';
 import 'package:zodiac/data/network/responses/specializations_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_state.dart';
+import 'package:zodiac/services/recaptcha/recaptcha_service.dart';
 import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
@@ -40,12 +44,13 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   final Future<bool> Function(bool needShowSettingsAlert) _handlePermission;
 
   StreamSubscription? _currentBrandSubscription;
-
-  late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
   StreamSubscription<bool>? _connectivitySubscription;
   bool? isPushNotificationPermissionGranted;
+
+  late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
   late final StreamSubscription<bool> _updateAccountSubscription;
   late final StreamSubscription<bool> _updateUnreadNotificationsCounter;
+  late final StreamSubscription<bool> _updateAccauntSettingsSubscription;
 
   ZodiacAccountCubit(
     this._brandManager,
@@ -61,10 +66,10 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     } else {
       _currentBrandSubscription =
           _brandManager.listenCurrentBrandStream((value) async {
-            if(value.brandAlias == ZodiacBrand.alias) {
-              await refreshUserInfo();
-              _currentBrandSubscription?.cancel();
-            }
+        if (value.brandAlias == ZodiacBrand.alias) {
+          await refreshUserInfo();
+          _currentBrandSubscription?.cancel();
+        }
       });
     }
 
@@ -83,6 +88,11 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
         _mainCubit.unreadNotificationsCounterUpdateTrigger.listen((value) {
       _getUnreadNotificationsCount();
     });
+
+    _updateAccauntSettingsSubscription =
+        _mainCubit.updateAccauntSettingsTrigger.listen((_) {
+      _getSettings();
+    });
   }
 
   @override
@@ -92,6 +102,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     _updateAccountSubscription.cancel();
     _updateUnreadNotificationsCounter.cancel();
     _currentBrandSubscription?.cancel();
+    _updateAccauntSettingsSubscription.cancel();
     super.close();
   }
 
@@ -104,6 +115,12 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   void goToBalanceAndTransactions(BuildContext context) {
     context.push(
       route: ZodiacBalanceAndTransactions(userBalance: state.userBalance),
+    );
+  }
+
+  void goToPhoneNumber(BuildContext context) {
+    context.push(
+      route: ZodiacPhoneNumber(phone: state.phone),
     );
   }
 
@@ -122,6 +139,10 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
         }
 
         await _getAllCategories();
+
+        SettingsResponse settingsResponse = await _getSettings();
+
+        await _initRecaptcha(settingsResponse.captcha);
 
         ExpertDetailsResponse response =
             await _userRepository.getDetailedUserInfo(AuthorizedRequest());
@@ -178,6 +199,26 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
           CategoryInfo.normalizeList(responseCategories);
 
       _cacheManager.saveAllCategories(categories);
+    }
+  }
+
+  Future<SettingsResponse> _getSettings() async {
+    final SettingsResponse response =
+        await _userRepository.getSettings(SettingsRequest());
+    emit(state.copyWith(
+      phone: response.phone,
+    ));
+    return response;
+  }
+
+  Future<void> _initRecaptcha(Captcha? captcha) async {
+    if (captcha?.scoreBased?.key != null &&
+        !await RecaptchaService.isInitialized()) {
+      try {
+        await RecaptchaService.init(captcha!.scoreBased!.key!);
+      } catch (e) {
+        logger.d(e);
+      }
     }
   }
 

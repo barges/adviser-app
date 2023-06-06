@@ -134,6 +134,8 @@ flutter:
   assets:
     - assets/
     - assets/zodiac/
+    - assets/zodiac/files/
+    - assets/zodiac/vectors/
     - assets/vectors/
     - assets/images/
     - assets/images/brands/
@@ -144,7 +146,7 @@ flutter:
     - assets/vectors/horoscopes/
     - assets/vectors/sessions_types/
     - assets/vectors/user_performance/
-    - assets/audios/
+    - assets/zodiac/audios/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
