@@ -31,6 +31,8 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
 
   Timer? _resendTimer;
 
+  static List<String> sendingImagesMids = [];
+
   int _resendCount = 0;
   ChatMessageCubit(
     this._chatMessageModel,
@@ -57,7 +59,7 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
           }
         });
       }
-      if (isImage) {
+      if (isImage && !sendingImagesMids.contains(_chatMessageModel.mid)) {
         _resendImage(context);
       }
     }
@@ -85,6 +87,8 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
   Future<void> _resendImage(BuildContext context) async {
     if (_chatMessageModel.mid != null && _chatMessageModel.mainImage != null) {
       try {
+        sendingImagesMids.add(_chatMessageModel.mid!);
+
         final SendImageResponse response =
             await _chatRepository.sendImageToChat(
           request: AuthorizedRequest(),
@@ -108,6 +112,8 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
       } catch (e) {
         logger.d(e);
         emit(state.copyWith(showResendWidget: true));
+      } finally {
+        sendingImagesMids.remove(_chatMessageModel.mid);
       }
     }
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
+import 'package:scrollview_observer/scrollview_observer.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
@@ -81,71 +82,75 @@ class ChatScreen extends StatelessWidget {
                 body: Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    Column(
-                      children: [
-                        Expanded(
-                          child: Builder(builder: (context) {
-                            final List<ChatMessageModel>? messages =
-                                context.select(
-                                    (ChatCubit cubit) => cubit.state.messages);
-                            if (messages != null) {
-                              if (messages.isNotEmpty) {
-                                return ChatMessagesListWidget(
-                                  fromStartingChat: fromStartingChat,
-                                  messages: messages,
-                                );
+                    ListViewObserver(
+                      controller: chatCubit.observerController,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Builder(builder: (context) {
+                              final List<ChatMessageModel>? messages =
+                                  context.select((ChatCubit cubit) =>
+                                      cubit.state.messages);
+                              if (messages != null) {
+                                if (messages.isNotEmpty) {
+                                  return ChatMessagesListWidget(
+                                    fromStartingChat: fromStartingChat,
+                                    messages: messages,
+                                  );
+                                } else {
+                                  return CustomScrollView(
+                                    slivers: [
+                                      SliverFillRemaining(
+                                        hasScrollBody: false,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            EmptyListWidget(
+                                              title: SZodiac.of(context)
+                                                  .noMessagesYetZodiac,
+                                              label: SZodiac.of(context)
+                                                  .yourChatHistoryWillAppearHereZodiac,
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                }
                               } else {
-                                return CustomScrollView(
-                                  slivers: [
-                                    SliverFillRemaining(
-                                      hasScrollBody: false,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          EmptyListWidget(
-                                            title: SZodiac.of(context)
-                                                .noMessagesYetZodiac,
-                                            label: SZodiac.of(context)
-                                                .yourChatHistoryWillAppearHereZodiac,
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                );
+                                return const SizedBox.shrink();
                               }
-                            } else {
-                              return const SizedBox.shrink();
-                            }
-                          }),
-                        ),
-                        if (chatIsActive || offlineSessionIsActive)
-                          Builder(builder: (context) {
-                            final double focusedTextInputHeight =
-                                context.select((ChatCubit cubit) =>
-                                    cubit.state.textInputHeight);
+                            }),
+                          ),
+                          if (chatIsActive || offlineSessionIsActive)
+                            Builder(builder: (context) {
+                              final double focusedTextInputHeight =
+                                  context.select((ChatCubit cubit) =>
+                                      cubit.state.textInputHeight);
 
-                            context.select((ChatCubit cubit) =>
-                                cubit.state.textInputFocused);
+                              context.select((ChatCubit cubit) =>
+                                  cubit.state.textInputFocused);
 
-                            final double bottomPadding =
-                                bottomPartTextInputHeight +
-                                    (chatCubit.state.textInputFocused
-                                        ? grabbingHeight +
-                                            12.0 +
-                                            ZodiacConstants
-                                                .chatHorizontalPadding +
-                                            focusedTextInputHeight
-                                        : MediaQuery.of(context)
-                                            .padding
-                                            .bottom);
-                            return Container(
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                              height: bottomPadding,
-                            );
-                          }),
-                      ],
+                              final double bottomPadding =
+                                  bottomPartTextInputHeight +
+                                      (chatCubit.state.textInputFocused
+                                          ? grabbingHeight +
+                                              12.0 +
+                                              ZodiacConstants
+                                                  .chatHorizontalPadding +
+                                              focusedTextInputHeight
+                                          : MediaQuery.of(context)
+                                              .padding
+                                              .bottom);
+                              return Container(
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                height: bottomPadding,
+                              );
+                            }),
+                        ],
+                      ),
                     ),
                     Positioned(
                       top: 0.0,
