@@ -6,7 +6,6 @@ import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:fortunica/data/models/app_errors/app_error.dart';
@@ -30,6 +29,7 @@ import 'package:fortunica/domain/repositories/fortunica_chats_repository.dart';
 import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/fortunica_constants.dart';
 import 'package:fortunica/fortunica_main_cubit.dart';
+import 'package:fortunica/presentation/base_cubit/base_cubit.dart';
 import 'package:fortunica/presentation/screens/chat/chat_screen.dart';
 import 'package:fortunica/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:fortunica/presentation/screens/customer_profile/customer_profile_screen.dart';
@@ -53,7 +53,7 @@ import 'chat_state.dart';
 
 const String _recordFileExt = 'm4a';
 
-class ChatCubit extends Cubit<ChatState> {
+class ChatCubit extends BaseCubit<ChatState> {
   final ScrollController activeMessagesScrollController = ScrollController();
   final ScrollController textInputScrollController = ScrollController();
   final SnappingSheetController controller = SnappingSheetController();
@@ -68,8 +68,6 @@ class ChatCubit extends Cubit<ChatState> {
   GlobalKey? questionGlobalKey;
 
   final ConnectivityService connectivityService;
-
-  late final StreamSubscription<bool> _keyboardSubscription;
 
   final FortunicaChatsRepository chatsRepository;
   final ChatScreenArguments chatScreenArguments;
@@ -95,8 +93,6 @@ class ChatCubit extends Cubit<ChatState> {
   int? _recordAudioDuration;
   AnswerRequest? _answerRequest;
   StreamSubscription<RecorderDisposition>? _recordingProgressSubscription;
-  late final StreamSubscription<bool> _appOnPauseSubscription;
-  late final StreamSubscription<bool> _stopAudioSubscription;
   late final StreamSubscription<bool> _refreshChatInfoSubscription;
 
   Timer? _answerTimer;
@@ -141,7 +137,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
     getData();
 
-    _appOnPauseSubscription = mainCubit.changeAppLifecycleStream.listen(
+    addListener(mainCubit.changeAppLifecycleStream.listen(
       (value) async {
         if (isPublicChat()) {
           _answerTimer?.cancel();
@@ -158,10 +154,9 @@ class ChatCubit extends Cubit<ChatState> {
           audioPlayer.pause();
         }
       },
-    );
+    ));
 
-    _keyboardSubscription =
-        KeyboardVisibilityController().onChange.listen((bool visible) {
+    addListener(KeyboardVisibilityController().onChange.listen((bool visible) {
       if (!visible) {
         textInputFocusNode.unfocus();
         emit(state.copyWith(isTextInputCollapsed: true));
@@ -173,14 +168,35 @@ class ChatCubit extends Cubit<ChatState> {
           scrollChatDown();
         }
       }).onError((error, stackTrace) {});
-    });
+    }));
 
-    _stopAudioSubscription = mainCubit.audioStopTrigger.listen((value) {
+    addListener(mainCubit.audioStopTrigger.listen((value) {
       if (audioRecorder.isRecording) {
         stopRecordingAudio();
       }
       audioPlayer.pause();
-    });
+    }));
+
+    addListener(audioRecorder.stateStream.listen((e) async {
+      if (e.state == SoundRecorderState.isRecording) {
+        emit(state.copyWith(
+          recordingDuration: const Duration(),
+        ));
+
+        _recordingProgressSubscription =
+            audioRecorder.onProgress?.listen((e) async {
+          emit(state.copyWith(
+            recordingDuration: e.duration ?? const Duration(),
+          ));
+        });
+      } else {
+        _recordingProgressSubscription?.cancel();
+      }
+
+      emit(state.copyWith(
+        isRecording: e.state == SoundRecorderState.isRecording,
+      ));
+    }));
 
     _refreshChatInfoSubscription = refreshChatInfoTrigger.listen((value) {
       getData();
@@ -200,15 +216,12 @@ class ChatCubit extends Cubit<ChatState> {
 
   @override
   Future<void> close() async {
-    _keyboardSubscription.cancel();
     if (audioRecorder.isRecording) {
       await cancelRecordingAudio();
     }
     _deleteRecordedAudioFile(state.recordedAudio);
 
     activeMessagesScrollController.dispose();
-    _appOnPauseSubscription.cancel();
-    _stopAudioSubscription.cancel();
 
     textInputScrollController.dispose();
     textInputEditingController.dispose();

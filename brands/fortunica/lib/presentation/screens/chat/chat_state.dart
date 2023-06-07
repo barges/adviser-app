@@ -30,6 +30,8 @@ class ChatState with _$ChatState {
     @Default(false)
         bool refreshEnabled,
     RitualCardInfo? ritualCardInfo,
+    @Default(false) bool isRecording,
+    @Default(Duration.zero) Duration recordingDuration,
     File? recordedAudio,
     ChatItem? questionFromDB,
     ChatItemStatusType? questionStatus,
