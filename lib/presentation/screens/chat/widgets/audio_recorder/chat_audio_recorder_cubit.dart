@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_recorder/chat_audio_recorder_state.dart';
 import 'package:shared_advisor_interface/presentation/services/audio/audio_recorder_service.dart';
 
@@ -38,7 +39,7 @@ class ChatAudioRecorderCubit extends Cubit<ChatAudioRecorderState> {
   Future<void> close() {
     _recordingProgressSubscription?.cancel();
     _recordingStateSubscription?.cancel();
-
+    logger.d('Recording close');
     return super.close();
   }
 }

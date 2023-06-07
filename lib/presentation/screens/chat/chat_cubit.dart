@@ -571,10 +571,12 @@ class ChatCubit extends Cubit<ChatState> {
 
       _recordAudioDuration = (metaAudio.trackDuration ?? 0) ~/ 1000;
       if (!checkMinRecordDurationIsOk()) {
-        _mainCubit.updateErrorMessage(UIError(
-            uiErrorType:
-                UIErrorType.youCantSendThisMessageBecauseItsLessThanXSeconds,
-            args: [_minRecordDurationInSec]));
+        if (state.currentTabIndex == 0) {
+          _mainCubit.updateErrorMessage(UIError(
+              uiErrorType:
+                  UIErrorType.youCantSendThisMessageBecauseItsLessThanXSeconds,
+              args: [_minRecordDurationInSec]));
+        }
       } else if (!_checkMaxRecordDurationIsOk()) {
         _mainCubit.updateErrorMessage(UIError(
             uiErrorType: UIErrorType.youVeReachTheXMinuteTimeLimit,
@@ -747,6 +749,9 @@ class ChatCubit extends Cubit<ChatState> {
   void changeCurrentTabIndex(int newIndex) {
     emit(state.copyWith(currentTabIndex: newIndex));
     textInputFocusNode.unfocus();
+    if (audioRecorder.isRecording) {
+      stopRecordingAudio();
+    }
   }
 
   void updateSuccessMessage(AppSuccess appSuccess) {
