@@ -12,25 +12,18 @@ part 'chat_state.freezed.dart';
 @freezed
 class ChatState with _$ChatState {
   const factory ChatState({
-    @Default([])
-        List<ChatItem> activeMessages,
-    @Default([])
-        List<File> attachedPictures,
-    @Default(0)
-        int currentTabIndex,
-    @Default(0)
-        int inputTextLength,
-    @Default(true)
-        bool showInputFieldIfPublic,
-    @Default(false)
-        bool isSendButtonEnabled,
-    @Default(EmptySuccess())
-        AppSuccess appSuccess,
-    @Default(false)
-        bool isAudioAnswerEnabled,
-    @Default(false)
-        bool refreshEnabled,
+    @Default([]) List<ChatItem> activeMessages,
+    @Default([]) List<File> attachedPictures,
+    @Default(0) int currentTabIndex,
+    @Default(0) int inputTextLength,
+    @Default(true) bool showInputFieldIfPublic,
+    @Default(false) bool isSendButtonEnabled,
+    @Default(EmptySuccess()) AppSuccess appSuccess,
+    @Default(false) bool isAudioAnswerEnabled,
+    @Default(false) bool refreshEnabled,
     RitualCardInfo? ritualCardInfo,
+    @Default(false) bool isRecording,
+    @Default(Duration.zero) Duration recordingDuration,
     File? recordedAudio,
     ChatItem? questionFromDB,
     ChatItemStatusType? questionStatus,
@@ -39,16 +32,11 @@ class ChatState with _$ChatState {
         clientName: '',
       ),
     )
-        CustomerProfileScreenArguments? appBarUpdateArguments,
-    @Default(true)
-        bool isTextInputCollapsed,
-    @Default(18.0)
-        double textInputHeight,
-    @Default(false)
-        bool textInputFocused,
-    @Default(false)
-        bool isStretchedTextField,
-    @Default(96.0)
-        double bottomTextAreaHeight,
+    CustomerProfileScreenArguments? appBarUpdateArguments,
+    @Default(true) bool isTextInputCollapsed,
+    @Default(18.0) double textInputHeight,
+    @Default(false) bool textInputFocused,
+    @Default(false) bool isStretchedTextField,
+    @Default(96.0) double bottomTextAreaHeight,
   }) = _ChatState;
 }

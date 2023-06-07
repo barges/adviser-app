@@ -25,7 +25,6 @@ import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.da
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_state.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_input_field_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_recorder/chat_audio_recorder_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
 import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
@@ -247,42 +246,37 @@ class ChatContentWidget extends StatelessWidget {
                     color: needBarrierColor
                         ? Utils.getOverlayColor(context)
                         : Colors.transparent,
-                    child: BlocProvider(
-                      create: (context) =>
-                          ChatAudioRecorderCubit(chatCubit.audioRecorder),
-                      child: Builder(
-                        builder: (context) {
-                          final int currentIndex = context.select(
-                              (ChatCubit cubit) => cubit.state.currentTabIndex);
-                          final ChatItemStatusType? questionStatus =
-                              context.select((ChatCubit cubit) =>
-                                  cubit.state.questionStatus);
+                    child: Builder(
+                      builder: (context) {
+                        final int currentIndex = context.select(
+                            (ChatCubit cubit) => cubit.state.currentTabIndex);
+                        final ChatItemStatusType? questionStatus =
+                            context.select((ChatCubit cubit) =>
+                                cubit.state.questionStatus);
 
-                          if (chatCubit.needActiveChatTab() &&
-                              currentIndex == 0) {
-                            if (chatCubit.isPublicChat()) {
-                              final bool showInputFieldIfPublic =
-                                  context.select((ChatCubit cubit) =>
-                                      cubit.state.showInputFieldIfPublic);
-                              if (!showInputFieldIfPublic ||
-                                  questionStatus != ChatItemStatusType.taken) {
-                                return const SizedBox.shrink();
-                              } else {
-                                return const ActiveChatInputFieldWidget();
-                              }
+                        if (chatCubit.needActiveChatTab() &&
+                            currentIndex == 0) {
+                          if (chatCubit.isPublicChat()) {
+                            final bool showInputFieldIfPublic = context.select(
+                                (ChatCubit cubit) =>
+                                    cubit.state.showInputFieldIfPublic);
+                            if (!showInputFieldIfPublic ||
+                                questionStatus != ChatItemStatusType.taken) {
+                              return const SizedBox.shrink();
                             } else {
-                              if (questionStatus !=
-                                  ChatItemStatusType.answered) {
-                                return const ActiveChatInputFieldWidget();
-                              } else {
-                                return const SizedBox.shrink();
-                              }
+                              return const ActiveChatInputFieldWidget();
                             }
                           } else {
-                            return const SizedBox.shrink();
+                            if (questionStatus != ChatItemStatusType.answered) {
+                              return const ActiveChatInputFieldWidget();
+                            } else {
+                              return const SizedBox.shrink();
+                            }
                           }
-                        },
-                      ),
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      },
                     ),
                   ),
                 );
