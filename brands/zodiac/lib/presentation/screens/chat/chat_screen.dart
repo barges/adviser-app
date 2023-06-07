@@ -17,7 +17,7 @@ import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dar
 import 'package:zodiac/presentation/common_widgets/messages/app_success_widget.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_messages_list_widget.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/chat_text_input_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/client_information_widget.dart';
 import 'package:zodiac/zodiac_constants.dart';
 import 'package:zodiac/zodiac_extensions.dart';
@@ -68,13 +68,7 @@ class ChatScreen extends StatelessWidget {
                 backgroundColor: Theme.of(context).canvasColor,
                 appBar: ChatConversationAppBar(
                   userData: userData,
-                  onTap: () {
-                    if (chatCubit.state.repliedMessage != null) {
-                      chatCubit.changeClientInformationWidgetOpened();
-                    } else {
-                      chatCubit.setRepliedMessage(ChatMessageModel());
-                    }
-                  },
+                  onTap: chatCubit.changeClientInformationWidgetOpened,
                   backButtonOnTap: () {
                     if (offlineSessionIsActive) {
                       _endOfflineSession(context);
@@ -83,13 +77,7 @@ class ChatScreen extends StatelessWidget {
                     }
                   },
                   endChatButtonOnTap:
-                      chatIsActive ? () {
-                    if (chatCubit.state.repliedMessage != null) {
-                      chatCubit.setRepliedMessage(null);
-                    } else {
-                      _endChat(context);
-                    }
-                  } : null,
+                      chatIsActive ? () => _endChat(context) : null,
                 ),
                 body: Stack(
                   clipBehavior: Clip.none,
@@ -144,21 +132,10 @@ class ChatScreen extends StatelessWidget {
                               context.select((ChatCubit cubit) =>
                                   cubit.state.textInputFocused);
 
-                              final ChatMessageModel? repliedMessage =
-                                  context.select((ChatCubit cubit) =>
-                                      cubit.state.repliedMessage);
-
-                              final bool hasRepliedMessage =
-                                  repliedMessage != null;
-
-                              final double grabbingHeight = hasRepliedMessage
-                                  ? constGrabbingHeight + repliedMessageHeight
-                                  : constGrabbingHeight;
-
                               final double bottomPadding =
-                                  constBottomPartTextInputHeight +
+                                  bottomPartTextInputHeight +
                                       (chatCubit.state.textInputFocused
-                                          ? constGrabbingHeight +
+                                          ? grabbingHeight +
                                               12.0 +
                                               ZodiacConstants
                                                   .chatHorizontalPadding +

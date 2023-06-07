@@ -3,6 +3,7 @@ import 'dart:io' hide SocketMessage;
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
@@ -20,17 +21,21 @@ import 'package:zodiac/data/models/enums/chat_message_type.dart';
 import 'package:zodiac/data/network/requests/profile_details_request.dart';
 import 'package:zodiac/data/network/responses/profile_details_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
-import 'package:zodiac/presentation/base_cubit/base_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/chat_state.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/chat_text_input_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/chat_text_input_widget.dart';
+import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
+import 'package:zodiac/services/websocket_manager/chat_login_event.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
+import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
+import 'package:zodiac/services/websocket_manager/paid_free_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
+import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
+import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 const Duration _typingIndicatorDuration = Duration(milliseconds: 5000);
-
 typedef UnderageConfirmDialog = Future<bool?> Function(String message);
 
 class ChatCubitParams {
@@ -46,7 +51,7 @@ class ChatCubitParams {
 }
 
 @injectable
-class ChatCubit extends BaseCubit<ChatState> {
+class ChatCubit extends Cubit<ChatState> {
   final ZodiacCachingManager _cachingManager;
   final WebSocketManager _webSocketManager;
   late final bool _fromStartingChat;
@@ -77,6 +82,32 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   StreamSubscription<ChatMessageModel>? _oneMessageSubscription;
 
+  late final StreamSubscription<List<ChatMessageModel>> _messagesSubscription;
+  late final StreamSubscription<EnterRoomData> _enterRoomDataSubscription;
+  late final StreamSubscription<CreatedDeliveredEvent>
+      _updateMessageIdSubscription;
+  late final StreamSubscription<CreatedDeliveredEvent>
+      _updateMessageIsDeliveredSubscription;
+  late final StreamSubscription<int> _updateMessageIsReadSubscription;
+  late final StreamSubscription<int> _updateWriteStatusSubscription;
+  late final StreamSubscription<UpdateTimerEvent> _updateChatTimerSubscription;
+  late final StreamSubscription<bool> _stopRoomSubscription;
+  late final StreamSubscription<ChatLoginEvent> _chatLoginSubscription;
+  late final StreamSubscription<UnderageConfirmEvent>
+      _underageConfirmSubscription;
+
+  late final StreamSubscription<ActiveChatEvent>
+      _updateChatIsActiveSubscription;
+
+  late final StreamSubscription<OfflineSessionEvent>
+      _updateOfflineSessionIsActiveSubscription;
+
+  late final StreamSubscription<WebSocketState> _webSocketStateSubscription;
+
+  late final StreamSubscription<bool> _keyboardSubscription;
+
+  late final StreamSubscription<PaidFreeEvent> _paidFreeChatSubscription;
+
   bool triggerOnTextChanged = true;
   bool _isRefresh = false;
   bool _isLoadingMessages = false;
@@ -100,7 +131,7 @@ class ChatCubit extends BaseCubit<ChatState> {
     clientData = chatCubitParams.clientData;
     _underageConfirmDialog = chatCubitParams.underageConfirmDialog;
 
-    addListener(_webSocketManager.entitiesStream.listen((event) {
+    _messagesSubscription = _webSocketManager.entitiesStream.listen((event) {
       if (_isRefresh) {
         _isRefresh = false;
         _messages.clear();
@@ -129,9 +160,10 @@ class ChatCubit extends BaseCubit<ChatState> {
           }
         }
       });
-    }));
+    });
 
-    addListener(_webSocketManager.updateMessageIdStream.listen((event) {
+    _updateMessageIdSubscription =
+        _webSocketManager.updateMessageIdStream.listen((event) {
       if (clientData.id == event.clientId) {
         final int index =
             _messages.indexWhere((element) => element.mid == event.mid);
@@ -143,14 +175,14 @@ class ChatCubit extends BaseCubit<ChatState> {
           _updateMessages();
         }
       }
-    }));
+    });
 
-    addListener(
+    _updateMessageIsDeliveredSubscription =
         _webSocketManager.updateMessageIsDeliveredStream.listen((event) {
       _updateMessageIsDelivered(event);
-    }));
+    });
 
-    addListener(
+    _updateMessageIsReadSubscription =
         _webSocketManager.updateMessageIsReadStream.distinct().listen((event) {
       final int index = _messages.indexWhere((element) => element.id == event);
       if (index > -1) {
@@ -160,17 +192,19 @@ class ChatCubit extends BaseCubit<ChatState> {
         );
         _updateMessages();
       }
-    }));
+    });
 
-    addListener(_webSocketManager.updateWriteStatusStream.listen((event) {
+    _updateWriteStatusSubscription =
+        _webSocketManager.updateWriteStatusStream.listen((event) {
       if (event == clientData.id && !state.needShowTypingIndicator) {
         _updateWriteStatus(true);
         Future.delayed(_typingIndicatorDuration)
             .then((value) => _updateWriteStatus(false));
       }
-    }));
+    });
 
-    addListener(_webSocketManager.chatIsActiveStream.listen((event) {
+    _updateChatIsActiveSubscription =
+        _webSocketManager.chatIsActiveStream.listen((event) {
       if (event.clientId == clientData.id) {
         emit(state.copyWith(
             chatIsActive: event.isActive, shouldShowInput: event.isActive));
@@ -198,9 +232,10 @@ class ChatCubit extends BaseCubit<ChatState> {
           }
         }
       }
-    }));
+    });
 
-    addListener(_webSocketManager.offlineSessionIsActiveStream.listen((event) {
+    _updateOfflineSessionIsActiveSubscription =
+        _webSocketManager.offlineSessionIsActiveStream.listen((event) {
       if (event.clientId == clientData.id) {
         emit(state.copyWith(offlineSessionIsActive: event.isActive));
         if (event.timeout != null && event.isActive) {
@@ -224,15 +259,16 @@ class ChatCubit extends BaseCubit<ChatState> {
           _offlineSessionTimer?.cancel();
         }
       }
-    }));
+    });
 
-    addListener(_webSocketManager.enterRoomDataStream.listen((event) {
+    _enterRoomDataSubscription =
+        _webSocketManager.enterRoomDataStream.listen((event) {
       if (event.userData?.id == clientData.id) {
         _isRefresh = true;
         enterRoomData = event;
         emit(state.copyWith(chatIsActive: true));
       }
-    }));
+    });
 
     if (!_fromStartingChat) {
       _webSocketManager.chatLogin(opponentId: clientData.id ?? 0);
@@ -285,7 +321,8 @@ class ChatCubit extends BaseCubit<ChatState> {
       }
     });
 
-    addListener(KeyboardVisibilityController().onChange.listen((bool visible) {
+    _keyboardSubscription =
+        KeyboardVisibilityController().onChange.listen((bool visible) {
       if (!visible) {
         textInputFocusNode.unfocus();
         emit(state.copyWith(isTextInputCollapsed: true));
@@ -294,7 +331,7 @@ class ChatCubit extends BaseCubit<ChatState> {
       Future.delayed(const Duration(milliseconds: 500)).then((value) {
         emit(state.copyWith(keyboardOpened: !state.keyboardOpened));
       }).onError((error, stackTrace) {});
-    }));
+    });
 
     textInputFocusNode.addListener(() {
       final bool isFocused = textInputFocusNode.hasFocus;
@@ -304,7 +341,8 @@ class ChatCubit extends BaseCubit<ChatState> {
       }
     });
 
-    addListener(_webSocketManager.updateChatTimerStream.listen(
+    _updateChatTimerSubscription =
+        _webSocketManager.updateChatTimerStream.listen(
       (event) {
         if (event.clientId == clientData.id) {
           emit(state.copyWith(isChatReconnecting: false));
@@ -319,21 +357,22 @@ class ChatCubit extends BaseCubit<ChatState> {
           }
         }
       },
-    ));
+    );
 
-    addListener(_webSocketManager.stopRoomStream.listen(
+    _stopRoomSubscription = _webSocketManager.stopRoomStream.listen(
       (event) => emit(state.copyWith(isChatReconnecting: true)),
-    ));
+    );
 
-    addListener(_webSocketManager.chatLoginStream.listen(
+    _chatLoginSubscription = _webSocketManager.chatLoginStream.listen(
       (event) {
         if (clientData.id == event.opponentId) {
           _chatId = event.chatId;
         }
       },
-    ));
+    );
 
-    addListener(_webSocketManager.underageConfirmStream.listen((event) async {
+    _underageConfirmSubscription =
+        _webSocketManager.underageConfirmStream.listen((event) async {
       if (event.opponentId == clientData.id) {
         bool? reportConfirmed = await _underageConfirmDialog(event.message);
 
@@ -344,9 +383,9 @@ class ChatCubit extends BaseCubit<ChatState> {
           }
         }
       }
-    }));
+    });
 
-    addListener(_webSocketManager.webSocketStateStream.listen(
+    _webSocketStateSubscription = _webSocketManager.webSocketStateStream.listen(
       (event) {
         if (event == WebSocketState.connected) {
           if (state.offlineSessionIsActive) {
@@ -364,19 +403,16 @@ class ChatCubit extends BaseCubit<ChatState> {
           emit(state.copyWith(isChatReconnecting: true));
         }
       },
-    ));
+    );
 
-    addListener(_webSocketManager.paidFreeStream.listen((event) {
+    _paidFreeChatSubscription =
+        _webSocketManager.paidFreeStream.listen((event) {
       if (event.opponentId == clientData.id) {
         emit(state.copyWith(chatPaymentStatus: event.status));
       }
-    }));
+    });
 
     getClientInformation();
-  }
-
-  setRepliedMessage(ChatMessageModel? repliedMessage) {
-    emit(state.copyWith(repliedMessage: repliedMessage));
   }
 
   @override
@@ -385,11 +421,26 @@ class ChatCubit extends BaseCubit<ChatState> {
     textInputScrollController.dispose();
     messagesScrollController.dispose();
     textInputFocusNode.dispose();
+    _messagesSubscription.cancel();
     _oneMessageSubscription?.cancel();
+    _enterRoomDataSubscription.cancel();
+    _updateMessageIdSubscription.cancel();
+    _updateMessageIsDeliveredSubscription.cancel();
+    _updateMessageIsReadSubscription.cancel();
+    _updateWriteStatusSubscription.cancel();
     _showDownButtonSubscription.cancel();
     _showDownButtonStream.close();
+    _keyboardSubscription.cancel();
+    _updateChatIsActiveSubscription.cancel();
+    _updateOfflineSessionIsActiveSubscription.cancel();
+    _updateChatTimerSubscription.cancel();
     _chatTimer?.cancel();
+    _stopRoomSubscription.cancel();
     _offlineSessionTimer?.cancel();
+    _chatLoginSubscription.cancel();
+    _underageConfirmSubscription.cancel();
+    _webSocketStateSubscription.cancel();
+    _paidFreeChatSubscription.cancel();
     return super.close();
   }
 
@@ -444,13 +495,8 @@ class ChatCubit extends BaseCubit<ChatState> {
       emit(state.copyWith(textInputHeight: height));
       if (snappingSheetController.isAttached && state.isTextInputCollapsed) {
         try {
-          snappingSheetController.snapToPosition(
-            SnappingPosition.pixels(
-              positionPixels: height +
-                  constGrabbingHeight * 2 +
-                  (state.repliedMessage != null ? repliedMessageHeight : 0.0),
-            ),
-          );
+          snappingSheetController.snapToPosition(SnappingPosition.pixels(
+              positionPixels: height + grabbingHeight * 2));
         } catch (e) {
           logger.d('method -> updateHiddenInputHeight in ChatCubit: \n$e');
         }
@@ -458,13 +504,8 @@ class ChatCubit extends BaseCubit<ChatState> {
     } else {
       emit(state.copyWith(textInputHeight: maxHeight));
       if (snappingSheetController.isAttached && state.isTextInputCollapsed) {
-        snappingSheetController.snapToPosition(
-          SnappingPosition.pixels(
-            positionPixels: maxHeight +
-                constGrabbingHeight * 2 +
-                (state.repliedMessage != null ? repliedMessageHeight : 0.0),
-          ),
-        );
+        snappingSheetController.snapToPosition(SnappingPosition.pixels(
+            positionPixels: maxHeight + grabbingHeight * 2));
       }
     }
   }

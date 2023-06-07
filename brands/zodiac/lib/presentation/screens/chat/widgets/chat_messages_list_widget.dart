@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
-import 'package:shared_advisor_interface/global.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/down_button_widget.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/chat_text_input_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/typing_indicator.dart';
 import 'package:zodiac/zodiac_constants.dart';
 
@@ -25,17 +23,6 @@ class ChatMessagesListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final ChatCubit chatCubit = context.read<ChatCubit>();
 
-    final ChatMessageModel? repliedMessage =
-        context.select((ChatCubit cubit) => cubit.state.repliedMessage);
-
-    final bool hasRepliedMessage = repliedMessage != null;
-
-    final bool chatIsActive = chatCubit.state.chatIsActive;
-    final bool offlineSessionIsActive = chatCubit.state.offlineSessionIsActive;
-
-    final double paddingIfHasRepliedMessage =
-        hasRepliedMessage ? repliedMessageHeight : 0.0;
-
     // for (var element in messages) {
     //   logger.d(element);
     // }
@@ -46,8 +33,6 @@ class ChatMessagesListWidget extends StatelessWidget {
 
     final bool needShowTypingIndicator = context
         .select((ChatCubit cubit) => cubit.state.needShowTypingIndicator);
-
-    logger.d(MediaQuery.of(context).padding.bottom);
 
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
@@ -67,8 +52,9 @@ class ChatMessagesListWidget extends StatelessWidget {
                 ZodiacConstants.chatHorizontalPadding,
                 ZodiacConstants.chatHorizontalPadding,
                 ZodiacConstants.chatHorizontalPadding +
-                    (chatIsActive || offlineSessionIsActive
-                        ? paddingIfHasRepliedMessage
+                    (chatCubit.state.chatIsActive ||
+                            chatCubit.state.offlineSessionIsActive
+                        ? 0.0
                         : MediaQuery.of(context).padding.bottom),
               ),
               reverse: true,
@@ -119,9 +105,9 @@ class ChatMessagesListWidget extends StatelessWidget {
               return needShowDownButton
                   ? Positioned(
                       right: ZodiacConstants.chatHorizontalPadding,
-                      bottom: (chatIsActive || offlineSessionIsActive
-                          ? ZodiacConstants.chatHorizontalPadding +
-                          paddingIfHasRepliedMessage
+                      bottom: (chatCubit.state.chatIsActive ||
+                              chatCubit.state.offlineSessionIsActive
+                          ? ZodiacConstants.chatHorizontalPadding
                           : MediaQuery.of(context).padding.bottom +
                               ZodiacConstants.chatHorizontalPadding),
                       child: DownButtonWidget(
