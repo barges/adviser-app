@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
@@ -27,48 +26,6 @@ class ChatMessageWidget extends StatelessWidget {
   final ChatMessageModel chatMessageModel;
 
   const ChatMessageWidget({
-    Key? key,
-    required this.chatMessageModel,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final ChatCubit chatCubit = context.read<ChatCubit>();
-    final bool canReply = chatMessageModel.supportsReply;
-    final theme = Theme.of(context);
-    return canReply
-        ? Dismissible(
-            key: ValueKey(chatMessageModel.hashCode),
-            direction: DismissDirection.endToStart,
-            confirmDismiss: (DismissDirection direction) async {
-              chatCubit.setRepliedMessage(chatMessageModel);
-              return false;
-            },
-            background: Align(
-              alignment: Alignment.centerRight,
-              child: Assets.zodiac.vectors.arrowReply.svg(
-                height: AppConstants.iconSize,
-                width: AppConstants.iconSize,
-                colorFilter: ColorFilter.mode(
-                  theme.primaryColor,
-                  BlendMode.srcIn,
-                ),
-              ),
-            ),
-            child: _ChatMessageWidget(
-              chatMessageModel: chatMessageModel,
-            ),
-          )
-        : _ChatMessageWidget(
-            chatMessageModel: chatMessageModel,
-          );
-  }
-}
-
-class _ChatMessageWidget extends StatelessWidget {
-  final ChatMessageModel chatMessageModel;
-
-  const _ChatMessageWidget({
     Key? key,
     required this.chatMessageModel,
   }) : super(key: key);

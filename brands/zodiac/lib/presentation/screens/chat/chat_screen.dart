@@ -68,13 +68,7 @@ class ChatScreen extends StatelessWidget {
                 backgroundColor: Theme.of(context).canvasColor,
                 appBar: ChatConversationAppBar(
                   userData: userData,
-                  onTap: () {
-                    if (chatCubit.state.repliedMessage != null) {
-                      chatCubit.changeClientInformationWidgetOpened();
-                    } else {
-                      chatCubit.setRepliedMessage(ChatMessageModel());
-                    }
-                  },
+                  onTap: chatCubit.changeClientInformationWidgetOpened,
                   backButtonOnTap: () {
                     if (offlineSessionIsActive) {
                       _endOfflineSession(context);
@@ -84,11 +78,7 @@ class ChatScreen extends StatelessWidget {
                   },
                   endChatButtonOnTap: chatIsActive
                       ? () {
-                          if (chatCubit.state.repliedMessage != null) {
-                            chatCubit.setRepliedMessage(null);
-                          } else {
-                            _endChat(context);
-                          }
+                          _endChat(context);
                         }
                       : null,
                 ),
