@@ -73,7 +73,6 @@ class CustomerProfileWidget extends StatelessWidget {
                         ],
                       );
                     } else {
-
                       final Gender? gender = customerInfo.gender;
                       final DateTime? birthdate = customerInfo.birthdate;
                       return Column(
@@ -83,7 +82,7 @@ class CustomerProfileWidget extends StatelessWidget {
                             width: MediaQuery.of(context).size.width,
                             padding: const EdgeInsets.symmetric(
                                 horizontal:
-                                AppConstants.horizontalScreenPadding,
+                                    AppConstants.horizontalScreenPadding,
                                 vertical: 24.0),
                             child: Column(children: [
                               Padding(
@@ -102,8 +101,8 @@ class CustomerProfileWidget extends StatelessWidget {
                               ),
                               Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: AppConstants
-                                          .horizontalScreenPadding),
+                                      horizontal:
+                                          AppConstants.horizontalScreenPadding),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -117,39 +116,33 @@ class CustomerProfileWidget extends StatelessWidget {
                                               customerInfo.lastName;
                                           return Text(
                                             firstName != null &&
-                                                lastName != null
+                                                    lastName != null
                                                 ? '$firstName $lastName'
                                                 : SFortunica.of(context)
-                                                .notSpecifiedFortunica,
+                                                    .notSpecifiedFortunica,
                                             textAlign: TextAlign.center,
-                                            style: theme
-                                                .textTheme.headlineMedium,
+                                            style:
+                                                theme.textTheme.headlineMedium,
                                           );
                                         }),
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: [
-                                          if (birthdate !=
-                                              null)
+                                          if (birthdate != null)
                                             Text(
                                               DateFormat(datePattern5)
-                                                  .format(
-                                                birthdate
-                                                    .toLocal(),
-                                              )
-                                                  .capitalize ??
+                                                      .format(birthdate)
+                                                      .capitalize ??
                                                   '',
-                                              style: theme
-                                                  .textTheme.bodyMedium
+                                              style: theme.textTheme.bodyMedium
                                                   ?.copyWith(
                                                 color: theme.shadowColor,
                                               ),
                                             ),
                                           if (gender != null ||
-                                              birthdate !=
-                                                  null)
+                                              birthdate != null)
                                             Row(
                                               children: [
                                                 const SizedBox(
@@ -160,11 +153,9 @@ class CustomerProfileWidget extends StatelessWidget {
                                                   height: 4.0,
                                                   decoration: BoxDecoration(
                                                       borderRadius:
-                                                      BorderRadius
-                                                          .circular(
-                                                          90.0),
-                                                      color:
-                                                      theme.hintColor),
+                                                          BorderRadius.circular(
+                                                              90.0),
+                                                      color: theme.hintColor),
                                                 ),
                                                 const SizedBox(
                                                   width: 8.0,
@@ -174,8 +165,7 @@ class CustomerProfileWidget extends StatelessWidget {
                                           if (gender != null)
                                             Text(
                                               gender.name(context),
-                                              style: theme
-                                                  .textTheme.bodyMedium
+                                              style: theme.textTheme.bodyMedium
                                                   ?.copyWith(
                                                 color: theme.shadowColor,
                                               ),
@@ -186,34 +176,32 @@ class CustomerProfileWidget extends StatelessWidget {
                                   )),
                               Builder(builder: (context) {
                                 final List<String>? questionProperties =
-                                customerInfo.advisorMatch?.values
-                                    .toList();
+                                    customerInfo.advisorMatch?.values.toList();
                                 return (questionProperties != null &&
-                                    questionProperties.isNotEmpty)
+                                        questionProperties.isNotEmpty)
                                     ? Column(
-                                  children: [
-                                    const SizedBox(
-                                        height: AppConstants
-                                            .horizontalScreenPadding),
-                                    Wrap(
-                                      runSpacing: 8.0,
-                                      children: [
-                                        QuestionPropertiesWidget(
-                                          properties:
-                                          questionProperties,
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                )
+                                        children: [
+                                          const SizedBox(
+                                              height: AppConstants
+                                                  .horizontalScreenPadding),
+                                          Wrap(
+                                            runSpacing: 8.0,
+                                            children: [
+                                              QuestionPropertiesWidget(
+                                                properties: questionProperties,
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      )
                                     : const SizedBox.shrink();
                               }),
                             ]),
                           ),
                           Builder(builder: (context) {
                             final List<Note>? notes = context.select(
-                                    (CustomerProfileCubit cubit) =>
-                                cubit.state.notes);
+                                (CustomerProfileCubit cubit) =>
+                                    cubit.state.notes);
                             return NotesWidget(
                               notes: notes,
                               images: const [

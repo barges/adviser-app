@@ -38,88 +38,85 @@ class ChatMessagesListWidget extends StatelessWidget {
       onTap: FocusScope.of(context).unfocus,
       child: Container(
         color: Theme.of(context).scaffoldBackgroundColor,
-        child: ListViewObserver(
-          controller: chatCubit.observerController,
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              ListView.separated(
-                physics: ChatObserverClampingScrollPhysics(
-                  observer: chatCubit.chatObserver,
-                ),
-                shrinkWrap: chatCubit.chatObserver.isShrinkWrap,
-                controller: chatCubit.messagesScrollController,
-                padding: EdgeInsets.fromLTRB(
-                  ZodiacConstants.chatHorizontalPadding,
-                  ZodiacConstants.chatHorizontalPadding,
-                  ZodiacConstants.chatHorizontalPadding,
-                  ZodiacConstants.chatHorizontalPadding +
-                      (chatCubit.state.chatIsActive ||
-                              chatCubit.state.offlineSessionIsActive
-                          ? 0.0
-                          : MediaQuery.of(context).padding.bottom),
-                ),
-                reverse: true,
-                itemCount: messages.length + 1,
-                itemBuilder: (BuildContext context, int index) {
-                  if (index == 0) {
-                    return Builder(builder: (context) {
-                      return needShowTypingIndicator
-                          ? const Align(
-                              alignment: Alignment.bottomLeft,
-                              child: TypingIndicator(),
-                            )
-                          : const SizedBox.shrink();
-                    });
-                  } else {
-                    final ChatMessageModel messageModel = messages[index - 1];
-                    if (messageModel.isOutgoing || messageModel.isRead) {
-                      return ChatMessageWidget(
-                        key: messageModel.isOutgoing
-                            ? ValueKey(messageModel.mid)
-                            : null,
-                        chatMessageModel: messageModel,
-                      );
-                    } else {
-                      return VisibilityDetector(
-                        key: Key(messageModel.id.toString()),
-                        onVisibilityChanged: (visibilityInfo) {
-                          if (visibilityInfo.visibleFraction == 1) {
-                            chatCubit.sendReadMessage(messageModel.id);
-                          }
-                        },
-                        child: ChatMessageWidget(
-                          chatMessageModel: messageModel,
-                        ),
-                      );
-                    }
-                  }
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(
-                    height: 4.0,
-                  );
-                },
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            ListView.separated(
+              physics: ChatObserverClampingScrollPhysics(
+                observer: chatCubit.chatObserver,
               ),
-              Builder(builder: (context) {
-                final bool needShowDownButton = context.select(
-                    (ChatCubit cubit) => cubit.state.needShowDownButton);
-                return needShowDownButton
-                    ? Positioned(
-                        right: ZodiacConstants.chatHorizontalPadding,
-                        bottom: (chatCubit.state.chatIsActive ||
-                                chatCubit.state.offlineSessionIsActive
-                            ? ZodiacConstants.chatHorizontalPadding
-                            : MediaQuery.of(context).padding.bottom +
-                                ZodiacConstants.chatHorizontalPadding),
-                        child: DownButtonWidget(
-                          unreadCount: unreadCount,
-                        ),
-                      )
-                    : const SizedBox.shrink();
-              }),
-            ],
-          ),
+              shrinkWrap: chatCubit.chatObserver.isShrinkWrap,
+              controller: chatCubit.messagesScrollController,
+              padding: EdgeInsets.fromLTRB(
+                ZodiacConstants.chatHorizontalPadding,
+                ZodiacConstants.chatHorizontalPadding,
+                ZodiacConstants.chatHorizontalPadding,
+                ZodiacConstants.chatHorizontalPadding +
+                    (chatCubit.state.chatIsActive ||
+                            chatCubit.state.offlineSessionIsActive
+                        ? 0.0
+                        : MediaQuery.of(context).padding.bottom),
+              ),
+              reverse: true,
+              itemCount: messages.length + 1,
+              itemBuilder: (BuildContext context, int index) {
+                if (index == 0) {
+                  return Builder(builder: (context) {
+                    return needShowTypingIndicator
+                        ? const Align(
+                            alignment: Alignment.bottomLeft,
+                            child: TypingIndicator(),
+                          )
+                        : const SizedBox.shrink();
+                  });
+                } else {
+                  final ChatMessageModel messageModel = messages[index - 1];
+                  if (messageModel.isOutgoing || messageModel.isRead) {
+                    return ChatMessageWidget(
+                      key: messageModel.isOutgoing
+                          ? ValueKey(messageModel.mid)
+                          : null,
+                      chatMessageModel: messageModel,
+                    );
+                  } else {
+                    return VisibilityDetector(
+                      key: Key(messageModel.id.toString()),
+                      onVisibilityChanged: (visibilityInfo) {
+                        if (visibilityInfo.visibleFraction == 1) {
+                          chatCubit.sendReadMessage(messageModel.id);
+                        }
+                      },
+                      child: ChatMessageWidget(
+                        chatMessageModel: messageModel,
+                      ),
+                    );
+                  }
+                }
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const SizedBox(
+                  height: 4.0,
+                );
+              },
+            ),
+            Builder(builder: (context) {
+              final bool needShowDownButton = context
+                  .select((ChatCubit cubit) => cubit.state.needShowDownButton);
+              return needShowDownButton
+                  ? Positioned(
+                      right: ZodiacConstants.chatHorizontalPadding,
+                      bottom: (chatCubit.state.chatIsActive ||
+                              chatCubit.state.offlineSessionIsActive
+                          ? ZodiacConstants.chatHorizontalPadding
+                          : MediaQuery.of(context).padding.bottom +
+                              ZodiacConstants.chatHorizontalPadding),
+                      child: DownButtonWidget(
+                        unreadCount: unreadCount,
+                      ),
+                    )
+                  : const SizedBox.shrink();
+            }),
+          ],
         ),
       ),
     );

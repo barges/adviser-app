@@ -200,8 +200,7 @@ class ChatTextInputWidget extends StatelessWidget {
                                   onTap: () {
                                     showPickImageAlert(
                                       context: context,
-                                      setImage: (image) =>
-                                          chatCubit.sendImage(context, image),
+                                      setImage: chatCubit.sendImage,
                                     );
                                   },
                                   child: Assets.vectors.gallery.svg(

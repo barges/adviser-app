@@ -99,8 +99,8 @@ Future<bool?> showOkCancelAlert({
                             if (isCancelEnabled)
                               TextButton(
                                 child: Text(
-                                    cancelText ??
-                                        S.of(context).cancel.toUpperCase(),
+                                    (cancelText ?? S.of(context).cancel)
+                                        .toUpperCase(),
                                     style:
                                         theme.textTheme.displayLarge?.copyWith(
                                       fontSize: 14.0,
