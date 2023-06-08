@@ -19,7 +19,7 @@ class ResendMessageWidget extends StatelessWidget {
     return Row(children: [
       _ResendButtonWidget(
         text: SZodiac.of(context).cancelSendingZodiac,
-        iconPath: Assets.vectors.cross.path,
+        iconPath: Assets.vectors.close.path,
         color: AppColors.error,
         onTap: onCancel,
       ),
@@ -78,7 +78,10 @@ class _ResendButtonWidget extends StatelessWidget {
               iconPath,
               height: 16.0,
               width: 16.0,
-              color: color,
+              colorFilter: ColorFilter.mode(
+                color,
+                BlendMode.srcIn,
+              ),
             ),
           ],
         ),

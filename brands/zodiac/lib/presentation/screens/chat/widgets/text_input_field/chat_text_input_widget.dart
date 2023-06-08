@@ -156,7 +156,9 @@ class ChatTextInputWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     if (!textInputFocused && hasRepliedMessage)
-                      RepliedMessageWidget(),
+                      RepliedMessageWidget(
+                        repliedMessage: repliedMessage!,
+                      ),
                     Builder(builder: (context) {
                       return Container(
                         height: constBottomPartTextInputHeight,
@@ -187,7 +189,10 @@ class ChatTextInputWidget extends StatelessWidget {
                                       child: Assets.vectors.plusRounded.svg(
                                         width: AppConstants.iconSize,
                                         height: AppConstants.iconSize,
-                                        color: theme.iconTheme.color,
+                                        colorFilter: ColorFilter.mode(
+                                          theme.shadowColor,
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -205,7 +210,10 @@ class ChatTextInputWidget extends StatelessWidget {
                                   child: Assets.vectors.gallery.svg(
                                     width: AppConstants.iconSize,
                                     height: AppConstants.iconSize,
-                                    color: theme.iconTheme.color,
+                                    colorFilter: ColorFilter.mode(
+                                      theme.shadowColor,
+                                      BlendMode.srcIn,
+                                    ),
                                   ),
                                 )
                               ],
@@ -260,7 +268,10 @@ class ChatTextInputWidget extends StatelessWidget {
                                 child: Assets.zodiac.vectors.emoji.svg(
                                   width: AppConstants.iconSize,
                                   height: AppConstants.iconSize,
-                                  color: theme.iconTheme.color,
+                                  colorFilter: ColorFilter.mode(
+                                    theme.shadowColor,
+                                    BlendMode.srcIn,
+                                  ),
                                 ),
                               ),
                             Builder(builder: (context) {
