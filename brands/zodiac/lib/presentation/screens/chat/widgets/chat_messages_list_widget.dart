@@ -122,7 +122,8 @@ class ChatMessagesListWidget extends StatelessWidget {
                           ? ZodiacConstants.chatHorizontalPadding +
                               paddingIfHasRepliedMessage
                           : MediaQuery.of(context).padding.bottom +
-                              ZodiacConstants.chatHorizontalPadding),
+                              ZodiacConstants.chatHorizontalPadding +
+                              42.0),
                       child: DownButtonWidget(
                         unreadCount: unreadCount,
                       ),

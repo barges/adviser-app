@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/enums/chat_payment_status.dart';
@@ -30,5 +32,6 @@ class ChatState with _$ChatState {
     Duration? chatTimerValue,
     Duration? offlineSessionTimerValue,
     ChatPaymentStatus? chatPaymentStatus,
+    File? recordedAudio,
   }) = _ChatState;
 }

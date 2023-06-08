@@ -147,5 +147,7 @@
   "theMaximumImageSizeIs10MbZodiac": "Die maximale Bildgröße beträgt 10 MB.",
   "onlineZodiac": "Online",
   "busyZodiac": "Beschäftigt",
-  "offlineZodiac": "Offline"
+  "offlineZodiac": "Offline",
+  "doYouWantToDeleteThisAudioMessageZodiac": "Möchten Sie diese Audionachricht löschen?",
+  "recordingStoppedBecauseYouReachedLimitZodiac": "Die Aufnahme wurde gestoppt, da Sie die {maxRecordLengthInMb}Mb Grenze erreicht haben."
 }

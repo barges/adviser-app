@@ -4,15 +4,25 @@ import 'dart:io' hide SocketMessage;
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:injectable/injectable.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/services/audio/audio_player_service.dart';
+import 'package:shared_advisor_interface/services/audio/audio_recorder_service.dart';
+import 'package:shared_advisor_interface/services/check_permission_service.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
+import 'package:storage_space/storage_space.dart';
+import 'package:uuid/uuid.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/app_error/app_error.dart';
+import 'package:zodiac/data/models/app_error/ui_error_type.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
@@ -30,18 +40,20 @@ import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 const Duration _typingIndicatorDuration = Duration(milliseconds: 5000);
-
+const String _recordFileExt = 'm4a';
 typedef UnderageConfirmDialog = Future<bool?> Function(String message);
 
 class ChatCubitParams {
   final bool fromStartingChat;
   final UserData clientData;
   final UnderageConfirmDialog underageConfirmDialog;
+  final ValueGetter<Future<bool?>> deleteAudioMessageAlert;
 
   ChatCubitParams({
     required this.fromStartingChat,
     required this.clientData,
     required this.underageConfirmDialog,
+    required this.deleteAudioMessageAlert,
   });
 }
 
@@ -54,6 +66,13 @@ class ChatCubit extends BaseCubit<ChatState> {
   final ZodiacUserRepository _userRepository;
   final ZodiacMainCubit _zodiacMainCubit;
   late final UnderageConfirmDialog _underageConfirmDialog;
+
+  final AudioPlayerService _audioPlayer = AudioPlayerServiceImpl();
+  final AudioRecorderService _audioRecorder = AudioRecorderServiceImp();
+  final CheckPermissionService _checkPermissionService;
+  final _uuid = const Uuid();
+  late final ValueGetter<Future<bool?>> _deleteAudioMessageAlert;
+  StreamSubscription<RecorderDisposition>? _recordingProgressSubscription;
 
   final SnappingSheetController snappingSheetController =
       SnappingSheetController();
@@ -89,16 +108,20 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   int? _chatId;
 
+  int? _recordAudioDuration;
+
   ChatCubit(
     @factoryParam ChatCubitParams chatCubitParams,
     this._cachingManager,
     this._webSocketManager,
     this._userRepository,
     this._zodiacMainCubit,
+    this._checkPermissionService,
   ) : super(const ChatState()) {
     _fromStartingChat = chatCubitParams.fromStartingChat;
     clientData = chatCubitParams.clientData;
     _underageConfirmDialog = chatCubitParams.underageConfirmDialog;
+    _deleteAudioMessageAlert = chatCubitParams.deleteAudioMessageAlert;
 
     addListener(_webSocketManager.entitiesStream.listen((event) {
       if (_isRefresh) {
@@ -380,7 +403,11 @@ class ChatCubit extends BaseCubit<ChatState> {
   }
 
   @override
-  Future<void> close() {
+  Future<void> close() async {
+    if (audioRecorder.isRecording) {
+      await cancelRecordingAudio();
+    }
+    _deleteRecordedAudioFile(state.recordedAudio);
     textInputEditingController.dispose();
     textInputScrollController.dispose();
     messagesScrollController.dispose();
@@ -390,6 +417,7 @@ class ChatCubit extends BaseCubit<ChatState> {
     _showDownButtonStream.close();
     _chatTimer?.cancel();
     _offlineSessionTimer?.cancel();
+    _recordingProgressSubscription?.cancel();
     return super.close();
   }
 
@@ -501,6 +529,109 @@ class ChatCubit extends BaseCubit<ChatState> {
     emit(state.copyWith(isStretchedTextField: value));
   }
 
+  Future<void> startRecordingAudio(BuildContext context) async {
+    textInputFocusNode.unfocus();
+    StorageSpace freeSpace = await getStorageSpace(
+      lowOnSpaceThreshold: 0,
+      fractionDigits: 1,
+    );
+    final freeSpaceInMb = freeSpace.free /
+        (AppConstants.bytesInKilobyte * AppConstants.bytesInKilobyte);
+    if (freeSpaceInMb <= AppConstants.minFreeSpaceInMb) {
+      //await recordingIsNotPossibleAlert();
+      return;
+    }
+
+    //_tryStartAnswerSend();
+
+    audioPlayer.stop();
+
+    // ignore: use_build_context_synchronously
+    await _checkPermissionService.handlePermission(
+        context, PermissionType.audio);
+
+    final isRecordGranted = await Permission.microphone.isGranted;
+
+    if (!isRecordGranted) {
+      return;
+    }
+
+    final fileName = '${_uuid.v4()}.$_recordFileExt';
+    await audioRecorder.startRecorder(fileName);
+
+    String? recordingPath = await audioRecorder.getRecordURL(path: fileName);
+    File? recordingAudio;
+    if (recordingPath != null) {
+      recordingAudio = File(recordingPath);
+    }
+
+    _recordingProgressSubscription =
+        audioRecorder.onProgress?.listen((e) async {
+      _recordAudioDuration = e.duration?.inSeconds;
+      if (recordingAudio != null &&
+          !_checkMaxRecordLengthIsOk(recordingAudio)) {
+        stopRecordingAudio();
+        _zodiacMainCubit.updateErrorMessage(UIError(
+            uiErrorType: UIErrorType.recordingStoppedBecauseYouReached,
+            args: [AppConstants.maxRecordLengthInMb]));
+      }
+    });
+  }
+
+  Future<void> stopRecordingAudio() async {
+    _recordingProgressSubscription?.cancel();
+    _recordingProgressSubscription = null;
+
+    String? recordingPath = await audioRecorder.stopRecorder();
+    logger.i("recorded audio: $recordingPath");
+
+    File? recordedAudio;
+    if (recordingPath != null && recordingPath.isNotEmpty) {
+      recordedAudio = File(recordingPath);
+      final Metadata metaAudio =
+          await MetadataRetriever.fromFile(recordedAudio);
+      _recordAudioDuration = (metaAudio.trackDuration ?? 0) ~/ 1000;
+    }
+
+    emit(
+      state.copyWith(
+        recordedAudio: recordedAudio,
+        isSendButtonEnabled: recordedAudio != null,
+      ),
+    );
+  }
+
+  Future<void> deleteRecordedAudio() async {
+    await audioPlayer.stop();
+
+    if (await _deleteAudioMessageAlert() == true) {
+      await _deleteRecordedAudioFile(state.recordedAudio);
+      _recordAudioDuration = null;
+
+      emit(state.copyWith(
+        recordedAudio: null,
+      ));
+    }
+  }
+
+  Future<void> cancelRecordingAudio() async {
+    _recordingProgressSubscription?.cancel();
+    _recordingProgressSubscription = null;
+    _recordAudioDuration = null;
+
+    String? recordingPath = await audioRecorder.stopRecorder();
+    if (recordingPath != null && recordingPath.isNotEmpty) {
+      File recordedAudio = File(recordingPath);
+      await _deleteRecordedAudioFile(recordedAudio);
+    }
+
+    emit(
+      state.copyWith(
+        recordedAudio: null,
+      ),
+    );
+  }
+
   void _updateMessages() {
     emit(state.copyWith(messages: List.from(_messages)));
   }
@@ -518,6 +649,16 @@ class ChatCubit extends BaseCubit<ChatState> {
             .jumpTo(textInputScrollController.position.maxScrollExtent);
       }
     });
+  }
+
+  bool _checkMaxRecordLengthIsOk(File recordingAudio) {
+    return recordingAudio.sizeInMb < AppConstants.maxRecordLengthInMb;
+  }
+
+  Future<void> _deleteRecordedAudioFile(File? recordedAudio) async {
+    if (recordedAudio != null && await recordedAudio.exists()) {
+      recordedAudio.deleteSync();
+    }
   }
 
   String _generateMessageId() {
@@ -618,4 +759,10 @@ class ChatCubit extends BaseCubit<ChatState> {
       }
     }
   }
+
+  int? get recordAudioDuration => _recordAudioDuration;
+
+  AudioPlayerService get audioPlayer => _audioPlayer;
+
+  AudioRecorderService get audioRecorder => _audioRecorder;
 }

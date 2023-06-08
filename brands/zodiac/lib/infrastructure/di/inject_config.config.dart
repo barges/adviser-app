@@ -121,6 +121,7 @@ Future<_i1.GetIt> $initGetIt(
         gh<_i14.WebSocketManager>(),
         gh<_i23.ZodiacUserRepository>(),
         gh<_i13.ZodiacMainCubit>(),
+        gh<_i4.CheckPermissionService>(),
       ));
   gh.factory<_i29.ZodiacArticlesRepository>(
       () => _i30.ZodiacArticlesRepositoryImpl(gh<_i25.ArticlesApi>()));

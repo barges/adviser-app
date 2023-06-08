@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'audio_session_configure_mixin.dart';
 // ignore: depend_on_referenced_packages
@@ -17,9 +18,12 @@ abstract class AudioRecorderService {
 
   Future<String?> stopRecorder();
 
+  Future<String?> getRecordURL({required String path});
+
   void close();
 }
 
+@Injectable(as: AudioRecorderService)
 class AudioRecorderServiceImp extends AudioRecorderService
     with AudioSessionConfigureMixin {
   FlutterSoundRecorder? _recorder;
@@ -67,6 +71,11 @@ class AudioRecorderServiceImp extends AudioRecorderService
           _recorder?.recorderState.toSoundRecorderState()));
       return value;
     });
+  }
+
+  @override
+  Future<String?> getRecordURL({required String path}) async {
+    return await _recorder?.getRecordURL(path: path);
   }
 
   @override
