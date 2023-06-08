@@ -51,6 +51,10 @@ class ChatMessageModel with _$ChatMessageModel {
     @JsonKey(fromJson: _boolFromInt, toJson: _boolToInt)
     @Default(false)
         bool fromAdvisor,
+    @Default(false)
+        bool supportsReply,
+    @Default(false)
+        bool supportsReaction,
     @JsonKey(unknownEnumValue: MissedMessageAction.none)
         MissedMessageAction? action,
     @JsonKey(name: 'main') String? mainImage,

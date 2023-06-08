@@ -48,7 +48,7 @@ dependencies:
   mime: ^1.0.2
   audioplayers: ^2.0.0
   flutter_media_metadata: ^1.0.0+1
-  snapping_sheet: ^3.1.0
+  snapping_sheet_2: ^3.1.5
   flutter_keyboard_visibility: ^5.4.0
   flutter_keyboard_size: ^1.0.1
   uuid: ^3.0.7

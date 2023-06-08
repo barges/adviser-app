@@ -82,14 +82,15 @@ class ChatScreen extends StatelessWidget {
                       chatCubit.logoutChat(context);
                     }
                   },
-                  endChatButtonOnTap:
-                      chatIsActive ? () {
-                    if (chatCubit.state.repliedMessage != null) {
-                      chatCubit.setRepliedMessage(null);
-                    } else {
-                      _endChat(context);
-                    }
-                  } : null,
+                  endChatButtonOnTap: chatIsActive
+                      ? () {
+                          if (chatCubit.state.repliedMessage != null) {
+                            chatCubit.setRepliedMessage(null);
+                          } else {
+                            _endChat(context);
+                          }
+                        }
+                      : null,
                 ),
                 body: Stack(
                   clipBehavior: Clip.none,
@@ -136,42 +137,7 @@ class ChatScreen extends StatelessWidget {
                             }),
                           ),
                           if (chatIsActive || offlineSessionIsActive)
-                            Builder(builder: (context) {
-                              final double focusedTextInputHeight =
-                                  context.select((ChatCubit cubit) =>
-                                      cubit.state.textInputHeight);
-
-                              context.select((ChatCubit cubit) =>
-                                  cubit.state.textInputFocused);
-
-                              final ChatMessageModel? repliedMessage =
-                                  context.select((ChatCubit cubit) =>
-                                      cubit.state.repliedMessage);
-
-                              final bool hasRepliedMessage =
-                                  repliedMessage != null;
-
-                              final double grabbingHeight = hasRepliedMessage
-                                  ? constGrabbingHeight + repliedMessageHeight
-                                  : constGrabbingHeight;
-
-                              final double bottomPadding =
-                                  constBottomPartTextInputHeight +
-                                      (chatCubit.state.textInputFocused
-                                          ? constGrabbingHeight +
-                                              12.0 +
-                                              ZodiacConstants
-                                                  .chatHorizontalPadding +
-                                              focusedTextInputHeight
-                                          : MediaQuery.of(context)
-                                              .padding
-                                              .bottom);
-                              return Container(
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor,
-                                height: bottomPadding,
-                              );
-                            }),
+                            const _BottomPaddingContainerIfHasTextInputField(),
                         ],
                       ),
                     ),
@@ -249,7 +215,12 @@ class ChatScreen extends StatelessWidget {
                             : Colors.transparent,
                         child: Builder(
                           builder: (context) {
-                            return const ChatTextInputWidget();
+                            final ChatMessageModel? repliedMessage =
+                                context.select((ChatCubit cubit) =>
+                                    cubit.state.repliedMessage);
+                            return ChatTextInputWidget(
+                              repliedMessage: repliedMessage,
+                            );
                           },
                         ),
                       ),
@@ -304,4 +275,31 @@ Future<bool?> _showUnderageConfirmDialog(
     deleteText: SZodiac.of(context).reportZodiac,
     swapButtonColorsForAndroid: true,
   );
+}
+
+class _BottomPaddingContainerIfHasTextInputField extends StatelessWidget {
+  const _BottomPaddingContainerIfHasTextInputField({Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final double focusedTextInputHeight =
+        context.select((ChatCubit cubit) => cubit.state.textInputHeight);
+
+    context.select((ChatCubit cubit) => cubit.state.textInputFocused);
+
+    context.select((ChatCubit cubit) => cubit.state.repliedMessage);
+
+    final double bottomPadding = constBottomPartTextInputHeight +
+        (context.read<ChatCubit>().state.textInputFocused
+            ? constGrabbingHeight +
+                ZodiacConstants.chatVerticalPadding +
+                12.0 +
+                focusedTextInputHeight
+            : MediaQuery.of(context).padding.bottom);
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      height: bottomPadding,
+    );
+  }
 }

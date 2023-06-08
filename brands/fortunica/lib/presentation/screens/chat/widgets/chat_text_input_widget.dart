@@ -15,7 +15,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_i
 import 'package:fortunica/presentation/screens/chat/chat_cubit.dart';
 import 'package:fortunica/presentation/screens/chat/widgets/attached_pictures.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
-import 'package:snapping_sheet/snapping_sheet.dart';
+import 'package:snapping_sheet_2/snapping_sheet.dart';
 
 const grabbingHeight = 16.0;
 const textCounterHeight = 21.0;
@@ -158,7 +158,6 @@ class ChatTextInputWidget extends StatelessWidget {
                           ],
                         ),
                         sheetBelow: SnappingSheetContent(
-                          draggable: true,
                           childScrollController: isStretchedTextField
                               ? chatCubit.textInputScrollController
                               : null,

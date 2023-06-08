@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
-import 'package:shared_advisor_interface/global.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
@@ -47,8 +46,6 @@ class ChatMessagesListWidget extends StatelessWidget {
     final bool needShowTypingIndicator = context
         .select((ChatCubit cubit) => cubit.state.needShowTypingIndicator);
 
-    logger.d(MediaQuery.of(context).padding.bottom);
-
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
       child: Container(
@@ -64,9 +61,9 @@ class ChatMessagesListWidget extends StatelessWidget {
               controller: chatCubit.messagesScrollController,
               padding: EdgeInsets.fromLTRB(
                 ZodiacConstants.chatHorizontalPadding,
+                ZodiacConstants.chatVerticalPadding,
                 ZodiacConstants.chatHorizontalPadding,
-                ZodiacConstants.chatHorizontalPadding,
-                ZodiacConstants.chatHorizontalPadding +
+                ZodiacConstants.chatVerticalPadding +
                     (chatIsActive || offlineSessionIsActive
                         ? paddingIfHasRepliedMessage
                         : MediaQuery.of(context).padding.bottom),
@@ -121,7 +118,7 @@ class ChatMessagesListWidget extends StatelessWidget {
                       right: ZodiacConstants.chatHorizontalPadding,
                       bottom: (chatIsActive || offlineSessionIsActive
                           ? ZodiacConstants.chatHorizontalPadding +
-                          paddingIfHasRepliedMessage
+                              paddingIfHasRepliedMessage
                           : MediaQuery.of(context).padding.bottom +
                               ZodiacConstants.chatHorizontalPadding),
                       child: DownButtonWidget(

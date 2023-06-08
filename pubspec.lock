@@ -1696,6 +1696,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
+  snapping_sheet_2:
+    dependency: transitive
+    description:
+      name: snapping_sheet_2
+      sha256: "8e7c7b746a226673cd5d2680b23dfa315e5ac75f551e8c05aa37eba24fb5487d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.5"
   source_gen:
     dependency: transitive
     description:

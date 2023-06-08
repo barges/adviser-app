@@ -45,7 +45,7 @@ import 'package:shared_advisor_interface/services/audio/audio_player_service.dar
 import 'package:shared_advisor_interface/services/audio/audio_recorder_service.dart';
 import 'package:shared_advisor_interface/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
-import 'package:snapping_sheet/snapping_sheet.dart';
+import 'package:snapping_sheet_2/snapping_sheet.dart';
 import 'package:storage_space/storage_space.dart';
 import 'package:uuid/uuid.dart';
 

@@ -14,9 +14,11 @@ class GrabbingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    final bool hasMessage = repliedMessage != null;
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: repliedMessage != null
+      height: hasMessage
           ? constGrabbingHeight + repliedMessageHeight
           : constGrabbingHeight,
       decoration: BoxDecoration(
@@ -34,8 +36,7 @@ class GrabbingWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (repliedMessage != null)
-            RepliedMessageWidget(),
+          if (hasMessage) const RepliedMessageWidget(),
           Container(
             width: MediaQuery.of(context).size.width,
             height: 1.0,

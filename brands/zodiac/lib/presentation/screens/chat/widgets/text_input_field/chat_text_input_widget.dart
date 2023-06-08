@@ -6,7 +6,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
-import 'package:snapping_sheet/snapping_sheet.dart';
+import 'package:snapping_sheet_2/snapping_sheet.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
@@ -21,8 +21,11 @@ const scrollbarThickness = 4.0;
 const constBottomPartTextInputHeight = 52.0;
 
 class ChatTextInputWidget extends StatelessWidget {
+  final ChatMessageModel? repliedMessage;
+
   const ChatTextInputWidget({
     Key? key,
+    this.repliedMessage,
   }) : super(key: key);
 
   @override
@@ -33,7 +36,8 @@ class ChatTextInputWidget extends StatelessWidget {
 
     return BlocListener<ChatCubit, ChatState>(
       listenWhen: (prev, current) =>
-          prev.inputTextLength != current.inputTextLength,
+          prev.inputTextLength != current.inputTextLength ||
+          prev.repliedMessage != current.repliedMessage,
       listener: (context, state) {
         final double maxWidth = MediaQuery.of(context).size.width -
             scrollbarThickness -
@@ -56,14 +60,14 @@ class ChatTextInputWidget extends StatelessWidget {
         final bool isStretchedTextField = context
             .select((ChatCubit cubit) => cubit.state.isStretchedTextField);
 
-        final ChatMessageModel? repliedMessage =
-            context.select((ChatCubit cubit) => cubit.state.repliedMessage);
-
         final bool hasRepliedMessage = repliedMessage != null;
 
         final double bottomPartTextInputHeight = hasRepliedMessage
             ? constBottomPartTextInputHeight + repliedMessageHeight
             : constBottomPartTextInputHeight;
+
+        final double repliedHeight =
+            hasRepliedMessage ? repliedMessageHeight / 2 : 0.0;
 
         context.select((ChatCubit cubit) => cubit.state.keyboardOpened);
 
@@ -111,13 +115,13 @@ class ChatTextInputWidget extends StatelessWidget {
                       initialSnappingPosition: SnappingPosition.pixels(
                         positionPixels: textInputHeight +
                             constGrabbingHeight * 2 +
-                            (hasRepliedMessage ? repliedMessageHeight : 0.0),
+                            (hasRepliedMessage ? repliedHeight : 0.0),
                       ),
                       snappingPositions: [
                         SnappingPosition.pixels(
                           positionPixels: textInputHeight +
                               constGrabbingHeight * 2 +
-                              (hasRepliedMessage ? repliedMessageHeight : 0.0),
+                              (hasRepliedMessage ? repliedHeight : 0.0),
                         ),
                         SnappingPosition.pixels(
                           positionPixels: h +
@@ -129,13 +133,11 @@ class ChatTextInputWidget extends StatelessWidget {
                         repliedMessage: repliedMessage,
                       ),
                       sheetBelow: SnappingSheetContent(
-                        draggable: true,
                         childScrollController: isStretchedTextField
                             ? chatCubit.textInputScrollController
                             : null,
-                        child: SizedBox(
-                          height: 18,
-                          //color: theme.canvasColor,
+                        child: Container(
+                          color: theme.canvasColor,
                           child: _InputTextField(key: chatCubit.textInputKey),
                         ),
                       ),

@@ -11,7 +11,7 @@ import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
-import 'package:snapping_sheet/snapping_sheet.dart';
+import 'package:snapping_sheet_2/snapping_sheet.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
@@ -440,15 +440,16 @@ class ChatCubit extends BaseCubit<ChatState> {
   }
 
   void updateHiddenInputHeight(double height, double maxHeight) {
+    final double repliedHeight =
+        state.repliedMessage != null ? repliedMessageHeight / 2 : 0.0;
+
     if (height <= maxHeight) {
       emit(state.copyWith(textInputHeight: height));
       if (snappingSheetController.isAttached && state.isTextInputCollapsed) {
         try {
           snappingSheetController.snapToPosition(
             SnappingPosition.pixels(
-              positionPixels: height +
-                  constGrabbingHeight * 2 +
-                  (state.repliedMessage != null ? repliedMessageHeight : 0.0),
+              positionPixels: height + constGrabbingHeight * 2 + repliedHeight,
             ),
           );
         } catch (e) {
@@ -460,9 +461,7 @@ class ChatCubit extends BaseCubit<ChatState> {
       if (snappingSheetController.isAttached && state.isTextInputCollapsed) {
         snappingSheetController.snapToPosition(
           SnappingPosition.pixels(
-            positionPixels: maxHeight +
-                constGrabbingHeight * 2 +
-                (state.repliedMessage != null ? repliedMessageHeight : 0.0),
+            positionPixels: maxHeight + constGrabbingHeight * 2 + repliedHeight,
           ),
         );
       }
@@ -612,11 +611,9 @@ class ChatCubit extends BaseCubit<ChatState> {
 
       if (index > -1) {
         final ChatMessageModel model = _messages[index];
-        logger.d(model);
         _messages[index] = model.copyWith(
           isDelivered: true,
         );
-        logger.d(_messages[index]);
         _updateMessages();
       }
     }
