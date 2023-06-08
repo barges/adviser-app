@@ -28,6 +28,8 @@ class ChatState with _$ChatState {
     @Default(false) bool isChatReconnecting,
     @Default(false) bool showOfflineSessionsMessage,
     @Default(false) bool shouldShowInput,
+    @Default(false) bool isRecording,
+    @Default(Duration.zero) Duration recordingDuration,
     UserDetails? clientInformation,
     Duration? chatTimerValue,
     Duration? offlineSessionTimerValue,

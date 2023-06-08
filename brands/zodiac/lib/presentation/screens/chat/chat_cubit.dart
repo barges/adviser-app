@@ -395,6 +395,27 @@ class ChatCubit extends BaseCubit<ChatState> {
       }
     }));
 
+    addListener(audioRecorder.stateStream.listen((e) async {
+      if (e.state == SoundRecorderState.isRecording) {
+        emit(state.copyWith(
+          recordingDuration: const Duration(),
+        ));
+
+        _recordingProgressSubscription =
+            audioRecorder.onProgress?.listen((e) async {
+          emit(state.copyWith(
+            recordingDuration: e.duration ?? const Duration(),
+          ));
+        });
+      } else {
+        _recordingProgressSubscription?.cancel();
+      }
+
+      emit(state.copyWith(
+        isRecording: e.state == SoundRecorderState.isRecording,
+      ));
+    }));
+
     getClientInformation();
   }
 
