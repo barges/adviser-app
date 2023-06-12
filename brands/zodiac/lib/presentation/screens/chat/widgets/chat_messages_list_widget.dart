@@ -7,6 +7,7 @@ import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/down_button_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/typing_indicator.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/wrappers/resend_message/resend_message_wrapper.dart';
 import 'package:zodiac/zodiac_constants.dart';
 
 class ChatMessagesListWidget extends StatelessWidget {
@@ -71,11 +72,15 @@ class ChatMessagesListWidget extends StatelessWidget {
                   });
                 } else {
                   final ChatMessageModel messageModel = messages[index - 1];
-                  if (messageModel.isOutgoing || messageModel.isRead) {
+                  if ((messageModel.isOutgoing && messageModel.isDelivered) ||
+                      messageModel.isRead) {
                     return ChatMessageWidget(
-                      key: messageModel.isOutgoing
-                          ? ValueKey(messageModel.mid)
-                          : null,
+                      chatMessageModel: messageModel,
+                    );
+                  } else if (messageModel.isOutgoing &&
+                      !messageModel.isDelivered) {
+                    return ResendMessageWrapper(
+                      key: ValueKey(messageModel.mid),
                       chatMessageModel: messageModel,
                     );
                   } else {
