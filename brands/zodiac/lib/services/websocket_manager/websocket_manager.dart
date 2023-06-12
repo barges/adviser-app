@@ -4,6 +4,7 @@ import 'package:zodiac/data/models/chat/enter_room_data.dart';
 import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
 import 'package:zodiac/services/websocket_manager/chat_login_event.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
+import 'package:zodiac/services/websocket_manager/message_reaction_created_event.dart';
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/paid_free_event.dart';
 import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
@@ -42,6 +43,8 @@ abstract class WebSocketManager {
   Stream<ChatLoginEvent> get chatLoginStream;
 
   Stream<UnderageConfirmEvent> get underageConfirmStream;
+
+  Stream<MessageReactionCreatedEvent> get messageReactionCreatedStream;
 
   Stream<WebSocketState> get webSocketStateStream;
 
@@ -95,4 +98,11 @@ abstract class WebSocketManager {
   void sendUnderageReport({required String roomId});
 
   void sendCloseOfflineSession();
+
+  void sendMessageReaction({
+    required String mid,
+    required String message,
+    required String roomId,
+    required int opponentId,
+  });
 }
