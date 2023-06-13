@@ -234,7 +234,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "previewAccount":
             MessageLookupByLibrary.simpleMessage("Profilvorschau"),
         "private": MessageLookupByLibrary.simpleMessage("Privat"),
-        "privateQuestion": MessageLookupByLibrary.simpleMessage("Privat Frage"),
+        "privateQuestion": MessageLookupByLibrary.simpleMessage("Privat-Frage"),
         "privateQuestions":
             MessageLookupByLibrary.simpleMessage("Private Fragen"),
         "profile": MessageLookupByLibrary.simpleMessage("Profil"),
