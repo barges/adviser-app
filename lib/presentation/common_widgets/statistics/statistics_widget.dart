@@ -12,10 +12,13 @@ class StatisticsWidget extends StatelessWidget {
 
   final int currentMonthIndex;
 
+  final ValueSetter<int> setIndex;
+
   const StatisticsWidget({
     Key? key,
     required this.months,
     required this.currentMonthIndex,
+    required this.setIndex,
     this.statistics,
   }) : super(key: key);
 
@@ -31,6 +34,7 @@ class StatisticsWidget extends StatelessWidget {
             MonthHeaderWidget(
               months: months,
               currentMonthIndex: currentMonthIndex,
+              setIndex: setIndex,
             ),
             const SizedBox(
               height: 16.0,

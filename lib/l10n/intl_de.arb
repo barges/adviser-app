@@ -203,7 +203,7 @@
   "copied": "Kopiert!",
   "notSpecified": "Nicht angegeben",
   "newPassword": "Neues Passwort",
-  "privateQuestion": "Privat Frage",
+  "privateQuestion": "Privat-Frage",
   "publicQuestion": "Live-Frage",
   "soulmateReadingSessions": "Seelenpartner Reading",
   "loveCrushReadingSessions": "Herzenspartner-Prognose",
@@ -211,5 +211,7 @@
   "reading360Sessions": "360° Rundumblick",
   "ritualSessions": "Blockadenlösung",
   "astrologySessions": "Astrologie",
-  "tarotSessions": "Kartenlegen"
+  "tarotSessions": "Kartenlegen",
+  "cancelled": "Storniert",
+  "earnedThisMonth": "Aktueller Monatsverdienst:"
 }

@@ -77,6 +77,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "calls": MessageLookupByLibrary.simpleMessage("Chamadas"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "cancelSending": MessageLookupByLibrary.simpleMessage("Cancelar envio"),
+        "cancelled": MessageLookupByLibrary.simpleMessage("Cancelada"),
         "changeCoverPicture":
             MessageLookupByLibrary.simpleMessage("Alterar foto da capa"),
         "changePassword": MessageLookupByLibrary.simpleMessage("Alterar senha"),
@@ -121,6 +122,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Deseja devolver esta pergunta?"),
         "done": MessageLookupByLibrary.simpleMessage("Feito"),
         "earned": MessageLookupByLibrary.simpleMessage("Não recebido"),
+        "earnedThisMonth":
+            MessageLookupByLibrary.simpleMessage("Total ganho este mês:"),
         "editNote": MessageLookupByLibrary.simpleMessage("Editar nota"),
         "editProfile": MessageLookupByLibrary.simpleMessage("Editar perfil"),
         "email": MessageLookupByLibrary.simpleMessage("E-mail"),
