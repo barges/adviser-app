@@ -107,57 +107,74 @@ class _ReportsUnit extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                 horizontal: 8.0,
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: RichText(
-                      text: TextSpan(
-                          text:
-                              '${reportsUnit.type?.sessionNameForStatistics(context)} '
-                              '(${isCanceled ? reportsUnit.numberCancelled : reportsUnit.number}) ',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            fontSize: 14.0,
-                            height: 1.2,
-                          ),
-                          children: [
-                            if (!isCanceled)
-                              TextSpan(
-                                text:
-                                    '($currencySymbol${rate.toStringAsFixed(2)})',
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w500,
-                                  color: Theme.of(context).shadowColor,
-                                ),
-                              )
-                          ]),
-                    ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                              text:
+                                  '${reportsUnit.type?.sessionNameForStatistics(context)} '
+                                  '(${isCanceled ? reportsUnit.numberCancelled : reportsUnit.number}) ',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                fontSize: 14.0,
+                                height: 1.2,
+                              ),
+                              children: [
+                                if (!isCanceled)
+                                  TextSpan(
+                                    text:
+                                        '($currencySymbol${rate.toStringAsFixed(2)})',
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context).shadowColor,
+                                    ),
+                                  )
+                              ]),
+                        ),
+                      ),
+                      // Text(
+                      //   '${reportsUnit.type?.sessionNameForStatistics} '
+                      //   '(${isCanceled ? reportsUnit.numberCancelled : reportsUnit.number})',
+                      //
+                      //   style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      //     fontSize: 14.0,
+                      //   ),
+                      // ),
+                      // if (!isCanceled)
+                      //   Row(
+                      //     children: [
+                      //       const SizedBox(
+                      //         width: 4.0,
+                      //       ),
+                      //       Text(
+                      //         '($currencySymbol ${rate.toStringAsFixed(2)})',
+                      //         style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      //           fontSize: 12.0,
+                      //           fontWeight: FontWeight.w500,
+                      //           color: Theme.of(context).shadowColor,
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                    ],
                   ),
-                  // Text(
-                  //   '${reportsUnit.type?.sessionNameForStatistics} '
-                  //   '(${isCanceled ? reportsUnit.numberCancelled : reportsUnit.number})',
-                  //
-                  //   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  //     fontSize: 14.0,
-                  //   ),
-                  // ),
-                  // if (!isCanceled)
-                  //   Row(
-                  //     children: [
-                  //       const SizedBox(
-                  //         width: 4.0,
-                  //       ),
-                  //       Text(
-                  //         '($currencySymbol ${rate.toStringAsFixed(2)})',
-                  //         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  //           fontSize: 12.0,
-                  //           fontWeight: FontWeight.w500,
-                  //           color: Theme.of(context).shadowColor,
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
+                  if (isCanceled)
+                    SizedBox(
+                      height: 14.0,
+                      child: Text(
+                        S.of(context).cancelled,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontSize: 12.0,
+                          color: theme.shadowColor,
+                        ),
+                      ),
+                    )
                 ],
               ),
             ),
@@ -184,7 +201,7 @@ class _ReportsUnit extends StatelessWidget {
                 SizedBox(
                   height: 14.0,
                   child: Text(
-                    S.of(context).cancelled,
+                    S.of(context).earned,
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontSize: 12.0,
                       color: theme.shadowColor,
