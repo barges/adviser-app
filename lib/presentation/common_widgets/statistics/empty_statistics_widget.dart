@@ -26,7 +26,6 @@ class EmptyStatisticsWidget extends StatelessWidget {
               ],
             ),
           ),
-          //const SeeMoreWidget(),
         ],
       ),
     );

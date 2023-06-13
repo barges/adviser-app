@@ -9,6 +9,7 @@ import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/splash/splash_state.dart';
+import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -39,7 +40,9 @@ class _SplashScreenState extends State<SplashScreen> {
       create: (_) {
         return SplashCubit(
           getIt.get<CachingManager>(),
+          getIt.get<CheckPermissionService>(),
           Utils.isDarkMode(context),
+          context,
         );
       },
       child: Builder(
