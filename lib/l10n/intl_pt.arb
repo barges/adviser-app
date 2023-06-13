@@ -212,5 +212,6 @@
   "ritualSessions": "Sessão de Ritual",
   "astrologySessions": "Consulta Astrológica",
   "tarotSessions": "Leitura de Cartas Especial",
-  "cancelled": "Cancelada"
+  "cancelled": "Cancelada",
+  "earnedThisMonth": "Total ganho este mês:"
 }

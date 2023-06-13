@@ -211,5 +211,6 @@
   "ritualSessions": "Ritual Session",
   "astrologySessions": "Astral Chart",
   "tarotSessions": "Card Reading",
-  "cancelled": "Canceled"
+  "cancelled": "Canceled",
+  "earnedThisMonth": "Earned this month:"
 }

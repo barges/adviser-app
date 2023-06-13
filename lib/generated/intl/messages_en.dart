@@ -120,6 +120,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Do you want to return this question?"),
         "done": MessageLookupByLibrary.simpleMessage("Done"),
         "earned": MessageLookupByLibrary.simpleMessage("Earned"),
+        "earnedThisMonth":
+            MessageLookupByLibrary.simpleMessage("Earned this month:"),
         "editNote": MessageLookupByLibrary.simpleMessage("Edit Note"),
         "editProfile": MessageLookupByLibrary.simpleMessage("Edit profile"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),

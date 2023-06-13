@@ -212,5 +212,6 @@
   "ritualSessions": "Blockadenlösung",
   "astrologySessions": "Astrologie",
   "tarotSessions": "Kartenlegen",
-  "cancelled": "Storniert"
+  "cancelled": "Storniert",
+  "earnedThisMonth": "Aktueller Monatsverdienst:"
 }
