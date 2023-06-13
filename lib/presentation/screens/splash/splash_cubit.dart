@@ -20,6 +20,7 @@ class SplashCubit extends Cubit<SplashState> {
 
   Future<void> _checkLoggedStatus(BuildContext context) async {
     getIt.get<FreshChatService>().initFreshChat(_isDarkMode);
+    await Future.delayed(const Duration(milliseconds: 700));
     await AppTrackingTransparency.requestTrackingAuthorization();
     // ignore: use_build_context_synchronously
     await _checkPermissionService.handlePermission(
