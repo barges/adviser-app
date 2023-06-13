@@ -17,7 +17,9 @@ import 'package:shared_advisor_interface/presentation/common_widgets/statistics/
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/dashboard_v1_cubit.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/widgets/personal_information_widget.dart';
+import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/widgets/skeleton_statistics_widget.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+import 'package:skeleton_loader/skeleton_loader.dart';
 
 class DashboardV1Screen extends StatelessWidget {
   const DashboardV1Screen({
@@ -26,7 +28,9 @@ class DashboardV1Screen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     final MainCubit mainCubit = context.read<MainCubit>();
+
     return BlocProvider(
         create: (_) => DashboardV1Cubit(
               getIt.get<CachingManager>(),
@@ -40,6 +44,9 @@ class DashboardV1Screen extends StatelessWidget {
               (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
           final AppError appError =
               context.select((MainCubit cubit) => cubit.state.appError);
+          final List<ReportsMonth> months =
+              context.select((DashboardV1Cubit cubit) => cubit.state.months);
+
           return Scaffold(
               appBar: HomeAppBar(
                   withBrands: true,
@@ -59,23 +66,22 @@ class DashboardV1Screen extends StatelessWidget {
                             ? [
                                 SliverToBoxAdapter(
                                   child: Padding(
-                                    padding: const EdgeInsets.all(
-                                        AppConstants.horizontalScreenPadding),
-                                    child: Column(
-                                      children: const [
-                                        PersonalInformationWidget(),
-                                        SizedBox(
-                                          height: AppConstants
-                                              .horizontalScreenPadding,
-                                        ),
-                                      ],
+                                    padding: const EdgeInsets.fromLTRB(
+                                      AppConstants.horizontalScreenPadding,
+                                      16.0,
+                                      AppConstants.horizontalScreenPadding,
+                                      0.0,
                                     ),
+                                    child: months.isNotEmpty
+                                        ? PersonalInformationWidget()
+                                        : SkeletonLoader(
+                                            baseColor: theme.hintColor,
+                                            highlightColor: theme.canvasColor,
+                                            builder:
+                                                PersonalInformationWidget()),
                                   ),
                                 ),
                                 Builder(builder: (context) {
-                                  final List<ReportsMonth> months =
-                                      context.select((DashboardV1Cubit cubit) =>
-                                          cubit.state.months);
                                   final ReportsStatistics? statistics =
                                       context.select((DashboardV1Cubit cubit) =>
                                           cubit.state.reportsStatistics);
@@ -99,7 +105,7 @@ class DashboardV1Screen extends StatelessWidget {
                                         : const EmptyStatisticsWidget();
                                   } else {
                                     return const SliverToBoxAdapter(
-                                      child: SizedBox.shrink(),
+                                      child: SkeletonStatisticsWidget(),
                                     );
                                   }
                                 }),
