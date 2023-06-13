@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
+import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_month.dart';
+import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
 import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
@@ -10,9 +12,10 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/statistics/empty_statistics_widget.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/statistics/statistics_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/dashboard_v1_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/widgets/month_statistic_widget.dart';
 import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/widgets/personal_information_widget.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
@@ -51,34 +54,68 @@ class DashboardV1Screen extends StatelessWidget {
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: dashboardCubit.refreshInfo,
-                      child: CustomScrollView(slivers: [
-                        isOnline
-                            ? SliverToBoxAdapter(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(
-                                      AppConstants.horizontalScreenPadding),
-                                  child: Column(
-                                    children: const [
-                                      PersonalInformationWidget(),
-                                      SizedBox(
-                                        height: AppConstants
-                                            .horizontalScreenPadding,
-                                      ),
-                                      MonthStatisticWidget()
-                                    ],
+                      child: CustomScrollView(
+                        slivers: isOnline
+                            ? [
+                                SliverToBoxAdapter(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(
+                                        AppConstants.horizontalScreenPadding),
+                                    child: Column(
+                                      children: const [
+                                        PersonalInformationWidget(),
+                                        SizedBox(
+                                          height: AppConstants
+                                              .horizontalScreenPadding,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              )
-                            : SliverFillRemaining(
-                                hasScrollBody: false,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    NoConnectionWidget(),
-                                  ],
-                                ),
-                              ),
-                      ]),
+                                Builder(builder: (context) {
+                                  final List<ReportsMonth> months =
+                                      context.select((DashboardV1Cubit cubit) =>
+                                          cubit.state.months);
+                                  final ReportsStatistics? statistics =
+                                      context.select((DashboardV1Cubit cubit) =>
+                                          cubit.state.reportsStatistics);
+                                  final int currentMonthIndex = context.select(
+                                      (DashboardV1Cubit cubit) =>
+                                          cubit.state.currentMonthIndex);
+
+                                  final bool isEmptyStatistics =
+                                      months.length == 1 &&
+                                          statistics?.markets?.isEmpty == true;
+                                  if (months.isNotEmpty) {
+                                    return !isEmptyStatistics
+                                        ? StatisticsWidget(
+                                            months: months,
+                                            currentMonthIndex:
+                                                currentMonthIndex,
+                                            statistics: statistics,
+                                            setIndex: dashboardCubit
+                                                .updateCurrentMonthIndex,
+                                          )
+                                        : const EmptyStatisticsWidget();
+                                  } else {
+                                    return const SliverToBoxAdapter(
+                                      child: SizedBox.shrink(),
+                                    );
+                                  }
+                                }),
+                              ]
+                            : [
+                                const SliverFillRemaining(
+                                  hasScrollBody: false,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      NoConnectionWidget(),
+                                    ],
+                                  ),
+                                )
+                              ],
+                      ),
                     ),
                   ),
                 ],

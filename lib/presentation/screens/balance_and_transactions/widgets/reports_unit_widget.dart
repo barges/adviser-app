@@ -184,7 +184,7 @@ class _ReportsUnit extends StatelessWidget {
                 SizedBox(
                   height: 14.0,
                   child: Text(
-                    S.of(context).earned,
+                    S.of(context).cancelled,
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontSize: 12.0,
                       color: theme.shadowColor,

@@ -211,5 +211,6 @@
   "reading360Sessions": "Lectura 360°",
   "ritualSessions": "Sesión de Ritual",
   "astrologySessions": "Carta Astral",
-  "tarotSessions": "Lectura de cartas Premium"
+  "tarotSessions": "Lectura de cartas Premium",
+  "cancelled": "Cancelado"
 }

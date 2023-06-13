@@ -210,5 +210,6 @@
   "reading360Sessions": "360° Reading",
   "ritualSessions": "Ritual Session",
   "astrologySessions": "Astral Chart",
-  "tarotSessions": "Card Reading"
+  "tarotSessions": "Card Reading",
+  "cancelled": "Cancelled"
 }

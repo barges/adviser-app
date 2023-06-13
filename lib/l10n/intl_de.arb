@@ -211,5 +211,6 @@
   "reading360Sessions": "360° Rundumblick",
   "ritualSessions": "Blockadenlösung",
   "astrologySessions": "Astrologie",
-  "tarotSessions": "Kartenlegen"
+  "tarotSessions": "Kartenlegen",
+  "cancelled": "Abgesagt"
 }
