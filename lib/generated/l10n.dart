@@ -2181,10 +2181,10 @@ class S {
     );
   }
 
-  /// `Cancelled`
+  /// `Canceled`
   String get cancelled {
     return Intl.message(
-      'Cancelled',
+      'Canceled',
       name: 'cancelled',
       desc: '',
       args: [],

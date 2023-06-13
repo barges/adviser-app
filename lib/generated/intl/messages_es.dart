@@ -78,7 +78,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "calls": MessageLookupByLibrary.simpleMessage("Llamadas"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "cancelSending": MessageLookupByLibrary.simpleMessage("Cancelar envío"),
-        "cancelled": MessageLookupByLibrary.simpleMessage("Cancelado"),
+        "cancelled": MessageLookupByLibrary.simpleMessage("Cancelada"),
         "changeCoverPicture":
             MessageLookupByLibrary.simpleMessage("Cambiar foto de portada"),
         "changePassword":
