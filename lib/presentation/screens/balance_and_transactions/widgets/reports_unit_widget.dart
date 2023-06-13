@@ -82,7 +82,6 @@ class _ReportsUnit extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return SizedBox(
-      height: AppConstants.iconButtonSize,
       child: Row(
         children: [
           Container(
