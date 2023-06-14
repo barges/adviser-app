@@ -26,6 +26,7 @@ import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
 import 'package:zodiac/services/websocket_manager/chat_login_event.dart';
 import 'package:zodiac/services/websocket_manager/commands.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
+import 'package:zodiac/services/websocket_manager/message_reaction_created_event.dart';
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/paid_free_event.dart';
 import 'package:zodiac/services/websocket_manager/room_paused_event.dart';
@@ -89,6 +90,9 @@ class WebSocketManagerImpl implements WebSocketManager {
   final PublishSubject<PaidFreeEvent> _paidFreeStream = PublishSubject();
 
   final PublishSubject<RoomPausedEvent> _roomPausedStream = PublishSubject();
+
+  final PublishSubject<MessageReactionCreatedEvent>
+      _messageReactionCreatedStream = PublishSubject();
 
   WebSocketManagerImpl(
     this._zodiacMainCubit,
@@ -226,6 +230,9 @@ class WebSocketManagerImpl implements WebSocketManager {
     //timerCorrect
     _emitter.on(
         Commands.timerCorrect, this, (event, _) => _onTimerCorrect(event));
+
+    _emitter.on(Commands.messageReactionCreated, this,
+        (event, _) => _onMessageReactionCreated(event));
   }
 
   @override
@@ -285,6 +292,10 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   @override
   Stream<RoomPausedEvent> get roomPausedStream => _roomPausedStream.stream;
+
+  @override
+  Stream<MessageReactionCreatedEvent> get messageReactionCreatedStream =>
+      _messageReactionCreatedStream.stream;
 
   @override
   WebSocketState get currentState => _currentState;
@@ -443,6 +454,21 @@ class WebSocketManagerImpl implements WebSocketManager {
   @override
   void sendCloseOfflineSession() {
     _send(SocketMessage.closeOfflineChat());
+  }
+
+  @override
+  void sendMessageReaction({
+    required String mid,
+    required String message,
+    required String roomId,
+    required int opponentId,
+  }) {
+    _send(SocketMessage.sendMessageReaction(
+      mid: mid,
+      message: message,
+      roomId: roomId,
+      opponentId: opponentId,
+    ));
   }
 
   @override
@@ -932,6 +958,23 @@ class WebSocketManagerImpl implements WebSocketManager {
         _updateChatTimerStream.add(UpdateTimerEvent(
             value: Duration(milliseconds: data.params['time']),
             clientId: data.opponentId!));
+      }
+    });
+  }
+
+  void _onMessageReactionCreated(Event event) {
+    (event.eventData as SocketMessage).let((data) {
+      if (data.params is Map &&
+          data.params['mid'] != null &&
+          data.params['message'] != null &&
+          data.opponentId != null) {
+        _messageReactionCreatedStream.add(
+          MessageReactionCreatedEvent(
+            mid: data.params['mid'],
+            reaction: data.params['message'],
+            clientId: data.opponentId!,
+          ),
+        );
       }
     });
   }

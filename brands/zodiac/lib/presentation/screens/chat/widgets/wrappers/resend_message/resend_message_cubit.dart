@@ -14,9 +14,9 @@ import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
-import 'chat_message_state.dart';
+import 'resend_message_state.dart';
 
-class ChatMessageCubit extends Cubit<ChatMessageState> {
+class ResendMessageCubit extends Cubit<ResendMessageState> {
   final ChatMessageModel _chatMessageModel;
   final String? _roomId;
   final int? _opponentId;
@@ -34,7 +34,7 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
   static List<String> sendingImagesMids = [];
 
   int _resendCount = 0;
-  ChatMessageCubit(
+  ResendMessageCubit(
     this._chatMessageModel,
     this._roomId,
     this._opponentId,
@@ -45,7 +45,8 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
     this.deleteMessage,
     this.updateImageIsDelivered,
     BuildContext context,
-  ) : super(const ChatMessageState()) {
+  ) : super(const ResendMessageState()) {
+    logger.d('CREATE');
     if (_chatMessageModel.isOutgoing && !_chatMessageModel.isDelivered) {
       if (!isImage) {
         _setTimer();
