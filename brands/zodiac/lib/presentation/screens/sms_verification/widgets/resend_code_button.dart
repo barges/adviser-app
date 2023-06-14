@@ -17,7 +17,8 @@ class ResendCodeButton extends StatelessWidget {
       final isResendCodeButtonEnabled = context.select(
           (SMSVerificationCubitCubit cubit) =>
               cubit.state.isResendCodeButtonEnabled);
-      const String attempts = '3/3';
+      // TODO Implement after attempts will be add on backend
+      const String attempts = '0/3';
       return GestureDetector(
         onTap: isResendCodeButtonEnabled
             ? () async {

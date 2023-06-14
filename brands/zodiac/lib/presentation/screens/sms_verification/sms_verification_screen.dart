@@ -96,8 +96,8 @@ class SMSVerificationScreen extends StatelessWidget {
                                 ),
                               ),
                               // TODO Implement after attempts will be add on backend
-                              /*Builder(builder: (context) {
-                                const String attempts = '5';
+                              Builder(builder: (context) {
+                                const String attempts = '0';
                                 final List<String>
                                     youHaveAttemptsToEnterRightCode =
                                     SZodiac.of(context)
@@ -123,7 +123,7 @@ class SMSVerificationScreen extends StatelessWidget {
                                     ],
                                   ),
                                 );
-                              }),*/
+                              }),
                               const SizedBox(
                                 height: 24.0,
                               ),
