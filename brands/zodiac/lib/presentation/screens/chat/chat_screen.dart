@@ -50,6 +50,12 @@ class ChatScreen extends StatelessWidget {
         final bool offlineSessionIsActive = context
             .select((ChatCubit cubit) => cubit.state.offlineSessionIsActive);
 
+        final bool isVisibleTextField =
+            context.select((ChatCubit cubit) => cubit.state.isVisibleTextField);
+
+        final bool showTextField =
+            (chatIsActive || offlineSessionIsActive) && isVisibleTextField;
+
         return WillPopScope(
           onWillPop: () async {
             if (chatIsActive) {
@@ -123,7 +129,7 @@ class ChatScreen extends StatelessWidget {
                               }
                             }),
                           ),
-                          if (chatIsActive || offlineSessionIsActive)
+                          if (showTextField)
                             Builder(builder: (context) {
                               final double focusedTextInputHeight =
                                   context.select((ChatCubit cubit) =>
@@ -210,38 +216,29 @@ class ChatScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              Builder(builder: (context) {
-                final bool isVisibleTextField = context.select(
-                    (ChatCubit cubit) => cubit.state.isVisibleTextField);
-                if ((chatIsActive || offlineSessionIsActive) &&
-                    isVisibleTextField) {
-                  return KeyboardSizeProvider(
-                    child: Builder(builder: (context) {
-                      final bool needBarrierColor = context.select(
-                          (ChatCubit cubit) =>
-                              cubit.state.isStretchedTextField);
-                      return SafeArea(
-                        bottom: false,
-                        child: Material(
-                          type: needBarrierColor
-                              ? MaterialType.canvas
-                              : MaterialType.transparency,
-                          color: needBarrierColor
-                              ? Utils.getOverlayColor(context)
-                              : Colors.transparent,
-                          child: Builder(
-                            builder: (context) {
-                              return const ChatTextInputWidget();
-                            },
-                          ),
+              if (showTextField)
+                KeyboardSizeProvider(
+                  child: Builder(builder: (context) {
+                    final bool needBarrierColor = context.select(
+                        (ChatCubit cubit) => cubit.state.isStretchedTextField);
+                    return SafeArea(
+                      bottom: false,
+                      child: Material(
+                        type: needBarrierColor
+                            ? MaterialType.canvas
+                            : MaterialType.transparency,
+                        color: needBarrierColor
+                            ? Utils.getOverlayColor(context)
+                            : Colors.transparent,
+                        child: Builder(
+                          builder: (context) {
+                            return const ChatTextInputWidget();
+                          },
                         ),
-                      );
-                    }),
-                  );
-                } else {
-                  return const SizedBox.shrink();
-                }
-              })
+                      ),
+                    );
+                  }),
+                ),
             ],
           ),
         );
