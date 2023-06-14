@@ -50,6 +50,12 @@ class ChatScreen extends StatelessWidget {
         final bool offlineSessionIsActive = context
             .select((ChatCubit cubit) => cubit.state.offlineSessionIsActive);
 
+        final bool isVisibleTextField =
+            context.select((ChatCubit cubit) => cubit.state.isVisibleTextField);
+
+        final bool showTextField =
+            (chatIsActive || offlineSessionIsActive) && isVisibleTextField;
+
         return WillPopScope(
           onWillPop: () async {
             if (chatIsActive) {
@@ -123,7 +129,7 @@ class ChatScreen extends StatelessWidget {
                               }
                             }),
                           ),
-                          if (chatIsActive || offlineSessionIsActive)
+                          if (showTextField)
                             Builder(builder: (context) {
                               final double focusedTextInputHeight =
                                   context.select((ChatCubit cubit) =>
@@ -210,7 +216,7 @@ class ChatScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              if (chatIsActive || offlineSessionIsActive)
+              if (showTextField)
                 KeyboardSizeProvider(
                   child: Builder(builder: (context) {
                     final bool needBarrierColor = context.select(

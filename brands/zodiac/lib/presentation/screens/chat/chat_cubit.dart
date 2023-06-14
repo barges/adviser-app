@@ -28,6 +28,7 @@ import 'package:zodiac/services/websocket_manager/chat_login_event.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/paid_free_event.dart';
+import 'package:zodiac/services/websocket_manager/room_paused_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
 import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
@@ -107,6 +108,8 @@ class ChatCubit extends Cubit<ChatState> {
   late final StreamSubscription<bool> _keyboardSubscription;
 
   late final StreamSubscription<PaidFreeEvent> _paidFreeChatSubscription;
+
+  late final StreamSubscription<RoomPausedEvent> _roomPausedSubscription;
 
   bool triggerOnTextChanged = true;
   bool _isRefresh = false;
@@ -412,6 +415,16 @@ class ChatCubit extends Cubit<ChatState> {
       }
     });
 
+    _roomPausedSubscription =
+        _webSocketManager.roomPausedStream.listen((event) {
+      if (event.opponentId == clientData.id) {
+        if (event.isPaused) {
+          _chatTimer?.cancel();
+        }
+        emit(state.copyWith(isVisibleTextField: !event.isPaused));
+      }
+    });
+
     getClientInformation();
   }
 
@@ -441,6 +454,7 @@ class ChatCubit extends Cubit<ChatState> {
     _underageConfirmSubscription.cancel();
     _webSocketStateSubscription.cancel();
     _paidFreeChatSubscription.cancel();
+    _roomPausedSubscription.cancel();
     return super.close();
   }
 
