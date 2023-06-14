@@ -28,6 +28,7 @@ import 'package:zodiac/services/websocket_manager/commands.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/paid_free_event.dart';
+import 'package:zodiac/services/websocket_manager/room_paused_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
@@ -86,6 +87,8 @@ class WebSocketManagerImpl implements WebSocketManager {
   final PublishSubject<WebSocketState> _webSocketStateStream = PublishSubject();
 
   final PublishSubject<PaidFreeEvent> _paidFreeStream = PublishSubject();
+
+  final PublishSubject<RoomPausedEvent> _roomPausedStream = PublishSubject();
 
   WebSocketManagerImpl(
     this._zodiacMainCubit,
@@ -279,6 +282,9 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   @override
   Stream<PaidFreeEvent> get paidFreeStream => _paidFreeStream.stream;
+
+  @override
+  Stream<RoomPausedEvent> get roomPausedStream => _roomPausedStream.stream;
 
   @override
   WebSocketState get currentState => _currentState;
@@ -881,11 +887,25 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onRoomPaused(Event event) {
-    ///TODO - Implements onRoomPaused
+    (event.eventData as SocketMessage).let((data) {
+      (data.opponentId as int).let(
+        (id) {
+          _roomPausedStream
+              .add(RoomPausedEvent(opponentId: id, isPaused: true));
+        },
+      );
+    });
   }
 
   void _onRoomUnpaused(Event event) {
-    ///TODO - Implements onRoomUnpaused
+    (event.eventData as SocketMessage).let((data) {
+      (data.opponentId as int).let(
+        (id) {
+          _roomPausedStream
+              .add(RoomPausedEvent(opponentId: id, isPaused: false));
+        },
+      );
+    });
   }
 
   void _onSendUserMessage(Event event) {

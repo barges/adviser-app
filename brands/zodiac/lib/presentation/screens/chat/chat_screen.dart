@@ -210,29 +210,38 @@ class ChatScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              if (chatIsActive || offlineSessionIsActive)
-                KeyboardSizeProvider(
-                  child: Builder(builder: (context) {
-                    final bool needBarrierColor = context.select(
-                        (ChatCubit cubit) => cubit.state.isStretchedTextField);
-                    return SafeArea(
-                      bottom: false,
-                      child: Material(
-                        type: needBarrierColor
-                            ? MaterialType.canvas
-                            : MaterialType.transparency,
-                        color: needBarrierColor
-                            ? Utils.getOverlayColor(context)
-                            : Colors.transparent,
-                        child: Builder(
-                          builder: (context) {
-                            return const ChatTextInputWidget();
-                          },
+              Builder(builder: (context) {
+                final bool isVisibleTextField = context.select(
+                    (ChatCubit cubit) => cubit.state.isVisibleTextField);
+                if ((chatIsActive || offlineSessionIsActive) &&
+                    isVisibleTextField) {
+                  return KeyboardSizeProvider(
+                    child: Builder(builder: (context) {
+                      final bool needBarrierColor = context.select(
+                          (ChatCubit cubit) =>
+                              cubit.state.isStretchedTextField);
+                      return SafeArea(
+                        bottom: false,
+                        child: Material(
+                          type: needBarrierColor
+                              ? MaterialType.canvas
+                              : MaterialType.transparency,
+                          color: needBarrierColor
+                              ? Utils.getOverlayColor(context)
+                              : Colors.transparent,
+                          child: Builder(
+                            builder: (context) {
+                              return const ChatTextInputWidget();
+                            },
+                          ),
                         ),
-                      ),
-                    );
-                  }),
-                ),
+                      );
+                    }),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              })
             ],
           ),
         );
