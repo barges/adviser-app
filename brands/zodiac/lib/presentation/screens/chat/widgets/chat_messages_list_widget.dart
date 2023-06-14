@@ -89,7 +89,7 @@ class ChatMessagesListWidget extends StatelessWidget {
                             ),
                     );
                   }
-                  if ((messageModel.isOutgoing && messageModel.isDelivered)) {
+                  if (messageModel.isOutgoing && messageModel.isDelivered) {
                     return ChatMessageWidget(
                       chatMessageModel: messageModel,
                     );
@@ -100,16 +100,11 @@ class ChatMessagesListWidget extends StatelessWidget {
                       chatMessageModel: messageModel,
                     );
                   } else {
-                    return Stack(
-                      children: [
-                        messageModel.supportsReaction == true
-                            ? ReactionFeatureWrapper(
-                                chatMessageModel: messageModel)
-                            : ChatMessageWidget(
-                                chatMessageModel: messageModel,
-                              ),
-                      ],
-                    );
+                    return messageModel.supportsReaction == true
+                        ? ReactionFeatureWrapper(chatMessageModel: messageModel)
+                        : ChatMessageWidget(
+                            chatMessageModel: messageModel,
+                          );
                   }
                 }
               },
