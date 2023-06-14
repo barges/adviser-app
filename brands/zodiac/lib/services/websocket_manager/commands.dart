@@ -104,4 +104,8 @@ class Commands {
   static String get timerCorrect => 'timerCorrect';
 
   static String get closeOfflineChat => 'closeOfflineChat';
+
+  static String get sendMessageReaction => 'sendMessageReaction';
+
+  static String get messageReactionCreated => 'messageReactionCreated';
 }

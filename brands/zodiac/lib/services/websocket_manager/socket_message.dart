@@ -188,4 +188,20 @@ class SocketMessage {
 
   static SocketMessage closeOfflineChat() =>
       SocketMessage(action: Commands.closeOfflineChat);
+
+  static SocketMessage sendMessageReaction({
+    required String mid,
+    required String message,
+    required String roomId,
+    required int opponentId,
+  }) =>
+      SocketMessage(
+        action: Commands.sendMessageReaction,
+        params: {
+          "mid": mid,
+          "message": message,
+          "room_id": roomId,
+          "opponent_id": opponentId,
+        },
+      );
 }
