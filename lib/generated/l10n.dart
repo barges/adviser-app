@@ -890,10 +890,10 @@ class S {
     );
   }
 
-  /// `The month is not over yet`
+  /// `No sessions were completed this month`
   String get youHaveNotYetCompletedThisMonthsSessions {
     return Intl.message(
-      'The month is not over yet',
+      'No sessions were completed this month',
       name: 'youHaveNotYetCompletedThisMonthsSessions',
       desc: '',
       args: [],
