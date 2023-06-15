@@ -83,7 +83,7 @@
   "addNote": "Add Note",
   "title": "Title",
   "youHaveNotCompletedAnySessionsYet": "You have not completed any sessions yet",
-  "youHaveNotYetCompletedThisMonthsSessions": "The month is not over yet",
+  "youHaveNotYetCompletedThisMonthsSessions": "No sessions were completed this month",
   "avgDailyEarnings": "Avg Daily Earnings",
   "performanceOverviewAnalytics": "Performance Overview Analytics",
   "editNote": "Edit Note",

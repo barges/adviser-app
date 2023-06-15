@@ -362,7 +362,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "You have not completed any sessions yet"),
         "youHaveNotYetCompletedThisMonthsSessions":
-            MessageLookupByLibrary.simpleMessage("The month is not over yet"),
+            MessageLookupByLibrary.simpleMessage(
+                "No sessions were completed this month"),
         "youHaveXdaystoReadItBeforeYourAccountWillGetBlocked": m5,
         "youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse":
             MessageLookupByLibrary.simpleMessage(
