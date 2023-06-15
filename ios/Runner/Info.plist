@@ -58,11 +58,11 @@
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>NSCameraUsageDescription</key>
-		<string>This app requires access to the camera so you can take photos and upload them to the app.</string>
+		<string>Access to the Camera allows you to take photos for your profile and share photos in the chat with customers.</string>
 		<key>NSMicrophoneUsageDescription</key>
-		<string>This app requires access to the microphone so you can record audio messages.</string>
+		<string>Access to the Microphone allows you to record Audio messages.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>This app requires access to the gallery so you can share photos in the app.</string>
+		<string>Allow Photo access to add photos to your Gallery and send photos in the chat.</string>
 		<key>NSUserTrackingUsageDescription</key>
 		<string>Allowing this helps us identify which marketing channel you came through, and will not be used for any other purpose. You can change this in the Settings app.</string>
 		<key>UIBackgroundModes</key>
