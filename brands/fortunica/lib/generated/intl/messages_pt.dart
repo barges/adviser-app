@@ -85,6 +85,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancelFortunica": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "cancelSendingFortunica":
             MessageLookupByLibrary.simpleMessage("Cancelar envio"),
+        "cancelledFortunica": MessageLookupByLibrary.simpleMessage("Cancelada"),
         "changeCoverPictureFortunica":
             MessageLookupByLibrary.simpleMessage("Alterar foto da capa"),
         "changePasswordFortunica":
@@ -132,6 +133,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Deseja devolver esta pergunta?"),
         "doneFortunica": MessageLookupByLibrary.simpleMessage("Feito"),
         "earnedFortunica": MessageLookupByLibrary.simpleMessage("Não recebido"),
+        "earnedThisMonthFortunica":
+            MessageLookupByLibrary.simpleMessage("Total ganho este mês:"),
         "editNoteFortunica":
             MessageLookupByLibrary.simpleMessage("Editar nota"),
         "editProfileFortunica":
@@ -392,7 +395,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Você ainda não concluiu nenhuma sessão"),
         "youHaveNotYetCompletedThisMonthsSessionsFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Você não possui ganhos neste mês."),
+                "Nenhuma sessão concluída este mê"),
         "youHaveXdaystoReadItBeforeYourAccountWillGetBlockedFortunica": m5,
         "youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElseFortunica":
             MessageLookupByLibrary.simpleMessage(

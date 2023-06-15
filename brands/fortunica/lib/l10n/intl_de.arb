@@ -79,7 +79,7 @@
   "addNoteFortunica": "Notiz hinzufügen",
   "titleFortunica": "Titel",
   "youHaveNotCompletedAnySessionsYetFortunica": "Du hast noch keine Sessions abgeschlossen",
-  "youHaveNotYetCompletedThisMonthsSessionsFortunica": "Der Monat ist noch nicht abgeschlossen",
+  "youHaveNotYetCompletedThisMonthsSessionsFortunica": "In diesem Monat wurden keine Sessions abgeschlossen",
   "avgDailyEarningsFortunica": "Durchschnittliches Tageseinkommen",
   "performanceOverviewAnalyticsFortunica": "Leistungsstatistik",
   "editNoteFortunica": "Notiz bearbeiten",
@@ -186,7 +186,7 @@
   "recordingIsNotPossibleAllocateSpaceOnTheDeviceFortunica": "Aufzeichnung ist nicht möglich, Speicherplatz auf dem Gerät freigeben",
   "notSpecifiedFortunica": "Nicht angegeben",
   "newPasswordFortunica": "Neues Passwort",
-  "privateQuestionFortunica": "Privat Frage",
+  "privateQuestionFortunica": "Privat-Frage",
   "publicQuestionFortunica": "Live-Frage",
   "soulmateReadingSessionsFortunica": "Seelenpartner Reading",
   "loveCrushReadingSessionsFortunica": "Herzenspartner-Prognose",
@@ -194,5 +194,7 @@
   "reading360SessionsFortunica": "360° Rundumblick",
   "ritualSessionsFortunica": "Blockadenlösung",
   "astrologySessionsFortunica": "Astrologie",
-  "tarotSessionsFortunica": "Kartenlegen"
+  "tarotSessionsFortunica": "Kartenlegen",
+  "cancelledFortunica": "Storniert",
+  "earnedThisMonthFortunica": "Aktueller Monatsverdienst:"
 }

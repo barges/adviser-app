@@ -1,3 +1,5 @@
+import 'package:fortunica/presentation/common_widgets/statistics/empty_statistics_widget.dart';
+import 'package:fortunica/presentation/common_widgets/statistics/statistics_widget.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/main_state.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +14,7 @@ import 'package:fortunica/infrastructure/di/inject_config.dart';
 import 'package:fortunica/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
 import 'package:fortunica/presentation/common_widgets/no_connection_widget.dart';
 import 'package:fortunica/presentation/screens/balance_and_transactions/balance_and_transactions_cubit.dart';
-import 'package:fortunica/presentation/screens/balance_and_transactions/widgets/empty_statistics_widget.dart';
-import 'package:fortunica/presentation/screens/balance_and_transactions/widgets/statistics_widget.dart';
+
 class BalanceAndTransactionsScreen extends StatelessWidget {
   const BalanceAndTransactionsScreen({Key? key}) : super(key: key);
 
@@ -62,7 +63,8 @@ class BalanceAndTransactionsScreen extends StatelessWidget {
                       : null,
                   slivers: [
                     ScrollableAppBar(
-                      title: SFortunica.of(context).balanceTransactionsFortunica,
+                      title:
+                          SFortunica.of(context).balanceTransactionsFortunica,
                     ),
                     Builder(builder: (context) {
                       final bool isOnline = context.select((MainCubit cubit) =>
@@ -75,6 +77,8 @@ class BalanceAndTransactionsScreen extends StatelessWidget {
                                   months: months,
                                   currentMonthIndex: currentMonthIndex,
                                   statistics: statistics,
+                                  setIndex: balanceAndTransactionsCubit
+                                      .updateCurrentMonthIndex,
                                 )
                               : const EmptyStatisticsWidget();
                         } else {
