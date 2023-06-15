@@ -3,6 +3,8 @@ import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart'
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/services/audio/audio_player_service.dart';
+import 'package:shared_advisor_interface/services/audio/audio_recorder_service.dart';
 import 'package:shared_advisor_interface/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/services/fresh_chat_service.dart';
@@ -38,4 +40,12 @@ abstract class ServicesModule {
 
   @singleton
   SoundModeService get silentModeService => globalGetIt.get<SoundModeService>();
+
+  @injectable
+  AudioPlayerService get audioPlayerService =>
+      globalGetIt.get<AudioPlayerService>();
+
+  @injectable
+  AudioRecorderService get audioRecorderService =>
+      globalGetIt.get<AudioRecorderService>();
 }

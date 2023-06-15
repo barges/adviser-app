@@ -270,11 +270,10 @@ class ChatTextInputWidget extends StatelessWidget {
                                   (ChatCubit cubit) =>
                                       cubit.state.isSendButtonEnabled);
 
-                              if (!(!isSendButtonEnabled &&
-                                  chatCubit.enterRoomData
+                              if (chatCubit.enterRoomData
                                           ?.isAvailableAudioMessage ==
                                       true &&
-                                  !textInputFocused)) {
+                                  !textInputFocused) {
                                 return Padding(
                                   padding: const EdgeInsets.only(left: 12.0),
                                   child: AppIconGradientButton(

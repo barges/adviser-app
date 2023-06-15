@@ -9,6 +9,7 @@ import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_cubit.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/messages/audio_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/coupon_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/end_chat_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/image_message_widget.dart';
@@ -42,9 +43,10 @@ class ChatMessageWidget extends StatelessWidget {
         zodiacGetIt.get<WebSocketManager>(),
         zodiacGetIt.get<ZodiacMainCubit>(),
         chatMessageModel.type == ChatMessageType.image,
+        chatMessageModel.type == ChatMessageType.audio,
         zodiacGetIt.get<ZodiacChatRepository>(),
         chatCubit.deleteMessage,
-        chatCubit.updateImageIsDelivered,
+        chatCubit.updateMediaIsDelivered,
         context,
       ),
       child: Builder(builder: (context) {
@@ -141,7 +143,9 @@ class ChatMessageWidget extends StatelessWidget {
                     case ChatMessageType.productList:
                       return Text(chatMessageModel.type.name);
                     case ChatMessageType.audio:
-                      return Text(chatMessageModel.type.name);
+                      return AudioMessageWidget(
+                          chatMessageModel: chatMessageModel,
+                          hideLoader: showResendWidget);
                   }
                 }),
                 if (showResendWidget && chatMessageModel.isOutgoing)

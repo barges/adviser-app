@@ -7,7 +7,11 @@ import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
+import 'package:zodiac/data/network/requests/base_audio_message_request.dart';
+import 'package:zodiac/data/network/requests/create_audio_message_request.dart';
+import 'package:zodiac/data/network/responses/create_audio_message_response.dart';
 import 'package:zodiac/data/network/responses/send_image_response.dart';
+import 'package:zodiac/data/network/responses/upload_audio_message_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_chat_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
@@ -23,15 +27,17 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
   final WebSocketManager _webSocketManager;
   final ZodiacChatRepository _chatRepository;
   final bool isImage;
+  final bool isAudio;
   final ZodiacMainCubit _zodiacMainCubit;
   final ValueSetter<String?> deleteMessage;
-  final ValueSetter<CreatedDeliveredEvent> updateImageIsDelivered;
+  final ValueSetter<CreatedDeliveredEvent> updateMediaIsDelivered;
 
   StreamSubscription<CreatedDeliveredEvent>? _messageDeliveredSubscription;
 
   Timer? _resendTimer;
 
   static List<String> sendingImagesMids = [];
+  static List<String> sendingAudiosMids = [];
 
   int _resendCount = 0;
   ChatMessageCubit(
@@ -41,13 +47,14 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
     this._webSocketManager,
     this._zodiacMainCubit,
     this.isImage,
+    this.isAudio,
     this._chatRepository,
     this.deleteMessage,
-    this.updateImageIsDelivered,
+    this.updateMediaIsDelivered,
     BuildContext context,
   ) : super(const ChatMessageState()) {
     if (_chatMessageModel.isOutgoing && !_chatMessageModel.isDelivered) {
-      if (!isImage) {
+      if (!isImage && !isAudio) {
         _setTimer();
         _messageDeliveredSubscription =
             _webSocketManager.updateMessageIdStream.listen((event) {
@@ -61,6 +68,11 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
       }
       if (isImage && !sendingImagesMids.contains(_chatMessageModel.mid)) {
         _resendImage(context);
+      }
+
+      if (isAudio && !sendingAudiosMids.contains(_chatMessageModel.mid)) {
+        _resendAudio(context);
+        emit(state.copyWith(showResendWidget: false));
       }
     }
   }
@@ -77,6 +89,8 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
 
     if (isImage) {
       _resendImage(context);
+    } else if (isAudio) {
+      _resendAudio(context);
     } else {
       _resendMessage();
       _resendCount = 0;
@@ -98,7 +112,7 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
         );
 
         if (response.status == true) {
-          updateImageIsDelivered(CreatedDeliveredEvent(
+          updateMediaIsDelivered(CreatedDeliveredEvent(
               mid: _chatMessageModel.mid!, clientId: _opponentId ?? 0));
         } else {
           if (response.errorCode == 3) {
@@ -114,6 +128,48 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
         emit(state.copyWith(showResendWidget: true));
       } finally {
         sendingImagesMids.remove(_chatMessageModel.mid);
+      }
+    }
+  }
+
+  Future<void> _resendAudio(BuildContext context) async {
+    if (_chatMessageModel.mid != null &&
+        _chatMessageModel.path != null &&
+        _roomId != null) {
+      try {
+        sendingAudiosMids.add(_chatMessageModel.mid!);
+
+        final CreateAudioMessageResponse createAudioMessageResponse =
+            await _chatRepository.createAudioMessage(
+                request: CreateAudioMessageRequest(
+                    roomId: _roomId!, length: _chatMessageModel.length!));
+
+        if (createAudioMessageResponse.status == true &&
+            createAudioMessageResponse.result != null &&
+            createAudioMessageResponse.result!.entityId != null) {
+          final UploadAudioMessageResponse uploadAudioMessageResponse =
+              await _chatRepository.uploadAudioMessage(
+                  request: BaseAudioMessageRequest(),
+                  entityId: createAudioMessageResponse.result!.entityId!,
+                  audioFile: File(_chatMessageModel.path!));
+
+          if (uploadAudioMessageResponse.status == true &&
+              uploadAudioMessageResponse.result?.path != null) {
+            updateMediaIsDelivered(CreatedDeliveredEvent(
+                mid: _chatMessageModel.mid!,
+                clientId: _opponentId ?? 0,
+                path: uploadAudioMessageResponse.result?.path));
+          } else {
+            emit(state.copyWith(showResendWidget: true));
+          }
+        } else {
+          emit(state.copyWith(showResendWidget: true));
+        }
+      } catch (e) {
+        logger.d(e);
+        emit(state.copyWith(showResendWidget: true));
+      } finally {
+        sendingAudiosMids.remove(_chatMessageModel.mid);
       }
     }
   }

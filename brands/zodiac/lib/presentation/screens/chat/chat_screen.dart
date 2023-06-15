@@ -193,7 +193,7 @@ class ChatScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              if (!(chatIsActive || offlineSessionIsActive))
+              if (chatIsActive || offlineSessionIsActive)
                 KeyboardSizeProvider(
                   child: Builder(builder: (context) {
                     final bool needBarrierColor = context.select(

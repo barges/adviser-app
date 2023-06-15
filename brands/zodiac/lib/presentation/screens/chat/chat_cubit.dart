@@ -67,8 +67,8 @@ class ChatCubit extends BaseCubit<ChatState> {
   final ZodiacMainCubit _zodiacMainCubit;
   late final UnderageConfirmDialog _underageConfirmDialog;
 
-  final AudioPlayerService _audioPlayer = AudioPlayerServiceImpl();
-  final AudioRecorderService _audioRecorder = AudioRecorderServiceImp();
+  final AudioPlayerService _audioPlayer;
+  final AudioRecorderService _audioRecorder;
   final CheckPermissionService _checkPermissionService;
   final _uuid = const Uuid();
   late final ValueGetter<Future<bool?>> _deleteAudioMessageAlert;
@@ -109,6 +109,7 @@ class ChatCubit extends BaseCubit<ChatState> {
   int? _chatId;
 
   int? _recordAudioDuration;
+  File? _sentRecordedAudio;
 
   ChatCubit(
     @factoryParam ChatCubitParams chatCubitParams,
@@ -117,6 +118,8 @@ class ChatCubit extends BaseCubit<ChatState> {
     this._userRepository,
     this._zodiacMainCubit,
     this._checkPermissionService,
+    this._audioPlayer,
+    this._audioRecorder,
   ) : super(const ChatState()) {
     _fromStartingChat = chatCubitParams.fromStartingChat;
     clientData = chatCubitParams.clientData;
@@ -199,7 +202,11 @@ class ChatCubit extends BaseCubit<ChatState> {
             chatIsActive: event.isActive, shouldShowInput: event.isActive));
         if (!event.isActive) {
           _chatTimer?.cancel();
-          emit(state.copyWith(chatTimerValue: null));
+          _cancelOrDeleteRecordedAudio();
+          emit(state.copyWith(
+            chatTimerValue: null,
+            recordedAudio: null,
+          ));
         }
         if (event.isActive) {
           final String? helloMessage = enterRoomData?.expertData?.helloMessage;
@@ -425,10 +432,7 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   @override
   Future<void> close() async {
-    if (audioRecorder.isRecording) {
-      await cancelRecordingAudio();
-    }
-    _deleteRecordedAudioFile(state.recordedAudio);
+    _cancelOrDeleteRecordedAudio();
     textInputEditingController.dispose();
     textInputScrollController.dispose();
     messagesScrollController.dispose();
@@ -563,8 +567,6 @@ class ChatCubit extends BaseCubit<ChatState> {
       return;
     }
 
-    //_tryStartAnswerSend();
-
     audioPlayer.stop();
 
     // ignore: use_build_context_synchronously
@@ -676,6 +678,15 @@ class ChatCubit extends BaseCubit<ChatState> {
     return recordingAudio.sizeInMb < AppConstants.maxRecordLengthInMb;
   }
 
+  Future<void> _cancelOrDeleteRecordedAudio() async {
+    if (audioRecorder.isRecording) {
+      await cancelRecordingAudio();
+    } else {
+      await _deleteRecordedAudioFile(state.recordedAudio ?? _sentRecordedAudio);
+      _sentRecordedAudio = null;
+    }
+  }
+
   Future<void> _deleteRecordedAudioFile(File? recordedAudio) async {
     if (recordedAudio != null && await recordedAudio.exists()) {
       recordedAudio.deleteSync();
@@ -705,15 +716,13 @@ class ChatCubit extends BaseCubit<ChatState> {
         );
 
     if (shouldSend == true) {
-      String mid = _generateMessageId();
-
       ChatMessageModel message = ChatMessageModel(
         type: ChatMessageType.image,
         isOutgoing: true,
         utc: DateTime.now().toUtc(),
         fromAdvisor: true,
         mainImage: image.path,
-        mid: mid,
+        mid: _generateMessageId(),
         isDelivered: false,
       );
 
@@ -722,6 +731,31 @@ class ChatCubit extends BaseCubit<ChatState> {
 
       logger.d(message);
     }
+  }
+
+  Future<void> sendAudio() async {
+    await audioPlayer.stop();
+
+    ChatMessageModel message = ChatMessageModel(
+      type: ChatMessageType.audio,
+      isOutgoing: true,
+      utc: DateTime.now().toUtc(),
+      fromAdvisor: true,
+      length: _recordAudioDuration,
+      path: state.recordedAudio!.path,
+      mid: _generateMessageId(),
+      isDelivered: false,
+    );
+
+    _messages.insert(0, message);
+    _updateMessages();
+
+    _sentRecordedAudio = state.recordedAudio;
+    emit(state.copyWith(
+      recordedAudio: null,
+    ));
+
+    logger.d(message);
   }
 
   void closeOfflineSessionsMessage() {
@@ -756,14 +790,23 @@ class ChatCubit extends BaseCubit<ChatState> {
   void deleteMessage(String? mid) {
     _messages.removeWhere((element) => element.mid == mid);
     emit(state.copyWith(messages: List.of(_messages)));
+    _deleteSentRecordedAudio();
   }
 
   void closeErrorMessage() {
     _zodiacMainCubit.clearErrorMessage();
   }
 
-  void updateImageIsDelivered(CreatedDeliveredEvent event) {
+  void updateMediaIsDelivered(CreatedDeliveredEvent event) {
     _updateMessageIsDelivered(event);
+    _deleteSentRecordedAudio();
+  }
+
+  void _deleteSentRecordedAudio() {
+    if (_sentRecordedAudio != null) {
+      _deleteRecordedAudioFile(_sentRecordedAudio);
+      _sentRecordedAudio = null;
+    }
   }
 
   void _updateMessageIsDelivered(CreatedDeliveredEvent event) {
@@ -775,6 +818,7 @@ class ChatCubit extends BaseCubit<ChatState> {
         final ChatMessageModel model = _messages[index];
         _messages[index] = model.copyWith(
           isDelivered: true,
+          path: event.path,
         );
         _updateMessages();
       }

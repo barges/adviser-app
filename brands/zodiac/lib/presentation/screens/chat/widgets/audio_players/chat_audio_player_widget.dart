@@ -3,28 +3,32 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/services/audio/audio_player_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortunica/data/models/chats/attachment.dart';
-import 'package:fortunica/presentation/screens/chat/chat_cubit.dart';
-import 'package:fortunica/presentation/screens/chat/widgets/audio_players/chat_audio_player_cubit.dart';
+import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/audio_players/chat_audio_player_cubit.dart';
+
 class ChatAudioPlayerWidget extends StatelessWidget {
-  final bool isQuestion;
-  final Attachment attachment;
+  final bool isOutgoing;
+  final String? url;
   final AudioPlayerService player;
+  final int duration;
 
   const ChatAudioPlayerWidget({
     super.key,
-    required this.isQuestion,
-    required this.attachment,
+    required this.isOutgoing,
+    required this.url,
     required this.player,
+    required this.duration,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final ChatCubit chatCubit = context.read<ChatCubit>();
     return BlocProvider(
+      key: url != null ? Key(url!) : null,
       create: (_) => ChatAudioPlayerCubit(
         player,
-        attachment.url,
+        url,
       ),
       child: SizedBox(
         height: 48.0,
@@ -36,16 +40,12 @@ class ChatAudioPlayerWidget extends StatelessWidget {
               final bool isPlaying = context.select(
                   (ChatAudioPlayerCubit cubit) => cubit.state.isPlaying);
 
-              final Uri itemUri = Uri.parse(attachment.url ?? '');
+              final Uri itemUri = Uri.parse(url ?? '');
 
               return _PlayPauseBtn(
                 isPlaying: isPlaying,
-                color: isQuestion
-                    ? Theme.of(context).primaryColor
-                    : Theme.of(context).backgroundColor,
-                iconColor: isQuestion
-                    ? Theme.of(context).backgroundColor
-                    : Theme.of(context).primaryColor,
+                color: isOutgoing ? theme.canvasColor : theme.primaryColor,
+                iconColor: isOutgoing ? theme.primaryColor : theme.canvasColor,
                 onTapPlayPause: () {
                   if (isOnline) {
                     if (chatCubit.audioRecorder.isRecording) {
@@ -73,16 +73,13 @@ class ChatAudioPlayerWidget extends StatelessWidget {
               return Expanded(
                 child: _PlayProgress(
                   player: player,
-                  url: attachment.url ?? '',
-                  duration: Duration(seconds: attachment.meta?.duration ?? 0),
+                  url: url ?? '',
+                  duration: Duration(seconds: duration),
                   position: position,
-                  textColor: isQuestion
-                      ? Theme.of(context).primaryColor
-                      : Theme.of(context).backgroundColor,
-                  backgroundColor: Theme.of(context).primaryColorLight,
-                  color: isQuestion
-                      ? Theme.of(context).primaryColor
-                      : Theme.of(context).backgroundColor,
+                  textColor:
+                      isOutgoing ? theme.canvasColor : theme.primaryColor,
+                  backgroundColor: theme.primaryColorLight,
+                  color: isOutgoing ? theme.canvasColor : theme.primaryColor,
                   isNotStopped: isNotStopped,
                 ),
               );
@@ -157,6 +154,7 @@ class _PlayProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       children: [
         Row(
@@ -167,17 +165,17 @@ class _PlayProgress extends StatelessWidget {
             if (isNotStopped)
               Text(
                 position.toString().substring(2, 7),
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: textColor,
-                      fontSize: 12.0,
-                    ),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: textColor,
+                  fontSize: 12.0,
+                ),
               ),
             Text(
               duration.toString().substring(2, 7),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: textColor,
-                    fontSize: 12.0,
-                  ),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: textColor,
+                fontSize: 12.0,
+              ),
             ),
           ],
         ),
