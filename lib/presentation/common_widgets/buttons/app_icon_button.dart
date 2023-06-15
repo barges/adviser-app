@@ -6,6 +6,7 @@ class AppIconButton extends StatelessWidget {
   final String icon;
   final VoidCallback? onTap;
   final bool needColor;
+  final Color? color;
 
   ///TODO: need change
 
@@ -13,6 +14,7 @@ class AppIconButton extends StatelessWidget {
     Key? key,
     required this.icon,
     this.onTap,
+    this.color,
     this.needColor = true,
   }) : super(key: key);
 
@@ -30,7 +32,7 @@ class AppIconButton extends StatelessWidget {
         child: Center(
             child: SvgPicture.asset(
           icon,
-          color: needColor ? Theme.of(context).primaryColor : null,
+          color: color ?? (needColor ? Theme.of(context).primaryColor : null),
           height: AppConstants.iconSize,
           width: AppConstants.iconSize,
         )),
