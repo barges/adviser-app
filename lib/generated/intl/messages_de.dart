@@ -76,6 +76,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Abbrechen"),
         "cancelSending":
             MessageLookupByLibrary.simpleMessage("Senden abbrechen"),
+        "cancelled": MessageLookupByLibrary.simpleMessage("Storniert"),
         "changeCoverPicture":
             MessageLookupByLibrary.simpleMessage("Hintergrundbild ändern"),
         "changePassword":
@@ -119,6 +120,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Möchtest du diese Frage zurückschicken?"),
         "done": MessageLookupByLibrary.simpleMessage("Fertig"),
         "earned": MessageLookupByLibrary.simpleMessage("Verdient"),
+        "earnedThisMonth":
+            MessageLookupByLibrary.simpleMessage("Aktueller Monatsverdienst:"),
         "editNote": MessageLookupByLibrary.simpleMessage("Notiz bearbeiten"),
         "editProfile":
             MessageLookupByLibrary.simpleMessage("Profil bearbeiten"),
@@ -233,7 +236,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "previewAccount":
             MessageLookupByLibrary.simpleMessage("Profilvorschau"),
         "private": MessageLookupByLibrary.simpleMessage("Privat"),
-        "privateQuestion": MessageLookupByLibrary.simpleMessage("Privat Frage"),
+        "privateQuestion": MessageLookupByLibrary.simpleMessage("Privat-Frage"),
         "privateQuestions":
             MessageLookupByLibrary.simpleMessage("Private Fragen"),
         "profile": MessageLookupByLibrary.simpleMessage("Profil"),

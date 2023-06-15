@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/data/models/chats/rirual_card_info.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
+import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
@@ -15,6 +16,9 @@ class RitualInfoCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    logger.d(ritualCardInfo?.birthdate);
+
     final ThemeData theme = Theme.of(context);
     final isLeftImage = ritualCardInfo?.leftImage != null;
     final isRightImage = ritualCardInfo?.rightImage != null;

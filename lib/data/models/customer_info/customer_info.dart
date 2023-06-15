@@ -15,7 +15,7 @@ class CustomerInfo with _$CustomerInfo {
     QuestionsSubscription? questionsSubscription,
     @JsonKey(name: '_id') String? lId,
     String? country,
-    String? birthdate,
+    DateTime? birthdate,
     String? firstName,
     @JsonKey(unknownEnumValue: Gender.unknown)
     Gender? gender,

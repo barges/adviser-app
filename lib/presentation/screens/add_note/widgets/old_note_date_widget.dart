@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_cubit.dart';
 import 'package:shared_advisor_interface/extensions.dart';
@@ -16,7 +17,10 @@ class OldNoteDateWidget extends StatelessWidget {
         vertical: 12.0,
       ),
       child: Text(
-        addNoteCubit.arguments.updatedAt?.parseDateTimePattern10 ?? '',
+        addNoteCubit.arguments.updatedAt != null
+            ? DateFormat(datePattern10)
+                .format(addNoteCubit.arguments.updatedAt!.toLocal())
+            : '',
         style: Theme.of(context).textTheme.displaySmall?.copyWith(
               fontWeight: FontWeight.w400,
               color: Theme.of(context).shadowColor,

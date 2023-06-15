@@ -2180,6 +2180,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Canceled`
+  String get cancelled {
+    return Intl.message(
+      'Canceled',
+      name: 'cancelled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Earned this month:`
+  String get earnedThisMonth {
+    return Intl.message(
+      'Earned this month:',
+      name: 'earnedThisMonth',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

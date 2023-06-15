@@ -68,9 +68,7 @@ class _ReviewCustomerInfoWidget extends StatelessWidget {
                     .bodyMedium
                     ?.copyWith(fontWeight: FontWeight.w600)),
             Text(
-              DateFormat(dateFormat)
-                  .format(DateTime.now())
-                  .parseDateTimePattern4,
+              DateFormat(datePattern4).format(DateTime.now()),
               style: Theme.of(context)
                   .textTheme
                   .bodySmall

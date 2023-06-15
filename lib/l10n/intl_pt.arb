@@ -211,5 +211,7 @@
   "reading360Sessions": "Leitura 360°",
   "ritualSessions": "Sessão de Ritual",
   "astrologySessions": "Consulta Astrológica",
-  "tarotSessions": "Leitura de Cartas Especial"
+  "tarotSessions": "Leitura de Cartas Especial",
+  "cancelled": "Cancelada",
+  "earnedThisMonth": "Total ganho este mês:"
 }

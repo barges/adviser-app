@@ -3,7 +3,7 @@ description: Shared advisor interface
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 3.0.4+48
+version: 3.0.4+54
 
 environment:
   sdk: '>=3.0.2 <4.0.0'  
@@ -73,6 +73,7 @@ dependencies:
   flutter_sound: ^9.2.13
   audio_session: ^0.1.13
   flutter_media_metadata: ^1.0.0+1
+  skeleton_loader: ^2.0.0+4
 
   cupertino_icons: ^1.0.5
   percent_indicator: ^4.2.2
