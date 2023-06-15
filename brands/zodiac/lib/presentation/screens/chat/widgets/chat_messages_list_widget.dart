@@ -83,6 +83,7 @@ class ChatMessagesListWidget extends StatelessWidget {
                       },
                       child: messageModel.supportsReaction == true
                           ? ReactionFeatureWrapper(
+                              key: ValueKey(messageModel.mid),
                               chatMessageModel: messageModel)
                           : ChatMessageWidget(
                               chatMessageModel: messageModel,
@@ -101,7 +102,9 @@ class ChatMessagesListWidget extends StatelessWidget {
                     );
                   } else {
                     return messageModel.supportsReaction == true
-                        ? ReactionFeatureWrapper(chatMessageModel: messageModel)
+                        ? ReactionFeatureWrapper(
+                            key: ValueKey(messageModel.mid),
+                            chatMessageModel: messageModel)
                         : ChatMessageWidget(
                             chatMessageModel: messageModel,
                           );

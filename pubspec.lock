@@ -933,6 +933,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.9.1"
+  focused_menu:
+    dependency: transitive
+    description:
+      name: focused_menu
+      sha256: bd06bf580a8573e100571a1d9bc27c2200a38681de30eeda96246df1eac06749
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
   fortunica:
     dependency: "direct main"
     description:
