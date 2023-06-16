@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:zodiac/data/models/enums/recaptcha_custom_action.dart';
 import 'package:zodiac/data/models/settings/phone.dart';
@@ -27,16 +30,21 @@ const verificationCodeAttemptsPer24HoursMax = 3;
 class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   Phone _phone;
   Phone? _phoneVerified;
+  final MainCubit _globalMainCubit;
   final ZodiacMainCubit _zodiacMainCubit;
   final ZodiacUserRepository _zodiacUserRepository;
   final ConnectivityService _connectivityService;
   final FocusNode phoneNumberInputFocus = FocusNode();
+  final FocusNode phoneCodeSearchFocus = FocusNode();
   final TextEditingController phoneNumberInputController =
       TextEditingController();
   final List<PhoneCountryCode> _phoneCountryCodes = [];
 
+  StreamSubscription<bool>? _appLifecycleSubscription;
+
   PhoneNumberCubit(
     this._phone,
+    this._globalMainCubit,
     this._zodiacMainCubit,
     this._zodiacUserRepository,
     this._connectivityService,
@@ -48,6 +56,7 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   Future<void> close() async {
     phoneNumberInputFocus.dispose();
     phoneNumberInputController.dispose();
+    _appLifecycleSubscription?.cancel();
     return super.close();
   }
 
@@ -90,6 +99,27 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
         phone: _phone,
       ));
     });
+
+    if (Platform.isAndroid) {
+      _appLifecycleSubscription =
+          _globalMainCubit.changeAppLifecycleStream.listen(
+        (value) {
+          if (value) {
+            if (state.isPhoneCodeSearchVisible) {
+              phoneCodeSearchFocus.requestFocus();
+            } else {
+              setTextInputFocus(true);
+            }
+          } else {
+            if (state.isPhoneCodeSearchVisible) {
+              phoneCodeSearchFocus.unfocus();
+            } else {
+              setTextInputFocus(false);
+            }
+          }
+        },
+      );
+    }
   }
 
   Future<void> _loadCountryPhoneCodesJson() async {

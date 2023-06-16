@@ -9,10 +9,12 @@ import 'package:zodiac/presentation/screens/phone_number/phone_number_cubit.dart
 class PhoneCodeSearchAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   final ValueChanged<String> onChanged;
+  final FocusNode? focusNode;
 
   const PhoneCodeSearchAppBar({
     Key? key,
     required this.onChanged,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -41,6 +43,7 @@ class PhoneCodeSearchAppBar extends StatelessWidget
         alignment: Alignment.bottomLeft,
         child: SearchWidget(
           autofocus: true,
+          focusNode: focusNode,
           isBorder: false,
           onChanged: onChanged,
         ),

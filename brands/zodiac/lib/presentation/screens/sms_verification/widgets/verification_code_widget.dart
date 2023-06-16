@@ -59,10 +59,6 @@ class VerificationCodeWidget extends StatelessWidget {
               controller:
                   smsVerificationCubitCubit.verificationCodeInputController,
               keyboardType: TextInputType.number,
-              //onCompleted: onCompleted,
-              /*onTap: () {
-                   print("Pressed");
-                 },*/
               onChanged: (text) =>
                   smsVerificationCubitCubit.updateVerifyButtonEnabled(
                       text.length == verificationCodeInputFieldCount),

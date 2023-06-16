@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:zodiac/data/models/settings/phone.dart';
@@ -32,6 +33,7 @@ class PhoneNumberScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => PhoneNumberCubit(
         phone ?? const Phone(),
+        zodiacGetIt.get<MainCubit>(),
         zodiacGetIt.get<ZodiacMainCubit>(),
         zodiacGetIt.get<ZodiacUserRepository>(),
         zodiacGetIt.get<ConnectivityService>(),

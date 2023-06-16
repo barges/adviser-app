@@ -15,7 +15,9 @@ class PhoneCodeSearchWidget extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
       appBar: PhoneCodeSearchAppBar(
-          onChanged: (text) => phoneNumberCubit.searchPhoneCountryCodes(text)),
+        onChanged: (text) => phoneNumberCubit.searchPhoneCountryCodes(text),
+        focusNode: phoneNumberCubit.phoneCodeSearchFocus,
+      ),
       body: SafeArea(
         child: Builder(builder: (context) {
           final List<PhoneCountryCode> searchedPhoneCountryCodes =

@@ -10,12 +10,14 @@ class SearchWidget extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final bool autofocus;
   final bool isBorder;
+  final FocusNode? focusNode;
 
   const SearchWidget({
     Key? key,
     required this.onChanged,
     this.autofocus = false,
     this.isBorder = true,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -91,6 +93,7 @@ class _SearchWidgetState extends State<SearchWidget> {
             Expanded(
               child: TextField(
                 autofocus: widget.autofocus,
+                focusNode: widget.focusNode,
                 controller: _searchTextController,
                 onChanged: (text) {
                   _searchStream.add(text);
