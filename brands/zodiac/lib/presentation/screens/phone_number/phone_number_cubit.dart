@@ -26,6 +26,7 @@ const verificationCodeAttemptsPer24HoursMax = 3;
 
 class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   Phone _phone;
+  Phone? _phoneVerified;
   final ZodiacMainCubit _zodiacMainCubit;
   final ZodiacUserRepository _zodiacUserRepository;
   final ConnectivityService _connectivityService;
@@ -56,6 +57,10 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
     WidgetsBinding.instance
         .addPostFrameCallback((_) => setTextInputFocus(true));
 
+    if (_phone.isVerified == true) {
+      _phoneVerified = _phone;
+    }
+
     if (_phone.number != null) {
       phoneNumberInputController.text = _phone.number.toString();
     }
@@ -70,7 +75,8 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
             country: (_phone.country == null && _phone.code != null)
                 ? _getCountryNameByCode(_phone.code!)
                 : ''),
-        isSendCodeButtonEnabled: isPhoneNumberValidLength,
+        isSendCodeButtonEnabled:
+            isPhoneNumberValidLength && !_phoneIsVerified(),
         phoneNumberMaxLength: phoneNumberMaxLength,
       ));
     }
@@ -80,7 +86,7 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
           number: int.tryParse(phoneNumberInputController.text));
       final isValidLength = isPhoneNumberValidLength;
       emit(state.copyWith(
-        isSendCodeButtonEnabled: isValidLength,
+        isSendCodeButtonEnabled: isValidLength && !_phoneIsVerified(),
         phone: _phone,
       ));
     });
@@ -192,7 +198,7 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
     }
     emit(state.copyWith(
       phone: _phone,
-      isSendCodeButtonEnabled: isPhoneNumberValidLength,
+      isSendCodeButtonEnabled: isPhoneNumberValidLength && !_phoneIsVerified(),
       phoneNumberMaxLength: phoneNumberMaxLength,
     ));
   }
@@ -217,6 +223,11 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
       phoneNumberInputController.selection = TextSelection.collapsed(
           offset: phoneNumberInputController.text.length);
     }
+  }
+
+  bool _phoneIsVerified() {
+    return _phoneVerified?.code == _phone.code &&
+        _phoneVerified?.number == _phone.number;
   }
 
   bool get isPhoneNumberValidLength {
