@@ -1,27 +1,25 @@
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:fortunica/data/models/reports_endpoint/reports_month.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
-import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortunica/data/models/reports_endpoint/reports_month.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/picker_modal_pop_up.dart';
-import 'package:fortunica/presentation/screens/balance_and_transactions/balance_and_transactions_cubit.dart';
+
 class MonthHeaderWidget extends StatelessWidget {
   final List<ReportsMonth> months;
   final int currentMonthIndex;
+  final ValueSetter<int> setIndex;
 
-  const MonthHeaderWidget({
-    Key? key,
-    required this.months,
-    required this.currentMonthIndex,
-  }) : super(key: key);
+  const MonthHeaderWidget(
+      {Key? key,
+      required this.months,
+      required this.currentMonthIndex,
+      required this.setIndex})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final BalanceAndTransactionsCubit balanceAndTransactionsCubit =
-        context.read<BalanceAndTransactionsCubit>();
-
     final bool hasPrevious = currentMonthIndex < months.length - 1;
 
     final bool hasNext = currentMonthIndex > 0;
@@ -46,8 +44,7 @@ class MonthHeaderWidget extends StatelessWidget {
               icon: Assets.vectors.arrowLeft.path,
               onTap: () {
                 if (hasPrevious) {
-                  balanceAndTransactionsCubit
-                      .updateCurrentMonthIndex(currentMonthIndex + 1);
+                  setIndex(currentMonthIndex + 1);
                 }
               },
             ),
@@ -57,7 +54,7 @@ class MonthHeaderWidget extends StatelessWidget {
               if (months.length > 1) {
                 showPickerModalPopUp(
                   context: context,
-                  setIndex: balanceAndTransactionsCubit.updateCurrentMonthIndex,
+                  setIndex: setIndex,
                   currentIndex: currentMonthIndex,
                   elements: months
                       .map((e) => Padding(
@@ -118,8 +115,7 @@ class MonthHeaderWidget extends StatelessWidget {
               icon: Assets.vectors.arrowRight.path,
               onTap: () {
                 if (hasNext) {
-                  balanceAndTransactionsCubit
-                      .updateCurrentMonthIndex(currentMonthIndex - 1);
+                  setIndex(currentMonthIndex - 1);
                 }
               },
             ),

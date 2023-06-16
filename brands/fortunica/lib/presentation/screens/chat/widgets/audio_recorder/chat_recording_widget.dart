@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortunica/generated/l10n.dart';
 import 'package:fortunica/presentation/screens/chat/chat_cubit.dart';
-import 'package:fortunica/presentation/screens/chat/widgets/audio_recorder/chat_audio_recorder_cubit.dart';
 
 class ChatRecordingWidget extends StatelessWidget {
   final VoidCallback? onClosePressed;
@@ -41,8 +40,9 @@ class ChatRecordingWidget extends StatelessWidget {
               ),
               const Spacer(),
               Builder(builder: (context) {
-                context.select(
-                    (ChatAudioRecorderCubit cubit) => cubit.state.duration);
+                context
+                    .select((ChatCubit cubit) => cubit.state.recordingDuration);
+
                 return Text(
                   s.fromXsecToYminFortunica(chatCubit.minRecordDurationInSec,
                       chatCubit.maxRecordDurationInMinutes),
@@ -81,8 +81,7 @@ class ChatRecordingWidget extends StatelessWidget {
                     ),
                     Builder(builder: (context) {
                       Duration duration = context.select(
-                          (ChatAudioRecorderCubit cubit) =>
-                              cubit.state.duration);
+                          (ChatCubit cubit) => cubit.state.recordingDuration);
                       final time = duration.toString().substring(3, 7);
                       return SizedBox(
                         width: 38.0,

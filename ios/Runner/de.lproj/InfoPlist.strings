@@ -1,5 +1,4 @@
-
-"NSCameraUsageDescription" = "Diese App erfordert Zugriff auf die Kamera, damit Sie Fotos aufnehmen und in die App hochladen können.";
-"NSMicrophoneUsageDescription" = "Diese App erfordert Zugriff auf das Mikrofon, damit Sie Audionachrichten aufzeichnen können.";
-"NSPhotoLibraryUsageDescription" = "Diese App erfordert Zugriff auf die Galerie, damit Sie Fotos in der App teilen können.";
+"NSCameraUsageDescription" = "Zugriff auf die Kamera erlaubt es Ihnen Fotos für Ihr Profil zu machen und Fotos mit anderen Kunden im Chat auszutauschen.";
+"NSMicrophoneUsageDescription" = "Zugriff auf das Mikrofon ermöglicht es Ihnen Sprachnachrichten aufzunehmen.";
+"NSPhotoLibraryUsageDescription" = "Erlauben Sie Zugriff auf die Fotos um Fotos in Ihrer Galerie zu laden und im Chat zu senden.";
 "NSUserTrackingUsageDescription" = "Wenn Sie dies zulassen, können wir feststellen, über welchen Marketingkanal Sie gekommen sind, und es wird für keinen anderen Zweck verwendet. Sie können dies in der App unter Einstellungen ändern.";

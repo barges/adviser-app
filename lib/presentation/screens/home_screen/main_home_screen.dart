@@ -9,6 +9,7 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/main_state.dart';
 import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
 import 'package:shared_advisor_interface/presentation/screens/home_screen/cubit/main_home_screen_cubit.dart';
+import 'package:shared_advisor_interface/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/services/fresh_chat_service.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 
@@ -26,7 +27,13 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     globalGetIt
         .get<FreshChatService>()
         .initFreshChat(Utils.isDarkMode(context));
+    await Future.delayed(const Duration(milliseconds: 700));
     await AppTrackingTransparency.requestTrackingAuthorization();
+    // ignore: use_build_context_synchronously
+    await globalGetIt.get<CheckPermissionService>().handlePermission(
+        context, PermissionType.notification,
+        needShowSettings: false);
+
     FlutterNativeSplash.remove();
   }
 

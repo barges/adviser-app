@@ -84,6 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancelFortunica": MessageLookupByLibrary.simpleMessage("Abbrechen"),
         "cancelSendingFortunica":
             MessageLookupByLibrary.simpleMessage("Senden abbrechen"),
+        "cancelledFortunica": MessageLookupByLibrary.simpleMessage("Storniert"),
         "changeCoverPictureFortunica":
             MessageLookupByLibrary.simpleMessage("Hintergrundbild ändern"),
         "changePasswordFortunica":
@@ -129,6 +130,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Möchtest du diese Frage zurückschicken?"),
         "doneFortunica": MessageLookupByLibrary.simpleMessage("Fertig"),
         "earnedFortunica": MessageLookupByLibrary.simpleMessage("Verdient"),
+        "earnedThisMonthFortunica":
+            MessageLookupByLibrary.simpleMessage("Aktueller Monatsverdienst:"),
         "editNoteFortunica":
             MessageLookupByLibrary.simpleMessage("Notiz bearbeiten"),
         "editProfileFortunica":
@@ -253,7 +256,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Profilvorschau"),
         "privateFortunica": MessageLookupByLibrary.simpleMessage("Privat"),
         "privateQuestionFortunica":
-            MessageLookupByLibrary.simpleMessage("Privat Frage"),
+            MessageLookupByLibrary.simpleMessage("Privat-Frage"),
         "privateQuestionsFortunica":
             MessageLookupByLibrary.simpleMessage("Private Fragen"),
         "profileFortunica": MessageLookupByLibrary.simpleMessage("Profil"),
@@ -388,7 +391,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Du hast noch keine Sessions abgeschlossen"),
         "youHaveNotYetCompletedThisMonthsSessionsFortunica":
             MessageLookupByLibrary.simpleMessage(
-                "Der Monat ist noch nicht abgeschlossen"),
+                "In diesem Monat wurden keine Sessions abgeschlossen"),
         "youHaveXdaystoReadItBeforeYourAccountWillGetBlockedFortunica": m5,
         "youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElseFortunica":
             MessageLookupByLibrary.simpleMessage(

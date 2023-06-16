@@ -79,7 +79,7 @@
   "addNoteFortunica": "Adicionar nota",
   "titleFortunica": "Título",
   "youHaveNotCompletedAnySessionsYetFortunica": "Você ainda não concluiu nenhuma sessão",
-  "youHaveNotYetCompletedThisMonthsSessionsFortunica": "Você não possui ganhos neste mês.",
+  "youHaveNotYetCompletedThisMonthsSessionsFortunica": "Nenhuma sessão concluída este mê",
   "allMarketsFortunica": "Todos os mercados",
   "marketFortunica": "Mercado:",
   "allFortunica": "Todos",
@@ -194,5 +194,7 @@
   "reading360SessionsFortunica": "Leitura 360°",
   "ritualSessionsFortunica": "Sessão de Ritual",
   "astrologySessionsFortunica": "Consulta Astrológica",
-  "tarotSessionsFortunica": "Leitura de Cartas Especial"
+  "tarotSessionsFortunica": "Leitura de Cartas Especial",
+  "cancelledFortunica": "Cancelada",
+  "earnedThisMonthFortunica": "Total ganho este mês:"
 }
