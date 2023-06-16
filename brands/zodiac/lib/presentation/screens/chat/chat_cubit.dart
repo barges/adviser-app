@@ -240,7 +240,8 @@ class ChatCubit extends Cubit<ChatState> {
     _updateOfflineSessionIsActiveSubscription =
         _webSocketManager.offlineSessionIsActiveStream.listen((event) {
       if (event.clientId == clientData.id) {
-        emit(state.copyWith(offlineSessionIsActive: event.isActive));
+        emit(state.copyWith(
+            offlineSessionIsActive: event.isActive, isVisibleTextField: true));
         if (event.timeout != null && event.isActive) {
           emit(state.copyWith(
               showOfflineSessionsMessage: true,
