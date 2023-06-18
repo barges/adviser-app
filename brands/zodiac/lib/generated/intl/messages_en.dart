@@ -231,6 +231,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Service"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Services"),
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sessions"),
+        "sorryPhoneVerificationUnavailable": MessageLookupByLibrary.simpleMessage(
+            "Sorry, phone verification is currently unavailable. Please try again later."),
         "startChatZodiac": MessageLookupByLibrary.simpleMessage("Start Chat"),
         "successZodiac": MessageLookupByLibrary.simpleMessage("Success"),
         "templatesContentZodiac":

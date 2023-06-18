@@ -1554,6 +1554,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Sorry, phone verification is currently unavailable. Please try again later.`
+  String get sorryPhoneVerificationUnavailable {
+    return Intl.message(
+      'Sorry, phone verification is currently unavailable. Please try again later.',
+      name: 'sorryPhoneVerificationUnavailable',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

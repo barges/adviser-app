@@ -21,9 +21,11 @@ import 'package:zodiac/zodiac_main_cubit.dart';
 import 'widgets/phone_code_search_widget.dart';
 
 class PhoneNumberScreen extends StatelessWidget {
+  final String? siteKey;
   final Phone? phone;
   const PhoneNumberScreen({
     super.key,
+    required this.siteKey,
     required this.phone,
   });
 
@@ -32,6 +34,7 @@ class PhoneNumberScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return BlocProvider(
       create: (_) => PhoneNumberCubit(
+        siteKey,
         phone ?? const Phone(),
         zodiacGetIt.get<MainCubit>(),
         zodiacGetIt.get<ZodiacMainCubit>(),

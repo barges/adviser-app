@@ -146,5 +146,6 @@
   "theMaximumImageSizeIs10MbZodiac": "Die maximale Bildgröße beträgt 10 MB.",
   "onlineZodiac": "Online",
   "busyZodiac": "Beschäftigt",
-  "offlineZodiac": "Offline"
+  "offlineZodiac": "Offline",
+  "sorryPhoneVerificationUnavailable":"Leider ist die telefonische Bestätigung derzeit nicht verfügbar. Bitte drei weitere Latr."
 }

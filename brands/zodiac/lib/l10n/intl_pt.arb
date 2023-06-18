@@ -148,5 +148,6 @@
   "theMaximumImageSizeIs10MbZodiac": "O tamanho máximo da imagem é de 10Mb.",
   "onlineZodiac": "On-line",
   "busyZodiac": "Ocupado",
-  "offlineZodiac": "Desligado"
+  "offlineZodiac": "Desligado",
+  "sorryPhoneVerificationUnavailable": "A verificação por telefone não está disponível no momento. Por favor, três agan latr."
 }

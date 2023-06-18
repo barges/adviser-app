@@ -11,6 +11,8 @@ import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
+import 'package:zodiac/data/models/app_error/app_error.dart';
+import 'package:zodiac/data/models/app_error/ui_error_type.dart';
 import 'package:zodiac/data/models/enums/recaptcha_custom_action.dart';
 import 'package:zodiac/data/models/settings/phone.dart';
 import 'package:zodiac/data/models/settings/phone_country_code.dart';
@@ -30,6 +32,7 @@ const verificationCodeAttemptsPer24HoursMax = 3;
 class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   Phone _phone;
   Phone? _phoneVerified;
+  final String? _siteKey;
   final MainCubit _globalMainCubit;
   final ZodiacMainCubit _zodiacMainCubit;
   final ZodiacUserRepository _zodiacUserRepository;
@@ -41,8 +44,10 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   final List<PhoneCountryCode> _phoneCountryCodes = [];
 
   StreamSubscription<bool>? _appLifecycleSubscription;
+  bool _recaptchaServiceIsInitialized = false;
 
   PhoneNumberCubit(
+    this._siteKey,
     this._phone,
     this._globalMainCubit,
     this._zodiacMainCubit,
@@ -61,6 +66,7 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   }
 
   _init() async {
+    await _initRecaptchaService();
     await _loadCountryPhoneCodesJson();
 
     WidgetsBinding.instance
@@ -84,8 +90,7 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
             country: (_phone.country == null && _phone.code != null)
                 ? _getCountryNameByCode(_phone.code!)
                 : ''),
-        isSendCodeButtonEnabled:
-            isPhoneNumberValidLength && !_phoneIsVerified(),
+        isSendCodeButtonEnabled: _isSendCodeButtonEnabled(),
         phoneNumberMaxLength: phoneNumberMaxLength,
       ));
     }
@@ -93,9 +98,8 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
     phoneNumberInputController.addListener(() {
       _phone = _phone.copyWith(
           number: int.tryParse(phoneNumberInputController.text));
-      final isValidLength = isPhoneNumberValidLength;
       emit(state.copyWith(
-        isSendCodeButtonEnabled: isValidLength && !_phoneIsVerified(),
+        isSendCodeButtonEnabled: _isSendCodeButtonEnabled(),
         phone: _phone,
       ));
     });
@@ -118,6 +122,28 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
             }
           }
         },
+      );
+    }
+  }
+
+  Future<void> _initRecaptchaService() async {
+    if (_siteKey != null) {
+      try {
+        await RecaptchaService.initRecaptcha(_siteKey!);
+        _recaptchaServiceIsInitialized = true;
+      } catch (e) {
+        _zodiacMainCubit.updateErrorMessage(
+          UIError(
+            uiErrorType: UIErrorType.phoneVerificationUnavailable,
+          ),
+        );
+        logger.d(e);
+      }
+    } else {
+      _zodiacMainCubit.updateErrorMessage(
+        UIError(
+          uiErrorType: UIErrorType.phoneVerificationUnavailable,
+        ),
       );
     }
   }
@@ -228,7 +254,7 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
     }
     emit(state.copyWith(
       phone: _phone,
-      isSendCodeButtonEnabled: isPhoneNumberValidLength && !_phoneIsVerified(),
+      isSendCodeButtonEnabled: _isSendCodeButtonEnabled(),
       phoneNumberMaxLength: phoneNumberMaxLength,
     ));
   }
@@ -255,12 +281,18 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
     }
   }
 
+  bool _isSendCodeButtonEnabled() {
+    return _isPhoneNumberValidLength() &&
+        !_phoneIsVerified() &&
+        _recaptchaServiceIsInitialized;
+  }
+
   bool _phoneIsVerified() {
     return _phoneVerified?.code == _phone.code &&
         _phoneVerified?.number == _phone.number;
   }
 
-  bool get isPhoneNumberValidLength {
+  bool _isPhoneNumberValidLength() {
     final phoneNumberParsed = PhoneNumber.parse(_phone.toString());
     return phoneNumberParsed.isValidLength();
   }
