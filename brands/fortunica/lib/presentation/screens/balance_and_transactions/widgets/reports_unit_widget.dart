@@ -1,9 +1,10 @@
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fortunica/data/models/reports_endpoint/reports_unit.dart';
 import 'package:fortunica/generated/l10n.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/generated/l10n.dart';
 
 class ReportsUnitWidget extends StatelessWidget {
   final ReportsUnit reportsUnit;
@@ -82,7 +83,6 @@ class _ReportsUnit extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return SizedBox(
-      height: AppConstants.iconButtonSize,
       child: Row(
         children: [
           Container(
@@ -107,57 +107,74 @@ class _ReportsUnit extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                 horizontal: 8.0,
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: RichText(
-                      text: TextSpan(
-                          text:
-                              '${reportsUnit.type?.sessionNameForStatistics(context)} '
-                              '(${isCanceled ? reportsUnit.numberCancelled : reportsUnit.number}) ',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            fontSize: 14.0,
-                            height: 1.2,
-                          ),
-                          children: [
-                            if (!isCanceled)
-                              TextSpan(
-                                text:
-                                    '($currencySymbol${rate.toStringAsFixed(2)})',
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w500,
-                                  color: Theme.of(context).shadowColor,
-                                ),
-                              )
-                          ]),
-                    ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                              text:
+                                  '${reportsUnit.type?.sessionNameForStatistics(context)} '
+                                  '(${isCanceled ? reportsUnit.numberCancelled : reportsUnit.number}) ',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                fontSize: 14.0,
+                                height: 1.2,
+                              ),
+                              children: [
+                                if (!isCanceled)
+                                  TextSpan(
+                                    text:
+                                        '($currencySymbol${rate.toStringAsFixed(2)})',
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context).shadowColor,
+                                    ),
+                                  )
+                              ]),
+                        ),
+                      ),
+                      // Text(
+                      //   '${reportsUnit.type?.sessionNameForStatistics} '
+                      //   '(${isCanceled ? reportsUnit.numberCancelled : reportsUnit.number})',
+                      //
+                      //   style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      //     fontSize: 14.0,
+                      //   ),
+                      // ),
+                      // if (!isCanceled)
+                      //   Row(
+                      //     children: [
+                      //       const SizedBox(
+                      //         width: 4.0,
+                      //       ),
+                      //       Text(
+                      //         '($currencySymbol ${rate.toStringAsFixed(2)})',
+                      //         style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      //           fontSize: 12.0,
+                      //           fontWeight: FontWeight.w500,
+                      //           color: Theme.of(context).shadowColor,
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                    ],
                   ),
-                  // Text(
-                  //   '${reportsUnit.type?.sessionNameForStatistics} '
-                  //   '(${isCanceled ? reportsUnit.numberCancelled : reportsUnit.number})',
-                  //
-                  //   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  //     fontSize: 14.0,
-                  //   ),
-                  // ),
-                  // if (!isCanceled)
-                  //   Row(
-                  //     children: [
-                  //       const SizedBox(
-                  //         width: 4.0,
-                  //       ),
-                  //       Text(
-                  //         '($currencySymbol ${rate.toStringAsFixed(2)})',
-                  //         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  //           fontSize: 12.0,
-                  //           fontWeight: FontWeight.w500,
-                  //           color: Theme.of(context).shadowColor,
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
+                  if (isCanceled)
+                    SizedBox(
+                      height: 14.0,
+                      child: Text(
+                        SFortunica.of(context).cancelledFortunica,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontSize: 12.0,
+                          color: theme.shadowColor,
+                        ),
+                      ),
+                    )
                 ],
               ),
             ),
