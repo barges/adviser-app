@@ -19,6 +19,7 @@ import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_messages_list_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_text_input_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/client_information_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/emoji_picker/emoji_picker_widget.dart';
 import 'package:zodiac/zodiac_constants.dart';
 import 'package:zodiac/zodiac_extensions.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
@@ -129,6 +130,7 @@ class ChatScreen extends StatelessWidget {
                               }
                             }),
                           ),
+                          EmojiPickerWidget(),
                           if (showTextField)
                             Builder(builder: (context) {
                               final double focusedTextInputHeight =

@@ -23,4 +23,6 @@ class AppColorsDark {
   static const Color primaryDark = Color(0xFF5987E2);
 
   static const Color contrastLight = Color.fromRGBO(37, 37, 37, 0.5);
+
+  static const Color menuSeparator = Color.fromRGBO(0, 0, 0, 0.6);
 }
