@@ -73,7 +73,7 @@ deploy-ios:
     - job: generate-release-notes
       artifacts: true
   script:
-    - firebase appdistribution:distribute "build/ios/ipa/Advisor App.ipa" --app 1:986930839057:ios:931a04b3aeb905de5cbbb0 --token "$FIREBASE_TOKEN" --release-notes-file release-notes.txt --groups "Testers" --debug
+    - firebase appdistribution:distribute "build/ios/ipa/fortunica for Psychic Readers.ipa" --app 1:986930839057:ios:931a04b3aeb905de5cbbb0 --token "$FIREBASE_TOKEN" --release-notes-file release-notes.txt --groups "Testers" --debug
   tags:
     - macmini
   only:
