@@ -133,23 +133,7 @@ class AppInterceptor extends Interceptor {
 
     BaseResponse baseResponse = BaseResponse.fromJson(response.data);
 
-    if (baseResponse.errorCode == 3) {
-      if (baseResponse.errorMsg == "Phone is already exist") {
-        _zodiacMainCubit.updateErrorMessage(
-          UIError(
-            uiErrorType: UIErrorType.phoneIsAlreadyExist,
-          ),
-        );
-      }
-      if (baseResponse.errorMsg == "Wrong input data" &&
-          baseResponse.errorField == "captcha_response") {
-        _zodiacMainCubit.updateErrorMessage(
-          UIError(
-            uiErrorType: UIErrorType.phoneVerificationUnavailable,
-          ),
-        );
-      }
-    } else if (baseResponse.errorCode == 5) {
+    if (baseResponse.errorCode == 5) {
       _webSocketManager.close();
       await _cachingManager.logout();
       context?.replaceAll([const ZodiacAuth()]);

@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
@@ -29,26 +30,24 @@ const countryPhoneCodesJsonPath =
 const pnoneNumberMaxLength = 15;
 const verificationCodeAttemptsPer24HoursMax = 3;
 
+@injectable
 class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   Phone _phone;
-  Phone? _phoneVerified;
   final String? _siteKey;
   final MainCubit _globalMainCubit;
   final ZodiacMainCubit _zodiacMainCubit;
   final ZodiacUserRepository _zodiacUserRepository;
   final ConnectivityService _connectivityService;
-  final FocusNode phoneNumberInputFocus = FocusNode();
-  final FocusNode phoneCodeSearchFocus = FocusNode();
-  final TextEditingController phoneNumberInputController =
-      TextEditingController();
+
   final List<PhoneCountryCode> _phoneCountryCodes = [];
 
+  Phone? _phoneVerified;
   StreamSubscription<bool>? _appLifecycleSubscription;
   bool _recaptchaServiceIsInitialized = false;
 
   PhoneNumberCubit(
-    this._siteKey,
-    this._phone,
+    @factoryParam this._siteKey,
+    @factoryParam this._phone,
     this._globalMainCubit,
     this._zodiacMainCubit,
     this._zodiacUserRepository,
@@ -59,8 +58,6 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
 
   @override
   Future<void> close() async {
-    phoneNumberInputFocus.dispose();
-    phoneNumberInputController.dispose();
     _appLifecycleSubscription?.cancel();
     return super.close();
   }
@@ -76,15 +73,8 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
       _phoneVerified = _phone;
     }
 
-    if (_phone.number != null) {
-      phoneNumberInputController.text = _phone.number.toString();
-    }
     if (_phone.code != null) {
-      int? phoneNumberMaxLength =
-          await compute(_getPhoneNumberMaxLength, _phone.code!);
-      if (phoneNumberMaxLength != null) {
-        _correctPhoneNumberDigitCount(phoneNumberMaxLength);
-      }
+      int phoneNumberMaxLength = await _getPhoneNumberMaxLength();
       emit(state.copyWith(
         phone: _phone.copyWith(
             country: (_phone.country == null && _phone.code != null)
@@ -95,28 +85,19 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
       ));
     }
 
-    phoneNumberInputController.addListener(() {
-      _phone = _phone.copyWith(
-          number: int.tryParse(phoneNumberInputController.text));
-      emit(state.copyWith(
-        isSendCodeButtonEnabled: _isSendCodeButtonEnabled(),
-        phone: _phone,
-      ));
-    });
-
     if (Platform.isAndroid) {
       _appLifecycleSubscription =
           _globalMainCubit.changeAppLifecycleStream.listen(
         (value) {
           if (value) {
             if (state.isPhoneCodeSearchVisible) {
-              phoneCodeSearchFocus.requestFocus();
+              emit(state.copyWith(isPhoneCodeSearchFocused: true));
             } else {
               setTextInputFocus(true);
             }
           } else {
             if (state.isPhoneCodeSearchVisible) {
-              phoneCodeSearchFocus.unfocus();
+              emit(state.copyWith(isPhoneCodeSearchFocused: false));
             } else {
               setTextInputFocus(false);
             }
@@ -246,12 +227,7 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
       country: phoneCountryCode.name,
     );
 
-    int? phoneNumberMaxLength = _phone.code != null
-        ? await compute(_getPhoneNumberMaxLength, _phone.code!)
-        : null;
-    if (phoneNumberMaxLength != null) {
-      _correctPhoneNumberDigitCount(phoneNumberMaxLength);
-    }
+    int phoneNumberMaxLength = await _getPhoneNumberMaxLength();
     emit(state.copyWith(
       phone: _phone,
       isSendCodeButtonEnabled: _isSendCodeButtonEnabled(),
@@ -259,26 +235,27 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
     ));
   }
 
+  void setPhoneNumber(String number) {
+    _phone = _phone.copyWith(number: int.tryParse(number));
+    emit(state.copyWith(
+      isSendCodeButtonEnabled: _isSendCodeButtonEnabled(),
+      phone: _phone,
+    ));
+  }
+
   void setTextInputFocus(bool value) {
     emit(state.copyWith(isPhoneNumberInputFocused: value));
-    if (value) {
-      phoneNumberInputFocus.requestFocus();
-    } else {
-      phoneNumberInputFocus.unfocus();
-    }
   }
 
   void clearErrorMessage() {
     _zodiacMainCubit.clearErrorMessage();
   }
 
-  void _correctPhoneNumberDigitCount(int maxLength) {
-    if (phoneNumberInputController.text.length > maxLength) {
-      phoneNumberInputController.text =
-          phoneNumberInputController.text.substring(0, maxLength);
-      phoneNumberInputController.selection = TextSelection.collapsed(
-          offset: phoneNumberInputController.text.length);
-    }
+  Future<int> _getPhoneNumberMaxLength() async {
+    int maxLength = _phone.code != null
+        ? await compute(_getPhoneNumberMaxLengthForCode, _phone.code!)
+        : pnoneNumberMaxLength;
+    return maxLength;
   }
 
   bool _isSendCodeButtonEnabled() {
@@ -300,7 +277,7 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   Phone get phone => _phone;
 }
 
-int _getPhoneNumberMaxLength(int code) {
+int _getPhoneNumberMaxLengthForCode(int code) {
   final List<String> splittedNumber = '111111111111111'.split('');
   String testNumber = '';
   bool isValidLengthPrev = false;

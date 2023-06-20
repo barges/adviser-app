@@ -625,10 +625,10 @@ class SZodiac {
   }
 
   /// `Your account has been blocked.<br>Please contact <a href=''>Customer Support</a> to resolve the issue`
-  String get youWereBlocked {
+  String get youWhereBlocked {
     return Intl.message(
       'Your account has been blocked.<br>Please contact <a href=\'\'>Customer Support</a> to resolve the issue',
-      name: 'youWereBlocked',
+      name: 'youWhereBlocked',
       desc: '',
       args: [],
     );
@@ -1190,16 +1190,6 @@ class SZodiac {
     return Intl.message(
       'You’ve reached the limit of phone verification attempts. Please contact support.',
       name: 'youveReachedLimitPhoneVerificationAttemptsZodiac',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Phone is already exist`
-  String get phoneIsAlreadyExistZodiac {
-    return Intl.message(
-      'Phone is already exist',
-      name: 'phoneIsAlreadyExistZodiac',
       desc: '',
       args: [],
     );

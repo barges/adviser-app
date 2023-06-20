@@ -10,13 +10,12 @@ enum UIErrorType {
   checkYourInternetConnection,
   loginDetailsSeemToBeIncorrect,
   youveReachedLimitPhone,
-  phoneIsAlreadyExist,
   phoneVerificationUnavailable;
 
   String getErrorMessage(BuildContext context, List<Object>? args) {
     switch (this) {
       case UIErrorType.youWhereBlocked:
-        return SZodiac.of(context).youWereBlocked;
+        return SZodiac.of(context).youWhereBlocked;
       case UIErrorType.wrongUsernameAndOrPassword:
         return SZodiac.of(context).wrongUsernameAndOrPasswordZodiac;
       // case UIErrorType.youCantSendThisMessageBecauseItsLessThanXSeconds:
@@ -37,8 +36,6 @@ enum UIErrorType {
       case UIErrorType.youveReachedLimitPhone:
         return SZodiac.of(context)
             .youveReachedLimitPhoneVerificationAttemptsZodiac;
-      case UIErrorType.phoneIsAlreadyExist:
-        return SZodiac.of(context).phoneIsAlreadyExistZodiac;
       case UIErrorType.phoneVerificationUnavailable:
         return SZodiac.of(context).sorryPhoneVerificationUnavailable;
     }

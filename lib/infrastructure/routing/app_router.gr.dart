@@ -1465,7 +1465,7 @@ class ZodiacPhoneNumber extends _i45.PageRouteInfo<ZodiacPhoneNumberArgs> {
   ZodiacPhoneNumber({
     _i46.Key? key,
     required String? siteKey,
-    required _i50.Phone? phone,
+    required _i50.Phone phone,
   }) : super(
           ZodiacPhoneNumber.name,
           path: 'zodiacPhoneNumber',
@@ -1490,7 +1490,7 @@ class ZodiacPhoneNumberArgs {
 
   final String? siteKey;
 
-  final _i50.Phone? phone;
+  final _i50.Phone phone;
 
   @override
   String toString() {

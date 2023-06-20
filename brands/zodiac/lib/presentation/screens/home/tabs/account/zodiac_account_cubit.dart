@@ -10,6 +10,7 @@ import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
+import 'package:zodiac/data/models/settings/phone.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
@@ -119,7 +120,8 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
 
   void goToPhoneNumber(BuildContext context) {
     context.push(
-      route: ZodiacPhoneNumber(siteKey: _siteKey, phone: state.phone),
+      route: ZodiacPhoneNumber(
+          siteKey: _siteKey, phone: state.phone ?? const Phone()),
     );
   }
 

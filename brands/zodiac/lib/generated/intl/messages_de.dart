@@ -185,8 +185,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Allgemeine Leistungsanalyse"),
         "personalBalanceZodiac":
             MessageLookupByLibrary.simpleMessage("Personal Balance:"),
-        "phoneIsAlreadyExistZodiac": MessageLookupByLibrary.simpleMessage(
-            "Telefon ist bereits vorhanden"),
         "phoneNumberVerifiedZodiac":
             MessageLookupByLibrary.simpleMessage("Telefonnummer verifiziert"),
         "phoneNumberZodiac":
@@ -276,7 +274,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "youHaveVerificationAttemptsPerDayZodiac": m8,
         "youMissedCallFromZodiac": m9,
         "youMissedChatFromZodiac": m10,
-        "youWereBlocked": MessageLookupByLibrary.simpleMessage(
+        "youWhereBlocked": MessageLookupByLibrary.simpleMessage(
             "Ihr Konto wurde gesperrt.<br>Bitte wenden Sie sich an den <a href=\'\'>Kundensupport</a>, um das Problem zu lösen"),
         "yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac":
             MessageLookupByLibrary.simpleMessage(

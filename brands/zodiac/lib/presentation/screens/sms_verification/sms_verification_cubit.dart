@@ -49,14 +49,11 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
         _globalMainCubit.changeAppLifecycleStream.listen(
       (value) {
         if (value) {
-          if (Platform.isAndroid) {
-            codeTextFieldFocus.requestFocus();
-          }
+          WidgetsBinding.instance
+              .addPostFrameCallback((_) => codeTextFieldFocus.requestFocus());
           _checkTimingInactiveResendCode();
         } else {
-          if (Platform.isAndroid) {
-            codeTextFieldFocus.unfocus();
-          }
+          codeTextFieldFocus.unfocus();
           _inactiveResendCodeTimer?.cancel();
         }
       },
