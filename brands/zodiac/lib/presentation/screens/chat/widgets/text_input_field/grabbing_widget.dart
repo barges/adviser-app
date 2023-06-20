@@ -36,7 +36,10 @@ class GrabbingWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (hasMessage) const RepliedMessageWidget(),
+          if (hasMessage)
+            RepliedMessageWidget(
+              repliedMessage: repliedMessage!,
+            ),
           Container(
             width: MediaQuery.of(context).size.width,
             height: 1.0,

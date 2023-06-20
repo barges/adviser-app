@@ -63,7 +63,7 @@ class ChatConversationAppBar extends StatelessWidget
                       child: Row(
                         children: [
                           AppIconButton(
-                            icon: Assets.vectors.cross.path,
+                            icon: Assets.vectors.close.path,
                           ),
                           const SizedBox(
                             width: 8.0,

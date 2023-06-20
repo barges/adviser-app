@@ -6,7 +6,7 @@ import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget.dart';
 
-class ChatMessageWidgetReplyWrapper extends StatelessWidget {
+class ChatMessageWidgetReplyWrapper extends StatefulWidget {
   final ChatMessageModel chatMessageModel;
   final bool chatIsActive;
 
@@ -17,17 +17,34 @@ class ChatMessageWidgetReplyWrapper extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<ChatMessageWidgetReplyWrapper> createState() =>
+      _ChatMessageWidgetReplyWrapperState();
+}
+
+class _ChatMessageWidgetReplyWrapperState
+    extends State<ChatMessageWidgetReplyWrapper>
+    with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
-    final ChatCubit chatCubit = context.read<ChatCubit>();
-    final bool canReply = chatIsActive &&
-        chatMessageModel.supportsReply;
+    super.build(context);
     final theme = Theme.of(context);
+    final ChatCubit chatCubit = context.read<ChatCubit>();
+    final bool canReply =
+        widget.chatIsActive && widget.chatMessageModel.supportsReply;
+    final int? repliedMessageId = chatCubit.state.repliedMessage?.id;
+    final bool isCurrentReplyMessage = repliedMessageId != null &&
+        widget.chatMessageModel.id == repliedMessageId;
+
     return canReply
         ? Dismissible(
-            key: ValueKey(chatMessageModel.hashCode),
+            key: isCurrentReplyMessage
+                ? chatCubit.repliedMessageGlobalKey
+                : ValueKey(widget.chatMessageModel.hashCode),
             direction: DismissDirection.endToStart,
             confirmDismiss: (DismissDirection direction) async {
-              chatCubit.setRepliedMessage(chatMessageModel);
+              chatCubit.setRepliedMessage(
+                repliedMessage: widget.chatMessageModel,
+              );
               return false;
             },
             background: Align(
@@ -42,11 +59,20 @@ class ChatMessageWidgetReplyWrapper extends StatelessWidget {
               ),
             ),
             child: ChatMessageWidget(
-              chatMessageModel: chatMessageModel,
+              chatMessageModel: widget.chatMessageModel,
             ),
           )
         : ChatMessageWidget(
-            chatMessageModel: chatMessageModel,
+            chatMessageModel: widget.chatMessageModel,
           );
+  }
+
+  @override
+  bool get wantKeepAlive {
+    final int? repliedMessageId =
+        context.read<ChatCubit>().state.repliedMessage?.id;
+    final bool isCurrentReplyMessage = repliedMessageId != null &&
+        widget.chatMessageModel.id == repliedMessageId;
+    return isCurrentReplyMessage ? true : false;
   }
 }

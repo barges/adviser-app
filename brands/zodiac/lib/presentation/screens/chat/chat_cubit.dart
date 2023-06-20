@@ -83,6 +83,7 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   final FocusNode textInputFocusNode = FocusNode();
   final GlobalKey textInputKey = GlobalKey();
+  final GlobalKey repliedMessageGlobalKey = GlobalKey();
 
   final PublishSubject<double> _showDownButtonStream = PublishSubject();
   late final StreamSubscription<double> _showDownButtonSubscription;
@@ -426,7 +427,7 @@ class ChatCubit extends BaseCubit<ChatState> {
     getClientInformation();
   }
 
-  setRepliedMessage(ChatMessageModel? repliedMessage) {
+  setRepliedMessage({ChatMessageModel? repliedMessage,}) {
     emit(state.copyWith(repliedMessage: repliedMessage));
   }
 

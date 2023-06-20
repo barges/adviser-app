@@ -26,12 +26,15 @@ class Utils {
     return textPainter.size.height;
   }
 
-  static void animateToWidget(GlobalKey key) {
+  static void animateToWidget(GlobalKey key, {double alignment = 0.0}) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final BuildContext? context = key.currentContext;
       if (context != null) {
-        Scrollable.ensureVisible(context,
-            duration: const Duration(milliseconds: 500));
+        Scrollable.ensureVisible(
+          context,
+          alignment: alignment,
+          duration: const Duration(milliseconds: 500),
+        );
       }
     });
   }
