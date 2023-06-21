@@ -10,6 +10,16 @@ class RecaptchaService {
 
   static Completer<bool> _completer = Completer<bool>()..complete(false);
 
+  static Future<void> initRecaptcha(String siteKey) async {
+    if (!await isInitialized()) {
+      try {
+        await init(siteKey);
+      } catch (e) {
+        rethrow;
+      }
+    }
+  }
+
   static Future<void> init(String siteKey) async {
     if (!await isInitialized()) {
       _completer = Completer<bool>();
