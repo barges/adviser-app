@@ -808,7 +808,7 @@ class ChatCubit extends BaseCubit<ChatState> {
   void deleteMessage(String? mid) {
     _messages.removeWhere((element) => element.mid == mid);
     emit(state.copyWith(messages: List.of(_messages)));
-    _deleteSentRecordedAudio();
+    _deleteSentRecordedAudioIfExist();
   }
 
   void closeErrorMessage() {
@@ -817,10 +817,10 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   void updateMediaIsDelivered(CreatedDeliveredEvent event) {
     _updateMessageIsDelivered(event);
-    _deleteSentRecordedAudio();
+    _deleteSentRecordedAudioIfExist();
   }
 
-  void _deleteSentRecordedAudio() {
+  void _deleteSentRecordedAudioIfExist() {
     if (_sentRecordedAudio != null) {
       _deleteRecordedAudioFile(_sentRecordedAudio);
       _sentRecordedAudio = null;
