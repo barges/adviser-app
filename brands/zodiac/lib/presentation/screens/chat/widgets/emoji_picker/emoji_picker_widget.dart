@@ -3,8 +3,8 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/extensions.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/search_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/emoji_picker/emoji_picker_cubit.dart';
 
@@ -91,14 +91,20 @@ class _EmojiPickerWidgetState extends State<EmojiPickerWidget> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      16.0, 12.0, 0.0, 8.0),
-                                              child: Text(categories[index]
-                                                      .category
-                                                      .name
-                                                      .capitalize ??
-                                                  '')),
+                                            padding: const EdgeInsets.fromLTRB(
+                                                16.0, 12.0, 0.0, 8.0),
+                                            child: Text(
+                                              categories[index]
+                                                  .category
+                                                  .getTitle(context)
+                                                  .toUpperCase(),
+                                              style: theme.textTheme.labelSmall
+                                                  ?.copyWith(
+                                                fontSize: 11.0,
+                                                color: theme.shadowColor,
+                                              ),
+                                            ),
+                                          ),
                                           Expanded(
                                             child: GridView.builder(
                                               gridDelegate:
@@ -125,7 +131,7 @@ class _EmojiPickerWidgetState extends State<EmojiPickerWidget> {
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 12.0),
+                                    const EdgeInsets.symmetric(vertical: 14.0),
                                 child: SmoothPageIndicator(
                                   controller:
                                       emojiPickerCubit.categoriesPageController,
@@ -211,6 +217,29 @@ extension CategoryEmojiExt on Category {
         return CupertinoIcons.heart;
       case Category.FLAGS:
         return CupertinoIcons.flag;
+    }
+  }
+
+  String getTitle(BuildContext context) {
+    switch (this) {
+      case Category.RECENT:
+        return SZodiac.of(context).recentlyUsedZodiac;
+      case Category.SMILEYS:
+        return SZodiac.of(context).smileysAndPeopleZodiac;
+      case Category.ANIMALS:
+        return SZodiac.of(context).animalsAndNatureZodiac;
+      case Category.FOODS:
+        return SZodiac.of(context).foodAndDrinkZodiac;
+      case Category.ACTIVITIES:
+        return SZodiac.of(context).activityZodiac;
+      case Category.TRAVEL:
+        return SZodiac.of(context).travelAndPlacesZodiac;
+      case Category.OBJECTS:
+        return SZodiac.of(context).objectsZodiac;
+      case Category.SYMBOLS:
+        return SZodiac.of(context).symbolsZodiac;
+      case Category.FLAGS:
+        return SZodiac.of(context).flagsZodiac;
     }
   }
 }

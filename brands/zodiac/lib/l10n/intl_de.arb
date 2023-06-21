@@ -147,5 +147,14 @@
   "theMaximumImageSizeIs10MbZodiac": "Die maximale Bildgröße beträgt 10 MB.",
   "onlineZodiac": "Online",
   "busyZodiac": "Beschäftigt",
-  "offlineZodiac": "Offline"
+  "offlineZodiac": "Offline",
+  "recentlyUsedZodiac": "Kürzlich benutzt",
+  "smileysAndPeopleZodiac": "Smileys & Menschen",
+  "animalsAndNatureZodiac": "Tiere & Natur",
+  "foodAndDrinkZodiac": "Essen & Trinken",
+  "activityZodiac": "Aktivität",
+  "travelAndPlacesZodiac": "Reisen & Orte",
+  "objectsZodiac": "Objekte",
+  "symbolsZodiac": "Symbole",
+  "flagsZodiac": "Flaggen"
 }
