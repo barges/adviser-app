@@ -8,6 +8,8 @@ import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_messa
 import 'package:zodiac/presentation/screens/chat/widgets/down_button_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/chat_text_input_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/typing_indicator.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/wrappers/reaction_feature/reaction_feature_wrapper.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/wrappers/resend_message/resend_message_wrapper.dart';
 import 'package:zodiac/zodiac_constants.dart';
 
 class ChatMessagesListWidget extends StatelessWidget {

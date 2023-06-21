@@ -55,6 +55,7 @@ dependencies:
   storage_space: ^1.0.1+5
   smooth_page_indicator: ^1.0.0+2
   freshchat_sdk: ^0.10.3
+  skeleton_loader: ^2.0.0+4
 
 
   ### Firebase

@@ -9,6 +9,7 @@ import 'package:fortunica/presentation/screens/chat/widgets/audio_players/chat_a
 import 'package:fortunica/presentation/screens/chat/widgets/chat_item_background_widget.dart';
 import 'package:fortunica/presentation/screens/chat/widgets/chat_item_footer_widget.dart';
 import 'package:fortunica/presentation/screens/chat/widgets/chat_text_area_widget.dart';
+
 class ChatItemWidget extends StatefulWidget {
   final ChatItem item;
 
@@ -79,8 +80,11 @@ class _ChatItemWidgetState extends State<ChatItemWidget>
                 return const SizedBox();
               }).toList(),
             ),
-          const SizedBox(
-            height: 5.0,
+          SizedBox(
+            height: widget.item.attachments?.isNotEmpty == true &&
+                    widget.item.attachments![0].type == AttachmentType.audio
+                ? 14.0
+                : 5.0,
           ),
         ]),
         Positioned(

@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
+import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
 import 'package:zodiac/data/models/enums/chat_payment_status.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
@@ -58,28 +59,10 @@ class ChatConversationAppBar extends StatelessWidget
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   if (endChatButtonOnTap != null)
-                    GestureDetector(
+                    AppIconButton(
+                      icon: Assets.zodiac.vectors.endChat.path,
                       onTap: endChatButtonOnTap,
-                      child: Row(
-                        children: [
-                          AppIconButton(
-                            icon: Assets.vectors.close.path,
-                          ),
-                          const SizedBox(
-                            width: 8.0,
-                          ),
-                          Text(
-                            SZodiac.of(context).endChatZodiac.toUpperCase(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelSmall
-                                ?.copyWith(
-                                  fontSize: 12.0,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                          )
-                        ],
-                      ),
+                      color: AppColors.error,
                     )
                   else
                     AppIconButton(

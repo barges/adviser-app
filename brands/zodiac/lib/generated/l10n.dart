@@ -1365,16 +1365,6 @@ class SZodiac {
     );
   }
 
-  /// `End\nchat`
-  String get endChatZodiac {
-    return Intl.message(
-      'End\nchat',
-      name: 'endChatZodiac',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Do you really want to end the chat?`
   String get doYouReallyWantToEndTheChatZodiac {
     return Intl.message(

@@ -138,9 +138,11 @@ class PhoneNumberScreen extends StatelessWidget {
                             ),
                             const Spacer(),
                             Builder(builder: (context) {
+                              // TODO Implement after attempts will be add on backend
                               final verificationCodeAttempts = context.select(
-                                  (PhoneNumberCubit cubit) =>
-                                      cubit.state.verificationCodeAttempts);
+                                      (PhoneNumberCubit cubit) => cubit
+                                          .state.verificationCodeAttempts) ??
+                                  0;
                               final attempts =
                                   '$verificationCodeAttempts/$verificationCodeAttemptsPer24HoursMax';
                               final List<String>

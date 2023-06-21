@@ -42,6 +42,7 @@ class ChatRecordingWidget extends StatelessWidget {
               Builder(builder: (context) {
                 context
                     .select((ChatCubit cubit) => cubit.state.recordingDuration);
+
                 return Text(
                   s.fromXsecToYminFortunica(chatCubit.minRecordDurationInSec,
                       chatCubit.maxRecordDurationInMinutes),

@@ -14,29 +14,28 @@ class ActiveChatInputFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ChatCubit chatCubit = context.read<ChatCubit>();
-    return Builder(builder: (context) {
-      final bool isRecording = context.select(
-          (ChatCubit cubit) => cubit.state.isRecording);
-      final File? recordedAudio =
-          context.select((ChatCubit cubit) => cubit.state.recordedAudio);
 
-      if (recordedAudio != null) {
-        return ChatRecordedPlayerWidget(
-          player: chatCubit.audioPlayer,
-          url: chatCubit.state.recordedAudio?.path,
-          recordedDuration: chatCubit.recordAudioDuration,
-          onDeletePressed: () async =>
-              await chatCubit.deleteRecordedAudio(),
-          onSendPressed: () => chatCubit.sendAnswer(ChatContentType.media),
-        );
-      } else if (isRecording) {
-        return ChatRecordingWidget(
-          onClosePressed: () => chatCubit.cancelRecordingAudio(),
-          onStopRecordPressed: () => chatCubit.stopRecordingAudio(),
-        );
-      } else {
-        return const ChatTextInputWidget();
-      }
-    });
+    final bool isRecording =
+        context.select((ChatCubit cubit) => cubit.state.isRecording);
+
+    final File? recordedAudio =
+        context.select((ChatCubit cubit) => cubit.state.recordedAudio);
+
+    if (recordedAudio != null) {
+      return ChatRecordedPlayerWidget(
+        player: chatCubit.audioPlayer,
+        url: chatCubit.state.recordedAudio?.path,
+        recordedDuration: chatCubit.recordAudioDuration,
+        onDeletePressed: () async => await chatCubit.deleteRecordedAudio(),
+        onSendPressed: () => chatCubit.sendAnswer(ChatContentType.media),
+      );
+    } else if (isRecording) {
+      return ChatRecordingWidget(
+        onClosePressed: () => chatCubit.cancelRecordingAudio(),
+        onStopRecordPressed: () => chatCubit.stopRecordingAudio(),
+      );
+    } else {
+      return const ChatTextInputWidget();
+    }
   }
 }

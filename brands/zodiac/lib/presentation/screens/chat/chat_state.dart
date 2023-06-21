@@ -12,7 +12,7 @@ class ChatState with _$ChatState {
   const factory ChatState({
     List<ChatMessageModel>? messages,
     ChatMessageModel? repliedMessage,
-    @Default(false) bool isVisibleTextField,
+    @Default(true) bool isVisibleTextField,
     @Default(false) bool clientInformationWidgetOpened,
     @Default(false) bool needShowDownButton,
     @Default(false) bool needShowTypingIndicator,

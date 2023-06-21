@@ -81,6 +81,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancelFortunica": MessageLookupByLibrary.simpleMessage("Cancel"),
         "cancelSendingFortunica":
             MessageLookupByLibrary.simpleMessage("Cancel sending"),
+        "cancelledFortunica": MessageLookupByLibrary.simpleMessage("Canceled"),
         "changeCoverPictureFortunica":
             MessageLookupByLibrary.simpleMessage("Change cover picture"),
         "changePasswordFortunica":
@@ -127,6 +128,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Do you want to return this question?"),
         "doneFortunica": MessageLookupByLibrary.simpleMessage("Done"),
         "earnedFortunica": MessageLookupByLibrary.simpleMessage("Earned"),
+        "earnedThisMonthFortunica":
+            MessageLookupByLibrary.simpleMessage("Earned this month:"),
         "editNoteFortunica": MessageLookupByLibrary.simpleMessage("Edit Note"),
         "editProfileFortunica":
             MessageLookupByLibrary.simpleMessage("Edit profile"),
@@ -383,7 +386,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "You have not completed any sessions yet"),
         "youHaveNotYetCompletedThisMonthsSessionsFortunica":
-            MessageLookupByLibrary.simpleMessage("The month is not over yet"),
+            MessageLookupByLibrary.simpleMessage(
+                "No sessions were completed this month"),
         "youHaveXdaystoReadItBeforeYourAccountWillGetBlockedFortunica": m5,
         "youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElseFortunica":
             MessageLookupByLibrary.simpleMessage(

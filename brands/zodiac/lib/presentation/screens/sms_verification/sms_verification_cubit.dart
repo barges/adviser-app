@@ -98,7 +98,7 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
           captchaResponse: token,
         ));
 
-        if (response.errorCode != null) {
+        if (response.isVerified == false) {
           emit(state.copyWith(
             isError: true,
           ));

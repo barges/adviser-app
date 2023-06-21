@@ -34,6 +34,7 @@ import 'package:zodiac/presentation/base_cubit/base_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/chat_state.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/chat_text_input_widget.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
+import 'package:zodiac/services/websocket_manager/room_paused_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac.dart';
@@ -94,6 +95,8 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   late final ChatScrollObserver chatObserver =
       ChatScrollObserver(observerController)..fixedPositionOffset = 48.0;
+
+  late final StreamSubscription<RoomPausedEvent> _roomPausedSubscription;
 
   StreamSubscription<ChatMessageModel>? _oneMessageSubscription;
 
@@ -233,7 +236,8 @@ class ChatCubit extends BaseCubit<ChatState> {
 
     addListener(_webSocketManager.offlineSessionIsActiveStream.listen((event) {
       if (event.clientId == clientData.id) {
-        emit(state.copyWith(offlineSessionIsActive: event.isActive));
+        emit(state.copyWith(
+            offlineSessionIsActive: event.isActive, isVisibleTextField: true));
         if (event.timeout != null && event.isActive) {
           emit(state.copyWith(
               showOfflineSessionsMessage: true,
@@ -424,10 +428,22 @@ class ChatCubit extends BaseCubit<ChatState> {
       ));
     }));
 
+    _roomPausedSubscription =
+        _webSocketManager.roomPausedStream.listen((event) {
+      if (event.opponentId == clientData.id) {
+        if (event.isPaused) {
+          _chatTimer?.cancel();
+        }
+        emit(state.copyWith(isVisibleTextField: !event.isPaused));
+      }
+    });
+
     getClientInformation();
   }
 
-  setRepliedMessage({ChatMessageModel? repliedMessage,}) {
+  setRepliedMessage({
+    ChatMessageModel? repliedMessage,
+  }) {
     emit(state.copyWith(repliedMessage: repliedMessage));
   }
 
@@ -444,6 +460,7 @@ class ChatCubit extends BaseCubit<ChatState> {
     _chatTimer?.cancel();
     _offlineSessionTimer?.cancel();
     _recordingProgressSubscription?.cancel();
+    _roomPausedSubscription.cancel();
     return super.close();
   }
 
