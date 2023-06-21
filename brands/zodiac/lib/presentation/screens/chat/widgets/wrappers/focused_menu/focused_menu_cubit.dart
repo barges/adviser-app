@@ -1,10 +1,10 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/wrappers/reaction_feature/reaction_feature_state.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/wrappers/focused_menu/focused_menu_state.dart';
 
-class ReactionFeatureCubit extends Cubit<ReactionFeatureState> {
-  ReactionFeatureCubit() : super(const ReactionFeatureState()) {
+class FocusedMenuCubit extends Cubit<FocusedMenuState> {
+  FocusedMenuCubit() : super(const FocusedMenuState()) {
     _getRecentEmojis();
   }
 

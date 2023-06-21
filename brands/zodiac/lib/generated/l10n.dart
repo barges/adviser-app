@@ -1564,6 +1564,96 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Recently used`
+  String get recentlyUsedZodiac {
+    return Intl.message(
+      'Recently used',
+      name: 'recentlyUsedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Smileys & People`
+  String get smileysAndPeopleZodiac {
+    return Intl.message(
+      'Smileys & People',
+      name: 'smileysAndPeopleZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Animals & Nature`
+  String get animalsAndNatureZodiac {
+    return Intl.message(
+      'Animals & Nature',
+      name: 'animalsAndNatureZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Food & Drink`
+  String get foodAndDrinkZodiac {
+    return Intl.message(
+      'Food & Drink',
+      name: 'foodAndDrinkZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Activity`
+  String get activityZodiac {
+    return Intl.message(
+      'Activity',
+      name: 'activityZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Travel & Places`
+  String get travelAndPlacesZodiac {
+    return Intl.message(
+      'Travel & Places',
+      name: 'travelAndPlacesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Objects`
+  String get objectsZodiac {
+    return Intl.message(
+      'Objects',
+      name: 'objectsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Symbols`
+  String get symbolsZodiac {
+    return Intl.message(
+      'Symbols',
+      name: 'symbolsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Flags`
+  String get flagsZodiac {
+    return Intl.message(
+      'Flags',
+      name: 'flagsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

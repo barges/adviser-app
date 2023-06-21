@@ -1,11 +1,11 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'reaction_feature_state.freezed.dart';
+part 'focused_menu_state.freezed.dart';
 
 @freezed
-class ReactionFeatureState with _$ReactionFeatureState {
-  const factory ReactionFeatureState({
+class FocusedMenuState with _$FocusedMenuState {
+  const factory FocusedMenuState({
     @Default([]) List<Emoji> recentEmojis,
-  }) = _ReactionFeatureState;
+  }) = _FocusedMenuState;
 }

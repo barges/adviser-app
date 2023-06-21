@@ -10,32 +10,35 @@ import 'package:shared_advisor_interface/themes/app_colors_light.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/generated/l10n.dart';
+import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/wrappers/reaction_feature/focused_menu_holder.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/wrappers/reaction_feature/reaction_feature_cubit.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/wrappers/focused_menu/focused_menu_cubit.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/wrappers/focused_menu/focused_menu_holder.dart';
 
-class ReactionFeatureWrapper extends StatefulWidget {
+class FocusedMenuWrapper extends StatefulWidget {
   final ChatMessageModel chatMessageModel;
 
-  const ReactionFeatureWrapper({Key? key, required this.chatMessageModel})
+  const FocusedMenuWrapper({Key? key, required this.chatMessageModel})
       : super(key: key);
 
   @override
-  State<ReactionFeatureWrapper> createState() => _ReactionFeatureWrapperState();
+  State<FocusedMenuWrapper> createState() => _FocusedMenuWrapperState();
 }
 
-class _ReactionFeatureWrapperState extends State<ReactionFeatureWrapper> {
+class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
   final GlobalKey key = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final bool isDarkMode = Utils.isDarkMode(context);
+    final ChatCubit chatCubit = context.read<ChatCubit>();
+
     return BlocProvider(
-      create: (context) => ReactionFeatureCubit(),
+      create: (context) => FocusedMenuCubit(),
       child: Builder(builder: (context) {
         final List<Emoji> recentEmojis = context
-            .select((ReactionFeatureCubit cubit) => cubit.state.recentEmojis);
+            .select((FocusedMenuCubit cubit) => cubit.state.recentEmojis);
         return FocusedMenuHolder(
           key: key,
           onPressed: () {},
@@ -107,6 +110,7 @@ class _ReactionFeatureWrapperState extends State<ReactionFeatureWrapper> {
                     } else {
                       return GestureDetector(
                         onTap: () {
+                          chatCubit.setEmojiPickerOpened(true);
                           context.pop();
                         },
                         child: Container(
