@@ -191,8 +191,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Allgemeine Leistungsanalyse"),
         "personalBalanceZodiac":
             MessageLookupByLibrary.simpleMessage("Personal Balance:"),
-        "phoneIsAlreadyExistZodiac": MessageLookupByLibrary.simpleMessage(
-            "Telefon ist bereits vorhanden"),
         "phoneNumberVerifiedZodiac":
             MessageLookupByLibrary.simpleMessage("Telefonnummer verifiziert"),
         "phoneNumberZodiac":
@@ -236,6 +234,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Service"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Services"),
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sitzungen"),
+        "sorryPhoneVerificationUnavailable": MessageLookupByLibrary.simpleMessage(
+            "Leider ist die telefonische Bestätigung derzeit nicht verfügbar. Bitte drei weitere Latr."),
         "startChatZodiac":
             MessageLookupByLibrary.simpleMessage("Chat beginnen"),
         "successZodiac": MessageLookupByLibrary.simpleMessage("Erfolg"),
@@ -281,7 +281,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "youHaveVerificationAttemptsPerDayZodiac": m9,
         "youMissedCallFromZodiac": m10,
         "youMissedChatFromZodiac": m11,
-        "youWereBlocked": MessageLookupByLibrary.simpleMessage(
+        "youWhereBlocked": MessageLookupByLibrary.simpleMessage(
             "Ihr Konto wurde gesperrt.<br>Bitte wenden Sie sich an den <a href=\'\'>Kundensupport</a>, um das Problem zu lösen"),
         "yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac":
             MessageLookupByLibrary.simpleMessage(

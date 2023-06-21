@@ -7,6 +7,8 @@ const String datePattern1 = 'MMM d, yyyy';
 const String datePattern4 = 'MMM dd';
 const String datePattern5 = 'MMM dd, yyyy';
 
+const String currencyPattern = '#,##0.00';
+
 extension DateTimeExt on DateTime {
   String get chatListTime {
     DateTime now = DateTime.now();
@@ -50,5 +52,12 @@ extension DateTimeExt on DateTime {
     return DateFormat(
       'MMM. dd, yyyy ${BrandManager.timeFormat}',
     ).format(toLocal());
+  }
+}
+
+extension DoubleExt on double {
+  String get parseValueToCurrencyFormat {
+    final currencyFormatter = NumberFormat(currencyPattern, 'ID');
+    return currencyFormatter.format(this).replaceAll('.', ' ');
   }
 }

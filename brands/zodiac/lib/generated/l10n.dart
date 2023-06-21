@@ -625,10 +625,10 @@ class SZodiac {
   }
 
   /// `Your account has been blocked.<br>Please contact <a href=''>Customer Support</a> to resolve the issue`
-  String get youWereBlocked {
+  String get youWhereBlocked {
     return Intl.message(
       'Your account has been blocked.<br>Please contact <a href=\'\'>Customer Support</a> to resolve the issue',
-      name: 'youWereBlocked',
+      name: 'youWhereBlocked',
       desc: '',
       args: [],
     );
@@ -1195,16 +1195,6 @@ class SZodiac {
     );
   }
 
-  /// `Phone is already exist`
-  String get phoneIsAlreadyExistZodiac {
-    return Intl.message(
-      'Phone is already exist',
-      name: 'phoneIsAlreadyExistZodiac',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Start Chat`
   String get startChatZodiac {
     return Intl.message(
@@ -1573,6 +1563,16 @@ class SZodiac {
       name: 'recordingStoppedBecauseYouReachedLimitZodiac',
       desc: '',
       args: [maxRecordLengthInMb],
+    );
+  }
+
+  /// `Sorry, phone verification is currently unavailable. Please try again later.`
+  String get sorryPhoneVerificationUnavailable {
+    return Intl.message(
+      'Sorry, phone verification is currently unavailable. Please try again later.',
+      name: 'sorryPhoneVerificationUnavailable',
+      desc: '',
+      args: [],
     );
   }
 }

@@ -1,13 +1,19 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
+import 'package:zodiac/data/models/app_error/app_error.dart';
+import 'package:zodiac/data/models/app_error/ui_error_type.dart';
 import 'package:zodiac/data/models/enums/recaptcha_custom_action.dart';
 import 'package:zodiac/data/models/settings/phone.dart';
 import 'package:zodiac/data/models/settings/phone_country_code.dart';
@@ -24,18 +30,25 @@ const countryPhoneCodesJsonPath =
 const pnoneNumberMaxLength = 15;
 const verificationCodeAttemptsPer24HoursMax = 3;
 
+@injectable
 class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   Phone _phone;
+  final String? _siteKey;
+  final MainCubit _globalMainCubit;
   final ZodiacMainCubit _zodiacMainCubit;
   final ZodiacUserRepository _zodiacUserRepository;
   final ConnectivityService _connectivityService;
-  final FocusNode phoneNumberInputFocus = FocusNode();
-  final TextEditingController phoneNumberInputController =
-      TextEditingController();
+
   final List<PhoneCountryCode> _phoneCountryCodes = [];
 
+  Phone? _phoneVerified;
+  StreamSubscription<bool>? _appLifecycleSubscription;
+  bool _recaptchaServiceIsInitialized = false;
+
   PhoneNumberCubit(
-    this._phone,
+    @factoryParam this._siteKey,
+    @factoryParam this._phone,
+    this._globalMainCubit,
     this._zodiacMainCubit,
     this._zodiacUserRepository,
     this._connectivityService,
@@ -45,45 +58,75 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
 
   @override
   Future<void> close() async {
-    phoneNumberInputFocus.dispose();
-    phoneNumberInputController.dispose();
+    _appLifecycleSubscription?.cancel();
     return super.close();
   }
 
   _init() async {
+    await _initRecaptchaService();
     await _loadCountryPhoneCodesJson();
 
     WidgetsBinding.instance
         .addPostFrameCallback((_) => setTextInputFocus(true));
 
-    if (_phone.number != null) {
-      phoneNumberInputController.text = _phone.number.toString();
+    if (_phone.isVerified == true) {
+      _phoneVerified = _phone;
     }
+
     if (_phone.code != null) {
-      int? phoneNumberMaxLength =
-          await compute(_getPhoneNumberMaxLength, _phone.code!);
-      if (phoneNumberMaxLength != null) {
-        _correctPhoneNumberDigitCount(phoneNumberMaxLength);
-      }
+      int phoneNumberMaxLength = await _getPhoneNumberMaxLength();
       emit(state.copyWith(
         phone: _phone.copyWith(
             country: (_phone.country == null && _phone.code != null)
                 ? _getCountryNameByCode(_phone.code!)
                 : ''),
-        isSendCodeButtonEnabled: isPhoneNumberValidLength,
+        isSendCodeButtonEnabled: _isSendCodeButtonEnabled(),
         phoneNumberMaxLength: phoneNumberMaxLength,
       ));
     }
 
-    phoneNumberInputController.addListener(() {
-      _phone = _phone.copyWith(
-          number: int.tryParse(phoneNumberInputController.text));
-      final isValidLength = isPhoneNumberValidLength;
-      emit(state.copyWith(
-        isSendCodeButtonEnabled: isValidLength,
-        phone: _phone,
-      ));
-    });
+    if (Platform.isAndroid) {
+      _appLifecycleSubscription =
+          _globalMainCubit.changeAppLifecycleStream.listen(
+        (value) {
+          if (value) {
+            if (state.isPhoneCodeSearchVisible) {
+              emit(state.copyWith(isPhoneCodeSearchFocused: true));
+            } else {
+              setTextInputFocus(true);
+            }
+          } else {
+            if (state.isPhoneCodeSearchVisible) {
+              emit(state.copyWith(isPhoneCodeSearchFocused: false));
+            } else {
+              setTextInputFocus(false);
+            }
+          }
+        },
+      );
+    }
+  }
+
+  Future<void> _initRecaptchaService() async {
+    if (_siteKey != null) {
+      try {
+        await RecaptchaService.initRecaptcha(_siteKey!);
+        _recaptchaServiceIsInitialized = true;
+      } catch (e) {
+        _zodiacMainCubit.updateErrorMessage(
+          UIError(
+            uiErrorType: UIErrorType.phoneVerificationUnavailable,
+          ),
+        );
+        logger.d(e);
+      }
+    } else {
+      _zodiacMainCubit.updateErrorMessage(
+        UIError(
+          uiErrorType: UIErrorType.phoneVerificationUnavailable,
+        ),
+      );
+    }
   }
 
   Future<void> _loadCountryPhoneCodesJson() async {
@@ -184,42 +227,49 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
       country: phoneCountryCode.name,
     );
 
-    int? phoneNumberMaxLength = _phone.code != null
-        ? await compute(_getPhoneNumberMaxLength, _phone.code!)
-        : null;
-    if (phoneNumberMaxLength != null) {
-      _correctPhoneNumberDigitCount(phoneNumberMaxLength);
-    }
+    int phoneNumberMaxLength = await _getPhoneNumberMaxLength();
     emit(state.copyWith(
       phone: _phone,
-      isSendCodeButtonEnabled: isPhoneNumberValidLength,
+      isSendCodeButtonEnabled: _isSendCodeButtonEnabled(),
       phoneNumberMaxLength: phoneNumberMaxLength,
+    ));
+  }
+
+  void setPhoneNumber(String number) {
+    _phone = _phone.copyWith(number: int.tryParse(number));
+    emit(state.copyWith(
+      isSendCodeButtonEnabled: _isSendCodeButtonEnabled(),
+      phone: _phone,
     ));
   }
 
   void setTextInputFocus(bool value) {
     emit(state.copyWith(isPhoneNumberInputFocused: value));
-    if (value) {
-      phoneNumberInputFocus.requestFocus();
-    } else {
-      phoneNumberInputFocus.unfocus();
-    }
   }
 
   void clearErrorMessage() {
     _zodiacMainCubit.clearErrorMessage();
   }
 
-  void _correctPhoneNumberDigitCount(int maxLength) {
-    if (phoneNumberInputController.text.length > maxLength) {
-      phoneNumberInputController.text =
-          phoneNumberInputController.text.substring(0, maxLength);
-      phoneNumberInputController.selection = TextSelection.collapsed(
-          offset: phoneNumberInputController.text.length);
-    }
+  Future<int> _getPhoneNumberMaxLength() async {
+    int maxLength = _phone.code != null
+        ? await compute(_getPhoneNumberMaxLengthForCode, _phone.code!)
+        : pnoneNumberMaxLength;
+    return maxLength;
   }
 
-  bool get isPhoneNumberValidLength {
+  bool _isSendCodeButtonEnabled() {
+    return _isPhoneNumberValidLength() &&
+        !_phoneIsVerified() &&
+        _recaptchaServiceIsInitialized;
+  }
+
+  bool _phoneIsVerified() {
+    return _phoneVerified?.code == _phone.code &&
+        _phoneVerified?.number == _phone.number;
+  }
+
+  bool _isPhoneNumberValidLength() {
     final phoneNumberParsed = PhoneNumber.parse(_phone.toString());
     return phoneNumberParsed.isValidLength();
   }
@@ -227,7 +277,7 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   Phone get phone => _phone;
 }
 
-int _getPhoneNumberMaxLength(int code) {
+int _getPhoneNumberMaxLengthForCode(int code) {
   final List<String> splittedNumber = '111111111111111'.split('');
   String testNumber = '';
   bool isValidLengthPrev = false;

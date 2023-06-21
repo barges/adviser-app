@@ -57,7 +57,7 @@
   "customerSupportZodiac": "Suporte ao cliente",
   "oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac": "😱 Opa! Seus dados de acesso parecem estar incorretos. Tente novamente ou toque em Redefinir senha.",
   "zodiacTeam": "Zodiac Equipe",
-  "youWereBlocked": "Sua conta foi bloqueada.<br>Entre em contato com o <a href=''>Suporte ao cliente</a> para resolver o problema",
+  "youWhereBlocked": "Sua conta foi bloqueada.<br>Entre em contato com o <a href=''>Suporte ao cliente</a> para resolver o problema",
   "editProfileZodiac": "Editar Perfil",
   "doYouReallyWantToDeleteLocaleNameFromYourListZodiac": "Você realmente deseja excluir {localeName} da sua lista?",
   "nicknameZodiac": "Apelido",
@@ -113,7 +113,6 @@
   "okZodiac":"Ok",
   "limitReachedZodiac":"Limite alcançado",
   "youveReachedLimitPhoneVerificationAttemptsZodiac":"Você atingiu o limite de tentativas de verificação por telefone. Entre em contato com o suporte.",
-  "phoneIsAlreadyExistZodiac": "O telefone já existe",
   "startChatZodiac": "Iniciar bate-papo",
   "declineZodiac": "Declínio",
   "incomingChatZodiac": "Bate-papo RECEBENDO",
@@ -150,5 +149,6 @@
   "busyZodiac": "Ocupado",
   "offlineZodiac": "Desligado",
   "doYouWantToDeleteThisAudioMessageZodiac": "Deseja excluir esta mensagem de áudio?",
-  "recordingStoppedBecauseYouReachedLimitZodiac": "A gravação parou porque você atingiu o limite de {maxRecordLengthInMb}Mb limit."
+  "recordingStoppedBecauseYouReachedLimitZodiac": "A gravação parou porque você atingiu o limite de {maxRecordLengthInMb}Mb limit.",
+  "sorryPhoneVerificationUnavailable": "A verificação por telefone não está disponível no momento. Por favor, três agan latr."
 }

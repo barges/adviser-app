@@ -5,24 +5,24 @@ import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
-import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:zodiac/data/models/settings/phone.dart';
-import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/simple_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dart';
-import 'package:zodiac/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:zodiac/presentation/screens/phone_number/phone_number_cubit.dart';
 import 'package:zodiac/presentation/screens/phone_number/widgets/country_code_widget.dart';
+import 'package:zodiac/presentation/screens/phone_number/widgets/phone_number_text_field.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 import 'widgets/phone_code_search_widget.dart';
 
 class PhoneNumberScreen extends StatelessWidget {
-  final Phone? phone;
+  final String? siteKey;
+  final Phone phone;
   const PhoneNumberScreen({
     super.key,
+    required this.siteKey,
     required this.phone,
   });
 
@@ -30,11 +30,9 @@ class PhoneNumberScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return BlocProvider(
-      create: (_) => PhoneNumberCubit(
-        phone ?? const Phone(),
-        zodiacGetIt.get<ZodiacMainCubit>(),
-        zodiacGetIt.get<ZodiacUserRepository>(),
-        zodiacGetIt.get<ConnectivityService>(),
+      create: (_) => zodiacGetIt.get<PhoneNumberCubit>(
+        param1: siteKey,
+        param2: phone,
       ),
       child: Builder(builder: (context) {
         PhoneNumberCubit phoneNumberCubit = context.read<PhoneNumberCubit>();
@@ -116,23 +114,8 @@ class PhoneNumberScreen extends StatelessWidget {
                                   width: 8.0,
                                 ),
                                 Expanded(
-                                  child: Builder(builder: (context) {
-                                    context.select((PhoneNumberCubit cubit) =>
-                                        cubit.state.isPhoneNumberInputFocused);
-                                    final maxLength = context.select(
-                                        (PhoneNumberCubit cubit) =>
-                                            cubit.state.phoneNumberMaxLength);
-                                    return AppTextField(
-                                      maxLength:
-                                          maxLength ?? pnoneNumberMaxLength,
-                                      textInputType: TextInputType.number,
-                                      focusNode: phoneNumberCubit
-                                          .phoneNumberInputFocus,
-                                      controller: phoneNumberCubit
-                                          .phoneNumberInputController,
-                                      label: SZodiac.of(context).phoneZodiac,
-                                    );
-                                  }),
+                                  child: PhoneNumberTextField(
+                                      text: phone.number.toString()),
                                 )
                               ],
                             ),
@@ -140,9 +123,8 @@ class PhoneNumberScreen extends StatelessWidget {
                             Builder(builder: (context) {
                               // TODO Implement after attempts will be add on backend
                               final verificationCodeAttempts = context.select(
-                                      (PhoneNumberCubit cubit) => cubit
-                                          .state.verificationCodeAttempts) ??
-                                  0;
+                                  (PhoneNumberCubit cubit) =>
+                                      cubit.state.verificationCodeAttempts);
                               final attempts =
                                   '$verificationCodeAttempts/$verificationCodeAttemptsPer24HoursMax';
                               final List<String>
@@ -151,29 +133,24 @@ class PhoneNumberScreen extends StatelessWidget {
                                       .youHaveVerificationAttemptsPerDayZodiac(
                                           attempts)
                                       .split(attempts);
-                              return verificationCodeAttempts != null
-                                  ? Text.rich(
-                                      TextSpan(
+                              return Text.rich(
+                                TextSpan(
+                                  text: youHaveVerificationAttemptsPerDay.first,
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    fontSize: 16.0,
+                                    color: theme.shadowColor,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: attempts,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
                                         text: youHaveVerificationAttemptsPerDay
-                                            .first,
-                                        style: theme.textTheme.bodyMedium
-                                            ?.copyWith(
-                                          fontSize: 16.0,
-                                          color: theme.shadowColor,
-                                        ),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              text: attempts,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold)),
-                                          TextSpan(
-                                              text:
-                                                  youHaveVerificationAttemptsPerDay
-                                                      .last),
-                                        ],
-                                      ),
-                                    )
-                                  : const SizedBox.shrink();
+                                            .last),
+                                  ],
+                                ),
+                              );
                             }),
                             const SizedBox(
                               height: 16.0,
@@ -214,7 +191,7 @@ class PhoneNumberScreen extends StatelessWidget {
                   (PhoneNumberCubit cubit) =>
                       cubit.state.isPhoneCodeSearchVisible);
               return isPhoneCodeSearchVisible
-                  ? const PhoneCodeSearchWidget()
+                  ? PhoneCodeSearchWidget()
                   : const SizedBox.shrink();
             }),
           ],

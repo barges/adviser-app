@@ -55,7 +55,7 @@
   "noTransactionsYetZodiac":"No transactions, yet",
   "yourTransactionsHistoryWillAppearHereZodiac": "Your transactions history will appear here",
   "zodiacTeam": "Zodiac Team",
-  "youWereBlocked": "Ihr Konto wurde gesperrt.<br>Bitte wenden Sie sich an den <a href=''>Kundensupport</a>, um das Problem zu lösen",
+  "youWhereBlocked": "Ihr Konto wurde gesperrt.<br>Bitte wenden Sie sich an den <a href=''>Kundensupport</a>, um das Problem zu lösen",
   "editProfileZodiac": "Profil bearbeiten",
   "doYouReallyWantToDeleteLocaleNameFromYourListZodiac": "Möchten Sie {localeName} wirklich aus Ihrer Liste löschen?",
   "nicknameZodiac": "Spitzname",
@@ -111,7 +111,6 @@
   "okZodiac":"Ok",
   "limitReachedZodiac":"Limit erreicht",
   "youveReachedLimitPhoneVerificationAttemptsZodiac":"Sie haben das Limit für telefonische Bestätigungsversuche erreicht. Bitte wenden Sie sich an den Support.",
-  "phoneIsAlreadyExistZodiac": "Telefon ist bereits vorhanden",
   "startChatZodiac": "Chat beginnen",
   "declineZodiac": "Abfall",
   "incomingChatZodiac": "EINGEHENDER Chat",
@@ -148,5 +147,6 @@
   "busyZodiac": "Beschäftigt",
   "offlineZodiac": "Offline",
   "doYouWantToDeleteThisAudioMessageZodiac": "Möchten Sie diese Audionachricht löschen?",
-  "recordingStoppedBecauseYouReachedLimitZodiac": "Die Aufnahme wurde gestoppt, da Sie die {maxRecordLengthInMb}Mb Grenze erreicht haben."
+  "recordingStoppedBecauseYouReachedLimitZodiac": "Die Aufnahme wurde gestoppt, da Sie die {maxRecordLengthInMb}Mb Grenze erreicht haben.",
+  "sorryPhoneVerificationUnavailable":"Leider ist die telefonische Bestätigung derzeit nicht verfügbar. Bitte drei weitere Latr."
 }

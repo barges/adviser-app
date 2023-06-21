@@ -82,7 +82,12 @@ class _ChatItemWidgetState extends State<ChatItemWidget>
             ),
           SizedBox(
             height: widget.item.attachments?.isNotEmpty == true &&
-                    widget.item.attachments![0].type == AttachmentType.audio
+                    widget.item.attachments?.indexWhere((element) =>
+                            element.type == AttachmentType.audio) !=
+                        null &&
+                    widget.item.attachments?.indexWhere((element) =>
+                            element.type == AttachmentType.audio) !=
+                        -1
                 ? 14.0
                 : 5.0,
           ),

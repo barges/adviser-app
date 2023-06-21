@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,8 +49,11 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
         _globalMainCubit.changeAppLifecycleStream.listen(
       (value) {
         if (value) {
+          WidgetsBinding.instance
+              .addPostFrameCallback((_) => codeTextFieldFocus.requestFocus());
           _checkTimingInactiveResendCode();
         } else {
+          codeTextFieldFocus.unfocus();
           _inactiveResendCodeTimer?.cancel();
         }
       },

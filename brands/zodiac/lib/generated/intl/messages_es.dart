@@ -198,8 +198,6 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Análisis General de Desempeño"),
         "personalBalanceZodiac":
             MessageLookupByLibrary.simpleMessage("Saldo Personal:"),
-        "phoneIsAlreadyExistZodiac":
-            MessageLookupByLibrary.simpleMessage("El teléfono ya existe"),
         "phoneNumberVerifiedZodiac": MessageLookupByLibrary.simpleMessage(
             "Número de teléfono verificado"),
         "phoneNumberZodiac":
@@ -243,6 +241,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Servicio"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Servicios"),
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sesiones"),
+        "sorryPhoneVerificationUnavailable": MessageLookupByLibrary.simpleMessage(
+            "Lo sentimos, la verificación telefónica no está disponible actualmente. Por favor tres agan latr."),
         "startChatZodiac":
             MessageLookupByLibrary.simpleMessage("Comenzar chat"),
         "successZodiac": MessageLookupByLibrary.simpleMessage("Éxito"),
@@ -289,7 +289,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "youHaveVerificationAttemptsPerDayZodiac": m9,
         "youMissedCallFromZodiac": m10,
         "youMissedChatFromZodiac": m11,
-        "youWereBlocked": MessageLookupByLibrary.simpleMessage(
+        "youWhereBlocked": MessageLookupByLibrary.simpleMessage(
             "Su cuenta ha sido bloqueada.<br>Póngase en contacto con <a href=\'\'>Atención al cliente</a> para resolver el problema"),
         "yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac":
             MessageLookupByLibrary.simpleMessage(
