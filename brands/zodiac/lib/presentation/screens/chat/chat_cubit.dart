@@ -77,8 +77,6 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   final SnappingSheetController snappingSheetController =
       SnappingSheetController();
-  final TextEditingController textInputEditingController =
-      TextEditingController();
   final ScrollController textInputScrollController = ScrollController();
   final ScrollController messagesScrollController = ScrollController();
 
@@ -215,20 +213,7 @@ class ChatCubit extends BaseCubit<ChatState> {
         if (event.isActive) {
           final String? helloMessage = enterRoomData?.expertData?.helloMessage;
           if (helloMessage?.isNotEmpty == true) {
-            final ChatMessageModel chatMessageModel = ChatMessageModel(
-              utc: DateTime.now().toUtc(),
-              type: ChatMessageType.simple,
-              isOutgoing: true,
-              isDelivered: false,
-              mid: _generateMessageId(),
-              message: helloMessage,
-            );
-            _messages.insert(0, chatMessageModel);
-            _updateMessages();
-            _webSocketManager.sendMessageToChat(
-                message: chatMessageModel,
-                roomId: enterRoomData?.roomData?.id ?? '',
-                opponentId: clientData.id ?? 0);
+            sendMessageToChat(text: helloMessage!);
           }
         }
       }
@@ -294,29 +279,6 @@ class ChatCubit extends BaseCubit<ChatState> {
             getMessageWithPagination(maxId: maxId);
           });
         }
-      }
-    });
-
-    textInputEditingController.addListener(() {
-      final String text = textInputEditingController.text;
-      if (text.isNotEmpty) {
-        emit(state.copyWith(
-          inputTextLength: text.length,
-          isSendButtonEnabled: text.trim().isNotEmpty,
-        ));
-      } else {
-        emit(state.copyWith(
-          inputTextLength: 0,
-          isSendButtonEnabled: false,
-        ));
-      }
-      if (triggerOnTextChanged) {
-        triggerOnTextChanged = false;
-        Future.delayed(_typingIndicatorDuration)
-            .then((value) => triggerOnTextChanged = true);
-        _webSocketManager.sendWriteStatus(
-            opponentId: clientData.id ?? 0,
-            roomId: enterRoomData?.roomData?.id ?? '');
       }
     });
 
@@ -407,14 +369,14 @@ class ChatCubit extends BaseCubit<ChatState> {
       }
     }));
 
-    addListener(audioRecorder.stateStream.listen((e) async {
+    addListener(_audioRecorder.stateStream.listen((e) async {
       if (e.state == SoundRecorderState.isRecording) {
         emit(state.copyWith(
           recordingDuration: const Duration(),
         ));
 
         _recordingProgressSubscription =
-            audioRecorder.onProgress?.listen((e) async {
+            _audioRecorder.onProgress?.listen((e) async {
           emit(state.copyWith(
             recordingDuration: e.duration ?? const Duration(),
           ));
@@ -441,16 +403,9 @@ class ChatCubit extends BaseCubit<ChatState> {
     getClientInformation();
   }
 
-  setRepliedMessage({
-    ChatMessageModel? repliedMessage,
-  }) {
-    emit(state.copyWith(repliedMessage: repliedMessage));
-  }
-
   @override
   Future<void> close() async {
     _cancelOrDeleteRecordedAudio();
-    textInputEditingController.dispose();
     textInputScrollController.dispose();
     messagesScrollController.dispose();
     textInputFocusNode.dispose();
@@ -464,26 +419,52 @@ class ChatCubit extends BaseCubit<ChatState> {
     return super.close();
   }
 
-  void sendMessageToChat() {
+  void sendMessageToChat({required String text}) {
     final ChatMessageModel chatMessageModel = ChatMessageModel(
       utc: DateTime.now().toUtc(),
       type: ChatMessageType.simple,
       isOutgoing: true,
       isDelivered: false,
       mid: _generateMessageId(),
-      message: textInputEditingController.text.trim(),
+      message: text,
     );
     if (state.needShowDownButton) {
       animateToStartChat();
     }
     _messages.insert(0, chatMessageModel);
     _updateMessages();
-    textInputEditingController.clear();
     _webSocketManager.sendMessageToChat(
       message: chatMessageModel,
       roomId: enterRoomData?.roomData?.id ?? '',
       opponentId: clientData.id ?? 0,
+
+      ///TODO: need relocate to chatMessageModel maybe
+      repliedMessageId: state.repliedMessage?.id,
     );
+  }
+
+  void sendWriteStatus() {
+    if (triggerOnTextChanged) {
+      triggerOnTextChanged = false;
+      Future.delayed(_typingIndicatorDuration)
+          .then((value) => triggerOnTextChanged = true);
+      _webSocketManager.sendWriteStatus(
+          opponentId: clientData.id ?? 0,
+          roomId: enterRoomData?.roomData?.id ?? '');
+    }
+  }
+
+  setRepliedMessage({
+    ChatMessageModel? repliedMessage,
+  }) {
+    emit(state.copyWith(repliedMessage: repliedMessage));
+  }
+
+  void updateInputTextInfo(int textLength, bool isEnabled) {
+    emit(state.copyWith(
+      inputTextLength: textLength,
+      isSendButtonEnabled: isEnabled,
+    ));
   }
 
   void sendReadMessage(int? messageId) {
@@ -598,16 +579,16 @@ class ChatCubit extends BaseCubit<ChatState> {
     }
 
     final fileName = '${_uuid.v4()}.$_recordFileExt';
-    await audioRecorder.startRecorder(fileName);
+    await _audioRecorder.startRecorder(fileName);
 
-    String? recordingPath = await audioRecorder.getRecordURL(path: fileName);
+    String? recordingPath = await _audioRecorder.getRecordURL(path: fileName);
     File? recordingAudio;
     if (recordingPath != null) {
       recordingAudio = File(recordingPath);
     }
 
     _recordingProgressSubscription =
-        audioRecorder.onProgress?.listen((e) async {
+        _audioRecorder.onProgress?.listen((e) async {
       _recordAudioDuration = e.duration?.inSeconds;
       if (recordingAudio != null &&
           !_checkMaxRecordLengthIsOk(recordingAudio)) {
@@ -623,7 +604,7 @@ class ChatCubit extends BaseCubit<ChatState> {
     _recordingProgressSubscription?.cancel();
     _recordingProgressSubscription = null;
 
-    String? recordingPath = await audioRecorder.stopRecorder();
+    String? recordingPath = await _audioRecorder.stopRecorder();
     logger.i("recorded audio: $recordingPath");
 
     File? recordedAudio;
@@ -660,7 +641,7 @@ class ChatCubit extends BaseCubit<ChatState> {
     _recordingProgressSubscription = null;
     _recordAudioDuration = null;
 
-    String? recordingPath = await audioRecorder.stopRecorder();
+    String? recordingPath = await _audioRecorder.stopRecorder();
     if (recordingPath != null && recordingPath.isNotEmpty) {
       File recordedAudio = File(recordingPath);
       await _deleteRecordedAudioFile(recordedAudio);
@@ -697,7 +678,7 @@ class ChatCubit extends BaseCubit<ChatState> {
   }
 
   Future<void> _cancelOrDeleteRecordedAudio() async {
-    if (audioRecorder.isRecording) {
+    if (_audioRecorder.isRecording) {
       await cancelRecordingAudio();
     } else {
       await _deleteRecordedAudioFile(state.recordedAudio ?? _sentRecordedAudio);
