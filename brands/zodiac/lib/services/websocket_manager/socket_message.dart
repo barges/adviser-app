@@ -92,6 +92,7 @@ class SocketMessage {
     required String roomId,
     required int opponentId,
     required String mid,
+    int? repliedMessageId,
   }) =>
       SocketMessage(action: Commands.chatMessage, params: {
         'message': message,
@@ -99,6 +100,7 @@ class SocketMessage {
         'room_id': roomId,
         'opponent_id': opponentId,
         'mid': mid,
+        'replied_message_id': repliedMessageId,
       });
 
   static SocketMessage msgDelivered({String? mid}) => SocketMessage(

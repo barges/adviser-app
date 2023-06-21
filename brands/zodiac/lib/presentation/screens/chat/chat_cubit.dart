@@ -57,8 +57,6 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   final SnappingSheetController snappingSheetController =
       SnappingSheetController();
-  final TextEditingController textInputEditingController =
-      TextEditingController();
   final ScrollController textInputScrollController = ScrollController();
   final ScrollController messagesScrollController = ScrollController();
 
@@ -182,20 +180,7 @@ class ChatCubit extends BaseCubit<ChatState> {
         if (event.isActive) {
           final String? helloMessage = enterRoomData?.expertData?.helloMessage;
           if (helloMessage?.isNotEmpty == true) {
-            final ChatMessageModel chatMessageModel = ChatMessageModel(
-              utc: DateTime.now().toUtc(),
-              type: ChatMessageType.simple,
-              isOutgoing: true,
-              isDelivered: false,
-              mid: _generateMessageId(),
-              message: helloMessage,
-            );
-            _messages.insert(0, chatMessageModel);
-            _updateMessages();
-            _webSocketManager.sendMessageToChat(
-                message: chatMessageModel,
-                roomId: enterRoomData?.roomData?.id ?? '',
-                opponentId: clientData.id ?? 0);
+            sendMessageToChat(text: helloMessage!);
           }
         }
       }
@@ -260,29 +245,6 @@ class ChatCubit extends BaseCubit<ChatState> {
             getMessageWithPagination(maxId: maxId);
           });
         }
-      }
-    });
-
-    textInputEditingController.addListener(() {
-      final String text = textInputEditingController.text;
-      if (text.isNotEmpty) {
-        emit(state.copyWith(
-          inputTextLength: text.length,
-          isSendButtonEnabled: text.trim().isNotEmpty,
-        ));
-      } else {
-        emit(state.copyWith(
-          inputTextLength: 0,
-          isSendButtonEnabled: false,
-        ));
-      }
-      if (triggerOnTextChanged) {
-        triggerOnTextChanged = false;
-        Future.delayed(_typingIndicatorDuration)
-            .then((value) => triggerOnTextChanged = true);
-        _webSocketManager.sendWriteStatus(
-            opponentId: clientData.id ?? 0,
-            roomId: enterRoomData?.roomData?.id ?? '');
       }
     });
 
@@ -376,13 +338,8 @@ class ChatCubit extends BaseCubit<ChatState> {
     getClientInformation();
   }
 
-  setRepliedMessage({ChatMessageModel? repliedMessage,}) {
-    emit(state.copyWith(repliedMessage: repliedMessage));
-  }
-
   @override
   Future<void> close() {
-    textInputEditingController.dispose();
     textInputScrollController.dispose();
     messagesScrollController.dispose();
     textInputFocusNode.dispose();
@@ -394,26 +351,51 @@ class ChatCubit extends BaseCubit<ChatState> {
     return super.close();
   }
 
-  void sendMessageToChat() {
+  void sendMessageToChat({required String text}) {
     final ChatMessageModel chatMessageModel = ChatMessageModel(
       utc: DateTime.now().toUtc(),
       type: ChatMessageType.simple,
       isOutgoing: true,
       isDelivered: false,
       mid: _generateMessageId(),
-      message: textInputEditingController.text.trim(),
+      message: text,
     );
     if (state.needShowDownButton) {
       animateToStartChat();
     }
     _messages.insert(0, chatMessageModel);
     _updateMessages();
-    textInputEditingController.clear();
     _webSocketManager.sendMessageToChat(
       message: chatMessageModel,
       roomId: enterRoomData?.roomData?.id ?? '',
       opponentId: clientData.id ?? 0,
+      ///TODO: need relocate to chatMessageModel maybe
+      repliedMessageId: state.repliedMessage?.id,
     );
+  }
+
+  void sendWriteStatus() {
+    if (triggerOnTextChanged) {
+      triggerOnTextChanged = false;
+      Future.delayed(_typingIndicatorDuration)
+          .then((value) => triggerOnTextChanged = true);
+      _webSocketManager.sendWriteStatus(
+          opponentId: clientData.id ?? 0,
+          roomId: enterRoomData?.roomData?.id ?? '');
+    }
+  }
+
+  setRepliedMessage({
+    ChatMessageModel? repliedMessage,
+  }) {
+    emit(state.copyWith(repliedMessage: repliedMessage));
+  }
+
+  void updateInputTextInfo(int textLength, bool isEnabled){
+    emit(state.copyWith(
+      inputTextLength: textLength,
+      isSendButtonEnabled: isEnabled,
+    ));
   }
 
   void sendReadMessage(int? messageId) {

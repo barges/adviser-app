@@ -412,12 +412,14 @@ class WebSocketManagerImpl implements WebSocketManager {
     required ChatMessageModel message,
     required String roomId,
     required int opponentId,
+    int? repliedMessageId,
   }) =>
       _send(SocketMessage.chatMessage(
         message: message.message ?? '',
         roomId: roomId,
         opponentId: opponentId,
         mid: message.mid ?? '',
+        repliedMessageId: repliedMessageId,
       ));
 
   @override

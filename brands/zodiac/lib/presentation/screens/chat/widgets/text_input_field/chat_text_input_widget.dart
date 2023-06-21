@@ -20,13 +20,43 @@ const stretchedTextFieldTopPadding = 21.0;
 const scrollbarThickness = 4.0;
 const constBottomPartTextInputHeight = 52.0;
 
-class ChatTextInputWidget extends StatelessWidget {
+class ChatTextInputWidget extends StatefulWidget {
   final ChatMessageModel? repliedMessage;
 
   const ChatTextInputWidget({
     Key? key,
     this.repliedMessage,
   }) : super(key: key);
+
+  @override
+  State<ChatTextInputWidget> createState() => _ChatTextInputWidgetState();
+}
+
+class _ChatTextInputWidgetState extends State<ChatTextInputWidget> {
+  final TextEditingController textInputEditingController =
+      TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    textInputEditingController.addListener(() {
+      final ChatCubit chatCubit = context.read<ChatCubit>();
+      final String text = textInputEditingController.text;
+      if (text.isNotEmpty) {
+        chatCubit.updateInputTextInfo(text.length, text.trim().isNotEmpty);
+      } else {
+        chatCubit.updateInputTextInfo(0, false);
+      }
+      chatCubit.sendWriteStatus();
+    });
+  }
+
+  @override
+  void dispose() {
+    textInputEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +78,7 @@ class ChatTextInputWidget extends StatelessWidget {
           height: 1.2,
         );
         chatCubit.updateHiddenInputHeight(
-          Utils.getTextHeight(
-              chatCubit.textInputEditingController.text, style, maxWidth),
+          Utils.getTextHeight(textInputEditingController.text, style, maxWidth),
           Utils.getTextHeight('\n\n\n\n', style, maxWidth),
         );
       },
@@ -60,7 +89,7 @@ class ChatTextInputWidget extends StatelessWidget {
         final bool isStretchedTextField = context
             .select((ChatCubit cubit) => cubit.state.isStretchedTextField);
 
-        final bool hasRepliedMessage = repliedMessage != null;
+        final bool hasRepliedMessage = widget.repliedMessage != null;
 
         final double bottomPartTextInputHeight = hasRepliedMessage
             ? constBottomPartTextInputHeight + repliedMessageHeight
@@ -130,7 +159,7 @@ class ChatTextInputWidget extends StatelessWidget {
                         ),
                       ],
                       grabbing: GrabbingWidget(
-                        repliedMessage: repliedMessage,
+                        repliedMessage: widget.repliedMessage,
                       ),
                       sheetBelow: SnappingSheetContent(
                         childScrollController: isStretchedTextField
@@ -138,7 +167,11 @@ class ChatTextInputWidget extends StatelessWidget {
                             : null,
                         child: Container(
                           color: theme.canvasColor,
-                          child: _InputTextField(key: chatCubit.textInputKey),
+                          child: _InputTextField(
+                            key: chatCubit.textInputKey,
+                            textInputEditingController:
+                                textInputEditingController,
+                          ),
                         ),
                       ),
                     ),
@@ -157,7 +190,7 @@ class ChatTextInputWidget extends StatelessWidget {
                   children: [
                     if (!textInputFocused && hasRepliedMessage)
                       RepliedMessageWidget(
-                        repliedMessage: repliedMessage!,
+                        repliedMessage: widget.repliedMessage!,
                       ),
                     Builder(builder: (context) {
                       return Container(
@@ -221,7 +254,7 @@ class ChatTextInputWidget extends StatelessWidget {
                             if (!textInputFocused)
                               Builder(builder: (context) {
                                 final String text =
-                                    chatCubit.textInputEditingController.text;
+                                    textInputEditingController.text;
                                 return Expanded(
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -235,9 +268,7 @@ class ChatTextInputWidget extends StatelessWidget {
                                         },
                                         child: text.isNotEmpty
                                             ? Text(
-                                                chatCubit
-                                                    .textInputEditingController
-                                                    .text,
+                                                textInputEditingController.text,
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 textAlign: TextAlign.start,
@@ -301,7 +332,11 @@ class ChatTextInputWidget extends StatelessWidget {
                                   child: AppIconGradientButton(
                                     onTap: () {
                                       if (isSendButtonEnabled) {
-                                        chatCubit.sendMessageToChat();
+                                        chatCubit.sendMessageToChat(
+                                          text: textInputEditingController.text
+                                              .trim(),
+                                        );
+                                        textInputEditingController.clear();
                                         if (!chatCubit.state.chatIsActive &&
                                             !chatCubit
                                                 .state.offlineSessionIsActive) {
@@ -333,8 +368,11 @@ class ChatTextInputWidget extends StatelessWidget {
 }
 
 class _InputTextField extends StatelessWidget {
+  final TextEditingController textInputEditingController;
+
   const _InputTextField({
     Key? key,
+    required this.textInputEditingController,
   }) : super(key: key);
 
   @override
@@ -363,7 +401,7 @@ class _InputTextField extends StatelessWidget {
           keyboardType: TextInputType.multiline,
           textCapitalization: TextCapitalization.sentences,
           scrollPhysics: const ClampingScrollPhysics(),
-          controller: chatCubit.textInputEditingController,
+          controller: textInputEditingController,
           focusNode: chatCubit.textInputFocusNode,
           maxLines: isCollapsed ? 5 : null,
           minLines: isCollapsed ? 1 : null,
