@@ -7,7 +7,7 @@ import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/down_button_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/typing_indicator.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/wrappers/reaction_feature/reaction_feature_wrapper.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/wrappers/focused_menu/focused_menu_wrapper.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/wrappers/resend_message/resend_message_wrapper.dart';
 import 'package:zodiac/zodiac_constants.dart';
 
@@ -35,6 +35,9 @@ class ChatMessagesListWidget extends StatelessWidget {
 
     final bool needShowTypingIndicator = context
         .select((ChatCubit cubit) => cubit.state.needShowTypingIndicator);
+
+    final bool chatIsActive =
+        context.select((ChatCubit cubit) => cubit.state.chatIsActive);
 
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
@@ -73,6 +76,9 @@ class ChatMessagesListWidget extends StatelessWidget {
                   });
                 } else {
                   final ChatMessageModel messageModel = messages[index - 1];
+                  final bool focusedMenuEnabled =
+                      messageModel.supportsReaction == true;
+
                   if (!messageModel.isOutgoing && !messageModel.isRead) {
                     return VisibilityDetector(
                       key: Key(messageModel.id.toString()),
@@ -81,8 +87,8 @@ class ChatMessagesListWidget extends StatelessWidget {
                           chatCubit.sendReadMessage(messageModel.id);
                         }
                       },
-                      child: messageModel.supportsReaction == true
-                          ? ReactionFeatureWrapper(
+                      child: focusedMenuEnabled
+                          ? FocusedMenuWrapper(
                               key: ValueKey(messageModel.mid),
                               chatMessageModel: messageModel)
                           : ChatMessageWidget(
@@ -101,8 +107,8 @@ class ChatMessagesListWidget extends StatelessWidget {
                       chatMessageModel: messageModel,
                     );
                   } else {
-                    return messageModel.supportsReaction == true
-                        ? ReactionFeatureWrapper(
+                    return focusedMenuEnabled
+                        ? FocusedMenuWrapper(
                             key: ValueKey(messageModel.mid),
                             chatMessageModel: messageModel)
                         : ChatMessageWidget(

@@ -57,191 +57,213 @@ class ChatScreen extends StatelessWidget {
         final bool showTextField =
             (chatIsActive || offlineSessionIsActive) && isVisibleTextField;
 
-        return WillPopScope(
-          onWillPop: () async {
-            if (chatIsActive) {
-              _endChat(context);
-            } else if (offlineSessionIsActive) {
-              _endOfflineSession(context);
-            } else {
-              chatCubit.logoutChat(context);
-            }
-            return false;
-          },
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Scaffold(
-                backgroundColor: Theme.of(context).canvasColor,
-                appBar: ChatConversationAppBar(
-                  userData: userData,
-                  onTap: chatCubit.changeClientInformationWidgetOpened,
-                  backButtonOnTap: () {
-                    if (offlineSessionIsActive) {
-                      _endOfflineSession(context);
-                    } else {
-                      chatCubit.logoutChat(context);
-                    }
-                  },
-                  endChatButtonOnTap:
-                      chatIsActive ? () => _endChat(context) : null,
-                ),
-                body: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    ListViewObserver(
-                      controller: chatCubit.observerController,
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: Builder(builder: (context) {
-                              final List<ChatMessageModel>? messages =
-                                  context.select((ChatCubit cubit) =>
-                                      cubit.state.messages);
-                              if (messages != null) {
-                                if (messages.isNotEmpty) {
-                                  return ChatMessagesListWidget(
-                                    fromStartingChat: fromStartingChat,
-                                    messages: messages,
-                                  );
-                                } else {
-                                  return CustomScrollView(
-                                    slivers: [
-                                      SliverFillRemaining(
-                                        hasScrollBody: false,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            EmptyListWidget(
-                                              title: SZodiac.of(context)
-                                                  .noMessagesYetZodiac,
-                                              label: SZodiac.of(context)
-                                                  .yourChatHistoryWillAppearHereZodiac,
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  );
-                                }
-                              } else {
-                                return const SizedBox.shrink();
-                              }
-                            }),
-                          ),
-                          EmojiPickerWidget(),
-                          if (showTextField)
-                            Builder(builder: (context) {
-                              final double focusedTextInputHeight =
-                                  context.select((ChatCubit cubit) =>
-                                      cubit.state.textInputHeight);
+        final bool emojiPickerOpened =
+            context.select((ChatCubit cubit) => cubit.state.emojiPickerOpened);
 
-                              context.select((ChatCubit cubit) =>
-                                  cubit.state.textInputFocused);
-
-                              final double bottomPadding =
-                                  bottomPartTextInputHeight +
-                                      (chatCubit.state.textInputFocused
-                                          ? grabbingHeight +
-                                              12.0 +
-                                              ZodiacConstants
-                                                  .chatHorizontalPadding +
-                                              focusedTextInputHeight
-                                          : MediaQuery.of(context)
-                                              .padding
-                                              .bottom);
-                              return Container(
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor,
-                                height: bottomPadding,
-                              );
-                            }),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      top: 0.0,
-                      right: 0.0,
-                      left: 0.0,
-                      child: Builder(builder: (context) {
-                        final bool showOfflineSessionsMessage = context.select(
-                            (ChatCubit cubit) =>
-                                cubit.state.showOfflineSessionsMessage);
-
-                        return Column(
+        return GestureDetector(
+          onTap: emojiPickerOpened
+              ? () => chatCubit.setEmojiPickerOpened(false)
+              : null,
+          child: WillPopScope(
+            onWillPop: () async {
+              if (chatIsActive) {
+                _endChat(context);
+              } else if (offlineSessionIsActive) {
+                _endOfflineSession(context);
+              } else {
+                chatCubit.logoutChat(context);
+              }
+              return false;
+            },
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Scaffold(
+                  backgroundColor: Theme.of(context).canvasColor,
+                  appBar: ChatConversationAppBar(
+                    userData: userData,
+                    onTap: chatCubit.changeClientInformationWidgetOpened,
+                    backButtonOnTap: () {
+                      if (offlineSessionIsActive) {
+                        _endOfflineSession(context);
+                      } else {
+                        chatCubit.logoutChat(context);
+                      }
+                    },
+                    endChatButtonOnTap:
+                        chatIsActive ? () => _endChat(context) : null,
+                  ),
+                  body: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      ListViewObserver(
+                        controller: chatCubit.observerController,
+                        child: Column(
                           children: [
-                            ClientInformationWidget(
-                              chatIsActive: chatIsActive,
+                            Expanded(
+                              child: Builder(builder: (context) {
+                                final List<ChatMessageModel>? messages =
+                                    context.select((ChatCubit cubit) =>
+                                        cubit.state.messages);
+                                if (messages != null) {
+                                  if (messages.isNotEmpty) {
+                                    return ChatMessagesListWidget(
+                                      fromStartingChat: fromStartingChat,
+                                      messages: messages,
+                                    );
+                                  } else {
+                                    return CustomScrollView(
+                                      slivers: [
+                                        SliverFillRemaining(
+                                          hasScrollBody: false,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              EmptyListWidget(
+                                                title: SZodiac.of(context)
+                                                    .noMessagesYetZodiac,
+                                                label: SZodiac.of(context)
+                                                    .yourChatHistoryWillAppearHereZodiac,
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    );
+                                  }
+                                } else {
+                                  return const SizedBox.shrink();
+                                }
+                              }),
                             ),
                             Builder(builder: (context) {
-                              final AppError appError = context.select(
-                                  (ZodiacMainCubit cubit) =>
-                                      cubit.state.appError);
-                              final bool internetConnectionIsAvailable =
-                                  context.select((MainCubit cubit) => cubit
-                                      .state.internetConnectionIsAvailable);
-
-                              return AppErrorWidget(
-                                errorMessage: !internetConnectionIsAvailable
-                                    ? SZodiac.of(context)
-                                        .noInternetConnectionZodiac
-                                    : appError.getMessage(context),
-                                roundedCorners: !showOfflineSessionsMessage,
-                                close: internetConnectionIsAvailable
-                                    ? chatCubit.closeErrorMessage
-                                    : null,
+                              return AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 500),
+                                transitionBuilder: (child, animation) =>
+                                    SizeTransition(
+                                  sizeFactor: animation,
+                                  child: child,
+                                ),
+                                child: emojiPickerOpened
+                                    ? const EmojiPickerWidget()
+                                    : const SizedBox.shrink(),
                               );
                             }),
-                            Builder(builder: (context) {
-                              final Duration? offlineSessionTimerValue =
-                                  context.select((ChatCubit cubit) =>
-                                      cubit.state.offlineSessionTimerValue);
+                            if (showTextField)
+                              Builder(builder: (context) {
+                                final double focusedTextInputHeight =
+                                    context.select((ChatCubit cubit) =>
+                                        cubit.state.textInputHeight);
 
-                              return AppSuccessWidget(
-                                title: SZodiac.of(context).chatEndedZodiac,
-                                message: showOfflineSessionsMessage &&
-                                        offlineSessionTimerValue != null
-                                    ? SZodiac.of(context)
-                                        .youAreAbleToWriteWithinZodiac(
-                                            offlineSessionTimerValue
-                                                .offlineSessionTimerFormat(
-                                                    context))
-                                    : '',
-                                onClose: chatCubit.closeOfflineSessionsMessage,
-                              );
-                            }),
+                                context.select((ChatCubit cubit) =>
+                                    cubit.state.textInputFocused);
+
+                                final double bottomPadding =
+                                    bottomPartTextInputHeight +
+                                        (chatCubit.state.textInputFocused
+                                            ? grabbingHeight +
+                                                12.0 +
+                                                ZodiacConstants
+                                                    .chatHorizontalPadding +
+                                                focusedTextInputHeight
+                                            : MediaQuery.of(context)
+                                                .padding
+                                                .bottom);
+                                return Container(
+                                  color:
+                                      Theme.of(context).scaffoldBackgroundColor,
+                                  height: bottomPadding,
+                                );
+                              }),
                           ],
-                        );
-                      }),
-                    ),
-                  ],
-                ),
-              ),
-              if (showTextField)
-                KeyboardSizeProvider(
-                  child: Builder(builder: (context) {
-                    final bool needBarrierColor = context.select(
-                        (ChatCubit cubit) => cubit.state.isStretchedTextField);
-                    return SafeArea(
-                      bottom: false,
-                      child: Material(
-                        type: needBarrierColor
-                            ? MaterialType.canvas
-                            : MaterialType.transparency,
-                        color: needBarrierColor
-                            ? Utils.getOverlayColor(context)
-                            : Colors.transparent,
-                        child: Builder(
-                          builder: (context) {
-                            return const ChatTextInputWidget();
-                          },
                         ),
                       ),
-                    );
-                  }),
+                      Positioned(
+                        top: 0.0,
+                        right: 0.0,
+                        left: 0.0,
+                        child: Builder(builder: (context) {
+                          final bool showOfflineSessionsMessage =
+                              context.select((ChatCubit cubit) =>
+                                  cubit.state.showOfflineSessionsMessage);
+
+                          return Column(
+                            children: [
+                              ClientInformationWidget(
+                                chatIsActive: chatIsActive,
+                              ),
+                              Builder(builder: (context) {
+                                final AppError appError = context.select(
+                                    (ZodiacMainCubit cubit) =>
+                                        cubit.state.appError);
+                                final bool internetConnectionIsAvailable =
+                                    context.select((MainCubit cubit) => cubit
+                                        .state.internetConnectionIsAvailable);
+
+                                return AppErrorWidget(
+                                  errorMessage: !internetConnectionIsAvailable
+                                      ? SZodiac.of(context)
+                                          .noInternetConnectionZodiac
+                                      : appError.getMessage(context),
+                                  roundedCorners: !showOfflineSessionsMessage,
+                                  close: internetConnectionIsAvailable
+                                      ? chatCubit.closeErrorMessage
+                                      : null,
+                                );
+                              }),
+                              Builder(builder: (context) {
+                                final Duration? offlineSessionTimerValue =
+                                    context.select((ChatCubit cubit) =>
+                                        cubit.state.offlineSessionTimerValue);
+
+                                return AppSuccessWidget(
+                                  title: SZodiac.of(context).chatEndedZodiac,
+                                  message: showOfflineSessionsMessage &&
+                                          offlineSessionTimerValue != null
+                                      ? SZodiac.of(context)
+                                          .youAreAbleToWriteWithinZodiac(
+                                              offlineSessionTimerValue
+                                                  .offlineSessionTimerFormat(
+                                                      context))
+                                      : '',
+                                  onClose:
+                                      chatCubit.closeOfflineSessionsMessage,
+                                );
+                              }),
+                            ],
+                          );
+                        }),
+                      ),
+                    ],
+                  ),
                 ),
-            ],
+                if (showTextField)
+                  KeyboardSizeProvider(
+                    child: Builder(builder: (context) {
+                      final bool needBarrierColor = context.select(
+                          (ChatCubit cubit) =>
+                              cubit.state.isStretchedTextField);
+                      return SafeArea(
+                        bottom: false,
+                        child: Material(
+                          type: needBarrierColor
+                              ? MaterialType.canvas
+                              : MaterialType.transparency,
+                          color: needBarrierColor
+                              ? Utils.getOverlayColor(context)
+                              : Colors.transparent,
+                          child: Builder(
+                            builder: (context) {
+                              return const ChatTextInputWidget();
+                            },
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+              ],
+            ),
           ),
         );
       }),

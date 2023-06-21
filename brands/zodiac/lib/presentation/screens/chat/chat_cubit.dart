@@ -676,4 +676,8 @@ class ChatCubit extends Cubit<ChatState> {
       }
     }
   }
+
+  void setEmojiPickerOpened(bool value) {
+    emit(state.copyWith(emojiPickerOpened: value));
+  }
 }

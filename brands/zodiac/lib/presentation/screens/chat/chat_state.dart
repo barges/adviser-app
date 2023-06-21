@@ -25,6 +25,7 @@ class ChatState with _$ChatState {
     @Default(false) bool isChatReconnecting,
     @Default(false) bool showOfflineSessionsMessage,
     @Default(false) bool shouldShowInput,
+    @Default(false) bool emojiPickerOpened,
     UserDetails? clientInformation,
     Duration? chatTimerValue,
     Duration? offlineSessionTimerValue,
