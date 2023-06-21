@@ -15,6 +15,6 @@ class PhoneNumberState with _$PhoneNumberState {
     @Default(Phone()) phone,
     @Default([]) List<PhoneCountryCode> searchedPhoneCountryCodes,
     @Default(pnoneNumberMaxLength) int phoneNumberMaxLength,
-    int? verificationCodeAttempts,
+    @Default(0) int verificationCodeAttempts,
   }) = _PhoneNumberState;
 }

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:zodiac/data/models/settings/phone_country_code.dart';
 import 'package:zodiac/presentation/screens/phone_number/phone_number_cubit.dart';
@@ -10,21 +9,33 @@ import 'package:zodiac/presentation/screens/phone_number/phone_number_state.dart
 import 'package:zodiac/presentation/screens/phone_number/widgets/phone_code_item.dart';
 import 'package:zodiac/presentation/screens/phone_number/widgets/phone_code_search_app_bar.dart';
 
-class PhoneCodeSearchWidget extends HookWidget {
-  const PhoneCodeSearchWidget({super.key});
+class PhoneCodeSearchWidget extends StatefulWidget {
+  final FocusNode _phoneCodeSearchFocus = FocusNode();
+
+  PhoneCodeSearchWidget({super.key});
+
+  @override
+  State<PhoneCodeSearchWidget> createState() => _PhoneCodeSearchWidgetState();
+}
+
+class _PhoneCodeSearchWidgetState extends State<PhoneCodeSearchWidget> {
+  @override
+  void dispose() {
+    widget._phoneCodeSearchFocus.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final phoneCodeSearchFocus = useFocusNode();
     PhoneNumberCubit phoneNumberCubit = context.read<PhoneNumberCubit>();
     return BlocListener<PhoneNumberCubit, PhoneNumberState>(
       listener: (_, state) {
         if (Platform.isAndroid) {
           if (state.isPhoneCodeSearchFocused &&
               state.isPhoneCodeSearchVisible) {
-            phoneCodeSearchFocus.requestFocus();
+            widget._phoneCodeSearchFocus.requestFocus();
           } else if (state.isPhoneCodeSearchVisible) {
-            phoneCodeSearchFocus.unfocus();
+            widget._phoneCodeSearchFocus.unfocus();
           }
         }
       },
@@ -32,7 +43,7 @@ class PhoneCodeSearchWidget extends HookWidget {
         backgroundColor: Theme.of(context).canvasColor,
         appBar: PhoneCodeSearchAppBar(
           onChanged: (text) => phoneNumberCubit.searchPhoneCountryCodes(text),
-          focusNode: phoneCodeSearchFocus,
+          focusNode: widget._phoneCodeSearchFocus,
         ),
         body: SafeArea(
           child: Builder(builder: (context) {

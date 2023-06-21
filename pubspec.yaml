@@ -91,7 +91,6 @@ dependencies:
   snapping_sheet: ^3.1.0
   system_date_time_format: ^0.7.0
   injectable: ^2.1.1
-  flutter_hooks: ^0.18.6
 
 dev_dependencies:
   flutter_test:
