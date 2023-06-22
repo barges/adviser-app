@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/global.dart';
 
+typedef FutureVoidCallback = Future<void> Function();
+
 class FocusedMenuItem {
   Color? backgroundColor;
   Widget title;
@@ -31,6 +33,7 @@ class FocusedMenuHolder extends StatefulWidget {
   final Widget? menuSeparator;
   final double? menuBorderRadius;
   final Widget? topMenuWidget;
+  final FutureVoidCallback? onHold;
 
   /// Open with tap insted of long press.
   final bool openWithTap;
@@ -52,6 +55,7 @@ class FocusedMenuHolder extends StatefulWidget {
       this.menuSeparator,
       this.menuBorderRadius,
       this.topMenuWidget,
+      this.onHold,
       this.openWithTap = false})
       : super(key: key);
 
@@ -87,6 +91,9 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
         },
         onLongPress: () async {
           if (!widget.openWithTap) {
+            if (widget.onHold != null) {
+              await widget.onHold!();
+            }
             await openMenu(context);
           }
         },

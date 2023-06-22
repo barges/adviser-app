@@ -62,6 +62,7 @@ class ChatMessageModel with _$ChatMessageModel {
     RepliedMessage? repliedMessage,
     String? mid,
     bool? supportsReaction,
+    @Default('') String reaction,
     @JsonKey(ignore: true) @Default(true) bool isDelivered,
   }) = _ChatMessageModel;
 

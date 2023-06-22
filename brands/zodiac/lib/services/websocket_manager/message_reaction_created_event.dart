@@ -1,10 +1,10 @@
 class MessageReactionCreatedEvent {
-  final String mid;
+  final String id;
   final String reaction;
   final int clientId;
 
   const MessageReactionCreatedEvent({
-    required this.mid,
+    required this.id,
     required this.reaction,
     required this.clientId,
   });

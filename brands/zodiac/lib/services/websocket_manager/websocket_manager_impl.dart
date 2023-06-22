@@ -970,7 +970,7 @@ class WebSocketManagerImpl implements WebSocketManager {
           data.opponentId != null) {
         _messageReactionCreatedStream.add(
           MessageReactionCreatedEvent(
-            mid: data.params['mid'],
+            id: data.params['mid'],
             reaction: data.params['message'],
             clientId: data.opponentId!,
           ),

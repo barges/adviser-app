@@ -99,7 +99,8 @@ class ChatMessagesListWidget extends StatelessWidget {
                       },
                       child: focusedMenuEnabled
                           ? FocusedMenuWrapper(
-                              key: ValueKey(messageModel.mid),
+                              key: ValueKey(
+                                  '${messageModel.reaction}_${messageModel.mid}'),
                               chatMessageModel: messageModel)
                           : ChatMessageWidget(
                               chatMessageModel: messageModel,
@@ -119,7 +120,8 @@ class ChatMessagesListWidget extends StatelessWidget {
                   } else {
                     return focusedMenuEnabled
                         ? FocusedMenuWrapper(
-                            key: ValueKey(messageModel.mid),
+                            key: ValueKey(
+                                '${messageModel.reaction}_${messageModel.mid}'),
                             chatMessageModel: messageModel)
                         : ChatMessageWidget(
                             chatMessageModel: messageModel,

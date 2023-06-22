@@ -35,9 +35,9 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
     final ChatCubit chatCubit = context.read<ChatCubit>();
 
     return BlocProvider(
-      create: (context) => FocusedMenuCubit(),
+      create: (context) => FocusedMenuCubit(widget.chatMessageModel.reaction),
       child: Builder(builder: (context) {
-        final List<Emoji> recentEmojis = context
+        List<Emoji> recentEmojis = context
             .select((FocusedMenuCubit cubit) => cubit.state.recentEmojis);
         return FocusedMenuHolder(
           key: key,
@@ -64,7 +64,12 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
           ),
           menuItems: [
             FocusedMenuItem(
-              title: Text('Reply'),
+              title: Text(
+                SZodiac.of(context).replyZodiac,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontSize: 17.0,
+                ),
+              ),
               backgroundColor: theme.unselectedWidgetColor,
               trailingIcon: Assets.vectors.arrowReturn.svg(
                 height: AppConstants.iconSize,
@@ -73,7 +78,12 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
               ),
             ),
             FocusedMenuItem(
-              title: Text(SZodiac.of(context).cancelZodiac),
+              title: Text(
+                SZodiac.of(context).cancelZodiac,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontSize: 17.0,
+                ),
+              ),
               backgroundColor: theme.unselectedWidgetColor,
               trailingIcon: Assets.vectors.cross.svg(
                 height: AppConstants.iconSize,
@@ -96,24 +106,41 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
                   itemBuilder: (context, index) {
                     if (recentEmojis.isNotEmpty &&
                         index != recentEmojis.length) {
-                      return SizedBox(
-                        height: 40.0,
-                        width: 40.0,
-                        child: Center(
-                          child: Text(
-                            recentEmojis[index].emoji,
-                            style: theme.textTheme.bodyMedium
-                                ?.copyWith(fontSize: 30.0),
+                      return Builder(builder: (context) {
+                        final bool isSelected = recentEmojis[index].emoji ==
+                            widget.chatMessageModel.reaction;
+                        return GestureDetector(
+                          onTap: () {
+                            final String? messageId = _getMessageId();
+                            if (messageId != null) {
+                              chatCubit.sendReaction(messageId,
+                                  isSelected ? '' : recentEmojis[index].emoji);
+                            }
+                            context.pop();
+                          },
+                          child: Container(
+                            height: 40.0,
+                            width: 40.0,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.circular(isSelected ? 8.0 : 0.0),
+                              color:
+                                  isSelected ? theme.primaryColorLight : null,
+                            ),
+                            child: Center(
+                              child: Text(
+                                recentEmojis[index].emoji,
+                                style: theme.textTheme.bodyMedium
+                                    ?.copyWith(fontSize: 30.0),
+                              ),
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      });
                     } else {
                       return GestureDetector(
                         onTap: () {
-                          int? id = widget.chatMessageModel.id;
-                          String? mid = widget.chatMessageModel.mid;
-                          chatCubit.setEmojiPickerOpened(
-                              id != null ? id.toString() : mid);
+                          chatCubit.setEmojiPickerOpened(_getMessageId());
                           context.pop();
                         },
                         child: Container(
@@ -145,5 +172,11 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
         );
       }),
     );
+  }
+
+  String? _getMessageId() {
+    final int? id = widget.chatMessageModel.id;
+    final String? mid = widget.chatMessageModel.mid;
+    return id != null ? id.toString() : mid;
   }
 }

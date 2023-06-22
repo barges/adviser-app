@@ -26,6 +26,7 @@ import 'package:zodiac/presentation/screens/chat/widgets/chat_text_input_widget.
 import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
 import 'package:zodiac/services/websocket_manager/chat_login_event.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
+import 'package:zodiac/services/websocket_manager/message_reaction_created_event.dart';
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/paid_free_event.dart';
 import 'package:zodiac/services/websocket_manager/room_paused_event.dart';
@@ -110,6 +111,9 @@ class ChatCubit extends Cubit<ChatState> {
   late final StreamSubscription<PaidFreeEvent> _paidFreeChatSubscription;
 
   late final StreamSubscription<RoomPausedEvent> _roomPausedSubscription;
+
+  late final StreamSubscription<MessageReactionCreatedEvent>
+      _reactionCreatedSubscription;
 
   bool triggerOnTextChanged = true;
   bool _isRefresh = false;
@@ -425,6 +429,16 @@ class ChatCubit extends Cubit<ChatState> {
       }
     });
 
+    _reactionCreatedSubscription =
+        _webSocketManager.messageReactionCreatedStream.listen((event) {
+      if (event.clientId == clientData.id) {
+        int index = _messages.indexWhere((element) =>
+            element.id.toString() == event.id || element.mid == event.id);
+        _messages[index] = _messages[index].copyWith(reaction: event.reaction);
+        _updateMessages();
+      }
+    });
+
     getClientInformation();
   }
 
@@ -455,6 +469,7 @@ class ChatCubit extends Cubit<ChatState> {
     _webSocketStateSubscription.cancel();
     _paidFreeChatSubscription.cancel();
     _roomPausedSubscription.cancel();
+    _reactionCreatedSubscription.cancel();
     return super.close();
   }
 
@@ -687,5 +702,6 @@ class ChatCubit extends Cubit<ChatState> {
         message: emoji,
         roomId: enterRoomData?.roomData?.id ?? '',
         opponentId: clientData.id ?? 0);
+    setEmojiPickerOpened(null);
   }
 }
