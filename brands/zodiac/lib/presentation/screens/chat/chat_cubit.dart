@@ -677,7 +677,15 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  void setEmojiPickerOpened(bool value) {
-    emit(state.copyWith(emojiPickerOpened: value));
+  void setEmojiPickerOpened(String? id) {
+    emit(state.copyWith(reactionMessageId: id));
+  }
+
+  void sendReaction(String mid, String emoji) {
+    _webSocketManager.sendMessageReaction(
+        mid: mid,
+        message: emoji,
+        roomId: enterRoomData?.roomData?.id ?? '',
+        opponentId: clientData.id ?? 0);
   }
 }

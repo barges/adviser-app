@@ -39,8 +39,18 @@ class ChatMessagesListWidget extends StatelessWidget {
     final bool chatIsActive =
         context.select((ChatCubit cubit) => cubit.state.chatIsActive);
 
+    final bool emojiPickerOpened =
+        context.select((ChatCubit cubit) => cubit.state.reactionMessageId) !=
+            null;
+
     return GestureDetector(
-      onTap: FocusScope.of(context).unfocus,
+      onTap: () {
+        FocusScope.of(context).unfocus();
+
+        if (emojiPickerOpened) {
+          chatCubit.setEmojiPickerOpened(null);
+        }
+      },
       child: Container(
         color: Theme.of(context).scaffoldBackgroundColor,
         child: Stack(
@@ -77,7 +87,7 @@ class ChatMessagesListWidget extends StatelessWidget {
                 } else {
                   final ChatMessageModel messageModel = messages[index - 1];
                   final bool focusedMenuEnabled =
-                      messageModel.supportsReaction == true;
+                      messageModel.supportsReaction == true && chatIsActive;
 
                   if (!messageModel.isOutgoing && !messageModel.isRead) {
                     return VisibilityDetector(

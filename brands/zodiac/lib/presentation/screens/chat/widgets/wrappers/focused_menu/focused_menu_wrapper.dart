@@ -110,7 +110,10 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
                     } else {
                       return GestureDetector(
                         onTap: () {
-                          chatCubit.setEmojiPickerOpened(true);
+                          int? id = widget.chatMessageModel.id;
+                          String? mid = widget.chatMessageModel.mid;
+                          chatCubit.setEmojiPickerOpened(
+                              id != null ? id.toString() : mid);
                           context.pop();
                         },
                         child: Container(

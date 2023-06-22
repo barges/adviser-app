@@ -6,19 +6,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/search_widget.dart';
+import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/emoji_picker/emoji_picker_cubit.dart';
 
 class EmojiPickerWidget extends StatefulWidget {
-  const EmojiPickerWidget({Key? key}) : super(key: key);
+  final String reactionMessageId;
+  const EmojiPickerWidget({
+    Key? key,
+    required this.reactionMessageId,
+  }) : super(key: key);
 
   @override
   State<EmojiPickerWidget> createState() => _EmojiPickerWidgetState();
 }
 
 class _EmojiPickerWidgetState extends State<EmojiPickerWidget> {
+  final GlobalKey<EmojiPickerState> emojiPickerKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final ChatCubit chatCubit = context.read<ChatCubit>();
 
     return BlocProvider(
         create: (context) => EmojiPickerCubit(),
@@ -113,13 +121,24 @@ class _EmojiPickerWidgetState extends State<EmojiPickerWidget> {
                                                       mainAxisSpacing: 10.0,
                                                       crossAxisSpacing: 10.0),
                                               itemBuilder: (context, index) =>
-                                                  Center(
-                                                child: Text(
-                                                  emojis[index].emoji,
-                                                  style: theme
-                                                      .textTheme.bodyMedium
-                                                      ?.copyWith(
-                                                          fontSize: 30.0),
+                                                  GestureDetector(
+                                                onTap: () {
+                                                  EmojiPickerUtils()
+                                                      .addEmojiToRecentlyUsed(
+                                                          key: emojiPickerKey,
+                                                          emoji: emojis[index]);
+                                                  chatCubit.sendReaction(
+                                                      widget.reactionMessageId,
+                                                      emojis[index].emoji);
+                                                },
+                                                child: Center(
+                                                  child: Text(
+                                                    emojis[index].emoji,
+                                                    style: theme
+                                                        .textTheme.bodyMedium
+                                                        ?.copyWith(
+                                                            fontSize: 30.0),
+                                                  ),
                                                 ),
                                               ),
                                               itemCount: emojis.length,
