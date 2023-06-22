@@ -18,10 +18,9 @@ import 'package:fortunica/presentation/screens/home/tabs/dashboard_v1/widgets/sk
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
-import 'package:skeleton_loader/skeleton_loader.dart';
+import 'package:shimmer/shimmer.dart';
 
 class DashboardV1Screen extends StatelessWidget {
   const DashboardV1Screen({
@@ -76,10 +75,10 @@ class DashboardV1Screen extends StatelessWidget {
                                     ),
                                     child: months.isNotEmpty
                                         ? const PersonalInformationWidget()
-                                        : SkeletonLoader(
+                                        : Shimmer.fromColors(
                                             baseColor: theme.hintColor,
                                             highlightColor: theme.canvasColor,
-                                            builder:
+                                            child:
                                                 const PersonalInformationWidget()),
                                   ),
                                 ),

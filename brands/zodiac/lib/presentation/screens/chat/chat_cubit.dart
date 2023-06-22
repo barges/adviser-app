@@ -24,9 +24,6 @@ import 'package:zodiac/presentation/base_cubit/base_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/chat_state.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/chat_text_input_widget.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
-import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
-import 'package:zodiac/services/websocket_manager/paid_free_event.dart';
-import 'package:zodiac/services/websocket_manager/room_paused_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac.dart';
@@ -68,7 +65,6 @@ class ChatCubit extends BaseCubit<ChatState> {
   final GlobalKey repliedMessageGlobalKey = GlobalKey();
 
   final PublishSubject<double> _showDownButtonStream = PublishSubject();
-  late final StreamSubscription<double> _showDownButtonSubscription;
 
   late final ListObserverController observerController =
       ListObserverController(controller: messagesScrollController)
@@ -228,7 +224,7 @@ class ChatCubit extends BaseCubit<ChatState> {
       _webSocketManager.chatLogin(opponentId: clientData.id ?? 0);
     }
 
-    _showDownButtonSubscription = _showDownButtonStream
+    addListener(_showDownButtonStream
         .debounceTime(const Duration(milliseconds: 300))
         .listen((event) {
       emit(
@@ -236,7 +232,7 @@ class ChatCubit extends BaseCubit<ChatState> {
           needShowDownButton: event > 48.0 ? true : false,
         ),
       );
-    });
+    }));
 
     messagesScrollController.addListener(() {
       _showDownButtonStream.add(messagesScrollController.position.pixels);
@@ -339,15 +335,14 @@ class ChatCubit extends BaseCubit<ChatState> {
       }
     }));
 
-    _roomPausedSubscription =
-        _webSocketManager.roomPausedStream.listen((event) {
+    addListener(_webSocketManager.roomPausedStream.listen((event) {
       if (event.opponentId == clientData.id) {
         if (event.isPaused) {
           _chatTimer?.cancel();
         }
         emit(state.copyWith(isVisibleTextField: !event.isPaused));
       }
-    });
+    }));
 
     getClientInformation();
   }
@@ -358,7 +353,6 @@ class ChatCubit extends BaseCubit<ChatState> {
     messagesScrollController.dispose();
     textInputFocusNode.dispose();
     _oneMessageSubscription?.cancel();
-    _showDownButtonSubscription.cancel();
     _showDownButtonStream.close();
     _chatTimer?.cancel();
     _offlineSessionTimer?.cancel();
@@ -383,6 +377,7 @@ class ChatCubit extends BaseCubit<ChatState> {
       message: chatMessageModel,
       roomId: enterRoomData?.roomData?.id ?? '',
       opponentId: clientData.id ?? 0,
+
       ///TODO: need relocate to chatMessageModel maybe
       repliedMessageId: state.repliedMessage?.id,
     );
@@ -405,7 +400,7 @@ class ChatCubit extends BaseCubit<ChatState> {
     emit(state.copyWith(repliedMessage: repliedMessage));
   }
 
-  void updateInputTextInfo(int textLength, bool isEnabled){
+  void updateInputTextInfo(int textLength, bool isEnabled) {
     emit(state.copyWith(
       inputTextLength: textLength,
       isSendButtonEnabled: isEnabled,

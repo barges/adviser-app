@@ -95,7 +95,6 @@ class ChatCubit extends BaseCubit<ChatState> {
   late final StreamSubscription<bool> _refreshChatInfoSubscription;
 
   StreamSubscription<RecorderDisposition>? _recordingProgressSubscription;
-  StreamSubscription<RecorderServiceState>? _recordingStateSubscription;
   StreamSubscription<RecorderDisposition>? _recordingDurationSubscription;
 
   Timer? _answerTimer;
@@ -186,14 +185,14 @@ class ChatCubit extends BaseCubit<ChatState> {
           recordingDuration: const Duration(),
         ));
 
-        _recordingProgressSubscription =
+        _recordingDurationSubscription =
             audioRecorder.onProgress?.listen((e) async {
-          emit(state.copyWith(
-            recordingDuration: e.duration ?? const Duration(),
-          ));
-        });
+              emit(state.copyWith(
+                recordingDuration: e.duration ?? const Duration(),
+              ));
+            });
       } else {
-        _recordingProgressSubscription?.cancel();
+        _recordingDurationSubscription?.cancel();
       }
 
       emit(state.copyWith(
@@ -215,27 +214,6 @@ class ChatCubit extends BaseCubit<ChatState> {
     });
 
     getBottomTextAreaHeight();
-
-    _recordingStateSubscription = audioRecorder.stateStream?.listen((e) async {
-      if (e.state == SoundRecorderState.isRecording) {
-        emit(state.copyWith(
-          recordingDuration: const Duration(),
-        ));
-
-        _recordingDurationSubscription =
-            audioRecorder.onProgress?.listen((e) async {
-          emit(state.copyWith(
-            recordingDuration: e.duration ?? const Duration(),
-          ));
-        });
-      } else {
-        _recordingDurationSubscription?.cancel();
-      }
-
-      emit(state.copyWith(
-        isRecording: e.state == SoundRecorderState.isRecording,
-      ));
-    });
   }
 
   @override
@@ -261,7 +239,6 @@ class ChatCubit extends BaseCubit<ChatState> {
     _refreshChatInfoSubscription.cancel();
 
     _recordingDurationSubscription?.cancel();
-    _recordingStateSubscription?.cancel();
 
     return super.close();
   }
