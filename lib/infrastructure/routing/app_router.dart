@@ -1,5 +1,4 @@
 import 'package:shared_advisor_interface/infrastructure/routing/route_paths.dart';
-import 'package:shared_advisor_interface/presentation/screens/all_brands/all_brands_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/force_update/force_update_screen.dart';
 import 'package:shared_advisor_interface/presentation/screens/home_screen/main_home_screen.dart';
 import 'package:auto_route/auto_route.dart';
@@ -24,11 +23,6 @@ import 'package:zodiac/infrastructure/routing/app_router.dart';
       page: ForceUpdateScreen,
       path: RoutePaths.forceUpdateScreen,
       name: RoutePaths.forceUpdateScreen,
-    ),
-    AutoRoute(
-      page: AllBrandsScreen,
-      path: RoutePaths.allBrandsScreen,
-      name: RoutePaths.allBrandsScreen,
     ),
   ],
 )

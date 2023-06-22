@@ -50,6 +50,12 @@ class ChatScreen extends StatelessWidget {
         final bool offlineSessionIsActive = context
             .select((ChatCubit cubit) => cubit.state.offlineSessionIsActive);
 
+        final bool isVisibleTextField =
+            context.select((ChatCubit cubit) => cubit.state.isVisibleTextField);
+
+        final bool showTextField =
+            (chatIsActive || offlineSessionIsActive) && isVisibleTextField;
+
         return WillPopScope(
           onWillPop: () async {
             if (chatIsActive) {
@@ -76,11 +82,8 @@ class ChatScreen extends StatelessWidget {
                       chatCubit.logoutChat(context);
                     }
                   },
-                  endChatButtonOnTap: chatIsActive
-                      ? () {
-                          _endChat(context);
-                        }
-                      : null,
+                  endChatButtonOnTap:
+                      chatIsActive ? () => _endChat(context) : null,
                 ),
                 body: Stack(
                   clipBehavior: Clip.none,
@@ -126,7 +129,7 @@ class ChatScreen extends StatelessWidget {
                               }
                             }),
                           ),
-                          if (chatIsActive || offlineSessionIsActive)
+                          if (showTextField)
                             const _BottomPaddingContainerIfHasTextInputField(),
                         ],
                       ),
@@ -189,7 +192,7 @@ class ChatScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              if (chatIsActive || offlineSessionIsActive)
+              if (showTextField)
                 KeyboardSizeProvider(
                   child: Builder(builder: (context) {
                     final bool needBarrierColor = context.select(

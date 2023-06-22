@@ -1,10 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'chat_message_state.freezed.dart';
+part 'resend_message_state.freezed.dart';
 
 @freezed
-class ChatMessageState with _$ChatMessageState {
-  const factory ChatMessageState({
+class ResendMessageState with _$ResendMessageState {
+  const factory ResendMessageState({
     @Default(false) bool showResendWidget,
   }) = _ChatMessageState;
 }

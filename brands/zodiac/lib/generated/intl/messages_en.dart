@@ -109,7 +109,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "editProfileZodiac":
             MessageLookupByLibrary.simpleMessage("Edit profile"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("Email"),
-        "endChatZodiac": MessageLookupByLibrary.simpleMessage("End\nchat"),
         "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Enter your email address and we\'ll send you instructions to create a new password"),
@@ -188,8 +187,6 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Performance Overview Analytics"),
         "personalBalanceZodiac":
             MessageLookupByLibrary.simpleMessage("Personal Balance:"),
-        "phoneIsAlreadyExistZodiac":
-            MessageLookupByLibrary.simpleMessage("Phone is already exist"),
         "phoneNumberVerifiedZodiac":
             MessageLookupByLibrary.simpleMessage("Phone number verified"),
         "phoneNumberZodiac":
@@ -232,6 +229,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Service"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Services"),
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sessions"),
+        "sorryPhoneVerificationUnavailable": MessageLookupByLibrary.simpleMessage(
+            "Sorry, phone verification is currently unavailable. Please try again later."),
         "startChatZodiac": MessageLookupByLibrary.simpleMessage("Start Chat"),
         "successZodiac": MessageLookupByLibrary.simpleMessage("Success"),
         "templatesContentZodiac":
@@ -275,7 +274,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "youHaveVerificationAttemptsPerDayZodiac": m8,
         "youMissedCallFromZodiac": m9,
         "youMissedChatFromZodiac": m10,
-        "youWereBlocked": MessageLookupByLibrary.simpleMessage(
+        "youWhereBlocked": MessageLookupByLibrary.simpleMessage(
             "Your account has been blocked.<br>Please contact <a href=\'\'>Customer Support</a> to resolve the issue"),
         "yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac":
             MessageLookupByLibrary.simpleMessage(

@@ -851,10 +851,10 @@ class SFortunica {
     );
   }
 
-  /// `The month is not over yet`
+  /// `No sessions were completed this month`
   String get youHaveNotYetCompletedThisMonthsSessionsFortunica {
     return Intl.message(
-      'The month is not over yet',
+      'No sessions were completed this month',
       name: 'youHaveNotYetCompletedThisMonthsSessionsFortunica',
       desc: '',
       args: [],
@@ -2015,6 +2015,26 @@ class SFortunica {
     return Intl.message(
       'Card Reading',
       name: 'tarotSessionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Canceled`
+  String get cancelledFortunica {
+    return Intl.message(
+      'Canceled',
+      name: 'cancelledFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Earned this month:`
+  String get earnedThisMonthFortunica {
+    return Intl.message(
+      'Earned this month:',
+      name: 'earnedThisMonthFortunica',
       desc: '',
       args: [],
     );

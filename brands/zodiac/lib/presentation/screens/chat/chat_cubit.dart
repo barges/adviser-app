@@ -24,6 +24,9 @@ import 'package:zodiac/presentation/base_cubit/base_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/chat_state.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/chat_text_input_widget.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
+import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
+import 'package:zodiac/services/websocket_manager/paid_free_event.dart';
+import 'package:zodiac/services/websocket_manager/room_paused_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac.dart';
@@ -188,7 +191,8 @@ class ChatCubit extends BaseCubit<ChatState> {
 
     addListener(_webSocketManager.offlineSessionIsActiveStream.listen((event) {
       if (event.clientId == clientData.id) {
-        emit(state.copyWith(offlineSessionIsActive: event.isActive));
+        emit(state.copyWith(
+            offlineSessionIsActive: event.isActive, isVisibleTextField: true));
         if (event.timeout != null && event.isActive) {
           emit(state.copyWith(
               showOfflineSessionsMessage: true,
@@ -334,6 +338,16 @@ class ChatCubit extends BaseCubit<ChatState> {
         emit(state.copyWith(chatPaymentStatus: event.status));
       }
     }));
+
+    _roomPausedSubscription =
+        _webSocketManager.roomPausedStream.listen((event) {
+      if (event.opponentId == clientData.id) {
+        if (event.isPaused) {
+          _chatTimer?.cancel();
+        }
+        emit(state.copyWith(isVisibleTextField: !event.isPaused));
+      }
+    });
 
     getClientInformation();
   }

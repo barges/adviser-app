@@ -22,7 +22,7 @@ class ChatMessageModel with _$ChatMessageModel {
   const factory ChatMessageModel({
     @JsonKey(fromJson: _typeFromJson, toJson: _typeToJson)
     @Default(ChatMessageType.simple)
-        ChatMessageType type,
+    ChatMessageType type,
     int? id,
     @JsonKey(fromJson: _dateFromSeconds, toJson: _dateToSeconds) DateTime? utc,
     int? timerReal,
@@ -31,7 +31,7 @@ class ChatMessageModel with _$ChatMessageModel {
     String? message,
     @JsonKey(fromJson: _boolFromInt, toJson: _boolToInt)
     @Default(false)
-        bool isRead,
+    bool isRead,
     int? roomId,
     @JsonKey(name: 'productBox') ProductBox? productBox,
     String? price,
@@ -42,7 +42,7 @@ class ChatMessageModel with _$ChatMessageModel {
     int? tipsId,
     @JsonKey(name: 'me', fromJson: _boolFromInt, toJson: _boolToInt)
     @Default(false)
-        bool isOutgoing,
+    bool isOutgoing,
     String? name,
     String? authorName,
     String? description,
@@ -56,7 +56,7 @@ class ChatMessageModel with _$ChatMessageModel {
     @Default(false)
         bool supportsReaction,
     @JsonKey(unknownEnumValue: MissedMessageAction.none)
-        MissedMessageAction? action,
+    MissedMessageAction? action,
     @JsonKey(name: 'main') String? mainImage,
     String? thumbnail,
     String? couponImage,

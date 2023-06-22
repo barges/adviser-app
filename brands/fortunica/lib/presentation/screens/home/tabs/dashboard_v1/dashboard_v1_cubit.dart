@@ -1,10 +1,11 @@
 import 'dart:async';
 
+import 'package:fortunica/data/models/reports_endpoint/reports_month.dart';
+import 'package:fortunica/data/models/reports_endpoint/reports_year.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:collection/collection.dart';
 import 'package:shared_advisor_interface/extensions.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortunica/data/cache/fortunica_caching_manager.dart';
 import 'package:fortunica/data/models/reports_endpoint/reports_statistics.dart';
@@ -48,18 +49,55 @@ class DashboardV1Cubit extends Cubit<DashboardV1State> {
   }
 
   Future<void> getReports() async {
-    if (await _connectivityService.checkConnection()) {
-      final ReportsResponse reportsResponse =
-          await _userRepository.getUserReports();
-      ReportsStatistics? statistics = reportsResponse
-          .dateRange?.firstOrNull?.months?.firstOrNull?.statistics;
-      emit(
-        state.copyWith(
+    try {
+      if (await _connectivityService.checkConnection()) {
+        final List<ReportsMonth> months = [];
+
+        final ReportsResponse reportsResponse =
+            await _userRepository.getUserReports();
+
+        ReportsStatistics? statistics = reportsResponse
+            .dateRange?.firstOrNull?.months?.firstOrNull?.statistics;
+
+        for (ReportsYear year in reportsResponse.dateRange ?? []) {
+          months.addAll(year.months ?? []);
+        }
+
+        emit(
+          state.copyWith(
             monthAmount: statistics?.total?.marketTotal?.amount ?? 0.0,
             currencySymbol:
-                statistics?.meta?.currency?.currencySymbolByName ?? ''),
-      );
+                statistics?.meta?.currency?.currencySymbolByName ?? '',
+            months: months,
+            reportsStatistics: months.firstOrNull?.statistics,
+            currentMonthIndex: 0,
+          ),
+        );
+      }
+    } catch (e) {
+      logger.d(e);
     }
+  }
+
+  Future<void> updateStatisticsByMonth(int index) async {
+    if (index > 0) {
+      final ReportsStatistics reportsStatistics =
+          await _userRepository.getUserReportsByMonth(
+        state.months[index].startDate ?? '',
+        state.months[index].endDate ?? '',
+      );
+
+      emit(state.copyWith(reportsStatistics: reportsStatistics));
+    } else {
+      emit(state.copyWith(
+        reportsStatistics: state.months.firstOrNull?.statistics,
+      ));
+    }
+  }
+
+  void updateCurrentMonthIndex(int index) {
+    emit(state.copyWith(currentMonthIndex: index));
+    updateStatisticsByMonth(index);
   }
 
   Future<void> refreshInfo() async {

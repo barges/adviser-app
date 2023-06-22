@@ -79,7 +79,7 @@
   "addNoteFortunica": "Add Note",
   "titleFortunica": "Title",
   "youHaveNotCompletedAnySessionsYetFortunica": "You have not completed any sessions yet",
-  "youHaveNotYetCompletedThisMonthsSessionsFortunica": "The month is not over yet",
+  "youHaveNotYetCompletedThisMonthsSessionsFortunica": "No sessions were completed this month",
   "avgDailyEarningsFortunica": "Avg Daily Earnings",
   "performanceOverviewAnalyticsFortunica": "Performance Overview Analytics",
   "editNoteFortunica": "Edit Note",
@@ -193,5 +193,7 @@
   "reading360SessionsFortunica": "360° Reading",
   "ritualSessionsFortunica": "Ritual Session",
   "astrologySessionsFortunica": "Astral Chart",
-  "tarotSessionsFortunica": "Card Reading"
+  "tarotSessionsFortunica": "Card Reading",
+  "cancelledFortunica": "Canceled",
+  "earnedThisMonthFortunica": "Earned this month:"
 }

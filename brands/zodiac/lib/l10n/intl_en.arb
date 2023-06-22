@@ -56,7 +56,7 @@
   "yourTransactionsHistoryWillAppearHereZodiac": "Your transactions history will appear here",
   "oopsYourLoginDetailsSeemToBeIncorrectGiveItAnotherTryOrTapResetPasswordZodiac": "😱 Oops! Your login details seem to be incorrect. Give it another try, or tap Reset Password.",
   "zodiacTeam": "Zodiac Team",
-  "youWereBlocked": "Your account has been blocked.<br>Please contact <a href=''>Customer Support</a> to resolve the issue",
+  "youWhereBlocked": "Your account has been blocked.<br>Please contact <a href=''>Customer Support</a> to resolve the issue",
   "customerSupportZodiac": "Customer Support",
   "editProfileZodiac": "Edit profile",
   "doYouReallyWantToDeleteLocaleNameFromYourListZodiac": "Do you really want to delete {localeName} from your list?",
@@ -113,7 +113,6 @@
   "okZodiac":"Ok",
   "limitReachedZodiac":"Limit reached",
   "youveReachedLimitPhoneVerificationAttemptsZodiac":"You’ve reached the limit of phone verification attempts. Please contact support.",
-  "phoneIsAlreadyExistZodiac": "Phone is already exist",
   "startChatZodiac": "Start Chat",
   "declineZodiac": "Decline",
   "incomingChatZodiac": "INCOMING Chat",
@@ -130,7 +129,6 @@
   "typeMessageZodiac": "Type message",
   "selectedPhotoZodiac": "Selected photo",
   "reconnectingZodiac": "Reconnecting...",
-  "endChatZodiac": "End\nchat",
   "doYouReallyWantToEndTheChatZodiac": "Do you really want to end the chat?",
   "yesZodiac": "Yes",
   "noZodiac": "No",
@@ -149,5 +147,6 @@
   "theMaximumImageSizeIs10MbZodiac": "The maximum image size is 10Mb.",
   "onlineZodiac": "Online",
   "busyZodiac": "Busy",
-  "offlineZodiac": "Offline"
+  "offlineZodiac": "Offline",
+  "sorryPhoneVerificationUnavailable": "Sorry, phone verification is currently unavailable. Please try again later."
 }
