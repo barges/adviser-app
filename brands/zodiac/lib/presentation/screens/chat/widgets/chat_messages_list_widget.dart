@@ -4,11 +4,10 @@ import 'package:scrollview_observer/scrollview_observer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget_reply_wrapper.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/down_button_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/chat_text_input_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/typing_indicator.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/wrappers/reaction_feature/reaction_feature_wrapper.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/wrappers/resend_message/resend_message_wrapper.dart';
 import 'package:zodiac/zodiac_constants.dart';
 
@@ -84,25 +83,13 @@ class ChatMessagesListWidget extends StatelessWidget {
                   });
                 } else {
                   final ChatMessageModel messageModel = messages[index - 1];
-                  if (!messageModel.isOutgoing && !messageModel.isRead) {
-                    return VisibilityDetector(
-                      key: Key(messageModel.id.toString()),
-                      onVisibilityChanged: (visibilityInfo) {
-                        if (visibilityInfo.visibleFraction == 1) {
-                          chatCubit.sendReadMessage(messageModel.id);
-                        }
-                      },
-                      child: messageModel.supportsReaction == true
-                          ? ReactionFeatureWrapper(
-                              chatMessageModel: messageModel)
-                          : ChatMessageWidget(
-                              chatMessageModel: messageModel,
-                            ),
-                    );
-                  }
-                  if (messageModel.isOutgoing && messageModel.isDelivered) {
-                    return ChatMessageWidget(
+                  if (messageModel.isOutgoing || messageModel.isRead) {
+                    return ChatMessageWidgetReplyWrapper(
+                      key: messageModel.isOutgoing
+                          ? ValueKey(messageModel.mid)
+                          : null,
                       chatMessageModel: messageModel,
+                      chatIsActive: chatIsActive,
                     );
                   } else if (messageModel.isOutgoing &&
                       !messageModel.isDelivered) {
@@ -111,11 +98,18 @@ class ChatMessagesListWidget extends StatelessWidget {
                       chatMessageModel: messageModel,
                     );
                   } else {
-                    return messageModel.supportsReaction == true
-                        ? ReactionFeatureWrapper(chatMessageModel: messageModel)
-                        : ChatMessageWidget(
-                            chatMessageModel: messageModel,
-                          );
+                    return VisibilityDetector(
+                      key: Key(messageModel.id.toString()),
+                      onVisibilityChanged: (visibilityInfo) {
+                        if (visibilityInfo.visibleFraction == 1) {
+                          chatCubit.sendReadMessage(messageModel.id);
+                        }
+                      },
+                      child: ChatMessageWidgetReplyWrapper(
+                        chatMessageModel: messageModel,
+                        chatIsActive: chatIsActive,
+                      ),
+                    );
                   }
                 }
               },

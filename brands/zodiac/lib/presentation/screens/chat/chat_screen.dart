@@ -133,7 +133,7 @@ class ChatScreen extends StatelessWidget {
                               }
                             }),
                           ),
-                          if (chatIsActive || offlineSessionIsActive)
+                          if (showTextField)
                             const _BottomPaddingContainerIfHasTextInputField(),
                         ],
                       ),

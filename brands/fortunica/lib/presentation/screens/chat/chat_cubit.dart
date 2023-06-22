@@ -92,8 +92,10 @@ class ChatCubit extends BaseCubit<ChatState> {
   double _maxAttachmentSizeInMb = 0;
   int? _recordAudioDuration;
   AnswerRequest? _answerRequest;
-  StreamSubscription<RecorderDisposition>? _recordingProgressSubscription;
   late final StreamSubscription<bool> _refreshChatInfoSubscription;
+
+  StreamSubscription<RecorderDisposition>? _recordingProgressSubscription;
+  StreamSubscription<RecorderDisposition>? _recordingDurationSubscription;
 
   Timer? _answerTimer;
   bool _counterMessageCleared = false;
@@ -183,14 +185,14 @@ class ChatCubit extends BaseCubit<ChatState> {
           recordingDuration: const Duration(),
         ));
 
-        _recordingProgressSubscription =
+        _recordingDurationSubscription =
             audioRecorder.onProgress?.listen((e) async {
-          emit(state.copyWith(
-            recordingDuration: e.duration ?? const Duration(),
-          ));
-        });
+              emit(state.copyWith(
+                recordingDuration: e.duration ?? const Duration(),
+              ));
+            });
       } else {
-        _recordingProgressSubscription?.cancel();
+        _recordingDurationSubscription?.cancel();
       }
 
       emit(state.copyWith(
@@ -235,6 +237,8 @@ class ChatCubit extends BaseCubit<ChatState> {
     _answerTimer?.cancel();
 
     _refreshChatInfoSubscription.cancel();
+
+    _recordingDurationSubscription?.cancel();
 
     return super.close();
   }

@@ -63,7 +63,9 @@ class ChatMessageModel with _$ChatMessageModel {
     int? length,
     RepliedMessage? repliedMessage,
     String? mid,
-    @JsonKey(ignore: true) @Default(true) bool isDelivered,
+    @JsonKey(ignore: true)
+    @Default(true)
+    bool isDelivered,
   }) = _ChatMessageModel;
 
   factory ChatMessageModel.fromJson(Map<String, dynamic> json) =>
