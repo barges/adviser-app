@@ -50,7 +50,11 @@ class ChatMessageModel with _$ChatMessageModel {
     int? dateExpire,
     @JsonKey(fromJson: _boolFromInt, toJson: _boolToInt)
     @Default(false)
-    bool fromAdvisor,
+        bool fromAdvisor,
+    @Default(false)
+        bool supportsReply,
+    @Default(false)
+        bool supportsReaction,
     @JsonKey(unknownEnumValue: MissedMessageAction.none)
     MissedMessageAction? action,
     @JsonKey(name: 'main') String? mainImage,
@@ -61,8 +65,9 @@ class ChatMessageModel with _$ChatMessageModel {
     int? length,
     RepliedMessage? repliedMessage,
     String? mid,
-    bool? supportsReaction,
-    @JsonKey(ignore: true) @Default(true) bool isDelivered,
+    @JsonKey(ignore: true)
+    @Default(true)
+    bool isDelivered,
   }) = _ChatMessageModel;
 
   factory ChatMessageModel.fromJson(Map<String, dynamic> json) =>

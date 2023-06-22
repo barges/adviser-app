@@ -6,20 +6,57 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
-import 'package:snapping_sheet/snapping_sheet.dart';
+import 'package:snapping_sheet_2/snapping_sheet.dart';
+import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/chat_state.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/grabbing_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/replied_message_widget.dart';
 
-const grabbingHeight = 16.0;
-const stretchedTextFieldTopPaddingF = 21.0;
+const constGrabbingHeight = 16.0;
+const repliedMessageHeight = 48.0;
+const stretchedTextFieldTopPadding = 21.0;
 const scrollbarThickness = 4.0;
-const bottomPartTextInputHeight = AppConstants.appBarHeight;
+const constBottomPartTextInputHeight = 52.0;
 
-class ChatTextInputWidget extends StatelessWidget {
+class ChatTextInputWidget extends StatefulWidget {
+  final ChatMessageModel? repliedMessage;
+
   const ChatTextInputWidget({
     Key? key,
+    this.repliedMessage,
   }) : super(key: key);
+
+  @override
+  State<ChatTextInputWidget> createState() => _ChatTextInputWidgetState();
+}
+
+class _ChatTextInputWidgetState extends State<ChatTextInputWidget> {
+  final TextEditingController textInputEditingController =
+      TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    textInputEditingController.addListener(() {
+      final ChatCubit chatCubit = context.read<ChatCubit>();
+      final String text = textInputEditingController.text;
+      if (text.isNotEmpty) {
+        chatCubit.updateInputTextInfo(text.length, text.trim().isNotEmpty);
+      } else {
+        chatCubit.updateInputTextInfo(0, false);
+      }
+      chatCubit.sendWriteStatus();
+    });
+  }
+
+  @override
+  void dispose() {
+    textInputEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +66,8 @@ class ChatTextInputWidget extends StatelessWidget {
 
     return BlocListener<ChatCubit, ChatState>(
       listenWhen: (prev, current) =>
-          prev.inputTextLength != current.inputTextLength,
+          prev.inputTextLength != current.inputTextLength ||
+          prev.repliedMessage != current.repliedMessage,
       listener: (context, state) {
         final double maxWidth = MediaQuery.of(context).size.width -
             scrollbarThickness -
@@ -40,16 +78,25 @@ class ChatTextInputWidget extends StatelessWidget {
           height: 1.2,
         );
         chatCubit.updateHiddenInputHeight(
-          Utils.getTextHeight(
-              chatCubit.textInputEditingController.text, style, maxWidth),
+          Utils.getTextHeight(textInputEditingController.text, style, maxWidth),
           Utils.getTextHeight('\n\n\n\n', style, maxWidth),
         );
       },
       child: Builder(builder: (context) {
         final bool textInputFocused =
             context.select((ChatCubit cubit) => cubit.state.textInputFocused);
+
         final bool isStretchedTextField = context
             .select((ChatCubit cubit) => cubit.state.isStretchedTextField);
+
+        final bool hasRepliedMessage = widget.repliedMessage != null;
+
+        final double bottomPartTextInputHeight = hasRepliedMessage
+            ? constBottomPartTextInputHeight + repliedMessageHeight
+            : constBottomPartTextInputHeight;
+
+        final double repliedHeight =
+            hasRepliedMessage ? repliedMessageHeight / 2 : 0.0;
 
         context.select((ChatCubit cubit) => cubit.state.keyboardOpened);
 
@@ -71,11 +118,12 @@ class ChatTextInputWidget extends StatelessWidget {
                           .bottom -
                       bottomPartTextInputHeight -
                       (AppConstants.appBarHeight / 2) -
-                      stretchedTextFieldTopPaddingF;
+                      stretchedTextFieldTopPadding;
 
                   return Flexible(
                     child: SnappingSheet(
-                      grabbingHeight: grabbingHeight,
+                      grabbingHeight: constGrabbingHeight +
+                          (hasRepliedMessage ? repliedMessageHeight : 0.0),
                       onSheetMoved: (data) {
                         if (data.relativeToSnappingPositions > 0.1) {
                           chatCubit.updateTextFieldIsCollapse(false);
@@ -94,57 +142,36 @@ class ChatTextInputWidget extends StatelessWidget {
                       },
                       controller: chatCubit.snappingSheetController,
                       initialSnappingPosition: SnappingPosition.pixels(
-                        positionPixels: textInputHeight + grabbingHeight * 2,
+                        positionPixels: textInputHeight +
+                            constGrabbingHeight * 2 +
+                            (hasRepliedMessage ? repliedHeight : 0.0),
                       ),
                       snappingPositions: [
                         SnappingPosition.pixels(
-                          positionPixels: textInputHeight + grabbingHeight * 2,
+                          positionPixels: textInputHeight +
+                              constGrabbingHeight * 2 +
+                              (hasRepliedMessage ? repliedHeight : 0.0),
                         ),
                         SnappingPosition.pixels(
-                          positionPixels: h + grabbingHeight,
+                          positionPixels: h +
+                              constGrabbingHeight +
+                              (hasRepliedMessage ? repliedMessageHeight : 0.0),
                         ),
                       ],
-                      grabbing: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: grabbingHeight,
-                        decoration:
-                            BoxDecoration(color: theme.canvasColor, boxShadow: [
-                          BoxShadow(
-                            blurRadius: 2.0,
-                            spreadRadius: 2.0,
-                            color: theme.canvasColor,
-                            offset: const Offset(0, 10),
-                          )
-                        ]),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 1.0,
-                              color: theme.hintColor,
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 5.0),
-                              height: 4.0,
-                              width: 48.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(90.0),
-                                color: theme.hintColor,
-                              ),
-                            ),
-                            const SizedBox(height: 6.0)
-                          ],
-                        ),
+                      grabbing: GrabbingWidget(
+                        repliedMessage: widget.repliedMessage,
                       ),
                       sheetBelow: SnappingSheetContent(
-                        draggable: true,
                         childScrollController: isStretchedTextField
                             ? chatCubit.textInputScrollController
                             : null,
                         child: Container(
                           color: theme.canvasColor,
-                          child: _InputTextField(key: chatCubit.textInputKey),
+                          child: _InputTextField(
+                            key: chatCubit.textInputKey,
+                            textInputEditingController:
+                                textInputEditingController,
+                          ),
                         ),
                       ),
                     ),
@@ -152,15 +179,22 @@ class ChatTextInputWidget extends StatelessWidget {
                 }),
               Container(
                 color: theme.canvasColor,
-                height: bottomPartTextInputHeight +
-                    (textInputFocused
-                        ? 0.0
-                        : MediaQuery.of(context).padding.bottom),
+                height: textInputFocused
+                    ? constBottomPartTextInputHeight
+                    : bottomPartTextInputHeight +
+                        (textInputFocused
+                            ? 0.0
+                            : MediaQuery.of(context).padding.bottom),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
+                    if (!textInputFocused && hasRepliedMessage)
+                      RepliedMessageWidget(
+                        repliedMessage: widget.repliedMessage!,
+                      ),
                     Builder(builder: (context) {
                       return Container(
-                        height: bottomPartTextInputHeight,
+                        height: constBottomPartTextInputHeight,
                         padding: EdgeInsets.fromLTRB(
                           AppConstants.horizontalScreenPadding,
                           textInputFocused ? 0.0 : 10.0,
@@ -188,7 +222,10 @@ class ChatTextInputWidget extends StatelessWidget {
                                       child: Assets.vectors.plusRounded.svg(
                                         width: AppConstants.iconSize,
                                         height: AppConstants.iconSize,
-                                        color: theme.iconTheme.color,
+                                        colorFilter: ColorFilter.mode(
+                                          theme.shadowColor,
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -206,7 +243,10 @@ class ChatTextInputWidget extends StatelessWidget {
                                   child: Assets.vectors.gallery.svg(
                                     width: AppConstants.iconSize,
                                     height: AppConstants.iconSize,
-                                    color: theme.iconTheme.color,
+                                    colorFilter: ColorFilter.mode(
+                                      theme.shadowColor,
+                                      BlendMode.srcIn,
+                                    ),
                                   ),
                                 )
                               ],
@@ -214,7 +254,7 @@ class ChatTextInputWidget extends StatelessWidget {
                             if (!textInputFocused)
                               Builder(builder: (context) {
                                 final String text =
-                                    chatCubit.textInputEditingController.text;
+                                    textInputEditingController.text;
                                 return Expanded(
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -228,9 +268,7 @@ class ChatTextInputWidget extends StatelessWidget {
                                         },
                                         child: text.isNotEmpty
                                             ? Text(
-                                                chatCubit
-                                                    .textInputEditingController
-                                                    .text,
+                                                textInputEditingController.text,
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 textAlign: TextAlign.start,
@@ -261,7 +299,10 @@ class ChatTextInputWidget extends StatelessWidget {
                                 child: Assets.zodiac.vectors.emoji.svg(
                                   width: AppConstants.iconSize,
                                   height: AppConstants.iconSize,
-                                  color: theme.iconTheme.color,
+                                  colorFilter: ColorFilter.mode(
+                                    theme.shadowColor,
+                                    BlendMode.srcIn,
+                                  ),
                                 ),
                               ),
                             Builder(builder: (context) {
@@ -291,7 +332,11 @@ class ChatTextInputWidget extends StatelessWidget {
                                   child: AppIconGradientButton(
                                     onTap: () {
                                       if (isSendButtonEnabled) {
-                                        chatCubit.sendMessageToChat();
+                                        chatCubit.sendMessageToChat(
+                                          text: textInputEditingController.text
+                                              .trim(),
+                                        );
+                                        textInputEditingController.clear();
                                         if (!chatCubit.state.chatIsActive &&
                                             !chatCubit
                                                 .state.offlineSessionIsActive) {
@@ -323,8 +368,11 @@ class ChatTextInputWidget extends StatelessWidget {
 }
 
 class _InputTextField extends StatelessWidget {
+  final TextEditingController textInputEditingController;
+
   const _InputTextField({
     Key? key,
+    required this.textInputEditingController,
   }) : super(key: key);
 
   @override
@@ -353,7 +401,7 @@ class _InputTextField extends StatelessWidget {
           keyboardType: TextInputType.multiline,
           textCapitalization: TextCapitalization.sentences,
           scrollPhysics: const ClampingScrollPhysics(),
-          controller: chatCubit.textInputEditingController,
+          controller: textInputEditingController,
           focusNode: chatCubit.textInputFocusNode,
           maxLines: isCollapsed ? 5 : null,
           minLines: isCollapsed ? 1 : null,
