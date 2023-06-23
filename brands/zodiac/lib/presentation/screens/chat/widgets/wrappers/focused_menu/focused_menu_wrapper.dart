@@ -11,14 +11,16 @@ import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget_reply_wrapper.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/wrappers/focused_menu/focused_menu_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/wrappers/focused_menu/focused_menu_holder.dart';
 
 class FocusedMenuWrapper extends StatefulWidget {
   final ChatMessageModel chatMessageModel;
+  final bool chatIsActive;
 
-  const FocusedMenuWrapper({Key? key, required this.chatMessageModel})
+  const FocusedMenuWrapper(
+      {Key? key, required this.chatMessageModel, required this.chatIsActive})
       : super(key: key);
 
   @override
@@ -33,10 +35,8 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
     final ThemeData theme = Theme.of(context);
     final bool isDarkMode = Utils.isDarkMode(context);
     final ChatCubit chatCubit = context.read<ChatCubit>();
-    final bool chatIsActive =
-        context.select((ChatCubit cubit) => cubit.state.chatIsActive);
     final bool focusedMenuEnabled =
-        widget.chatMessageModel.supportsReaction == true && chatIsActive;
+        widget.chatMessageModel.supportsReaction == true && widget.chatIsActive;
 
     if (focusedMenuEnabled) {
       return BlocProvider(
@@ -174,15 +174,19 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
                     itemCount: recentEmojis.length + 1),
               );
             }),
-            child: ChatMessageWidget(
+            child: ChatMessageWidgetReplyWrapper(
               chatMessageModel: widget.chatMessageModel,
+              chatIsActive: widget.chatIsActive,
+              chatCubit: chatCubit,
             ),
           );
         }),
       );
     } else {
-      return ChatMessageWidget(
+      return ChatMessageWidgetReplyWrapper(
         chatMessageModel: widget.chatMessageModel,
+        chatIsActive: widget.chatIsActive,
+        chatCubit: chatCubit,
       );
     }
   }

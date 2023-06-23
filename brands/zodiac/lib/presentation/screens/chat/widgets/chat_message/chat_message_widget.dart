@@ -12,9 +12,6 @@ import 'package:zodiac/presentation/screens/chat/widgets/messages/simple_message
 import 'package:zodiac/presentation/screens/chat/widgets/messages/start_chat_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/system_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/tips_message_widget.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/resend_message_widget.dart';
-import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
-import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ChatMessageWidget extends StatelessWidget {
   final ChatMessageModel chatMessageModel;
