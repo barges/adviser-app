@@ -83,7 +83,7 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
                         ),
                       ),
                       backgroundColor: theme.unselectedWidgetColor,
-                      trailingIcon: Assets.vectors.arrowReturn.svg(
+                      trailingIcon: Assets.zodiac.vectors.arrowReply.svg(
                         height: AppConstants.iconSize,
                         width: AppConstants.iconSize,
                         color: theme.shadowColor,
