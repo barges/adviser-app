@@ -9,12 +9,15 @@ class BaseResponse {
   final int? errorCode;
   @JsonKey(name: 'error_msg')
   final String? errorMsg;
+  @JsonKey(name: 'error_field')
+  final String? errorField;
   final String? message;
 
   const BaseResponse({
     this.status,
     this.errorCode,
     this.errorMsg,
+    this.errorField,
     this.message,
   });
 

@@ -133,13 +133,7 @@ class AppInterceptor extends Interceptor {
 
     BaseResponse baseResponse = BaseResponse.fromJson(response.data);
 
-    if (baseResponse.errorCode == 3) {
-      _zodiacMainCubit.updateErrorMessage(
-        UIError(
-          uiErrorType: UIErrorType.phoneIsAlreadyExist,
-        ),
-      );
-    } else if (baseResponse.errorCode == 5) {
+    if (baseResponse.errorCode == 5) {
       _webSocketManager.close();
       await _cachingManager.logout();
       context?.replaceAll([const ZodiacAuth()]);

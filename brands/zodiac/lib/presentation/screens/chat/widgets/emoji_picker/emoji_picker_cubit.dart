@@ -6,8 +6,17 @@ import 'package:zodiac/presentation/screens/chat/widgets/emoji_picker/emoji_pick
 
 class EmojiPickerCubit extends Cubit<EmojiPickerState> {
   final PageController categoriesPageController = PageController();
+  final FocusNode searchFocusNode = FocusNode();
 
-  EmojiPickerCubit() : super(const EmojiPickerState());
+  EmojiPickerCubit() : super(const EmojiPickerState()) {
+    searchFocusNode.addListener(() {
+      final bool value = searchFocusNode.hasFocus;
+      emit(state.copyWith(searchFieldFocused: value));
+      if (!value && state.searchedEmojis.isEmpty) {
+        emit(state.copyWith(categoryIndex: 0));
+      }
+    });
+  }
 
   void setCategoryIndex(int index, {bool shouldJump = false}) {
     emit(state.copyWith(categoryIndex: index));
@@ -24,13 +33,6 @@ class EmojiPickerCubit extends Cubit<EmojiPickerState> {
       emit(state.copyWith(searchedEmojis: emojis));
     } else {
       emit(state.copyWith(searchedEmojis: []));
-    }
-  }
-
-  void setSearchFocused(bool value) {
-    emit(state.copyWith(searchFieldFocused: value));
-    if (!value && state.searchedEmojis.isEmpty) {
-      emit(state.copyWith(categoryIndex: 0));
     }
   }
 }

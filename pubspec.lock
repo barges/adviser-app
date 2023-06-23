@@ -1691,6 +1691,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  shimmer:
+    dependency: transitive
+    description:
+      name: shimmer
+      sha256: "5f88c883a22e9f9f299e5ba0e4f7e6054857224976a5d9f839d4ebdc94a14ac9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -1712,6 +1720,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
+  snapping_sheet_2:
+    dependency: transitive
+    description:
+      name: snapping_sheet_2
+      sha256: "8e7c7b746a226673cd5d2680b23dfa315e5ac75f551e8c05aa37eba24fb5487d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.5"
   source_gen:
     dependency: transitive
     description:

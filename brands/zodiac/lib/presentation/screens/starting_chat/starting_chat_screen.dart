@@ -62,7 +62,10 @@ class StartingChatScreen extends StatelessWidget {
                         Assets.zodiac.vectors.zodiacPsychicsLogo.svg(
                           width: 227.0,
                           height: 86.0,
-                          color: AppColors.purple,
+                          colorFilter: const ColorFilter.mode(
+                            AppColors.purple,
+                            BlendMode.srcIn,
+                          ),
                         ),
                         Expanded(
                           child: Column(
@@ -128,10 +131,13 @@ class StartingChatScreen extends StatelessWidget {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Assets.vectors.cross.svg(
+                              Assets.vectors.close.svg(
                                 height: AppConstants.iconSize,
                                 width: AppConstants.iconSize,
-                                color: theme.shadowColor,
+                                colorFilter: ColorFilter.mode(
+                                  theme.shadowColor,
+                                  BlendMode.srcIn,
+                                ),
                               ),
                               const SizedBox(
                                 width: 4.0,

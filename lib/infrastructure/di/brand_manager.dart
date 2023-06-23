@@ -42,7 +42,7 @@ class BrandManager {
     }
   }
 
-   List<BaseBrand> authorizedBrands() {
+  List<BaseBrand> authorizedBrands() {
     final List<String> authBrandsAliases = [];
     for (BaseBrand b in brands) {
       if (b.isAuth) {
@@ -124,22 +124,11 @@ class BrandManager {
   }
 
   Future<void> setCurrentBrand(BaseBrand brand) async {
-   await _cachingManager.saveCurrentBrand(brand);
+    await _cachingManager.saveCurrentBrand(brand);
   }
 
   StreamSubscription listenCurrentBrandStream(
       ValueChanged<BaseBrand> callback) {
     return _cachingManager.listenCurrentBrandStream(callback);
   }
-
-
-  static List<String> allBrands = [
-    Assets.images.brands.bitWine.path,
-    Assets.images.brands.purpleGarden.path,
-    Assets.images.brands.purpleTides.path,
-    Assets.images.brands.purpleOcean.path,
-    Assets.images.brands.zodiacPsychics.path,
-    Assets.images.brands.theraPeer.path,
-    Assets.images.brands.fortunica.path,
-  ];
 }

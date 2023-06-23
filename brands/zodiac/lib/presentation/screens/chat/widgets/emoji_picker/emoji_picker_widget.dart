@@ -52,9 +52,9 @@ class _EmojiPickerWidgetState extends State<EmojiPickerWidget> {
                   children: [
                     SearchWidget(
                       onChanged: emojiPickerCubit.searchEmojiByName,
-                      onFocused: emojiPickerCubit.setSearchFocused,
                       hasCancelButton: true,
                       backgroundColor: theme.scaffoldBackgroundColor,
+                      focusNode: emojiPickerCubit.searchFocusNode,
                     ),
                     if (searchedEmojis.isNotEmpty || searchFieldFocused)
                       SizedBox(

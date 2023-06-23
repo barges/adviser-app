@@ -12,15 +12,15 @@ class SearchWidget extends StatefulWidget {
   final bool isBorder;
   final bool hasCancelButton;
   final Color? backgroundColor;
-  final ValueChanged<bool>? onFocused;
+  final FocusNode? focusNode;
 
   const SearchWidget({
     Key? key,
     required this.onChanged,
     this.backgroundColor,
-    this.onFocused,
     this.autofocus = false,
     this.isBorder = true,
+    this.focusNode,
     this.hasCancelButton = false,
   }) : super(key: key);
 
@@ -35,8 +35,6 @@ class _SearchWidgetState extends State<SearchWidget> {
 
   final TextEditingController _searchTextController = TextEditingController();
 
-  final FocusNode _searchFocusNode = FocusNode();
-
   @override
   void initState() {
     super.initState();
@@ -45,12 +43,6 @@ class _SearchWidgetState extends State<SearchWidget> {
         .listen((text) async {
       widget.onChanged(text);
     });
-
-    if (widget.onFocused != null) {
-      _searchFocusNode.addListener(() {
-        widget.onFocused!(_searchFocusNode.hasFocus);
-      });
-    }
   }
 
   @override
@@ -58,7 +50,6 @@ class _SearchWidgetState extends State<SearchWidget> {
     _searchTextController.dispose();
     _searchSubscription.cancel();
     _searchStream.close();
-    _searchFocusNode.dispose();
     super.dispose();
   }
 
@@ -112,8 +103,8 @@ class _SearchWidgetState extends State<SearchWidget> {
                   ),
                   Expanded(
                     child: TextField(
-                      focusNode: _searchFocusNode,
                       autofocus: widget.autofocus,
+                      focusNode: widget.focusNode,
                       controller: _searchTextController,
                       onChanged: (text) {
                         _searchStream.add(text);
@@ -161,7 +152,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                       BorderRadius.circular(AppConstants.buttonRadius),
                   color: backgroundColor,
                 ),
-                child: Assets.vectors.cross.svg(
+                child: Assets.zodiac.vectors.crossSmall.svg(
                   height: AppConstants.iconSize,
                   width: AppConstants.iconSize,
                   color: theme.primaryColor,

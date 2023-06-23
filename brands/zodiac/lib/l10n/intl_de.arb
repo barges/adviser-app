@@ -55,7 +55,7 @@
   "noTransactionsYetZodiac":"No transactions, yet",
   "yourTransactionsHistoryWillAppearHereZodiac": "Your transactions history will appear here",
   "zodiacTeam": "Zodiac Team",
-  "youWereBlocked": "Ihr Konto wurde gesperrt.<br>Bitte wenden Sie sich an den <a href=''>Kundensupport</a>, um das Problem zu lösen",
+  "youWhereBlocked": "Ihr Konto wurde gesperrt.<br>Bitte wenden Sie sich an den <a href=''>Kundensupport</a>, um das Problem zu lösen",
   "editProfileZodiac": "Profil bearbeiten",
   "doYouReallyWantToDeleteLocaleNameFromYourListZodiac": "Möchten Sie {localeName} wirklich aus Ihrer Liste löschen?",
   "nicknameZodiac": "Spitzname",
@@ -111,7 +111,6 @@
   "okZodiac":"Ok",
   "limitReachedZodiac":"Limit erreicht",
   "youveReachedLimitPhoneVerificationAttemptsZodiac":"Sie haben das Limit für telefonische Bestätigungsversuche erreicht. Bitte wenden Sie sich an den Support.",
-  "phoneIsAlreadyExistZodiac": "Telefon ist bereits vorhanden",
   "startChatZodiac": "Chat beginnen",
   "declineZodiac": "Abfall",
   "incomingChatZodiac": "EINGEHENDER Chat",
@@ -128,7 +127,6 @@
   "typeMessageZodiac": "Schreibe eine Nachricht",
   "selectedPhotoZodiac": "Ausgewähltes Foto",
   "reconnectingZodiac": "Wieder verbinden...",
-  "endChatZodiac": "Beende\nChat",
   "doYouReallyWantToEndTheChatZodiac": "Möchten Sie den Chat wirklich beenden?",
   "yesZodiac": "Ja",
   "noZodiac": "Nein",
@@ -156,5 +154,6 @@
   "travelAndPlacesZodiac": "Reisen & Orte",
   "objectsZodiac": "Objekte",
   "symbolsZodiac": "Symbole",
-  "flagsZodiac": "Flaggen"
+  "flagsZodiac": "Flaggen",
+  "sorryPhoneVerificationUnavailable":"Leider ist die telefonische Bestätigung derzeit nicht verfügbar. Bitte drei weitere Latr."
 }

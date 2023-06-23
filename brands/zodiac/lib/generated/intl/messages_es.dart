@@ -115,8 +115,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "editProfileZodiac":
             MessageLookupByLibrary.simpleMessage("Editar perfil"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("Email"),
-        "endChatZodiac":
-            MessageLookupByLibrary.simpleMessage("Finalizar\nchat"),
         "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Ingresa tu email y te enviaremos instrucciones para crear una nueva contraseña"),
@@ -201,8 +199,6 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Análisis General de Desempeño"),
         "personalBalanceZodiac":
             MessageLookupByLibrary.simpleMessage("Saldo Personal:"),
-        "phoneIsAlreadyExistZodiac":
-            MessageLookupByLibrary.simpleMessage("El teléfono ya existe"),
         "phoneNumberVerifiedZodiac": MessageLookupByLibrary.simpleMessage(
             "Número de teléfono verificado"),
         "phoneNumberZodiac":
@@ -249,6 +245,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sesiones"),
         "smileysAndPeopleZodiac":
             MessageLookupByLibrary.simpleMessage("Emoticonos y personas"),
+        "sorryPhoneVerificationUnavailable": MessageLookupByLibrary.simpleMessage(
+            "Lo sentimos, la verificación telefónica no está disponible actualmente. Por favor tres agan latr."),
         "startChatZodiac":
             MessageLookupByLibrary.simpleMessage("Comenzar chat"),
         "successZodiac": MessageLookupByLibrary.simpleMessage("Éxito"),
@@ -298,7 +296,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "youHaveVerificationAttemptsPerDayZodiac": m8,
         "youMissedCallFromZodiac": m9,
         "youMissedChatFromZodiac": m10,
-        "youWereBlocked": MessageLookupByLibrary.simpleMessage(
+        "youWhereBlocked": MessageLookupByLibrary.simpleMessage(
             "Su cuenta ha sido bloqueada.<br>Póngase en contacto con <a href=\'\'>Atención al cliente</a> para resolver el problema"),
         "yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac":
             MessageLookupByLibrary.simpleMessage(
