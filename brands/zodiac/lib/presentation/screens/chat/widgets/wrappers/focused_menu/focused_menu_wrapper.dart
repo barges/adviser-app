@@ -33,145 +33,158 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
     final ThemeData theme = Theme.of(context);
     final bool isDarkMode = Utils.isDarkMode(context);
     final ChatCubit chatCubit = context.read<ChatCubit>();
+    final bool chatIsActive =
+        context.select((ChatCubit cubit) => cubit.state.chatIsActive);
+    final bool focusedMenuEnabled =
+        widget.chatMessageModel.supportsReaction == true && chatIsActive;
 
-    return BlocProvider(
-      create: (context) => FocusedMenuCubit(widget.chatMessageModel.reaction),
-      child: Builder(builder: (context) {
-        List<Emoji> recentEmojis = context
-            .select((FocusedMenuCubit cubit) => cubit.state.recentEmojis);
-        return FocusedMenuHolder(
-          key: key,
-          onPressed: () {},
-          animateMenuItems: true,
-          menuWidth: 244.0,
-          menuOffset: 8.0,
-          menuBorderRadius: 12.0,
-          blurBackgroundColor:
-              AppColors.overlay.withOpacity(isDarkMode ? 0.8 : 0.3),
-          menuSeparator: Container(
-            height: 8.0,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              border: Border(
-                  top: BorderSide(
-                width: 1.0,
-                color: theme.shadowColor,
-              )),
-              color: isDarkMode
-                  ? AppColorsDark.menuSeparator
-                  : AppColorsLight.menuSeparator,
-            ),
-          ),
-          menuItems: [
-            FocusedMenuItem(
-              title: Text(
-                SZodiac.of(context).replyZodiac,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontSize: 17.0,
-                ),
-              ),
-              backgroundColor: theme.unselectedWidgetColor,
-              trailingIcon: Assets.vectors.arrowReturn.svg(
-                height: AppConstants.iconSize,
-                width: AppConstants.iconSize,
-                color: theme.shadowColor,
-              ),
-            ),
-            FocusedMenuItem(
-              title: Text(
-                SZodiac.of(context).cancelZodiac,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontSize: 17.0,
-                ),
-              ),
-              backgroundColor: theme.unselectedWidgetColor,
-              trailingIcon: Assets.vectors.cross.svg(
-                height: AppConstants.iconSize,
-                width: AppConstants.iconSize,
-                color: theme.shadowColor,
-              ),
-            ),
-          ],
-          topMenuWidget: Builder(builder: (context) {
-            return Container(
-              height: 48.0,
+    if (focusedMenuEnabled) {
+      return BlocProvider(
+        create: (context) => FocusedMenuCubit(widget.chatMessageModel.reaction),
+        child: Builder(builder: (context) {
+          List<Emoji> recentEmojis = context
+              .select((FocusedMenuCubit cubit) => cubit.state.recentEmojis);
+          return FocusedMenuHolder(
+            key: key,
+            onPressed: () {},
+            animateMenuItems: true,
+            menuWidth: 244.0,
+            menuOffset: 8.0,
+            menuBorderRadius: 12.0,
+            blurBackgroundColor:
+                AppColors.overlay.withOpacity(isDarkMode ? 0.8 : 0.3),
+            menuSeparator: Container(
+              height: 8.0,
+              width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.0),
-                color: theme.canvasColor,
+                border: Border(
+                    top: BorderSide(
+                  width: 1.0,
+                  color: theme.shadowColor,
+                )),
+                color: isDarkMode
+                    ? AppColorsDark.menuSeparator
+                    : AppColorsLight.menuSeparator,
               ),
-              padding: const EdgeInsets.all(4.0),
-              child: ListView.separated(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    if (recentEmojis.isNotEmpty &&
-                        index != recentEmojis.length) {
-                      return Builder(builder: (context) {
-                        final bool isSelected = recentEmojis[index].emoji ==
-                            widget.chatMessageModel.reaction;
+            ),
+            menuItems: [
+              FocusedMenuItem(
+                title: Text(
+                  SZodiac.of(context).replyZodiac,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontSize: 17.0,
+                  ),
+                ),
+                backgroundColor: theme.unselectedWidgetColor,
+                trailingIcon: Assets.vectors.arrowReturn.svg(
+                  height: AppConstants.iconSize,
+                  width: AppConstants.iconSize,
+                  color: theme.shadowColor,
+                ),
+              ),
+              FocusedMenuItem(
+                title: Text(
+                  SZodiac.of(context).cancelZodiac,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontSize: 17.0,
+                  ),
+                ),
+                backgroundColor: theme.unselectedWidgetColor,
+                trailingIcon: Assets.vectors.cross.svg(
+                  height: AppConstants.iconSize,
+                  width: AppConstants.iconSize,
+                  color: theme.shadowColor,
+                ),
+              ),
+            ],
+            topMenuWidget: Builder(builder: (context) {
+              return Container(
+                height: 48.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12.0),
+                  color: theme.canvasColor,
+                ),
+                padding: const EdgeInsets.all(4.0),
+                child: ListView.separated(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      if (recentEmojis.isNotEmpty &&
+                          index != recentEmojis.length) {
+                        return Builder(builder: (context) {
+                          final bool isSelected = recentEmojis[index].emoji ==
+                              widget.chatMessageModel.reaction;
+                          return GestureDetector(
+                            onTap: () {
+                              final String? messageId = _getMessageId();
+                              if (messageId != null) {
+                                chatCubit.sendReaction(
+                                    messageId,
+                                    isSelected
+                                        ? ''
+                                        : recentEmojis[index].emoji);
+                              }
+                              context.pop();
+                            },
+                            child: Container(
+                              height: 40.0,
+                              width: 40.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    isSelected ? 8.0 : 0.0),
+                                color:
+                                    isSelected ? theme.primaryColorLight : null,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  recentEmojis[index].emoji,
+                                  style: theme.textTheme.bodyMedium
+                                      ?.copyWith(fontSize: 30.0),
+                                ),
+                              ),
+                            ),
+                          );
+                        });
+                      } else {
                         return GestureDetector(
                           onTap: () {
-                            final String? messageId = _getMessageId();
-                            if (messageId != null) {
-                              chatCubit.sendReaction(messageId,
-                                  isSelected ? '' : recentEmojis[index].emoji);
-                            }
+                            chatCubit.setEmojiPickerOpened(_getMessageId());
                             context.pop();
                           },
                           child: Container(
                             height: 40.0,
                             width: 40.0,
                             decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(isSelected ? 8.0 : 0.0),
-                              color:
-                                  isSelected ? theme.primaryColorLight : null,
+                              borderRadius: BorderRadius.circular(8.0),
+                              color: theme.scaffoldBackgroundColor,
                             ),
                             child: Center(
-                              child: Text(
-                                recentEmojis[index].emoji,
-                                style: theme.textTheme.bodyMedium
-                                    ?.copyWith(fontSize: 30.0),
+                              child: Assets.zodiac.vectors.selectEmojiIcon.svg(
+                                height: AppConstants.iconSize,
+                                width: AppConstants.iconSize,
+                                color: theme.shadowColor,
                               ),
                             ),
                           ),
                         );
-                      });
-                    } else {
-                      return GestureDetector(
-                        onTap: () {
-                          chatCubit.setEmojiPickerOpened(_getMessageId());
-                          context.pop();
-                        },
-                        child: Container(
-                          height: 40.0,
-                          width: 40.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            color: theme.scaffoldBackgroundColor,
-                          ),
-                          child: Center(
-                            child: Assets.zodiac.vectors.selectEmojiIcon.svg(
-                              height: AppConstants.iconSize,
-                              width: AppConstants.iconSize,
-                              color: theme.shadowColor,
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(width: 8.0),
-                  itemCount: recentEmojis.length + 1),
-            );
-          }),
-          child: ChatMessageWidget(
-            chatMessageModel: widget.chatMessageModel,
-          ),
-        );
-      }),
-    );
+                      }
+                    },
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(width: 8.0),
+                    itemCount: recentEmojis.length + 1),
+              );
+            }),
+            child: ChatMessageWidget(
+              chatMessageModel: widget.chatMessageModel,
+            ),
+          );
+        }),
+      );
+    } else {
+      return ChatMessageWidget(
+        chatMessageModel: widget.chatMessageModel,
+      );
+    }
   }
 
   String? _getMessageId() {

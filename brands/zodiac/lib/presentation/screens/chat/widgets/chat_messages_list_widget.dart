@@ -36,9 +36,6 @@ class ChatMessagesListWidget extends StatelessWidget {
     final bool needShowTypingIndicator = context
         .select((ChatCubit cubit) => cubit.state.needShowTypingIndicator);
 
-    final bool chatIsActive =
-        context.select((ChatCubit cubit) => cubit.state.chatIsActive);
-
     final bool emojiPickerOpened =
         context.select((ChatCubit cubit) => cubit.state.reactionMessageId) !=
             null;
@@ -86,26 +83,19 @@ class ChatMessagesListWidget extends StatelessWidget {
                   });
                 } else {
                   final ChatMessageModel messageModel = messages[index - 1];
-                  final bool focusedMenuEnabled =
-                      messageModel.supportsReaction == true && chatIsActive;
 
                   if (!messageModel.isOutgoing && !messageModel.isRead) {
                     return VisibilityDetector(
-                      key: Key(messageModel.id.toString()),
-                      onVisibilityChanged: (visibilityInfo) {
-                        if (visibilityInfo.visibleFraction == 1) {
-                          chatCubit.sendReadMessage(messageModel.id);
-                        }
-                      },
-                      child: focusedMenuEnabled
-                          ? FocusedMenuWrapper(
-                              key: ValueKey(
-                                  '${messageModel.reaction}_${messageModel.mid}'),
-                              chatMessageModel: messageModel)
-                          : ChatMessageWidget(
-                              chatMessageModel: messageModel,
-                            ),
-                    );
+                        key: Key(messageModel.id.toString()),
+                        onVisibilityChanged: (visibilityInfo) {
+                          if (visibilityInfo.visibleFraction == 1) {
+                            chatCubit.sendReadMessage(messageModel.id);
+                          }
+                        },
+                        child: FocusedMenuWrapper(
+                            key: ValueKey(
+                                '${messageModel.reaction}_${messageModel.mid}'),
+                            chatMessageModel: messageModel));
                   }
                   if (messageModel.isOutgoing && messageModel.isDelivered) {
                     return ChatMessageWidget(
@@ -118,14 +108,10 @@ class ChatMessagesListWidget extends StatelessWidget {
                       chatMessageModel: messageModel,
                     );
                   } else {
-                    return focusedMenuEnabled
-                        ? FocusedMenuWrapper(
-                            key: ValueKey(
-                                '${messageModel.reaction}_${messageModel.mid}'),
-                            chatMessageModel: messageModel)
-                        : ChatMessageWidget(
-                            chatMessageModel: messageModel,
-                          );
+                    return FocusedMenuWrapper(
+                        key: ValueKey(
+                            '${messageModel.reaction}_${messageModel.mid}'),
+                        chatMessageModel: messageModel);
                   }
                 }
               },
