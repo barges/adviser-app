@@ -7,7 +7,7 @@ import 'audio_session_configure_mixin.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 
 abstract class AudioRecorderService {
-  Stream<RecorderServiceState>? get stateStream;
+  Stream<RecorderServiceState> get stateStream;
 
   Stream<RecorderDisposition>? get onProgress;
 
@@ -23,7 +23,7 @@ abstract class AudioRecorderService {
 class AudioRecorderServiceImp extends AudioRecorderService
     with AudioSessionConfigureMixin {
   FlutterSoundRecorder? _recorder;
-  StreamController<RecorderServiceState>? _controller =
+  final StreamController<RecorderServiceState> _controller =
       StreamController.broadcast();
 
   AudioRecorderServiceImp() {
@@ -41,7 +41,7 @@ class AudioRecorderServiceImp extends AudioRecorderService
   }
 
   @override
-  Stream<RecorderServiceState>? get stateStream => _controller?.stream;
+  Stream<RecorderServiceState> get stateStream => _controller.stream;
 
   @override
   Stream<RecorderDisposition>? get onProgress => _recorder?.onProgress
@@ -55,7 +55,7 @@ class AudioRecorderServiceImp extends AudioRecorderService
       codec: Codec.aacMP4,
     )
         .then((_) {
-      _controller?.add(RecorderServiceState(
+      _controller.add(RecorderServiceState(
           _recorder?.recorderState.toSoundRecorderState()));
     });
   }
@@ -63,7 +63,7 @@ class AudioRecorderServiceImp extends AudioRecorderService
   @override
   Future<String?> stopRecorder() async {
     return await _recorder?.stopRecorder().then((value) {
-      _controller?.add(RecorderServiceState(
+      _controller.add(RecorderServiceState(
           _recorder?.recorderState.toSoundRecorderState()));
       return value;
     });
@@ -77,8 +77,7 @@ class AudioRecorderServiceImp extends AudioRecorderService
     _recorder?.closeRecorder();
     _recorder = null;
 
-    _controller?.close();
-    _controller = null;
+    _controller.close();
   }
 }
 

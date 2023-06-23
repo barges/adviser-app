@@ -429,12 +429,14 @@ class WebSocketManagerImpl implements WebSocketManager {
     required ChatMessageModel message,
     required String roomId,
     required int opponentId,
+    int? repliedMessageId,
   }) =>
       _send(SocketMessage.chatMessage(
         message: message.message ?? '',
         roomId: roomId,
         opponentId: opponentId,
         mid: message.mid ?? '',
+        repliedMessageId: repliedMessageId,
       ));
 
   @override
@@ -965,11 +967,12 @@ class WebSocketManagerImpl implements WebSocketManager {
   void _onMessageReactionCreated(Event event) {
     (event.eventData as SocketMessage).let((data) {
       if (data.params is Map &&
-          data.params['mid'] != null &&
+          (data.params['mid'] != null || data.params['id'] != null) &&
           data.params['message'] != null &&
           data.opponentId != null) {
         _messageReactionCreatedStream.add(
           MessageReactionCreatedEvent(
+            id: data.params['id'],
             mid: data.params['mid'],
             reaction: data.params['message'],
             clientId: data.opponentId!,

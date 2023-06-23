@@ -53,9 +53,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("SMS verification"),
         "aboutZodiac": MessageLookupByLibrary.simpleMessage("About"),
         "accountZodiac": MessageLookupByLibrary.simpleMessage("Account"),
+        "activityZodiac": MessageLookupByLibrary.simpleMessage("Activity"),
         "addZodiac": MessageLookupByLibrary.simpleMessage("Add"),
         "allSpecialitiesZodiac":
             MessageLookupByLibrary.simpleMessage("All specialities"),
+        "animalsAndNatureZodiac":
+            MessageLookupByLibrary.simpleMessage("Animals & Nature"),
         "articlesZodiac": MessageLookupByLibrary.simpleMessage("Articles"),
         "audioMessageZodiac":
             MessageLookupByLibrary.simpleMessage("Audio message"),
@@ -117,6 +120,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "enterYourPasswordZodiac":
             MessageLookupByLibrary.simpleMessage("Enter your password"),
         "experienceZodiac": MessageLookupByLibrary.simpleMessage("Experience"),
+        "flagsZodiac": MessageLookupByLibrary.simpleMessage("Flags"),
+        "foodAndDrinkZodiac":
+            MessageLookupByLibrary.simpleMessage("Food & Drink"),
         "forgotPasswordZodiac":
             MessageLookupByLibrary.simpleMessage("Forgot password"),
         "freeChatZodiac": MessageLookupByLibrary.simpleMessage("Free chat"),
@@ -168,6 +174,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Notifications"),
         "nowYouCanReceiveCallsZodiac":
             MessageLookupByLibrary.simpleMessage("Now you can receive calls"),
+        "objectsZodiac": MessageLookupByLibrary.simpleMessage("Objects"),
         "offlineServiceZodiac":
             MessageLookupByLibrary.simpleMessage("Offline service:"),
         "offlineZodiac": MessageLookupByLibrary.simpleMessage("Offline"),
@@ -203,6 +210,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "previewAccountZodiac":
             MessageLookupByLibrary.simpleMessage("Preview account"),
         "pricePerMinZodiac": m3,
+        "recentlyUsedZodiac":
+            MessageLookupByLibrary.simpleMessage("Recently used"),
         "reconnectingZodiac":
             MessageLookupByLibrary.simpleMessage("Reconnecting..."),
         "replyZodiac": MessageLookupByLibrary.simpleMessage("Reply"),
@@ -229,10 +238,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Service"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Services"),
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sessions"),
+        "smileysAndPeopleZodiac":
+            MessageLookupByLibrary.simpleMessage("Smileys & People"),
         "sorryPhoneVerificationUnavailable": MessageLookupByLibrary.simpleMessage(
             "Sorry, phone verification is currently unavailable. Please try again later."),
         "startChatZodiac": MessageLookupByLibrary.simpleMessage("Start Chat"),
         "successZodiac": MessageLookupByLibrary.simpleMessage("Success"),
+        "symbolsZodiac": MessageLookupByLibrary.simpleMessage("Symbols"),
         "templatesContentZodiac":
             MessageLookupByLibrary.simpleMessage("Templates & Content"),
         "theMaximumImageSizeIs10MbZodiac": MessageLookupByLibrary.simpleMessage(
@@ -246,6 +258,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tipZodiac": MessageLookupByLibrary.simpleMessage("Tip"),
         "todayZodiac": MessageLookupByLibrary.simpleMessage("Today"),
         "topUpZodiac": MessageLookupByLibrary.simpleMessage("Top Up"),
+        "travelAndPlacesZodiac":
+            MessageLookupByLibrary.simpleMessage("Travel & Places"),
         "tryAgainZodiac": MessageLookupByLibrary.simpleMessage("Try again"),
         "typeMessageZodiac":
             MessageLookupByLibrary.simpleMessage("Type message"),

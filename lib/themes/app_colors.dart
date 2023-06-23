@@ -11,4 +11,5 @@ class AppColors {
   static const Color black = Color(0xFF000000);
   static const Color orange = Color(0xFFFF902D);
   static const Color purple = Color(0xFFBE53C8);
+  static const Color overlay = Color(0xFF28313A);
 }

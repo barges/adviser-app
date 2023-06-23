@@ -9,6 +9,7 @@ part 'chat_state.freezed.dart';
 class ChatState with _$ChatState {
   const factory ChatState({
     List<ChatMessageModel>? messages,
+    ChatMessageModel? repliedMessage,
     @Default(true) bool isVisibleTextField,
     @Default(false) bool clientInformationWidgetOpened,
     @Default(false) bool needShowDownButton,
@@ -25,6 +26,7 @@ class ChatState with _$ChatState {
     @Default(false) bool isChatReconnecting,
     @Default(false) bool showOfflineSessionsMessage,
     @Default(false) bool shouldShowInput,
+    String? reactionMessageId,
     UserDetails? clientInformation,
     Duration? chatTimerValue,
     Duration? offlineSessionTimerValue,

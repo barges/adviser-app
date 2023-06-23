@@ -21,6 +21,8 @@ class ChatState with _$ChatState {
     @Default(false) bool isAudioAnswerEnabled,
     @Default(false) bool refreshEnabled,
     RitualCardInfo? ritualCardInfo,
+    @Default(false) bool isRecording,
+    @Default(Duration.zero) Duration recordingDuration,
     File? recordedAudio,
     ChatItem? questionFromDB,
     ChatItemStatusType? questionStatus,
@@ -36,7 +38,5 @@ class ChatState with _$ChatState {
     @Default(false) bool isStretchedTextField,
     @Default(false) bool keyboardOpened,
     @Default(96.0) double bottomTextAreaHeight,
-    @Default(false) bool isRecording,
-    @Default(Duration.zero) Duration recordingDuration,
   }) = _ChatState;
 }
