@@ -2,8 +2,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/global.dart';
 
-typedef FutureVoidCallback = Future<void> Function();
-
 class FocusedMenuItem {
   Color? backgroundColor;
   Widget title;
@@ -19,6 +17,7 @@ class FocusedMenuItem {
 
 class FocusedMenuHolder extends StatefulWidget {
   final Widget child;
+  final Widget? openedChild;
   final double? menuItemExtent;
   final double? menuWidth;
   final List<FocusedMenuItem> menuItems;
@@ -33,7 +32,8 @@ class FocusedMenuHolder extends StatefulWidget {
   final Widget? menuSeparator;
   final double? menuBorderRadius;
   final Widget? topMenuWidget;
-  final FutureVoidCallback? onHold;
+  final VoidCallback? onHold;
+  final VoidCallback? onClose;
 
   /// Open with tap insted of long press.
   final bool openWithTap;
@@ -43,6 +43,7 @@ class FocusedMenuHolder extends StatefulWidget {
       required this.child,
       required this.onPressed,
       required this.menuItems,
+      this.openedChild,
       this.duration,
       this.menuBoxDecoration,
       this.menuItemExtent,
@@ -56,6 +57,7 @@ class FocusedMenuHolder extends StatefulWidget {
       this.menuBorderRadius,
       this.topMenuWidget,
       this.onHold,
+      this.onClose,
       this.openWithTap = false})
       : super(key: key);
 
@@ -92,7 +94,7 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
         onLongPress: () async {
           if (!widget.openWithTap) {
             if (widget.onHold != null) {
-              await widget.onHold!();
+              widget.onHold!();
             }
             await openMenu(context);
           }
@@ -126,11 +128,14 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
                     menuSeparator: widget.menuSeparator,
                     menuBorderRadius: widget.menuBorderRadius,
                     topMenuWidget: widget.topMenuWidget,
-                    child: widget.child,
+                    child: widget.openedChild ?? widget.child,
                   ));
             },
             fullscreenDialog: true,
             opaque: false));
+    if (widget.onClose != null) {
+      widget.onClose!();
+    }
   }
 }
 

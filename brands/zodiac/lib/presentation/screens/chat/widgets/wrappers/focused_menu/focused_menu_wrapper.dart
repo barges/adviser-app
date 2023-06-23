@@ -11,6 +11,7 @@ import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget_reply_wrapper.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/wrappers/focused_menu/focused_menu_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/wrappers/focused_menu/focused_menu_holder.dart';
@@ -47,6 +48,7 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
         child: Builder(builder: (context) {
           List<Emoji> recentEmojis = context
               .select((FocusedMenuCubit cubit) => cubit.state.recentEmojis);
+
           return FocusedMenuHolder(
             key: key,
             onPressed: () {},
@@ -186,10 +188,11 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
                     );
                   })
                 : null,
+            openedChild:
+                ChatMessageWidget(chatMessageModel: widget.chatMessageModel),
             child: ChatMessageWidgetReplyWrapper(
               chatMessageModel: widget.chatMessageModel,
               chatIsActive: widget.chatIsActive,
-              chatCubit: chatCubit,
             ),
           );
         }),
@@ -198,7 +201,6 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
       return ChatMessageWidgetReplyWrapper(
         chatMessageModel: widget.chatMessageModel,
         chatIsActive: widget.chatIsActive,
-        chatCubit: chatCubit,
       );
     }
   }
