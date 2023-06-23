@@ -965,12 +965,13 @@ class WebSocketManagerImpl implements WebSocketManager {
   void _onMessageReactionCreated(Event event) {
     (event.eventData as SocketMessage).let((data) {
       if (data.params is Map &&
-          data.params['mid'] != null &&
+          (data.params['mid'] != null || data.params['id'] != null) &&
           data.params['message'] != null &&
           data.opponentId != null) {
         _messageReactionCreatedStream.add(
           MessageReactionCreatedEvent(
-            id: data.params['mid'],
+            id: data.params['id'],
+            mid: data.params['mid'],
             reaction: data.params['message'],
             clientId: data.opponentId!,
           ),

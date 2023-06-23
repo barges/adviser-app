@@ -432,8 +432,8 @@ class ChatCubit extends Cubit<ChatState> {
     _reactionCreatedSubscription =
         _webSocketManager.messageReactionCreatedStream.listen((event) {
       if (event.clientId == clientData.id) {
-        int index = _messages.indexWhere((element) =>
-            element.id.toString() == event.id || element.mid == event.id);
+        int index = _messages.indexWhere(
+            (element) => element.id == event.id || element.mid == event.mid);
         _messages[index] = _messages[index].copyWith(reaction: event.reaction);
         _updateMessages();
       }
