@@ -93,18 +93,17 @@ class ChatMessagesListWidget extends StatelessWidget {
                   });
                 } else {
                   final ChatMessageModel messageModel = messages[index - 1];
-                  if (messageModel.isOutgoing || messageModel.isRead) {
+                  if (messageModel.isOutgoing && !messageModel.isDelivered) {
+                    return ResendMessageWrapper(
+                      key: ValueKey(messageModel.mid),
+                      chatMessageModel: messageModel,
+                    );
+                  } else if (messageModel.isOutgoing || messageModel.isRead) {
                     return FocusedMenuWrapper(
                       key: ValueKey(
                           '${messageModel.reaction}_${messageModel.mid}'),
                       chatMessageModel: messageModel,
                       chatIsActive: chatIsActive,
-                    );
-                  } else if (messageModel.isOutgoing &&
-                      !messageModel.isDelivered) {
-                    return ResendMessageWrapper(
-                      key: ValueKey(messageModel.mid),
-                      chatMessageModel: messageModel,
                     );
                   } else if (!messageModel.isOutgoing && !messageModel.isRead) {
                     return VisibilityDetector(
