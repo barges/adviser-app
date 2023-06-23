@@ -148,5 +148,14 @@
   "onlineZodiac": "Online",
   "busyZodiac": "Busy",
   "offlineZodiac": "Offline",
+  "recentlyUsedZodiac": "Recently used",
+  "smileysAndPeopleZodiac": "Smileys & People",
+  "animalsAndNatureZodiac": "Animals & Nature",
+  "foodAndDrinkZodiac": "Food & Drink",
+  "activityZodiac": "Activity",
+  "travelAndPlacesZodiac": "Travel & Places",
+  "objectsZodiac": "Objects",
+  "symbolsZodiac": "Symbols",
+  "flagsZodiac": "Flags",
   "sorryPhoneVerificationUnavailable": "Sorry, phone verification is currently unavailable. Please try again later."
 }

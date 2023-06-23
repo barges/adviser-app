@@ -19,6 +19,7 @@ import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_messages_list_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/chat_text_input_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/client_information_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/emoji_picker/emoji_picker_widget.dart';
 import 'package:zodiac/zodiac_constants.dart';
 import 'package:zodiac/zodiac_extensions.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
@@ -129,6 +130,24 @@ class ChatScreen extends StatelessWidget {
                               }
                             }),
                           ),
+                          Builder(builder: (context) {
+                            final String? reactionMessageId = context.select(
+                                (ChatCubit cubit) =>
+                                    cubit.state.reactionMessageId);
+                            return AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 500),
+                              transitionBuilder: (child, animation) =>
+                                  SizeTransition(
+                                sizeFactor: animation,
+                                child: child,
+                              ),
+                              child: reactionMessageId != null && showTextField
+                                  ? EmojiPickerWidget(
+                                      reactionMessageId: reactionMessageId,
+                                    )
+                                  : const SizedBox.shrink(),
+                            );
+                          }),
                           if (showTextField)
                             const _BottomPaddingContainerIfHasTextInputField(),
                         ],

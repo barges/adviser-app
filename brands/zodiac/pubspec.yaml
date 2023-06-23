@@ -56,6 +56,8 @@ dependencies:
   snapping_sheet_2: ^3.1.5
   flutter_keyboard_visibility: ^5.4.0
   flutter_keyboard_size: ^1.0.1
+  focused_menu: ^1.0.5
+  emoji_picker_flutter: ^1.6.1
 
   audible_mode: ^1.0.1
 
