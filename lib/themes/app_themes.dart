@@ -22,6 +22,7 @@ class AppThemes {
       errorColor: AppColors.error,
       dividerColor: AppColorsLight.shade1,
       primaryColorDark: AppColorsLight.primaryDark,
+      unselectedWidgetColor: AppColorsLight.contrastLight,
       iconTheme: const IconThemeData(
         color: AppColorsLight.shade3,
       ),
@@ -192,7 +193,7 @@ class AppThemes {
       hintColor: AppColorsDark.shade1,
       dividerColor: AppColorsDark.shade1,
       primaryColorDark: AppColorsDark.primaryDark,
-
+      unselectedWidgetColor: AppColorsDark.contrastLight,
       errorColor: AppColors.error,
       iconTheme: const IconThemeData(
         color: AppColorsDark.shade3,

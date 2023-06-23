@@ -150,5 +150,14 @@
   "offlineZodiac": "Offline",
   "doYouWantToDeleteThisAudioMessageZodiac": "Do you want to delete this audio message?",
   "recordingStoppedBecauseYouReachedLimitZodiac": "Recording stopped because you've reached the {maxRecordLengthInMb}Mb limit.",
+  "recentlyUsedZodiac": "Recently used",
+  "smileysAndPeopleZodiac": "Smileys & People",
+  "animalsAndNatureZodiac": "Animals & Nature",
+  "foodAndDrinkZodiac": "Food & Drink",
+  "activityZodiac": "Activity",
+  "travelAndPlacesZodiac": "Travel & Places",
+  "objectsZodiac": "Objects",
+  "symbolsZodiac": "Symbols",
+  "flagsZodiac": "Flags",
   "sorryPhoneVerificationUnavailable": "Sorry, phone verification is currently unavailable. Please try again later."
 }

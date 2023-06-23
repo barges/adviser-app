@@ -30,6 +30,7 @@ class ChatState with _$ChatState {
     @Default(false) bool shouldShowInput,
     @Default(false) bool isRecording,
     @Default(Duration.zero) Duration recordingDuration,
+    String? reactionMessageId,
     UserDetails? clientInformation,
     Duration? chatTimerValue,
     Duration? offlineSessionTimerValue,

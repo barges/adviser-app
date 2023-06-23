@@ -61,6 +61,8 @@ dependencies:
   uuid: ^3.0.7
   flutter_media_metadata: ^1.0.0+1
   audioplayers: ^2.0.0
+  focused_menu: ^1.0.5
+  emoji_picker_flutter: ^1.6.1
 
   audible_mode: ^1.0.1
 

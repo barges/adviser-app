@@ -395,6 +395,15 @@ class ChatCubit extends BaseCubit<ChatState> {
       }
     }));
 
+    addListener(_webSocketManager.messageReactionCreatedStream.listen((event) {
+      if (event.clientId == clientData.id) {
+        int index = _messages.indexWhere(
+            (element) => element.id == event.id || element.mid == event.mid);
+        _messages[index] = _messages[index].copyWith(reaction: event.reaction);
+        _updateMessages();
+      }
+    }));
+
     getClientInformation();
   }
 
@@ -822,4 +831,17 @@ class ChatCubit extends BaseCubit<ChatState> {
   AudioPlayerService get audioPlayer => _audioPlayer;
 
   AudioRecorderService get audioRecorder => _audioRecorder;
+
+  void setEmojiPickerOpened(String? id) {
+    emit(state.copyWith(reactionMessageId: id));
+  }
+
+  void sendReaction(String mid, String emoji) {
+    _webSocketManager.sendMessageReaction(
+        mid: mid,
+        message: emoji,
+        roomId: enterRoomData?.roomData?.id ?? '',
+        opponentId: clientData.id ?? 0);
+    setEmojiPickerOpened(null);
+  }
 }
