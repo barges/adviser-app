@@ -183,24 +183,22 @@ class FocusedMenuDetails extends StatelessWidget {
     final leftOffset = (childOffset.dx + maxMenuWidth) < size.width
         ? childOffset.dx
         : (childOffset.dx - maxMenuWidth + childSize!.width);
-    final topOffset = (childOffset.dy + menuHeight + childSize!.height) <
-            size.height - bottomOffsetHeight!
-        ? childOffset.dy + childSize!.height + menuOffset!
-        : childOffset.dy - menuHeight - menuOffset! - 11.0;
 
-    final bottomOffset = (childOffset.dy + menuHeight + childSize!.height) <
-            size.height - bottomOffsetHeight!
-        ? MediaQuery.of(context).size.height -
-            childOffset.dy +
-            (menuOffset ?? 0.0)
-        : MediaQuery.of(context).size.height -
-            childOffset.dy +
-            (menuOffset ?? 0.0) * 2 +
-            menuHeight +
-            11.0;
+    final noVerticalOverlow =
+        (childOffset.dy + menuHeight + childSize!.height) <
+            size.height -
+                bottomOffsetHeight! -
+                MediaQuery.of(context).padding.bottom;
 
-    logger.d((childOffset.dy + menuHeight + childSize!.height) <
-        size.height - bottomOffsetHeight!);
+    final childPositionDy = noVerticalOverlow
+        ? childOffset.dy
+        : childOffset.dy - menuHeight - bottomOffsetHeight!;
+
+    final topOffset = childPositionDy + childSize!.height + menuOffset!;
+
+    final bottomOffset = size.height - childPositionDy + (menuOffset ?? 0.0);
+
+    logger.d(noVerticalOverlow);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
@@ -302,7 +300,7 @@ class FocusedMenuDetails extends StatelessWidget {
             ),
           ),
           Positioned(
-              top: childOffset.dy,
+              top: childPositionDy,
               left: childOffset.dx,
               child: AbsorbPointer(
                   absorbing: false,
