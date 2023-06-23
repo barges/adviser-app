@@ -4,6 +4,7 @@ import 'package:scrollview_observer/scrollview_observer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/down_button_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/chat_text_input_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/typing_indicator.dart';
@@ -98,7 +99,7 @@ class ChatMessagesListWidget extends StatelessWidget {
                       key: ValueKey(messageModel.mid),
                       chatMessageModel: messageModel,
                     );
-                  } else if (messageModel.isOutgoing || messageModel.isRead) {
+                  } else if (!messageModel.isOutgoing && messageModel.isRead) {
                     return FocusedMenuWrapper(
                       key: ValueKey(
                           '${messageModel.reaction}_${messageModel.mid}'),
@@ -121,11 +122,8 @@ class ChatMessagesListWidget extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return FocusedMenuWrapper(
-                      key: ValueKey(
-                          '${messageModel.reaction}_${messageModel.mid}'),
+                    return ChatMessageWidget(
                       chatMessageModel: messageModel,
-                      chatIsActive: chatIsActive,
                     );
                   }
                 }
