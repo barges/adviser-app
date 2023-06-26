@@ -89,6 +89,16 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
       _getUnreadNotificationsCount();
     });
 
+    _connectivitySubscription =
+        _connectivityService.connectivityStream.listen((event) async {
+      if (event) {
+        if (_siteKey == null) {
+          SettingsResponse settingsResponse = await _getSettings();
+          _siteKey = settingsResponse.captcha?.scoreBased?.key;
+        }
+      }
+    });
+
     _updateAccauntSettingsSubscription =
         _mainCubit.updateAccauntSettingsTrigger.listen((_) {
       _getSettings();
@@ -118,10 +128,14 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     );
   }
 
-  void goToPhoneNumber(BuildContext context) {
+  Future<void> goToPhoneNumber(BuildContext context) async {
+    final isOnline = await _connectivityService.checkConnection();
+    // ignore: use_build_context_synchronously
     context.push(
       route: ZodiacPhoneNumber(
-          siteKey: _siteKey, phone: state.phone ?? const Phone()),
+          siteKey: _siteKey,
+          phone: state.phone ?? const Phone(),
+          isOnline: isOnline),
     );
   }
 

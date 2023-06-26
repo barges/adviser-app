@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/sms_verification/sms_verification_cubit.dart';
@@ -34,20 +35,26 @@ class ResendCodeButton extends StatelessWidget {
                 }
               }
             : null,
-        child: Opacity(
-          opacity: isResendCodeButtonEnabled ? 1.0 : 0.4,
-          child: Text(
-            isResendCodeButtonEnabled
-                ? SZodiac.of(context).resendCodeZodiac(attempts)
-                : SZodiac.of(context)
-                    .nextAttemptInZodiac(inactiveResendCodeDurationInSec),
-            textAlign: TextAlign.center,
-            style: theme.textTheme.labelMedium?.copyWith(
-              fontSize: 17.0,
-              color: theme.primaryColor,
-            ),
-          ),
-        ),
+        child: Builder(builder: (context) {
+          final bool isOnline = context.select(
+              (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
+          return Opacity(
+            opacity: isOnline && isResendCodeButtonEnabled ? 1.0 : 0.4,
+            child: Builder(builder: (context) {
+              return Text(
+                isResendCodeButtonEnabled
+                    ? SZodiac.of(context).resendCodeZodiac(attempts)
+                    : SZodiac.of(context)
+                        .nextAttemptInZodiac(inactiveResendCodeDurationInSec),
+                textAlign: TextAlign.center,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  fontSize: 17.0,
+                  color: theme.primaryColor,
+                ),
+              );
+            }),
+          );
+        }),
       );
     });
   }

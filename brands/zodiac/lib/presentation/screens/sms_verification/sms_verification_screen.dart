@@ -19,8 +19,6 @@ import 'package:zodiac/presentation/screens/sms_verification/widgets/resend_code
 import 'package:zodiac/presentation/screens/sms_verification/widgets/verification_code_widget.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
-const verificationCodeInputFieldCount = 4;
-
 class SMSVerificationScreen extends StatelessWidget {
   final Phone? phoneNumber;
   const SMSVerificationScreen({
@@ -42,8 +40,6 @@ class SMSVerificationScreen extends StatelessWidget {
       child: Builder(builder: (context) {
         SMSVerificationCubitCubit smsVerificationCubitCubit =
             context.read<SMSVerificationCubitCubit>();
-        final AppError appError =
-            context.select((ZodiacMainCubit cubit) => cubit.state.appError);
         return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: SimpleAppBar(
@@ -60,10 +56,21 @@ class SMSVerificationScreen extends StatelessWidget {
                       : constraints.maxHeight,
                   child: Column(
                     children: [
-                      AppErrorWidget(
-                        errorMessage: appError.getMessage(context),
-                        close: smsVerificationCubitCubit.clearErrorMessage,
-                      ),
+                      Builder(builder: (context) {
+                        final AppError appError = context.select(
+                            (ZodiacMainCubit cubit) => cubit.state.appError);
+                        final bool internetConnectionIsAvailable =
+                            context.select((MainCubit cubit) =>
+                                cubit.state.internetConnectionIsAvailable);
+                        return AppErrorWidget(
+                          errorMessage: !internetConnectionIsAvailable
+                              ? SZodiac.of(context).noInternetConnectionZodiac
+                              : appError.getMessage(context),
+                          close: internetConnectionIsAvailable
+                              ? smsVerificationCubitCubit.clearErrorMessage
+                              : null,
+                        );
+                      }),
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(

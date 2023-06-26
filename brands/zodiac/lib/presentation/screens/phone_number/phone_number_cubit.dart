@@ -43,7 +43,10 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
 
   Phone? _phoneVerified;
   StreamSubscription<bool>? _appLifecycleSubscription;
+  StreamSubscription<bool>? _connectivitySubscription;
+
   bool _recaptchaServiceIsInitialized = false;
+  bool _isOnline = true;
 
   PhoneNumberCubit(
     @factoryParam this._siteKey,
@@ -59,15 +62,26 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   @override
   Future<void> close() async {
     _appLifecycleSubscription?.cancel();
+    _connectivitySubscription?.cancel();
     return super.close();
   }
 
   _init() async {
-    await _initRecaptchaService();
-    await _loadCountryPhoneCodesJson();
-
     WidgetsBinding.instance
         .addPostFrameCallback((_) => setTextInputFocus(true));
+
+    _connectivitySubscription =
+        _connectivityService.connectivityStream.listen((event) {
+      _isOnline = event;
+
+      emit(state.copyWith(
+        isSendCodeButtonEnabled: _isSendCodeButtonEnabled(),
+      ));
+    });
+    _isOnline = await _connectivityService.checkConnection();
+
+    await _initRecaptchaService();
+    await _loadCountryPhoneCodesJson();
 
     if (_phone.isVerified == true) {
       _phoneVerified = _phone;
@@ -259,7 +273,8 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   }
 
   bool _isSendCodeButtonEnabled() {
-    return _isPhoneNumberValidLength() &&
+    return _isOnline &&
+        _isPhoneNumberValidLength() &&
         !_phoneIsVerified() &&
         _recaptchaServiceIsInitialized;
   }
