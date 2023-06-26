@@ -129,9 +129,7 @@ class ChatCubit extends BaseCubit<ChatState> {
             _messages.where((element) => !element.isDelivered).toList();
         if (messagesNotDelivered.isNotEmpty) {
           for (var element in messagesNotDelivered) {
-            if (element.path != null) {
-              _deleteRecordedAudioFile(File(element.path!));
-            }
+            element.path?.let((that) => _deleteRecordedAudioFile(File(that)));
           }
         }
 
@@ -759,7 +757,7 @@ class ChatCubit extends BaseCubit<ChatState> {
       utc: DateTime.now().toUtc(),
       fromAdvisor: true,
       length: _recordAudioDuration,
-      path: state.recordedAudio!.path,
+      path: state.recordedAudio?.path,
       mid: _generateMessageId(),
       isDelivered: false,
     );
@@ -806,9 +804,7 @@ class ChatCubit extends BaseCubit<ChatState> {
   void deleteMessage(String? mid) {
     final ChatMessageModel? model =
         _messages.firstWhereOrNull((element) => element.mid == mid);
-    if (model?.path != null) {
-      _deleteRecordedAudioFile(File(model!.path!));
-    }
+    model?.path?.let((that) => _deleteRecordedAudioFile(File(that)));
     _messages.remove(model);
     emit(state.copyWith(messages: List.of(_messages)));
   }
@@ -819,9 +815,7 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   void updateMediaIsDelivered(CreatedDeliveredEvent event) {
     _updateMessageIsDelivered(event);
-    if (event.path != null) {
-      _deleteRecordedAudioFile(File(event.pathLocal!));
-    }
+    event.pathLocal?.let((that) => _deleteRecordedAudioFile(File(that)));
   }
 
   void _updateMessageIsDelivered(CreatedDeliveredEvent event) {
