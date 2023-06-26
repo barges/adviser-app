@@ -198,7 +198,9 @@ class _ChatTextInputWidgetState extends State<ChatTextInputWidget> {
                         padding: EdgeInsets.fromLTRB(
                           AppConstants.horizontalScreenPadding,
                           textInputFocused ? 0.0 : 10.0,
-                          AppConstants.horizontalScreenPadding,
+                          textInputFocused
+                              ? AppConstants.horizontalScreenPadding
+                              : 14.0,
                           8.0,
                         ),
                         child: Row(
@@ -310,8 +312,7 @@ class _ChatTextInputWidgetState extends State<ChatTextInputWidget> {
                                   (ChatCubit cubit) =>
                                       cubit.state.isSendButtonEnabled);
 
-                              if (!isSendButtonEnabled &&
-                                  chatCubit.enterRoomData
+                              if (chatCubit.enterRoomData
                                           ?.isAvailableAudioMessage ==
                                       true &&
                                   !textInputFocused) {
@@ -319,8 +320,7 @@ class _ChatTextInputWidgetState extends State<ChatTextInputWidget> {
                                   padding: const EdgeInsets.only(left: 12.0),
                                   child: AppIconGradientButton(
                                     onTap: () {
-                                      ///TODO: Start record audio
-                                      //chatCubit.startRecordingAudio(context);
+                                      chatCubit.startRecordingAudio(context);
                                     },
                                     icon: Assets.vectors.microphone.path,
                                     iconColor: theme.backgroundColor,

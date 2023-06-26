@@ -32,9 +32,10 @@ class ResendMessageWrapper extends StatelessWidget {
         zodiacGetIt.get<WebSocketManager>(),
         zodiacGetIt.get<ZodiacMainCubit>(),
         chatMessageModel.type == ChatMessageType.image,
+        chatMessageModel.type == ChatMessageType.audio,
         zodiacGetIt.get<ZodiacChatRepository>(),
         chatCubit.deleteMessage,
-        chatCubit.updateImageIsDelivered,
+        chatCubit.updateMediaIsDelivered,
         context,
       ),
       child: Builder(builder: (context) {

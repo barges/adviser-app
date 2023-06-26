@@ -3,7 +3,11 @@ import 'dart:io';
 import 'package:injectable/injectable.dart';
 import 'package:zodiac/data/network/api/chat_api.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
+import 'package:zodiac/data/network/requests/base_audio_message_request.dart';
+import 'package:zodiac/data/network/requests/create_audio_message_request.dart';
+import 'package:zodiac/data/network/responses/create_audio_message_response.dart';
 import 'package:zodiac/data/network/responses/send_image_response.dart';
+import 'package:zodiac/data/network/responses/upload_audio_message_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_chat_repository.dart';
 
 @Injectable(as: ZodiacChatRepository)
@@ -27,6 +31,26 @@ class ZodiacChatRepositoryImpl implements ZodiacChatRepository {
       mid: mid,
       image: image,
       clientId: clientId,
+    );
+  }
+
+  @override
+  Future<CreateAudioMessageResponse> createAudioMessage(
+      {required CreateAudioMessageRequest request}) async {
+    return await _chatApi.createAudioMessage(request: request);
+  }
+
+  @override
+  Future<UploadAudioMessageResponse> uploadAudioMessage({
+    required BaseAudioMessageRequest request,
+    required int entityId,
+    required File audioFile,
+  }) async {
+    return await _chatApi.uploadAudioMessage(
+      secret: request.secret,
+      auth: request.auth,
+      entityId: entityId,
+      audioFile: audioFile,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/services/audio/audio_session_configure_mixin.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -21,6 +22,7 @@ abstract class AudioPlayerService {
   void dispose();
 }
 
+@Injectable(as: AudioPlayerService)
 class AudioPlayerServiceImpl extends AudioPlayerService
     with AudioSessionConfigureMixin {
   final AudioPlayer _player = AudioPlayer();
