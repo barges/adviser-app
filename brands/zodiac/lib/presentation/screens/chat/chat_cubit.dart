@@ -3,17 +3,26 @@ import 'dart:io' hide SocketMessage;
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:injectable/injectable.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
+import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
-import 'package:snapping_sheet/snapping_sheet.dart';
+import 'package:shared_advisor_interface/services/audio/audio_player_service.dart';
+import 'package:shared_advisor_interface/services/audio/audio_recorder_service.dart';
+import 'package:shared_advisor_interface/services/check_permission_service.dart';
+import 'package:snapping_sheet_2/snapping_sheet.dart';
+import 'package:storage_space/storage_space.dart';
+import 'package:uuid/uuid.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/app_error/app_error.dart';
+import 'package:zodiac/data/models/app_error/ui_error_type.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
@@ -21,38 +30,35 @@ import 'package:zodiac/data/models/enums/chat_message_type.dart';
 import 'package:zodiac/data/network/requests/profile_details_request.dart';
 import 'package:zodiac/data/network/responses/profile_details_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
+import 'package:zodiac/presentation/base_cubit/base_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/chat_state.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/chat_text_input_widget.dart';
-import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
-import 'package:zodiac/services/websocket_manager/chat_login_event.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/chat_text_input_widget.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
-import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
-import 'package:zodiac/services/websocket_manager/paid_free_event.dart';
-import 'package:zodiac/services/websocket_manager/room_paused_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
-import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
-import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 const Duration _typingIndicatorDuration = Duration(milliseconds: 5000);
+const String _recordFileExt = 'm4a';
 typedef UnderageConfirmDialog = Future<bool?> Function(String message);
 
 class ChatCubitParams {
   final bool fromStartingChat;
   final UserData clientData;
   final UnderageConfirmDialog underageConfirmDialog;
+  final ValueGetter<Future<bool?>> deleteAudioMessageAlert;
 
   ChatCubitParams({
     required this.fromStartingChat,
     required this.clientData,
     required this.underageConfirmDialog,
+    required this.deleteAudioMessageAlert,
   });
 }
 
 @injectable
-class ChatCubit extends Cubit<ChatState> {
+class ChatCubit extends BaseCubit<ChatState> {
   final ZodiacCachingManager _cachingManager;
   final WebSocketManager _webSocketManager;
   late final bool _fromStartingChat;
@@ -61,18 +67,23 @@ class ChatCubit extends Cubit<ChatState> {
   final ZodiacMainCubit _zodiacMainCubit;
   late final UnderageConfirmDialog _underageConfirmDialog;
 
+  final AudioPlayerService _audioPlayer;
+  final AudioRecorderService _audioRecorder;
+  final CheckPermissionService _checkPermissionService;
+  final _uuid = const Uuid();
+  late final ValueGetter<Future<bool?>> _deleteAudioMessageAlert;
+  StreamSubscription<RecorderDisposition>? _recordingProgressSubscription;
+
   final SnappingSheetController snappingSheetController =
       SnappingSheetController();
-  final TextEditingController textInputEditingController =
-      TextEditingController();
   final ScrollController textInputScrollController = ScrollController();
   final ScrollController messagesScrollController = ScrollController();
 
   final FocusNode textInputFocusNode = FocusNode();
   final GlobalKey textInputKey = GlobalKey();
+  final GlobalKey repliedMessageGlobalKey = GlobalKey();
 
   final PublishSubject<double> _showDownButtonStream = PublishSubject();
-  late final StreamSubscription<double> _showDownButtonSubscription;
 
   late final ListObserverController observerController =
       ListObserverController(controller: messagesScrollController)
@@ -82,34 +93,6 @@ class ChatCubit extends Cubit<ChatState> {
       ChatScrollObserver(observerController)..fixedPositionOffset = 48.0;
 
   StreamSubscription<ChatMessageModel>? _oneMessageSubscription;
-
-  late final StreamSubscription<List<ChatMessageModel>> _messagesSubscription;
-  late final StreamSubscription<EnterRoomData> _enterRoomDataSubscription;
-  late final StreamSubscription<CreatedDeliveredEvent>
-      _updateMessageIdSubscription;
-  late final StreamSubscription<CreatedDeliveredEvent>
-      _updateMessageIsDeliveredSubscription;
-  late final StreamSubscription<int> _updateMessageIsReadSubscription;
-  late final StreamSubscription<int> _updateWriteStatusSubscription;
-  late final StreamSubscription<UpdateTimerEvent> _updateChatTimerSubscription;
-  late final StreamSubscription<bool> _stopRoomSubscription;
-  late final StreamSubscription<ChatLoginEvent> _chatLoginSubscription;
-  late final StreamSubscription<UnderageConfirmEvent>
-      _underageConfirmSubscription;
-
-  late final StreamSubscription<ActiveChatEvent>
-      _updateChatIsActiveSubscription;
-
-  late final StreamSubscription<OfflineSessionEvent>
-      _updateOfflineSessionIsActiveSubscription;
-
-  late final StreamSubscription<WebSocketState> _webSocketStateSubscription;
-
-  late final StreamSubscription<bool> _keyboardSubscription;
-
-  late final StreamSubscription<PaidFreeEvent> _paidFreeChatSubscription;
-
-  late final StreamSubscription<RoomPausedEvent> _roomPausedSubscription;
 
   bool triggerOnTextChanged = true;
   bool _isRefresh = false;
@@ -123,19 +106,33 @@ class ChatCubit extends Cubit<ChatState> {
 
   int? _chatId;
 
+  int? _recordAudioDuration;
+
   ChatCubit(
     @factoryParam ChatCubitParams chatCubitParams,
     this._cachingManager,
     this._webSocketManager,
     this._userRepository,
     this._zodiacMainCubit,
+    this._checkPermissionService,
+    this._audioPlayer,
+    this._audioRecorder,
   ) : super(const ChatState()) {
     _fromStartingChat = chatCubitParams.fromStartingChat;
     clientData = chatCubitParams.clientData;
     _underageConfirmDialog = chatCubitParams.underageConfirmDialog;
+    _deleteAudioMessageAlert = chatCubitParams.deleteAudioMessageAlert;
 
-    _messagesSubscription = _webSocketManager.entitiesStream.listen((event) {
+    addListener(_webSocketManager.entitiesStream.listen((event) {
       if (_isRefresh) {
+        final List<ChatMessageModel> messagesNotDelivered =
+            _messages.where((element) => !element.isDelivered).toList();
+        if (messagesNotDelivered.isNotEmpty) {
+          for (var element in messagesNotDelivered) {
+            element.path?.let((that) => _deleteRecordedAudioFile(File(that)));
+          }
+        }
+
         _isRefresh = false;
         _messages.clear();
       }
@@ -163,10 +160,9 @@ class ChatCubit extends Cubit<ChatState> {
           }
         }
       });
-    });
+    }));
 
-    _updateMessageIdSubscription =
-        _webSocketManager.updateMessageIdStream.listen((event) {
+    addListener(_webSocketManager.updateMessageIdStream.listen((event) {
       if (clientData.id == event.clientId) {
         final int index =
             _messages.indexWhere((element) => element.mid == event.mid);
@@ -178,14 +174,14 @@ class ChatCubit extends Cubit<ChatState> {
           _updateMessages();
         }
       }
-    });
+    }));
 
-    _updateMessageIsDeliveredSubscription =
+    addListener(
         _webSocketManager.updateMessageIsDeliveredStream.listen((event) {
       _updateMessageIsDelivered(event);
-    });
+    }));
 
-    _updateMessageIsReadSubscription =
+    addListener(
         _webSocketManager.updateMessageIsReadStream.distinct().listen((event) {
       final int index = _messages.indexWhere((element) => element.id == event);
       if (index > -1) {
@@ -195,19 +191,17 @@ class ChatCubit extends Cubit<ChatState> {
         );
         _updateMessages();
       }
-    });
+    }));
 
-    _updateWriteStatusSubscription =
-        _webSocketManager.updateWriteStatusStream.listen((event) {
+    addListener(_webSocketManager.updateWriteStatusStream.listen((event) {
       if (event == clientData.id && !state.needShowTypingIndicator) {
         _updateWriteStatus(true);
         Future.delayed(_typingIndicatorDuration)
             .then((value) => _updateWriteStatus(false));
       }
-    });
+    }));
 
-    _updateChatIsActiveSubscription =
-        _webSocketManager.chatIsActiveStream.listen((event) {
+    addListener(_webSocketManager.chatIsActiveStream.listen((event) {
       if (event.clientId == clientData.id) {
         emit(state.copyWith(
             chatIsActive: event.isActive, shouldShowInput: event.isActive));
@@ -218,27 +212,13 @@ class ChatCubit extends Cubit<ChatState> {
         if (event.isActive) {
           final String? helloMessage = enterRoomData?.expertData?.helloMessage;
           if (helloMessage?.isNotEmpty == true) {
-            final ChatMessageModel chatMessageModel = ChatMessageModel(
-              utc: DateTime.now().toUtc(),
-              type: ChatMessageType.simple,
-              isOutgoing: true,
-              isDelivered: false,
-              mid: _generateMessageId(),
-              message: helloMessage,
-            );
-            _messages.insert(0, chatMessageModel);
-            _updateMessages();
-            _webSocketManager.sendMessageToChat(
-                message: chatMessageModel,
-                roomId: enterRoomData?.roomData?.id ?? '',
-                opponentId: clientData.id ?? 0);
+            sendMessageToChat(text: helloMessage!);
           }
         }
       }
-    });
+    }));
 
-    _updateOfflineSessionIsActiveSubscription =
-        _webSocketManager.offlineSessionIsActiveStream.listen((event) {
+    addListener(_webSocketManager.offlineSessionIsActiveStream.listen((event) {
       if (event.clientId == clientData.id) {
         emit(state.copyWith(
             offlineSessionIsActive: event.isActive, isVisibleTextField: true));
@@ -259,26 +239,26 @@ class ChatCubit extends Cubit<ChatState> {
                         (state.offlineSessionTimerValue?.inSeconds ?? 0) - 1)));
           });
         } else if (!event.isActive) {
+          _cancelOrDeleteRecordedAudio();
           emit(state.copyWith(showOfflineSessionsMessage: false));
           _offlineSessionTimer?.cancel();
         }
       }
-    });
+    }));
 
-    _enterRoomDataSubscription =
-        _webSocketManager.enterRoomDataStream.listen((event) {
+    addListener(_webSocketManager.enterRoomDataStream.listen((event) {
       if (event.userData?.id == clientData.id) {
         _isRefresh = true;
         enterRoomData = event;
         emit(state.copyWith(chatIsActive: true));
       }
-    });
+    }));
 
     if (!_fromStartingChat) {
       _webSocketManager.chatLogin(opponentId: clientData.id ?? 0);
     }
 
-    _showDownButtonSubscription = _showDownButtonStream
+    addListener(_showDownButtonStream
         .debounceTime(const Duration(milliseconds: 300))
         .listen((event) {
       emit(
@@ -286,7 +266,7 @@ class ChatCubit extends Cubit<ChatState> {
           needShowDownButton: event > 48.0 ? true : false,
         ),
       );
-    });
+    }));
 
     messagesScrollController.addListener(() {
       _showDownButtonStream.add(messagesScrollController.position.pixels);
@@ -302,31 +282,7 @@ class ChatCubit extends Cubit<ChatState> {
       }
     });
 
-    textInputEditingController.addListener(() {
-      final String text = textInputEditingController.text;
-      if (text.isNotEmpty) {
-        emit(state.copyWith(
-          inputTextLength: text.length,
-          isSendButtonEnabled: text.trim().isNotEmpty,
-        ));
-      } else {
-        emit(state.copyWith(
-          inputTextLength: 0,
-          isSendButtonEnabled: false,
-        ));
-      }
-      if (triggerOnTextChanged) {
-        triggerOnTextChanged = false;
-        Future.delayed(_typingIndicatorDuration)
-            .then((value) => triggerOnTextChanged = true);
-        _webSocketManager.sendWriteStatus(
-            opponentId: clientData.id ?? 0,
-            roomId: enterRoomData?.roomData?.id ?? '');
-      }
-    });
-
-    _keyboardSubscription =
-        KeyboardVisibilityController().onChange.listen((bool visible) {
+    addListener(KeyboardVisibilityController().onChange.listen((bool visible) {
       if (!visible) {
         textInputFocusNode.unfocus();
         emit(state.copyWith(isTextInputCollapsed: true));
@@ -335,7 +291,7 @@ class ChatCubit extends Cubit<ChatState> {
       Future.delayed(const Duration(milliseconds: 500)).then((value) {
         emit(state.copyWith(keyboardOpened: !state.keyboardOpened));
       }).onError((error, stackTrace) {});
-    });
+    }));
 
     textInputFocusNode.addListener(() {
       final bool isFocused = textInputFocusNode.hasFocus;
@@ -345,8 +301,7 @@ class ChatCubit extends Cubit<ChatState> {
       }
     });
 
-    _updateChatTimerSubscription =
-        _webSocketManager.updateChatTimerStream.listen(
+    addListener(_webSocketManager.updateChatTimerStream.listen(
       (event) {
         if (event.clientId == clientData.id) {
           emit(state.copyWith(isChatReconnecting: false));
@@ -361,22 +316,21 @@ class ChatCubit extends Cubit<ChatState> {
           }
         }
       },
-    );
+    ));
 
-    _stopRoomSubscription = _webSocketManager.stopRoomStream.listen(
+    addListener(_webSocketManager.stopRoomStream.listen(
       (event) => emit(state.copyWith(isChatReconnecting: true)),
-    );
+    ));
 
-    _chatLoginSubscription = _webSocketManager.chatLoginStream.listen(
+    addListener(_webSocketManager.chatLoginStream.listen(
       (event) {
         if (clientData.id == event.opponentId) {
           _chatId = event.chatId;
         }
       },
-    );
+    ));
 
-    _underageConfirmSubscription =
-        _webSocketManager.underageConfirmStream.listen((event) async {
+    addListener(_webSocketManager.underageConfirmStream.listen((event) async {
       if (event.opponentId == clientData.id) {
         bool? reportConfirmed = await _underageConfirmDialog(event.message);
 
@@ -387,9 +341,9 @@ class ChatCubit extends Cubit<ChatState> {
           }
         }
       }
-    });
+    }));
 
-    _webSocketStateSubscription = _webSocketManager.webSocketStateStream.listen(
+    addListener(_webSocketManager.webSocketStateStream.listen(
       (event) {
         if (event == WebSocketState.connected) {
           if (state.offlineSessionIsActive) {
@@ -407,78 +361,121 @@ class ChatCubit extends Cubit<ChatState> {
           emit(state.copyWith(isChatReconnecting: true));
         }
       },
-    );
+    ));
 
-    _paidFreeChatSubscription =
-        _webSocketManager.paidFreeStream.listen((event) {
+    addListener(_webSocketManager.paidFreeStream.listen((event) {
       if (event.opponentId == clientData.id) {
         emit(state.copyWith(chatPaymentStatus: event.status));
       }
-    });
+    }));
 
-    _roomPausedSubscription =
-        _webSocketManager.roomPausedStream.listen((event) {
+    addListener(_audioRecorder.stateStream.listen((e) async {
+      if (e.state == SoundRecorderState.isRecording) {
+        emit(state.copyWith(
+          recordingDuration: const Duration(),
+        ));
+
+        _recordingProgressSubscription =
+            _audioRecorder.onProgress?.listen((e) async {
+          emit(state.copyWith(
+            recordingDuration: e.duration ?? const Duration(),
+          ));
+        });
+      } else {
+        _recordingProgressSubscription?.cancel();
+      }
+
+      emit(state.copyWith(
+        isRecording: e.state == SoundRecorderState.isRecording,
+      ));
+    }));
+
+    addListener(_webSocketManager.roomPausedStream.listen((event) {
       if (event.opponentId == clientData.id) {
         if (event.isPaused) {
           _chatTimer?.cancel();
         }
         emit(state.copyWith(isVisibleTextField: !event.isPaused));
       }
-    });
+    }));
+
+    addListener(_webSocketManager.messageReactionCreatedStream.listen((event) {
+      if (event.clientId == clientData.id) {
+        int index = _messages.indexWhere(
+            (element) => element.id == event.id || element.mid == event.mid);
+        _messages[index] = _messages[index].copyWith(reaction: event.reaction);
+        _updateMessages();
+      }
+    }));
 
     getClientInformation();
   }
 
   @override
-  Future<void> close() {
-    textInputEditingController.dispose();
+  Future<void> close() async {
     textInputScrollController.dispose();
     messagesScrollController.dispose();
     textInputFocusNode.dispose();
-    _messagesSubscription.cancel();
     _oneMessageSubscription?.cancel();
-    _enterRoomDataSubscription.cancel();
-    _updateMessageIdSubscription.cancel();
-    _updateMessageIsDeliveredSubscription.cancel();
-    _updateMessageIsReadSubscription.cancel();
-    _updateWriteStatusSubscription.cancel();
-    _showDownButtonSubscription.cancel();
     _showDownButtonStream.close();
-    _keyboardSubscription.cancel();
-    _updateChatIsActiveSubscription.cancel();
-    _updateOfflineSessionIsActiveSubscription.cancel();
-    _updateChatTimerSubscription.cancel();
     _chatTimer?.cancel();
-    _stopRoomSubscription.cancel();
     _offlineSessionTimer?.cancel();
-    _chatLoginSubscription.cancel();
-    _underageConfirmSubscription.cancel();
-    _webSocketStateSubscription.cancel();
-    _paidFreeChatSubscription.cancel();
-    _roomPausedSubscription.cancel();
+    _recordingProgressSubscription?.cancel();
     return super.close();
   }
 
-  void sendMessageToChat() {
+  int? get recordAudioDuration => _recordAudioDuration;
+
+  AudioPlayerService get audioPlayer => _audioPlayer;
+
+  AudioRecorderService get audioRecorder => _audioRecorder;
+
+  void sendMessageToChat({required String text}) {
     final ChatMessageModel chatMessageModel = ChatMessageModel(
       utc: DateTime.now().toUtc(),
       type: ChatMessageType.simple,
       isOutgoing: true,
       isDelivered: false,
       mid: _generateMessageId(),
-      message: textInputEditingController.text.trim(),
+      message: text,
     );
     if (state.needShowDownButton) {
       animateToStartChat();
     }
     _messages.insert(0, chatMessageModel);
     _updateMessages();
-    textInputEditingController.clear();
     _webSocketManager.sendMessageToChat(
       message: chatMessageModel,
       roomId: enterRoomData?.roomData?.id ?? '',
       opponentId: clientData.id ?? 0,
+
+      ///TODO: need relocate to chatMessageModel maybe
+      repliedMessageId: state.repliedMessage?.id,
     );
+  }
+
+  void sendWriteStatus() {
+    if (triggerOnTextChanged) {
+      triggerOnTextChanged = false;
+      Future.delayed(_typingIndicatorDuration)
+          .then((value) => triggerOnTextChanged = true);
+      _webSocketManager.sendWriteStatus(
+          opponentId: clientData.id ?? 0,
+          roomId: enterRoomData?.roomData?.id ?? '');
+    }
+  }
+
+  setRepliedMessage({
+    ChatMessageModel? repliedMessage,
+  }) {
+    emit(state.copyWith(repliedMessage: repliedMessage));
+  }
+
+  void updateInputTextInfo(int textLength, bool isEnabled) {
+    emit(state.copyWith(
+      inputTextLength: textLength,
+      isSendButtonEnabled: isEnabled,
+    ));
   }
 
   void sendReadMessage(int? messageId) {
@@ -506,12 +503,18 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   void updateHiddenInputHeight(double height, double maxHeight) {
+    final double repliedHeight =
+        state.repliedMessage != null ? repliedMessageHeight / 2 : 0.0;
+
     if (height <= maxHeight) {
       emit(state.copyWith(textInputHeight: height));
       if (snappingSheetController.isAttached && state.isTextInputCollapsed) {
         try {
-          snappingSheetController.snapToPosition(SnappingPosition.pixels(
-              positionPixels: height + grabbingHeight * 2));
+          snappingSheetController.snapToPosition(
+            SnappingPosition.pixels(
+              positionPixels: height + constGrabbingHeight * 2 + repliedHeight,
+            ),
+          );
         } catch (e) {
           logger.d('method -> updateHiddenInputHeight in ChatCubit: \n$e');
         }
@@ -519,8 +522,11 @@ class ChatCubit extends Cubit<ChatState> {
     } else {
       emit(state.copyWith(textInputHeight: maxHeight));
       if (snappingSheetController.isAttached && state.isTextInputCollapsed) {
-        snappingSheetController.snapToPosition(SnappingPosition.pixels(
-            positionPixels: maxHeight + grabbingHeight * 2));
+        snappingSheetController.snapToPosition(
+          SnappingPosition.pixels(
+            positionPixels: maxHeight + constGrabbingHeight * 2 + repliedHeight,
+          ),
+        );
       }
     }
   }
@@ -558,6 +564,107 @@ class ChatCubit extends Cubit<ChatState> {
     emit(state.copyWith(isStretchedTextField: value));
   }
 
+  Future<void> startRecordingAudio(BuildContext context) async {
+    textInputFocusNode.unfocus();
+    StorageSpace freeSpace = await getStorageSpace(
+      lowOnSpaceThreshold: 0,
+      fractionDigits: 1,
+    );
+    final freeSpaceInMb = freeSpace.free /
+        (AppConstants.bytesInKilobyte * AppConstants.bytesInKilobyte);
+    if (freeSpaceInMb <= AppConstants.minFreeSpaceInMb) {
+      //await recordingIsNotPossibleAlert();
+      return;
+    }
+
+    audioPlayer.stop();
+
+    // ignore: use_build_context_synchronously
+    await _checkPermissionService.handlePermission(
+        context, PermissionType.audio);
+
+    final isRecordGranted = await Permission.microphone.isGranted;
+
+    if (!isRecordGranted) {
+      return;
+    }
+
+    final fileName = '${_uuid.v4()}.$_recordFileExt';
+    await _audioRecorder.startRecorder(fileName);
+
+    String? recordingPath = await _audioRecorder.getRecordURL(path: fileName);
+    File? recordingAudio;
+    if (recordingPath != null) {
+      recordingAudio = File(recordingPath);
+    }
+
+    _recordingProgressSubscription =
+        _audioRecorder.onProgress?.listen((e) async {
+      _recordAudioDuration = e.duration?.inSeconds;
+      if (recordingAudio != null &&
+          !_checkMaxRecordLengthIsOk(recordingAudio)) {
+        stopRecordingAudio();
+        _zodiacMainCubit.updateErrorMessage(UIError(
+            uiErrorType: UIErrorType.recordingStoppedBecauseYouReached,
+            args: [AppConstants.maxRecordLengthInMb]));
+      }
+    });
+  }
+
+  Future<void> stopRecordingAudio() async {
+    _recordingProgressSubscription?.cancel();
+    _recordingProgressSubscription = null;
+
+    String? recordingPath = await _audioRecorder.stopRecorder();
+    logger.i("recorded audio: $recordingPath");
+
+    File? recordedAudio;
+    if (recordingPath != null && recordingPath.isNotEmpty) {
+      recordedAudio = File(recordingPath);
+      final Metadata metaAudio =
+          await MetadataRetriever.fromFile(recordedAudio);
+      _recordAudioDuration = (metaAudio.trackDuration ?? 0) ~/ 1000;
+    }
+
+    emit(
+      state.copyWith(
+        recordedAudio: recordedAudio,
+        isSendButtonEnabled: recordedAudio != null,
+      ),
+    );
+  }
+
+  Future<void> deleteRecordedAudio() async {
+    await audioPlayer.stop();
+
+    if (await _deleteAudioMessageAlert() == true) {
+      await _deleteRecordedAudioFile(state.recordedAudio);
+      _recordAudioDuration = null;
+
+      emit(state.copyWith(
+        recordedAudio: null,
+      ));
+    }
+  }
+
+  Future<void> cancelRecordingAudio() async {
+    _recordingProgressSubscription?.cancel();
+    _recordingProgressSubscription = null;
+    _recordAudioDuration = null;
+
+    String? recordingPath = await _audioRecorder.stopRecorder();
+    if (recordingPath != null && recordingPath.isNotEmpty) {
+      File recordedAudio = File(recordingPath);
+      await _deleteRecordedAudioFile(recordedAudio);
+    }
+
+    emit(
+      state.copyWith(
+        recordedAudio: null,
+      ),
+    );
+  }
+
   void _updateMessages() {
     emit(state.copyWith(messages: List.from(_messages)));
   }
@@ -577,6 +684,29 @@ class ChatCubit extends Cubit<ChatState> {
     });
   }
 
+  bool _checkMaxRecordLengthIsOk(File recordingAudio) {
+    return recordingAudio.sizeInMb < AppConstants.maxRecordLengthInMb;
+  }
+
+  Future<void> _cancelOrDeleteRecordedAudio() async {
+    if (_audioRecorder.isRecording) {
+      await cancelRecordingAudio();
+    } else if (state.recordedAudio != null) {
+      await _deleteRecordedAudioFile(state.recordedAudio);
+      emit(
+        state.copyWith(
+          recordedAudio: null,
+        ),
+      );
+    }
+  }
+
+  Future<void> _deleteRecordedAudioFile(File? recordedAudio) async {
+    if (recordedAudio != null && await recordedAudio.exists()) {
+      recordedAudio.deleteSync();
+    }
+  }
+
   String _generateMessageId() {
     final expertId = _cachingManager.getUid();
     return SocketMessage.generateMessageId(expertId);
@@ -590,6 +720,7 @@ class ChatCubit extends Cubit<ChatState> {
     if (enterRoomData?.roomData?.id != null) {
       _webSocketManager.sendEndChat(roomId: enterRoomData!.roomData!.id!);
     }
+    _cancelOrDeleteRecordedAudio();
   }
 
   Future<void> sendImage(File image) async {
@@ -600,15 +731,13 @@ class ChatCubit extends Cubit<ChatState> {
         );
 
     if (shouldSend == true) {
-      String mid = _generateMessageId();
-
       ChatMessageModel message = ChatMessageModel(
         type: ChatMessageType.image,
         isOutgoing: true,
         utc: DateTime.now().toUtc(),
         fromAdvisor: true,
         mainImage: image.path,
-        mid: mid,
+        mid: _generateMessageId(),
         isDelivered: false,
       );
 
@@ -617,6 +746,30 @@ class ChatCubit extends Cubit<ChatState> {
 
       logger.d(message);
     }
+  }
+
+  Future<void> sendAudio() async {
+    await audioPlayer.stop();
+
+    ChatMessageModel message = ChatMessageModel(
+      type: ChatMessageType.audio,
+      isOutgoing: true,
+      utc: DateTime.now().toUtc(),
+      fromAdvisor: true,
+      length: _recordAudioDuration,
+      path: state.recordedAudio?.path,
+      mid: _generateMessageId(),
+      isDelivered: false,
+    );
+
+    _messages.insert(0, message);
+    _updateMessages();
+
+    emit(state.copyWith(
+      recordedAudio: null,
+    ));
+
+    logger.d(message);
   }
 
   void closeOfflineSessionsMessage() {
@@ -649,7 +802,10 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   void deleteMessage(String? mid) {
-    _messages.removeWhere((element) => element.mid == mid);
+    final ChatMessageModel? model =
+        _messages.firstWhereOrNull((element) => element.mid == mid);
+    model?.path?.let((that) => _deleteRecordedAudioFile(File(that)));
+    _messages.remove(model);
     emit(state.copyWith(messages: List.of(_messages)));
   }
 
@@ -657,8 +813,9 @@ class ChatCubit extends Cubit<ChatState> {
     _zodiacMainCubit.clearErrorMessage();
   }
 
-  void updateImageIsDelivered(CreatedDeliveredEvent event) {
+  void updateMediaIsDelivered(CreatedDeliveredEvent event) {
     _updateMessageIsDelivered(event);
+    event.pathLocal?.let((that) => _deleteRecordedAudioFile(File(that)));
   }
 
   void _updateMessageIsDelivered(CreatedDeliveredEvent event) {
@@ -668,13 +825,25 @@ class ChatCubit extends Cubit<ChatState> {
 
       if (index > -1) {
         final ChatMessageModel model = _messages[index];
-        logger.d(model);
         _messages[index] = model.copyWith(
           isDelivered: true,
+          path: event.path,
         );
-        logger.d(_messages[index]);
         _updateMessages();
       }
     }
+  }
+
+  void setEmojiPickerOpened(String? id) {
+    emit(state.copyWith(reactionMessageId: id));
+  }
+
+  void sendReaction(String mid, String emoji) {
+    _webSocketManager.sendMessageReaction(
+        mid: mid,
+        message: emoji,
+        roomId: enterRoomData?.roomData?.id ?? '',
+        opponentId: clientData.id ?? 0);
+    setEmojiPickerOpened(null);
   }
 }

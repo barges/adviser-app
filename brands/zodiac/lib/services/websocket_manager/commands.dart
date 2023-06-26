@@ -107,5 +107,5 @@ class Commands {
 
   static String get sendMessageReaction => 'sendMessageReaction';
 
-  static String get messageReactionCreated => 'messageReactionCreated';
+  static String get messageReactionCreated => 'reactionMessageCreated';
 }

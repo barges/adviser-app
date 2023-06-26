@@ -6,8 +6,9 @@ import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/down_button_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/chat_text_input_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/typing_indicator.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/wrappers/reaction_feature/reaction_feature_wrapper.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/wrappers/focused_menu/focused_menu_wrapper.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/wrappers/resend_message/resend_message_wrapper.dart';
 import 'package:zodiac/zodiac_constants.dart';
 
@@ -25,6 +26,17 @@ class ChatMessagesListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final ChatCubit chatCubit = context.read<ChatCubit>();
 
+    final ChatMessageModel? repliedMessage =
+        context.select((ChatCubit cubit) => cubit.state.repliedMessage);
+
+    final bool hasRepliedMessage = repliedMessage != null;
+
+    final bool chatIsActive = chatCubit.state.chatIsActive;
+    final bool offlineSessionIsActive = chatCubit.state.offlineSessionIsActive;
+
+    final double paddingIfHasRepliedMessage =
+        hasRepliedMessage ? repliedMessageHeight : 0.0;
+
     // for (var element in messages) {
     //   logger.d(element);
     // }
@@ -36,8 +48,18 @@ class ChatMessagesListWidget extends StatelessWidget {
     final bool needShowTypingIndicator = context
         .select((ChatCubit cubit) => cubit.state.needShowTypingIndicator);
 
+    final bool emojiPickerOpened =
+        context.select((ChatCubit cubit) => cubit.state.reactionMessageId) !=
+            null;
+
     return GestureDetector(
-      onTap: FocusScope.of(context).unfocus,
+      onTap: () {
+        FocusScope.of(context).unfocus();
+
+        if (emojiPickerOpened) {
+          chatCubit.setEmojiPickerOpened(null);
+        }
+      },
       child: Container(
         color: Theme.of(context).scaffoldBackgroundColor,
         child: Stack(
@@ -51,12 +73,11 @@ class ChatMessagesListWidget extends StatelessWidget {
               controller: chatCubit.messagesScrollController,
               padding: EdgeInsets.fromLTRB(
                 ZodiacConstants.chatHorizontalPadding,
+                ZodiacConstants.chatVerticalPadding,
                 ZodiacConstants.chatHorizontalPadding,
-                ZodiacConstants.chatHorizontalPadding,
-                ZodiacConstants.chatHorizontalPadding +
-                    (chatCubit.state.chatIsActive ||
-                            chatCubit.state.offlineSessionIsActive
-                        ? 0.0
+                ZodiacConstants.chatVerticalPadding +
+                    (chatIsActive || offlineSessionIsActive
+                        ? paddingIfHasRepliedMessage
                         : MediaQuery.of(context).padding.bottom),
               ),
               reverse: true,
@@ -73,7 +94,19 @@ class ChatMessagesListWidget extends StatelessWidget {
                   });
                 } else {
                   final ChatMessageModel messageModel = messages[index - 1];
-                  if (!messageModel.isOutgoing && !messageModel.isRead) {
+                  if (messageModel.isOutgoing && !messageModel.isDelivered) {
+                    return ResendMessageWrapper(
+                      key: ValueKey(messageModel.mid),
+                      chatMessageModel: messageModel,
+                    );
+                  } else if (!messageModel.isOutgoing && messageModel.isRead) {
+                    return FocusedMenuWrapper(
+                      key: ValueKey(
+                          '${messageModel.reaction}_${messageModel.mid}'),
+                      chatMessageModel: messageModel,
+                      chatIsActive: chatIsActive,
+                    );
+                  } else if (!messageModel.isOutgoing && !messageModel.isRead) {
                     return VisibilityDetector(
                       key: Key(messageModel.id.toString()),
                       onVisibilityChanged: (visibilityInfo) {
@@ -81,30 +114,17 @@ class ChatMessagesListWidget extends StatelessWidget {
                           chatCubit.sendReadMessage(messageModel.id);
                         }
                       },
-                      child: messageModel.supportsReaction == true
-                          ? ReactionFeatureWrapper(
-                              chatMessageModel: messageModel)
-                          : ChatMessageWidget(
-                              chatMessageModel: messageModel,
-                            ),
+                      child: FocusedMenuWrapper(
+                        key: ValueKey(
+                            '${messageModel.reaction}_${messageModel.mid}'),
+                        chatMessageModel: messageModel,
+                        chatIsActive: chatIsActive,
+                      ),
                     );
-                  }
-                  if (messageModel.isOutgoing && messageModel.isDelivered) {
+                  } else {
                     return ChatMessageWidget(
                       chatMessageModel: messageModel,
                     );
-                  } else if (messageModel.isOutgoing &&
-                      !messageModel.isDelivered) {
-                    return ResendMessageWrapper(
-                      key: ValueKey(messageModel.mid),
-                      chatMessageModel: messageModel,
-                    );
-                  } else {
-                    return messageModel.supportsReaction == true
-                        ? ReactionFeatureWrapper(chatMessageModel: messageModel)
-                        : ChatMessageWidget(
-                            chatMessageModel: messageModel,
-                          );
                   }
                 }
               },
@@ -120,11 +140,12 @@ class ChatMessagesListWidget extends StatelessWidget {
               return needShowDownButton
                   ? Positioned(
                       right: ZodiacConstants.chatHorizontalPadding,
-                      bottom: (chatCubit.state.chatIsActive ||
-                              chatCubit.state.offlineSessionIsActive
-                          ? ZodiacConstants.chatHorizontalPadding
+                      bottom: (chatIsActive || offlineSessionIsActive
+                          ? ZodiacConstants.chatHorizontalPadding +
+                              paddingIfHasRepliedMessage
                           : MediaQuery.of(context).padding.bottom +
-                              ZodiacConstants.chatHorizontalPadding),
+                              ZodiacConstants.chatHorizontalPadding +
+                              42.0),
                       child: DownButtonWidget(
                         unreadCount: unreadCount,
                       ),

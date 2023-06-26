@@ -148,5 +148,16 @@
   "onlineZodiac": "On-line",
   "busyZodiac": "Ocupado",
   "offlineZodiac": "Desligado",
+  "doYouWantToDeleteThisAudioMessageZodiac": "Deseja excluir esta mensagem de áudio?",
+  "recordingStoppedBecauseYouReachedLimitZodiac": "A gravação parou porque você atingiu o limite de {maxRecordLengthInMb}Mb limit.",
+  "recentlyUsedZodiac": "Usado recentemente",
+  "smileysAndPeopleZodiac": "Emoticons e pessoas",
+  "animalsAndNatureZodiac": "Animais e Natureza",
+  "foodAndDrinkZodiac": "Comida e bebida",
+  "activityZodiac": "Atividade",
+  "travelAndPlacesZodiac": "Viagens e lugares",
+  "objectsZodiac": "Objetos",
+  "symbolsZodiac": "Símbolos",
+  "flagsZodiac": "Bandeiras",
   "sorryPhoneVerificationUnavailable": "A verificação por telefone não está disponível no momento. Por favor, três agan latr."
 }

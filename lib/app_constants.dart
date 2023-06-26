@@ -15,6 +15,7 @@ class AppConstants {
 
   static const int bytesInKilobyte = 1024;
   static const int minFreeSpaceInMb = 3;
+  static const int maxRecordLengthInMb = 100;
 
   static const String startMSS = '0:00';
 

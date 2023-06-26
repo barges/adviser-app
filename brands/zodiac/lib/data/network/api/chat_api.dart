@@ -3,7 +3,10 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:zodiac/data/network/requests/create_audio_message_request.dart';
+import 'package:zodiac/data/network/responses/create_audio_message_response.dart';
 import 'package:zodiac/data/network/responses/send_image_response.dart';
+import 'package:zodiac/data/network/responses/upload_audio_message_response.dart';
 
 part 'chat_api.g.dart';
 
@@ -23,5 +26,18 @@ abstract class ChatApi {
     @Part(name: 'mid') String? mid,
     @Part(name: 'image') File? image,
     @Path('clientId') required String clientId,
+  });
+
+  @POST('/entities/create-audio-message')
+  Future<CreateAudioMessageResponse> createAudioMessage(
+      {@Body() required CreateAudioMessageRequest request});
+
+  @POST('/entities/upload-audio-message')
+  @MultiPart()
+  Future<UploadAudioMessageResponse> uploadAudioMessage({
+    @Part(name: 'secret') String? secret,
+    @Part(name: 'auth') String? auth,
+    @Part(name: 'entity_id') int? entityId,
+    @Part(name: 'audio_file') File? audioFile,
   });
 }

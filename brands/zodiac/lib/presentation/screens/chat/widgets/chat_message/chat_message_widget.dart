@@ -3,6 +3,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/enums/chat_message_type.dart';
 import 'package:zodiac/generated/l10n.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/messages/audio_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/coupon_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/end_chat_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/image_message_widget.dart';
@@ -104,7 +105,10 @@ class ChatMessageWidget extends StatelessWidget {
       case ChatMessageType.productList:
         return Text(chatMessageModel.type.name);
       case ChatMessageType.audio:
-        return Text(chatMessageModel.type.name);
+        return AudioMessageWidget(
+          chatMessageModel: chatMessageModel,
+          hideLoader: hideLoader,
+        );
     }
   }
 }

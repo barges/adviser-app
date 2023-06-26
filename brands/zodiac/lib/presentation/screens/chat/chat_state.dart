@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/enums/chat_payment_status.dart';
@@ -9,6 +11,7 @@ part 'chat_state.freezed.dart';
 class ChatState with _$ChatState {
   const factory ChatState({
     List<ChatMessageModel>? messages,
+    ChatMessageModel? repliedMessage,
     @Default(true) bool isVisibleTextField,
     @Default(false) bool clientInformationWidgetOpened,
     @Default(false) bool needShowDownButton,
@@ -25,9 +28,13 @@ class ChatState with _$ChatState {
     @Default(false) bool isChatReconnecting,
     @Default(false) bool showOfflineSessionsMessage,
     @Default(false) bool shouldShowInput,
+    @Default(false) bool isRecording,
+    @Default(Duration.zero) Duration recordingDuration,
+    String? reactionMessageId,
     UserDetails? clientInformation,
     Duration? chatTimerValue,
     Duration? offlineSessionTimerValue,
     ChatPaymentStatus? chatPaymentStatus,
+    File? recordedAudio,
   }) = _ChatState;
 }

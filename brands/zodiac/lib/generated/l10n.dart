@@ -1545,6 +1545,117 @@ class SZodiac {
     );
   }
 
+  /// `Do you want to delete this audio message?`
+  String get doYouWantToDeleteThisAudioMessageZodiac {
+    return Intl.message(
+      'Do you want to delete this audio message?',
+      name: 'doYouWantToDeleteThisAudioMessageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recording stopped because you've reached the {maxRecordLengthInMb}Mb limit.`
+  String recordingStoppedBecauseYouReachedLimitZodiac(
+      Object maxRecordLengthInMb) {
+    return Intl.message(
+      'Recording stopped because you\'ve reached the ${maxRecordLengthInMb}Mb limit.',
+      name: 'recordingStoppedBecauseYouReachedLimitZodiac',
+      desc: '',
+      args: [maxRecordLengthInMb],
+    );
+  }
+
+  /// `Recently used`
+  String get recentlyUsedZodiac {
+    return Intl.message(
+      'Recently used',
+      name: 'recentlyUsedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Smileys & People`
+  String get smileysAndPeopleZodiac {
+    return Intl.message(
+      'Smileys & People',
+      name: 'smileysAndPeopleZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Animals & Nature`
+  String get animalsAndNatureZodiac {
+    return Intl.message(
+      'Animals & Nature',
+      name: 'animalsAndNatureZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Food & Drink`
+  String get foodAndDrinkZodiac {
+    return Intl.message(
+      'Food & Drink',
+      name: 'foodAndDrinkZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Activity`
+  String get activityZodiac {
+    return Intl.message(
+      'Activity',
+      name: 'activityZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Travel & Places`
+  String get travelAndPlacesZodiac {
+    return Intl.message(
+      'Travel & Places',
+      name: 'travelAndPlacesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Objects`
+  String get objectsZodiac {
+    return Intl.message(
+      'Objects',
+      name: 'objectsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Symbols`
+  String get symbolsZodiac {
+    return Intl.message(
+      'Symbols',
+      name: 'symbolsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Flags`
+  String get flagsZodiac {
+    return Intl.message(
+      'Flags',
+      name: 'flagsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Sorry, phone verification is currently unavailable. Please try again later.`
   String get sorryPhoneVerificationUnavailable {
     return Intl.message(

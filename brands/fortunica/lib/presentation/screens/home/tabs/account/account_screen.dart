@@ -78,16 +78,16 @@ class AccountScreen extends StatelessWidget {
                     Expanded(
                       child: RefreshIndicator(
                         onRefresh: accountCubit.refreshUserinfo,
-                        child: CustomScrollView(
+                        child: const CustomScrollView(
                           slivers: [
                             SliverToBoxAdapter(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                   horizontal:
                                       AppConstants.horizontalScreenPadding,
                                 ),
                                 child: Column(
-                                  children: const [
+                                  children: [
                                     SizedBox(
                                       height: 24.0,
                                     ),
@@ -112,14 +112,14 @@ class AccountScreen extends StatelessWidget {
                   ],
                 );
               } else {
-                return CustomScrollView(
-                  physics: const ClampingScrollPhysics(),
+                return const CustomScrollView(
+                  physics:  ClampingScrollPhysics(),
                   slivers: [
                     SliverFillRemaining(
                       hasScrollBody: false,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           NoConnectionWidget(),
                         ],
                       ),

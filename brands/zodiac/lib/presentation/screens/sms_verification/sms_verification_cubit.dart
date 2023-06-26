@@ -82,8 +82,10 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
         _globalMainCubit.changeAppLifecycleStream.listen(
       (value) {
         if (value) {
-          WidgetsBinding.instance
-              .addPostFrameCallback((_) => codeTextFieldFocus.requestFocus());
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Future.delayed(const Duration(milliseconds: 500),
+                () => codeTextFieldFocus.requestFocus());
+          });
           _checkTimingInactiveResendCode();
         } else {
           codeTextFieldFocus.unfocus();
