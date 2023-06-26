@@ -16,6 +16,7 @@ import 'package:zodiac/presentation/common_widgets/empty_list_widget.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_success_widget.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/active_chat_input_field_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_messages_list_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/chat_text_input_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/client_information_widget.dart';
@@ -36,13 +37,16 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocProvider(
       create: (_) => zodiacGetIt.get<ChatCubit>(
           param1: ChatCubitParams(
-              fromStartingChat: fromStartingChat,
-              clientData: userData,
-              underageConfirmDialog: (message) =>
-                  _showUnderageConfirmDialog(context, message))),
+        fromStartingChat: fromStartingChat,
+        clientData: userData,
+        underageConfirmDialog: (message) =>
+            _showUnderageConfirmDialog(context, message),
+        deleteAudioMessageAlert: () => _deleteAudioMessageAlert(context),
+      )),
       child: Builder(builder: (context) {
         final ChatCubit chatCubit = context.read<ChatCubit>();
         final bool chatIsActive =
@@ -72,7 +76,7 @@ class ChatScreen extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             children: [
               Scaffold(
-                backgroundColor: Theme.of(context).canvasColor,
+                backgroundColor: theme.canvasColor,
                 appBar: ChatConversationAppBar(
                   userData: userData,
                   onTap: chatCubit.changeClientInformationWidgetOpened,
@@ -225,16 +229,7 @@ class ChatScreen extends StatelessWidget {
                         color: needBarrierColor
                             ? Utils.getOverlayColor(context)
                             : Colors.transparent,
-                        child: Builder(
-                          builder: (context) {
-                            final ChatMessageModel? repliedMessage =
-                                context.select((ChatCubit cubit) =>
-                                    cubit.state.repliedMessage);
-                            return ChatTextInputWidget(
-                              repliedMessage: repliedMessage,
-                            );
-                          },
-                        ),
+                        child: const ActiveChatInputFieldWidget(),
                       ),
                     );
                   }),
@@ -244,6 +239,11 @@ class ChatScreen extends StatelessWidget {
         );
       }),
     );
+  }
+
+  Future<bool?> _deleteAudioMessageAlert(BuildContext context) async {
+    return await showDeleteAlert(
+        context, SZodiac.of(context).doYouWantToDeleteThisAudioMessageZodiac);
   }
 
   Future<void> _endChat(BuildContext context) async {

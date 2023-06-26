@@ -10,7 +10,8 @@ enum UIErrorType {
   checkYourInternetConnection,
   loginDetailsSeemToBeIncorrect,
   youveReachedLimitPhone,
-  phoneVerificationUnavailable;
+  phoneVerificationUnavailable,
+  recordingStoppedBecauseYouReached;
 
   String getErrorMessage(BuildContext context, List<Object>? args) {
     switch (this) {
@@ -38,6 +39,9 @@ enum UIErrorType {
             .youveReachedLimitPhoneVerificationAttemptsZodiac;
       case UIErrorType.phoneVerificationUnavailable:
         return SZodiac.of(context).sorryPhoneVerificationUnavailable;
+      case UIErrorType.recordingStoppedBecauseYouReached:
+        return SZodiac.of(context)
+            .recordingStoppedBecauseYouReachedLimitZodiac(args?[0] ?? '');
     }
   }
 }

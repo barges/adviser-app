@@ -12,18 +12,21 @@
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
-import '../../data/cache/global_caching_manager.dart' as _i6;
-import '../../data/cache/global_caching_manager_impl.dart' as _i7;
-import '../../main_cubit.dart' as _i13;
-import '../../services/check_permission_service.dart' as _i12;
-import '../../services/connectivity_service.dart' as _i3;
-import '../../services/dynamic_link_service.dart' as _i4;
-import '../../services/fresh_chat_service.dart' as _i5;
-import '../../services/push_notification/push_notification_manager.dart' as _i8;
+import '../../data/cache/global_caching_manager.dart' as _i8;
+import '../../data/cache/global_caching_manager_impl.dart' as _i9;
+import '../../main_cubit.dart' as _i15;
+import '../../services/audio/audio_player_service.dart' as _i3;
+import '../../services/audio/audio_recorder_service.dart' as _i4;
+import '../../services/check_permission_service.dart' as _i14;
+import '../../services/connectivity_service.dart' as _i5;
+import '../../services/dynamic_link_service.dart' as _i6;
+import '../../services/fresh_chat_service.dart' as _i7;
+import '../../services/push_notification/push_notification_manager.dart'
+    as _i10;
 import '../../services/push_notification/push_notification_manager_impl.dart'
-    as _i9;
-import '../../services/sound_mode_service.dart' as _i10;
-import 'brand_manager.dart' as _i11;
+    as _i11;
+import '../../services/sound_mode_service.dart' as _i12;
+import 'brand_manager.dart' as _i13;
 
 // ignore_for_file: unnecessary_lambdas
 // ignore_for_file: lines_longer_than_80_chars
@@ -38,20 +41,23 @@ _i1.GetIt $initGetIt(
     environment,
     environmentFilter,
   );
-  gh.singleton<_i3.ConnectivityService>(_i3.ConnectivityService());
-  gh.singleton<_i4.DynamicLinkService>(_i4.DynamicLinkService());
-  gh.singleton<_i5.FreshChatService>(_i5.FreshChatServiceImpl());
-  gh.singleton<_i6.GlobalCachingManager>(_i7.GlobalCachingManagerImpl());
-  gh.singleton<_i8.PushNotificationManager>(_i9.PushNotificationManagerImpl());
-  gh.singleton<_i10.SoundModeService>(_i10.SoundModeService());
-  gh.singleton<_i11.BrandManager>(
-      _i11.BrandManager(gh<_i6.GlobalCachingManager>()));
-  gh.singleton<_i12.CheckPermissionService>(
-      _i12.CheckPermissionService(gh<_i6.GlobalCachingManager>()));
-  gh.singleton<_i13.MainCubit>(_i13.MainCubit(
-    gh<_i6.GlobalCachingManager>(),
-    gh<_i11.BrandManager>(),
-    gh<_i3.ConnectivityService>(),
+  gh.factory<_i3.AudioPlayerService>(() => _i3.AudioPlayerServiceImpl());
+  gh.factory<_i4.AudioRecorderService>(() => _i4.AudioRecorderServiceImp());
+  gh.singleton<_i5.ConnectivityService>(_i5.ConnectivityService());
+  gh.singleton<_i6.DynamicLinkService>(_i6.DynamicLinkService());
+  gh.singleton<_i7.FreshChatService>(_i7.FreshChatServiceImpl());
+  gh.singleton<_i8.GlobalCachingManager>(_i9.GlobalCachingManagerImpl());
+  gh.singleton<_i10.PushNotificationManager>(
+      _i11.PushNotificationManagerImpl());
+  gh.singleton<_i12.SoundModeService>(_i12.SoundModeService());
+  gh.singleton<_i13.BrandManager>(
+      _i13.BrandManager(gh<_i8.GlobalCachingManager>()));
+  gh.singleton<_i14.CheckPermissionService>(
+      _i14.CheckPermissionService(gh<_i8.GlobalCachingManager>()));
+  gh.singleton<_i15.MainCubit>(_i15.MainCubit(
+    gh<_i8.GlobalCachingManager>(),
+    gh<_i13.BrandManager>(),
+    gh<_i5.ConnectivityService>(),
   ));
   return getIt;
 }

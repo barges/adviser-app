@@ -148,6 +148,8 @@
   "onlineZodiac": "On-line",
   "busyZodiac": "Ocupado",
   "offlineZodiac": "Desligado",
+  "doYouWantToDeleteThisAudioMessageZodiac": "Deseja excluir esta mensagem de áudio?",
+  "recordingStoppedBecauseYouReachedLimitZodiac": "A gravação parou porque você atingiu o limite de {maxRecordLengthInMb}Mb limit.",
   "recentlyUsedZodiac": "Usado recentemente",
   "smileysAndPeopleZodiac": "Emoticons e pessoas",
   "animalsAndNatureZodiac": "Animais e Natureza",

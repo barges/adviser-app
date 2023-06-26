@@ -1,10 +1,8 @@
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortunica/generated/l10n.dart';
-import 'package:fortunica/presentation/screens/chat/chat_cubit.dart';
+import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 
 class ChatRecordingWidget extends StatelessWidget {
   final VoidCallback? onClosePressed;
@@ -19,8 +17,6 @@ class ChatRecordingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final s = SFortunica.of(context);
-    final ChatCubit chatCubit = context.read<ChatCubit>();
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -39,22 +35,6 @@ class ChatRecordingWidget extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              Builder(builder: (context) {
-                context
-                    .select((ChatCubit cubit) => cubit.state.recordingDuration);
-
-                return Text(
-                  s.fromXsecToYminFortunica(chatCubit.minRecordDurationInSec,
-                      chatCubit.maxRecordDurationInMinutes),
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: chatCubit.checkMinRecordDurationIsOk()
-                        ? AppColors.online
-                        : theme.errorColor,
-                    fontSize: 12.0,
-                  ),
-                );
-              }),
-              const SizedBox(width: 8.0),
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 8.0,

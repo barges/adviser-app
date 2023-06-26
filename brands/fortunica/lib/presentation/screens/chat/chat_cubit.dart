@@ -187,10 +187,10 @@ class ChatCubit extends BaseCubit<ChatState> {
 
         _recordingDurationSubscription =
             audioRecorder.onProgress?.listen((e) async {
-              emit(state.copyWith(
-                recordingDuration: e.duration ?? const Duration(),
-              ));
-            });
+          emit(state.copyWith(
+            recordingDuration: e.duration ?? const Duration(),
+          ));
+        });
       } else {
         _recordingDurationSubscription?.cancel();
       }

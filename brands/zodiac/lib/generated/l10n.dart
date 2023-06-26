@@ -1545,6 +1545,27 @@ class SZodiac {
     );
   }
 
+  /// `Do you want to delete this audio message?`
+  String get doYouWantToDeleteThisAudioMessageZodiac {
+    return Intl.message(
+      'Do you want to delete this audio message?',
+      name: 'doYouWantToDeleteThisAudioMessageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recording stopped because you've reached the {maxRecordLengthInMb}Mb limit.`
+  String recordingStoppedBecauseYouReachedLimitZodiac(
+      Object maxRecordLengthInMb) {
+    return Intl.message(
+      'Recording stopped because you\'ve reached the ${maxRecordLengthInMb}Mb limit.',
+      name: 'recordingStoppedBecauseYouReachedLimitZodiac',
+      desc: '',
+      args: [maxRecordLengthInMb],
+    );
+  }
+
   /// `Recently used`
   String get recentlyUsedZodiac {
     return Intl.message(
