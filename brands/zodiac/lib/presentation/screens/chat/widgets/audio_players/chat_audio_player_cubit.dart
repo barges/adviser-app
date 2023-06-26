@@ -1,16 +1,11 @@
-import 'dart:async';
-
 import 'package:shared_advisor_interface/services/audio/audio_player_service.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zodiac/presentation/base_cubit/base_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/audio_players/chat_audio_player_state.dart';
 
-class ChatAudioPlayerCubit extends Cubit<ChatAudioPlayerState> {
+class ChatAudioPlayerCubit extends BaseCubit<ChatAudioPlayerState> {
   final AudioPlayerService _player;
   final String? _url;
-
-  StreamSubscription<AudioPlayerState>? _playerStateSubscription;
-  StreamSubscription<PlayerPosition>? _playerPositionSubscription;
 
   ChatAudioPlayerCubit(
     this._player,
@@ -24,7 +19,7 @@ class ChatAudioPlayerCubit extends Cubit<ChatAudioPlayerState> {
           playerState != PlayerState.completed,
     ));
 
-    _playerStateSubscription = _player.stateStream.distinct().listen((event) {
+    addListener(_player.stateStream.distinct().listen((event) {
       if (event.url == _url) {
         emit(state.copyWith(
           isPlaying: event.playerState == PlayerState.playing,
@@ -38,21 +33,14 @@ class ChatAudioPlayerCubit extends Cubit<ChatAudioPlayerState> {
           position: Duration.zero,
         ));
       }
-    });
+    }));
 
-    _playerPositionSubscription = _player.positionStream.listen((event) {
+    addListener(_player.positionStream.listen((event) {
       if (event.url == _url) {
         emit(state.copyWith(
           position: event.duration ?? Duration.zero,
         ));
       }
-    });
-  }
-
-  @override
-  Future<void> close() {
-    _playerStateSubscription?.cancel();
-    _playerPositionSubscription?.cancel();
-    return super.close();
+    }));
   }
 }

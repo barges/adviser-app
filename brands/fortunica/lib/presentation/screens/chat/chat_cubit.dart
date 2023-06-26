@@ -187,10 +187,10 @@ class ChatCubit extends BaseCubit<ChatState> {
 
         _recordingDurationSubscription =
             audioRecorder.onProgress?.listen((e) async {
-              emit(state.copyWith(
-                recordingDuration: e.duration ?? const Duration(),
-              ));
-            });
+          emit(state.copyWith(
+            recordingDuration: e.duration ?? const Duration(),
+          ));
+        });
       } else {
         _recordingDurationSubscription?.cancel();
       }
@@ -597,10 +597,12 @@ class ChatCubit extends BaseCubit<ChatState> {
 
       _recordAudioDuration = (metaAudio.trackDuration ?? 0) ~/ 1000;
       if (!checkMinRecordDurationIsOk()) {
-        fortunicaMainCubit.updateErrorMessage(UIError(
-            uiErrorType:
-                UIErrorType.youCantSendThisMessageBecauseItsLessThanXSeconds,
-            args: [_minRecordDurationInSec]));
+        if (state.currentTabIndex == 0) {
+          fortunicaMainCubit.updateErrorMessage(UIError(
+              uiErrorType:
+                  UIErrorType.youCantSendThisMessageBecauseItsLessThanXSeconds,
+              args: [_minRecordDurationInSec]));
+        }
       } else if (!_checkMaxRecordDurationIsOk()) {
         fortunicaMainCubit.updateErrorMessage(UIError(
             uiErrorType: UIErrorType.youVeReachTheXMinuteTimeLimit,
@@ -774,6 +776,9 @@ class ChatCubit extends BaseCubit<ChatState> {
   void changeCurrentTabIndex(int newIndex) {
     emit(state.copyWith(currentTabIndex: newIndex));
     textInputFocusNode.unfocus();
+    if (audioRecorder.isRecording) {
+      stopRecordingAudio();
+    }
   }
 
   void updateSuccessMessage(AppSuccess appSuccess) {

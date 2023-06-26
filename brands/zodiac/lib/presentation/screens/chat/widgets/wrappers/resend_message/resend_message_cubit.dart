@@ -157,9 +157,11 @@ class ResendMessageCubit extends Cubit<ResendMessageState> {
           if (uploadAudioMessageResponse.status == true &&
               uploadAudioMessageResponse.result?.path != null) {
             updateMediaIsDelivered(CreatedDeliveredEvent(
-                mid: _chatMessageModel.mid!,
-                clientId: _opponentId ?? 0,
-                path: uploadAudioMessageResponse.result?.path));
+              mid: _chatMessageModel.mid!,
+              clientId: _opponentId ?? 0,
+              path: uploadAudioMessageResponse.result?.path,
+              pathLocal: _chatMessageModel.path,
+            ));
           } else {
             emit(state.copyWith(showResendWidget: true));
           }

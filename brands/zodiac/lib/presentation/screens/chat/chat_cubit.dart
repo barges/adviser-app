@@ -107,7 +107,6 @@ class ChatCubit extends BaseCubit<ChatState> {
   int? _chatId;
 
   int? _recordAudioDuration;
-  File? _sentRecordedAudio;
 
   ChatCubit(
     @factoryParam ChatCubitParams chatCubitParams,
@@ -126,6 +125,16 @@ class ChatCubit extends BaseCubit<ChatState> {
 
     addListener(_webSocketManager.entitiesStream.listen((event) {
       if (_isRefresh) {
+        final List<ChatMessageModel> messagesNotDelivered =
+            _messages.where((element) => !element.isDelivered).toList();
+        if (messagesNotDelivered.isNotEmpty) {
+          for (var element in messagesNotDelivered) {
+            if (element.path != null) {
+              _deleteRecordedAudioFile(File(element.path!));
+            }
+          }
+        }
+
         _isRefresh = false;
         _messages.clear();
       }
@@ -200,11 +209,7 @@ class ChatCubit extends BaseCubit<ChatState> {
             chatIsActive: event.isActive, shouldShowInput: event.isActive));
         if (!event.isActive) {
           _chatTimer?.cancel();
-          _cancelOrDeleteRecordedAudio();
-          emit(state.copyWith(
-            chatTimerValue: null,
-            recordedAudio: null,
-          ));
+          emit(state.copyWith(chatTimerValue: null));
         }
         if (event.isActive) {
           final String? helloMessage = enterRoomData?.expertData?.helloMessage;
@@ -236,6 +241,7 @@ class ChatCubit extends BaseCubit<ChatState> {
                         (state.offlineSessionTimerValue?.inSeconds ?? 0) - 1)));
           });
         } else if (!event.isActive) {
+          _cancelOrDeleteRecordedAudio();
           emit(state.copyWith(showOfflineSessionsMessage: false));
           _offlineSessionTimer?.cancel();
         }
@@ -409,7 +415,6 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   @override
   Future<void> close() async {
-    _cancelOrDeleteRecordedAudio();
     textInputScrollController.dispose();
     messagesScrollController.dispose();
     textInputFocusNode.dispose();
@@ -420,6 +425,12 @@ class ChatCubit extends BaseCubit<ChatState> {
     _recordingProgressSubscription?.cancel();
     return super.close();
   }
+
+  int? get recordAudioDuration => _recordAudioDuration;
+
+  AudioPlayerService get audioPlayer => _audioPlayer;
+
+  AudioRecorderService get audioRecorder => _audioRecorder;
 
   void sendMessageToChat({required String text}) {
     final ChatMessageModel chatMessageModel = ChatMessageModel(
@@ -682,9 +693,13 @@ class ChatCubit extends BaseCubit<ChatState> {
   Future<void> _cancelOrDeleteRecordedAudio() async {
     if (_audioRecorder.isRecording) {
       await cancelRecordingAudio();
-    } else {
-      await _deleteRecordedAudioFile(state.recordedAudio ?? _sentRecordedAudio);
-      _sentRecordedAudio = null;
+    } else if (state.recordedAudio != null) {
+      await _deleteRecordedAudioFile(state.recordedAudio);
+      emit(
+        state.copyWith(
+          recordedAudio: null,
+        ),
+      );
     }
   }
 
@@ -707,6 +722,7 @@ class ChatCubit extends BaseCubit<ChatState> {
     if (enterRoomData?.roomData?.id != null) {
       _webSocketManager.sendEndChat(roomId: enterRoomData!.roomData!.id!);
     }
+    _cancelOrDeleteRecordedAudio();
   }
 
   Future<void> sendImage(File image) async {
@@ -751,7 +767,6 @@ class ChatCubit extends BaseCubit<ChatState> {
     _messages.insert(0, message);
     _updateMessages();
 
-    _sentRecordedAudio = state.recordedAudio;
     emit(state.copyWith(
       recordedAudio: null,
     ));
@@ -789,9 +804,13 @@ class ChatCubit extends BaseCubit<ChatState> {
   }
 
   void deleteMessage(String? mid) {
-    _messages.removeWhere((element) => element.mid == mid);
+    final ChatMessageModel? model =
+        _messages.firstWhereOrNull((element) => element.mid == mid);
+    if (model?.path != null) {
+      _deleteRecordedAudioFile(File(model!.path!));
+    }
+    _messages.remove(model);
     emit(state.copyWith(messages: List.of(_messages)));
-    _deleteSentRecordedAudioIfExist();
   }
 
   void closeErrorMessage() {
@@ -800,13 +819,8 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   void updateMediaIsDelivered(CreatedDeliveredEvent event) {
     _updateMessageIsDelivered(event);
-    _deleteSentRecordedAudioIfExist();
-  }
-
-  void _deleteSentRecordedAudioIfExist() {
-    if (_sentRecordedAudio != null) {
-      _deleteRecordedAudioFile(_sentRecordedAudio);
-      _sentRecordedAudio = null;
+    if (event.path != null) {
+      _deleteRecordedAudioFile(File(event.pathLocal!));
     }
   }
 
@@ -825,12 +839,6 @@ class ChatCubit extends BaseCubit<ChatState> {
       }
     }
   }
-
-  int? get recordAudioDuration => _recordAudioDuration;
-
-  AudioPlayerService get audioPlayer => _audioPlayer;
-
-  AudioRecorderService get audioRecorder => _audioRecorder;
 
   void setEmojiPickerOpened(String? id) {
     emit(state.copyWith(reactionMessageId: id));
