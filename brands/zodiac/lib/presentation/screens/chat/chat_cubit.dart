@@ -466,7 +466,11 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   void _stopOfflineSession() {
     _cancelOrDeleteRecordedAudio();
-    emit(state.copyWith(showOfflineSessionsMessage: false));
+    emit(state.copyWith(
+      showOfflineSessionsMessage: false,
+      offlineSessionIsActive: false,
+      isVisibleTextField: true,
+    ));
     _offlineSessionTimer?.cancel();
   }
 
