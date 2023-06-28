@@ -159,5 +159,6 @@
   "objectsZodiac": "Objects",
   "symbolsZodiac": "Symbols",
   "flagsZodiac": "Flags",
-  "sorryPhoneVerificationUnavailable": "Sorry, phone verification is currently unavailable. Please try again later."
+  "sorryPhoneVerificationUnavailable": "Sorry, phone verification is currently unavailable. Please try again later.",
+  "youZodiac": "You"
 }
