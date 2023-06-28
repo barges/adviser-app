@@ -1,34 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
+import 'package:zodiac/data/models/chat/replied_message.dart';
 import 'package:zodiac/generated/l10n.dart';
 
 class RepliedMessageContentWidget extends StatelessWidget {
-  final ChatMessageModel repliedMessage;
+  final ChatMessageModel? chatMessageModel;
+  final RepliedMessage? repliedMessage;
+  final Color authorNameColor;
+  final Color messageColor;
+
   const RepliedMessageContentWidget({
     Key? key,
-    required this.repliedMessage,
+    required this.authorNameColor,
+    required this.messageColor,
+    this.chatMessageModel,
+    this.repliedMessage,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    String authorName = chatMessageModel != null
+        ? '${chatMessageModel?.authorName ?? ''}${chatMessageModel?.isOutgoing == true ? ' (${SZodiac.of(context).youZodiac})' : ''}'
+        : repliedMessage?.repliedUserName ?? '';
+    String message = chatMessageModel?.message ?? repliedMessage?.text ?? '';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '${repliedMessage.authorName ?? ''}${repliedMessage.isOutgoing ? ' (${SZodiac.of(context).youZodiac})' : ''}',
+          authorName,
           style: theme.textTheme.displaySmall?.copyWith(
             fontSize: 14.0,
-            color: theme.primaryColor,
+            color: authorNameColor,
           ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
         Text(
-          repliedMessage.message ?? '',
+          message,
           style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.shadowColor,
+            color: messageColor,
           ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,

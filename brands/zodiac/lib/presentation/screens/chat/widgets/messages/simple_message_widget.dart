@@ -3,6 +3,7 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/is_delivered_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/messages/reaction_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/replied_message_content_widget.dart';
 import 'package:zodiac/zodiac_constants.dart';
 import 'package:zodiac/zodiac_extensions.dart';
 
@@ -84,6 +85,41 @@ class _MessageContainer extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if (chatMessageModel.repliedMessage != null)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: IntrinsicWidth(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          height: 36.0,
+                          width: 2.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(2.0),
+                            color: isOutgoing
+                                ? theme.backgroundColor
+                                : theme.primaryColor,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 8.0,
+                        ),
+                        Expanded(
+                          child: RepliedMessageContentWidget(
+                            repliedMessage: chatMessageModel.repliedMessage,
+                            authorNameColor: isOutgoing
+                                ? theme.backgroundColor
+                                : theme.primaryColor,
+                            messageColor: isOutgoing
+                                ? theme.backgroundColor
+                                : theme.shadowColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               Text(
                 chatMessageModel.message ?? '',
                 style: theme.textTheme.bodySmall?.copyWith(
