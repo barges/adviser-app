@@ -137,12 +137,15 @@ class SMSVerificationScreen extends StatelessWidget {
                               const VerificationCodeWidget(),
                               const Spacer(),
                               Builder(builder: (context) {
+                                final bool isOnline = context.select(
+                                    (MainCubit cubit) => cubit
+                                        .state.internetConnectionIsAvailable);
                                 final isVerifyButtonEnabled = context.select(
                                     (SMSVerificationCubitCubit cubit) =>
                                         cubit.state.isVerifyButtonEnabled);
                                 return AppElevatedButton(
                                   title: SZodiac.of(context).verifyZodiac,
-                                  onPressed: isVerifyButtonEnabled
+                                  onPressed: isOnline && isVerifyButtonEnabled
                                       ? () async {
                                           if (await smsVerificationCubitCubit
                                               .verifyPhoneNumber()) {

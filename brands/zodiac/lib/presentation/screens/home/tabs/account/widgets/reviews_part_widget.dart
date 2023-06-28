@@ -119,6 +119,7 @@ class ReviewsPartWidget extends StatelessWidget {
               return TileWidget(
                 title: SZodiac.of(context).phoneNumberZodiac,
                 iconSVGPath: Assets.zodiac.vectors.call.path,
+                isDisable: !zodiacAccountCubit.isSiteKey(),
                 onTap: () => zodiacAccountCubit.goToPhoneNumber(context),
                 widget: SizedBox(
                   width: 100.0,

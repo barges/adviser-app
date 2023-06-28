@@ -33,7 +33,6 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
   StreamSubscription<bool>? _connectivitySubscription;
 
   Timer? _inactiveResendCodeTimer;
-  bool _isOnline = true;
   int _codeTextFieldFilled = 0;
 
   SMSVerificationCubitCubit(
@@ -66,17 +65,6 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
     });
 
     _checkTimingInactiveResendCode();
-
-    _connectivitySubscription =
-        _connectivityService.connectivityStream.listen((event) {
-      _isOnline = event;
-
-      emit(state.copyWith(
-        isVerifyButtonEnabled: _isOnline &&
-            _codeTextFieldFilled == verificationCodeInputFieldCount,
-      ));
-    });
-    _isOnline = await _connectivityService.checkConnection();
 
     _appLifecycleSubscription =
         _globalMainCubit.changeAppLifecycleStream.listen(
@@ -116,24 +104,22 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
   Future<bool> verifyPhoneNumber() async {
     codeTextFieldFocus.unfocus();
     try {
-      if (await _connectivityService.checkConnection()) {
-        final token = await RecaptchaService.execute(
-            RecaptchaCustomAction.phoneVerifyCode);
+      final token =
+          await RecaptchaService.execute(RecaptchaCustomAction.phoneVerifyCode);
 
-        final PhoneNumberVerifyResponse response = await _zodiacUserRepository
-            .verifyPhoneNumber(PhoneNumberVerifyRequest(
-          code: int.parse(verificationCodeInputController.text),
-          captchaResponse: token,
+      final PhoneNumberVerifyResponse response = await _zodiacUserRepository
+          .verifyPhoneNumber(PhoneNumberVerifyRequest(
+        code: int.parse(verificationCodeInputController.text),
+        captchaResponse: token,
+      ));
+
+      if (response.isVerified == false) {
+        emit(state.copyWith(
+          isError: true,
         ));
-
-        if (response.isVerified == false) {
-          emit(state.copyWith(
-            isError: true,
-          ));
-        }
-
-        return response.status == true && response.isVerified == true;
       }
+
+      return response.status == true && response.isVerified == true;
     } catch (e) {
       logger.d(e);
     }
@@ -197,7 +183,7 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
     _codeTextFieldFilled = codeTextFieldFilled;
     emit(state.copyWith(
       isVerifyButtonEnabled:
-          _isOnline && _codeTextFieldFilled == verificationCodeInputFieldCount,
+          _codeTextFieldFilled == verificationCodeInputFieldCount,
     ));
   }
 

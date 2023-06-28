@@ -28,7 +28,6 @@ class VerificationCodeWidget extends StatelessWidget {
             child: PinCodeTextField(
               appContext: context,
               autoFocus: true,
-              autoUnfocus: false,
               autoDisposeControllers: false,
               focusNode: smsVerificationCubitCubit.codeTextFieldFocus,
               textStyle: theme.textTheme.bodyMedium?.copyWith(

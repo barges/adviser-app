@@ -15,13 +15,15 @@ class ResendCodeButton extends StatelessWidget {
     SMSVerificationCubitCubit smsVerificationCubitCubit =
         context.read<SMSVerificationCubitCubit>();
     return Builder(builder: (context) {
+      final bool isOnline = context.select(
+          (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
       final isResendCodeButtonEnabled = context.select(
           (SMSVerificationCubitCubit cubit) =>
               cubit.state.isResendCodeButtonEnabled);
       // TODO Implement after attempts will be add on backend
       const String attempts = '0/3';
       return GestureDetector(
-        onTap: isResendCodeButtonEnabled
+        onTap: isOnline && isResendCodeButtonEnabled
             ? () async {
                 if (await smsVerificationCubitCubit.resendCode()) {
                   await showOkCancelAlert(
@@ -35,26 +37,20 @@ class ResendCodeButton extends StatelessWidget {
                 }
               }
             : null,
-        child: Builder(builder: (context) {
-          final bool isOnline = context.select(
-              (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
-          return Opacity(
-            opacity: isOnline && isResendCodeButtonEnabled ? 1.0 : 0.4,
-            child: Builder(builder: (context) {
-              return Text(
-                isResendCodeButtonEnabled
-                    ? SZodiac.of(context).resendCodeZodiac(attempts)
-                    : SZodiac.of(context)
-                        .nextAttemptInZodiac(inactiveResendCodeDurationInSec),
-                textAlign: TextAlign.center,
-                style: theme.textTheme.labelMedium?.copyWith(
-                  fontSize: 17.0,
-                  color: theme.primaryColor,
-                ),
-              );
-            }),
-          );
-        }),
+        child: Opacity(
+          opacity: isOnline && isResendCodeButtonEnabled ? 1.0 : 0.4,
+          child: Text(
+            isResendCodeButtonEnabled
+                ? SZodiac.of(context).resendCodeZodiac(attempts)
+                : SZodiac.of(context)
+                    .nextAttemptInZodiac(inactiveResendCodeDurationInSec),
+            textAlign: TextAlign.center,
+            style: theme.textTheme.labelMedium?.copyWith(
+              fontSize: 17.0,
+              color: theme.primaryColor,
+            ),
+          ),
+        ),
       );
     });
   }

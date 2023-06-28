@@ -362,7 +362,6 @@ class MainAppRouter extends _i45.RootStackRouter {
           key: args.key,
           siteKey: args.siteKey,
           phone: args.phone,
-          isOnline: args.isOnline,
         ),
       );
     },
@@ -1467,7 +1466,6 @@ class ZodiacPhoneNumber extends _i45.PageRouteInfo<ZodiacPhoneNumberArgs> {
     _i46.Key? key,
     required String? siteKey,
     required _i50.Phone phone,
-    bool isOnline = true,
   }) : super(
           ZodiacPhoneNumber.name,
           path: 'zodiacPhoneNumber',
@@ -1475,7 +1473,6 @@ class ZodiacPhoneNumber extends _i45.PageRouteInfo<ZodiacPhoneNumberArgs> {
             key: key,
             siteKey: siteKey,
             phone: phone,
-            isOnline: isOnline,
           ),
         );
 
@@ -1487,7 +1484,6 @@ class ZodiacPhoneNumberArgs {
     this.key,
     required this.siteKey,
     required this.phone,
-    this.isOnline = true,
   });
 
   final _i46.Key? key;
@@ -1496,11 +1492,9 @@ class ZodiacPhoneNumberArgs {
 
   final _i50.Phone phone;
 
-  final bool isOnline;
-
   @override
   String toString() {
-    return 'ZodiacPhoneNumberArgs{key: $key, siteKey: $siteKey, phone: $phone, isOnline: $isOnline}';
+    return 'ZodiacPhoneNumberArgs{key: $key, siteKey: $siteKey, phone: $phone}';
   }
 }
 

@@ -43,14 +43,15 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   final Future<bool> Function(bool needShowSettingsAlert) _handlePermission;
 
   StreamSubscription? _currentBrandSubscription;
-  StreamSubscription<bool>? _connectivitySubscription;
+  StreamSubscription<bool>? _pushTokenConnectivitySubscription;
+  StreamSubscription<bool>? _getSettingsConnectivitySubscription;
   bool? isPushNotificationPermissionGranted;
   String? _siteKey;
 
   late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
   late final StreamSubscription<bool> _updateAccountSubscription;
   late final StreamSubscription<bool> _updateUnreadNotificationsCounter;
-  late final StreamSubscription<bool> _updateAccauntSettingsSubscription;
+  late final StreamSubscription<bool> _updateAccountSettingsSubscription;
 
   ZodiacAccountCubit(
     this._brandManager,
@@ -89,30 +90,20 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
       _getUnreadNotificationsCount();
     });
 
-    _connectivitySubscription =
-        _connectivityService.connectivityStream.listen((event) async {
-      if (event) {
-        if (_siteKey == null) {
-          SettingsResponse settingsResponse = await _getSettings();
-          _siteKey = settingsResponse.captcha?.scoreBased?.key;
-        }
-      }
-    });
-
-    _updateAccauntSettingsSubscription =
+    _updateAccountSettingsSubscription =
         _mainCubit.updateAccauntSettingsTrigger.listen((_) {
-      _getSettings();
+      _getSettings(true);
     });
   }
 
   @override
   Future<void> close() async {
     _updateUserBalanceSubscription.cancel();
-    _connectivitySubscription?.cancel();
+    _pushTokenConnectivitySubscription?.cancel();
     _updateAccountSubscription.cancel();
     _updateUnreadNotificationsCounter.cancel();
     _currentBrandSubscription?.cancel();
-    _updateAccauntSettingsSubscription.cancel();
+    _updateAccountSettingsSubscription.cancel();
     super.close();
   }
 
@@ -129,14 +120,16 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   }
 
   Future<void> goToPhoneNumber(BuildContext context) async {
-    final isOnline = await _connectivityService.checkConnection();
-    // ignore: use_build_context_synchronously
     context.push(
       route: ZodiacPhoneNumber(
-          siteKey: _siteKey,
-          phone: state.phone ?? const Phone(),
-          isOnline: isOnline),
+        siteKey: _siteKey,
+        phone: state.phone ?? const Phone(),
+      ),
     );
+  }
+
+  bool isSiteKey() {
+    return _siteKey != null;
   }
 
   void goToReviews(BuildContext context) {
@@ -145,6 +138,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
 
   Future<void> refreshUserInfo() async {
     try {
+      _getSettings();
       if (await _connectivityService.checkConnection()) {
         isPushNotificationPermissionGranted = await _handlePermission(false);
 
@@ -154,9 +148,6 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
         }
 
         await _getAllCategories();
-
-        SettingsResponse settingsResponse = await _getSettings();
-        _siteKey = settingsResponse.captcha?.scoreBased?.key;
 
         ExpertDetailsResponse response =
             await _userRepository.getDetailedUserInfo(AuthorizedRequest());
@@ -216,13 +207,27 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     }
   }
 
-  Future<SettingsResponse> _getSettings() async {
-    final SettingsResponse response =
-        await _userRepository.getSettings(SettingsRequest());
-    emit(state.copyWith(
-      phone: response.phone,
-    ));
-    return response;
+  Future<void> _getSettings([update = false]) async {
+    if (_siteKey == null || update) {
+      if (await _connectivityService.checkConnection()) {
+        final SettingsResponse response =
+            await _userRepository.getSettings(SettingsRequest());
+        if (response.status == true) {
+          _siteKey = response.captcha?.scoreBased?.key;
+          emit(state.copyWith(
+            phone: response.phone,
+          ));
+        }
+        _getSettingsConnectivitySubscription?.cancel();
+      } else {
+        _getSettingsConnectivitySubscription =
+            _connectivityService.connectivityStream.listen((event) {
+          if (event) {
+            _getSettings();
+          }
+        });
+      }
+    }
   }
 
   Future<void> _sendPushToken() async {
@@ -239,9 +244,9 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
             _cacheManager.pushTokenIsSent = true;
           }
         }
-        _connectivitySubscription?.cancel();
+        _pushTokenConnectivitySubscription?.cancel();
       } else {
-        _connectivitySubscription =
+        _pushTokenConnectivitySubscription =
             _connectivityService.connectivityStream.listen((event) {
           if (event) {
             _sendPushToken();
