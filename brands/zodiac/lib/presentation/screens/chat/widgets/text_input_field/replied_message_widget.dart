@@ -4,8 +4,8 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
-import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/replied_message_content_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/chat_text_input_widget.dart';
 
 class RepliedMessageWidget extends StatelessWidget {
@@ -53,28 +53,8 @@ class RepliedMessageWidget extends StatelessWidget {
               color: theme.primaryColor,
             ),
             Expanded(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${repliedMessage.authorName ?? ''}${repliedMessage.isOutgoing ? ' (${SZodiac.of(context).youZodiac})' : ''}',
-                  style: theme.textTheme.displaySmall?.copyWith(
-                    fontSize: 14.0,
-                    color: theme.primaryColor,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  repliedMessage.message ?? '',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.shadowColor,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: true,
-                )
-              ],
+                child: RepliedMessageContentWidget(
+              repliedMessage: repliedMessage,
             )),
             const SizedBox(
               width: 8.0,
