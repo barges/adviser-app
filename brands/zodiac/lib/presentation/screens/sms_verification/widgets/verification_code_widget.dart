@@ -4,7 +4,6 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/sms_verification/sms_verification_cubit.dart';
-import 'package:zodiac/presentation/screens/sms_verification/sms_verification_screen.dart';
 
 class VerificationCodeWidget extends StatelessWidget {
   const VerificationCodeWidget({
@@ -29,7 +28,6 @@ class VerificationCodeWidget extends StatelessWidget {
             child: PinCodeTextField(
               appContext: context,
               autoFocus: true,
-              autoUnfocus: false,
               autoDisposeControllers: false,
               focusNode: smsVerificationCubitCubit.codeTextFieldFocus,
               textStyle: theme.textTheme.bodyMedium?.copyWith(
@@ -59,9 +57,8 @@ class VerificationCodeWidget extends StatelessWidget {
               controller:
                   smsVerificationCubitCubit.verificationCodeInputController,
               keyboardType: TextInputType.number,
-              onChanged: (text) =>
-                  smsVerificationCubitCubit.updateVerifyButtonEnabled(
-                      text.length == verificationCodeInputFieldCount),
+              onChanged: (text) => smsVerificationCubitCubit
+                  .updateVerifyButtonEnabled(text.length),
               beforeTextPaste: (text) {
                 //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
                 //but you can show anything you want here, like your pop up saying wrong paste format or etc
