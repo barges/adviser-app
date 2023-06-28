@@ -105,6 +105,7 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
                     ),
                   ]
                 : [],
+            topMenuWidgetHeight: supportsReaction ? 48.0 : null,
             topMenuWidget: supportsReaction
                 ? Builder(builder: (context) {
                     return Container(
