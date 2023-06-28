@@ -63,7 +63,7 @@ class ChatMessageModel with _$ChatMessageModel {
     int? length,
     RepliedMessage? repliedMessage,
     String? mid,
-    @Default('') String reaction,
+    @JsonKey(name: 'emoji') @Default('') String reaction,
     @JsonKey(ignore: true) @Default(true) bool isDelivered,
   }) = _ChatMessageModel;
 

@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:core';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,6 +16,7 @@ import 'package:zodiac/presentation/screens/sms_verification/sms_verification_st
 import 'package:zodiac/services/recaptcha/recaptcha_service.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
+const verificationCodeInputFieldCount = 4;
 const inactiveResendCodeDurationInSec = 30;
 
 class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
@@ -29,7 +30,11 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
   final codeTextFieldFocus = FocusNode();
 
   late final StreamSubscription<bool> _appLifecycleSubscription;
+  StreamSubscription<bool>? _connectivitySubscription;
+
   Timer? _inactiveResendCodeTimer;
+  int _codeTextFieldFilled = 0;
+
   SMSVerificationCubitCubit(
     this._globalMainCubit,
     this._zodiacMainCubit,
@@ -37,6 +42,20 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
     this._connectivityService,
     this._cacheManager,
   ) : super(const SMSVerificationState()) {
+    _init();
+  }
+
+  @override
+  Future<void> close() {
+    verificationCodeInputController.dispose();
+    codeTextFieldFocus.dispose();
+    _inactiveResendCodeTimer?.cancel();
+    _appLifecycleSubscription.cancel();
+    _connectivitySubscription?.cancel();
+    return super.close();
+  }
+
+  _init() async {
     codeTextFieldFocus.addListener(() {
       if (state.isError && codeTextFieldFocus.hasPrimaryFocus) {
         emit(state.copyWith(
@@ -44,6 +63,8 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
         ));
       }
     });
+
+    _checkTimingInactiveResendCode();
 
     _appLifecycleSubscription =
         _globalMainCubit.changeAppLifecycleStream.listen(
@@ -60,17 +81,6 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
         }
       },
     );
-
-    _checkTimingInactiveResendCode();
-  }
-
-  @override
-  Future<void> close() {
-    verificationCodeInputController.dispose();
-    codeTextFieldFocus.dispose();
-    _inactiveResendCodeTimer?.cancel();
-    _appLifecycleSubscription.cancel();
-    return super.close();
   }
 
   void _checkTimingInactiveResendCode() {
@@ -94,24 +104,22 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
   Future<bool> verifyPhoneNumber() async {
     codeTextFieldFocus.unfocus();
     try {
-      if (await _connectivityService.checkConnection()) {
-        final token = await RecaptchaService.execute(
-            RecaptchaCustomAction.phoneVerifyCode);
+      final token =
+          await RecaptchaService.execute(RecaptchaCustomAction.phoneVerifyCode);
 
-        final PhoneNumberVerifyResponse response = await _zodiacUserRepository
-            .verifyPhoneNumber(PhoneNumberVerifyRequest(
-          code: int.parse(verificationCodeInputController.text),
-          captchaResponse: token,
+      final PhoneNumberVerifyResponse response = await _zodiacUserRepository
+          .verifyPhoneNumber(PhoneNumberVerifyRequest(
+        code: int.parse(verificationCodeInputController.text),
+        captchaResponse: token,
+      ));
+
+      if (response.isVerified == false) {
+        emit(state.copyWith(
+          isError: true,
         ));
-
-        if (response.isVerified == false) {
-          emit(state.copyWith(
-            isError: true,
-          ));
-        }
-
-        return response.status == true && response.isVerified == true;
       }
+
+      return response.status == true && response.isVerified == true;
     } catch (e) {
       logger.d(e);
     }
@@ -171,9 +179,11 @@ class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
     });
   }
 
-  void updateVerifyButtonEnabled(bool value) {
+  void updateVerifyButtonEnabled(int codeTextFieldFilled) {
+    _codeTextFieldFilled = codeTextFieldFilled;
     emit(state.copyWith(
-      isVerifyButtonEnabled: value,
+      isVerifyButtonEnabled:
+          _codeTextFieldFilled == verificationCodeInputFieldCount,
     ));
   }
 

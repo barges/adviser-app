@@ -11,7 +11,6 @@ import 'package:injectable/injectable.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:zodiac/data/models/app_error/app_error.dart';
 import 'package:zodiac/data/models/app_error/ui_error_type.dart';
 import 'package:zodiac/data/models/enums/recaptcha_custom_action.dart';
@@ -37,12 +36,13 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   final MainCubit _globalMainCubit;
   final ZodiacMainCubit _zodiacMainCubit;
   final ZodiacUserRepository _zodiacUserRepository;
-  final ConnectivityService _connectivityService;
 
   final List<PhoneCountryCode> _phoneCountryCodes = [];
 
   Phone? _phoneVerified;
   StreamSubscription<bool>? _appLifecycleSubscription;
+  StreamSubscription<bool>? _connectivitySubscription;
+
   bool _recaptchaServiceIsInitialized = false;
 
   PhoneNumberCubit(
@@ -51,7 +51,6 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
     this._globalMainCubit,
     this._zodiacMainCubit,
     this._zodiacUserRepository,
-    this._connectivityService,
   ) : super(const PhoneNumberState()) {
     _init();
   }
@@ -59,15 +58,16 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   @override
   Future<void> close() async {
     _appLifecycleSubscription?.cancel();
+    _connectivitySubscription?.cancel();
     return super.close();
   }
 
   _init() async {
-    await _initRecaptchaService();
-    await _loadCountryPhoneCodesJson();
-
     WidgetsBinding.instance
         .addPostFrameCallback((_) => setTextInputFocus(true));
+
+    await _initRecaptchaService();
+    await _loadCountryPhoneCodesJson();
 
     if (_phone.isVerified == true) {
       _phoneVerified = _phone;
@@ -202,21 +202,18 @@ class PhoneNumberCubit extends Cubit<PhoneNumberState> {
 
   Future<PhoneNumberResponse?> _editPhoneNumber() async {
     try {
-      if (await _connectivityService.checkConnection()) {
-        final token = await RecaptchaService.execute(
-            RecaptchaCustomAction.phoneVerifyNumber);
+      final token = await RecaptchaService.execute(
+          RecaptchaCustomAction.phoneVerifyNumber);
 
-        final PhoneNumberResponse response =
-            await _zodiacUserRepository.editPhoneNumber(PhoneNumberRequest(
-          phoneCode: _phone.code!,
-          phoneNumber: _phone.number,
-          captchaResponse: token,
-        ));
-        return response;
-      }
+      final PhoneNumberResponse response =
+          await _zodiacUserRepository.editPhoneNumber(PhoneNumberRequest(
+        phoneCode: _phone.code!,
+        phoneNumber: _phone.number,
+        captchaResponse: token,
+      ));
+      return response;
     } catch (e) {
       logger.d(e);
-      rethrow;
     }
     return null;
   }

@@ -210,6 +210,7 @@ class ChatCubit extends BaseCubit<ChatState> {
           emit(state.copyWith(chatTimerValue: null));
         }
         if (event.isActive) {
+          _stopOfflineSession();
           final String? helloMessage = enterRoomData?.expertData?.helloMessage;
           if (helloMessage?.isNotEmpty == true) {
             sendMessageToChat(text: helloMessage!);
@@ -239,9 +240,7 @@ class ChatCubit extends BaseCubit<ChatState> {
                         (state.offlineSessionTimerValue?.inSeconds ?? 0) - 1)));
           });
         } else if (!event.isActive) {
-          _cancelOrDeleteRecordedAudio();
-          emit(state.copyWith(showOfflineSessionsMessage: false));
-          _offlineSessionTimer?.cancel();
+          _stopOfflineSession();
         }
       }
     }));
@@ -463,6 +462,16 @@ class ChatCubit extends BaseCubit<ChatState> {
           opponentId: clientData.id ?? 0,
           roomId: enterRoomData?.roomData?.id ?? '');
     }
+  }
+
+  void _stopOfflineSession() {
+    _cancelOrDeleteRecordedAudio();
+    emit(state.copyWith(
+      showOfflineSessionsMessage: false,
+      offlineSessionIsActive: false,
+      isVisibleTextField: true,
+    ));
+    _offlineSessionTimer?.cancel();
   }
 
   setRepliedMessage({
