@@ -82,6 +82,9 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
                           fontSize: 17.0,
                         ),
                       ),
+                      onPressed: () => chatCubit.setRepliedMessage(
+                        repliedMessage: widget.chatMessageModel,
+                      ),
                       backgroundColor: theme.unselectedWidgetColor,
                       trailingIcon: Assets.zodiac.vectors.arrowReply.svg(
                         height: AppConstants.iconSize,
