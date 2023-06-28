@@ -92,11 +92,11 @@ class ReviewsScreen extends StatelessWidget {
                             );
                           } else if (reviewList == null &&
                               !internetConnectionIsAvailable) {
-                            return SliverFillRemaining(
+                            return const SliverFillRemaining(
                               hasScrollBody: false,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
+                                children: [
                                   NoConnectionWidget(),
                                 ],
                               ),
