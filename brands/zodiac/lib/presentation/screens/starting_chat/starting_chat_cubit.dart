@@ -126,6 +126,7 @@ class StartingChatCubit extends Cubit<StartingChatState> {
         RoutePathsZodiac.chatScreen) {
       ZodiacBrand().context?.replace(
               route: ZodiacChat(
+            key: UniqueKey(),
             userData: userData,
             fromStartingChat: true,
           ));
