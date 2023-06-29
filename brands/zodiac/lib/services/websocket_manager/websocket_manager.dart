@@ -69,7 +69,6 @@ abstract class WebSocketManager {
     required ChatMessageModel message,
     required String roomId,
     required int opponentId,
-    int? repliedMessageId,
   });
 
   void sendWriteStatus({

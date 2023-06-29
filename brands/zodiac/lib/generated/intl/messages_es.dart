@@ -305,6 +305,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "youMissedChatFromZodiac": m11,
         "youWhereBlocked": MessageLookupByLibrary.simpleMessage(
             "Su cuenta ha sido bloqueada.<br>Póngase en contacto con <a href=\'\'>Atención al cliente</a> para resolver el problema"),
+        "youZodiac": MessageLookupByLibrary.simpleMessage("Tú"),
         "yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Se aceptan sus cambios y se revisarán en breve. Todas las actualizaciones serán visibles para los clientes después de eso"),

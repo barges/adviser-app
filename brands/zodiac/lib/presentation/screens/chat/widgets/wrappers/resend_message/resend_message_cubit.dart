@@ -53,7 +53,6 @@ class ResendMessageCubit extends Cubit<ResendMessageState> {
     this.updateMediaIsDelivered,
     BuildContext context,
   ) : super(const ResendMessageState()) {
-    logger.d('CREATE');
     if (_chatMessageModel.isOutgoing && !_chatMessageModel.isDelivered) {
       if (!isImage && !isAudio) {
         _setTimer();
@@ -187,8 +186,6 @@ class ResendMessageCubit extends Cubit<ResendMessageState> {
 
   void _setTimer() {
     _resendTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      logger.d('Timer');
-
       if (_resendCount < 3) {
         _resendMessage();
         _resendCount++;
