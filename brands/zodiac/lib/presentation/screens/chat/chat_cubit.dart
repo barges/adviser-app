@@ -14,6 +14,7 @@ import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/services/audio/audio_player_service.dart';
 import 'package:shared_advisor_interface/services/audio/audio_recorder_service.dart';
 import 'package:shared_advisor_interface/services/check_permission_service.dart';
@@ -25,6 +26,7 @@ import 'package:zodiac/data/models/app_error/app_error.dart';
 import 'package:zodiac/data/models/app_error/ui_error_type.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
+import 'package:zodiac/data/models/chat/replied_message.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
 import 'package:zodiac/data/models/enums/chat_message_type.dart';
 import 'package:zodiac/data/network/requests/profile_details_request.dart';
@@ -64,6 +66,7 @@ class ChatCubit extends BaseCubit<ChatState> {
   late final bool _fromStartingChat;
   late final UserData clientData;
   final ZodiacUserRepository _userRepository;
+  final MainCubit _mainCubit;
   final ZodiacMainCubit _zodiacMainCubit;
   late final UnderageConfirmDialog _underageConfirmDialog;
 
@@ -113,6 +116,7 @@ class ChatCubit extends BaseCubit<ChatState> {
     this._cachingManager,
     this._webSocketManager,
     this._userRepository,
+    this._mainCubit,
     this._zodiacMainCubit,
     this._checkPermissionService,
     this._audioPlayer,
@@ -128,7 +132,7 @@ class ChatCubit extends BaseCubit<ChatState> {
         final List<ChatMessageModel> messagesNotDelivered =
             _messages.where((element) => !element.isDelivered).toList();
         if (messagesNotDelivered.isNotEmpty) {
-          for (var element in messagesNotDelivered) {
+          for (ChatMessageModel element in messagesNotDelivered) {
             element.path?.let((that) => _deleteRecordedAudioFile(File(that)));
           }
         }
@@ -241,6 +245,7 @@ class ChatCubit extends BaseCubit<ChatState> {
           });
         } else if (!event.isActive) {
           _stopOfflineSession();
+          _cancelOrDeleteRecordedAudio();
         }
       }
     }));
@@ -265,6 +270,24 @@ class ChatCubit extends BaseCubit<ChatState> {
           needShowDownButton: event > 48.0 ? true : false,
         ),
       );
+    }));
+
+    addListener(_mainCubit.changeAppLifecycleStream.listen(
+      (value) async {
+        if (!value) {
+          if (_audioRecorder.isRecording) {
+            stopRecordingAudio();
+          }
+          _audioPlayer.pause();
+        }
+      },
+    ));
+
+    addListener(_mainCubit.audioStopTrigger.listen((value) {
+      if (_audioRecorder.isRecording) {
+        stopRecordingAudio();
+      }
+      _audioPlayer.pause();
     }));
 
     messagesScrollController.addListener(() {
@@ -414,12 +437,20 @@ class ChatCubit extends BaseCubit<ChatState> {
   Future<void> close() async {
     textInputScrollController.dispose();
     messagesScrollController.dispose();
+
     textInputFocusNode.dispose();
-    _oneMessageSubscription?.cancel();
+
     _showDownButtonStream.close();
+
     _chatTimer?.cancel();
     _offlineSessionTimer?.cancel();
+
+    _oneMessageSubscription?.cancel();
     _recordingProgressSubscription?.cancel();
+
+    _audioRecorder.close();
+    _audioPlayer.dispose();
+
     return super.close();
   }
 
@@ -430,6 +461,17 @@ class ChatCubit extends BaseCubit<ChatState> {
   AudioRecorderService get audioRecorder => _audioRecorder;
 
   void sendMessageToChat({required String text}) {
+    RepliedMessage? repliedMessage;
+    final ChatMessageModel? repliedMessageModel = state.repliedMessage;
+
+    repliedMessageModel?.let((model) {
+      repliedMessage = RepliedMessage(
+        type: model.type,
+        text: model.message,
+        repliedUserName: model.authorName,
+      );
+    });
+
     final ChatMessageModel chatMessageModel = ChatMessageModel(
       utc: DateTime.now().toUtc(),
       type: ChatMessageType.simple,
@@ -437,19 +479,19 @@ class ChatCubit extends BaseCubit<ChatState> {
       isDelivered: false,
       mid: _generateMessageId(),
       message: text,
+      repliedMessage: repliedMessage,
+      repliedMessageId: state.repliedMessage?.id,
     );
     if (state.needShowDownButton) {
       animateToStartChat();
     }
     _messages.insert(0, chatMessageModel);
     _updateMessages();
+    setRepliedMessage();
     _webSocketManager.sendMessageToChat(
       message: chatMessageModel,
       roomId: enterRoomData?.roomData?.id ?? '',
       opponentId: clientData.id ?? 0,
-
-      ///TODO: need relocate to chatMessageModel maybe
-      repliedMessageId: state.repliedMessage?.id,
     );
   }
 
@@ -465,7 +507,6 @@ class ChatCubit extends BaseCubit<ChatState> {
   }
 
   void _stopOfflineSession() {
-    _cancelOrDeleteRecordedAudio();
     emit(state.copyWith(
       showOfflineSessionsMessage: false,
       offlineSessionIsActive: false,
@@ -586,7 +627,7 @@ class ChatCubit extends BaseCubit<ChatState> {
       return;
     }
 
-    audioPlayer.stop();
+    _audioPlayer.stop();
 
     // ignore: use_build_context_synchronously
     await _checkPermissionService.handlePermission(
@@ -644,7 +685,7 @@ class ChatCubit extends BaseCubit<ChatState> {
   }
 
   Future<void> deleteRecordedAudio() async {
-    await audioPlayer.stop();
+    await _audioPlayer.stop();
 
     if (await _deleteAudioMessageAlert() == true) {
       await _deleteRecordedAudioFile(state.recordedAudio);
@@ -758,7 +799,7 @@ class ChatCubit extends BaseCubit<ChatState> {
   }
 
   Future<void> sendAudio() async {
-    await audioPlayer.stop();
+    await _audioPlayer.stop();
 
     ChatMessageModel message = ChatMessageModel(
       type: ChatMessageType.audio,

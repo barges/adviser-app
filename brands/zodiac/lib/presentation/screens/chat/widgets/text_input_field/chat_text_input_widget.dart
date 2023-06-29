@@ -66,8 +66,9 @@ class _ChatTextInputWidgetState extends State<ChatTextInputWidget> {
 
     return BlocListener<ChatCubit, ChatState>(
       listenWhen: (prev, current) =>
-          prev.inputTextLength != current.inputTextLength ||
-          prev.repliedMessage != current.repliedMessage,
+          current.textInputFocused &&
+          (prev.inputTextLength != current.inputTextLength ||
+              prev.repliedMessage != current.repliedMessage),
       listener: (context, state) {
         final double maxWidth = MediaQuery.of(context).size.width -
             scrollbarThickness -

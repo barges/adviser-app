@@ -157,5 +157,6 @@
   "objectsZodiac": "Objekte",
   "symbolsZodiac": "Symbole",
   "flagsZodiac": "Flaggen",
-  "sorryPhoneVerificationUnavailable":"Leider ist die telefonische Bestätigung derzeit nicht verfügbar. Bitte drei weitere Latr."
+  "sorryPhoneVerificationUnavailable":"Leider ist die telefonische Bestätigung derzeit nicht verfügbar. Bitte drei weitere Latr.",
+  "youZodiac": "Du"
 }
