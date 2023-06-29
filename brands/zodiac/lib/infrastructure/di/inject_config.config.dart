@@ -145,7 +145,6 @@ Future<_i1.GetIt> $initGetIt(
         gh<_i10.MainCubit>(),
         gh<_i15.ZodiacMainCubit>(),
         gh<_i25.ZodiacUserRepository>(),
-        gh<_i7.ConnectivityService>(),
       ));
   gh.factory<_i33.ZodiacArticlesRepository>(
       () => _i34.ZodiacArticlesRepositoryImpl(gh<_i27.ArticlesApi>()));

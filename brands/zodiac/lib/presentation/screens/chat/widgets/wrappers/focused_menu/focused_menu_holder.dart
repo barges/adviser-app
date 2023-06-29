@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/global.dart';
 
 class FocusedMenuItem {
   Color? backgroundColor;
@@ -34,6 +33,7 @@ class FocusedMenuHolder extends StatefulWidget {
   final Widget? topMenuWidget;
   final VoidCallback? onHold;
   final VoidCallback? onClose;
+  final double? topMenuWidgetHeight;
 
   /// Open with tap insted of long press.
   final bool openWithTap;
@@ -56,10 +56,13 @@ class FocusedMenuHolder extends StatefulWidget {
       this.menuSeparator,
       this.menuBorderRadius,
       this.topMenuWidget,
+      this.topMenuWidgetHeight,
       this.onHold,
       this.onClose,
       this.openWithTap = false})
-      : super(key: key);
+      : assert((topMenuWidget != null && topMenuWidgetHeight != null) ||
+            (topMenuWidget == null && topMenuWidgetHeight == null)),
+        super(key: key);
 
   @override
   State<FocusedMenuHolder> createState() => _FocusedMenuHolderState();
@@ -128,6 +131,7 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
                     menuSeparator: widget.menuSeparator,
                     menuBorderRadius: widget.menuBorderRadius,
                     topMenuWidget: widget.topMenuWidget,
+                    topMenuWidgetHeight: widget.topMenuWidgetHeight,
                     child: widget.openedChild ?? widget.child,
                   ));
             },
@@ -139,7 +143,7 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
   }
 }
 
-class FocusedMenuDetails extends StatelessWidget {
+class FocusedMenuDetails extends StatefulWidget {
   final List<FocusedMenuItem> menuItems;
   final BoxDecoration? menuBoxDecoration;
   final Offset childOffset;
@@ -155,6 +159,7 @@ class FocusedMenuDetails extends StatelessWidget {
   final Widget? menuSeparator;
   final double? menuBorderRadius;
   final Widget? topMenuWidget;
+  final double? topMenuWidgetHeight;
 
   const FocusedMenuDetails({
     Key? key,
@@ -173,37 +178,59 @@ class FocusedMenuDetails extends StatelessWidget {
     this.menuBorderRadius,
     this.menuSeparator,
     this.topMenuWidget,
+    this.topMenuWidgetHeight,
   }) : super(key: key);
+
+  @override
+  State<FocusedMenuDetails> createState() => _FocusedMenuDetailsState();
+}
+
+class _FocusedMenuDetailsState extends State<FocusedMenuDetails> {
+  final ScrollController controller = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.animateTo(controller.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300), curve: Curves.linear);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
     // final maxMenuHeight = size.height * 0.45;
-    final menuHeight = menuItems.length * (itemExtent ?? 50.0) +
-        (menuSeparator != null ? menuItems.length - 1 * 8.0 : 0.0);
+    final menuHeight = widget.menuItems.length * (widget.itemExtent ?? 50.0) +
+        (widget.menuSeparator != null
+            ? widget.menuItems.length - 1 * 8.0
+            : 0.0);
 
-    final maxMenuWidth = menuWidth ?? (size.width * 0.70);
+    final maxMenuWidth = widget.menuWidth ?? (size.width * 0.70);
     //  final menuHeight = listHeight < maxMenuHeight ? listHeight : maxMenuHeight;
-    final leftOffset = (childOffset.dx + maxMenuWidth) < size.width
-        ? childOffset.dx
-        : (childOffset.dx - maxMenuWidth + childSize!.width);
+    // final leftOffset = (childOffset.dx + maxMenuWidth) < size.width
+    //     ? childOffset.dx
+    //     : (childOffset.dx - maxMenuWidth + childSize!.width);
 
     final noVerticalOverlow =
-        (childOffset.dy + menuHeight + childSize!.height) <
+        (widget.childOffset.dy + menuHeight + widget.childSize!.height) <
             size.height -
-                bottomOffsetHeight! -
+                widget.bottomOffsetHeight! -
                 MediaQuery.of(context).padding.bottom;
 
     final childPositionDy = noVerticalOverlow
-        ? childOffset.dy
-        : childOffset.dy - menuHeight - bottomOffsetHeight!;
+        ? widget.childOffset.dy
+        : widget.childOffset.dy - menuHeight - widget.bottomOffsetHeight!;
 
-    final topOffset = childPositionDy + childSize!.height + menuOffset!;
+    //final topOffset = childPositionDy + childSize!.height + menuOffset!;
 
-    final bottomOffset = size.height - childPositionDy + (menuOffset ?? 0.0);
+    final bottomOffset =
+        size.height - childPositionDy + (widget.menuOffset ?? 0.0);
 
-    logger.d(noVerticalOverlow);
+    final bool messageOverflows = widget.topMenuWidgetHeight != null &&
+        (bottomOffset + widget.topMenuWidgetHeight! > size.height);
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
@@ -215,108 +242,147 @@ class FocusedMenuDetails extends StatelessWidget {
               },
               child: BackdropFilter(
                 filter: ImageFilter.blur(
-                    sigmaX: blurSize ?? 4, sigmaY: blurSize ?? 4),
+                    sigmaX: widget.blurSize ?? 4, sigmaY: widget.blurSize ?? 4),
                 child: Container(
-                  color: (blurBackgroundColor ?? Colors.black).withOpacity(0.7),
+                  color: (widget.blurBackgroundColor ?? Colors.black)
+                      .withOpacity(0.7),
                 ),
               )),
           Positioned(
-            top: topOffset,
-            left: leftOffset,
-            child: TweenAnimationBuilder(
-              duration: Duration(milliseconds: 200),
-              builder: (BuildContext context, dynamic value, Widget? child) {
-                return Transform.scale(
-                  scale: value,
-                  alignment: Alignment.center,
-                  child: child,
-                );
-              },
-              tween: Tween(begin: 0.0, end: 1.0),
-              child: Container(
-                width: maxMenuWidth,
-                height: menuHeight + 11.0,
-                decoration: menuBoxDecoration ??
-                    BoxDecoration(
-                        borderRadius:
-                            BorderRadius.circular(menuBorderRadius ?? 5.0),
-                        boxShadow: const [
-                          BoxShadow(
-                              color: Colors.black38,
-                              blurRadius: 10,
-                              spreadRadius: 1)
-                        ]),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(menuBorderRadius ?? 5.0),
-                  child: ListView.separated(
-                    itemCount: menuItems.length,
-                    padding: EdgeInsets.zero,
-                    physics: const BouncingScrollPhysics(),
-                    separatorBuilder: (context, index) =>
-                        menuSeparator ?? const SizedBox.shrink(),
-                    itemBuilder: (context, index) {
-                      FocusedMenuItem item = menuItems[index];
-                      Widget listItem = GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                            if (item.onPressed != null) {
-                              item.onPressed!();
-                            }
-                          },
-                          child: Container(
-                              //alignment: Alignment.center,
-                              // margin: const EdgeInsets.only(bottom: 1),
-                              color: item.backgroundColor ?? Colors.white,
-                              height: itemExtent ?? 50.0,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 11.0, horizontal: 16),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    item.title,
-                                    if (item.trailingIcon != null) ...[
-                                      item.trailingIcon!
-                                    ]
-                                  ],
-                                ),
-                              )));
-                      if (animateMenu) {
-                        return TweenAnimationBuilder(
-                            builder: (context, dynamic value, child) {
-                              return Transform(
-                                transform: Matrix4.rotationX(1.5708 * value),
-                                alignment: Alignment.bottomCenter,
-                                child: child,
-                              );
+            // top: topOffset,
+            // left: leftOffset,
+            top: messageOverflows ? 0.0 : childPositionDy,
+            left: widget.childOffset.dx,
+            bottom: messageOverflows ? widget.bottomOffsetHeight : null,
+
+            child: SingleChildScrollView(
+              controller: controller,
+              child: AbsorbPointer(
+                absorbing: false,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: messageOverflows
+                          ? 50 +
+                              (widget.topMenuWidgetHeight ?? 0) +
+                              (widget.menuOffset ?? 0)
+                          : 0.0,
+                    ),
+                    SizedBox(
+                        width: widget.childSize!.width,
+                        height: widget.childSize!.height,
+                        child: widget.child),
+                    if (widget.menuOffset != null)
+                      SizedBox(
+                        height: widget.menuOffset,
+                      ),
+                    TweenAnimationBuilder(
+                      duration: Duration(milliseconds: 200),
+                      builder:
+                          (BuildContext context, dynamic value, Widget? child) {
+                        return Transform.scale(
+                          scale: value,
+                          alignment: Alignment.center,
+                          child: child,
+                        );
+                      },
+                      tween: Tween(begin: 0.0, end: 1.0),
+                      child: Container(
+                        width: maxMenuWidth,
+                        height: menuHeight + 11.0,
+                        decoration: widget.menuBoxDecoration ??
+                            BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    widget.menuBorderRadius ?? 5.0),
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: Colors.black38,
+                                      blurRadius: 10,
+                                      spreadRadius: 1)
+                                ]),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                              widget.menuBorderRadius ?? 5.0),
+                          child: ListView.separated(
+                            itemCount: widget.menuItems.length,
+                            padding: EdgeInsets.zero,
+                            physics: const NeverScrollableScrollPhysics(),
+                            separatorBuilder: (context, index) =>
+                                widget.menuSeparator ?? const SizedBox.shrink(),
+                            itemBuilder: (context, index) {
+                              FocusedMenuItem item = widget.menuItems[index];
+                              Widget listItem = GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    if (item.onPressed != null) {
+                                      item.onPressed!();
+                                    }
+                                  },
+                                  child: Container(
+                                      //alignment: Alignment.center,
+                                      // margin: const EdgeInsets.only(bottom: 1),
+                                      color:
+                                          item.backgroundColor ?? Colors.white,
+                                      height: widget.itemExtent ?? 50.0,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 11.0, horizontal: 16),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            item.title,
+                                            if (item.trailingIcon != null) ...[
+                                              item.trailingIcon!
+                                            ]
+                                          ],
+                                        ),
+                                      )));
+                              if (widget.animateMenu) {
+                                return TweenAnimationBuilder(
+                                    builder: (context, dynamic value, child) {
+                                      return Transform(
+                                        transform:
+                                            Matrix4.rotationX(1.5708 * value),
+                                        alignment: Alignment.bottomCenter,
+                                        child: child,
+                                      );
+                                    },
+                                    tween: Tween(begin: 1.0, end: 0.0),
+                                    duration:
+                                        Duration(milliseconds: index * 200),
+                                    child: listItem);
+                              } else {
+                                return listItem;
+                              }
                             },
-                            tween: Tween(begin: 1.0, end: 0.0),
-                            duration: Duration(milliseconds: index * 200),
-                            child: listItem);
-                      } else {
-                        return listItem;
-                      }
-                    },
-                  ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
-          Positioned(
-              top: childPositionDy,
-              left: childOffset.dx,
-              child: AbsorbPointer(
-                  absorbing: false,
-                  child: SizedBox(
-                      width: childSize!.width,
-                      height: childSize!.height,
-                      child: child))),
-          if (topMenuWidget != null)
+          // Positioned(
+          //     top: childPositionDy,
+          //     left: childOffset.dx,
+          //     child: AbsorbPointer(
+          //         absorbing: false,
+          //         child: SizedBox(
+          //             width: childSize!.width,
+          //             height: childSize!.height,
+          //             child: child))),
+          if (widget.topMenuWidget != null &&
+              widget.topMenuWidgetHeight != null)
             Positioned(
-                bottom: bottomOffset,
-                left: childOffset.dx,
+                top: messageOverflows ? 50.0 : null,
+                bottom: messageOverflows ? null : bottomOffset,
+                left: widget.childOffset.dx,
                 child: TweenAnimationBuilder(
                   duration: Duration(milliseconds: 200),
                   builder:
@@ -328,7 +394,7 @@ class FocusedMenuDetails extends StatelessWidget {
                     );
                   },
                   tween: Tween(begin: 0.0, end: 1.0),
-                  child: topMenuWidget,
+                  child: widget.topMenuWidget,
                 )),
         ],
       ),
