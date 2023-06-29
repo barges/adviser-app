@@ -25,6 +25,7 @@ import 'package:zodiac/data/models/app_error/app_error.dart';
 import 'package:zodiac/data/models/app_error/ui_error_type.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
+import 'package:zodiac/data/models/chat/replied_message.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
 import 'package:zodiac/data/models/enums/chat_message_type.dart';
 import 'package:zodiac/data/network/requests/profile_details_request.dart';
@@ -430,6 +431,17 @@ class ChatCubit extends BaseCubit<ChatState> {
   AudioRecorderService get audioRecorder => _audioRecorder;
 
   void sendMessageToChat({required String text}) {
+    RepliedMessage? repliedMessage;
+    final ChatMessageModel? repliedMessageModel = state.repliedMessage;
+
+    repliedMessageModel?.let((model) {
+      repliedMessage = RepliedMessage(
+        type: model.type,
+        text: model.message,
+        repliedUserName: model.authorName,
+      );
+    });
+
     final ChatMessageModel chatMessageModel = ChatMessageModel(
       utc: DateTime.now().toUtc(),
       type: ChatMessageType.simple,
@@ -437,19 +449,19 @@ class ChatCubit extends BaseCubit<ChatState> {
       isDelivered: false,
       mid: _generateMessageId(),
       message: text,
+      repliedMessage: repliedMessage,
+      repliedMessageId: state.repliedMessage?.id,
     );
     if (state.needShowDownButton) {
       animateToStartChat();
     }
     _messages.insert(0, chatMessageModel);
     _updateMessages();
+    setRepliedMessage();
     _webSocketManager.sendMessageToChat(
       message: chatMessageModel,
       roomId: enterRoomData?.roomData?.id ?? '',
       opponentId: clientData.id ?? 0,
-
-      ///TODO: need relocate to chatMessageModel maybe
-      repliedMessageId: state.repliedMessage?.id,
     );
   }
 

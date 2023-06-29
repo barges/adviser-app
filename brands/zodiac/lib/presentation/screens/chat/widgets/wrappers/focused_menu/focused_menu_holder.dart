@@ -213,13 +213,13 @@ class _FocusedMenuDetailsState extends State<FocusedMenuDetails> {
     //     ? childOffset.dx
     //     : (childOffset.dx - maxMenuWidth + childSize!.width);
 
-    final noVerticalOverlow =
+    final noVerticalOverflow =
         (widget.childOffset.dy + menuHeight + widget.childSize!.height) <
             size.height -
                 widget.bottomOffsetHeight! -
                 MediaQuery.of(context).padding.bottom;
 
-    final childPositionDy = noVerticalOverlow
+    final childPositionDy = noVerticalOverflow
         ? widget.childOffset.dy
         : widget.childOffset.dy - menuHeight - widget.bottomOffsetHeight!;
 
