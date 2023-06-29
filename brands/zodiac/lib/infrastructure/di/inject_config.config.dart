@@ -130,6 +130,7 @@ Future<_i1.GetIt> $initGetIt(
         gh<_i13.ZodiacCachingManager>(),
         gh<_i16.WebSocketManager>(),
         gh<_i25.ZodiacUserRepository>(),
+        gh<_i10.MainCubit>(),
         gh<_i15.ZodiacMainCubit>(),
         gh<_i6.CheckPermissionService>(),
         gh<_i3.AudioPlayerService>(),
