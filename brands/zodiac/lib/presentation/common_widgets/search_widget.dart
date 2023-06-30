@@ -10,9 +10,9 @@ class SearchWidget extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final bool autofocus;
   final bool isBorder;
-  final bool hasCancelButton;
   final Color? backgroundColor;
   final FocusNode? focusNode;
+  final VoidCallback? onCancel;
 
   const SearchWidget({
     Key? key,
@@ -21,7 +21,7 @@ class SearchWidget extends StatefulWidget {
     this.autofocus = false,
     this.isBorder = true,
     this.focusNode,
-    this.hasCancelButton = false,
+    this.onCancel,
   }) : super(key: key);
 
   @override
@@ -57,6 +57,7 @@ class _SearchWidgetState extends State<SearchWidget> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final Color backgroundColor = widget.backgroundColor ?? theme.hintColor;
+    final bool hasCancelButton = widget.onCancel != null;
     return Container(
       alignment: Alignment.center,
       height: AppConstants.appBarHeight,
@@ -79,9 +80,7 @@ class _SearchWidgetState extends State<SearchWidget> {
               margin: EdgeInsets.fromLTRB(
                   AppConstants.horizontalScreenPadding,
                   9.0,
-                  widget.hasCancelButton
-                      ? 8.0
-                      : AppConstants.horizontalScreenPadding,
+                  hasCancelButton ? 8.0 : AppConstants.horizontalScreenPadding,
                   9.0),
               height: AppConstants.iconButtonSize,
               decoration: BoxDecoration(
@@ -138,11 +137,14 @@ class _SearchWidgetState extends State<SearchWidget> {
               ),
             ),
           ),
-          if (widget.hasCancelButton)
+          if (hasCancelButton)
             GestureDetector(
               onTap: () {
                 _searchTextController.clear();
                 _searchStream.add('');
+                if (widget.onCancel != null) {
+                  widget.onCancel!();
+                }
               },
               child: Container(
                 height: AppConstants.iconButtonSize,
