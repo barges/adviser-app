@@ -1,6 +1,5 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/wrappers/focused_menu/focused_menu_state.dart';
 
 class FocusedMenuCubit extends Cubit<FocusedMenuState> {
@@ -10,7 +9,7 @@ class FocusedMenuCubit extends Cubit<FocusedMenuState> {
   }
 
   Future<void> _getRecentEmojis() async {
-    try {
+
       final recentEmojis = await EmojiPickerUtils().getRecentEmojis();
 
       final List<Emoji> emojisList = [];
@@ -24,10 +23,9 @@ class FocusedMenuCubit extends Cubit<FocusedMenuState> {
       } else {
         emojisList.addAll(recentEmojis.take(6).map((e) => e.emoji));
       }
+        if(!isClosed) {
+          emit(state.copyWith(recentEmojis: emojisList));
+        }
 
-      emit(state.copyWith(recentEmojis: emojisList));
-    } catch (e) {
-      logger.d(e);
-    }
   }
 }
