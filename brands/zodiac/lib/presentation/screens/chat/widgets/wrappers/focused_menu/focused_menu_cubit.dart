@@ -1,5 +1,6 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/wrappers/focused_menu/focused_menu_state.dart';
 
 class FocusedMenuCubit extends Cubit<FocusedMenuState> {
@@ -9,20 +10,24 @@ class FocusedMenuCubit extends Cubit<FocusedMenuState> {
   }
 
   Future<void> _getRecentEmojis() async {
-    final recentEmojis = await EmojiPickerUtils().getRecentEmojis();
+    try {
+      final recentEmojis = await EmojiPickerUtils().getRecentEmojis();
 
-    final List<Emoji> emojisList = [];
+      final List<Emoji> emojisList = [];
 
-    if (selectedReaction.isNotEmpty) {
-      emojisList.add(Emoji(selectedReaction, ''));
-      recentEmojis.removeWhere(
-        (element) => element.emoji.emoji == selectedReaction,
-      );
-      emojisList.addAll(recentEmojis.take(5).map((e) => e.emoji));
-    } else {
-      emojisList.addAll(recentEmojis.take(6).map((e) => e.emoji));
+      if (selectedReaction.isNotEmpty) {
+        emojisList.add(Emoji(selectedReaction, ''));
+        recentEmojis.removeWhere(
+          (element) => element.emoji.emoji == selectedReaction,
+        );
+        emojisList.addAll(recentEmojis.take(5).map((e) => e.emoji));
+      } else {
+        emojisList.addAll(recentEmojis.take(6).map((e) => e.emoji));
+      }
+
+      emit(state.copyWith(recentEmojis: emojisList));
+    } catch (e) {
+      logger.d(e);
     }
-
-    emit(state.copyWith(recentEmojis: emojisList));
   }
 }
