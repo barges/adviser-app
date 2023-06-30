@@ -109,4 +109,6 @@ abstract class WebSocketManager {
     required String roomId,
     required int opponentId,
   });
+
+  void addUpdateIdEvent(CreatedDeliveredEvent event);
 }

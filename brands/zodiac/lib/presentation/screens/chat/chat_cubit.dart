@@ -127,20 +127,19 @@ class ChatCubit extends BaseCubit<ChatState> {
     _deleteAudioMessageAlert = chatCubitParams.deleteAudioMessageAlert;
 
     addListener(_webSocketManager.entitiesStream.listen((event) {
+      List<ChatMessageModel> messagesNotDelivered = [];
       if (_isRefresh) {
-        final List<ChatMessageModel> messagesNotDelivered =
+        messagesNotDelivered =
             _messages.where((element) => !element.isDelivered).toList();
-        if (messagesNotDelivered.isNotEmpty) {
-          for (ChatMessageModel element in messagesNotDelivered) {
-            element.path?.let((that) => _deleteRecordedAudioFile(File(that)));
-          }
-        }
 
         _isRefresh = false;
         _messages.clear();
       }
 
       _messages.addAll(event);
+      if (messagesNotDelivered.isNotEmpty) {
+        _messages.insertAll(0, messagesNotDelivered);
+      }
       _updateMessages();
 
       if (event.length == 50) {

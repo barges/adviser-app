@@ -678,6 +678,11 @@ class WebSocketManagerImpl implements WebSocketManager {
     });
   }
 
+  @override
+  void addUpdateIdEvent(CreatedDeliveredEvent event) {
+    _updateMessageIdStream.add(event);
+  }
+
   void _onMsgCreated(Event event) {
     (event.eventData as SocketMessage).let((data) {
       (data.opponentId as int).let(
