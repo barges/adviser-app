@@ -20,6 +20,7 @@ import 'package:zodiac/data/network/requests/update_user_status_request.dart';
 import 'package:zodiac/data/network/responses/balance_response.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
+import 'package:zodiac/data/network/responses/daily_coupons_response.dart';
 import 'package:zodiac/data/network/responses/expert_details_response.dart';
 import 'package:zodiac/data/network/responses/locale_descriptions_response.dart';
 import 'package:zodiac/data/network/responses/locales_response.dart';
@@ -225,5 +226,11 @@ class ZodiacUserRepositoryImpl implements ZodiacUserRepository {
   Future<ProfileDetailsResponse> getProfileDetails(
       ProfileDetailsRequest request) async {
     return await _userApi.getProfileDetails(request);
+  }
+
+  @override
+  Future<DailyCouponsResponse> getDailyCoupons(
+      AuthorizedRequest request) async {
+    return await _userApi.getDailyCoupons(request);
   }
 }

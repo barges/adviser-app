@@ -22,6 +22,7 @@ import 'package:zodiac/data/network/requests/update_random_call_enabled_request.
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
 import 'package:zodiac/data/network/responses/balance_response.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
+import 'package:zodiac/data/network/responses/daily_coupons_response.dart';
 import 'package:zodiac/data/network/responses/expert_details_response.dart';
 import 'package:zodiac/data/network/responses/locale_descriptions_response.dart';
 import 'package:zodiac/data/network/responses/locales_response.dart';
@@ -194,5 +195,10 @@ abstract class UserApi {
   @POST('/profile/details')
   Future<ProfileDetailsResponse> getProfileDetails(
     @Body() ProfileDetailsRequest request,
+  );
+
+  @POST('/advisor-daily-coupons')
+  Future<DailyCouponsResponse> getDailyCoupons(
+    @Body() AuthorizedRequest request,
   );
 }

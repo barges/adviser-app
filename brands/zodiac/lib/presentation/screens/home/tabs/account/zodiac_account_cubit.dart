@@ -23,6 +23,7 @@ import 'package:zodiac/data/network/requests/settings_request.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
+import 'package:zodiac/data/network/responses/daily_coupons_response.dart';
 import 'package:zodiac/data/network/responses/expert_details_response.dart';
 import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
@@ -168,6 +169,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
           ));
 
           _getUnreadNotificationsCount();
+          getDailyCoupons();
         } else {
           _updateErrorMessage(response.getErrorMessage());
         }
@@ -382,6 +384,21 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   void clearErrorMessage() {
     if (state.errorMessage.isNotEmpty) {
       emit(state.copyWith(errorMessage: ''));
+    }
+  }
+
+  Future<void> getDailyCoupons() async {
+    DailyCouponsResponse response =
+        await _userRepository.getDailyCoupons(AuthorizedRequest());
+    if (response.status == true) {
+      emit(
+        state.copyWith(
+          dailyCoupons: response.coupons,
+          dailyCouponsLimit: response.limit ?? 0,
+          dailyCouponsEnabled: response.isEnabled ?? false,
+          dailyRenewalEnabled: response.isRenewalEnabled ?? false,
+        ),
+      );
     }
   }
 }
