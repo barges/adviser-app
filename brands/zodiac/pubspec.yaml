@@ -56,7 +56,7 @@ dependencies:
   snapping_sheet_2: ^3.1.5
   flutter_keyboard_visibility: ^5.4.0
   flutter_keyboard_size: ^1.0.1
-  storage_space: ^1.0.1+5
+  disk_space: ^0.2.1
   permission_handler: ^10.2.0
   uuid: ^3.0.7
   flutter_media_metadata: ^1.0.0+1

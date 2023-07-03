@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io' hide SocketMessage;
 
 import 'package:collection/collection.dart';
+import 'package:disk_space/disk_space.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
@@ -19,7 +20,6 @@ import 'package:shared_advisor_interface/services/audio/audio_player_service.dar
 import 'package:shared_advisor_interface/services/audio/audio_recorder_service.dart';
 import 'package:shared_advisor_interface/services/check_permission_service.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
-import 'package:storage_space/storage_space.dart';
 import 'package:uuid/uuid.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/app_error/app_error.dart';
@@ -49,12 +49,14 @@ class ChatCubitParams {
   final UserData clientData;
   final UnderageConfirmDialog underageConfirmDialog;
   final ValueGetter<Future<bool?>> deleteAudioMessageAlert;
+  final ValueGetter<Future<bool?>> recordingIsNotPossibleAlert;
 
   ChatCubitParams({
     required this.fromStartingChat,
     required this.clientData,
     required this.underageConfirmDialog,
     required this.deleteAudioMessageAlert,
+    required this.recordingIsNotPossibleAlert,
   });
 }
 
@@ -74,6 +76,7 @@ class ChatCubit extends BaseCubit<ChatState> {
   final CheckPermissionService _checkPermissionService;
   final _uuid = const Uuid();
   late final ValueGetter<Future<bool?>> _deleteAudioMessageAlert;
+  late final ValueGetter<Future<bool?>> _recordingIsNotPossibleAlert;
   StreamSubscription<RecorderDisposition>? _recordingProgressSubscription;
 
   final SnappingSheetController snappingSheetController =
@@ -125,6 +128,7 @@ class ChatCubit extends BaseCubit<ChatState> {
     clientData = chatCubitParams.clientData;
     _underageConfirmDialog = chatCubitParams.underageConfirmDialog;
     _deleteAudioMessageAlert = chatCubitParams.deleteAudioMessageAlert;
+    _recordingIsNotPossibleAlert = chatCubitParams.recordingIsNotPossibleAlert;
 
     addListener(_webSocketManager.entitiesStream.listen((event) {
       List<ChatMessageModel> messagesNotDelivered = [];
@@ -603,14 +607,10 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   Future<void> startRecordingAudio(BuildContext context) async {
     textInputFocusNode.unfocus();
-    StorageSpace freeSpace = await getStorageSpace(
-      lowOnSpaceThreshold: 0,
-      fractionDigits: 1,
-    );
-    final freeSpaceInMb = freeSpace.free /
-        (AppConstants.bytesInKilobyte * AppConstants.bytesInKilobyte);
+
+    final freeSpaceInMb = await DiskSpace.getFreeDiskSpace ?? double.infinity;
     if (freeSpaceInMb <= AppConstants.minFreeSpaceInMb) {
-      //await recordingIsNotPossibleAlert();
+      await _recordingIsNotPossibleAlert();
       return;
     }
 

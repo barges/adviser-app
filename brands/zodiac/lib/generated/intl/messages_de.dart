@@ -218,6 +218,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Kürzlich benutzt"),
         "reconnectingZodiac":
             MessageLookupByLibrary.simpleMessage("Wieder verbinden..."),
+        "recordingIsNotPossibleZodiac": MessageLookupByLibrary.simpleMessage(
+            "Aufzeichnung ist nicht möglich, Speicherplatz auf dem Gerät freigeben"),
         "recordingStoppedBecauseYouReachedLimitZodiac": m4,
         "replyZodiac": MessageLookupByLibrary.simpleMessage("Antwort"),
         "reportUnderageUserZodiac": MessageLookupByLibrary.simpleMessage(
@@ -245,8 +247,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sitzungen"),
         "smileysAndPeopleZodiac":
             MessageLookupByLibrary.simpleMessage("Smileys & Menschen"),
-        "sorryPhoneVerificationUnavailable": MessageLookupByLibrary.simpleMessage(
-            "Leider ist die telefonische Bestätigung derzeit nicht verfügbar. Bitte drei weitere Latr."),
+        "sorryPhoneVerificationUnavailableZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Leider ist die telefonische Bestätigung derzeit nicht verfügbar. Bitte drei weitere Latr."),
         "startChatZodiac":
             MessageLookupByLibrary.simpleMessage("Chat beginnen"),
         "successZodiac": MessageLookupByLibrary.simpleMessage("Erfolg"),

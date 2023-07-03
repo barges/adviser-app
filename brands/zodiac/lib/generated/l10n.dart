@@ -1657,10 +1657,20 @@ class SZodiac {
   }
 
   /// `Sorry, phone verification is currently unavailable. Please try again later.`
-  String get sorryPhoneVerificationUnavailable {
+  String get sorryPhoneVerificationUnavailableZodiac {
     return Intl.message(
       'Sorry, phone verification is currently unavailable. Please try again later.',
-      name: 'sorryPhoneVerificationUnavailable',
+      name: 'sorryPhoneVerificationUnavailableZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recording is not possible, allocate space on the device`
+  String get recordingIsNotPossibleZodiac {
+    return Intl.message(
+      'Recording is not possible, allocate space on the device',
+      name: 'recordingIsNotPossibleZodiac',
       desc: '',
       args: [],
     );

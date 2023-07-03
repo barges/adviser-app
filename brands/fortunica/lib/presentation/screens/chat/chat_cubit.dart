@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
+import 'package:disk_space/disk_space.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -46,7 +47,6 @@ import 'package:shared_advisor_interface/services/audio/audio_recorder_service.d
 import 'package:shared_advisor_interface/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
-import 'package:storage_space/storage_space.dart';
 import 'package:uuid/uuid.dart';
 
 import 'chat_state.dart';
@@ -544,12 +544,8 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   Future<void> startRecordingAudio(BuildContext context) async {
     textInputFocusNode.unfocus();
-    StorageSpace freeSpace = await getStorageSpace(
-      lowOnSpaceThreshold: 0,
-      fractionDigits: 1,
-    );
-    final freeSpaceInMb = freeSpace.free /
-        (AppConstants.bytesInKilobyte * AppConstants.bytesInKilobyte);
+
+    final freeSpaceInMb = await DiskSpace.getFreeDiskSpace ?? double.infinity;
     if (freeSpaceInMb <= AppConstants.minFreeSpaceInMb) {
       await recordingIsNotPossibleAlert();
       return;

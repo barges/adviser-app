@@ -38,7 +38,7 @@ enum UIErrorType {
         return SZodiac.of(context)
             .youveReachedLimitPhoneVerificationAttemptsZodiac;
       case UIErrorType.phoneVerificationUnavailable:
-        return SZodiac.of(context).sorryPhoneVerificationUnavailable;
+        return SZodiac.of(context).sorryPhoneVerificationUnavailableZodiac;
       case UIErrorType.recordingStoppedBecauseYouReached:
         return SZodiac.of(context)
             .recordingStoppedBecauseYouReachedLimitZodiac(args?[0] ?? '');

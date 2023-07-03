@@ -52,7 +52,7 @@ dependencies:
   flutter_keyboard_visibility: ^5.4.0
   flutter_keyboard_size: ^1.0.1
   uuid: ^3.0.7
-  storage_space: ^1.0.1+5
+  disk_space: ^0.2.1
   smooth_page_indicator: ^1.0.0+2
   freshchat_sdk: ^0.10.3
   shimmer: ^3.0.0
