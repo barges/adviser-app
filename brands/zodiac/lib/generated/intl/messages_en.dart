@@ -163,6 +163,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "nicknameZodiac": MessageLookupByLibrary.simpleMessage("Nickname"),
         "noArticlesYet":
             MessageLookupByLibrary.simpleMessage("No articles, yet"),
+        "noEmojiFoundZodiac":
+            MessageLookupByLibrary.simpleMessage("No emoji found"),
         "noInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage("No internet connection."),
         "noMessagesYetZodiac":
@@ -220,6 +222,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Recently used"),
         "reconnectingZodiac":
             MessageLookupByLibrary.simpleMessage("Reconnecting..."),
+        "recordingIsNotPossibleZodiac": MessageLookupByLibrary.simpleMessage(
+            "Recording is not possible, allocate space on the device"),
         "recordingStoppedBecauseYouReachedLimitZodiac": m4,
         "replyZodiac": MessageLookupByLibrary.simpleMessage("Reply"),
         "reportUnderageUserZodiac":
@@ -237,6 +241,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "reviewsZodiac": MessageLookupByLibrary.simpleMessage("Reviews"),
         "salesZodiac": MessageLookupByLibrary.simpleMessage("Sales"),
         "saveZodiac": MessageLookupByLibrary.simpleMessage("Save"),
+        "searchResultsZodiac":
+            MessageLookupByLibrary.simpleMessage("Search results"),
         "searchZodiac": MessageLookupByLibrary.simpleMessage("Search"),
         "secondsZodiac": MessageLookupByLibrary.simpleMessage("sec"),
         "selectedPhotoZodiac":
@@ -247,8 +253,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sessions"),
         "smileysAndPeopleZodiac":
             MessageLookupByLibrary.simpleMessage("Smileys & People"),
-        "sorryPhoneVerificationUnavailable": MessageLookupByLibrary.simpleMessage(
-            "Sorry, phone verification is currently unavailable. Please try again later."),
+        "sorryPhoneVerificationUnavailableZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Sorry, phone verification is currently unavailable. Please try again later."),
         "startChatZodiac": MessageLookupByLibrary.simpleMessage("Start Chat"),
         "successZodiac": MessageLookupByLibrary.simpleMessage("Success"),
         "symbolsZodiac": MessageLookupByLibrary.simpleMessage("Symbols"),

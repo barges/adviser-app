@@ -8,6 +8,6 @@ class EmojiPickerState with _$EmojiPickerState {
   const factory EmojiPickerState({
     @Default(0) int categoryIndex,
     @Default([]) List<Emoji> searchedEmojis,
-    @Default(false) bool searchFieldFocused,
+    @Default(true) bool searchFieldEmpty,
   }) = _EmojiPickerState;
 }

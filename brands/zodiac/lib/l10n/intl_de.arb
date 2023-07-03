@@ -157,6 +157,9 @@
   "objectsZodiac": "Objekte",
   "symbolsZodiac": "Symbole",
   "flagsZodiac": "Flaggen",
-  "sorryPhoneVerificationUnavailable":"Leider ist die telefonische Bestätigung derzeit nicht verfügbar. Bitte drei weitere Latr.",
-  "youZodiac": "Du"
+  "sorryPhoneVerificationUnavailableZodiac":"Leider ist die telefonische Bestätigung derzeit nicht verfügbar. Bitte drei weitere Latr.",
+  "recordingIsNotPossibleZodiac": "Aufzeichnung ist nicht möglich, Speicherplatz auf dem Gerät freigeben",
+  "youZodiac": "Du",
+  "searchResultsZodiac": "Suchergebnisse",
+  "noEmojiFoundZodiac": "Kein Emoji gefunden"
 }

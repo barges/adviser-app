@@ -72,6 +72,7 @@ class _MessageContainer extends StatelessWidget {
           constraints: BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width -
                 reactionContainerWidth -
+                reactionContainerPadding -
                 ZodiacConstants.chatHorizontalPadding * 2,
           ),
           padding: const EdgeInsets.all(12.0),

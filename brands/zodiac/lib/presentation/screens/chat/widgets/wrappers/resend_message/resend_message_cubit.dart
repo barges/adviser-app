@@ -147,6 +147,12 @@ class ResendMessageCubit extends Cubit<ResendMessageState> {
         if (createAudioMessageResponse.status == true &&
             createAudioMessageResponse.result != null &&
             createAudioMessageResponse.result!.entityId != null) {
+          _webSocketManager.addUpdateIdEvent(CreatedDeliveredEvent(
+            mid: _chatMessageModel.mid!,
+            clientId: _opponentId ?? 0,
+            id: createAudioMessageResponse.result!.entityId,
+          ));
+
           final UploadAudioMessageResponse uploadAudioMessageResponse =
               await _chatRepository.uploadAudioMessage(
                   request: BaseAudioMessageRequest(),
