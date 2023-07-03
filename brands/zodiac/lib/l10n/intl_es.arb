@@ -160,5 +160,8 @@
   "symbolsZodiac": "Simbolos",
   "flagsZodiac": "Banderas",
   "sorryPhoneVerificationUnavailableZodiac": "Lo sentimos, la verificación telefónica no está disponible actualmente. Por favor tres agan latr.",
-  "recordingIsNotPossibleZodiac": "No es posible grabar, libere espacio en el dispositivo"
+  "recordingIsNotPossibleZodiac": "No es posible grabar, libere espacio en el dispositivo",
+  "youZodiac": "Tú",
+  "searchResultsZodiac": "Resultados de la búsqueda",
+  "noEmojiFoundZodiac": "No se encontraron emojis"
 }

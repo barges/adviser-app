@@ -1675,6 +1675,36 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `You`
+  String get youZodiac {
+    return Intl.message(
+      'You',
+      name: 'youZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search results`
+  String get searchResultsZodiac {
+    return Intl.message(
+      'Search results',
+      name: 'searchResultsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No emoji found`
+  String get noEmojiFoundZodiac {
+    return Intl.message(
+      'No emoji found',
+      name: 'noEmojiFoundZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

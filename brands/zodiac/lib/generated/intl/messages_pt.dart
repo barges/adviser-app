@@ -169,6 +169,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "nicknameZodiac": MessageLookupByLibrary.simpleMessage("Apelido"),
         "noArticlesYet":
             MessageLookupByLibrary.simpleMessage("Ainda não há artigos"),
+        "noEmojiFoundZodiac":
+            MessageLookupByLibrary.simpleMessage("Nenhum emoji encontrado"),
         "noInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage("Sem conexão com a internet."),
         "noMessagesYetZodiac":
@@ -244,6 +246,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "reviewsZodiac": MessageLookupByLibrary.simpleMessage("Avaliações"),
         "salesZodiac": MessageLookupByLibrary.simpleMessage("Vendas"),
         "saveZodiac": MessageLookupByLibrary.simpleMessage("Salvar"),
+        "searchResultsZodiac":
+            MessageLookupByLibrary.simpleMessage("Procurar Resultados"),
         "searchZodiac": MessageLookupByLibrary.simpleMessage("Procurar"),
         "secondsZodiac": MessageLookupByLibrary.simpleMessage("seg"),
         "selectedPhotoZodiac":
@@ -309,6 +313,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "youMissedChatFromZodiac": m11,
         "youWhereBlocked": MessageLookupByLibrary.simpleMessage(
             "Sua conta foi bloqueada.<br>Entre em contato com o <a href=\'\'>Suporte ao cliente</a> para resolver o problema"),
+        "youZodiac": MessageLookupByLibrary.simpleMessage("Você"),
         "yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Suas alterações foram aceitas e serão analisadas em breve. Todas as atualizações ficarão visíveis para os clientes depois disso"),

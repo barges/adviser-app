@@ -160,5 +160,8 @@
   "symbolsZodiac": "Symbols",
   "flagsZodiac": "Flags",
   "sorryPhoneVerificationUnavailableZodiac": "Sorry, phone verification is currently unavailable. Please try again later.",
-  "recordingIsNotPossibleZodiac": "Recording is not possible, allocate space on the device"
+  "recordingIsNotPossibleZodiac": "Recording is not possible, allocate space on the device",
+  "youZodiac": "You",
+  "searchResultsZodiac": "Search results",
+  "noEmojiFoundZodiac": "No emoji found"
 }
