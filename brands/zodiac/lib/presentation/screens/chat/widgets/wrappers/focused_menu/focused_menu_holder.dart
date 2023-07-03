@@ -1,5 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 
 class FocusedMenuItem {
   Color? backgroundColor;
@@ -16,7 +18,6 @@ class FocusedMenuItem {
 
 class FocusedMenuHolder extends StatefulWidget {
   final Widget child;
-  final Widget? openedChild;
   final double? menuItemExtent;
   final double? menuWidth;
   final List<FocusedMenuItem> menuItems;
@@ -34,6 +35,7 @@ class FocusedMenuHolder extends StatefulWidget {
   final VoidCallback? onHold;
   final VoidCallback? onClose;
   final double? topMenuWidgetHeight;
+  final ChatCubit? cubit;
 
   /// Open with tap insted of long press.
   final bool openWithTap;
@@ -43,7 +45,6 @@ class FocusedMenuHolder extends StatefulWidget {
       required this.child,
       required this.onPressed,
       required this.menuItems,
-      this.openedChild,
       this.duration,
       this.menuBoxDecoration,
       this.menuItemExtent,
@@ -59,6 +60,7 @@ class FocusedMenuHolder extends StatefulWidget {
       this.topMenuWidgetHeight,
       this.onHold,
       this.onClose,
+      this.cubit,
       this.openWithTap = false})
       : assert((topMenuWidget != null && topMenuWidgetHeight != null) ||
             (topMenuWidget == null && topMenuWidgetHeight == null)),
@@ -114,6 +116,7 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
                 widget.duration ?? const Duration(milliseconds: 100),
             pageBuilder: (context, animation, secondaryAnimation) {
               animation = Tween(begin: 0.0, end: 1.0).animate(animation);
+
               return FadeTransition(
                   opacity: animation,
                   child: FocusedMenuDetails(
@@ -132,7 +135,12 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
                     menuBorderRadius: widget.menuBorderRadius,
                     topMenuWidget: widget.topMenuWidget,
                     topMenuWidgetHeight: widget.topMenuWidgetHeight,
-                    child: widget.openedChild ?? widget.child,
+                    child: widget.cubit != null
+                        ? BlocProvider.value(
+                            value: widget.cubit!,
+                            child: widget.child,
+                          )
+                        : widget.child,
                   ));
             },
             fullscreenDialog: true,
@@ -257,114 +265,112 @@ class _FocusedMenuDetailsState extends State<FocusedMenuDetails> {
 
             child: SingleChildScrollView(
               controller: controller,
-              child: AbsorbPointer(
-                absorbing: false,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: messageOverflows
-                          ? 50 +
-                              (widget.topMenuWidgetHeight ?? 0) +
-                              (widget.menuOffset ?? 0)
-                          : 0.0,
-                    ),
-                    SizedBox(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: messageOverflows
+                        ? 50 +
+                            (widget.topMenuWidgetHeight ?? 0) +
+                            (widget.menuOffset ?? 0)
+                        : 0.0,
+                  ),
+                  AbsorbPointer(
+                    absorbing: true,
+                    child: SizedBox(
                         width: widget.childSize!.width,
                         height: widget.childSize!.height,
                         child: widget.child),
-                    if (widget.menuOffset != null)
-                      SizedBox(
-                        height: widget.menuOffset,
-                      ),
-                    TweenAnimationBuilder(
-                      duration: Duration(milliseconds: 200),
-                      builder:
-                          (BuildContext context, dynamic value, Widget? child) {
-                        return Transform.scale(
-                          scale: value,
-                          alignment: Alignment.center,
-                          child: child,
-                        );
-                      },
-                      tween: Tween(begin: 0.0, end: 1.0),
-                      child: Container(
-                        width: maxMenuWidth,
-                        height: menuHeight + 11.0,
-                        decoration: widget.menuBoxDecoration ??
-                            BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    widget.menuBorderRadius ?? 5.0),
-                                boxShadow: const [
-                                  BoxShadow(
-                                      color: Colors.black38,
-                                      blurRadius: 10,
-                                      spreadRadius: 1)
-                                ]),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(
-                              widget.menuBorderRadius ?? 5.0),
-                          child: ListView.separated(
-                            itemCount: widget.menuItems.length,
-                            padding: EdgeInsets.zero,
-                            physics: const NeverScrollableScrollPhysics(),
-                            separatorBuilder: (context, index) =>
-                                widget.menuSeparator ?? const SizedBox.shrink(),
-                            itemBuilder: (context, index) {
-                              FocusedMenuItem item = widget.menuItems[index];
-                              Widget listItem = GestureDetector(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                    if (item.onPressed != null) {
-                                      item.onPressed!();
-                                    }
+                  ),
+                  if (widget.menuOffset != null)
+                    SizedBox(
+                      height: widget.menuOffset,
+                    ),
+                  TweenAnimationBuilder(
+                    duration: Duration(milliseconds: 200),
+                    builder:
+                        (BuildContext context, dynamic value, Widget? child) {
+                      return Transform.scale(
+                        scale: value,
+                        alignment: Alignment.center,
+                        child: child,
+                      );
+                    },
+                    tween: Tween(begin: 0.0, end: 1.0),
+                    child: Container(
+                      width: maxMenuWidth,
+                      height: menuHeight + 11.0,
+                      decoration: widget.menuBoxDecoration ??
+                          BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  widget.menuBorderRadius ?? 5.0),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.black38,
+                                    blurRadius: 10,
+                                    spreadRadius: 1)
+                              ]),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                            widget.menuBorderRadius ?? 5.0),
+                        child: ListView.separated(
+                          itemCount: widget.menuItems.length,
+                          padding: EdgeInsets.zero,
+                          physics: const NeverScrollableScrollPhysics(),
+                          separatorBuilder: (context, index) =>
+                              widget.menuSeparator ?? const SizedBox.shrink(),
+                          itemBuilder: (context, index) {
+                            FocusedMenuItem item = widget.menuItems[index];
+                            Widget listItem = GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  if (item.onPressed != null) {
+                                    item.onPressed!();
+                                  }
+                                },
+                                child: Container(
+                                    //alignment: Alignment.center,
+                                    // margin: const EdgeInsets.only(bottom: 1),
+                                    color: item.backgroundColor ?? Colors.white,
+                                    height: widget.itemExtent ?? 50.0,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 11.0, horizontal: 16),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          item.title,
+                                          if (item.trailingIcon != null) ...[
+                                            item.trailingIcon!
+                                          ]
+                                        ],
+                                      ),
+                                    )));
+                            if (widget.animateMenu) {
+                              return TweenAnimationBuilder(
+                                  builder: (context, dynamic value, child) {
+                                    return Transform(
+                                      transform:
+                                          Matrix4.rotationX(1.5708 * value),
+                                      alignment: Alignment.bottomCenter,
+                                      child: child,
+                                    );
                                   },
-                                  child: Container(
-                                      //alignment: Alignment.center,
-                                      // margin: const EdgeInsets.only(bottom: 1),
-                                      color:
-                                          item.backgroundColor ?? Colors.white,
-                                      height: widget.itemExtent ?? 50.0,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 11.0, horizontal: 16),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            item.title,
-                                            if (item.trailingIcon != null) ...[
-                                              item.trailingIcon!
-                                            ]
-                                          ],
-                                        ),
-                                      )));
-                              if (widget.animateMenu) {
-                                return TweenAnimationBuilder(
-                                    builder: (context, dynamic value, child) {
-                                      return Transform(
-                                        transform:
-                                            Matrix4.rotationX(1.5708 * value),
-                                        alignment: Alignment.bottomCenter,
-                                        child: child,
-                                      );
-                                    },
-                                    tween: Tween(begin: 1.0, end: 0.0),
-                                    duration:
-                                        Duration(milliseconds: index * 200),
-                                    child: listItem);
-                              } else {
-                                return listItem;
-                              }
-                            },
-                          ),
+                                  tween: Tween(begin: 1.0, end: 0.0),
+                                  duration: Duration(milliseconds: index * 200),
+                                  child: listItem);
+                            } else {
+                              return listItem;
+                            }
+                          },
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

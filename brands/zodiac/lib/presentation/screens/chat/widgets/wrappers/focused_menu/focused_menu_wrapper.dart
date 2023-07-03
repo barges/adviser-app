@@ -12,7 +12,6 @@ import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/enums/chat_message_type.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget_reply_wrapper.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/wrappers/focused_menu/focused_menu_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/wrappers/focused_menu/focused_menu_holder.dart';
@@ -21,9 +20,11 @@ class FocusedMenuWrapper extends StatefulWidget {
   final ChatMessageModel chatMessageModel;
   final bool chatIsActive;
 
-  const FocusedMenuWrapper(
-      {Key? key, required this.chatMessageModel, required this.chatIsActive})
-      : super(key: key);
+  const FocusedMenuWrapper({
+    Key? key,
+    required this.chatMessageModel,
+    required this.chatIsActive,
+  }) : super(key: key);
 
   @override
   State<FocusedMenuWrapper> createState() => _FocusedMenuWrapperState();
@@ -197,8 +198,7 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
                     );
                   })
                 : null,
-            openedChild:
-                ChatMessageWidget(chatMessageModel: widget.chatMessageModel),
+            cubit: chatCubit,
             child: ChatMessageWidgetReplyWrapper(
               chatMessageModel: widget.chatMessageModel,
               chatIsActive: widget.chatIsActive,
