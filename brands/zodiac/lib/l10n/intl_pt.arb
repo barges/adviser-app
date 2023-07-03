@@ -159,7 +159,8 @@
   "objectsZodiac": "Objetos",
   "symbolsZodiac": "Símbolos",
   "flagsZodiac": "Bandeiras",
-  "sorryPhoneVerificationUnavailable": "A verificação por telefone não está disponível no momento. Por favor, três agan latr.",
+  "sorryPhoneVerificationUnavailableZodiac": "A verificação por telefone não está disponível no momento. Por favor, três agan latr.",
+  "recordingIsNotPossibleZodiac": "A gravação não é possível, libere espaço no dispositivo",
   "youZodiac": "Você",
   "searchResultsZodiac": "Procurar Resultados",
   "noEmojiFoundZodiac": "Nenhum emoji encontrado"
