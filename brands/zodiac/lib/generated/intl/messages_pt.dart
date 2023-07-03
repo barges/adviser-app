@@ -169,6 +169,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "nicknameZodiac": MessageLookupByLibrary.simpleMessage("Apelido"),
         "noArticlesYet":
             MessageLookupByLibrary.simpleMessage("Ainda não há artigos"),
+        "noEmojiFoundZodiac":
+            MessageLookupByLibrary.simpleMessage("Nenhum emoji encontrado"),
         "noInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage("Sem conexão com a internet."),
         "noMessagesYetZodiac":
@@ -242,6 +244,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "reviewsZodiac": MessageLookupByLibrary.simpleMessage("Avaliações"),
         "salesZodiac": MessageLookupByLibrary.simpleMessage("Vendas"),
         "saveZodiac": MessageLookupByLibrary.simpleMessage("Salvar"),
+        "searchResultsZodiac":
+            MessageLookupByLibrary.simpleMessage("Procurar Resultados"),
         "searchZodiac": MessageLookupByLibrary.simpleMessage("Procurar"),
         "secondsZodiac": MessageLookupByLibrary.simpleMessage("seg"),
         "selectedPhotoZodiac":
