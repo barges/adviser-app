@@ -204,6 +204,9 @@ class _ChatTextInputWidgetState extends State<ChatTextInputWidget> {
                               : 14.0,
                           8.0,
                         ),
+                        decoration: BoxDecoration(
+                            border: Border(
+                                top: BorderSide(color: theme.hintColor))),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,

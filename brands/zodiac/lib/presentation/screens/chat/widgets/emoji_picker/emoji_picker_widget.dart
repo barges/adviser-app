@@ -209,14 +209,26 @@ class _EmojiPickerWidgetState extends State<EmojiPickerWidget> {
                                 ? ListView.separated(
                                     scrollDirection: Axis.horizontal,
                                     itemCount: searchedEmojis.length,
-                                    itemBuilder: (context, index) => SizedBox(
-                                      height: 40.0,
-                                      width: 40.0,
-                                      child: Center(
-                                        child: Text(
-                                          searchedEmojis[index].emoji,
-                                          style: theme.textTheme.bodyMedium
-                                              ?.copyWith(fontSize: 30.0),
+                                    itemBuilder: (context, index) =>
+                                        GestureDetector(
+                                      onTap: () {
+                                        EmojiPickerUtils()
+                                            .addEmojiToRecentlyUsed(
+                                                key: emojiPickerKey,
+                                                emoji: searchedEmojis[index]);
+                                        chatCubit.sendReaction(
+                                            widget.reactionMessageId,
+                                            searchedEmojis[index].emoji);
+                                      },
+                                      child: SizedBox(
+                                        height: 40.0,
+                                        width: 40.0,
+                                        child: Center(
+                                          child: Text(
+                                            searchedEmojis[index].emoji,
+                                            style: theme.textTheme.bodyMedium
+                                                ?.copyWith(fontSize: 30.0),
+                                          ),
                                         ),
                                       ),
                                     ),

@@ -50,6 +50,8 @@ class ChatMessagesListWidget extends StatelessWidget {
     final bool emojiPickerOpened =
         context.select((ChatCubit cubit) => cubit.state.reactionMessageId) !=
             null;
+    final String? reactionMessageId =
+        context.select((ChatCubit cubit) => cubit.state.reactionMessageId);
 
     return GestureDetector(
       onTap: () {
@@ -94,51 +96,59 @@ class ChatMessagesListWidget extends StatelessWidget {
                 } else {
                   final ChatMessageModel messageModel = messages[index - 1];
 
-                  return GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).unfocus();
-                    },
-                    child: Builder(builder: (context) {
-                      if (messageModel.isOutgoing &&
-                          !messageModel.isDelivered) {
-                        return ResendMessageWrapper(
-                          key: ValueKey(messageModel.mid),
-                          chatMessageModel: messageModel,
-                        );
-                      } else if (!messageModel.isOutgoing &&
-                          !messageModel.isRead) {
-                        return Stack(
-                          alignment: Alignment.bottomCenter,
-                          children: [
-                            FocusedMenuWrapper(
-                              key: ValueKey(
-                                  '${messageModel.reaction}_${messageModel.mid}'),
-                              chatMessageModel: messageModel,
-                              chatIsActive: chatIsActive,
-                            ),
-                            VisibilityDetector(
-                              key: Key(messageModel.id.toString()),
-                              onVisibilityChanged: (visibilityInfo) {
-                                if (visibilityInfo.visibleFraction == 1) {
-                                  chatCubit.sendReadMessage(messageModel.id);
-                                }
-                              },
-                              child: const SizedBox(
-                                height: 24.0,
-                                width: double.infinity,
+                  return Opacity(
+                    opacity: reactionMessageId != null &&
+                            !messageModel.compareId(reactionMessageId)
+                        ? 0.4
+                        : 1.0,
+                    child: GestureDetector(
+                      onTap: () {
+                        FocusScope.of(context).unfocus();
+                      },
+                      child: Builder(builder: (context) {
+                        if (messageModel.isOutgoing &&
+                            !messageModel.isDelivered) {
+                          return ResendMessageWrapper(
+                            key: ValueKey(messageModel.mid),
+                            chatMessageModel: messageModel,
+                          );
+                        } else if (!messageModel.isOutgoing &&
+                            !messageModel.isRead) {
+                          return Stack(
+                            alignment: Alignment.bottomCenter,
+                            children: [
+                              FocusedMenuWrapper(
+                                key: ValueKey(
+                                    '${messageModel.reaction}_${messageModel.mid}'),
+                                chatMessageModel: messageModel,
+                                chatIsActive: chatIsActive,
+                                reactionMessageId: reactionMessageId,
                               ),
-                            )
-                          ],
-                        );
-                      } else {
-                        return FocusedMenuWrapper(
-                          key: ValueKey(
-                              '${messageModel.reaction}_${messageModel.mid}'),
-                          chatMessageModel: messageModel,
-                          chatIsActive: chatIsActive,
-                        );
-                      }
-                    }),
+                              VisibilityDetector(
+                                key: Key(messageModel.id.toString()),
+                                onVisibilityChanged: (visibilityInfo) {
+                                  if (visibilityInfo.visibleFraction == 1) {
+                                    chatCubit.sendReadMessage(messageModel.id);
+                                  }
+                                },
+                                child: const SizedBox(
+                                  height: 24.0,
+                                  width: double.infinity,
+                                ),
+                              )
+                            ],
+                          );
+                        } else {
+                          return FocusedMenuWrapper(
+                            key: ValueKey(
+                                '${messageModel.reaction}_${messageModel.mid}'),
+                            chatMessageModel: messageModel,
+                            chatIsActive: chatIsActive,
+                            reactionMessageId: reactionMessageId,
+                          );
+                        }
+                      }),
+                    ),
                   );
                 }
               },
