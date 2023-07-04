@@ -214,7 +214,7 @@ class ChatCubit extends BaseCubit<ChatState> {
             chatIsActive: event.isActive, shouldShowInput: event.isActive));
         if (!event.isActive) {
           _chatTimer?.cancel();
-          emit(state.copyWith(chatTimerValue: null));
+          emit(state.copyWith(chatTimerValue: null, reactionMessageId: null));
         }
         if (event.isActive) {
           _stopOfflineSession();
