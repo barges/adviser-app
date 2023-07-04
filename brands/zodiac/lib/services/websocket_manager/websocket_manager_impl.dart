@@ -496,14 +496,16 @@ class WebSocketManagerImpl implements WebSocketManager {
       });
 
   void _send(SocketMessage message) {
-    if (kDebugMode) {
-      if (message.action != Commands.pong) {
+    if (_currentState == WebSocketState.connected) {
+      if (kDebugMode) {
+        if (message.action != Commands.pong) {
+          logger.d('PUB message: ${message.encoded}');
+        }
+      } else {
         logger.d('PUB message: ${message.encoded}');
       }
-    } else {
-      logger.d('PUB message: ${message.encoded}');
+      _channel?.sink.add(message.encoded);
     }
-    _channel?.sink.add(message.encoded);
   }
 
   void _onStart(int userId) {
