@@ -98,6 +98,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirmYourCountryCodeAndEnterYourPhoneNumberZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Bestätigen Sie Ihre Telefonnummer und geben Sie Ihre Telefonnummer ein"),
+        "dailyRenewalZodiac":
+            MessageLookupByLibrary.simpleMessage("Tägliche Erneuerung"),
         "dashboardZodiac": MessageLookupByLibrary.simpleMessage("Dashboard"),
         "daysZodiac": MessageLookupByLibrary.simpleMessage("tage"),
         "declineZodiac": MessageLookupByLibrary.simpleMessage("Abfall"),
@@ -234,15 +236,22 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Reviews from your clients will appear here"),
         "reviewsZodiac": MessageLookupByLibrary.simpleMessage("Bewertungen"),
         "salesZodiac": MessageLookupByLibrary.simpleMessage("Sales"),
+        "saveCouponsSetZodiac":
+            MessageLookupByLibrary.simpleMessage("Coupons-Set speichern"),
         "saveZodiac": MessageLookupByLibrary.simpleMessage("Speichern"),
         "searchZodiac": MessageLookupByLibrary.simpleMessage("Suche"),
         "secondsZodiac": MessageLookupByLibrary.simpleMessage("sek"),
+        "selectedCouponsWillBeRenewedAutomaticallyZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Ausgewählte Gutscheine werden automatisch erneuert und in Ihrem Profil angezeigt"),
         "selectedPhotoZodiac":
             MessageLookupByLibrary.simpleMessage("Ausgewähltes Foto"),
         "sendCodeZodiac": MessageLookupByLibrary.simpleMessage("Code senden"),
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Service"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Services"),
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sitzungen"),
+        "showDailyCouponsZodiac":
+            MessageLookupByLibrary.simpleMessage("Tagesgutscheine anzeigen"),
         "smileysAndPeopleZodiac":
             MessageLookupByLibrary.simpleMessage("Smileys & Menschen"),
         "sorryPhoneVerificationUnavailable": MessageLookupByLibrary.simpleMessage(
@@ -258,6 +267,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "theNicknameIsInvalidMustBe3to250SymbolsZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Der Spitzname ist ungültig. Muss 3 bis 250 Symbole sein."),
+        "theNumberOfAvailableCouponsDependsOnTheAmountOfSessionsZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Die Anzahl der verfügbaren Coupons hängt von der Anzahl der Sitzungen ab. Ausgewählte Gutscheine werden am nächsten Tag in Ihrem Profil angezeigt."),
         "thePasswordsMustMatchZodiac": MessageLookupByLibrary.simpleMessage(
             "Die Passwörter müssen übereinstimmen"),
         "thisMonthZodiac": MessageLookupByLibrary.simpleMessage("Dieser Monat"),

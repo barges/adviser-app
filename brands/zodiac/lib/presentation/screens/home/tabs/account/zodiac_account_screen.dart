@@ -10,6 +10,7 @@ import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dart';
+import 'package:zodiac/presentation/screens/home/tabs/account/widgets/daily_coupons_part_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/widgets/reviews_part_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/widgets/user_fee_part_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/widgets/user_info_part_widget.dart';
@@ -69,6 +70,10 @@ class AccountScreen extends StatelessWidget {
                                   height: 24.0,
                                 ),
                                 ReviewsPartWidget(),
+                                SizedBox(
+                                  height: 24.0,
+                                ),
+                                DailyCouponsPartWidget(),
                               ],
                             ),
                           ),

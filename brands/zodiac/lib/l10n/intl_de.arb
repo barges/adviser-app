@@ -158,5 +158,10 @@
   "symbolsZodiac": "Symbole",
   "flagsZodiac": "Flaggen",
   "sorryPhoneVerificationUnavailable":"Leider ist die telefonische Bestätigung derzeit nicht verfügbar. Bitte drei weitere Latr.",
-  "youZodiac": "Du"
+  "youZodiac": "Du",
+  "showDailyCouponsZodiac": "Tagesgutscheine anzeigen",
+  "theNumberOfAvailableCouponsDependsOnTheAmountOfSessionsZodiac": "Die Anzahl der verfügbaren Coupons hängt von der Anzahl der Sitzungen ab. Ausgewählte Gutscheine werden am nächsten Tag in Ihrem Profil angezeigt.",
+  "saveCouponsSetZodiac": "Coupons-Set speichern",
+  "dailyRenewalZodiac": "Tägliche Erneuerung",
+  "selectedCouponsWillBeRenewedAutomaticallyZodiac": "Ausgewählte Gutscheine werden automatisch erneuert und in Ihrem Profil angezeigt"
 }

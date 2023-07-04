@@ -160,5 +160,10 @@
   "symbolsZodiac": "Symbols",
   "flagsZodiac": "Flags",
   "sorryPhoneVerificationUnavailable": "Sorry, phone verification is currently unavailable. Please try again later.",
-  "youZodiac": "You"
+  "youZodiac": "You",
+  "showDailyCouponsZodiac": "Show daily coupons",
+  "theNumberOfAvailableCouponsDependsOnTheAmountOfSessionsZodiac": "The number of available coupons depends on the amount of sessions. Selected coupons will appear on your profile the following day.",
+  "saveCouponsSetZodiac": "Save coupons set",
+  "dailyRenewalZodiac": "Daily renewal",
+  "selectedCouponsWillBeRenewedAutomaticallyZodiac": "Selected coupons will be renewed automatically and displayed on your profile"
 }

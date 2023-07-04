@@ -160,5 +160,10 @@
   "symbolsZodiac": "Símbolos",
   "flagsZodiac": "Bandeiras",
   "sorryPhoneVerificationUnavailable": "A verificação por telefone não está disponível no momento. Por favor, três agan latr.",
-  "youZodiac": "Você"
+  "youZodiac": "Você",
+  "showDailyCouponsZodiac": "Mostrar cupons diários",
+  "theNumberOfAvailableCouponsDependsOnTheAmountOfSessionsZodiac": "O número de cupons disponíveis depende da quantidade de sessões. Os cupons selecionados aparecerão em seu perfil no dia seguinte.",
+  "saveCouponsSetZodiac": "Salvar conjunto de cupons",
+  "dailyRenewalZodiac": "Renovação diária",
+  "selectedCouponsWillBeRenewedAutomaticallyZodiac": "Os cupons selecionados serão renovados automaticamente e exibidos em seu perfil"
 }
