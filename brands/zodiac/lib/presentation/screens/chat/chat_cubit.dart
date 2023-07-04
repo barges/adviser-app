@@ -19,6 +19,7 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/services/audio/audio_player_service.dart';
 import 'package:shared_advisor_interface/services/audio/audio_recorder_service.dart';
 import 'package:shared_advisor_interface/services/check_permission_service.dart';
+import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
 import 'package:uuid/uuid.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
@@ -88,6 +89,7 @@ class ChatCubit extends BaseCubit<ChatState> {
   final FocusNode textInputFocusNode = FocusNode();
   final GlobalKey textInputKey = GlobalKey();
   final GlobalKey repliedMessageGlobalKey = GlobalKey();
+  final GlobalKey reactedMessageGlobalKey = GlobalKey();
 
   final PublishSubject<double> _showDownButtonStream = PublishSubject();
 
@@ -885,6 +887,7 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   void setEmojiPickerOpened(String? id) {
     emit(state.copyWith(reactionMessageId: id));
+    Utils.animateToWidget(reactedMessageGlobalKey);
   }
 
   void sendReaction(String mid, String emoji) {

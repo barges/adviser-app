@@ -19,11 +19,13 @@ import 'package:zodiac/presentation/screens/chat/widgets/wrappers/focused_menu/f
 class FocusedMenuWrapper extends StatefulWidget {
   final ChatMessageModel chatMessageModel;
   final bool chatIsActive;
+  final String? reactionMessageId;
 
   const FocusedMenuWrapper({
     Key? key,
     required this.chatMessageModel,
     required this.chatIsActive,
+    this.reactionMessageId,
   }) : super(key: key);
 
   @override
@@ -200,6 +202,10 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
                 : null,
             cubit: chatCubit,
             child: ChatMessageWidgetReplyWrapper(
+              key: widget.reactionMessageId != null &&
+                      widget.reactionMessageId == _getMessageId()
+                  ? chatCubit.reactedMessageGlobalKey
+                  : null,
               chatMessageModel: widget.chatMessageModel,
               chatIsActive: widget.chatIsActive,
             ),
@@ -208,6 +214,10 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
       );
     } else {
       return ChatMessageWidgetReplyWrapper(
+        key: widget.reactionMessageId != null &&
+                widget.reactionMessageId == _getMessageId()
+            ? chatCubit.reactedMessageGlobalKey
+            : null,
         chatMessageModel: widget.chatMessageModel,
         chatIsActive: widget.chatIsActive,
       );
