@@ -236,9 +236,10 @@ class _FocusedMenuDetailsState extends State<FocusedMenuDetails> {
     final bottomOffset =
         size.height - childPositionDy + (widget.menuOffset ?? 0.0);
 
-    final bool messageOverflows = widget.topMenuWidgetHeight != null &&
-        (bottomOffset + widget.topMenuWidgetHeight! > size.height);
-
+    final bool messageOverflows = ((widget.childSize?.height ?? 0.0) +
+            menuHeight +
+            (widget.topMenuWidgetHeight ?? 0.0) >
+        size.height);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
