@@ -73,6 +73,10 @@ class ChatMessageModel with _$ChatMessageModel {
 
   factory ChatMessageModel.fromJson(Map<String, dynamic> json) =>
       _$ChatMessageModelFromJson(json);
+
+  bool compareId(String id) {
+    return mid == id || this.id.toString() == id;
+  }
 }
 
 ChatMessageType _typeFromJson(num? value) {

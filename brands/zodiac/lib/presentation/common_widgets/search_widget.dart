@@ -154,10 +154,15 @@ class _SearchWidgetState extends State<SearchWidget> {
                       BorderRadius.circular(AppConstants.buttonRadius),
                   color: backgroundColor,
                 ),
-                child: Assets.zodiac.vectors.crossSmall.svg(
-                  height: AppConstants.iconSize,
-                  width: AppConstants.iconSize,
-                  color: theme.primaryColor,
+                child: Center(
+                  child: Assets.zodiac.vectors.crossSmall.svg(
+                    height: AppConstants.iconSize,
+                    width: AppConstants.iconSize,
+                    colorFilter: ColorFilter.mode(
+                      theme.primaryColor,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                 ),
               ),
             )
