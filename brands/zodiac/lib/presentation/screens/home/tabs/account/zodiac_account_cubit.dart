@@ -12,6 +12,7 @@ import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/data/models/settings/phone.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
+import 'package:zodiac/data/models/user_info/daily_coupon_info.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
@@ -399,6 +400,30 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
           dailyRenewalEnabled: response.isRenewalEnabled ?? false,
         ),
       );
+    }
+  }
+
+  void setCouponCounter(int? couponId, int count) {
+    List<DailyCouponInfo> dailyCoupons = List.of(state.dailyCoupons ?? []);
+    if (dailyCoupons.isNotEmpty) {
+      int index =
+          dailyCoupons.indexWhere((element) => element.couponId == couponId);
+      dailyCoupons[index] = dailyCoupons[index].copyWith(count: count);
+      emit(state.copyWith(dailyCoupons: List.of(dailyCoupons)));
+    }
+  }
+
+  void onDailyCouponCheckboxChanged(int? couponId, bool value) {
+    List<DailyCouponInfo> dailyCoupons = List.of(state.dailyCoupons ?? []);
+    if (dailyCoupons.isNotEmpty) {
+      int index =
+          dailyCoupons.indexWhere((element) => element.couponId == couponId);
+      if (value) {
+        dailyCoupons[index] = dailyCoupons[index].copyWith(count: 1);
+      } else {
+        dailyCoupons[index] = dailyCoupons[index].copyWith(count: 0);
+      }
+      emit(state.copyWith(dailyCoupons: List.of(dailyCoupons)));
     }
   }
 }
