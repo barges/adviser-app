@@ -158,7 +158,10 @@ class _SearchWidgetState extends State<SearchWidget> {
                   child: Assets.zodiac.vectors.crossSmall.svg(
                     height: AppConstants.iconSize,
                     width: AppConstants.iconSize,
-                    color: theme.primaryColor,
+                    colorFilter: ColorFilter.mode(
+                      theme.primaryColor,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
               ),
