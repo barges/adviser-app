@@ -10,7 +10,7 @@ class ChatAudioPlayerCubit extends BaseCubit<ChatAudioPlayerState> {
   ChatAudioPlayerCubit(
     this._player,
     this._url,
-  ) : super(const ChatAudioPlayerState()) {
+  ) : super(ChatAudioPlayerState(position: _player.currentPosition)) {
     final PlayerState playerState = _player.getCurrentState(_url);
 
     emit(state.copyWith(
