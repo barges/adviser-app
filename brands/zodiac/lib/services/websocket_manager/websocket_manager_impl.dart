@@ -496,14 +496,16 @@ class WebSocketManagerImpl implements WebSocketManager {
       });
 
   void _send(SocketMessage message) {
-    if (kDebugMode) {
-      if (message.action != Commands.pong) {
+    if (_currentState == WebSocketState.connected) {
+      if (kDebugMode) {
+        if (message.action != Commands.pong) {
+          logger.d('PUB message: ${message.encoded}');
+        }
+      } else {
         logger.d('PUB message: ${message.encoded}');
       }
-    } else {
-      logger.d('PUB message: ${message.encoded}');
+      _channel?.sink.add(message.encoded);
     }
-    _channel?.sink.add(message.encoded);
   }
 
   void _onStart(int userId) {
@@ -675,6 +677,11 @@ class WebSocketManagerImpl implements WebSocketManager {
     (event.eventData as SocketMessage).let((data) {
       (data.opponentId as int).let((id) => _updateWriteStatusStream.add(id));
     });
+  }
+
+  @override
+  void addUpdateIdEvent(CreatedDeliveredEvent event) {
+    _updateMessageIdStream.add(event);
   }
 
   void _onMsgCreated(Event event) {

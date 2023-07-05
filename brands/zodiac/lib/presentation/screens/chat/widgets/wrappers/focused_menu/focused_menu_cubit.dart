@@ -9,20 +9,23 @@ class FocusedMenuCubit extends Cubit<FocusedMenuState> {
   }
 
   Future<void> _getRecentEmojis() async {
-    final recentEmojis = await EmojiPickerUtils().getRecentEmojis();
 
-    final List<Emoji> emojisList = [];
+      final recentEmojis = await EmojiPickerUtils().getRecentEmojis();
 
-    if (selectedReaction.isNotEmpty) {
-      emojisList.add(Emoji(selectedReaction, ''));
-      recentEmojis.removeWhere(
-        (element) => element.emoji.emoji == selectedReaction,
-      );
-      emojisList.addAll(recentEmojis.take(5).map((e) => e.emoji));
-    } else {
-      emojisList.addAll(recentEmojis.take(6).map((e) => e.emoji));
-    }
+      final List<Emoji> emojisList = [];
 
-    emit(state.copyWith(recentEmojis: emojisList));
+      if (selectedReaction.isNotEmpty) {
+        emojisList.add(Emoji(selectedReaction, ''));
+        recentEmojis.removeWhere(
+          (element) => element.emoji.emoji == selectedReaction,
+        );
+        emojisList.addAll(recentEmojis.take(5).map((e) => e.emoji));
+      } else {
+        emojisList.addAll(recentEmojis.take(6).map((e) => e.emoji));
+      }
+        if(!isClosed) {
+          emit(state.copyWith(recentEmojis: emojisList));
+        }
+
   }
 }

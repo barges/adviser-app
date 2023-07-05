@@ -46,6 +46,8 @@ class ChatScreen extends StatelessWidget {
         underageConfirmDialog: (message) =>
             _showUnderageConfirmDialog(context, message),
         deleteAudioMessageAlert: () => _deleteAudioMessageAlert(context),
+        recordingIsNotPossibleAlert: () =>
+            _recordingIsNotPossibleAlert(context),
       )),
       child: Builder(builder: (context) {
         final ChatCubit chatCubit = context.read<ChatCubit>();
@@ -253,6 +255,17 @@ class ChatScreen extends StatelessWidget {
   Future<bool?> _deleteAudioMessageAlert(BuildContext context) async {
     return await showDeleteAlert(
         context, SZodiac.of(context).doYouWantToDeleteThisAudioMessageZodiac);
+  }
+
+  Future<bool?> _recordingIsNotPossibleAlert(BuildContext context) async {
+    final s = SZodiac.of(context);
+    return await showOkCancelAlert(
+      context: context,
+      title: s.recordingIsNotPossibleZodiac,
+      okText: s.okZodiac,
+      allowBarrierClick: true,
+      isCancelEnabled: false,
+    );
   }
 
   Future<void> _endChat(BuildContext context) async {
