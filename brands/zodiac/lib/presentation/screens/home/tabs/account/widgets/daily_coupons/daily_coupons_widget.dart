@@ -66,52 +66,55 @@ class _DailyCouponWidget extends StatelessWidget {
 
     final ZodiacAccountCubit accountCubit = context.read<ZodiacAccountCubit>();
 
-    return Blur(
-      blur: showCounter ? 2 : 0,
-      blurColor:
-          showCounter ? Utils.getOverlayColor(context) : Colors.transparent,
-      colorOpacity: showCounter ? 0.5 : 0.0,
-      borderRadius: BorderRadius.circular(12.0),
-      overlay: Stack(
-        children: [
-          Positioned.fill(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (showCounter)
-                  CounterWidget(
-                    count: dailyCoupon.count ?? 1,
-                    limitReached: limitReached,
-                    couponId: dailyCoupon.couponId,
-                  ),
-              ],
-            ),
-          ),
-          Positioned(
-            top: 8.0,
-            right: 8.0,
-            child: SizedBox(
-              height: 24.0,
-              width: 24.0,
-              child: CheckboxWidget(
-                value: showCounter,
-                onChanged: (value) {
-                  if (!value) {
-                    accountCubit.onDailyCouponCheckboxChanged(
-                        dailyCoupon.couponId, value);
-                  } else if (value && !limitReached) {
-                    accountCubit.onDailyCouponCheckboxChanged(
-                        dailyCoupon.couponId, value);
-                  }
-                },
+    return Opacity(
+      opacity: limitReached && !showCounter ? 0.6 : 1.0,
+      child: Blur(
+        blur: showCounter ? 2 : 0,
+        blurColor:
+            showCounter ? Utils.getOverlayColor(context) : Colors.transparent,
+        colorOpacity: showCounter ? 0.5 : 0.0,
+        borderRadius: BorderRadius.circular(12.0),
+        overlay: Stack(
+          children: [
+            Positioned.fill(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (showCounter)
+                    CounterWidget(
+                      count: dailyCoupon.count ?? 1,
+                      limitReached: limitReached,
+                      couponId: dailyCoupon.couponId,
+                    ),
+                ],
               ),
             ),
-          )
-        ],
-      ),
-      child: AppImageWidget(
-        uri: Uri.parse(
-          dailyCoupon.image ?? '',
+            Positioned(
+              top: 8.0,
+              right: 8.0,
+              child: SizedBox(
+                height: 24.0,
+                width: 24.0,
+                child: CheckboxWidget(
+                  value: showCounter,
+                  onChanged: (value) {
+                    if (!value) {
+                      accountCubit.onDailyCouponCheckboxChanged(
+                          dailyCoupon.couponId, value);
+                    } else if (value && !limitReached) {
+                      accountCubit.onDailyCouponCheckboxChanged(
+                          dailyCoupon.couponId, value);
+                    }
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+        child: AppImageWidget(
+          uri: Uri.parse(
+            dailyCoupon.image ?? '',
+          ),
         ),
       ),
     );

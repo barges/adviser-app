@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
@@ -22,6 +23,7 @@ import 'package:zodiac/data/network/requests/price_settings_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
 import 'package:zodiac/data/network/requests/set_daily_coupons_request.dart';
 import 'package:zodiac/data/network/requests/settings_request.dart';
+import 'package:zodiac/data/network/requests/update_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
@@ -50,6 +52,8 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   StreamSubscription<bool>? _getSettingsConnectivitySubscription;
   bool? isPushNotificationPermissionGranted;
   String? _siteKey;
+
+  List<DailyCouponInfo> _savedCouponsSet = [];
 
   late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
   late final StreamSubscription<bool> _updateAccountSubscription;
@@ -393,12 +397,14 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     DailyCouponsResponse response =
         await _userRepository.getDailyCoupons(AuthorizedRequest());
     if (response.status == true) {
+      _savedCouponsSet = response.coupons ?? [];
       emit(
         state.copyWith(
           dailyCoupons: response.coupons,
           dailyCouponsLimit: response.limit ?? 0,
           dailyCouponsEnabled: response.isEnabled ?? false,
           dailyRenewalEnabled: response.isRenewalEnabled ?? false,
+          couponsSetEqualPrevious: true,
         ),
       );
     }
@@ -410,7 +416,10 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
       int index =
           dailyCoupons.indexWhere((element) => element.couponId == couponId);
       dailyCoupons[index] = dailyCoupons[index].copyWith(count: count);
-      emit(state.copyWith(dailyCoupons: List.of(dailyCoupons)));
+      emit(state.copyWith(
+        dailyCoupons: List.of(dailyCoupons),
+        couponsSetEqualPrevious: checkCouponsSetEqualPrevious(dailyCoupons),
+      ));
     }
   }
 
@@ -424,7 +433,11 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
       } else {
         dailyCoupons[index] = dailyCoupons[index].copyWith(count: 0);
       }
-      emit(state.copyWith(dailyCoupons: List.of(dailyCoupons)));
+
+      emit(state.copyWith(
+        dailyCoupons: List.of(dailyCoupons),
+        couponsSetEqualPrevious: checkCouponsSetEqualPrevious(dailyCoupons),
+      ));
     }
   }
 
@@ -446,10 +459,36 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
         final BaseResponse response = await _userRepository
             .setDailyCoupons(SetDailyCouponsRequest(coupons: couponIds));
 
-        if (response.status == true) {}
+        if (response.status == true) {
+          _savedCouponsSet = dailyCoupons;
+          emit(state.copyWith(couponsSetEqualPrevious: true));
+        }
       }
     } catch (e) {
       logger.d(e);
     }
+  }
+
+  Future<void> updateDailyCouponsEnabled(bool value) async {
+    final BaseResponse response = await _userRepository
+        .updateEnableDailyCoupons(UpdateEnabledRequest(isEnabled: value));
+
+    if (response.status == true) {
+      emit(state.copyWith(dailyCouponsEnabled: value));
+    }
+  }
+
+  Future<void> updateDailyCouponsRenewalEnabled(bool value) async {
+    final BaseResponse response =
+        await _userRepository.updateEnableDailyCouponsRenewal(
+            UpdateEnabledRequest(isEnabled: value));
+
+    if (response.status == true) {
+      emit(state.copyWith(dailyRenewalEnabled: value));
+    }
+  }
+
+  bool checkCouponsSetEqualPrevious(List<DailyCouponInfo> dailyCoupons) {
+    return dailyCoupons.equals(_savedCouponsSet);
   }
 }

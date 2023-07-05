@@ -18,6 +18,7 @@ import 'package:zodiac/data/network/requests/profile_details_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
 import 'package:zodiac/data/network/requests/set_daily_coupons_request.dart';
 import 'package:zodiac/data/network/requests/settings_request.dart';
+import 'package:zodiac/data/network/requests/update_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_locale_request.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
@@ -206,5 +207,15 @@ abstract class UserApi {
   @POST('/advisor-daily-coupons/add')
   Future<BaseResponse> setDailyCoupons(
     @Body() SetDailyCouponsRequest request,
+  );
+
+  @POST('/advisor-daily-coupons/enable')
+  Future<BaseResponse> updateEnableDailyCoupons(
+    @Body() UpdateEnabledRequest request,
+  );
+
+  @POST('/advisor-daily-coupons/renewal/enable')
+  Future<BaseResponse> updateEnableDailyCouponsRenewal(
+    @Body() UpdateEnabledRequest request,
   );
 }

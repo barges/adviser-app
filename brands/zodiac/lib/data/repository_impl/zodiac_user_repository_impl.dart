@@ -16,6 +16,7 @@ import 'package:zodiac/data/network/requests/profile_details_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
 import 'package:zodiac/data/network/requests/set_daily_coupons_request.dart';
 import 'package:zodiac/data/network/requests/settings_request.dart';
+import 'package:zodiac/data/network/requests/update_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_locale_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
 import 'package:zodiac/data/network/responses/balance_response.dart';
@@ -238,5 +239,17 @@ class ZodiacUserRepositoryImpl implements ZodiacUserRepository {
   @override
   Future<BaseResponse> setDailyCoupons(SetDailyCouponsRequest request) async {
     return await _userApi.setDailyCoupons(request);
+  }
+
+  @override
+  Future<BaseResponse> updateEnableDailyCoupons(
+      UpdateEnabledRequest request) async {
+    return await _userApi.updateEnableDailyCoupons(request);
+  }
+
+  @override
+  Future<BaseResponse> updateEnableDailyCouponsRenewal(
+      UpdateEnabledRequest request) async {
+    return await _userApi.updateEnableDailyCouponsRenewal(request);
   }
 }

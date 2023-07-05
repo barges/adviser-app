@@ -37,52 +37,56 @@ class AccountScreen extends StatelessWidget {
           body: Builder(builder: (context) {
             ZodiacAccountCubit accountCubit =
                 context.read<ZodiacAccountCubit>();
-            return SafeArea(
-              child: RefreshIndicator(
-                onRefresh: accountCubit.refreshUserInfo,
-                child: CustomScrollView(
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: Column(
-                        children: [
-                          Builder(builder: (context) {
-                            final ZodiacAccountCubit zodiacAccountCubit =
-                                context.read<ZodiacAccountCubit>();
-                            final String errorMessage = context.select(
-                                (ZodiacAccountCubit cubit) =>
-                                    cubit.state.errorMessage);
-                            return AppErrorWidget(
-                              errorMessage: errorMessage,
-                              close: zodiacAccountCubit.clearErrorMessage,
-                            );
-                          }),
-                          const Padding(
-                            padding: EdgeInsets.all(
-                                AppConstants.horizontalScreenPadding),
-                            child: Column(
-                              children: [
-                                UserInfoPartWidget(),
-                                SizedBox(
-                                  height: 24.0,
+            return Stack(
+              children: [
+                SafeArea(
+                  child: RefreshIndicator(
+                    onRefresh: accountCubit.refreshUserInfo,
+                    child: CustomScrollView(
+                      slivers: [
+                        SliverToBoxAdapter(
+                          child: Column(
+                            children: [
+                              Builder(builder: (context) {
+                                final ZodiacAccountCubit zodiacAccountCubit =
+                                    context.read<ZodiacAccountCubit>();
+                                final String errorMessage = context.select(
+                                    (ZodiacAccountCubit cubit) =>
+                                        cubit.state.errorMessage);
+                                return AppErrorWidget(
+                                  errorMessage: errorMessage,
+                                  close: zodiacAccountCubit.clearErrorMessage,
+                                );
+                              }),
+                              const Padding(
+                                padding: EdgeInsets.all(
+                                    AppConstants.horizontalScreenPadding),
+                                child: Column(
+                                  children: [
+                                    UserInfoPartWidget(),
+                                    SizedBox(
+                                      height: 24.0,
+                                    ),
+                                    UserFeePartWidget(),
+                                    SizedBox(
+                                      height: 24.0,
+                                    ),
+                                    ReviewsPartWidget(),
+                                    SizedBox(
+                                      height: 24.0,
+                                    ),
+                                    DailyCouponsPartWidget(),
+                                  ],
                                 ),
-                                UserFeePartWidget(),
-                                SizedBox(
-                                  height: 24.0,
-                                ),
-                                ReviewsPartWidget(),
-                                SizedBox(
-                                  height: 24.0,
-                                ),
-                                DailyCouponsPartWidget(),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             );
           })),
     );

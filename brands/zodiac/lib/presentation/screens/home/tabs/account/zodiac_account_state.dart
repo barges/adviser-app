@@ -27,5 +27,6 @@ class ZodiacAccountState with _$ZodiacAccountState {
     @Default(0) int dailyCouponsLimit,
     @Default(false) bool dailyCouponsEnabled,
     @Default(false) bool dailyRenewalEnabled,
+    @Default(true) bool couponsSetEqualPrevious,
   }) = _ZodiacAccountState;
 }

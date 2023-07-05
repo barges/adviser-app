@@ -15,6 +15,7 @@ import 'package:zodiac/data/network/requests/profile_details_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
 import 'package:zodiac/data/network/requests/set_daily_coupons_request.dart';
 import 'package:zodiac/data/network/requests/settings_request.dart';
+import 'package:zodiac/data/network/requests/update_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_locale_request.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
@@ -127,4 +128,9 @@ abstract class ZodiacUserRepository {
   Future<DailyCouponsResponse> getDailyCoupons(AuthorizedRequest request);
 
   Future<BaseResponse> setDailyCoupons(SetDailyCouponsRequest request);
+
+  Future<BaseResponse> updateEnableDailyCoupons(UpdateEnabledRequest request);
+
+  Future<BaseResponse> updateEnableDailyCouponsRenewal(
+      UpdateEnabledRequest request);
 }
