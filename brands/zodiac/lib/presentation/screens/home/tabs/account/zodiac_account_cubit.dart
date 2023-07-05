@@ -57,6 +57,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   Timer? _successMessageTimer;
 
   List<DailyCouponInfo> _savedCouponsSet = [];
+  bool? _savedCouponsSetCountIsZero;
 
   late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
   late final StreamSubscription<bool> _updateAccountSubscription;
@@ -402,6 +403,9 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
         await _userRepository.getDailyCoupons(AuthorizedRequest());
     if (response.status == true) {
       _savedCouponsSet = response.coupons ?? [];
+
+      _savedCouponsSetCountIsZero = _checkCouponsCountIsZero(_savedCouponsSet);
+
       emit(
         state.copyWith(
           dailyCoupons: response.coupons,
@@ -409,6 +413,8 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
           dailyCouponsEnabled: response.isEnabled ?? false,
           dailyRenewalEnabled: response.isRenewalEnabled ?? false,
           couponsSetEqualPrevious: true,
+          disableDailyCouponsEnabling: _savedCouponsSetCountIsZero == true,
+          disableDailyRenewalEnabling: _savedCouponsSetCountIsZero == true,
         ),
       );
     }
@@ -420,9 +426,14 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
       int index =
           dailyCoupons.indexWhere((element) => element.couponId == couponId);
       dailyCoupons[index] = dailyCoupons[index].copyWith(count: count);
+
+      bool dailyCouponsCountIsZero = _checkCouponsCountIsZero(dailyCoupons);
+
       emit(state.copyWith(
         dailyCoupons: List.of(dailyCoupons),
         couponsSetEqualPrevious: checkCouponsSetEqualPrevious(dailyCoupons),
+        disableDailyRenewalEnabling:
+            dailyCouponsCountIsZero && _savedCouponsSetCountIsZero == true,
       ));
     }
   }
@@ -438,9 +449,13 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
         dailyCoupons[index] = dailyCoupons[index].copyWith(count: 0);
       }
 
+      bool dailyCouponsCountIsZero = _checkCouponsCountIsZero(dailyCoupons);
+
       emit(state.copyWith(
         dailyCoupons: List.of(dailyCoupons),
         couponsSetEqualPrevious: checkCouponsSetEqualPrevious(dailyCoupons),
+        disableDailyRenewalEnabling:
+            dailyCouponsCountIsZero && _savedCouponsSetCountIsZero == true,
       ));
     }
   }
@@ -469,6 +484,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
             couponsSetEqualPrevious: true,
             appSuccess:
                 UISuccess(UISuccessMessagesType.dailyCouponsSetUpSuccessful),
+            disableDailyCouponsEnabling: false,
           ));
           _successMessageTimer =
               Timer(const Duration(seconds: 10), clearSuccessMessage);
@@ -506,5 +522,16 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     if (state.appSuccess is! EmptySuccess) {
       emit(state.copyWith(appSuccess: const EmptySuccess()));
     }
+  }
+
+  bool _checkCouponsCountIsZero(List<DailyCouponInfo> dailyCoupons) {
+    bool couponsCountIsZero = true;
+    for (DailyCouponInfo element in dailyCoupons) {
+      if (element.count != null && element.count! > 0) {
+        couponsCountIsZero = false;
+        break;
+      }
+    }
+    return couponsCountIsZero;
   }
 }

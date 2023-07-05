@@ -30,5 +30,7 @@ class ZodiacAccountState with _$ZodiacAccountState {
     @Default(false) bool dailyRenewalEnabled,
     @Default(true) bool couponsSetEqualPrevious,
     @Default(EmptySuccess()) AppSuccess appSuccess,
+    @Default(false) bool disableDailyCouponsEnabling,
+    @Default(false) bool disableDailyRenewalEnabling,
   }) = _ZodiacAccountState;
 }

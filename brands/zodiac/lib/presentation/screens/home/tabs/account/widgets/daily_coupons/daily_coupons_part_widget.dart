@@ -36,161 +36,183 @@ class DailyCouponsPartWidget extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppConstants.horizontalScreenPadding),
-                child: Column(
-                  children: [
-                    Row(
+              Builder(builder: (context) {
+                final bool disableDailyCouponsEnabling = context.select(
+                    (ZodiacAccountCubit cubit) =>
+                        cubit.state.disableDailyCouponsEnabling);
+
+                return Opacity(
+                  opacity: disableDailyCouponsEnabling ? 0.6 : 1.0,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: AppConstants.horizontalScreenPadding),
+                    child: Column(
                       children: [
-                        Text(
-                          SZodiac.of(context).showDailyCouponsZodiac,
-                          style: theme.textTheme.headlineMedium
-                              ?.copyWith(fontSize: 17.0),
+                        Row(
+                          children: [
+                            Text(
+                              SZodiac.of(context).showDailyCouponsZodiac,
+                              style: theme.textTheme.headlineMedium
+                                  ?.copyWith(fontSize: 17.0),
+                            ),
+                            const SizedBox(
+                              width: 4.0,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(2.0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.0),
+                                color: theme.primaryColor,
+                              ),
+                              child: Text(
+                                '$selectedCount/$dailyCouponsLimit',
+                                style: theme.textTheme.labelMedium?.copyWith(
+                                  fontSize: 13.0,
+                                  color: theme.canvasColor,
+                                ),
+                              ),
+                            ),
+                            const Spacer(),
+                            Builder(builder: (context) {
+                              final bool dailyCouponsEnabled = context.select(
+                                  (ZodiacAccountCubit cubit) =>
+                                      cubit.state.dailyCouponsEnabled);
+                              return CupertinoSwitch(
+                                value: dailyCouponsEnabled,
+                                onChanged: disableDailyCouponsEnabling
+                                    ? null
+                                    : accountCubit.updateDailyCouponsEnabled,
+                                activeColor: Theme.of(context).primaryColor,
+                                trackColor: Theme.of(context).hintColor,
+                              );
+                            }),
+                          ],
                         ),
                         const SizedBox(
-                          width: 4.0,
+                          height: 8.0,
                         ),
-                        Container(
-                          padding: const EdgeInsets.all(2.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            color: theme.primaryColor,
-                          ),
-                          child: Text(
-                            '$selectedCount/$dailyCouponsLimit',
-                            style: theme.textTheme.labelMedium?.copyWith(
-                              fontSize: 13.0,
-                              color: theme.canvasColor,
-                            ),
-                          ),
+                        Text(
+                          SZodiac.of(context)
+                              .theNumberOfAvailableCouponsDependsOnTheAmountOfSessionsZodiac,
+                          style: theme.textTheme.bodyMedium
+                              ?.copyWith(color: theme.shadowColor),
                         ),
-                        const Spacer(),
-                        Builder(builder: (context) {
-                          final bool dailyCouponsEnabled = context.select(
-                              (ZodiacAccountCubit cubit) =>
-                                  cubit.state.dailyCouponsEnabled);
-                          return CupertinoSwitch(
-                            value: dailyCouponsEnabled,
-                            onChanged: accountCubit.updateDailyCouponsEnabled,
-                            activeColor: Theme.of(context).primaryColor,
-                            trackColor: Theme.of(context).hintColor,
-                          );
-                        }),
+                        const SizedBox(
+                          height: 16.0,
+                        ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 8.0,
-                    ),
-                    Text(
-                      SZodiac.of(context)
-                          .theNumberOfAvailableCouponsDependsOnTheAmountOfSessionsZodiac,
-                      style: theme.textTheme.bodyMedium
-                          ?.copyWith(color: theme.shadowColor),
-                    ),
-                    const SizedBox(
-                      height: 16.0,
-                    ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              }),
               DailyCouponsWidget(
                 dailyCoupons: dailyCoupons,
                 limitReached: selectedCount == dailyCouponsLimit,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppConstants.horizontalScreenPadding),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 16.0,
-                    ),
-                    Builder(builder: (context) {
-                      final bool countIsZero = selectedCount == 0;
+              const SizedBox(
+                height: 16.0,
+              ),
+              Builder(builder: (context) {
+                final bool countIsZero = selectedCount == 0;
 
-                      final bool couponsSetEqualPrevious = context.select(
-                          (ZodiacAccountCubit cubit) =>
-                              cubit.state.couponsSetEqualPrevious);
+                final bool couponsSetEqualPrevious = context.select(
+                    (ZodiacAccountCubit cubit) =>
+                        cubit.state.couponsSetEqualPrevious);
 
-                      return SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: Opacity(
-                          opacity: couponsSetEqualPrevious || countIsZero
-                              ? 0.6
-                              : 1.0,
-                          child: ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        theme.primaryColor),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                ),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: AppConstants.horizontalScreenPadding),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Opacity(
+                      opacity:
+                          couponsSetEqualPrevious || countIsZero ? 0.6 : 1.0,
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                theme.primaryColor),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
                               ),
-                              onPressed: couponsSetEqualPrevious || countIsZero
-                                  ? null
-                                  : accountCubit.saveDailyCouponsSet,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 13.0,
-                                  horizontal: 16.0,
-                                ),
-                                child: Text(
-                                  countIsZero
-                                      ? SZodiac.of(context)
-                                          .selectAtLeast1CouponZodiac
-                                      : SZodiac.of(context)
-                                          .saveCouponsSetZodiac,
-                                  style: theme.textTheme.labelMedium?.copyWith(
-                                    fontSize: 17.0,
-                                    color: theme.canvasColor,
-                                  ),
-                                ),
-                              )),
-                        ),
-                      );
-                    }),
-                    const SizedBox(
-                      height: 16.0,
+                            ),
+                          ),
+                          onPressed: couponsSetEqualPrevious || countIsZero
+                              ? null
+                              : accountCubit.saveDailyCouponsSet,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 13.0,
+                              horizontal: 16.0,
+                            ),
+                            child: Text(
+                              countIsZero
+                                  ? SZodiac.of(context)
+                                      .selectAtLeast1CouponZodiac
+                                  : SZodiac.of(context).saveCouponsSetZodiac,
+                              style: theme.textTheme.labelMedium?.copyWith(
+                                fontSize: 17.0,
+                                color: theme.canvasColor,
+                              ),
+                            ),
+                          )),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ),
+                );
+              }),
+              Builder(builder: (context) {
+                final bool disableDailyRenewalEnabling = context.select(
+                    (ZodiacAccountCubit cubit) =>
+                        cubit.state.disableDailyRenewalEnabling);
+                return Opacity(
+                  opacity: disableDailyRenewalEnabling ? 0.6 : 1.0,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: AppConstants.horizontalScreenPadding),
+                    child: Column(
                       children: [
-                        Text(
-                          SZodiac.of(context).dailyRenewalZodiac,
-                          style: theme.textTheme.headlineMedium
-                              ?.copyWith(fontSize: 17.0),
+                        const SizedBox(
+                          height: 16.0,
                         ),
-                        Builder(builder: (context) {
-                          final bool dailyRenewalEnabled = context.select(
-                              (ZodiacAccountCubit cubit) =>
-                                  cubit.state.dailyRenewalEnabled);
-                          return CupertinoSwitch(
-                            value: dailyRenewalEnabled,
-                            onChanged:
-                                accountCubit.updateDailyCouponsRenewalEnabled,
-                            activeColor: Theme.of(context).primaryColor,
-                            trackColor: Theme.of(context).hintColor,
-                          );
-                        }),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              SZodiac.of(context).dailyRenewalZodiac,
+                              style: theme.textTheme.headlineMedium
+                                  ?.copyWith(fontSize: 17.0),
+                            ),
+                            Builder(builder: (context) {
+                              final bool dailyRenewalEnabled = context.select(
+                                  (ZodiacAccountCubit cubit) =>
+                                      cubit.state.dailyRenewalEnabled);
+                              return CupertinoSwitch(
+                                value: dailyRenewalEnabled,
+                                onChanged: disableDailyRenewalEnabling
+                                    ? null
+                                    : accountCubit
+                                        .updateDailyCouponsRenewalEnabled,
+                                activeColor: Theme.of(context).primaryColor,
+                                trackColor: Theme.of(context).hintColor,
+                              );
+                            }),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 8.0,
+                        ),
+                        Text(
+                          SZodiac.of(context)
+                              .selectedCouponsWillBeRenewedAutomaticallyZodiac,
+                          style: theme.textTheme.bodyMedium
+                              ?.copyWith(color: theme.shadowColor),
+                        ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 8.0,
-                    ),
-                    Text(
-                      SZodiac.of(context)
-                          .selectedCouponsWillBeRenewedAutomaticallyZodiac,
-                      style: theme.textTheme.bodyMedium
-                          ?.copyWith(color: theme.shadowColor),
-                    ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              }),
             ],
           ),
         );
