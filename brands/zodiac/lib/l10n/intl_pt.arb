@@ -165,5 +165,6 @@
   "theNumberOfAvailableCouponsDependsOnTheAmountOfSessionsZodiac": "O número de cupons disponíveis depende da quantidade de sessões. Os cupons selecionados aparecerão em seu perfil no dia seguinte.",
   "saveCouponsSetZodiac": "Salvar conjunto de cupons",
   "dailyRenewalZodiac": "Renovação diária",
-  "selectedCouponsWillBeRenewedAutomaticallyZodiac": "Os cupons selecionados serão renovados automaticamente e exibidos em seu perfil"
+  "selectedCouponsWillBeRenewedAutomaticallyZodiac": "Os cupons selecionados serão renovados automaticamente e exibidos em seu perfil",
+  "selectAtLeast1CouponZodiac": "Selecione pelo menos 1 cupom"
 }

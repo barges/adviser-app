@@ -28,6 +28,8 @@ class DailyCouponsPartWidget extends StatelessWidget {
           selectedCount += element.count ?? 0;
         }
 
+        final bool countIsZero = selectedCount == 0;
+
         return Container(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           decoration: BoxDecoration(
@@ -108,31 +110,39 @@ class DailyCouponsPartWidget extends StatelessWidget {
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
-                      child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                theme.primaryColor),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0),
+                      child: Opacity(
+                        opacity: countIsZero ? 0.6 : 1.0,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  theme.primaryColor),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
                               ),
                             ),
-                          ),
-                          onPressed: accountCubit.saveDailyCouponsSet,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 13.0,
-                              horizontal: 16.0,
-                            ),
-                            child: Text(
-                              SZodiac.of(context).saveCouponsSetZodiac,
-                              style: theme.textTheme.labelMedium?.copyWith(
-                                fontSize: 17.0,
-                                color: theme.canvasColor,
+                            onPressed: countIsZero
+                                ? null
+                                : accountCubit.saveDailyCouponsSet,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 13.0,
+                                horizontal: 16.0,
                               ),
-                            ),
-                          )),
+                              child: Text(
+                                countIsZero
+                                    ? SZodiac.of(context)
+                                        .selectAtLeast1CouponZodiac
+                                    : SZodiac.of(context).saveCouponsSetZodiac,
+                                style: theme.textTheme.labelMedium?.copyWith(
+                                  fontSize: 17.0,
+                                  color: theme.canvasColor,
+                                ),
+                              ),
+                            )),
+                      ),
                     ),
                     const SizedBox(
                       height: 16.0,

@@ -248,6 +248,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "saveZodiac": MessageLookupByLibrary.simpleMessage("Salvar"),
         "searchZodiac": MessageLookupByLibrary.simpleMessage("Procurar"),
         "secondsZodiac": MessageLookupByLibrary.simpleMessage("seg"),
+        "selectAtLeast1CouponZodiac": MessageLookupByLibrary.simpleMessage(
+            "Selecione pelo menos 1 cupom"),
         "selectedCouponsWillBeRenewedAutomaticallyZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Os cupons selecionados serão renovados automaticamente e exibidos em seu perfil"),

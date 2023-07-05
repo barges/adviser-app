@@ -1725,6 +1725,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Select at least 1 coupon`
+  String get selectAtLeast1CouponZodiac {
+    return Intl.message(
+      'Select at least 1 coupon',
+      name: 'selectAtLeast1CouponZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {
