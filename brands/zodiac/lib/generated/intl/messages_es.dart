@@ -58,6 +58,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "accountZodiac": MessageLookupByLibrary.simpleMessage("Cuenta"),
         "activityZodiac": MessageLookupByLibrary.simpleMessage("Actividad"),
         "addZodiac": MessageLookupByLibrary.simpleMessage("Agregar"),
+        "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Todos los cupones seleccionados están listos para mostrarse mañana."),
         "allSpecialitiesZodiac":
             MessageLookupByLibrary.simpleMessage("Todas las especialidades"),
         "animalsAndNatureZodiac":
@@ -259,6 +262,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Servicio"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Servicios"),
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sesiones"),
+        "setUpSuccessfulZodiac":
+            MessageLookupByLibrary.simpleMessage("Instalación exitosa"),
         "showDailyCouponsZodiac":
             MessageLookupByLibrary.simpleMessage("Mostrar cupones diarios"),
         "smileysAndPeopleZodiac":

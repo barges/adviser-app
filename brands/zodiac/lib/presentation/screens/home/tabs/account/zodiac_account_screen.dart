@@ -6,10 +6,12 @@ import 'package:shared_advisor_interface/services/check_permission_service.dart'
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/app_success/app_success.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dart';
+import 'package:zodiac/presentation/common_widgets/messages/app_success_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/widgets/daily_coupons/daily_coupons_part_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/widgets/reviews_part_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/widgets/user_fee_part_widget.dart';
@@ -86,6 +88,19 @@ class AccountScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                Positioned(
+                    top: 0.0,
+                    right: 0.0,
+                    left: 0.0,
+                    child: Builder(builder: (context) {
+                      final AppSuccess appSuccess = context.select(
+                          (ZodiacAccountCubit cubit) => cubit.state.appSuccess);
+                      return AppSuccessWidget(
+                        title: appSuccess.getTitle(context),
+                        message: appSuccess.getMessage(context),
+                        onClose: accountCubit.clearSuccessMessage,
+                      );
+                    }))
               ],
             );
           })),

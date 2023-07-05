@@ -10,6 +10,8 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.da
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/app_success/app_success.dart';
+import 'package:zodiac/data/models/app_success/ui_success_type.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/data/models/settings/phone.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
@@ -52,6 +54,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   StreamSubscription<bool>? _getSettingsConnectivitySubscription;
   bool? isPushNotificationPermissionGranted;
   String? _siteKey;
+  Timer? _successMessageTimer;
 
   List<DailyCouponInfo> _savedCouponsSet = [];
 
@@ -111,6 +114,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     _updateUnreadNotificationsCounter.cancel();
     _currentBrandSubscription?.cancel();
     _updateAccountSettingsSubscription.cancel();
+    _successMessageTimer?.cancel();
     super.close();
   }
 
@@ -461,7 +465,13 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
 
         if (response.status == true) {
           _savedCouponsSet = dailyCoupons;
-          emit(state.copyWith(couponsSetEqualPrevious: true));
+          emit(state.copyWith(
+            couponsSetEqualPrevious: true,
+            appSuccess:
+                UISuccess(UISuccessMessagesType.dailyCouponsSetUpSuccessful),
+          ));
+          _successMessageTimer =
+              Timer(const Duration(seconds: 10), clearSuccessMessage);
         }
       }
     } catch (e) {
@@ -490,5 +500,11 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
 
   bool checkCouponsSetEqualPrevious(List<DailyCouponInfo> dailyCoupons) {
     return dailyCoupons.equals(_savedCouponsSet);
+  }
+
+  void clearSuccessMessage() {
+    if (state.appSuccess is! EmptySuccess) {
+      emit(state.copyWith(appSuccess: const EmptySuccess()));
+    }
   }
 }

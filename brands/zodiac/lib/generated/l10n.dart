@@ -1735,6 +1735,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Set up successful`
+  String get setUpSuccessfulZodiac {
+    return Intl.message(
+      'Set up successful',
+      name: 'setUpSuccessfulZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All selected coupons are ready to be displayed tomorrow.`
+  String get allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac {
+    return Intl.message(
+      'All selected coupons are ready to be displayed tomorrow.',
+      name: 'allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

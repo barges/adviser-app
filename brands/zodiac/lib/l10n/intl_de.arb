@@ -164,5 +164,7 @@
   "saveCouponsSetZodiac": "Coupons-Set speichern",
   "dailyRenewalZodiac": "Tägliche Erneuerung",
   "selectedCouponsWillBeRenewedAutomaticallyZodiac": "Ausgewählte Gutscheine werden automatisch erneuert und in Ihrem Profil angezeigt",
-  "selectAtLeast1CouponZodiac": "Wählen Sie mindestens 1 Gutschein aus"
+  "selectAtLeast1CouponZodiac": "Wählen Sie mindestens 1 Gutschein aus",
+  "setUpSuccessfulZodiac": "Installation erfolgreich",
+  "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac": "Alle ausgewählten Gutscheine können morgen angezeigt werden."
 }

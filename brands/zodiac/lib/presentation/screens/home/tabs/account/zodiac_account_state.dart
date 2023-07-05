@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:zodiac/data/models/app_success/app_success.dart';
 import 'package:zodiac/data/models/settings/phone.dart';
 import 'package:zodiac/data/models/user_info/daily_coupon_info.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
@@ -28,5 +29,6 @@ class ZodiacAccountState with _$ZodiacAccountState {
     @Default(false) bool dailyCouponsEnabled,
     @Default(false) bool dailyRenewalEnabled,
     @Default(true) bool couponsSetEqualPrevious,
+    @Default(EmptySuccess()) AppSuccess appSuccess,
   }) = _ZodiacAccountState;
 }

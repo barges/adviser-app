@@ -166,5 +166,7 @@
   "saveCouponsSetZodiac": "Save coupons set",
   "dailyRenewalZodiac": "Daily renewal",
   "selectedCouponsWillBeRenewedAutomaticallyZodiac": "Selected coupons will be renewed automatically and displayed on your profile",
-  "selectAtLeast1CouponZodiac": "Select at least 1 coupon"
+  "selectAtLeast1CouponZodiac": "Select at least 1 coupon",
+  "setUpSuccessfulZodiac": "Set up successful",
+  "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac": "All selected coupons are ready to be displayed tomorrow."
 }
