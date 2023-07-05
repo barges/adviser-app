@@ -13,6 +13,8 @@ class DailyCouponsPartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final ZodiacAccountCubit accountCubit = context.read<ZodiacAccountCubit>();
+
     final List<DailyCouponInfo>? dailyCoupons =
         context.select((ZodiacAccountCubit cubit) => cubit.state.dailyCoupons);
 
@@ -117,6 +119,7 @@ class DailyCouponsPartWidget extends StatelessWidget {
                               ),
                             ),
                           ),
+                          onPressed: accountCubit.saveDailyCouponsSet,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                               vertical: 13.0,
@@ -129,8 +132,7 @@ class DailyCouponsPartWidget extends StatelessWidget {
                                 color: theme.canvasColor,
                               ),
                             ),
-                          ),
-                          onPressed: () {}),
+                          )),
                     ),
                     const SizedBox(
                       height: 16.0,

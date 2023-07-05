@@ -20,6 +20,7 @@ import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
+import 'package:zodiac/data/network/requests/set_daily_coupons_request.dart';
 import 'package:zodiac/data/network/requests/settings_request.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
@@ -424,6 +425,31 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
         dailyCoupons[index] = dailyCoupons[index].copyWith(count: 0);
       }
       emit(state.copyWith(dailyCoupons: List.of(dailyCoupons)));
+    }
+  }
+
+  Future<void> saveDailyCouponsSet() async {
+    try {
+      List<DailyCouponInfo>? dailyCoupons = state.dailyCoupons;
+
+      if (dailyCoupons != null) {
+        List<int> couponIds = [];
+
+        for (DailyCouponInfo element in dailyCoupons) {
+          if (element.couponId != null &&
+              element.count != null &&
+              element.count! > 0) {
+            couponIds.addAll(List.filled(element.count!, element.couponId!));
+          }
+        }
+
+        final BaseResponse response = await _userRepository
+            .setDailyCoupons(SetDailyCouponsRequest(coupons: couponIds));
+
+        if (response.status == true) {}
+      }
+    } catch (e) {
+      logger.d(e);
     }
   }
 }
