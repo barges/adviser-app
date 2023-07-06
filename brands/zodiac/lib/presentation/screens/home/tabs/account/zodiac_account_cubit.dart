@@ -35,6 +35,7 @@ import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
 import 'package:zodiac/data/network/responses/settings_response.dart';
 import 'package:zodiac/data/network/responses/specializations_response.dart';
+import 'package:zodiac/domain/repositories/zodiac_coupons_repository.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_state.dart';
 import 'package:zodiac/zodiac.dart';
@@ -48,6 +49,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   final ConnectivityService _connectivityService;
   final PushNotificationManager _pushNotificationManager;
   final Future<bool> Function(bool needShowSettingsAlert) _handlePermission;
+  final ZodiacCouponsRepository _couponsRepository;
 
   StreamSubscription? _currentBrandSubscription;
   StreamSubscription<bool>? _pushTokenConnectivitySubscription;
@@ -71,6 +73,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     this._cacheManager,
     this._connectivityService,
     this._pushNotificationManager,
+    this._couponsRepository,
     this._handlePermission,
   ) : super(const ZodiacAccountState()) {
     if (_brandManager.getCurrentBrand().brandAlias == ZodiacBrand.alias) {
@@ -400,7 +403,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
 
   Future<void> getDailyCoupons() async {
     DailyCouponsResponse response =
-        await _userRepository.getDailyCoupons(AuthorizedRequest());
+        await _couponsRepository.getDailyCoupons(AuthorizedRequest());
     if (response.status == true) {
       _savedCouponsSet = response.coupons ?? [];
 
@@ -475,7 +478,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
           }
         }
 
-        final BaseResponse response = await _userRepository
+        final BaseResponse response = await _couponsRepository
             .setDailyCoupons(SetDailyCouponsRequest(coupons: couponIds));
 
         if (response.status == true) {
@@ -496,7 +499,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   }
 
   Future<void> updateDailyCouponsEnabled(bool value) async {
-    final BaseResponse response = await _userRepository
+    final BaseResponse response = await _couponsRepository
         .updateEnableDailyCoupons(UpdateEnabledRequest(isEnabled: value));
 
     if (response.status == true) {
@@ -506,7 +509,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
 
   Future<void> updateDailyCouponsRenewalEnabled(bool value) async {
     final BaseResponse response =
-        await _userRepository.updateEnableDailyCouponsRenewal(
+        await _couponsRepository.updateEnableDailyCouponsRenewal(
             UpdateEnabledRequest(isEnabled: value));
 
     if (response.status == true) {

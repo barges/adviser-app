@@ -13,15 +13,12 @@ import 'package:zodiac/data/network/requests/phone_number_verify_request.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
 import 'package:zodiac/data/network/requests/profile_details_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
-import 'package:zodiac/data/network/requests/set_daily_coupons_request.dart';
 import 'package:zodiac/data/network/requests/settings_request.dart';
-import 'package:zodiac/data/network/requests/update_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_locale_request.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
 import 'package:zodiac/data/network/responses/balance_response.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
-import 'package:zodiac/data/network/responses/daily_coupons_response.dart';
 import 'package:zodiac/data/network/responses/expert_details_response.dart';
 import 'package:zodiac/data/network/responses/notification_details_response.dart';
 import 'package:zodiac/data/network/responses/locale_descriptions_response.dart';
@@ -124,13 +121,4 @@ abstract class ZodiacUserRepository {
 
   Future<ProfileDetailsResponse> getProfileDetails(
       ProfileDetailsRequest request);
-
-  Future<DailyCouponsResponse> getDailyCoupons(AuthorizedRequest request);
-
-  Future<BaseResponse> setDailyCoupons(SetDailyCouponsRequest request);
-
-  Future<BaseResponse> updateEnableDailyCoupons(UpdateEnabledRequest request);
-
-  Future<BaseResponse> updateEnableDailyCouponsRenewal(
-      UpdateEnabledRequest request);
 }

@@ -16,15 +16,12 @@ import 'package:zodiac/data/network/requests/phone_number_verify_request.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
 import 'package:zodiac/data/network/requests/profile_details_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
-import 'package:zodiac/data/network/requests/set_daily_coupons_request.dart';
 import 'package:zodiac/data/network/requests/settings_request.dart';
-import 'package:zodiac/data/network/requests/update_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_locale_request.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
 import 'package:zodiac/data/network/responses/balance_response.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
-import 'package:zodiac/data/network/responses/daily_coupons_response.dart';
 import 'package:zodiac/data/network/responses/expert_details_response.dart';
 import 'package:zodiac/data/network/responses/locale_descriptions_response.dart';
 import 'package:zodiac/data/network/responses/locales_response.dart';
@@ -197,25 +194,5 @@ abstract class UserApi {
   @POST('/profile/details')
   Future<ProfileDetailsResponse> getProfileDetails(
     @Body() ProfileDetailsRequest request,
-  );
-
-  @POST('/advisor-daily-coupons')
-  Future<DailyCouponsResponse> getDailyCoupons(
-    @Body() AuthorizedRequest request,
-  );
-
-  @POST('/advisor-daily-coupons/add')
-  Future<BaseResponse> setDailyCoupons(
-    @Body() SetDailyCouponsRequest request,
-  );
-
-  @POST('/advisor-daily-coupons/enable')
-  Future<BaseResponse> updateEnableDailyCoupons(
-    @Body() UpdateEnabledRequest request,
-  );
-
-  @POST('/advisor-daily-coupons/renewal/enable')
-  Future<BaseResponse> updateEnableDailyCouponsRenewal(
-    @Body() UpdateEnabledRequest request,
   );
 }

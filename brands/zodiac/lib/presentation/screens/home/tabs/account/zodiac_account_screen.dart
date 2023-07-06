@@ -7,6 +7,7 @@ import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/app_success/app_success.dart';
+import 'package:zodiac/domain/repositories/zodiac_coupons_repository.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/home_app_bar.dart';
@@ -32,6 +33,7 @@ class AccountScreen extends StatelessWidget {
         zodiacGetIt.get<ZodiacCachingManager>(),
         zodiacGetIt.get<ConnectivityService>(),
         zodiacGetIt.get<PushNotificationManager>(),
+        zodiacGetIt.get<ZodiacCouponsRepository>(),
         (value) => handlePermission(context, value),
       ),
       child: Scaffold(
