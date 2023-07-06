@@ -108,4 +108,6 @@ class Commands {
   static String get sendMessageReaction => 'sendMessageReaction';
 
   static String get messageReactionCreated => 'reactionMessageCreated';
+
+  static String get upsellingList => 'upsellingList';
 }

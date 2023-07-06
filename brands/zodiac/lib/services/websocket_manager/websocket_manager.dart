@@ -110,4 +110,6 @@ abstract class WebSocketManager {
   });
 
   void addUpdateIdEvent(CreatedDeliveredEvent event);
+
+  void sendUpsellingList({required int chatId});
 }
