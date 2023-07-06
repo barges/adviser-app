@@ -58,6 +58,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "accountZodiac": MessageLookupByLibrary.simpleMessage("Account"),
         "activityZodiac": MessageLookupByLibrary.simpleMessage("Activity"),
         "addZodiac": MessageLookupByLibrary.simpleMessage("Add"),
+        "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "All selected coupons are ready to be displayed tomorrow."),
         "allSpecialitiesZodiac":
             MessageLookupByLibrary.simpleMessage("All specialities"),
         "animalsAndNatureZodiac":
@@ -99,6 +102,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Confirm your country code and enter your phone number"),
         "customerSupportZodiac":
             MessageLookupByLibrary.simpleMessage("Customer Support"),
+        "dailyRenewalZodiac":
+            MessageLookupByLibrary.simpleMessage("Daily renewal"),
         "dashboardZodiac": MessageLookupByLibrary.simpleMessage("Dashboard"),
         "daysZodiac": MessageLookupByLibrary.simpleMessage("days"),
         "declineZodiac": MessageLookupByLibrary.simpleMessage("Decline"),
@@ -240,17 +245,28 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Reviews from your clients will appear here"),
         "reviewsZodiac": MessageLookupByLibrary.simpleMessage("Reviews"),
         "salesZodiac": MessageLookupByLibrary.simpleMessage("Sales"),
+        "saveCouponsSetZodiac":
+            MessageLookupByLibrary.simpleMessage("Save coupons set"),
         "saveZodiac": MessageLookupByLibrary.simpleMessage("Save"),
         "searchResultsZodiac":
             MessageLookupByLibrary.simpleMessage("Search results"),
         "searchZodiac": MessageLookupByLibrary.simpleMessage("Search"),
         "secondsZodiac": MessageLookupByLibrary.simpleMessage("sec"),
+        "selectAtLeast1CouponZodiac":
+            MessageLookupByLibrary.simpleMessage("Select at least 1 coupon"),
+        "selectedCouponsWillBeRenewedAutomaticallyZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Selected coupons will be renewed automatically and displayed on your profile"),
         "selectedPhotoZodiac":
             MessageLookupByLibrary.simpleMessage("Selected photo"),
         "sendCodeZodiac": MessageLookupByLibrary.simpleMessage("Send code"),
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Service"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Services"),
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sessions"),
+        "setUpSuccessfulZodiac":
+            MessageLookupByLibrary.simpleMessage("Set up successful"),
+        "showDailyCouponsZodiac":
+            MessageLookupByLibrary.simpleMessage("Show daily coupons"),
         "smileysAndPeopleZodiac":
             MessageLookupByLibrary.simpleMessage("Smileys & People"),
         "sorryPhoneVerificationUnavailableZodiac":
@@ -266,6 +282,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "theNicknameIsInvalidMustBe3to250SymbolsZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "The nickname is invalid. Must be 3 to 250 symbols."),
+        "theNumberOfAvailableCouponsDependsOnTheAmountOfSessionsZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "The number of available coupons depends on the amount of sessions. Selected coupons will appear on your profile the following day."),
         "thePasswordsMustMatchZodiac":
             MessageLookupByLibrary.simpleMessage("The passwords must match"),
         "thisMonthZodiac": MessageLookupByLibrary.simpleMessage("This Month"),

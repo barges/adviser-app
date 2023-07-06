@@ -163,6 +163,13 @@
   "recordingIsNotPossibleZodiac": "A gravação não é possível, libere espaço no dispositivo",
   "youZodiac": "Você",
   "searchResultsZodiac": "Procurar Resultados",
-  "noEmojiFoundZodiac": "Nenhum emoji encontrado"
-
+  "noEmojiFoundZodiac": "Nenhum emoji encontrado",
+  "showDailyCouponsZodiac": "Mostrar cupons diários",
+  "theNumberOfAvailableCouponsDependsOnTheAmountOfSessionsZodiac": "O número de cupons disponíveis depende da quantidade de sessões. Os cupons selecionados aparecerão em seu perfil no dia seguinte.",
+  "saveCouponsSetZodiac": "Salvar conjunto de cupons",
+  "dailyRenewalZodiac": "Renovação diária",
+  "selectedCouponsWillBeRenewedAutomaticallyZodiac": "Os cupons selecionados serão renovados automaticamente e exibidos em seu perfil",
+  "selectAtLeast1CouponZodiac": "Selecione pelo menos 1 cupom",
+  "setUpSuccessfulZodiac": "Configuração bem sucedida",
+  "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac": "Todos os cupons selecionados estão prontos para serem exibidos amanhã."
 }
