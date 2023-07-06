@@ -163,7 +163,7 @@ class ChatScreen extends StatelessWidget {
                                       : const SizedBox.shrink(),
                                 );
                               }),
-                              const SafeArea(child: UpsellingMenuWidget()),
+                              // const SafeArea(child: UpsellingMenuWidget()),
                               if (showTextField)
                                 const _BottomPaddingContainerIfHasTextInputField(),
                             ],
