@@ -907,5 +907,8 @@ class ChatCubit extends BaseCubit<ChatState> {
     } else {
       emit(state.copyWith(selectedUpsellingMenuItem: type));
     }
+    if (_chatId != null) {
+      _webSocketManager.sendUpsellingList(chatId: _chatId!);
+    }
   }
 }
