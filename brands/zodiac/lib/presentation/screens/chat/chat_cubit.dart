@@ -36,6 +36,7 @@ import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/base_cubit/base_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/chat_state.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/chat_text_input_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu_widget.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
@@ -265,6 +266,7 @@ class ChatCubit extends BaseCubit<ChatState> {
 
     if (!_fromStartingChat) {
       _webSocketManager.chatLogin(opponentId: clientData.id ?? 0);
+      emit(state.copyWith(upsellingMenuOpened: true));
     }
 
     addListener(_showDownButtonStream
@@ -897,5 +899,13 @@ class ChatCubit extends BaseCubit<ChatState> {
         roomId: enterRoomData?.roomData?.id ?? '',
         opponentId: clientData.id ?? 0);
     setEmojiPickerOpened(null);
+  }
+
+  void selectUpsellingMenuItem(UpsellingMenuType type) {
+    if (state.selectedUpsellingMenuItem == type) {
+      emit(state.copyWith(selectedUpsellingMenuItem: null));
+    } else {
+      emit(state.copyWith(selectedUpsellingMenuItem: type));
+    }
   }
 }
