@@ -12,6 +12,7 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/canned_message/canned_message_category.dart';
 import 'package:zodiac/data/models/chat/call_data.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/end_chat_data.dart';
@@ -34,6 +35,7 @@ import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
 import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
+import 'package:zodiac/services/websocket_manager/upselling_list_event.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
@@ -90,6 +92,9 @@ class WebSocketManagerImpl implements WebSocketManager {
   final PublishSubject<PaidFreeEvent> _paidFreeStream = PublishSubject();
 
   final PublishSubject<RoomPausedEvent> _roomPausedStream = PublishSubject();
+
+  final PublishSubject<UpsellingListEvent> _upsellingListStream =
+      PublishSubject();
 
   final PublishSubject<MessageReactionCreatedEvent>
       _messageReactionCreatedStream = PublishSubject();
@@ -233,6 +238,9 @@ class WebSocketManagerImpl implements WebSocketManager {
 
     _emitter.on(Commands.messageReactionCreated, this,
         (event, _) => _onMessageReactionCreated(event));
+
+    _emitter.on(
+        Commands.upsellingList, this, (event, _) => _onUpsellingList(event));
   }
 
   @override
@@ -296,6 +304,10 @@ class WebSocketManagerImpl implements WebSocketManager {
   @override
   Stream<MessageReactionCreatedEvent> get messageReactionCreatedStream =>
       _messageReactionCreatedStream.stream;
+
+  @override
+  Stream<UpsellingListEvent> get upsellingListStream =>
+      _upsellingListStream.stream;
 
   @override
   WebSocketState get currentState => _currentState;
@@ -993,6 +1005,24 @@ class WebSocketManagerImpl implements WebSocketManager {
           ),
         );
       }
+    });
+  }
+
+  void _onUpsellingList(Event event) {
+    (event.eventData as SocketMessage).let((data) {
+      (data.params['opponent_id'] as int).let(
+        (id) {
+          Map<String, dynamic>? categories = data.params['categories'];
+          if (categories != null) {
+            List<CannedMessageCategory> categoriesList = [];
+            categories.forEach((key, value) =>
+                categoriesList.add(CannedMessageCategory.fromJson(value)));
+            logger.d(categoriesList);
+            _upsellingListStream.add(UpsellingListEvent(
+                cannedCategories: categoriesList, opponentId: id));
+          }
+        },
+      );
     });
   }
 }
