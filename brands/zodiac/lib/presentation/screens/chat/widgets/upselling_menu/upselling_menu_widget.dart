@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/canned_messages_widget.dart';
 
 enum UpsellingMenuType {
   coupons,
@@ -20,38 +21,45 @@ class UpsellingMenuWidget extends StatelessWidget {
 
     final UpsellingMenuType? selectedMenuItem = context
         .select((ChatCubit cubit) => cubit.state.selectedUpsellingMenuItem);
-    return Container(
-        height: 42.0,
-        decoration: BoxDecoration(color: theme.canvasColor),
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppConstants.horizontalScreenPadding,
-          vertical: 4.0,
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: _UpsellingMenuItemWidget(
-                iconPath: Assets.zodiac.vectors.narrowCouponsIcon.path,
-                type: UpsellingMenuType.coupons,
-                selectedMenuItem: selectedMenuItem,
-              ),
+    return Column(
+      children: [
+        const CannedMessagesWidget(),
+        Container(
+            height: 42.0,
+            decoration: BoxDecoration(
+                color: theme.canvasColor,
+                border: Border(top: BorderSide(color: theme.hintColor))),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppConstants.horizontalScreenPadding,
+              vertical: 4.0,
             ),
-            Expanded(
-              child: _UpsellingMenuItemWidget(
-                iconPath: Assets.zodiac.vectors.chatsIcon.path,
-                type: UpsellingMenuType.canned,
-                selectedMenuItem: selectedMenuItem,
-              ),
-            ),
-            Expanded(
-              child: _UpsellingMenuItemWidget(
-                iconPath: Assets.zodiac.vectors.narrowServicesIcon.path,
-                type: UpsellingMenuType.services,
-                selectedMenuItem: selectedMenuItem,
-              ),
-            ),
-          ],
-        ));
+            child: Row(
+              children: [
+                Expanded(
+                  child: _UpsellingMenuItemWidget(
+                    iconPath: Assets.zodiac.vectors.narrowCouponsIcon.path,
+                    type: UpsellingMenuType.coupons,
+                    selectedMenuItem: selectedMenuItem,
+                  ),
+                ),
+                Expanded(
+                  child: _UpsellingMenuItemWidget(
+                    iconPath: Assets.zodiac.vectors.chatsIcon.path,
+                    type: UpsellingMenuType.canned,
+                    selectedMenuItem: selectedMenuItem,
+                  ),
+                ),
+                Expanded(
+                  child: _UpsellingMenuItemWidget(
+                    iconPath: Assets.zodiac.vectors.narrowServicesIcon.path,
+                    type: UpsellingMenuType.services,
+                    selectedMenuItem: selectedMenuItem,
+                  ),
+                ),
+              ],
+            )),
+      ],
+    );
   }
 }
 

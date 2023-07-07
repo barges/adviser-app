@@ -1015,9 +1015,13 @@ class WebSocketManagerImpl implements WebSocketManager {
           Map<String, dynamic>? categories = data.params['categories'];
           if (categories != null) {
             List<CannedMessageCategory> categoriesList = [];
-            categories.forEach((key, value) =>
-                categoriesList.add(CannedMessageCategory.fromJson(value)));
-            logger.d(categoriesList);
+            final sortedCategories = categories.entries.toList()
+              ..sort(
+                  (e1, e2) => int.parse(e1.key).compareTo(int.parse(e2.key)));
+            for (var element in sortedCategories) {
+              categoriesList.add(CannedMessageCategory.fromJson(element.value));
+            }
+
             _upsellingListStream.add(UpsellingListEvent(
                 cannedCategories: categoriesList, opponentId: id));
           }

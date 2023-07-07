@@ -259,6 +259,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Selected coupons will be renewed automatically and displayed on your profile"),
         "selectedPhotoZodiac":
             MessageLookupByLibrary.simpleMessage("Selected photo"),
+        "sendCannedMessageZodiac":
+            MessageLookupByLibrary.simpleMessage("Send canned message"),
         "sendCodeZodiac": MessageLookupByLibrary.simpleMessage("Send code"),
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Service"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Services"),

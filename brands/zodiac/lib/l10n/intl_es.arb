@@ -171,5 +171,6 @@
   "selectedCouponsWillBeRenewedAutomaticallyZodiac": "Los cupones seleccionados se renovarán automáticamente y se mostrarán en su perfil",
   "selectAtLeast1CouponZodiac": "Seleccione al menos 1 cupón",
   "setUpSuccessfulZodiac": "Instalación exitosa",
-  "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac": "Todos los cupones seleccionados están listos para mostrarse mañana."
+  "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac": "Todos los cupones seleccionados están listos para mostrarse mañana.",
+  "sendCannedMessageZodiac": "Enviar mensaje enlatado"
 }
