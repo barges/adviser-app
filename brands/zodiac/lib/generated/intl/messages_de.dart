@@ -261,6 +261,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "sendCannedMessageZodiac": MessageLookupByLibrary.simpleMessage(
             "Senden Sie eine vorgefertigte Nachricht"),
         "sendCodeZodiac": MessageLookupByLibrary.simpleMessage("Code senden"),
+        "sendZodiac": MessageLookupByLibrary.simpleMessage("Schicken"),
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Service"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Services"),
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sitzungen"),

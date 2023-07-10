@@ -173,5 +173,6 @@
   "setUpSuccessfulZodiac": "Set up successful",
   "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac": "All selected coupons are ready to be displayed tomorrow.",
   "sendCannedMessageZodiac": "Send canned message",
-  "editZodiac": "Edit"
+  "editZodiac": "Edit",
+  "sendZodiac": "Send"
 }

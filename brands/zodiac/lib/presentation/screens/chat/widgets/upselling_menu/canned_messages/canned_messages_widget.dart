@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/models/canned_message/canned_message_category.dart';
 import 'package:zodiac/data/models/canned_message/canned_message_model.dart';
@@ -20,10 +21,13 @@ class CannedMessagesWidget extends StatefulWidget {
 
 class _CannedMessagesWidgetState extends State<CannedMessagesWidget> {
   int selectedCategotyIndex = 0;
+  int? selectedMessageIndex;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final ChatCubit chatCubit = context.read<ChatCubit>();
+
     final List<CannedMessageCategory>? cannedMessageCategories = context
         .select((ChatCubit cubit) => cubit.state.cannedMessageCategories);
 
@@ -114,7 +118,7 @@ class _CannedMessagesWidgetState extends State<CannedMessagesWidget> {
 
               if (messages != null) {
                 return AnimatedSwitcher(
-                  duration: Duration(milliseconds: 500),
+                  duration: const Duration(milliseconds: 500),
                   transitionBuilder: (child, animation) => SizeTransition(
                     sizeFactor: animation,
                     child: child,
@@ -122,12 +126,37 @@ class _CannedMessagesWidgetState extends State<CannedMessagesWidget> {
                   child: CannedMessagesPageView(
                     key: ValueKey(messages.hashCode),
                     messages: messages,
+                    onPageChanged: (value) => selectedMessageIndex = value,
                   ),
                 );
               } else {
                 return const SizedBox.shrink();
               }
             }),
+            const SizedBox(
+              height: 12.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppConstants.horizontalScreenPadding),
+              child: AppElevatedButton(
+                title: SZodiac.of(context).sendZodiac,
+                onPressed: () {
+                  if (selectedMessageIndex != null) {
+                    chatCubit.sendUpsellingMessage(
+                      cannedMessageId:
+                          cannedMessageCategories[selectedCategotyIndex]
+                              .messages?[selectedMessageIndex!]
+                              .id,
+                      customCannedMessage:
+                          cannedMessageCategories[selectedCategotyIndex]
+                              .messages?[selectedMessageIndex!]
+                              .message,
+                    );
+                  }
+                },
+              ),
+            ),
           ],
         ),
       );
@@ -139,8 +168,12 @@ class _CannedMessagesWidgetState extends State<CannedMessagesWidget> {
 
 class CannedMessagesPageView extends StatefulWidget {
   final List<CannedMessageModel> messages;
-  const CannedMessagesPageView({Key? key, required this.messages})
-      : super(key: key);
+  final ValueChanged<int> onPageChanged;
+  const CannedMessagesPageView({
+    Key? key,
+    required this.messages,
+    required this.onPageChanged,
+  }) : super(key: key);
 
   @override
   State<CannedMessagesPageView> createState() => _CannedMessagesPageViewState();
@@ -159,10 +192,12 @@ class _CannedMessagesPageViewState extends State<CannedMessagesPageView> {
   void initState() {
     super.initState();
 
+    widget.onPageChanged(0);
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       double maxHeight = 0;
 
-      widget.messages.forEach((element) {
+      for (var element in widget.messages) {
         double height = Utils.getTextHeight(
                 element.message ?? '',
                 Theme.of(context).textTheme.bodyMedium,
@@ -176,12 +211,18 @@ class _CannedMessagesPageViewState extends State<CannedMessagesPageView> {
         if (height > maxHeight) {
           maxHeight = height;
         }
-      });
+      }
 
       setState(() {
         widgetHeight = maxHeight;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -192,6 +233,7 @@ class _CannedMessagesPageViewState extends State<CannedMessagesPageView> {
       child: PageView.builder(
         controller: _pageController,
         itemCount: widget.messages.length,
+        onPageChanged: widget.onPageChanged,
         itemBuilder: (context, index) => Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

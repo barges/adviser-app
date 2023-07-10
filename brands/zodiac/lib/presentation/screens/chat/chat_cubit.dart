@@ -917,4 +917,20 @@ class ChatCubit extends BaseCubit<ChatState> {
       _webSocketManager.sendUpsellingList(chatId: _chatId!);
     }
   }
+
+  void sendUpsellingMessage({
+    String? customCannedMessage,
+    String? couponCode,
+    int? cannedMessageId,
+  }) {
+    if (_chatId != null && clientData.id != null) {
+      _webSocketManager.sendUpselling(
+        chatId: _chatId!,
+        opponentId: clientData.id!,
+        customCannedMessage: customCannedMessage,
+        couponCode: couponCode,
+        cannedMessageId: cannedMessageId,
+      );
+    }
+  }
 }

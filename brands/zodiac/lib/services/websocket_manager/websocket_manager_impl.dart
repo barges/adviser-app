@@ -490,6 +490,23 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   @override
+  void sendUpselling({
+    required int chatId,
+    required int opponentId,
+    String? customCannedMessage,
+    String? couponCode,
+    int? cannedMessageId,
+  }) {
+    _send(SocketMessage.sendUpselling(
+      chatId: chatId,
+      opponentId: opponentId,
+      customCannedMessage: customCannedMessage,
+      couponCode: couponCode,
+      cannedMessageId: cannedMessageId,
+    ));
+  }
+
+  @override
   void close() {
     _currentState = WebSocketState.closed;
     _socketSubscription?.cancel();

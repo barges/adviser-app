@@ -268,6 +268,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "sendCannedMessageZodiac":
             MessageLookupByLibrary.simpleMessage("Enviar mensaje enlatado"),
         "sendCodeZodiac": MessageLookupByLibrary.simpleMessage("Enviar código"),
+        "sendZodiac": MessageLookupByLibrary.simpleMessage("Enviar"),
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Servicio"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Servicios"),
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sesiones"),

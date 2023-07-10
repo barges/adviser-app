@@ -115,4 +115,12 @@ abstract class WebSocketManager {
   void addUpdateIdEvent(CreatedDeliveredEvent event);
 
   void sendUpsellingList({required int chatId});
+
+  void sendUpselling({
+    required int chatId,
+    required int opponentId,
+    String? customCannedMessage,
+    String? couponCode,
+    int? cannedMessageId,
+  });
 }
