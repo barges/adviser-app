@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/canned_messages_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/canned_messages/canned_messages_widget.dart';
 
 enum UpsellingMenuType {
   coupons,
@@ -22,6 +22,7 @@ class UpsellingMenuWidget extends StatelessWidget {
     final UpsellingMenuType? selectedMenuItem = context
         .select((ChatCubit cubit) => cubit.state.selectedUpsellingMenuItem);
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         const CannedMessagesWidget(),
         Container(

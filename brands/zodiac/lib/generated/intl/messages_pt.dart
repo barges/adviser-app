@@ -124,6 +124,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Deseja excluir esta mensagem?"),
         "editProfileZodiac":
             MessageLookupByLibrary.simpleMessage("Editar Perfil"),
+        "editZodiac": MessageLookupByLibrary.simpleMessage("Editar"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("E-Mail"),
         "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(

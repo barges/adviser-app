@@ -172,5 +172,6 @@
   "selectAtLeast1CouponZodiac": "Seleccione al menos 1 cupón",
   "setUpSuccessfulZodiac": "Instalación exitosa",
   "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac": "Todos los cupones seleccionados están listos para mostrarse mañana.",
-  "sendCannedMessageZodiac": "Enviar mensaje enlatado"
+  "sendCannedMessageZodiac": "Enviar mensaje enlatado",
+  "editZodiac": "Editar"
 }

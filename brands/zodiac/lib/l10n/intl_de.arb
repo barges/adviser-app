@@ -170,5 +170,6 @@
   "selectAtLeast1CouponZodiac": "Wählen Sie mindestens 1 Gutschein aus",
   "setUpSuccessfulZodiac": "Installation erfolgreich",
   "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac": "Alle ausgewählten Gutscheine können morgen angezeigt werden.",
-  "sendCannedMessageZodiac": "Senden Sie eine vorgefertigte Nachricht"
+  "sendCannedMessageZodiac": "Senden Sie eine vorgefertigte Nachricht",
+  "editZodiac": "Bearbeiten"
 }

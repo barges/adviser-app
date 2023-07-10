@@ -20,7 +20,7 @@ class CategotyMenuItemWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: 24.0,
           vertical: 9.0,
         ),
