@@ -57,6 +57,8 @@ int? _stringToIntFromJson(dynamic value) {
 double? _stringToDoubleFromJson(dynamic value) {
   if (value is double) {
     return value;
+  } else if (value is int) {
+    return value.toDouble();
   } else if (value is String) {
     return double.parse(value);
   } else {
