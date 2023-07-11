@@ -243,16 +243,19 @@ class _CannedMessagesPageViewState extends State<CannedMessagesPageView> {
                 onEditing: (message) {
                   double height =
                       _getCannedMessageHeight(message, editingMaxLines);
+
                   if (widgetHeight < height) {
                     setState(() {
                       widgetHeight = height;
                     });
-                  } else if (_widgetWithMaxHeight.index == index) {
-                    _setWidgetWithMaxHeight();
-                    logger.d(_widgetWithMaxHeight.height);
-                    setState(() {
-                      widgetHeight = _widgetWithMaxHeight.height;
-                    });
+                  } else {
+                    _setWidgetWithMaxHeight(message, index);
+                    logger.d(_widgetWithMaxHeight.index);
+                    if (_widgetWithMaxHeight.index == index) {
+                      setState(() {
+                        widgetHeight = _widgetWithMaxHeight.height;
+                      });
+                    }
                   }
                 },
               ),
@@ -277,12 +280,13 @@ class _CannedMessagesPageViewState extends State<CannedMessagesPageView> {
         12;
   }
 
-  void _setWidgetWithMaxHeight() {
+  void _setWidgetWithMaxHeight(String message, int editingIndex) {
     double maxHeight = 0;
 
     widget.messages.forEachIndexed((index, element) {
-      double height =
-          _getCannedMessageHeight(element.message ?? '', editingMaxLines);
+      double height = _getCannedMessageHeight(
+          index == editingIndex ? message : element.message ?? '',
+          editingMaxLines);
       if (height > maxHeight) {
         maxHeight = height;
         _widgetWithMaxHeight =
