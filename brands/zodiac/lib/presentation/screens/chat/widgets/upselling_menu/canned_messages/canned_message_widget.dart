@@ -31,17 +31,11 @@ class _CannedMessageWidgetState extends State<CannedMessageWidget> {
   static const int maxCount = 280;
 
   final TextEditingController _editingController = TextEditingController();
-
-  int currentCount = 0;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    _editingController.addListener(() {
-      setState(() {
-        currentCount = _editingController.text.length;
-      });
-    });
   }
 
   @override
@@ -85,91 +79,94 @@ class _CannedMessageWidgetState extends State<CannedMessageWidget> {
           ),
         ],
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          isEditing
-              ? TextField(
-                  controller: _editingController,
-                  autofocus: true,
-                  textCapitalization: TextCapitalization.sentences,
-                  minLines: 1,
-                  maxLines: editingMaxLines,
-                  style: theme.textTheme.bodyMedium,
-                  maxLength: maxCount,
-                  textAlignVertical: TextAlignVertical.top,
-                  decoration: const InputDecoration(
-                    isDense: true,
-                    contentPadding: EdgeInsets.zero,
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                  ),
-                  onChanged: (value) {
-                    cannedMessagesCubit.editedCannedMessage = value;
-                    widget.onEditing(value);
-                  },
-                  buildCounter: (context,
-                      {required currentLength, required isFocused, maxLength}) {
-                    final bool limitReached =
-                        maxLength != null && currentLength >= maxLength;
-                    return Text(
-                      '$currentLength/$maxLength',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        fontSize: 14.0,
-                        color:
-                            limitReached ? AppColors.error : AppColors.online,
-                      ),
-                    );
-                  },
-                )
-              : Text(
+      child: isEditing
+          ? Scrollbar(
+              child: TextField(
+                controller: _editingController,
+                scrollController: _scrollController,
+                autofocus: true,
+                textCapitalization: TextCapitalization.sentences,
+                minLines: 1,
+                maxLines: editingMaxLines,
+                style: theme.textTheme.bodyMedium,
+                maxLength: maxCount,
+                textAlignVertical: TextAlignVertical.top,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  contentPadding: EdgeInsets.zero,
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                ),
+                onChanged: (value) {
+                  cannedMessagesCubit.editedCannedMessage = value;
+                  widget.onEditing(value);
+                },
+                buildCounter: (context,
+                    {required currentLength, required isFocused, maxLength}) {
+                  final bool limitReached =
+                      maxLength != null && currentLength >= maxLength;
+                  return Text(
+                    '$currentLength/$maxLength',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      fontSize: 14.0,
+                      color: limitReached ? AppColors.error : AppColors.online,
+                    ),
+                  );
+                },
+              ),
+            )
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
                   widget.message,
                   maxLines: displayMaxLines,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.backgroundColor,
                   ),
                 ),
-          if (!isEditing)
-            Padding(
-              padding: const EdgeInsets.only(top: paddingBetweenMessageAndEdit),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      cannedMessagesCubit.setEditingIndex(widget.index);
-                      _editingController.text = widget.message;
-                    },
+                if (!isEditing)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: paddingBetweenMessageAndEdit),
                     child: Row(
-                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text(
-                          SZodiac.of(context).editZodiac,
-                          style: theme.textTheme.labelMedium?.copyWith(
-                            color: theme.backgroundColor,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8.0,
-                        ),
-                        Assets.zodiac.vectors.editIcon.svg(
-                          height: AppConstants.iconSize,
-                          width: AppConstants.iconSize,
-                          colorFilter: ColorFilter.mode(
-                            theme.backgroundColor,
-                            BlendMode.srcIn,
+                        GestureDetector(
+                          onTap: () {
+                            cannedMessagesCubit.setEditingIndex(widget.index);
+                            _editingController.text = widget.message;
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                SZodiac.of(context).editZodiac,
+                                style: theme.textTheme.labelMedium?.copyWith(
+                                  color: theme.backgroundColor,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 8.0,
+                              ),
+                              Assets.zodiac.vectors.editIcon.svg(
+                                height: AppConstants.iconSize,
+                                width: AppConstants.iconSize,
+                                colorFilter: ColorFilter.mode(
+                                  theme.backgroundColor,
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-            )
-        ],
-      ),
+                  )
+              ],
+            ),
     );
   }
 }
