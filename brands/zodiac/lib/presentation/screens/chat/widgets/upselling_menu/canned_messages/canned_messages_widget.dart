@@ -76,42 +76,53 @@ class CannedMessagesWidget extends StatelessWidget {
                   const SizedBox(
                     height: 12.0,
                   ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: AppConstants.horizontalScreenPadding,
+                  Builder(builder: (context) {
+                    final int? editingCannedMessageIndex = context.select(
+                        (CannedMessagesCubit cubit) =>
+                            cubit.state.editingCannedMessageIndex);
+                    if (editingCannedMessageIndex == null) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12.0),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              const SizedBox(
+                                width: AppConstants.horizontalScreenPadding,
+                              ),
+                              ...cannedMessageCategories
+                                  .mapIndexed((index, element) {
+                                final Widget child = CategotyMenuItemWidget(
+                                  title: element.categoryName ?? '',
+                                  isSelected: selectedCategotyIndex == index,
+                                  onTap: () => cannedMessagesCubit
+                                      .setSelectedCategoryIndex(index),
+                                );
+                                if (index !=
+                                    cannedMessageCategories.length - 1) {
+                                  return Row(
+                                    children: [
+                                      child,
+                                      const SizedBox(
+                                        width: 8.0,
+                                      )
+                                    ],
+                                  );
+                                } else {
+                                  return child;
+                                }
+                              }).toList(),
+                              const SizedBox(
+                                width: AppConstants.horizontalScreenPadding,
+                              ),
+                            ],
+                          ),
                         ),
-                        ...cannedMessageCategories.mapIndexed((index, element) {
-                          final Widget child = CategotyMenuItemWidget(
-                            title: element.categoryName ?? '',
-                            isSelected: selectedCategotyIndex == index,
-                            onTap: () => cannedMessagesCubit
-                                .setSelectedCategoryIndex(index),
-                          );
-                          if (index != cannedMessageCategories.length - 1) {
-                            return Row(
-                              children: [
-                                child,
-                                const SizedBox(
-                                  width: 8.0,
-                                )
-                              ],
-                            );
-                          } else {
-                            return child;
-                          }
-                        }).toList(),
-                        const SizedBox(
-                          width: AppConstants.horizontalScreenPadding,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12.0,
-                  ),
+                      );
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  }),
                   Builder(builder: (context) {
                     final List<CannedMessageModel>? messages =
                         cannedMessageCategories[selectedCategotyIndex].messages;
@@ -188,8 +199,6 @@ class _CannedMessagesPageViewState extends State<CannedMessagesPageView> {
       PageController(viewportFraction: viewportFraction);
 
   late final CannedMessagesCubit cannedMessagesCubit;
-
-  //final PublishSubject _stopEditingStream = PublishSubject();
 
   double widgetHeight = 0;
   late _CannedMessageHeightModel _widgetWithMaxHeight;
