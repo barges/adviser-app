@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
@@ -12,11 +14,13 @@ const int editingMaxLines = 6;
 class CannedMessageWidget extends StatefulWidget {
   final String message;
   final ValueChanged<String> onEditing;
+  final Stream stopEditingStream;
 
   const CannedMessageWidget({
     Key? key,
     required this.message,
     required this.onEditing,
+    required this.stopEditingStream,
   }) : super(key: key);
 
   @override
@@ -27,6 +31,8 @@ class _CannedMessageWidgetState extends State<CannedMessageWidget> {
   static const int maxCount = 280;
 
   final TextEditingController _editingController = TextEditingController();
+
+  StreamSubscription? _stopEditingSubscription;
 
   bool isEditing = false;
   int currentCount = 0;
@@ -39,11 +45,20 @@ class _CannedMessageWidgetState extends State<CannedMessageWidget> {
         currentCount = _editingController.text.length;
       });
     });
+
+    _stopEditingSubscription = widget.stopEditingStream.listen((event) {
+      if (isEditing) {
+        setState(() {
+          isEditing = false;
+        });
+      }
+    });
   }
 
   @override
   void dispose() {
     _editingController.dispose();
+    _stopEditingSubscription?.cancel();
     super.dispose();
   }
 
