@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
@@ -11,179 +10,170 @@ import 'package:zodiac/data/models/canned_message/canned_message_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/canned_messages/canned_message_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/canned_messages/canned_messages_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/category_menu_item_widget.dart';
 
-class CannedMessagesWidget extends StatefulWidget {
+class CannedMessagesWidget extends StatelessWidget {
   const CannedMessagesWidget({Key? key}) : super(key: key);
-
-  @override
-  State<CannedMessagesWidget> createState() => _CannedMessagesWidgetState();
-}
-
-class _CannedMessagesWidgetState extends State<CannedMessagesWidget> {
-  int selectedCategotyIndex = 0;
-  int? selectedMessageIndex;
-  String? editedCannedMessage;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final ChatCubit chatCubit = context.read<ChatCubit>();
 
-    final List<CannedMessageCategory>? cannedMessageCategories = context
-        .select((ChatCubit cubit) => cubit.state.cannedMessageCategories);
+    return BlocProvider(
+      create: (context) => CannedMessagesCubit(),
+      child: Builder(
+        builder: (context) {
+          final CannedMessagesCubit cannedMessagesCubit =
+              context.read<CannedMessagesCubit>();
 
-    if (cannedMessageCategories != null) {
-      return Container(
-        decoration: BoxDecoration(color: theme.canvasColor),
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppConstants.horizontalScreenPadding),
-              child: Row(
+          final List<CannedMessageCategory>? cannedMessageCategories = context
+              .select((ChatCubit cubit) => cubit.state.cannedMessageCategories);
+          final int selectedCategotyIndex = context.select(
+              (CannedMessagesCubit cubit) => cubit.state.selectedCategotyIndex);
+
+          if (cannedMessageCategories != null) {
+            return Container(
+              decoration: BoxDecoration(color: theme.canvasColor),
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SizedBox(
-                    width: 32.0,
-                  ),
-                  Expanded(
-                    child: Text(
-                      SZodiac.of(context).sendCannedMessageZodiac,
-                      style: theme.textTheme.headlineMedium
-                          ?.copyWith(fontSize: 17.0),
-                      textAlign: TextAlign.center,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: AppConstants.horizontalScreenPadding),
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 32.0,
+                        ),
+                        Expanded(
+                          child: Text(
+                            SZodiac.of(context).sendCannedMessageZodiac,
+                            style: theme.textTheme.headlineMedium
+                                ?.copyWith(fontSize: 17.0),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 8.0,
+                        ),
+                        GestureDetector(
+                          onTap: chatCubit.closeUpsellingMenu,
+                          child: Assets.zodiac.vectors.crossSmall.svg(
+                            height: AppConstants.iconSize,
+                            width: AppConstants.iconSize,
+                            colorFilter: ColorFilter.mode(
+                              theme.shadowColor,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                   const SizedBox(
-                    width: 8.0,
+                    height: 12.0,
                   ),
-                  GestureDetector(
-                    onTap: chatCubit.closeUpsellingMenu,
-                    child: Assets.zodiac.vectors.crossSmall.svg(
-                      height: AppConstants.iconSize,
-                      width: AppConstants.iconSize,
-                      colorFilter: ColorFilter.mode(
-                        theme.shadowColor,
-                        BlendMode.srcIn,
-                      ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: AppConstants.horizontalScreenPadding,
+                        ),
+                        ...cannedMessageCategories.mapIndexed((index, element) {
+                          final Widget child = CategotyMenuItemWidget(
+                            title: element.categoryName ?? '',
+                            isSelected: selectedCategotyIndex == index,
+                            onTap: () => cannedMessagesCubit
+                                .setSelectedCategoryIndex(index),
+                          );
+                          if (index != cannedMessageCategories.length - 1) {
+                            return Row(
+                              children: [
+                                child,
+                                const SizedBox(
+                                  width: 8.0,
+                                )
+                              ],
+                            );
+                          } else {
+                            return child;
+                          }
+                        }).toList(),
+                        const SizedBox(
+                          width: AppConstants.horizontalScreenPadding,
+                        ),
+                      ],
                     ),
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 12.0,
-            ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  const SizedBox(
-                    width: AppConstants.horizontalScreenPadding,
                   ),
-                  ...cannedMessageCategories.mapIndexed((index, element) {
-                    final Widget child = CategotyMenuItemWidget(
-                      title: element.categoryName ?? '',
-                      isSelected: selectedCategotyIndex == index,
-                      onTap: () {
-                        if (selectedCategotyIndex != index) {
-                          setState(() {
-                            selectedCategotyIndex = index;
-                          });
-                        }
-                      },
-                    );
-                    if (index != cannedMessageCategories.length - 1) {
-                      return Row(
-                        children: [
-                          child,
-                          const SizedBox(
-                            width: 8.0,
-                          )
-                        ],
+                  const SizedBox(
+                    height: 12.0,
+                  ),
+                  Builder(builder: (context) {
+                    final List<CannedMessageModel>? messages =
+                        cannedMessageCategories[selectedCategotyIndex].messages;
+
+                    if (messages != null) {
+                      return AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 500),
+                        transitionBuilder: (child, animation) => SizeTransition(
+                          sizeFactor: animation,
+                          child: child,
+                        ),
+                        child: CannedMessagesPageView(
+                          key: ValueKey(messages.hashCode),
+                          messages: messages,
+                        ),
                       );
                     } else {
-                      return child;
+                      return const SizedBox.shrink();
                     }
-                  }).toList(),
+                  }),
                   const SizedBox(
-                    width: AppConstants.horizontalScreenPadding,
+                    height: 12.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: AppConstants.horizontalScreenPadding),
+                    child: AppElevatedButton(
+                      title: SZodiac.of(context).sendZodiac,
+                      onPressed: () {
+                        chatCubit.sendUpsellingMessage(
+                          cannedMessageId:
+                              cannedMessageCategories[selectedCategotyIndex]
+                                  .messages?[
+                                      cannedMessagesCubit.selectedMessageIndex]
+                                  .id,
+                          customCannedMessage: cannedMessagesCubit
+                                  .editedCannedMessage ??
+                              cannedMessageCategories[selectedCategotyIndex]
+                                  .messages?[
+                                      cannedMessagesCubit.selectedMessageIndex]
+                                  .message,
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(
-              height: 12.0,
-            ),
-            Builder(builder: (context) {
-              final List<CannedMessageModel>? messages =
-                  cannedMessageCategories[selectedCategotyIndex].messages;
-
-              if (messages != null) {
-                return AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 500),
-                  transitionBuilder: (child, animation) => SizeTransition(
-                    sizeFactor: animation,
-                    child: child,
-                  ),
-                  child: CannedMessagesPageView(
-                    key: ValueKey(messages.hashCode),
-                    messages: messages,
-                    onPageChanged: (value) {
-                      selectedMessageIndex = value;
-                      editedCannedMessage = null;
-                    },
-                    onEditing: (value) => editedCannedMessage = value,
-                  ),
-                );
-              } else {
-                return const SizedBox.shrink();
-              }
-            }),
-            const SizedBox(
-              height: 12.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppConstants.horizontalScreenPadding),
-              child: AppElevatedButton(
-                title: SZodiac.of(context).sendZodiac,
-                onPressed: () {
-                  if (selectedMessageIndex != null) {
-                    chatCubit.sendUpsellingMessage(
-                      cannedMessageId:
-                          cannedMessageCategories[selectedCategotyIndex]
-                              .messages?[selectedMessageIndex!]
-                              .id,
-                      customCannedMessage: editedCannedMessage ??
-                          cannedMessageCategories[selectedCategotyIndex]
-                              .messages?[selectedMessageIndex!]
-                              .message,
-                    );
-                  }
-                },
-              ),
-            ),
-          ],
-        ),
-      );
-    } else {
-      return const SizedBox.shrink();
-    }
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
+      ),
+    );
   }
 }
 
 class CannedMessagesPageView extends StatefulWidget {
   final List<CannedMessageModel> messages;
-  final ValueChanged<int> onPageChanged;
-  final ValueChanged<String?> onEditing;
   const CannedMessagesPageView({
     Key? key,
     required this.messages,
-    required this.onPageChanged,
-    required this.onEditing,
   }) : super(key: key);
 
   @override
@@ -197,7 +187,9 @@ class _CannedMessagesPageViewState extends State<CannedMessagesPageView> {
   final PageController _pageController =
       PageController(viewportFraction: viewportFraction);
 
-  final PublishSubject _stopEditingStream = PublishSubject();
+  late final CannedMessagesCubit cannedMessagesCubit;
+
+  //final PublishSubject _stopEditingStream = PublishSubject();
 
   double widgetHeight = 0;
   late _CannedMessageHeightModel _widgetWithMaxHeight;
@@ -206,7 +198,9 @@ class _CannedMessagesPageViewState extends State<CannedMessagesPageView> {
   void initState() {
     super.initState();
 
-    widget.onPageChanged(0);
+    cannedMessagesCubit = context.read<CannedMessagesCubit>();
+
+    cannedMessagesCubit.onPageChanged(0);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       double maxHeight = 0;
@@ -241,8 +235,7 @@ class _CannedMessagesPageViewState extends State<CannedMessagesPageView> {
         controller: _pageController,
         itemCount: widget.messages.length,
         onPageChanged: (index) {
-          widget.onPageChanged(index);
-          _stopEditingStream.add(true);
+          cannedMessagesCubit.onPageChanged(index);
           _setWidgetWithMaxHeight();
           if (widgetHeight > _widgetWithMaxHeight.height) {
             setState(() {
@@ -257,10 +250,9 @@ class _CannedMessagesPageViewState extends State<CannedMessagesPageView> {
               padding: const EdgeInsets.symmetric(
                   horizontal: paddingBetweenCannedMessages),
               child: CannedMessageWidget(
+                index: index,
                 message: widget.messages[index].message ?? '',
-                stopEditingStream: _stopEditingStream.stream,
                 onEditing: (message) {
-                  widget.onEditing(message);
                   double height =
                       _getCannedMessageHeight(message, editingMaxLines);
 

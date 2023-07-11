@@ -1,10 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/generated/l10n.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/canned_messages/canned_messages_cubit.dart';
 
 const double cannedMessageContentPadding = 12.0;
 const double paddingBetweenMessageAndEdit = 6.0;
@@ -14,13 +14,13 @@ const int editingMaxLines = 6;
 class CannedMessageWidget extends StatefulWidget {
   final String message;
   final ValueChanged<String> onEditing;
-  final Stream stopEditingStream;
+  final int index;
 
   const CannedMessageWidget({
     Key? key,
     required this.message,
     required this.onEditing,
-    required this.stopEditingStream,
+    required this.index,
   }) : super(key: key);
 
   @override
@@ -32,9 +32,6 @@ class _CannedMessageWidgetState extends State<CannedMessageWidget> {
 
   final TextEditingController _editingController = TextEditingController();
 
-  StreamSubscription? _stopEditingSubscription;
-
-  bool isEditing = false;
   int currentCount = 0;
 
   @override
@@ -45,26 +42,24 @@ class _CannedMessageWidgetState extends State<CannedMessageWidget> {
         currentCount = _editingController.text.length;
       });
     });
-
-    _stopEditingSubscription = widget.stopEditingStream.listen((event) {
-      if (isEditing) {
-        setState(() {
-          isEditing = false;
-        });
-      }
-    });
   }
 
   @override
   void dispose() {
     _editingController.dispose();
-    _stopEditingSubscription?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final CannedMessagesCubit cannedMessagesCubit =
+        context.read<CannedMessagesCubit>();
+
+    final bool isEditing = context.select((CannedMessagesCubit cubit) =>
+            cubit.state.editingCannedMessageIndex) ==
+        widget.index;
+
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.all(cannedMessageContentPadding),
@@ -111,7 +106,10 @@ class _CannedMessageWidgetState extends State<CannedMessageWidget> {
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
                   ),
-                  onChanged: widget.onEditing,
+                  onChanged: (value) {
+                    cannedMessagesCubit.editedCannedMessage = value;
+                    widget.onEditing(value);
+                  },
                   buildCounter: (context,
                       {required currentLength, required isFocused, maxLength}) {
                     final bool limitReached =
@@ -141,9 +139,7 @@ class _CannedMessageWidgetState extends State<CannedMessageWidget> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      setState(() {
-                        isEditing = true;
-                      });
+                      cannedMessagesCubit.setEditingIndex(widget.index);
                       _editingController.text = widget.message;
                     },
                     child: Row(
