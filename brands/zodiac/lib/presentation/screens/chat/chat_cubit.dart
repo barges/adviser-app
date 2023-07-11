@@ -909,13 +909,17 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   void selectUpsellingMenuItem(UpsellingMenuType type) {
     if (state.selectedUpsellingMenuItem == type) {
-      emit(state.copyWith(selectedUpsellingMenuItem: null));
+      closeUpsellingMenu();
     } else {
       emit(state.copyWith(selectedUpsellingMenuItem: type));
     }
     if (_chatId != null) {
       _webSocketManager.sendUpsellingList(chatId: _chatId!);
     }
+  }
+
+  void closeUpsellingMenu() {
+    emit(state.copyWith(selectedUpsellingMenuItem: null));
   }
 
   void sendUpsellingMessage({
@@ -931,6 +935,7 @@ class ChatCubit extends BaseCubit<ChatState> {
         couponCode: couponCode,
         cannedMessageId: cannedMessageId,
       );
+      closeUpsellingMenu();
     }
   }
 }

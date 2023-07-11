@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/models/canned_message/canned_message_category.dart';
@@ -57,12 +58,15 @@ class _CannedMessagesWidgetState extends State<CannedMessagesWidget> {
                   const SizedBox(
                     width: 8.0,
                   ),
-                  Assets.zodiac.vectors.crossSmall.svg(
-                    height: AppConstants.iconSize,
-                    width: AppConstants.iconSize,
-                    colorFilter: ColorFilter.mode(
-                      theme.shadowColor,
-                      BlendMode.srcIn,
+                  GestureDetector(
+                    onTap: chatCubit.closeUpsellingMenu,
+                    child: Assets.zodiac.vectors.crossSmall.svg(
+                      height: AppConstants.iconSize,
+                      width: AppConstants.iconSize,
+                      colorFilter: ColorFilter.mode(
+                        theme.shadowColor,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   )
                 ],
@@ -186,7 +190,8 @@ class _CannedMessagesPageViewState extends State<CannedMessagesPageView> {
   final PageController _pageController =
       PageController(viewportFraction: viewportFraction);
 
-  double? widgetHeight;
+  double widgetHeight = 0;
+  late _CannedMessageHeightModel _widgetWithMaxHeight;
 
   @override
   void initState() {
@@ -197,21 +202,15 @@ class _CannedMessagesPageViewState extends State<CannedMessagesPageView> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       double maxHeight = 0;
 
-      for (var element in widget.messages) {
-        double height = Utils.getTextHeight(
-                element.message ?? '',
-                Theme.of(context).textTheme.bodyMedium,
-                MediaQuery.of(context).size.width * viewportFraction -
-                    paddingBetweenCannedMessages * 2 -
-                    cannedMessageContentPadding * 2,
-                maxLines: 7) +
-            AppConstants.iconSize +
-            paddingBetweenMessageAndEdit +
-            cannedMessageContentPadding * 2;
+      widget.messages.forEachIndexed((index, element) {
+        double height =
+            _getCannedMessageHeight(element.message ?? '', displayMaxLines);
         if (height > maxHeight) {
           maxHeight = height;
+          _widgetWithMaxHeight =
+              _CannedMessageHeightModel(index: index, height: height);
         }
-      }
+      });
 
       setState(() {
         widgetHeight = maxHeight;
@@ -227,8 +226,7 @@ class _CannedMessagesPageViewState extends State<CannedMessagesPageView> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 1000),
+    return SizedBox(
       height: widgetHeight,
       child: PageView.builder(
         controller: _pageController,
@@ -241,11 +239,65 @@ class _CannedMessagesPageViewState extends State<CannedMessagesPageView> {
               padding: const EdgeInsets.symmetric(
                   horizontal: paddingBetweenCannedMessages),
               child: CannedMessageWidget(
-                  message: widget.messages[index].message ?? ''),
+                message: widget.messages[index].message ?? '',
+                onEditing: (message) {
+                  double height =
+                      _getCannedMessageHeight(message, editingMaxLines);
+                  if (widgetHeight < height) {
+                    setState(() {
+                      widgetHeight = height;
+                    });
+                  } else if (_widgetWithMaxHeight.index == index) {
+                    _setWidgetWithMaxHeight();
+                    logger.d(_widgetWithMaxHeight.height);
+                    setState(() {
+                      widgetHeight = _widgetWithMaxHeight.height;
+                    });
+                  }
+                },
+              ),
             ),
           ],
         ),
       ),
     );
   }
+
+  double _getCannedMessageHeight(String message, int maxLines) {
+    return Utils.getTextHeight(
+            message,
+            Theme.of(context).textTheme.bodyMedium,
+            MediaQuery.of(context).size.width * viewportFraction -
+                paddingBetweenCannedMessages * 2 -
+                cannedMessageContentPadding * 2,
+            maxLines: maxLines) +
+        AppConstants.iconSize +
+        paddingBetweenMessageAndEdit +
+        cannedMessageContentPadding * 2 +
+        12;
+  }
+
+  void _setWidgetWithMaxHeight() {
+    double maxHeight = 0;
+
+    widget.messages.forEachIndexed((index, element) {
+      double height =
+          _getCannedMessageHeight(element.message ?? '', editingMaxLines);
+      if (height > maxHeight) {
+        maxHeight = height;
+        _widgetWithMaxHeight =
+            _CannedMessageHeightModel(index: index, height: height);
+      }
+    });
+  }
+}
+
+class _CannedMessageHeightModel {
+  final int index;
+  final double height;
+
+  const _CannedMessageHeightModel({
+    required this.index,
+    required this.height,
+  });
 }

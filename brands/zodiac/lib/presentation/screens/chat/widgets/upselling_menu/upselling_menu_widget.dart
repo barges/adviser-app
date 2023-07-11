@@ -24,7 +24,13 @@ class UpsellingMenuWidget extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const CannedMessagesWidget(),
+        AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            transitionBuilder: (child, animation) => SizeTransition(
+                  sizeFactor: animation,
+                  child: child,
+                ),
+            child: _upsellingWidget(context, selectedMenuItem)),
         Container(
             height: 42.0,
             decoration: BoxDecoration(
@@ -61,6 +67,16 @@ class UpsellingMenuWidget extends StatelessWidget {
             )),
       ],
     );
+  }
+
+  Widget _upsellingWidget(
+      BuildContext context, UpsellingMenuType? selectedMenuItem) {
+    switch (selectedMenuItem) {
+      case UpsellingMenuType.canned:
+        return const CannedMessagesWidget();
+      default:
+        return const SizedBox.shrink();
+    }
   }
 }
 
