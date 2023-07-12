@@ -938,4 +938,8 @@ class ChatCubit extends BaseCubit<ChatState> {
       closeUpsellingMenu();
     }
   }
+
+  void setUpsellingMenuOpened() {
+    emit(state.copyWith(upsellingMenuOpened: !state.upsellingMenuOpened));
+  }
 }

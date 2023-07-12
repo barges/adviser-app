@@ -163,7 +163,35 @@ class ChatScreen extends StatelessWidget {
                                       : const SizedBox.shrink(),
                                 );
                               }),
-                              const SafeArea(child: UpsellingMenuWidget()),
+                              Builder(builder: (context) {
+                                final bool upsellingMenuOpened = context.select(
+                                    (ChatCubit cubit) =>
+                                        cubit.state.upsellingMenuOpened);
+
+                                return Stack(
+                                  children: [
+                                    Positioned.fill(
+                                        child: Container(
+                                      color: theme.scaffoldBackgroundColor,
+                                    )),
+                                    AnimatedSwitcher(
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      transitionBuilder: (child, animation) =>
+                                          ScaleTransition(
+                                        scale: animation,
+                                        alignment: Alignment.bottomLeft,
+                                        child: child,
+                                      ),
+                                      child: upsellingMenuOpened
+                                          ? const SafeArea(
+                                              child: UpsellingMenuWidget(),
+                                            )
+                                          : const SizedBox.shrink(),
+                                    ),
+                                  ],
+                                );
+                              }),
                               if (showTextField)
                                 const _BottomPaddingContainerIfHasTextInputField(),
                             ],
