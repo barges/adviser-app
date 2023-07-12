@@ -172,7 +172,10 @@ class ChatScreen extends StatelessWidget {
                                   children: [
                                     Positioned.fill(
                                         child: Container(
-                                      color: theme.scaffoldBackgroundColor,
+                                      color:
+                                          chatIsActive || offlineSessionIsActive
+                                              ? theme.scaffoldBackgroundColor
+                                              : theme.canvasColor,
                                     )),
                                     AnimatedSwitcher(
                                       duration:

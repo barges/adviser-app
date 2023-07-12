@@ -18,6 +18,7 @@ class UpsellingMenuWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final ChatCubit chatCubit = context.read<ChatCubit>();
 
     final UpsellingMenuType? selectedMenuItem = context
         .select((ChatCubit cubit) => cubit.state.selectedUpsellingMenuItem);
@@ -59,6 +60,7 @@ class UpsellingMenuWidget extends StatelessWidget {
                       iconPath: Assets.zodiac.vectors.chatsIcon.path,
                       type: UpsellingMenuType.canned,
                       selectedMenuItem: selectedMenuItem,
+                      count: chatCubit.state.cannedMessageCategories?.length,
                     ),
                   ),
                 if (enabledMenuItems.contains(UpsellingMenuType.services))
@@ -90,11 +92,14 @@ class _UpsellingMenuItemWidget extends StatelessWidget {
   final String iconPath;
   final UpsellingMenuType type;
   final UpsellingMenuType? selectedMenuItem;
+  final int? count;
+
   const _UpsellingMenuItemWidget({
     Key? key,
     required this.iconPath,
     required this.type,
     this.selectedMenuItem,
+    this.count,
   }) : super(key: key);
 
   @override
@@ -110,14 +115,41 @@ class _UpsellingMenuItemWidget extends StatelessWidget {
             color: isSelected ? theme.primaryColorLight : null,
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius)),
         child: Center(
-          child: SvgPicture.asset(
-            iconPath,
-            height: AppConstants.iconSize,
-            width: AppConstants.iconSize,
-            colorFilter: ColorFilter.mode(
-              isSelected ? theme.primaryColor : theme.shadowColor,
-              BlendMode.srcIn,
-            ),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              SvgPicture.asset(
+                iconPath,
+                height: AppConstants.iconSize,
+                width: AppConstants.iconSize,
+                colorFilter: ColorFilter.mode(
+                  isSelected ? theme.primaryColor : theme.shadowColor,
+                  BlendMode.srcIn,
+                ),
+              ),
+              if (count != null)
+                Positioned(
+                  top: -6.0,
+                  right: -5.0,
+                  child: Container(
+                    height: 16.0,
+                    width: 16.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: isSelected
+                          ? theme.canvasColor
+                          : theme.primaryColorLight,
+                    ),
+                    child: Center(
+                      child: Text(
+                        count.toString(),
+                        style: theme.textTheme.displaySmall
+                            ?.copyWith(color: theme.primaryColor),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           ),
         ),
       ),

@@ -947,7 +947,9 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   void setUpsellingMenuOpened() {
     if (state.enabledMenuItems.isNotEmpty) {
-      emit(state.copyWith(upsellingMenuOpened: !state.upsellingMenuOpened));
+      emit(state.copyWith(
+          upsellingMenuOpened: !state.upsellingMenuOpened,
+          selectedUpsellingMenuItem: null));
     }
   }
 }
