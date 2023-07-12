@@ -21,6 +21,9 @@ class UpsellingMenuWidget extends StatelessWidget {
 
     final UpsellingMenuType? selectedMenuItem = context
         .select((ChatCubit cubit) => cubit.state.selectedUpsellingMenuItem);
+    final List<UpsellingMenuType> enabledMenuItems =
+        context.select((ChatCubit cubit) => cubit.state.enabledMenuItems);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -42,27 +45,30 @@ class UpsellingMenuWidget extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Expanded(
-                  child: _UpsellingMenuItemWidget(
-                    iconPath: Assets.zodiac.vectors.narrowCouponsIcon.path,
-                    type: UpsellingMenuType.coupons,
-                    selectedMenuItem: selectedMenuItem,
+                if (enabledMenuItems.contains(UpsellingMenuType.coupons))
+                  Expanded(
+                    child: _UpsellingMenuItemWidget(
+                      iconPath: Assets.zodiac.vectors.narrowCouponsIcon.path,
+                      type: UpsellingMenuType.coupons,
+                      selectedMenuItem: selectedMenuItem,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: _UpsellingMenuItemWidget(
-                    iconPath: Assets.zodiac.vectors.chatsIcon.path,
-                    type: UpsellingMenuType.canned,
-                    selectedMenuItem: selectedMenuItem,
+                if (enabledMenuItems.contains(UpsellingMenuType.canned))
+                  Expanded(
+                    child: _UpsellingMenuItemWidget(
+                      iconPath: Assets.zodiac.vectors.chatsIcon.path,
+                      type: UpsellingMenuType.canned,
+                      selectedMenuItem: selectedMenuItem,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: _UpsellingMenuItemWidget(
-                    iconPath: Assets.zodiac.vectors.narrowServicesIcon.path,
-                    type: UpsellingMenuType.services,
-                    selectedMenuItem: selectedMenuItem,
+                if (enabledMenuItems.contains(UpsellingMenuType.services))
+                  Expanded(
+                    child: _UpsellingMenuItemWidget(
+                      iconPath: Assets.zodiac.vectors.narrowServicesIcon.path,
+                      type: UpsellingMenuType.services,
+                      selectedMenuItem: selectedMenuItem,
+                    ),
                   ),
-                ),
               ],
             )),
       ],

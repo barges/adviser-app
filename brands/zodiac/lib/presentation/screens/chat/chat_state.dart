@@ -41,5 +41,6 @@ class ChatState with _$ChatState {
     @Default(false) bool upsellingMenuOpened,
     UpsellingMenuType? selectedUpsellingMenuItem,
     List<CannedMessageCategory>? cannedMessageCategories,
+    @Default([]) List<UpsellingMenuType> enabledMenuItems,
   }) = _ChatState;
 }

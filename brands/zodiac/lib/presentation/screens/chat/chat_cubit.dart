@@ -355,6 +355,7 @@ class ChatCubit extends BaseCubit<ChatState> {
       (event) {
         if (clientData.id == event.opponentId) {
           _chatId = event.chatId;
+          _webSocketManager.sendUpsellingList(chatId: _chatId!);
         }
       },
     ));
@@ -439,7 +440,15 @@ class ChatCubit extends BaseCubit<ChatState> {
 
     addListener(_webSocketManager.upsellingListStream.listen((event) {
       if (event.opponentId == clientData.id) {
-        emit(state.copyWith(cannedMessageCategories: event.cannedCategories));
+        List<UpsellingMenuType> enabledUpsellingItems =
+            List.of(state.enabledMenuItems);
+        if (event.cannedCategories != null &&
+            !enabledUpsellingItems.contains(UpsellingMenuType.canned)) {
+          enabledUpsellingItems.add(UpsellingMenuType.canned);
+        }
+        emit(state.copyWith(
+            cannedMessageCategories: event.cannedCategories,
+            enabledMenuItems: enabledUpsellingItems));
       }
     }));
 
@@ -913,9 +922,6 @@ class ChatCubit extends BaseCubit<ChatState> {
     } else {
       emit(state.copyWith(selectedUpsellingMenuItem: type));
     }
-    if (_chatId != null) {
-      _webSocketManager.sendUpsellingList(chatId: _chatId!);
-    }
   }
 
   void closeUpsellingMenu() {
@@ -940,6 +946,8 @@ class ChatCubit extends BaseCubit<ChatState> {
   }
 
   void setUpsellingMenuOpened() {
-    emit(state.copyWith(upsellingMenuOpened: !state.upsellingMenuOpened));
+    if (state.enabledMenuItems.isNotEmpty) {
+      emit(state.copyWith(upsellingMenuOpened: !state.upsellingMenuOpened));
+    }
   }
 }
