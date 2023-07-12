@@ -18,6 +18,7 @@ import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/end_chat_data.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
+import 'package:zodiac/data/models/coupons/coupons_category.dart';
 import 'package:zodiac/data/models/enums/chat_payment_status.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
@@ -1030,18 +1031,31 @@ class WebSocketManagerImpl implements WebSocketManager {
       (data.params['opponent_id'] as int).let(
         (id) {
           Map<String, dynamic>? categories = data.params['categories'];
+          List<CouponsCategory>? couponsList =
+              (data.params['coupons'] as List<dynamic>)
+                  .map((e) => CouponsCategory.fromJson(e))
+                  .toList();
+
+          List<CannedMessageCategory>? categoriesList;
           if (categories != null) {
-            List<CannedMessageCategory> categoriesList = [];
+            categoriesList = [];
             final sortedCategories = categories.entries.toList()
               ..sort(
                   (e1, e2) => int.parse(e1.key).compareTo(int.parse(e2.key)));
             for (var element in sortedCategories) {
               categoriesList.add(CannedMessageCategory.fromJson(element.value));
             }
-
-            _upsellingListStream.add(UpsellingListEvent(
-                cannedCategories: categoriesList, opponentId: id));
           }
+
+          logger.d('Coupons: $couponsList');
+
+          _upsellingListStream.add(
+            UpsellingListEvent(
+              cannedCategories: categoriesList,
+              couponsCategories: couponsList,
+              opponentId: id,
+            ),
+          );
         },
       );
     });
