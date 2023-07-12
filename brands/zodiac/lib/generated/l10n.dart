@@ -462,11 +462,31 @@ class SZodiac {
     );
   }
 
+  /// `Services & Messages`
+  String get servicesMessagesZodiac {
+    return Intl.message(
+      'Services & Messages',
+      name: 'servicesMessagesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Services`
   String get servicesZodiac {
     return Intl.message(
       'Services',
       name: 'servicesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Сanned messages`
+  String get cannedMessagesZodiac {
+    return Intl.message(
+      'Сanned messages',
+      name: 'cannedMessagesZodiac',
       desc: '',
       args: [],
     );
@@ -1701,6 +1721,46 @@ class SZodiac {
     return Intl.message(
       'No emoji found',
       name: 'noEmojiFoundZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can easily access these templates during and after the chat`
+  String get youCanEasilyAccessTheseTemplates {
+    return Intl.message(
+      'You can easily access these templates during and after the chat',
+      name: 'youCanEasilyAccessTheseTemplates',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add message`
+  String get addMessage {
+    return Intl.message(
+      'Add message',
+      name: 'addMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This is what your client will see as a chat bubble from you`
+  String get thisWhatYourClientSee {
+    return Intl.message(
+      'This is what your client will see as a chat bubble from you',
+      name: 'thisWhatYourClientSee',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose category of the template`
+  String get chooseCategoryTemplate {
+    return Intl.message(
+      'Choose category of the template',
+      name: 'chooseCategoryTemplate',
       desc: '',
       args: [],
     );

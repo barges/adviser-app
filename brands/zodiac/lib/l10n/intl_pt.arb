@@ -40,7 +40,9 @@
   "unverifiedZodiac": "Não verificado",
   "addZodiac": "Adicionar",
   "templatesContentZodiac": "Modelos e conteúdo",
+  "servicesMessagesZodiac": "Serviços e mensagens",
   "servicesZodiac": "Serviços",
+  "cannedMessagesZodiac": "Mensagens anuladas",
   "pricePerMinZodiac": "${price}/min",
   "changeZodiac": "Mudar",
   "lowestRateZodiac": "Tarifa mais baixa",
@@ -163,6 +165,10 @@
   "recordingIsNotPossibleZodiac": "A gravação não é possível, libere espaço no dispositivo",
   "youZodiac": "Você",
   "searchResultsZodiac": "Procurar Resultados",
-  "noEmojiFoundZodiac": "Nenhum emoji encontrado"
+  "noEmojiFoundZodiac": "Nenhum emoji encontrado",
+  "youCanEasilyAccessTheseTemplates" : "Você pode acessar facilmente esses modelos durante e após o bate-papo",
+  "addMessage": "Adicionar mensagem",
+  "thisWhatYourClientSee":"Isso é o que seu cliente verá como um balão de bate-papo seu",
+  "chooseCategoryTemplate": "Escolha a categoria do modelo"
 
 }

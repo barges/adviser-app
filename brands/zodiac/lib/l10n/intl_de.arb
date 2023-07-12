@@ -40,7 +40,9 @@
   "unverifiedZodiac": "Unbestätigt",
   "addZodiac": "Hinzufügen",
   "templatesContentZodiac": "Templates & Content",
+  "servicesMessagesZodiac": "Service und Nachrichten",
   "servicesZodiac": "Services",
+  "cannedMessagesZodiac": "Gecannte Nachrichten",
   "pricePerMinZodiac": "${price}/min",
   "changeZodiac": "Change",
   "lowestRateZodiac": "Lowest rate",
@@ -161,5 +163,9 @@
   "recordingIsNotPossibleZodiac": "Aufzeichnung ist nicht möglich, Speicherplatz auf dem Gerät freigeben",
   "youZodiac": "Du",
   "searchResultsZodiac": "Suchergebnisse",
-  "noEmojiFoundZodiac": "Kein Emoji gefunden"
+  "noEmojiFoundZodiac": "Kein Emoji gefunden",
+  "youCanEasilyAccessTheseTemplates" : "Sie können während und nach dem Chat problemlos auf diese Vorlagen zugreifen",
+  "addMessage": "Nachricht hinzufügen",
+  "thisWhatYourClientSee":"Dies ist, was Ihr Kunde als Chat-Blase von Ihnen sieht",
+  "chooseCategoryTemplate": "Wählen Sie die Kategorie der Vorlage"
 }

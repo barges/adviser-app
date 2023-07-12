@@ -40,7 +40,9 @@
   "unverifiedZodiac": "Unverified",
   "addZodiac": "Add",
   "templatesContentZodiac": "Templates & Content",
+  "servicesMessagesZodiac": "Services & Messages",
   "servicesZodiac": "Services",
+  "cannedMessagesZodiac": "Сanned messages",
   "pricePerMinZodiac": "${price}/min",
   "changeZodiac": "Change",
   "lowestRateZodiac": "Lowest rate",
@@ -163,5 +165,9 @@
   "recordingIsNotPossibleZodiac": "Recording is not possible, allocate space on the device",
   "youZodiac": "You",
   "searchResultsZodiac": "Search results",
-  "noEmojiFoundZodiac": "No emoji found"
+  "noEmojiFoundZodiac": "No emoji found",
+  "youCanEasilyAccessTheseTemplates" : "You can easily access these templates during and after the chat",
+  "addMessage": "Add message",
+  "thisWhatYourClientSee":"This is what your client will see as a chat bubble from you",
+  "chooseCategoryTemplate": "Choose category of the template"
 }

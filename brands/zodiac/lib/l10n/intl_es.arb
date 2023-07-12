@@ -40,7 +40,9 @@
   "unverifiedZodiac": "Inconfirmado",
   "addZodiac": "Agregar",
   "templatesContentZodiac": "Plantillas y contenido",
+  "servicesMessagesZodiac": "Servicios y mensajes",
   "servicesZodiac": "Servicios",
+  "cannedMessagesZodiac": "Mensajes grabados",
   "pricePerMinZodiac": "${price}/min",
   "changeZodiac": "Cambiar",
   "lowestRateZodiac": "La tasa más baja",
@@ -163,5 +165,9 @@
   "recordingIsNotPossibleZodiac": "No es posible grabar, libere espacio en el dispositivo",
   "youZodiac": "Tú",
   "searchResultsZodiac": "Resultados de la búsqueda",
-  "noEmojiFoundZodiac": "No se encontraron emojis"
+  "noEmojiFoundZodiac": "No se encontraron emojis",
+  "youCanEasilyAccessTheseTemplates" : "Puede acceder fácilmente a estas plantillas durante y después del chat",
+  "addMessage": "Agregar mensaje",
+  "thisWhatYourClientSee":"Esto es lo que tu cliente verá como una burbuja de chat tuya",
+  "chooseCategoryTemplate": "Elija la categoría de la plantilla"
 }

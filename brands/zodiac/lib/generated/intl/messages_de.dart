@@ -57,6 +57,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "aboutZodiac": MessageLookupByLibrary.simpleMessage("Über"),
         "accountZodiac": MessageLookupByLibrary.simpleMessage("Account"),
         "activityZodiac": MessageLookupByLibrary.simpleMessage("Aktivität"),
+        "addMessage":
+            MessageLookupByLibrary.simpleMessage("Nachricht hinzufügen"),
         "addZodiac": MessageLookupByLibrary.simpleMessage("Hinzufügen"),
         "allSpecialitiesZodiac":
             MessageLookupByLibrary.simpleMessage("Alle Spezialitäten"),
@@ -79,6 +81,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancelSendingZodiac":
             MessageLookupByLibrary.simpleMessage("Senden abbrechen"),
         "cancelZodiac": MessageLookupByLibrary.simpleMessage("Abbrechen"),
+        "cannedMessagesZodiac":
+            MessageLookupByLibrary.simpleMessage("Gecannte Nachrichten"),
         "changeZodiac": MessageLookupByLibrary.simpleMessage("Change"),
         "characterLimitExceededZodiac": MessageLookupByLibrary.simpleMessage(
             "Zeichenbegrenzung überschritten."),
@@ -91,6 +95,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "checkYourInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Überprüfe deine Internetverbindung"),
+        "chooseCategoryTemplate": MessageLookupByLibrary.simpleMessage(
+            "Wählen Sie die Kategorie der Vorlage"),
         "chooseEmailAppZodiac":
             MessageLookupByLibrary.simpleMessage("E-Mail-App auswählen"),
         "closeZodiac": MessageLookupByLibrary.simpleMessage("Schließen"),
@@ -247,6 +253,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ausgewähltes Foto"),
         "sendCodeZodiac": MessageLookupByLibrary.simpleMessage("Code senden"),
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Service"),
+        "servicesMessagesZodiac":
+            MessageLookupByLibrary.simpleMessage("Service und Nachrichten"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Services"),
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sitzungen"),
         "smileysAndPeopleZodiac":
@@ -268,6 +276,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "thePasswordsMustMatchZodiac": MessageLookupByLibrary.simpleMessage(
             "Die Passwörter müssen übereinstimmen"),
         "thisMonthZodiac": MessageLookupByLibrary.simpleMessage("Dieser Monat"),
+        "thisWhatYourClientSee": MessageLookupByLibrary.simpleMessage(
+            "Dies ist, was Ihr Kunde als Chat-Blase von Ihnen sieht"),
         "tipZodiac": MessageLookupByLibrary.simpleMessage("Spitze"),
         "todayZodiac": MessageLookupByLibrary.simpleMessage("Heute"),
         "topUpZodiac": MessageLookupByLibrary.simpleMessage("Nachfüllen"),
@@ -298,6 +308,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "youCanChangePriceOncePer24HZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "You can change price once per 24 h"),
+        "youCanEasilyAccessTheseTemplates": MessageLookupByLibrary.simpleMessage(
+            "Sie können während und nach dem Chat problemlos auf diese Vorlagen zugreifen"),
         "youHaveAttemptsToEnterRightCodeZodiac": m8,
         "youHaveVerificationAttemptsPerDayZodiac": m9,
         "youMissedCallFromZodiac": m10,

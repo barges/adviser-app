@@ -61,12 +61,14 @@ import '../../domain/repositories/zodiac_user_repository.dart' as _i25;
 import '../../presentation/screens/chat/chat_cubit.dart' as _i31;
 import '../../presentation/screens/phone_number/phone_number_cubit.dart'
     as _i32;
+import '../../presentation/screens/services_messages/canned_messages/canned_messages_cubit.dart'
+    as _i42;
 import '../../services/websocket_manager/websocket_manager.dart' as _i16;
 import '../../services/websocket_manager/websocket_manager_impl.dart' as _i17;
 import '../../zodiac_main_cubit.dart' as _i15;
 import 'dio_interceptors/app_interceptor.dart' as _i18;
-import 'modules/api_module.dart' as _i43;
-import 'modules/services_module.dart' as _i42;
+import 'modules/api_module.dart' as _i44;
+import 'modules/services_module.dart' as _i43;
 
 // ignore_for_file: unnecessary_lambdas
 // ignore_for_file: lines_longer_than_80_chars
@@ -162,9 +164,11 @@ Future<_i1.GetIt> $initGetIt(
       _i39.ZodiacCannedMessagesRepositoryImpl(gh<_i29.CannedMessagesApi>()));
   gh.factory<_i40.ZodiacChatRepository>(
       () => _i41.ZodiacChatRepositoryImpl(gh<_i30.ChatApi>()));
+  gh.factory<_i42.CannedMessagesCubit>(() =>
+      _i42.CannedMessagesCubit(gh<_i38.ZodiacCannedMessagesRepository>()));
   return getIt;
 }
 
-class _$ServicesModule extends _i42.ServicesModule {}
+class _$ServicesModule extends _i43.ServicesModule {}
 
-class _$ApiModule extends _i43.ApiModule {}
+class _$ApiModule extends _i44.ApiModule {}

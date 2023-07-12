@@ -12,14 +12,12 @@ abstract class ZodiacCannedMessagesRepository {
   Future<CannedMessagesResponse> getCannedMessages(
       CannedMessagesRequest request);
 
-  Future<CannedMessagesAddResponse> addCannedMessages(
+  Future<CannedMessagesAddResponse> addCannedMessage(
       CannedMessagesAddRequest request);
 
-  Future<BaseResponse> updateCannedMessages(
-      CannedMessagesUpdateRequest request);
+  Future<BaseResponse> updateCannedMessage(CannedMessagesUpdateRequest request);
 
-  Future<BaseResponse> deleteCannedMessages(
-      CannedMessagesDeleteRequest request);
+  Future<BaseResponse> deleteCannedMessage(CannedMessagesDeleteRequest request);
 
   Future<CannedCategoriesResponse> getCannedCategories(
       AuthorizedRequest request);

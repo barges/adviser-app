@@ -26,19 +26,19 @@ class ZodiacCannedMessagesRepositoryImpl
   }
 
   @override
-  Future<CannedMessagesAddResponse> addCannedMessages(
+  Future<CannedMessagesAddResponse> addCannedMessage(
       CannedMessagesAddRequest request) async {
     return await _api.addCannedMessages(request);
   }
 
   @override
-  Future<BaseResponse> updateCannedMessages(
+  Future<BaseResponse> updateCannedMessage(
       CannedMessagesUpdateRequest request) async {
     return await _api.updateCannedMessages(request);
   }
 
   @override
-  Future<BaseResponse> deleteCannedMessages(
+  Future<BaseResponse> deleteCannedMessage(
       CannedMessagesDeleteRequest request) async {
     return await _api.deleteCannedMessages(request);
   }
