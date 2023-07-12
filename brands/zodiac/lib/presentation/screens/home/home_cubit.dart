@@ -98,11 +98,12 @@ class HomeCubit extends Cubit<HomeState> {
 
     _appLifecycleSubscription =
         _globalMainCubit.changeAppLifecycleStream.listen(
-      (value) {
+      (value) async {
         _appInForeground = value;
 
         if (value) {
-          if (_webSocketManager.currentState == WebSocketState.closed) {
+          if (await _connectivityService.checkConnection() &&
+              _webSocketManager.currentState == WebSocketState.closed) {
             _webSocketManager.connect();
           }
         } else {
