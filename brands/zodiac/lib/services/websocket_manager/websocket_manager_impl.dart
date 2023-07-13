@@ -1053,24 +1053,24 @@ class WebSocketManagerImpl implements WebSocketManager {
     (event.eventData as SocketMessage).let((data) {
       (data.params['opponent_id'] as int).let(
         (id) {
-          Map<String, dynamic>? categories = data.params['categories'];
-          List<CouponsCategory>? couponsList =
-              (data.params['coupons'] as List<dynamic>)
-                  .map((e) => CouponsCategory.fromJson(e))
-                  .toList();
-
           List<CannedMessageCategory>? categoriesList;
-          if (categories != null) {
+
+          dynamic categories = data.params['categories'];
+          if (categories is Map<String, dynamic>) {
             categoriesList = [];
             final sortedCategories = categories.entries.toList()
               ..sort(
                   (e1, e2) => int.parse(e1.key).compareTo(int.parse(e2.key)));
             for (var element in sortedCategories) {
-              categoriesList.add(CannedMessageCategory.fromJson(element.value));
+              categoriesList!
+                  .add(CannedMessageCategory.fromJson(element.value));
             }
           }
 
-          logger.d('Coupons: $couponsList');
+          List<CouponsCategory>? couponsList =
+              (data.params['coupons'] as List<dynamic>)
+                  .map((e) => CouponsCategory.fromJson(e))
+                  .toList();
 
           _upsellingListStream.add(
             UpsellingListEvent(
