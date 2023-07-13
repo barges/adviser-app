@@ -167,5 +167,13 @@
   "youCanEasilyAccessTheseTemplates" : "Sie können während und nach dem Chat problemlos auf diese Vorlagen zugreifen",
   "addMessage": "Nachricht hinzufügen",
   "thisWhatYourClientSee":"Dies ist, was Ihr Kunde als Chat-Blase von Ihnen sieht",
-  "chooseCategoryTemplate": "Wählen Sie die Kategorie der Vorlage"
+  "chooseCategoryTemplate": "Wählen Sie die Kategorie der Vorlage",
+  "showDailyCouponsZodiac": "Tagesgutscheine anzeigen",
+  "theNumberOfAvailableCouponsDependsOnTheAmountOfSessionsZodiac": "Die Anzahl der verfügbaren Coupons hängt von der Anzahl der Sitzungen ab. Ausgewählte Gutscheine werden am nächsten Tag in Ihrem Profil angezeigt.",
+  "saveCouponsSetZodiac": "Coupons-Set speichern",
+  "dailyRenewalZodiac": "Tägliche Erneuerung",
+  "selectedCouponsWillBeRenewedAutomaticallyZodiac": "Ausgewählte Gutscheine werden automatisch erneuert und in Ihrem Profil angezeigt",
+  "selectAtLeast1CouponZodiac": "Wählen Sie mindestens 1 Gutschein aus",
+  "setUpSuccessfulZodiac": "Installation erfolgreich",
+  "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac": "Alle ausgewählten Gutscheine können morgen angezeigt werden."
 }

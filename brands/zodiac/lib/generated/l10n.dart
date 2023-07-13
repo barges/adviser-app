@@ -1765,6 +1765,86 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Show daily coupons`
+  String get showDailyCouponsZodiac {
+    return Intl.message(
+      'Show daily coupons',
+      name: 'showDailyCouponsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The number of available coupons depends on the amount of sessions. Selected coupons will appear on your profile the following day.`
+  String get theNumberOfAvailableCouponsDependsOnTheAmountOfSessionsZodiac {
+    return Intl.message(
+      'The number of available coupons depends on the amount of sessions. Selected coupons will appear on your profile the following day.',
+      name: 'theNumberOfAvailableCouponsDependsOnTheAmountOfSessionsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save coupons set`
+  String get saveCouponsSetZodiac {
+    return Intl.message(
+      'Save coupons set',
+      name: 'saveCouponsSetZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Daily renewal`
+  String get dailyRenewalZodiac {
+    return Intl.message(
+      'Daily renewal',
+      name: 'dailyRenewalZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Selected coupons will be renewed automatically and displayed on your profile`
+  String get selectedCouponsWillBeRenewedAutomaticallyZodiac {
+    return Intl.message(
+      'Selected coupons will be renewed automatically and displayed on your profile',
+      name: 'selectedCouponsWillBeRenewedAutomaticallyZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select at least 1 coupon`
+  String get selectAtLeast1CouponZodiac {
+    return Intl.message(
+      'Select at least 1 coupon',
+      name: 'selectAtLeast1CouponZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set up successful`
+  String get setUpSuccessfulZodiac {
+    return Intl.message(
+      'Set up successful',
+      name: 'setUpSuccessfulZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All selected coupons are ready to be displayed tomorrow.`
+  String get allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac {
+    return Intl.message(
+      'All selected coupons are ready to be displayed tomorrow.',
+      name: 'allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

@@ -169,6 +169,13 @@
   "youCanEasilyAccessTheseTemplates" : "Você pode acessar facilmente esses modelos durante e após o bate-papo",
   "addMessage": "Adicionar mensagem",
   "thisWhatYourClientSee":"Isso é o que seu cliente verá como um balão de bate-papo seu",
-  "chooseCategoryTemplate": "Escolha a categoria do modelo"
-
+  "chooseCategoryTemplate": "Escolha a categoria do modelo",
+  "showDailyCouponsZodiac": "Mostrar cupons diários",
+  "theNumberOfAvailableCouponsDependsOnTheAmountOfSessionsZodiac": "O número de cupons disponíveis depende da quantidade de sessões. Os cupons selecionados aparecerão em seu perfil no dia seguinte.",
+  "saveCouponsSetZodiac": "Salvar conjunto de cupons",
+  "dailyRenewalZodiac": "Renovação diária",
+  "selectedCouponsWillBeRenewedAutomaticallyZodiac": "Os cupons selecionados serão renovados automaticamente e exibidos em seu perfil",
+  "selectAtLeast1CouponZodiac": "Selecione pelo menos 1 cupom",
+  "setUpSuccessfulZodiac": "Configuração bem sucedida",
+  "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac": "Todos os cupons selecionados estão prontos para serem exibidos amanhã."
 }

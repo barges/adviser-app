@@ -9,6 +9,8 @@ abstract class AudioPlayerService {
 
   Stream<PlayerPosition> get positionStream;
 
+  Duration get currentPosition;
+
   Future<void> playPause(Uri uri);
 
   Future<void> pause();
@@ -32,6 +34,8 @@ class AudioPlayerServiceImpl extends AudioPlayerService
   String? _currentUrl;
 
   StreamSubscription? _stateSubscription;
+
+  Duration _currentPosition = const Duration();
 
   AudioPlayerServiceImpl() {
     _init();
@@ -59,8 +63,14 @@ class AudioPlayerServiceImpl extends AudioPlayerService
   }
 
   @override
-  Stream<PlayerPosition> get positionStream => _player.onPositionChanged
-      .map((event) => PlayerPosition(duration: event, url: _currentUrl));
+  Stream<PlayerPosition> get positionStream =>
+      _player.onPositionChanged.map((event) {
+        _currentPosition = event;
+        return PlayerPosition(duration: event, url: _currentUrl);
+      });
+
+  @override
+  Duration get currentPosition => _currentPosition;
 
   @override
   Future<void> playPause(Uri uri) async {
