@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
-import 'package:zodiac/data/models/canned_messages/canned_categorie.dart';
+import 'package:zodiac/data/models/canned_messages/canned_category.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_cubit.dart';
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_screen.dart';
@@ -11,19 +11,20 @@ import 'package:zodiac/presentation/screens/services_messages/canned_messages/wi
 
 class EditCannedMessageWidget extends StatefulWidget {
   final String text;
-  final CannedCategorie? category;
-  final List<CannedCategorie> categories;
+  final CannedCategory? category;
+  final List<CannedCategory> categories;
   final ValueChanged<String> onTextEdit;
   final ValueChanged<int> onSelectCategory;
   final VoidCallback? onSave;
-  const EditCannedMessageWidget(
-      {super.key,
-      required this.text,
-      required this.category,
-      required this.categories,
-      required this.onTextEdit,
-      required this.onSelectCategory,
-      required this.onSave});
+  const EditCannedMessageWidget({
+    super.key,
+    required this.text,
+    required this.category,
+    required this.categories,
+    required this.onTextEdit,
+    required this.onSelectCategory,
+    required this.onSave,
+  });
 
   @override
   State<EditCannedMessageWidget> createState() =>
@@ -33,8 +34,8 @@ class EditCannedMessageWidget extends StatefulWidget {
 class _EditCannedMessageWidgetState extends State<EditCannedMessageWidget> {
   late final TextEditingController _textEditingController;
   late int _initialSelectedIndex;
-  int _countSymbols = 0;
-  StateSetter? _setState;
+  late final ValueNotifier<int> countSymbolsNotifier =
+      ValueNotifier(_textEditingController.text.length);
 
   @override
   void initState() {
@@ -43,10 +44,10 @@ class _EditCannedMessageWidgetState extends State<EditCannedMessageWidget> {
     _textEditingController = TextEditingController(text: widget.text);
     _textEditingController.addListener(() {
       widget.onTextEdit(_textEditingController.text);
+      countSymbolsNotifier.value = _textEditingController.text.length;
     });
 
     widget.onTextEdit(_textEditingController.text);
-    _countSymbols = _textEditingController.text.length;
 
     _initialSelectedIndex = widget.category != null
         ? widget.categories.indexOf(widget.category!)
@@ -107,19 +108,16 @@ class _EditCannedMessageWidgetState extends State<EditCannedMessageWidget> {
                       initialSelectedIndex: _initialSelectedIndex,
                     ),
                   ),
-                StatefulBuilder(
-                    builder: (BuildContext context, StateSetter setState) {
-                  _setState = setState;
-                  _textEditingController.removeListener(_setCountSymbols);
-                  _textEditingController.addListener(_setCountSymbols);
-                  return AppElevatedButton(
-                    title: SZodiac.of(context).saveZodiac,
-                    onPressed: _countSymbols > 0 &&
-                            _countSymbols <= maximumMessageSymbols
-                        ? widget.onSave
-                        : null,
-                  );
-                }),
+                ValueListenableBuilder(
+                    valueListenable: countSymbolsNotifier,
+                    builder: (_, int value, __) {
+                      return AppElevatedButton(
+                        title: SZodiac.of(context).saveZodiac,
+                        onPressed: value > 0 && value <= maximumMessageSymbols
+                            ? widget.onSave
+                            : null,
+                      );
+                    }),
                 const SizedBox(
                   height: 18.0,
                 ),
@@ -141,9 +139,5 @@ class _EditCannedMessageWidgetState extends State<EditCannedMessageWidget> {
             )),
       ),
     );
-  }
-
-  void _setCountSymbols() {
-    _setState!(() => _countSymbols = _textEditingController.text.length);
   }
 }

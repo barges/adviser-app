@@ -2,14 +2,17 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:zodiac/data/models/canned_messages/canned_categorie.dart';
+import 'package:zodiac/data/models/canned_messages/canned_category.dart';
 
-class CategoriesWidget extends StatefulWidget {
+class CategoriesWidget extends StatelessWidget {
   final ValueChanged<int> onTap;
-  final List<CannedCategorie> categories;
+  final List<CannedCategory> categories;
   final int initialSelectedIndex;
   final String? title;
-  const CategoriesWidget({
+  late final ValueNotifier<int> indexNotifier =
+      ValueNotifier(initialSelectedIndex);
+
+  CategoriesWidget({
     super.key,
     required this.onTap,
     required this.categories,
@@ -18,47 +21,39 @@ class CategoriesWidget extends StatefulWidget {
   });
 
   @override
-  State<CategoriesWidget> createState() => _CategoriesWidgetState();
-}
-
-class _CategoriesWidgetState extends State<CategoriesWidget> {
-  late int selectedIndex;
-
-  @override
-  void initState() {
-    super.initState();
-    selectedIndex = widget.initialSelectedIndex;
-  }
-
-  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.title != null)
+        if (title != null)
           Padding(
             padding: const EdgeInsets.only(bottom: 12.0),
             child: Text(
-              widget.title!,
+              title!,
               style: theme.textTheme.headlineMedium?.copyWith(fontSize: 17.0),
             ),
           ),
         Column(
-            children: widget.categories.mapIndexed<Widget>(
+            children: categories.mapIndexed<Widget>(
           (index, element) {
             return Padding(
               padding: EdgeInsets.only(
-                  bottom: index != widget.categories.length - 1 ? 12.0 : 0.0),
-              child: _RadioButton(
-                title: element.name ?? '',
-                isSelected: selectedIndex == index,
-                onTap: () => setState(() {
-                  if (selectedIndex != index) {
-                    widget.onTap(index);
-                  }
-                  selectedIndex = index;
-                }),
+                  bottom: index != categories.length - 1 ? 12.0 : 0.0),
+              child: ValueListenableBuilder(
+                valueListenable: indexNotifier,
+                builder: (_, int value, __) {
+                  return _RadioButton(
+                    title: element.name ?? '',
+                    isSelected: value == index,
+                    onTap: () {
+                      if (value != index) {
+                        onTap(index);
+                      }
+                      indexNotifier.value = index;
+                    },
+                  );
+                },
               ),
             );
           },

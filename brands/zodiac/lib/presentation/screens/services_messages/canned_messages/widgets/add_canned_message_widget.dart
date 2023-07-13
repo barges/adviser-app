@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
-import 'package:zodiac/data/models/canned_messages/canned_categorie.dart';
+import 'package:zodiac/data/models/canned_messages/canned_category.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/services_messages/box_decoration_widget.dart';
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_cubit.dart';
@@ -65,7 +65,7 @@ class _AddCannedMessageWidgetState extends State<AddCannedMessageWidget> {
             height: verticalInterval,
           ),
           Builder(builder: (context) {
-            final List<CannedCategorie> categories = context
+            final List<CannedCategory> categories = context
                 .select((CannedMessagesCubit cubit) => cubit.state.categories);
             return categories.isNotEmpty
                 ? Padding(

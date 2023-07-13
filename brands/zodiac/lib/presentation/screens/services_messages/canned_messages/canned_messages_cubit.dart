@@ -2,30 +2,25 @@ import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
-import 'package:zodiac/data/models/canned_messages/canned_categorie.dart';
+import 'package:zodiac/data/models/canned_messages/canned_category.dart';
 import 'package:zodiac/data/models/canned_messages/canned_message.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
-import 'package:zodiac/data/network/requests/canned_messages_add_request.dart';
-import 'package:zodiac/data/network/requests/canned_messages_delete_request.dart';
-import 'package:zodiac/data/network/requests/canned_messages_request.dart';
-import 'package:zodiac/data/network/requests/canned_messages_update_request.dart';
+import 'package:zodiac/data/network/requests/canned_messages/canned_messages_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
-import 'package:zodiac/data/network/responses/canned_categories_response.dart';
-import 'package:zodiac/data/network/responses/canned_messages_add_response.dart';
-import 'package:zodiac/data/network/responses/canned_messages_response.dart';
+import 'package:zodiac/data/network/responses/canned_messages/canned_messages_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_canned_messages_repository.dart';
 
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_state.dart';
 
-const maximumMessageSymbols = 280;
+const maximumMessageSymbols = 10; //280;
 
 @injectable
 class CannedMessagesCubit extends Cubit<CannedMessagesState> {
   final ZodiacCannedMessagesRepository _zodiacCannedMessagesRepository;
   final List<CannedMessage> _messages = [];
-  CannedCategorie? _selectedCategory;
-  CannedCategorie? _categoryToAdd;
-  CannedCategorie? _updateCategory;
+  CannedCategory? _selectedCategory;
+  CannedCategory? _categoryToAdd;
+  CannedCategory? _updateCategory;
   CannedMessage? _updateMessage;
   String _textCannedMessageToAdd = '';
   String _updatedText = '';
@@ -60,14 +55,14 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
     _categoryToAdd = state.categories[categoryIndex];
   }
 
-  void setCategorie(int? categoryIndex) {
-    CannedCategorie? cannedCategory =
+  void setCategory(int? categoryIndex) {
+    CannedCategory? cannedCategory =
         categoryIndex != null ? state.categories[categoryIndex] : null;
     _selectedCategory = cannedCategory;
   }
 
-  void setUpdateCategorie(int categoryIndex) {
-    CannedCategorie? cannedCategory =
+  void setUpdateCategory(int categoryIndex) {
+    CannedCategory? cannedCategory =
         state.categories.isNotEmpty ? state.categories[categoryIndex] : null;
     _updateCategory = cannedCategory;
   }
@@ -92,7 +87,7 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
 
   Future<bool> saveTemplate() async {
     if (_textCannedMessageToAdd.isNotEmpty) {
-      final CannedMessagesAddResponse? response = await _addCannedMessages();
+      final CannedMessagesResponse? response = await _addCannedMessages();
       if (response != null) {
         final newCannedMessage = CannedMessage(
             id: response.messageId,
@@ -131,13 +126,13 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
     }
   }
 
-  CannedCategorie? getCategoryById(int id) {
+  CannedCategory? getCategoryById(int id) {
     return state.categories.firstWhereOrNull((element) => element.id == id);
   }
 
   Future<void> _getCannedCategories() async {
     try {
-      final CannedCategoriesResponse response =
+      final CannedMessagesResponse response =
           await _zodiacCannedMessagesRepository
               .getCannedCategories(AuthorizedRequest());
 
@@ -174,11 +169,11 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
     }
   }
 
-  Future<CannedMessagesAddResponse?> _addCannedMessages() async {
+  Future<CannedMessagesResponse?> _addCannedMessages() async {
     try {
-      final CannedMessagesAddResponse response =
+      final CannedMessagesResponse response =
           await _zodiacCannedMessagesRepository.addCannedMessage(
-              CannedMessagesAddRequest(
+              CannedMessagesRequest(
                   categoryId: _categoryToAdd?.id,
                   text: _textCannedMessageToAdd));
 
@@ -195,7 +190,7 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
   Future<bool> _updateCannedMessage() async {
     try {
       final BaseResponse response = await _zodiacCannedMessagesRepository
-          .updateCannedMessage(CannedMessagesUpdateRequest(
+          .updateCannedMessage(CannedMessagesRequest(
               messageId: _updateMessage?.id,
               categoryId: _updateCategory?.id,
               text: _updatedText));
@@ -212,9 +207,8 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
 
   Future<bool> _deleteCannedMessage(int? messageId) async {
     try {
-      final BaseResponse response =
-          await _zodiacCannedMessagesRepository.deleteCannedMessage(
-              CannedMessagesDeleteRequest(messageId: messageId));
+      final BaseResponse response = await _zodiacCannedMessagesRepository
+          .deleteCannedMessage(CannedMessagesRequest(messageId: messageId));
 
       if (response.status == true) {
         return true;

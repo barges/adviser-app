@@ -10,9 +10,13 @@ part 'canned_messages_request.g.dart';
 )
 class CannedMessagesRequest extends AuthorizedRequest {
   int? categoryId;
+  int? messageId;
+  String? text;
 
   CannedMessagesRequest({
     this.categoryId,
+    this.messageId,
+    this.text,
   }) : super();
 
   factory CannedMessagesRequest.fromJson(Map<String, dynamic> json) =>

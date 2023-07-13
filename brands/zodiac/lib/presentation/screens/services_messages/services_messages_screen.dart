@@ -12,13 +12,13 @@ import 'package:zodiac/presentation/screens/services_messages/canned_messages/ca
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ServicesMessagesScreen extends StatelessWidget {
-  const ServicesMessagesScreen({super.key});
+  final ValueNotifier<int> _indexNotifier = ValueNotifier(1);
+  ServicesMessagesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     ZodiacMainCubit zodiacMainCubit = context.read<ZodiacMainCubit>();
-    int currentIndex = 1;
     return Scaffold(
         appBar: SimpleAppBar(
           title: SZodiac.of(context).servicesMessagesZodiac,
@@ -40,49 +40,54 @@ class ServicesMessagesScreen extends StatelessWidget {
                         );
                       }),
                       Expanded(
-                        child: StatefulBuilder(builder:
-                            (BuildContext context, StateSetter setState) {
-                          return Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: AppConstants.horizontalScreenPadding,
-                                    left: AppConstants.horizontalScreenPadding,
-                                    right:
-                                        AppConstants.horizontalScreenPadding),
-                                child: ListOfFiltersWidget(
-                                  currentFilterIndex: currentIndex,
-                                  onTapToFilter: (index) {
-                                    if (index != null) {
-                                      setState(() => currentIndex = index);
-                                    }
-                                  },
-                                  filters: [
-                                    SZodiac.of(context).servicesZodiac,
-                                    SZodiac.of(context).cannedMessagesZodiac
-                                  ],
-                                  itemWidth: (MediaQuery.of(context)
-                                              .size
-                                              .width -
-                                          AppConstants.horizontalScreenPadding *
-                                              2 -
-                                          8.0) *
-                                      0.5,
-                                ),
-                              ),
-                              const SizedBox(height: verticalInterval),
-                              Flexible(
-                                child: IndexedStack(
-                                  index: currentIndex,
-                                  children: const [
-                                    SizedBox.shrink(),
-                                    CannedMessagesScreen(),
-                                  ],
-                                ),
-                              )
-                            ],
-                          );
-                        }),
+                        child: ValueListenableBuilder(
+                            valueListenable: _indexNotifier,
+                            builder: (BuildContext context, int value, _) {
+                              return Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: AppConstants
+                                            .horizontalScreenPadding,
+                                        left: AppConstants
+                                            .horizontalScreenPadding,
+                                        right: AppConstants
+                                            .horizontalScreenPadding),
+                                    child: ListOfFiltersWidget(
+                                      currentFilterIndex: value,
+                                      onTapToFilter: (index) {
+                                        if (index != null) {
+                                          _indexNotifier.value = index;
+                                        }
+                                      },
+                                      filters: [
+                                        SZodiac.of(context).servicesZodiac,
+                                        SZodiac.of(context)
+                                            .cannedMessagesZodiac,
+                                      ],
+                                      itemWidth: (MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              AppConstants
+                                                      .horizontalScreenPadding *
+                                                  2 -
+                                              8.0) /
+                                          2,
+                                    ),
+                                  ),
+                                  const SizedBox(height: verticalInterval),
+                                  Flexible(
+                                    child: IndexedStack(
+                                      index: value,
+                                      children: const [
+                                        SizedBox.shrink(),
+                                        CannedMessagesScreen(),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              );
+                            }),
                       ),
                     ],
                   )

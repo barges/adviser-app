@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:zodiac/data/models/canned_messages/canned_categorie.dart';
+import 'package:zodiac/data/models/canned_messages/canned_category.dart';
 import 'package:zodiac/data/models/canned_messages/canned_message.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_cubit.dart';
@@ -11,23 +11,22 @@ import 'package:zodiac/presentation/screens/services_messages/canned_messages/ca
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/widgets/canned_message_card.dart';
 
 class CannedMessageManagerWidget extends StatelessWidget {
-  const CannedMessageManagerWidget({super.key});
+  final ValueNotifier<int> indexNotifier = ValueNotifier(0);
+  CannedMessageManagerWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     CannedMessagesCubit cannedMessagesCubit =
         context.read<CannedMessagesCubit>();
-    int currentFilterIndex = 0;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Builder(builder: (context) {
-          final List<CannedCategorie> categories = context
+          final List<CannedCategory> categories = context
               .select((CannedMessagesCubit cubit) => cubit.state.categories);
-          final List<String> filters = categories.isNotEmpty
-              ? categories.map((item) => item.name ?? '').toList()
-              : [];
+          final List<String> filters =
+              categories.map((item) => item.name ?? '').toList();
           return categories.isNotEmpty
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,27 +42,25 @@ class CannedMessageManagerWidget extends StatelessWidget {
                             ?.copyWith(fontSize: 17.0),
                       ),
                     ),
-                    StatefulBuilder(
-                        builder: (BuildContext context, StateSetter setState) {
-                      return ListOfFiltersWidget(
-                        currentFilterIndex: currentFilterIndex,
-                        onTapToFilter: (index) {
-                          if (index != null) {
-                            setState(() {
-                              currentFilterIndex = index;
-                              cannedMessagesCubit.setCategorie(
-                                  currentFilterIndex == 0
-                                      ? null
-                                      : currentFilterIndex - 1);
+                    ValueListenableBuilder(
+                      valueListenable: indexNotifier,
+                      builder: (_, int value, __) {
+                        return ListOfFiltersWidget(
+                          currentFilterIndex: value,
+                          onTapToFilter: (index) {
+                            if (index != null) {
+                              indexNotifier.value = index;
+                              cannedMessagesCubit
+                                  .setCategory(index == 0 ? null : index - 1);
                               cannedMessagesCubit
                                   .filterCannedMessagesByCategory();
-                            });
-                          }
-                        },
-                        filters: [SZodiac.of(context).allZodiac, ...filters],
-                        padding: AppConstants.horizontalScreenPadding,
-                      );
-                    }),
+                            }
+                          },
+                          filters: [SZodiac.of(context).allZodiac, ...filters],
+                          padding: AppConstants.horizontalScreenPadding,
+                        );
+                      },
+                    ),
                   ],
                 )
               : const SizedBox.shrink();

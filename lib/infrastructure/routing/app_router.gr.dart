@@ -368,9 +368,11 @@ class MainAppRouter extends _i46.RootStackRouter {
       );
     },
     ZodiacServicesMessages.name: (routeData) {
+      final args = routeData.argsAs<ZodiacServicesMessagesArgs>(
+          orElse: () => const ZodiacServicesMessagesArgs());
       return _i46.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i32.ServicesMessagesScreen(),
+        child: _i32.ServicesMessagesScreen(key: args.key),
       );
     },
     ZodiacSMSVerification.name: (routeData) {
@@ -1513,14 +1515,27 @@ class ZodiacPhoneNumberArgs {
 
 /// generated route for
 /// [_i32.ServicesMessagesScreen]
-class ZodiacServicesMessages extends _i46.PageRouteInfo<void> {
-  const ZodiacServicesMessages()
+class ZodiacServicesMessages
+    extends _i46.PageRouteInfo<ZodiacServicesMessagesArgs> {
+  ZodiacServicesMessages({_i47.Key? key})
       : super(
           ZodiacServicesMessages.name,
           path: 'zodiacServicesMessages',
+          args: ZodiacServicesMessagesArgs(key: key),
         );
 
   static const String name = 'ZodiacServicesMessages';
+}
+
+class ZodiacServicesMessagesArgs {
+  const ZodiacServicesMessagesArgs({this.key});
+
+  final _i47.Key? key;
+
+  @override
+  String toString() {
+    return 'ZodiacServicesMessagesArgs{key: $key}';
+  }
 }
 
 /// generated route for

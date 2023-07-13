@@ -1,24 +1,18 @@
 import 'package:zodiac/data/network/requests/authorized_request.dart';
-import 'package:zodiac/data/network/requests/canned_messages_add_request.dart';
-import 'package:zodiac/data/network/requests/canned_messages_delete_request.dart';
-import 'package:zodiac/data/network/requests/canned_messages_request.dart';
-import 'package:zodiac/data/network/requests/canned_messages_update_request.dart';
+import 'package:zodiac/data/network/requests/canned_messages/canned_messages_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
-import 'package:zodiac/data/network/responses/canned_categories_response.dart';
-import 'package:zodiac/data/network/responses/canned_messages_add_response.dart';
-import 'package:zodiac/data/network/responses/canned_messages_response.dart';
+import 'package:zodiac/data/network/responses/canned_messages/canned_messages_response.dart';
 
 abstract class ZodiacCannedMessagesRepository {
   Future<CannedMessagesResponse> getCannedMessages(
       CannedMessagesRequest request);
 
-  Future<CannedMessagesAddResponse> addCannedMessage(
-      CannedMessagesAddRequest request);
+  Future<CannedMessagesResponse> addCannedMessage(
+      CannedMessagesRequest request);
 
-  Future<BaseResponse> updateCannedMessage(CannedMessagesUpdateRequest request);
+  Future<BaseResponse> updateCannedMessage(CannedMessagesRequest request);
 
-  Future<BaseResponse> deleteCannedMessage(CannedMessagesDeleteRequest request);
+  Future<BaseResponse> deleteCannedMessage(CannedMessagesRequest request);
 
-  Future<CannedCategoriesResponse> getCannedCategories(
-      AuthorizedRequest request);
+  Future<CannedMessagesResponse> getCannedCategories(AuthorizedRequest request);
 }

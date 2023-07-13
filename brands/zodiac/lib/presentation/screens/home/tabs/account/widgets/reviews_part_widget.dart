@@ -143,7 +143,7 @@ class ReviewsPartWidget extends StatelessWidget {
               title: SZodiac.of(context).servicesMessagesZodiac,
               iconSVGPath: Assets.zodiac.vectors.servicesIcon.path,
               onTap: () => context.push(
-                route: const ZodiacServicesMessages(),
+                route: ZodiacServicesMessages(),
               ),
             ),
           ],

@@ -20,11 +20,11 @@ class CannedMessagesScreen extends StatelessWidget {
       child: Builder(builder: (context) {
         return GestureDetector(
           onTap: FocusScope.of(context).unfocus,
-          child: const SingleChildScrollView(
-            padding: EdgeInsets.only(bottom: verticalInterval),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.only(bottom: verticalInterval),
             child: Column(
               children: [
-                AddCannedMessageWidget(),
+                const AddCannedMessageWidget(),
                 CannedMessageManagerWidget(),
               ],
             ),

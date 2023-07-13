@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
-import 'package:zodiac/data/models/canned_messages/canned_categorie.dart';
+import 'package:zodiac/data/models/canned_messages/canned_category.dart';
 import 'package:zodiac/data/models/canned_messages/canned_message.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/services_messages/box_decoration_widget.dart';
@@ -51,7 +51,7 @@ class CannedMessageCard extends StatelessWidget {
                   onTap: () {
                     FocusScope.of(context).unfocus();
                     cannedMessagesCubit.setUpdateCannedMessage(cannedMessage);
-                    final CannedCategorie? category =
+                    final CannedCategory? category =
                         cannedMessage.categoryId != null
                             ? cannedMessagesCubit
                                 .getCategoryById(cannedMessage.categoryId!)
@@ -66,7 +66,7 @@ class CannedMessageCard extends StatelessWidget {
                             onTextEdit: (text) =>
                                 cannedMessagesCubit.setUpdatedText(text),
                             onSelectCategory: (index) =>
-                                cannedMessagesCubit.setUpdateCategorie(index),
+                                cannedMessagesCubit.setUpdateCategory(index),
                             onSave: () async {
                               if (await cannedMessagesCubit
                                   .updateCannedMessage()) {
