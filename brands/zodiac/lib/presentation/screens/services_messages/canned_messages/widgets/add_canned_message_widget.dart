@@ -81,14 +81,21 @@ class _AddCannedMessageWidgetState extends State<AddCannedMessageWidget> {
                   )
                 : const SizedBox.shrink();
           }),
-          AppElevatedButton(
-            title: SZodiac.of(context).saveTemplateZodiac,
-            onPressed: () async {
-              if (await cannedMessagesCubit.saveTemplate()) {
-                _textEditingController.text = '';
-              }
-            },
-          ),
+          Builder(builder: (context) {
+            final isButtonEnabled = context.select(
+                (CannedMessagesCubit cubit) =>
+                    cubit.state.isSaveTemplateButtonEnabled);
+            return AppElevatedButton(
+              title: SZodiac.of(context).saveTemplateZodiac,
+              onPressed: isButtonEnabled
+                  ? () async {
+                      if (await cannedMessagesCubit.saveTemplate()) {
+                        _textEditingController.text = '';
+                      }
+                    }
+                  : null,
+            );
+          }),
           const SizedBox(
             height: verticalInterval,
           ),

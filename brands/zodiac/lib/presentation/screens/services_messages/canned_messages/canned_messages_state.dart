@@ -9,5 +9,6 @@ class CannedMessagesState with _$CannedMessagesState {
   const factory CannedMessagesState({
     @Default([]) List<CannedCategorie> categories,
     @Default([]) List<CannedMessage> messages,
+    @Default(false) bool isSaveTemplateButtonEnabled,
   }) = _CannedMessagesState;
 }

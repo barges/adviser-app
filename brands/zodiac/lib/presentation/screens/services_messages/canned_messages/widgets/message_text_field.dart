@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/presentation/common_widgets/text_fields/app_text_field.dart';
-
-const maximumMessageSymbols = 280;
+import 'package:zodiac/presentation/screens/services_messages/canned_messages/widgets/counter_text_field.dart';
 
 class MessageTextField extends StatelessWidget {
   final String title;
+  final TextEditingController controller;
   final String? note;
-  final TextEditingController? controller;
   const MessageTextField({
     super.key,
     required this.title,
+    required this.controller,
     this.note,
-    this.controller,
   });
 
   @override
@@ -31,14 +29,8 @@ class MessageTextField extends StatelessWidget {
             Positioned(
               right: 12.0,
               bottom: 12.0,
-              child: Text(
-                '0 / $maximumMessageSymbols',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  fontSize: 14.0,
-                  color: AppColors.online,
-                ),
-              ),
-            )
+              child: CounterTextField(controller: controller),
+            ),
           ],
         ),
         if (note != null)

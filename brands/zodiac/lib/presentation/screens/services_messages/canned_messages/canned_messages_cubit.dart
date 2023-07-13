@@ -17,6 +17,8 @@ import 'package:zodiac/domain/repositories/zodiac_canned_messages_repository.dar
 
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_state.dart';
 
+const maximumMessageSymbols = 280;
+
 @injectable
 class CannedMessagesCubit extends Cubit<CannedMessagesState> {
   final ZodiacCannedMessagesRepository _zodiacCannedMessagesRepository;
@@ -45,6 +47,9 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
 
   void setTextCannedMessageToAdd(String text) {
     _textCannedMessageToAdd = text;
+    emit(state.copyWith(
+      isSaveTemplateButtonEnabled: _isCountSymbolsOk(text.length),
+    ));
   }
 
   void setUpdatedText(String text) {
@@ -219,5 +224,9 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
     }
 
     return false;
+  }
+
+  bool _isCountSymbolsOk(int count) {
+    return count > 0 && count <= maximumMessageSymbols;
   }
 }

@@ -34,16 +34,9 @@ class ServicesMessagesScreen extends StatelessWidget {
                       Builder(builder: (context) {
                         final AppError appError = context.select(
                             (ZodiacMainCubit cubit) => cubit.state.appError);
-                        final bool isOnline = context.select(
-                            (MainCubit cubit) =>
-                                cubit.state.internetConnectionIsAvailable);
                         return AppErrorWidget(
-                          errorMessage: !isOnline
-                              ? SZodiac.of(context).noInternetConnectionZodiac
-                              : appError.getMessage(context),
-                          close: isOnline
-                              ? zodiacMainCubit.clearErrorMessage
-                              : null,
+                          errorMessage: appError.getMessage(context),
+                          close: zodiacMainCubit.clearErrorMessage,
                         );
                       }),
                       Expanded(
