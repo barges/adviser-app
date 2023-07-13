@@ -18,7 +18,7 @@ class InfoWidget extends StatelessWidget {
           ),
           Flexible(
             child: Text(
-              SZodiac.of(context).youCanEasilyAccessTheseTemplates,
+              SZodiac.of(context).youCanEasilyAccessTheseTemplatesZodiac,
               maxLines: 2,
               style: theme.textTheme.bodySmall,
             ),

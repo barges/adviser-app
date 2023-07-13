@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:zodiac/data/models/canned_messages/canned_categorie.dart';
 import 'package:zodiac/data/models/canned_messages/canned_message.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_cubit.dart';
 import 'package:zodiac/presentation/screens/services_messages/list_of_filters_widget.dart';
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_screen.dart';
@@ -37,7 +38,7 @@ class CannedMessageManagerWidget extends StatelessWidget {
                         bottom: AppConstants.horizontalScreenPadding,
                       ),
                       child: Text(
-                        'Manage messages',
+                        SZodiac.of(context).manageMessagesZodiac,
                         style: theme.textTheme.headlineMedium
                             ?.copyWith(fontSize: 17.0),
                       ),
@@ -59,7 +60,7 @@ class CannedMessageManagerWidget extends StatelessWidget {
                             });
                           }
                         },
-                        filters: ['All', ...filters],
+                        filters: [SZodiac.of(context).allZodiac, ...filters],
                         padding: AppConstants.horizontalScreenPadding,
                       );
                     }),

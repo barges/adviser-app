@@ -6,6 +6,7 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:zodiac/data/models/canned_messages/canned_categorie.dart';
 import 'package:zodiac/data/models/canned_messages/canned_message.dart';
+import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/services_messages/box_decoration_widget.dart';
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_cubit.dart';
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/widgets/edit_canned_message_widget.dart';
@@ -89,10 +90,11 @@ class CannedMessageCard extends StatelessWidget {
                   FocusScope.of(context).unfocus();
                   if (await showOkCancelAlert(
                         context: context,
-                        title: 'Do you really want to delete this template?',
-                        description:
-                            "It will be removed from the templates and you won't be able to use it from the chat anymore",
-                        okText: 'Delete',
+                        title:
+                            SZodiac.of(context).doYouWantDeleteTemplateZodiac,
+                        description: SZodiac.of(context)
+                            .itWillBeRemovedFromTemplatesZodiac,
+                        okText: SZodiac.of(context).deleteZodiac,
                         allowBarrierClick: false,
                         isCancelEnabled: true,
                       ) ==

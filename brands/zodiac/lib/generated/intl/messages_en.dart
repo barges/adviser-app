@@ -57,13 +57,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "aboutZodiac": MessageLookupByLibrary.simpleMessage("About"),
         "accountZodiac": MessageLookupByLibrary.simpleMessage("Account"),
         "activityZodiac": MessageLookupByLibrary.simpleMessage("Activity"),
-        "addMessage": MessageLookupByLibrary.simpleMessage("Add message"),
+        "addMessageZodiac": MessageLookupByLibrary.simpleMessage("Add message"),
         "addZodiac": MessageLookupByLibrary.simpleMessage("Add"),
         "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "All selected coupons are ready to be displayed tomorrow."),
         "allSpecialitiesZodiac":
             MessageLookupByLibrary.simpleMessage("All specialities"),
+        "allZodiac": MessageLookupByLibrary.simpleMessage("All"),
         "animalsAndNatureZodiac":
             MessageLookupByLibrary.simpleMessage("Animals & Nature"),
         "articlesZodiac": MessageLookupByLibrary.simpleMessage("Articles"),
@@ -96,7 +97,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "checkYourInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Check your internet connection"),
-        "chooseCategoryTemplate": MessageLookupByLibrary.simpleMessage(
+        "chooseCategoryTemplateZodiac": MessageLookupByLibrary.simpleMessage(
             "Choose category of the template"),
         "chooseEmailAppZodiac":
             MessageLookupByLibrary.simpleMessage("Choose email app"),
@@ -112,6 +113,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dashboardZodiac": MessageLookupByLibrary.simpleMessage("Dashboard"),
         "daysZodiac": MessageLookupByLibrary.simpleMessage("days"),
         "declineZodiac": MessageLookupByLibrary.simpleMessage("Decline"),
+        "deleteZodiac": MessageLookupByLibrary.simpleMessage("Delete"),
         "doYouReallyWantToCloseTheChatZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Do you really want to close the chat?"),
@@ -119,14 +121,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "doYouReallyWantToEndTheChatZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Do you really want to end the chat?"),
+        "doYouWantDeleteTemplateZodiac": MessageLookupByLibrary.simpleMessage(
+            "Do you really want to delete this template?"),
         "doYouWantToDeleteThisAudioMessageZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Do you want to delete this audio message?"),
         "doYouWantToDeleteThisMessageZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Do you want to delete this message?"),
+        "editMessageZodiac":
+            MessageLookupByLibrary.simpleMessage("Edit message"),
         "editProfileZodiac":
             MessageLookupByLibrary.simpleMessage("Edit profile"),
+        "editTemplateZodiac":
+            MessageLookupByLibrary.simpleMessage("Edit template"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("Email"),
         "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(
@@ -154,6 +162,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("INCOMING Chat"),
         "incorrectCodeZodiac":
             MessageLookupByLibrary.simpleMessage("Incorrect code"),
+        "itWillBeRemovedFromTemplatesZodiac": MessageLookupByLibrary.simpleMessage(
+            "It will be removed from the templates and you won\'t be able to use it from the chat anymore"),
         "languageZodiac": MessageLookupByLibrary.simpleMessage("Language"),
         "limitReachedZodiac":
             MessageLookupByLibrary.simpleMessage("Limit reached"),
@@ -163,6 +173,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Main language"),
         "mainSpecialtyZodiac":
             MessageLookupByLibrary.simpleMessage("Main specialty"),
+        "manageMessagesZodiac":
+            MessageLookupByLibrary.simpleMessage("Manage messages"),
         "minutesZodiac": MessageLookupByLibrary.simpleMessage("min"),
         "mySpecialtiesZodiac":
             MessageLookupByLibrary.simpleMessage("My specialties"),
@@ -252,6 +264,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "salesZodiac": MessageLookupByLibrary.simpleMessage("Sales"),
         "saveCouponsSetZodiac":
             MessageLookupByLibrary.simpleMessage("Save coupons set"),
+        "saveTemplateZodiac":
+            MessageLookupByLibrary.simpleMessage("Save template"),
         "saveZodiac": MessageLookupByLibrary.simpleMessage("Save"),
         "searchResultsZodiac":
             MessageLookupByLibrary.simpleMessage("Search results"),
@@ -295,7 +309,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "thePasswordsMustMatchZodiac":
             MessageLookupByLibrary.simpleMessage("The passwords must match"),
         "thisMonthZodiac": MessageLookupByLibrary.simpleMessage("This Month"),
-        "thisWhatYourClientSee": MessageLookupByLibrary.simpleMessage(
+        "thisWhatYourClientSeeZodiac": MessageLookupByLibrary.simpleMessage(
             "This is what your client will see as a chat bubble from you"),
         "tipZodiac": MessageLookupByLibrary.simpleMessage("Tip"),
         "todayZodiac": MessageLookupByLibrary.simpleMessage("Today"),
@@ -326,8 +340,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "youCanChangePriceOncePer24HZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "You can change price once per 24 h"),
-        "youCanEasilyAccessTheseTemplates": MessageLookupByLibrary.simpleMessage(
-            "You can easily access these templates during and after the chat"),
+        "youCanEasilyAccessTheseTemplatesZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "You can easily access these templates during and after the chat"),
         "youHaveAttemptsToEnterRightCodeZodiac": m8,
         "youHaveVerificationAttemptsPerDayZodiac": m9,
         "youMissedCallFromZodiac": m10,

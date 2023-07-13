@@ -57,8 +57,8 @@ class _AddCannedMessageWidgetState extends State<AddCannedMessageWidget> {
             height: verticalInterval,
           ),
           MessageTextField(
-            title: SZodiac.of(context).addMessage,
-            note: SZodiac.of(context).thisWhatYourClientSee,
+            title: SZodiac.of(context).addMessageZodiac,
+            note: SZodiac.of(context).thisWhatYourClientSeeZodiac,
             controller: _textEditingController,
           ),
           const SizedBox(
@@ -72,9 +72,9 @@ class _AddCannedMessageWidgetState extends State<AddCannedMessageWidget> {
                     padding: const EdgeInsets.only(bottom: verticalInterval),
                     child: BoxDecorationWidget(
                       child: CategoriesWidget(
-                        title: SZodiac.of(context).chooseCategoryTemplate,
+                        title: SZodiac.of(context).chooseCategoryTemplateZodiac,
                         onTap: (index) =>
-                            cannedMessagesCubit.setCategoryToAdd(index!),
+                            cannedMessagesCubit.setCategoryToAdd(index),
                         categories: categories,
                       ),
                     ),
@@ -82,7 +82,7 @@ class _AddCannedMessageWidgetState extends State<AddCannedMessageWidget> {
                 : const SizedBox.shrink();
           }),
           AppElevatedButton(
-            title: 'Save template',
+            title: SZodiac.of(context).saveTemplateZodiac,
             onPressed: () async {
               if (await cannedMessagesCubit.saveTemplate()) {
                 _textEditingController.text = '';

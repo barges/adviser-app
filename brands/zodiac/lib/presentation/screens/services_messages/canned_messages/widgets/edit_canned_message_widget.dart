@@ -81,13 +81,13 @@ class _EditCannedMessageWidgetState extends State<EditCannedMessageWidget> {
                       )),
                 ),
                 Text(
-                  'Edit template',
+                  SZodiac.of(context).editTemplateZodiac,
                   style:
                       theme.textTheme.headlineMedium?.copyWith(fontSize: 17.0),
                 ),
                 const SizedBox(height: AppConstants.horizontalScreenPadding),
                 MessageTextField(
-                  title: 'Edit message',
+                  title: SZodiac.of(context).editMessageZodiac,
                   controller: _textEditingController,
                 ),
                 const SizedBox(
@@ -97,14 +97,14 @@ class _EditCannedMessageWidgetState extends State<EditCannedMessageWidget> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: verticalInterval),
                     child: CategoriesWidget(
-                      title: SZodiac.of(context).chooseCategoryTemplate,
+                      title: SZodiac.of(context).chooseCategoryTemplateZodiac,
                       onTap: (index) => widget.onSelectCategory(index),
                       categories: widget.categories,
                       initialSelectedIndex: _initialSelectedIndex,
                     ),
                   ),
                 AppElevatedButton(
-                  title: 'Save',
+                  title: SZodiac.of(context).saveZodiac,
                   onPressed: widget.onSave,
                 ),
                 const SizedBox(
@@ -113,7 +113,7 @@ class _EditCannedMessageWidgetState extends State<EditCannedMessageWidget> {
                 GestureDetector(
                   onTap: () => context.popRoute(),
                   child: Text(
-                    'Cancel',
+                    SZodiac.of(context).cancelZodiac,
                     style: theme.textTheme.headlineMedium?.copyWith(
                       fontSize: 17.0,
                       fontWeight: FontWeight.w500,

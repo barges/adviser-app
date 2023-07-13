@@ -1727,40 +1727,120 @@ class SZodiac {
   }
 
   /// `You can easily access these templates during and after the chat`
-  String get youCanEasilyAccessTheseTemplates {
+  String get youCanEasilyAccessTheseTemplatesZodiac {
     return Intl.message(
       'You can easily access these templates during and after the chat',
-      name: 'youCanEasilyAccessTheseTemplates',
+      name: 'youCanEasilyAccessTheseTemplatesZodiac',
       desc: '',
       args: [],
     );
   }
 
   /// `Add message`
-  String get addMessage {
+  String get addMessageZodiac {
     return Intl.message(
       'Add message',
-      name: 'addMessage',
+      name: 'addMessageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save template`
+  String get saveTemplateZodiac {
+    return Intl.message(
+      'Save template',
+      name: 'saveTemplateZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get allZodiac {
+    return Intl.message(
+      'All',
+      name: 'allZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you really want to delete this template?`
+  String get doYouWantDeleteTemplateZodiac {
+    return Intl.message(
+      'Do you really want to delete this template?',
+      name: 'doYouWantDeleteTemplateZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It will be removed from the templates and you won't be able to use it from the chat anymore`
+  String get itWillBeRemovedFromTemplatesZodiac {
+    return Intl.message(
+      'It will be removed from the templates and you won\'t be able to use it from the chat anymore',
+      name: 'itWillBeRemovedFromTemplatesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get deleteZodiac {
+    return Intl.message(
+      'Delete',
+      name: 'deleteZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Manage messages`
+  String get manageMessagesZodiac {
+    return Intl.message(
+      'Manage messages',
+      name: 'manageMessagesZodiac',
       desc: '',
       args: [],
     );
   }
 
   /// `This is what your client will see as a chat bubble from you`
-  String get thisWhatYourClientSee {
+  String get thisWhatYourClientSeeZodiac {
     return Intl.message(
       'This is what your client will see as a chat bubble from you',
-      name: 'thisWhatYourClientSee',
+      name: 'thisWhatYourClientSeeZodiac',
       desc: '',
       args: [],
     );
   }
 
   /// `Choose category of the template`
-  String get chooseCategoryTemplate {
+  String get chooseCategoryTemplateZodiac {
     return Intl.message(
       'Choose category of the template',
-      name: 'chooseCategoryTemplate',
+      name: 'chooseCategoryTemplateZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit template`
+  String get editTemplateZodiac {
+    return Intl.message(
+      'Edit template',
+      name: 'editTemplateZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit message`
+  String get editMessageZodiac {
+    return Intl.message(
+      'Edit message',
+      name: 'editMessageZodiac',
       desc: '',
       args: [],
     );
