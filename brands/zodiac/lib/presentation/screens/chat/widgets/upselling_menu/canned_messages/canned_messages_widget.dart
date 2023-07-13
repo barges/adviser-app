@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/models/canned_message/canned_message_category.dart';
@@ -12,6 +11,7 @@ import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/canned_messages/canned_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/canned_messages/canned_messages_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/category_menu_item_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/upselling_header_widget.dart';
 
 class CannedMessagesWidget extends StatelessWidget {
   const CannedMessagesWidget({Key? key}) : super(key: key);
@@ -30,8 +30,8 @@ class CannedMessagesWidget extends StatelessWidget {
 
           final List<CannedMessageCategory>? cannedMessageCategories = context
               .select((ChatCubit cubit) => cubit.state.cannedMessageCategories);
-          final int selectedCategotyIndex = context.select(
-              (CannedMessagesCubit cubit) => cubit.state.selectedCategotyIndex);
+          final int selectedCategoryIndex = context.select(
+              (CannedMessagesCubit cubit) => cubit.state.selectedCategoryIndex);
 
           if (cannedMessageCategories != null) {
             return Container(
@@ -43,34 +43,9 @@ class CannedMessagesWidget extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: AppConstants.horizontalScreenPadding),
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 32.0,
-                        ),
-                        Expanded(
-                          child: Text(
-                            SZodiac.of(context).sendCannedMessageZodiac,
-                            style: theme.textTheme.headlineMedium
-                                ?.copyWith(fontSize: 17.0),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8.0,
-                        ),
-                        GestureDetector(
-                          onTap: chatCubit.closeUpsellingMenu,
-                          child: Assets.zodiac.vectors.crossSmall.svg(
-                            height: AppConstants.iconSize,
-                            width: AppConstants.iconSize,
-                            colorFilter: ColorFilter.mode(
-                              theme.shadowColor,
-                              BlendMode.srcIn,
-                            ),
-                          ),
-                        )
-                      ],
+                    child: UpsellingHeaderWidget(
+                      title: SZodiac.of(context).sendCannedMessageZodiac,
+                      onCrossTap: chatCubit.closeUpsellingMenu,
                     ),
                   ),
                   const SizedBox(
@@ -92,9 +67,9 @@ class CannedMessagesWidget extends StatelessWidget {
                               ),
                               ...cannedMessageCategories
                                   .mapIndexed((index, element) {
-                                final Widget child = CategotyMenuItemWidget(
+                                final Widget child = CategoryMenuItemWidget(
                                   title: element.categoryName ?? '',
-                                  isSelected: selectedCategotyIndex == index,
+                                  isSelected: selectedCategoryIndex == index,
                                   onTap: () => cannedMessagesCubit
                                       .setSelectedCategoryIndex(index),
                                 );
@@ -125,7 +100,7 @@ class CannedMessagesWidget extends StatelessWidget {
                   }),
                   Builder(builder: (context) {
                     final List<CannedMessageModel>? messages =
-                        cannedMessageCategories[selectedCategotyIndex].messages;
+                        cannedMessageCategories[selectedCategoryIndex].messages;
 
                     if (messages != null) {
                       return AnimatedSwitcher(
@@ -154,13 +129,13 @@ class CannedMessagesWidget extends StatelessWidget {
                       onPressed: () {
                         chatCubit.sendUpsellingMessage(
                           cannedMessageId:
-                              cannedMessageCategories[selectedCategotyIndex]
+                              cannedMessageCategories[selectedCategoryIndex]
                                   .messages?[
                                       cannedMessagesCubit.selectedMessageIndex]
                                   .id,
                           customCannedMessage: cannedMessagesCubit
                                   .editedCannedMessage ??
-                              cannedMessageCategories[selectedCategotyIndex]
+                              cannedMessageCategories[selectedCategoryIndex]
                                   .messages?[
                                       cannedMessagesCubit.selectedMessageIndex]
                                   .message,

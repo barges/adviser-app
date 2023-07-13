@@ -40,16 +40,19 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(timer) => "Sie können innerhalb von ${timer} schreiben";
 
-  static String m8(attempts) =>
-      "Sie haben ${attempts} versuche, den richtigen Code einzugeben";
+  static String m8(limit) =>
+      "Sie können ${limit} Gutscheine pro Tag versenden.";
 
   static String m9(attempts) =>
+      "Sie haben ${attempts} versuche, den richtigen Code einzugeben";
+
+  static String m10(attempts) =>
       "Sie haben ${attempts} Verifizierungsversuche pro Tag";
 
-  static String m10(clientName) =>
+  static String m11(clientName) =>
       "Sie haben einen Anruf von ${clientName} verpasst.";
 
-  static String m11(clientName) =>
+  static String m12(clientName) =>
       "Sie haben einen Chat von ${clientName} verpasst.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -261,6 +264,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "sendCannedMessageZodiac": MessageLookupByLibrary.simpleMessage(
             "Senden Sie eine vorgefertigte Nachricht"),
         "sendCodeZodiac": MessageLookupByLibrary.simpleMessage("Code senden"),
+        "sendCouponZodiac":
+            MessageLookupByLibrary.simpleMessage("Gutschein verschicken"),
         "sendZodiac": MessageLookupByLibrary.simpleMessage("Schicken"),
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Service"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Services"),
@@ -321,10 +326,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "youCanChangePriceOncePer24HZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "You can change price once per 24 h"),
-        "youHaveAttemptsToEnterRightCodeZodiac": m8,
-        "youHaveVerificationAttemptsPerDayZodiac": m9,
-        "youMissedCallFromZodiac": m10,
-        "youMissedChatFromZodiac": m11,
+        "youCanSendNCouponsPerDayZodiac": m8,
+        "youHaveAttemptsToEnterRightCodeZodiac": m9,
+        "youHaveVerificationAttemptsPerDayZodiac": m10,
+        "youMissedCallFromZodiac": m11,
+        "youMissedChatFromZodiac": m12,
         "youWhereBlocked": MessageLookupByLibrary.simpleMessage(
             "Ihr Konto wurde gesperrt.<br>Bitte wenden Sie sich an den <a href=\'\'>Kundensupport</a>, um das Problem zu lösen"),
         "youZodiac": MessageLookupByLibrary.simpleMessage("Du"),

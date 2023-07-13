@@ -174,5 +174,7 @@
   "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac": "Todos los cupones seleccionados están listos para mostrarse mañana.",
   "sendCannedMessageZodiac": "Enviar mensaje enlatado",
   "editZodiac": "Editar",
-  "sendZodiac": "Enviar"
+  "sendZodiac": "Enviar",
+  "sendCouponZodiac": "Enviar cupón",
+  "youCanSendNCouponsPerDayZodiac": "Puedes enviar {limit} cupones por día."
 }

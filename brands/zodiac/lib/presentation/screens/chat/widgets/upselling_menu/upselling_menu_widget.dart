@@ -5,6 +5,7 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/canned_messages/canned_messages_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/coupons/coupons_widget.dart';
 
 enum UpsellingMenuType {
   coupons,
@@ -82,6 +83,8 @@ class UpsellingMenuWidget extends StatelessWidget {
     switch (selectedMenuItem) {
       case UpsellingMenuType.canned:
         return const CannedMessagesWidget();
+      case UpsellingMenuType.coupons:
+        return const CouponsWidget();
       default:
         return const SizedBox.shrink();
     }

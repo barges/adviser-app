@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 
-class CategotyMenuItemWidget extends StatelessWidget {
+class CategoryMenuItemWidget extends StatelessWidget {
   final String title;
   final bool isSelected;
   final VoidCallback? onTap;
 
-  const CategotyMenuItemWidget({
+  const CategoryMenuItemWidget({
     Key? key,
     required this.title,
     required this.isSelected,

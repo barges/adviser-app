@@ -446,8 +446,13 @@ class ChatCubit extends BaseCubit<ChatState> {
             !enabledUpsellingItems.contains(UpsellingMenuType.canned)) {
           enabledUpsellingItems.add(UpsellingMenuType.canned);
         }
+        if (event.couponsCategories != null &&
+            !enabledUpsellingItems.contains(UpsellingMenuType.coupons)) {
+          enabledUpsellingItems.add(UpsellingMenuType.coupons);
+        }
         emit(state.copyWith(
             cannedMessageCategories: event.cannedCategories,
+            couponsCategories: event.couponsCategories,
             enabledMenuItems: enabledUpsellingItems));
       }
     }));
