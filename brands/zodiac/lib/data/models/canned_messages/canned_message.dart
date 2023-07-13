@@ -13,7 +13,7 @@ class CannedMessage with _$CannedMessage {
   const factory CannedMessage({
     int? id,
     int? categoryId,
-    String? text,
+    @JsonKey(fromJson: _toString) String? text,
     int? dateCreate,
     String? categoryName,
   }) = _CannedMessage;
@@ -21,3 +21,5 @@ class CannedMessage with _$CannedMessage {
   factory CannedMessage.fromJson(Map<String, dynamic> json) =>
       _$CannedMessageFromJson(json);
 }
+
+String? _toString(value) => value is String ? value : value?.toString();

@@ -68,7 +68,7 @@ class CannedMessageCard extends StatelessWidget {
                                 cannedMessagesCubit.setUpdateCategorie(index),
                             onSave: () async {
                               if (await cannedMessagesCubit
-                                  .updateCannedMessages()) {
+                                  .updateCannedMessage()) {
                                 context.popRoute();
                               }
                             });

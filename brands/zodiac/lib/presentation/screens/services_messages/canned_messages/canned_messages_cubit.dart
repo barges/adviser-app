@@ -87,18 +87,32 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
 
   Future<bool> saveTemplate() async {
     if (_textCannedMessageToAdd.isNotEmpty) {
-      if (await _addCannedMessages()) {
-        await _updateMessages();
+      final CannedMessagesAddResponse? response = await _addCannedMessages();
+      if (response != null) {
+        final newCannedMessage = CannedMessage(
+            id: response.messageId,
+            categoryId: _categoryToAdd?.id,
+            categoryName: _categoryToAdd?.name,
+            text: _textCannedMessageToAdd);
+        _messages.insert(0, newCannedMessage);
+        await filterCannedMessagesByCategory();
         return true;
       }
     }
     return false;
   }
 
-  Future<bool> updateCannedMessages() async {
+  Future<bool> updateCannedMessage() async {
     if (_updatedText.isNotEmpty) {
       if (await _updateCannedMessage()) {
-        await _updateMessages();
+        final CannedMessage updatedMessage = _updateMessage!.copyWith(
+            id: _updateMessage?.id,
+            categoryId: _updateCategory?.id,
+            categoryName: _updateCategory?.name,
+            text: _updatedText);
+        _messages.replaceRange(
+            _messages.indexOf(_updateMessage!), 1, [updatedMessage]);
+        await filterCannedMessagesByCategory();
         return true;
       }
     }
@@ -107,17 +121,13 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
 
   Future<void> deleteCannedMessage(int? messageId) async {
     if (await _deleteCannedMessage(messageId)) {
-      await _updateMessages();
+      _messages.removeWhere((element) => element.id == messageId);
+      await filterCannedMessagesByCategory();
     }
   }
 
   CannedCategorie? getCategoryById(int id) {
     return state.categories.firstWhereOrNull((element) => element.id == id);
-  }
-
-  Future<void> _updateMessages() async {
-    await _getCannedMessages(false);
-    await filterCannedMessagesByCategory();
   }
 
   Future<void> _getCannedCategories() async {
@@ -138,7 +148,7 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
     }
   }
 
-  Future<void> _getCannedMessages([refresh = true]) async {
+  Future<void> _getCannedMessages() async {
     try {
       final CannedMessagesResponse response =
           await _zodiacCannedMessagesRepository
@@ -150,18 +160,16 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
           response.messages != null &&
           response.messages!.isNotEmpty) {
         _messages.addAll(response.messages ?? []);
-        if (refresh) {
-          emit(state.copyWith(
-            messages: List.of(_messages),
-          ));
-        }
+        emit(state.copyWith(
+          messages: List.of(_messages),
+        ));
       }
     } catch (e) {
       logger.d(e);
     }
   }
 
-  Future<bool> _addCannedMessages() async {
+  Future<CannedMessagesAddResponse?> _addCannedMessages() async {
     try {
       final CannedMessagesAddResponse response =
           await _zodiacCannedMessagesRepository.addCannedMessage(
@@ -170,13 +178,13 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
                   text: _textCannedMessageToAdd));
 
       if (response.status == true && response.messageId != null) {
-        return true;
+        return response;
       }
     } catch (e) {
       logger.d(e);
     }
 
-    return false;
+    return null;
   }
 
   Future<bool> _updateCannedMessage() async {
