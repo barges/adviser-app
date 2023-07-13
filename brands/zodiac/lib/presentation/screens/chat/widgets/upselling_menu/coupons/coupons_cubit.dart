@@ -6,8 +6,6 @@ class CouponsCubit extends BaseCubit<CouponsState> {
   final WebSocketManager _webSocketManager;
   final int? _opponentId;
 
-  int selectedMessageIndex = 1;
-
   CouponsCubit(this._webSocketManager, this._opponentId)
       : super(const CouponsState()) {
     addListener(_webSocketManager.sendUserMessageStream.listen((event) {
@@ -22,6 +20,6 @@ class CouponsCubit extends BaseCubit<CouponsState> {
   }
 
   void onPageChanged(int index) {
-    selectedMessageIndex = index;
+    emit(state.copyWith(selectedCouponIndex: index));
   }
 }

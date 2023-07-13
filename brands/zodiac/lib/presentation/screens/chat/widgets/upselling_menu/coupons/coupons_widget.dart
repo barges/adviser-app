@@ -137,18 +137,27 @@ class CouponsWidget extends StatelessWidget {
                         final String? errorMessage = context.select(
                             (CouponsCubit cubit) => cubit.state.errorMessage);
 
-                        if (errorMessage?.isNotEmpty == true) {
-                          return Text(
-                            Utils.parseHtmlString(errorMessage!),
-                            textAlign: TextAlign.center,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              fontSize: 14.0,
-                              color: AppColors.error,
-                            ),
-                          );
-                        } else {
-                          return const SizedBox.shrink();
-                        }
+                        return AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          transitionBuilder: (child, animation) =>
+                              SizeTransition(
+                            sizeFactor: animation,
+                            child: child,
+                          ),
+                          child: errorMessage?.isNotEmpty == true
+                              ? Padding(
+                                  padding: const EdgeInsets.only(bottom: 12.0),
+                                  child: Text(
+                                    Utils.parseHtmlString(errorMessage!),
+                                    textAlign: TextAlign.center,
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      fontSize: 14.0,
+                                      color: AppColors.error,
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                        );
                       })),
                       AppElevatedButton(
                         title: SZodiac.of(context).sendZodiac,
@@ -157,9 +166,9 @@ class CouponsWidget extends StatelessWidget {
                               couponsCategories[selectedCategoryIndex].coupons;
                           if (coupons != null) {
                             chatCubit.sendUpsellingMessage(
-                                couponCode:
-                                    coupons[couponsCubit.selectedMessageIndex]
-                                        .code);
+                                couponCode: coupons[
+                                        couponsCubit.state.selectedCouponIndex]
+                                    .code);
                           }
                         },
                       ),

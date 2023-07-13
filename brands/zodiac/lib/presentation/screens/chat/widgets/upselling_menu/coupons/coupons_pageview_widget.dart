@@ -32,6 +32,9 @@ class _CouponsPageViewWidgetState extends State<CouponsPageViewWidget> {
 
     final CouponsCubit couponsCubit = context.read<CouponsCubit>();
 
+    final int selectedCouponIndex =
+        context.select((CouponsCubit cubit) => cubit.state.selectedCouponIndex);
+
     return SizedBox(
       height: height,
       child: PageView.builder(
@@ -40,9 +43,12 @@ class _CouponsPageViewWidgetState extends State<CouponsPageViewWidget> {
         onPageChanged: couponsCubit.onPageChanged,
         itemBuilder: (context, index) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
-          child: AppImageWidget(
-            uri: Uri.parse(
-              widget.coupons[index].image ?? '',
+          child: Opacity(
+            opacity: selectedCouponIndex == index ? 1.0 : 0.6,
+            child: AppImageWidget(
+              uri: Uri.parse(
+                widget.coupons[index].image ?? '',
+              ),
             ),
           ),
         ),
