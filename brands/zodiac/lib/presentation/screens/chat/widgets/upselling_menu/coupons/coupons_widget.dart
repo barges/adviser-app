@@ -3,12 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/extensions.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
+import 'package:shared_advisor_interface/themes/app_colors.dart';
+import 'package:shared_advisor_interface/utils/utils.dart';
+import 'package:zodiac/data/models/coupons/coupon_info.dart';
 import 'package:zodiac/data/models/coupons/coupons_category.dart';
 import 'package:zodiac/generated/l10n.dart';
+import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/category_menu_item_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/coupons/coupons_cubit.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/coupons/coupons_pageview_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/upselling_header_widget.dart';
+import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 
 class CouponsWidget extends StatelessWidget {
   const CouponsWidget({Key? key}) : super(key: key);
@@ -17,8 +24,13 @@ class CouponsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
+    final ChatCubit chatCubit = context.read<ChatCubit>();
+
     return BlocProvider(
-      create: (_) => CouponsCubit(),
+      create: (_) => CouponsCubit(
+        zodiacGetIt.get<WebSocketManager>(),
+        chatCubit.clientData.id,
+      ),
       child: Builder(builder: (context) {
         final CouponsCubit couponsCubit = context.read<CouponsCubit>();
 
@@ -40,6 +52,7 @@ class CouponsWidget extends StatelessWidget {
                     children: [
                       UpsellingHeaderWidget(
                         title: SZodiac.of(context).sendCouponZodiac,
+                        onCrossTap: chatCubit.closeUpsellingMenu,
                       ),
                       const SizedBox(
                         height: 4.0,
@@ -104,6 +117,55 @@ class CouponsWidget extends StatelessWidget {
                     ),
                   ],
                 ),
+                const SizedBox(
+                  height: 12.0,
+                ),
+                if (couponsCategories[selectedCategoryIndex].coupons != null)
+                  CouponsPageViewWidget(
+                    coupons: couponsCategories[selectedCategoryIndex].coupons!,
+                  ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppConstants.horizontalScreenPadding,
+                  ),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 12.0,
+                      ),
+                      Builder(builder: ((context) {
+                        final String? errorMessage = context.select(
+                            (CouponsCubit cubit) => cubit.state.errorMessage);
+
+                        if (errorMessage?.isNotEmpty == true) {
+                          return Text(
+                            Utils.parseHtmlString(errorMessage!),
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              fontSize: 14.0,
+                              color: AppColors.error,
+                            ),
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      })),
+                      AppElevatedButton(
+                        title: SZodiac.of(context).sendZodiac,
+                        onPressed: () {
+                          List<CouponInfo>? coupons =
+                              couponsCategories[selectedCategoryIndex].coupons;
+                          if (coupons != null) {
+                            chatCubit.sendUpsellingMessage(
+                                couponCode:
+                                    coupons[couponsCubit.selectedMessageIndex]
+                                        .code);
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           );

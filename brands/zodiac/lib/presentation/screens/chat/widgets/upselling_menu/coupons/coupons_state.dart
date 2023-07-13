@@ -6,5 +6,6 @@ part 'coupons_state.freezed.dart';
 class CouponsState with _$CouponsState {
   const factory CouponsState({
     @Default(0) int selectedCategoryIndex,
+    String? errorMessage,
   }) = _CouponsState;
 }

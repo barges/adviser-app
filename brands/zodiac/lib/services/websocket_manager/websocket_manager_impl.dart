@@ -32,6 +32,7 @@ import 'package:zodiac/services/websocket_manager/message_reaction_created_event
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/paid_free_event.dart';
 import 'package:zodiac/services/websocket_manager/room_paused_event.dart';
+import 'package:zodiac/services/websocket_manager/send_user_message_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
@@ -95,6 +96,9 @@ class WebSocketManagerImpl implements WebSocketManager {
   final PublishSubject<RoomPausedEvent> _roomPausedStream = PublishSubject();
 
   final PublishSubject<UpsellingListEvent> _upsellingListStream =
+      PublishSubject();
+
+  final PublishSubject<SendUserMessageEvent> _sendUserMessageStream =
       PublishSubject();
 
   final PublishSubject<MessageReactionCreatedEvent>
@@ -309,6 +313,10 @@ class WebSocketManagerImpl implements WebSocketManager {
   @override
   Stream<UpsellingListEvent> get upsellingListStream =>
       _upsellingListStream.stream;
+
+  @override
+  Stream<SendUserMessageEvent> get sendUserMessageStream =>
+      _sendUserMessageStream.stream;
 
   @override
   WebSocketState get currentState => _currentState;
@@ -978,7 +986,22 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onSendUserMessage(Event event) {
-    ///TODO - Implements onSendUserMessage
+    (event.eventData as SocketMessage).let((data) {
+      (data.opponentId as int).let(
+        (id) {
+          (data.params as Map).let((params) {
+            final bool? status = params['status'];
+            if (status != null) {
+              _sendUserMessageStream.add(SendUserMessageEvent(
+                opponentId: id,
+                status: status,
+                message: params['message'],
+              ));
+            }
+          });
+        },
+      );
+    });
   }
 
   void _onStartTimer(Event event) {

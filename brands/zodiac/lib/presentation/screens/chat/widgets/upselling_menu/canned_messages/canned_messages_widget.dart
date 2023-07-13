@@ -140,6 +140,7 @@ class CannedMessagesWidget extends StatelessWidget {
                                       cannedMessagesCubit.selectedMessageIndex]
                                   .message,
                         );
+                        chatCubit.closeUpsellingMenu();
                       },
                     ),
                   ),

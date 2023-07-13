@@ -8,6 +8,7 @@ import 'package:zodiac/services/websocket_manager/message_reaction_created_event
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/paid_free_event.dart';
 import 'package:zodiac/services/websocket_manager/room_paused_event.dart';
+import 'package:zodiac/services/websocket_manager/send_user_message_event.dart';
 import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
 import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
 import 'package:zodiac/services/websocket_manager/upselling_list_event.dart';
@@ -55,6 +56,8 @@ abstract class WebSocketManager {
   Stream<RoomPausedEvent> get roomPausedStream;
 
   Stream<UpsellingListEvent> get upsellingListStream;
+
+  Stream<SendUserMessageEvent> get sendUserMessageStream;
 
   WebSocketState get currentState;
 

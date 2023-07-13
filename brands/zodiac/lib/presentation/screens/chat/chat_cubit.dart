@@ -946,7 +946,6 @@ class ChatCubit extends BaseCubit<ChatState> {
         couponCode: couponCode,
         cannedMessageId: cannedMessageId,
       );
-      closeUpsellingMenu();
     }
   }
 
