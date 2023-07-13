@@ -327,6 +327,9 @@ class ChatCubit extends BaseCubit<ChatState> {
 
       if (!isFocused) {
         setTextInputFocus(false);
+      } else {
+        closeUpsellingMenu();
+        emit(state.copyWith(upsellingMenuOpened: false));
       }
     });
 
@@ -954,6 +957,9 @@ class ChatCubit extends BaseCubit<ChatState> {
       emit(state.copyWith(
           upsellingMenuOpened: !state.upsellingMenuOpened,
           selectedUpsellingMenuItem: null));
+      if (state.upsellingMenuOpened) {
+        textInputFocusNode.unfocus();
+      }
     }
   }
 }
