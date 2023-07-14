@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/settings/phone.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
@@ -138,9 +140,11 @@ class ReviewsPartWidget extends StatelessWidget {
               height: 1.0,
             ),
             TileWidget(
-              title: SZodiac.of(context).servicesZodiac,
+              title: SZodiac.of(context).servicesMessagesZodiac,
               iconSVGPath: Assets.zodiac.vectors.servicesIcon.path,
-              onTap: () {},
+              onTap: () => context.push(
+                route: ZodiacServicesMessages(),
+              ),
             ),
           ],
         ),

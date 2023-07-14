@@ -4,6 +4,7 @@ class AppConstants {
   static const String appPushIcon = 'ic_stat_reader_app_push';
 
   static const double textFieldsHeight = 48.0;
+  static const double textFieldsBigHeight = 144.0;
   static const double buttonRadius = 12.0;
   static const double iconSize = 24.0;
   static const double iconButtonSize = 32.0;

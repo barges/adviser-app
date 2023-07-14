@@ -26,6 +26,7 @@ class RoutePathsZodiac {
   static const smsVerificationScreen = '${ZodiacBrand.alias}SMSVerification';
   static const phoneNumberVerifiedScreen =
       '${ZodiacBrand.alias}PhoneNumberVerified';
+  static const servicesMessagesScreen = '${ZodiacBrand.alias}ServicesMessages';
   static const chatScreen = '${ZodiacBrand.alias}Chat';
   static const sendImageScreen = '${ZodiacBrand.alias}SendImage';
 }

@@ -348,7 +348,7 @@ class WebSocketManagerImpl implements WebSocketManager {
         logger.d("Socket is closed...");
         _webSocketStateStream.add(WebSocketState.closed);
         _currentState = WebSocketState.closed;
-        _authCheckOnBackend();
+        // _authCheckOnBackend();
       }, onError: (error) {
         logger.d("Socket error: $error");
         _webSocketStateStream.add(WebSocketState.closed);
