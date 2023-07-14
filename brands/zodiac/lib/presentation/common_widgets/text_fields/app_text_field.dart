@@ -6,7 +6,7 @@ class AppTextField extends StatelessWidget {
   final String? label;
   final ValidationErrorType errorType;
   final TextEditingController? controller;
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
   final FocusNode? nextFocusNode;
   final TextInputType? textInputType;
   final TextInputAction? textInputAction;
@@ -17,7 +17,7 @@ class AppTextField extends StatelessWidget {
 
   const AppTextField({
     Key? key,
-    required this.focusNode,
+    this.focusNode,
     this.label,
     this.controller,
     this.nextFocusNode,
@@ -51,7 +51,7 @@ class AppTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
             color: errorType != ValidationErrorType.empty
                 ? Theme.of(context).errorColor
-                : focusNode.hasPrimaryFocus
+                : focusNode != null && focusNode!.hasPrimaryFocus
                     ? Theme.of(context).primaryColor
                     : Theme.of(context).hintColor,
           ),
