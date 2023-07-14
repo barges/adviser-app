@@ -25,6 +25,8 @@ class UpsellingMenuWidget extends StatelessWidget {
         .select((ChatCubit cubit) => cubit.state.selectedUpsellingMenuItem);
     final List<UpsellingMenuType> enabledMenuItems =
         context.select((ChatCubit cubit) => cubit.state.enabledMenuItems);
+    final int? enabledCouponsCount =
+        context.select((ChatCubit cubit) => cubit.state.enabledCouponsCount);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -53,6 +55,8 @@ class UpsellingMenuWidget extends StatelessWidget {
                       iconPath: Assets.zodiac.vectors.narrowCouponsIcon.path,
                       type: UpsellingMenuType.coupons,
                       selectedMenuItem: selectedMenuItem,
+                      count: enabledCouponsCount,
+                      isEnabled: enabledCouponsCount != 0,
                     ),
                   ),
                 if (enabledMenuItems.contains(UpsellingMenuType.canned))
@@ -94,6 +98,7 @@ class UpsellingMenuWidget extends StatelessWidget {
 class _UpsellingMenuItemWidget extends StatelessWidget {
   final String iconPath;
   final UpsellingMenuType type;
+  final bool isEnabled;
   final UpsellingMenuType? selectedMenuItem;
   final int? count;
 
@@ -103,6 +108,7 @@ class _UpsellingMenuItemWidget extends StatelessWidget {
     required this.type,
     this.selectedMenuItem,
     this.count,
+    this.isEnabled = true,
   }) : super(key: key);
 
   @override
@@ -112,7 +118,7 @@ class _UpsellingMenuItemWidget extends StatelessWidget {
     final bool isSelected = type == selectedMenuItem;
 
     return GestureDetector(
-      onTap: () => chatCubit.selectUpsellingMenuItem(type),
+      onTap: isEnabled ? () => chatCubit.selectUpsellingMenuItem(type) : null,
       child: Container(
         decoration: BoxDecoration(
             color: isSelected ? theme.primaryColorLight : null,
@@ -121,13 +127,16 @@ class _UpsellingMenuItemWidget extends StatelessWidget {
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              SvgPicture.asset(
-                iconPath,
-                height: AppConstants.iconSize,
-                width: AppConstants.iconSize,
-                colorFilter: ColorFilter.mode(
-                  isSelected ? theme.primaryColor : theme.shadowColor,
-                  BlendMode.srcIn,
+              Opacity(
+                opacity: isEnabled ? 1.0 : 0.3,
+                child: SvgPicture.asset(
+                  iconPath,
+                  height: AppConstants.iconSize,
+                  width: AppConstants.iconSize,
+                  colorFilter: ColorFilter.mode(
+                    isSelected ? theme.primaryColor : theme.shadowColor,
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
               if (count != null)

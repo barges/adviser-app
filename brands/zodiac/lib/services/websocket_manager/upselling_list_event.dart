@@ -5,10 +5,12 @@ class UpsellingListEvent {
   final List<CannedMessageCategory>? cannedCategories;
   final List<CouponsCategory>? couponsCategories;
   final int opponentId;
+  final int? enabledCouponsCount;
 
   UpsellingListEvent({
     this.cannedCategories,
     this.couponsCategories,
     required this.opponentId,
+    this.enabledCouponsCount,
   });
 }

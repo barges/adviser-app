@@ -1077,6 +1077,7 @@ class WebSocketManagerImpl implements WebSocketManager {
               cannedCategories: categoriesList,
               couponsCategories: couponsList,
               opponentId: id,
+              enabledCouponsCount: 5,
             ),
           );
         },
