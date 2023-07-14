@@ -63,7 +63,6 @@ dependencies:
   audioplayers: ^2.0.0
   focused_menu: ^1.0.5
   emoji_picker_flutter: ^1.6.1
-  snappy_list_view: ^0.1.0
   
   audible_mode: ^1.0.1
 
