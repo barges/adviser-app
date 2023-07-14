@@ -30,6 +30,7 @@ class CouponsWidget extends StatelessWidget {
       create: (_) => CouponsCubit(
         zodiacGetIt.get<WebSocketManager>(),
         chatCubit.clientData.id,
+        chatCubit.closeUpsellingMenu,
       ),
       child: Builder(builder: (context) {
         final CouponsCubit couponsCubit = context.read<CouponsCubit>();
