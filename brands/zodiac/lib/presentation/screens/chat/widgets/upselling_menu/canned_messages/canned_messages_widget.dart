@@ -5,8 +5,8 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
-import 'package:zodiac/data/models/canned_message/canned_message_category.dart';
-import 'package:zodiac/data/models/canned_message/canned_message_model.dart';
+import 'package:zodiac/data/models/canned_message_socket/canned_message_socket_category.dart';
+import 'package:zodiac/data/models/canned_message_socket/canned_message_socket_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/canned_messages/canned_message_widget.dart';
@@ -28,8 +28,9 @@ class CannedMessagesWidget extends StatelessWidget {
           final CannedMessagesCubit cannedMessagesCubit =
               context.read<CannedMessagesCubit>();
 
-          final List<CannedMessageCategory>? cannedMessageCategories = context
-              .select((ChatCubit cubit) => cubit.state.cannedMessageCategories);
+          final List<CannedMessageSocketCategory>? cannedMessageCategories =
+              context.select(
+                  (ChatCubit cubit) => cubit.state.cannedMessageCategories);
           final int selectedCategotyIndex = context.select(
               (CannedMessagesCubit cubit) => cubit.state.selectedCategotyIndex);
 
@@ -124,7 +125,7 @@ class CannedMessagesWidget extends StatelessWidget {
                     }
                   }),
                   Builder(builder: (context) {
-                    final List<CannedMessageModel>? messages =
+                    final List<CannedMessageSocketModel>? messages =
                         cannedMessageCategories[selectedCategotyIndex].messages;
 
                     if (messages != null) {
@@ -181,7 +182,7 @@ class CannedMessagesWidget extends StatelessWidget {
 }
 
 class CannedMessagesPageView extends StatefulWidget {
-  final List<CannedMessageModel> messages;
+  final List<CannedMessageSocketModel> messages;
   const CannedMessagesPageView({
     Key? key,
     required this.messages,

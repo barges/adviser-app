@@ -12,7 +12,7 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
-import 'package:zodiac/data/models/canned_message/canned_message_category.dart';
+import 'package:zodiac/data/models/canned_message_socket/canned_message_socket_category.dart';
 import 'package:zodiac/data/models/chat/call_data.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/end_chat_data.dart';
@@ -1031,12 +1031,13 @@ class WebSocketManagerImpl implements WebSocketManager {
         (id) {
           Map<String, dynamic>? categories = data.params['categories'];
           if (categories != null) {
-            List<CannedMessageCategory> categoriesList = [];
+            List<CannedMessageSocketCategory> categoriesList = [];
             final sortedCategories = categories.entries.toList()
               ..sort(
                   (e1, e2) => int.parse(e1.key).compareTo(int.parse(e2.key)));
             for (var element in sortedCategories) {
-              categoriesList.add(CannedMessageCategory.fromJson(element.value));
+              categoriesList
+                  .add(CannedMessageSocketCategory.fromJson(element.value));
             }
 
             _upsellingListStream.add(UpsellingListEvent(
