@@ -59,6 +59,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "activityZodiac": MessageLookupByLibrary.simpleMessage("Atividade"),
         "addMessageZodiac":
             MessageLookupByLibrary.simpleMessage("Adicionar mensagem"),
+        "addServiceZodiac":
+            MessageLookupByLibrary.simpleMessage("Adicionar serviço"),
         "addZodiac": MessageLookupByLibrary.simpleMessage("Adicionar"),
         "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac":
             MessageLookupByLibrary.simpleMessage(
@@ -212,10 +214,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "nowYouCanReceiveCallsZodiac": MessageLookupByLibrary.simpleMessage(
             "Agora você pode receber chamadas"),
         "objectsZodiac": MessageLookupByLibrary.simpleMessage("Objetos"),
+        "offlineServiceTabZodiac":
+            MessageLookupByLibrary.simpleMessage("Serviço off-line"),
         "offlineServiceZodiac":
             MessageLookupByLibrary.simpleMessage("Serviço off-line:"),
         "offlineZodiac": MessageLookupByLibrary.simpleMessage("Desligado"),
         "okZodiac": MessageLookupByLibrary.simpleMessage("Ok"),
+        "onlineServiceTabZodiac":
+            MessageLookupByLibrary.simpleMessage("Serviço on-line"),
         "onlineServicesZodiac":
             MessageLookupByLibrary.simpleMessage("Serviços online:"),
         "onlineZodiac": MessageLookupByLibrary.simpleMessage("On-line"),

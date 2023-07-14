@@ -9,6 +9,7 @@ import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dar
 import 'package:zodiac/presentation/common_widgets/no_connection_widget.dart';
 import 'package:zodiac/presentation/screens/services_messages/list_of_filters_widget.dart';
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_screen.dart';
+import 'package:zodiac/presentation/screens/services_messages/services/services_screen.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class ServicesMessagesScreen extends StatelessWidget {
@@ -80,7 +81,7 @@ class ServicesMessagesScreen extends StatelessWidget {
                                     child: IndexedStack(
                                       index: value,
                                       children: const [
-                                        SizedBox.shrink(),
+                                        ServicesScreen(),
                                         CannedMessagesScreen(),
                                       ],
                                     ),

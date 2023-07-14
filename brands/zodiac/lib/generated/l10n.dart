@@ -1925,6 +1925,36 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Add Service`
+  String get addServiceZodiac {
+    return Intl.message(
+      'Add Service',
+      name: 'addServiceZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Online service`
+  String get onlineServiceTabZodiac {
+    return Intl.message(
+      'Online service',
+      name: 'onlineServiceTabZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Offline service`
+  String get offlineServiceTabZodiac {
+    return Intl.message(
+      'Offline service',
+      name: 'offlineServiceTabZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {
