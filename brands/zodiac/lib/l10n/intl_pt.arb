@@ -192,5 +192,7 @@
   "moreAboutOfflineServicesZodiac": "Mais sobre serviços off-line",
   "thisTypeOfServicesAreNotTimeSensitiveZodiac": "Este tipo de serviço não é sensível ao tempo. Além disso, o usuário pode comprá-lo em sua página de perfil e na página de serviços. Você precisará concluí-lo durante determinado período e fornecer feedback ao cliente",
   "duplicateAnExistingServiceZodiac": "Duplicar um serviço existente",
-  "notSelectedZodiac": "Não selecionado"
+  "notSelectedZodiac": "Não selecionado",
+  "mainZodiac": "Principal",
+  "setAsMainLanguageZodiac": "Definir como idioma principal"
 }

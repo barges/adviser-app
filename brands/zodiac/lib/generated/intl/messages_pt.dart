@@ -185,6 +185,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Idioma principal"),
         "mainSpecialtyZodiac":
             MessageLookupByLibrary.simpleMessage("Especialidade principal"),
+        "mainZodiac": MessageLookupByLibrary.simpleMessage("Principal"),
         "manageMessagesZodiac":
             MessageLookupByLibrary.simpleMessage("Gerenciar mensagens"),
         "minutesZodiac": MessageLookupByLibrary.simpleMessage("min"),
@@ -303,6 +304,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Serviços e mensagens"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Serviços"),
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sessões"),
+        "setAsMainLanguageZodiac": MessageLookupByLibrary.simpleMessage(
+            "Definir como idioma principal"),
         "setUpSuccessfulZodiac":
             MessageLookupByLibrary.simpleMessage("Configuração bem sucedida"),
         "showDailyCouponsZodiac":

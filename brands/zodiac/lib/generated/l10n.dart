@@ -1995,6 +1995,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Main`
+  String get mainZodiac {
+    return Intl.message(
+      'Main',
+      name: 'mainZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set as main language`
+  String get setAsMainLanguageZodiac {
+    return Intl.message(
+      'Set as main language',
+      name: 'setAsMainLanguageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {
