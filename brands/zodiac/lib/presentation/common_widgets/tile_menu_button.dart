@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:zodiac/generated/l10n.dart';
 
 class TileMenuButton extends StatelessWidget {
   final String label;
-  final String title;
+  final String? title;
   final VoidCallback? onTap;
   final bool isError;
 
   const TileMenuButton({
     Key? key,
     required this.label,
-    required this.title,
+    this.title,
     this.onTap,
     this.isError = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -27,7 +30,7 @@ class TileMenuButton extends StatelessWidget {
           ),
           child: Text(
             label,
-            style: Theme.of(context).textTheme.labelMedium,
+            style: theme.textTheme.labelMedium,
           ),
         ),
         const SizedBox(
@@ -38,15 +41,15 @@ class TileMenuButton extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-              color: isError ? Theme.of(context).errorColor : Theme.of(context).hintColor,
+              color: isError ? theme.errorColor : theme.hintColor,
             ),
             child: Container(
               margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
               height: AppConstants.textFieldsHeight - 3,
               decoration: BoxDecoration(
                 borderRadius:
-                BorderRadius.circular(AppConstants.buttonRadius - 1),
-                color: Theme.of(context).canvasColor,
+                    BorderRadius.circular(AppConstants.buttonRadius - 1),
+                color: theme.canvasColor,
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -56,18 +59,21 @@ class TileMenuButton extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        title,
+                        title ?? SZodiac.of(context).notSelectedZodiac,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                            color: title != null
+                                ? theme.hoverColor
+                                : theme.shadowColor),
                       ),
                     ),
-                    if(onTap != null)
-                    Assets.vectors.arrowRight.svg(
-                      height: AppConstants.iconSize,
-                      width: AppConstants.iconSize,
-                      color: Theme.of(context).iconTheme.color,
-                    ),
+                    if (onTap != null)
+                      Assets.vectors.arrowRight.svg(
+                        height: AppConstants.iconSize,
+                        width: AppConstants.iconSize,
+                        color: theme.iconTheme.color,
+                      ),
                   ],
                 ),
               ),
@@ -78,5 +84,3 @@ class TileMenuButton extends StatelessWidget {
     );
   }
 }
-
-

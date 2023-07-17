@@ -134,6 +134,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "doYouWantToDeleteThisMessageZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Deseja excluir esta mensagem?"),
+        "duplicateAnExistingServiceZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Duplicar um serviço existente"),
         "editMessageZodiac":
             MessageLookupByLibrary.simpleMessage("Editar mensagem"),
         "editProfileZodiac":
@@ -211,6 +214,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noTransactionsYetZodiac":
             MessageLookupByLibrary.simpleMessage("Nenhuma transação ainda"),
         "noZodiac": MessageLookupByLibrary.simpleMessage("Não"),
+        "notSelectedZodiac":
+            MessageLookupByLibrary.simpleMessage("Não selecionado"),
         "notificationsZodiac":
             MessageLookupByLibrary.simpleMessage("Notificações"),
         "nowYouCanReceiveCallsZodiac": MessageLookupByLibrary.simpleMessage(

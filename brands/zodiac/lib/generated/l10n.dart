@@ -1975,6 +1975,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Duplicate an existing service`
+  String get duplicateAnExistingServiceZodiac {
+    return Intl.message(
+      'Duplicate an existing service',
+      name: 'duplicateAnExistingServiceZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not selected`
+  String get notSelectedZodiac {
+    return Intl.message(
+      'Not selected',
+      name: 'notSelectedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

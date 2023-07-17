@@ -189,5 +189,7 @@
   "onlineServiceTabZodiac": "Servicio en línea",
   "offlineServiceTabZodiac": "Servicio fuera de línea",
   "moreAboutOfflineServicesZodiac": "Más sobre servicios fuera de línea",
-  "thisTypeOfServicesAreNotTimeSensitiveZodiac": "Este tipo de servicios no son sensibles al tiempo. También el usuario puede comprarlo desde su página de perfil y desde la página de servicios. Deberá completarlo durante cierto período y proporcionar comentarios al cliente."
+  "thisTypeOfServicesAreNotTimeSensitiveZodiac": "Este tipo de servicios no son sensibles al tiempo. También el usuario puede comprarlo desde su página de perfil y desde la página de servicios. Deberá completarlo durante cierto período y proporcionar comentarios al cliente.",
+  "duplicateAnExistingServiceZodiac": "Duplicar un servicio existente",
+  "notSelectedZodiac": "No seleccionado"
 }

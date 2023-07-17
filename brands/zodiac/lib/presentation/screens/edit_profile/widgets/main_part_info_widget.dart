@@ -11,7 +11,7 @@ import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_cubit.dart';
-import 'package:zodiac/presentation/screens/edit_profile/widgets/tile_menu_button.dart';
+import 'package:zodiac/presentation/common_widgets/tile_menu_button.dart';
 
 class MainPartInfoWidget extends StatelessWidget {
   final DetailedUserInfo? detailedUserInfo;

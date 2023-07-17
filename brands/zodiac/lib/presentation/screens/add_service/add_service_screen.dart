@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/simple_app_bar.dart';
+import 'package:zodiac/presentation/common_widgets/tile_menu_button.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/information_expansion_panel.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/tabs_widget.dart';
@@ -37,6 +38,13 @@ class AddServiceScreen extends StatelessWidget {
                     title: SZodiac.of(context).moreAboutOfflineServicesZodiac,
                     content: SZodiac.of(context)
                         .thisTypeOfServicesAreNotTimeSensitiveZodiac,
+                  ),
+                  const SizedBox(
+                    height: 24.0,
+                  ),
+                  TileMenuButton(
+                    label: SZodiac.of(context).duplicateAnExistingServiceZodiac,
+                    onTap: () {},
                   )
                 ],
               )),
