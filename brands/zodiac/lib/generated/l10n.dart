@@ -1955,6 +1955,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `More about offline services`
+  String get moreAboutOfflineServicesZodiac {
+    return Intl.message(
+      'More about offline services',
+      name: 'moreAboutOfflineServicesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This type of services are not time sensitive. Also user can buy it from your profile page and from the services page. You will need to complete it during certain period and provide feedback to the customer`
+  String get thisTypeOfServicesAreNotTimeSensitiveZodiac {
+    return Intl.message(
+      'This type of services are not time sensitive. Also user can buy it from your profile page and from the services page. You will need to complete it during certain period and provide feedback to the customer',
+      name: 'thisTypeOfServicesAreNotTimeSensitiveZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

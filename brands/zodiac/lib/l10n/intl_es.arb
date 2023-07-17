@@ -187,5 +187,7 @@
   "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac": "Todos los cupones seleccionados están listos para mostrarse mañana.",
   "addServiceZodiac": "Agregar servicio",
   "onlineServiceTabZodiac": "Servicio en línea",
-  "offlineServiceTabZodiac": "Servicio fuera de línea"
+  "offlineServiceTabZodiac": "Servicio fuera de línea",
+  "moreAboutOfflineServicesZodiac": "Más sobre servicios fuera de línea",
+  "thisTypeOfServicesAreNotTimeSensitiveZodiac": "Este tipo de servicios no son sensibles al tiempo. También el usuario puede comprarlo desde su página de perfil y desde la página de servicios. Deberá completarlo durante cierto período y proporcionar comentarios al cliente."
 }

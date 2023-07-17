@@ -180,6 +180,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "manageMessagesZodiac":
             MessageLookupByLibrary.simpleMessage("Nachrichten verwalten"),
         "minutesZodiac": MessageLookupByLibrary.simpleMessage("min"),
+        "moreAboutOfflineServicesZodiac":
+            MessageLookupByLibrary.simpleMessage("Mehr über Offline-Dienste"),
         "mySpecialtiesZodiac":
             MessageLookupByLibrary.simpleMessage("Meine Spezialitäten"),
         "newCustomersZodiac":
@@ -315,6 +317,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "thePasswordsMustMatchZodiac": MessageLookupByLibrary.simpleMessage(
             "Die Passwörter müssen übereinstimmen"),
         "thisMonthZodiac": MessageLookupByLibrary.simpleMessage("Dieser Monat"),
+        "thisTypeOfServicesAreNotTimeSensitiveZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Diese Art von Diensten ist nicht zeitkritisch. Außerdem können Benutzer es auf Ihrer Profilseite und auf der Serviceseite kaufen. Sie müssen es innerhalb eines bestimmten Zeitraums ausfüllen und dem Kunden Feedback geben"),
         "thisWhatYourClientSeeZodiac": MessageLookupByLibrary.simpleMessage(
             "Dies ist, was Ihr Kunde als Chat-Blase von Ihnen sieht"),
         "tipZodiac": MessageLookupByLibrary.simpleMessage("Spitze"),

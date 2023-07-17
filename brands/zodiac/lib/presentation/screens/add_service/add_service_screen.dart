@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/simple_app_bar.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
+import 'package:zodiac/presentation/screens/add_service/widgets/information_expansion_panel.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/tabs_widget.dart';
 
 class AddServiceScreen extends StatelessWidget {
@@ -22,13 +23,21 @@ class AddServiceScreen extends StatelessWidget {
         ),
         body: SingleChildScrollView(
           child: Padding(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: AppConstants.horizontalScreenPadding,
                 vertical: 16.0,
               ),
               child: Column(
                 children: [
-                  TabsWidget(),
+                  const TabsWidget(),
+                  const SizedBox(
+                    height: 24.0,
+                  ),
+                  InformationExpansionPanel(
+                    title: SZodiac.of(context).moreAboutOfflineServicesZodiac,
+                    content: SZodiac.of(context)
+                        .thisTypeOfServicesAreNotTimeSensitiveZodiac,
+                  )
                 ],
               )),
         ),
