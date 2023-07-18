@@ -462,11 +462,31 @@ class SZodiac {
     );
   }
 
+  /// `Services & Messages`
+  String get servicesMessagesZodiac {
+    return Intl.message(
+      'Services & Messages',
+      name: 'servicesMessagesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Services`
   String get servicesZodiac {
     return Intl.message(
       'Services',
       name: 'servicesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Сanned messages`
+  String get cannedMessagesZodiac {
+    return Intl.message(
+      'Сanned messages',
+      name: 'cannedMessagesZodiac',
       desc: '',
       args: [],
     );
@@ -1701,6 +1721,126 @@ class SZodiac {
     return Intl.message(
       'No emoji found',
       name: 'noEmojiFoundZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can easily access these templates during and after the chat`
+  String get youCanEasilyAccessTheseTemplatesZodiac {
+    return Intl.message(
+      'You can easily access these templates during and after the chat',
+      name: 'youCanEasilyAccessTheseTemplatesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add message`
+  String get addMessageZodiac {
+    return Intl.message(
+      'Add message',
+      name: 'addMessageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save template`
+  String get saveTemplateZodiac {
+    return Intl.message(
+      'Save template',
+      name: 'saveTemplateZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get allZodiac {
+    return Intl.message(
+      'All',
+      name: 'allZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you really want to delete this template?`
+  String get doYouWantDeleteTemplateZodiac {
+    return Intl.message(
+      'Do you really want to delete this template?',
+      name: 'doYouWantDeleteTemplateZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It will be removed from the templates and you won't be able to use it from the chat anymore`
+  String get itWillBeRemovedFromTemplatesZodiac {
+    return Intl.message(
+      'It will be removed from the templates and you won\'t be able to use it from the chat anymore',
+      name: 'itWillBeRemovedFromTemplatesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get deleteZodiac {
+    return Intl.message(
+      'Delete',
+      name: 'deleteZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Manage messages`
+  String get manageMessagesZodiac {
+    return Intl.message(
+      'Manage messages',
+      name: 'manageMessagesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This is what your client will see as a chat bubble from you`
+  String get thisWhatYourClientSeeZodiac {
+    return Intl.message(
+      'This is what your client will see as a chat bubble from you',
+      name: 'thisWhatYourClientSeeZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose category of the template`
+  String get chooseCategoryTemplateZodiac {
+    return Intl.message(
+      'Choose category of the template',
+      name: 'chooseCategoryTemplateZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit template`
+  String get editTemplateZodiac {
+    return Intl.message(
+      'Edit template',
+      name: 'editTemplateZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit message`
+  String get editMessageZodiac {
+    return Intl.message(
+      'Edit message',
+      name: 'editMessageZodiac',
       desc: '',
       args: [],
     );
