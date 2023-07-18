@@ -116,6 +116,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "daysZodiac": MessageLookupByLibrary.simpleMessage("tage"),
         "declineZodiac": MessageLookupByLibrary.simpleMessage("Abfall"),
         "deleteZodiac": MessageLookupByLibrary.simpleMessage("Löschen"),
+        "descriptionZodiac":
+            MessageLookupByLibrary.simpleMessage("Beschreibung"),
         "doYouReallyWantToCloseTheChatZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Möchten Sie den Chat wirklich schließen?"),
@@ -140,6 +142,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Profil bearbeiten"),
         "editTemplateZodiac":
             MessageLookupByLibrary.simpleMessage("Vorlage bearbeiten"),
+        "egAstrologyReadingZodiac":
+            MessageLookupByLibrary.simpleMessage("z.B. Astrologie-Lesung"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("E-Mail"),
         "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(
@@ -292,6 +296,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "selectedPhotoZodiac":
             MessageLookupByLibrary.simpleMessage("Ausgewähltes Foto"),
         "sendCodeZodiac": MessageLookupByLibrary.simpleMessage("Code senden"),
+        "serviceDescriptionHintZodiac": MessageLookupByLibrary.simpleMessage(
+            "Ich werde 3 Karten ziehen\nIch werde meinen Engel kontaktieren\nGemeinsam lesen wir die Schlussfolgerungen\nSchließlich werde ich Ihnen in einer nächsten Sitzung die von uns durchgeführte Analyse mitteilen"),
         "serviceLanguageZodiac":
             MessageLookupByLibrary.simpleMessage("Servicesprache"),
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Service"),
@@ -333,6 +339,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "thisWhatYourClientSeeZodiac": MessageLookupByLibrary.simpleMessage(
             "Dies ist, was Ihr Kunde als Chat-Blase von Ihnen sieht"),
         "tipZodiac": MessageLookupByLibrary.simpleMessage("Spitze"),
+        "titleZodiac": MessageLookupByLibrary.simpleMessage("Titel"),
         "todayZodiac": MessageLookupByLibrary.simpleMessage("Heute"),
         "topUpZodiac": MessageLookupByLibrary.simpleMessage("Nachfüllen"),
         "travelAndPlacesZodiac":

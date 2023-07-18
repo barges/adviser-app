@@ -193,5 +193,9 @@
   "notSelectedZodiac": "Nicht ausgewählt",
   "mainZodiac": "Hauptsächlich",
   "setAsMainLanguageZodiac": "Als Hauptsprache festlegen",
-  "serviceLanguageZodiac": "Servicesprache"
+  "serviceLanguageZodiac": "Servicesprache",
+  "titleZodiac": "Titel",
+  "egAstrologyReadingZodiac": "z.B. Astrologie-Lesung",
+  "descriptionZodiac": "Beschreibung",
+  "serviceDescriptionHintZodiac": "Ich werde 3 Karten ziehen\nIch werde meinen Engel kontaktieren\nGemeinsam lesen wir die Schlussfolgerungen\nSchließlich werde ich Ihnen in einer nächsten Sitzung die von uns durchgeführte Analyse mitteilen"
 }

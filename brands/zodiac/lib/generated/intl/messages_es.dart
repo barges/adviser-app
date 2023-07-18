@@ -120,6 +120,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "daysZodiac": MessageLookupByLibrary.simpleMessage("dias"),
         "declineZodiac": MessageLookupByLibrary.simpleMessage("Rechazar"),
         "deleteZodiac": MessageLookupByLibrary.simpleMessage("Borrar"),
+        "descriptionZodiac":
+            MessageLookupByLibrary.simpleMessage("Descripción"),
         "doYouReallyWantToCloseTheChatZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "¿De verdad quieres cerrar el chat?"),
@@ -142,6 +144,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Editar perfil"),
         "editTemplateZodiac":
             MessageLookupByLibrary.simpleMessage("Editar plantilla"),
+        "egAstrologyReadingZodiac":
+            MessageLookupByLibrary.simpleMessage("p.ej. Lectura de astrología"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("Email"),
         "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(
@@ -297,6 +301,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "selectedPhotoZodiac":
             MessageLookupByLibrary.simpleMessage("Foto seleccionada"),
         "sendCodeZodiac": MessageLookupByLibrary.simpleMessage("Enviar código"),
+        "serviceDescriptionHintZodiac": MessageLookupByLibrary.simpleMessage(
+            "Robaré 3 cartas\nContactaré a mi ángel\nJuntos leeremos las conclusiones.\nEventualmente compartiré con ustedes, en una próxima sesión, el análisis que hemos hecho"),
         "serviceLanguageZodiac":
             MessageLookupByLibrary.simpleMessage("Idioma del servicio"),
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Servicio"),
@@ -338,6 +344,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "thisWhatYourClientSeeZodiac": MessageLookupByLibrary.simpleMessage(
             "Esto es lo que tu cliente verá como una burbuja de chat tuya"),
         "tipZodiac": MessageLookupByLibrary.simpleMessage("Consejo"),
+        "titleZodiac": MessageLookupByLibrary.simpleMessage("Título"),
         "todayZodiac": MessageLookupByLibrary.simpleMessage("Hoy"),
         "topUpZodiac": MessageLookupByLibrary.simpleMessage("Completar"),
         "travelAndPlacesZodiac":

@@ -10,6 +10,7 @@ import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/information_expansion_panel.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/language_section_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/tabs_widget.dart';
+import 'package:zodiac/presentation/screens/add_service/widgets/title_description_part_widget.dart';
 
 class AddServiceScreen extends StatelessWidget {
   const AddServiceScreen({Key? key}) : super(key: key);
@@ -63,7 +64,20 @@ class AddServiceScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const LanguageSectionWidget()
+                  const LanguageSectionWidget(),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppConstants.horizontalScreenPadding,
+                    ),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 24.0,
+                        ),
+                        TitleDescriptionPartWidget(),
+                      ],
+                    ),
+                  )
                 ],
               )),
         ),

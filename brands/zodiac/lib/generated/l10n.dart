@@ -2025,6 +2025,46 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Title`
+  String get titleZodiac {
+    return Intl.message(
+      'Title',
+      name: 'titleZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `e.g. Astrology Reading`
+  String get egAstrologyReadingZodiac {
+    return Intl.message(
+      'e.g. Astrology Reading',
+      name: 'egAstrologyReadingZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description`
+  String get descriptionZodiac {
+    return Intl.message(
+      'Description',
+      name: 'descriptionZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `I will draw 3 cards\nI will contact my angel\nTogether we will read the conclusions\nEventually I will share with you, in a next session, the analysis we have done`
+  String get serviceDescriptionHintZodiac {
+    return Intl.message(
+      'I will draw 3 cards\nI will contact my angel\nTogether we will read the conclusions\nEventually I will share with you, in a next session, the analysis we have done',
+      name: 'serviceDescriptionHintZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

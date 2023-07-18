@@ -14,6 +14,7 @@ class AppTextField extends StatelessWidget {
   final int? maxLength;
   final bool isPassword;
   final bool isBig;
+  final bool showCounter;
 
   const AppTextField({
     Key? key,
@@ -28,6 +29,7 @@ class AppTextField extends StatelessWidget {
     this.isBig = false,
     this.errorType = ValidationErrorType.empty,
     this.hintText = '',
+    this.showCounter = false,
   }) : super(key: key);
 
   @override
@@ -81,8 +83,16 @@ class AppTextField extends StatelessWidget {
                 contentPadding: isBig
                     ? const EdgeInsets.all(12.0)
                     : const EdgeInsets.symmetric(horizontal: 12.0),
-                counterText: '',
+                // counterText: '',
               ),
+              buildCounter: (context,
+                  {required currentLength, required isFocused, maxLength}) {
+                if (showCounter && maxLength != null) {
+                  return Text('$currentLength/$maxLength');
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
               maxLines: isBig ? 10 : 1,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
