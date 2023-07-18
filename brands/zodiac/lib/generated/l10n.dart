@@ -2065,6 +2065,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Explain in 3-5 steps what the customers will get.`
+  String get explainIn3to5StepsWhatTheCustomersWillGetZodiac {
+    return Intl.message(
+      'Explain in 3-5 steps what the customers will get.',
+      name: 'explainIn3to5StepsWhatTheCustomersWillGetZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

@@ -22,64 +22,67 @@ class AddServiceScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           AddServiceCubit(zodiacGetIt.get<ZodiacCachingManager>()),
-      child: Scaffold(
-        backgroundColor: theme.scaffoldBackgroundColor,
-        appBar: SimpleAppBar(
-          title: SZodiac.of(context).addServiceZodiac,
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 16.0,
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppConstants.horizontalScreenPadding,
+      child: GestureDetector(
+        onTap: FocusScope.of(context).unfocus,
+        child: Scaffold(
+          backgroundColor: theme.scaffoldBackgroundColor,
+          appBar: SimpleAppBar(
+            title: SZodiac.of(context).addServiceZodiac,
+          ),
+          body: SingleChildScrollView(
+            child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16.0,
+                ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppConstants.horizontalScreenPadding,
+                      ),
+                      child: Column(
+                        children: [
+                          const TabsWidget(),
+                          const SizedBox(
+                            height: 24.0,
+                          ),
+                          InformationExpansionPanel(
+                            title: SZodiac.of(context)
+                                .moreAboutOfflineServicesZodiac,
+                            content: SZodiac.of(context)
+                                .thisTypeOfServicesAreNotTimeSensitiveZodiac,
+                          ),
+                          const SizedBox(
+                            height: 24.0,
+                          ),
+                          TileMenuButton(
+                            label: SZodiac.of(context)
+                                .duplicateAnExistingServiceZodiac,
+                            onTap: () {},
+                          ),
+                          const SizedBox(
+                            height: 24.0,
+                          ),
+                        ],
+                      ),
                     ),
-                    child: Column(
-                      children: [
-                        const TabsWidget(),
-                        const SizedBox(
-                          height: 24.0,
-                        ),
-                        InformationExpansionPanel(
-                          title: SZodiac.of(context)
-                              .moreAboutOfflineServicesZodiac,
-                          content: SZodiac.of(context)
-                              .thisTypeOfServicesAreNotTimeSensitiveZodiac,
-                        ),
-                        const SizedBox(
-                          height: 24.0,
-                        ),
-                        TileMenuButton(
-                          label: SZodiac.of(context)
-                              .duplicateAnExistingServiceZodiac,
-                          onTap: () {},
-                        ),
-                        const SizedBox(
-                          height: 24.0,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const LanguageSectionWidget(),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppConstants.horizontalScreenPadding,
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 24.0,
-                        ),
-                        TitleDescriptionPartWidget(),
-                      ],
-                    ),
-                  )
-                ],
-              )),
+                    const LanguageSectionWidget(),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppConstants.horizontalScreenPadding,
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 24.0,
+                          ),
+                          TitleDescriptionPartWidget(),
+                        ],
+                      ),
+                    )
+                  ],
+                )),
+          ),
         ),
       ),
     );

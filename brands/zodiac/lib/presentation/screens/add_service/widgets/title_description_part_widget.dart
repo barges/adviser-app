@@ -22,6 +22,8 @@ class TitleDescriptionPartWidget extends StatelessWidget {
           hintText: SZodiac.of(context).serviceDescriptionHintZodiac,
           maxLength: 280,
           showCounter: true,
+          footerHint: SZodiac.of(context)
+              .explainIn3to5StepsWhatTheCustomersWillGetZodiac,
         ),
       ],
     );
