@@ -193,5 +193,6 @@
   "duplicateAnExistingServiceZodiac": "Duplicar un servicio existente",
   "notSelectedZodiac": "No seleccionado",
   "mainZodiac": "Principal",
-  "setAsMainLanguageZodiac": "Establecer como idioma principal"
+  "setAsMainLanguageZodiac": "Establecer como idioma principal",
+  "serviceLanguageZodiac": "Idioma del servicio"
 }

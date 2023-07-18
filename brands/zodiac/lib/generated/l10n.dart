@@ -2015,6 +2015,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Service language`
+  String get serviceLanguageZodiac {
+    return Intl.message(
+      'Service language',
+      name: 'serviceLanguageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

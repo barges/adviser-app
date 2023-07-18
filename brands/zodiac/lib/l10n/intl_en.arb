@@ -194,5 +194,6 @@
   "duplicateAnExistingServiceZodiac": "Duplicate an existing service",
   "notSelectedZodiac": "Not selected",
   "mainZodiac": "Main",
-  "setAsMainLanguageZodiac": "Set as main language"
+  "setAsMainLanguageZodiac": "Set as main language",
+  "serviceLanguageZodiac": "Service language"
 }

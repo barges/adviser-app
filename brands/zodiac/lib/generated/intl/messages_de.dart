@@ -292,6 +292,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "selectedPhotoZodiac":
             MessageLookupByLibrary.simpleMessage("Ausgewähltes Foto"),
         "sendCodeZodiac": MessageLookupByLibrary.simpleMessage("Code senden"),
+        "serviceLanguageZodiac":
+            MessageLookupByLibrary.simpleMessage("Servicesprache"),
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Service"),
         "servicesMessagesZodiac":
             MessageLookupByLibrary.simpleMessage("Service und Nachrichten"),
