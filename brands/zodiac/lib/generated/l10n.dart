@@ -2075,6 +2075,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Price`
+  String get priceZodiac {
+    return Intl.message(
+      'Price',
+      name: 'priceZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

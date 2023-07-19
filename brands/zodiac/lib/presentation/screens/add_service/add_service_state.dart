@@ -10,5 +10,6 @@ class AddServiceState with _$AddServiceState {
     @Default(0) int selectedLanguageIndex,
     int? mainLanguageIndex,
     List<String>? languagesList,
+    @Default(10.99) double price,
   }) = _AddServiceState;
 }

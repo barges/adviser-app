@@ -97,4 +97,8 @@ class AddServiceCubit extends Cubit<AddServiceState> {
   void _removeLocaleProperties(String localeCode) {
     localesGlobalKeys.removeAt(state.languagesList?.indexOf(localeCode) ?? 0);
   }
+
+  void onPriceChanged(double value) {
+    emit(state.copyWith(price: value));
+  }
 }

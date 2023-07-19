@@ -198,5 +198,6 @@
   "egAstrologyReadingZodiac": "z.B. Astrologie-Lesung",
   "descriptionZodiac": "Beschreibung",
   "serviceDescriptionHintZodiac": "Ich werde 3 Karten ziehen\nIch werde meinen Engel kontaktieren\nGemeinsam lesen wir die Schlussfolgerungen\nSchließlich werde ich Ihnen in einer nächsten Sitzung die von uns durchgeführte Analyse mitteilen",
-  "explainIn3to5StepsWhatTheCustomersWillGetZodiac": "Erklären Sie in 3-5 Schritten, was die Kunden bekommen."
+  "explainIn3to5StepsWhatTheCustomersWillGetZodiac": "Erklären Sie in 3-5 Schritten, was die Kunden bekommen.",
+  "priceZodiac": "Preis"
 }

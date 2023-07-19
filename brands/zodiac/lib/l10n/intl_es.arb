@@ -199,5 +199,6 @@
   "egAstrologyReadingZodiac": "p.ej. Lectura de astrología",
   "descriptionZodiac": "Descripción",
   "serviceDescriptionHintZodiac": "Robaré 3 cartas\nContactaré a mi ángel\nJuntos leeremos las conclusiones.\nEventualmente compartiré con ustedes, en una próxima sesión, el análisis que hemos hecho",
-  "explainIn3to5StepsWhatTheCustomersWillGetZodiac": "Explique en 3-5 pasos lo que obtendrán los clientes."
+  "explainIn3to5StepsWhatTheCustomersWillGetZodiac": "Explique en 3-5 pasos lo que obtendrán los clientes.",
+  "priceZodiac": "Precio"
 }

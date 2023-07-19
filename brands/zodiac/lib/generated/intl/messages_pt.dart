@@ -266,6 +266,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "previewAccountZodiac":
             MessageLookupByLibrary.simpleMessage("Visualizar conta"),
         "pricePerMinZodiac": m3,
+        "priceZodiac": MessageLookupByLibrary.simpleMessage("Preço"),
         "recentlyUsedZodiac":
             MessageLookupByLibrary.simpleMessage("Usado recentemente"),
         "reconnectingZodiac":
