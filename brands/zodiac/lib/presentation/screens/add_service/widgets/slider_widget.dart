@@ -5,7 +5,7 @@ import 'package:zodiac/presentation/common_widgets/buttons/app_icon_button.dart'
 import 'package:zodiac/presentation/screens/add_service/widgets/sf_round_rect_tooltip_shape.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
-typedef ValueFormatter = String Function(String value);
+typedef ValueFormatter = String Function(double value);
 
 class SliderWidget extends StatelessWidget {
   final double value;
@@ -73,7 +73,7 @@ class SliderWidget extends StatelessWidget {
                     ),
                   ),
                   tooltipTextFormatterCallback: (actualValue, formattedText) =>
-                      tooltipFormater(value.toStringAsFixed(2)),
+                      tooltipFormater(value),
                   thumbIcon: Padding(
                     padding: const EdgeInsets.all(1.5),
                     child: Container(
@@ -99,13 +99,13 @@ class SliderWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              labelFormatter(min.toStringAsFixed(2)),
+              labelFormatter(min),
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.shadowColor,
               ),
             ),
             Text(
-              labelFormatter(max.toStringAsFixed(2)),
+              labelFormatter(max),
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.shadowColor,
               ),

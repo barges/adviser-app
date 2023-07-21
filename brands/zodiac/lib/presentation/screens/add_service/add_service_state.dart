@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/tabs_widget.dart';
 
 part 'add_service_state.freezed.dart';
@@ -11,5 +12,8 @@ class AddServiceState with _$AddServiceState {
     int? mainLanguageIndex,
     List<String>? languagesList,
     @Default(10.99) double price,
+    @Default(DeliveryTimeTabType.minutes)
+    DeliveryTimeTabType selectedDeliveryTimeTab,
+    @Default(20) double deliveryTime,
   }) = _AddServiceState;
 }

@@ -120,6 +120,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "daysZodiac": MessageLookupByLibrary.simpleMessage("dias"),
         "declineZodiac": MessageLookupByLibrary.simpleMessage("Declínio"),
         "deleteZodiac": MessageLookupByLibrary.simpleMessage("Excluir"),
+        "deliveryTimeZodiac":
+            MessageLookupByLibrary.simpleMessage("Prazo de entrega"),
         "descriptionZodiac": MessageLookupByLibrary.simpleMessage("Descrição"),
         "doYouReallyWantToCloseTheChatZodiac":
             MessageLookupByLibrary.simpleMessage("Deseja mesmo fechar o chat?"),
@@ -194,6 +196,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "mainZodiac": MessageLookupByLibrary.simpleMessage("Principal"),
         "manageMessagesZodiac":
             MessageLookupByLibrary.simpleMessage("Gerenciar mensagens"),
+        "minutesFullZodiac": MessageLookupByLibrary.simpleMessage("Minutos"),
         "minutesZodiac": MessageLookupByLibrary.simpleMessage("min"),
         "moreAboutOfflineServicesZodiac": MessageLookupByLibrary.simpleMessage(
             "Mais sobre serviços off-line"),

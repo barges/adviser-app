@@ -2085,6 +2085,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Delivery time`
+  String get deliveryTimeZodiac {
+    return Intl.message(
+      'Delivery time',
+      name: 'deliveryTimeZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Minutes`
+  String get minutesFullZodiac {
+    return Intl.message(
+      'Minutes',
+      name: 'minutesFullZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

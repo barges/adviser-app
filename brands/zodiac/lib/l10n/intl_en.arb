@@ -201,5 +201,7 @@
   "descriptionZodiac": "Description",
   "serviceDescriptionHintZodiac": "I will draw 3 cards\nI will contact my angel\nTogether we will read the conclusions\nEventually I will share with you, in a next session, the analysis we have done",
   "explainIn3to5StepsWhatTheCustomersWillGetZodiac": "Explain in 3-5 steps what the customers will get.",
-  "priceZodiac": "Price"
+  "priceZodiac": "Price",
+  "deliveryTimeZodiac": "Delivery time",
+  "minutesFullZodiac": "Minutes"
 }

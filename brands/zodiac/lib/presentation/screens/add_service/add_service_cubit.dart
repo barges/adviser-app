@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
@@ -8,6 +7,7 @@ import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/user_info/locale_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_state.dart';
+import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part_widget.dart';
 
 class AddServiceCubit extends Cubit<AddServiceState> {
   final ZodiacCachingManager _cachingManager;
@@ -100,7 +100,26 @@ class AddServiceCubit extends Cubit<AddServiceState> {
   }
 
   void onPriceChanged(dynamic value) {
-    logger.d(value);
-    emit(state.copyWith(price: value));
+    if (value >= 4.99 && value <= 299.99) {
+      emit(state.copyWith(price: value));
+    }
+  }
+
+  void onDeliveryTimeTabChanged(DeliveryTimeTabType value) {
+    if (value != state.selectedDeliveryTimeTab) {
+      emit(
+        state.copyWith(
+          selectedDeliveryTimeTab: value,
+          deliveryTime: value.defaultValue,
+        ),
+      );
+    }
+  }
+
+  void onDeliveryTimeChanged(dynamic value) {
+    if (value >= state.selectedDeliveryTimeTab.min &&
+        value <= state.selectedDeliveryTimeTab.max) {
+      emit(state.copyWith(deliveryTime: value));
+    }
   }
 }

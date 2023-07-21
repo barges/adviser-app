@@ -20,7 +20,7 @@ class TabsWidget extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: _TabWidget(
+          child: TabWidget(
             title: SZodiac.of(context).onlineServiceTabZodiac,
             isSelected: selectedTabIndex == ServiceTabType.online,
           ),
@@ -29,7 +29,7 @@ class TabsWidget extends StatelessWidget {
           width: 8.0,
         ),
         Expanded(
-          child: _TabWidget(
+          child: TabWidget(
             title: SZodiac.of(context).offlineServiceTabZodiac,
             isSelected: selectedTabIndex == ServiceTabType.offline,
           ),
@@ -39,32 +39,42 @@ class TabsWidget extends StatelessWidget {
   }
 }
 
-class _TabWidget extends StatelessWidget {
+class TabWidget extends StatelessWidget {
   final String title;
   final bool isSelected;
+  final VoidCallback? onTap;
+  final Color? unselectedColor;
 
-  const _TabWidget({
+  const TabWidget({
     Key? key,
     required this.title,
     required this.isSelected,
+    this.onTap,
+    this.unselectedColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    return Container(
-      decoration: BoxDecoration(
-        color: isSelected ? theme.primaryColorLight : theme.canvasColor,
-        borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 9.0, horizontal: 24.0),
-      child: Center(
-        child: Text(
-          title,
-          style: isSelected
-              ? theme.textTheme.labelMedium
-                  ?.copyWith(fontSize: 15.0, color: theme.primaryColor)
-              : theme.textTheme.bodyMedium,
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: isSelected
+              ? theme.primaryColorLight
+              : unselectedColor ?? theme.canvasColor,
+          borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 9.0),
+        child: Center(
+          child: Text(
+            title,
+            style: isSelected
+                ? theme.textTheme.labelMedium
+                    ?.copyWith(fontSize: 15.0, color: theme.primaryColor)
+                : theme.textTheme.bodyMedium,
+          ),
         ),
       ),
     );
