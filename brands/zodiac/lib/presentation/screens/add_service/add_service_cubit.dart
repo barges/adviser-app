@@ -7,7 +7,7 @@ import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/user_info/locale_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_state.dart';
-import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part_widget.dart';
+import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
 
 class AddServiceCubit extends Cubit<AddServiceState> {
   final ZodiacCachingManager _cachingManager;

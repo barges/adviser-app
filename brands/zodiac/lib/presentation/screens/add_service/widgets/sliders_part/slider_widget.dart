@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:zodiac/presentation/common_widgets/buttons/app_icon_button.dart';
-import 'package:zodiac/presentation/screens/add_service/widgets/sf_round_rect_tooltip_shape.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/sf_round_rect_tooltip_shape.dart';
 
 typedef ValueFormatter = String Function(double value);
 
