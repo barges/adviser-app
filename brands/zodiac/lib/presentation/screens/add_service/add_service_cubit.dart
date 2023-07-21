@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
@@ -98,7 +99,8 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     localesGlobalKeys.removeAt(state.languagesList?.indexOf(localeCode) ?? 0);
   }
 
-  void onPriceChanged(double value) {
+  void onPriceChanged(dynamic value) {
+    logger.d(value);
     emit(state.copyWith(price: value));
   }
 }

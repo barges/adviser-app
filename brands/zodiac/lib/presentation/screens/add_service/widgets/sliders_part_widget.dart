@@ -40,8 +40,10 @@ class SlidersPartWidget extends StatelessWidget {
                     value: price,
                     min: 4.99,
                     max: 299.99,
-                    divisions: 59,
+                    stepSize: 5,
                     onChanged: addServiceCubit.onPriceChanged,
+                    tooltipFormater: (value) => '\$$value',
+                    labelFormatter: (value) => '\$$value',
                   );
                 }),
               ],
