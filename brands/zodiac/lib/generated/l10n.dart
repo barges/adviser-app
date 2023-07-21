@@ -2105,6 +2105,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Discount for reorder`
+  String get discountForReorderZodiac {
+    return Intl.message(
+      'Discount for reorder',
+      name: 'discountForReorderZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

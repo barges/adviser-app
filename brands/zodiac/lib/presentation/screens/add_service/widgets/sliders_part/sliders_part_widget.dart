@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
+import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/discount_for_reorder_slider_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/price_slider_widget.dart';
 
 class SlidersPartWidget extends StatelessWidget {
@@ -14,6 +15,10 @@ class SlidersPartWidget extends StatelessWidget {
           height: 24.0,
         ),
         DeliveryTimeSliderWidget(),
+        SizedBox(
+          height: 24.0,
+        ),
+        DiscountForReorderWidget(),
       ],
     );
   }

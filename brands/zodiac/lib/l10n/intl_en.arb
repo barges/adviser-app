@@ -203,5 +203,6 @@
   "explainIn3to5StepsWhatTheCustomersWillGetZodiac": "Explain in 3-5 steps what the customers will get.",
   "priceZodiac": "Price",
   "deliveryTimeZodiac": "Delivery time",
-  "minutesFullZodiac": "Minutes"
+  "minutesFullZodiac": "Minutes",
+  "discountForReorderZodiac": "Discount for reorder"
 }

@@ -120,6 +120,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Lieferzeit"),
         "descriptionZodiac":
             MessageLookupByLibrary.simpleMessage("Beschreibung"),
+        "discountForReorderZodiac":
+            MessageLookupByLibrary.simpleMessage("Rabatt bei Nachbestellung"),
         "doYouReallyWantToCloseTheChatZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Möchten Sie den Chat wirklich schließen?"),

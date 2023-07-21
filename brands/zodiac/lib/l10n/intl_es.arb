@@ -202,5 +202,6 @@
   "explainIn3to5StepsWhatTheCustomersWillGetZodiac": "Explique en 3-5 pasos lo que obtendrán los clientes.",
   "priceZodiac": "Precio",
   "deliveryTimeZodiac": "El tiempo de entrega",
-  "minutesFullZodiac": "Minutos"
+  "minutesFullZodiac": "Minutos",
+  "discountForReorderZodiac": "Descuento por reordenar"
 }

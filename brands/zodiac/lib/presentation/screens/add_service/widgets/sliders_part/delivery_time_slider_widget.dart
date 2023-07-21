@@ -15,6 +15,9 @@ class DeliveryTimeSliderWidget extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final AddServiceCubit addServiceCubit = context.read<AddServiceCubit>();
 
+    final DeliveryTimeTabType selectedDeliveryTimeTab = context
+        .select((AddServiceCubit cubit) => cubit.state.selectedDeliveryTimeTab);
+
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
@@ -22,81 +25,76 @@ class DeliveryTimeSliderWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
       ),
       padding: const EdgeInsets.all(16.0),
-      child: Builder(builder: (context) {
-        final DeliveryTimeTabType selectedDeliveryTimeTab = context.select(
-            (AddServiceCubit cubit) => cubit.state.selectedDeliveryTimeTab);
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              SZodiac.of(context).deliveryTimeZodiac,
-              style: theme.textTheme.headlineMedium?.copyWith(fontSize: 17.0),
-            ),
-            const SizedBox(
-              height: 12.0,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: TabWidget(
-                    title: SZodiac.of(context).minutesFullZodiac,
-                    isSelected:
-                        selectedDeliveryTimeTab == DeliveryTimeTabType.minutes,
-                    unselectedColor: theme.scaffoldBackgroundColor,
-                    onTap: () => addServiceCubit
-                        .onDeliveryTimeTabChanged(DeliveryTimeTabType.minutes),
-                  ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            SZodiac.of(context).deliveryTimeZodiac,
+            style: theme.textTheme.headlineMedium?.copyWith(fontSize: 17.0),
+          ),
+          const SizedBox(
+            height: 12.0,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: TabWidget(
+                  title: SZodiac.of(context).minutesFullZodiac,
+                  isSelected:
+                      selectedDeliveryTimeTab == DeliveryTimeTabType.minutes,
+                  unselectedColor: theme.scaffoldBackgroundColor,
+                  onTap: () => addServiceCubit
+                      .onDeliveryTimeTabChanged(DeliveryTimeTabType.minutes),
                 ),
-                const SizedBox(
-                  width: 8.0,
+              ),
+              const SizedBox(
+                width: 8.0,
+              ),
+              Expanded(
+                child: TabWidget(
+                  title: SZodiac.of(context).hoursZodiac.capitalize ?? '',
+                  isSelected:
+                      selectedDeliveryTimeTab == DeliveryTimeTabType.hours,
+                  unselectedColor: theme.scaffoldBackgroundColor,
+                  onTap: () => addServiceCubit
+                      .onDeliveryTimeTabChanged(DeliveryTimeTabType.hours),
                 ),
-                Expanded(
-                  child: TabWidget(
-                    title: SZodiac.of(context).hoursZodiac.capitalize ?? '',
-                    isSelected:
-                        selectedDeliveryTimeTab == DeliveryTimeTabType.hours,
-                    unselectedColor: theme.scaffoldBackgroundColor,
-                    onTap: () => addServiceCubit
-                        .onDeliveryTimeTabChanged(DeliveryTimeTabType.hours),
-                  ),
+              ),
+              const SizedBox(
+                width: 8.0,
+              ),
+              Expanded(
+                child: TabWidget(
+                  title: SZodiac.of(context).daysZodiac.capitalize ?? '',
+                  isSelected:
+                      selectedDeliveryTimeTab == DeliveryTimeTabType.days,
+                  unselectedColor: theme.scaffoldBackgroundColor,
+                  onTap: () => addServiceCubit
+                      .onDeliveryTimeTabChanged(DeliveryTimeTabType.days),
                 ),
-                const SizedBox(
-                  width: 8.0,
-                ),
-                Expanded(
-                  child: TabWidget(
-                    title: SZodiac.of(context).daysZodiac.capitalize ?? '',
-                    isSelected:
-                        selectedDeliveryTimeTab == DeliveryTimeTabType.days,
-                    unselectedColor: theme.scaffoldBackgroundColor,
-                    onTap: () => addServiceCubit
-                        .onDeliveryTimeTabChanged(DeliveryTimeTabType.days),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 12.0,
-            ),
-            Builder(builder: (context) {
-              final double deliveryTime = context
-                  .select((AddServiceCubit cubit) => cubit.state.deliveryTime);
-              return SliderWidget(
-                value: deliveryTime,
-                min: selectedDeliveryTimeTab.min,
-                max: selectedDeliveryTimeTab.max,
-                stepSize: 1,
-                onChanged: addServiceCubit.onDeliveryTimeChanged,
-                tooltipFormater: (value) => selectedDeliveryTimeTab.formatter(
-                    context, value.toStringAsFixed(0)),
-                labelFormatter: (value) => selectedDeliveryTimeTab.formatter(
-                    context, value.toStringAsFixed(0)),
-              );
-            }),
-          ],
-        );
-      }),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 12.0,
+          ),
+          Builder(builder: (context) {
+            final double deliveryTime = context
+                .select((AddServiceCubit cubit) => cubit.state.deliveryTime);
+            return SliderWidget(
+              value: deliveryTime,
+              min: selectedDeliveryTimeTab.min,
+              max: selectedDeliveryTimeTab.max,
+              stepSize: 1,
+              onChanged: addServiceCubit.onDeliveryTimeChanged,
+              tooltipFormater: (value) => selectedDeliveryTimeTab.formatter(
+                  context, value.toStringAsFixed(0)),
+              labelFormatter: (value) => selectedDeliveryTimeTab.formatter(
+                  context, value.toStringAsFixed(0)),
+            );
+          }),
+        ],
+      ),
     );
   }
 }

@@ -15,5 +15,7 @@ class AddServiceState with _$AddServiceState {
     @Default(DeliveryTimeTabType.minutes)
     DeliveryTimeTabType selectedDeliveryTimeTab,
     @Default(20) double deliveryTime,
+    @Default(10) double discount,
+    @Default(false) bool discountEnabled,
   }) = _AddServiceState;
 }

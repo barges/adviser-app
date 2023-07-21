@@ -9,6 +9,12 @@ import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_state.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
 
+const double minPrice = 4.99;
+const double maxPrice = 299.99;
+
+const double minDiscount = 5;
+const double maxDiscount = 50;
+
 class AddServiceCubit extends Cubit<AddServiceState> {
   final ZodiacCachingManager _cachingManager;
 
@@ -100,7 +106,7 @@ class AddServiceCubit extends Cubit<AddServiceState> {
   }
 
   void onPriceChanged(dynamic value) {
-    if (value >= 4.99 && value <= 299.99) {
+    if (value >= minPrice && value <= maxPrice) {
       emit(state.copyWith(price: value));
     }
   }
@@ -121,5 +127,15 @@ class AddServiceCubit extends Cubit<AddServiceState> {
         value <= state.selectedDeliveryTimeTab.max) {
       emit(state.copyWith(deliveryTime: value));
     }
+  }
+
+  void onDiscountChanged(dynamic value) {
+    if (value >= minDiscount && value <= maxDiscount) {
+      emit(state.copyWith(discount: value));
+    }
+  }
+
+  void onDiscountEnabledChanged(bool value) {
+    emit(state.copyWith(discountEnabled: value));
   }
 }

@@ -35,8 +35,8 @@ class PriceSliderWidget extends StatelessWidget {
                 context.select((AddServiceCubit cubit) => cubit.state.price);
             return SliderWidget(
               value: price,
-              min: 4.99,
-              max: 299.99,
+              min: minPrice,
+              max: maxPrice,
               stepSize: 5,
               onChanged: addServiceCubit.onPriceChanged,
               tooltipFormater: (value) => '\$${value.toStringAsFixed(2)}',
