@@ -5,6 +5,7 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.da
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/user_info/locale_model.dart';
+import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_state.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
@@ -17,10 +18,16 @@ const double maxDiscount = 50;
 
 class AddServiceCubit extends Cubit<AddServiceState> {
   final ZodiacCachingManager _cachingManager;
+  final ZodiacServicesRepository _servicesRepository;
 
   late List<GlobalKey> localesGlobalKeys;
 
-  AddServiceCubit(this._cachingManager) : super(const AddServiceState()) {
+  AddServiceCubit(
+    this._cachingManager,
+    this._servicesRepository,
+  ) : super(const AddServiceState()) {
+    _getImages();
+
     emit(state.copyWith(languagesList: ['en', 'es']));
 
     localesGlobalKeys =
@@ -137,5 +144,25 @@ class AddServiceCubit extends Cubit<AddServiceState> {
 
   void onDiscountEnabledChanged(bool value) {
     emit(state.copyWith(discountEnabled: value));
+  }
+
+  Future<void> _getImages() async {
+    // final DefaultServicesImagesResponse response =
+    //     await _servicesRepository.getDefaultImages(AuthorizedRequest());
+
+    List<String> images = List.generate(
+        32,
+        (index) =>
+            'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg');
+
+    emit(state.copyWith(images: images));
+  }
+
+  void setShowAllImages() {
+    emit(state.copyWith(showAllImages: !state.showAllImages));
+  }
+
+  void selectImage(int index) {
+    emit(state.copyWith(selectedImageIndex: index));
   }
 }

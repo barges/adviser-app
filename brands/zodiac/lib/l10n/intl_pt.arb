@@ -204,5 +204,7 @@
   "priceZodiac": "Preço",
   "deliveryTimeZodiac": "Prazo de entrega",
   "minutesFullZodiac": "Minutos",
-  "discountForReorderZodiac": "Desconto para reordenar"
+  "discountForReorderZodiac": "Desconto para reordenar",
+  "chooseAnImageZodiac": "Escolha uma imagem",
+  "showMoreZodiac": "Mostre mais"
 }

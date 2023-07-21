@@ -2115,6 +2115,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Choose an image`
+  String get chooseAnImageZodiac {
+    return Intl.message(
+      'Choose an image',
+      name: 'chooseAnImageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show more`
+  String get showMoreZodiac {
+    return Intl.message(
+      'Show more',
+      name: 'showMoreZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

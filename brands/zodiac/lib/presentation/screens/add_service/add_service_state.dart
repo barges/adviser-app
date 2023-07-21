@@ -17,5 +17,8 @@ class AddServiceState with _$AddServiceState {
     @Default(20) double deliveryTime,
     @Default(10) double discount,
     @Default(false) bool discountEnabled,
+    @Default(0) int selectedImageIndex,
+    List<String>? images,
+    @Default(false) bool showAllImages,
   }) = _AddServiceState;
 }

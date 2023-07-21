@@ -202,5 +202,7 @@
   "priceZodiac": "Preis",
   "deliveryTimeZodiac": "Lieferzeit",
   "minutesFullZodiac": "Protokoll",
-  "discountForReorderZodiac": "Rabatt bei Nachbestellung"
+  "discountForReorderZodiac": "Rabatt bei Nachbestellung",
+  "chooseAnImageZodiac": "Wählen Sie ein Bild",
+  "showMoreZodiac": "Zeig mehr"
 }

@@ -102,6 +102,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "checkYourInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Revisa tu conexión a internet"),
+        "chooseAnImageZodiac":
+            MessageLookupByLibrary.simpleMessage("Elige una imagen"),
         "chooseCategoryTemplateZodiac": MessageLookupByLibrary.simpleMessage(
             "Elija la categoría de la plantilla"),
         "chooseEmailAppZodiac":
@@ -325,6 +327,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Instalación exitosa"),
         "showDailyCouponsZodiac":
             MessageLookupByLibrary.simpleMessage("Mostrar cupones diarios"),
+        "showMoreZodiac": MessageLookupByLibrary.simpleMessage("Mostrar más"),
         "smileysAndPeopleZodiac":
             MessageLookupByLibrary.simpleMessage("Emoticonos y personas"),
         "sorryPhoneVerificationUnavailableZodiac":
