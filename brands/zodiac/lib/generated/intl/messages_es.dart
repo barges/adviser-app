@@ -57,9 +57,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "aboutZodiac": MessageLookupByLibrary.simpleMessage("Acerca de"),
         "accountZodiac": MessageLookupByLibrary.simpleMessage("Cuenta"),
         "activityZodiac": MessageLookupByLibrary.simpleMessage("Actividad"),
+        "addMessageZodiac":
+            MessageLookupByLibrary.simpleMessage("Agregar mensaje"),
         "addZodiac": MessageLookupByLibrary.simpleMessage("Agregar"),
+        "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Todos los cupones seleccionados están listos para mostrarse mañana."),
         "allSpecialitiesZodiac":
             MessageLookupByLibrary.simpleMessage("Todas las especialidades"),
+        "allZodiac": MessageLookupByLibrary.simpleMessage("Todo"),
         "animalsAndNatureZodiac":
             MessageLookupByLibrary.simpleMessage("Animales y Naturaleza"),
         "articlesZodiac": MessageLookupByLibrary.simpleMessage("Artículos"),
@@ -79,6 +85,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancelSendingZodiac":
             MessageLookupByLibrary.simpleMessage("Cancelar envío"),
         "cancelZodiac": MessageLookupByLibrary.simpleMessage("Cancelar"),
+        "cannedMessagesZodiac":
+            MessageLookupByLibrary.simpleMessage("Mensajes grabados"),
         "changeZodiac": MessageLookupByLibrary.simpleMessage("Cambiar"),
         "characterLimitExceededZodiac": MessageLookupByLibrary.simpleMessage(
             "Se excedió el límite de caracteres."),
@@ -92,6 +100,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "checkYourInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Revisa tu conexión a internet"),
+        "chooseCategoryTemplateZodiac": MessageLookupByLibrary.simpleMessage(
+            "Elija la categoría de la plantilla"),
         "chooseEmailAppZodiac":
             MessageLookupByLibrary.simpleMessage("Elegir el email de la app"),
         "closeZodiac": MessageLookupByLibrary.simpleMessage("Cerca"),
@@ -101,10 +111,13 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Confirme su número de teléfono e ingrese su número de teléfono"),
         "customerSupportZodiac": MessageLookupByLibrary.simpleMessage(
             "Soporte de Atención al Cliente"),
+        "dailyRenewalZodiac":
+            MessageLookupByLibrary.simpleMessage("Renovación diaria"),
         "dashboardZodiac":
             MessageLookupByLibrary.simpleMessage("Panel de Control"),
         "daysZodiac": MessageLookupByLibrary.simpleMessage("dias"),
         "declineZodiac": MessageLookupByLibrary.simpleMessage("Rechazar"),
+        "deleteZodiac": MessageLookupByLibrary.simpleMessage("Borrar"),
         "doYouReallyWantToCloseTheChatZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "¿De verdad quieres cerrar el chat?"),
@@ -118,8 +131,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "doYouWantToDeleteThisMessageZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "¿Quieres borrar este mensaje?"),
+        "editMessageZodiac":
+            MessageLookupByLibrary.simpleMessage("Editar mensaje"),
         "editProfileZodiac":
             MessageLookupByLibrary.simpleMessage("Editar perfil"),
+        "editTemplateZodiac":
+            MessageLookupByLibrary.simpleMessage("Editar plantilla"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("Email"),
         "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(
@@ -148,6 +165,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Chat ENTRANTE"),
         "incorrectCodeZodiac":
             MessageLookupByLibrary.simpleMessage("Código incorrecto"),
+        "itWillBeRemovedFromTemplatesZodiac": MessageLookupByLibrary.simpleMessage(
+            "Se eliminará de las plantillas y ya no podrás usarlo desde el chat"),
         "languageZodiac": MessageLookupByLibrary.simpleMessage("Idioma"),
         "limitReachedZodiac":
             MessageLookupByLibrary.simpleMessage("Límite alcanzado"),
@@ -158,6 +177,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Lenguaje principal"),
         "mainSpecialtyZodiac":
             MessageLookupByLibrary.simpleMessage("Especialidad principal"),
+        "manageMessagesZodiac":
+            MessageLookupByLibrary.simpleMessage("Administrar mensajes"),
         "minutesZodiac": MessageLookupByLibrary.simpleMessage("min"),
         "mySpecialtiesZodiac":
             MessageLookupByLibrary.simpleMessage("Mis especialidades"),
@@ -168,6 +189,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "nicknameZodiac": MessageLookupByLibrary.simpleMessage("Apodo"),
         "noArticlesYet":
             MessageLookupByLibrary.simpleMessage("Aún no hay artículos"),
+        "noEmojiFoundZodiac":
+            MessageLookupByLibrary.simpleMessage("No se encontraron emojis"),
         "noInternetConnectionZodiac":
             MessageLookupByLibrary.simpleMessage("Sin conexión a internet."),
         "noMessagesYetZodiac":
@@ -225,6 +248,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Recientemente usado"),
         "reconnectingZodiac":
             MessageLookupByLibrary.simpleMessage("Reconectar..."),
+        "recordingIsNotPossibleZodiac": MessageLookupByLibrary.simpleMessage(
+            "No es posible grabar, libere espacio en el dispositivo"),
         "recordingStoppedBecauseYouReachedLimitZodiac": m4,
         "replyZodiac": MessageLookupByLibrary.simpleMessage("Responder"),
         "reportUnderageUserZodiac": MessageLookupByLibrary.simpleMessage(
@@ -241,19 +266,37 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Las reseñas de tus clientes aparecerán aquí"),
         "reviewsZodiac": MessageLookupByLibrary.simpleMessage("Reseñas"),
         "salesZodiac": MessageLookupByLibrary.simpleMessage("Ventas"),
+        "saveCouponsSetZodiac":
+            MessageLookupByLibrary.simpleMessage("Guardar conjunto de cupones"),
+        "saveTemplateZodiac":
+            MessageLookupByLibrary.simpleMessage("Guardar plantilla"),
         "saveZodiac": MessageLookupByLibrary.simpleMessage("Ahorrar"),
+        "searchResultsZodiac":
+            MessageLookupByLibrary.simpleMessage("Resultados de la búsqueda"),
         "searchZodiac": MessageLookupByLibrary.simpleMessage("Buscar"),
         "secondsZodiac": MessageLookupByLibrary.simpleMessage("seg"),
+        "selectAtLeast1CouponZodiac":
+            MessageLookupByLibrary.simpleMessage("Seleccione al menos 1 cupón"),
+        "selectedCouponsWillBeRenewedAutomaticallyZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Los cupones seleccionados se renovarán automáticamente y se mostrarán en su perfil"),
         "selectedPhotoZodiac":
             MessageLookupByLibrary.simpleMessage("Foto seleccionada"),
         "sendCodeZodiac": MessageLookupByLibrary.simpleMessage("Enviar código"),
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Servicio"),
+        "servicesMessagesZodiac":
+            MessageLookupByLibrary.simpleMessage("Servicios y mensajes"),
         "servicesZodiac": MessageLookupByLibrary.simpleMessage("Servicios"),
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sesiones"),
+        "setUpSuccessfulZodiac":
+            MessageLookupByLibrary.simpleMessage("Instalación exitosa"),
+        "showDailyCouponsZodiac":
+            MessageLookupByLibrary.simpleMessage("Mostrar cupones diarios"),
         "smileysAndPeopleZodiac":
             MessageLookupByLibrary.simpleMessage("Emoticonos y personas"),
-        "sorryPhoneVerificationUnavailable": MessageLookupByLibrary.simpleMessage(
-            "Lo sentimos, la verificación telefónica no está disponible actualmente. Por favor tres agan latr."),
+        "sorryPhoneVerificationUnavailableZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Lo sentimos, la verificación telefónica no está disponible actualmente. Por favor tres agan latr."),
         "startChatZodiac":
             MessageLookupByLibrary.simpleMessage("Comenzar chat"),
         "successZodiac": MessageLookupByLibrary.simpleMessage("Éxito"),
@@ -265,9 +308,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "theNicknameIsInvalidMustBe3to250SymbolsZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "El apodo no es válido. Debe tener entre 3 y 250 símbolos."),
+        "theNumberOfAvailableCouponsDependsOnTheAmountOfSessionsZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "El número de cupones disponibles depende de la cantidad de sesiones. Los cupones seleccionados aparecerán en su perfil al día siguiente."),
         "thePasswordsMustMatchZodiac": MessageLookupByLibrary.simpleMessage(
             "Las contraseñas deben coincidir"),
         "thisMonthZodiac": MessageLookupByLibrary.simpleMessage("Este Mes"),
+        "thisWhatYourClientSeeZodiac": MessageLookupByLibrary.simpleMessage(
+            "Esto es lo que tu cliente verá como una burbuja de chat tuya"),
         "tipZodiac": MessageLookupByLibrary.simpleMessage("Consejo"),
         "todayZodiac": MessageLookupByLibrary.simpleMessage("Hoy"),
         "topUpZodiac": MessageLookupByLibrary.simpleMessage("Completar"),
@@ -299,12 +347,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "youCanChangePriceOncePer24HZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Puedes cambiar el precio una vez cada 24 h"),
+        "youCanEasilyAccessTheseTemplatesZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Puede acceder fácilmente a estas plantillas durante y después del chat"),
         "youHaveAttemptsToEnterRightCodeZodiac": m8,
         "youHaveVerificationAttemptsPerDayZodiac": m9,
         "youMissedCallFromZodiac": m10,
         "youMissedChatFromZodiac": m11,
         "youWhereBlocked": MessageLookupByLibrary.simpleMessage(
             "Su cuenta ha sido bloqueada.<br>Póngase en contacto con <a href=\'\'>Atención al cliente</a> para resolver el problema"),
+        "youZodiac": MessageLookupByLibrary.simpleMessage("Tú"),
         "yourChangesAreAcceptedAndWillBeReviewedShortlyZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Se aceptan sus cambios y se revisarán en breve. Todas las actualizaciones serán visibles para los clientes después de eso"),

@@ -4,7 +4,6 @@ import 'package:scrollview_observer/scrollview_observer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/down_button_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/chat_text_input_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/typing_indicator.dart';
@@ -51,6 +50,8 @@ class ChatMessagesListWidget extends StatelessWidget {
     final bool emojiPickerOpened =
         context.select((ChatCubit cubit) => cubit.state.reactionMessageId) !=
             null;
+    final String? reactionMessageId =
+        context.select((ChatCubit cubit) => cubit.state.reactionMessageId);
 
     return GestureDetector(
       onTap: () {
@@ -94,38 +95,61 @@ class ChatMessagesListWidget extends StatelessWidget {
                   });
                 } else {
                   final ChatMessageModel messageModel = messages[index - 1];
-                  if (messageModel.isOutgoing && !messageModel.isDelivered) {
-                    return ResendMessageWrapper(
-                      key: ValueKey(messageModel.mid),
-                      chatMessageModel: messageModel,
-                    );
-                  } else if (!messageModel.isOutgoing && messageModel.isRead) {
-                    return FocusedMenuWrapper(
-                      key: ValueKey(
-                          '${messageModel.reaction}_${messageModel.mid}'),
-                      chatMessageModel: messageModel,
-                      chatIsActive: chatIsActive,
-                    );
-                  } else if (!messageModel.isOutgoing && !messageModel.isRead) {
-                    return VisibilityDetector(
-                      key: Key(messageModel.id.toString()),
-                      onVisibilityChanged: (visibilityInfo) {
-                        if (visibilityInfo.visibleFraction == 1) {
-                          chatCubit.sendReadMessage(messageModel.id);
-                        }
+
+                  return Opacity(
+                    opacity: reactionMessageId != null &&
+                            !messageModel.compareId(reactionMessageId)
+                        ? 0.4
+                        : 1.0,
+                    child: GestureDetector(
+                      onTap: () {
+                        FocusScope.of(context).unfocus();
                       },
-                      child: FocusedMenuWrapper(
-                        key: ValueKey(
-                            '${messageModel.reaction}_${messageModel.mid}'),
-                        chatMessageModel: messageModel,
-                        chatIsActive: chatIsActive,
-                      ),
-                    );
-                  } else {
-                    return ChatMessageWidget(
-                      chatMessageModel: messageModel,
-                    );
-                  }
+                      child: Builder(builder: (context) {
+                        if (messageModel.isOutgoing &&
+                            !messageModel.isDelivered) {
+                          return ResendMessageWrapper(
+                            key: ValueKey(messageModel.mid),
+                            chatMessageModel: messageModel,
+                          );
+                        } else if (!messageModel.isOutgoing &&
+                            !messageModel.isRead) {
+                          return Stack(
+                            alignment: Alignment.bottomCenter,
+                            children: [
+                              FocusedMenuWrapper(
+                                key: ValueKey(
+                                    '${messageModel.reaction}_${messageModel.mid}'),
+                                chatMessageModel: messageModel,
+                                chatIsActive: chatIsActive,
+                                reactionMessageId: reactionMessageId,
+                              ),
+                              VisibilityDetector(
+                                key: Key(messageModel.id.toString()),
+                                onVisibilityChanged: (visibilityInfo) {
+                                  if (visibilityInfo.visibleFraction == 1) {
+                                    chatCubit.sendReadMessage(messageModel.id);
+                                  }
+                                },
+                                child: const SizedBox(
+                                  height: 24.0,
+                                  width: double.infinity,
+                                ),
+                              )
+                            ],
+                          );
+                        } else {
+                          return FocusedMenuWrapper(
+                            key: ValueKey(
+                                '${messageModel.reaction}_${messageModel.mid}'),
+                            chatMessageModel: messageModel,
+                            chatIsActive: chatIsActive,
+                            reactionMessageId: reactionMessageId,
+                          );
+                        }
+                      }),
+                    ),
+                  );
                 }
               },
               separatorBuilder: (BuildContext context, int index) {

@@ -5,6 +5,7 @@ import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 
 const double reactionContainerWidth = 36.0;
+const double reactionContainerPadding = 4.0;
 
 class ReactionWidget extends StatelessWidget {
   final ChatMessageModel chatMessageModel;
@@ -35,7 +36,10 @@ class ReactionWidget extends StatelessWidget {
               }
             },
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              padding: EdgeInsets.only(
+                right: isOutgoing ? reactionContainerPadding : 0,
+                left: isOutgoing ? 0 : reactionContainerPadding,
+              ),
               child: Container(
                 width: reactionContainerWidth,
                 height: reactionContainerWidth,

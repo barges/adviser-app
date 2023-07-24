@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
@@ -9,9 +10,12 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.da
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/app_success/app_success.dart';
+import 'package:zodiac/data/models/app_success/ui_success_type.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/data/models/settings/phone.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
+import 'package:zodiac/data/models/user_info/daily_coupon_info.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
@@ -19,15 +23,19 @@ import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
+import 'package:zodiac/data/network/requests/set_daily_coupons_request.dart';
 import 'package:zodiac/data/network/requests/settings_request.dart';
+import 'package:zodiac/data/network/requests/update_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
+import 'package:zodiac/data/network/responses/daily_coupons_response.dart';
 import 'package:zodiac/data/network/responses/expert_details_response.dart';
 import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
 import 'package:zodiac/data/network/responses/settings_response.dart';
 import 'package:zodiac/data/network/responses/specializations_response.dart';
+import 'package:zodiac/domain/repositories/zodiac_coupons_repository.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_state.dart';
 import 'package:zodiac/zodiac.dart';
@@ -41,12 +49,17 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   final ConnectivityService _connectivityService;
   final PushNotificationManager _pushNotificationManager;
   final Future<bool> Function(bool needShowSettingsAlert) _handlePermission;
+  final ZodiacCouponsRepository _couponsRepository;
 
   StreamSubscription? _currentBrandSubscription;
   StreamSubscription<bool>? _pushTokenConnectivitySubscription;
   StreamSubscription<bool>? _getSettingsConnectivitySubscription;
   bool? isPushNotificationPermissionGranted;
   String? _siteKey;
+  Timer? _successMessageTimer;
+
+  List<DailyCouponInfo> _savedCouponsSet = [];
+  bool? _savedCouponsSetCountIsZero;
 
   late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
   late final StreamSubscription<bool> _updateAccountSubscription;
@@ -60,6 +73,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     this._cacheManager,
     this._connectivityService,
     this._pushNotificationManager,
+    this._couponsRepository,
     this._handlePermission,
   ) : super(const ZodiacAccountState()) {
     if (_brandManager.getCurrentBrand().brandAlias == ZodiacBrand.alias) {
@@ -104,6 +118,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     _updateUnreadNotificationsCounter.cancel();
     _currentBrandSubscription?.cancel();
     _updateAccountSettingsSubscription.cancel();
+    _successMessageTimer?.cancel();
     super.close();
   }
 
@@ -168,6 +183,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
           ));
 
           _getUnreadNotificationsCount();
+          getDailyCoupons();
         } else {
           _updateErrorMessage(response.getErrorMessage());
         }
@@ -383,5 +399,142 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     if (state.errorMessage.isNotEmpty) {
       emit(state.copyWith(errorMessage: ''));
     }
+  }
+
+  Future<void> getDailyCoupons() async {
+    DailyCouponsResponse response =
+        await _couponsRepository.getDailyCoupons(AuthorizedRequest());
+    if (response.status == true) {
+      _savedCouponsSet = response.coupons ?? [];
+
+      _savedCouponsSetCountIsZero = _checkCouponsCountIsZero(_savedCouponsSet);
+
+      emit(
+        state.copyWith(
+          dailyCoupons: response.coupons,
+          dailyCouponsLimit: response.limit ?? 0,
+          dailyCouponsEnabled: response.isEnabled ?? false,
+          dailyRenewalEnabled: response.isRenewalEnabled ?? false,
+          couponsSetEqualPrevious: true,
+          disableDailyCouponsEnabling: _savedCouponsSetCountIsZero == true,
+          disableDailyRenewalEnabling: _savedCouponsSetCountIsZero == true,
+        ),
+      );
+    }
+  }
+
+  void setCouponCounter(int? couponId, int count) {
+    List<DailyCouponInfo> dailyCoupons = List.of(state.dailyCoupons ?? []);
+    if (dailyCoupons.isNotEmpty) {
+      int index =
+          dailyCoupons.indexWhere((element) => element.couponId == couponId);
+      dailyCoupons[index] = dailyCoupons[index].copyWith(count: count);
+
+      bool dailyCouponsCountIsZero = _checkCouponsCountIsZero(dailyCoupons);
+
+      emit(state.copyWith(
+        dailyCoupons: List.of(dailyCoupons),
+        couponsSetEqualPrevious: checkCouponsSetEqualPrevious(dailyCoupons),
+        disableDailyRenewalEnabling:
+            dailyCouponsCountIsZero && _savedCouponsSetCountIsZero == true,
+      ));
+    }
+  }
+
+  void onDailyCouponCheckboxChanged(int? couponId, bool value) {
+    List<DailyCouponInfo> dailyCoupons = List.of(state.dailyCoupons ?? []);
+    if (dailyCoupons.isNotEmpty) {
+      int index =
+          dailyCoupons.indexWhere((element) => element.couponId == couponId);
+      if (value) {
+        dailyCoupons[index] = dailyCoupons[index].copyWith(count: 1);
+      } else {
+        dailyCoupons[index] = dailyCoupons[index].copyWith(count: 0);
+      }
+
+      bool dailyCouponsCountIsZero = _checkCouponsCountIsZero(dailyCoupons);
+
+      emit(state.copyWith(
+        dailyCoupons: List.of(dailyCoupons),
+        couponsSetEqualPrevious: checkCouponsSetEqualPrevious(dailyCoupons),
+        disableDailyRenewalEnabling:
+            dailyCouponsCountIsZero && _savedCouponsSetCountIsZero == true,
+      ));
+    }
+  }
+
+  Future<void> saveDailyCouponsSet() async {
+    try {
+      List<DailyCouponInfo>? dailyCoupons = state.dailyCoupons;
+
+      if (dailyCoupons != null) {
+        List<int> couponIds = [];
+
+        for (DailyCouponInfo element in dailyCoupons) {
+          if (element.couponId != null &&
+              element.count != null &&
+              element.count! > 0) {
+            couponIds.addAll(List.filled(element.count!, element.couponId!));
+          }
+        }
+
+        final BaseResponse response = await _couponsRepository
+            .setDailyCoupons(SetDailyCouponsRequest(coupons: couponIds));
+
+        if (response.status == true) {
+          _savedCouponsSet = dailyCoupons;
+          emit(state.copyWith(
+            couponsSetEqualPrevious: true,
+            appSuccess:
+                UISuccess(UISuccessMessagesType.dailyCouponsSetUpSuccessful),
+            disableDailyCouponsEnabling: false,
+          ));
+          _successMessageTimer =
+              Timer(const Duration(seconds: 10), clearSuccessMessage);
+        }
+      }
+    } catch (e) {
+      logger.d(e);
+    }
+  }
+
+  Future<void> updateDailyCouponsEnabled(bool value) async {
+    final BaseResponse response = await _couponsRepository
+        .updateEnableDailyCoupons(UpdateEnabledRequest(isEnabled: value));
+
+    if (response.status == true) {
+      emit(state.copyWith(dailyCouponsEnabled: value));
+    }
+  }
+
+  Future<void> updateDailyCouponsRenewalEnabled(bool value) async {
+    final BaseResponse response =
+        await _couponsRepository.updateEnableDailyCouponsRenewal(
+            UpdateEnabledRequest(isEnabled: value));
+
+    if (response.status == true) {
+      emit(state.copyWith(dailyRenewalEnabled: value));
+    }
+  }
+
+  bool checkCouponsSetEqualPrevious(List<DailyCouponInfo> dailyCoupons) {
+    return dailyCoupons.equals(_savedCouponsSet);
+  }
+
+  void clearSuccessMessage() {
+    if (state.appSuccess is! EmptySuccess) {
+      emit(state.copyWith(appSuccess: const EmptySuccess()));
+    }
+  }
+
+  bool _checkCouponsCountIsZero(List<DailyCouponInfo> dailyCoupons) {
+    bool couponsCountIsZero = true;
+    for (DailyCouponInfo element in dailyCoupons) {
+      if (element.count != null && element.count! > 0) {
+        couponsCountIsZero = false;
+        break;
+      }
+    }
+    return couponsCountIsZero;
   }
 }

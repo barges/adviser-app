@@ -9,9 +9,9 @@ import 'package:shared_advisor_interface/themes/app_colors_dark.dart';
 import 'package:shared_advisor_interface/themes/app_colors_light.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
+import 'package:zodiac/data/models/enums/chat_message_type.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/chat_message/chat_message_widget_reply_wrapper.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/wrappers/focused_menu/focused_menu_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/wrappers/focused_menu/focused_menu_holder.dart';
@@ -19,10 +19,14 @@ import 'package:zodiac/presentation/screens/chat/widgets/wrappers/focused_menu/f
 class FocusedMenuWrapper extends StatefulWidget {
   final ChatMessageModel chatMessageModel;
   final bool chatIsActive;
+  final String? reactionMessageId;
 
-  const FocusedMenuWrapper(
-      {Key? key, required this.chatMessageModel, required this.chatIsActive})
-      : super(key: key);
+  const FocusedMenuWrapper({
+    Key? key,
+    required this.chatMessageModel,
+    required this.chatIsActive,
+    this.reactionMessageId,
+  }) : super(key: key);
 
   @override
   State<FocusedMenuWrapper> createState() => _FocusedMenuWrapperState();
@@ -38,9 +42,11 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
     final ChatCubit chatCubit = context.read<ChatCubit>();
     final bool supportsReaction =
         widget.chatMessageModel.supportsReaction == true;
-    final bool supportsReply = widget.chatMessageModel.supportsReply == true;
+    final bool supportsReply =
+        widget.chatMessageModel.type == ChatMessageType.simple &&
+            widget.chatMessageModel.supportsReply == true;
     final bool focusedMenuEnabled =
-        (supportsReaction || supportsReply) && widget.chatIsActive;
+        widget.chatIsActive && (supportsReaction || supportsReply);
 
     if (focusedMenuEnabled) {
       return BlocProvider(
@@ -51,7 +57,9 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
 
           return FocusedMenuHolder(
             key: key,
-            onPressed: () {},
+            onPressed: () {
+              FocusScope.of(context).unfocus();
+            },
             animateMenuItems: true,
             menuWidth: 244.0,
             menuOffset: 8.0,
@@ -81,6 +89,9 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
                         style: theme.textTheme.bodyMedium?.copyWith(
                           fontSize: 17.0,
                         ),
+                      ),
+                      onPressed: () => chatCubit.setRepliedMessage(
+                        repliedMessage: widget.chatMessageModel,
                       ),
                       backgroundColor: theme.unselectedWidgetColor,
                       trailingIcon: Assets.zodiac.vectors.arrowReply.svg(
@@ -189,9 +200,12 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
                     );
                   })
                 : null,
-            openedChild:
-                ChatMessageWidget(chatMessageModel: widget.chatMessageModel),
+            cubit: chatCubit,
             child: ChatMessageWidgetReplyWrapper(
+              key: widget.reactionMessageId != null &&
+                      widget.reactionMessageId == _getMessageId()
+                  ? chatCubit.reactedMessageGlobalKey
+                  : null,
               chatMessageModel: widget.chatMessageModel,
               chatIsActive: widget.chatIsActive,
             ),
@@ -200,6 +214,10 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
       );
     } else {
       return ChatMessageWidgetReplyWrapper(
+        key: widget.reactionMessageId != null &&
+                widget.reactionMessageId == _getMessageId()
+            ? chatCubit.reactedMessageGlobalKey
+            : null,
         chatMessageModel: widget.chatMessageModel,
         chatIsActive: widget.chatIsActive,
       );

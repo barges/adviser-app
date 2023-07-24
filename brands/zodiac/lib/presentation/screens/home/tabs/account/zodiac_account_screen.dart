@@ -6,10 +6,14 @@ import 'package:shared_advisor_interface/services/check_permission_service.dart'
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/app_success/app_success.dart';
+import 'package:zodiac/domain/repositories/zodiac_coupons_repository.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dart';
+import 'package:zodiac/presentation/common_widgets/messages/app_success_widget.dart';
+import 'package:zodiac/presentation/screens/home/tabs/account/widgets/daily_coupons/daily_coupons_part_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/widgets/reviews_part_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/widgets/user_fee_part_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/widgets/user_info_part_widget.dart';
@@ -29,6 +33,7 @@ class AccountScreen extends StatelessWidget {
         zodiacGetIt.get<ZodiacCachingManager>(),
         zodiacGetIt.get<ConnectivityService>(),
         zodiacGetIt.get<PushNotificationManager>(),
+        zodiacGetIt.get<ZodiacCouponsRepository>(),
         (value) => handlePermission(context, value),
       ),
       child: Scaffold(
@@ -36,48 +41,69 @@ class AccountScreen extends StatelessWidget {
           body: Builder(builder: (context) {
             ZodiacAccountCubit accountCubit =
                 context.read<ZodiacAccountCubit>();
-            return SafeArea(
-              child: RefreshIndicator(
-                onRefresh: accountCubit.refreshUserInfo,
-                child: CustomScrollView(
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: Column(
-                        children: [
-                          Builder(builder: (context) {
-                            final ZodiacAccountCubit zodiacAccountCubit =
-                                context.read<ZodiacAccountCubit>();
-                            final String errorMessage = context.select(
-                                (ZodiacAccountCubit cubit) =>
-                                    cubit.state.errorMessage);
-                            return AppErrorWidget(
-                              errorMessage: errorMessage,
-                              close: zodiacAccountCubit.clearErrorMessage,
-                            );
-                          }),
-                          const Padding(
-                            padding: EdgeInsets.all(
-                                AppConstants.horizontalScreenPadding),
-                            child: Column(
-                              children: [
-                                UserInfoPartWidget(),
-                                SizedBox(
-                                  height: 24.0,
+            return Stack(
+              children: [
+                SafeArea(
+                  child: RefreshIndicator(
+                    onRefresh: accountCubit.refreshUserInfo,
+                    child: CustomScrollView(
+                      slivers: [
+                        SliverToBoxAdapter(
+                          child: Column(
+                            children: [
+                              Builder(builder: (context) {
+                                final ZodiacAccountCubit zodiacAccountCubit =
+                                    context.read<ZodiacAccountCubit>();
+                                final String errorMessage = context.select(
+                                    (ZodiacAccountCubit cubit) =>
+                                        cubit.state.errorMessage);
+                                return AppErrorWidget(
+                                  errorMessage: errorMessage,
+                                  close: zodiacAccountCubit.clearErrorMessage,
+                                );
+                              }),
+                              const Padding(
+                                padding: EdgeInsets.all(
+                                    AppConstants.horizontalScreenPadding),
+                                child: Column(
+                                  children: [
+                                    UserInfoPartWidget(),
+                                    SizedBox(
+                                      height: 24.0,
+                                    ),
+                                    UserFeePartWidget(),
+                                    SizedBox(
+                                      height: 24.0,
+                                    ),
+                                    ReviewsPartWidget(),
+                                    SizedBox(
+                                      height: 24.0,
+                                    ),
+                                    DailyCouponsPartWidget(),
+                                  ],
                                 ),
-                                UserFeePartWidget(),
-                                SizedBox(
-                                  height: 24.0,
-                                ),
-                                ReviewsPartWidget(),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+                Positioned(
+                    top: 0.0,
+                    right: 0.0,
+                    left: 0.0,
+                    child: Builder(builder: (context) {
+                      final AppSuccess appSuccess = context.select(
+                          (ZodiacAccountCubit cubit) => cubit.state.appSuccess);
+                      return AppSuccessWidget(
+                        title: appSuccess.getTitle(context),
+                        message: appSuccess.getMessage(context),
+                        onClose: accountCubit.clearSuccessMessage,
+                      );
+                    }))
+              ],
             );
           })),
     );

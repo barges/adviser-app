@@ -336,7 +336,7 @@ class WebSocketManagerImpl implements WebSocketManager {
         logger.d("Socket is closed...");
         _webSocketStateStream.add(WebSocketState.closed);
         _currentState = WebSocketState.closed;
-        _authCheckOnBackend();
+        // _authCheckOnBackend();
       }, onError: (error) {
         logger.d("Socket error: $error");
         _webSocketStateStream.add(WebSocketState.closed);
@@ -429,14 +429,13 @@ class WebSocketManagerImpl implements WebSocketManager {
     required ChatMessageModel message,
     required String roomId,
     required int opponentId,
-    int? repliedMessageId,
   }) =>
       _send(SocketMessage.chatMessage(
         message: message.message ?? '',
         roomId: roomId,
         opponentId: opponentId,
         mid: message.mid ?? '',
-        repliedMessageId: repliedMessageId,
+        repliedMessageId: message.repliedMessageId,
       ));
 
   @override
@@ -474,6 +473,11 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   @override
+  void sendUpsellingList({required int chatId}) {
+    _send(SocketMessage.upsellingList(chatId: chatId));
+  }
+
+  @override
   void close() {
     _currentState = WebSocketState.closed;
     _socketSubscription?.cancel();
@@ -497,14 +501,16 @@ class WebSocketManagerImpl implements WebSocketManager {
       });
 
   void _send(SocketMessage message) {
-    if (kDebugMode) {
-      if (message.action != Commands.pong) {
+    if (_currentState == WebSocketState.connected) {
+      if (kDebugMode) {
+        if (message.action != Commands.pong) {
+          logger.d('PUB message: ${message.encoded}');
+        }
+      } else {
         logger.d('PUB message: ${message.encoded}');
       }
-    } else {
-      logger.d('PUB message: ${message.encoded}');
+      _channel?.sink.add(message.encoded);
     }
-    _channel?.sink.add(message.encoded);
   }
 
   void _onStart(int userId) {
@@ -676,6 +682,11 @@ class WebSocketManagerImpl implements WebSocketManager {
     (event.eventData as SocketMessage).let((data) {
       (data.opponentId as int).let((id) => _updateWriteStatusStream.add(id));
     });
+  }
+
+  @override
+  void addUpdateIdEvent(CreatedDeliveredEvent event) {
+    _updateMessageIdStream.add(event);
   }
 
   void _onMsgCreated(Event event) {

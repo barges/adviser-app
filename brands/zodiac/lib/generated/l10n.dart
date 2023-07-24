@@ -462,11 +462,31 @@ class SZodiac {
     );
   }
 
+  /// `Services & Messages`
+  String get servicesMessagesZodiac {
+    return Intl.message(
+      'Services & Messages',
+      name: 'servicesMessagesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Services`
   String get servicesZodiac {
     return Intl.message(
       'Services',
       name: 'servicesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Сanned messages`
+  String get cannedMessagesZodiac {
+    return Intl.message(
+      'Сanned messages',
+      name: 'cannedMessagesZodiac',
       desc: '',
       args: [],
     );
@@ -1657,10 +1677,250 @@ class SZodiac {
   }
 
   /// `Sorry, phone verification is currently unavailable. Please try again later.`
-  String get sorryPhoneVerificationUnavailable {
+  String get sorryPhoneVerificationUnavailableZodiac {
     return Intl.message(
       'Sorry, phone verification is currently unavailable. Please try again later.',
-      name: 'sorryPhoneVerificationUnavailable',
+      name: 'sorryPhoneVerificationUnavailableZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recording is not possible, allocate space on the device`
+  String get recordingIsNotPossibleZodiac {
+    return Intl.message(
+      'Recording is not possible, allocate space on the device',
+      name: 'recordingIsNotPossibleZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You`
+  String get youZodiac {
+    return Intl.message(
+      'You',
+      name: 'youZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search results`
+  String get searchResultsZodiac {
+    return Intl.message(
+      'Search results',
+      name: 'searchResultsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No emoji found`
+  String get noEmojiFoundZodiac {
+    return Intl.message(
+      'No emoji found',
+      name: 'noEmojiFoundZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can easily access these templates during and after the chat`
+  String get youCanEasilyAccessTheseTemplatesZodiac {
+    return Intl.message(
+      'You can easily access these templates during and after the chat',
+      name: 'youCanEasilyAccessTheseTemplatesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add message`
+  String get addMessageZodiac {
+    return Intl.message(
+      'Add message',
+      name: 'addMessageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save template`
+  String get saveTemplateZodiac {
+    return Intl.message(
+      'Save template',
+      name: 'saveTemplateZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get allZodiac {
+    return Intl.message(
+      'All',
+      name: 'allZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you really want to delete this template?`
+  String get doYouWantDeleteTemplateZodiac {
+    return Intl.message(
+      'Do you really want to delete this template?',
+      name: 'doYouWantDeleteTemplateZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It will be removed from the templates and you won't be able to use it from the chat anymore`
+  String get itWillBeRemovedFromTemplatesZodiac {
+    return Intl.message(
+      'It will be removed from the templates and you won\'t be able to use it from the chat anymore',
+      name: 'itWillBeRemovedFromTemplatesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get deleteZodiac {
+    return Intl.message(
+      'Delete',
+      name: 'deleteZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Manage messages`
+  String get manageMessagesZodiac {
+    return Intl.message(
+      'Manage messages',
+      name: 'manageMessagesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This is what your client will see as a chat bubble from you`
+  String get thisWhatYourClientSeeZodiac {
+    return Intl.message(
+      'This is what your client will see as a chat bubble from you',
+      name: 'thisWhatYourClientSeeZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose category of the template`
+  String get chooseCategoryTemplateZodiac {
+    return Intl.message(
+      'Choose category of the template',
+      name: 'chooseCategoryTemplateZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit template`
+  String get editTemplateZodiac {
+    return Intl.message(
+      'Edit template',
+      name: 'editTemplateZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit message`
+  String get editMessageZodiac {
+    return Intl.message(
+      'Edit message',
+      name: 'editMessageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show daily coupons`
+  String get showDailyCouponsZodiac {
+    return Intl.message(
+      'Show daily coupons',
+      name: 'showDailyCouponsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The number of available coupons depends on the amount of sessions. Selected coupons will appear on your profile the following day.`
+  String get theNumberOfAvailableCouponsDependsOnTheAmountOfSessionsZodiac {
+    return Intl.message(
+      'The number of available coupons depends on the amount of sessions. Selected coupons will appear on your profile the following day.',
+      name: 'theNumberOfAvailableCouponsDependsOnTheAmountOfSessionsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save coupons set`
+  String get saveCouponsSetZodiac {
+    return Intl.message(
+      'Save coupons set',
+      name: 'saveCouponsSetZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Daily renewal`
+  String get dailyRenewalZodiac {
+    return Intl.message(
+      'Daily renewal',
+      name: 'dailyRenewalZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Selected coupons will be renewed automatically and displayed on your profile`
+  String get selectedCouponsWillBeRenewedAutomaticallyZodiac {
+    return Intl.message(
+      'Selected coupons will be renewed automatically and displayed on your profile',
+      name: 'selectedCouponsWillBeRenewedAutomaticallyZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select at least 1 coupon`
+  String get selectAtLeast1CouponZodiac {
+    return Intl.message(
+      'Select at least 1 coupon',
+      name: 'selectAtLeast1CouponZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set up successful`
+  String get setUpSuccessfulZodiac {
+    return Intl.message(
+      'Set up successful',
+      name: 'setUpSuccessfulZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All selected coupons are ready to be displayed tomorrow.`
+  String get allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac {
+    return Intl.message(
+      'All selected coupons are ready to be displayed tomorrow.',
+      name: 'allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac',
       desc: '',
       args: [],
     );

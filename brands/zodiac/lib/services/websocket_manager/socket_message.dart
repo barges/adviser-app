@@ -206,4 +206,11 @@ class SocketMessage {
           "opponent_id": opponentId,
         },
       );
+
+  static SocketMessage upsellingList({required int chatId}) => SocketMessage(
+        action: Commands.upsellingList,
+        params: {
+          'chat_id': chatId,
+        },
+      );
 }

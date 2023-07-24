@@ -7,6 +7,8 @@ abstract class AppSuccess {
 
   const AppSuccess(this.uiSuccessType, this.argument);
 
+  String? getTitle(BuildContext context);
+
   String getMessage(BuildContext context);
 }
 
@@ -16,6 +18,11 @@ class EmptySuccess extends AppSuccess {
   @override
   String getMessage(BuildContext context) {
     return '';
+  }
+
+  @override
+  String? getTitle(BuildContext context) {
+    return null;
   }
 }
 
@@ -27,5 +34,10 @@ class UISuccess extends AppSuccess {
   @override
   String getMessage(BuildContext context) {
     return uiSuccessType?.getSuccessMessage(context, argument) ?? '';
+  }
+
+  @override
+  String? getTitle(BuildContext context) {
+    return uiSuccessType?.getSuccessTitle(context);
   }
 }

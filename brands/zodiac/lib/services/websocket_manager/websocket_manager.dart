@@ -69,7 +69,6 @@ abstract class WebSocketManager {
     required ChatMessageModel message,
     required String roomId,
     required int opponentId,
-    int? repliedMessageId,
   });
 
   void sendWriteStatus({
@@ -109,4 +108,8 @@ abstract class WebSocketManager {
     required String roomId,
     required int opponentId,
   });
+
+  void addUpdateIdEvent(CreatedDeliveredEvent event);
+
+  void sendUpsellingList({required int chatId});
 }

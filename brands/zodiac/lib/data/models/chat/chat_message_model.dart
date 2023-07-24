@@ -6,9 +6,9 @@ import 'package:zodiac/data/models/chat/replied_message.dart';
 import 'package:zodiac/data/models/enums/chat_message_type.dart';
 import 'package:zodiac/data/models/enums/missed_message_action.dart';
 
-part 'chat_message_model.g.dart';
-
 part 'chat_message_model.freezed.dart';
+
+part 'chat_message_model.g.dart';
 
 @freezed
 class ChatMessageModel with _$ChatMessageModel {
@@ -64,11 +64,19 @@ class ChatMessageModel with _$ChatMessageModel {
     RepliedMessage? repliedMessage,
     String? mid,
     @JsonKey(name: 'emoji') @Default('') String reaction,
-    @JsonKey(ignore: true) @Default(true) bool isDelivered,
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    @Default(true)
+    bool isDelivered,
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    int? repliedMessageId,
   }) = _ChatMessageModel;
 
   factory ChatMessageModel.fromJson(Map<String, dynamic> json) =>
       _$ChatMessageModelFromJson(json);
+
+  bool compareId(String id) {
+    return mid == id || this.id.toString() == id;
+  }
 }
 
 ChatMessageType _typeFromJson(num? value) {
