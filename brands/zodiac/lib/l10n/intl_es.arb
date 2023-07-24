@@ -205,5 +205,8 @@
   "minutesFullZodiac": "Minutos",
   "discountForReorderZodiac": "Descuento por reordenar",
   "chooseAnImageZodiac": "Elige una imagen",
-  "showMoreZodiac": "Mostrar más"
+  "showMoreZodiac": "Mostrar más",
+  "servicePreviewZodiac": "Vista previa del servicio",
+  "buyZodiac": "Comprar",
+  "sendForApprovalZodiac": "Enviar para aprobación"
 }

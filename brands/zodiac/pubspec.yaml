@@ -65,6 +65,7 @@ dependencies:
   emoji_picker_flutter: ^1.6.1
   syncfusion_flutter_sliders: ^22.1.39
   syncfusion_flutter_core: ^22.1.39
+  dotted_border: ^2.0.0+3
 
   audible_mode: ^1.0.1
 

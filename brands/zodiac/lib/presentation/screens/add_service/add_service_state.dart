@@ -20,5 +20,6 @@ class AddServiceState with _$AddServiceState {
     @Default(0) int selectedImageIndex,
     List<String>? images,
     @Default(false) bool showAllImages,
+    @Default(false) bool updateTextsFlag,
   }) = _AddServiceState;
 }

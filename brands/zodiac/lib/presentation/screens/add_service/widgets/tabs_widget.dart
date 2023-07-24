@@ -7,6 +7,15 @@ import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
 enum ServiceTabType {
   online,
   offline;
+
+  String getShortTitle(BuildContext context) {
+    switch (this) {
+      case online:
+        return SZodiac.of(context).onlineZodiac;
+      case offline:
+        return SZodiac.of(context).offlineZodiac;
+    }
+  }
 }
 
 class TabsWidget extends StatelessWidget {

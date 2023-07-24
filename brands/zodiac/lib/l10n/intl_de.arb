@@ -204,5 +204,8 @@
   "minutesFullZodiac": "Protokoll",
   "discountForReorderZodiac": "Rabatt bei Nachbestellung",
   "chooseAnImageZodiac": "Wählen Sie ein Bild",
-  "showMoreZodiac": "Zeig mehr"
+  "showMoreZodiac": "Zeig mehr",
+  "servicePreviewZodiac": "Servicevorschau",
+  "buyZodiac": "Besorgen",
+  "sendForApprovalZodiac": "Zur Genehmigung senden"
 }

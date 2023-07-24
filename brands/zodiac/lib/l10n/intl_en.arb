@@ -206,5 +206,8 @@
   "minutesFullZodiac": "Minutes",
   "discountForReorderZodiac": "Discount for reorder",
   "chooseAnImageZodiac": "Choose an image",
-  "showMoreZodiac": "Show more"
+  "showMoreZodiac": "Show more",
+  "servicePreviewZodiac": "Service preview",
+  "buyZodiac": "Buy",
+  "sendForApprovalZodiac": "Send for approval"
 }

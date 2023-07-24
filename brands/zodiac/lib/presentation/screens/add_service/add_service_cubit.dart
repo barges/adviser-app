@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/enums/validation_error_type.dart';
 import 'package:zodiac/data/models/user_info/locale_model.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -16,11 +17,18 @@ const double maxPrice = 299.99;
 const double minDiscount = 5;
 const double maxDiscount = 50;
 
+const int _textFieldsCount = 2;
+
+const int titleIndex = 0;
+const int descriptionIndex = 1;
+
 class AddServiceCubit extends Cubit<AddServiceState> {
   final ZodiacCachingManager _cachingManager;
   final ZodiacServicesRepository _servicesRepository;
 
   late List<GlobalKey> localesGlobalKeys;
+  final Map<String, List<TextEditingController>> textControllersMap = {};
+  final Map<String, List<ValidationErrorType>> errorTextsMap = {};
 
   AddServiceCubit(
     this._cachingManager,
@@ -32,6 +40,10 @@ class AddServiceCubit extends Cubit<AddServiceState> {
 
     localesGlobalKeys =
         List.generate(state.languagesList?.length ?? 0, (index) => GlobalKey());
+
+    state.languagesList?.forEach((element) {
+      _setNewLocaleProperties(element);
+    });
   }
 
   void goToAddNewLocale(BuildContext context) {
@@ -76,6 +88,27 @@ class AddServiceCubit extends Cubit<AddServiceState> {
 
   void _setNewLocaleProperties(String localeCode) {
     localesGlobalKeys.add(GlobalKey());
+
+    errorTextsMap[localeCode] = List<ValidationErrorType>.generate(
+      _textFieldsCount,
+      (index) => ValidationErrorType.requiredField,
+    );
+
+    textControllersMap[localeCode] = List<TextEditingController>.generate(
+      _textFieldsCount,
+      (index) {
+        return TextEditingController()
+          ..addListener(() {
+            errorTextsMap[localeCode]?[index] = ValidationErrorType.empty;
+            _updateTextsFlag();
+          });
+      },
+    );
+  }
+
+  void _updateTextsFlag() {
+    bool flag = state.updateTextsFlag;
+    emit(state.copyWith(updateTextsFlag: !flag));
   }
 
   void setMainLanguage(int index) {

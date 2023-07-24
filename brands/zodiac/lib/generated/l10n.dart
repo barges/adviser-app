@@ -2135,6 +2135,36 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Service preview`
+  String get servicePreviewZodiac {
+    return Intl.message(
+      'Service preview',
+      name: 'servicePreviewZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Buy`
+  String get buyZodiac {
+    return Intl.message(
+      'Buy',
+      name: 'buyZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send for approval`
+  String get sendForApprovalZodiac {
+    return Intl.message(
+      'Send for approval',
+      name: 'sendForApprovalZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

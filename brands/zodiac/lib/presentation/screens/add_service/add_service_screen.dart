@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -10,10 +11,10 @@ import 'package:zodiac/presentation/common_widgets/tile_menu_button.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/choose_image_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/information_expansion_panel.dart';
-import 'package:zodiac/presentation/screens/add_service/widgets/language_section_widget.dart';
+import 'package:zodiac/presentation/screens/add_service/widgets/languages_part_widget.dart';
+import 'package:zodiac/presentation/screens/add_service/widgets/preview_part/service_preview_part_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/sliders_part_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/tabs_widget.dart';
-import 'package:zodiac/presentation/screens/add_service/widgets/title_description_part_widget.dart';
 
 class AddServiceScreen extends StatelessWidget {
   const AddServiceScreen({Key? key}) : super(key: key);
@@ -36,65 +37,80 @@ class AddServiceScreen extends StatelessWidget {
           ),
           body: SingleChildScrollView(
             child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 16.0,
-                ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppConstants.horizontalScreenPadding,
-                      ),
-                      child: Column(
-                        children: [
-                          const TabsWidget(),
-                          const SizedBox(
-                            height: 24.0,
-                          ),
-                          InformationExpansionPanel(
-                            title: SZodiac.of(context)
-                                .moreAboutOfflineServicesZodiac,
-                            content: SZodiac.of(context)
-                                .thisTypeOfServicesAreNotTimeSensitiveZodiac,
-                          ),
-                          const SizedBox(
-                            height: 24.0,
-                          ),
-                          TileMenuButton(
-                            label: SZodiac.of(context)
-                                .duplicateAnExistingServiceZodiac,
-                            onTap: () {},
-                          ),
-                          const SizedBox(
-                            height: 24.0,
-                          ),
-                        ],
-                      ),
+              padding: const EdgeInsets.symmetric(
+                vertical: 16.0,
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppConstants.horizontalScreenPadding,
                     ),
-                    const LanguageSectionWidget(),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: AppConstants.horizontalScreenPadding,
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 24.0,
-                          ),
-                          TitleDescriptionPartWidget(),
-                          SizedBox(
-                            height: 24.0,
-                          ),
-                          SlidersPartWidget(),
-                          SizedBox(
-                            height: 24.0,
-                          ),
-                          ChooseImageWidget(),
-                        ],
-                      ),
-                    )
-                  ],
-                )),
+                    child: Column(
+                      children: [
+                        const TabsWidget(),
+                        const SizedBox(
+                          height: 24.0,
+                        ),
+                        InformationExpansionPanel(
+                          title: SZodiac.of(context)
+                              .moreAboutOfflineServicesZodiac,
+                          content: SZodiac.of(context)
+                              .thisTypeOfServicesAreNotTimeSensitiveZodiac,
+                        ),
+                        const SizedBox(
+                          height: 24.0,
+                        ),
+                        TileMenuButton(
+                          label: SZodiac.of(context)
+                              .duplicateAnExistingServiceZodiac,
+                          onTap: () {},
+                        ),
+                        const SizedBox(
+                          height: 24.0,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const LanguagesPartWidget(),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppConstants.horizontalScreenPadding,
+                    ),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 24.0,
+                        ),
+                        SlidersPartWidget(),
+                        SizedBox(
+                          height: 24.0,
+                        ),
+                        ChooseImageWidget(),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 24.0,
+                  ),
+                  const ServicePreviewPartWidget(),
+                  const SizedBox(
+                    height: 24.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppConstants.horizontalScreenPadding,
+                    ),
+                    child: AppElevatedButton(
+                        title: SZodiac.of(context).sendForApprovalZodiac,
+                        onPressed: () {}),
+                  ),
+                  const SizedBox(
+                    height: 24.0,
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

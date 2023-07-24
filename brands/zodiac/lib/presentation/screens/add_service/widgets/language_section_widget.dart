@@ -8,7 +8,12 @@ import 'package:zodiac/presentation/common_widgets/checkbox_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
 
 class LanguageSectionWidget extends StatelessWidget {
-  const LanguageSectionWidget({Key? key}) : super(key: key);
+  final int selectedLanguageIndex;
+
+  const LanguageSectionWidget({
+    Key? key,
+    required this.selectedLanguageIndex,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +22,7 @@ class LanguageSectionWidget extends StatelessWidget {
 
     final List<String>? languagesList =
         context.select((AddServiceCubit cubit) => cubit.state.languagesList);
-    final int selectedLanguageIndex = context
-        .select((AddServiceCubit cubit) => cubit.state.selectedLanguageIndex);
+
     final int? mainLanguageIndex = context
         .select((AddServiceCubit cubit) => cubit.state.mainLanguageIndex);
 

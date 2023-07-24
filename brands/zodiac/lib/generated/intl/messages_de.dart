@@ -79,6 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Guthaben & Transaktionen"),
         "bonusZodiac": MessageLookupByLibrary.simpleMessage("Bonus"),
         "busyZodiac": MessageLookupByLibrary.simpleMessage("Beschäftigt"),
+        "buyZodiac": MessageLookupByLibrary.simpleMessage("Besorgen"),
         "callEndedZodiac":
             MessageLookupByLibrary.simpleMessage("Anruf beendet"),
         "callStartedZodiac":
@@ -307,10 +308,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "selectedPhotoZodiac":
             MessageLookupByLibrary.simpleMessage("Ausgewähltes Foto"),
         "sendCodeZodiac": MessageLookupByLibrary.simpleMessage("Code senden"),
+        "sendForApprovalZodiac":
+            MessageLookupByLibrary.simpleMessage("Zur Genehmigung senden"),
         "serviceDescriptionHintZodiac": MessageLookupByLibrary.simpleMessage(
             "Ich werde 3 Karten ziehen\nIch werde meinen Engel kontaktieren\nGemeinsam lesen wir die Schlussfolgerungen\nSchließlich werde ich Ihnen in einer nächsten Sitzung die von uns durchgeführte Analyse mitteilen"),
         "serviceLanguageZodiac":
             MessageLookupByLibrary.simpleMessage("Servicesprache"),
+        "servicePreviewZodiac":
+            MessageLookupByLibrary.simpleMessage("Servicevorschau"),
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Service"),
         "servicesMessagesZodiac":
             MessageLookupByLibrary.simpleMessage("Service und Nachrichten"),
