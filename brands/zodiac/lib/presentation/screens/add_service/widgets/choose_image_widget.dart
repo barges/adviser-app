@@ -65,24 +65,30 @@ class ChooseImageWidget extends StatelessWidget {
                   .mapIndexed(
                     (index, element) => GestureDetector(
                       onTap: () => addServiceCubit.selectImage(index),
-                      child: Container(
-                        clipBehavior: Clip.hardEdge,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6.0),
-                            border: selectedImageIndex == index
-                                ? Border.all(
-                                    color: theme.primaryColor,
-                                    width: 2.0,
-                                  )
-                                : null),
-                        child: Opacity(
-                          opacity: selectedImageIndex == index ? 0.6 : 1.0,
-                          child: AppImageWidget(
-                            uri: Uri.parse(element),
-                            height: 36.0,
-                            radius: 4.0,
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: Opacity(
+                              opacity: selectedImageIndex == index ? 0.6 : 1.0,
+                              child: AppImageWidget(
+                                uri: Uri.parse(element),
+                                radius: 6.0,
+                                fit: BoxFit.fitWidth,
+                              ),
+                            ),
                           ),
-                        ),
+                          Positioned.fill(
+                              child: Container(
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6.0),
+                                      border: selectedImageIndex == index
+                                          ? Border.all(
+                                              color: theme.primaryColor,
+                                              width: 2.0,
+                                            )
+                                          : null)))
+                        ],
                       ),
                     ),
                   )
