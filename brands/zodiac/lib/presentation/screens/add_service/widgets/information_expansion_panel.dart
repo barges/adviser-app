@@ -41,13 +41,14 @@ class _InformationExpansionPanelState extends State<InformationExpansionPanel> {
         elevation: 0,
         children: [
           ExpansionPanel(
+            backgroundColor: Colors.transparent,
             canTapOnHeader: true,
             isExpanded: isExpanded,
             headerBuilder: (context, isExpanded) => Row(
               children: [
                 Assets.zodiac.vectors.infoSquareLarge.svg(
-                    height: AppConstants.iconSize,
-                    width: AppConstants.iconSize,
+                    height: 32.0,
+                    width: 32.0,
                     fit: BoxFit.fill,
                     colorFilter:
                         ColorFilter.mode(theme.shadowColor, BlendMode.srcIn)),
