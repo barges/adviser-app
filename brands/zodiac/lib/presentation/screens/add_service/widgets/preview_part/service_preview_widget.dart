@@ -58,6 +58,11 @@ class ServicePreviewWidget extends StatelessWidget {
                 Builder(builder: (context) {
                   final double price = context
                       .select((AddServiceCubit cubit) => cubit.state.price);
+                  final double discount = context
+                      .select((AddServiceCubit cubit) => cubit.state.discount);
+                  final bool discountEnabled = context.select(
+                      (AddServiceCubit cubit) => cubit.state.discountEnabled);
+
                   return Container(
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
@@ -82,7 +87,8 @@ class ServicePreviewWidget extends StatelessWidget {
                           width: 8.0,
                         ),
                         Text(
-                          '${SZodiac.of(context).buyZodiac} \$${price.toStringAsFixed(2)}',
+                          '${SZodiac.of(context).buyZodiac}'
+                          ' \$${(price * (discountEnabled ? (1 - discount / 100) : 1)).toStringAsFixed(2)}',
                           style: theme.textTheme.labelMedium?.copyWith(
                             fontSize: 17.0,
                             color: theme.canvasColor,

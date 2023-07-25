@@ -42,6 +42,7 @@ class ServicePreviewImageWidget extends StatelessWidget {
           right: 16.0,
           left: 16.0,
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: ValueListenableBuilder(
