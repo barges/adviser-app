@@ -26,9 +26,13 @@ class AddServiceCubit extends Cubit<AddServiceState> {
   final ZodiacCachingManager _cachingManager;
   final ZodiacServicesRepository _servicesRepository;
 
-  late List<GlobalKey> localesGlobalKeys;
+  List<GlobalKey> localesGlobalKeys = [];
   final Map<String, List<TextEditingController>> textControllersMap = {};
+  final Map<String, List<FocusNode>> focusNodesMap = {};
+  final Map<String, List<ValueNotifier>> hasFocusNotifiersMap = {};
   final Map<String, List<ValidationErrorType>> errorTextsMap = {};
+
+  bool _wasFocusRequest = false;
 
   AddServiceCubit(
     this._cachingManager,
@@ -38,12 +42,29 @@ class AddServiceCubit extends Cubit<AddServiceState> {
 
     emit(state.copyWith(languagesList: ['en', 'es']));
 
-    localesGlobalKeys =
-        List.generate(state.languagesList?.length ?? 0, (index) => GlobalKey());
-
     state.languagesList?.forEach((element) {
-      _setNewLocaleProperties(element);
+      _setNewLocaleProperties(element, onStart: true);
     });
+  }
+
+  @override
+  Future<void> close() async {
+    for (var entry in textControllersMap.entries) {
+      for (var element in entry.value) {
+        element.dispose();
+      }
+    }
+    for (var entry in focusNodesMap.entries) {
+      for (var element in entry.value) {
+        element.dispose();
+      }
+    }
+    for (var entry in hasFocusNotifiersMap.entries) {
+      for (var element in entry.value) {
+        element.dispose();
+      }
+    }
+    super.close();
   }
 
   void goToAddNewLocale(BuildContext context) {
@@ -90,12 +111,12 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     }
   }
 
-  void _setNewLocaleProperties(String localeCode) {
-    localesGlobalKeys.add(GlobalKey());
-
+  void _setNewLocaleProperties(String localeCode, {bool onStart = false}) {
     errorTextsMap[localeCode] = List<ValidationErrorType>.generate(
       _textFieldsCount,
-      (index) => ValidationErrorType.requiredField,
+      (index) => onStart
+          ? ValidationErrorType.empty
+          : ValidationErrorType.requiredField,
     );
 
     textControllersMap[localeCode] = List<TextEditingController>.generate(
@@ -108,6 +129,24 @@ class AddServiceCubit extends Cubit<AddServiceState> {
           });
       },
     );
+
+    hasFocusNotifiersMap[localeCode] = List<ValueNotifier>.generate(
+      _textFieldsCount,
+      (index) => ValueNotifier(false),
+    );
+
+    focusNodesMap[localeCode] = List<FocusNode>.generate(
+      _textFieldsCount,
+      (index) {
+        final node = FocusNode();
+        node.addListener(() {
+          hasFocusNotifiersMap[localeCode]?[index].value = node.hasFocus;
+        });
+        return node;
+      },
+    );
+
+    localesGlobalKeys.add(GlobalKey());
   }
 
   void _updateTextsFlag() {
@@ -146,6 +185,22 @@ class AddServiceCubit extends Cubit<AddServiceState> {
   }
 
   void _removeLocaleProperties(String localeCode) {
+    for (TextEditingController element
+        in textControllersMap[localeCode] ?? []) {
+      element.dispose();
+    }
+    for (FocusNode element in focusNodesMap[localeCode] ?? []) {
+      element.dispose();
+    }
+    for (ValueNotifier element in hasFocusNotifiersMap[localeCode] ?? []) {
+      element.dispose();
+    }
+
+    textControllersMap.remove(localeCode);
+    focusNodesMap.remove(localeCode);
+    hasFocusNotifiersMap.remove(localeCode);
+    errorTextsMap.remove(localeCode);
+
     localesGlobalKeys.removeAt(state.languagesList?.indexOf(localeCode) ?? 0);
   }
 
@@ -201,5 +256,53 @@ class AddServiceCubit extends Cubit<AddServiceState> {
 
   void selectImage(int index) {
     emit(state.copyWith(selectedImageIndex: index));
+  }
+
+  void sendForApproval() {
+    final bool isChecked = _checkTextFields();
+  }
+
+  bool _checkTextFields() {
+    bool isValid = true;
+    int? firstLanguageWithErrorIndex;
+    final List<String> languagesList = List.from(state.languagesList ?? []);
+    for (String localeCode in languagesList) {
+      final List<TextEditingController>? controllersByLocale =
+          textControllersMap[localeCode];
+      if (controllersByLocale != null) {
+        for (int i = 0; i < controllersByLocale.length; i++) {
+          if (!_checkTextField(localeCode, i)) {
+            firstLanguageWithErrorIndex ??= languagesList.indexOf(localeCode);
+            _wasFocusRequest = true;
+            isValid = false;
+          }
+
+          if (localeCode == languagesList.lastOrNull &&
+              i == controllersByLocale.length - 1) {
+            _wasFocusRequest = false;
+          }
+        }
+      }
+    }
+    if (firstLanguageWithErrorIndex != null) {
+      changeLocaleIndex(firstLanguageWithErrorIndex);
+    }
+    return isValid;
+  }
+
+  bool _checkTextField(String localeCode, int index) {
+    bool isValid = true;
+    final String text =
+        textControllersMap[localeCode]?[index].text.trim() ?? '';
+    if (text.isEmpty) {
+      isValid = false;
+
+      errorTextsMap[localeCode]?[index] = ValidationErrorType.requiredField;
+
+      if (!_wasFocusRequest) {
+        focusNodesMap[localeCode]?[index].requestFocus();
+      }
+    }
+    return isValid;
   }
 }

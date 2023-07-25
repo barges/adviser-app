@@ -106,8 +106,9 @@ class AddServiceScreen extends StatelessWidget {
                         horizontal: AppConstants.horizontalScreenPadding,
                       ),
                       child: AppElevatedButton(
-                          title: SZodiac.of(context).sendForApprovalZodiac,
-                          onPressed: () {}),
+                        title: SZodiac.of(context).sendForApprovalZodiac,
+                        onPressed: addServiceCubit.sendForApproval,
+                      ),
                     ),
                     const SizedBox(
                       height: 24.0,

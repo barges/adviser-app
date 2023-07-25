@@ -90,8 +90,7 @@ class AppTextField extends StatelessWidget {
                     ? EdgeInsets.fromLTRB(
                         12.0, 12.0, 12.0, showCounter ? 0.0 : 12.0)
                     : const EdgeInsets.symmetric(horizontal: 12.0),
-
-                // counterText: '',
+                counterText: showCounter ? null : '',
               ),
               buildCounter: showCounter
                   ? (context,
