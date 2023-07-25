@@ -29,7 +29,9 @@ class LanguageSectionWidget extends StatelessWidget {
     final bool isMain = selectedLanguageIndex == mainLanguageIndex;
 
     if (languagesList != null) {
+      final bool deleteEnabled = languagesList.length > 1;
       return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -38,67 +40,49 @@ class LanguageSectionWidget extends StatelessWidget {
                 horizontal: AppConstants.horizontalScreenPadding,
               ),
               child: Row(
-                children: languagesList.mapIndexed(
-                  (index, element) {
-                    if (index < languagesList.length - 1) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: _LanguageButton(
-                          key: addServiceCubit.localesGlobalKeys[index],
-                          title: addServiceCubit.localeNativeName(element),
-                          isSelected: selectedLanguageIndex == index,
-                          isMain: mainLanguageIndex == index,
-                          setIsSelected: () =>
-                              addServiceCubit.changeLocaleIndex(index),
-                          removeLocale: () =>
-                              addServiceCubit.removeLocale(element),
-                        ),
-                      );
-                    } else {
-                      return Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: _LanguageButton(
-                              key: addServiceCubit.localesGlobalKeys[index],
-                              title: addServiceCubit.localeNativeName(element),
-                              isSelected: selectedLanguageIndex == index,
-                              isMain: mainLanguageIndex == index,
-                              setIsSelected: () =>
-                                  addServiceCubit.changeLocaleIndex(index),
-                              removeLocale: () =>
-                                  addServiceCubit.removeLocale(element),
-                            ),
+                children: [
+                  ...languagesList
+                      .mapIndexed(
+                        (index, element) => Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: _LanguageButton(
+                            key: addServiceCubit.localesGlobalKeys[index],
+                            title: addServiceCubit.localeNativeName(element),
+                            isSelected: selectedLanguageIndex == index,
+                            isMain: mainLanguageIndex == index,
+                            deleteEnabled: deleteEnabled,
+                            setIsSelected: () =>
+                                addServiceCubit.changeLocaleIndex(index),
+                            removeLocale: () =>
+                                addServiceCubit.removeLocale(element),
                           ),
-                          GestureDetector(
-                            onTap: () =>
-                                addServiceCubit.goToAddNewLocale(context),
-                            child: Container(
-                              height: 38.0,
-                              width: 38.0,
-                              decoration: BoxDecoration(
-                                color: theme.canvasColor,
-                                borderRadius: BorderRadius.circular(
-                                  AppConstants.buttonRadius,
-                                ),
-                              ),
-                              child: Center(
-                                child: Assets.vectors.add.svg(
-                                  height: 24.0,
-                                  width: 24.0,
-                                  colorFilter: ColorFilter.mode(
-                                    theme.primaryColor,
-                                    BlendMode.srcIn,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      );
-                    }
-                  },
-                ).toList(),
+                        ),
+                      )
+                      .toList(),
+                  GestureDetector(
+                    onTap: () => addServiceCubit.goToAddNewLocale(context),
+                    child: Container(
+                      height: 38.0,
+                      width: 38.0,
+                      decoration: BoxDecoration(
+                        color: theme.canvasColor,
+                        borderRadius: BorderRadius.circular(
+                          AppConstants.buttonRadius,
+                        ),
+                      ),
+                      child: Center(
+                        child: Assets.vectors.add.svg(
+                          height: 24.0,
+                          width: 24.0,
+                          colorFilter: ColorFilter.mode(
+                            theme.primaryColor,
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
           ),
@@ -146,6 +130,7 @@ class _LanguageButton extends StatelessWidget {
   final bool isMain;
   final VoidCallback setIsSelected;
   final VoidCallback removeLocale;
+  final bool deleteEnabled;
 
   const _LanguageButton({
     Key? key,
@@ -154,6 +139,7 @@ class _LanguageButton extends StatelessWidget {
     required this.isMain,
     required this.setIsSelected,
     required this.removeLocale,
+    required this.deleteEnabled,
   }) : super(key: key);
 
   @override
@@ -210,7 +196,7 @@ class _LanguageButton extends StatelessWidget {
             ],
           ),
         ),
-        if (!isMain)
+        if (!isMain && deleteEnabled)
           GestureDetector(
             onTap: removeLocale,
             child: Row(
