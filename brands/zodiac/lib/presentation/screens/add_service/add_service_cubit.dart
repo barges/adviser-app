@@ -58,6 +58,10 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     );
   }
 
+  void goToDuplicateService(BuildContext context) {
+    context.push(route: const ZodiacDuplicateService());
+  }
+
   String localeNativeName(String code) {
     List<LocaleModel>? locales = _cachingManager.getAllLocales();
 

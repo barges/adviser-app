@@ -28,92 +28,97 @@ class AddServiceScreen extends StatelessWidget {
         zodiacGetIt.get<ZodiacCachingManager>(),
         zodiacGetIt.get<ZodiacServicesRepository>(),
       ),
-      child: GestureDetector(
-        onTap: FocusScope.of(context).unfocus,
-        child: Scaffold(
-          backgroundColor: theme.scaffoldBackgroundColor,
-          appBar: SimpleAppBar(
-            title: SZodiac.of(context).addServiceZodiac,
-          ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 16.0,
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppConstants.horizontalScreenPadding,
+      child: Builder(builder: (context) {
+        final AddServiceCubit addServiceCubit = context.read<AddServiceCubit>();
+
+        return GestureDetector(
+          onTap: FocusScope.of(context).unfocus,
+          child: Scaffold(
+            backgroundColor: theme.scaffoldBackgroundColor,
+            appBar: SimpleAppBar(
+              title: SZodiac.of(context).addServiceZodiac,
+            ),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16.0,
+                ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppConstants.horizontalScreenPadding,
+                      ),
+                      child: Column(
+                        children: [
+                          const TabsWidget(),
+                          const SizedBox(
+                            height: 24.0,
+                          ),
+                          InformationExpansionPanel(
+                            title: SZodiac.of(context)
+                                .moreAboutOfflineServicesZodiac,
+                            content: SZodiac.of(context)
+                                .thisTypeOfServicesAreNotTimeSensitiveZodiac,
+                          ),
+                          const SizedBox(
+                            height: 24.0,
+                          ),
+                          TileMenuButton(
+                            label: SZodiac.of(context)
+                                .duplicateAnExistingServiceZodiac,
+                            onTap: () =>
+                                addServiceCubit.goToDuplicateService(context),
+                          ),
+                          const SizedBox(
+                            height: 24.0,
+                          ),
+                        ],
+                      ),
                     ),
-                    child: Column(
-                      children: [
-                        const TabsWidget(),
-                        const SizedBox(
-                          height: 24.0,
-                        ),
-                        InformationExpansionPanel(
-                          title: SZodiac.of(context)
-                              .moreAboutOfflineServicesZodiac,
-                          content: SZodiac.of(context)
-                              .thisTypeOfServicesAreNotTimeSensitiveZodiac,
-                        ),
-                        const SizedBox(
-                          height: 24.0,
-                        ),
-                        TileMenuButton(
-                          label: SZodiac.of(context)
-                              .duplicateAnExistingServiceZodiac,
-                          onTap: () {},
-                        ),
-                        const SizedBox(
-                          height: 24.0,
-                        ),
-                      ],
+                    const LanguagesPartWidget(),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppConstants.horizontalScreenPadding,
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 24.0,
+                          ),
+                          SlidersPartWidget(),
+                          SizedBox(
+                            height: 24.0,
+                          ),
+                          ChooseImageWidget(),
+                        ],
+                      ),
                     ),
-                  ),
-                  const LanguagesPartWidget(),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppConstants.horizontalScreenPadding,
+                    const SizedBox(
+                      height: 24.0,
                     ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 24.0,
-                        ),
-                        SlidersPartWidget(),
-                        SizedBox(
-                          height: 24.0,
-                        ),
-                        ChooseImageWidget(),
-                      ],
+                    const ServicePreviewPartWidget(),
+                    const SizedBox(
+                      height: 24.0,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 24.0,
-                  ),
-                  const ServicePreviewPartWidget(),
-                  const SizedBox(
-                    height: 24.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppConstants.horizontalScreenPadding,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppConstants.horizontalScreenPadding,
+                      ),
+                      child: AppElevatedButton(
+                          title: SZodiac.of(context).sendForApprovalZodiac,
+                          onPressed: () {}),
                     ),
-                    child: AppElevatedButton(
-                        title: SZodiac.of(context).sendForApprovalZodiac,
-                        onPressed: () {}),
-                  ),
-                  const SizedBox(
-                    height: 24.0,
-                  ),
-                ],
+                    const SizedBox(
+                      height: 24.0,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

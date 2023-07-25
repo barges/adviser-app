@@ -30,4 +30,5 @@ class RoutePathsZodiac {
   static const chatScreen = '${ZodiacBrand.alias}Chat';
   static const sendImageScreen = '${ZodiacBrand.alias}SendImage';
   static const addService = '${ZodiacBrand.alias}AddService';
+  static const duplicateService = '${ZodiacBrand.alias}DuplicateService';
 }
