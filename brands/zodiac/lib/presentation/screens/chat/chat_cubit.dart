@@ -452,6 +452,19 @@ class ChatCubit extends BaseCubit<ChatState> {
       }
     }));
 
+    addListener(_webSocketManager.upsellingActionsStream.listen((event) {
+      emit(state.copyWith(
+        cannedMessagesCount: event
+            .firstWhereOrNull((element) => element.type == 'canned_messages')
+            ?.counter,
+        couponsCount: event
+            .firstWhereOrNull((element) => element.type == 'coupons')
+            ?.counter,
+      ));
+    }));
+
+    _webSocketManager.sendUpsellingActions();
+
     getClientInformation();
   }
 

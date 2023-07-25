@@ -228,4 +228,7 @@ class SocketMessage {
         'message_id': cannedMessageId,
         'opponent_id': opponentId,
       });
+
+  static SocketMessage upsellingActions() =>
+      SocketMessage(action: Commands.upsellingActions);
 }

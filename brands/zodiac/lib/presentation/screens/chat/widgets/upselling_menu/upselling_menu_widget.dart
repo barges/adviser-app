@@ -18,7 +18,6 @@ class UpsellingMenuWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final ChatCubit chatCubit = context.read<ChatCubit>();
 
     final UpsellingMenuType? selectedMenuItem = context
         .select((ChatCubit cubit) => cubit.state.selectedUpsellingMenuItem);
@@ -47,22 +46,33 @@ class UpsellingMenuWidget extends StatelessWidget {
             child: Row(
               children: [
                 if (enabledMenuItems.contains(UpsellingMenuType.coupons))
-                  Expanded(
-                    child: _UpsellingMenuItemWidget(
-                      iconPath: Assets.zodiac.vectors.narrowCouponsIcon.path,
-                      type: UpsellingMenuType.coupons,
-                      selectedMenuItem: selectedMenuItem,
-                    ),
-                  ),
+                  Builder(builder: (context) {
+                    final int? couponsCount = context
+                        .select((ChatCubit cubit) => cubit.state.couponsCount);
+
+                    return Expanded(
+                      child: _UpsellingMenuItemWidget(
+                        iconPath: Assets.zodiac.vectors.narrowCouponsIcon.path,
+                        type: UpsellingMenuType.coupons,
+                        selectedMenuItem: selectedMenuItem,
+                        count: couponsCount,
+                      ),
+                    );
+                  }),
                 if (enabledMenuItems.contains(UpsellingMenuType.canned))
-                  Expanded(
-                    child: _UpsellingMenuItemWidget(
-                      iconPath: Assets.zodiac.vectors.chatsIcon.path,
-                      type: UpsellingMenuType.canned,
-                      selectedMenuItem: selectedMenuItem,
-                      count: chatCubit.state.cannedMessageCategories?.length,
-                    ),
-                  ),
+                  Builder(builder: (context) {
+                    final int? cannedMessagesCount = context.select(
+                        (ChatCubit cubit) => cubit.state.cannedMessagesCount);
+
+                    return Expanded(
+                      child: _UpsellingMenuItemWidget(
+                        iconPath: Assets.zodiac.vectors.chatsIcon.path,
+                        type: UpsellingMenuType.canned,
+                        selectedMenuItem: selectedMenuItem,
+                        count: cannedMessagesCount,
+                      ),
+                    );
+                  }),
                 if (enabledMenuItems.contains(UpsellingMenuType.services))
                   Expanded(
                     child: _UpsellingMenuItemWidget(

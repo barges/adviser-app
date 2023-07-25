@@ -1,6 +1,7 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
+import 'package:zodiac/data/models/upselling_action/upselling_action_model.dart';
 import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
 import 'package:zodiac/services/websocket_manager/chat_login_event.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
@@ -55,6 +56,8 @@ abstract class WebSocketManager {
   Stream<RoomPausedEvent> get roomPausedStream;
 
   Stream<UpsellingListEvent> get upsellingListStream;
+
+  Stream<List<UpsellingActionModel>> get upsellingActionsStream;
 
   WebSocketState get currentState;
 
@@ -123,4 +126,6 @@ abstract class WebSocketManager {
     String? couponCode,
     int? cannedMessageId,
   });
+
+  void sendUpsellingActions();
 }

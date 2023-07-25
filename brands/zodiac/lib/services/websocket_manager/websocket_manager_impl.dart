@@ -19,6 +19,7 @@ import 'package:zodiac/data/models/chat/end_chat_data.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
 import 'package:zodiac/data/models/enums/chat_payment_status.dart';
+import 'package:zodiac/data/models/upselling_action/upselling_action_model.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
 import 'package:zodiac/infrastructure/routing/route_paths.dart';
@@ -98,6 +99,9 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   final PublishSubject<MessageReactionCreatedEvent>
       _messageReactionCreatedStream = PublishSubject();
+
+  final PublishSubject<List<UpsellingActionModel>> _upsellingActionsStream =
+      PublishSubject();
 
   WebSocketManagerImpl(
     this._zodiacMainCubit,
@@ -241,6 +245,9 @@ class WebSocketManagerImpl implements WebSocketManager {
 
     _emitter.on(
         Commands.upsellingList, this, (event, _) => _onUpsellingList(event));
+
+    _emitter.on(Commands.upsellingActions, this,
+        (event, _) => _onUpsellingActions(event));
   }
 
   @override
@@ -308,6 +315,10 @@ class WebSocketManagerImpl implements WebSocketManager {
   @override
   Stream<UpsellingListEvent> get upsellingListStream =>
       _upsellingListStream.stream;
+
+  @override
+  Stream<List<UpsellingActionModel>> get upsellingActionsStream =>
+      _upsellingActionsStream.stream;
 
   @override
   WebSocketState get currentState => _currentState;
@@ -504,6 +515,11 @@ class WebSocketManagerImpl implements WebSocketManager {
       couponCode: couponCode,
       cannedMessageId: cannedMessageId,
     ));
+  }
+
+  @override
+  void sendUpsellingActions() {
+    _send(SocketMessage.upsellingActions());
   }
 
   @override
@@ -1045,6 +1061,18 @@ class WebSocketManagerImpl implements WebSocketManager {
           }
         },
       );
+    });
+  }
+
+  void _onUpsellingActions(Event event) {
+    (event.eventData as SocketMessage).let((data) {
+      List<dynamic> actions = data.params['actions'];
+
+      List<UpsellingActionModel> actionsFromJson = actions
+          .map((e) => UpsellingActionModel.fromJson(e as Map<String, dynamic>))
+          .toList();
+
+      _upsellingActionsStream.add(actionsFromJson);
     });
   }
 }

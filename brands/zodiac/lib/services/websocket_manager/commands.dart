@@ -112,4 +112,6 @@ class Commands {
   static String get upsellingList => 'upsellingList';
 
   static String get sendUpselling => 'sendUpselling';
+
+  static String get upsellingActions => 'upsellingActions';
 }
