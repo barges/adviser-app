@@ -114,7 +114,9 @@ class HomeCubit extends Cubit<HomeState> {
 
     _connectivitySubscription =
         _connectivityService.connectivityStream.listen((event) {
-      if (_appInForeground && event) {
+      if (_appInForeground &&
+          event &&
+          _webSocketManager.currentState == WebSocketState.closed) {
         _webSocketManager.connect();
       }
       if (!event) {

@@ -12,7 +12,7 @@ import 'package:zodiac/domain/repositories/zodiac_canned_messages_repository.dar
 
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_state.dart';
 
-const maximumMessageSymbols = 10; //280;
+const maximumMessageSymbols = 280;
 
 @injectable
 class CannedMessagesCubit extends Cubit<CannedMessagesState> {
