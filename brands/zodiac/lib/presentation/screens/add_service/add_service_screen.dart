@@ -64,12 +64,19 @@ class AddServiceScreen extends StatelessWidget {
                           const SizedBox(
                             height: 24.0,
                           ),
-                          TileMenuButton(
-                            label: SZodiac.of(context)
-                                .duplicateAnExistingServiceZodiac,
-                            onTap: () =>
-                                addServiceCubit.goToDuplicateService(context),
-                          ),
+                          Builder(builder: (context) {
+                            final String? duplicatedServiceName =
+                                context.select((AddServiceCubit cubit) =>
+                                    cubit.state.duplicatedServiceName);
+
+                            return TileMenuButton(
+                              label: SZodiac.of(context)
+                                  .duplicateAnExistingServiceZodiac,
+                              title: duplicatedServiceName,
+                              onTap: () =>
+                                  addServiceCubit.goToDuplicateService(context),
+                            );
+                          }),
                           const SizedBox(
                             height: 24.0,
                           ),

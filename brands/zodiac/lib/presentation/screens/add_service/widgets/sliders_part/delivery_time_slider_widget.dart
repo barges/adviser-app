@@ -147,4 +147,35 @@ enum DeliveryTimeTabType {
         return 3;
     }
   }
+
+  static DeliveryTimeTabType? fromSeconds(int? value) {
+    if (value != null) {
+      final Duration duration = Duration(seconds: value);
+
+      if (duration.inDays > 0) {
+        return DeliveryTimeTabType.days;
+      } else if (duration.inHours > 0) {
+        return DeliveryTimeTabType.hours;
+      } else {
+        return DeliveryTimeTabType.minutes;
+      }
+    }
+    return null;
+  }
+
+  double? deliveryTimeFromSeconds(int? value) {
+    if (value != null) {
+      final Duration duration = Duration(seconds: value);
+
+      switch (this) {
+        case DeliveryTimeTabType.days:
+          return duration.inDays.toDouble();
+        case DeliveryTimeTabType.hours:
+          return duration.inHours.toDouble();
+        case DeliveryTimeTabType.minutes:
+          return duration.inMinutes.toDouble();
+      }
+    }
+    return null;
+  }
 }

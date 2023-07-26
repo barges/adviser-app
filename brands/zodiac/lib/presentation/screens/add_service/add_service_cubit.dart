@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
@@ -5,6 +6,7 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.da
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
+import 'package:zodiac/data/models/services/service_info_item.dart';
 import 'package:zodiac/data/models/user_info/locale_model.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -80,7 +82,53 @@ class AddServiceCubit extends Cubit<AddServiceState> {
   }
 
   void goToDuplicateService(BuildContext context) {
-    context.push(route: const ZodiacDuplicateService());
+    context.push(
+        route: ZodiacDuplicateService(returnCallback: duplicateService));
+  }
+
+  void duplicateService(Map<String, dynamic> params) {
+    final String name = params['name'];
+    final ServiceInfoItem duplicatedService = params['duplicatedService'];
+
+    final List<String>? languagesList = state.languagesList;
+    if (languagesList != null) {
+      for (String element in languagesList) {
+        removeLocale(element);
+      }
+    }
+
+    final List<String> _newLanguagesList = [];
+    duplicatedService.translations?.forEach((element) {
+      if (element.code != null) {
+        _newLanguagesList.add(element.code!);
+        _addLocaleLocally(element.code!);
+        _setupLanguageTexts(
+            element.code!, element.title ?? '', element.description ?? '');
+      }
+    });
+    DeliveryTimeTabType? deliveryTimeTabType =
+        DeliveryTimeTabType.fromSeconds(duplicatedService.duration);
+
+    emit(
+      state.copyWith(
+        languagesList: _newLanguagesList,
+        duplicatedServiceName: name,
+        price: duplicatedService.price ?? 9.99,
+        selectedDeliveryTimeTab:
+            deliveryTimeTabType ?? DeliveryTimeTabType.minutes,
+        deliveryTime: deliveryTimeTabType
+                ?.deliveryTimeFromSeconds(duplicatedService.duration) ??
+            9.99,
+        mainLanguageIndex: _newLanguagesList
+            .indexWhere((element) => element == duplicatedService.mainLocale),
+      ),
+    );
+  }
+
+  void _setupLanguageTexts(
+      String localeCode, String title, String description) {
+    textControllersMap[localeCode]?[titleIndex].text = title;
+    textControllersMap[localeCode]?[descriptionIndex].text = description;
   }
 
   String localeNativeName(String code) {

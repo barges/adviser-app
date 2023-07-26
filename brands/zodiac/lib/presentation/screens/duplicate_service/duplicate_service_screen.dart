@@ -12,12 +12,18 @@ import 'package:zodiac/presentation/common_widgets/search_widget.dart';
 import 'package:zodiac/presentation/screens/duplicate_service/duplicate_service_cubit.dart';
 
 class DuplicateServiceScreen extends StatelessWidget {
-  const DuplicateServiceScreen({Key? key}) : super(key: key);
+  final ValueChanged<Map<String, dynamic>> returnCallback;
+
+  const DuplicateServiceScreen({
+    Key? key,
+    required this.returnCallback,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => DuplicateServiceCubit(),
+      create: (context) =>
+          DuplicateServiceCubit(returnCallback: returnCallback),
       child: Builder(builder: (context) {
         final DuplicateServiceCubit duplicateServiceCubit =
             context.read<DuplicateServiceCubit>();
@@ -41,6 +47,7 @@ class DuplicateServiceScreen extends StatelessWidget {
                     icon: Assets.vectors.check.path,
                     onTap: () {
                       context.pop();
+                      duplicateServiceCubit.setDuplicateService();
                     },
                   )
                 : null,

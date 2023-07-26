@@ -21,5 +21,6 @@ class AddServiceState with _$AddServiceState {
     List<String>? images,
     @Default(false) bool showAllImages,
     @Default(false) bool updateTextsFlag,
+    String? duplicatedServiceName,
   }) = _AddServiceState;
 }
