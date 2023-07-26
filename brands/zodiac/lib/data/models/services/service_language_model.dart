@@ -11,9 +11,9 @@ class ServiceLanguageModel with _$ServiceLanguageModel {
 
   @JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)
   const factory ServiceLanguageModel({
-    String? code,
+    @JsonKey(name: 'locale_code') String? code,
     String? title,
-    @Default(false) bool isMain,
+    String? description,
   }) = _ServiceLanguageModel;
 
   factory ServiceLanguageModel.fromJson(Map<String, dynamic> json) =>

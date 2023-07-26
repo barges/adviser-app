@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:zodiac/data/models/services/service_item.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/buttons/app_icon_button.dart';
@@ -24,6 +25,9 @@ class DuplicateServiceScreen extends StatelessWidget {
         final int? selectedDuplicatedService = context.select(
             (DuplicateServiceCubit cubit) =>
                 cubit.state.selectedDuplicatedService);
+
+        final List<ServiceItem>? services = context
+            .select((DuplicateServiceCubit cubit) => cubit.state.services);
 
         return Scaffold(
           backgroundColor: Theme.of(context).canvasColor,
@@ -48,23 +52,24 @@ class DuplicateServiceScreen extends StatelessWidget {
               ),
               Expanded(child: Builder(
                 builder: (context) {
-                  final List<String> services = context.select(
-                      (DuplicateServiceCubit cubit) => cubit.state.services);
-
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: AppConstants.horizontalScreenPadding),
-                    child: ListView.builder(
-                      itemCount: services.length,
-                      itemBuilder: (context, index) => CheckboxTileWidget(
-                        isMultiselect: false,
-                        isSelected: index == selectedDuplicatedService,
-                        title: services[index],
-                        onTap: () => duplicateServiceCubit
-                            .selectDuplicatedService(index),
+                  if (services != null) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: AppConstants.horizontalScreenPadding),
+                      child: ListView.builder(
+                        itemCount: services.length,
+                        itemBuilder: (context, index) => CheckboxTileWidget(
+                          isMultiselect: false,
+                          isSelected: index == selectedDuplicatedService,
+                          title: services[index].name ?? '',
+                          onTap: () => duplicateServiceCubit
+                              .selectDuplicatedService(index),
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
                 },
               ))
             ],
