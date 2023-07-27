@@ -473,6 +473,7 @@ class MainAppRouter extends _i48.RootStackRouter {
         child: _i42.DuplicateServiceScreen(
           key: args.key,
           returnCallback: args.returnCallback,
+          oldDuplicatedServiceId: args.oldDuplicatedServiceId,
         ),
       );
     },
@@ -1858,12 +1859,14 @@ class ZodiacDuplicateService
   ZodiacDuplicateService({
     _i49.Key? key,
     required void Function(Map<String, dynamic>) returnCallback,
+    int? oldDuplicatedServiceId,
   }) : super(
           ZodiacDuplicateService.name,
           path: 'zodiacDuplicateService',
           args: ZodiacDuplicateServiceArgs(
             key: key,
             returnCallback: returnCallback,
+            oldDuplicatedServiceId: oldDuplicatedServiceId,
           ),
         );
 
@@ -1874,15 +1877,18 @@ class ZodiacDuplicateServiceArgs {
   const ZodiacDuplicateServiceArgs({
     this.key,
     required this.returnCallback,
+    this.oldDuplicatedServiceId,
   });
 
   final _i49.Key? key;
 
   final void Function(Map<String, dynamic>) returnCallback;
 
+  final int? oldDuplicatedServiceId;
+
   @override
   String toString() {
-    return 'ZodiacDuplicateServiceArgs{key: $key, returnCallback: $returnCallback}';
+    return 'ZodiacDuplicateServiceArgs{key: $key, returnCallback: $returnCallback, oldDuplicatedServiceId: $oldDuplicatedServiceId}';
   }
 }
 

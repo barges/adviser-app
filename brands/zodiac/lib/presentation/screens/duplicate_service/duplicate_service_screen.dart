@@ -13,17 +13,21 @@ import 'package:zodiac/presentation/screens/duplicate_service/duplicate_service_
 
 class DuplicateServiceScreen extends StatelessWidget {
   final ValueChanged<Map<String, dynamic>> returnCallback;
+  final int? oldDuplicatedServiceId;
 
   const DuplicateServiceScreen({
     Key? key,
     required this.returnCallback,
+    this.oldDuplicatedServiceId,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          DuplicateServiceCubit(returnCallback: returnCallback),
+      create: (context) => DuplicateServiceCubit(
+        returnCallback: returnCallback,
+        oldDuplicatedServiceId: oldDuplicatedServiceId,
+      ),
       child: Builder(builder: (context) {
         final DuplicateServiceCubit duplicateServiceCubit =
             context.read<DuplicateServiceCubit>();

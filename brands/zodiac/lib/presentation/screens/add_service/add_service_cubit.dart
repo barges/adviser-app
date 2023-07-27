@@ -35,6 +35,7 @@ class AddServiceCubit extends Cubit<AddServiceState> {
   final Map<String, List<ValidationErrorType>> errorTextsMap = {};
 
   bool _wasFocusRequest = false;
+  int? _duplicatedServiceId;
 
   AddServiceCubit(
     this._cachingManager,
@@ -83,12 +84,17 @@ class AddServiceCubit extends Cubit<AddServiceState> {
 
   void goToDuplicateService(BuildContext context) {
     context.push(
-        route: ZodiacDuplicateService(returnCallback: duplicateService));
+        route: ZodiacDuplicateService(
+      returnCallback: duplicateService,
+      oldDuplicatedServiceId: _duplicatedServiceId,
+    ));
   }
 
   void duplicateService(Map<String, dynamic> params) {
     final String name = params['name'];
     final ServiceInfoItem duplicatedService = params['duplicatedService'];
+
+    _duplicatedServiceId = duplicatedService.id;
 
     final List<String>? languagesList = state.languagesList;
     if (languagesList != null) {
@@ -111,17 +117,18 @@ class AddServiceCubit extends Cubit<AddServiceState> {
 
     emit(
       state.copyWith(
-        languagesList: _newLanguagesList,
-        duplicatedServiceName: name,
-        price: duplicatedService.price ?? 9.99,
-        selectedDeliveryTimeTab:
-            deliveryTimeTabType ?? DeliveryTimeTabType.minutes,
-        deliveryTime: deliveryTimeTabType
-                ?.deliveryTimeFromSeconds(duplicatedService.duration) ??
-            9.99,
-        mainLanguageIndex: _newLanguagesList
-            .indexWhere((element) => element == duplicatedService.mainLocale),
-      ),
+          languagesList: _newLanguagesList,
+          duplicatedServiceName: name,
+          price: duplicatedService.price ?? 9.99,
+          selectedDeliveryTimeTab:
+              deliveryTimeTabType ?? DeliveryTimeTabType.minutes,
+          deliveryTime: deliveryTimeTabType
+                  ?.deliveryTimeFromSeconds(duplicatedService.duration) ??
+              9.99,
+          mainLanguageIndex: _newLanguagesList
+              .indexWhere((element) => element == duplicatedService.mainLocale),
+          selectedLanguageIndex: 0,
+          updateAfterDuplicate: !state.updateAfterDuplicate),
     );
   }
 

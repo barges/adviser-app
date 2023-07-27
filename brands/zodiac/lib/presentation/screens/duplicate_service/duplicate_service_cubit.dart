@@ -8,19 +8,26 @@ import 'package:zodiac/presentation/screens/duplicate_service/duplicate_service_
 
 class DuplicateServiceCubit extends Cubit<DuplicateServiceState> {
   final ValueChanged<Map<String, dynamic>> returnCallback;
+  final int? oldDuplicatedServiceId;
 
   List<ServiceItem> _services = [];
 
-  DuplicateServiceCubit({required this.returnCallback})
-      : super(const DuplicateServiceState()) {
+  DuplicateServiceCubit({
+    required this.returnCallback,
+    this.oldDuplicatedServiceId,
+  }) : super(const DuplicateServiceState()) {
     _getDuplicatedServices();
   }
 
   void _getDuplicatedServices() {
-    _services = const [
+    _services = [
       ServiceItem(id: 1, name: 'Karma Cleaning'),
       ServiceItem(id: 2, name: 'Tarrot Reading'),
     ];
+
+    _services.removeWhere(
+      (element) => element.id == oldDuplicatedServiceId,
+    );
 
     emit(state.copyWith(services: _services));
   }

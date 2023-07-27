@@ -16,6 +16,9 @@ class TitleDescriptionPartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AddServiceCubit addServiceCubit = context.read<AddServiceCubit>();
+
+    context.select((AddServiceCubit cubit) => cubit.state.updateAfterDuplicate);
+
     return IndexedStack(
       index: selectedLanguageIndex,
       children: addServiceCubit.textControllersMap.entries.map((entry) {
