@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 
 part 'default_services_images_response.g.dart';
@@ -6,7 +7,7 @@ part 'default_services_images_response.g.dart';
 @JsonSerializable(includeIfNull: false)
 class DefaultServicesImagesResponse extends BaseResponse {
   @JsonKey(name: 'default_images')
-  final Map<String, String>? defaultImages;
+  final List<ImageSampleModel>? defaultImages;
 
   const DefaultServicesImagesResponse({
     super.status,

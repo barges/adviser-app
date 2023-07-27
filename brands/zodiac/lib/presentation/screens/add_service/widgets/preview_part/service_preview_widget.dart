@@ -14,6 +14,8 @@ class ServicePreviewWidget extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final AddServiceCubit addServiceCubit = context.read<AddServiceCubit>();
 
+    context.select((AddServiceCubit cubit) => cubit.state.updateAfterDuplicate);
+
     final int selectedLanguageIndex = context
         .select((AddServiceCubit cubit) => cubit.state.selectedLanguageIndex);
 

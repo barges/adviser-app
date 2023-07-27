@@ -178,4 +178,17 @@ enum DeliveryTimeTabType {
     }
     return null;
   }
+
+  int toSeconds(int value) {
+    Duration duration;
+    switch (this) {
+      case DeliveryTimeTabType.days:
+        duration = Duration(days: value);
+      case DeliveryTimeTabType.hours:
+        duration = Duration(hours: value);
+      case DeliveryTimeTabType.minutes:
+        duration = Duration(minutes: value);
+    }
+    return duration.inSeconds;
+  }
 }

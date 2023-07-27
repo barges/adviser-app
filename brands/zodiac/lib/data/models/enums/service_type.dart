@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:zodiac/generated/l10n.dart';
+
 enum ServiceType {
   online,
   offline;
@@ -13,12 +16,21 @@ enum ServiceType {
     }
   }
 
-  int get toInt {
-    switch (this) {
+  static int toInt(ServiceType value) {
+    switch (value) {
       case ServiceType.offline:
         return 0;
       case ServiceType.online:
         return 1;
+    }
+  }
+
+  String getShortTitle(BuildContext context) {
+    switch (this) {
+      case online:
+        return SZodiac.of(context).onlineZodiac;
+      case offline:
+        return SZodiac.of(context).offlineZodiac;
     }
   }
 }

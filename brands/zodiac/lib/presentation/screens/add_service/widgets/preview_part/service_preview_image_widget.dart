@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
+import 'package:zodiac/data/models/enums/service_type.dart';
+import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
-import 'package:zodiac/presentation/screens/add_service/widgets/tabs_widget.dart';
 
 class ServicePreviewImageWidget extends StatelessWidget {
   final int selectedLanguageIndex;
@@ -20,7 +21,7 @@ class ServicePreviewImageWidget extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final AddServiceCubit addServiceCubit = context.read<AddServiceCubit>();
 
-    final List<String>? images =
+    final List<ImageSampleModel>? images =
         context.select((AddServiceCubit cubit) => cubit.state.images);
     final int selectedImageIndex = context
         .select((AddServiceCubit cubit) => cubit.state.selectedImageIndex);
@@ -33,7 +34,7 @@ class ServicePreviewImageWidget extends StatelessWidget {
     return Stack(
       children: [
         AppImageWidget(
-          uri: Uri.parse(images?[selectedImageIndex] ?? ''),
+          uri: Uri.parse(images?[selectedImageIndex].image ?? ''),
           height: 98.0,
           width: 260,
         ),
@@ -97,8 +98,8 @@ class _ServiceTypeAndDeliveryTimeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    final ServiceTabType selectedTabIndex =
-        context.select((AddServiceCubit cubit) => cubit.state.selectedTabIndex);
+    final ServiceType selectedTab =
+        context.select((AddServiceCubit cubit) => cubit.state.selectedTab);
 
     final double deliveryTime =
         context.select((AddServiceCubit cubit) => cubit.state.deliveryTime);
@@ -115,7 +116,7 @@ class _ServiceTypeAndDeliveryTimeWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: Text(
-        '${selectedTabIndex.getShortTitle(context)}:'
+        '${selectedTab.getShortTitle(context)}:'
                 ' ${selectedDeliveryTimeTab.formatter(
           context,
           deliveryTime.toStringAsFixed(0),

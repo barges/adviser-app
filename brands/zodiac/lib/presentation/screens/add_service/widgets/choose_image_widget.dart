@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
@@ -17,16 +18,18 @@ class ChooseImageWidget extends StatelessWidget {
 
     final int selectedImageIndex = context
         .select((AddServiceCubit cubit) => cubit.state.selectedImageIndex);
-    final List<String>? images =
+    final List<ImageSampleModel>? images =
         context.select((AddServiceCubit cubit) => cubit.state.images);
     final bool showAllImages =
         context.select((AddServiceCubit cubit) => cubit.state.showAllImages);
 
     if (images != null) {
       final List<String> shownImages = showAllImages
-          ? images
+          ? images.map((e) => e.image ?? '').toList()
           : images
               .getRange(0, images.length > 12 ? 12 : images.length)
+              .toList()
+              .map((e) => e.image ?? '')
               .toList();
 
       return Container(
@@ -46,7 +49,7 @@ class ChooseImageWidget extends StatelessWidget {
               height: 12.0,
             ),
             AppImageWidget(
-              uri: Uri.parse(images[selectedImageIndex]),
+              uri: Uri.parse(images[selectedImageIndex].image ?? ''),
               width: MediaQuery.of(context).size.width,
               height: 118.0,
               radius: 4.0,

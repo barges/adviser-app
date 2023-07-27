@@ -9,10 +9,11 @@ part 'service_language_model.freezed.dart';
 class ServiceLanguageModel with _$ServiceLanguageModel {
   const ServiceLanguageModel._();
 
-  @JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)
+  @JsonSerializable(
+      includeIfNull: false, fieldRename: FieldRename.snake, createToJson: true)
   const factory ServiceLanguageModel({
     @JsonKey(name: 'locale_code') String? code,
-    String? title,
+    @JsonKey(name: 'name') String? title,
     String? description,
   }) = _ServiceLanguageModel;
 
