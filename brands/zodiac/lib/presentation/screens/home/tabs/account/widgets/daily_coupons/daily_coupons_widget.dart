@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
-import 'package:zodiac/data/models/user_info/daily_coupon_info.dart';
+import 'package:zodiac/data/models/coupons/coupon_info.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
 import 'package:zodiac/presentation/common_widgets/checkbox_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/widgets/daily_coupons/counter_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_cubit.dart';
 
 class DailyCouponsWidget extends StatelessWidget {
-  final List<DailyCouponInfo> dailyCoupons;
+  final List<CouponInfo> dailyCoupons;
   final bool limitReached;
 
   const DailyCouponsWidget({
@@ -50,7 +50,7 @@ class DailyCouponsWidget extends StatelessWidget {
 }
 
 class _DailyCouponWidget extends StatelessWidget {
-  final DailyCouponInfo dailyCoupon;
+  final CouponInfo dailyCoupon;
   final bool limitReached;
 
   const _DailyCouponWidget({

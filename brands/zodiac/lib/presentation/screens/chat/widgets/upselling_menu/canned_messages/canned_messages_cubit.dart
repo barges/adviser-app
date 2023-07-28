@@ -8,7 +8,7 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
   CannedMessagesCubit() : super(const CannedMessagesState());
 
   void setSelectedCategoryIndex(int index) {
-    emit(state.copyWith(selectedCategotyIndex: index));
+    emit(state.copyWith(selectedCategoryIndex: index));
   }
 
   void onPageChanged(int index) {

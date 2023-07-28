@@ -1955,6 +1955,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Send coupon`
+  String get sendCouponZodiac {
+    return Intl.message(
+      'Send coupon',
+      name: 'sendCouponZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can send {limit} coupons per day.`
+  String youCanSendNCouponsPerDayZodiac(Object limit) {
+    return Intl.message(
+      'You can send $limit coupons per day.',
+      name: 'youCanSendNCouponsPerDayZodiac',
+      desc: '',
+      args: [limit],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

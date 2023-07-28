@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:zodiac/data/models/app_success/app_success.dart';
+import 'package:zodiac/data/models/coupons/coupon_info.dart';
 import 'package:zodiac/data/models/settings/phone.dart';
-import 'package:zodiac/data/models/user_info/daily_coupon_info.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
 
@@ -24,7 +24,7 @@ class ZodiacAccountState with _$ZodiacAccountState {
     userBalance,
     @Default('') String errorMessage,
     @Default(0) int unreadedNotificationsCount,
-    List<DailyCouponInfo>? dailyCoupons,
+    List<CouponInfo>? dailyCoupons,
     @Default(0) int dailyCouponsLimit,
     @Default(false) bool dailyCouponsEnabled,
     @Default(false) bool dailyRenewalEnabled,

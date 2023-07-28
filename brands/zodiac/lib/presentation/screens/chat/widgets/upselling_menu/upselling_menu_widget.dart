@@ -5,6 +5,7 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/canned_messages/canned_messages_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/coupons/coupons_widget.dart';
 
 enum UpsellingMenuType {
   coupons,
@@ -56,6 +57,7 @@ class UpsellingMenuWidget extends StatelessWidget {
                         type: UpsellingMenuType.coupons,
                         selectedMenuItem: selectedMenuItem,
                         count: couponsCount,
+                        isEnabled: couponsCount != 0,
                       ),
                     );
                   }),
@@ -92,6 +94,8 @@ class UpsellingMenuWidget extends StatelessWidget {
     switch (selectedMenuItem) {
       case UpsellingMenuType.canned:
         return const CannedMessagesWidget();
+      case UpsellingMenuType.coupons:
+        return const CouponsWidget();
       default:
         return const SizedBox.shrink();
     }
@@ -101,6 +105,7 @@ class UpsellingMenuWidget extends StatelessWidget {
 class _UpsellingMenuItemWidget extends StatelessWidget {
   final String iconPath;
   final UpsellingMenuType type;
+  final bool isEnabled;
   final UpsellingMenuType? selectedMenuItem;
   final int? count;
 
@@ -110,6 +115,7 @@ class _UpsellingMenuItemWidget extends StatelessWidget {
     required this.type,
     this.selectedMenuItem,
     this.count,
+    this.isEnabled = true,
   }) : super(key: key);
 
   @override
@@ -119,7 +125,7 @@ class _UpsellingMenuItemWidget extends StatelessWidget {
     final bool isSelected = type == selectedMenuItem;
 
     return GestureDetector(
-      onTap: () => chatCubit.selectUpsellingMenuItem(type),
+      onTap: isEnabled ? () => chatCubit.selectUpsellingMenuItem(type) : null,
       child: Container(
         decoration: BoxDecoration(
             color: isSelected ? theme.primaryColorLight : null,
@@ -128,13 +134,16 @@ class _UpsellingMenuItemWidget extends StatelessWidget {
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              SvgPicture.asset(
-                iconPath,
-                height: AppConstants.iconSize,
-                width: AppConstants.iconSize,
-                colorFilter: ColorFilter.mode(
-                  isSelected ? theme.primaryColor : theme.shadowColor,
-                  BlendMode.srcIn,
+              Opacity(
+                opacity: isEnabled ? 1.0 : 0.3,
+                child: SvgPicture.asset(
+                  iconPath,
+                  height: AppConstants.iconSize,
+                  width: AppConstants.iconSize,
+                  colorFilter: ColorFilter.mode(
+                    isSelected ? theme.primaryColor : theme.shadowColor,
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
               if (count != null)

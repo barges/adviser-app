@@ -18,6 +18,7 @@ import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/end_chat_data.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
+import 'package:zodiac/data/models/coupons/coupons_category.dart';
 import 'package:zodiac/data/models/enums/chat_payment_status.dart';
 import 'package:zodiac/data/models/upselling_action/upselling_action_model.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
@@ -32,6 +33,7 @@ import 'package:zodiac/services/websocket_manager/message_reaction_created_event
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/paid_free_event.dart';
 import 'package:zodiac/services/websocket_manager/room_paused_event.dart';
+import 'package:zodiac/services/websocket_manager/send_user_message_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
@@ -95,6 +97,9 @@ class WebSocketManagerImpl implements WebSocketManager {
   final PublishSubject<RoomPausedEvent> _roomPausedStream = PublishSubject();
 
   final PublishSubject<UpsellingListEvent> _upsellingListStream =
+      PublishSubject();
+
+  final PublishSubject<SendUserMessageEvent> _sendUserMessageStream =
       PublishSubject();
 
   final PublishSubject<MessageReactionCreatedEvent>
@@ -315,6 +320,10 @@ class WebSocketManagerImpl implements WebSocketManager {
   @override
   Stream<UpsellingListEvent> get upsellingListStream =>
       _upsellingListStream.stream;
+
+  @override
+  Stream<SendUserMessageEvent> get sendUserMessageStream =>
+      _sendUserMessageStream.stream;
 
   @override
   Stream<List<UpsellingActionModel>> get upsellingActionsStream =>
@@ -993,7 +1002,22 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onSendUserMessage(Event event) {
-    ///TODO - Implements onSendUserMessage
+    (event.eventData as SocketMessage).let((data) {
+      (data.opponentId as int).let(
+        (id) {
+          (data.params as Map).let((params) {
+            final bool? status = params['status'];
+            if (status != null) {
+              _sendUserMessageStream.add(SendUserMessageEvent(
+                opponentId: id,
+                status: status,
+                message: params['message'],
+              ));
+            }
+          });
+        },
+      );
+    });
   }
 
   void _onStartTimer(Event event) {
@@ -1045,9 +1069,11 @@ class WebSocketManagerImpl implements WebSocketManager {
     (event.eventData as SocketMessage).let((data) {
       (data.params['opponent_id'] as int).let(
         (id) {
-          Map<String, dynamic>? categories = data.params['categories'];
-          if (categories != null) {
-            List<CannedMessageSocketCategory> categoriesList = [];
+          List<CannedMessageSocketCategory>? categoriesList;
+
+          dynamic categories = data.params['categories'];
+          if (categories is Map<String, dynamic>) {
+            categoriesList = [];
             final sortedCategories = categories.entries.toList()
               ..sort(
                   (e1, e2) => int.parse(e1.key).compareTo(int.parse(e2.key)));
@@ -1055,10 +1081,20 @@ class WebSocketManagerImpl implements WebSocketManager {
               categoriesList
                   .add(CannedMessageSocketCategory.fromJson(element.value));
             }
-
-            _upsellingListStream.add(UpsellingListEvent(
-                cannedCategories: categoriesList, opponentId: id));
           }
+
+          List<CouponsCategory>? couponsList =
+              (data.params['coupons'] as List<dynamic>)
+                  .map((e) => CouponsCategory.fromJson(e))
+                  .toList();
+
+          _upsellingListStream.add(
+            UpsellingListEvent(
+              cannedCategories: categoriesList,
+              couponsCategories: couponsList,
+              opponentId: id,
+            ),
+          );
         },
       );
     });

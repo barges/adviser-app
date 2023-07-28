@@ -327,6 +327,9 @@ class ChatCubit extends BaseCubit<ChatState> {
 
       if (!isFocused) {
         setTextInputFocus(false);
+      } else {
+        closeUpsellingMenu();
+        emit(state.copyWith(upsellingMenuOpened: false));
       }
     });
 
@@ -446,9 +449,15 @@ class ChatCubit extends BaseCubit<ChatState> {
             !enabledUpsellingItems.contains(UpsellingMenuType.canned)) {
           enabledUpsellingItems.add(UpsellingMenuType.canned);
         }
+        if (event.couponsCategories != null &&
+            !enabledUpsellingItems.contains(UpsellingMenuType.coupons)) {
+          enabledUpsellingItems.add(UpsellingMenuType.coupons);
+        }
         emit(state.copyWith(
-            cannedMessageCategories: event.cannedCategories,
-            enabledMenuItems: enabledUpsellingItems));
+          cannedMessageCategories: event.cannedCategories,
+          couponsCategories: event.couponsCategories,
+          enabledMenuItems: enabledUpsellingItems,
+        ));
       }
     }));
 
@@ -954,7 +963,6 @@ class ChatCubit extends BaseCubit<ChatState> {
         couponCode: couponCode,
         cannedMessageId: cannedMessageId,
       );
-      closeUpsellingMenu();
     }
   }
 
@@ -963,6 +971,9 @@ class ChatCubit extends BaseCubit<ChatState> {
       emit(state.copyWith(
           upsellingMenuOpened: !state.upsellingMenuOpened,
           selectedUpsellingMenuItem: null));
+      if (state.upsellingMenuOpened) {
+        textInputFocusNode.unfocus();
+      }
     }
   }
 }
