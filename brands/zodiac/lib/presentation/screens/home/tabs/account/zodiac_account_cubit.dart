@@ -134,7 +134,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     );
   }
 
-  Future<void> goToPhoneNumber(BuildContext context) async {
+  void goToPhoneNumber(BuildContext context) {
     context.push(
       route: ZodiacPhoneNumber(
         siteKey: _siteKey,

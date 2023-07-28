@@ -58,6 +58,7 @@ class CannedMessageCard extends StatelessWidget {
                             : null;
                     showModalBottomSheet<void>(
                       context: context,
+                      useSafeArea: true,
                       builder: (BuildContext context) {
                         return EditCannedMessageWidget(
                             text: cannedMessage.text ?? '',
