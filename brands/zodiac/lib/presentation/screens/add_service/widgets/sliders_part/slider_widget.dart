@@ -47,7 +47,7 @@ class SliderWidget extends StatelessWidget {
                 data: SfSliderThemeData(
                   tooltipTextStyle: theme.textTheme.bodyMedium?.copyWith(
                     fontSize: 17.0,
-                    color: theme.canvasColor,
+                    color: theme.backgroundColor,
                   ),
                   thumbRadius: 12.0,
                   overlayRadius: 0.0,
@@ -75,10 +75,10 @@ class SliderWidget extends StatelessWidget {
                   tooltipTextFormatterCallback: (actualValue, formattedText) =>
                       tooltipFormater(value),
                   thumbIcon: Padding(
-                    padding: const EdgeInsets.all(1.5),
+                    padding: const EdgeInsets.all(2),
                     child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
+                      decoration: BoxDecoration(
+                        color: theme.canvasColor,
                         shape: BoxShape.circle,
                       ),
                     ),
