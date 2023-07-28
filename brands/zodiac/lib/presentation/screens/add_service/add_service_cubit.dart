@@ -12,8 +12,6 @@ import 'package:zodiac/data/models/services/service_info_item.dart';
 import 'package:zodiac/data/models/services/service_language_model.dart';
 import 'package:zodiac/data/models/user_info/locale_model.dart';
 import 'package:zodiac/data/network/requests/add_service_request.dart';
-import 'package:zodiac/data/network/requests/authorized_request.dart';
-import 'package:zodiac/data/network/responses/default_services_images_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_state.dart';
@@ -303,6 +301,7 @@ class AddServiceCubit extends Cubit<AddServiceState> {
       //   await _servicesRepository.getDefaultImages(AuthorizedRequest());
 
       //  if (response.status == true) {
+
       List<ImageSampleModel> images = List.generate(
           32,
           (index) => const ImageSampleModel(
@@ -311,6 +310,7 @@ class AddServiceCubit extends Cubit<AddServiceState> {
                   'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg'));
 
       emit(state.copyWith(images: images));
+
       //}
     } catch (e) {
       logger.d(e);
