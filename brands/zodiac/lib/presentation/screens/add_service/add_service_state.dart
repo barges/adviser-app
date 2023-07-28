@@ -24,5 +24,6 @@ class AddServiceState with _$AddServiceState {
     @Default(false) bool updateTextsFlag,
     String? duplicatedServiceName,
     @Default(false) bool updateAfterDuplicate,
+    @Default(false) bool alreadyTriedToGetImages,
   }) = _AddServiceState;
 }

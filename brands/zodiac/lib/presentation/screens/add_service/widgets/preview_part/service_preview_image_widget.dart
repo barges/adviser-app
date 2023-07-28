@@ -10,10 +10,12 @@ import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/del
 
 class ServicePreviewImageWidget extends StatelessWidget {
   final int selectedLanguageIndex;
+  final List<ImageSampleModel> images;
 
   const ServicePreviewImageWidget({
     Key? key,
     required this.selectedLanguageIndex,
+    required this.images,
   }) : super(key: key);
 
   @override
@@ -21,8 +23,6 @@ class ServicePreviewImageWidget extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final AddServiceCubit addServiceCubit = context.read<AddServiceCubit>();
 
-    final List<ImageSampleModel>? images =
-        context.select((AddServiceCubit cubit) => cubit.state.images);
     final int selectedImageIndex = context
         .select((AddServiceCubit cubit) => cubit.state.selectedImageIndex);
 
@@ -34,7 +34,7 @@ class ServicePreviewImageWidget extends StatelessWidget {
     return Stack(
       children: [
         AppImageWidget(
-          uri: Uri.parse(images?[selectedImageIndex].image ?? ''),
+          uri: Uri.parse(images[selectedImageIndex].image ?? ''),
           height: 98.0,
           width: 260,
         ),

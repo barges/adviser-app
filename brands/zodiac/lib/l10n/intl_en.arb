@@ -209,5 +209,7 @@
   "showMoreZodiac": "Show more",
   "servicePreviewZodiac": "Service preview",
   "buyZodiac": "Buy",
-  "sendForApprovalZodiac": "Send for approval"
+  "sendForApprovalZodiac": "Send for approval",
+  "somethingWentWrongZodiac": "Something went wrong",
+  "swipeDownToReloadZodiac": "Swipe down to reload"
 }

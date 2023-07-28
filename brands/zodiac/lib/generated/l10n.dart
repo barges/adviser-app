@@ -2165,6 +2165,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Something went wrong`
+  String get somethingWentWrongZodiac {
+    return Intl.message(
+      'Something went wrong',
+      name: 'somethingWentWrongZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Swipe down to reload`
+  String get swipeDownToReloadZodiac {
+    return Intl.message(
+      'Swipe down to reload',
+      name: 'swipeDownToReloadZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

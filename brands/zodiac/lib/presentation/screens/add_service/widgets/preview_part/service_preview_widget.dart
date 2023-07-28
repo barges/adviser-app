@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/preview_part/service_preview_image_widget.dart';
 
 class ServicePreviewWidget extends StatelessWidget {
-  const ServicePreviewWidget({Key? key}) : super(key: key);
+  final List<ImageSampleModel> images;
+
+  const ServicePreviewWidget({
+    Key? key,
+    required this.images,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +42,7 @@ class ServicePreviewWidget extends StatelessWidget {
         children: [
           ServicePreviewImageWidget(
             selectedLanguageIndex: selectedLanguageIndex,
+            images: images,
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),

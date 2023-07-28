@@ -12,6 +12,8 @@ import 'package:zodiac/data/models/services/service_info_item.dart';
 import 'package:zodiac/data/models/services/service_language_model.dart';
 import 'package:zodiac/data/models/user_info/locale_model.dart';
 import 'package:zodiac/data/network/requests/add_service_request.dart';
+import 'package:zodiac/data/network/requests/authorized_request.dart';
+import 'package:zodiac/data/network/responses/default_services_images_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_state.dart';
@@ -45,7 +47,7 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     this._cachingManager,
     this._servicesRepository,
   ) : super(const AddServiceState()) {
-    _getImages();
+    getImages();
 
     for (String element in state.languagesList) {
       _setNewLocaleProperties(element, onStart: true);
@@ -295,18 +297,26 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     emit(state.copyWith(discountEnabled: value));
   }
 
-  Future<void> _getImages() async {
-    // final DefaultServicesImagesResponse response =
-    //     await _servicesRepository.getDefaultImages(AuthorizedRequest());
+  Future<void> getImages() async {
+    try {
+      // final DefaultServicesImagesResponse response =
+      //   await _servicesRepository.getDefaultImages(AuthorizedRequest());
 
-    List<ImageSampleModel> images = List.generate(
-        32,
-        (index) => const ImageSampleModel(
-            imageAlias: 'alias',
-            image:
-                'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg'));
+      //  if (response.status == true) {
+      List<ImageSampleModel> images = List.generate(
+          32,
+          (index) => const ImageSampleModel(
+              imageAlias: 'alias',
+              image:
+                  'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg'));
 
-    emit(state.copyWith(images: images));
+      emit(state.copyWith(images: images));
+      //}
+    } catch (e) {
+      logger.d(e);
+    } finally {
+      emit(state.copyWith(alreadyTriedToGetImages: true));
+    }
   }
 
   void setShowAllImages() {

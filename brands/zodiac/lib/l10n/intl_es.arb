@@ -208,5 +208,7 @@
   "showMoreZodiac": "Mostrar más",
   "servicePreviewZodiac": "Vista previa del servicio",
   "buyZodiac": "Comprar",
-  "sendForApprovalZodiac": "Enviar para aprobación"
+  "sendForApprovalZodiac": "Enviar para aprobación",
+  "somethingWentWrongZodiac": "Algo salió mal",
+  "swipeDownToReloadZodiac": "Desliza hacia abajo para recargar"
 }

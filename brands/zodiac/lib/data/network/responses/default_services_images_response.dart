@@ -6,15 +6,14 @@ part 'default_services_images_response.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class DefaultServicesImagesResponse extends BaseResponse {
-  @JsonKey(name: 'default_images')
-  final List<ImageSampleModel>? defaultImages;
+  final List<ImageSampleModel>? samples;
 
   const DefaultServicesImagesResponse({
     super.status,
     super.errorCode,
     super.errorMsg,
     super.message,
-    this.defaultImages,
+    this.samples,
   });
 
   factory DefaultServicesImagesResponse.fromJson(Map<String, dynamic> json) =>
