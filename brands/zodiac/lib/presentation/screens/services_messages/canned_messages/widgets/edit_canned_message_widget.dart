@@ -64,93 +64,79 @@ class _EditCannedMessageWidgetState extends State<EditCannedMessageWidget> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppConstants.horizontalScreenPadding,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 8.0,
-              bottom: AppConstants.horizontalScreenPadding,
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppConstants.horizontalScreenPadding,
             ),
-            child: Container(
-                width: 96.0,
-                height: 4.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(21.0),
-                  color: theme.dividerColor,
-                )),
-          ),
-          Text(
-            SZodiac.of(context).editTemplateZodiac,
-            style: theme.textTheme.headlineMedium?.copyWith(fontSize: 17.0),
-          ),
-          const SizedBox(height: AppConstants.horizontalScreenPadding),
-          Flexible(
-            child: RawScrollbar(
-              thumbColor: theme.hintColor,
-              thickness: 4.0,
-              radius: const Radius.circular(2.0),
-              crossAxisMargin: -10.0,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    MessageTextField(
-                      title: SZodiac.of(context).editMessageZodiac,
-                      controller: _textEditingController,
-                    ),
-                    const SizedBox(
-                      height: verticalInterval,
-                    ),
-                    if (widget.categories.isNotEmpty)
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(bottom: verticalInterval),
-                        child: CategoriesWidget(
-                          title:
-                              SZodiac.of(context).chooseCategoryTemplateZodiac,
-                          onTap: (index) => widget.onSelectCategory(index),
-                          categories: widget.categories,
-                          initialSelectedIndex: _initialSelectedIndex,
-                        ),
-                      ),
-                    ValueListenableBuilder(
-                        valueListenable: countSymbolsNotifier,
-                        builder: (_, int value, __) {
-                          return AppElevatedButton(
-                            title: SZodiac.of(context).saveZodiac,
-                            onPressed:
-                                value > 0 && value <= maximumMessageSymbols
-                                    ? widget.onSave
-                                    : null,
-                          );
-                        }),
-                    const SizedBox(
-                      height: 18.0,
-                    ),
-                    GestureDetector(
-                      onTap: () => context.popRoute(),
-                      child: Text(
-                        SZodiac.of(context).cancelZodiac,
-                        style: theme.textTheme.headlineMedium?.copyWith(
-                          fontSize: 17.0,
-                          fontWeight: FontWeight.w500,
-                          color: theme.shadowColor,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                  ],
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 8.0,
+                    bottom: AppConstants.horizontalScreenPadding,
+                  ),
+                  child: Container(
+                      width: 96.0,
+                      height: 4.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(21.0),
+                        color: theme.dividerColor,
+                      )),
                 ),
-              ),
-            ),
-          ),
-        ],
+                Text(
+                  SZodiac.of(context).editTemplateZodiac,
+                  style:
+                      theme.textTheme.headlineMedium?.copyWith(fontSize: 17.0),
+                ),
+                const SizedBox(height: AppConstants.horizontalScreenPadding),
+                MessageTextField(
+                  title: SZodiac.of(context).editMessageZodiac,
+                  controller: _textEditingController,
+                ),
+                const SizedBox(
+                  height: verticalInterval,
+                ),
+                if (widget.categories.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: verticalInterval),
+                    child: CategoriesWidget(
+                      title: SZodiac.of(context).chooseCategoryTemplateZodiac,
+                      onTap: (index) => widget.onSelectCategory(index),
+                      categories: widget.categories,
+                      initialSelectedIndex: _initialSelectedIndex,
+                    ),
+                  ),
+                ValueListenableBuilder(
+                    valueListenable: countSymbolsNotifier,
+                    builder: (_, int value, __) {
+                      return AppElevatedButton(
+                        title: SZodiac.of(context).saveZodiac,
+                        onPressed: value > 0 && value <= maximumMessageSymbols
+                            ? widget.onSave
+                            : null,
+                      );
+                    }),
+                const SizedBox(
+                  height: 18.0,
+                ),
+                GestureDetector(
+                  onTap: () => context.popRoute(),
+                  child: Text(
+                    SZodiac.of(context).cancelZodiac,
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      fontSize: 17.0,
+                      fontWeight: FontWeight.w500,
+                      color: theme.shadowColor,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+              ],
+            )),
       ),
     );
   }

@@ -6,6 +6,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 import 'package:shared_advisor_interface/global.dart';
@@ -18,7 +19,6 @@ import 'package:zodiac/data/models/settings/phone_country_code.dart';
 import 'package:zodiac/data/network/requests/phone_number_request.dart';
 import 'package:zodiac/data/network/responses/phone_number_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
-import 'package:zodiac/presentation/base_cubit/base_cubit.dart';
 
 import 'package:zodiac/presentation/screens/phone_number/phone_number_state.dart';
 import 'package:zodiac/services/recaptcha/recaptcha_service.dart';
@@ -30,7 +30,7 @@ const pnoneNumberMaxLength = 15;
 const verificationCodeAttemptsPer24HoursMax = 3;
 
 @injectable
-class PhoneNumberCubit extends BaseCubit<PhoneNumberState> {
+class PhoneNumberCubit extends Cubit<PhoneNumberState> {
   Phone _phone;
   final String? _siteKey;
   final MainCubit _globalMainCubit;
@@ -40,6 +40,8 @@ class PhoneNumberCubit extends BaseCubit<PhoneNumberState> {
   final List<PhoneCountryCode> _phoneCountryCodes = [];
 
   Phone? _phoneVerified;
+  StreamSubscription<bool>? _appLifecycleSubscription;
+  StreamSubscription<bool>? _connectivitySubscription;
 
   bool _recaptchaServiceIsInitialized = false;
 
@@ -51,6 +53,13 @@ class PhoneNumberCubit extends BaseCubit<PhoneNumberState> {
     this._zodiacUserRepository,
   ) : super(const PhoneNumberState()) {
     _init();
+  }
+
+  @override
+  Future<void> close() async {
+    _appLifecycleSubscription?.cancel();
+    _connectivitySubscription?.cancel();
+    return super.close();
   }
 
   _init() async {
@@ -77,7 +86,8 @@ class PhoneNumberCubit extends BaseCubit<PhoneNumberState> {
     }
 
     if (Platform.isAndroid) {
-      addListener(_globalMainCubit.changeAppLifecycleStream.listen(
+      _appLifecycleSubscription =
+          _globalMainCubit.changeAppLifecycleStream.listen(
         (value) {
           if (value) {
             if (state.isPhoneCodeSearchVisible) {
@@ -93,7 +103,7 @@ class PhoneNumberCubit extends BaseCubit<PhoneNumberState> {
             }
           }
         },
-      ));
+      );
     }
   }
 

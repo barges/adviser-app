@@ -12,7 +12,6 @@ import 'package:zodiac/data/network/requests/phone_number_verify_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/phone_number_verify_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
-import 'package:zodiac/presentation/base_cubit/base_cubit.dart';
 import 'package:zodiac/presentation/screens/sms_verification/sms_verification_state.dart';
 import 'package:zodiac/services/recaptcha/recaptcha_service.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
@@ -20,7 +19,7 @@ import 'package:zodiac/zodiac_main_cubit.dart';
 const verificationCodeInputFieldCount = 4;
 const inactiveResendCodeDurationInSec = 30;
 
-class SMSVerificationCubitCubit extends BaseCubit<SMSVerificationState> {
+class SMSVerificationCubitCubit extends Cubit<SMSVerificationState> {
   final MainCubit _globalMainCubit;
   final ZodiacMainCubit _zodiacMainCubit;
   final ZodiacUserRepository _zodiacUserRepository;
@@ -29,6 +28,9 @@ class SMSVerificationCubitCubit extends BaseCubit<SMSVerificationState> {
   final TextEditingController verificationCodeInputController =
       TextEditingController();
   final codeTextFieldFocus = FocusNode();
+
+  late final StreamSubscription<bool> _appLifecycleSubscription;
+  StreamSubscription<bool>? _connectivitySubscription;
 
   Timer? _inactiveResendCodeTimer;
   int _codeTextFieldFilled = 0;
@@ -48,6 +50,8 @@ class SMSVerificationCubitCubit extends BaseCubit<SMSVerificationState> {
     verificationCodeInputController.dispose();
     codeTextFieldFocus.dispose();
     _inactiveResendCodeTimer?.cancel();
+    _appLifecycleSubscription.cancel();
+    _connectivitySubscription?.cancel();
     return super.close();
   }
 
@@ -62,7 +66,8 @@ class SMSVerificationCubitCubit extends BaseCubit<SMSVerificationState> {
 
     _checkTimingInactiveResendCode();
 
-    addListener(_globalMainCubit.changeAppLifecycleStream.listen(
+    _appLifecycleSubscription =
+        _globalMainCubit.changeAppLifecycleStream.listen(
       (value) {
         if (value) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -75,7 +80,7 @@ class SMSVerificationCubitCubit extends BaseCubit<SMSVerificationState> {
           _inactiveResendCodeTimer?.cancel();
         }
       },
-    ));
+    );
   }
 
   void _checkTimingInactiveResendCode() {
