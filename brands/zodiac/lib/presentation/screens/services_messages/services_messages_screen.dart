@@ -12,8 +12,10 @@ import 'package:zodiac/presentation/screens/services_messages/canned_messages/ca
 import 'package:zodiac/presentation/screens/services_messages/services/services_screen.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
+const verticalInterval = 24.0;
+
 class ServicesMessagesScreen extends StatelessWidget {
-  final ValueNotifier<int> _indexNotifier = ValueNotifier(1);
+  final ValueNotifier<int> _indexNotifier = ValueNotifier(0);
   ServicesMessagesScreen({super.key});
 
   @override

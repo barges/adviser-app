@@ -7,8 +7,8 @@ import 'package:zodiac/data/models/canned_messages/canned_message.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_cubit.dart';
 import 'package:zodiac/presentation/screens/services_messages/list_of_filters_widget.dart';
-import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_screen.dart';
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/widgets/canned_message_card.dart';
+import 'package:zodiac/presentation/screens/services_messages/services_messages_screen.dart';
 
 class CannedMessageManagerWidget extends StatelessWidget {
   final ValueNotifier<int> indexNotifier = ValueNotifier(0);

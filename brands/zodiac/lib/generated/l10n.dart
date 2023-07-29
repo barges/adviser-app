@@ -352,6 +352,36 @@ class SZodiac {
     );
   }
 
+  /// `Approved`
+  String get approvedZodiac {
+    return Intl.message(
+      'Approved',
+      name: 'approvedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rejected`
+  String get rejectedZodiac {
+    return Intl.message(
+      'Rejected',
+      name: 'rejectedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Temp`
+  String get tempZodiac {
+    return Intl.message(
+      'Temp',
+      name: 'tempZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `You can change price once per 24 h`
   String get youCanChangePriceOncePer24HZodiac {
     return Intl.message(
@@ -1776,11 +1806,31 @@ class SZodiac {
     );
   }
 
+  /// `Do you really want to delete {title} service?`
+  String doYouWantDeleteServicesZodiac(Object title) {
+    return Intl.message(
+      'Do you really want to delete $title service?',
+      name: 'doYouWantDeleteServicesZodiac',
+      desc: '',
+      args: [title],
+    );
+  }
+
   /// `It will be removed from the templates and you won't be able to use it from the chat anymore`
   String get itWillBeRemovedFromTemplatesZodiac {
     return Intl.message(
       'It will be removed from the templates and you won\'t be able to use it from the chat anymore',
       name: 'itWillBeRemovedFromTemplatesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It will be removed from the services page and from your profile if it’s shown there. You wouldn’t be able to sell it anymore`
+  String get itWillBeRemovedFromServicesZodiac {
+    return Intl.message(
+      'It will be removed from the services page and from your profile if it’s shown there. You wouldn’t be able to sell it anymore',
+      name: 'itWillBeRemovedFromServicesZodiac',
       desc: '',
       args: [],
     );
@@ -2161,6 +2211,26 @@ class SZodiac {
     return Intl.message(
       'Send for approval',
       name: 'sendForApprovalZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Let’s create your first service`
+  String get letsCreateYourFirstServiceZodiac {
+    return Intl.message(
+      'Let’s create your first service',
+      name: 'letsCreateYourFirstServiceZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First you need to fill up all required information about the service then send it for approval and as it would be ready you will be able to sell it`
+  String get firstYouNeedFillInformationAboutServiceZodiac {
+    return Intl.message(
+      'First you need to fill up all required information about the service then send it for approval and as it would be ready you will be able to sell it',
+      name: 'firstYouNeedFillInformationAboutServiceZodiac',
       desc: '',
       args: [],
     );

@@ -159,7 +159,7 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
       if (response.status == true &&
           response.messages != null &&
           response.messages!.isNotEmpty) {
-        _messages.addAll(response.messages ?? []);
+        _messages.addAll(response.messages!);
         emit(state.copyWith(
           messages: List.of(_messages),
         ));

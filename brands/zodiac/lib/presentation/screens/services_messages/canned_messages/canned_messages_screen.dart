@@ -6,8 +6,7 @@ import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_cubit.dart';
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/widgets/add_canned_message_widget.dart';
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/widgets/canned_message_manager_widget.dart';
-
-const verticalInterval = 24.0;
+import 'package:zodiac/presentation/screens/services_messages/services_messages_screen.dart';
 
 class CannedMessagesScreen extends StatelessWidget {
   const CannedMessagesScreen({super.key});
@@ -17,20 +16,18 @@ class CannedMessagesScreen extends StatelessWidget {
     return BlocProvider(
       lazy: false,
       create: (_) => zodiacGetIt.get<CannedMessagesCubit>(),
-      child: Builder(builder: (context) {
-        return GestureDetector(
-          onTap: FocusScope.of(context).unfocus,
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.only(bottom: verticalInterval),
-            child: Column(
-              children: [
-                const AddCannedMessageWidget(),
-                CannedMessageManagerWidget(),
-              ],
-            ),
+      child: GestureDetector(
+        onTap: FocusScope.of(context).unfocus,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.only(bottom: verticalInterval),
+          child: Column(
+            children: [
+              const AddCannedMessageWidget(),
+              CannedMessageManagerWidget(),
+            ],
           ),
-        );
-      }),
+        ),
+      ),
     );
   }
 }

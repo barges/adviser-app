@@ -16,8 +16,8 @@ abstract class ServicesApi {
 
   @POST('/service/get-default-images')
   Future<DefaultServicesImagesResponse> getDefaultImages(
-      AuthorizedRequest request);
+      @Body() AuthorizedRequest request);
 
   @POST('/service/list')
-  Future<ServiceListResponse> getServices(ServiceListRequest request);
+  Future<ServiceListResponse> getServices(@Body() ServiceListRequest request);
 }
