@@ -12,12 +12,15 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/canned_message_socket/canned_message_socket_category.dart';
 import 'package:zodiac/data/models/chat/call_data.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/end_chat_data.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
+import 'package:zodiac/data/models/coupons/coupons_category.dart';
 import 'package:zodiac/data/models/enums/chat_payment_status.dart';
+import 'package:zodiac/data/models/upselling_action/upselling_action_model.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
 import 'package:zodiac/infrastructure/routing/route_paths.dart';
@@ -30,10 +33,12 @@ import 'package:zodiac/services/websocket_manager/message_reaction_created_event
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/paid_free_event.dart';
 import 'package:zodiac/services/websocket_manager/room_paused_event.dart';
+import 'package:zodiac/services/websocket_manager/send_user_message_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
 import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
+import 'package:zodiac/services/websocket_manager/upselling_list_event.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
@@ -91,8 +96,17 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   final PublishSubject<RoomPausedEvent> _roomPausedStream = PublishSubject();
 
+  final PublishSubject<UpsellingListEvent> _upsellingListStream =
+      PublishSubject();
+
+  final PublishSubject<SendUserMessageEvent> _sendUserMessageStream =
+      PublishSubject();
+
   final PublishSubject<MessageReactionCreatedEvent>
       _messageReactionCreatedStream = PublishSubject();
+
+  final PublishSubject<List<UpsellingActionModel>> _upsellingActionsStream =
+      PublishSubject();
 
   WebSocketManagerImpl(
     this._zodiacMainCubit,
@@ -233,6 +247,12 @@ class WebSocketManagerImpl implements WebSocketManager {
 
     _emitter.on(Commands.messageReactionCreated, this,
         (event, _) => _onMessageReactionCreated(event));
+
+    _emitter.on(
+        Commands.upsellingList, this, (event, _) => _onUpsellingList(event));
+
+    _emitter.on(Commands.upsellingActions, this,
+        (event, _) => _onUpsellingActions(event));
   }
 
   @override
@@ -296,6 +316,18 @@ class WebSocketManagerImpl implements WebSocketManager {
   @override
   Stream<MessageReactionCreatedEvent> get messageReactionCreatedStream =>
       _messageReactionCreatedStream.stream;
+
+  @override
+  Stream<UpsellingListEvent> get upsellingListStream =>
+      _upsellingListStream.stream;
+
+  @override
+  Stream<SendUserMessageEvent> get sendUserMessageStream =>
+      _sendUserMessageStream.stream;
+
+  @override
+  Stream<List<UpsellingActionModel>> get upsellingActionsStream =>
+      _upsellingActionsStream.stream;
 
   @override
   WebSocketState get currentState => _currentState;
@@ -475,6 +507,28 @@ class WebSocketManagerImpl implements WebSocketManager {
   @override
   void sendUpsellingList({required int chatId}) {
     _send(SocketMessage.upsellingList(chatId: chatId));
+  }
+
+  @override
+  void sendUpselling({
+    required int chatId,
+    required int opponentId,
+    String? customCannedMessage,
+    String? couponCode,
+    int? cannedMessageId,
+  }) {
+    _send(SocketMessage.sendUpselling(
+      chatId: chatId,
+      opponentId: opponentId,
+      customCannedMessage: customCannedMessage,
+      couponCode: couponCode,
+      cannedMessageId: cannedMessageId,
+    ));
+  }
+
+  @override
+  void sendUpsellingActions() {
+    _send(SocketMessage.upsellingActions());
   }
 
   @override
@@ -948,7 +1002,22 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onSendUserMessage(Event event) {
-    ///TODO - Implements onSendUserMessage
+    (event.eventData as SocketMessage).let((data) {
+      (data.opponentId as int).let(
+        (id) {
+          (data.params as Map).let((params) {
+            final bool? status = params['status'];
+            if (status != null) {
+              _sendUserMessageStream.add(SendUserMessageEvent(
+                opponentId: id,
+                status: status,
+                message: params['message'],
+              ));
+            }
+          });
+        },
+      );
+    });
   }
 
   void _onStartTimer(Event event) {
@@ -993,6 +1062,53 @@ class WebSocketManagerImpl implements WebSocketManager {
           ),
         );
       }
+    });
+  }
+
+  void _onUpsellingList(Event event) {
+    (event.eventData as SocketMessage).let((data) {
+      (data.params['opponent_id'] as int).let(
+        (id) {
+          List<CannedMessageSocketCategory>? categoriesList;
+
+          dynamic categories = data.params['categories'];
+          if (categories is Map<String, dynamic>) {
+            categoriesList = [];
+            final sortedCategories = categories.entries.toList()
+              ..sort(
+                  (e1, e2) => int.parse(e1.key).compareTo(int.parse(e2.key)));
+            for (var element in sortedCategories) {
+              categoriesList
+                  .add(CannedMessageSocketCategory.fromJson(element.value));
+            }
+          }
+
+          List<CouponsCategory>? couponsList =
+              (data.params['coupons'] as List<dynamic>)
+                  .map((e) => CouponsCategory.fromJson(e))
+                  .toList();
+
+          _upsellingListStream.add(
+            UpsellingListEvent(
+              cannedCategories: categoriesList,
+              couponsCategories: couponsList,
+              opponentId: id,
+            ),
+          );
+        },
+      );
+    });
+  }
+
+  void _onUpsellingActions(Event event) {
+    (event.eventData as SocketMessage).let((data) {
+      List<dynamic> actions = data.params['actions'];
+
+      List<UpsellingActionModel> actionsFromJson = actions
+          .map((e) => UpsellingActionModel.fromJson(e as Map<String, dynamic>))
+          .toList();
+
+      _upsellingActionsStream.add(actionsFromJson);
     });
   }
 }
