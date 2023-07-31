@@ -216,5 +216,6 @@
   "buyZodiac": "Buy",
   "sendForApprovalZodiac": "Send for approval",
   "letsCreateYourFirstServiceZodiac": "Let’s create your first service",
-  "firstYouNeedFillInformationAboutServiceZodiac": "First you need to fill up all required information about the service then send it for approval and as it would be ready you will be able to sell it"
+  "firstYouNeedFillInformationAboutServiceZodiac": "First you need to fill up all required information about the service then send it for approval and as it would be ready you will be able to sell it",
+  "soldZodiac": "sold"
 }

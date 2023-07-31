@@ -344,6 +344,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "showMoreZodiac": MessageLookupByLibrary.simpleMessage("Mostrar más"),
         "smileysAndPeopleZodiac":
             MessageLookupByLibrary.simpleMessage("Emoticonos y personas"),
+        "soldZodiac": MessageLookupByLibrary.simpleMessage("vendido"),
         "sorryPhoneVerificationUnavailableZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Lo sentimos, la verificación telefónica no está disponible actualmente. Por favor tres agan latr."),

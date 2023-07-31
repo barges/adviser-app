@@ -343,6 +343,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "showMoreZodiac": MessageLookupByLibrary.simpleMessage("Show more"),
         "smileysAndPeopleZodiac":
             MessageLookupByLibrary.simpleMessage("Smileys & People"),
+        "soldZodiac": MessageLookupByLibrary.simpleMessage("sold"),
         "sorryPhoneVerificationUnavailableZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Sorry, phone verification is currently unavailable. Please try again later."),

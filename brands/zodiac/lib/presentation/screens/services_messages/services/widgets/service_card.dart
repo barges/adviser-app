@@ -8,6 +8,7 @@ import 'package:zodiac/data/models/services/service_item.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
 import 'package:zodiac/presentation/screens/services_messages/services/services_cubit.dart';
+import 'package:zodiac/presentation/screens/services_messages/services/widgets/sold_widget.dart';
 import 'package:zodiac/zodiac_extensions.dart';
 
 class ServiceCard extends StatelessWidget {
@@ -42,39 +43,53 @@ class ServiceCard extends StatelessWidget {
           Container(
             height: 130.0,
             padding: const EdgeInsets.all(AppConstants.horizontalScreenPadding),
-            child: Column(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  serviceItem.name ?? '',
-                  style: theme.textTheme.displaySmall?.copyWith(
-                    fontSize: 14.0,
-                    color: theme.canvasColor,
-                  ),
-                  maxLines: 2,
-                ),
-                const Spacer(),
-                if (status != '')
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.promotion,
-                      borderRadius: BorderRadius.circular(4.0),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 4.0,
-                      horizontal: 6.0,
-                    ),
-                    child: Text(
-                      status,
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        fontSize: 12.0,
-                        color: theme.canvasColor,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 238.0,
+                      child: Text(
+                        serviceItem.name ?? '',
+                        style: theme.textTheme.displaySmall?.copyWith(
+                            fontSize: 14.0,
+                            color: theme.canvasColor,
+                            overflow: TextOverflow.ellipsis),
+                        maxLines: 2,
                       ),
                     ),
-                  ),
-                const SizedBox(height: 8.0),
-                const _TimeWidget()
+                    const Spacer(),
+                    if (status != '')
+                      Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.promotion,
+                          borderRadius: BorderRadius.circular(4.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4.0,
+                          horizontal: 6.0,
+                        ),
+                        child: Text(
+                          status,
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            fontSize: 12.0,
+                            color: theme.canvasColor,
+                          ),
+                        ),
+                      ),
+                    const SizedBox(height: 8.0),
+                    const _TimeWidget()
+                  ],
+                ),
+                const SoldWidget(
+                  sold: 168,
+                  like: 160,
+                  unlike: 8,
+                )
               ],
             ),
           ),
