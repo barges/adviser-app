@@ -40,15 +40,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(timer) => "You are able to write within ${timer}";
 
-  static String m8(attempts) =>
-      "You have ${attempts} attempts to enter the right code";
+  static String m8(limit) => "You can send ${limit} coupons per day.";
 
   static String m9(attempts) =>
+      "You have ${attempts} attempts to enter the right code";
+
+  static String m10(attempts) =>
       "You have ${attempts} verification attempts per day";
 
-  static String m10(clientName) => "You missed a call from ${clientName}.";
+  static String m11(clientName) => "You missed a call from ${clientName}.";
 
-  static String m11(clientName) => "You missed a chat from ${clientName}.";
+  static String m12(clientName) => "You missed a chat from ${clientName}.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -135,6 +137,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Edit profile"),
         "editTemplateZodiac":
             MessageLookupByLibrary.simpleMessage("Edit template"),
+        "editZodiac": MessageLookupByLibrary.simpleMessage("Edit"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("Email"),
         "enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordZodiac":
             MessageLookupByLibrary.simpleMessage(
@@ -278,7 +281,11 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Selected coupons will be renewed automatically and displayed on your profile"),
         "selectedPhotoZodiac":
             MessageLookupByLibrary.simpleMessage("Selected photo"),
+        "sendCannedMessageZodiac":
+            MessageLookupByLibrary.simpleMessage("Send canned message"),
         "sendCodeZodiac": MessageLookupByLibrary.simpleMessage("Send code"),
+        "sendCouponZodiac": MessageLookupByLibrary.simpleMessage("Send coupon"),
+        "sendZodiac": MessageLookupByLibrary.simpleMessage("Send"),
         "serviceZodiac": MessageLookupByLibrary.simpleMessage("Service"),
         "servicesMessagesZodiac":
             MessageLookupByLibrary.simpleMessage("Services & Messages"),
@@ -347,10 +354,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "youCanEasilyAccessTheseTemplatesZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "You can easily access these templates during and after the chat"),
-        "youHaveAttemptsToEnterRightCodeZodiac": m8,
-        "youHaveVerificationAttemptsPerDayZodiac": m9,
-        "youMissedCallFromZodiac": m10,
-        "youMissedChatFromZodiac": m11,
+        "youCanSendNCouponsPerDayZodiac": m8,
+        "youHaveAttemptsToEnterRightCodeZodiac": m9,
+        "youHaveVerificationAttemptsPerDayZodiac": m10,
+        "youMissedCallFromZodiac": m11,
+        "youMissedChatFromZodiac": m12,
         "youWhereBlocked": MessageLookupByLibrary.simpleMessage(
             "Your account has been blocked.<br>Please contact <a href=\'\'>Customer Support</a> to resolve the issue"),
         "youZodiac": MessageLookupByLibrary.simpleMessage("You"),

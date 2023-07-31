@@ -187,5 +187,10 @@
   "setUpSuccessfulZodiac": "Set up successful",
   "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac": "All selected coupons are ready to be displayed tomorrow.",
   "somethingWentWrongZodiac": "Something went wrong",
-  "swipeDownToReloadZodiac": "Swipe down to reload"
+  "swipeDownToReloadZodiac": "Swipe down to reload",
+  "sendCannedMessageZodiac": "Send canned message",
+  "editZodiac": "Edit",
+  "sendZodiac": "Send",
+  "sendCouponZodiac": "Send coupon",
+  "youCanSendNCouponsPerDayZodiac": "You can send {limit} coupons per day."
 }

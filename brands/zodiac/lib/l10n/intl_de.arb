@@ -185,5 +185,10 @@
   "setUpSuccessfulZodiac": "Installation erfolgreich",
   "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac": "Alle ausgewählten Gutscheine können morgen angezeigt werden.",
   "somethingWentWrongZodiac": "Etwas ist schief gelaufen",
-  "swipeDownToReloadZodiac": "Zum Neuladen nach unten wischen"
+  "swipeDownToReloadZodiac": "Zum Neuladen nach unten wischen",
+  "sendCannedMessageZodiac": "Senden Sie eine vorgefertigte Nachricht",
+  "editZodiac": "Bearbeiten",
+  "sendZodiac": "Schicken",
+  "sendCouponZodiac": "Gutschein verschicken",
+  "youCanSendNCouponsPerDayZodiac": "Sie können {limit} Gutscheine pro Tag versenden."
 }
