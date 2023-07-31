@@ -289,12 +289,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Tagesgutscheine anzeigen"),
         "smileysAndPeopleZodiac":
             MessageLookupByLibrary.simpleMessage("Smileys & Menschen"),
+        "somethingWentWrongZodiac":
+            MessageLookupByLibrary.simpleMessage("Etwas ist schief gelaufen"),
         "sorryPhoneVerificationUnavailableZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Leider ist die telefonische Bestätigung derzeit nicht verfügbar. Bitte drei weitere Latr."),
         "startChatZodiac":
             MessageLookupByLibrary.simpleMessage("Chat beginnen"),
         "successZodiac": MessageLookupByLibrary.simpleMessage("Erfolg"),
+        "swipeDownToReloadZodiac": MessageLookupByLibrary.simpleMessage(
+            "Zum Neuladen nach unten wischen"),
         "symbolsZodiac": MessageLookupByLibrary.simpleMessage("Symbole"),
         "templatesContentZodiac":
             MessageLookupByLibrary.simpleMessage("Templates & Content"),

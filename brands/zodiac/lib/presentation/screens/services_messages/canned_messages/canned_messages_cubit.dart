@@ -32,11 +32,29 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
   }
 
   _init() async {
-    await _getCannedCategories();
-    await _getCannedMessages();
+    loadData();
 
     if (state.categories.isNotEmpty) {
       _categoryToAdd = state.categories.first;
+    }
+  }
+
+  Future<void> loadData() async {
+    emit(state.copyWith(
+      isDataLoading: true,
+      isErrorDataLoading: false,
+    ));
+    try {
+      await _getCannedCategories();
+      await _getCannedMessages();
+      emit(state.copyWith(
+        isDataLoading: false,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        isDataLoading: false,
+        isErrorDataLoading: true,
+      ));
     }
   }
 
@@ -140,11 +158,12 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
           response.categories != null &&
           response.categories!.isNotEmpty) {
         emit(state.copyWith(
-          categories: response.categories!,
+          categories: List.of(response.categories!),
         ));
       }
     } catch (e) {
       logger.d(e);
+      rethrow;
     }
   }
 
@@ -159,13 +178,14 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
       if (response.status == true &&
           response.messages != null &&
           response.messages!.isNotEmpty) {
-        _messages.addAll(response.messages ?? []);
+        _messages.addAll(response.messages!);
         emit(state.copyWith(
           messages: List.of(_messages),
         ));
       }
     } catch (e) {
       logger.d(e);
+      rethrow;
     }
   }
 

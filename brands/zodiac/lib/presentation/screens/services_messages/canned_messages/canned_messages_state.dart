@@ -10,5 +10,7 @@ class CannedMessagesState with _$CannedMessagesState {
     @Default([]) List<CannedCategory> categories,
     @Default([]) List<CannedMessage> messages,
     @Default(false) bool isSaveTemplateButtonEnabled,
+    @Default(false) bool isDataLoading,
+    @Default(false) bool isErrorDataLoading,
   }) = _CannedMessagesState;
 }
