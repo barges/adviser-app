@@ -213,4 +213,22 @@ class SocketMessage {
           'chat_id': chatId,
         },
       );
+
+  static SocketMessage sendUpselling({
+    required int chatId,
+    required int opponentId,
+    String? customCannedMessage,
+    String? couponCode,
+    int? cannedMessageId,
+  }) =>
+      SocketMessage(action: Commands.sendUpselling, params: {
+        'chat_id': chatId,
+        'custom_msg': customCannedMessage,
+        'coupon_code': couponCode,
+        'message_id': cannedMessageId,
+        'opponent_id': opponentId,
+      });
+
+  static SocketMessage upsellingActions() =>
+      SocketMessage(action: Commands.upsellingActions);
 }

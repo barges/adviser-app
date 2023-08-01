@@ -1925,6 +1925,56 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Send canned message`
+  String get sendCannedMessageZodiac {
+    return Intl.message(
+      'Send canned message',
+      name: 'sendCannedMessageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get editZodiac {
+    return Intl.message(
+      'Edit',
+      name: 'editZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send`
+  String get sendZodiac {
+    return Intl.message(
+      'Send',
+      name: 'sendZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send coupon`
+  String get sendCouponZodiac {
+    return Intl.message(
+      'Send coupon',
+      name: 'sendCouponZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can send {limit} coupons per day.`
+  String youCanSendNCouponsPerDayZodiac(Object limit) {
+    return Intl.message(
+      'You can send $limit coupons per day.',
+      name: 'youCanSendNCouponsPerDayZodiac',
+      desc: '',
+      args: [limit],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

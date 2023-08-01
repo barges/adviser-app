@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:zodiac/data/models/user_info/daily_coupon_info.dart';
+import 'package:zodiac/data/models/coupons/coupon_info.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/widgets/daily_coupons/daily_coupons_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_cubit.dart';
@@ -15,7 +15,7 @@ class DailyCouponsPartWidget extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final ZodiacAccountCubit accountCubit = context.read<ZodiacAccountCubit>();
 
-    final List<DailyCouponInfo>? dailyCoupons =
+    final List<CouponInfo>? dailyCoupons =
         context.select((ZodiacAccountCubit cubit) => cubit.state.dailyCoupons);
 
     if (dailyCoupons != null) {
@@ -24,7 +24,7 @@ class DailyCouponsPartWidget extends StatelessWidget {
             (ZodiacAccountCubit cubit) => cubit.state.dailyCouponsLimit);
 
         int selectedCount = 0;
-        for (DailyCouponInfo element in dailyCoupons) {
+        for (CouponInfo element in dailyCoupons) {
           selectedCount += element.count ?? 0;
         }
 

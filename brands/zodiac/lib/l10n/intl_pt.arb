@@ -185,5 +185,10 @@
   "selectedCouponsWillBeRenewedAutomaticallyZodiac": "Os cupons selecionados serão renovados automaticamente e exibidos em seu perfil",
   "selectAtLeast1CouponZodiac": "Selecione pelo menos 1 cupom",
   "setUpSuccessfulZodiac": "Configuração bem sucedida",
-  "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac": "Todos os cupons selecionados estão prontos para serem exibidos amanhã."
+  "allSelectedCouponsAreReadyToBeDisplayedTomorrowZodiac": "Todos os cupons selecionados estão prontos para serem exibidos amanhã.",
+  "sendCannedMessageZodiac": "Enviar mensagem enlatada",
+  "editZodiac": "Editar",
+  "sendZodiac": "Enviar",
+  "sendCouponZodiac": "Enviar cupom",
+  "youCanSendNCouponsPerDayZodiac": "Você pode enviar {limit} cupons por dia."
 }
