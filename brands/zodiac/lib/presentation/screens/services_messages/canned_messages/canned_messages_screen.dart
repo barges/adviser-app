@@ -22,22 +22,25 @@ class CannedMessagesScreen extends StatelessWidget {
       child: Builder(builder: (context) {
         final CannedMessagesCubit cannedMessagesCubit =
             context.read<CannedMessagesCubit>();
-        final bool isDataLoading = context
-            .select((CannedMessagesCubit cubit) => cubit.state.isDataLoading);
-        final bool isErrorDataLoading = context.select(
-            (CannedMessagesCubit cubit) => cubit.state.isErrorDataLoading);
+        final categories = context
+            .select((CannedMessagesCubit cubit) => cubit.state.categories);
+        final messages =
+            context.select((CannedMessagesCubit cubit) => cubit.state.messages);
+        final bool isNoData = categories == null || messages == null;
+        final bool showErrorData = context
+            .select((CannedMessagesCubit cubit) => cubit.state.showErrorData);
         return RefreshIndicator(
           onRefresh: () {
             return cannedMessagesCubit.loadData();
           },
           child: GestureDetector(
             onTap: FocusScope.of(context).unfocus,
-            child: isDataLoading
+            child: isNoData && !showErrorData
                 ? const SizedBox.shrink()
                 : SingleChildScrollView(
                     padding: const EdgeInsets.only(bottom: verticalInterval),
                     physics: const AlwaysScrollableScrollPhysics(),
-                    child: isErrorDataLoading
+                    child: showErrorData
                         ? Container(
                             alignment: Alignment.center,
                             height: MediaQuery.of(context).size.height -

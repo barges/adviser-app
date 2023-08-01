@@ -7,10 +7,9 @@ part 'canned_messages_state.freezed.dart';
 @freezed
 class CannedMessagesState with _$CannedMessagesState {
   const factory CannedMessagesState({
-    @Default([]) List<CannedCategory> categories,
-    @Default([]) List<CannedMessage> messages,
+    List<CannedCategory>? categories,
+    List<CannedMessage>? messages,
     @Default(false) bool isSaveTemplateButtonEnabled,
-    @Default(false) bool isDataLoading,
-    @Default(false) bool isErrorDataLoading,
+    @Default(false) bool showErrorData,
   }) = _CannedMessagesState;
 }

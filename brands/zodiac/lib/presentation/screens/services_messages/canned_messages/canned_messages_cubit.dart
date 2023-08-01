@@ -34,26 +34,21 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
   _init() async {
     loadData();
 
-    if (state.categories.isNotEmpty) {
-      _categoryToAdd = state.categories.first;
+    if (state.categories != null && state.categories!.isNotEmpty) {
+      _categoryToAdd = state.categories!.first;
     }
   }
 
   Future<void> loadData() async {
-    emit(state.copyWith(
-      isDataLoading: true,
-      isErrorDataLoading: false,
-    ));
     try {
       await _getCannedCategories();
       await _getCannedMessages();
       emit(state.copyWith(
-        isDataLoading: false,
+        showErrorData: false,
       ));
     } catch (e) {
       emit(state.copyWith(
-        isDataLoading: false,
-        isErrorDataLoading: true,
+        showErrorData: true,
       ));
     }
   }
@@ -70,18 +65,18 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
   }
 
   void setCategoryToAdd(int categoryIndex) {
-    _categoryToAdd = state.categories[categoryIndex];
+    _categoryToAdd = state.categories![categoryIndex];
   }
 
   void setCategory(int? categoryIndex) {
     CannedCategory? cannedCategory =
-        categoryIndex != null ? state.categories[categoryIndex] : null;
+        categoryIndex != null ? state.categories![categoryIndex] : null;
     _selectedCategory = cannedCategory;
   }
 
   void setUpdateCategory(int categoryIndex) {
     CannedCategory? cannedCategory =
-        state.categories.isNotEmpty ? state.categories[categoryIndex] : null;
+        state.categories!.isNotEmpty ? state.categories![categoryIndex] : null;
     _updateCategory = cannedCategory;
   }
 
@@ -145,7 +140,7 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
   }
 
   CannedCategory? getCategoryById(int id) {
-    return state.categories.firstWhereOrNull((element) => element.id == id);
+    return state.categories!.firstWhereOrNull((element) => element.id == id);
   }
 
   Future<void> _getCannedCategories() async {
