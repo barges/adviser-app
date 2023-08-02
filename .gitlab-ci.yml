@@ -41,9 +41,11 @@ build-android:
   before_script:
     - printf ${ANDROID_RELEASE_KEY} | base64 -d > ./android/keys/release.keystore
     - flutter --version
+    - pkill java || echo 'java is not running'
     - sh pubs.sh
   script:
     - flutter build appbundle --release
+    - pkill java || echo 'java is not running'
   artifacts:
     paths:
       - build/app/outputs/bundle/release/app-release.aab
