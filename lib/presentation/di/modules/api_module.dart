@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_advisor_interface/configuration.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
+import 'package:shared_advisor_interface/data/cache/secure_storage_manager_impl.dart';
 import 'package:shared_advisor_interface/data/network/api/auth_api.dart';
 import 'package:shared_advisor_interface/data/network/api/chats_api.dart';
 import 'package:shared_advisor_interface/data/network/api/customer_api.dart';
@@ -53,6 +54,8 @@ class ApiModule implements Module {
   Future<Map<String, dynamic>> _getHeaders(CachingManager cacheManager) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    final SecureStorageManagerImpl secureStorageManagerImpl =
+        SecureStorageManagerImpl();
 
     Map<String, dynamic> headers = {
       'Content-Type': 'application/json',
@@ -72,7 +75,12 @@ class ApiModule implements Module {
       headers['x-adviqo-is-physical-device'] = androidInfo.isPhysicalDevice;
     } else if (Platform.isIOS) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-      headers['x-adviqo-adid'] = iosInfo.identifierForVendor;
+      String? id = await secureStorageManagerImpl.getDeviceId();
+      if (id == null) {
+        id = iosInfo.identifierForVendor;
+        secureStorageManagerImpl.saveDeviceId(id!);
+      }
+      headers['x-adviqo-adid'] = id;
       headers['x-adviqo-device-name'] = iosInfo.name;
       headers['x-adviqo-device-version'] = iosInfo.systemVersion;
       headers['x-adviqo-is-physical-device'] = iosInfo.isPhysicalDevice;
