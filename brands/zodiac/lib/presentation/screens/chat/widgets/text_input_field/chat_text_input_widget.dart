@@ -213,29 +213,38 @@ class _ChatTextInputWidgetState extends State<ChatTextInputWidget> {
                           children: [
                             Row(
                               children: [
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: Container(
-                                    height: AppConstants.iconButtonSize,
-                                    width: AppConstants.iconButtonSize,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          AppConstants.buttonRadius),
-                                      color: Theme.of(context)
-                                          .scaffoldBackgroundColor,
-                                    ),
-                                    child: Center(
-                                      child: Assets.vectors.plusRounded.svg(
-                                        width: AppConstants.iconSize,
-                                        height: AppConstants.iconSize,
-                                        colorFilter: ColorFilter.mode(
-                                          theme.shadowColor,
-                                          BlendMode.srcIn,
+                                Builder(builder: (context) {
+                                  final bool upsellingMenuOpened =
+                                      context.select((ChatCubit cubit) =>
+                                          cubit.state.upsellingMenuOpened);
+
+                                  return GestureDetector(
+                                    onTap: chatCubit.setUpsellingMenuOpened,
+                                    child: Container(
+                                      height: AppConstants.iconButtonSize,
+                                      width: AppConstants.iconButtonSize,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            AppConstants.buttonRadius),
+                                        color: upsellingMenuOpened
+                                            ? theme.primaryColorLight
+                                            : theme.scaffoldBackgroundColor,
+                                      ),
+                                      child: Center(
+                                        child: Assets.vectors.plusRounded.svg(
+                                          width: AppConstants.iconSize,
+                                          height: AppConstants.iconSize,
+                                          colorFilter: ColorFilter.mode(
+                                            upsellingMenuOpened
+                                                ? theme.primaryColor
+                                                : theme.shadowColor,
+                                            BlendMode.srcIn,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ),
+                                  );
+                                }),
                                 const SizedBox(
                                   width: 12.0,
                                 ),

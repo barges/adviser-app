@@ -12,10 +12,10 @@ import 'package:shared_advisor_interface/services/push_notification/push_notific
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/app_success/app_success.dart';
 import 'package:zodiac/data/models/app_success/ui_success_type.dart';
+import 'package:zodiac/data/models/coupons/coupon_info.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/data/models/settings/phone.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
-import 'package:zodiac/data/models/user_info/daily_coupon_info.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
@@ -58,7 +58,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   String? _siteKey;
   Timer? _successMessageTimer;
 
-  List<DailyCouponInfo> _savedCouponsSet = [];
+  List<CouponInfo> _savedCouponsSet = [];
   bool? _savedCouponsSetCountIsZero;
 
   late final StreamSubscription<UserBalance> _updateUserBalanceSubscription;
@@ -134,7 +134,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     );
   }
 
-  Future<void> goToPhoneNumber(BuildContext context) async {
+  void goToPhoneNumber(BuildContext context) {
     context.push(
       route: ZodiacPhoneNumber(
         siteKey: _siteKey,
@@ -424,7 +424,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   }
 
   void setCouponCounter(int? couponId, int count) {
-    List<DailyCouponInfo> dailyCoupons = List.of(state.dailyCoupons ?? []);
+    List<CouponInfo> dailyCoupons = List.of(state.dailyCoupons ?? []);
     if (dailyCoupons.isNotEmpty) {
       int index =
           dailyCoupons.indexWhere((element) => element.couponId == couponId);
@@ -442,7 +442,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   }
 
   void onDailyCouponCheckboxChanged(int? couponId, bool value) {
-    List<DailyCouponInfo> dailyCoupons = List.of(state.dailyCoupons ?? []);
+    List<CouponInfo> dailyCoupons = List.of(state.dailyCoupons ?? []);
     if (dailyCoupons.isNotEmpty) {
       int index =
           dailyCoupons.indexWhere((element) => element.couponId == couponId);
@@ -465,12 +465,12 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
 
   Future<void> saveDailyCouponsSet() async {
     try {
-      List<DailyCouponInfo>? dailyCoupons = state.dailyCoupons;
+      List<CouponInfo>? dailyCoupons = state.dailyCoupons;
 
       if (dailyCoupons != null) {
         List<int> couponIds = [];
 
-        for (DailyCouponInfo element in dailyCoupons) {
+        for (CouponInfo element in dailyCoupons) {
           if (element.couponId != null &&
               element.count != null &&
               element.count! > 0) {
@@ -517,7 +517,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     }
   }
 
-  bool checkCouponsSetEqualPrevious(List<DailyCouponInfo> dailyCoupons) {
+  bool checkCouponsSetEqualPrevious(List<CouponInfo> dailyCoupons) {
     return dailyCoupons.equals(_savedCouponsSet);
   }
 
@@ -527,9 +527,9 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     }
   }
 
-  bool _checkCouponsCountIsZero(List<DailyCouponInfo> dailyCoupons) {
+  bool _checkCouponsCountIsZero(List<CouponInfo> dailyCoupons) {
     bool couponsCountIsZero = true;
-    for (DailyCouponInfo element in dailyCoupons) {
+    for (CouponInfo element in dailyCoupons) {
       if (element.count != null && element.count! > 0) {
         couponsCountIsZero = false;
         break;
