@@ -63,7 +63,7 @@ class CannedMessageCard extends StatelessWidget {
                         return EditCannedMessageWidget(
                             text: cannedMessage.text ?? '',
                             category: category,
-                            categories: cannedMessagesCubit.state.categories,
+                            categories: cannedMessagesCubit.state.categories!,
                             onTextEdit: (text) =>
                                 cannedMessagesCubit.setUpdatedText(text),
                             onSelectCategory: (index) =>

@@ -1926,6 +1926,26 @@ class SZodiac {
     );
   }
 
+  /// `Something went wrong`
+  String get somethingWentWrongZodiac {
+    return Intl.message(
+      'Something went wrong',
+      name: 'somethingWentWrongZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Swipe down to reload`
+  String get swipeDownToReloadZodiac {
+    return Intl.message(
+      'Swipe down to reload',
+      name: 'swipeDownToReloadZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Send canned message`
   String get sendCannedMessageZodiac {
     return Intl.message(

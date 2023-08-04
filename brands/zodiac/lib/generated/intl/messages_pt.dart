@@ -304,12 +304,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Mostrar cupons diários"),
         "smileysAndPeopleZodiac":
             MessageLookupByLibrary.simpleMessage("Emoticons e pessoas"),
+        "somethingWentWrongZodiac":
+            MessageLookupByLibrary.simpleMessage("Algo deu errado"),
         "sorryPhoneVerificationUnavailableZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "A verificação por telefone não está disponível no momento. Por favor, três agan latr."),
         "startChatZodiac":
             MessageLookupByLibrary.simpleMessage("Iniciar bate-papo"),
         "successZodiac": MessageLookupByLibrary.simpleMessage("Sucesso"),
+        "swipeDownToReloadZodiac": MessageLookupByLibrary.simpleMessage(
+            "Deslize para baixo para recarregar"),
         "symbolsZodiac": MessageLookupByLibrary.simpleMessage("Símbolos"),
         "templatesContentZodiac":
             MessageLookupByLibrary.simpleMessage("Modelos e conteúdo"),
@@ -358,10 +362,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "youCanChangePriceOncePer24HZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Você pode alterar o preço uma vez a cada 24 h"),
-        "youCanSendNCouponsPerDayZodiac": m8,
         "youCanEasilyAccessTheseTemplatesZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Você pode acessar facilmente esses modelos durante e após o bate-papo"),
+        "youCanSendNCouponsPerDayZodiac": m8,
         "youHaveAttemptsToEnterRightCodeZodiac": m9,
         "youHaveVerificationAttemptsPerDayZodiac": m10,
         "youMissedCallFromZodiac": m11,
