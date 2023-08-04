@@ -99,6 +99,8 @@ class AccountCubit extends Cubit<AccountState> {
       },
     );
 
+    _firebaseMessaging.onTokenRefresh.listen((_) => _sendPushToken());
+
     firstGetUserInfo();
   }
 
