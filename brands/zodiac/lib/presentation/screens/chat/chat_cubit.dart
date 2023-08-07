@@ -313,7 +313,6 @@ class ChatCubit extends BaseCubit<ChatState> {
 
     addListener(KeyboardVisibilityController().onChange.listen((bool visible) {
       if (!visible) {
-        textInputFocusNode.unfocus();
         emit(state.copyWith(isTextInputCollapsed: true));
       }
 
