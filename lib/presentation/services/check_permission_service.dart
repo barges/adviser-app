@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,8 @@ class CheckPermissionService {
     PermissionStatus status;
     Map<String, dynamic> permissionStatusesMap =
         _cacheManager.getFirstPermissionStatusesRequestsMap();
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
     switch (permissionType) {
       case PermissionType.camera:
         {
@@ -28,7 +31,7 @@ class CheckPermissionService {
         break;
       case PermissionType.gallery:
         {
-          if (Platform.isIOS) {
+          if (Platform.isIOS || androidInfo.version.sdkInt >= 33) {
             status = await Permission.photos.request();
           } else {
             status = await Permission.storage.request();
