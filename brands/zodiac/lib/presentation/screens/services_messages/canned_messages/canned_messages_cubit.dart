@@ -32,7 +32,7 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
   }
 
   _init() async {
-    loadData();
+    await loadData();
 
     if (state.categories != null && state.categories!.isNotEmpty) {
       _categoryToAdd = state.categories!.first;
@@ -170,9 +170,7 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
 
       _messages.clear();
 
-      if (response.status == true &&
-          response.messages != null &&
-          response.messages!.isNotEmpty) {
+      if (response.status == true && response.messages != null) {
         _messages.addAll(response.messages!);
         emit(state.copyWith(
           messages: List.of(_messages),
