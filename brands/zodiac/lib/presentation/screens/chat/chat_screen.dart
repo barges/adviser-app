@@ -21,7 +21,7 @@ import 'package:zodiac/presentation/screens/chat/widgets/chat_messages_list_widg
 import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/chat_text_input_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/client_information_widget.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/emoji_picker/emoji_picker_widget.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/upselling_menu_widget.dart';
 import 'package:zodiac/zodiac_constants.dart';
 import 'package:zodiac/zodiac_extensions.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
@@ -163,7 +163,38 @@ class ChatScreen extends StatelessWidget {
                                       : const SizedBox.shrink(),
                                 );
                               }),
-                              // const SafeArea(child: UpsellingMenuWidget()),
+                              Builder(builder: (context) {
+                                final bool upsellingMenuOpened = context.select(
+                                    (ChatCubit cubit) =>
+                                        cubit.state.upsellingMenuOpened);
+
+                                return Stack(
+                                  children: [
+                                    Positioned.fill(
+                                        child: Container(
+                                      color:
+                                          chatIsActive || offlineSessionIsActive
+                                              ? theme.scaffoldBackgroundColor
+                                              : theme.canvasColor,
+                                    )),
+                                    AnimatedSwitcher(
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      transitionBuilder: (child, animation) =>
+                                          ScaleTransition(
+                                        scale: animation,
+                                        alignment: Alignment.bottomLeft,
+                                        child: child,
+                                      ),
+                                      child: upsellingMenuOpened
+                                          ? const SafeArea(
+                                              child: UpsellingMenuWidget(),
+                                            )
+                                          : const SizedBox.shrink(),
+                                    ),
+                                  ],
+                                );
+                              }),
                               if (showTextField)
                                 const _BottomPaddingContainerIfHasTextInputField(),
                             ],

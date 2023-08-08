@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:zodiac/data/models/canned_message_socket/canned_message_socket_category.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
+import 'package:zodiac/data/models/coupons/coupons_category.dart';
 import 'package:zodiac/data/models/enums/chat_payment_status.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/upselling_menu_widget.dart';
 
 part 'chat_state.freezed.dart';
 
@@ -39,5 +41,10 @@ class ChatState with _$ChatState {
     File? recordedAudio,
     @Default(false) bool upsellingMenuOpened,
     UpsellingMenuType? selectedUpsellingMenuItem,
+    List<CannedMessageSocketCategory>? cannedMessageCategories,
+    List<CouponsCategory>? couponsCategories,
+    @Default([]) List<UpsellingMenuType> enabledMenuItems,
+    int? couponsCount,
+    int? cannedMessagesCount,
   }) = _ChatState;
 }
