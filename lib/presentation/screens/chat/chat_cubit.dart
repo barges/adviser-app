@@ -160,7 +160,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     _keyboardSubscription = KeyboardVisibilityController()
         .onChange
-        .debounceTime(const Duration(milliseconds: 600))
+        .debounceTime(const Duration(milliseconds: 700))
         .listen((bool visible) {
       if (!visible) {
         textInputFocusNode.unfocus();
