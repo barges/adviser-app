@@ -6,6 +6,7 @@ part 'default_services_images_response.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class DefaultServicesImagesResponse extends BaseResponse {
+  @JsonKey(name: 'result', fromJson: _sampleFromJson)
   final List<ImageSampleModel>? samples;
 
   const DefaultServicesImagesResponse({
@@ -21,4 +22,20 @@ class DefaultServicesImagesResponse extends BaseResponse {
 
   @override
   Map<String, dynamic> toJson() => _$DefaultServicesImagesResponseToJson(this);
+}
+
+List<ImageSampleModel>? _sampleFromJson(dynamic value) {
+  if (value is Map<String, dynamic>) {
+    List<dynamic> samples = value['samples'];
+    List<ImageSampleModel> result = [];
+    for (var element in samples) {
+      if (element is Map<String, dynamic>) {
+        result.add(ImageSampleModel.fromJson(element));
+      }
+    }
+    if (result.isNotEmpty) {
+      return result;
+    }
+  }
+  return null;
 }

@@ -16,13 +16,13 @@ abstract class ServicesApi {
   @factoryMethod
   factory ServicesApi(Dio dio) = _ServicesApi;
 
-  @POST('/services/image-samples')
+  @POST('/advisor/services/image-samples')
   Future<DefaultServicesImagesResponse> getDefaultImages(
       @Body() AuthorizedRequest request);
 
-  @POST('/services')
+  @POST('/advisor/services')
   Future<ServiceListResponse> getServices(@Body() ServiceListRequest request);
 
-  @POST('/services/add')
+  @POST('/advisor/services/add')
   Future<AddServiceResponse> addService(@Body() AddServiceRequest request);
 }
