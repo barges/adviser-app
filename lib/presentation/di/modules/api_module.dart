@@ -36,7 +36,7 @@ class ApiModule implements Module {
 
   Future<Dio> _initDio(CachingManager cacheManager) async {
     final dio = Dio();
-    dio.options.baseUrl = AppConstants.baseUrlProd;
+    dio.options.baseUrl = AppConstants.baseUrlStage;
     dio.options.headers = await _getHeaders(cacheManager);
     dio.options.connectTimeout = const Duration(seconds: 30);
     dio.options.receiveTimeout = const Duration(seconds: 30);
