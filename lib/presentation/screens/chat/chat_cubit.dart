@@ -158,18 +158,16 @@ class ChatCubit extends Cubit<ChatState> {
       },
     );
 
-    _keyboardSubscription =
-        KeyboardVisibilityController().onChange.listen((bool visible) {
+    _keyboardSubscription = KeyboardVisibilityController()
+        .onChange
+        .debounceTime(const Duration(milliseconds: 700))
+        .listen((bool visible) {
       if (!visible) {
         textInputFocusNode.unfocus();
         emit(state.copyWith(isTextInputCollapsed: true));
+      } else {
+        scrollChatDown();
       }
-
-      Future.delayed(const Duration(milliseconds: 500)).then((value) {
-        if (visible) {
-          scrollChatDown();
-        }
-      }).onError((error, stackTrace) {});
     });
 
     _stopAudioSubscription = _mainCubit.audioStopTrigger.listen((value) {

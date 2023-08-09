@@ -1,5 +1,7 @@
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/data/cache/data_caching_manager.dart';
+import 'package:shared_advisor_interface/data/cache/secure_storage_manager.dart';
+import 'package:shared_advisor_interface/data/cache/secure_storage_manager_impl.dart';
 import 'package:shared_advisor_interface/main.dart';
 import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
@@ -14,6 +16,7 @@ class ServicesModule implements Module {
   @override
   Future<void> dependency() async {
     getIt.registerSingleton<CachingManager>(DataCachingManager());
+    getIt.registerSingleton<SecureStorageManager>(SecureStorageManagerImpl());
     getIt.registerLazySingleton<FreshChatService>(() => FreshChatServiceImpl());
     getIt.registerLazySingleton<ConnectivityService>(
         () => ConnectivityService());
