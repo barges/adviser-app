@@ -44,16 +44,15 @@ class AccountScreen extends StatelessWidget {
           body: Builder(builder: (context) {
             ZodiacAccountCubit accountCubit =
                 context.read<ZodiacAccountCubit>();
-            return Stack(
-              children: [
-                SafeArea(
-                  child: Builder(builder: (context) {
-                    final bool internetConnectionIsAvailable = context.select(
-                        (MainCubit cubit) =>
-                            cubit.state.internetConnectionIsAvailable);
-
-                    if (internetConnectionIsAvailable) {
-                      return RefreshIndicator(
+            return Builder(builder: (context) {
+              final bool internetConnectionIsAvailable = context.select(
+                  (MainCubit cubit) =>
+                      cubit.state.internetConnectionIsAvailable);
+              if (internetConnectionIsAvailable) {
+                return Stack(
+                  children: [
+                    SafeArea(
+                      child: RefreshIndicator(
                         onRefresh: accountCubit.refreshUserInfo,
                         child: CustomScrollView(
                           slivers: [
@@ -99,52 +98,54 @@ class AccountScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                      );
-                    } else {
-                      return const CustomScrollView(
-                        slivers: [
-                          SliverFillRemaining(
-                            hasScrollBody: false,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                NoConnectionWidget(),
-                              ],
-                            ),
-                          )
+                      ),
+                    ),
+                    Positioned(
+                        top: 0.0,
+                        right: 0.0,
+                        left: 0.0,
+                        child: Builder(builder: (context) {
+                          final AppSuccess appSuccess = context.select(
+                              (ZodiacAccountCubit cubit) =>
+                                  cubit.state.appSuccess);
+                          return AppSuccessWidget(
+                            title: appSuccess.getTitle(context),
+                            message: appSuccess.getMessage(context),
+                            onClose: accountCubit.clearSuccessMessage,
+                          );
+                        })),
+                    Positioned(
+                        top: 0.0,
+                        right: 0.0,
+                        left: 0.0,
+                        child: Builder(builder: (context) {
+                          final AppError appError = context.select(
+                              (ZodiacMainCubit cubit) => cubit.state.appError);
+                          return AppErrorWidget(
+                            errorMessage: appError.getMessage(context),
+                            close: context
+                                .read<ZodiacMainCubit>()
+                                .clearErrorMessage,
+                          );
+                        }))
+                  ],
+                );
+              } else {
+                return const CustomScrollView(
+                  slivers: [
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          NoConnectionWidget(),
                         ],
-                      );
-                    }
-                  }),
-                ),
-                Positioned(
-                    top: 0.0,
-                    right: 0.0,
-                    left: 0.0,
-                    child: Builder(builder: (context) {
-                      final AppSuccess appSuccess = context.select(
-                          (ZodiacAccountCubit cubit) => cubit.state.appSuccess);
-                      return AppSuccessWidget(
-                        title: appSuccess.getTitle(context),
-                        message: appSuccess.getMessage(context),
-                        onClose: accountCubit.clearSuccessMessage,
-                      );
-                    })),
-                Positioned(
-                    top: 0.0,
-                    right: 0.0,
-                    left: 0.0,
-                    child: Builder(builder: (context) {
-                      final AppError appError = context.select(
-                          (ZodiacMainCubit cubit) => cubit.state.appError);
-                      return AppErrorWidget(
-                        errorMessage: appError.getMessage(context),
-                        close:
-                            context.read<ZodiacMainCubit>().clearErrorMessage,
-                      );
-                    }))
-              ],
-            );
+                      ),
+                    )
+                  ],
+                );
+              }
+            });
           })),
     );
   }
