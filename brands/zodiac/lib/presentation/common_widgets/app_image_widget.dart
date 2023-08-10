@@ -19,6 +19,8 @@ class AppImageWidget extends StatelessWidget {
   final double? width;
   final double? loadingIndicatorHeight;
   final int? memCacheHeight;
+  final Color? imageColor;
+  final BlendMode? colorBlendMode;
 
   const AppImageWidget({
     required this.uri,
@@ -28,6 +30,8 @@ class AppImageWidget extends StatelessWidget {
     this.memCacheHeight,
     this.backgroundColor,
     this.loadingIndicatorHeight,
+    this.imageColor,
+    this.colorBlendMode,
     this.canBeOpenedInFullScreen = false,
     this.fit = BoxFit.cover,
     super.key,
@@ -59,6 +63,8 @@ class AppImageWidget extends StatelessWidget {
                 width: width,
                 height: height,
                 fit: fit,
+                color: imageColor,
+                colorBlendMode: colorBlendMode,
                 placeholder: (context, url) => Container(
                   width: width,
                   height: height,
@@ -96,6 +102,8 @@ class AppImageWidget extends StatelessWidget {
                 fit: fit,
                 width: width,
                 height: height,
+                color: imageColor,
+                colorBlendMode: colorBlendMode,
               ),
       ),
     );

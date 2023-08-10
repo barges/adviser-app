@@ -34,6 +34,7 @@ import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/paid_free_event.dart';
 import 'package:zodiac/services/websocket_manager/room_paused_event.dart';
 import 'package:zodiac/services/websocket_manager/send_user_message_event.dart';
+import 'package:zodiac/services/websocket_manager/socket_constants.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
@@ -574,8 +575,8 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onEvent(Event event) {
     final SocketMessage message = (event.eventData as SocketMessage);
-    final int messageType = message.params?['type'];
-    final String location = message.params?['location'];
+    final int messageType = message.params?[SocketConstants.type];
+    final String location = message.params?[SocketConstants.location];
     if (messageType == 6 && location == '/logout') {
       final zodiacBrand = ZodiacBrand();
       if (zodiacBrand.isCurrent) {
@@ -620,8 +621,8 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onChatLogin(Event event) {
     final SocketMessage message = (event.eventData as SocketMessage);
-    final int? opponentId = message.params['opponent_id'];
-    final int? chatId = message.params['chat_id'];
+    final int? opponentId = message.params[SocketConstants.opponentId];
+    final int? chatId = message.params[SocketConstants.chatId];
     if (opponentId != null) {
       _send(
         SocketMessage.entities(
@@ -747,8 +748,8 @@ class WebSocketManagerImpl implements WebSocketManager {
     (event.eventData as SocketMessage).let((data) {
       (data.opponentId as int).let(
         (clientId) {
-          final String? mid = data.params['mid'];
-          final int? id = data.params['id'];
+          final String? mid = data.params[SocketConstants.mid];
+          final int? id = data.params[SocketConstants.id];
 
           _updateMessageIdStream.add(
             CreatedDeliveredEvent(
@@ -766,7 +767,7 @@ class WebSocketManagerImpl implements WebSocketManager {
     (event.eventData as SocketMessage).let((data) {
       (data.opponentId as int).let(
         (clientId) {
-          final String? mid = data.params['mid'];
+          final String? mid = data.params[SocketConstants.mid];
 
           _updateMessageIsDeliveredStream.add(
             CreatedDeliveredEvent(
@@ -790,11 +791,11 @@ class WebSocketManagerImpl implements WebSocketManager {
     // _zodiacMainCubit.updateSessions();
 
     (event.eventData as SocketMessage).let((data) {
-      _send(SocketMessage.msgDelivered(mid: data.params['mid']));
+      _send(SocketMessage.msgDelivered(mid: data.params[SocketConstants.mid]));
 
       final message = ChatMessageModel.fromJson(data.params ?? {});
 
-      int messageType = data.params?['type'];
+      int messageType = data.params?[SocketConstants.type];
       switch (messageType) {
         case 3:
           // - Simple message
@@ -864,7 +865,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onUnreadChats(Event event) {
     SocketMessage message = (event.eventData as SocketMessage);
-    int? count = message.params['count'];
+    int? count = message.params[SocketConstants.count];
     if (count != null) {
       _zodiacMainCubit.updateUnreadChats(count);
     }
@@ -872,7 +873,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onUnderageConfirm(Event event) {
     (event.eventData as SocketMessage).let((data) {
-      final String? message = data.params['message'];
+      final String? message = data.params[SocketConstants.message];
       if (data.opponentId != null && message != null) {
         _underageConfirmStream.add(UnderageConfirmEvent(
             opponentId: data.opponentId!, message: message));
@@ -904,7 +905,7 @@ class WebSocketManagerImpl implements WebSocketManager {
     (event.eventData as SocketMessage).let((data) {
       (data.opponentId as int).let(
         (id) {
-          final int? timeout = data.params['timeout'];
+          final int? timeout = data.params[SocketConstants.timeout];
 
           _offlineSessionIsActiveStream.add(
             OfflineSessionEvent(
@@ -946,12 +947,12 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onStartroom(Event event) {
     (event.eventData as SocketMessage).let((data) {
-      logger.d(data.params['time']);
+      logger.d(data.params[SocketConstants.time]);
       if (data.params is Map &&
-          data.params['time'] != null &&
+          data.params[SocketConstants.time] != null &&
           data.opponentId != null) {
         _updateChatTimerStream.add(UpdateTimerEvent(
-            value: Duration(milliseconds: data.params['time']),
+            value: Duration(milliseconds: data.params[SocketConstants.time]),
             clientId: data.opponentId!));
       }
     });
@@ -959,7 +960,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onPaidfree(Event event) {
     (event.eventData as SocketMessage).let((data) {
-      final int? statusCode = data.params["status"];
+      final int? statusCode = data.params[SocketConstants.status];
       final ChatPaymentStatus? status =
           ChatPaymentStatus.statusFromInt(statusCode);
       if (status != null && data.opponentId != null) {
@@ -1006,12 +1007,12 @@ class WebSocketManagerImpl implements WebSocketManager {
       (data.opponentId as int).let(
         (id) {
           (data.params as Map).let((params) {
-            final bool? status = params['status'];
+            final bool? status = params[SocketConstants.status];
             if (status != null) {
               _sendUserMessageStream.add(SendUserMessageEvent(
                 opponentId: id,
                 status: status,
-                message: params['message'],
+                message: params[SocketConstants.message],
               ));
             }
           });
@@ -1033,12 +1034,12 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onTimerCorrect(Event event) {
     (event.eventData as SocketMessage).let((data) {
-      logger.d(data.params['time']);
+      logger.d(data.params[SocketConstants.time]);
       if (data.params is Map &&
-          data.params['time'] != null &&
+          data.params[SocketConstants.time] != null &&
           data.opponentId != null) {
         _updateChatTimerStream.add(UpdateTimerEvent(
-            value: Duration(milliseconds: data.params['time']),
+            value: Duration(milliseconds: data.params[SocketConstants.time]),
             clientId: data.opponentId!));
       }
     });
@@ -1047,17 +1048,18 @@ class WebSocketManagerImpl implements WebSocketManager {
   void _onMessageReactionCreated(Event event) {
     (event.eventData as SocketMessage).let((data) {
       if (data.params is Map &&
-          (data.params['mid'] != null || data.params['id'] != null) &&
-          data.params['message'] != null &&
+          (data.params[SocketConstants.mid] != null ||
+              data.params[SocketConstants.id] != null) &&
+          data.params[SocketConstants.message] != null &&
           data.opponentId != null) {
         _messageReactionCreatedStream.add(
           MessageReactionCreatedEvent(
-            id: data.params['id'],
+            id: data.params[SocketConstants.id],
             // ignore: prefer_null_aware_operators
-            mid: data.params['mid'] != null
-                ? data.params['mid'].toString()
+            mid: data.params[SocketConstants.mid] != null
+                ? data.params[SocketConstants.mid].toString()
                 : null,
-            reaction: data.params['message'],
+            reaction: data.params[SocketConstants.message],
             clientId: data.opponentId!,
           ),
         );
@@ -1067,11 +1069,11 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onUpsellingList(Event event) {
     (event.eventData as SocketMessage).let((data) {
-      (data.params['opponent_id'] as int).let(
+      (data.params[SocketConstants.opponentId] as int).let(
         (id) {
           List<CannedMessageSocketCategory>? categoriesList;
 
-          dynamic categories = data.params['categories'];
+          dynamic categories = data.params[SocketConstants.categories];
           if (categories is Map<String, dynamic>) {
             categoriesList = [];
             final sortedCategories = categories.entries.toList()
@@ -1084,7 +1086,7 @@ class WebSocketManagerImpl implements WebSocketManager {
           }
 
           List<CouponsCategory>? couponsList =
-              (data.params['coupons'] as List<dynamic>)
+              (data.params[SocketConstants.coupons] as List<dynamic>)
                   .map((e) => CouponsCategory.fromJson(e))
                   .toList();
 
@@ -1102,7 +1104,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   void _onUpsellingActions(Event event) {
     (event.eventData as SocketMessage).let((data) {
-      List<dynamic> actions = data.params['actions'];
+      List<dynamic> actions = data.params[SocketConstants.actions];
 
       List<UpsellingActionModel> actionsFromJson = actions
           .map((e) => UpsellingActionModel.fromJson(e as Map<String, dynamic>))

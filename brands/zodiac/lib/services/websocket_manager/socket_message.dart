@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:zodiac/services/websocket_manager/commands.dart';
+import 'package:zodiac/services/websocket_manager/socket_constants.dart';
 
 class SocketMessage {
   late String action;
@@ -38,27 +39,27 @@ class SocketMessage {
 
   static SocketMessage pong() => SocketMessage(action: Commands.pong);
 
-  static SocketMessage advisorLogin({required int userId}) =>
-      SocketMessage(action: Commands.advisorLogin, params: {'user_id': userId});
+  static SocketMessage advisorLogin({required int userId}) => SocketMessage(
+      action: Commands.advisorLogin, params: {SocketConstants.userId: userId});
 
-  static SocketMessage offlineStatus({int status = 0}) =>
-      SocketMessage(action: Commands.offlineExpert, params: {'status': status});
+  static SocketMessage offlineStatus({int status = 0}) => SocketMessage(
+      action: Commands.offlineExpert, params: {SocketConstants.status: status});
 
-  static SocketMessage setAfk() =>
-      SocketMessage(action: Commands.setAfk, params: {'afk_time': 10});
+  static SocketMessage setAfk() => SocketMessage(
+      action: Commands.setAfk, params: {SocketConstants.afkTime: 10});
 
   static SocketMessage getState() =>
       SocketMessage(action: Commands.getState, params: {});
 
-  static SocketMessage chatLogin({required int id}) =>
-      SocketMessage(action: Commands.chatLogin, params: {'id': id});
+  static SocketMessage chatLogin({required int id}) => SocketMessage(
+      action: Commands.chatLogin, params: {SocketConstants.id: id});
 
-  static SocketMessage chatLogout({required int chatId}) =>
-      SocketMessage(action: Commands.chatLogout, params: {'chat_id': chatId});
+  static SocketMessage chatLogout({required int chatId}) => SocketMessage(
+      action: Commands.chatLogout, params: {SocketConstants.chatId: chatId});
 
   static SocketMessage entities({required int opponentId, int? maxId}) =>
       SocketMessage(action: Commands.entities, params: {
-        'opponent_id': opponentId,
+        SocketConstants.opponentId: opponentId,
         if (maxId != null)
           'filters': {
             'max_id': maxId,
@@ -68,23 +69,23 @@ class SocketMessage {
   static SocketMessage createRoom(
           {required int clientId, required double expertFee}) =>
       SocketMessage(action: Commands.createRoom, params: {
-        'userData': {'id': clientId},
-        'expertData': {'fee': expertFee},
+        SocketConstants.userData: {SocketConstants.id: clientId},
+        SocketConstants.expertData: {SocketConstants.fee: expertFee},
       });
 
   static SocketMessage enterRoom(
           {required int opponentId, int? activeChat, String? roomId}) =>
       SocketMessage(action: Commands.enterRoom, params: {
-        'active_chat': activeChat,
-        'room_id': roomId,
-        'opponent_id': opponentId,
+        SocketConstants.activeChat: activeChat,
+        SocketConstants.roomId: roomId,
+        SocketConstants.opponentId: opponentId,
       });
 
   static SocketMessage writeStatus(
           {required String roomId, required int opponentId}) =>
       SocketMessage(action: Commands.writeStatus, params: {
-        'room_id': roomId,
-        'opponent_id': opponentId,
+        SocketConstants.roomId: roomId,
+        SocketConstants.opponentId: opponentId,
       });
 
   static SocketMessage chatMessage({
@@ -95,11 +96,11 @@ class SocketMessage {
     int? repliedMessageId,
   }) =>
       SocketMessage(action: Commands.chatMessage, params: {
-        'message': message,
+        SocketConstants.message: message,
         'view': 0,
-        'room_id': roomId,
-        'opponent_id': opponentId,
-        'mid': mid,
+        SocketConstants.roomId: roomId,
+        SocketConstants.opponentId: opponentId,
+        SocketConstants.mid: mid,
         'replied_message_id': repliedMessageId,
       });
 
@@ -107,7 +108,7 @@ class SocketMessage {
         action: Commands.msgDelivered,
         params: mid != null
             ? {
-                'mid': mid,
+                SocketConstants.mid: mid,
               }
             : null,
       );
@@ -118,17 +119,19 @@ class SocketMessage {
   static SocketMessage readMessage(
           {required int messageId, required int opponentId}) =>
       SocketMessage(action: Commands.readMessage, params: {
-        'id': messageId,
-        'opponent_id': opponentId,
+        SocketConstants.id: messageId,
+        SocketConstants.opponentId: opponentId,
       });
 
   static SocketMessage underageConfirm({required String roomId}) =>
       SocketMessage(
-          action: Commands.underageConfirm, params: {'room_id': roomId});
+          action: Commands.underageConfirm,
+          params: {SocketConstants.roomId: roomId});
 
   static SocketMessage underageReport({required String roomId}) =>
       SocketMessage(
-          action: Commands.underageReport, params: {'room_id': roomId});
+          action: Commands.underageReport,
+          params: {SocketConstants.roomId: roomId});
 
   static SocketMessage productMessage({
     required String serviceName,
@@ -138,22 +141,23 @@ class SocketMessage {
     required String mid,
   }) =>
       SocketMessage(action: Commands.productMessage, params: {
-        "message": serviceName,
-        "mid": mid,
+        SocketConstants.message: serviceName,
+        SocketConstants.mid: mid,
         "price": price,
         "product_id": productId,
-        "room_id": roomId,
+        SocketConstants.roomId: roomId,
         "view": 0
       });
 
   static SocketMessage saveChat({required String roomId}) =>
       SocketMessage(action: Commands.saveChat, params: {
         "end_type": 2,
-        "room_id": roomId,
+        SocketConstants.roomId: roomId,
       });
 
   static SocketMessage funcActions({required int opponentId}) => SocketMessage(
-      action: Commands.funcActions, params: {"opponent_id": opponentId});
+      action: Commands.funcActions,
+      params: {SocketConstants.opponentId: opponentId});
 
   static SocketMessage privateMessage({
     required int messageId,
@@ -161,30 +165,30 @@ class SocketMessage {
     required String mid,
   }) =>
       SocketMessage(action: Commands.privateMessage, params: {
-        "mid": mid,
-        "message_id": messageId,
-        "opponent_id": opponentId
+        SocketConstants.mid: mid,
+        SocketConstants.messageId: messageId,
+        SocketConstants.opponentId: opponentId
       });
 
   static SocketMessage extendSession({required String roomId}) => SocketMessage(
-      action: Commands.extendSession, params: {'room_id': roomId});
+      action: Commands.extendSession, params: {SocketConstants.roomId: roomId});
 
   static SocketMessage sendUserMessage(
           {required int chatId,
           required int messageId,
           required int opponentId}) =>
       SocketMessage(action: Commands.sendUserMessage, params: {
-        "chat_id": chatId,
-        "type": "chat",
+        SocketConstants.chatId: chatId,
+        SocketConstants.type: "chat",
         "msg": messageId,
-        "opponent_id": opponentId,
+        SocketConstants.opponentId: opponentId,
       });
 
   static SocketMessage declineCall({int? opponentId}) =>
       SocketMessage(action: Commands.declineCall, params: {
-        "message": "",
-        "userData": {
-          "id": opponentId ?? 0,
+        SocketConstants.message: "",
+        SocketConstants.userData: {
+          SocketConstants.id: opponentId ?? 0,
         },
       });
 
@@ -200,17 +204,17 @@ class SocketMessage {
       SocketMessage(
         action: Commands.sendMessageReaction,
         params: {
-          "mid": mid,
-          "message": message,
-          "room_id": roomId,
-          "opponent_id": opponentId,
+          SocketConstants.mid: mid,
+          SocketConstants.message: message,
+          SocketConstants.roomId: roomId,
+          SocketConstants.opponentId: opponentId,
         },
       );
 
   static SocketMessage upsellingList({required int chatId}) => SocketMessage(
         action: Commands.upsellingList,
         params: {
-          'chat_id': chatId,
+          SocketConstants.chatId: chatId,
         },
       );
 
@@ -222,11 +226,11 @@ class SocketMessage {
     int? cannedMessageId,
   }) =>
       SocketMessage(action: Commands.sendUpselling, params: {
-        'chat_id': chatId,
+        SocketConstants.chatId: chatId,
         'custom_msg': customCannedMessage,
         'coupon_code': couponCode,
-        'message_id': cannedMessageId,
-        'opponent_id': opponentId,
+        SocketConstants.messageId: cannedMessageId,
+        SocketConstants.opponentId: opponentId,
       });
 
   static SocketMessage upsellingActions() =>
