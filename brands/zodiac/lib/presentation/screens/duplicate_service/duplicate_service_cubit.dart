@@ -4,7 +4,9 @@ import 'package:zodiac/data/models/enums/service_type.dart';
 import 'package:zodiac/data/models/services/service_info_item.dart';
 import 'package:zodiac/data/models/services/service_item.dart';
 import 'package:zodiac/data/models/services/service_language_model.dart';
+import 'package:zodiac/data/network/requests/get_service_info_request.dart';
 import 'package:zodiac/data/network/requests/services_list_request.dart';
+import 'package:zodiac/data/network/responses/get_service_info_response.dart';
 import 'package:zodiac/data/network/responses/services_list_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/presentation/screens/duplicate_service/duplicate_service_state.dart';
@@ -51,17 +53,23 @@ class DuplicateServiceCubit extends Cubit<DuplicateServiceState> {
     emit(state.copyWith(selectedDuplicatedService: index));
   }
 
-  void setDuplicateService() {
+  Future<void> setDuplicateService() async {
     final int? selectedIndex = state.selectedDuplicatedService;
     final List<ServiceItem>? services = state.services;
 
-    if (selectedIndex != null && services != null) {
-      final ServiceInfoItem service = servicesInfo
-          .firstWhere((element) => element.id == services[selectedIndex].id);
-      returnCallback({
-        'name': services[selectedIndex].name ?? '',
-        'duplicatedService': service,
-      });
+    if (selectedIndex != null &&
+        services?.isNotEmpty == true &&
+        services![selectedIndex].id != null) {
+      final GetServiceInfoResponse response =
+          await servicesRepository.getServiceInfo(
+              GetServiceInfoRequest(serviceId: services[selectedIndex].id!));
+
+      if (response.result != null) {
+        returnCallback({
+          'name': services[selectedIndex].name ?? '',
+          'duplicatedService': response.result,
+        });
+      }
     }
   }
 }

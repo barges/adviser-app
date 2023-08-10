@@ -116,6 +116,16 @@ class AddServiceCubit extends Cubit<AddServiceState> {
             element.code!, element.title ?? '', element.description ?? '');
       }
     });
+
+    duplicatedService.approval?.forEach((element) {
+      if (element.code != null) {
+        _newLanguagesList.add(element.code!);
+        _addLocaleLocally(element.code!);
+        _setupLanguageTexts(element.code!, element.title?.value ?? '',
+            element.description?.value ?? '');
+      }
+    });
+
     DeliveryTimeTabType? deliveryTimeTabType =
         DeliveryTimeTabType.fromSeconds(duplicatedService.duration);
 
