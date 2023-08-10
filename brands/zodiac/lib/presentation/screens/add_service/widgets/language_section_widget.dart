@@ -93,27 +93,32 @@ class LanguageSectionWidget extends StatelessWidget {
             vertical: 9.0,
             horizontal: AppConstants.horizontalScreenPadding,
           ),
-          child: Opacity(
-            opacity: mainLanguageIndex == null || isMain ? 1.0 : 0.6,
-            child: Row(
-              children: [
-                CheckboxWidget(
-                  value: isMain,
-                  onChanged: (value) => mainLanguageIndex == null || isMain
-                      ? addServiceCubit.setMainLanguage(selectedLanguageIndex)
-                      : {},
-                ),
-                const SizedBox(
-                  width: 16.0,
-                ),
-                Text(SZodiac.of(context).setAsMainLanguageZodiac,
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelMedium
-                        ?.copyWith(fontSize: 16.0))
-              ],
-            ),
-          ),
+          child: Builder(builder: (context) {
+            final bool selectingMainLanguageIsEnabled =
+                (mainLanguageIndex == null || isMain) &&
+                    languagesList.length > 1;
+            return Opacity(
+              opacity: selectingMainLanguageIsEnabled ? 1.0 : 0.6,
+              child: Row(
+                children: [
+                  CheckboxWidget(
+                    value: isMain,
+                    onChanged: (value) => selectingMainLanguageIsEnabled
+                        ? addServiceCubit.setMainLanguage(selectedLanguageIndex)
+                        : {},
+                  ),
+                  const SizedBox(
+                    width: 16.0,
+                  ),
+                  Text(SZodiac.of(context).setAsMainLanguageZodiac,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelMedium
+                          ?.copyWith(fontSize: 16.0))
+                ],
+              ),
+            );
+          }),
         )
       ],
     );
