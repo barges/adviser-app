@@ -3,7 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:zodiac/data/models/services/service_item.dart';
+import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
+import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:zodiac/presentation/common_widgets/checkbox_tile_widget.dart';
@@ -11,12 +14,23 @@ import 'package:zodiac/presentation/common_widgets/search_widget.dart';
 import 'package:zodiac/presentation/screens/duplicate_service/duplicate_service_cubit.dart';
 
 class DuplicateServiceScreen extends StatelessWidget {
-  const DuplicateServiceScreen({Key? key}) : super(key: key);
+  final ValueChanged<Map<String, dynamic>> returnCallback;
+  final int? oldDuplicatedServiceId;
+
+  const DuplicateServiceScreen({
+    Key? key,
+    required this.returnCallback,
+    this.oldDuplicatedServiceId,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => DuplicateServiceCubit(),
+      create: (context) => DuplicateServiceCubit(
+        servicesRepository: zodiacGetIt.get<ZodiacServicesRepository>(),
+        returnCallback: returnCallback,
+        oldDuplicatedServiceId: oldDuplicatedServiceId,
+      ),
       child: Builder(builder: (context) {
         final DuplicateServiceCubit duplicateServiceCubit =
             context.read<DuplicateServiceCubit>();
@@ -24,6 +38,9 @@ class DuplicateServiceScreen extends StatelessWidget {
         final int? selectedDuplicatedService = context.select(
             (DuplicateServiceCubit cubit) =>
                 cubit.state.selectedDuplicatedService);
+
+        final List<ServiceItem>? services = context
+            .select((DuplicateServiceCubit cubit) => cubit.state.services);
 
         return Scaffold(
           backgroundColor: Theme.of(context).canvasColor,
@@ -37,6 +54,7 @@ class DuplicateServiceScreen extends StatelessWidget {
                     icon: Assets.vectors.check.path,
                     onTap: () {
                       context.pop();
+                      duplicateServiceCubit.setDuplicateService();
                     },
                   )
                 : null,
@@ -48,23 +66,24 @@ class DuplicateServiceScreen extends StatelessWidget {
               ),
               Expanded(child: Builder(
                 builder: (context) {
-                  final List<String> services = context.select(
-                      (DuplicateServiceCubit cubit) => cubit.state.services);
-
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: AppConstants.horizontalScreenPadding),
-                    child: ListView.builder(
-                      itemCount: services.length,
-                      itemBuilder: (context, index) => CheckboxTileWidget(
-                        isMultiselect: false,
-                        isSelected: index == selectedDuplicatedService,
-                        title: services[index],
-                        onTap: () => duplicateServiceCubit
-                            .selectDuplicatedService(index),
+                  if (services != null) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: AppConstants.horizontalScreenPadding),
+                      child: ListView.builder(
+                        itemCount: services.length,
+                        itemBuilder: (context, index) => CheckboxTileWidget(
+                          isMultiselect: false,
+                          isSelected: index == selectedDuplicatedService,
+                          title: services[index].name ?? '',
+                          onTap: () => duplicateServiceCubit
+                              .selectDuplicatedService(index),
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
                 },
               ))
             ],

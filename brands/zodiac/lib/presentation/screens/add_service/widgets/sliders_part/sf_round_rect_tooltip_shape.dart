@@ -10,12 +10,14 @@ class SfRoundRectangularTooltipShape extends SfTooltipShape {
   final double cornerRadius;
   final Color color;
   final TextStyle? textStyle;
+  final double thumbRadius;
 
   SfRoundRectangularTooltipShape({
     required this.horizontalPadding,
     required this.verticalPadding,
     required this.cornerRadius,
     required this.color,
+    required this.thumbRadius,
     this.textStyle,
   });
 
@@ -108,10 +110,11 @@ class SfRoundRectangularTooltipShape extends SfTooltipShape {
       required Paint paint,
       required Animation<double> animation,
       required Rect trackRect}) {
+    double bottomPadding = thumbRadius + 2;
     // ignore: avoid_as
     final Path path = _updateRectangularTooltipWidth(
       textPainter.size,
-      offset.dy,
+      bottomPadding,
       trackRect,
       thumbCenter.dx,
     );
@@ -137,7 +140,7 @@ class SfRoundRectangularTooltipShape extends SfTooltipShape {
 
     final double dx = -halfTextPainterWidth;
 
-    final double dy = offset.dy +
+    final double dy = bottomPadding +
         tooltipTriangleHeight +
         (pathRect.size.height - tooltipTriangleHeight) / 2 +
         textPainter.height / 2;

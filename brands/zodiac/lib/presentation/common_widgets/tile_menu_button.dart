@@ -8,12 +8,14 @@ class TileMenuButton extends StatelessWidget {
   final String? title;
   final VoidCallback? onTap;
   final bool isError;
+  final Color? color;
 
   const TileMenuButton({
     Key? key,
     required this.label,
     this.title,
     this.onTap,
+    this.color,
     this.isError = false,
   }) : super(key: key);
 

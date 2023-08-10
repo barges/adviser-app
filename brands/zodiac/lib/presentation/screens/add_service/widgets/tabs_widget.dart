@@ -1,46 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:zodiac/data/models/enums/service_type.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
-
-enum ServiceTabType {
-  online,
-  offline;
-
-  String getShortTitle(BuildContext context) {
-    switch (this) {
-      case online:
-        return SZodiac.of(context).onlineZodiac;
-      case offline:
-        return SZodiac.of(context).offlineZodiac;
-    }
-  }
-}
 
 class TabsWidget extends StatelessWidget {
   const TabsWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final ServiceTabType selectedTabIndex =
-        context.select((AddServiceCubit cubit) => cubit.state.selectedTabIndex);
+    final ServiceType selectedTab =
+        context.select((AddServiceCubit cubit) => cubit.state.selectedTab);
 
     return Row(
       children: [
         Expanded(
           child: TabWidget(
             title: SZodiac.of(context).onlineServiceTabZodiac,
-            isSelected: selectedTabIndex == ServiceTabType.online,
+            isSelected: selectedTab == ServiceType.online,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           width: 8.0,
         ),
         Expanded(
           child: TabWidget(
             title: SZodiac.of(context).offlineServiceTabZodiac,
-            isSelected: selectedTabIndex == ServiceTabType.offline,
+            isSelected: selectedTab == ServiceType.offline,
           ),
         ),
       ],

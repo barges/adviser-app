@@ -1,6 +1,7 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/models/chat/enter_room_data.dart';
+import 'package:zodiac/data/models/upselling_action/upselling_action_model.dart';
 import 'package:zodiac/services/websocket_manager/active_chat_event.dart';
 import 'package:zodiac/services/websocket_manager/chat_login_event.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
@@ -8,8 +9,10 @@ import 'package:zodiac/services/websocket_manager/message_reaction_created_event
 import 'package:zodiac/services/websocket_manager/offline_session_event.dart';
 import 'package:zodiac/services/websocket_manager/paid_free_event.dart';
 import 'package:zodiac/services/websocket_manager/room_paused_event.dart';
+import 'package:zodiac/services/websocket_manager/send_user_message_event.dart';
 import 'package:zodiac/services/websocket_manager/underage_confirm_event.dart';
 import 'package:zodiac/services/websocket_manager/update_timer_event.dart';
+import 'package:zodiac/services/websocket_manager/upselling_list_event.dart';
 
 enum WebSocketState {
   connected,
@@ -52,6 +55,12 @@ abstract class WebSocketManager {
   Stream<PaidFreeEvent> get paidFreeStream;
 
   Stream<RoomPausedEvent> get roomPausedStream;
+
+  Stream<UpsellingListEvent> get upsellingListStream;
+
+  Stream<SendUserMessageEvent> get sendUserMessageStream;
+
+  Stream<List<UpsellingActionModel>> get upsellingActionsStream;
 
   WebSocketState get currentState;
 
@@ -112,4 +121,14 @@ abstract class WebSocketManager {
   void addUpdateIdEvent(CreatedDeliveredEvent event);
 
   void sendUpsellingList({required int chatId});
+
+  void sendUpselling({
+    required int chatId,
+    required int opponentId,
+    String? customCannedMessage,
+    String? couponCode,
+    int? cannedMessageId,
+  });
+
+  void sendUpsellingActions();
 }

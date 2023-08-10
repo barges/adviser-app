@@ -36,7 +36,7 @@ import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/base_cubit/base_cubit.dart';
 import 'package:zodiac/presentation/screens/chat/chat_state.dart';
 import 'package:zodiac/presentation/screens/chat/widgets/text_input_field/chat_text_input_widget.dart';
-import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu_widget.dart';
+import 'package:zodiac/presentation/screens/chat/widgets/upselling_menu/upselling_menu_widget.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
 import 'package:zodiac/services/websocket_manager/socket_message.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
@@ -327,6 +327,9 @@ class ChatCubit extends BaseCubit<ChatState> {
 
       if (!isFocused) {
         setTextInputFocus(false);
+      } else {
+        closeUpsellingMenu();
+        emit(state.copyWith(upsellingMenuOpened: false));
       }
     });
 
@@ -355,6 +358,7 @@ class ChatCubit extends BaseCubit<ChatState> {
       (event) {
         if (clientData.id == event.opponentId) {
           _chatId = event.chatId;
+          _webSocketManager.sendUpsellingList(chatId: _chatId!);
         }
       },
     ));
@@ -436,6 +440,39 @@ class ChatCubit extends BaseCubit<ChatState> {
         _updateMessages();
       }
     }));
+
+    addListener(_webSocketManager.upsellingListStream.listen((event) {
+      if (event.opponentId == clientData.id) {
+        List<UpsellingMenuType> enabledUpsellingItems =
+            List.of(state.enabledMenuItems);
+        if (event.cannedCategories != null &&
+            !enabledUpsellingItems.contains(UpsellingMenuType.canned)) {
+          enabledUpsellingItems.add(UpsellingMenuType.canned);
+        }
+        if (event.couponsCategories != null &&
+            !enabledUpsellingItems.contains(UpsellingMenuType.coupons)) {
+          enabledUpsellingItems.add(UpsellingMenuType.coupons);
+        }
+        emit(state.copyWith(
+          cannedMessageCategories: event.cannedCategories,
+          couponsCategories: event.couponsCategories,
+          enabledMenuItems: enabledUpsellingItems,
+        ));
+      }
+    }));
+
+    addListener(_webSocketManager.upsellingActionsStream.listen((event) {
+      emit(state.copyWith(
+        cannedMessagesCount: event
+            .firstWhereOrNull((element) => element.type == 'canned_messages')
+            ?.counter,
+        couponsCount: event
+            .firstWhereOrNull((element) => element.type == 'coupons')
+            ?.counter,
+      ));
+    }));
+
+    _webSocketManager.sendUpsellingActions();
 
     getClientInformation();
   }
@@ -903,12 +940,40 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   void selectUpsellingMenuItem(UpsellingMenuType type) {
     if (state.selectedUpsellingMenuItem == type) {
-      emit(state.copyWith(selectedUpsellingMenuItem: null));
+      closeUpsellingMenu();
     } else {
       emit(state.copyWith(selectedUpsellingMenuItem: type));
     }
-    if (_chatId != null) {
-      _webSocketManager.sendUpsellingList(chatId: _chatId!);
+  }
+
+  void closeUpsellingMenu() {
+    emit(state.copyWith(selectedUpsellingMenuItem: null));
+  }
+
+  void sendUpsellingMessage({
+    String? customCannedMessage,
+    String? couponCode,
+    int? cannedMessageId,
+  }) {
+    if (_chatId != null && clientData.id != null) {
+      _webSocketManager.sendUpselling(
+        chatId: _chatId!,
+        opponentId: clientData.id!,
+        customCannedMessage: customCannedMessage,
+        couponCode: couponCode,
+        cannedMessageId: cannedMessageId,
+      );
+    }
+  }
+
+  void setUpsellingMenuOpened() {
+    if (state.enabledMenuItems.isNotEmpty) {
+      emit(state.copyWith(
+          upsellingMenuOpened: !state.upsellingMenuOpened,
+          selectedUpsellingMenuItem: null));
+      if (state.upsellingMenuOpened) {
+        textInputFocusNode.unfocus();
+      }
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:zodiac/data/models/services/service_item.dart';
 
 part 'duplicate_service_state.freezed.dart';
 
@@ -6,6 +7,6 @@ part 'duplicate_service_state.freezed.dart';
 class DuplicateServiceState with _$DuplicateServiceState {
   const factory DuplicateServiceState({
     int? selectedDuplicatedService,
-    @Default([]) List<String> services,
+    List<ServiceItem>? services,
   }) = _DuplicateServiceState;
 }

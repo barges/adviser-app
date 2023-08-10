@@ -2,25 +2,27 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'daily_coupon_info.g.dart';
-part 'daily_coupon_info.freezed.dart';
+part 'coupon_info.g.dart';
+part 'coupon_info.freezed.dart';
 
 @freezed
-class DailyCouponInfo with _$DailyCouponInfo {
-  const DailyCouponInfo._();
+class CouponInfo with _$CouponInfo {
+  const CouponInfo._();
 
   @JsonSerializable(
       includeIfNull: false,
       createToJson: true,
       explicitToJson: true,
       fieldRename: FieldRename.snake)
-  const factory DailyCouponInfo({
+  const factory CouponInfo({
     int? couponId,
     int? count,
     int? status,
+    String? name,
+    String? code,
     String? image,
-  }) = _DailyCouponInfo;
+  }) = _CouponInfo;
 
-  factory DailyCouponInfo.fromJson(Map<String, dynamic> json) =>
-      _$DailyCouponInfoFromJson(json);
+  factory CouponInfo.fromJson(Map<String, dynamic> json) =>
+      _$CouponInfoFromJson(json);
 }

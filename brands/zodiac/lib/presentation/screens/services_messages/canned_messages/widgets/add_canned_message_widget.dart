@@ -66,7 +66,7 @@ class _AddCannedMessageWidgetState extends State<AddCannedMessageWidget> {
           ),
           Builder(builder: (context) {
             final List<CannedCategory> categories = context
-                .select((CannedMessagesCubit cubit) => cubit.state.categories);
+                .select((CannedMessagesCubit cubit) => cubit.state.categories!);
             return categories.isNotEmpty
                 ? Padding(
                     padding: const EdgeInsets.only(bottom: verticalInterval),

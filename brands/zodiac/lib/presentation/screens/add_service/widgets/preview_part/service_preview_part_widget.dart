@@ -1,10 +1,16 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/preview_part/service_preview_widget.dart';
 
 class ServicePreviewPartWidget extends StatelessWidget {
-  const ServicePreviewPartWidget({Key? key}) : super(key: key);
+  final List<ImageSampleModel> images;
+
+  const ServicePreviewPartWidget({
+    Key? key,
+    required this.images,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +32,9 @@ class ServicePreviewPartWidget extends StatelessWidget {
           padding: const EdgeInsets.all(24.0),
           strokeWidth: 2.0,
           dashPattern: const [8.0, 8.0],
-          child: const ServicePreviewWidget(),
+          child: ServicePreviewWidget(
+            images: images,
+          ),
         ),
       ],
     );

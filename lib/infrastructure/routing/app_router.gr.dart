@@ -467,9 +467,14 @@ class MainAppRouter extends _i48.RootStackRouter {
       );
     },
     ZodiacDuplicateService.name: (routeData) {
+      final args = routeData.argsAs<ZodiacDuplicateServiceArgs>();
       return _i48.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i42.DuplicateServiceScreen(),
+        child: _i42.DuplicateServiceScreen(
+          key: args.key,
+          returnCallback: args.returnCallback,
+          oldDuplicatedServiceId: args.oldDuplicatedServiceId,
+        ),
       );
     },
     ZodiacLogin.name: (routeData) {
@@ -1849,14 +1854,42 @@ class ZodiacAddService extends _i48.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i42.DuplicateServiceScreen]
-class ZodiacDuplicateService extends _i48.PageRouteInfo<void> {
-  const ZodiacDuplicateService()
-      : super(
+class ZodiacDuplicateService
+    extends _i48.PageRouteInfo<ZodiacDuplicateServiceArgs> {
+  ZodiacDuplicateService({
+    _i49.Key? key,
+    required void Function(Map<String, dynamic>) returnCallback,
+    int? oldDuplicatedServiceId,
+  }) : super(
           ZodiacDuplicateService.name,
           path: 'zodiacDuplicateService',
+          args: ZodiacDuplicateServiceArgs(
+            key: key,
+            returnCallback: returnCallback,
+            oldDuplicatedServiceId: oldDuplicatedServiceId,
+          ),
         );
 
   static const String name = 'ZodiacDuplicateService';
+}
+
+class ZodiacDuplicateServiceArgs {
+  const ZodiacDuplicateServiceArgs({
+    this.key,
+    required this.returnCallback,
+    this.oldDuplicatedServiceId,
+  });
+
+  final _i49.Key? key;
+
+  final void Function(Map<String, dynamic>) returnCallback;
+
+  final int? oldDuplicatedServiceId;
+
+  @override
+  String toString() {
+    return 'ZodiacDuplicateServiceArgs{key: $key, returnCallback: $returnCallback, oldDuplicatedServiceId: $oldDuplicatedServiceId}';
+  }
 }
 
 /// generated route for

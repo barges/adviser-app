@@ -4,8 +4,6 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:html/dom.dart';
-import 'package:html/parser.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -185,11 +183,12 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           );
           texts.insert(
             aboutIndex,
-            _parseHtmlString(descriptions.about?.toString().trim() ?? ''),
+            Utils.parseHtmlString(descriptions.about?.toString().trim() ?? ''),
           );
           texts.insert(
             experienceIndex,
-            _parseHtmlString(descriptions.experience?.toString().trim() ?? ''),
+            Utils.parseHtmlString(
+                descriptions.experience?.toString().trim() ?? ''),
           );
           texts.insert(
             helloMessageIndex,
@@ -225,14 +224,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       }
     }
     return isOk;
-  }
-
-  String _parseHtmlString(String? htmlString) {
-    final Document document = parse(htmlString);
-    final String parsedString =
-        parse(document.body?.text).documentElement?.text ?? '';
-
-    return parsedString;
   }
 
   Future<void> goToSelectAllCategories(BuildContext context) async {

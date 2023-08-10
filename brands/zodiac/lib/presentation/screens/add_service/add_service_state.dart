@@ -1,16 +1,17 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:zodiac/data/models/enums/service_type.dart';
+import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
-import 'package:zodiac/presentation/screens/add_service/widgets/tabs_widget.dart';
 
 part 'add_service_state.freezed.dart';
 
 @freezed
 class AddServiceState with _$AddServiceState {
   const factory AddServiceState({
-    @Default(ServiceTabType.offline) ServiceTabType selectedTabIndex,
+    @Default(ServiceType.offline) ServiceType selectedTab,
     @Default(0) int selectedLanguageIndex,
     int? mainLanguageIndex,
-    List<String>? languagesList,
+    @Default(['en']) List<String> languagesList,
     @Default(10.99) double price,
     @Default(DeliveryTimeTabType.minutes)
     DeliveryTimeTabType selectedDeliveryTimeTab,
@@ -18,8 +19,11 @@ class AddServiceState with _$AddServiceState {
     @Default(10) double discount,
     @Default(false) bool discountEnabled,
     @Default(0) int selectedImageIndex,
-    List<String>? images,
+    List<ImageSampleModel>? images,
     @Default(false) bool showAllImages,
     @Default(false) bool updateTextsFlag,
+    String? duplicatedServiceName,
+    @Default(false) bool updateAfterDuplicate,
+    @Default(false) bool alreadyTriedToGetImages,
   }) = _AddServiceState;
 }

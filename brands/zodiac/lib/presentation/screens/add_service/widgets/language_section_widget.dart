@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/checkbox_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
@@ -198,7 +199,17 @@ class _LanguageButton extends StatelessWidget {
         ),
         if (!isMain && deleteEnabled)
           GestureDetector(
-            onTap: removeLocale,
+            onTap: () async {
+              final bool? shouldDelete = await showDeleteAlert(
+                  context,
+                  SZodiac.of(context)
+                      .doYouReallyWantToDeleteLocaleNameFromYourListZodiac(
+                          '"$title"'));
+
+              if (shouldDelete == true) {
+                removeLocale();
+              }
+            },
             child: Row(
               children: [
                 const VerticalDivider(

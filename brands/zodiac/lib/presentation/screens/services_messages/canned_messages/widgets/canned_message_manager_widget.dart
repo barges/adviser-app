@@ -24,7 +24,7 @@ class CannedMessageManagerWidget extends StatelessWidget {
       children: [
         Builder(builder: (context) {
           final List<CannedCategory> categories = context
-              .select((CannedMessagesCubit cubit) => cubit.state.categories);
+              .select((CannedMessagesCubit cubit) => cubit.state.categories!);
           final List<String> filters =
               categories.map((item) => item.name ?? '').toList();
           return categories.isNotEmpty
@@ -67,7 +67,7 @@ class CannedMessageManagerWidget extends StatelessWidget {
         }),
         Builder(builder: (context) {
           final List<CannedMessage> messages = context
-              .select((CannedMessagesCubit cubit) => cubit.state.messages);
+              .select((CannedMessagesCubit cubit) => cubit.state.messages!);
           return Padding(
               padding: EdgeInsets.only(
                 top: messages.isNotEmpty ? verticalInterval : 0.0,
