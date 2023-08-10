@@ -284,6 +284,10 @@ class AddServiceCubit extends Cubit<AddServiceState> {
       languagesList: List.of(locales),
       selectedLanguageIndex: newLocaleIndex,
     ));
+
+    if (locales.length == 1) {
+      emit(state.copyWith(mainLanguageIndex: 0));
+    }
   }
 
   void _removeLocaleProperties(String localeCode) {
