@@ -4,7 +4,9 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:zodiac/data/models/services/service_item.dart';
+import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
+import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:zodiac/presentation/common_widgets/checkbox_tile_widget.dart';
@@ -25,6 +27,7 @@ class DuplicateServiceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => DuplicateServiceCubit(
+        servicesRepository: zodiacGetIt.get<ZodiacServicesRepository>(),
         returnCallback: returnCallback,
         oldDuplicatedServiceId: oldDuplicatedServiceId,
       ),

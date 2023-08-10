@@ -4,32 +4,40 @@ import 'package:zodiac/data/models/enums/service_type.dart';
 import 'package:zodiac/data/models/services/service_info_item.dart';
 import 'package:zodiac/data/models/services/service_item.dart';
 import 'package:zodiac/data/models/services/service_language_model.dart';
+import 'package:zodiac/data/network/requests/services_list_request.dart';
+import 'package:zodiac/data/network/responses/services_list_response.dart';
+import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/presentation/screens/duplicate_service/duplicate_service_state.dart';
 
 class DuplicateServiceCubit extends Cubit<DuplicateServiceState> {
+  final ZodiacServicesRepository servicesRepository;
+
   final ValueChanged<Map<String, dynamic>> returnCallback;
   final int? oldDuplicatedServiceId;
 
   List<ServiceItem> _services = [];
 
   DuplicateServiceCubit({
+    required this.servicesRepository,
     required this.returnCallback,
     this.oldDuplicatedServiceId,
   }) : super(const DuplicateServiceState()) {
     _getDuplicatedServices();
   }
 
-  void _getDuplicatedServices() {
-    _services = [
-      ServiceItem(id: 1, name: 'Karma Cleaning'),
-      ServiceItem(id: 2, name: 'Tarrot Reading'),
-    ];
+  Future<void> _getDuplicatedServices() async {
+    final ServiceListResponse response = await servicesRepository
+        .getServices(ServiceListRequest(count: 20, offset: 0));
 
-    _services.removeWhere(
-      (element) => element.id == oldDuplicatedServiceId,
-    );
+    if (response.status == true) {
+      _services = response.result ?? [];
 
-    emit(state.copyWith(services: _services));
+      _services.removeWhere(
+        (element) => element.id == oldDuplicatedServiceId,
+      );
+
+      emit(state.copyWith(services: _services));
+    }
   }
 
   void search(String text) {
