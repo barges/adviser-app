@@ -1,4 +1,5 @@
-import 'package:blur/blur.dart';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
@@ -68,14 +69,20 @@ class _DailyCouponWidget extends StatelessWidget {
 
     return Opacity(
       opacity: limitReached && !showCounter ? 0.6 : 1.0,
-      child: Blur(
-        blur: showCounter ? 2 : 0,
-        blurColor:
-            showCounter ? Utils.getOverlayColor(context) : Colors.transparent,
-        colorOpacity: showCounter ? 0.5 : 0.0,
-        borderRadius: BorderRadius.circular(12.0),
-        overlay: Stack(
+      child: ClipRRect(
+        child: Stack(
           children: [
+            AppImageWidget(
+              uri: Uri.parse(
+                dailyCoupon.image ?? '',
+              ),
+              imageColor: showCounter ? Utils.getOverlayColor(context) : null,
+              colorBlendMode: BlendMode.srcATop,
+            ),
+            if (showCounter)
+              const Positioned.fill(
+                child: _BlurWidget(),
+              ),
             Positioned.fill(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -111,11 +118,22 @@ class _DailyCouponWidget extends StatelessWidget {
             )
           ],
         ),
-        child: AppImageWidget(
-          uri: Uri.parse(
-            dailyCoupon.image ?? '',
-          ),
-        ),
+      ),
+    );
+  }
+}
+
+class _BlurWidget extends StatelessWidget {
+  const _BlurWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+      child: Container(
+        color: Colors.black.withOpacity(0),
       ),
     );
   }
