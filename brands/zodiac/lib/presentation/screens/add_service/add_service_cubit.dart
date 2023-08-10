@@ -13,6 +13,7 @@ import 'package:zodiac/data/models/services/service_language_model.dart';
 import 'package:zodiac/data/models/user_info/locale_model.dart';
 import 'package:zodiac/data/network/requests/add_service_request.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
+import 'package:zodiac/data/network/responses/add_service_response.dart';
 import 'package:zodiac/data/network/responses/default_services_images_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -332,7 +333,7 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     emit(state.copyWith(selectedImageIndex: index));
   }
 
-  void sendForApproval() {
+  Future<void> sendForApproval(BuildContext context) async {
     final bool isChecked = _checkTextFields();
 
     final List<ImageSampleModel>? images = state.images;
@@ -359,7 +360,13 @@ class AddServiceCubit extends Cubit<AddServiceState> {
         translations: translations,
       );
 
-      _servicesRepository.addService(request);
+      AddServiceResponse response =
+          await _servicesRepository.addService(request);
+
+      if (response.status == true) {
+        // ignore: use_build_context_synchronously
+        context.pop();
+      }
     }
   }
 
