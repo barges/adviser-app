@@ -10,10 +10,12 @@ import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
 
 class LanguageSectionWidget extends StatelessWidget {
   final int selectedLanguageIndex;
+  final List<String> languagesList;
 
   const LanguageSectionWidget({
     Key? key,
     required this.selectedLanguageIndex,
+    required this.languagesList,
   }) : super(key: key);
 
   @override
@@ -21,107 +23,100 @@ class LanguageSectionWidget extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final AddServiceCubit addServiceCubit = context.read<AddServiceCubit>();
 
-    final List<String>? languagesList =
-        context.select((AddServiceCubit cubit) => cubit.state.languagesList);
-
     final int? mainLanguageIndex = context
         .select((AddServiceCubit cubit) => cubit.state.mainLanguageIndex);
 
     final bool isMain = selectedLanguageIndex == mainLanguageIndex;
 
-    if (languagesList != null) {
-      final bool deleteEnabled = languagesList.length > 1;
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppConstants.horizontalScreenPadding,
-              ),
-              child: Row(
-                children: [
-                  ...languagesList
-                      .mapIndexed(
-                        (index, element) => Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: _LanguageButton(
-                            key: addServiceCubit.localesGlobalKeys[index],
-                            title: addServiceCubit.localeNativeName(element),
-                            isSelected: selectedLanguageIndex == index,
-                            isMain: mainLanguageIndex == index,
-                            deleteEnabled: deleteEnabled,
-                            setIsSelected: () =>
-                                addServiceCubit.changeLocaleIndex(index),
-                            removeLocale: () =>
-                                addServiceCubit.removeLocale(element),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  GestureDetector(
-                    onTap: () => addServiceCubit.goToAddNewLocale(context),
-                    child: Container(
-                      height: 38.0,
-                      width: 38.0,
-                      decoration: BoxDecoration(
-                        color: theme.canvasColor,
-                        borderRadius: BorderRadius.circular(
-                          AppConstants.buttonRadius,
+    final bool deleteEnabled = languagesList.length > 1;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppConstants.horizontalScreenPadding,
+            ),
+            child: Row(
+              children: [
+                ...languagesList
+                    .mapIndexed(
+                      (index, element) => Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: _LanguageButton(
+                          key: addServiceCubit.localesGlobalKeys[index],
+                          title: addServiceCubit.localeNativeName(element),
+                          isSelected: selectedLanguageIndex == index,
+                          isMain: mainLanguageIndex == index,
+                          deleteEnabled: deleteEnabled,
+                          setIsSelected: () =>
+                              addServiceCubit.changeLocaleIndex(index),
+                          removeLocale: () =>
+                              addServiceCubit.removeLocale(element),
                         ),
                       ),
-                      child: Center(
-                        child: Assets.vectors.add.svg(
-                          height: 24.0,
-                          width: 24.0,
-                          colorFilter: ColorFilter.mode(
-                            theme.primaryColor,
-                            BlendMode.srcIn,
-                          ),
+                    )
+                    .toList(),
+                GestureDetector(
+                  onTap: () => addServiceCubit.goToAddNewLocale(context),
+                  child: Container(
+                    height: 38.0,
+                    width: 38.0,
+                    decoration: BoxDecoration(
+                      color: theme.canvasColor,
+                      borderRadius: BorderRadius.circular(
+                        AppConstants.buttonRadius,
+                      ),
+                    ),
+                    child: Center(
+                      child: Assets.vectors.add.svg(
+                        height: 24.0,
+                        width: 24.0,
+                        colorFilter: ColorFilter.mode(
+                          theme.primaryColor,
+                          BlendMode.srcIn,
                         ),
                       ),
                     ),
-                  )
-                ],
-              ),
+                  ),
+                )
+              ],
             ),
           ),
-          const SizedBox(
-            height: 8.0,
+        ),
+        const SizedBox(
+          height: 8.0,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 9.0,
+            horizontal: AppConstants.horizontalScreenPadding,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 9.0,
-              horizontal: AppConstants.horizontalScreenPadding,
+          child: Opacity(
+            opacity: mainLanguageIndex == null || isMain ? 1.0 : 0.6,
+            child: Row(
+              children: [
+                CheckboxWidget(
+                  value: isMain,
+                  onChanged: (value) => mainLanguageIndex == null || isMain
+                      ? addServiceCubit.setMainLanguage(selectedLanguageIndex)
+                      : {},
+                ),
+                const SizedBox(
+                  width: 16.0,
+                ),
+                Text(SZodiac.of(context).setAsMainLanguageZodiac,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelMedium
+                        ?.copyWith(fontSize: 16.0))
+              ],
             ),
-            child: Opacity(
-              opacity: mainLanguageIndex == null || isMain ? 1.0 : 0.6,
-              child: Row(
-                children: [
-                  CheckboxWidget(
-                    value: isMain,
-                    onChanged: (value) => mainLanguageIndex == null || isMain
-                        ? addServiceCubit.setMainLanguage(selectedLanguageIndex)
-                        : {},
-                  ),
-                  const SizedBox(
-                    width: 16.0,
-                  ),
-                  Text(SZodiac.of(context).setAsMainLanguageZodiac,
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelMedium
-                          ?.copyWith(fontSize: 16.0))
-                ],
-              ),
-            ),
-          )
-        ],
-      );
-    } else {
-      return const SizedBox.shrink();
-    }
+          ),
+        )
+      ],
+    );
   }
 }
 

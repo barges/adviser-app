@@ -19,10 +19,12 @@ import 'package:zodiac/zodiac_main_cubit.dart';
 
 class AddServiceBodyWidget extends StatelessWidget {
   final List<ImageSampleModel> images;
+  final List<String> languagesList;
 
   const AddServiceBodyWidget({
     Key? key,
     required this.images,
+    required this.languagesList,
   }) : super(key: key);
 
   @override
@@ -76,7 +78,9 @@ class AddServiceBodyWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                const LanguagesPartWidget(),
+                LanguagesPartWidget(
+                  languagesList: languagesList,
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppConstants.horizontalScreenPadding,

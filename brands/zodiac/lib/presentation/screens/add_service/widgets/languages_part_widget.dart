@@ -6,7 +6,11 @@ import 'package:zodiac/presentation/screens/add_service/widgets/language_section
 import 'package:zodiac/presentation/screens/add_service/widgets/title_description_part_widget.dart';
 
 class LanguagesPartWidget extends StatelessWidget {
-  const LanguagesPartWidget({Key? key}) : super(key: key);
+  final List<String> languagesList;
+  const LanguagesPartWidget({
+    Key? key,
+    required this.languagesList,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +19,10 @@ class LanguagesPartWidget extends StatelessWidget {
 
     return Column(
       children: [
-        LanguageSectionWidget(selectedLanguageIndex: selectedLanguageIndex),
+        LanguageSectionWidget(
+          selectedLanguageIndex: selectedLanguageIndex,
+          languagesList: languagesList,
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: AppConstants.horizontalScreenPadding,

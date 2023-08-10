@@ -10,8 +10,8 @@ class AddServiceState with _$AddServiceState {
   const factory AddServiceState({
     @Default(ServiceType.offline) ServiceType selectedTab,
     @Default(0) int selectedLanguageIndex,
-    int? mainLanguageIndex,
-    @Default(['en']) List<String> languagesList,
+    @Default(0) int? mainLanguageIndex,
+    List<String>? languagesList,
     @Default(10.99) double price,
     @Default(DeliveryTimeTabType.minutes)
     DeliveryTimeTabType selectedDeliveryTimeTab,
