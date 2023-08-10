@@ -84,6 +84,7 @@ dependencies:
   smooth_page_indicator: ^1.0.0+2
   mime: ^1.0.2
   flutter_cache_manager: ^3.3.0
+  flutter_secure_storage: ^8.0.0
   percent_indicator: ^4.2.2
   carousel_slider: ^4.1.1
   share_plus: ^4.4.0

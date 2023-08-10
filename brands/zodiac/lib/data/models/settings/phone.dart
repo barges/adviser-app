@@ -12,7 +12,7 @@ class Phone with _$Phone {
   @JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)
   const factory Phone({
     int? code,
-    int? number,
+    @JsonKey(fromJson: _numberFromJson) int? number,
     String? country,
     bool? isVerified,
   }) = _Phone;
@@ -27,4 +27,8 @@ class Phone with _$Phone {
   String toCodeString() {
     return code != null ? '+$code' : '';
   }
+}
+
+int? _numberFromJson(dynamic jsonValue) {
+  return jsonValue is String ? int.tryParse(jsonValue) : jsonValue;
 }
