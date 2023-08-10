@@ -19,6 +19,12 @@ class CannedMessageManagerWidget extends StatelessWidget {
     final theme = Theme.of(context);
     CannedMessagesCubit cannedMessagesCubit =
         context.read<CannedMessagesCubit>();
+    if (cannedMessagesCubit.state.categories != null &&
+        cannedMessagesCubit.selectedCategory != null) {
+      indexNotifier.value = cannedMessagesCubit.state.categories!
+              .indexOf(cannedMessagesCubit.selectedCategory!) +
+          1;
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -66,8 +72,9 @@ class CannedMessageManagerWidget extends StatelessWidget {
               : const SizedBox.shrink();
         }),
         Builder(builder: (context) {
-          final List<CannedMessage> messages = context
-              .select((CannedMessagesCubit cubit) => cubit.state.messages!);
+          final List<CannedMessage> messages = context.select(
+                  (CannedMessagesCubit cubit) => cubit.state.messages) ??
+              [];
           return Padding(
               padding: EdgeInsets.only(
                 top: messages.isNotEmpty ? verticalInterval : 0.0,

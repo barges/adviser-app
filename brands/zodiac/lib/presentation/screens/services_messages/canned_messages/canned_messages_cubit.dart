@@ -32,7 +32,7 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
   }
 
   _init() async {
-    loadData();
+    await loadData();
 
     if (state.categories != null && state.categories!.isNotEmpty) {
       _categoryToAdd = state.categories!.first;
@@ -143,15 +143,15 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
     return state.categories!.firstWhereOrNull((element) => element.id == id);
   }
 
+  CannedCategory? get selectedCategory => _selectedCategory;
+
   Future<void> _getCannedCategories() async {
     try {
       final CannedMessagesResponse response =
           await _zodiacCannedMessagesRepository
               .getCannedCategories(AuthorizedRequest());
 
-      if (response.status == true &&
-          response.categories != null &&
-          response.categories!.isNotEmpty) {
+      if (response.status == true && response.categories != null) {
         emit(state.copyWith(
           categories: List.of(response.categories!),
         ));
@@ -170,9 +170,7 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
 
       _messages.clear();
 
-      if (response.status == true &&
-          response.messages != null &&
-          response.messages!.isNotEmpty) {
+      if (response.status == true && response.messages != null) {
         _messages.addAll(response.messages!);
         emit(state.copyWith(
           messages: List.of(_messages),
