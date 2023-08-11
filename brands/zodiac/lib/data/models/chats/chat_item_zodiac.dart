@@ -2,6 +2,7 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:zodiac/data/models/enums/chat_message_type.dart';
+import 'package:zodiac/data/models/enums/message_type.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 
 part 'chat_item_zodiac.g.dart';
@@ -27,6 +28,7 @@ class ZodiacChatsListItem with _$ZodiacChatsListItem {
     String? name,
     @JsonKey(fromJson: _statusFromJson) ZodiacUserStatus? status,
     String? avatar,
+    @JsonKey(fromJson: MessageType.fromJson) MessageType? type,
   }) = _ZodiacChatsListItem;
 
   factory ZodiacChatsListItem.fromJson(Map<String, dynamic> json) =>
