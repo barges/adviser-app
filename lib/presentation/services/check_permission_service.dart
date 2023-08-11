@@ -22,7 +22,7 @@ class CheckPermissionService {
     Map<String, dynamic> permissionStatusesMap =
         _cacheManager.getFirstPermissionStatusesRequestsMap();
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+
     switch (permissionType) {
       case PermissionType.camera:
         {
@@ -31,10 +31,16 @@ class CheckPermissionService {
         break;
       case PermissionType.gallery:
         {
-          if (Platform.isIOS || androidInfo.version.sdkInt >= 33) {
+          if (Platform.isIOS) {
             status = await Permission.photos.request();
           } else {
-            status = await Permission.storage.request();
+            final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+
+            if (androidInfo.version.sdkInt >= 33) {
+              status = await Permission.photos.request();
+            } else {
+              status = await Permission.storage.request();
+            }
           }
         }
         break;
