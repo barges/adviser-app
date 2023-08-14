@@ -27,11 +27,12 @@ class SessionsCubit extends Cubit<SessionsState> {
   StreamSubscription? _updateSessionsSubscription;
 
   final ScrollController chatsListScrollController = ScrollController();
-  final TextEditingController searchEditingController = TextEditingController();
 
   bool _isLoading = false;
   bool _hasMore = true;
   final List<ZodiacChatsListItem> _chatsList = [];
+
+  String _searchName = '';
 
   SessionsCubit(
     this._chatsRepository,
@@ -101,7 +102,11 @@ class SessionsCubit extends Cubit<SessionsState> {
           _hasMore = response.count != null &&
               _chatsList.length < int.parse(response.count!);
 
-          emit(state.copyWith(chatList: List.of(_chatsList)));
+          emit(state.copyWith(
+            chatList: _searchName.isNotEmpty
+                ? _filterByClientName(_searchName)
+                : List.of(_chatsList),
+          ));
         }
 
         _isLoading = false;
@@ -111,6 +116,26 @@ class SessionsCubit extends Cubit<SessionsState> {
 
       _isLoading = false;
     }
+  }
+
+  void searchByClientName(String text) {
+    _searchName = text;
+    emit(state.copyWith(
+      chatList: _searchName.isNotEmpty
+          ? _filterByClientName(_searchName)
+          : List.of(_chatsList),
+    ));
+  }
+
+  List<ZodiacChatsListItem> _filterByClientName(String text) {
+    String searchText = text.trim().toLowerCase();
+    return _chatsList.where((item) {
+      if (item.name != null &&
+          item.name!.toLowerCase().startsWith(searchText)) {
+        return true;
+      }
+      return false;
+    }).toList();
   }
 
   Future<void> hideChat(int? chatId) async {
@@ -133,4 +158,6 @@ class SessionsCubit extends Cubit<SessionsState> {
   void clearErrorMessage() {
     _zodiacMainCubit.clearErrorMessage();
   }
+
+  bool get isData => _chatsList.isNotEmpty;
 }
