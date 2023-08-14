@@ -342,7 +342,7 @@ class WebSocketManagerImpl implements WebSocketManager {
       if (_channel != null) {
         close();
       }
-      const host = ZodiacConstants.socketUrlZodiac;
+      const host = ZodiacConstants.socketUrlZodiacDev;
 
       final url = Uri(
           scheme: "wss",

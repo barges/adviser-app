@@ -215,6 +215,5 @@
   "servicePreviewZodiac": "Servicevorschau",
   "buyZodiac": "Besorgen",
   "sendForApprovalZodiac": "Zur Genehmigung senden",
-  "somethingWentWrongZodiac": "Etwas ist schief gelaufen",
-  "swipeDownToReloadZodiac": "Zum Neuladen nach unten wischen"
+  "editServiceZodiac": "Dienst bearbeiten"
 }

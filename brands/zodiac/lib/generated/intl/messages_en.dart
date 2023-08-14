@@ -148,6 +148,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Edit message"),
         "editProfileZodiac":
             MessageLookupByLibrary.simpleMessage("Edit profile"),
+        "editServiceZodiac":
+            MessageLookupByLibrary.simpleMessage("Edit service"),
         "editTemplateZodiac":
             MessageLookupByLibrary.simpleMessage("Edit template"),
         "editZodiac": MessageLookupByLibrary.simpleMessage("Edit"),

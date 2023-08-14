@@ -2235,6 +2235,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Edit service`
+  String get editServiceZodiac {
+    return Intl.message(
+      'Edit service',
+      name: 'editServiceZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

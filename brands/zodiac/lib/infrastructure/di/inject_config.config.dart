@@ -76,8 +76,6 @@ import 'dio_interceptors/app_interceptor.dart' as _i18;
 import 'modules/api_module.dart' as _i49;
 import 'modules/services_module.dart' as _i48;
 
-// ignore_for_file: unnecessary_lambdas
-// ignore_for_file: lines_longer_than_80_chars
 // initializes the registration of main-scope dependencies inside of GetIt
 Future<_i1.GetIt> $initGetIt(
   _i1.GetIt getIt, {
