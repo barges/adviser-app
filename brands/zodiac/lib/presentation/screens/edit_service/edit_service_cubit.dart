@@ -13,11 +13,9 @@ import 'package:zodiac/data/network/responses/default_services_images_response.d
 import 'package:zodiac/data/network/responses/get_service_info_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/presentation/screens/edit_service/edit_service_state.dart';
+import 'package:zodiac/zodiac_constants.dart';
 
 const int _textFieldsCount = 2;
-
-const int titleIndex = 0;
-const int descriptionIndex = 1;
 
 class EditServiceCubit extends Cubit<EditServiceState> {
   final int serviceId;
@@ -147,7 +145,20 @@ class EditServiceCubit extends Cubit<EditServiceState> {
 
   void _setupLanguageTexts(
       String localeCode, String title, String description) {
-    textControllersMap[localeCode]?[titleIndex].text = title;
-    textControllersMap[localeCode]?[descriptionIndex].text = description;
+    textControllersMap[localeCode]?[ZodiacConstants.serviceTitleIndex].text =
+        title;
+    textControllersMap[localeCode]?[ZodiacConstants.serviceDescriptionIndex]
+        .text = description;
+  }
+
+  void onDiscountChanged(dynamic value) {
+    if (value >= ZodiacConstants.serviceMinDiscount &&
+        value <= ZodiacConstants.serviceMaxDiscount) {
+      emit(state.copyWith(discount: value));
+    }
+  }
+
+  void onDiscountEnabledChanged(bool value) {
+    emit(state.copyWith(discountEnabled: value));
   }
 }

@@ -26,9 +26,6 @@ import 'package:zodiac/zodiac_constants.dart';
 const double minPrice = 4.99;
 const double maxPrice = 299.99;
 
-const double minDiscount = 5;
-const double maxDiscount = 50;
-
 const int _textFieldsCount = 2;
 
 class AddServiceCubit extends Cubit<AddServiceState> {
@@ -335,7 +332,8 @@ class AddServiceCubit extends Cubit<AddServiceState> {
   }
 
   void onDiscountChanged(dynamic value) {
-    if (value >= minDiscount && value <= maxDiscount) {
+    if (value >= ZodiacConstants.serviceMinDiscount &&
+        value <= ZodiacConstants.serviceMaxDiscount) {
       emit(state.copyWith(discount: value));
     }
   }

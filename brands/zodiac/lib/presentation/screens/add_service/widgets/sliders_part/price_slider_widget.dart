@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:zodiac/generated/l10n.dart';
+import 'package:zodiac/presentation/common_widgets/service/slider_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
-import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/slider_widget.dart';
 
 class PriceSliderWidget extends StatelessWidget {
   const PriceSliderWidget({Key? key}) : super(key: key);

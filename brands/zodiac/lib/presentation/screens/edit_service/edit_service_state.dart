@@ -12,5 +12,8 @@ class EditServiceState with _$EditServiceState {
     @Default(0) int selectedLanguageIndex,
     int? mainLanguageIndex,
     List<String>? languagesList,
+    @Default(10.99) double price,
+    @Default(10) double discount,
+    @Default(false) bool discountEnabled,
   }) = _EditServiceState;
 }

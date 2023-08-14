@@ -1,20 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:zodiac/generated/l10n.dart';
-import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
-import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/slider_widget.dart';
+import 'package:zodiac/presentation/common_widgets/service/slider_widget.dart';
+import 'package:zodiac/zodiac_constants.dart';
 
 class DiscountForReorderWidget extends StatelessWidget {
-  const DiscountForReorderWidget({Key? key}) : super(key: key);
+  final bool discountEnabled;
+  final ValueChanged<bool> onDiscountEnabledChanged;
+  final double price;
+  final double discount;
+  final ValueChanged onDiscountChanged;
+
+  const DiscountForReorderWidget({
+    Key? key,
+    required this.discountEnabled,
+    required this.onDiscountEnabledChanged,
+    required this.price,
+    required this.discount,
+    required this.onDiscountChanged,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final AddServiceCubit addServiceCubit = context.read<AddServiceCubit>();
-    final bool discountEnabled =
-        context.select((AddServiceCubit cubit) => cubit.state.discountEnabled);
 
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -36,7 +45,7 @@ class DiscountForReorderWidget extends StatelessWidget {
               CupertinoSwitch(
                 value: discountEnabled,
                 activeColor: theme.primaryColor,
-                onChanged: addServiceCubit.onDiscountEnabledChanged,
+                onChanged: onDiscountEnabledChanged,
               ),
             ],
           ),
@@ -48,16 +57,12 @@ class DiscountForReorderWidget extends StatelessWidget {
             child: IgnorePointer(
               ignoring: !discountEnabled,
               child: Builder(builder: (context) {
-                final double price = context
-                    .select((AddServiceCubit cubit) => cubit.state.price);
-                final double discount = context
-                    .select((AddServiceCubit cubit) => cubit.state.discount);
                 return SliderWidget(
                   value: discount,
-                  min: minDiscount,
-                  max: maxDiscount,
+                  min: ZodiacConstants.serviceMinDiscount,
+                  max: ZodiacConstants.serviceMaxDiscount,
                   stepSize: 1,
-                  onChanged: addServiceCubit.onDiscountChanged,
+                  onChanged: onDiscountChanged,
                   tooltipFormater: (value) =>
                       '${value.toStringAsFixed(0)}% \$${(price * (1 - discount / 100)).toStringAsFixed(2)}',
                   labelFormatter: (value) => '${value.toStringAsFixed(0)}%',
