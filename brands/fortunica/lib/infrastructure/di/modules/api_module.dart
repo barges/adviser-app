@@ -8,6 +8,7 @@ import 'package:fortunica/fortunica_constants.dart';
 import 'package:fortunica/infrastructure/di/dio_interceptors/app_interceptor.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_advisor_interface/data/cache/secure_storage_manager.dart';
 import 'package:shared_advisor_interface/global.dart';
 
 @module
@@ -43,17 +44,25 @@ abstract class ApiModule {
       'x-adviqo-app-id': packageInfo.packageName,
       'Authorization': cacheManager.getUserToken(),
     };
+    String? id = await secureStorageManager.getDeviceId();
     if (Platform.isAndroid) {
       const AndroidId androidIdPlugin = AndroidId();
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      String? id = await androidIdPlugin.getId();
+      if (id == null) {
+        id = await androidIdPlugin.getId();
+        secureStorageManager.saveDeviceId(id!);
+      }
       headers['x-adviqo-adid'] = id;
       headers['x-adviqo-device-name'] = androidInfo.model;
       headers['x-adviqo-device-version'] = androidInfo.version.release;
       headers['x-adviqo-is-physical-device'] = androidInfo.isPhysicalDevice;
     } else if (Platform.isIOS) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-      headers['x-adviqo-adid'] = iosInfo.identifierForVendor;
+      if (id == null) {
+        id = iosInfo.identifierForVendor;
+        secureStorageManager.saveDeviceId(id!);
+      }
+      headers['x-adviqo-adid'] = id;
       headers['x-adviqo-device-name'] = iosInfo.name;
       headers['x-adviqo-device-version'] = iosInfo.systemVersion;
       headers['x-adviqo-is-physical-device'] = iosInfo.isPhysicalDevice;
@@ -61,6 +70,10 @@ abstract class ApiModule {
 
     return headers;
   }
+
+  @singleton
+  SecureStorageManager get secureStorageManager =>
+      globalGetIt.get<SecureStorageManager>();
 }
 
 extension DioHeadersExt on Dio {

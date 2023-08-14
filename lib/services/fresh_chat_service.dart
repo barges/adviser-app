@@ -5,6 +5,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:freshchat_sdk/freshchat_sdk.dart';
 import 'package:freshchat_sdk/freshchat_user.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_advisor_interface/data/cache/secure_storage_manager.dart';
 import 'package:shared_advisor_interface/global.dart';
 
 const String appName = 'Advisor Shared Interface';
@@ -45,13 +46,21 @@ class FreshChatServiceImpl extends FreshChatService {
     }
 
     final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    String? deviceId;
+    SecureStorageManager secureStorageManager =
+        globalGetIt.get<SecureStorageManager>();
+    String? deviceId = await secureStorageManager.getDeviceId();
     if (Platform.isAndroid) {
       const AndroidId androidIdPlugin = AndroidId();
-      deviceId = await androidIdPlugin.getId();
+      if (deviceId == null) {
+        deviceId = await androidIdPlugin.getId();
+        secureStorageManager.saveDeviceId(deviceId!);
+      }
     } else if (Platform.isIOS) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-      deviceId = iosInfo.identifierForVendor;
+      if (deviceId == null) {
+        deviceId = iosInfo.identifierForVendor;
+        secureStorageManager.saveDeviceId(deviceId!);
+      }
     }
 
     final String restoreId = userInfo?.restoreId ?? await getRestoreId() ?? '';
