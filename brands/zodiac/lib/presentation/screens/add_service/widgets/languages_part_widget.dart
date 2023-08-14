@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:zodiac/presentation/common_widgets/service/title_description_part_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/language_section_widget.dart';
-import 'package:zodiac/presentation/screens/add_service/widgets/title_description_part_widget.dart';
 
 class LanguagesPartWidget extends StatelessWidget {
   final List<String> languagesList;
@@ -14,6 +14,8 @@ class LanguagesPartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AddServiceCubit addServiceCubit = context.read<AddServiceCubit>();
+
     final int selectedLanguageIndex = context
         .select((AddServiceCubit cubit) => cubit.state.selectedLanguageIndex);
 
@@ -32,9 +34,18 @@ class LanguagesPartWidget extends StatelessWidget {
               const SizedBox(
                 height: 24.0,
               ),
-              TitleDescriptionPartWidget(
-                selectedLanguageIndex: selectedLanguageIndex,
-              ),
+              Builder(builder: (context) {
+                context.select((AddServiceCubit cubit) =>
+                    cubit.state.updateAfterDuplicate);
+
+                return TitleDescriptionPartWidget(
+                  selectedLanguageIndex: selectedLanguageIndex,
+                  textControllersMap: addServiceCubit.textControllersMap,
+                  hasFocusNotifiersMap: addServiceCubit.hasFocusNotifiersMap,
+                  errorTextsMap: addServiceCubit.errorTextsMap,
+                  focusNodesMap: addServiceCubit.focusNodesMap,
+                );
+              })
             ],
           ),
         )

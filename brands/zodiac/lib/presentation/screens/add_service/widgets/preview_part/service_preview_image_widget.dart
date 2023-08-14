@@ -7,6 +7,7 @@ import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
+import 'package:zodiac/zodiac_constants.dart';
 
 class ServicePreviewImageWidget extends StatelessWidget {
   final int selectedLanguageIndex;
@@ -29,7 +30,7 @@ class ServicePreviewImageWidget extends StatelessWidget {
     final TextEditingController titleController = addServiceCubit
         .textControllersMap.entries
         .toList()[selectedLanguageIndex]
-        .value[titleIndex];
+        .value[ZodiacConstants.serviceTitleIndex];
 
     return Stack(
       children: [

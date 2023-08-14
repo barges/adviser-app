@@ -21,6 +21,7 @@ import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_state.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
+import 'package:zodiac/zodiac_constants.dart';
 
 const double minPrice = 4.99;
 const double maxPrice = 299.99;
@@ -29,9 +30,6 @@ const double minDiscount = 5;
 const double maxDiscount = 50;
 
 const int _textFieldsCount = 2;
-
-const int titleIndex = 0;
-const int descriptionIndex = 1;
 
 class AddServiceCubit extends Cubit<AddServiceState> {
   final ZodiacCachingManager _zodiacCachingManager;
@@ -181,8 +179,10 @@ class AddServiceCubit extends Cubit<AddServiceState> {
 
   void _setupLanguageTexts(
       String localeCode, String title, String description) {
-    textControllersMap[localeCode]?[titleIndex].text = title;
-    textControllersMap[localeCode]?[descriptionIndex].text = description;
+    textControllersMap[localeCode]?[ZodiacConstants.serviceTitleIndex].text =
+        title;
+    textControllersMap[localeCode]?[ZodiacConstants.serviceDescriptionIndex]
+        .text = description;
   }
 
   String localeNativeName(String code) {
@@ -373,8 +373,12 @@ class AddServiceCubit extends Cubit<AddServiceState> {
         translations.add(
           ServiceLanguageModel(
             code: element,
-            title: textControllersMap[element]?[titleIndex].text,
-            description: textControllersMap[element]?[descriptionIndex].text,
+            title: textControllersMap[element]
+                    ?[ZodiacConstants.serviceTitleIndex]
+                .text,
+            description: textControllersMap[element]
+                    ?[ZodiacConstants.serviceDescriptionIndex]
+                .text,
           ),
         );
       }

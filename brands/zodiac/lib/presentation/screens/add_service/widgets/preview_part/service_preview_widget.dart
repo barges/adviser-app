@@ -6,6 +6,7 @@ import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/preview_part/service_preview_image_widget.dart';
+import 'package:zodiac/zodiac_constants.dart';
 
 class ServicePreviewWidget extends StatelessWidget {
   final List<ImageSampleModel> images;
@@ -28,7 +29,7 @@ class ServicePreviewWidget extends StatelessWidget {
     final TextEditingController descriptionController = addServiceCubit
         .textControllersMap.entries
         .toList()[selectedLanguageIndex]
-        .value[descriptionIndex];
+        .value[ZodiacConstants.serviceDescriptionIndex];
 
     return Container(
       width: 260.0,

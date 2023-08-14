@@ -33,12 +33,17 @@ class EditServiceScreen extends StatelessWidget {
             List<String>? languagesList = context
                 .select((EditServiceCubit cubit) => cubit.state.languagesList);
             if (languagesList != null) {
-              return Column(
-                children: [
-                  LanguagesPartWidget(
-                    languagesList: languagesList,
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Column(
+                    children: [
+                      LanguagesPartWidget(
+                        languagesList: languagesList,
+                      ),
+                    ],
                   ),
-                ],
+                ),
               );
             } else {
               return const SizedBox.shrink();
