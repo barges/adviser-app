@@ -7,9 +7,9 @@ import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app
 import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dart';
+import 'package:zodiac/presentation/common_widgets/service/choose_image_widget.dart';
 import 'package:zodiac/presentation/common_widgets/tile_menu_button.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
-import 'package:zodiac/presentation/screens/add_service/widgets/choose_image_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/information_expansion_panel.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/languages_part_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/preview_part/service_preview_part_widget.dart';
@@ -94,9 +94,22 @@ class AddServiceBodyWidget extends StatelessWidget {
                       const SizedBox(
                         height: 24.0,
                       ),
-                      ChooseImageWidget(
-                        images: images,
-                      ),
+                      Builder(builder: (context) {
+                        final int selectedImageIndex = context.select(
+                            (AddServiceCubit cubit) =>
+                                cubit.state.selectedImageIndex);
+                        final bool showAllImages = context.select(
+                            (AddServiceCubit cubit) =>
+                                cubit.state.showAllImages);
+
+                        return ChooseImageWidget(
+                          images: images,
+                          selectImage: addServiceCubit.selectImage,
+                          selectedImageIndex: selectedImageIndex,
+                          showAllImages: showAllImages,
+                          setShowAllImages: addServiceCubit.setShowAllImages,
+                        );
+                      }),
                     ],
                   ),
                 ),
