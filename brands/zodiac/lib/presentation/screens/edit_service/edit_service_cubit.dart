@@ -1,6 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/utils/utils.dart';
+import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/enums/validation_error_type.dart';
 import 'package:zodiac/data/models/services/image_sample_model.dart';
+import 'package:zodiac/data/models/services/service_info_item.dart';
+import 'package:zodiac/data/models/user_info/locale_model.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/requests/get_service_info_request.dart';
 import 'package:zodiac/data/network/responses/default_services_images_response.dart';
@@ -8,13 +14,26 @@ import 'package:zodiac/data/network/responses/get_service_info_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/presentation/screens/edit_service/edit_service_state.dart';
 
+const int _textFieldsCount = 2;
+
+const int titleIndex = 0;
+const int descriptionIndex = 1;
+
 class EditServiceCubit extends Cubit<EditServiceState> {
   final int serviceId;
   final ZodiacServicesRepository servicesRepository;
+  final ZodiacCachingManager zodiacCachingManager;
+
+  List<GlobalKey> languagesGlobalKeys = [];
+  final Map<String, List<TextEditingController>> textControllersMap = {};
+  final Map<String, List<FocusNode>> focusNodesMap = {};
+  final Map<String, List<ValueNotifier>> hasFocusNotifiersMap = {};
+  final Map<String, List<ValidationErrorType>> errorTextsMap = {};
 
   EditServiceCubit({
     required this.serviceId,
     required this.servicesRepository,
+    required this.zodiacCachingManager,
   }) : super(const EditServiceState()) {
     fetchData();
   }
@@ -44,5 +63,91 @@ class EditServiceCubit extends Cubit<EditServiceState> {
   Future<void> _getServiceInfo() async {
     final GetServiceInfoResponse response = await servicesRepository
         .getServiceInfo(GetServiceInfoRequest(serviceId: serviceId));
+
+    if (response.status == true) {
+      final ServiceInfoItem? serviceInfo = response.result;
+
+      final List<String> _newLanguagesList = [];
+      serviceInfo?.translations?.forEach((element) {
+        if (element.code != null) {
+          _newLanguagesList.add(element.code!);
+          _setLocaleProperties(element.code!);
+          _setupLanguageTexts(
+              element.code!, element.title ?? '', element.description ?? '');
+        }
+      });
+
+      serviceInfo?.approval?.forEach((element) {
+        if (element.code != null) {
+          _newLanguagesList.add(element.code!);
+          _setLocaleProperties(element.code!);
+          _setupLanguageTexts(element.code!, element.title?.value ?? '',
+              element.description?.value ?? '');
+        }
+      });
+      emit(state.copyWith(languagesList: _newLanguagesList));
+    }
+  }
+
+  void _setLocaleProperties(String localeCode) {
+    errorTextsMap[localeCode] = List<ValidationErrorType>.generate(
+      _textFieldsCount,
+      (index) => ValidationErrorType.empty,
+    );
+
+    textControllersMap[localeCode] = List<TextEditingController>.generate(
+      _textFieldsCount,
+      (index) {
+        return TextEditingController()
+          ..addListener(() {
+            errorTextsMap[localeCode]?[index] = ValidationErrorType.empty;
+            _updateTextsFlag();
+          });
+      },
+    );
+
+    hasFocusNotifiersMap[localeCode] = List<ValueNotifier>.generate(
+      _textFieldsCount,
+      (index) => ValueNotifier(false),
+    );
+
+    focusNodesMap[localeCode] = List<FocusNode>.generate(
+      _textFieldsCount,
+      (index) {
+        final node = FocusNode();
+        node.addListener(() {
+          hasFocusNotifiersMap[localeCode]?[index].value = node.hasFocus;
+        });
+        return node;
+      },
+    );
+
+    languagesGlobalKeys.add(GlobalKey());
+  }
+
+  void _updateTextsFlag() {
+    bool flag = state.updateTextsFlag;
+    emit(state.copyWith(updateTextsFlag: !flag));
+  }
+
+  void changeLocaleIndex(int newIndex) {
+    emit(state.copyWith(selectedLanguageIndex: newIndex));
+    Utils.animateToWidget(languagesGlobalKeys[newIndex]);
+  }
+
+  String localeNativeName(String code) {
+    List<LocaleModel>? locales = zodiacCachingManager.getAllLocales();
+
+    return locales
+            ?.firstWhere((element) => element.code == code,
+                orElse: () => const LocaleModel())
+            .nameNative ??
+        '';
+  }
+
+  void _setupLanguageTexts(
+      String localeCode, String title, String description) {
+    textControllersMap[localeCode]?[titleIndex].text = title;
+    textControllersMap[localeCode]?[descriptionIndex].text = description;
   }
 }

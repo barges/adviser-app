@@ -8,5 +8,9 @@ class EditServiceState with _$EditServiceState {
   const factory EditServiceState({
     @Default(false) bool alreadyFetchData,
     List<ImageSampleModel>? images,
+    @Default(false) bool updateTextsFlag,
+    @Default(0) int selectedLanguageIndex,
+    int? mainLanguageIndex,
+    List<String>? languagesList,
   }) = _EditServiceState;
 }
