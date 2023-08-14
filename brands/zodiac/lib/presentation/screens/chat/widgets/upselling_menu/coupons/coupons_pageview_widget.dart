@@ -49,6 +49,7 @@ class _CouponsPageViewWidgetState extends State<CouponsPageViewWidget> {
               uri: Uri.parse(
                 widget.coupons[index].image ?? '',
               ),
+              fit: BoxFit.fill,
             ),
           ),
         ),

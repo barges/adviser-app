@@ -4,6 +4,8 @@ import 'package:android_id/android_id.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_advisor_interface/data/cache/secure_storage_manager.dart';
+import 'package:shared_advisor_interface/global.dart';
 
 class AppInfo {
   late final Future<bool> _initAppInfo;
@@ -45,18 +47,25 @@ class AppInfo {
     locale = Intl.getCurrentLocale();
     appsflyerId = '1469200336473-6162102739781632588';
 
+    SecureStorageManager secureStorageManager =
+        globalGetIt.get<SecureStorageManager>();
+    deviceId = await secureStorageManager.getDeviceId();
     if (Platform.isAndroid) {
       const AndroidId androidIdPlugin = AndroidId();
       final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-
-      deviceId = await androidIdPlugin.getId();
+      if (deviceId == null) {
+        deviceId = await androidIdPlugin.getId();
+        secureStorageManager.saveDeviceId(deviceId!);
+      }
       device = "${androidInfo.manufacturer} ${androidInfo.model}";
       deviceType = 'android';
       os = 'android';
     } else if (Platform.isIOS) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-
-      deviceId = iosInfo.identifierForVendor;
+      if (deviceId == null) {
+        deviceId = iosInfo.identifierForVendor;
+        secureStorageManager.saveDeviceId(deviceId!);
+      }
       device = iosInfo.name;
       deviceType = 'iphone';
       os = 'iphone';
