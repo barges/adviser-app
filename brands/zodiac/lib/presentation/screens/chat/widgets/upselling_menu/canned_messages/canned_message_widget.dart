@@ -34,12 +34,8 @@ class _CannedMessageWidgetState extends State<CannedMessageWidget> {
   final ScrollController _scrollController = ScrollController();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
+    _scrollController.dispose();
     _editingController.dispose();
     super.dispose();
   }
