@@ -18,7 +18,6 @@ const maximumMessageSymbols = 280;
 class CannedMessagesCubit extends Cubit<CannedMessagesState> {
   final ZodiacCannedMessagesRepository _zodiacCannedMessagesRepository;
   final List<CannedMessage> _messages = [];
-  CannedCategory? _selectedCategory;
   CannedCategory? _categoryToAdd;
   CannedCategory? _updateCategory;
   CannedMessage? _updateMessage;
@@ -44,6 +43,7 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
       await _getCannedCategories();
       await _getCannedMessages();
       emit(state.copyWith(
+        selectedCategoryIndex: 0,
         showErrorData: false,
       ));
     } catch (e) {
@@ -68,12 +68,6 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
     _categoryToAdd = state.categories![categoryIndex];
   }
 
-  void setCategory(int? categoryIndex) {
-    CannedCategory? cannedCategory =
-        categoryIndex != null ? state.categories![categoryIndex] : null;
-    _selectedCategory = cannedCategory;
-  }
-
   void setUpdateCategory(int categoryIndex) {
     CannedCategory? cannedCategory =
         state.categories!.isNotEmpty ? state.categories![categoryIndex] : null;
@@ -82,20 +76,6 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
 
   void setUpdateCannedMessage(CannedMessage cannedMessage) {
     _updateMessage = cannedMessage;
-  }
-
-  Future<void> filterCannedMessagesByCategory() async {
-    if (_selectedCategory != null) {
-      emit(state.copyWith(
-        messages: _messages
-            .where((element) => element.categoryId == _selectedCategory?.id)
-            .toList(),
-      ));
-    } else {
-      emit(state.copyWith(
-        messages: List.of(_messages),
-      ));
-    }
   }
 
   Future<bool> saveTemplate() async {
@@ -108,7 +88,7 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
             categoryName: _categoryToAdd?.name,
             text: _textCannedMessageToAdd);
         _messages.insert(0, newCannedMessage);
-        await filterCannedMessagesByCategory();
+        _filterCannedMessagesByCategory();
         return true;
       }
     }
@@ -125,7 +105,7 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
             text: _updatedText);
         _messages.replaceRange(
             _messages.indexOf(_updateMessage!), 1, [updatedMessage]);
-        await filterCannedMessagesByCategory();
+        _filterCannedMessagesByCategory();
         return true;
       }
     }
@@ -135,7 +115,9 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
   Future<void> deleteCannedMessage(int? messageId) async {
     if (await _deleteCannedMessage(messageId)) {
       _messages.removeWhere((element) => element.id == messageId);
-      await filterCannedMessagesByCategory();
+      emit(state.copyWith(
+        messages: List.of(_messages),
+      ));
     }
   }
 
@@ -143,7 +125,34 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
     return state.categories!.firstWhereOrNull((element) => element.id == id);
   }
 
-  CannedCategory? get selectedCategory => _selectedCategory;
+  void getCannedMessagesByCategory(int categoryIndex) {
+    if (categoryIndex != 0) {
+      final selectedCategory = state.categories![categoryIndex - 1];
+      _getCannedMessages(selectedCategory.id);
+    } else {
+      _getCannedMessages();
+    }
+
+    emit(state.copyWith(
+      selectedCategoryIndex: categoryIndex,
+    ));
+  }
+
+  Future<void> _filterCannedMessagesByCategory() async {
+    if (state.selectedCategoryIndex != 0) {
+      final selectedCategory =
+          state.categories![state.selectedCategoryIndex - 1];
+      emit(state.copyWith(
+        messages: _messages
+            .where((element) => element.categoryId == selectedCategory.id)
+            .toList(),
+      ));
+    } else {
+      emit(state.copyWith(
+        messages: List.of(_messages),
+      ));
+    }
+  }
 
   Future<void> _getCannedCategories() async {
     try {
@@ -162,11 +171,11 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
     }
   }
 
-  Future<void> _getCannedMessages() async {
+  Future<void> _getCannedMessages([int? categoryId]) async {
     try {
       final CannedMessagesResponse response =
           await _zodiacCannedMessagesRepository
-              .getCannedMessages(CannedMessagesRequest());
+              .getCannedMessages(CannedMessagesRequest(categoryId: categoryId));
 
       _messages.clear();
 

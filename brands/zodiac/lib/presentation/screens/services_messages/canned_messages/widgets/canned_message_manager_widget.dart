@@ -11,20 +11,13 @@ import 'package:zodiac/presentation/screens/services_messages/canned_messages/ca
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/widgets/canned_message_card.dart';
 
 class CannedMessageManagerWidget extends StatelessWidget {
-  final ValueNotifier<int> indexNotifier = ValueNotifier(0);
-  CannedMessageManagerWidget({super.key});
+  const CannedMessageManagerWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     CannedMessagesCubit cannedMessagesCubit =
         context.read<CannedMessagesCubit>();
-    if (cannedMessagesCubit.state.categories != null &&
-        cannedMessagesCubit.selectedCategory != null) {
-      indexNotifier.value = cannedMessagesCubit.state.categories!
-              .indexOf(cannedMessagesCubit.selectedCategory!) +
-          1;
-    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -48,25 +41,22 @@ class CannedMessageManagerWidget extends StatelessWidget {
                             ?.copyWith(fontSize: 17.0),
                       ),
                     ),
-                    ValueListenableBuilder(
-                      valueListenable: indexNotifier,
-                      builder: (_, int value, __) {
-                        return ListOfFiltersWidget(
-                          currentFilterIndex: value,
-                          onTapToFilter: (index) {
-                            if (index != null) {
-                              indexNotifier.value = index;
-                              cannedMessagesCubit
-                                  .setCategory(index == 0 ? null : index - 1);
-                              cannedMessagesCubit
-                                  .filterCannedMessagesByCategory();
-                            }
-                          },
-                          filters: [SZodiac.of(context).allZodiac, ...filters],
-                          padding: AppConstants.horizontalScreenPadding,
-                        );
-                      },
-                    ),
+                    Builder(builder: (context) {
+                      final int selectedCategoryIndex = context.select(
+                          (CannedMessagesCubit cubit) =>
+                              cubit.state.selectedCategoryIndex);
+                      return ListOfFiltersWidget(
+                        currentFilterIndex: selectedCategoryIndex,
+                        onTapToFilter: (index) {
+                          if (index != null) {
+                            cannedMessagesCubit
+                                .getCannedMessagesByCategory(index);
+                          }
+                        },
+                        filters: [SZodiac.of(context).allZodiac, ...filters],
+                        padding: AppConstants.horizontalScreenPadding,
+                      );
+                    }),
                   ],
                 )
               : const SizedBox.shrink();
