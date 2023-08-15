@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
+import 'package:zodiac/data/models/enums/service_type.dart';
 import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dart';
@@ -12,9 +13,11 @@ import 'package:zodiac/presentation/common_widgets/tile_menu_button.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/information_expansion_panel.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/languages_part_widget.dart';
-import 'package:zodiac/presentation/screens/add_service/widgets/preview_part/service_preview_part_widget.dart';
+import 'package:zodiac/presentation/common_widgets/service/preview_part/service_preview_part_widget.dart';
+import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/sliders_part_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/tabs_widget.dart';
+import 'package:zodiac/zodiac_constants.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class AddServiceBodyWidget extends StatelessWidget {
@@ -116,9 +119,49 @@ class AddServiceBodyWidget extends StatelessWidget {
                 const SizedBox(
                   height: 24.0,
                 ),
-                ServicePreviewPartWidget(
-                  images: images,
-                ),
+                Builder(builder: (context) {
+                  context.select((AddServiceCubit cubit) =>
+                      cubit.state.updateAfterDuplicate);
+
+                  final int selectedImageIndex = context.select(
+                      (AddServiceCubit cubit) =>
+                          cubit.state.selectedImageIndex);
+                  final int selectedLanguageIndex = context.select(
+                      (AddServiceCubit cubit) =>
+                          cubit.state.selectedLanguageIndex);
+
+                  final double price = context
+                      .select((AddServiceCubit cubit) => cubit.state.price);
+                  final double discount = context
+                      .select((AddServiceCubit cubit) => cubit.state.discount);
+                  final bool discountEnabled = context.select(
+                      (AddServiceCubit cubit) => cubit.state.discountEnabled);
+                  final ServiceType selectedTab = context.select(
+                      (AddServiceCubit cubit) => cubit.state.selectedTab);
+
+                  final double deliveryTime = context.select(
+                      (AddServiceCubit cubit) => cubit.state.deliveryTime);
+                  final DeliveryTimeTabType selectedDeliveryTimeTab =
+                      context.select((AddServiceCubit cubit) =>
+                          cubit.state.selectedDeliveryTimeTab);
+
+                  return ServicePreviewPartWidget(
+                    selectedImage: images[selectedImageIndex],
+                    titleController: addServiceCubit.textControllersMap.entries
+                        .toList()[selectedLanguageIndex]
+                        .value[ZodiacConstants.serviceTitleIndex],
+                    descriptionController: addServiceCubit
+                        .textControllersMap.entries
+                        .toList()[selectedLanguageIndex]
+                        .value[ZodiacConstants.serviceDescriptionIndex],
+                    price: price,
+                    discount: discount,
+                    discountEnabled: discountEnabled,
+                    serviceType: selectedTab,
+                    deliveryTime: deliveryTime,
+                    deliveryTimeType: selectedDeliveryTimeTab,
+                  );
+                }),
                 const SizedBox(
                   height: 24.0,
                 ),

@@ -166,7 +166,7 @@ class AddServiceCubit extends Cubit<AddServiceState> {
               deliveryTimeTabType ?? DeliveryTimeTabType.minutes,
           deliveryTime: deliveryTimeTabType
                   ?.deliveryTimeFromSeconds(duplicatedService.duration) ??
-              9.99,
+              20,
           mainLanguageIndex: _newLanguagesList
               .indexWhere((element) => element == duplicatedService.mainLocale),
           selectedLanguageIndex: 0,

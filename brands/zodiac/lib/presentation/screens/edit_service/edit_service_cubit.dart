@@ -12,6 +12,7 @@ import 'package:zodiac/data/network/requests/get_service_info_request.dart';
 import 'package:zodiac/data/network/responses/default_services_images_response.dart';
 import 'package:zodiac/data/network/responses/get_service_info_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
+import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
 import 'package:zodiac/presentation/screens/edit_service/edit_service_state.dart';
 import 'package:zodiac/zodiac_constants.dart';
 
@@ -87,13 +88,13 @@ class EditServiceCubit extends Cubit<EditServiceState> {
         }
       });
 
-      emit(state.copyWith(languagesList: _newLanguagesList));
+      EditServiceState newState =
+          state.copyWith(languagesList: _newLanguagesList);
 
       if (serviceInfo?.mainLocale != null) {
         final int mainLanguageIndex =
             _newLanguagesList.indexOf(serviceInfo!.mainLocale!);
-
-        emit(state.copyWith(mainLanguageIndex: mainLanguageIndex));
+        newState = newState.copyWith(mainLanguageIndex: mainLanguageIndex);
       }
 
       if (serviceInfo?.imageAlias != null) {
@@ -101,9 +102,27 @@ class EditServiceCubit extends Cubit<EditServiceState> {
             (element) => element.imageAlias == serviceInfo?.imageAlias);
 
         if (selectedImageIndex != null) {
-          emit(state.copyWith(selectedImageIndex: selectedImageIndex));
+          newState = newState.copyWith(selectedImageIndex: selectedImageIndex);
         }
       }
+
+      if (serviceInfo?.price != null) {
+        newState = newState.copyWith(price: serviceInfo!.price!);
+      }
+
+      if (serviceInfo?.duration != null) {
+        DeliveryTimeTabType? deliveryTimeTabType =
+            DeliveryTimeTabType.fromSeconds(serviceInfo?.duration);
+
+        newState = newState.copyWith(
+          deliveryTimeType: deliveryTimeTabType ?? DeliveryTimeTabType.minutes,
+          deliveryTime: deliveryTimeTabType
+                  ?.deliveryTimeFromSeconds(serviceInfo?.duration) ??
+              20,
+        );
+      }
+
+      emit(newState);
     }
   }
 
