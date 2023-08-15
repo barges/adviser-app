@@ -43,7 +43,10 @@ class EditServiceCubit extends Cubit<EditServiceState> {
     } catch (e) {
       logger.d(e);
     } finally {
-      emit(state.copyWith(alreadyFetchData: true));
+      emit(state.copyWith(
+        alreadyFetchData: true,
+        dataFetched: state.languagesList != null && state.images != null,
+      ));
     }
   }
 
@@ -83,7 +86,24 @@ class EditServiceCubit extends Cubit<EditServiceState> {
               element.description?.value ?? '');
         }
       });
+
       emit(state.copyWith(languagesList: _newLanguagesList));
+
+      if (serviceInfo?.mainLocale != null) {
+        final int mainLanguageIndex =
+            _newLanguagesList.indexOf(serviceInfo!.mainLocale!);
+
+        emit(state.copyWith(mainLanguageIndex: mainLanguageIndex));
+      }
+
+      if (serviceInfo?.imageAlias != null) {
+        final int? selectedImageIndex = state.images?.indexWhere(
+            (element) => element.imageAlias == serviceInfo?.imageAlias);
+
+        if (selectedImageIndex != null) {
+          emit(state.copyWith(selectedImageIndex: selectedImageIndex));
+        }
+      }
     }
   }
 
@@ -160,5 +180,13 @@ class EditServiceCubit extends Cubit<EditServiceState> {
 
   void onDiscountEnabledChanged(bool value) {
     emit(state.copyWith(discountEnabled: value));
+  }
+
+  void setShowAllImages() {
+    emit(state.copyWith(showAllImages: !state.showAllImages));
+  }
+
+  void selectImage(int index) {
+    emit(state.copyWith(selectedImageIndex: index));
   }
 }

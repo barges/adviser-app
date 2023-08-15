@@ -15,5 +15,8 @@ class EditServiceState with _$EditServiceState {
     @Default(10.99) double price,
     @Default(10) double discount,
     @Default(false) bool discountEnabled,
+    @Default(0) int selectedImageIndex,
+    @Default(false) bool showAllImages,
+    @Default(false) bool dataFetched,
   }) = _EditServiceState;
 }

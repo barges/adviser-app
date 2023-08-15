@@ -12,11 +12,12 @@ part 'service_info_item.freezed.dart';
 class ServiceInfoItem with _$ServiceInfoItem {
   const ServiceInfoItem._();
 
-  @JsonSerializable(includeIfNull: false)
+  @JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)
   const factory ServiceInfoItem({
     @JsonKey(name: 'service_id') int? id,
     int? status,
     String? image,
+    String? imageAlias,
     @JsonKey(name: 'default_locale') String? mainLocale,
     @JsonKey(fromJson: ServiceType.fromInt) ServiceType? type,
     List<ServiceLanguageModel>? translations,
