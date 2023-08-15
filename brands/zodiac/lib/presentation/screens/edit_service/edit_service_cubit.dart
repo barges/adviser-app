@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/data/models/services/service_info_item.dart';
+import 'package:zodiac/data/models/services/service_language_model.dart';
 import 'package:zodiac/data/models/user_info/locale_model.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
+import 'package:zodiac/data/network/requests/edit_service_request.dart';
 import 'package:zodiac/data/network/requests/get_service_info_request.dart';
+import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/default_services_images_response.dart';
 import 'package:zodiac/data/network/responses/get_service_info_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
@@ -29,12 +33,34 @@ class EditServiceCubit extends Cubit<EditServiceState> {
   final Map<String, List<ValueNotifier>> hasFocusNotifiersMap = {};
   final Map<String, List<ValidationErrorType>> errorTextsMap = {};
 
+  bool _wasFocusRequest = false;
+
   EditServiceCubit({
     required this.serviceId,
     required this.servicesRepository,
     required this.zodiacCachingManager,
   }) : super(const EditServiceState()) {
     fetchData();
+  }
+
+  @override
+  Future<void> close() async {
+    for (var entry in textControllersMap.entries) {
+      for (var element in entry.value) {
+        element.dispose();
+      }
+    }
+    for (var entry in focusNodesMap.entries) {
+      for (var element in entry.value) {
+        element.dispose();
+      }
+    }
+    for (var entry in hasFocusNotifiersMap.entries) {
+      for (var element in entry.value) {
+        element.dispose();
+      }
+    }
+    super.close();
   }
 
   Future<void> fetchData() async {
@@ -207,5 +233,84 @@ class EditServiceCubit extends Cubit<EditServiceState> {
 
   void selectImage(int index) {
     emit(state.copyWith(selectedImageIndex: index));
+  }
+
+  Future<void> sendForApproval(BuildContext context) async {
+    final bool isChecked = _checkTextFields();
+
+    final List<ImageSampleModel>? images = state.images;
+    if (isChecked && images != null && state.languagesList != null) {
+      final List<ServiceLanguageModel> translations = [];
+      for (String element in state.languagesList!) {
+        translations.add(
+          ServiceLanguageModel(
+            code: element,
+            title: textControllersMap[element]
+                    ?[ZodiacConstants.serviceTitleIndex]
+                .text,
+            description: textControllersMap[element]
+                    ?[ZodiacConstants.serviceDescriptionIndex]
+                .text,
+          ),
+        );
+      }
+      final EditServiceRequest request = EditServiceRequest(
+        imageAlias: images[state.selectedImageIndex].imageAlias ?? '',
+        translations: translations,
+        serviceId: serviceId,
+        duration: state.deliveryTimeType.toSeconds(state.deliveryTime.toInt()),
+      );
+
+      BaseResponse response = await servicesRepository.editService(request);
+
+      if (response.status == true) {
+        // ignore: use_build_context_synchronously
+        context.pop();
+      }
+    }
+  }
+
+  bool _checkTextFields() {
+    bool isValid = true;
+    int? firstLanguageWithErrorIndex;
+    final List<String> languagesList = List.from(state.languagesList ?? []);
+    for (String localeCode in languagesList) {
+      final List<TextEditingController>? controllersByLocale =
+          textControllersMap[localeCode];
+      if (controllersByLocale != null) {
+        for (int i = 0; i < controllersByLocale.length; i++) {
+          if (!_checkTextField(localeCode, i)) {
+            firstLanguageWithErrorIndex ??= languagesList.indexOf(localeCode);
+            _wasFocusRequest = true;
+            isValid = false;
+          }
+
+          if (localeCode == languagesList.lastOrNull &&
+              i == controllersByLocale.length - 1) {
+            _wasFocusRequest = false;
+          }
+        }
+      }
+    }
+    if (firstLanguageWithErrorIndex != null) {
+      changeLocaleIndex(firstLanguageWithErrorIndex);
+    }
+    return isValid;
+  }
+
+  bool _checkTextField(String localeCode, int index) {
+    bool isValid = true;
+    final String text =
+        textControllersMap[localeCode]?[index].text.trim() ?? '';
+    if (text.isEmpty) {
+      isValid = false;
+
+      errorTextsMap[localeCode]?[index] = ValidationErrorType.requiredField;
+
+      if (!_wasFocusRequest) {
+        focusNodesMap[localeCode]?[index].requestFocus();
+      }
+    }
+    return isValid;
   }
 }
