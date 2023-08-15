@@ -65,7 +65,7 @@ class SessionsScreen extends StatelessWidget {
                             )),
                       ]);
                     } else if (chatsList != null) {
-                      if (zodiacSessionsCubit.isData) {
+                      if (chatsList.isNotEmpty) {
                         return RefreshIndicator(
                           onRefresh: zodiacSessionsCubit.refreshChatsList,
                           child: SlidableAutoCloseBehavior(
@@ -75,12 +75,9 @@ class SessionsScreen extends StatelessWidget {
                               physics: const ClampingScrollPhysics().applyTo(
                                   const AlwaysScrollableScrollPhysics()),
                               slivers: [
-                                const SliverPersistentHeader(
-                                  delegate: _SearchTextField(),
-                                ),
                                 const SliverToBoxAdapter(
                                   child: SizedBox(
-                                    height: 12.0,
+                                    height: 12.0 + 52.0,
                                   ),
                                 ),
                                 SliverList(
@@ -155,6 +152,20 @@ class SessionsScreen extends StatelessWidget {
                       );
                     }
                   }),
+                  Column(
+                    children: [
+                      SearchWidget(
+                        isBorder: false,
+                        backgroundColor:
+                            Theme.of(context).scaffoldBackgroundColor,
+                        onChanged: (text) =>
+                            zodiacSessionsCubit.searchByClientName(text),
+                      ),
+                      const Divider(
+                        height: 1.0,
+                      ),
+                    ],
+                  ),
                   if (isOnline)
                     Positioned(
                       top: 0.0,
@@ -164,7 +175,7 @@ class SessionsScreen extends StatelessWidget {
                         errorMessage: appError.getMessage(context),
                         close: zodiacSessionsCubit.clearErrorMessage,
                       ),
-                    )
+                    ),
                 ],
               );
             })),
@@ -183,39 +194,6 @@ class SessionsScreen extends StatelessWidget {
           name: item.name,
         ),
       ),
-    );
-  }
-}
-
-class _SearchTextField extends SliverPersistentHeaderDelegate {
-  const _SearchTextField() : super();
-
-  @override
-  double get maxExtent => 53.0;
-
-  @override
-  double get minExtent => 1.0;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      true;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    final SessionsCubit zodiacSessionsCubit = context.read<SessionsCubit>();
-    return Column(
-      children: [
-        SearchWidget(
-          autofocus: true,
-          isBorder: false,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          onChanged: (text) => zodiacSessionsCubit.searchByClientName(text),
-        ),
-        const Divider(
-          height: 1.0,
-        ),
-      ],
     );
   }
 }

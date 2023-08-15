@@ -16,6 +16,7 @@ import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 const int _count = 20;
+const _neededMinValueSearch = 3;
 
 class SessionsCubit extends Cubit<SessionsState> {
   final ZodiacSessionsRepository _chatsRepository;
@@ -91,9 +92,11 @@ class SessionsCubit extends Cubit<SessionsState> {
           final ChatEntitiesResponse response =
               await _chatsRepository.getChatsList(
             ListRequest(
-              count: _count,
-              offset: _chatsList.length,
-            ),
+                count: _count,
+                offset: _chatsList.length,
+                search: _searchName.length >= _neededMinValueSearch
+                    ? _searchName
+                    : null),
           );
 
           List<ZodiacChatsListItem>? chatsList = response.result;
@@ -102,11 +105,7 @@ class SessionsCubit extends Cubit<SessionsState> {
           _hasMore = response.count != null &&
               _chatsList.length < int.parse(response.count!);
 
-          emit(state.copyWith(
-            chatList: _searchName.isNotEmpty
-                ? _filterByClientName(_searchName)
-                : List.of(_chatsList),
-          ));
+          emit(state.copyWith(chatList: List.of(_chatsList)));
         }
 
         _isLoading = false;
@@ -120,22 +119,7 @@ class SessionsCubit extends Cubit<SessionsState> {
 
   void searchByClientName(String text) {
     _searchName = text;
-    emit(state.copyWith(
-      chatList: _searchName.isNotEmpty
-          ? _filterByClientName(_searchName)
-          : List.of(_chatsList),
-    ));
-  }
-
-  List<ZodiacChatsListItem> _filterByClientName(String text) {
-    String searchText = text.trim().toLowerCase();
-    return _chatsList.where((item) {
-      if (item.name != null &&
-          item.name!.toLowerCase().startsWith(searchText)) {
-        return true;
-      }
-      return false;
-    }).toList();
+    _getChatsList(refresh: true);
   }
 
   Future<void> hideChat(int? chatId) async {
@@ -158,6 +142,4 @@ class SessionsCubit extends Cubit<SessionsState> {
   void clearErrorMessage() {
     _zodiacMainCubit.clearErrorMessage();
   }
-
-  bool get isData => _chatsList.isNotEmpty;
 }
