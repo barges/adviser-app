@@ -17,7 +17,6 @@ const maximumMessageSymbols = 280;
 @injectable
 class CannedMessagesCubit extends Cubit<CannedMessagesState> {
   final ZodiacCannedMessagesRepository _zodiacCannedMessagesRepository;
-  final List<CannedMessage> _messages = [];
   CannedCategory? _categoryToAdd;
   CannedCategory? _updateCategory;
   CannedMessage? _updateMessage;
@@ -87,8 +86,17 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
             categoryId: _categoryToAdd?.id,
             categoryName: _categoryToAdd?.name,
             text: _textCannedMessageToAdd);
-        _messages.insert(0, newCannedMessage);
-        _filterCannedMessagesByCategory();
+
+        if (state.selectedCategoryIndex == 0 ||
+            state.categories![state.selectedCategoryIndex - 1].id ==
+                newCannedMessage.categoryId) {
+          final messages = List.of(state.messages!);
+          messages.insert(0, newCannedMessage);
+          emit(state.copyWith(
+            messages: messages,
+          ));
+        }
+
         return true;
       }
     }
@@ -103,9 +111,24 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
             categoryId: _updateCategory?.id,
             categoryName: _updateCategory?.name,
             text: _updatedText);
-        _messages.replaceRange(
-            _messages.indexOf(_updateMessage!), 1, [updatedMessage]);
-        _filterCannedMessagesByCategory();
+
+        if (state.selectedCategoryIndex == 0 ||
+            state.categories![state.selectedCategoryIndex - 1].id ==
+                updatedMessage.categoryId) {
+          final messages = List.of(state.messages!);
+          messages.replaceRange(
+              messages.indexOf(_updateMessage!), 1, [updatedMessage]);
+          emit(state.copyWith(
+            messages: messages,
+          ));
+        } else {
+          final messages = List.of(state.messages!);
+          messages.removeWhere((element) => element.id == updatedMessage.id);
+          emit(state.copyWith(
+            messages: List.of(messages),
+          ));
+        }
+
         return true;
       }
     }
@@ -114,9 +137,10 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
 
   Future<void> deleteCannedMessage(int? messageId) async {
     if (await _deleteCannedMessage(messageId)) {
-      _messages.removeWhere((element) => element.id == messageId);
+      final messages = List.of(state.messages!);
+      messages.removeWhere((element) => element.id == messageId);
       emit(state.copyWith(
-        messages: List.of(_messages),
+        messages: List.of(messages),
       ));
     }
   }
@@ -136,22 +160,6 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
     emit(state.copyWith(
       selectedCategoryIndex: categoryIndex,
     ));
-  }
-
-  Future<void> _filterCannedMessagesByCategory() async {
-    if (state.selectedCategoryIndex != 0) {
-      final selectedCategory =
-          state.categories![state.selectedCategoryIndex - 1];
-      emit(state.copyWith(
-        messages: _messages
-            .where((element) => element.categoryId == selectedCategory.id)
-            .toList(),
-      ));
-    } else {
-      emit(state.copyWith(
-        messages: List.of(_messages),
-      ));
-    }
   }
 
   Future<void> _getCannedCategories() async {
@@ -177,12 +185,9 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
           await _zodiacCannedMessagesRepository
               .getCannedMessages(CannedMessagesRequest(categoryId: categoryId));
 
-      _messages.clear();
-
       if (response.status == true && response.messages != null) {
-        _messages.addAll(response.messages!);
         emit(state.copyWith(
-          messages: List.of(_messages),
+          messages: List.of(response.messages!),
         ));
       }
     } catch (e) {

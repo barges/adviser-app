@@ -49,9 +49,9 @@ class CannedMessagesScreen extends StatelessWidget {
                                 38.0 * 2 -
                                 verticalInterval * 2,
                             child: const SomethingWentWrongWidget())
-                        : Column(
+                        : const Column(
                             children: [
-                              const AddCannedMessageWidget(),
+                              AddCannedMessageWidget(),
                               CannedMessageManagerWidget(),
                             ],
                           ),
