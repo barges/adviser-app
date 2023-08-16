@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zodiac/data/models/enums/approval_status.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/text_fields/app_text_field.dart';
@@ -10,6 +11,7 @@ class TitleDescriptionPartWidget extends StatelessWidget {
   final Map<String, List<ValueNotifier>> hasFocusNotifiersMap;
   final Map<String, List<ValidationErrorType>> errorTextsMap;
   final Map<String, List<FocusNode>> focusNodesMap;
+  final Map<String, List<ApprovalStatus?>>? approvalStatusMap;
 
   const TitleDescriptionPartWidget({
     Key? key,
@@ -18,6 +20,7 @@ class TitleDescriptionPartWidget extends StatelessWidget {
     required this.hasFocusNotifiersMap,
     required this.errorTextsMap,
     required this.focusNodesMap,
+    this.approvalStatusMap,
   }) : super(key: key);
 
   @override
@@ -41,6 +44,8 @@ class TitleDescriptionPartWidget extends StatelessWidget {
                     errorType: errorTextsMap[entry.key]
                             ?[ZodiacConstants.serviceTitleIndex] ??
                         ValidationErrorType.empty,
+                    approvalStatus: approvalStatusMap?[entry.key]
+                        ?[ZodiacConstants.serviceTitleIndex],
                   );
                 }),
             const SizedBox(
@@ -65,6 +70,8 @@ class TitleDescriptionPartWidget extends StatelessWidget {
                     errorType: errorTextsMap[entry.key]
                             ?[ZodiacConstants.serviceDescriptionIndex] ??
                         ValidationErrorType.empty,
+                    approvalStatus: approvalStatusMap?[entry.key]
+                        ?[ZodiacConstants.serviceDescriptionIndex],
                   );
                 }),
           ],

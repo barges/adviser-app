@@ -2245,6 +2245,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Waiting for approval`
+  String get waitingForApprovalZodiac {
+    return Intl.message(
+      'Waiting for approval',
+      name: 'waitingForApprovalZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rejected`
+  String get rejectedZodiac {
+    return Intl.message(
+      'Rejected',
+      name: 'rejectedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

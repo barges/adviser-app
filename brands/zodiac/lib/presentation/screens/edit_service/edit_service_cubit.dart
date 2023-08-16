@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/enums/approval_status.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/data/models/services/service_info_item.dart';
@@ -32,6 +33,7 @@ class EditServiceCubit extends Cubit<EditServiceState> {
   final Map<String, List<FocusNode>> focusNodesMap = {};
   final Map<String, List<ValueNotifier>> hasFocusNotifiersMap = {};
   final Map<String, List<ValidationErrorType>> errorTextsMap = {};
+  final Map<String, List<ApprovalStatus?>> approvalStatusMap = {};
 
   bool _wasFocusRequest = false;
 
@@ -109,8 +111,13 @@ class EditServiceCubit extends Cubit<EditServiceState> {
         if (element.code != null) {
           _newLanguagesList.add(element.code!);
           _setLocaleProperties(element.code!);
-          _setupLanguageTexts(element.code!, element.title?.value ?? '',
-              element.description?.value ?? '');
+          _setupLanguageTexts(
+            element.code!,
+            element.title?.value ?? '',
+            element.description?.value ?? '',
+            approvalStatusTitle: element.title?.status,
+            approvalStatusDescription: element.description?.status,
+          );
         }
       });
 
@@ -185,6 +192,9 @@ class EditServiceCubit extends Cubit<EditServiceState> {
       },
     );
 
+    approvalStatusMap[localeCode] =
+        List.generate(_textFieldsCount, (index) => null);
+
     languagesGlobalKeys.add(GlobalKey());
   }
 
@@ -209,11 +219,21 @@ class EditServiceCubit extends Cubit<EditServiceState> {
   }
 
   void _setupLanguageTexts(
-      String localeCode, String title, String description) {
+    String localeCode,
+    String title,
+    String description, {
+    ApprovalStatus? approvalStatusTitle,
+    ApprovalStatus? approvalStatusDescription,
+  }) {
     textControllersMap[localeCode]?[ZodiacConstants.serviceTitleIndex].text =
         title;
     textControllersMap[localeCode]?[ZodiacConstants.serviceDescriptionIndex]
         .text = description;
+
+    approvalStatusMap[localeCode]?[ZodiacConstants.serviceTitleIndex] =
+        approvalStatusTitle;
+    approvalStatusMap[localeCode]?[ZodiacConstants.serviceDescriptionIndex] =
+        approvalStatusDescription;
   }
 
   void onDiscountChanged(dynamic value) {

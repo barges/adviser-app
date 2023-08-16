@@ -215,5 +215,7 @@
   "servicePreviewZodiac": "Servicevorschau",
   "buyZodiac": "Besorgen",
   "sendForApprovalZodiac": "Zur Genehmigung senden",
-  "editServiceZodiac": "Dienst bearbeiten"
+  "editServiceZodiac": "Dienst bearbeiten",
+  "waitingForApprovalZodiac": "Warten auf die Bestätigung",
+  "rejectedZodiac": "Abgelehnt"
 }

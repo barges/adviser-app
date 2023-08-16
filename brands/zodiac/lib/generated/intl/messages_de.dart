@@ -282,6 +282,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "recordingIsNotPossibleZodiac": MessageLookupByLibrary.simpleMessage(
             "Aufzeichnung ist nicht möglich, Speicherplatz auf dem Gerät freigeben"),
         "recordingStoppedBecauseYouReachedLimitZodiac": m4,
+        "rejectedZodiac": MessageLookupByLibrary.simpleMessage("Abgelehnt"),
         "replyZodiac": MessageLookupByLibrary.simpleMessage("Antwort"),
         "reportUnderageUserZodiac": MessageLookupByLibrary.simpleMessage(
             "Minderjährigen Benutzer melden"),
@@ -385,6 +386,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Uh-oh. Es sieht so aus, als hättest du deine Verbindung verloren. Bitte versuche es erneut."),
         "unverifiedZodiac": MessageLookupByLibrary.simpleMessage("Unbestätigt"),
         "verifyZodiac": MessageLookupByLibrary.simpleMessage("Verifizieren"),
+        "waitingForApprovalZodiac":
+            MessageLookupByLibrary.simpleMessage("Warten auf die Bestätigung"),
         "weVeSentPasswordResetInstructionsToEmailZodiac": m6,
         "wellTextYouCodeToVerifyYourPhoneNumberZodiac":
             MessageLookupByLibrary.simpleMessage(

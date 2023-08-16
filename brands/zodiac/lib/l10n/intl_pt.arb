@@ -217,5 +217,7 @@
   "servicePreviewZodiac": "Visualização do serviço",
   "buyZodiac": "Comprar",
   "sendForApprovalZodiac": "Enviar para aprovação",
-  "editServiceZodiac": "Editar serviço"
+  "editServiceZodiac": "Editar serviço",
+  "waitingForApprovalZodiac": "Esperando aprovação",
+  "rejectedZodiac": "Rejeitado"
 }

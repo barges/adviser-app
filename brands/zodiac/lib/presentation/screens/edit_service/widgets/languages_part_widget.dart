@@ -48,6 +48,7 @@ class LanguagesPartWidget extends StatelessWidget {
                 hasFocusNotifiersMap: editServiceCubit.hasFocusNotifiersMap,
                 errorTextsMap: editServiceCubit.errorTextsMap,
                 focusNodesMap: editServiceCubit.focusNodesMap,
+                approvalStatusMap: editServiceCubit.approvalStatusMap,
               ),
             ],
           ),

@@ -217,5 +217,7 @@
   "servicePreviewZodiac": "Service preview",
   "buyZodiac": "Buy",
   "sendForApprovalZodiac": "Send for approval",
-  "editServiceZodiac": "Edit service"
+  "editServiceZodiac": "Edit service",
+  "waitingForApprovalZodiac": "Waiting for approval",
+  "rejectedZodiac": "Rejected"
 }
