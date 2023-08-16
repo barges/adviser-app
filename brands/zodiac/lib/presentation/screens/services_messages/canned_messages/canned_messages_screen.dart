@@ -10,9 +10,25 @@ import 'package:zodiac/presentation/screens/services_messages/canned_messages/wi
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/widgets/canned_message_manager_widget.dart';
 
 const verticalInterval = 24.0;
+const scrollPositionToShowMessages = 620.0;
 
-class CannedMessagesScreen extends StatelessWidget {
+class CannedMessagesScreen extends StatefulWidget {
   const CannedMessagesScreen({super.key});
+
+  @override
+  State<CannedMessagesScreen> createState() => _CannedMessagesScreenState();
+}
+
+class _CannedMessagesScreenState extends State<CannedMessagesScreen> {
+  final ScrollController controller = ScrollController();
+  int? messagesCount;
+  int selectedCategoryIndex = 0;
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +42,24 @@ class CannedMessagesScreen extends StatelessWidget {
             .select((CannedMessagesCubit cubit) => cubit.state.categories);
         final messages =
             context.select((CannedMessagesCubit cubit) => cubit.state.messages);
+        if (selectedCategoryIndex !=
+                cannedMessagesCubit.state.selectedCategoryIndex &&
+            messagesCount != messages?.length) {
+          if (messagesCount != null && messagesCount! < messages!.length) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              controller.animateTo(
+                  controller.position.maxScrollExtent >
+                          scrollPositionToShowMessages
+                      ? scrollPositionToShowMessages
+                      : controller.position.maxScrollExtent,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.linear);
+            });
+          }
+          selectedCategoryIndex =
+              cannedMessagesCubit.state.selectedCategoryIndex;
+          messagesCount = messages?.length;
+        }
         final bool isNoData = categories == null || messages == null;
         final bool showErrorData = context
             .select((CannedMessagesCubit cubit) => cubit.state.showErrorData);
@@ -38,6 +72,7 @@ class CannedMessagesScreen extends StatelessWidget {
             child: isNoData && !showErrorData
                 ? const SizedBox.shrink()
                 : SingleChildScrollView(
+                    controller: controller,
                     padding: const EdgeInsets.only(bottom: verticalInterval),
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: showErrorData
