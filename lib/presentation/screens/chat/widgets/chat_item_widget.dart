@@ -80,17 +80,17 @@ class _ChatItemWidgetState extends State<ChatItemWidget>
                 return const SizedBox();
               }).toList(),
             ),
-          SizedBox(
-            height: widget.item.attachments?.isNotEmpty == true &&
-                    widget.item.attachments?.indexWhere((element) =>
-                            element.type == AttachmentType.audio) !=
-                        null &&
-                    widget.item.attachments?.indexWhere((element) =>
-                            element.type == AttachmentType.audio) !=
-                        -1
-                ? 14.0
-                : 5.0,
-          ),
+          Builder(builder: (context) {
+            final int? isAudio = widget.item.attachments
+                ?.indexWhere((element) => element.type == AttachmentType.audio);
+            return SizedBox(
+              height: widget.item.attachments?.isNotEmpty == true &&
+                      isAudio != null &&
+                      isAudio != -1
+                  ? 14.0
+                  : 5.0,
+            );
+          }),
         ]),
         Positioned(
           right: 0.0,
