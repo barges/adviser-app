@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
+import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
 class CheckPermissionService {
   final CachingManager _cacheManager;
@@ -36,7 +37,8 @@ class CheckPermissionService {
           } else {
             final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
 
-            if (androidInfo.version.sdkInt >= 33) {
+            if (androidInfo.version.sdkInt >=
+                AppConstants.androidSdkVersion33) {
               status = await Permission.photos.request();
             } else {
               status = await Permission.storage.request();
