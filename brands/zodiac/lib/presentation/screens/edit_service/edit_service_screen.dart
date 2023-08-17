@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
+import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/simple_app_bar.dart';
@@ -24,6 +25,7 @@ class EditServiceScreen extends StatelessWidget {
         serviceId: serviceId,
         servicesRepository: zodiacGetIt.get<ZodiacServicesRepository>(),
         zodiacCachingManager: zodiacGetIt.get<ZodiacCachingManager>(),
+        userRepository: zodiacGetIt.get<ZodiacUserRepository>(),
       ),
       child: Builder(builder: (context) {
         final EditServiceCubit editServiceCubit =

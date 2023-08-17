@@ -17,6 +17,7 @@ import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/default_services_images_response.dart';
 import 'package:zodiac/data/network/responses/get_service_info_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
+import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
 import 'package:zodiac/presentation/screens/edit_service/edit_service_state.dart';
 import 'package:zodiac/zodiac_constants.dart';
@@ -27,6 +28,7 @@ class EditServiceCubit extends Cubit<EditServiceState> {
   final int serviceId;
   final ZodiacServicesRepository servicesRepository;
   final ZodiacCachingManager zodiacCachingManager;
+  final ZodiacUserRepository userRepository;
 
   List<GlobalKey> languagesGlobalKeys = [];
   final Map<String, List<TextEditingController>> textControllersMap = {};
@@ -41,6 +43,7 @@ class EditServiceCubit extends Cubit<EditServiceState> {
     required this.serviceId,
     required this.servicesRepository,
     required this.zodiacCachingManager,
+    required this.userRepository,
   }) : super(const EditServiceState()) {
     fetchData();
   }
@@ -67,6 +70,7 @@ class EditServiceCubit extends Cubit<EditServiceState> {
 
   Future<void> fetchData() async {
     try {
+      await _getLanguages();
       await _getImages();
       await _getServiceInfo();
     } catch (e) {
@@ -74,8 +78,20 @@ class EditServiceCubit extends Cubit<EditServiceState> {
     } finally {
       emit(state.copyWith(
         alreadyFetchData: true,
-        dataFetched: state.languagesList != null && state.images != null,
+        dataFetched: state.languagesList != null &&
+            state.images != null &&
+            zodiacCachingManager.haveLocales,
       ));
+    }
+  }
+
+  Future<void> _getLanguages() async {
+    if (!zodiacCachingManager.haveLocales) {
+      List<LocaleModel>? responseLocales =
+          ((await userRepository.getAllLocales(AuthorizedRequest())).result);
+      if (responseLocales != null) {
+        zodiacCachingManager.saveAllLocales(responseLocales);
+      }
     }
   }
 
