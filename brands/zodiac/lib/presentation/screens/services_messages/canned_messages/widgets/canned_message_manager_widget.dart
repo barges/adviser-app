@@ -11,8 +11,7 @@ import 'package:zodiac/presentation/screens/services_messages/canned_messages/ca
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/widgets/canned_message_card.dart';
 
 class CannedMessageManagerWidget extends StatelessWidget {
-  final ValueNotifier<int> indexNotifier = ValueNotifier(0);
-  CannedMessageManagerWidget({super.key});
+  const CannedMessageManagerWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,32 +41,30 @@ class CannedMessageManagerWidget extends StatelessWidget {
                             ?.copyWith(fontSize: 17.0),
                       ),
                     ),
-                    ValueListenableBuilder(
-                      valueListenable: indexNotifier,
-                      builder: (_, int value, __) {
-                        return ListOfFiltersWidget(
-                          currentFilterIndex: value,
-                          onTapToFilter: (index) {
-                            if (index != null) {
-                              indexNotifier.value = index;
-                              cannedMessagesCubit
-                                  .setCategory(index == 0 ? null : index - 1);
-                              cannedMessagesCubit
-                                  .filterCannedMessagesByCategory();
-                            }
-                          },
-                          filters: [SZodiac.of(context).allZodiac, ...filters],
-                          padding: AppConstants.horizontalScreenPadding,
-                        );
-                      },
-                    ),
+                    Builder(builder: (context) {
+                      final int selectedCategoryIndex = context.select(
+                          (CannedMessagesCubit cubit) =>
+                              cubit.state.selectedCategoryIndex);
+                      return ListOfFiltersWidget(
+                        currentFilterIndex: selectedCategoryIndex,
+                        onTapToFilter: (index) {
+                          if (index != null) {
+                            cannedMessagesCubit
+                                .getCannedMessagesByCategory(index);
+                          }
+                        },
+                        filters: [SZodiac.of(context).allZodiac, ...filters],
+                        padding: AppConstants.horizontalScreenPadding,
+                      );
+                    }),
                   ],
                 )
               : const SizedBox.shrink();
         }),
         Builder(builder: (context) {
-          final List<CannedMessage> messages = context
-              .select((CannedMessagesCubit cubit) => cubit.state.messages!);
+          final List<CannedMessage> messages = context.select(
+                  (CannedMessagesCubit cubit) => cubit.state.messages) ??
+              [];
           return Padding(
               padding: EdgeInsets.only(
                 top: messages.isNotEmpty ? verticalInterval : 0.0,
