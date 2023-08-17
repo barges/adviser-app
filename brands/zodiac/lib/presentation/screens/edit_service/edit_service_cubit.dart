@@ -170,8 +170,11 @@ class EditServiceCubit extends Cubit<EditServiceState> {
       (index) {
         return TextEditingController()
           ..addListener(() {
-            errorTextsMap[localeCode]?[index] = ValidationErrorType.empty;
-            _updateTextsFlag();
+            if (errorTextsMap[localeCode]?[index] !=
+                ValidationErrorType.empty) {
+              errorTextsMap[localeCode]?[index] = ValidationErrorType.empty;
+              _updateTextsFlag();
+            }
           });
       },
     );
@@ -287,6 +290,8 @@ class EditServiceCubit extends Cubit<EditServiceState> {
         // ignore: use_build_context_synchronously
         context.pop();
       }
+    } else {
+      _updateTextsFlag();
     }
   }
 

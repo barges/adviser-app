@@ -22,6 +22,8 @@ class LanguagesPartWidget extends StatelessWidget {
     final int? mainLanguageIndex = context
         .select((EditServiceCubit cubit) => cubit.state.mainLanguageIndex);
 
+    context.select((EditServiceCubit cubit) => cubit.state.updateTextsFlag);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -33,6 +35,8 @@ class LanguagesPartWidget extends StatelessWidget {
           mainLanguageIndex: mainLanguageIndex,
           deleteEnabled: false,
           setIsSelected: editServiceCubit.changeLocaleIndex,
+          errorTextsMap: editServiceCubit.errorTextsMap,
+          approvalStatusMap: editServiceCubit.approvalStatusMap,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(

@@ -40,6 +40,7 @@ class LanguageSectionWidget extends StatelessWidget {
           setIsSelected: addServiceCubit.changeLocaleIndex,
           removeLanguage: addServiceCubit.removeLocale,
           addNewLanguage: () => addServiceCubit.goToAddNewLocale(context),
+          errorTextsMap: addServiceCubit.errorTextsMap,
         ),
         const SizedBox(
           height: 8.0,

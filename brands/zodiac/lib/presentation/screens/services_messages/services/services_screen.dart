@@ -18,7 +18,7 @@ class ServicesScreen extends StatelessWidget {
             child: AppElevatedButton(
                 title: SZodiac.of(context).addServiceZodiac,
                 onPressed: () =>
-                    context.push(route: ZodiacEditService(serviceId: 1))))
+                    context.push(route: ZodiacEditService(serviceId: 3))))
       ],
     );
   }
