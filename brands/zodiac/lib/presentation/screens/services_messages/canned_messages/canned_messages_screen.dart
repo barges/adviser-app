@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:zodiac/data/models/canned_messages/canned_category.dart';
+import 'package:zodiac/data/models/canned_messages/canned_message.dart';
 
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/something_went_wrong_widget.dart';
@@ -12,23 +14,8 @@ import 'package:zodiac/presentation/screens/services_messages/canned_messages/wi
 const verticalInterval = 24.0;
 const scrollPositionToShowMessages = 620.0;
 
-class CannedMessagesScreen extends StatefulWidget {
+class CannedMessagesScreen extends StatelessWidget {
   const CannedMessagesScreen({super.key});
-
-  @override
-  State<CannedMessagesScreen> createState() => _CannedMessagesScreenState();
-}
-
-class _CannedMessagesScreenState extends State<CannedMessagesScreen> {
-  final ScrollController controller = ScrollController();
-  int? messagesCount;
-  int selectedCategoryIndex = 0;
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,28 +25,21 @@ class _CannedMessagesScreenState extends State<CannedMessagesScreen> {
       child: Builder(builder: (context) {
         final CannedMessagesCubit cannedMessagesCubit =
             context.read<CannedMessagesCubit>();
-        final categories = context
-            .select((CannedMessagesCubit cubit) => cubit.state.categories);
-        final messages =
-            context.select((CannedMessagesCubit cubit) => cubit.state.messages);
-        if (selectedCategoryIndex !=
-                cannedMessagesCubit.state.selectedCategoryIndex &&
-            messagesCount != messages?.length) {
-          if (messagesCount != null && messagesCount! < messages!.length) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              controller.animateTo(
-                  controller.position.maxScrollExtent >
-                          scrollPositionToShowMessages
-                      ? scrollPositionToShowMessages
-                      : controller.position.maxScrollExtent,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.linear);
-            });
-          }
-          selectedCategoryIndex =
-              cannedMessagesCubit.state.selectedCategoryIndex;
-          messagesCount = messages?.length;
-        }
+
+        final (
+          List<CannedCategory>?,
+          List<CannedMessage>?,
+        ) record = context.select(
+          (CannedMessagesCubit value) => (
+            value.state.categories,
+            value.state.messages,
+          ),
+        );
+        final (
+          List<CannedCategory>? categories,
+          List<CannedMessage>? messages,
+        ) = record;
+
         final bool isNoData = categories == null || messages == null;
         final bool showErrorData = context
             .select((CannedMessagesCubit cubit) => cubit.state.showErrorData);
@@ -72,7 +52,6 @@ class _CannedMessagesScreenState extends State<CannedMessagesScreen> {
             child: isNoData && !showErrorData
                 ? const SizedBox.shrink()
                 : SingleChildScrollView(
-                    controller: controller,
                     padding: const EdgeInsets.only(bottom: verticalInterval),
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: showErrorData
@@ -84,10 +63,12 @@ class _CannedMessagesScreenState extends State<CannedMessagesScreen> {
                                 38.0 * 2 -
                                 verticalInterval * 2,
                             child: const SomethingWentWrongWidget())
-                        : const Column(
+                        : Column(
                             children: [
-                              AddCannedMessageWidget(),
-                              CannedMessageManagerWidget(),
+                              const AddCannedMessageWidget(),
+                              CannedMessageManagerWidget(
+                                  key: cannedMessagesCubit
+                                      .cannedMessageManagerKey),
                             ],
                           ),
                   ),

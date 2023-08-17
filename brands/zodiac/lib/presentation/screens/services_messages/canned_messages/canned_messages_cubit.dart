@@ -1,7 +1,9 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/models/canned_messages/canned_category.dart';
 import 'package:zodiac/data/models/canned_messages/canned_message.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
@@ -17,6 +19,7 @@ const maximumMessageSymbols = 280;
 @injectable
 class CannedMessagesCubit extends Cubit<CannedMessagesState> {
   final ZodiacCannedMessagesRepository _zodiacCannedMessagesRepository;
+  final GlobalKey cannedMessageManagerKey = GlobalKey();
   CannedCategory? _categoryToAdd;
   CannedCategory? _updateCategory;
   CannedMessage? _updateMessage;
@@ -123,7 +126,8 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
           ));
         } else {
           final messages = List.of(state.messages!);
-          messages.removeWhere((element) => element.id == updatedMessage.id);
+          messages.removeAt(messages
+              .indexWhere((element) => element.id == updatedMessage.id));
           emit(state.copyWith(
             messages: List.of(messages),
           ));
@@ -138,7 +142,8 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
   Future<void> deleteCannedMessage(int? messageId) async {
     if (await _deleteCannedMessage(messageId)) {
       final messages = List.of(state.messages!);
-      messages.removeWhere((element) => element.id == messageId);
+      messages
+          .removeAt(messages.indexWhere((element) => element.id == messageId));
       emit(state.copyWith(
         messages: List.of(messages),
       ));
@@ -149,17 +154,19 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
     return state.categories!.firstWhereOrNull((element) => element.id == id);
   }
 
-  void getCannedMessagesByCategory(int categoryIndex) {
+  Future<void> getCannedMessagesByCategory(int categoryIndex) async {
     if (categoryIndex != 0) {
       final selectedCategory = state.categories![categoryIndex - 1];
-      _getCannedMessages(selectedCategory.id);
+      await _getCannedMessages(selectedCategory.id);
     } else {
-      _getCannedMessages();
+      await _getCannedMessages();
     }
 
     emit(state.copyWith(
       selectedCategoryIndex: categoryIndex,
     ));
+
+    Utils.animateToWidget(cannedMessageManagerKey);
   }
 
   Future<void> _getCannedCategories() async {
@@ -185,9 +192,10 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
           await _zodiacCannedMessagesRepository
               .getCannedMessages(CannedMessagesRequest(categoryId: categoryId));
 
-      if (response.status == true && response.messages != null) {
+      final List<CannedMessage>? messages = response.messages;
+      if (response.status == true && messages != null) {
         emit(state.copyWith(
-          messages: List.of(response.messages!),
+          messages: List.of(messages),
         ));
       }
     } catch (e) {
