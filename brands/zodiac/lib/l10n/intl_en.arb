@@ -219,5 +219,7 @@
   "sendForApprovalZodiac": "Send for approval",
   "editServiceZodiac": "Edit service",
   "waitingForApprovalZodiac": "Waiting for approval",
-  "rejectedZodiac": "Rejected"
+  "rejectedZodiac": "Rejected",
+  "yourServiceHasBeenRejectedBecauseOfZodiac": "Your service has been rejected because of:",
+  "commentFromSupportTeamZodiac": "Comment from support team:"
 }

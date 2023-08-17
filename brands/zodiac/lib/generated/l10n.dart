@@ -2265,6 +2265,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Your service has been rejected because of:`
+  String get yourServiceHasBeenRejectedBecauseOfZodiac {
+    return Intl.message(
+      'Your service has been rejected because of:',
+      name: 'yourServiceHasBeenRejectedBecauseOfZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Comment from support team:`
+  String get commentFromSupportTeamZodiac {
+    return Intl.message(
+      'Comment from support team:',
+      name: 'commentFromSupportTeamZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

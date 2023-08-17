@@ -113,6 +113,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Escolher email do app"),
         "closeZodiac": MessageLookupByLibrary.simpleMessage("Fechar"),
         "codeZodiac": MessageLookupByLibrary.simpleMessage("Código"),
+        "commentFromSupportTeamZodiac": MessageLookupByLibrary.simpleMessage(
+            "Comentário da equipe de suporte:"),
         "confirmYourCountryCodeAndEnterYourPhoneNumberZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Confirme seu número de telefone e digite seu número de telefone"),
@@ -434,6 +436,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "yourNotificationsHistoryWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Seu histórico de notificações aparecerá aqui"),
+        "yourServiceHasBeenRejectedBecauseOfZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Seu serviço foi rejeitado devido a:"),
         "yourTransactionsHistoryWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Seu histórico de transações aparecerá aqui"),

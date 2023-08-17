@@ -14,6 +14,7 @@ import 'package:zodiac/presentation/common_widgets/service/preview_part/service_
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
 import 'package:zodiac/presentation/screens/edit_service/edit_service_cubit.dart';
 import 'package:zodiac/presentation/screens/edit_service/widgets/languages_part_widget.dart';
+import 'package:zodiac/presentation/screens/edit_service/widgets/rejected_text_comment_widget.dart';
 import 'package:zodiac/zodiac_constants.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
@@ -33,6 +34,27 @@ class EditServiceBodyWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Column(
                 children: [
+                  Builder(builder: (context) {
+                    final String? rejectedText = context.select(
+                        (EditServiceCubit cubit) => cubit.state.rejectedText);
+                    final String? commentText = context.select(
+                        (EditServiceCubit cubit) => cubit.state.commentText);
+                    if (rejectedText != null || commentText != null) {
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          right: AppConstants.horizontalScreenPadding,
+                          left: AppConstants.horizontalScreenPadding,
+                          bottom: 24.0,
+                        ),
+                        child: RejectedTextCommentWidget(
+                          rejectedText: rejectedText,
+                          commentText: commentText,
+                        ),
+                      );
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  }),
                   Builder(builder: (context) {
                     List<String>? languagesList = context.select(
                         (EditServiceCubit cubit) => cubit.state.languagesList);
