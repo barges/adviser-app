@@ -223,8 +223,11 @@ class AddServiceCubit extends Cubit<AddServiceState> {
       (index) {
         return TextEditingController()
           ..addListener(() {
-            errorTextsMap[localeCode]?[index] = ValidationErrorType.empty;
-            _updateTextsFlag();
+            if (errorTextsMap[localeCode]?[index] !=
+                ValidationErrorType.empty) {
+              errorTextsMap[localeCode]?[index] = ValidationErrorType.empty;
+              _updateTextsFlag();
+            }
           });
       },
     );

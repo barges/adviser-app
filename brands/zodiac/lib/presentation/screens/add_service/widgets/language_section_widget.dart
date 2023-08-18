@@ -30,18 +30,23 @@ class LanguageSectionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ServiceLanguagesWidget(
-          languagesList: languagesList,
-          languagesGlobalKeys: addServiceCubit.localesGlobalKeys,
-          titleFormatter: addServiceCubit.localeNativeName,
-          selectedLanguageIndex: selectedLanguageIndex,
-          mainLanguageIndex: mainLanguageIndex,
-          deleteEnabled: deleteEnabled,
-          setIsSelected: addServiceCubit.changeLocaleIndex,
-          removeLanguage: addServiceCubit.removeLocale,
-          addNewLanguage: () => addServiceCubit.goToAddNewLocale(context),
-          errorTextsMap: addServiceCubit.errorTextsMap,
-        ),
+        Builder(builder: (context) {
+          context
+              .select((AddServiceCubit cubit) => cubit.state.updateTextsFlag);
+
+          return ServiceLanguagesWidget(
+            languagesList: languagesList,
+            languagesGlobalKeys: addServiceCubit.localesGlobalKeys,
+            titleFormatter: addServiceCubit.localeNativeName,
+            selectedLanguageIndex: selectedLanguageIndex,
+            mainLanguageIndex: mainLanguageIndex,
+            deleteEnabled: deleteEnabled,
+            setIsSelected: addServiceCubit.changeLocaleIndex,
+            removeLanguage: addServiceCubit.removeLocale,
+            addNewLanguage: () => addServiceCubit.goToAddNewLocale(context),
+            errorTextsMap: addServiceCubit.errorTextsMap,
+          );
+        }),
         const SizedBox(
           height: 8.0,
         ),
