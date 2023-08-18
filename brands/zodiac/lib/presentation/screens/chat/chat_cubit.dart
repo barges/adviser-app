@@ -311,15 +311,17 @@ class ChatCubit extends BaseCubit<ChatState> {
       }
     });
 
-    addListener(KeyboardVisibilityController().onChange.listen((bool visible) {
+    addListener(KeyboardVisibilityController()
+        .onChange
+        .debounceTime(const Duration(milliseconds: 700))
+        .listen((bool visible) {
       if (!visible) {
         textInputFocusNode.unfocus();
-        emit(state.copyWith(isTextInputCollapsed: true));
+        emit(state.copyWith(
+          isTextInputCollapsed: true,
+          keyboardOpened: !state.keyboardOpened,
+        ));
       }
-
-      Future.delayed(const Duration(milliseconds: 500)).then((value) {
-        emit(state.copyWith(keyboardOpened: !state.keyboardOpened));
-      }).onError((error, stackTrace) {});
     }));
 
     textInputFocusNode.addListener(() {
