@@ -171,6 +171,10 @@ class EditServiceCubit extends Cubit<EditServiceState> {
         );
       }
 
+      if (serviceInfo?.type != null) {
+        newState = newState.copyWith(serviceType: serviceInfo!.type!);
+      }
+
       emit(newState);
     }
   }

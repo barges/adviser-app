@@ -75,26 +75,35 @@ class EditServiceBodyWidget extends StatelessWidget {
                     child: Column(
                       children: [
                         Builder(builder: (context) {
-                          final bool discountEnabled = context.select(
+                          final ServiceType serviceType = context.select(
                               (EditServiceCubit cubit) =>
-                                  cubit.state.discountEnabled);
-                          final double price = context.select(
-                              (EditServiceCubit cubit) => cubit.state.price);
-                          final double discount = context.select(
-                              (EditServiceCubit cubit) => cubit.state.discount);
-                          return DiscountForReorderWidget(
-                            discountEnabled: discountEnabled,
-                            price: price,
-                            discount: discount,
-                            onDiscountChanged:
-                                editServiceCubit.onDiscountChanged,
-                            onDiscountEnabledChanged:
-                                editServiceCubit.onDiscountEnabledChanged,
-                          );
+                                  cubit.state.serviceType);
+
+                          if (serviceType == ServiceType.offline) {
+                            final bool discountEnabled = context.select(
+                                (EditServiceCubit cubit) =>
+                                    cubit.state.discountEnabled);
+                            final double price = context.select(
+                                (EditServiceCubit cubit) => cubit.state.price);
+                            final double discount = context.select(
+                                (EditServiceCubit cubit) =>
+                                    cubit.state.discount);
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 24.0),
+                              child: DiscountForReorderWidget(
+                                discountEnabled: discountEnabled,
+                                price: price,
+                                discount: discount,
+                                onDiscountChanged:
+                                    editServiceCubit.onDiscountChanged,
+                                onDiscountEnabledChanged:
+                                    editServiceCubit.onDiscountEnabledChanged,
+                              ),
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
                         }),
-                        const SizedBox(
-                          height: 24.0,
-                        ),
                         Builder(builder: (context) {
                           final List<ImageSampleModel>? images = context.select(
                               (EditServiceCubit cubit) => cubit.state.images);
