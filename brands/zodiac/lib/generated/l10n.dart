@@ -1995,6 +1995,16 @@ class SZodiac {
       args: [limit],
     );
   }
+
+  /// `Main`
+  String get mainZodiac {
+    return Intl.message(
+      'Main',
+      name: 'mainZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

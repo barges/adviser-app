@@ -12,6 +12,7 @@ import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/brands.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
+import 'package:zodiac/data/models/user_info/brand_model.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/data/models/user_info/locale_descriptions.dart';
@@ -22,6 +23,7 @@ import 'package:zodiac/data/network/requests/change_advisor_specializations_requ
 import 'package:zodiac/data/network/requests/change_main_specialization_request.dart';
 import 'package:zodiac/data/network/requests/locale_descriptions_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
+import 'package:zodiac/data/network/responses/brand_locales_response.dart';
 import 'package:zodiac/data/network/responses/locale_descriptions_response.dart';
 import 'package:zodiac/data/network/responses/main_specialization_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_edit_profile_repository.dart';
@@ -95,8 +97,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     });
 
     getData();
-
-    _editProfileRepository.getBrandLocales(AuthorizedRequest());
   }
 
   @override
@@ -131,6 +131,19 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         advisorLocales: [..._oldLocales],
       ));
       _updateTextsFlag();
+    }
+
+    final BrandLocalesResponse response =
+        await _editProfileRepository.getBrandLocales(AuthorizedRequest());
+
+    if (response.status == true) {
+      emit(
+        state.copyWith(
+          brands: response.result
+              ?.map((e) => e.brand ?? const BrandModel())
+              .toList(),
+        ),
+      );
     }
   }
 

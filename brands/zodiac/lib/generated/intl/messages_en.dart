@@ -176,6 +176,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Main language"),
         "mainSpecialtyZodiac":
             MessageLookupByLibrary.simpleMessage("Main specialty"),
+        "mainZodiac": MessageLookupByLibrary.simpleMessage("Main"),
         "manageMessagesZodiac":
             MessageLookupByLibrary.simpleMessage("Manage messages"),
         "minutesZodiac": MessageLookupByLibrary.simpleMessage("min"),

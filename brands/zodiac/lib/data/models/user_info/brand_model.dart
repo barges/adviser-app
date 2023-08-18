@@ -19,6 +19,7 @@ class BrandModel with _$BrandModel {
   const factory BrandModel({
     int? id,
     String? name,
+    bool? isMain,
     BrandFieldsModel? fields,
     List<String>? pendingApproval,
   }) = _BrandModel;

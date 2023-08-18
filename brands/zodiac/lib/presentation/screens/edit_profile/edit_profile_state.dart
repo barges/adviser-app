@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:zodiac/data/models/user_info/brand_model.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 
@@ -18,5 +19,7 @@ class EditProfileState with _$EditProfileState {
     List<CategoryInfo>? advisorMainCategory,
     @Default(true) bool canRefresh,
     File? avatar,
+    List<BrandModel>? brands,
+    @Default(0) int selectedBrandIndex,
   }) = _EditProfileState;
 }
