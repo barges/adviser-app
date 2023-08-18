@@ -24,6 +24,7 @@ import 'package:zodiac/data/network/requests/locale_descriptions_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/locale_descriptions_response.dart';
 import 'package:zodiac/data/network/responses/main_specialization_response.dart';
+import 'package:zodiac/domain/repositories/zodiac_edit_profile_repository.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_state.dart';
@@ -39,6 +40,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final ZodiacCachingManager _cachingManager;
   final ZodiacUserRepository _userRepository;
   final ConnectivityService _connectivityService;
+  final ZodiacEditProfileRepository _editProfileRepository;
 
   late final StreamSubscription<bool> _internetConnectionSubscription;
   late List<GlobalKey> localesGlobalKeys;
@@ -65,6 +67,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     this._cachingManager,
     this._userRepository,
     this._connectivityService,
+    this._editProfileRepository,
   ) : super(const EditProfileState()) {
     final DetailedUserInfo? userInfoFromCache =
         _cachingManager.getDetailedUserInfo();
@@ -92,6 +95,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     });
 
     getData();
+
+    _editProfileRepository.getBrandLocales(AuthorizedRequest());
   }
 
   @override
