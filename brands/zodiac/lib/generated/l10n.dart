@@ -2005,6 +2005,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Categories`
+  String get categoriesZodiac {
+    return Intl.message(
+      'Categories',
+      name: 'categoriesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

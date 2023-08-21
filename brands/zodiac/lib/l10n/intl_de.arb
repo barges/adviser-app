@@ -191,5 +191,6 @@
   "sendZodiac": "Schicken",
   "sendCouponZodiac": "Gutschein verschicken",
   "youCanSendNCouponsPerDayZodiac": "Sie können {limit} Gutscheine pro Tag versenden.",
-  "mainZodiac": "Hauptsächlich"
+  "mainZodiac": "Hauptsächlich",
+  "categoriesZodiac": "Kategorien"
 }

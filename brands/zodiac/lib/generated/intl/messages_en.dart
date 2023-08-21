@@ -87,6 +87,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancelZodiac": MessageLookupByLibrary.simpleMessage("Cancel"),
         "cannedMessagesZodiac":
             MessageLookupByLibrary.simpleMessage("Сanned messages"),
+        "categoriesZodiac": MessageLookupByLibrary.simpleMessage("Categories"),
         "changeZodiac": MessageLookupByLibrary.simpleMessage("Change"),
         "characterLimitExceededZodiac":
             MessageLookupByLibrary.simpleMessage("Character limit exceeded."),
