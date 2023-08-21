@@ -7,6 +7,7 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/user_info/brand_model.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/domain/repositories/zodiac_edit_profile_repository.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
@@ -76,7 +77,28 @@ class EditProfileScreen extends StatelessWidget {
                         },
                       ),
                       SliverToBoxAdapter(
-                        child: EditProfileBodyWidget(),
+                        child: Builder(builder: (context) {
+                          final List<BrandModel>? brands = context.select(
+                              (EditProfileCubit cubit) => cubit.state.brands);
+                          final int selectedBrandIndex = context.select(
+                              (EditProfileCubit cubit) =>
+                                  cubit.state.selectedBrandIndex);
+                          if (brands != null) {
+                            return IndexedStack(
+                              index: selectedBrandIndex,
+                              children: brands
+                                  .map(
+                                    (e) => EditProfileBodyWidget(
+                                      brands: brands,
+                                      selectedBrandIndex: selectedBrandIndex,
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        }),
                         // Column(
                         //   crossAxisAlignment: CrossAxisAlignment.start,
                         //   children: [

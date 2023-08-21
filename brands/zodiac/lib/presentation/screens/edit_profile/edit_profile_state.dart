@@ -21,5 +21,6 @@ class EditProfileState with _$EditProfileState {
     File? avatar,
     List<BrandModel>? brands,
     @Default(0) int selectedBrandIndex,
+    @Default([]) List<File?> avatars,
   }) = _EditProfileState;
 }

@@ -121,6 +121,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   Future<void> getData() async {
+    ///////////
     final bool mainIsDone = await _getMainSpeciality();
     final bool localesDescriptionsIsDone = await _setUpLocalesDescriptions();
 
@@ -132,6 +133,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       ));
       _updateTextsFlag();
     }
+    ////////////
 
     final BrandLocalesResponse response =
         await _editProfileRepository.getBrandLocales(AuthorizedRequest());
@@ -142,9 +144,14 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           brands: response.result
               ?.map((e) => e.brand ?? const BrandModel())
               .toList(),
+          avatars: response.result?.map((e) => null).toList() ?? [],
         ),
       );
     }
+  }
+
+  void selectBrandIndex(int index) {
+    emit(state.copyWith(selectedBrandIndex: index));
   }
 
   void _updateTextsFlag() {
