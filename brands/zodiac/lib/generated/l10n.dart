@@ -2015,6 +2015,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Select categories`
+  String get selectCategoriesZodiac {
+    return Intl.message(
+      'Select categories',
+      name: 'selectCategoriesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can choose up to 3 categories you prefer to work with and the main category among them`
+  String get youCanChooseUpTo3CategoriesZodiac {
+    return Intl.message(
+      'You can choose up to 3 categories you prefer to work with and the main category among them',
+      name: 'youCanChooseUpTo3CategoriesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

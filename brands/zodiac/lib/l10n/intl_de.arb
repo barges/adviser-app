@@ -192,5 +192,7 @@
   "sendCouponZodiac": "Gutschein verschicken",
   "youCanSendNCouponsPerDayZodiac": "Sie können {limit} Gutscheine pro Tag versenden.",
   "mainZodiac": "Hauptsächlich",
-  "categoriesZodiac": "Kategorien"
+  "categoriesZodiac": "Kategorien",
+  "selectCategoriesZodiac": "Wählen Sie Kategorien aus",
+  "youCanChooseUpTo3CategoriesZodiac": "Sie können bis zu 3 Kategorien auswählen, mit denen Sie am liebsten arbeiten möchten, und darunter die Hauptkategorie"
 }

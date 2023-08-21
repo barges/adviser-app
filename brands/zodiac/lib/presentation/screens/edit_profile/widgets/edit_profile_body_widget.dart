@@ -24,6 +24,8 @@ class EditProfileBodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final EditProfileCubit editProfileCubit = context.read<EditProfileCubit>();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -58,7 +60,7 @@ class EditProfileBodyWidget extends StatelessWidget {
                         .toList()
                         .join(', ') ??
                     '',
-                onTap: () {},
+                onTap: () => editProfileCubit.goToCategoriesList(context),
               ),
             ],
           ),

@@ -154,6 +154,19 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     emit(state.copyWith(selectedBrandIndex: index));
   }
 
+  void goToCategoriesList(BuildContext context) {
+    List<int> selectedIds = [];
+
+    state.brands?[state.selectedBrandIndex].fields?.categories
+        ?.forEach((element) {
+      if (element.id != null) {
+        selectedIds.add(element.id!);
+      }
+    });
+
+    context.push(route: ZodiacCategoriesList(selectedCategoryIds: selectedIds));
+  }
+
   void _updateTextsFlag() {
     bool flag = state.updateTextsFlag;
     emit(state.copyWith(updateTextsFlag: !flag));

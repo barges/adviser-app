@@ -284,6 +284,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "secondsZodiac": MessageLookupByLibrary.simpleMessage("seg"),
         "selectAtLeast1CouponZodiac": MessageLookupByLibrary.simpleMessage(
             "Selecione pelo menos 1 cupom"),
+        "selectCategoriesZodiac":
+            MessageLookupByLibrary.simpleMessage("Selecione as categorias"),
         "selectedCouponsWillBeRenewedAutomaticallyZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Os cupons selecionados serão renovados automaticamente e exibidos em seu perfil"),
@@ -364,6 +366,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "youCanChangePriceOncePer24HZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Você pode alterar o preço uma vez a cada 24 h"),
+        "youCanChooseUpTo3CategoriesZodiac": MessageLookupByLibrary.simpleMessage(
+            "Você pode escolher até 3 categorias com as quais prefere trabalhar e a categoria principal entre elas"),
         "youCanEasilyAccessTheseTemplatesZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Você pode acessar facilmente esses modelos durante e após o bate-papo"),

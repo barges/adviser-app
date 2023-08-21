@@ -193,5 +193,7 @@
   "sendCouponZodiac": "Enviar cupón",
   "youCanSendNCouponsPerDayZodiac": "Puedes enviar {limit} cupones por día.",
   "mainZodiac": "Principal",
-  "categoriesZodiac": "Categorías"
+  "categoriesZodiac": "Categorías",
+  "selectCategoriesZodiac": "Seleccionar categorías",
+  "youCanChooseUpTo3CategoriesZodiac": "Puede elegir hasta 3 categorías con las que prefiera trabajar y la categoría principal entre ellas"
 }

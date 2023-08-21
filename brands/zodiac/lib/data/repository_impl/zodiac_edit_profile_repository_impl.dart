@@ -1,7 +1,9 @@
 import 'package:injectable/injectable.dart';
 import 'package:zodiac/data/network/api/edit_profile_api.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
+import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/responses/brand_locales_response.dart';
+import 'package:zodiac/data/network/responses/specializations_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_edit_profile_repository.dart';
 
 @Injectable(as: ZodiacEditProfileRepository)
@@ -14,5 +16,10 @@ class ZodiacEditProfileRepositoryImpl implements ZodiacEditProfileRepository {
   Future<BrandLocalesResponse> getBrandLocales(
       AuthorizedRequest request) async {
     return await _editProfileApi.getBrandLocales(request);
+  }
+
+  @override
+  Future<SpecializationsResponse> getCategories(ListRequest request) async {
+    return await _editProfileApi.getCategories(request);
   }
 }
