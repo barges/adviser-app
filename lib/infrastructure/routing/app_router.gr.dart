@@ -479,7 +479,8 @@ class MainAppRouter extends _i48.RootStackRouter {
           key: args.key,
           title: args.title,
           items: args.items,
-          selectedId: args.selectedId,
+          returnCallback: args.returnCallback,
+          initialSelectedId: args.initialSelectedId,
         ),
       );
     },
@@ -1894,7 +1895,8 @@ class ZodiacCategoriesMethodsList
     _i49.Key? key,
     required String title,
     required List<_i42.CategoriesMethodsListItem> items,
-    int? selectedId,
+    required void Function(int) returnCallback,
+    int? initialSelectedId,
   }) : super(
           ZodiacCategoriesMethodsList.name,
           path: 'zodiacCategoriesMethodsList',
@@ -1902,7 +1904,8 @@ class ZodiacCategoriesMethodsList
             key: key,
             title: title,
             items: items,
-            selectedId: selectedId,
+            returnCallback: returnCallback,
+            initialSelectedId: initialSelectedId,
           ),
         );
 
@@ -1914,7 +1917,8 @@ class ZodiacCategoriesMethodsListArgs {
     this.key,
     required this.title,
     required this.items,
-    this.selectedId,
+    required this.returnCallback,
+    this.initialSelectedId,
   });
 
   final _i49.Key? key;
@@ -1923,11 +1927,13 @@ class ZodiacCategoriesMethodsListArgs {
 
   final List<_i42.CategoriesMethodsListItem> items;
 
-  final int? selectedId;
+  final void Function(int) returnCallback;
+
+  final int? initialSelectedId;
 
   @override
   String toString() {
-    return 'ZodiacCategoriesMethodsListArgs{key: $key, title: $title, items: $items, selectedId: $selectedId}';
+    return 'ZodiacCategoriesMethodsListArgs{key: $key, title: $title, items: $items, returnCallback: $returnCallback, initialSelectedId: $initialSelectedId}';
   }
 }
 

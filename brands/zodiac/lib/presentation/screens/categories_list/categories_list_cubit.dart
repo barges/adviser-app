@@ -53,9 +53,13 @@ class CategoriesListCubit extends Cubit<CategoriesListState> {
 
     context.push(
         route: ZodiacCategoriesMethodsList(
-      title: SZodiac.of(context).mainCategoryZodiac,
-      items: selectedItems,
-      selectedId: state.mainCategoryId,
-    ));
+            title: SZodiac.of(context).mainCategoryZodiac,
+            items: selectedItems,
+            initialSelectedId: state.mainCategoryId,
+            returnCallback: setMainCategoryId));
+  }
+
+  void setMainCategoryId(int id) {
+    emit(state.copyWith(mainCategoryId: id));
   }
 }

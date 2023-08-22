@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/wide_app_bar.dart';
+import 'package:zodiac/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:zodiac/presentation/common_widgets/checkbox_tile_widget.dart';
 import 'package:zodiac/presentation/screens/categories_methods_list/categories_methods_list_cubit.dart';
 
 class CategoriesMethodsListScreen extends StatelessWidget {
   final String title;
   final List<CategoriesMethodsListItem> items;
-  final int? selectedId;
+  final int? initialSelectedId;
+  final ValueSetter<int> returnCallback;
 
   const CategoriesMethodsListScreen({
     Key? key,
     required this.title,
     required this.items,
-    this.selectedId,
+    required this.returnCallback,
+    this.initialSelectedId,
   }) : super(key: key);
 
   @override
@@ -22,19 +27,28 @@ class CategoriesMethodsListScreen extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return BlocProvider(
-      create: (context) => CategoriesMethodsListCubit(selectedId),
-      child: Scaffold(
-        backgroundColor: theme.canvasColor,
-        appBar: WideAppBar(
-          bottomWidget: Text(
-            title,
-            style: theme.textTheme.headlineMedium,
+      create: (context) => CategoriesMethodsListCubit(initialSelectedId),
+      child: Builder(builder: (context) {
+        final int? selectedId = context.select(
+            (CategoriesMethodsListCubit cubit) => cubit.state.selectedId);
+        return Scaffold(
+          backgroundColor: theme.canvasColor,
+          appBar: WideAppBar(
+            bottomWidget: Text(
+              title,
+              style: theme.textTheme.headlineMedium,
+            ),
+            topRightWidget: selectedId != null
+                ? AppIconButton(
+                    icon: Assets.vectors.check.path,
+                    onTap: () {
+                      context.pop();
+                      returnCallback(selectedId);
+                    },
+                  )
+                : null,
           ),
-        ),
-        body: Builder(builder: (context) {
-          final int? selectedId = context.select(
-              (CategoriesMethodsListCubit cubit) => cubit.state.selectedId);
-          return Padding(
+          body: Padding(
             padding: const EdgeInsets.symmetric(
                 horizontal: AppConstants.horizontalScreenPadding,
                 vertical: 8.0),
@@ -51,9 +65,9 @@ class CategoriesMethodsListScreen extends StatelessWidget {
                   }),
               itemCount: items.length,
             ),
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
   }
 }
