@@ -61,6 +61,10 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   late List<CategoryInfo> _oldCategories;
   late CategoryInfo? _oldCategory;
 
+  ////////
+  final List<int?> _mainCategoryIds = [];
+  ////////
+
   bool _wasFocusRequest = false;
 
   bool needUpdateAccount = false;
@@ -86,7 +90,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     emit(state.copyWith(
       detailedUserInfo: userInfoFromCache,
       advisorMainLocale: userInfoFromCache?.details?.locale ?? 'en',
-      advisorCategories: categories,
+      //  advisorCategories: categories,
     ));
 
     _internetConnectionSubscription =
@@ -139,13 +143,19 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         await _editProfileRepository.getBrandLocales(AuthorizedRequest());
 
     if (response.status == true) {
+      List<BrandModel>? brands =
+          response.result?.map((e) => e.brand ?? const BrandModel()).toList();
+
+      brands?.forEach(
+        (element) => _mainCategoryIds.add(element.fields?.mainCategoryId),
+      );
+
       emit(
         state.copyWith(
-          brands: response.result
-              ?.map((e) => e.brand ?? const BrandModel())
-              .toList(),
-          avatars: response.result?.map((e) => null).toList() ?? [],
-        ),
+            brands: brands,
+            avatars: response.result?.map((e) => null).toList() ?? [],
+            advisorCategories:
+                brands?.map((e) => e.fields?.categories ?? []).toList() ?? []),
       );
     }
   }
@@ -171,7 +181,17 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         route: ZodiacCategoriesList(
       selectedCategoryIds: selectedIds,
       mainCategoryId: mainCategoryId,
+      returnCallback: setCategories,
     ));
+  }
+
+  void setCategories(List<CategoryInfo> categories, int mainCategoryId) {
+    List<List<CategoryInfo>> newCategories = List.of(state.advisorCategories);
+
+    newCategories[state.selectedBrandIndex] = categories;
+    _mainCategoryIds[state.selectedBrandIndex] = mainCategoryId;
+
+    emit(state.copyWith(advisorCategories: newCategories));
   }
 
   void _updateTextsFlag() {
@@ -271,43 +291,43 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     return isOk;
   }
 
-  Future<void> goToSelectAllCategories(BuildContext context) async {
-    context.push(
-        route: ZodiacSpecialitiesList(
-            oldSelectedCategories: state.advisorCategories,
-            returnCallback: (categories) {
-              if (categories.isNotEmpty) {
-                final int? mainCategoryId =
-                    state.advisorMainCategory?.firstOrNull?.id;
-                if (mainCategoryId != null &&
-                    !categories
-                        .map((e) => e.id)
-                        .toList()
-                        .contains(mainCategoryId)) {
-                  _changeMainCategory([categories.first]);
-                }
-              }
+  // Future<void> goToSelectAllCategories(BuildContext context) async {
+  //   context.push(
+  //       route: ZodiacSpecialitiesList(
+  //           oldSelectedCategories: state.advisorCategories,
+  //           returnCallback: (categories) {
+  //             if (categories.isNotEmpty) {
+  //               final int? mainCategoryId =
+  //                   state.advisorMainCategory?.firstOrNull?.id;
+  //               if (mainCategoryId != null &&
+  //                   !categories
+  //                       .map((e) => e.id)
+  //                       .toList()
+  //                       .contains(mainCategoryId)) {
+  //                 _changeMainCategory([categories.first]);
+  //               }
+  //             }
 
-              emit(state.copyWith(advisorCategories: categories));
-            }));
-  }
+  //             emit(state.copyWith(advisorCategories: categories));
+  //           }));
+  // }
 
-  Future<void> goToSelectMainCategory(BuildContext context) async {
-    final List<CategoryInfo>? mainCategory = state.advisorMainCategory;
-    final List<CategoryInfo> advisorCategories = state.advisorCategories;
+  // Future<void> goToSelectMainCategory(BuildContext context) async {
+  //   final List<CategoryInfo>? mainCategory = state.advisorMainCategory;
+  //   final List<CategoryInfo> advisorCategories = state.advisorCategories;
 
-    if (mainCategory != null && advisorCategories.isNotEmpty) {
-      context.push(
-        route: ZodiacSpecialitiesList(
-            isMultiselect: false,
-            allCategories: advisorCategories,
-            oldSelectedCategories: mainCategory,
-            returnCallback: (categories) {
-              _changeMainCategory(categories);
-            }),
-      );
-    }
-  }
+  //   if (mainCategory != null && advisorCategories.isNotEmpty) {
+  //     context.push(
+  //       route: ZodiacSpecialitiesList(
+  //           isMultiselect: false,
+  //           allCategories: advisorCategories,
+  //           oldSelectedCategories: mainCategory,
+  //           returnCallback: (categories) {
+  //             _changeMainCategory(categories);
+  //           }),
+  //     );
+  //   }
+  // }
 
   Future<void> goToAddNewLocale(BuildContext context) async {
     context.push(
@@ -321,87 +341,87 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     );
   }
 
-  Future<bool?> saveInfo() async {
-    bool? isOk;
+  // Future<bool?> saveInfo() async {
+  //   bool? isOk;
 
-    final bool isOnline = await _connectivityService.checkConnection();
+  //   final bool isOnline = await _connectivityService.checkConnection();
 
-    final bool isChecked = _checkTextFields();
+  //   final bool isChecked = _checkTextFields();
 
-    if (isOnline && isChecked) {
-      final int? newMainCategoryId = state.advisorMainCategory?.firstOrNull?.id;
-      if (newMainCategoryId != null && newMainCategoryId != _oldCategory?.id) {
-        final BaseResponse response = await _userRepository
-            .changeMainSpecialization(ChangeMainSpecializationRequest(
-          categoryId: newMainCategoryId,
-        ));
-        if (response.status == false) {
-          isOk = false;
-          return isOk;
-        } else {
-          _oldCategory = state.advisorMainCategory?.firstOrNull;
-          isOk = true;
-        }
-      }
+  //   if (isOnline && isChecked) {
+  //     final int? newMainCategoryId = state.advisorMainCategory?.firstOrNull?.id;
+  //     if (newMainCategoryId != null && newMainCategoryId != _oldCategory?.id) {
+  //       final BaseResponse response = await _userRepository
+  //           .changeMainSpecialization(ChangeMainSpecializationRequest(
+  //         categoryId: newMainCategoryId,
+  //       ));
+  //       if (response.status == false) {
+  //         isOk = false;
+  //         return isOk;
+  //       } else {
+  //         _oldCategory = state.advisorMainCategory?.firstOrNull;
+  //         isOk = true;
+  //       }
+  //     }
 
-      final List<int> oldList = _oldCategories.map((e) => e.id ?? 0).toList();
-      final List<int> newList =
-          state.advisorCategories.map((e) => e.id ?? 0).toList();
+  //     final List<int> oldList = _oldCategories.map((e) => e.id ?? 0).toList();
+  //     final List<int> newList =
+  //         state.advisorCategories.map((e) => e.id ?? 0).toList();
 
-      if (!unorderedDeepListEquals(oldList, newList)) {
-        final BaseResponse response = await _userRepository
-            .changeAdvisorSpecializations(ChangeAdvisorSpecializationsRequest(
-          categories: newList,
-        ));
+  //     if (!unorderedDeepListEquals(oldList, newList)) {
+  //       final BaseResponse response = await _userRepository
+  //           .changeAdvisorSpecializations(ChangeAdvisorSpecializationsRequest(
+  //         categories: newList,
+  //       ));
 
-        if (response.status == false) {
-          isOk = false;
-          return isOk;
-        } else {
-          _oldCategories = state.advisorCategories;
-          isOk = true;
-        }
-      }
+  //       if (response.status == false) {
+  //         isOk = false;
+  //         return isOk;
+  //       } else {
+  //         _oldCategories = state.advisorCategories;
+  //         isOk = true;
+  //       }
+  //     }
 
-      for (String localeCode in _oldLocales) {
-        final bool? isUpdated = await _updateAdvisorLocale(localeCode);
-        if (isUpdated == false) {
-          isOk = false;
-          return isOk;
-        } else if (isUpdated == true) {
-          isOk = true;
-        }
-      }
+  //     for (String localeCode in _oldLocales) {
+  //       final bool? isUpdated = await _updateAdvisorLocale(localeCode);
+  //       if (isUpdated == false) {
+  //         isOk = false;
+  //         return isOk;
+  //       } else if (isUpdated == true) {
+  //         isOk = true;
+  //       }
+  //     }
 
-      for (String localeCode in List.from(_newLocales)) {
-        final bool isAdded = await _addAdvisorLocale(localeCode);
-        if (isAdded == false) {
-          isOk = false;
-          return isOk;
-        } else if (isAdded == true) {
-          isOk = true;
-        }
-      }
+  //     for (String localeCode in List.from(_newLocales)) {
+  //       final bool isAdded = await _addAdvisorLocale(localeCode);
+  //       if (isAdded == false) {
+  //         isOk = false;
+  //         return isOk;
+  //       } else if (isAdded == true) {
+  //         isOk = true;
+  //       }
+  //     }
 
-      if (state.avatar != null) {
-        final BaseResponse response = await _userRepository.uploadAvatar(
-          request: AuthorizedRequest(),
-          brandId: Brands.zodiac.id,
-          avatar: state.avatar!,
-        );
-        if (response.status != true) {
-          isOk = false;
-          return isOk;
-        } else {
-          isOk = true;
-        }
-      }
-    } else {
-      _updateTextsFlag();
-      isOk = false;
-    }
-    return isOk;
-  }
+  //     if (state.avatar != null) {
+  //       final BaseResponse response = await _userRepository.uploadAvatar(
+  //         request: AuthorizedRequest(),
+  //         brandId: Brands.zodiac.id,
+  //         avatar: state.avatar!,
+  //       );
+  //       if (response.status != true) {
+  //         isOk = false;
+  //         return isOk;
+  //       } else {
+  //         isOk = true;
+  //       }
+  //     }
+  //   } else {
+  //     _updateTextsFlag();
+  //     isOk = false;
+  //   }
+  //   return isOk;
+  // }
 
   Future<bool> _addAdvisorLocale(String localeCode) async {
     bool isOk;

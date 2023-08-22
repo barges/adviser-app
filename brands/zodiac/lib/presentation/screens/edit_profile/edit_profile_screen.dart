@@ -126,7 +126,7 @@ class EditProfileScreen extends StatelessWidget {
     EditProfileCubit editProfileCubit,
     ZodiacMainCubit zodiacMainCubit,
   ) async {
-    final bool? isSaved = await editProfileCubit.saveInfo();
+    final bool? isSaved = false; // await editProfileCubit.saveInfo();
 
     if (isSaved == true) {
       final bool? isOk = await showOkCancelAlert(

@@ -467,6 +467,7 @@ class MainAppRouter extends _i48.RootStackRouter {
         child: _i41.CategoriesListScreen(
           key: args.key,
           selectedCategoryIds: args.selectedCategoryIds,
+          returnCallback: args.returnCallback,
           mainCategoryId: args.mainCategoryId,
         ),
       );
@@ -1854,6 +1855,10 @@ class ZodiacCategoriesList
   ZodiacCategoriesList({
     _i49.Key? key,
     required List<int> selectedCategoryIds,
+    required dynamic Function(
+      List<_i54.CategoryInfo>,
+      int,
+    ) returnCallback,
     int? mainCategoryId,
   }) : super(
           ZodiacCategoriesList.name,
@@ -1861,6 +1866,7 @@ class ZodiacCategoriesList
           args: ZodiacCategoriesListArgs(
             key: key,
             selectedCategoryIds: selectedCategoryIds,
+            returnCallback: returnCallback,
             mainCategoryId: mainCategoryId,
           ),
         );
@@ -1872,6 +1878,7 @@ class ZodiacCategoriesListArgs {
   const ZodiacCategoriesListArgs({
     this.key,
     required this.selectedCategoryIds,
+    required this.returnCallback,
     this.mainCategoryId,
   });
 
@@ -1879,11 +1886,16 @@ class ZodiacCategoriesListArgs {
 
   final List<int> selectedCategoryIds;
 
+  final dynamic Function(
+    List<_i54.CategoryInfo>,
+    int,
+  ) returnCallback;
+
   final int? mainCategoryId;
 
   @override
   String toString() {
-    return 'ZodiacCategoriesListArgs{key: $key, selectedCategoryIds: $selectedCategoryIds, mainCategoryId: $mainCategoryId}';
+    return 'ZodiacCategoriesListArgs{key: $key, selectedCategoryIds: $selectedCategoryIds, returnCallback: $returnCallback, mainCategoryId: $mainCategoryId}';
   }
 }
 
