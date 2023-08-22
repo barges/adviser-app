@@ -4,6 +4,7 @@ import 'package:zodiac/presentation/screens/article_details_screen/article_detai
 import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart';
 import 'package:zodiac/presentation/screens/categories_list/categories_list_screen.dart';
+import 'package:zodiac/presentation/screens/categories_methods_list/categories_methods_list_screen.dart';
 import 'package:zodiac/presentation/screens/chat/chat_screen.dart';
 import 'package:zodiac/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'package:zodiac/presentation/screens/gallery/gallery_pictures_screen.dart';
@@ -157,6 +158,11 @@ const zodiacRoute = AutoRoute(
       page: CategoriesListScreen,
       path: RoutePathsZodiac.categoriesListScreen,
       name: RoutePathsZodiac.categoriesListScreen,
+    ),
+    AutoRoute(
+      page: CategoriesMethodsListScreen,
+      path: RoutePathsZodiac.categoriesMethodsListScreen,
+      name: RoutePathsZodiac.categoriesMethodsListScreen,
     )
   ],
 );

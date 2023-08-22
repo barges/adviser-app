@@ -194,5 +194,7 @@
   "mainZodiac": "Hauptsächlich",
   "categoriesZodiac": "Kategorien",
   "selectCategoriesZodiac": "Wählen Sie Kategorien aus",
-  "youCanChooseUpTo3CategoriesZodiac": "Sie können bis zu 3 Kategorien auswählen, mit denen Sie am liebsten arbeiten möchten, und darunter die Hauptkategorie"
+  "youCanChooseUpTo3CategoriesZodiac": "Sie können bis zu 3 Kategorien auswählen, mit denen Sie am liebsten arbeiten möchten, und darunter die Hauptkategorie",
+  "mainCategoryZodiac": "Hauptkategorie",
+  "selectMainCategoryZodiac": "Hauptkategorie auswählen"
 }

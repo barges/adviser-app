@@ -2035,6 +2035,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Main category`
+  String get mainCategoryZodiac {
+    return Intl.message(
+      'Main category',
+      name: 'mainCategoryZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select main category`
+  String get selectMainCategoryZodiac {
+    return Intl.message(
+      'Select main category',
+      name: 'selectMainCategoryZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

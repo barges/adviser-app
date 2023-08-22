@@ -8,5 +8,6 @@ class CategoriesListState with _$CategoriesListState {
   const factory CategoriesListState({
     List<CategoryInfo>? categories,
     @Default([]) List<int> selectedIds,
+    int? mainCategoryId,
   }) = _CategoriesListState;
 }

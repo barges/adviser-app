@@ -177,6 +177,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginZodiac": MessageLookupByLibrary.simpleMessage("Iniciar sesión"),
         "lowestRateZodiac":
             MessageLookupByLibrary.simpleMessage("La tasa más baja"),
+        "mainCategoryZodiac":
+            MessageLookupByLibrary.simpleMessage("Categoria principal"),
         "mainLanguageZodiac":
             MessageLookupByLibrary.simpleMessage("Lenguaje principal"),
         "mainSpecialtyZodiac":
@@ -284,6 +286,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Seleccione al menos 1 cupón"),
         "selectCategoriesZodiac":
             MessageLookupByLibrary.simpleMessage("Seleccionar categorías"),
+        "selectMainCategoryZodiac": MessageLookupByLibrary.simpleMessage(
+            "Seleccionar categoría principal"),
         "selectedCouponsWillBeRenewedAutomaticallyZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Los cupones seleccionados se renovarán automáticamente y se mostrarán en su perfil"),

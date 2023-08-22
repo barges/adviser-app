@@ -164,7 +164,14 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       }
     });
 
-    context.push(route: ZodiacCategoriesList(selectedCategoryIds: selectedIds));
+    final int? mainCategoryId =
+        state.brands?[state.selectedBrandIndex].fields?.mainCategoryId;
+
+    context.push(
+        route: ZodiacCategoriesList(
+      selectedCategoryIds: selectedIds,
+      mainCategoryId: mainCategoryId,
+    ));
   }
 
   void _updateTextsFlag() {

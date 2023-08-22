@@ -30,4 +30,6 @@ class RoutePathsZodiac {
   static const chatScreen = '${ZodiacBrand.alias}Chat';
   static const sendImageScreen = '${ZodiacBrand.alias}SendImage';
   static const categoriesListScreen = '${ZodiacBrand.alias}CategoriesList';
+  static const categoriesMethodsListScreen =
+      '${ZodiacBrand.alias}CategoriesMethodsList';
 }

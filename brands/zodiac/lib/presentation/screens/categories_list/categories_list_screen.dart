@@ -8,13 +8,16 @@ import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/screens/categories_list/categories_list_cubit.dart';
 import 'package:zodiac/presentation/screens/categories_list/widgets/categories_list_widget.dart';
+import 'package:zodiac/presentation/screens/edit_profile/widgets/tile_menu_button.dart';
 
 class CategoriesListScreen extends StatelessWidget {
   final List<int> selectedCategoryIds;
+  final int? mainCategoryId;
 
   const CategoriesListScreen({
     Key? key,
     required this.selectedCategoryIds,
+    this.mainCategoryId,
   }) : super(key: key);
 
   @override
@@ -22,6 +25,7 @@ class CategoriesListScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => CategoriesListCubit(
         selectedCategoryIds,
+        mainCategoryId,
         zodiacGetIt.get<ZodiacEditProfileRepository>(),
       ),
       child: Scaffold(
@@ -44,6 +48,28 @@ class CategoriesListScreen extends StatelessWidget {
                     CategoriesListWidget(
                       categories: categories,
                     ),
+                    const SizedBox(
+                      height: 24.0,
+                    ),
+                    Builder(builder: (context) {
+                      final int? mainCategoryId = context.select(
+                          (CategoriesListCubit cubit) =>
+                              cubit.state.mainCategoryId);
+
+                      return TileMenuButton(
+                        label: SZodiac.of(context).mainCategoryZodiac,
+                        title: mainCategoryId != null
+                            ? categories
+                                    .firstWhere((element) =>
+                                        element.id == mainCategoryId)
+                                    .name ??
+                                ''
+                            : SZodiac.of(context).selectMainCategoryZodiac,
+                        onTap: () => context
+                            .read<CategoriesListCubit>()
+                            .selectMainCategory(context),
+                      );
+                    })
                   ],
                 ),
               ),

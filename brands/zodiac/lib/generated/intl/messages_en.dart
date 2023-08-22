@@ -173,6 +173,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Limit reached"),
         "loginZodiac": MessageLookupByLibrary.simpleMessage("Login"),
         "lowestRateZodiac": MessageLookupByLibrary.simpleMessage("Lowest rate"),
+        "mainCategoryZodiac":
+            MessageLookupByLibrary.simpleMessage("Main category"),
         "mainLanguageZodiac":
             MessageLookupByLibrary.simpleMessage("Main language"),
         "mainSpecialtyZodiac":
@@ -280,6 +282,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Select at least 1 coupon"),
         "selectCategoriesZodiac":
             MessageLookupByLibrary.simpleMessage("Select categories"),
+        "selectMainCategoryZodiac":
+            MessageLookupByLibrary.simpleMessage("Select main category"),
         "selectedCouponsWillBeRenewedAutomaticallyZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Selected coupons will be renewed automatically and displayed on your profile"),
