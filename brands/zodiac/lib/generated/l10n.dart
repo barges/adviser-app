@@ -2055,6 +2055,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `First select the categories`
+  String get firstSelectTheCategoriesZodiac {
+    return Intl.message(
+      'First select the categories',
+      name: 'firstSelectTheCategoriesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

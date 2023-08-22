@@ -18,6 +18,9 @@ class CategoriesListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
+    final CategoriesListCubit categoriesListCubit =
+        context.read<CategoriesListCubit>();
+
     final List<int> selectedIds =
         context.select((CategoriesListCubit cubit) => cubit.state.selectedIds);
 
@@ -53,7 +56,7 @@ class CategoriesListWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: Text(
-                        '${selectedIds.length}/3',
+                        '${selectedIds.length}/$maxCategoriesCount',
                         style: theme.textTheme.labelMedium?.copyWith(
                           fontSize: 13.0,
                           color: theme.canvasColor,
@@ -90,11 +93,17 @@ class CategoriesListWidget extends StatelessWidget {
                       (i, e) => Padding(
                         padding: EdgeInsets.only(
                             right: i != categories.length - 1 ? 8.0 : 0.0),
-                        child: CategoryItemWidget(
-                          image: e.image,
-                          icon: e.icon,
-                          name: e.name,
-                          isSelected: selectedIds.contains(e.id),
+                        child: GestureDetector(
+                          onTap: () =>
+                              categoriesListCubit.onCategorySelectChange(e.id),
+                          child: CategoryItemWidget(
+                            image: e.image,
+                            icon: e.icon,
+                            name: e.name,
+                            isSelected: selectedIds.contains(e.id),
+                            maxCountReached:
+                                selectedIds.length == maxCategoriesCount,
+                          ),
                         ),
                       ),
                     )

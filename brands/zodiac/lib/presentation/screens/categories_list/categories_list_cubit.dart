@@ -10,6 +10,8 @@ import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/categories_list/categories_list_state.dart';
 import 'package:zodiac/presentation/screens/categories_methods_list/categories_methods_list_screen.dart';
 
+const int maxCategoriesCount = 3;
+
 class CategoriesListCubit extends Cubit<CategoriesListState> {
   final ZodiacEditProfileRepository _editProfileRepository;
   final List<int> _selectedCategoryIds;
@@ -61,5 +63,20 @@ class CategoriesListCubit extends Cubit<CategoriesListState> {
 
   void setMainCategoryId(int id) {
     emit(state.copyWith(mainCategoryId: id));
+  }
+
+  void onCategorySelectChange(int? id) {
+    final List<int> selectedIds = List.of(state.selectedIds, growable: true);
+
+    if (selectedIds.contains(id)) {
+      selectedIds.remove(id);
+      if (id == state.mainCategoryId) {
+        emit(state.copyWith(mainCategoryId: null));
+      }
+    } else if (selectedIds.length < maxCategoriesCount && id != null) {
+      selectedIds.add(id);
+    }
+
+    emit(state.copyWith(selectedIds: selectedIds));
   }
 }

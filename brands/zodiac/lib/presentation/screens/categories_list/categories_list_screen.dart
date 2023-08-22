@@ -22,6 +22,8 @@ class CategoriesListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return BlocProvider(
       create: (context) => CategoriesListCubit(
         selectedCategoryIds,
@@ -52,22 +54,38 @@ class CategoriesListScreen extends StatelessWidget {
                       height: 24.0,
                     ),
                     Builder(builder: (context) {
+                      final List<int> selectedIds = context.select(
+                          (CategoriesListCubit cubit) =>
+                              cubit.state.selectedIds);
+
                       final int? mainCategoryId = context.select(
                           (CategoriesListCubit cubit) =>
                               cubit.state.mainCategoryId);
 
+                      final bool mainCategoryIsNull = mainCategoryId == null;
+                      final bool selectedIdsEmpty = selectedIds.isEmpty;
+
                       return TileMenuButton(
                         label: SZodiac.of(context).mainCategoryZodiac,
-                        title: mainCategoryId != null
-                            ? categories
-                                    .firstWhere((element) =>
-                                        element.id == mainCategoryId)
-                                    .name ??
-                                ''
-                            : SZodiac.of(context).selectMainCategoryZodiac,
+                        title: selectedIdsEmpty
+                            ? SZodiac.of(context).firstSelectTheCategoriesZodiac
+                            : !mainCategoryIsNull
+                                ? categories
+                                        .firstWhere((element) =>
+                                            element.id == mainCategoryId)
+                                        .name ??
+                                    ''
+                                : SZodiac.of(context).selectMainCategoryZodiac,
                         onTap: () => context
                             .read<CategoriesListCubit>()
                             .selectMainCategory(context),
+                        titleColor: mainCategoryIsNull || selectedIdsEmpty
+                            ? theme.shadowColor
+                            : null,
+                        labelColor: selectedIdsEmpty ? theme.shadowColor : null,
+                        backgroundColor: selectedIdsEmpty
+                            ? theme.scaffoldBackgroundColor
+                            : null,
                       );
                     })
                   ],

@@ -7,17 +7,25 @@ class TileMenuButton extends StatelessWidget {
   final String title;
   final VoidCallback? onTap;
   final bool isError;
+  final Color? labelColor;
+  final Color? titleColor;
+  final Color? backgroundColor;
 
   const TileMenuButton({
     Key? key,
     required this.label,
     required this.title,
     this.onTap,
+    this.labelColor,
+    this.titleColor,
+    this.backgroundColor,
     this.isError = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -27,7 +35,9 @@ class TileMenuButton extends StatelessWidget {
           ),
           child: Text(
             label,
-            style: Theme.of(context).textTheme.labelMedium,
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: labelColor ?? theme.hoverColor,
+            ),
           ),
         ),
         const SizedBox(
@@ -38,15 +48,15 @@ class TileMenuButton extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
-              color: isError ? Theme.of(context).errorColor : Theme.of(context).hintColor,
+              color: isError ? theme.errorColor : theme.hintColor,
             ),
             child: Container(
               margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
               height: AppConstants.textFieldsHeight - 3,
               decoration: BoxDecoration(
                 borderRadius:
-                BorderRadius.circular(AppConstants.buttonRadius - 1),
-                color: Theme.of(context).canvasColor,
+                    BorderRadius.circular(AppConstants.buttonRadius - 1),
+                color: backgroundColor ?? theme.canvasColor,
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -59,15 +69,17 @@ class TileMenuButton extends StatelessWidget {
                         title,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: titleColor ?? theme.hoverColor,
+                        ),
                       ),
                     ),
-                    if(onTap != null)
-                    Assets.vectors.arrowRight.svg(
-                      height: AppConstants.iconSize,
-                      width: AppConstants.iconSize,
-                      color: Theme.of(context).iconTheme.color,
-                    ),
+                    if (onTap != null)
+                      Assets.vectors.arrowRight.svg(
+                        height: AppConstants.iconSize,
+                        width: AppConstants.iconSize,
+                        color: theme.iconTheme.color,
+                      ),
                   ],
                 ),
               ),
@@ -78,5 +90,3 @@ class TileMenuButton extends StatelessWidget {
     );
   }
 }
-
-

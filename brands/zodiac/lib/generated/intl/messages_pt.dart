@@ -151,6 +151,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "enterYourPasswordZodiac":
             MessageLookupByLibrary.simpleMessage("Insira sua senha"),
         "experienceZodiac": MessageLookupByLibrary.simpleMessage("Experiência"),
+        "firstSelectTheCategoriesZodiac": MessageLookupByLibrary.simpleMessage(
+            "Primeiro selecione as categorias"),
         "flagsZodiac": MessageLookupByLibrary.simpleMessage("Bandeiras"),
         "foodAndDrinkZodiac":
             MessageLookupByLibrary.simpleMessage("Comida e bebida"),
