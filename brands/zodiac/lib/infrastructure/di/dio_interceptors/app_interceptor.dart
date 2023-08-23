@@ -7,6 +7,7 @@ import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:shared_advisor_interface/presentation/screens/force_update/force_update_screen.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/app_error/app_error.dart';
 import 'package:zodiac/data/models/app_error/ui_error_type.dart';
@@ -147,6 +148,21 @@ class AppInterceptor extends Interceptor {
         UIError(
           uiErrorType: UIErrorType.youveReachedLimitPhone,
         ),
+      );
+    } else if (baseResponse.errorCode == 23) {
+      final arguments = ForceUpdateScreenArguments(
+        title: response.data[_titleKey],
+        description: response.data[_descriptionKey],
+        updateLink: response.data[_updateLinkKey],
+        moreLink: response.data[_moreLinkKey],
+      );
+
+      context?.replaceAllRoot(
+        [
+          ForceUpdate(
+            forceUpdateScreenArguments: arguments,
+          ),
+        ],
       );
     } else if (baseResponse.errorCode != 0 &&
         !response.realUri.path.contains('forgot-password')) {
