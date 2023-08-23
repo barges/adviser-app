@@ -89,7 +89,8 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   final FocusNode textInputFocusNode = FocusNode();
   final GlobalKey textInputKey = GlobalKey();
-  final GlobalKey repliedMessageGlobalKey = GlobalKey();
+
+  GlobalKey? repliedMessageGlobalKey = GlobalKey();
   final GlobalKey reactedMessageGlobalKey = GlobalKey();
 
   final PublishSubject<double> _showDownButtonStream = PublishSubject();

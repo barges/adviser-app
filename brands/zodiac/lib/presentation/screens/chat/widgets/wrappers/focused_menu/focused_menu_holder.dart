@@ -89,7 +89,6 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        key: containerKey,
         onTap: () async {
           widget.onPressed();
           if (widget.openWithTap) {
@@ -104,7 +103,10 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
             await openMenu(context);
           }
         },
-        child: widget.child);
+        child: SizedBox(
+          key: containerKey,
+          child: widget.child,
+        ));
   }
 
   Future openMenu(BuildContext context) async {
