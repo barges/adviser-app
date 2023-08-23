@@ -33,15 +33,17 @@ class _ChatMessageWidgetReplyWrapperState
     final bool canReply = widget.chatIsActive &&
         widget.chatMessageModel.type == ChatMessageType.simple &&
         widget.chatMessageModel.supportsReply;
-    final int? repliedMessageId = chatCubit.state.repliedMessage?.id;
-    final bool isCurrentReplyMessage = repliedMessageId != null &&
-        widget.chatMessageModel.id == repliedMessageId;
+    // final int? repliedMessageId = chatCubit.state.repliedMessage?.id;
+    // final bool isCurrentReplyMessage = repliedMessageId != null &&
+    //     widget.chatMessageModel.id == repliedMessageId;
 
     return canReply
         ? Dismissible(
-            key: isCurrentReplyMessage
-                ? chatCubit.repliedMessageGlobalKey
-                : ValueKey(widget.chatMessageModel.hashCode),
+            key:
+                //isCurrentReplyMessage
+                // ? chatCubit.repliedMessageGlobalKey
+                // :
+                ValueKey(widget.chatMessageModel.hashCode),
             direction: DismissDirection.endToStart,
             confirmDismiss: (DismissDirection direction) async {
               chatCubit.setRepliedMessage(
