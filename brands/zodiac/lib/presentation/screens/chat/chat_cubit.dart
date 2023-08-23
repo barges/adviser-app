@@ -527,6 +527,8 @@ class ChatCubit extends BaseCubit<ChatState> {
       message: text,
       repliedMessage: repliedMessage,
       repliedMessageId: state.repliedMessage?.id,
+      supportsReply: true,
+      authorName: enterRoomData?.expertData?.name,
     );
     if (state.needShowDownButton) {
       animateToStartChat();
