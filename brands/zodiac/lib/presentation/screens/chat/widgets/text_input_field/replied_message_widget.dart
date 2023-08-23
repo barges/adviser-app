@@ -22,10 +22,12 @@ class RepliedMessageWidget extends StatelessWidget {
     final ChatCubit chatCubit = context.read<ChatCubit>();
     return GestureDetector(
       onTap: () {
-        Utils.animateToWidget(
-          chatCubit.repliedMessageGlobalKey,
-          alignment: 0.7,
-        );
+        if (chatCubit.repliedMessageGlobalKey != null) {
+          Utils.animateToWidget(
+            chatCubit.repliedMessageGlobalKey!,
+            alignment: 0.7,
+          );
+        }
       },
       child: Container(
         height: repliedMessageHeight,
