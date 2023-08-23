@@ -65,6 +65,12 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
             menuOffset: 8.0,
             menuBorderRadius: 12.0,
             bottomOffsetHeight: 8.0,
+            onHold: () {
+              chatCubit.repliedMessageGlobalKey = null;
+            },
+            onClose: () {
+              chatCubit.repliedMessageGlobalKey = GlobalKey();
+            },
             blurBackgroundColor:
                 AppColors.overlay.withOpacity(isDarkMode ? 0.8 : 0.3),
             menuSeparator: Container(

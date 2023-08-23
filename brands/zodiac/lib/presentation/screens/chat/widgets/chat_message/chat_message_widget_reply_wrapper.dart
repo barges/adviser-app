@@ -39,8 +39,9 @@ class _ChatMessageWidgetReplyWrapperState
 
     return canReply
         ? Dismissible(
-            key: isCurrentReplyMessage
-                ? chatCubit.repliedMessageGlobalKey
+            key: isCurrentReplyMessage &&
+                    chatCubit.repliedMessageGlobalKey != null
+                ? chatCubit.repliedMessageGlobalKey!
                 : ValueKey(widget.chatMessageModel.hashCode),
             direction: DismissDirection.endToStart,
             confirmDismiss: (DismissDirection direction) async {
