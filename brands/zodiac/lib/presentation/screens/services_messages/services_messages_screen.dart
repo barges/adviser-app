@@ -28,6 +28,7 @@ class ServicesMessagesScreen extends StatelessWidget {
         ),
         backgroundColor: theme.scaffoldBackgroundColor,
         body: SafeArea(
+          bottom: false,
           child: Builder(builder: (context) {
             final bool isOnline = context.select(
                 (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);

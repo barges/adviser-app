@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:zodiac/data/models/canned_messages/canned_category.dart';
+import 'package:zodiac/data/models/canned_messages/canned_message.dart';
 
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/something_went_wrong_widget.dart';
@@ -8,7 +10,9 @@ import 'package:zodiac/presentation/common_widgets/something_went_wrong_widget.d
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_cubit.dart';
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/widgets/add_canned_message_widget.dart';
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/widgets/canned_message_manager_widget.dart';
-import 'package:zodiac/presentation/screens/services_messages/services_messages_screen.dart';
+
+const verticalInterval = 24.0;
+const scrollPositionToShowMessages = 620.0;
 
 class CannedMessagesScreen extends StatelessWidget {
   const CannedMessagesScreen({super.key});
@@ -21,10 +25,21 @@ class CannedMessagesScreen extends StatelessWidget {
       child: Builder(builder: (context) {
         final CannedMessagesCubit cannedMessagesCubit =
             context.read<CannedMessagesCubit>();
-        final categories = context
-            .select((CannedMessagesCubit cubit) => cubit.state.categories);
-        final messages =
-            context.select((CannedMessagesCubit cubit) => cubit.state.messages);
+
+        final (
+          List<CannedCategory>?,
+          List<CannedMessage>?,
+        ) record = context.select(
+          (CannedMessagesCubit value) => (
+            value.state.categories,
+            value.state.messages,
+          ),
+        );
+        final (
+          List<CannedCategory>? categories,
+          List<CannedMessage>? messages,
+        ) = record;
+
         final bool isNoData = categories == null || messages == null;
         final bool showErrorData = context
             .select((CannedMessagesCubit cubit) => cubit.state.showErrorData);
@@ -51,7 +66,9 @@ class CannedMessagesScreen extends StatelessWidget {
                         : Column(
                             children: [
                               const AddCannedMessageWidget(),
-                              CannedMessageManagerWidget(),
+                              CannedMessageManagerWidget(
+                                  key: cannedMessagesCubit
+                                      .cannedMessageManagerKey),
                             ],
                           ),
                   ),

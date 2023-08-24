@@ -89,7 +89,6 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        key: containerKey,
         onTap: () async {
           widget.onPressed();
           if (widget.openWithTap) {
@@ -104,7 +103,10 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
             await openMenu(context);
           }
         },
-        child: widget.child);
+        child: SizedBox(
+          key: containerKey,
+          child: widget.child,
+        ));
   }
 
   Future openMenu(BuildContext context) async {
@@ -225,7 +227,8 @@ class _FocusedMenuDetailsState extends State<FocusedMenuDetails> {
         (widget.childOffset.dy + menuHeight + widget.childSize!.height) <
             size.height -
                 widget.bottomOffsetHeight! -
-                MediaQuery.of(context).padding.bottom;
+                MediaQuery.of(context).padding.bottom -
+                MediaQuery.of(context).padding.top;
 
     final childPositionDy = noVerticalOverflow
         ? widget.childOffset.dy
@@ -238,8 +241,11 @@ class _FocusedMenuDetailsState extends State<FocusedMenuDetails> {
 
     final bool messageOverflows = ((widget.childSize?.height ?? 0.0) +
             menuHeight +
-            (widget.topMenuWidgetHeight ?? 0.0) >
-        size.height);
+            (widget.topMenuWidgetHeight ?? 0.0) +
+            MediaQuery.of(context).padding.top +
+            MediaQuery.of(context).padding.bottom >
+        size.height + (widget.childOffset.dy < 0 ? widget.childOffset.dy : 0));
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
