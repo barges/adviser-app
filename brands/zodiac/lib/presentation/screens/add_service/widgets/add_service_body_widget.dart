@@ -4,17 +4,16 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
-import 'package:zodiac/data/models/enums/service_type.dart';
 import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:zodiac/presentation/common_widgets/service/choose_image_widget.dart';
 import 'package:zodiac/presentation/common_widgets/tile_menu_button.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
+import 'package:zodiac/presentation/screens/add_service/add_service_state.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/information_expansion_panel.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/languages_part_widget.dart';
 import 'package:zodiac/presentation/common_widgets/service/preview_part/service_preview_part_widget.dart';
-import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/sliders_part_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/tabs_widget.dart';
 import 'package:zodiac/zodiac_constants.dart';
@@ -123,43 +122,31 @@ class AddServiceBodyWidget extends StatelessWidget {
                   context.select((AddServiceCubit cubit) =>
                       cubit.state.updateAfterDuplicate);
 
-                  final int selectedImageIndex = context.select(
-                      (AddServiceCubit cubit) =>
-                          cubit.state.selectedImageIndex);
-                  final int selectedLanguageIndex = context.select(
-                      (AddServiceCubit cubit) =>
-                          cubit.state.selectedLanguageIndex);
+                  final ServicePreviewDto dto =
+                      context.select((AddServiceCubit cubit) {
+                    final AddServiceState state = cubit.state;
 
-                  final double price = context
-                      .select((AddServiceCubit cubit) => cubit.state.price);
-                  final double discount = context
-                      .select((AddServiceCubit cubit) => cubit.state.discount);
-                  final bool discountEnabled = context.select(
-                      (AddServiceCubit cubit) => cubit.state.discountEnabled);
-                  final ServiceType selectedTab = context.select(
-                      (AddServiceCubit cubit) => cubit.state.selectedTab);
-
-                  final double deliveryTime = context.select(
-                      (AddServiceCubit cubit) => cubit.state.deliveryTime);
-                  final DeliveryTimeTabType selectedDeliveryTimeTab =
-                      context.select((AddServiceCubit cubit) =>
-                          cubit.state.selectedDeliveryTimeTab);
+                    return (
+                      selectedImage: images[state.selectedImageIndex],
+                      titleController: addServiceCubit
+                          .textControllersMap.entries
+                          .toList()[state.selectedLanguageIndex]
+                          .value[ZodiacConstants.serviceTitleIndex],
+                      descriptionController: addServiceCubit
+                          .textControllersMap.entries
+                          .toList()[state.selectedLanguageIndex]
+                          .value[ZodiacConstants.serviceDescriptionIndex],
+                      price: state.price,
+                      discount: state.discount,
+                      discountEnabled: state.discountEnabled,
+                      serviceType: state.selectedTab,
+                      deliveryTime: state.deliveryTime,
+                      deliveryTimeType: state.selectedDeliveryTimeTab,
+                    );
+                  });
 
                   return ServicePreviewPartWidget(
-                    selectedImage: images[selectedImageIndex],
-                    titleController: addServiceCubit.textControllersMap.entries
-                        .toList()[selectedLanguageIndex]
-                        .value[ZodiacConstants.serviceTitleIndex],
-                    descriptionController: addServiceCubit
-                        .textControllersMap.entries
-                        .toList()[selectedLanguageIndex]
-                        .value[ZodiacConstants.serviceDescriptionIndex],
-                    price: price,
-                    discount: discount,
-                    discountEnabled: discountEnabled,
-                    serviceType: selectedTab,
-                    deliveryTime: deliveryTime,
-                    deliveryTimeType: selectedDeliveryTimeTab,
+                    dto: dto,
                   );
                 }),
                 const SizedBox(

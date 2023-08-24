@@ -11,8 +11,8 @@ import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dar
 import 'package:zodiac/presentation/common_widgets/service/choose_image_widget.dart';
 import 'package:zodiac/presentation/common_widgets/service/discount_for_reorder_slider_widget.dart';
 import 'package:zodiac/presentation/common_widgets/service/preview_part/service_preview_part_widget.dart';
-import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
 import 'package:zodiac/presentation/screens/edit_service/edit_service_cubit.dart';
+import 'package:zodiac/presentation/screens/edit_service/edit_service_state.dart';
 import 'package:zodiac/presentation/screens/edit_service/widgets/languages_part_widget.dart';
 import 'package:zodiac/presentation/screens/edit_service/widgets/rejected_text_comment_widget.dart';
 import 'package:zodiac/zodiac_constants.dart';
@@ -134,48 +134,34 @@ class EditServiceBodyWidget extends StatelessWidget {
                     height: 24.0,
                   ),
                   Builder(builder: (context) {
-                    final List<ImageSampleModel>? images = context
-                        .select((EditServiceCubit cubit) => cubit.state.images);
-                    final int selectedImageIndex = context.select(
-                        (EditServiceCubit cubit) =>
-                            cubit.state.selectedImageIndex);
-                    final int selectedLanguageIndex = context.select(
-                        (EditServiceCubit cubit) =>
-                            cubit.state.selectedLanguageIndex);
+                    final ServicePreviewDto dto =
+                        context.select((EditServiceCubit cubit) {
+                      final EditServiceState state = cubit.state;
 
-                    final double price = context
-                        .select((EditServiceCubit cubit) => cubit.state.price);
-                    final double discount = context.select(
-                        (EditServiceCubit cubit) => cubit.state.discount);
-                    final bool discountEnabled = context.select(
-                        (EditServiceCubit cubit) =>
-                            cubit.state.discountEnabled);
-                    final ServiceType serviceType = context.select(
-                        (EditServiceCubit cubit) => cubit.state.serviceType);
-
-                    final double deliveryTime = context.select(
-                        (EditServiceCubit cubit) => cubit.state.deliveryTime);
-                    final DeliveryTimeTabType deliveryTimeType = context.select(
-                        (EditServiceCubit cubit) =>
-                            cubit.state.deliveryTimeType);
-
-                    return ServicePreviewPartWidget(
-                        selectedImage: images?[selectedImageIndex] ??
-                            const ImageSampleModel(),
+                      return (
+                        selectedImage:
+                            state.images?[state.selectedImageIndex] ??
+                                const ImageSampleModel(),
                         titleController: editServiceCubit
                             .textControllersMap.entries
-                            .toList()[selectedLanguageIndex]
+                            .toList()[state.selectedLanguageIndex]
                             .value[ZodiacConstants.serviceTitleIndex],
                         descriptionController: editServiceCubit
                             .textControllersMap.entries
-                            .toList()[selectedLanguageIndex]
+                            .toList()[state.selectedLanguageIndex]
                             .value[ZodiacConstants.serviceDescriptionIndex],
-                        price: price,
-                        discount: discount,
-                        discountEnabled: discountEnabled,
-                        serviceType: serviceType,
-                        deliveryTime: deliveryTime,
-                        deliveryTimeType: deliveryTimeType);
+                        price: state.price,
+                        discount: state.discount,
+                        discountEnabled: state.discountEnabled,
+                        serviceType: state.serviceType,
+                        deliveryTime: state.deliveryTime,
+                        deliveryTimeType: state.deliveryTimeType
+                      );
+                    });
+
+                    return ServicePreviewPartWidget(
+                      dto: dto,
+                    );
                   }),
                   const SizedBox(
                     height: 24.0,

@@ -6,28 +6,24 @@ import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/service/preview_part/service_preview_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
 
+typedef ServicePreviewDto = ({
+  ImageSampleModel selectedImage,
+  TextEditingController titleController,
+  TextEditingController descriptionController,
+  double price,
+  double discount,
+  bool discountEnabled,
+  ServiceType serviceType,
+  double deliveryTime,
+  DeliveryTimeTabType deliveryTimeType,
+});
+
 class ServicePreviewPartWidget extends StatelessWidget {
-  final ImageSampleModel selectedImage;
-  final TextEditingController titleController;
-  final TextEditingController descriptionController;
-  final double price;
-  final double discount;
-  final bool discountEnabled;
-  final ServiceType serviceType;
-  final double deliveryTime;
-  final DeliveryTimeTabType deliveryTimeType;
+  final ServicePreviewDto dto;
 
   const ServicePreviewPartWidget({
     Key? key,
-    required this.selectedImage,
-    required this.titleController,
-    required this.descriptionController,
-    required this.price,
-    required this.discount,
-    required this.discountEnabled,
-    required this.serviceType,
-    required this.deliveryTime,
-    required this.deliveryTimeType,
+    required this.dto,
   }) : super(key: key);
 
   @override
@@ -51,15 +47,7 @@ class ServicePreviewPartWidget extends StatelessWidget {
           strokeWidth: 2.0,
           dashPattern: const [8.0, 8.0],
           child: ServicePreviewWidget(
-            selectedImage: selectedImage,
-            titleController: titleController,
-            descriptionController: descriptionController,
-            price: price,
-            discount: discount,
-            discountEnabled: discountEnabled,
-            serviceType: serviceType,
-            deliveryTime: deliveryTime,
-            deliveryTimeType: deliveryTimeType,
+            dto: dto,
           ),
         ),
       ],

@@ -1,34 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:zodiac/data/models/enums/service_type.dart';
-import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/service/preview_part/service_preview_image_widget.dart';
-import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
+import 'package:zodiac/presentation/common_widgets/service/preview_part/service_preview_part_widget.dart';
 
 class ServicePreviewWidget extends StatelessWidget {
-  final ImageSampleModel selectedImage;
-  final TextEditingController titleController;
-  final TextEditingController descriptionController;
-  final double price;
-  final double discount;
-  final bool discountEnabled;
-  final ServiceType serviceType;
-  final double deliveryTime;
-  final DeliveryTimeTabType deliveryTimeType;
+  final ServicePreviewDto dto;
 
   const ServicePreviewWidget({
     Key? key,
-    required this.selectedImage,
-    required this.titleController,
-    required this.descriptionController,
-    required this.price,
-    required this.discount,
-    required this.discountEnabled,
-    required this.serviceType,
-    required this.deliveryTime,
-    required this.deliveryTimeType,
+    required this.dto,
   }) : super(key: key);
 
   @override
@@ -46,11 +28,11 @@ class ServicePreviewWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ServicePreviewImageWidget(
-            selectedImage: selectedImage,
-            titleController: titleController,
-            serviceType: serviceType,
-            deliveryTime: deliveryTime,
-            deliveryTimeType: deliveryTimeType,
+            selectedImage: dto.selectedImage,
+            titleController: dto.titleController,
+            serviceType: dto.serviceType,
+            deliveryTime: dto.deliveryTime,
+            deliveryTimeType: dto.deliveryTimeType,
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -58,9 +40,9 @@ class ServicePreviewWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ValueListenableBuilder(
-                  valueListenable: descriptionController,
+                  valueListenable: dto.descriptionController,
                   builder: (context, value, child) => Text(
-                    descriptionController.text,
+                    dto.descriptionController.text,
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontSize: 14.0,
                       color: theme.shadowColor,
@@ -97,7 +79,7 @@ class ServicePreviewWidget extends StatelessWidget {
                       ),
                       Text(
                         '${SZodiac.of(context).buyZodiac}'
-                        ' \$${(price * (discountEnabled ? (1 - discount / 100) : 1)).toStringAsFixed(2)}',
+                        ' \$${(dto.price * (dto.discountEnabled ? (1 - dto.discount / 100) : 1)).toStringAsFixed(2)}',
                         style: theme.textTheme.labelMedium?.copyWith(
                           fontSize: 17.0,
                           color: theme.canvasColor,
