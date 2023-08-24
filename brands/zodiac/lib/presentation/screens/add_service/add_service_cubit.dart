@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
@@ -28,6 +29,7 @@ const double maxPrice = 299.99;
 
 const int _textFieldsCount = 2;
 
+@injectable
 class AddServiceCubit extends Cubit<AddServiceState> {
   final ZodiacCachingManager _zodiacCachingManager;
   final ZodiacServicesRepository _servicesRepository;

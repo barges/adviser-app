@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/services/image_sample_model.dart';
-import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
-import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/simple_app_bar.dart';
@@ -22,12 +18,7 @@ class AddServiceScreen extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return BlocProvider(
-      create: (context) => AddServiceCubit(
-        zodiacGetIt.get<ZodiacCachingManager>(),
-        zodiacGetIt.get<ZodiacServicesRepository>(),
-        zodiacGetIt.get<ZodiacUserRepository>(),
-        zodiacGetIt.get<GlobalCachingManager>(),
-      ),
+      create: (context) => zodiacGetIt.get<AddServiceCubit>(),
       child: GestureDetector(
         onTap: FocusScope.of(context).unfocus,
         child: Scaffold(

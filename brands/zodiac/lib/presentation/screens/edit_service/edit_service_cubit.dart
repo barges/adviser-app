@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
@@ -24,6 +25,7 @@ import 'package:zodiac/zodiac_constants.dart';
 
 const int _textFieldsCount = 2;
 
+@injectable
 class EditServiceCubit extends Cubit<EditServiceState> {
   final int serviceId;
   final ZodiacServicesRepository servicesRepository;
@@ -40,7 +42,7 @@ class EditServiceCubit extends Cubit<EditServiceState> {
   bool _wasFocusRequest = false;
 
   EditServiceCubit({
-    required this.serviceId,
+    @factoryParam required this.serviceId,
     required this.servicesRepository,
     required this.zodiacCachingManager,
     required this.userRepository,
