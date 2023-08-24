@@ -358,8 +358,10 @@ packages:
     description:
       name: collection
       sha256: f092b211a4319e98e5ff58223576de6c2803db36221657b46c82574721240687
+      sha256: f092b211a4319e98e5ff58223576de6c2803db36221657b46c82574721240687
       url: "https://pub.dev"
     source: hosted
+    version: "1.17.2"
     version: "1.17.2"
   color:
     dependency: transitive
@@ -1639,10 +1641,10 @@ packages:
     dependency: transitive
     description:
       name: scrollview_observer
-      sha256: "23047372f84591919e7502c3b098bb112502735d6804eafb62c676a9286910e0"
+      sha256: "64293a1e32570428055e4414363188c07f3e2adebd48ddce066b9676e56ef279"
       url: "https://pub.dev"
     source: hosted
-    version: "1.16.0"
+    version: "1.16.1"
   share_plus:
     dependency: "direct main"
     description:
