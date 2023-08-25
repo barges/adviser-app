@@ -35,8 +35,7 @@ class ServiceCard extends StatelessWidget {
       child: Stack(
         children: [
           AppImageWidget(
-            uri: Uri.parse(
-                'https://img.freepik.com/free-photo/fuji-mountain-with-milky-way-night_335224-104.jpg?w=500'),
+            uri: Uri.parse(serviceItem.image ?? ''),
             width: double.infinity,
             height: 130.0,
           ),
@@ -105,13 +104,17 @@ class ServiceCard extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'In-chat services I offer: Karma Cleansing🔥🔥 There are blockages out of a past life shown, they hinder you to share the love. Lets release old Carma. Willett, though a small man, actually took on a kind of judicial majesty as he calmed the patient with a gesture. I know how you wove the spell that.',
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 7,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontSize: 14.0,
-                      color: theme.shadowColor,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width -
+                        AppConstants.horizontalScreenPadding * 2,
+                    child: Text(
+                      serviceItem.description ?? '',
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 7,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontSize: 14.0,
+                        color: theme.shadowColor,
+                      ),
                     ),
                   ),
                   Row(
@@ -159,7 +162,7 @@ class ServiceCard extends StatelessWidget {
                                 isCancelEnabled: true,
                               ) ==
                               true) {
-                            servicesCubit.deleteService(serviceItem.id);
+                            servicesCubit.deleteService(serviceItem.id!);
                           }
                         },
                         child: Assets.vectors.delete.svg(),

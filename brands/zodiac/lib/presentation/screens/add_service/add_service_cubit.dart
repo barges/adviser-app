@@ -322,7 +322,7 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     emit(state.copyWith(selectedImageIndex: index));
   }
 
-  void sendForApproval() {
+  Future<void> sendForApproval() async {
     final bool isChecked = _checkTextFields();
 
     final List<ImageSampleModel>? images = state.images;
@@ -349,7 +349,7 @@ class AddServiceCubit extends Cubit<AddServiceState> {
         translations: translations,
       );
 
-      _servicesRepository.addService(request);
+      await _servicesRepository.addService(request);
     }
   }
 

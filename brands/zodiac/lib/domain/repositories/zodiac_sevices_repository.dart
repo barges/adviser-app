@@ -1,9 +1,10 @@
 import 'package:zodiac/data/network/requests/add_service_request.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
+import 'package:zodiac/data/network/requests/delete_service_request.dart';
 import 'package:zodiac/data/network/requests/services_list_request.dart';
 import 'package:zodiac/data/network/responses/add_service_response.dart';
 import 'package:zodiac/data/network/responses/default_services_images_response.dart';
-import 'package:zodiac/data/network/responses/services_list_response.dart';
+import 'package:zodiac/data/network/responses/services_response.dart';
 
 abstract class ZodiacServicesRepository {
   Future<DefaultServicesImagesResponse> getDefaultImages(
@@ -11,5 +12,7 @@ abstract class ZodiacServicesRepository {
 
   Future<AddServiceResponse> addService(AddServiceRequest request);
 
-  Future<ServiceListResponse> getServices(ServiceListRequest request);
+  Future<ServiceResponse> deleteService(DeleteServiceRequest request);
+
+  Future<ServiceResponse> getServices(ServiceListRequest request);
 }

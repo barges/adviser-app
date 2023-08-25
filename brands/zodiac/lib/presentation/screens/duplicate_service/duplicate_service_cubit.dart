@@ -5,7 +5,7 @@ import 'package:zodiac/data/models/services/service_info_item.dart';
 import 'package:zodiac/data/models/services/service_item.dart';
 import 'package:zodiac/data/models/services/service_language_model.dart';
 import 'package:zodiac/data/network/requests/services_list_request.dart';
-import 'package:zodiac/data/network/responses/services_list_response.dart';
+import 'package:zodiac/data/network/responses/services_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/presentation/screens/duplicate_service/duplicate_service_state.dart';
 
@@ -26,11 +26,11 @@ class DuplicateServiceCubit extends Cubit<DuplicateServiceState> {
   }
 
   Future<void> _getDuplicatedServices() async {
-    final ServiceListResponse response = await servicesRepository
-        .getServices(ServiceListRequest(count: 20, offset: 0));
+    final ServiceResponse response =
+        await servicesRepository.getServices(ServiceListRequest());
 
     if (response.status == true) {
-      _services = response.result ?? [];
+      _services = response.result?.list ?? [];
 
       _services.removeWhere(
         (element) => element.id == oldDuplicatedServiceId,

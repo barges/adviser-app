@@ -14,7 +14,8 @@ import 'package:zodiac/presentation/screens/services_messages/services/widgets/s
 import 'package:zodiac/presentation/screens/services_messages/services_messages_screen.dart';
 
 class ServicesScreen extends StatelessWidget {
-  const ServicesScreen({Key? key}) : super(key: key);
+  final ValueNotifier<int> indexNotifier = ValueNotifier(0);
+  ServicesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,77 +24,75 @@ class ServicesScreen extends StatelessWidget {
       lazy: false,
       create: (context) => zodiacGetIt.get<ServicesCubit>(),
       child: Builder(builder: (context) {
+        final ServicesCubit servicesCubit = context.read<ServicesCubit>();
         final List<ServiceItem>? services =
             context.select((ServicesCubit cubit) => cubit.state.services);
         if (services == null) {
           return const SizedBox.expand();
         } else {
-          return Column(
-            children: [
-              if (services.isNotEmpty)
-                Expanded(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(bottom: verticalInterval),
-                        child: ListOfFiltersWidget(
-                          currentFilterIndex: 0,
+          return RefreshIndicator(
+            onRefresh: () {
+              return servicesCubit.getServices();
+            },
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: verticalInterval),
+                  child: ValueListenableBuilder(
+                      valueListenable: indexNotifier,
+                      builder: (_, int value, __) {
+                        return ListOfFiltersWidget(
+                          currentFilterIndex: value,
                           onTapToFilter: (index) {
                             if (index != null) {
-                              /*indexNotifier.value = index;
-                                              cannedMessagesCubit
-                                                  .setCategory(index == 0 ? null : index - 1);
-                                              cannedMessagesCubit
-                                                  .filterCannedMessagesByCategory();*/
+                              indexNotifier.value = index;
+                              servicesCubit
+                                  .setStatus(index == 0 ? null : index - 1);
+                              servicesCubit.getServices();
                             }
                           },
                           filters: [
                             SZodiac.of(context).allZodiac,
-                            "Approved",
-                            "Pending",
-                            "Rejected"
+                            SZodiac.of(context).newZodiac,
+                            SZodiac.of(context).approvedZodiac,
+                            SZodiac.of(context).rejectedZodiac,
+                            SZodiac.of(context).tempZodiac
                           ],
                           padding: AppConstants.horizontalScreenPadding,
+                        );
+                      }),
+                ),
+                Expanded(
+                  child: servicesCubit.isDataServices
+                      ? ListView.separated(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: AppConstants.horizontalScreenPadding),
+                          itemBuilder: (_, index) =>
+                              ServiceCard(serviceItem: services[index]),
+                          separatorBuilder: (_, __) => const SizedBox(
+                                height: AppConstants.horizontalScreenPadding,
+                              ),
+                          itemCount: services.length)
+                      : const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            NoServicesWidget(),
+                          ],
                         ),
-                      ),
-                      Expanded(
-                          child: ListView.separated(
-                              //controller: articlesCubit.articlesScrollController,
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal:
-                                      AppConstants.horizontalScreenPadding),
-                              itemBuilder: (_, index) =>
-                                  ServiceCard(serviceItem: services[index]),
-                              separatorBuilder: (_, __) => const SizedBox(
-                                    height:
-                                        AppConstants.horizontalScreenPadding,
-                                  ),
-                              itemCount: services.length)),
-                    ],
-                  ),
                 ),
-              if (services.isEmpty)
-                const Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      NoServicesWidget(),
-                    ],
+                Container(
+                  decoration: BoxDecoration(color: theme.canvasColor),
+                  padding: const EdgeInsets.all(16.0),
+                  child: AppElevatedButton(
+                    title: SZodiac.of(context).addServiceZodiac,
+                    onPressed: () => context.push(
+                      route: const ZodiacAddService(),
+                    ),
                   ),
-                ),
-              Container(
-                decoration: BoxDecoration(color: theme.canvasColor),
-                padding: const EdgeInsets.all(16.0),
-                child: AppElevatedButton(
-                  title: SZodiac.of(context).addServiceZodiac,
-                  onPressed: () => context.push(
-                    route: const ZodiacAddService(),
-                  ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           );
         }
       }),

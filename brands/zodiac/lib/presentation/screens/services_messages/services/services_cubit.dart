@@ -1,59 +1,54 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
-import 'package:zodiac/data/models/services/service_item.dart';
+import 'package:zodiac/data/network/requests/delete_service_request.dart';
 import 'package:zodiac/data/network/requests/services_list_request.dart';
+import 'package:zodiac/data/network/responses/services_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/presentation/screens/services_messages/services/services_state.dart';
+import 'package:zodiac/zodiac_main_cubit.dart';
 
 @injectable
 class ServicesCubit extends Cubit<ServicesState> {
+  int? _selectedStatus;
+  final ZodiacMainCubit _mainCubit;
   final ZodiacServicesRepository _zodiacServicesRepository;
-  final List<ServiceItem> _services = [];
+  late final StreamSubscription<bool> _updateServicesSubscription;
 
   ServicesCubit(
+    this._mainCubit,
     this._zodiacServicesRepository,
   ) : super(const ServicesState()) {
     _init();
   }
 
   _init() async {
-    _getServices();
+    _updateServicesSubscription =
+        _mainCubit.updateServicesTrigger.listen((_) async {
+      getServices();
+    });
+
+    getServices();
   }
 
-  Future<void> _getServices() async {
-    try {
-      final response =
-          await _zodiacServicesRepository.getServices(ServiceListRequest(
-        count: 1,
-        offset: 0,
-        status: null,
-      ));
+  @override
+  Future<void> close() async {
+    _updateServicesSubscription.cancel();
+    super.close();
+  }
 
-      _services.clear();
+  Future<void> getServices() async {
+    try {
+      final ServiceResponse response = await _zodiacServicesRepository
+          .getServices(ServiceListRequest(status: _selectedStatus));
 
       if (response.status == true &&
-          response.count != 0 &&
           response.result != null &&
-          response.result!.isNotEmpty) {
-        _services.addAll(response.result!);
+          response.result!.list != null) {
         emit(state.copyWith(
-          services: List.of(_services),
-        ));
-      } else {
-        // Temporary for testing
-        const item = {
-          "id": 0,
-          "name": 'Karma cleaning',
-          "date_create": 1644657729,
-          "status": 1,
-          "reject_status": 0
-        };
-        _services.addAll(
-            [ServiceItem.fromJson(item), ServiceItem.fromJson(item)].toList());
-        //_services.clear();
-        emit(state.copyWith(
-          services: List.of(_services),
+          services: List.of(response.result!.list!),
         ));
       }
     } catch (e) {
@@ -61,10 +56,36 @@ class ServicesCubit extends Cubit<ServicesState> {
     }
   }
 
-  Future<void> deleteService(int? serviceId) async {
-    /*if (await _deleteCannedMessage(messageId)) {
-      _messages.removeWhere((element) => element.id == messageId);
-      await filterCannedMessagesByCategory();
-    }*/
+  void setStatus(int? status) {
+    _selectedStatus = status;
   }
+
+  Future<void> deleteService(int serviceId) async {
+    if (await _deleteService(serviceId)) {
+      final services = state.services!;
+      services
+          .removeAt(services.indexWhere((element) => element.id == serviceId));
+      emit(state.copyWith(
+        services: List.of(services),
+      ));
+    }
+  }
+
+  Future<bool> _deleteService(int serviceId) async {
+    try {
+      final ServiceResponse response = await _zodiacServicesRepository
+          .deleteService(DeleteServiceRequest(serviceId: serviceId));
+
+      if (response.status == true) {
+        return true;
+      }
+    } catch (e) {
+      logger.d(e);
+    }
+
+    return false;
+  }
+
+  bool get isDataServices =>
+      state.services != null ? state.services!.isNotEmpty : false;
 }

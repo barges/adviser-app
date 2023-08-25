@@ -111,7 +111,11 @@ class AddServiceBodyWidget extends StatelessWidget {
                   ),
                   child: AppElevatedButton(
                     title: SZodiac.of(context).sendForApprovalZodiac,
-                    onPressed: addServiceCubit.sendForApproval,
+                    onPressed: () async {
+                      await addServiceCubit.sendForApproval();
+                      // ignore: use_build_context_synchronously
+                      context.read<ZodiacMainCubit>().updateServices();
+                    },
                   ),
                 ),
                 const SizedBox(
