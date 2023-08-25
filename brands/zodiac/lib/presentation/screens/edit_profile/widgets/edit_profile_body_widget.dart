@@ -67,6 +67,24 @@ class EditProfileBodyWidget extends StatelessWidget {
                   onTap: () => editProfileCubit.goToCategoriesList(context),
                 );
               }),
+              const SizedBox(
+                height: 24.0,
+              ),
+              Builder(builder: (context) {
+                final List<List<CategoryInfo>> methods = context.select(
+                    (EditProfileCubit cubit) => cubit.state.advisorMethods);
+
+                return TileMenuButton(
+                  label: SZodiac.of(context).methodsZodiac,
+                  title: methods[selectedBrandIndex].isNotEmpty
+                      ? methods[selectedBrandIndex]
+                          .map((e) => e.name)
+                          .toList()
+                          .join(', ')
+                      : '',
+                  onTap: () => editProfileCubit.goToCategoriesList(context),
+                );
+              }),
             ],
           ),
         )

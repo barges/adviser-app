@@ -63,6 +63,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   ////////
   final List<int?> _mainCategoryIds = [];
+  final List<int?> _mainMethodIds = [];
   ////////
 
   bool _wasFocusRequest = false;
@@ -150,12 +151,19 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         (element) => _mainCategoryIds.add(element.fields?.mainCategoryId),
       );
 
+      brands?.forEach(
+        (element) => _mainCategoryIds.add(element.fields?.mainMethodId),
+      );
+
       emit(
         state.copyWith(
-            brands: brands,
-            avatars: response.result?.map((e) => null).toList() ?? [],
-            advisorCategories:
-                brands?.map((e) => e.fields?.categories ?? []).toList() ?? []),
+          brands: brands,
+          avatars: response.result?.map((e) => null).toList() ?? [],
+          advisorCategories:
+              brands?.map((e) => e.fields?.categories ?? []).toList() ?? [],
+          advisorMethods:
+              brands?.map((e) => e.fields?.methods ?? []).toList() ?? [],
+        ),
       );
     }
   }
@@ -181,11 +189,11 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         route: ZodiacCategoriesList(
       selectedCategoryIds: selectedIds,
       mainCategoryId: mainCategoryId,
-      returnCallback: setCategories,
+      returnCallback: _setCategories,
     ));
   }
 
-  void setCategories(List<CategoryInfo> categories, int mainCategoryId) {
+  void _setCategories(List<CategoryInfo> categories, int mainCategoryId) {
     List<List<CategoryInfo>> newCategories = List.of(state.advisorCategories);
 
     newCategories[state.selectedBrandIndex] = categories;

@@ -199,5 +199,7 @@
   "youCanChooseUpTo3CategoriesZodiac": "You can choose up to 3 categories you prefer to work with and the main category among them",
   "mainCategoryZodiac": "Main category",
   "selectMainCategoryZodiac": "Select main category",
-  "firstSelectTheCategoriesZodiac": "First select the categories"
+  "firstSelectTheCategoriesZodiac": "First select the categories",
+  "methodsZodiac": "Methods",
+  "selectMethodsZodiac": "Select methods"
 }

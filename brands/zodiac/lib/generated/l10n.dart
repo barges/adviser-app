@@ -2065,6 +2065,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Methods`
+  String get methodsZodiac {
+    return Intl.message(
+      'Methods',
+      name: 'methodsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select methods`
+  String get selectMethodsZodiac {
+    return Intl.message(
+      'Select methods',
+      name: 'selectMethodsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

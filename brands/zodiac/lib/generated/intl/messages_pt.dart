@@ -191,6 +191,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "mainZodiac": MessageLookupByLibrary.simpleMessage("Principal"),
         "manageMessagesZodiac":
             MessageLookupByLibrary.simpleMessage("Gerenciar mensagens"),
+        "methodsZodiac": MessageLookupByLibrary.simpleMessage("Métodos"),
         "minutesZodiac": MessageLookupByLibrary.simpleMessage("min"),
         "mySpecialtiesZodiac":
             MessageLookupByLibrary.simpleMessage("Minhas especialidades"),
@@ -292,6 +293,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Selecione as categorias"),
         "selectMainCategoryZodiac": MessageLookupByLibrary.simpleMessage(
             "Selecione a categoria principal"),
+        "selectMethodsZodiac":
+            MessageLookupByLibrary.simpleMessage("Selecione métodos"),
         "selectedCouponsWillBeRenewedAutomaticallyZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Os cupons selecionados serão renovados automaticamente e exibidos em seu perfil"),
