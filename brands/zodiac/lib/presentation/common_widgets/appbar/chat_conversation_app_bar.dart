@@ -5,6 +5,7 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/chat/user_data.dart';
@@ -112,7 +113,12 @@ class ChatConversationAppBar extends StatelessWidget
                               context.select((ChatCubit cubit) =>
                                   cubit.state.chatPaymentStatus);
 
-                          if (isChatReconnecting) {
+                          final bool internetConnectionIsAvailable =
+                              context.select((MainCubit cubit) =>
+                                  cubit.state.internetConnectionIsAvailable);
+
+                          if (isChatReconnecting ||
+                              !internetConnectionIsAvailable) {
                             return Text(
                               SZodiac.of(context).reconnectingZodiac,
                               style: TextStyle(
