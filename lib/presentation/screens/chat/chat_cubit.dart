@@ -98,8 +98,10 @@ class ChatCubit extends Cubit<ChatState> {
   StreamSubscription<RecorderDisposition>? _recordingDurationSubscription;
 
   Timer? _answerTimer;
+  Timer? _attachingPictureTimer;
   bool _counterMessageCleared = false;
   bool _isStartAnswerSending = false;
+  bool _isAttachingPicture = false;
   int oldTextInputLines = 1;
 
   static List<AnswerLimitation> _answerLimitations = [];
@@ -163,7 +165,9 @@ class ChatCubit extends Cubit<ChatState> {
         .debounceTime(const Duration(milliseconds: 700))
         .listen((bool visible) {
       if (!visible) {
-        textInputFocusNode.unfocus();
+        if (!_isAttachingPicture) {
+          textInputFocusNode.unfocus();
+        }
         emit(state.copyWith(isTextInputCollapsed: true));
       } else {
         scrollChatDown();
@@ -238,6 +242,7 @@ class ChatCubit extends Cubit<ChatState> {
     _recordingStateSubscription?.cancel();
 
     _answerTimer?.cancel();
+    _attachingPictureTimer?.cancel();
 
     _refreshChatInfoSubscription.cancel();
 
@@ -661,6 +666,8 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   void attachPicture(File? image) {
+    _attachingPictureTimer?.cancel();
+    _isAttachingPicture = true;
     _tryStartAnswerSend();
 
     final List<File> images = List.of(state.attachedPictures);
@@ -683,6 +690,9 @@ class ChatCubit extends Cubit<ChatState> {
 
     getBottomTextAreaHeight();
     _scrollTextFieldToEnd();
+
+    _attachingPictureTimer = Timer(
+        const Duration(milliseconds: 1200), () => _isAttachingPicture = false);
   }
 
   void deletePicture(File? image, {bool scrollToEnd = true}) {
