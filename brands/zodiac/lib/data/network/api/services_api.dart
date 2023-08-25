@@ -27,6 +27,6 @@ abstract class ServicesApi {
   @POST('/advisor/services/add')
   Future<AddServiceResponse> addService(@Body() AddServiceRequest request);
 
-  @POST('/advisor/service/delete')
+  @POST('/advisor/services/delete')
   Future<ServiceResponse> deleteService(@Body() DeleteServiceRequest request);
 }

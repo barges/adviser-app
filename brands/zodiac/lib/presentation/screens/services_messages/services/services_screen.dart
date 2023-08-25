@@ -14,8 +14,7 @@ import 'package:zodiac/presentation/screens/services_messages/services/widgets/s
 import 'package:zodiac/presentation/screens/services_messages/services_messages_screen.dart';
 
 class ServicesScreen extends StatelessWidget {
-  final ValueNotifier<int> indexNotifier = ValueNotifier(0);
-  ServicesScreen({Key? key}) : super(key: key);
+  const ServicesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,40 +26,38 @@ class ServicesScreen extends StatelessWidget {
         final ServicesCubit servicesCubit = context.read<ServicesCubit>();
         final List<ServiceItem>? services =
             context.select((ServicesCubit cubit) => cubit.state.services);
+        final int? selectedStatusIndex = context
+            .select((ServicesCubit cubit) => cubit.state.selectedStatusIndex);
         if (services == null) {
           return const SizedBox.expand();
         } else {
           return RefreshIndicator(
             onRefresh: () {
-              return servicesCubit.getServices();
+              return servicesCubit.getServices(refresh: true);
             },
             child: Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: verticalInterval),
-                  child: ValueListenableBuilder(
-                      valueListenable: indexNotifier,
-                      builder: (_, int value, __) {
-                        return ListOfFiltersWidget(
-                          currentFilterIndex: value,
-                          onTapToFilter: (index) {
-                            if (index != null) {
-                              indexNotifier.value = index;
-                              servicesCubit
-                                  .setStatus(index == 0 ? null : index - 1);
-                              servicesCubit.getServices();
-                            }
-                          },
-                          filters: [
-                            SZodiac.of(context).allZodiac,
-                            SZodiac.of(context).newZodiac,
-                            SZodiac.of(context).approvedZodiac,
-                            SZodiac.of(context).rejectedZodiac,
-                            SZodiac.of(context).tempZodiac
-                          ],
-                          padding: AppConstants.horizontalScreenPadding,
-                        );
-                      }),
+                  child: ListOfFiltersWidget(
+                    currentFilterIndex: selectedStatusIndex == null
+                        ? 0
+                        : selectedStatusIndex + 1,
+                    onTapToFilter: (index) {
+                      if (index != null) {
+                        servicesCubit.getServices(
+                            status: index == 0 ? null : index - 1);
+                      }
+                    },
+                    filters: [
+                      SZodiac.of(context).allZodiac,
+                      SZodiac.of(context).newZodiac,
+                      SZodiac.of(context).approvedZodiac,
+                      SZodiac.of(context).rejectedZodiac,
+                      SZodiac.of(context).tempZodiac
+                    ],
+                    padding: AppConstants.horizontalScreenPadding,
+                  ),
                 ),
                 Expanded(
                   child: servicesCubit.isDataServices

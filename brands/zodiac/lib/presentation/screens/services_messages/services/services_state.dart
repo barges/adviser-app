@@ -7,5 +7,6 @@ part 'services_state.freezed.dart';
 class ServicesState with _$ServicesState {
   const factory ServicesState({
     List<ServiceItem>? services,
+    int? selectedStatusIndex,
   }) = _ServicesState;
 }

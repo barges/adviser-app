@@ -12,7 +12,6 @@ import 'package:zodiac/zodiac_main_cubit.dart';
 
 @injectable
 class ServicesCubit extends Cubit<ServicesState> {
-  int? _selectedStatus;
   final ZodiacMainCubit _mainCubit;
   final ZodiacServicesRepository _zodiacServicesRepository;
   late final StreamSubscription<bool> _updateServicesSubscription;
@@ -27,7 +26,7 @@ class ServicesCubit extends Cubit<ServicesState> {
   _init() async {
     _updateServicesSubscription =
         _mainCubit.updateServicesTrigger.listen((_) async {
-      getServices();
+      getServices(refresh: true);
     });
 
     getServices();
@@ -39,10 +38,19 @@ class ServicesCubit extends Cubit<ServicesState> {
     super.close();
   }
 
-  Future<void> getServices() async {
+  Future<void> getServices({
+    int? status,
+    bool refresh = false,
+  }) async {
+    if (!refresh) {
+      emit(state.copyWith(
+        selectedStatusIndex: status,
+      ));
+    }
+
     try {
       final ServiceResponse response = await _zodiacServicesRepository
-          .getServices(ServiceListRequest(status: _selectedStatus));
+          .getServices(ServiceListRequest(status: state.selectedStatusIndex));
 
       if (response.status == true &&
           response.result != null &&
@@ -56,13 +64,9 @@ class ServicesCubit extends Cubit<ServicesState> {
     }
   }
 
-  void setStatus(int? status) {
-    _selectedStatus = status;
-  }
-
   Future<void> deleteService(int serviceId) async {
     if (await _deleteService(serviceId)) {
-      final services = state.services!;
+      final services = List.of(state.services!);
       services
           .removeAt(services.indexWhere((element) => element.id == serviceId));
       emit(state.copyWith(
