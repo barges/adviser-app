@@ -1,9 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:zodiac/infrastructure/routing/route_paths.dart';
+import 'package:zodiac/presentation/screens/add_service/add_service_screen.dart';
 import 'package:zodiac/presentation/screens/article_details_screen/article_details_screen.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart';
 import 'package:zodiac/presentation/screens/chat/chat_screen.dart';
+import 'package:zodiac/presentation/screens/duplicate_service/duplicate_service_screen.dart';
+import 'package:zodiac/presentation/screens/edit_service/edit_service_screen.dart';
 import 'package:zodiac/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'package:zodiac/presentation/screens/gallery/gallery_pictures_screen.dart';
 import 'package:zodiac/presentation/screens/home/home_screen.dart';
@@ -152,6 +155,21 @@ const zodiacRoute = AutoRoute(
       path: RoutePathsZodiac.sendImageScreen,
       name: RoutePathsZodiac.sendImageScreen,
     ),
+    AutoRoute(
+      page: AddServiceScreen,
+      path: RoutePathsZodiac.addService,
+      name: RoutePathsZodiac.addService,
+    ),
+    AutoRoute(
+      page: DuplicateServiceScreen,
+      path: RoutePathsZodiac.duplicateService,
+      name: RoutePathsZodiac.duplicateService,
+    ),
+    AutoRoute(
+      page: EditServiceScreen,
+      path: RoutePathsZodiac.editService,
+      name: RoutePathsZodiac.editService,
+    )
   ],
 );
 
