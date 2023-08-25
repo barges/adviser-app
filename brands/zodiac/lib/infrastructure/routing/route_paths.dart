@@ -29,4 +29,7 @@ class RoutePathsZodiac {
   static const servicesMessagesScreen = '${ZodiacBrand.alias}ServicesMessages';
   static const chatScreen = '${ZodiacBrand.alias}Chat';
   static const sendImageScreen = '${ZodiacBrand.alias}SendImage';
+  static const addService = '${ZodiacBrand.alias}AddService';
+  static const duplicateService = '${ZodiacBrand.alias}DuplicateService';
+  static const editService = '${ZodiacBrand.alias}EditService';
 }

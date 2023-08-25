@@ -1,5 +1,8 @@
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_advisor_interface/themes/app_colors.dart';
+import 'package:zodiac/data/models/enums/approval_status.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 
 class AppTextField extends StatelessWidget {
@@ -14,6 +17,9 @@ class AppTextField extends StatelessWidget {
   final int? maxLength;
   final bool isPassword;
   final bool isBig;
+  final bool showCounter;
+  final String? footerHint;
+  final ApprovalStatus? approvalStatus;
 
   const AppTextField({
     Key? key,
@@ -24,45 +30,67 @@ class AppTextField extends StatelessWidget {
     this.textInputType,
     this.textInputAction,
     this.maxLength,
+    this.footerHint,
+    this.approvalStatus,
     this.isPassword = false,
     this.isBig = false,
     this.errorType = ValidationErrorType.empty,
     this.hintText = '',
+    this.showCounter = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    final String? approvalText = approvalStatus?.getText(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (label != null)
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 12.0,
-              bottom: 4.0,
-            ),
-            child: Text(
-              label!,
-              style: Theme.of(context).textTheme.labelMedium,
-            ),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            if (label != null)
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 12.0,
+                  bottom: 4.0,
+                ),
+                child: Text(
+                  label!,
+                  style: theme.textTheme.labelMedium,
+                ),
+              ),
+            if (approvalText != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4.0),
+                child: _ApprovalStatusWidget(
+                  approvalStatus: approvalStatus!,
+                ),
+              ),
+          ],
+        ),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
             color: errorType != ValidationErrorType.empty
-                ? Theme.of(context).errorColor
+                ? theme.errorColor
                 : focusNode != null && focusNode!.hasPrimaryFocus
-                    ? Theme.of(context).primaryColor
-                    : Theme.of(context).hintColor,
+                    ? theme.primaryColor
+                    : theme.hintColor,
           ),
           child: Container(
             margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
-            height: (isBig ? 144.0 : AppConstants.textFieldsHeight) - 3,
+            height: (isBig ? 144.0 : AppConstants.textFieldsHeight) -
+                3 +
+                (showCounter ? 12.0 : 0.0),
             decoration: BoxDecoration(
               borderRadius:
                   BorderRadius.circular(AppConstants.buttonRadius - 1),
-              color: Theme.of(context).canvasColor,
+              color: theme.canvasColor,
             ),
+            padding: EdgeInsets.only(bottom: showCounter ? 12.0 : 0.0),
             child: TextField(
               controller: controller,
               focusNode: focusNode,
@@ -74,17 +102,35 @@ class AppTextField extends StatelessWidget {
               },
               decoration: InputDecoration(
                 hintText: hintText,
-                hintStyle: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: Theme.of(context).shadowColor),
+                hintStyle: theme.textTheme.bodyMedium
+                    ?.copyWith(color: theme.shadowColor),
                 contentPadding: isBig
-                    ? const EdgeInsets.all(12.0)
+                    ? EdgeInsets.fromLTRB(
+                        12.0, 12.0, 12.0, showCounter ? 0.0 : 12.0)
                     : const EdgeInsets.symmetric(horizontal: 12.0),
-                counterText: '',
+                counterText: showCounter ? null : '',
               ),
+              buildCounter: showCounter
+                  ? (context,
+                      {required currentLength, required isFocused, maxLength}) {
+                      if (maxLength != null) {
+                        final bool limitReached = currentLength >= maxLength;
+                        return Text(
+                          '$currentLength/$maxLength',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            fontSize: 14.0,
+                            color: limitReached
+                                ? AppColors.error
+                                : AppColors.online,
+                          ),
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    }
+                  : null,
               maxLines: isBig ? 10 : 1,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: theme.textTheme.bodyMedium,
             ),
           ),
         ),
@@ -96,13 +142,74 @@ class AppTextField extends StatelessWidget {
             ),
             child: Text(
               errorType.text(context),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).errorColor,
-                    fontSize: 12.0,
-                  ),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.errorColor,
+                fontSize: 12.0,
+              ),
+            ),
+          )
+        else if (footerHint != null)
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 2.0,
+              left: 12.0,
+            ),
+            child: Text(
+              footerHint!,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.shadowColor,
+                fontSize: 12.0,
+              ),
             ),
           )
       ],
+    );
+  }
+}
+
+class _ApprovalStatusWidget extends StatelessWidget {
+  final ApprovalStatus approvalStatus;
+  const _ApprovalStatusWidget({
+    Key? key,
+    required this.approvalStatus,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        vertical: 2.0,
+        horizontal: 6.0,
+      ),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: approvalStatus.color,
+        ),
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: Row(
+        children: [
+          SvgPicture.asset(
+            approvalStatus.iconPath,
+            height: 10.0,
+            width: 10.0,
+            colorFilter: ColorFilter.mode(
+              approvalStatus.color,
+              BlendMode.srcIn,
+            ),
+          ),
+          const SizedBox(
+            width: 4.0,
+          ),
+          Text(
+            approvalStatus.getText(context)?.toUpperCase() ?? '',
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  fontSize: 12.0,
+                  color: approvalStatus.color,
+                ),
+          )
+        ],
+      ),
     );
   }
 }

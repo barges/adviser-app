@@ -10,8 +10,10 @@ part 'list_request.g.dart';
 class ListRequest extends AuthorizedRequest {
   final int count;
   final int offset;
+  final String? search;
 
-  ListRequest({required this.count, required this.offset}) : super();
+  ListRequest({required this.count, required this.offset, this.search})
+      : super();
 
   factory ListRequest.fromJson(Map<String, dynamic> json) =>
       _$ListRequestFromJson(json);

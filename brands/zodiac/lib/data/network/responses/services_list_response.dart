@@ -7,6 +7,7 @@ part 'services_list_response.g.dart';
 @JsonSerializable(includeIfNull: false)
 class ServiceListResponse extends BaseResponse {
   final int? count;
+  @JsonKey(fromJson: _listFromJson)
   final List<ServiceItem>? result;
 
   const ServiceListResponse({
@@ -23,4 +24,20 @@ class ServiceListResponse extends BaseResponse {
 
   @override
   Map<String, dynamic> toJson() => _$ServiceListResponseToJson(this);
+}
+
+List<ServiceItem>? _listFromJson(dynamic value) {
+  if (value is Map<String, dynamic>) {
+    List<dynamic> samples = value['list'];
+    List<ServiceItem> result = [];
+    for (var element in samples) {
+      if (element is Map<String, dynamic>) {
+        result.add(ServiceItem.fromJson(element));
+      }
+    }
+    if (result.isNotEmpty) {
+      return result;
+    }
+  }
+  return null;
 }
