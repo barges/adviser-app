@@ -44,8 +44,9 @@ class ChatAudioPlayerWidget extends StatelessWidget {
 
               return _PlayPauseBtn(
                 isPlaying: isPlaying,
-                color: isOutgoing ? theme.canvasColor : theme.primaryColor,
-                iconColor: isOutgoing ? theme.primaryColor : theme.canvasColor,
+                color: isOutgoing ? theme.backgroundColor : theme.primaryColor,
+                iconColor:
+                    isOutgoing ? theme.primaryColor : theme.backgroundColor,
                 onTapPlayPause: () {
                   if (isOnline) {
                     if (chatCubit.audioRecorder.isRecording) {
@@ -76,10 +77,12 @@ class ChatAudioPlayerWidget extends StatelessWidget {
                   url: url ?? '',
                   duration: Duration(seconds: duration),
                   position: position,
-                  textColor:
-                      isOutgoing ? theme.canvasColor : theme.primaryColor,
+                  textColor: isOutgoing
+                      ? theme.backgroundColor
+                      : theme.primaryColorDark,
                   backgroundColor: theme.primaryColorLight,
-                  color: isOutgoing ? theme.canvasColor : theme.primaryColor,
+                  color:
+                      isOutgoing ? theme.backgroundColor : theme.primaryColor,
                   isNotStopped: isNotStopped,
                 ),
               );

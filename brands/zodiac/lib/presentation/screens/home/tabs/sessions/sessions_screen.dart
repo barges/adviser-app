@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -17,6 +16,7 @@ import 'package:zodiac/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/empty_list_widget.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dart';
 import 'package:zodiac/presentation/common_widgets/no_connection_widget.dart';
+import 'package:zodiac/presentation/common_widgets/search_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
 import 'package:zodiac/presentation/screens/home/tabs/sessions/widgets/zodiac_chat_list_tile_widget.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
@@ -75,12 +75,9 @@ class SessionsScreen extends StatelessWidget {
                               physics: const ClampingScrollPhysics().applyTo(
                                   const AlwaysScrollableScrollPhysics()),
                               slivers: [
-                                const SliverPersistentHeader(
-                                  delegate: _SearchTextField(),
-                                ),
                                 const SliverToBoxAdapter(
                                   child: SizedBox(
-                                    height: 12.0,
+                                    height: 12.0 + 52.0,
                                   ),
                                 ),
                                 SliverList(
@@ -155,6 +152,20 @@ class SessionsScreen extends StatelessWidget {
                       );
                     }
                   }),
+                  Column(
+                    children: [
+                      SearchWidget(
+                        isBorder: false,
+                        backgroundColor:
+                            Theme.of(context).scaffoldBackgroundColor,
+                        onChanged: (text) =>
+                            zodiacSessionsCubit.searchByClientName(text),
+                      ),
+                      const Divider(
+                        height: 1.0,
+                      ),
+                    ],
+                  ),
                   if (isOnline)
                     Positioned(
                       top: 0.0,
@@ -164,7 +175,7 @@ class SessionsScreen extends StatelessWidget {
                         errorMessage: appError.getMessage(context),
                         close: zodiacSessionsCubit.clearErrorMessage,
                       ),
-                    )
+                    ),
                 ],
               );
             })),
@@ -183,91 +194,6 @@ class SessionsScreen extends StatelessWidget {
           name: item.name,
         ),
       ),
-    );
-  }
-}
-
-class _SearchTextField extends SliverPersistentHeaderDelegate {
-  const _SearchTextField() : super();
-
-  @override
-  double get maxExtent => 53.0;
-
-  @override
-  double get minExtent => 1.0;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      true;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    final SessionsCubit zodiacSessionsCubit = context.read<SessionsCubit>();
-    final double height = maxExtent - shrinkOffset - 21.0;
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: height > 0 ? 10.0 : 0.0,
-            horizontal: AppConstants.horizontalScreenPadding,
-          ),
-          child: Container(
-            height: height > 0 ? height : 0.0,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                borderRadius: BorderRadius.circular(12.0)),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 4.0,
-                horizontal: 12.0,
-              ),
-              child: Row(
-                children: [
-                  Assets.vectors.search.svg(
-                    height: AppConstants.iconSize,
-                    width: AppConstants.iconSize,
-                    color: Theme.of(context).shadowColor,
-                  ),
-                  const SizedBox(
-                    width: 8.0,
-                  ),
-                  Expanded(
-                    child: TextField(
-                      controller: zodiacSessionsCubit.searchEditingController,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontSize: 17.0,
-                          ),
-                      decoration: InputDecoration(
-                        hintText: SZodiac.of(context).searchZodiac,
-                        hintStyle:
-                            Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  fontSize: 17.0,
-                                  color: Theme.of(context).shadowColor,
-                                ),
-                        isCollapsed: true,
-                        border: const OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-        const Divider(
-          height: 1.0,
-        ),
-      ],
     );
   }
 }
