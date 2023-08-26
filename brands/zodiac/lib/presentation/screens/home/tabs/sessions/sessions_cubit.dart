@@ -16,6 +16,7 @@ import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 const int _count = 20;
+const _neededMinValueSearch = 3;
 
 class SessionsCubit extends Cubit<SessionsState> {
   final ZodiacSessionsRepository _chatsRepository;
@@ -27,11 +28,12 @@ class SessionsCubit extends Cubit<SessionsState> {
   StreamSubscription? _updateSessionsSubscription;
 
   final ScrollController chatsListScrollController = ScrollController();
-  final TextEditingController searchEditingController = TextEditingController();
 
   bool _isLoading = false;
   bool _hasMore = true;
   final List<ZodiacChatsListItem> _chatsList = [];
+
+  String _searchName = '';
 
   SessionsCubit(
     this._chatsRepository,
@@ -90,9 +92,11 @@ class SessionsCubit extends Cubit<SessionsState> {
           final ChatEntitiesResponse response =
               await _chatsRepository.getChatsList(
             ListRequest(
-              count: _count,
-              offset: _chatsList.length,
-            ),
+                count: _count,
+                offset: _chatsList.length,
+                search: _searchName.length >= _neededMinValueSearch
+                    ? _searchName
+                    : null),
           );
 
           List<ZodiacChatsListItem>? chatsList = response.result;
@@ -111,6 +115,11 @@ class SessionsCubit extends Cubit<SessionsState> {
 
       _isLoading = false;
     }
+  }
+
+  void searchByClientName(String text) {
+    _searchName = text;
+    _getChatsList(refresh: true);
   }
 
   Future<void> hideChat(int? chatId) async {

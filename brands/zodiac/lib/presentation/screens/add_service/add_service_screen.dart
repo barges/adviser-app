@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/services/image_sample_model.dart';
-import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/simple_app_bar.dart';
@@ -20,10 +18,7 @@ class AddServiceScreen extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return BlocProvider(
-      create: (context) => AddServiceCubit(
-        zodiacGetIt.get<ZodiacCachingManager>(),
-        zodiacGetIt.get<ZodiacServicesRepository>(),
-      ),
+      create: (context) => zodiacGetIt.get<AddServiceCubit>(),
       child: GestureDetector(
         onTap: FocusScope.of(context).unfocus,
         child: Scaffold(
@@ -34,10 +29,13 @@ class AddServiceScreen extends StatelessWidget {
           body: Builder(builder: (context) {
             final List<ImageSampleModel>? images =
                 context.select((AddServiceCubit cubit) => cubit.state.images);
+            final List<String>? languagesList = context
+                .select((AddServiceCubit cubit) => cubit.state.languagesList);
 
-            if (images != null) {
+            if (images != null && languagesList != null) {
               return AddServiceBodyWidget(
                 images: images,
+                languagesList: languagesList,
               );
             } else {
               final bool internetConnectionIsAvailable = context.select(
@@ -49,7 +47,7 @@ class AddServiceScreen extends StatelessWidget {
                         cubit.state.alreadyTriedToGetImages);
                 if (alreadyTriedToGetImages) {
                   return RefreshIndicator(
-                    onRefresh: context.read<AddServiceCubit>().getImages,
+                    onRefresh: context.read<AddServiceCubit>().initializeScreen,
                     child: CustomScrollView(
                       physics: const AlwaysScrollableScrollPhysics()
                           .applyTo(const ClampingScrollPhysics()),

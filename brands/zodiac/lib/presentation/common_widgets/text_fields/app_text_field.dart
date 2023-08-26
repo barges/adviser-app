@@ -1,6 +1,8 @@
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
+import 'package:zodiac/data/models/enums/approval_status.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 
 class AppTextField extends StatelessWidget {
@@ -17,6 +19,7 @@ class AppTextField extends StatelessWidget {
   final bool isBig;
   final bool showCounter;
   final String? footerHint;
+  final ApprovalStatus? approvalStatus;
 
   const AppTextField({
     Key? key,
@@ -28,6 +31,7 @@ class AppTextField extends StatelessWidget {
     this.textInputAction,
     this.maxLength,
     this.footerHint,
+    this.approvalStatus,
     this.isPassword = false,
     this.isBig = false,
     this.errorType = ValidationErrorType.empty,
@@ -39,20 +43,34 @@ class AppTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
+    final String? approvalText = approvalStatus?.getText(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (label != null)
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 12.0,
-              bottom: 4.0,
-            ),
-            child: Text(
-              label!,
-              style: theme.textTheme.labelMedium,
-            ),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            if (label != null)
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 12.0,
+                  bottom: 4.0,
+                ),
+                child: Text(
+                  label!,
+                  style: theme.textTheme.labelMedium,
+                ),
+              ),
+            if (approvalText != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4.0),
+                child: _ApprovalStatusWidget(
+                  approvalStatus: approvalStatus!,
+                ),
+              ),
+          ],
+        ),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
@@ -145,6 +163,53 @@ class AppTextField extends StatelessWidget {
             ),
           )
       ],
+    );
+  }
+}
+
+class _ApprovalStatusWidget extends StatelessWidget {
+  final ApprovalStatus approvalStatus;
+  const _ApprovalStatusWidget({
+    Key? key,
+    required this.approvalStatus,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        vertical: 2.0,
+        horizontal: 6.0,
+      ),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: approvalStatus.color,
+        ),
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: Row(
+        children: [
+          SvgPicture.asset(
+            approvalStatus.iconPath,
+            height: 10.0,
+            width: 10.0,
+            colorFilter: ColorFilter.mode(
+              approvalStatus.color,
+              BlendMode.srcIn,
+            ),
+          ),
+          const SizedBox(
+            width: 4.0,
+          ),
+          Text(
+            approvalStatus.getText(context)?.toUpperCase() ?? '',
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  fontSize: 12.0,
+                  color: approvalStatus.color,
+                ),
+          )
+        ],
+      ),
     );
   }
 }

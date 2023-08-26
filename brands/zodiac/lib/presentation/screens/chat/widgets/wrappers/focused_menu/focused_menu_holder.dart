@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/presentation/screens/chat/chat_cubit.dart';
 
 class FocusedMenuItem {
@@ -239,12 +240,23 @@ class _FocusedMenuDetailsState extends State<FocusedMenuDetails> {
     final bottomOffset =
         size.height - childPositionDy + (widget.menuOffset ?? 0.0);
 
-    final bool messageOverflows = ((widget.childSize?.height ?? 0.0) +
+    logger.d(bottomOffset);
+
+    final bool topOverflows = (widget.childSize?.height ?? 0.0) +
             menuHeight +
+            (widget.childOffset.dy > 0 ? widget.childOffset.dy : 0) +
             (widget.topMenuWidgetHeight ?? 0.0) +
             MediaQuery.of(context).padding.top +
             MediaQuery.of(context).padding.bottom >
-        size.height + (widget.childOffset.dy < 0 ? widget.childOffset.dy : 0));
+        size.height;
+
+    final bool bottomOverflows = widget.childOffset.dy +
+            (widget.childSize?.height ?? 0) +
+            MediaQuery.of(context).padding.top +
+            MediaQuery.of(context).padding.bottom >
+        size.height;
+
+    final bool messageOverflows = topOverflows || bottomOverflows;
 
     return Scaffold(
       backgroundColor: Colors.transparent,

@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:zodiac/generated/l10n.dart';
+import 'package:zodiac/presentation/common_widgets/service/slider_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
-import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/slider_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/tabs_widget.dart';
 
 class DeliveryTimeSliderWidget extends StatelessWidget {

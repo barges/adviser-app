@@ -222,5 +222,10 @@
   "servicePreviewZodiac": "Visualização do serviço",
   "buyZodiac": "Comprar",
   "sendForApprovalZodiac": "Enviar para aprovação",
+  "editServiceZodiac": "Editar serviço",
+  "waitingForApprovalZodiac": "Esperando aprovação",
+  "rejectedZodiac": "Rejeitado",
+  "yourServiceHasBeenRejectedBecauseOfZodiac": "Seu serviço foi rejeitado devido a:",
+  "commentFromSupportTeamZodiac": "Comentário da equipe de suporte:",
   "soldZodiac": "vendido"
 }

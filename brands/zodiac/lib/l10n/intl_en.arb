@@ -222,6 +222,11 @@
   "servicePreviewZodiac": "Service preview",
   "buyZodiac": "Buy",
   "sendForApprovalZodiac": "Send for approval",
+  "editServiceZodiac": "Edit service",
+  "waitingForApprovalZodiac": "Waiting for approval",
+  "rejectedZodiac": "Rejected",
+  "yourServiceHasBeenRejectedBecauseOfZodiac": "Your service has been rejected because of:",
+  "commentFromSupportTeamZodiac": "Comment from support team:",
   "letsCreateYourFirstServiceZodiac": "Let’s create your first service",
   "firstYouNeedFillInformationAboutServiceZodiac": "First you need to fill up all required information about the service then send it for approval and as it would be ready you will be able to sell it",
   "soldZodiac": "sold"

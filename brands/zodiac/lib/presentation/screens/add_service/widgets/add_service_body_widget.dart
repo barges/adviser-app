@@ -7,22 +7,26 @@ import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app
 import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dart';
+import 'package:zodiac/presentation/common_widgets/service/choose_image_widget.dart';
 import 'package:zodiac/presentation/common_widgets/tile_menu_button.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
-import 'package:zodiac/presentation/screens/add_service/widgets/choose_image_widget.dart';
+import 'package:zodiac/presentation/screens/add_service/add_service_state.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/information_expansion_panel.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/languages_part_widget.dart';
-import 'package:zodiac/presentation/screens/add_service/widgets/preview_part/service_preview_part_widget.dart';
+import 'package:zodiac/presentation/common_widgets/service/preview_part/service_preview_part_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/sliders_part_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/tabs_widget.dart';
+import 'package:zodiac/zodiac_constants.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class AddServiceBodyWidget extends StatelessWidget {
   final List<ImageSampleModel> images;
+  final List<String> languagesList;
 
   const AddServiceBodyWidget({
     Key? key,
     required this.images,
+    required this.languagesList,
   }) : super(key: key);
 
   @override
@@ -76,7 +80,9 @@ class AddServiceBodyWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                const LanguagesPartWidget(),
+                LanguagesPartWidget(
+                  languagesList: languagesList,
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppConstants.horizontalScreenPadding,
@@ -90,18 +96,59 @@ class AddServiceBodyWidget extends StatelessWidget {
                       const SizedBox(
                         height: 24.0,
                       ),
-                      ChooseImageWidget(
-                        images: images,
-                      ),
+                      Builder(builder: (context) {
+                        final int selectedImageIndex = context.select(
+                            (AddServiceCubit cubit) =>
+                                cubit.state.selectedImageIndex);
+                        final bool showAllImages = context.select(
+                            (AddServiceCubit cubit) =>
+                                cubit.state.showAllImages);
+
+                        return ChooseImageWidget(
+                          images: images,
+                          selectImage: addServiceCubit.selectImage,
+                          selectedImageIndex: selectedImageIndex,
+                          showAllImages: showAllImages,
+                          setShowAllImages: addServiceCubit.setShowAllImages,
+                        );
+                      }),
                     ],
                   ),
                 ),
                 const SizedBox(
                   height: 24.0,
                 ),
-                ServicePreviewPartWidget(
-                  images: images,
-                ),
+                Builder(builder: (context) {
+                  context.select((AddServiceCubit cubit) =>
+                      cubit.state.updateAfterDuplicate);
+
+                  final ServicePreviewDto dto =
+                      context.select((AddServiceCubit cubit) {
+                    final AddServiceState state = cubit.state;
+
+                    return (
+                      selectedImage: images[state.selectedImageIndex],
+                      titleController: addServiceCubit
+                          .textControllersMap.entries
+                          .toList()[state.selectedLanguageIndex]
+                          .value[ZodiacConstants.serviceTitleIndex],
+                      descriptionController: addServiceCubit
+                          .textControllersMap.entries
+                          .toList()[state.selectedLanguageIndex]
+                          .value[ZodiacConstants.serviceDescriptionIndex],
+                      price: state.price,
+                      discount: state.discount,
+                      discountEnabled: state.discountEnabled,
+                      serviceType: state.selectedTab,
+                      deliveryTime: state.deliveryTime,
+                      deliveryTimeType: state.selectedDeliveryTimeTab,
+                    );
+                  });
+
+                  return ServicePreviewPartWidget(
+                    dto: dto,
+                  );
+                }),
                 const SizedBox(
                   height: 24.0,
                 ),
@@ -112,7 +159,7 @@ class AddServiceBodyWidget extends StatelessWidget {
                   child: AppElevatedButton(
                     title: SZodiac.of(context).sendForApprovalZodiac,
                     onPressed: () async {
-                      await addServiceCubit.sendForApproval();
+                      await addServiceCubit.sendForApproval(context);
                       // ignore: use_build_context_synchronously
                       context.read<ZodiacMainCubit>().updateServices();
                     },

@@ -2286,6 +2286,46 @@ class SZodiac {
     );
   }
 
+  /// `Edit service`
+  String get editServiceZodiac {
+    return Intl.message(
+      'Edit service',
+      name: 'editServiceZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Waiting for approval`
+  String get waitingForApprovalZodiac {
+    return Intl.message(
+      'Waiting for approval',
+      name: 'waitingForApprovalZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your service has been rejected because of:`
+  String get yourServiceHasBeenRejectedBecauseOfZodiac {
+    return Intl.message(
+      'Your service has been rejected because of:',
+      name: 'yourServiceHasBeenRejectedBecauseOfZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Comment from support team:`
+  String get commentFromSupportTeamZodiac {
+    return Intl.message(
+      'Comment from support team:',
+      name: 'commentFromSupportTeamZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Let’s create your first service`
   String get letsCreateYourFirstServiceZodiac {
     return Intl.message(

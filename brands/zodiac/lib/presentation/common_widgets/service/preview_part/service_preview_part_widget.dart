@@ -1,15 +1,29 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:zodiac/data/models/enums/service_type.dart';
 import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/generated/l10n.dart';
-import 'package:zodiac/presentation/screens/add_service/widgets/preview_part/service_preview_widget.dart';
+import 'package:zodiac/presentation/common_widgets/service/preview_part/service_preview_widget.dart';
+import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
+
+typedef ServicePreviewDto = ({
+  ImageSampleModel selectedImage,
+  TextEditingController titleController,
+  TextEditingController descriptionController,
+  double price,
+  double discount,
+  bool discountEnabled,
+  ServiceType serviceType,
+  double deliveryTime,
+  DeliveryTimeTabType deliveryTimeType,
+});
 
 class ServicePreviewPartWidget extends StatelessWidget {
-  final List<ImageSampleModel> images;
+  final ServicePreviewDto dto;
 
   const ServicePreviewPartWidget({
     Key? key,
-    required this.images,
+    required this.dto,
   }) : super(key: key);
 
   @override
@@ -33,7 +47,7 @@ class ServicePreviewPartWidget extends StatelessWidget {
           strokeWidth: 2.0,
           dashPattern: const [8.0, 8.0],
           child: ServicePreviewWidget(
-            images: images,
+            dto: dto,
           ),
         ),
       ],

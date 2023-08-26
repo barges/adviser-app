@@ -1,40 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/enums/service_type.dart';
 import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
-import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
 
 class ServicePreviewImageWidget extends StatelessWidget {
-  final int selectedLanguageIndex;
-  final List<ImageSampleModel> images;
+  final ImageSampleModel selectedImage;
+  final TextEditingController titleController;
+  final ServiceType serviceType;
+  final double deliveryTime;
+  final DeliveryTimeTabType deliveryTimeType;
 
   const ServicePreviewImageWidget({
     Key? key,
-    required this.selectedLanguageIndex,
-    required this.images,
+    required this.selectedImage,
+    required this.titleController,
+    required this.serviceType,
+    required this.deliveryTime,
+    required this.deliveryTimeType,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final AddServiceCubit addServiceCubit = context.read<AddServiceCubit>();
-
-    final int selectedImageIndex = context
-        .select((AddServiceCubit cubit) => cubit.state.selectedImageIndex);
-
-    final TextEditingController titleController = addServiceCubit
-        .textControllersMap.entries
-        .toList()[selectedLanguageIndex]
-        .value[titleIndex];
 
     return Stack(
       children: [
         AppImageWidget(
-          uri: Uri.parse(images[selectedImageIndex].image ?? ''),
+          uri: Uri.parse(selectedImage.image ?? ''),
           height: 98.0,
           width: 260,
         ),
@@ -81,10 +76,14 @@ class ServicePreviewImageWidget extends StatelessWidget {
             ],
           ),
         ),
-        const Positioned(
+        Positioned(
           bottom: 16.0,
           left: 16.0,
-          child: _ServiceTypeAndDeliveryTimeWidget(),
+          child: _ServiceTypeAndDeliveryTimeWidget(
+            serviceType: serviceType,
+            deliveryTime: deliveryTime,
+            deliveryTimeType: deliveryTimeType,
+          ),
         )
       ],
     );
@@ -92,19 +91,20 @@ class ServicePreviewImageWidget extends StatelessWidget {
 }
 
 class _ServiceTypeAndDeliveryTimeWidget extends StatelessWidget {
-  const _ServiceTypeAndDeliveryTimeWidget({Key? key}) : super(key: key);
+  final ServiceType serviceType;
+  final double deliveryTime;
+  final DeliveryTimeTabType deliveryTimeType;
+
+  const _ServiceTypeAndDeliveryTimeWidget({
+    Key? key,
+    required this.serviceType,
+    required this.deliveryTime,
+    required this.deliveryTimeType,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-
-    final ServiceType selectedTab =
-        context.select((AddServiceCubit cubit) => cubit.state.selectedTab);
-
-    final double deliveryTime =
-        context.select((AddServiceCubit cubit) => cubit.state.deliveryTime);
-    final DeliveryTimeTabType selectedDeliveryTimeTab = context
-        .select((AddServiceCubit cubit) => cubit.state.selectedDeliveryTimeTab);
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -116,8 +116,8 @@ class _ServiceTypeAndDeliveryTimeWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: Text(
-        '${selectedTab.getShortTitle(context)}:'
-                ' ${selectedDeliveryTimeTab.formatter(
+        '${serviceType.getShortTitle(context)}:'
+                ' ${deliveryTimeType.formatter(
           context,
           deliveryTime.toStringAsFixed(0),
         )}'

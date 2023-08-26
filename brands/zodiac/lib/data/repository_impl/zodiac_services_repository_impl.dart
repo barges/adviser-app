@@ -3,10 +3,14 @@ import 'package:zodiac/data/network/api/services_api.dart';
 import 'package:zodiac/data/network/requests/add_service_request.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/requests/delete_service_request.dart';
+import 'package:zodiac/data/network/requests/edit_service_request.dart';
+import 'package:zodiac/data/network/requests/get_service_info_request.dart';
 import 'package:zodiac/data/network/requests/services_list_request.dart';
 import 'package:zodiac/data/network/responses/add_service_response.dart';
+import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/default_services_images_response.dart';
 import 'package:zodiac/data/network/responses/services_response.dart';
+import 'package:zodiac/data/network/responses/get_service_info_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 
 @Injectable(as: ZodiacServicesRepository)
@@ -34,5 +38,16 @@ class ZodiacServicesRepositoryImpl implements ZodiacServicesRepository {
   @override
   Future<ServiceResponse> getServices(ServiceListRequest request) async {
     return await _api.getServices(request);
+  }
+
+  @override
+  Future<GetServiceInfoResponse> getServiceInfo(
+      GetServiceInfoRequest request) async {
+    return await _api.getServiceInfo(request);
+  }
+
+  @override
+  Future<BaseResponse> editService(EditServiceRequest request) async {
+    return await _api.editService(request);
   }
 }

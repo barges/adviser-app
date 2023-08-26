@@ -42,15 +42,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m8(timer) => "You are able to write within ${timer}";
 
-  static String m9(attempts) =>
-      "You have ${attempts} attempts to enter the right code";
+  static String m9(limit) => "You can send ${limit} coupons per day.";
 
   static String m10(attempts) =>
+      "You have ${attempts} attempts to enter the right code";
+
+  static String m11(attempts) =>
       "You have ${attempts} verification attempts per day";
 
-  static String m11(clientName) => "You missed a call from ${clientName}.";
+  static String m12(clientName) => "You missed a call from ${clientName}.";
 
-  static String m12(clientName) => "You missed a chat from ${clientName}.";
+  static String m13(clientName) => "You missed a chat from ${clientName}.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -110,6 +112,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Choose email app"),
         "closeZodiac": MessageLookupByLibrary.simpleMessage("Close"),
         "codeZodiac": MessageLookupByLibrary.simpleMessage("Code"),
+        "commentFromSupportTeamZodiac":
+            MessageLookupByLibrary.simpleMessage("Comment from support team:"),
         "confirmYourCountryCodeAndEnterYourPhoneNumberZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Confirm your country code and enter your phone number"),
@@ -150,8 +154,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Edit message"),
         "editProfileZodiac":
             MessageLookupByLibrary.simpleMessage("Edit profile"),
+        "editServiceZodiac":
+            MessageLookupByLibrary.simpleMessage("Edit service"),
         "editTemplateZodiac":
             MessageLookupByLibrary.simpleMessage("Edit template"),
+        "editZodiac": MessageLookupByLibrary.simpleMessage("Edit"),
         "egAstrologyReadingZodiac":
             MessageLookupByLibrary.simpleMessage("e.g. Astrology Reading"),
         "emailZodiac": MessageLookupByLibrary.simpleMessage("Email"),
@@ -320,9 +327,13 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Selected coupons will be renewed automatically and displayed on your profile"),
         "selectedPhotoZodiac":
             MessageLookupByLibrary.simpleMessage("Selected photo"),
+        "sendCannedMessageZodiac":
+            MessageLookupByLibrary.simpleMessage("Send canned message"),
         "sendCodeZodiac": MessageLookupByLibrary.simpleMessage("Send code"),
+        "sendCouponZodiac": MessageLookupByLibrary.simpleMessage("Send coupon"),
         "sendForApprovalZodiac":
             MessageLookupByLibrary.simpleMessage("Send for approval"),
+        "sendZodiac": MessageLookupByLibrary.simpleMessage("Send"),
         "serviceDescriptionHintZodiac": MessageLookupByLibrary.simpleMessage(
             "I will draw 3 cards\nI will contact my angel\nTogether we will read the conclusions\nEventually I will share with you, in a next session, the analysis we have done"),
         "serviceLanguageZodiac":
@@ -344,11 +355,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "smileysAndPeopleZodiac":
             MessageLookupByLibrary.simpleMessage("Smileys & People"),
         "soldZodiac": MessageLookupByLibrary.simpleMessage("sold"),
+        "somethingWentWrongZodiac":
+            MessageLookupByLibrary.simpleMessage("Something went wrong"),
         "sorryPhoneVerificationUnavailableZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Sorry, phone verification is currently unavailable. Please try again later."),
         "startChatZodiac": MessageLookupByLibrary.simpleMessage("Start Chat"),
         "successZodiac": MessageLookupByLibrary.simpleMessage("Success"),
+        "swipeDownToReloadZodiac":
+            MessageLookupByLibrary.simpleMessage("Swipe down to reload"),
         "symbolsZodiac": MessageLookupByLibrary.simpleMessage("Symbols"),
         "tempZodiac": MessageLookupByLibrary.simpleMessage("Temp"),
         "templatesContentZodiac":
@@ -383,6 +398,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Uh-oh. It looks like you\'ve lost your connection. Please try again."),
         "unverifiedZodiac": MessageLookupByLibrary.simpleMessage("Unverified"),
         "verifyZodiac": MessageLookupByLibrary.simpleMessage("Verify"),
+        "waitingForApprovalZodiac":
+            MessageLookupByLibrary.simpleMessage("Waiting for approval"),
         "weVeSentPasswordResetInstructionsToEmailZodiac": m7,
         "wellTextYouCodeToVerifyYourPhoneNumberZodiac":
             MessageLookupByLibrary.simpleMessage(
@@ -402,10 +419,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "youCanEasilyAccessTheseTemplatesZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "You can easily access these templates during and after the chat"),
-        "youHaveAttemptsToEnterRightCodeZodiac": m9,
-        "youHaveVerificationAttemptsPerDayZodiac": m10,
-        "youMissedCallFromZodiac": m11,
-        "youMissedChatFromZodiac": m12,
+        "youCanSendNCouponsPerDayZodiac": m9,
+        "youHaveAttemptsToEnterRightCodeZodiac": m10,
+        "youHaveVerificationAttemptsPerDayZodiac": m11,
+        "youMissedCallFromZodiac": m12,
+        "youMissedChatFromZodiac": m13,
         "youWhereBlocked": MessageLookupByLibrary.simpleMessage(
             "Your account has been blocked.<br>Please contact <a href=\'\'>Customer Support</a> to resolve the issue"),
         "youZodiac": MessageLookupByLibrary.simpleMessage("You"),
@@ -421,6 +439,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "yourNotificationsHistoryWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Your notifications history will appear here"),
+        "yourServiceHasBeenRejectedBecauseOfZodiac":
+            MessageLookupByLibrary.simpleMessage(
+                "Your service has been rejected because of:"),
         "yourTransactionsHistoryWillAppearHereZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Your transactions history will appear here"),

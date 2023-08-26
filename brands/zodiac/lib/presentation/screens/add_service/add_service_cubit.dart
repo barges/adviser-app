@@ -1,6 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
+import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -13,26 +15,26 @@ import 'package:zodiac/data/models/services/service_language_model.dart';
 import 'package:zodiac/data/models/user_info/locale_model.dart';
 import 'package:zodiac/data/network/requests/add_service_request.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
+import 'package:zodiac/data/network/responses/add_service_response.dart';
 import 'package:zodiac/data/network/responses/default_services_images_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
+import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_state.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
+import 'package:zodiac/zodiac_constants.dart';
 
 const double minPrice = 4.99;
 const double maxPrice = 299.99;
 
-const double minDiscount = 5;
-const double maxDiscount = 50;
-
 const int _textFieldsCount = 2;
 
-const int titleIndex = 0;
-const int descriptionIndex = 1;
-
+@injectable
 class AddServiceCubit extends Cubit<AddServiceState> {
-  final ZodiacCachingManager _cachingManager;
+  final ZodiacCachingManager _zodiacCachingManager;
   final ZodiacServicesRepository _servicesRepository;
+  final ZodiacUserRepository _userRepository;
+  final GlobalCachingManager _globalCachingManager;
 
   List<GlobalKey> localesGlobalKeys = [];
   final Map<String, List<TextEditingController>> textControllersMap = {};
@@ -44,14 +46,12 @@ class AddServiceCubit extends Cubit<AddServiceState> {
   int? _duplicatedServiceId;
 
   AddServiceCubit(
-    this._cachingManager,
+    this._zodiacCachingManager,
     this._servicesRepository,
+    this._userRepository,
+    this._globalCachingManager,
   ) : super(const AddServiceState()) {
-    getImages();
-
-    for (String element in state.languagesList) {
-      _setNewLocaleProperties(element, onStart: true);
-    }
+    initializeScreen();
   }
 
   @override
@@ -72,6 +72,36 @@ class AddServiceCubit extends Cubit<AddServiceState> {
       }
     }
     super.close();
+  }
+
+  Future<void> initializeScreen() async {
+    try {
+      await _getInitLanguage();
+      await _getImages();
+    } catch (e) {
+      logger.d(e);
+    } finally {
+      emit(state.copyWith(alreadyTriedToGetImages: true));
+    }
+  }
+
+  Future<void> _getInitLanguage() async {
+    if (_zodiacCachingManager.haveLocales) {
+      _setInitLanguage();
+    } else {
+      List<LocaleModel>? responseLocales =
+          ((await _userRepository.getAllLocales(AuthorizedRequest())).result);
+      if (responseLocales != null) {
+        _zodiacCachingManager.saveAllLocales(responseLocales);
+        _setInitLanguage();
+      }
+    }
+  }
+
+  void _setInitLanguage() {
+    String initLanguageCode = _globalCachingManager.getLanguageCode() ?? 'en';
+    emit(state.copyWith(languagesList: [initLanguageCode]));
+    _setNewLocaleProperties(initLanguageCode, onStart: true);
   }
 
   void goToAddNewLocale(BuildContext context) {
@@ -116,6 +146,16 @@ class AddServiceCubit extends Cubit<AddServiceState> {
             element.code!, element.title ?? '', element.description ?? '');
       }
     });
+
+    duplicatedService.approval?.forEach((element) {
+      if (element.code != null) {
+        _newLanguagesList.add(element.code!);
+        _addLocaleLocally(element.code!);
+        _setupLanguageTexts(element.code!, element.title?.value ?? '',
+            element.description?.value ?? '');
+      }
+    });
+
     DeliveryTimeTabType? deliveryTimeTabType =
         DeliveryTimeTabType.fromSeconds(duplicatedService.duration);
 
@@ -128,7 +168,7 @@ class AddServiceCubit extends Cubit<AddServiceState> {
               deliveryTimeTabType ?? DeliveryTimeTabType.minutes,
           deliveryTime: deliveryTimeTabType
                   ?.deliveryTimeFromSeconds(duplicatedService.duration) ??
-              9.99,
+              20,
           mainLanguageIndex: _newLanguagesList
               .indexWhere((element) => element == duplicatedService.mainLocale),
           selectedLanguageIndex: 0,
@@ -138,12 +178,14 @@ class AddServiceCubit extends Cubit<AddServiceState> {
 
   void _setupLanguageTexts(
       String localeCode, String title, String description) {
-    textControllersMap[localeCode]?[titleIndex].text = title;
-    textControllersMap[localeCode]?[descriptionIndex].text = description;
+    textControllersMap[localeCode]?[ZodiacConstants.serviceTitleIndex].text =
+        title;
+    textControllersMap[localeCode]?[ZodiacConstants.serviceDescriptionIndex]
+        .text = description;
   }
 
   String localeNativeName(String code) {
-    List<LocaleModel>? locales = _cachingManager.getAllLocales();
+    List<LocaleModel>? locales = _zodiacCachingManager.getAllLocales();
 
     return locales
             ?.firstWhere((element) => element.code == code,
@@ -158,7 +200,7 @@ class AddServiceCubit extends Cubit<AddServiceState> {
   }
 
   void _addLocaleLocally(String localeCode) {
-    final List<String> locales = List.from(state.languagesList);
+    final List<String> locales = List.from(state.languagesList ?? []);
     locales.add(localeCode);
     _setNewLocaleProperties(localeCode);
 
@@ -183,8 +225,11 @@ class AddServiceCubit extends Cubit<AddServiceState> {
       (index) {
         return TextEditingController()
           ..addListener(() {
-            errorTextsMap[localeCode]?[index] = ValidationErrorType.empty;
-            _updateTextsFlag();
+            if (errorTextsMap[localeCode]?[index] !=
+                ValidationErrorType.empty) {
+              errorTextsMap[localeCode]?[index] = ValidationErrorType.empty;
+              _updateTextsFlag();
+            }
           });
       },
     );
@@ -226,7 +271,7 @@ class AddServiceCubit extends Cubit<AddServiceState> {
   }
 
   void _removeLocaleLocally(String localeCode) {
-    final List<String> locales = List.of(state.languagesList);
+    final List<String> locales = List.of(state.languagesList ?? []);
     final codeIndex = locales.indexOf(localeCode);
     int newLocaleIndex = state.selectedLanguageIndex;
 
@@ -241,6 +286,10 @@ class AddServiceCubit extends Cubit<AddServiceState> {
       languagesList: List.of(locales),
       selectedLanguageIndex: newLocaleIndex,
     ));
+
+    if (locales.length == 1) {
+      emit(state.copyWith(mainLanguageIndex: 0));
+    }
   }
 
   void _removeLocaleProperties(String localeCode) {
@@ -260,7 +309,7 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     hasFocusNotifiersMap.remove(localeCode);
     errorTextsMap.remove(localeCode);
 
-    localesGlobalKeys.removeAt(state.languagesList.indexOf(localeCode));
+    localesGlobalKeys.removeAt(state.languagesList!.indexOf(localeCode));
   }
 
   void onPriceChanged(dynamic value) {
@@ -288,7 +337,8 @@ class AddServiceCubit extends Cubit<AddServiceState> {
   }
 
   void onDiscountChanged(dynamic value) {
-    if (value >= minDiscount && value <= maxDiscount) {
+    if (value >= ZodiacConstants.serviceMinDiscount &&
+        value <= ZodiacConstants.serviceMaxDiscount) {
       emit(state.copyWith(discount: value));
     }
   }
@@ -297,20 +347,14 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     emit(state.copyWith(discountEnabled: value));
   }
 
-  Future<void> getImages() async {
-    try {
-      final DefaultServicesImagesResponse response =
-          await _servicesRepository.getDefaultImages(AuthorizedRequest());
+  Future<void> _getImages() async {
+    final DefaultServicesImagesResponse response =
+        await _servicesRepository.getDefaultImages(AuthorizedRequest());
 
-      if (response.status == true) {
-        List<ImageSampleModel>? images = response.samples;
+    if (response.status == true) {
+      List<ImageSampleModel>? images = response.samples;
 
-        emit(state.copyWith(images: images));
-      }
-    } catch (e) {
-      logger.d(e);
-    } finally {
-      emit(state.copyWith(alreadyTriedToGetImages: true));
+      emit(state.copyWith(images: images));
     }
   }
 
@@ -322,18 +366,22 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     emit(state.copyWith(selectedImageIndex: index));
   }
 
-  Future<void> sendForApproval() async {
+  Future<void> sendForApproval(BuildContext context) async {
     final bool isChecked = _checkTextFields();
 
     final List<ImageSampleModel>? images = state.images;
-    if (isChecked && images != null) {
+    if (isChecked && images != null && state.languagesList != null) {
       final List<ServiceLanguageModel> translations = [];
-      for (String element in state.languagesList) {
+      for (String element in state.languagesList!) {
         translations.add(
           ServiceLanguageModel(
             code: element,
-            title: textControllersMap[element]?[titleIndex].text,
-            description: textControllersMap[element]?[descriptionIndex].text,
+            title: textControllersMap[element]
+                    ?[ZodiacConstants.serviceTitleIndex]
+                .text,
+            description: textControllersMap[element]
+                    ?[ZodiacConstants.serviceDescriptionIndex]
+                .text,
           ),
         );
       }
@@ -343,20 +391,27 @@ class AddServiceCubit extends Cubit<AddServiceState> {
             state.selectedDeliveryTimeTab.toSeconds(state.deliveryTime.toInt()),
         type: state.selectedTab,
         imageAlias: images[state.selectedImageIndex].imageAlias ?? '',
-        mainLocale: state.mainLanguageIndex != null
-            ? state.languagesList[state.mainLanguageIndex!]
-            : null,
+        mainLocale:
+            state.mainLanguageIndex != null && state.languagesList != null
+                ? state.languagesList![state.mainLanguageIndex!]
+                : null,
         translations: translations,
       );
 
-      await _servicesRepository.addService(request);
+      AddServiceResponse response =
+          await _servicesRepository.addService(request);
+
+      if (response.status == true) {
+        // ignore: use_build_context_synchronously
+        context.pop();
+      }
     }
   }
 
   bool _checkTextFields() {
     bool isValid = true;
     int? firstLanguageWithErrorIndex;
-    final List<String> languagesList = List.from(state.languagesList);
+    final List<String> languagesList = List.from(state.languagesList ?? []);
     for (String localeCode in languagesList) {
       final List<TextEditingController>? controllersByLocale =
           textControllersMap[localeCode];

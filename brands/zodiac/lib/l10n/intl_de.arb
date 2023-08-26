@@ -220,5 +220,10 @@
   "servicePreviewZodiac": "Servicevorschau",
   "buyZodiac": "Besorgen",
   "sendForApprovalZodiac": "Zur Genehmigung senden",
+  "editServiceZodiac": "Dienst bearbeiten",
+  "waitingForApprovalZodiac": "Warten auf die Bestätigung",
+  "rejectedZodiac": "Abgelehnt",
+  "yourServiceHasBeenRejectedBecauseOfZodiac": "Ihr Dienst wurde aus folgendem Grund abgelehnt:",
+  "commentFromSupportTeamZodiac": "Kommentar vom Support-Team:",
   "soldZodiac": "verkauft"
 }

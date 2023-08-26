@@ -1,31 +1,30 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
-import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
 
 class ChooseImageWidget extends StatelessWidget {
   final List<ImageSampleModel> images;
+  final int selectedImageIndex;
+  final bool showAllImages;
+  final ValueSetter<int> selectImage;
+  final VoidCallback setShowAllImages;
 
   const ChooseImageWidget({
     Key? key,
     required this.images,
+    required this.selectedImageIndex,
+    required this.showAllImages,
+    required this.selectImage,
+    required this.setShowAllImages,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final AddServiceCubit addServiceCubit = context.read<AddServiceCubit>();
-
-    final int selectedImageIndex = context
-        .select((AddServiceCubit cubit) => cubit.state.selectedImageIndex);
-
-    final bool showAllImages =
-        context.select((AddServiceCubit cubit) => cubit.state.showAllImages);
 
     final List<String> shownImages = showAllImages
         ? images.map((e) => e.image ?? '').toList()
@@ -70,7 +69,7 @@ class ChooseImageWidget extends StatelessWidget {
             children: shownImages
                 .mapIndexed(
                   (index, element) => GestureDetector(
-                    onTap: () => addServiceCubit.selectImage(index),
+                    onTap: () => selectImage(index),
                     child: Stack(
                       children: [
                         Positioned.fill(
@@ -101,7 +100,7 @@ class ChooseImageWidget extends StatelessWidget {
                 .toList(),
           ),
           GestureDetector(
-            onTap: addServiceCubit.setShowAllImages,
+            onTap: setShowAllImages,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

@@ -320,9 +320,11 @@ class ChatCubit extends BaseCubit<ChatState> {
         textInputFocusNode.unfocus();
         emit(state.copyWith(
           isTextInputCollapsed: true,
-          keyboardOpened: !state.keyboardOpened,
         ));
       }
+      emit(state.copyWith(
+        keyboardOpened: !state.keyboardOpened,
+      ));
     }));
 
     textInputFocusNode.addListener(() {
