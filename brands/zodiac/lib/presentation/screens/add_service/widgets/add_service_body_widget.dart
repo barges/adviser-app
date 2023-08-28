@@ -159,9 +159,10 @@ class AddServiceBodyWidget extends StatelessWidget {
                   child: AppElevatedButton(
                     title: SZodiac.of(context).sendForApprovalZodiac,
                     onPressed: () async {
-                      await addServiceCubit.sendForApproval(context);
-                      // ignore: use_build_context_synchronously
-                      context.read<ZodiacMainCubit>().updateServices();
+                      if (await addServiceCubit.sendForApproval(context)) {
+                        // ignore: use_build_context_synchronously
+                        context.read<ZodiacMainCubit>().updateServices();
+                      }
                     },
                   ),
                 ),
