@@ -544,6 +544,10 @@ class ChatCubit extends BaseCubit<ChatState> {
       roomId: enterRoomData?.roomData?.id ?? '',
       opponentId: clientData.id ?? 0,
     );
+
+    if (!state.isTextInputCollapsed) {
+      updateTextFieldIsCollapse(true);
+    }
   }
 
   void sendWriteStatus() {
