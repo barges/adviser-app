@@ -22,18 +22,20 @@ class DailyCouponsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double couponHeight = 96 /
+    const viewportFraction = 0.94;
+    const spacing = 12.0;
+    final couponHeight = 96 /
         264 *
         (MediaQuery.of(context).size.width -
             AppConstants.horizontalScreenPadding * 2) *
-        0.8;
+        viewportFraction;
     return SizedBox(
-      height: couponHeight * 3 + 12 * 2,
+      height: couponHeight * 3 + spacing,
       child: PageView.builder(
-        controller: PageController(viewportFraction: 0.8),
+        controller: PageController(viewportFraction: viewportFraction),
         itemCount: 3,
         itemBuilder: (context, rowIndex) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6.0),
+          padding: const EdgeInsets.symmetric(horizontal: spacing / 2),
           child: ListView.separated(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
@@ -41,7 +43,8 @@ class DailyCouponsWidget extends StatelessWidget {
               dailyCoupon: dailyCoupons[columnIndex + rowIndex * 3],
               limitReached: limitReached,
             ),
-            separatorBuilder: (context, index) => const SizedBox(height: 12.0),
+            separatorBuilder: (context, index) =>
+                const SizedBox(height: spacing),
             itemCount: 3,
           ),
         ),

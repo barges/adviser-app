@@ -459,6 +459,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
         couponsSetEqualPrevious: checkCouponsSetEqualPrevious(dailyCoupons),
         disableDailyRenewalEnabling:
             dailyCouponsCountIsZero && _savedCouponsSetCountIsZero == true,
+        disableDailyCouponsEnabling: dailyCouponsCountIsZero,
       ));
     }
   }

@@ -50,6 +50,7 @@ class ChatRecordingWidget extends StatelessWidget {
                     Container(
                       height: 11.0,
                       width: 11.0,
+                      margin: const EdgeInsets.only(right: 2.5),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: theme.errorColor,
