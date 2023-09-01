@@ -28,6 +28,8 @@ class DailyCouponsPartWidget extends StatelessWidget {
           selectedCount += element.count ?? 0;
         }
 
+        const opacity = 0.4;
+
         return Container(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           decoration: BoxDecoration(
@@ -42,7 +44,7 @@ class DailyCouponsPartWidget extends StatelessWidget {
                         cubit.state.disableDailyCouponsEnabling);
 
                 return Opacity(
-                  opacity: disableDailyCouponsEnabling ? 0.6 : 1.0,
+                  opacity: disableDailyCouponsEnabling ? opacity : 1.0,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: AppConstants.horizontalScreenPadding),
@@ -68,7 +70,7 @@ class DailyCouponsPartWidget extends StatelessWidget {
                                 '$selectedCount/$dailyCouponsLimit',
                                 style: theme.textTheme.labelMedium?.copyWith(
                                   fontSize: 13.0,
-                                  color: theme.canvasColor,
+                                  color: theme.backgroundColor,
                                 ),
                               ),
                             ),
@@ -91,20 +93,24 @@ class DailyCouponsPartWidget extends StatelessWidget {
                         const SizedBox(
                           height: 8.0,
                         ),
-                        Text(
-                          SZodiac.of(context)
-                              .theNumberOfAvailableCouponsDependsOnTheAmountOfSessionsZodiac,
-                          style: theme.textTheme.bodyMedium
-                              ?.copyWith(color: theme.shadowColor),
-                        ),
-                        const SizedBox(
-                          height: 16.0,
-                        ),
                       ],
                     ),
                   ),
                 );
               }),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppConstants.horizontalScreenPadding),
+                child: Text(
+                  SZodiac.of(context)
+                      .theNumberOfAvailableCouponsDependsOnTheAmountOfSessionsZodiac,
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(color: theme.shadowColor),
+                ),
+              ),
+              const SizedBox(
+                height: 16.0,
+              ),
               DailyCouponsWidget(
                 dailyCoupons: dailyCoupons,
                 limitReached: selectedCount == dailyCouponsLimit,
@@ -125,8 +131,9 @@ class DailyCouponsPartWidget extends StatelessWidget {
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Opacity(
-                      opacity:
-                          couponsSetEqualPrevious || countIsZero ? 0.6 : 1.0,
+                      opacity: couponsSetEqualPrevious || countIsZero
+                          ? opacity
+                          : 1.0,
                       child: ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
@@ -153,7 +160,7 @@ class DailyCouponsPartWidget extends StatelessWidget {
                                   : SZodiac.of(context).saveCouponsSetZodiac,
                               style: theme.textTheme.labelMedium?.copyWith(
                                 fontSize: 17.0,
-                                color: theme.canvasColor,
+                                color: theme.backgroundColor,
                               ),
                             ),
                           )),
@@ -166,7 +173,7 @@ class DailyCouponsPartWidget extends StatelessWidget {
                     (ZodiacAccountCubit cubit) =>
                         cubit.state.disableDailyRenewalEnabling);
                 return Opacity(
-                  opacity: disableDailyRenewalEnabling ? 0.6 : 1.0,
+                  opacity: disableDailyRenewalEnabling ? opacity : 1.0,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: AppConstants.horizontalScreenPadding),
