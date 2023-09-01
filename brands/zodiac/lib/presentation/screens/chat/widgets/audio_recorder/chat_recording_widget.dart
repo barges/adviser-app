@@ -47,18 +47,16 @@ class ChatRecordingWidget extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 2.5),
-                      child: Container(
-                        height: 11.0,
-                        width: 11.0,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: theme.errorColor,
-                          border: Border.all(
-                            width: 1.5,
-                            color: theme.canvasColor,
-                          ),
+                    Container(
+                      height: 11.0,
+                      width: 11.0,
+                      margin: const EdgeInsets.only(right: 2.5),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: theme.errorColor,
+                        border: Border.all(
+                          width: 1.5,
+                          color: theme.canvasColor,
                         ),
                       ),
                     ),
