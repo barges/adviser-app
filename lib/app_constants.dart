@@ -30,8 +30,6 @@ class AppConstants {
   static const String firebaseMessagingSenderId = '986930839057';
   static const String iosAppId = '1:986930839057:ios:931a04b3aeb905de5cbbb0';
 
-  static const int androidSdkVersion33 = 33;
-
   ///STAGE
   ///TODO: Needs to be commented out for release!!!
   static const bool needPrintLogs = true;

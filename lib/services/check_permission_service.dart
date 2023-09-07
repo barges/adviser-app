@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:device_info_plus/device_info_plus.dart';
-import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -13,7 +11,7 @@ import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_a
 
 @singleton
 class CheckPermissionService {
-  final GlobalCachingManager _cacheManager;
+   final GlobalCachingManager _cacheManager;
 
   CheckPermissionService(this._cacheManager);
 
@@ -22,9 +20,7 @@ class CheckPermissionService {
       {bool needShowSettings = true}) async {
     PermissionStatus status;
     Map<String, dynamic> permissionStatusesMap =
-        _cacheManager.getFirstPermissionStatusesRequestsMap();
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-
+    _cacheManager.getFirstPermissionStatusesRequestsMap();
     switch (permissionType) {
       case PermissionType.camera:
         {
@@ -36,13 +32,7 @@ class CheckPermissionService {
           if (Platform.isIOS) {
             status = await Permission.photos.request();
           } else {
-            final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-            if (androidInfo.version.sdkInt >=
-                AppConstants.androidSdkVersion33) {
-              status = await Permission.photos.request();
-            } else {
-              status = await Permission.storage.request();
-            }
+            status = await Permission.storage.request();
           }
         }
         break;

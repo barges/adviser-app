@@ -2,12 +2,10 @@
 
 import 'dart:io';
 
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
@@ -162,19 +160,11 @@ Future<void> _pickMultiImage(BuildContext context, ImageSource imageSource,
 }
 
 Future<bool> _checkForGrantedPermission(ImageSource imageSource) async {
-  AndroidDeviceInfo? androidInfo;
-  if (Platform.isAndroid) {
-    final deviceInfo = DeviceInfoPlugin();
-    androidInfo = await deviceInfo.androidInfo;
-  }
-
   return (imageSource == ImageSource.camera &&
           await Permission.camera.status == PermissionStatus.granted) ||
       (Platform.isAndroid &&
-              imageSource == ImageSource.gallery &&
-              androidInfo!.version.sdkInt >= AppConstants.androidSdkVersion33
-          ? await Permission.photos.status == PermissionStatus.granted
-          : await Permission.storage.status == PermissionStatus.granted) ||
+          imageSource == ImageSource.gallery &&
+          await Permission.storage.status == PermissionStatus.granted) ||
       (Platform.isIOS &&
               imageSource == ImageSource.gallery &&
               await Permission.photos.status == PermissionStatus.granted ||
