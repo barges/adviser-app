@@ -352,6 +352,16 @@ class SZodiac {
     );
   }
 
+  /// `Pending`
+  String get pendingZodiac {
+    return Intl.message(
+      'Pending',
+      name: 'pendingZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Approved`
   String get approvedZodiac {
     return Intl.message(
@@ -2351,6 +2361,76 @@ class SZodiac {
     return Intl.message(
       'sold',
       name: 'soldZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Complete the service`
+  String get completeTheServiceZodiac {
+    return Intl.message(
+      'Complete the service',
+      name: 'completeTheServiceZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The service {name} has been successfully completed.`
+  String theServiceSsuccessfullyCompletedZodiac(Object name) {
+    return Intl.message(
+      'The service $name has been successfully completed.',
+      name: 'theServiceSsuccessfullyCompletedZodiac',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `You can provide feedback to`
+  String get youCanProvideFeedbackToZodiac {
+    return Intl.message(
+      'You can provide feedback to',
+      name: 'youCanProvideFeedbackToZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Write your message`
+  String get writeYourMessageZodiac {
+    return Intl.message(
+      'Write your message',
+      name: 'writeYourMessageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Need at least 20 symbols to send the message`
+  String get needAtLeast20SymbolsZodiac {
+    return Intl.message(
+      'Need at least 20 symbols to send the message',
+      name: 'needAtLeast20SymbolsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Complete`
+  String get completeZodiac {
+    return Intl.message(
+      'Complete',
+      name: 'completeZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Activate`
+  String get activateZodiac {
+    return Intl.message(
+      'Activate',
+      name: 'activateZodiac',
       desc: '',
       args: [],
     );

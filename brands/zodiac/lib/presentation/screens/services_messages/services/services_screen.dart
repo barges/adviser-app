@@ -51,10 +51,9 @@ class ServicesScreen extends StatelessWidget {
                     },
                     filters: [
                       SZodiac.of(context).allZodiac,
-                      SZodiac.of(context).newZodiac,
+                      SZodiac.of(context).pendingZodiac,
                       SZodiac.of(context).approvedZodiac,
                       SZodiac.of(context).rejectedZodiac,
-                      SZodiac.of(context).tempZodiac
                     ],
                     padding: AppConstants.horizontalScreenPadding,
                   ),
@@ -87,7 +86,7 @@ class ServicesScreen extends StatelessWidget {
                       route: const ZodiacAddService(),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           );

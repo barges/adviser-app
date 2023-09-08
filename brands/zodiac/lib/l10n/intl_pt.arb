@@ -29,6 +29,7 @@
   "todayZodiac": "Hoje",
   "thisMonthZodiac": "Este mês",
   "newZodiac": "Novo",
+  "pendingZodiac" :"Pendente",
   "approvedZodiac":"Aprovado",
   "rejectedZodiac":"Rejeitado",
   "tempZodiac": "Temp",
@@ -224,8 +225,16 @@
   "sendForApprovalZodiac": "Enviar para aprovação",
   "editServiceZodiac": "Editar serviço",
   "waitingForApprovalZodiac": "Esperando aprovação",
-  "rejectedZodiac": "Rejeitado",
   "yourServiceHasBeenRejectedBecauseOfZodiac": "Seu serviço foi rejeitado devido a:",
   "commentFromSupportTeamZodiac": "Comentário da equipe de suporte:",
-  "soldZodiac": "vendido"
+  "letsCreateYourFirstServiceZodiac": "Vamos criar seu primeiro serviço",
+  "firstYouNeedFillInformationAboutServiceZodiac": "Primeiro você precisa preencher todas as informações necessárias sobre o serviço e depois enviá-lo para aprovação e assim que estiver pronto você poderá vendê-lo",
+  "soldZodiac": "vendido",
+  "completeTheServiceZodiac": "Conclua o serviço",
+  "theServiceSsuccessfullyCompletedZodiac": "O serviço {name} foi concluído com sucesso.",
+  "youCanProvideFeedbackToZodiac": "Você pode fornecer feedback para",
+  "writeYourMessageZodiac": "Escreva sua mensagem",
+  "needAtLeast20SymbolsZodiac":"Precisa de pelo menos 20 símbolos para enviar a mensagem",
+  "completeZodiac": "Completo",
+  "activateZodiac": "Ativar"
 }

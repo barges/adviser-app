@@ -83,9 +83,9 @@ class ServicesMessagesScreen extends StatelessWidget {
                                   Flexible(
                                     child: IndexedStack(
                                       index: value,
-                                      children: [
+                                      children: const [
                                         ServicesScreen(),
-                                        const CannedMessagesScreen(),
+                                        CannedMessagesScreen(),
                                       ],
                                     ),
                                   )

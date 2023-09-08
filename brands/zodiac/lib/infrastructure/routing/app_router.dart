@@ -5,6 +5,7 @@ import 'package:zodiac/presentation/screens/article_details_screen/article_detai
 import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart';
 import 'package:zodiac/presentation/screens/chat/chat_screen.dart';
+import 'package:zodiac/presentation/screens/complete_service/complete_service_screen.dart';
 import 'package:zodiac/presentation/screens/duplicate_service/duplicate_service_screen.dart';
 import 'package:zodiac/presentation/screens/edit_service/edit_service_screen.dart';
 import 'package:zodiac/presentation/screens/forgot_password/forgot_password_screen.dart';
@@ -169,7 +170,12 @@ const zodiacRoute = AutoRoute(
       page: EditServiceScreen,
       path: RoutePathsZodiac.editService,
       name: RoutePathsZodiac.editService,
-    )
+    ),
+    AutoRoute(
+      page: CompleteServiceScreen,
+      path: RoutePathsZodiac.completeService,
+      name: RoutePathsZodiac.completeService,
+    ),
   ],
 );
 

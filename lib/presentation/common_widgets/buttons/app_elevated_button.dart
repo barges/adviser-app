@@ -7,12 +7,14 @@ class AppElevatedButton extends StatelessWidget {
   final String title;
   final VoidCallback? onPressed;
   final String? iconPath;
+  final Color? color;
 
   const AppElevatedButton({
     Key? key,
     required this.title,
     required this.onPressed,
     this.iconPath,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -23,8 +25,11 @@ class AppElevatedButton extends StatelessWidget {
         width: double.infinity,
         height: 48.0,
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-              colors: [AppColors.ctaGradient1, AppColors.ctaGradient2]),
+          color: color,
+          gradient: color == null
+              ? const LinearGradient(
+                  colors: [AppColors.ctaGradient1, AppColors.ctaGradient2])
+              : null,
           borderRadius: BorderRadius.circular(AppConstants.buttonRadius),
         ),
         child: ElevatedButton(

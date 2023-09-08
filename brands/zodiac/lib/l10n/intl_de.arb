@@ -29,6 +29,7 @@
   "todayZodiac": "Heute",
   "thisMonthZodiac": "Dieser Monat",
   "newZodiac": "Neu",
+  "pendingZodiac" :"Ausstehend",
   "approvedZodiac":"Genehmigt",
   "rejectedZodiac":"Abgelehnt",
   "tempZodiac": "Vorübergehend",
@@ -222,8 +223,16 @@
   "sendForApprovalZodiac": "Zur Genehmigung senden",
   "editServiceZodiac": "Dienst bearbeiten",
   "waitingForApprovalZodiac": "Warten auf die Bestätigung",
-  "rejectedZodiac": "Abgelehnt",
   "yourServiceHasBeenRejectedBecauseOfZodiac": "Ihr Dienst wurde aus folgendem Grund abgelehnt:",
   "commentFromSupportTeamZodiac": "Kommentar vom Support-Team:",
-  "soldZodiac": "verkauft"
+  "letsCreateYourFirstServiceZodiac": "Lassen Sie uns Ihren ersten Service erstellen",
+  "firstYouNeedFillInformationAboutServiceZodiac": "Zuerst müssen Sie alle erforderlichen Informationen über den Dienst ausfüllen, ihn dann zur Genehmigung einsenden und sobald er fertig ist, können Sie ihn verkaufen",
+  "soldZodiac": "verkauft",
+  "completeTheServiceZodiac": "Schließen Sie den Dienst ab",
+  "theServiceSsuccessfullyCompletedZodiac": "Der Dienst {name} wurde erfolgreich abgeschlossen.",
+  "youCanProvideFeedbackToZodiac": "Yiu Chan leitet das Feedback",
+  "writeYourMessageZodiac": "Schreibe deine Nachricht",
+  "needAtLeast20SymbolsZodiac":"Letzte mindestens 20 Symbole zum Senden der Nachricht",
+  "completeZodiac": "Vollständig",
+  "activateZodiac": "Aktivieren Sie"
 }

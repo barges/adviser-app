@@ -29,6 +29,7 @@
   "todayZodiac": "Today",
   "thisMonthZodiac": "This Month",
   "newZodiac": "New",
+  "pendingZodiac" :"Pending",
   "approvedZodiac":"Approved",
   "rejectedZodiac":"Rejected",
   "tempZodiac": "Temp",
@@ -224,10 +225,16 @@
   "sendForApprovalZodiac": "Send for approval",
   "editServiceZodiac": "Edit service",
   "waitingForApprovalZodiac": "Waiting for approval",
-  "rejectedZodiac": "Rejected",
   "yourServiceHasBeenRejectedBecauseOfZodiac": "Your service has been rejected because of:",
   "commentFromSupportTeamZodiac": "Comment from support team:",
   "letsCreateYourFirstServiceZodiac": "Let’s create your first service",
   "firstYouNeedFillInformationAboutServiceZodiac": "First you need to fill up all required information about the service then send it for approval and as it would be ready you will be able to sell it",
-  "soldZodiac": "sold"
+  "soldZodiac": "sold",
+  "completeTheServiceZodiac": "Complete the service",
+  "theServiceSsuccessfullyCompletedZodiac": "The service {name} has been successfully completed.",
+  "youCanProvideFeedbackToZodiac": "You can provide feedback to",
+  "writeYourMessageZodiac": "Write your message",
+  "needAtLeast20SymbolsZodiac":"Need at least 20 symbols to send the message",
+  "completeZodiac": "Complete",
+  "activateZodiac": "Activate"
 }

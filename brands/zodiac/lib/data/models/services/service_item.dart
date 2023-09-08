@@ -20,6 +20,7 @@ class ServiceItem with _$ServiceItem {
     String? image,
     String? name,
     String? description,
+    @Default(false) bool isActive,
   }) = _ServiceItem;
 
   factory ServiceItem.fromJson(Map<String, dynamic> json) =>

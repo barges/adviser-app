@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/services/service_item.dart';
@@ -81,7 +82,7 @@ class ServiceCard extends StatelessWidget {
                             ),
                           ),
                         const SizedBox(height: 8.0),
-                        const _TimeWidget()
+                        _TimeWidget(text: serviceItem.durationView ?? ''),
                       ],
                     ),
                     const SoldWidget(
@@ -119,6 +120,16 @@ class ServiceCard extends StatelessWidget {
                 const SizedBox(
                   height: 16.0,
                 ),
+                // TODO Implement in next version
+                /*AppElevatedButton(
+                  title: serviceItem.isActive
+                      ? SZodiac.of(context).completeZodiac
+                      : SZodiac.of(context).activateZodiac,
+                  color: theme.primaryColor,
+                  onPressed: () => context.push(
+                    route: const ZodiacCompleteService(),
+                  ),
+                ),*/
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -177,7 +188,7 @@ class ServiceCard extends StatelessWidget {
                       child: Assets.vectors.delete.svg(),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -188,7 +199,8 @@ class ServiceCard extends StatelessWidget {
 }
 
 class _TimeWidget extends StatelessWidget {
-  const _TimeWidget({Key? key}) : super(key: key);
+  final String text;
+  const _TimeWidget({Key? key, required this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -204,7 +216,7 @@ class _TimeWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: Text(
-        '20 MIN',
+        text.toUpperCase(),
         style: theme.textTheme.labelSmall?.copyWith(
           fontSize: 12.0,
           color: theme.primaryColor,
@@ -221,13 +233,11 @@ String statusIntToTranslationString(BuildContext context, int? status) {
 
   switch (status) {
     case 0:
-      return SZodiac.of(context).newZodiac;
+      return SZodiac.of(context).pendingZodiac;
     case 1:
       return SZodiac.of(context).approvedZodiac;
     case 2:
       return SZodiac.of(context).rejectedZodiac;
-    case 3:
-      return SZodiac.of(context).tempZodiac;
     default:
       return '';
   }
