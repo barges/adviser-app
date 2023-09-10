@@ -82,7 +82,7 @@ class EditProfileBodyWidget extends StatelessWidget {
                           .toList()
                           .join(', ')
                       : '',
-                  onTap: () => editProfileCubit.goToCategoriesList(context),
+                  onTap: () => editProfileCubit.goToSelectMethods(context),
                 );
               }),
             ],

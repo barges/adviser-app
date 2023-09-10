@@ -23,4 +23,9 @@ abstract class EditProfileApi {
   Future<SpecializationsResponse> getCategories(
     @Body() ListRequest request,
   );
+
+  @POST('/methods')
+  Future<SpecializationsResponse> getMethods(
+    @Body() AuthorizedRequest request,
+  );
 }

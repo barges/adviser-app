@@ -22,4 +22,9 @@ class ZodiacEditProfileRepositoryImpl implements ZodiacEditProfileRepository {
   Future<SpecializationsResponse> getCategories(ListRequest request) async {
     return await _editProfileApi.getCategories(request);
   }
+
+  @override
+  Future<SpecializationsResponse> getMethods(AuthorizedRequest request) async {
+    return await _editProfileApi.getMethods(request);
+  }
 }

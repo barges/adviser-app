@@ -4,18 +4,20 @@ import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 
 class CheckboxWidget extends StatelessWidget {
   final bool value;
-  final ValueChanged<bool> onChanged;
+  final ValueChanged<bool>? onChanged;
   const CheckboxWidget({
     Key? key,
     required this.value,
-    required this.onChanged,
+    this.onChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onChanged(!value);
+        if (onChanged != null) {
+          onChanged!(!value);
+        }
       },
       child: value
           ? Assets.zodiac.vectors.filledCheckbox.svg(

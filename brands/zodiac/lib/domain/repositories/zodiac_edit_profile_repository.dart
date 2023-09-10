@@ -7,4 +7,6 @@ abstract class ZodiacEditProfileRepository {
   Future<BrandLocalesResponse> getBrandLocales(AuthorizedRequest request);
 
   Future<SpecializationsResponse> getCategories(ListRequest request);
+
+  Future<SpecializationsResponse> getMethods(AuthorizedRequest request);
 }

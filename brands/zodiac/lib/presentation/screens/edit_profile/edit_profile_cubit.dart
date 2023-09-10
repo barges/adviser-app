@@ -152,7 +152,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       );
 
       brands?.forEach(
-        (element) => _mainCategoryIds.add(element.fields?.mainMethodId),
+        (element) => _mainMethodIds.add(element.fields?.mainMethodId),
       );
 
       emit(
@@ -175,15 +175,13 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   void goToCategoriesList(BuildContext context) {
     List<int> selectedIds = [];
 
-    state.brands?[state.selectedBrandIndex].fields?.categories
-        ?.forEach((element) {
+    for (var element in state.advisorCategories[state.selectedBrandIndex]) {
       if (element.id != null) {
         selectedIds.add(element.id!);
       }
-    });
+    }
 
-    final int? mainCategoryId =
-        state.brands?[state.selectedBrandIndex].fields?.mainCategoryId;
+    final int? mainCategoryId = _mainCategoryIds[state.selectedBrandIndex];
 
     context.push(
         route: ZodiacCategoriesList(
@@ -200,6 +198,34 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     _mainCategoryIds[state.selectedBrandIndex] = mainCategoryId;
 
     emit(state.copyWith(advisorCategories: newCategories));
+  }
+
+  void goToSelectMethods(BuildContext context) {
+    List<int> selectedIds = [];
+
+    for (var element in state.advisorMethods[state.selectedBrandIndex]) {
+      if (element.id != null) {
+        selectedIds.add(element.id!);
+      }
+    }
+
+    final int? mainMethodId = _mainMethodIds[state.selectedBrandIndex];
+
+    context.push(
+        route: ZodiacSelectMethods(
+      selectedMethodIds: selectedIds,
+      mainMethodId: mainMethodId,
+      returnCallback: _setMethods,
+    ));
+  }
+
+  void _setMethods(List<CategoryInfo> methods, int mainMethodId) {
+    List<List<CategoryInfo>> newMethods = List.of(state.advisorMethods);
+
+    newMethods[state.selectedBrandIndex] = methods;
+    _mainMethodIds[state.selectedBrandIndex] = mainMethodId;
+
+    emit(state.copyWith(advisorMethods: newMethods));
   }
 
   void _updateTextsFlag() {

@@ -366,6 +366,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "You can change price once per 24 h"),
         "youCanChooseUpTo3CategoriesZodiac": MessageLookupByLibrary.simpleMessage(
             "You can choose up to 3 categories you prefer to work with and the main category among them"),
+        "youCanChooseUpTo3MethodsZodiac": MessageLookupByLibrary.simpleMessage(
+            "You can choose up to 3 methods you are working with and the main method among them"),
         "youCanEasilyAccessTheseTemplatesZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "You can easily access these templates during and after the chat"),

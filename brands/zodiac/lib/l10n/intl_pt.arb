@@ -201,5 +201,6 @@
   "selectMainCategoryZodiac": "Selecione a categoria principal",
   "firstSelectTheCategoriesZodiac": "Primeiro selecione as categorias",
   "methodsZodiac": "Métodos",
-  "selectMethodsZodiac": "Selecione métodos"
+  "selectMethodsZodiac": "Selecione métodos",
+  "youCanChooseUpTo3MethodsZodiac": "Você pode escolher até 3 métodos com os quais está trabalhando e o método principal entre eles"
 }

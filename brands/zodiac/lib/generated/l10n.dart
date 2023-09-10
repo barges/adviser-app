@@ -2085,6 +2085,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `You can choose up to 3 methods you are working with and the main method among them`
+  String get youCanChooseUpTo3MethodsZodiac {
+    return Intl.message(
+      'You can choose up to 3 methods you are working with and the main method among them',
+      name: 'youCanChooseUpTo3MethodsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {
