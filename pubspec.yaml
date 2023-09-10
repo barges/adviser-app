@@ -93,6 +93,7 @@ dependencies:
   snapping_sheet: ^3.1.0
   system_date_time_format: ^0.7.0
   injectable: ^2.1.1
+  mixpanel_flutter: ^2.1.1
 
 dev_dependencies:
   flutter_test:

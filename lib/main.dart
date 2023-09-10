@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fortunica/analytics/analytics_fortunica_impl.dart';
 import 'package:fortunica/fortunica.dart';
 import 'package:fortunica/fortunica_main_cubit.dart';
 import 'package:fortunica/generated/l10n.dart';
@@ -20,6 +21,7 @@ import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/multiple_localization/multiple_localization.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/app_loading_indicator.dart';
 import 'package:shared_advisor_interface/themes/app_themes.dart';
+import 'package:zodiac/analytics/analytics_zodiac_impl.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/zodiac.dart';
@@ -34,6 +36,9 @@ void main() async {
       await AppInitializer.setupPrerequisites(
         Flavor.production,
       );
+
+      await AnalyticsFortunicaImpl().init();
+      await AnalyticsZodiacImpl().init();
 
       await SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,

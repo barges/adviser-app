@@ -29,6 +29,9 @@ class AppConstants {
   static const String iosApiKey = 'AIzaSyCj0OVmpL96tU3WQLYJjqgCh6Af2gEoMa0';
   static const String firebaseMessagingSenderId = '986930839057';
   static const String iosAppId = '1:986930839057:ios:931a04b3aeb905de5cbbb0';
+  static const String mixpanelTokenFortunica =
+      'd12aa110be36d01bafda6508291db614';
+  static const String mixpanelTokenZodiac = 'd12aa110be36d01bafda6508291db614';
 
   ///STAGE
   ///TODO: Needs to be commented out for release!!!
