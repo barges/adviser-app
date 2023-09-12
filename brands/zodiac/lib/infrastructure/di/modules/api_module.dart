@@ -18,7 +18,7 @@ abstract class ApiModule {
   Future<Dio> initDio(
       GlobalCachingManager cacheManager, AppInterceptor appInterceptor) async {
     final dio = Dio();
-    dio.options.baseUrl = ZodiacConstants.baseUrlZodiacDev;
+    dio.options.baseUrl = ZodiacConstants.baseUrlZodiac;
     // dio.options.headers = await _getHeaders(cacheManager);
     dio.options.connectTimeout = const Duration(seconds: 30);
     dio.options.receiveTimeout = const Duration(seconds: 30);
