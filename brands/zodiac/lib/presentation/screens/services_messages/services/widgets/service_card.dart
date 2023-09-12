@@ -70,12 +70,13 @@ class ServiceCard extends StatelessWidget {
                                     text: serviceItem.status!.getTitle(context),
                                     textColor: theme.canvasColor,
                                     color: serviceItem.status ==
-                                            ServiceStaus.rejected
+                                            ServiceStatus.rejected
                                         ? AppColors.error
                                         : AppColors.online,
                                   ),
                                 ),
-                                if (serviceItem.status == ServiceStaus.rejected)
+                                if (serviceItem.status ==
+                                    ServiceStatus.rejected)
                                   Assets.zodiac.vectors.infoSquareSmall.svg(
                                     height: 19.0,
                                     color: theme.backgroundColor,

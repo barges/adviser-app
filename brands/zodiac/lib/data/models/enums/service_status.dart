@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:zodiac/generated/l10n.dart';
 
-enum ServiceStaus {
+enum ServiceStatus {
   pending,
   approved,
   rejected;
 
-  static ServiceStaus fromInt(int value) {
+  static ServiceStatus fromInt(int value) {
     switch (value) {
       case 0:
-        return ServiceStaus.pending;
+        return ServiceStatus.pending;
       case 1:
-        return ServiceStaus.approved;
+        return ServiceStatus.approved;
       case 2:
-        return ServiceStaus.rejected;
+        return ServiceStatus.rejected;
       default:
-        return ServiceStaus.pending;
+        return ServiceStatus.pending;
     }
   }
 

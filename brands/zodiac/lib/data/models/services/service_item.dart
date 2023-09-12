@@ -14,7 +14,7 @@ class ServiceItem with _$ServiceItem {
   @JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)
   const factory ServiceItem({
     @JsonKey(name: 'service_id') int? id,
-    @JsonKey(fromJson: ServiceStaus.fromInt) ServiceStaus? status,
+    @JsonKey(fromJson: ServiceStatus.fromInt) ServiceStatus? status,
     double? price,
     String? durationView,
     @JsonKey(fromJson: ServiceType.fromInt) ServiceType? type,

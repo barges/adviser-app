@@ -52,9 +52,9 @@ class ServicesScreen extends StatelessWidget {
                     },
                     filters: [
                       SZodiac.of(context).allZodiac,
-                      ServiceStaus.pending.getTitle(context),
-                      ServiceStaus.approved.getTitle(context),
-                      ServiceStaus.rejected.getTitle(context),
+                      ServiceStatus.pending.getTitle(context),
+                      ServiceStatus.approved.getTitle(context),
+                      ServiceStatus.rejected.getTitle(context),
                     ],
                     padding: AppConstants.horizontalScreenPadding,
                   ),
