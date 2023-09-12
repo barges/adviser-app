@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
+import 'package:zodiac/data/models/enums/service_status.dart';
 import 'package:zodiac/data/models/services/service_item.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
 import 'package:zodiac/presentation/screens/services_messages/services/services_cubit.dart';
-import 'package:zodiac/presentation/screens/services_messages/services/widgets/sold_widget.dart';
 import 'package:zodiac/zodiac_extensions.dart';
 
 class ServiceCard extends StatelessWidget {
@@ -23,8 +23,6 @@ class ServiceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     ServicesCubit servicesCubit = context.read<ServicesCubit>();
-    String status =
-        statusIntToTranslationString(context, serviceItem.status).toUpperCase();
     return Container(
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
@@ -47,49 +45,66 @@ class ServiceCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 238.0,
-                          child: Text(
+                    Flexible(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
                             serviceItem.name ?? '',
+                            overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.displaySmall?.copyWith(
                                 fontSize: 14.0,
                                 color: theme.canvasColor,
                                 overflow: TextOverflow.ellipsis),
-                            maxLines: 2,
                           ),
-                        ),
-                        const Spacer(),
-                        if (status != '')
-                          Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.promotion,
-                              borderRadius: BorderRadius.circular(4.0),
+                          const Spacer(),
+                          if (serviceItem.status != null)
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    right: 4.0,
+                                  ),
+                                  child: _LabelWidget(
+                                    text: serviceItem.status!.getTitle(context),
+                                    textColor: theme.canvasColor,
+                                    color: serviceItem.status ==
+                                            ServiceStaus.rejected
+                                        ? AppColors.error
+                                        : AppColors.online,
+                                  ),
+                                ),
+                                if (serviceItem.status == ServiceStaus.rejected)
+                                  Assets.zodiac.vectors.infoSquareSmall.svg(
+                                    height: 19.0,
+                                    color: theme.backgroundColor,
+                                  ),
+                              ],
                             ),
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 4.0,
-                              horizontal: 6.0,
-                            ),
-                            child: Text(
-                              status,
-                              style: theme.textTheme.labelSmall?.copyWith(
-                                fontSize: 12.0,
-                                color: theme.canvasColor,
-                              ),
-                            ),
+                          const SizedBox(height: 8.0),
+                          _LabelWidget(
+                            text: serviceItem.durationView ?? '',
+                            textColor: theme.primaryColor,
+                            color: theme.canvasColor,
                           ),
-                        const SizedBox(height: 8.0),
-                        _TimeWidget(text: serviceItem.durationView ?? ''),
-                      ],
+                        ],
+                      ),
                     ),
-                    const SoldWidget(
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: _LabelWidget(
+                        text: SZodiac.of(context).newZodiac.toUpperCase(),
+                        textColor: theme.canvasColor,
+                        color: AppColors.promotion,
+                      ),
+                    ),
+                    // TODO Implement in next version
+                    /*const SoldWidget(
                       sold: 168,
                       like: 160,
                       unlike: 8,
-                    )
+                    )*/
                   ],
                 ),
               ),
@@ -133,15 +148,22 @@ class ServiceCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Assets.zodiac.vectors.onlineService.svg(),
-                    const SizedBox(width: 8.0),
-                    Text(
-                      'Online service',
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        fontSize: 14.0,
-                        color: theme.primaryColor,
+                    if (serviceItem.type != null)
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            serviceItem.type!.iconPath,
+                            color: theme.primaryColor,
+                          ),
+                          const SizedBox(width: 8.0),
+                          Text(
+                            serviceItem.type!.getTitle(context),
+                            style: theme.textTheme.labelMedium?.copyWith(
+                              color: theme.primaryColor,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
                     const Spacer(),
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
@@ -198,9 +220,16 @@ class ServiceCard extends StatelessWidget {
   }
 }
 
-class _TimeWidget extends StatelessWidget {
+class _LabelWidget extends StatelessWidget {
   final String text;
-  const _TimeWidget({Key? key, required this.text}) : super(key: key);
+  final Color textColor;
+  final Color color;
+  const _LabelWidget(
+      {Key? key,
+      required this.text,
+      required this.textColor,
+      required this.color})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -209,36 +238,19 @@ class _TimeWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 6.0,
-        vertical: 4.0,
+        vertical: 2.0,
       ),
       decoration: BoxDecoration(
-        color: theme.canvasColor,
+        color: color,
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: Text(
         text.toUpperCase(),
-        style: theme.textTheme.labelSmall?.copyWith(
+        style: theme.textTheme.labelMedium?.copyWith(
           fontSize: 12.0,
-          color: theme.primaryColor,
+          color: textColor,
         ),
       ),
     );
-  }
-}
-
-String statusIntToTranslationString(BuildContext context, int? status) {
-  if (status == null) {
-    return '';
-  }
-
-  switch (status) {
-    case 0:
-      return SZodiac.of(context).pendingZodiac;
-    case 1:
-      return SZodiac.of(context).approvedZodiac;
-    case 2:
-      return SZodiac.of(context).rejectedZodiac;
-    default:
-      return '';
   }
 }

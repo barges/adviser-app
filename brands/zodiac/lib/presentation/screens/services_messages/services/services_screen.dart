@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
+import 'package:zodiac/data/models/enums/service_status.dart';
 import 'package:zodiac/data/models/services/service_item.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
@@ -51,9 +52,9 @@ class ServicesScreen extends StatelessWidget {
                     },
                     filters: [
                       SZodiac.of(context).allZodiac,
-                      SZodiac.of(context).pendingZodiac,
-                      SZodiac.of(context).approvedZodiac,
-                      SZodiac.of(context).rejectedZodiac,
+                      ServiceStaus.pending.getTitle(context),
+                      ServiceStaus.approved.getTitle(context),
+                      ServiceStaus.rejected.getTitle(context),
                     ],
                     padding: AppConstants.horizontalScreenPadding,
                   ),
