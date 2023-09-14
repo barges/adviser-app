@@ -2,10 +2,10 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:shared_advisor_interface/themes/app_colors_dark.dart';
 import 'package:shared_advisor_interface/themes/app_colors_light.dart';
-import 'package:shared_advisor_interface/themes/web_fonts/noto_color_emoji_font.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+const fontFamilyRedHatDisplay = 'RedHatDisplay';
 
 class AppThemes {
   static ThemeData themeLight(BuildContext context) {
@@ -43,97 +43,68 @@ class AppThemes {
           statusBarIconBrightness: Brightness.dark,
         ),
       ),
-      textTheme: TextTheme(
-          headlineLarge: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
-            fontSize: 24.0,
-            fontWeight: FontWeight.w900,
-            color: AppColorsLight.ui,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ]),
-          headlineMedium: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.w700,
-            color: AppColorsLight.ui,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ]),
-          labelMedium: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
-            fontSize: 14.0,
-            fontWeight: FontWeight.w500,
-            color: AppColorsLight.ui,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ]),
-          labelSmall: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
-            fontSize: 10.0,
-            fontWeight: FontWeight.w500,
-            color: AppColorsLight.ui,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ]),
-          titleMedium: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
-            color: AppColorsLight.ui,
-            fontSize: 17.0,
-            fontWeight: FontWeight.w600,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ]),
-          bodySmall: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 13.0,
-            color: AppColorsLight.ui,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ]),
-          displaySmall: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 12.0,
-            color: AppColorsLight.ui,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ]),
-          bodyMedium: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 15.0,
-            color: AppColorsLight.ui,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ]),
-          displayLarge: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 16.0,
-            color: AppColorsLight.ui,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ]),
-          labelLarge: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 26.0,
-            color: AppColorsLight.ui,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ])),
+      textTheme: const TextTheme(
+        headlineLarge: TextStyle(
+          fontFamily: fontFamilyRedHatDisplay,
+          fontSize: 24.0,
+          fontWeight: FontWeight.w900,
+          color: AppColorsLight.ui,
+        ),
+        headlineMedium: TextStyle(
+          fontFamily: fontFamilyRedHatDisplay,
+          fontSize: 20.0,
+          fontWeight: FontWeight.w700,
+          color: AppColorsLight.ui,
+        ),
+        labelMedium: TextStyle(
+          fontFamily: fontFamilyRedHatDisplay,
+          fontSize: 14.0,
+          fontWeight: FontWeight.w500,
+          color: AppColorsLight.ui,
+        ),
+        labelSmall: TextStyle(
+          fontFamily: fontFamilyRedHatDisplay,
+          fontSize: 10.0,
+          fontWeight: FontWeight.w500,
+          color: AppColorsLight.ui,
+        ),
+        titleMedium: TextStyle(
+          fontFamily: fontFamilyRedHatDisplay,
+          color: AppColorsLight.ui,
+          fontSize: 17.0,
+          fontWeight: FontWeight.w600,
+        ),
+        bodySmall: TextStyle(
+          fontFamily: fontFamilyRedHatDisplay,
+          fontWeight: FontWeight.w400,
+          fontSize: 13.0,
+          color: AppColorsLight.ui,
+        ),
+        displaySmall: TextStyle(
+          fontFamily: fontFamilyRedHatDisplay,
+          fontWeight: FontWeight.w700,
+          fontSize: 12.0,
+          color: AppColorsLight.ui,
+        ),
+        bodyMedium: TextStyle(
+          fontFamily: fontFamilyRedHatDisplay,
+          fontWeight: FontWeight.w400,
+          fontSize: 15.0,
+          color: AppColorsLight.ui,
+        ),
+        displayLarge: TextStyle(
+          fontFamily: fontFamilyRedHatDisplay,
+          fontWeight: FontWeight.w600,
+          fontSize: 16.0,
+          color: AppColorsLight.ui,
+        ),
+        labelLarge: TextStyle(
+          fontFamily: fontFamilyRedHatDisplay,
+          fontWeight: FontWeight.w700,
+          fontSize: 26.0,
+          color: AppColorsLight.ui,
+        ),
+      ),
 
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -206,97 +177,67 @@ class AppThemes {
             statusBarBrightness: Brightness.dark,
             statusBarIconBrightness: Brightness.light),
       ),
-      textTheme: TextTheme(
-          headlineLarge: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
+      textTheme: const TextTheme(
+          headlineLarge: TextStyle(
+            fontFamily: fontFamilyRedHatDisplay,
             fontSize: 24.0,
             fontWeight: FontWeight.w900,
             color: AppColorsDark.ui,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ]),
-          headlineMedium: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
+          ),
+          headlineMedium: TextStyle(
+            fontFamily: fontFamilyRedHatDisplay,
             fontSize: 20.0,
             fontWeight: FontWeight.w700,
             color: AppColorsDark.ui,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ]),
-          labelMedium: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
+          ),
+          labelMedium: TextStyle(
+            fontFamily: fontFamilyRedHatDisplay,
             fontSize: 14.0,
             fontWeight: FontWeight.w500,
             color: AppColorsDark.ui,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ]),
-          labelSmall: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
+          ),
+          labelSmall: TextStyle(
+            fontFamily: fontFamilyRedHatDisplay,
             fontSize: 10.0,
             fontWeight: FontWeight.w500,
             color: AppColorsDark.ui,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ]),
-          titleMedium: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
+          ),
+          titleMedium: TextStyle(
+            fontFamily: fontFamilyRedHatDisplay,
             color: AppColorsDark.ui,
             fontSize: 17.0,
             fontWeight: FontWeight.w600,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ]),
-          bodySmall: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
+          ),
+          bodySmall: TextStyle(
+            fontFamily: fontFamilyRedHatDisplay,
             fontWeight: FontWeight.w400,
             fontSize: 13.0,
             color: AppColorsDark.ui,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ]),
-          displaySmall: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
+          ),
+          displaySmall: TextStyle(
+            fontFamily: fontFamilyRedHatDisplay,
             fontWeight: FontWeight.w700,
             fontSize: 12.0,
             color: AppColorsDark.ui,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ]),
-          bodyMedium: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
+          ),
+          bodyMedium: TextStyle(
+            fontFamily: fontFamilyRedHatDisplay,
             fontWeight: FontWeight.w400,
             fontSize: 15.0,
             color: AppColorsDark.ui,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ]),
-          displayLarge: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
+          ),
+          displayLarge: TextStyle(
+            fontFamily: fontFamilyRedHatDisplay,
             fontWeight: FontWeight.w600,
             fontSize: 16.0,
             color: AppColorsDark.ui,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ]),
-          labelLarge: GoogleFonts.redHatDisplay(
-              textStyle: const TextStyle(
+          ),
+          labelLarge: TextStyle(
+            fontFamily: fontFamilyRedHatDisplay,
             fontWeight: FontWeight.w700,
             fontSize: 26.0,
             color: AppColorsDark.ui,
-          )).copyWith(fontFamilyFallback: [
-            ...?GoogleFonts.redHatDisplay().fontFamilyFallback,
-            NotoColorEmojiFont.fontFamily
-          ])),
+          )),
 
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
