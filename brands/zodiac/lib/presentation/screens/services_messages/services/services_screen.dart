@@ -25,10 +25,21 @@ class ServicesScreen extends StatelessWidget {
       create: (context) => zodiacGetIt.get<ServicesCubit>(),
       child: Builder(builder: (context) {
         final ServicesCubit servicesCubit = context.read<ServicesCubit>();
-        final List<ServiceItem>? services =
-            context.select((ServicesCubit cubit) => cubit.state.services);
-        final int? selectedStatusIndex = context
-            .select((ServicesCubit cubit) => cubit.state.selectedStatusIndex);
+
+        final (
+          List<ServiceItem>?,
+          int?,
+        ) record = context.select(
+          (ServicesCubit value) => (
+            value.state.services,
+            value.state.selectedStatusIndex,
+          ),
+        );
+        final (
+          List<ServiceItem>? services,
+          int? selectedStatusIndex,
+        ) = record;
+
         if (services == null) {
           return const SizedBox.expand();
         } else {

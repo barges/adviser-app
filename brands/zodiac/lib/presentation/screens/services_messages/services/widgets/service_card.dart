@@ -23,6 +23,8 @@ class ServiceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     ServicesCubit servicesCubit = context.read<ServicesCubit>();
+    final ServiceStatus? status = serviceItem.status;
+    final isRejected = status == ServiceStatus.rejected;
     return Container(
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
@@ -59,7 +61,7 @@ class ServiceCard extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis),
                           ),
                           const Spacer(),
-                          if (serviceItem.status != null)
+                          if (status != null)
                             Row(
                               children: [
                                 Padding(
@@ -67,16 +69,14 @@ class ServiceCard extends StatelessWidget {
                                     right: 4.0,
                                   ),
                                   child: _LabelWidget(
-                                    text: serviceItem.status!.getTitle(context),
+                                    text: status.getTitle(context),
                                     textColor: theme.canvasColor,
-                                    color: serviceItem.status ==
-                                            ServiceStatus.rejected
+                                    color: isRejected
                                         ? AppColors.error
                                         : AppColors.online,
                                   ),
                                 ),
-                                if (serviceItem.status ==
-                                    ServiceStatus.rejected)
+                                if (isRejected)
                                   Assets.zodiac.vectors.infoSquareSmall.svg(
                                     height: 19.0,
                                     color: theme.backgroundColor,

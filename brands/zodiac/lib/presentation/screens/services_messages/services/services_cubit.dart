@@ -52,11 +52,10 @@ class ServicesCubit extends Cubit<ServicesState> {
       final ServiceResponse response = await _zodiacServicesRepository
           .getServices(ServiceListRequest(status: state.selectedStatusIndex));
 
-      if (response.status == true &&
-          response.result != null &&
-          response.result!.list != null) {
+      final list = response.result?.list;
+      if (list != null) {
         emit(state.copyWith(
-          services: List.of(response.result!.list!),
+          services: list,
         ));
       }
     } catch (e) {
@@ -70,7 +69,7 @@ class ServicesCubit extends Cubit<ServicesState> {
       services
           .removeAt(services.indexWhere((element) => element.id == serviceId));
       emit(state.copyWith(
-        services: List.of(services),
+        services: services,
       ));
     }
   }
