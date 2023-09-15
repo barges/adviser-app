@@ -96,6 +96,7 @@ class CannedMessageCard extends StatelessWidget {
                         description: SZodiac.of(context)
                             .itWillBeRemovedFromTemplatesZodiac,
                         okText: SZodiac.of(context).deleteZodiac,
+                        okTextColor: theme.errorColor,
                         allowBarrierClick: false,
                         isCancelEnabled: true,
                       ) ==
