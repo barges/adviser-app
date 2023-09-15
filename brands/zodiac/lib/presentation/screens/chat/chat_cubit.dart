@@ -118,6 +118,8 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   int? _recordAudioDuration;
 
+  bool _isAppFromForeground = false;
+
   ChatCubit(
     @factoryParam ChatCubitParams chatCubitParams,
     this._cachingManager,
@@ -282,6 +284,7 @@ class ChatCubit extends BaseCubit<ChatState> {
 
     addListener(_mainCubit.changeAppLifecycleStream.listen(
       (value) async {
+        _isAppFromForeground = value;
         if (!value) {
           if (_audioRecorder.isRecording) {
             stopRecordingAudio();
@@ -389,10 +392,12 @@ class ChatCubit extends BaseCubit<ChatState> {
           } else if (!state.chatIsActive) {
             _webSocketManager.chatLogin(opponentId: clientData.id ?? 0);
             emit(state.copyWith(isChatReconnecting: false));
-          } else {
+          } else if (!_isAppFromForeground) {
             _isRefresh = true;
             emit(state.copyWith(chatIsActive: false, chatTimerValue: null));
             _chatTimer?.cancel();
+          } else {
+            _isAppFromForeground = false;
           }
         }
         if (event == WebSocketState.closed) {
