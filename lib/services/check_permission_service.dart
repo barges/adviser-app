@@ -79,10 +79,8 @@ class CheckPermissionService {
     }
 
     if (needShowSettings &&
-        status.isPermanentlyDenied
-        &&
-        permissionStatusesMap[permissionType.name] != null
-    ) {
+        status.isPermanentlyDenied &&
+        permissionStatusesMap[permissionType.name] != null) {
       VoidCallback actionOnOk = (() async {
         await openAppSettings();
       });
@@ -97,7 +95,7 @@ class CheckPermissionService {
     }
 
     if (status.isPermanentlyDenied) {
-       _cacheManager.saveFirstPermissionStatusesRequestsMap(permissionType);
+      _cacheManager.saveFirstPermissionStatusesRequestsMap(permissionType);
     }
 
     return status.isGranted;

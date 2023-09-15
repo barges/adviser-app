@@ -178,7 +178,15 @@ class EditServiceBodyWidget extends StatelessWidget {
                         child: AppElevatedButton(
                           title: SZodiac.of(context).sendForApprovalZodiac,
                           onPressed: internetConnectionIsAvailable
-                              ? () => editServiceCubit.sendForApproval(context)
+                              ? () async {
+                                  if (await editServiceCubit
+                                      .sendForApproval(context)) {
+                                    // ignore: use_build_context_synchronously
+                                    context
+                                        .read<ZodiacMainCubit>()
+                                        .updateServices();
+                                  }
+                                }
                               : null,
                         ),
                       ),

@@ -8,8 +8,8 @@ part 'list_request.g.dart';
   fieldRename: FieldRename.snake,
 )
 class ListRequest extends AuthorizedRequest {
-  final int count;
-  final int offset;
+  final int? count;
+  final int? offset;
   final String? search;
 
   ListRequest({required this.count, required this.offset, this.search})

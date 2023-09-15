@@ -9,8 +9,8 @@ class ServiceListRequest extends ListRequest {
   int? status;
 
   ServiceListRequest({
-    required super.count,
-    required super.offset,
+    super.count,
+    super.offset,
     this.status,
   }) : super();
 
