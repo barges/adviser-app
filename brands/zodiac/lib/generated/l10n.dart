@@ -1455,6 +1455,16 @@ class SZodiac {
     );
   }
 
+  /// `Photo`
+  String get photoZodiac {
+    return Intl.message(
+      'Photo',
+      name: 'photoZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Cancel sending`
   String get cancelSendingZodiac {
     return Intl.message(
