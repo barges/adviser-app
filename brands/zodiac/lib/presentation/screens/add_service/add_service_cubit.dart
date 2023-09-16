@@ -366,7 +366,7 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     emit(state.copyWith(selectedImageIndex: index));
   }
 
-  Future<void> sendForApproval(BuildContext context) async {
+  Future<bool> sendForApproval(BuildContext context) async {
     final bool isChecked = _checkTextFields();
 
     final List<ImageSampleModel>? images = state.images;
@@ -404,8 +404,10 @@ class AddServiceCubit extends Cubit<AddServiceState> {
       if (response.status == true) {
         // ignore: use_build_context_synchronously
         context.pop();
+        return true;
       }
     }
+    return false;
   }
 
   bool _checkTextFields() {

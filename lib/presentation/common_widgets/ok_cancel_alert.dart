@@ -10,6 +10,7 @@ Future<bool?> showOkCancelAlert({
   required BuildContext context,
   required String title,
   required String okText,
+  Color? okTextColor,
   VoidCallback? actionOnOK,
   required bool allowBarrierClick,
   required bool isCancelEnabled,
@@ -55,9 +56,10 @@ Future<bool?> showOkCancelAlert({
                         actionOnOK();
                       }
                     },
-                    child: Text(
-                      okText,
-                    ),
+                    child: Text(okText,
+                        style: theme.textTheme.displayLarge?.copyWith(
+                          color: okTextColor ?? theme.primaryColor,
+                        )),
                   )
                 ],
               )

@@ -44,23 +44,23 @@ import '../../data/network/api/services_api.dart' as _i20;
 import '../../data/network/api/sessions_api.dart' as _i21;
 import '../../data/network/api/user_api.dart' as _i22;
 import '../../data/repository_impl/zodiac_articles_repository_impl.dart'
-    as _i40;
-import '../../data/repository_impl/zodiac_auth_repository_impl.dart' as _i42;
+    as _i41;
+import '../../data/repository_impl/zodiac_auth_repository_impl.dart' as _i43;
 import '../../data/repository_impl/zodiac_canned_messages_repository_impl.dart'
-    as _i44;
-import '../../data/repository_impl/zodiac_chat_repository_impl.dart' as _i46;
-import '../../data/repository_impl/zodiac_coupons_repository_impl.dart' as _i48;
+    as _i45;
+import '../../data/repository_impl/zodiac_chat_repository_impl.dart' as _i47;
+import '../../data/repository_impl/zodiac_coupons_repository_impl.dart' as _i49;
 import '../../data/repository_impl/zodiac_services_repository_impl.dart'
     as _i24;
 import '../../data/repository_impl/zodiac_sessions_repository_impl.dart'
     as _i26;
 import '../../data/repository_impl/zodiac_user_repository_impl.dart' as _i28;
-import '../../domain/repositories/zodiac_articles_repository.dart' as _i39;
-import '../../domain/repositories/zodiac_auth_repository.dart' as _i41;
+import '../../domain/repositories/zodiac_articles_repository.dart' as _i40;
+import '../../domain/repositories/zodiac_auth_repository.dart' as _i42;
 import '../../domain/repositories/zodiac_canned_messages_repository.dart'
-    as _i43;
-import '../../domain/repositories/zodiac_chat_repository.dart' as _i45;
-import '../../domain/repositories/zodiac_coupons_repository.dart' as _i47;
+    as _i44;
+import '../../domain/repositories/zodiac_chat_repository.dart' as _i46;
+import '../../domain/repositories/zodiac_coupons_repository.dart' as _i48;
 import '../../domain/repositories/zodiac_sessions_repository.dart' as _i25;
 import '../../domain/repositories/zodiac_sevices_repository.dart' as _i23;
 import '../../domain/repositories/zodiac_user_repository.dart' as _i27;
@@ -71,13 +71,15 @@ import '../../presentation/screens/edit_service/edit_service_cubit.dart'
 import '../../presentation/screens/phone_number/phone_number_cubit.dart'
     as _i37;
 import '../../presentation/screens/services_messages/canned_messages/canned_messages_cubit.dart'
-    as _i49;
+    as _i50;
+import '../../presentation/screens/services_messages/services/services_cubit.dart'
+    as _i39;
 import '../../services/websocket_manager/websocket_manager.dart' as _i16;
 import '../../services/websocket_manager/websocket_manager_impl.dart' as _i17;
 import '../../zodiac_main_cubit.dart' as _i15;
 import 'dio_interceptors/app_interceptor.dart' as _i18;
-import 'modules/api_module.dart' as _i51;
-import 'modules/services_module.dart' as _i50;
+import 'modules/api_module.dart' as _i52;
+import 'modules/services_module.dart' as _i51;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 Future<_i1.GetIt> $initGetIt(
@@ -182,21 +184,25 @@ Future<_i1.GetIt> $initGetIt(
         gh<_i15.ZodiacMainCubit>(),
         gh<_i27.ZodiacUserRepository>(),
       ));
-  gh.factory<_i39.ZodiacArticlesRepository>(
-      () => _i40.ZodiacArticlesRepositoryImpl(gh<_i30.ArticlesApi>()));
-  gh.factory<_i41.ZodiacAuthRepository>(
-      () => _i42.ZodiacAuthRepositoryImpl(gh<_i31.AuthApi>()));
-  gh.factory<_i43.ZodiacCannedMessagesRepository>(() =>
-      _i44.ZodiacCannedMessagesRepositoryImpl(gh<_i32.CannedMessagesApi>()));
-  gh.factory<_i45.ZodiacChatRepository>(
-      () => _i46.ZodiacChatRepositoryImpl(gh<_i33.ChatApi>()));
-  gh.factory<_i47.ZodiacCouponsRepository>(
-      () => _i48.ZodiacCouponsRepositoryImpl(gh<_i35.CouponsApi>()));
-  gh.factory<_i49.CannedMessagesCubit>(() =>
-      _i49.CannedMessagesCubit(gh<_i43.ZodiacCannedMessagesRepository>()));
+  gh.factory<_i39.ServicesCubit>(() => _i39.ServicesCubit(
+        gh<_i15.ZodiacMainCubit>(),
+        gh<_i23.ZodiacServicesRepository>(),
+      ));
+  gh.factory<_i40.ZodiacArticlesRepository>(
+      () => _i41.ZodiacArticlesRepositoryImpl(gh<_i30.ArticlesApi>()));
+  gh.factory<_i42.ZodiacAuthRepository>(
+      () => _i43.ZodiacAuthRepositoryImpl(gh<_i31.AuthApi>()));
+  gh.factory<_i44.ZodiacCannedMessagesRepository>(() =>
+      _i45.ZodiacCannedMessagesRepositoryImpl(gh<_i32.CannedMessagesApi>()));
+  gh.factory<_i46.ZodiacChatRepository>(
+      () => _i47.ZodiacChatRepositoryImpl(gh<_i33.ChatApi>()));
+  gh.factory<_i48.ZodiacCouponsRepository>(
+      () => _i49.ZodiacCouponsRepositoryImpl(gh<_i35.CouponsApi>()));
+  gh.factory<_i50.CannedMessagesCubit>(() =>
+      _i50.CannedMessagesCubit(gh<_i44.ZodiacCannedMessagesRepository>()));
   return getIt;
 }
 
-class _$ServicesModule extends _i50.ServicesModule {}
+class _$ServicesModule extends _i51.ServicesModule {}
 
-class _$ApiModule extends _i51.ApiModule {}
+class _$ApiModule extends _i52.ApiModule {}
