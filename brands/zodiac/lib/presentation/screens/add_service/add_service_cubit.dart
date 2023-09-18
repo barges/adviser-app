@@ -11,6 +11,7 @@ import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/data/models/services/service_info_item.dart';
+import 'package:zodiac/data/models/services/service_item.dart';
 import 'package:zodiac/data/models/services/service_language_model.dart';
 import 'package:zodiac/data/models/user_info/locale_model.dart';
 import 'package:zodiac/data/network/requests/add_service_request.dart';
@@ -46,6 +47,8 @@ class AddServiceCubit extends Cubit<AddServiceState> {
 
   bool _wasFocusRequest = false;
   int? _duplicatedServiceId;
+
+  List<ServiceItem>? _approvedServices;
 
   AddServiceCubit(
     this._zodiacCachingManager,
@@ -94,6 +97,8 @@ class AddServiceCubit extends Cubit<AddServiceState> {
 
     emit(state.copyWith(
         hasApprovedServices: response.result?.list?.isNotEmpty == true));
+
+    _approvedServices = response.result?.list;
   }
 
   Future<void> _getInitLanguage() async {
@@ -128,11 +133,14 @@ class AddServiceCubit extends Cubit<AddServiceState> {
   }
 
   void goToDuplicateService(BuildContext context) {
-    context.push(
-        route: ZodiacDuplicateService(
-      returnCallback: duplicateService,
-      oldDuplicatedServiceId: _duplicatedServiceId,
-    ));
+    if (_approvedServices?.isNotEmpty == true) {
+      context.push(
+          route: ZodiacDuplicateService(
+        returnCallback: duplicateService,
+        oldDuplicatedServiceId: _duplicatedServiceId,
+        approvedServices: _approvedServices!,
+      ));
+    }
   }
 
   void duplicateService(Map<String, dynamic> params) {
