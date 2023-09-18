@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/models/chat/chat_message_model.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
@@ -13,7 +12,6 @@ import 'package:zodiac/data/network/responses/create_audio_message_response.dart
 import 'package:zodiac/data/network/responses/send_image_response.dart';
 import 'package:zodiac/data/network/responses/upload_audio_message_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_chat_repository.dart';
-import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/services/websocket_manager/created_delivered_event.dart';
 import 'package:zodiac/services/websocket_manager/websocket_manager.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
@@ -116,9 +114,8 @@ class ResendMessageCubit extends Cubit<ResendMessageState> {
               mid: _chatMessageModel.mid!, clientId: _opponentId ?? 0));
         } else {
           if (response.errorCode == 3) {
-            _zodiacMainCubit.updateErrorMessage(NetworkError(
-                message: SZodiac.of(context).theMaximumImageSizeIs10MbZodiac));
             deleteMessage(_chatMessageModel.mid);
+            return;
           }
 
           emit(state.copyWith(showResendWidget: true));
