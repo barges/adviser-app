@@ -15,8 +15,10 @@ import 'package:zodiac/data/models/services/service_language_model.dart';
 import 'package:zodiac/data/models/user_info/locale_model.dart';
 import 'package:zodiac/data/network/requests/add_service_request.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
+import 'package:zodiac/data/network/requests/services_list_request.dart';
 import 'package:zodiac/data/network/responses/add_service_response.dart';
 import 'package:zodiac/data/network/responses/default_services_images_response.dart';
+import 'package:zodiac/data/network/responses/services_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -78,11 +80,20 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     try {
       await _getInitLanguage();
       await _getImages();
+      await _getApprovedServices();
     } catch (e) {
       logger.d(e);
     } finally {
       emit(state.copyWith(alreadyTriedToGetImages: true));
     }
+  }
+
+  Future<void> _getApprovedServices() async {
+    final ServiceResponse response =
+        await _servicesRepository.getServices(ServiceListRequest(status: 1));
+
+    emit(state.copyWith(
+        hasApprovedServices: response.result?.list?.isNotEmpty == true));
   }
 
   Future<void> _getInitLanguage() async {

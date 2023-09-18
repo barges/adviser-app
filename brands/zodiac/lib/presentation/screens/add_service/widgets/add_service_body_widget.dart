@@ -58,21 +58,29 @@ class AddServiceBodyWidget extends StatelessWidget {
                         content: SZodiac.of(context)
                             .thisTypeOfServicesAreNotTimeSensitiveZodiac,
                       ),
-                      const SizedBox(
-                        height: 24.0,
-                      ),
                       Builder(builder: (context) {
-                        final String? duplicatedServiceName = context.select(
+                        final bool hasApprovedServices = context.select(
                             (AddServiceCubit cubit) =>
-                                cubit.state.duplicatedServiceName);
+                                cubit.state.hasApprovedServices);
 
-                        return TileMenuButton(
-                          label: SZodiac.of(context)
-                              .duplicateAnExistingServiceZodiac,
-                          title: duplicatedServiceName,
-                          onTap: () =>
-                              addServiceCubit.goToDuplicateService(context),
-                        );
+                        if (hasApprovedServices) {
+                          final String? duplicatedServiceName = context.select(
+                              (AddServiceCubit cubit) =>
+                                  cubit.state.duplicatedServiceName);
+
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 24.0),
+                            child: TileMenuButton(
+                              label: SZodiac.of(context)
+                                  .duplicateAnExistingServiceZodiac,
+                              title: duplicatedServiceName,
+                              onTap: () =>
+                                  addServiceCubit.goToDuplicateService(context),
+                            ),
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
                       }),
                       const SizedBox(
                         height: 24.0,
