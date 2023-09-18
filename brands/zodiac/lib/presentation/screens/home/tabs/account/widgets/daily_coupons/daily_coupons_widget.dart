@@ -73,6 +73,7 @@ class _DailyCouponWidget extends StatelessWidget {
     return Opacity(
       opacity: limitReached && !showCounter ? 0.6 : 1.0,
       child: ClipRRect(
+        borderRadius: BorderRadius.circular(8.0),
         child: Stack(
           children: [
             AppImageWidget(

@@ -23,8 +23,6 @@ class RepliedMessageContentWidget extends StatelessWidget {
     String authorName = chatMessageModel != null
         ? '${chatMessageModel?.authorName ?? ''}${chatMessageModel?.isOutgoing == true ? ' (${SZodiac.of(context).youZodiac})' : ''}'
         : repliedMessage?.repliedUserName ?? '';
-    String message = chatMessageModel?.message ?? repliedMessage?.text ?? '';
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -38,7 +36,7 @@ class RepliedMessageContentWidget extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         Text(
-          message,
+          repliedMessage?.type.getTitle(context) ?? '',
           style: theme.textTheme.bodySmall?.copyWith(
             color: messageColor,
           ),

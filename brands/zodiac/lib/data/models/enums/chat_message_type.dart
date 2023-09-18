@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:zodiac/generated/l10n.dart';
 
 enum ChatMessageType {
   simple,
@@ -136,6 +138,17 @@ enum ChatMessageType {
         return Assets.zodiac.vectors.dollarIcon.path;
       default:
         return null;
+    }
+  }
+
+  String getTitle(BuildContext context) {
+    switch (this) {
+      case audio:
+        return SZodiac.of(context).audioMessageZodiac;
+      case image:
+        return SZodiac.of(context).photoZodiac;
+      default:
+        return '';
     }
   }
 }

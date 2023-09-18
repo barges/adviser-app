@@ -291,6 +291,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "phoneNumberZodiac":
             MessageLookupByLibrary.simpleMessage("Número de telefone"),
         "phoneZodiac": MessageLookupByLibrary.simpleMessage("Telefone"),
+        "photoZodiac": MessageLookupByLibrary.simpleMessage("Foto"),
         "pleaseEnterAtLeast8CharactersZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Por favor insira pelo menos 8 caracteres"),
