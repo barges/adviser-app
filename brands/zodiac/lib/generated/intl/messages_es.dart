@@ -367,6 +367,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Instalación exitosa"),
         "showDailyCouponsZodiac":
             MessageLookupByLibrary.simpleMessage("Mostrar cupones diarios"),
+        "showLessZodiac": MessageLookupByLibrary.simpleMessage("Muestra menos"),
         "showMoreZodiac": MessageLookupByLibrary.simpleMessage("Mostrar más"),
         "smileysAndPeopleZodiac":
             MessageLookupByLibrary.simpleMessage("Emoticonos y personas"),

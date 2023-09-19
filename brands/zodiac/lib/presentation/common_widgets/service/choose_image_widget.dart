@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
@@ -25,6 +26,8 @@ class ChooseImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+
+    logger.d('showAllImages: $showAllImages');
 
     final List<String> shownImages = showAllImages
         ? images.map((e) => e.image ?? '').toList()
@@ -105,7 +108,9 @@ class ChooseImageWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  SZodiac.of(context).showMoreZodiac,
+                  showAllImages
+                      ? SZodiac.of(context).showLessZodiac
+                      : SZodiac.of(context).showMoreZodiac,
                   style: theme.textTheme.labelMedium?.copyWith(
                     fontSize: 17.0,
                     color: theme.primaryColor,
