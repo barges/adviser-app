@@ -93,10 +93,10 @@ class _AppTextFieldState extends State<AppTextField> {
                     ? theme.primaryColor
                     : theme.hintColor,
           ),
-          padding: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
+          //  padding: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
           child: Container(
-            //  margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
-            height: (widget.isBig ? 144.0 : AppConstants.textFieldsHeight),
+            margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
+            height: (widget.isBig ? 144.0 : AppConstants.textFieldsHeight) - 3,
             decoration: BoxDecoration(
               borderRadius:
                   BorderRadius.circular(AppConstants.buttonRadius - 1),
@@ -104,6 +104,7 @@ class _AppTextFieldState extends State<AppTextField> {
             ),
             padding: EdgeInsets.only(bottom: widget.showCounter ? 12.0 : 0.0),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -112,7 +113,7 @@ class _AppTextFieldState extends State<AppTextField> {
                     padding: widget.isBig
                         ? EdgeInsets.fromLTRB(
                             12.0, 12.0, 12.0, widget.showCounter ? 0.0 : 12.0)
-                        : const EdgeInsets.all(12.0),
+                        : const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 0.0),
                     child: TextField(
                       controller: widget.controller,
                       focusNode: widget.focusNode,
