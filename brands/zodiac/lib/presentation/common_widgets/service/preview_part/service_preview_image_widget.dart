@@ -28,10 +28,21 @@ class ServicePreviewImageWidget extends StatelessWidget {
 
     return Stack(
       children: [
-        AppImageWidget(
-          uri: Uri.parse(selectedImage.image ?? ''),
-          height: 108.0,
-          width: 260,
+        Container(
+          foregroundDecoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                const Color(0xFF000000).withOpacity(0.3),
+                const Color(0xFF000000).withOpacity(0),
+              ],
+              stops: const [0.2619, 1],
+            ),
+          ),
+          child: AppImageWidget(
+            uri: Uri.parse(selectedImage.image ?? ''),
+            height: 108.0,
+            width: 260,
+          ),
         ),
         Positioned(
           top: 16.0,
