@@ -30,7 +30,7 @@ class ServicePreviewImageWidget extends StatelessWidget {
       children: [
         AppImageWidget(
           uri: Uri.parse(selectedImage.image ?? ''),
-          height: 98.0,
+          height: 108.0,
           width: 260,
         ),
         Positioned(
@@ -62,7 +62,7 @@ class ServicePreviewImageWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4.0),
                 ),
                 padding: const EdgeInsets.symmetric(
-                  vertical: 4.0,
+                  vertical: 2.0,
                   horizontal: 6.0,
                 ),
                 child: Text(
