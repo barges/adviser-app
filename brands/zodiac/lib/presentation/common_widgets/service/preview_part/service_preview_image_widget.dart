@@ -58,7 +58,7 @@ class ServicePreviewImageWidget extends StatelessWidget {
                     titleController.text,
                     style: theme.textTheme.displaySmall?.copyWith(
                       fontSize: 14.0,
-                      color: theme.canvasColor,
+                      color: theme.backgroundColor,
                     ),
                     maxLines: 2,
                   ),
@@ -80,7 +80,7 @@ class ServicePreviewImageWidget extends StatelessWidget {
                   SZodiac.of(context).newZodiac.toUpperCase(),
                   style: theme.textTheme.labelSmall?.copyWith(
                     fontSize: 12.0,
-                    color: theme.canvasColor,
+                    color: theme.backgroundColor,
                   ),
                 ),
               )
@@ -123,7 +123,7 @@ class _ServiceTypeAndDeliveryTimeWidget extends StatelessWidget {
         vertical: 4.0,
       ),
       decoration: BoxDecoration(
-        color: theme.canvasColor,
+        color: theme.backgroundColor,
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: Text(
