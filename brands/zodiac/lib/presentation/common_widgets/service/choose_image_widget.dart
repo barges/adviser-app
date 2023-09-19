@@ -63,6 +63,7 @@ class ChooseImageWidget extends StatelessWidget {
             height: 12.0,
           ),
           GridView.count(
+            padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             crossAxisCount: 4,
@@ -86,21 +87,26 @@ class ChooseImageWidget extends StatelessWidget {
                           ),
                         ),
                         Positioned.fill(
-                            child: Container(
-                                clipBehavior: Clip.hardEdge,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6.0),
-                                    border: selectedImageIndex == index
-                                        ? Border.all(
-                                            color: theme.primaryColor,
-                                            width: 2.0,
-                                          )
-                                        : null)))
+                          child: Container(
+                            clipBehavior: Clip.hardEdge,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(6.0),
+                                border: selectedImageIndex == index
+                                    ? Border.all(
+                                        color: theme.primaryColor,
+                                        width: 2.0,
+                                      )
+                                    : null),
+                          ),
+                        )
                       ],
                     ),
                   ),
                 )
                 .toList(),
+          ),
+          const SizedBox(
+            height: 22.0,
           ),
           GestureDetector(
             onTap: setShowAllImages,
