@@ -34,10 +34,21 @@ class ServiceCard extends StatelessWidget {
         children: [
           Stack(
             children: [
-              AppImageWidget(
-                uri: Uri.parse(serviceItem.image ?? ''),
-                width: double.infinity,
-                height: 130.0,
+              Container(
+                foregroundDecoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      const Color(0xFF000000).withOpacity(0.4),
+                      const Color(0xFF000000).withOpacity(0)
+                    ],
+                    stops: const [0.2745, 1],
+                  ),
+                ),
+                child: AppImageWidget(
+                  uri: Uri.parse(serviceItem.image ?? ''),
+                  width: double.infinity,
+                  height: 130.0,
+                ),
               ),
               Container(
                 height: 130.0,
