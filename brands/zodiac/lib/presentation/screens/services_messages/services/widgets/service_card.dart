@@ -68,7 +68,7 @@ class ServiceCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.displaySmall?.copyWith(
                                 fontSize: 14.0,
-                                color: theme.canvasColor,
+                                color: theme.backgroundColor,
                                 overflow: TextOverflow.ellipsis),
                           ),
                           const Spacer(),
@@ -81,7 +81,7 @@ class ServiceCard extends StatelessWidget {
                                   ),
                                   child: _LabelWidget(
                                     text: status.getTitle(context),
-                                    textColor: theme.canvasColor,
+                                    textColor: theme.backgroundColor,
                                     color: isRejected
                                         ? AppColors.error
                                         : AppColors.online,
@@ -107,7 +107,7 @@ class ServiceCard extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 8.0),
                       child: _LabelWidget(
                         text: SZodiac.of(context).newZodiac.toUpperCase(),
-                        textColor: theme.canvasColor,
+                        textColor: theme.backgroundColor,
                         color: AppColors.promotion,
                       ),
                     ),
