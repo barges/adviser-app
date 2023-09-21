@@ -52,4 +52,22 @@ enum ServiceType {
         return Assets.zodiac.vectors.narrowServicesIcon.path;
     }
   }
+
+  String getInformationTitle(BuildContext context) {
+    switch (this) {
+      case online:
+        return '';
+      case offline:
+        return SZodiac.of(context).moreAboutOfflineServicesZodiac;
+    }
+  }
+
+  String getInformationContent(BuildContext context) {
+    switch (this) {
+      case online:
+        return '';
+      case offline:
+        return SZodiac.of(context).thisTypeOfServicesAreNotTimeSensitiveZodiac;
+    }
+  }
 }

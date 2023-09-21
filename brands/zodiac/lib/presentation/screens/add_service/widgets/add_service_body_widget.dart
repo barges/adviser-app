@@ -4,6 +4,7 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
+import 'package:zodiac/data/models/enums/service_type.dart';
 import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dart';
@@ -49,15 +50,33 @@ class AddServiceBodyWidget extends StatelessWidget {
                   child: Column(
                     children: [
                       const TabsWidget(),
-                      const SizedBox(
-                        height: 24.0,
-                      ),
-                      InformationExpansionPanel(
-                        title:
-                            SZodiac.of(context).moreAboutOfflineServicesZodiac,
-                        content: SZodiac.of(context)
-                            .thisTypeOfServicesAreNotTimeSensitiveZodiac,
-                      ),
+                      Builder(builder: (context) {
+                        final ServiceType serviceType = context.select(
+                            (AddServiceCubit cubit) => cubit.state.selectedTab);
+
+                        final bool hasOfflineService = context.select(
+                            (AddServiceCubit cubit) =>
+                                cubit.state.hasOfflineService);
+                        final bool hasOnlineService = context.select(
+                            (AddServiceCubit cubit) =>
+                                cubit.state.hasOnlineService);
+
+                        if ((serviceType == ServiceType.offline &&
+                                !hasOfflineService) ||
+                            (serviceType == ServiceType.online &&
+                                !hasOnlineService)) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 24.0),
+                            child: InformationExpansionPanel(
+                              title: serviceType.getInformationTitle(context),
+                              content:
+                                  serviceType.getInformationContent(context),
+                            ),
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      }),
                       Builder(builder: (context) {
                         final bool hasApprovedServices = context.select(
                             (AddServiceCubit cubit) =>

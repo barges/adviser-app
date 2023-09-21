@@ -11,14 +11,22 @@ import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/add_service_body_widget.dart';
 
 class AddServiceScreen extends StatelessWidget {
-  const AddServiceScreen({Key? key}) : super(key: key);
+  final bool hasOfflineService;
+  final bool hasOnlineService;
+
+  const AddServiceScreen({
+    Key? key,
+    required this.hasOfflineService,
+    required this.hasOnlineService,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
     return BlocProvider(
-      create: (context) => zodiacGetIt.get<AddServiceCubit>(),
+      create: (context) => zodiacGetIt.get<AddServiceCubit>(
+          param1: hasOfflineService, param2: hasOnlineService),
       child: GestureDetector(
         onTap: FocusScope.of(context).unfocus,
         child: Scaffold(

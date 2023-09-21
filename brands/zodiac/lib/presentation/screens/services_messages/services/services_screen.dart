@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:zodiac/data/models/enums/service_status.dart';
 import 'package:zodiac/data/models/services/service_item.dart';
@@ -94,9 +92,7 @@ class ServicesScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: AppElevatedButton(
                     title: SZodiac.of(context).addServiceZodiac,
-                    onPressed: () => context.push(
-                      route: const ZodiacAddService(),
-                    ),
+                    onPressed: () => servicesCubit.goToAddService(context),
                   ),
                 ),
               ],

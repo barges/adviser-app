@@ -55,7 +55,13 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     this._servicesRepository,
     this._userRepository,
     this._globalCachingManager,
+    @factoryParam bool hasOfflineService,
+    @factoryParam bool hasOnlineService,
   ) : super(const AddServiceState()) {
+    emit(state.copyWith(
+        hasOfflineService: hasOfflineService,
+        hasOnlineService: hasOnlineService));
+
     initializeScreen();
   }
 

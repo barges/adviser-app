@@ -19,7 +19,7 @@ class InformationExpansionPanel extends StatefulWidget {
 }
 
 class _InformationExpansionPanelState extends State<InformationExpansionPanel> {
-  bool isExpanded = false;
+  bool isExpanded = true;
 
   @override
   Widget build(BuildContext context) {

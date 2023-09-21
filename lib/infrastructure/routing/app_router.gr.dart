@@ -466,9 +466,14 @@ class MainAppRouter extends _i50.RootStackRouter {
       );
     },
     ZodiacAddService.name: (routeData) {
+      final args = routeData.argsAs<ZodiacAddServiceArgs>();
       return _i50.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i41.AddServiceScreen(),
+        child: _i41.AddServiceScreen(
+          key: args.key,
+          hasOfflineService: args.hasOfflineService,
+          hasOnlineService: args.hasOnlineService,
+        ),
       );
     },
     ZodiacDuplicateService.name: (routeData) {
@@ -1874,14 +1879,41 @@ class ZodiacSendImageArgs {
 
 /// generated route for
 /// [_i41.AddServiceScreen]
-class ZodiacAddService extends _i50.PageRouteInfo<void> {
-  const ZodiacAddService()
-      : super(
+class ZodiacAddService extends _i50.PageRouteInfo<ZodiacAddServiceArgs> {
+  ZodiacAddService({
+    _i51.Key? key,
+    required bool hasOfflineService,
+    required bool hasOnlineService,
+  }) : super(
           ZodiacAddService.name,
           path: 'zodiacAddService',
+          args: ZodiacAddServiceArgs(
+            key: key,
+            hasOfflineService: hasOfflineService,
+            hasOnlineService: hasOnlineService,
+          ),
         );
 
   static const String name = 'ZodiacAddService';
+}
+
+class ZodiacAddServiceArgs {
+  const ZodiacAddServiceArgs({
+    this.key,
+    required this.hasOfflineService,
+    required this.hasOnlineService,
+  });
+
+  final _i51.Key? key;
+
+  final bool hasOfflineService;
+
+  final bool hasOnlineService;
+
+  @override
+  String toString() {
+    return 'ZodiacAddServiceArgs{key: $key, hasOfflineService: $hasOfflineService, hasOnlineService: $hasOnlineService}';
+  }
 }
 
 /// generated route for
