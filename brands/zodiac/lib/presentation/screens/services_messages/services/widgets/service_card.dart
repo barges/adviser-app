@@ -5,7 +5,7 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/enums/service_status.dart';
 import 'package:zodiac/data/models/services/service_item.dart';
@@ -201,17 +201,12 @@ class ServiceCard extends StatelessWidget {
                     const SizedBox(width: 8.0),
                     GestureDetector(
                       onTap: () async {
-                        if (await showOkCancelAlert(
-                              context: context,
-                              title: SZodiac.of(context)
-                                  .doYouWantDeleteServicesZodiac(
-                                      serviceItem.name ?? ''),
+                        if (await showDeleteAlert(
+                              context,
+                              SZodiac.of(context).doYouWantDeleteServicesZodiac(
+                                  serviceItem.name ?? ''),
                               description: SZodiac.of(context)
                                   .itWillBeRemovedFromServicesZodiac,
-                              okText: SZodiac.of(context).deleteZodiac,
-                              okTextColor: theme.errorColor,
-                              allowBarrierClick: false,
-                              isCancelEnabled: true,
                             ) ==
                             true) {
                           if (serviceItem.id != null) {
