@@ -20,6 +20,7 @@ class AppTextField extends StatefulWidget {
   final bool showCounter;
   final String? footerHint;
   final ApprovalStatus? approvalStatus;
+  final bool cutMaxLength;
 
   const AppTextField({
     Key? key,
@@ -37,6 +38,7 @@ class AppTextField extends StatefulWidget {
     this.errorType = ValidationErrorType.empty,
     this.hintText = '',
     this.showCounter = false,
+    this.cutMaxLength = false,
   }) : super(key: key);
 
   @override
@@ -93,7 +95,6 @@ class _AppTextFieldState extends State<AppTextField> {
                     ? theme.primaryColor
                     : theme.hintColor,
           ),
-          //  padding: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
           child: Container(
             margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
             height: (widget.isBig ? 144.0 : AppConstants.textFieldsHeight) - 3,
@@ -118,8 +119,8 @@ class _AppTextFieldState extends State<AppTextField> {
                       controller: widget.controller,
                       focusNode: widget.focusNode,
                       keyboardType: widget.textInputType,
-                      maxLength: widget.maxLength,
                       textInputAction: widget.textInputAction,
+                      maxLength: widget.cutMaxLength ? widget.maxLength : null,
                       onSubmitted: (_) {
                         FocusScope.of(context)
                             .requestFocus(widget.nextFocusNode);

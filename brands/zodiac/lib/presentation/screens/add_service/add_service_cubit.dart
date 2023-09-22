@@ -470,14 +470,21 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     final String text =
         textControllersMap[localeCode]?[index].text.trim() ?? '';
     if (text.isEmpty) {
-      isValid = false;
-
       errorTextsMap[localeCode]?[index] = ValidationErrorType.requiredField;
+    } else if (index == ZodiacConstants.serviceDescriptionIndex &&
+        text.length > ZodiacConstants.serviceDescriptionMaxLength) {
+      errorTextsMap[localeCode]?[index] =
+          ValidationErrorType.characterLimitExceeded;
+    }
+
+    if (errorTextsMap[localeCode]?[index] != ValidationErrorType.empty) {
+      isValid = false;
 
       if (!_wasFocusRequest) {
         focusNodesMap[localeCode]?[index].requestFocus();
       }
     }
+
     return isValid;
   }
 }
