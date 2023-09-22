@@ -54,6 +54,7 @@ import 'package:shared_advisor_interface/presentation/screens/force_update/force
 import 'package:shared_advisor_interface/presentation/screens/home_screen/main_home_screen.dart'
     as _i1;
 import 'package:zodiac/data/models/chat/user_data.dart' as _i57;
+import 'package:zodiac/data/models/services/service_item.dart' as _i59;
 import 'package:zodiac/data/models/settings/phone.dart' as _i55;
 import 'package:zodiac/data/models/user_info/category_info.dart' as _i56;
 import 'package:zodiac/data/models/user_info/user_balance.dart' as _i54;
@@ -465,9 +466,14 @@ class MainAppRouter extends _i50.RootStackRouter {
       );
     },
     ZodiacAddService.name: (routeData) {
+      final args = routeData.argsAs<ZodiacAddServiceArgs>();
       return _i50.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i41.AddServiceScreen(),
+        child: _i41.AddServiceScreen(
+          key: args.key,
+          hasOfflineService: args.hasOfflineService,
+          hasOnlineService: args.hasOnlineService,
+        ),
       );
     },
     ZodiacDuplicateService.name: (routeData) {
@@ -477,6 +483,7 @@ class MainAppRouter extends _i50.RootStackRouter {
         child: _i42.DuplicateServiceScreen(
           key: args.key,
           returnCallback: args.returnCallback,
+          approvedServices: args.approvedServices,
           oldDuplicatedServiceId: args.oldDuplicatedServiceId,
         ),
       );
@@ -1872,14 +1879,41 @@ class ZodiacSendImageArgs {
 
 /// generated route for
 /// [_i41.AddServiceScreen]
-class ZodiacAddService extends _i50.PageRouteInfo<void> {
-  const ZodiacAddService()
-      : super(
+class ZodiacAddService extends _i50.PageRouteInfo<ZodiacAddServiceArgs> {
+  ZodiacAddService({
+    _i51.Key? key,
+    required bool hasOfflineService,
+    required bool hasOnlineService,
+  }) : super(
           ZodiacAddService.name,
           path: 'zodiacAddService',
+          args: ZodiacAddServiceArgs(
+            key: key,
+            hasOfflineService: hasOfflineService,
+            hasOnlineService: hasOnlineService,
+          ),
         );
 
   static const String name = 'ZodiacAddService';
+}
+
+class ZodiacAddServiceArgs {
+  const ZodiacAddServiceArgs({
+    this.key,
+    required this.hasOfflineService,
+    required this.hasOnlineService,
+  });
+
+  final _i51.Key? key;
+
+  final bool hasOfflineService;
+
+  final bool hasOnlineService;
+
+  @override
+  String toString() {
+    return 'ZodiacAddServiceArgs{key: $key, hasOfflineService: $hasOfflineService, hasOnlineService: $hasOnlineService}';
+  }
 }
 
 /// generated route for
@@ -1889,6 +1923,7 @@ class ZodiacDuplicateService
   ZodiacDuplicateService({
     _i51.Key? key,
     required void Function(Map<String, dynamic>) returnCallback,
+    required List<_i59.ServiceItem> approvedServices,
     int? oldDuplicatedServiceId,
   }) : super(
           ZodiacDuplicateService.name,
@@ -1896,6 +1931,7 @@ class ZodiacDuplicateService
           args: ZodiacDuplicateServiceArgs(
             key: key,
             returnCallback: returnCallback,
+            approvedServices: approvedServices,
             oldDuplicatedServiceId: oldDuplicatedServiceId,
           ),
         );
@@ -1907,6 +1943,7 @@ class ZodiacDuplicateServiceArgs {
   const ZodiacDuplicateServiceArgs({
     this.key,
     required this.returnCallback,
+    required this.approvedServices,
     this.oldDuplicatedServiceId,
   });
 
@@ -1914,11 +1951,13 @@ class ZodiacDuplicateServiceArgs {
 
   final void Function(Map<String, dynamic>) returnCallback;
 
+  final List<_i59.ServiceItem> approvedServices;
+
   final int? oldDuplicatedServiceId;
 
   @override
   String toString() {
-    return 'ZodiacDuplicateServiceArgs{key: $key, returnCallback: $returnCallback, oldDuplicatedServiceId: $oldDuplicatedServiceId}';
+    return 'ZodiacDuplicateServiceArgs{key: $key, returnCallback: $returnCallback, approvedServices: $approvedServices, oldDuplicatedServiceId: $oldDuplicatedServiceId}';
   }
 }
 

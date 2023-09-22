@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zodiac/data/models/services/service_item.dart';
 import 'package:zodiac/data/network/requests/get_service_info_request.dart';
-import 'package:zodiac/data/network/requests/services_list_request.dart';
-import 'package:zodiac/data/network/responses/services_response.dart';
 import 'package:zodiac/data/network/responses/get_service_info_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/presentation/screens/duplicate_service/duplicate_service_state.dart';
@@ -12,36 +10,24 @@ class DuplicateServiceCubit extends Cubit<DuplicateServiceState> {
   final ZodiacServicesRepository servicesRepository;
 
   final ValueChanged<Map<String, dynamic>> returnCallback;
+  final List<ServiceItem> approvedServices;
   final int? oldDuplicatedServiceId;
-
-  List<ServiceItem> _services = [];
 
   DuplicateServiceCubit({
     required this.servicesRepository,
     required this.returnCallback,
+    required this.approvedServices,
     this.oldDuplicatedServiceId,
   }) : super(const DuplicateServiceState()) {
-    _getDuplicatedServices();
-  }
-
-  Future<void> _getDuplicatedServices() async {
-    final ServiceResponse response =
-        await servicesRepository.getServices(ServiceListRequest());
-
-    if (response.status == true) {
-      _services = response.result?.list ?? [];
-
-      _services.removeWhere(
-        (element) => element.id == oldDuplicatedServiceId,
-      );
-
-      emit(state.copyWith(services: _services));
-    }
+    emit(state.copyWith(
+        services: approvedServices,
+        selectedDuplicatedService: approvedServices
+            .indexWhere((element) => element.id == oldDuplicatedServiceId)));
   }
 
   void search(String text) {
     List<ServiceItem> services =
-        _services.where((element) => element.name == text).toList();
+        approvedServices.where((element) => element.name == text).toList();
 
     emit(state.copyWith(services: services));
   }

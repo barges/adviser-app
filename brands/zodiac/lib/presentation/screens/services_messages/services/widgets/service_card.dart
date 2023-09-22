@@ -5,12 +5,13 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/data/models/enums/service_status.dart';
 import 'package:zodiac/data/models/services/service_item.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
+import 'package:zodiac/presentation/common_widgets/blackout_widget.dart';
 import 'package:zodiac/presentation/screens/services_messages/services/services_cubit.dart';
 import 'package:zodiac/zodiac_extensions.dart';
 
@@ -34,10 +35,12 @@ class ServiceCard extends StatelessWidget {
         children: [
           Stack(
             children: [
-              AppImageWidget(
-                uri: Uri.parse(serviceItem.image ?? ''),
-                width: double.infinity,
-                height: 130.0,
+              BlackoutWidget(
+                child: AppImageWidget(
+                  uri: Uri.parse(serviceItem.image ?? ''),
+                  width: double.infinity,
+                  height: 130.0,
+                ),
               ),
               Container(
                 height: 130.0,
@@ -57,7 +60,7 @@ class ServiceCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.displaySmall?.copyWith(
                                 fontSize: 14.0,
-                                color: theme.canvasColor,
+                                color: theme.backgroundColor,
                                 overflow: TextOverflow.ellipsis),
                           ),
                           const Spacer(),
@@ -70,7 +73,7 @@ class ServiceCard extends StatelessWidget {
                                   ),
                                   child: _LabelWidget(
                                     text: status.getTitle(context),
-                                    textColor: theme.canvasColor,
+                                    textColor: theme.backgroundColor,
                                     color: isRejected
                                         ? AppColors.error
                                         : AppColors.online,
@@ -96,7 +99,7 @@ class ServiceCard extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 8.0),
                       child: _LabelWidget(
                         text: SZodiac.of(context).newZodiac.toUpperCase(),
-                        textColor: theme.canvasColor,
+                        textColor: theme.backgroundColor,
                         color: AppColors.promotion,
                       ),
                     ),
@@ -190,17 +193,12 @@ class ServiceCard extends StatelessWidget {
                     const SizedBox(width: 8.0),
                     GestureDetector(
                       onTap: () async {
-                        if (await showOkCancelAlert(
-                              context: context,
-                              title: SZodiac.of(context)
-                                  .doYouWantDeleteServicesZodiac(
-                                      serviceItem.name ?? ''),
+                        if (await showDeleteAlert(
+                              context,
+                              SZodiac.of(context).doYouWantDeleteServicesZodiac(
+                                  serviceItem.name ?? ''),
                               description: SZodiac.of(context)
                                   .itWillBeRemovedFromServicesZodiac,
-                              okText: SZodiac.of(context).deleteZodiac,
-                              okTextColor: theme.errorColor,
-                              allowBarrierClick: false,
-                              isCancelEnabled: true,
                             ) ==
                             true) {
                           if (serviceItem.id != null) {
