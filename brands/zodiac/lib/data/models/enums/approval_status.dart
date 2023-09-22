@@ -14,9 +14,9 @@ enum ApprovalStatus {
       case 0:
         return ApprovalStatus.newStatus;
       case 1:
-        return ApprovalStatus.approved;
-      case 2:
         return ApprovalStatus.rejected;
+      case 2:
+        return ApprovalStatus.approved;
       case 3:
         return ApprovalStatus.temp;
       default:

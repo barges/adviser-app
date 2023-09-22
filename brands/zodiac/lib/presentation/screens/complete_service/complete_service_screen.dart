@@ -3,7 +3,8 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/simple_app_bar.dart';
-import 'package:zodiac/presentation/screens/services_messages/canned_messages/widgets/message_text_field.dart';
+import 'package:zodiac/presentation/common_widgets/text_fields/app_text_field.dart';
+import 'package:zodiac/zodiac_constants.dart';
 
 class CompleteServiceScreen extends StatelessWidget {
   const CompleteServiceScreen({super.key});
@@ -47,10 +48,13 @@ class CompleteServiceScreen extends StatelessWidget {
                 const SizedBox(
                   height: 24.0,
                 ),
-                MessageTextField(
-                  title: SZodiac.of(context).writeYourMessageZodiac,
-                  note: SZodiac.of(context).needAtLeast20SymbolsZodiac,
+                AppTextField(
                   controller: TextEditingController(),
+                  label: SZodiac.of(context).writeYourMessageZodiac,
+                  footerHint: SZodiac.of(context).needAtLeast20SymbolsZodiac,
+                  isBig: true,
+                  showCounter: true,
+                  maxLength: ZodiacConstants.serviceDescriptionMaxLength,
                 ),
                 const SizedBox(
                   height: 32.0,

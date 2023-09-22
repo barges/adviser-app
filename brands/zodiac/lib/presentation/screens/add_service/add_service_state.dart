@@ -25,5 +25,8 @@ class AddServiceState with _$AddServiceState {
     String? duplicatedServiceName,
     @Default(false) bool updateAfterDuplicate,
     @Default(false) bool alreadyTriedToGetImages,
+    @Default(false) bool hasApprovedServices,
+    @Default(false) bool hasOfflineService,
+    @Default(false) bool hasOnlineService,
   }) = _AddServiceState;
 }

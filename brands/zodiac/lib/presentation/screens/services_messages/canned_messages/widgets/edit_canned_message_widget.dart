@@ -4,10 +4,11 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:zodiac/data/models/canned_messages/canned_category.dart';
 import 'package:zodiac/generated/l10n.dart';
+import 'package:zodiac/presentation/common_widgets/text_fields/app_text_field.dart';
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_cubit.dart';
 import 'package:zodiac/presentation/screens/services_messages/canned_messages/widgets/categories_widget.dart';
-import 'package:zodiac/presentation/screens/services_messages/canned_messages/widgets/message_text_field.dart';
 import 'package:zodiac/presentation/screens/services_messages/services_messages_screen.dart';
+import 'package:zodiac/zodiac_constants.dart';
 
 class EditCannedMessageWidget extends StatefulWidget {
   final String text;
@@ -99,9 +100,12 @@ class _EditCannedMessageWidgetState extends State<EditCannedMessageWidget> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      MessageTextField(
-                        title: SZodiac.of(context).editMessageZodiac,
+                      AppTextField(
                         controller: _textEditingController,
+                        label: SZodiac.of(context).addMessageZodiac,
+                        isBig: true,
+                        showCounter: true,
+                        maxLength: ZodiacConstants.cannedMessageMaxLength,
                       ),
                       const SizedBox(
                         height: verticalInterval,

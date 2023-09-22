@@ -11,12 +11,15 @@ import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/data/models/services/service_info_item.dart';
+import 'package:zodiac/data/models/services/service_item.dart';
 import 'package:zodiac/data/models/services/service_language_model.dart';
 import 'package:zodiac/data/models/user_info/locale_model.dart';
 import 'package:zodiac/data/network/requests/add_service_request.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
+import 'package:zodiac/data/network/requests/services_list_request.dart';
 import 'package:zodiac/data/network/responses/add_service_response.dart';
 import 'package:zodiac/data/network/responses/default_services_images_response.dart';
+import 'package:zodiac/data/network/responses/services_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -45,12 +48,20 @@ class AddServiceCubit extends Cubit<AddServiceState> {
   bool _wasFocusRequest = false;
   int? _duplicatedServiceId;
 
+  List<ServiceItem>? _approvedServices;
+
   AddServiceCubit(
     this._zodiacCachingManager,
     this._servicesRepository,
     this._userRepository,
     this._globalCachingManager,
+    @factoryParam bool hasOfflineService,
+    @factoryParam bool hasOnlineService,
   ) : super(const AddServiceState()) {
+    emit(state.copyWith(
+        hasOfflineService: hasOfflineService,
+        hasOnlineService: hasOnlineService));
+
     initializeScreen();
   }
 
@@ -78,11 +89,22 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     try {
       await _getInitLanguage();
       await _getImages();
+      await _getApprovedServices();
     } catch (e) {
       logger.d(e);
     } finally {
       emit(state.copyWith(alreadyTriedToGetImages: true));
     }
+  }
+
+  Future<void> _getApprovedServices() async {
+    final ServiceResponse response =
+        await _servicesRepository.getServices(ServiceListRequest(status: 1));
+
+    emit(state.copyWith(
+        hasApprovedServices: response.result?.list?.isNotEmpty == true));
+
+    _approvedServices = response.result?.list;
   }
 
   Future<void> _getInitLanguage() async {
@@ -117,11 +139,14 @@ class AddServiceCubit extends Cubit<AddServiceState> {
   }
 
   void goToDuplicateService(BuildContext context) {
-    context.push(
-        route: ZodiacDuplicateService(
-      returnCallback: duplicateService,
-      oldDuplicatedServiceId: _duplicatedServiceId,
-    ));
+    if (_approvedServices?.isNotEmpty == true) {
+      context.push(
+          route: ZodiacDuplicateService(
+        returnCallback: duplicateService,
+        oldDuplicatedServiceId: _duplicatedServiceId,
+        approvedServices: _approvedServices!,
+      ));
+    }
   }
 
   void duplicateService(Map<String, dynamic> params) {
@@ -275,9 +300,10 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     final codeIndex = locales.indexOf(localeCode);
     int newLocaleIndex = state.selectedLanguageIndex;
 
-    if (codeIndex <= newLocaleIndex && codeIndex != 0) {
+    if (codeIndex <= newLocaleIndex && newLocaleIndex != 0) {
       newLocaleIndex = newLocaleIndex - 1;
     }
+
     _removeLocaleProperties(localeCode);
 
     locales.remove(localeCode);
@@ -443,14 +469,21 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     final String text =
         textControllersMap[localeCode]?[index].text.trim() ?? '';
     if (text.isEmpty) {
-      isValid = false;
-
       errorTextsMap[localeCode]?[index] = ValidationErrorType.requiredField;
+    } else if (index == ZodiacConstants.serviceDescriptionIndex &&
+        text.length > ZodiacConstants.serviceDescriptionMaxLength) {
+      errorTextsMap[localeCode]?[index] =
+          ValidationErrorType.characterLimitExceeded;
+    }
+
+    if (errorTextsMap[localeCode]?[index] != ValidationErrorType.empty) {
+      isValid = false;
 
       if (!_wasFocusRequest) {
         focusNodesMap[localeCode]?[index].requestFocus();
       }
     }
+
     return isValid;
   }
 }

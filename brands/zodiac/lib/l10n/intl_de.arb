@@ -235,5 +235,6 @@
   "writeYourMessageZodiac": "Schreibe deine Nachricht",
   "needAtLeast20SymbolsZodiac":"Letzte mindestens 20 Symbole zum Senden der Nachricht",
   "completeZodiac": "Vollständig",
-  "activateZodiac": "Aktivieren Sie"
+  "activateZodiac": "Aktivieren Sie",
+  "showLessZodiac": "Zeige weniger"
 }

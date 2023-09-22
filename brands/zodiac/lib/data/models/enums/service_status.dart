@@ -29,4 +29,15 @@ enum ServiceStatus {
         return SZodiac.of(context).rejectedZodiac;
     }
   }
+
+  int get toInt {
+    switch (this) {
+      case pending:
+        return 0;
+      case approved:
+        return 1;
+      case rejected:
+        return 2;
+    }
+  }
 }
