@@ -9,6 +9,7 @@ class ZodiacConstants {
   static const double serviceMinDiscount = 5;
   static const double serviceMaxDiscount = 50;
   static const int serviceDescriptionMaxLength = 280;
+  static const int cannedMessageMaxLength = 280;
 
   ///STAGE
   static const String baseUrlZodiac = 'https://stage.zodiacpsychics.com/api';

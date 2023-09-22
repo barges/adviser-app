@@ -144,7 +144,7 @@ class _AppTextFieldState extends State<AppTextField> {
                   Builder(builder: (context) {
                     if (widget.maxLength != null) {
                       final bool limitReached =
-                          currentLength >= widget.maxLength!;
+                          currentLength > widget.maxLength!;
                       return Padding(
                         padding: const EdgeInsets.only(right: 12.0),
                         child: Text(
