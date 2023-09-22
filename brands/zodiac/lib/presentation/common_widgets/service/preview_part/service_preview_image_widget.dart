@@ -4,6 +4,7 @@ import 'package:zodiac/data/models/enums/service_type.dart';
 import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
+import 'package:zodiac/presentation/common_widgets/blackout_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
 
 class ServicePreviewImageWidget extends StatelessWidget {
@@ -28,16 +29,7 @@ class ServicePreviewImageWidget extends StatelessWidget {
 
     return Stack(
       children: [
-        Container(
-          foregroundDecoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                const Color(0xFF000000).withOpacity(0.3),
-                const Color(0xFF000000).withOpacity(0),
-              ],
-              stops: const [0.2619, 1],
-            ),
-          ),
+        BlackoutWidget(
           child: AppImageWidget(
             uri: Uri.parse(selectedImage.image ?? ''),
             height: 108.0,

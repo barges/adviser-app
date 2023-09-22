@@ -141,57 +141,23 @@ class _AppTextFieldState extends State<AppTextField> {
                   ),
                 ),
                 if (widget.showCounter)
-                  Builder(builder: (context) {
-                    if (widget.maxLength != null) {
-                      final bool limitReached =
-                          currentLength > widget.maxLength!;
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 12.0),
-                        child: Text(
-                          '$currentLength/${widget.maxLength}',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            fontSize: 14.0,
-                            color: limitReached
-                                ? AppColors.error
-                                : AppColors.online,
-                          ),
-                        ),
-                      );
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  })
+                  _CounterWidget(
+                    currentLength: currentLength,
+                    maxLength: widget.maxLength,
+                  )
               ],
             ),
           ),
         ),
         if (widget.errorType != ValidationErrorType.empty)
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 2.0,
-              left: 12.0,
-            ),
-            child: Text(
-              widget.errorType.text(context),
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.errorColor,
-                fontSize: 12.0,
-              ),
-            ),
+          _FooterTextWidget(
+            text: widget.errorType.text(context),
+            color: theme.errorColor,
           )
         else if (widget.footerHint != null)
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 2.0,
-              left: 12.0,
-            ),
-            child: Text(
-              widget.footerHint!,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.shadowColor,
-                fontSize: 12.0,
-              ),
-            ),
+          _FooterTextWidget(
+            text: widget.footerHint!,
+            color: theme.shadowColor,
           )
       ],
     );
@@ -240,6 +206,67 @@ class _ApprovalStatusWidget extends StatelessWidget {
                 ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class _CounterWidget extends StatelessWidget {
+  final int currentLength;
+  final int? maxLength;
+  const _CounterWidget({
+    Key? key,
+    required this.currentLength,
+    required this.maxLength,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    if (maxLength != null) {
+      final bool limitReached = currentLength > maxLength!;
+      return Padding(
+        padding: const EdgeInsets.only(right: 12.0),
+        child: Text(
+          '$currentLength/$maxLength',
+          style: theme.textTheme.bodySmall?.copyWith(
+            fontSize: 14.0,
+            color: limitReached ? AppColors.error : AppColors.online,
+          ),
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+}
+
+class _FooterTextWidget extends StatelessWidget {
+  final String text;
+  final Color color;
+
+  const _FooterTextWidget({
+    Key? key,
+    required this.text,
+    required this.color,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 2.0,
+        left: 12.0,
+      ),
+      child: Text(
+        text,
+        style: theme.textTheme.bodySmall?.copyWith(
+          color: color,
+          fontSize: 12.0,
+        ),
       ),
     );
   }

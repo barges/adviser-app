@@ -304,7 +304,6 @@ class AddServiceCubit extends Cubit<AddServiceState> {
       newLocaleIndex = newLocaleIndex - 1;
     }
 
-    logger.d(newLocaleIndex);
     _removeLocaleProperties(localeCode);
 
     locales.remove(localeCode);

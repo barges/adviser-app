@@ -11,6 +11,7 @@ import 'package:zodiac/data/models/enums/service_status.dart';
 import 'package:zodiac/data/models/services/service_item.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
+import 'package:zodiac/presentation/common_widgets/blackout_widget.dart';
 import 'package:zodiac/presentation/screens/services_messages/services/services_cubit.dart';
 import 'package:zodiac/zodiac_extensions.dart';
 
@@ -34,16 +35,7 @@ class ServiceCard extends StatelessWidget {
         children: [
           Stack(
             children: [
-              Container(
-                foregroundDecoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      const Color(0xFF000000).withOpacity(0.4),
-                      const Color(0xFF000000).withOpacity(0)
-                    ],
-                    stops: const [0.2745, 1],
-                  ),
-                ),
+              BlackoutWidget(
                 child: AppImageWidget(
                   uri: Uri.parse(serviceItem.image ?? ''),
                   width: double.infinity,

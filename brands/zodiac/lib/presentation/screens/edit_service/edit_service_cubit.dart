@@ -354,6 +354,8 @@ class EditServiceCubit extends Cubit<EditServiceState> {
     if (text.isEmpty) {
       errorTextsMap[localeCode]?[index] = ValidationErrorType.requiredField;
     } else if (index == ZodiacConstants.serviceDescriptionIndex &&
+
+        ///TODO - Replace with backend value
         text.length > ZodiacConstants.serviceDescriptionMaxLength) {
       errorTextsMap[localeCode]?[index] =
           ValidationErrorType.characterLimitExceeded;
