@@ -47,17 +47,18 @@ class ServicesCubit extends Cubit<ServicesState> {
 
   Future<void> getServices({
     int? status,
+    int? index,
     bool refresh = false,
   }) async {
     if (!refresh) {
       emit(state.copyWith(
-        selectedStatusIndex: status,
+        selectedStatusIndex: index,
       ));
     }
 
     try {
       final ServiceResponse response = await _zodiacServicesRepository
-          .getServices(ServiceListRequest(status: state.selectedStatusIndex));
+          .getServices(ServiceListRequest(status: status));
 
       final list = response.result?.list;
       if (list != null) {

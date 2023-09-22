@@ -12,6 +12,12 @@ import 'package:zodiac/presentation/screens/services_messages/services/services_
 import 'package:zodiac/presentation/screens/services_messages/services/widgets/service_card.dart';
 import 'package:zodiac/presentation/screens/services_messages/services_messages_screen.dart';
 
+const List<ServiceStatus> listOfFilters = [
+  ServiceStatus.approved,
+  ServiceStatus.pending,
+  ServiceStatus.rejected
+];
+
 class ServicesScreen extends StatelessWidget {
   const ServicesScreen({Key? key}) : super(key: key);
 
@@ -50,20 +56,20 @@ class ServicesScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: verticalInterval),
                   child: ListOfFiltersWidget(
-                    currentFilterIndex: selectedStatusIndex == null
-                        ? 0
-                        : selectedStatusIndex + 1,
+                    currentFilterIndex: selectedStatusIndex,
                     onTapToFilter: (index) {
                       if (index != null) {
                         servicesCubit.getServices(
-                            status: index == 0 ? null : index - 1);
+                          status: index == 0
+                              ? null
+                              : listOfFilters[index - 1].toInt,
+                          index: index,
+                        );
                       }
                     },
                     filters: [
                       SZodiac.of(context).allZodiac,
-                      ServiceStatus.pending.getTitle(context),
-                      ServiceStatus.approved.getTitle(context),
-                      ServiceStatus.rejected.getTitle(context),
+                      ...listOfFilters.map((e) => e.getTitle(context))
                     ],
                     padding: AppConstants.horizontalScreenPadding,
                   ),
