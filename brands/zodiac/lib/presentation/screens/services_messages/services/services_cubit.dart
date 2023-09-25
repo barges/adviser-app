@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:zodiac/data/models/enums/service_status.dart';
 import 'package:zodiac/data/models/enums/service_type.dart';
 import 'package:zodiac/data/network/requests/delete_service_request.dart';
 import 'package:zodiac/data/network/requests/services_list_request.dart';
@@ -62,13 +63,15 @@ class ServicesCubit extends Cubit<ServicesState> {
 
       final list = response.result?.list;
       if (list != null) {
-        _hasOfflineServices ??=
-            list.indexWhere((element) => element.type == ServiceType.offline) !=
-                -1;
+        _hasOfflineServices ??= list.indexWhere((element) =>
+                element.type == ServiceType.offline &&
+                element.status == ServiceStatus.approved) !=
+            -1;
 
-        _hasOnlineServices ??=
-            list.indexWhere((element) => element.type == ServiceType.online) !=
-                -1;
+        _hasOnlineServices ??= list.indexWhere((element) =>
+                element.type == ServiceType.online &&
+                element.status == ServiceStatus.approved) !=
+            -1;
 
         emit(state.copyWith(
           services: list,
