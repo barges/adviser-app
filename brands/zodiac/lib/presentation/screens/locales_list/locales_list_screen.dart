@@ -83,6 +83,7 @@ class LocalesListScreen extends StatelessWidget {
                               isMultiselect: false,
                               isSelected: element.code == selectedLocaleCode,
                               title: element.nameNative ?? '',
+                              isLanguage: true,
                               onTap: () {
                                 FocusScope.of(context).unfocus();
                                 localesListCubit.tapToLocale(index);

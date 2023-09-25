@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
-import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:zodiac/data/models/enums/service_status.dart';
 import 'package:zodiac/data/models/services/service_item.dart';
@@ -13,6 +11,12 @@ import 'package:zodiac/presentation/screens/services_messages/list_of_filters_wi
 import 'package:zodiac/presentation/screens/services_messages/services/services_cubit.dart';
 import 'package:zodiac/presentation/screens/services_messages/services/widgets/service_card.dart';
 import 'package:zodiac/presentation/screens/services_messages/services_messages_screen.dart';
+
+const List<ServiceStatus> listOfFilters = [
+  ServiceStatus.approved,
+  ServiceStatus.pending,
+  ServiceStatus.rejected
+];
 
 class ServicesScreen extends StatelessWidget {
   const ServicesScreen({Key? key}) : super(key: key);
@@ -52,20 +56,20 @@ class ServicesScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: verticalInterval),
                   child: ListOfFiltersWidget(
-                    currentFilterIndex: selectedStatusIndex == null
-                        ? 0
-                        : selectedStatusIndex + 1,
+                    currentFilterIndex: selectedStatusIndex,
                     onTapToFilter: (index) {
                       if (index != null) {
                         servicesCubit.getServices(
-                            status: index == 0 ? null : index - 1);
+                          status: index == 0
+                              ? null
+                              : listOfFilters[index - 1].toInt,
+                          index: index,
+                        );
                       }
                     },
                     filters: [
                       SZodiac.of(context).allZodiac,
-                      ServiceStatus.pending.getTitle(context),
-                      ServiceStatus.approved.getTitle(context),
-                      ServiceStatus.rejected.getTitle(context),
+                      ...listOfFilters.map((e) => e.getTitle(context))
                     ],
                     padding: AppConstants.horizontalScreenPadding,
                   ),
@@ -94,9 +98,7 @@ class ServicesScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: AppElevatedButton(
                     title: SZodiac.of(context).addServiceZodiac,
-                    onPressed: () => context.push(
-                      route: const ZodiacAddService(),
-                    ),
+                    onPressed: () => servicesCubit.goToAddService(context),
                   ),
                 ),
               ],

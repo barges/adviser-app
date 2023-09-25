@@ -22,7 +22,7 @@ class DailyCouponsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const viewportFraction = 0.94;
+    const viewportFraction = 0.8;
     const spacing = 12.0;
     final couponHeight = 96 /
         264 *
@@ -30,10 +30,11 @@ class DailyCouponsWidget extends StatelessWidget {
             AppConstants.horizontalScreenPadding * 2) *
         viewportFraction;
     return SizedBox(
-      height: couponHeight * 3 + spacing,
+      height: couponHeight * 3 + spacing * 2,
       child: PageView.builder(
         controller: PageController(viewportFraction: viewportFraction),
         itemCount: 3,
+        padEnds: false,
         itemBuilder: (context, rowIndex) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: spacing / 2),
           child: ListView.separated(
@@ -42,6 +43,7 @@ class DailyCouponsWidget extends StatelessWidget {
             itemBuilder: (context, columnIndex) => _DailyCouponWidget(
               dailyCoupon: dailyCoupons[columnIndex + rowIndex * 3],
               limitReached: limitReached,
+              height: couponHeight,
             ),
             separatorBuilder: (context, index) =>
                 const SizedBox(height: spacing),
@@ -56,11 +58,13 @@ class DailyCouponsWidget extends StatelessWidget {
 class _DailyCouponWidget extends StatelessWidget {
   final CouponInfo dailyCoupon;
   final bool limitReached;
+  final double height;
 
   const _DailyCouponWidget({
     Key? key,
     required this.dailyCoupon,
     required this.limitReached,
+    required this.height,
   }) : super(key: key);
 
   @override
@@ -80,8 +84,10 @@ class _DailyCouponWidget extends StatelessWidget {
               uri: Uri.parse(
                 dailyCoupon.image ?? '',
               ),
+              height: height,
               imageColor: showCounter ? Utils.getOverlayColor(context) : null,
               colorBlendMode: BlendMode.srcATop,
+              fit: BoxFit.fill,
             ),
             if (showCounter)
               const Positioned.fill(
@@ -137,7 +143,7 @@ class _BlurWidget extends StatelessWidget {
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
       child: Container(
-        color: Colors.black.withOpacity(0),
+        color: Colors.transparent,
       ),
     );
   }

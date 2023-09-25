@@ -2445,6 +2445,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Show less`
+  String get showLessZodiac {
+    return Intl.message(
+      'Show less',
+      name: 'showLessZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

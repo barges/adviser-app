@@ -70,7 +70,7 @@ class ServicePreviewWidget extends StatelessWidget {
                         height: AppConstants.iconSize,
                         width: AppConstants.iconSize,
                         colorFilter: ColorFilter.mode(
-                          theme.canvasColor,
+                          theme.backgroundColor,
                           BlendMode.srcIn,
                         ),
                       ),
@@ -82,7 +82,7 @@ class ServicePreviewWidget extends StatelessWidget {
                         ' \$${(dto.price * (dto.discountEnabled ? (1 - dto.discount / 100) : 1)).toStringAsFixed(2)}',
                         style: theme.textTheme.labelMedium?.copyWith(
                           fontSize: 17.0,
-                          color: theme.canvasColor,
+                          color: theme.backgroundColor,
                         ),
                       )
                     ],

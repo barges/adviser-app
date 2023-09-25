@@ -1,11 +1,12 @@
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/generated/assets/fonts.gen.dart';
 import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:shared_advisor_interface/themes/app_colors_dark.dart';
 import 'package:shared_advisor_interface/themes/app_colors_light.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-const fontFamilyRedHatDisplay = 'RedHatDisplay';
+const fontFamilyRedHatDisplay = FontFamily.redHatDisplay;
 
 class AppThemes {
   static ThemeData themeLight(BuildContext context) {

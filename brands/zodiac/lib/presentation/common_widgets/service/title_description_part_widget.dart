@@ -40,7 +40,10 @@ class TitleDescriptionPartWidget extends StatelessWidget {
                         ZodiacConstants.serviceTitleIndex],
                     label: SZodiac.of(context).titleZodiac,
                     hintText: SZodiac.of(context).egAstrologyReadingZodiac,
+
+                    ///TODO - Replace with backend value
                     maxLength: 40,
+                    cutMaxLength: true,
                     errorType: errorTextsMap[entry.key]
                             ?[ZodiacConstants.serviceTitleIndex] ??
                         ValidationErrorType.empty,
@@ -63,7 +66,9 @@ class TitleDescriptionPartWidget extends StatelessWidget {
                     isBig: true,
                     label: SZodiac.of(context).descriptionZodiac,
                     hintText: SZodiac.of(context).serviceDescriptionHintZodiac,
-                    maxLength: 280,
+
+                    ///TODO - Replace with backend value
+                    maxLength: ZodiacConstants.serviceDescriptionMaxLength,
                     showCounter: true,
                     footerHint: SZodiac.of(context)
                         .explainIn3to5StepsWhatTheCustomersWillGetZodiac,
