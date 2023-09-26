@@ -7,7 +7,7 @@ import 'package:zodiac/presentation/common_widgets/service/preview_part/service_
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
 
 typedef ServicePreviewDto = ({
-  ImageSampleModel selectedImage,
+  ImageSampleModel? selectedImage,
   TextEditingController titleController,
   TextEditingController descriptionController,
   double price,

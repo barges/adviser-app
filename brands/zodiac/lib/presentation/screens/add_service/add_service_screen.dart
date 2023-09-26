@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/simple_app_bar.dart';
@@ -11,22 +10,14 @@ import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/add_service_body_widget.dart';
 
 class AddServiceScreen extends StatelessWidget {
-  final bool hasOfflineService;
-  final bool hasOnlineService;
-
-  const AddServiceScreen({
-    Key? key,
-    required this.hasOfflineService,
-    required this.hasOnlineService,
-  }) : super(key: key);
+  const AddServiceScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
     return BlocProvider(
-      create: (context) => zodiacGetIt.get<AddServiceCubit>(
-          param1: hasOfflineService, param2: hasOnlineService),
+      create: (context) => zodiacGetIt.get<AddServiceCubit>(),
       child: GestureDetector(
         onTap: FocusScope.of(context).unfocus,
         child: Scaffold(
@@ -35,16 +26,11 @@ class AddServiceScreen extends StatelessWidget {
             title: SZodiac.of(context).addServiceZodiac,
           ),
           body: Builder(builder: (context) {
-            final List<ImageSampleModel>? images =
-                context.select((AddServiceCubit cubit) => cubit.state.images);
-            final List<String>? languagesList = context
-                .select((AddServiceCubit cubit) => cubit.state.languagesList);
+            final bool dataFetched = context
+                .select((AddServiceCubit cubit) => cubit.state.dataFetched);
 
-            if (images != null && languagesList != null) {
-              return AddServiceBodyWidget(
-                images: images,
-                languagesList: languagesList,
-              );
+            if (dataFetched) {
+              return const AddServiceBodyWidget();
             } else {
               final bool internetConnectionIsAvailable = context.select(
                   (MainCubit cubit) =>
