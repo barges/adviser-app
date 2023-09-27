@@ -24,7 +24,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Möchten Sie ${localeName} wirklich aus Ihrer Liste löschen?";
 
   static String m1(title) =>
-      "Möchten Sie den Dienst ${title} wirklich löschen?";
+      "Möchten Sie den Dienst \"${title}\" wirklich löschen?";
 
   static String m2(seconds) => "Nächster versuch in ${seconds}s";
 
