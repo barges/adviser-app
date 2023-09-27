@@ -21,6 +21,7 @@ class AppTextField extends StatefulWidget {
   final String? footerHint;
   final ApprovalStatus? approvalStatus;
   final bool cutMaxLength;
+  final int? minLength;
 
   const AppTextField({
     Key? key,
@@ -31,6 +32,7 @@ class AppTextField extends StatefulWidget {
     this.textInputType,
     this.textInputAction,
     this.maxLength,
+    this.minLength,
     this.footerHint,
     this.approvalStatus,
     this.isPassword = false,
@@ -141,6 +143,7 @@ class _AppTextFieldState extends State<AppTextField> {
                   _CounterWidget(
                     currentLength: currentLength,
                     maxLength: widget.maxLength,
+                    minLength: widget.minLength,
                   )
               ],
             ),
@@ -211,10 +214,13 @@ class _ApprovalStatusWidget extends StatelessWidget {
 class _CounterWidget extends StatelessWidget {
   final int currentLength;
   final int? maxLength;
+  final int? minLength;
+
   const _CounterWidget({
     Key? key,
     required this.currentLength,
     required this.maxLength,
+    required this.minLength,
   }) : super(key: key);
 
   @override
@@ -222,14 +228,15 @@ class _CounterWidget extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     if (maxLength != null) {
-      final bool limitReached = currentLength > maxLength!;
+      final bool incorrectCurrentLength = currentLength > maxLength! ||
+          (minLength != null && currentLength < minLength!);
       return Padding(
         padding: const EdgeInsets.only(right: 12.0),
         child: Text(
           '$currentLength/$maxLength',
           style: theme.textTheme.bodySmall?.copyWith(
             fontSize: 14.0,
-            color: limitReached ? AppColors.error : AppColors.online,
+            color: incorrectCurrentLength ? AppColors.error : AppColors.online,
           ),
         ),
       );
