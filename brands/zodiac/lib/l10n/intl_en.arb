@@ -176,7 +176,7 @@
   "saveTemplateZodiac":"Save template",
   "allZodiac":"All",
   "doYouWantDeleteTemplateZodiac":"Do you really want to delete this template?",
-  "doYouWantDeleteServicesZodiac":"Do you really want to delete {title} service?",
+  "doYouWantDeleteServicesZodiac":"Do you really want to delete \"{title}\" service?",
   "itWillBeRemovedFromTemplatesZodiac":"It will be removed from the templates and you won't be able to use it from the chat anymore",
   "itWillBeRemovedFromServicesZodiac":"It will be removed from the services page and from your profile if it’s shown there. You wouldn’t be able to sell it anymore",
   "deleteZodiac": "Delete",
