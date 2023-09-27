@@ -143,9 +143,22 @@ class EditServiceCubit extends Cubit<EditServiceState> {
           state.copyWith(languagesList: _newLanguagesList);
 
       if (serviceInfo?.mainLocale != null) {
-        final int mainLanguageIndex =
-            _newLanguagesList.indexOf(serviceInfo!.mainLocale!);
-        newState = newState.copyWith(mainLanguageIndex: mainLanguageIndex);
+        String mainLocale = serviceInfo!.mainLocale!;
+
+        final int mainLanguageIndex = _newLanguagesList.indexOf(mainLocale);
+
+        if (mainLanguageIndex != 0) {
+          _newLanguagesList.remove(mainLocale);
+          _newLanguagesList.insert(0, mainLocale);
+
+          GlobalKey key = languagesGlobalKeys[mainLanguageIndex];
+          languagesGlobalKeys.removeAt(mainLanguageIndex);
+          languagesGlobalKeys.insert(0, key);
+          newState = newState.copyWith(
+              languagesList: _newLanguagesList, mainLanguageIndex: 0);
+        } else {
+          newState = newState.copyWith(mainLanguageIndex: mainLanguageIndex);
+        }
       }
 
       if (serviceInfo?.imageAlias != null) {

@@ -5,6 +5,7 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_advisor_interface/utils/utils.dart';
 
 Future<bool?> showDeleteAlert(
   BuildContext context,
@@ -18,6 +19,7 @@ Future<bool?> showDeleteAlert(
 
   return showDialog<bool>(
     context: context,
+    barrierColor: Utils.getOverlayColor(context),
     builder: (context) => Platform.isIOS
         ? CupertinoAlertDialog(
             title: Text(

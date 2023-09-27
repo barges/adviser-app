@@ -23,7 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(localeName) =>
       "Você realmente deseja excluir ${localeName} da sua lista?";
 
-  static String m1(title) => "Deseja realmente excluir o serviço ${title}?";
+  static String m1(title) => "Deseja realmente excluir o serviço \"${title}\"?";
 
   static String m2(seconds) => "Próxima tentativa em ${seconds}s";
 

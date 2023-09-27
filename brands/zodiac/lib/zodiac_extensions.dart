@@ -61,11 +61,11 @@ extension DateTimeExt on DateTime {
     }
     if (localTime.year != now.year) {
       return DateFormat(
-        'dd MMM yy, ${BrandManager.timeFormat}',
+        'MMM dd yy, ${BrandManager.timeFormat}',
       ).format(localTime);
     }
     return DateFormat(
-      'dd MMM, ${BrandManager.timeFormat}',
+      'MMM dd, ${BrandManager.timeFormat}',
     ).format(localTime);
   }
 

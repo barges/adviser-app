@@ -47,6 +47,7 @@ class LanguagesPartWidget extends StatelessWidget {
                 height: 24.0,
               ),
               TitleDescriptionPartWidget(
+                languagesList: languagesList,
                 selectedLanguageIndex: selectedLanguageIndex,
                 textControllersMap: editServiceCubit.textControllersMap,
                 hasFocusNotifiersMap: editServiceCubit.hasFocusNotifiersMap,
