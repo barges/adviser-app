@@ -8,6 +8,7 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/enums/service_type.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/data/models/services/service_info_item.dart';
@@ -55,13 +56,7 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     this._servicesRepository,
     this._userRepository,
     this._globalCachingManager,
-    @factoryParam bool hasOfflineService,
-    @factoryParam bool hasOnlineService,
   ) : super(const AddServiceState()) {
-    emit(state.copyWith(
-        hasOfflineService: hasOfflineService,
-        hasOnlineService: hasOnlineService));
-
     initializeScreen();
   }
 
@@ -93,7 +88,13 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     } catch (e) {
       logger.d(e);
     } finally {
-      emit(state.copyWith(alreadyTriedToGetImages: true));
+      emit(state.copyWith(
+        alreadyTriedToGetImages: true,
+        dataFetched: state.languagesList != null &&
+            state.images != null &&
+            state.hasOfflineService != null &&
+            state.hasOnlineService != null,
+      ));
     }
   }
 
@@ -102,7 +103,14 @@ class AddServiceCubit extends Cubit<AddServiceState> {
         await _servicesRepository.getServices(ServiceListRequest(status: 1));
 
     emit(state.copyWith(
-        hasApprovedServices: response.result?.list?.isNotEmpty == true));
+      hasApprovedServices: response.result?.list?.isNotEmpty == true,
+      hasOfflineService: response.result?.list
+              ?.indexWhere((element) => element.type == ServiceType.offline) !=
+          -1,
+      hasOnlineService: response.result?.list
+              ?.indexWhere((element) => element.type == ServiceType.online) !=
+          -1,
+    ));
 
     _approvedServices = response.result?.list;
   }
