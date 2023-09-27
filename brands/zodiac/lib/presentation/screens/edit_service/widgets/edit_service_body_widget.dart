@@ -142,14 +142,15 @@ class EditServiceBodyWidget extends StatelessWidget {
                         selectedImage:
                             state.images?[state.selectedImageIndex] ??
                                 const ImageSampleModel(),
-                        titleController: editServiceCubit
-                            .textControllersMap.entries
-                            .toList()[state.selectedLanguageIndex]
-                            .value[ZodiacConstants.serviceTitleIndex],
+                        titleController: editServiceCubit.textControllersMap[
+                                state.languagesList?[
+                                    state.selectedLanguageIndex]]
+                            ?[ZodiacConstants.serviceTitleIndex],
                         descriptionController: editServiceCubit
-                            .textControllersMap.entries
-                            .toList()[state.selectedLanguageIndex]
-                            .value[ZodiacConstants.serviceDescriptionIndex],
+                                    .textControllersMap[
+                                state.languagesList?[
+                                    state.selectedLanguageIndex]]
+                            ?[ZodiacConstants.serviceDescriptionIndex],
                         price: state.price,
                         discount: state.discount,
                         discountEnabled: state.discountEnabled,

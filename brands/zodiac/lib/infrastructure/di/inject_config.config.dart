@@ -136,17 +136,11 @@ Future<_i1.GetIt> $initGetIt(
       () => _i26.ZodiacChatsRepositoryImpl(gh<_i21.SessionsApi>()));
   gh.factory<_i27.ZodiacUserRepository>(
       () => _i28.ZodiacUserRepositoryImpl(gh<_i22.UserApi>()));
-  gh.factoryParam<_i29.AddServiceCubit, bool, bool>((
-    hasOfflineService,
-    hasOnlineService,
-  ) =>
-      _i29.AddServiceCubit(
+  gh.factory<_i29.AddServiceCubit>(() => _i29.AddServiceCubit(
         gh<_i13.ZodiacCachingManager>(),
         gh<_i23.ZodiacServicesRepository>(),
         gh<_i27.ZodiacUserRepository>(),
         gh<_i9.GlobalCachingManager>(),
-        hasOfflineService,
-        hasOnlineService,
       ));
   gh.factory<_i30.ArticlesApi>(() => _i30.ArticlesApi(gh<_i19.Dio>()));
   gh.factory<_i31.AuthApi>(() => _i31.AuthApi(gh<_i19.Dio>()));

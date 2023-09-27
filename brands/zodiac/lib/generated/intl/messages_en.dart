@@ -23,7 +23,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(localeName) =>
       "Do you really want to delete ${localeName} from your list?";
 
-  static String m1(title) => "Do you really want to delete ${title} service?";
+  static String m1(title) =>
+      "Do you really want to delete \"${title}\" service?";
 
   static String m2(seconds) => "Next attempt in ${seconds}s";
 

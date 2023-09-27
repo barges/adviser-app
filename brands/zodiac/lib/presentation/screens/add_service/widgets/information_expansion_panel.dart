@@ -57,10 +57,12 @@ class _InformationExpansionPanelState extends State<InformationExpansionPanel> {
                 const SizedBox(
                   width: 8.0,
                 ),
-                Text(
-                  widget.title,
-                  style: theme.textTheme.displaySmall?.copyWith(
-                    fontSize: 14.0,
+                Expanded(
+                  child: Text(
+                    widget.title,
+                    style: theme.textTheme.displaySmall?.copyWith(
+                      fontSize: 14.0,
+                    ),
                   ),
                 )
               ],

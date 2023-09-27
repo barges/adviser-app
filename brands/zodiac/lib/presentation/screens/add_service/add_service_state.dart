@@ -26,7 +26,8 @@ class AddServiceState with _$AddServiceState {
     @Default(false) bool updateAfterDuplicate,
     @Default(false) bool alreadyTriedToGetImages,
     @Default(false) bool hasApprovedServices,
-    @Default(false) bool hasOfflineService,
-    @Default(false) bool hasOnlineService,
+    bool? hasOfflineService,
+    bool? hasOnlineService,
+    @Default(false) bool dataFetched,
   }) = _AddServiceState;
 }

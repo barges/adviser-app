@@ -39,18 +39,19 @@ class ServicePreviewWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ValueListenableBuilder(
-                  valueListenable: dto.descriptionController,
-                  builder: (context, value, child) => Text(
-                    dto.descriptionController.text,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontSize: 14.0,
-                      color: theme.shadowColor,
+                if (dto.descriptionController != null)
+                  ValueListenableBuilder(
+                    valueListenable: dto.descriptionController!,
+                    builder: (context, value, child) => Text(
+                      dto.descriptionController!.text,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontSize: 14.0,
+                        color: theme.shadowColor,
+                      ),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
                 const SizedBox(
                   height: 8.0,
                 ),

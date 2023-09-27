@@ -1826,10 +1826,10 @@ class SZodiac {
     );
   }
 
-  /// `Do you really want to delete {title} service?`
+  /// `Do you really want to delete "{title}" service?`
   String doYouWantDeleteServicesZodiac(Object title) {
     return Intl.message(
-      'Do you really want to delete $title service?',
+      'Do you really want to delete "$title" service?',
       name: 'doYouWantDeleteServicesZodiac',
       desc: '',
       args: [title],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_advisor_interface/themes/app_colors.dart';
 import 'package:zodiac/generated/l10n.dart';
 
 enum ServiceStatus {
@@ -38,6 +39,17 @@ enum ServiceStatus {
         return 1;
       case rejected:
         return 2;
+    }
+  }
+
+  Color get labelBackgroundColor {
+    switch (this) {
+      case pending:
+        return AppColors.orange;
+      case rejected:
+        return AppColors.error;
+      case approved:
+        return AppColors.online;
     }
   }
 }

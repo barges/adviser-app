@@ -177,7 +177,7 @@
   "manageMessagesZodiac": "Administrar mensajes",
   "allZodiac":"Todo",
   "doYouWantDeleteTemplateZodiac":"¿Realmente desea eliminar esta plantilla?",
-  "doYouWantDeleteServicesZodiac":"¿Realmente desea eliminar el servicio {title}?",
+  "doYouWantDeleteServicesZodiac":"¿Realmente desea eliminar el servicio \"{title}\"?",
   "itWillBeRemovedFromTemplatesZodiac":"Se eliminará de las plantillas y ya no podrás usarlo desde el chat",
   "itWillBeRemovedFromServicesZodiac":"Se eliminará de la página de servicios y de su perfil si se muestra allí. Ya no podrías venderlo",
   "deleteZodiac": "Borrar",

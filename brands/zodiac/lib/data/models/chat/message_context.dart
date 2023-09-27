@@ -18,7 +18,7 @@ class MessageContext with _$MessageContext {
   const factory MessageContext({
     int? roomId,
     int? length,
-    String? path,
+    String? thumbnail,
   }) = _MessageContext;
 
   factory MessageContext.fromJson(Map<String, dynamic> json) =>
