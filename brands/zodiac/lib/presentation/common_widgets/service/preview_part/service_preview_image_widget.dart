@@ -9,7 +9,7 @@ import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/del
 
 class ServicePreviewImageWidget extends StatelessWidget {
   final ImageSampleModel? selectedImage;
-  final TextEditingController titleController;
+  final TextEditingController? titleController;
   final ServiceType serviceType;
   final double deliveryTime;
   final DeliveryTimeTabType deliveryTimeType;
@@ -43,19 +43,20 @@ class ServicePreviewImageWidget extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: ValueListenableBuilder(
-                  valueListenable: titleController,
-                  builder: (context, value, child) => Text(
-                    titleController.text,
-                    style: theme.textTheme.displaySmall?.copyWith(
-                      fontSize: 14.0,
-                      color: theme.backgroundColor,
+              if (titleController != null)
+                Expanded(
+                  child: ValueListenableBuilder(
+                    valueListenable: titleController!,
+                    builder: (context, value, child) => Text(
+                      titleController!.text,
+                      style: theme.textTheme.displaySmall?.copyWith(
+                        fontSize: 14.0,
+                        color: theme.backgroundColor,
+                      ),
+                      maxLines: 2,
                     ),
-                    maxLines: 2,
                   ),
                 ),
-              ),
               const SizedBox(
                 width: 32.0,
               ),

@@ -39,6 +39,7 @@ class LanguagesPartWidget extends StatelessWidget {
                     cubit.state.updateAfterDuplicate);
 
                 return TitleDescriptionPartWidget(
+                  languagesList: languagesList,
                   selectedLanguageIndex: selectedLanguageIndex,
                   textControllersMap: addServiceCubit.textControllersMap,
                   hasFocusNotifiersMap: addServiceCubit.hasFocusNotifiersMap,

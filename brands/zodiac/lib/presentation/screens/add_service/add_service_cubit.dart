@@ -295,7 +295,27 @@ class AddServiceCubit extends Cubit<AddServiceState> {
     if (state.mainLanguageIndex == index) {
       emit(state.copyWith(mainLanguageIndex: null));
     } else {
-      emit(state.copyWith(mainLanguageIndex: index));
+      List<String> languagesList = List.of(state.languagesList ?? []);
+
+      if (languagesList.isNotEmpty) {
+        String newMainLocale = languagesList[index];
+        languagesList.removeAt(index);
+        languagesList.insert(0, newMainLocale);
+
+        GlobalKey globalKey = localesGlobalKeys[index];
+        localesGlobalKeys.removeAt(index);
+        localesGlobalKeys.insert(0, globalKey);
+
+        emit(state.copyWith(
+          selectedLanguageIndex: 0,
+          mainLanguageIndex: 0,
+          languagesList: languagesList,
+        ));
+
+        _updateTextsFlag();
+      } else {
+        emit(state.copyWith(mainLanguageIndex: index));
+      }
     }
   }
 

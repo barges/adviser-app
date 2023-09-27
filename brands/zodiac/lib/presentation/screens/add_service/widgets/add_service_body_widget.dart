@@ -159,6 +159,8 @@ class AddServiceBodyWidget extends StatelessWidget {
                 Builder(builder: (context) {
                   context.select((AddServiceCubit cubit) =>
                       cubit.state.updateAfterDuplicate);
+                  context.select(
+                      (AddServiceCubit cubit) => cubit.state.updateTextsFlag);
 
                   final ServicePreviewDto dto =
                       context.select((AddServiceCubit cubit) {
@@ -166,14 +168,12 @@ class AddServiceBodyWidget extends StatelessWidget {
 
                     return (
                       selectedImage: state.images?[state.selectedImageIndex],
-                      titleController: addServiceCubit
-                          .textControllersMap.entries
-                          .toList()[state.selectedLanguageIndex]
-                          .value[ZodiacConstants.serviceTitleIndex],
-                      descriptionController: addServiceCubit
-                          .textControllersMap.entries
-                          .toList()[state.selectedLanguageIndex]
-                          .value[ZodiacConstants.serviceDescriptionIndex],
+                      titleController: addServiceCubit.textControllersMap[
+                              state.languagesList?[state.selectedLanguageIndex]]
+                          ?[ZodiacConstants.serviceTitleIndex],
+                      descriptionController: addServiceCubit.textControllersMap[
+                              state.languagesList?[state.selectedLanguageIndex]]
+                          ?[ZodiacConstants.serviceDescriptionIndex],
                       price: state.price,
                       discount: state.discount,
                       discountEnabled: state.discountEnabled,
