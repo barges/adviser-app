@@ -97,7 +97,7 @@ class _AppTextFieldState extends State<AppTextField> {
           ),
           child: Container(
             margin: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 2.0),
-            height: (widget.isBig ? 144.0 : AppConstants.textFieldsHeight) - 3,
+            height: widget.isBig ? null : AppConstants.textFieldsHeight - 3,
             decoration: BoxDecoration(
               borderRadius:
                   BorderRadius.circular(AppConstants.buttonRadius - 1),
@@ -109,35 +109,32 @@ class _AppTextFieldState extends State<AppTextField> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Expanded(
-                  child: Padding(
-                    padding: widget.isBig
-                        ? EdgeInsets.fromLTRB(
-                            12.0, 12.0, 12.0, widget.showCounter ? 0.0 : 12.0)
-                        : const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 0.0),
-                    child: TextField(
-                      controller: widget.controller,
-                      focusNode: widget.focusNode,
-                      keyboardType: widget.textInputType,
-                      textInputAction: widget.textInputAction,
-                      maxLength: widget.cutMaxLength ? widget.maxLength : null,
-                      onSubmitted: (_) {
-                        FocusScope.of(context)
-                            .requestFocus(widget.nextFocusNode);
-                      },
-                      onChanged: (value) =>
-                          setState(() => currentLength = value.length),
-                      decoration: InputDecoration(
-                        hintText: widget.hintText,
-                        hintStyle: theme.textTheme.bodyMedium
-                            ?.copyWith(color: theme.shadowColor),
-                        contentPadding: EdgeInsets.zero,
-                        isDense: true,
-                        counterText: '',
-                      ),
-                      maxLines: widget.isBig ? 10 : 1,
-                      style: theme.textTheme.bodyMedium,
+                Padding(
+                  padding: widget.isBig
+                      ? EdgeInsets.fromLTRB(
+                          12.0, 12.0, 12.0, widget.showCounter ? 0.0 : 12.0)
+                      : const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
+                  child: TextField(
+                    controller: widget.controller,
+                    focusNode: widget.focusNode,
+                    keyboardType: widget.textInputType,
+                    textInputAction: widget.textInputAction,
+                    maxLength: widget.cutMaxLength ? widget.maxLength : null,
+                    onSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(widget.nextFocusNode);
+                    },
+                    onChanged: (value) =>
+                        setState(() => currentLength = value.length),
+                    decoration: InputDecoration(
+                      hintText: widget.hintText,
+                      hintStyle: theme.textTheme.bodyMedium
+                          ?.copyWith(color: theme.shadowColor),
+                      contentPadding: EdgeInsets.zero,
+                      isDense: true,
+                      counterText: '',
                     ),
+                    maxLines: widget.isBig ? 5 : 1,
+                    style: theme.textTheme.bodyMedium,
                   ),
                 ),
                 if (widget.showCounter)
