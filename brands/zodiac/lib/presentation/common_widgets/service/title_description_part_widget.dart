@@ -37,6 +37,7 @@ class TitleDescriptionPartWidget extends StatelessWidget {
                     ZodiacConstants.serviceTitleIndex],
                 builder: (context, value, child) {
                   return AppTextField(
+                    key: ValueKey('$entry${ZodiacConstants.serviceTitleIndex}'),
                     controller: textControllersMap[entry]
                         ?[ZodiacConstants.serviceTitleIndex],
                     focusNode: focusNodesMap[entry]![
@@ -62,6 +63,8 @@ class TitleDescriptionPartWidget extends StatelessWidget {
                     ZodiacConstants.serviceDescriptionIndex],
                 builder: (context, value, child) {
                   return AppTextField(
+                    key: ValueKey(
+                        '$entry${ZodiacConstants.serviceDescriptionIndex}'),
                     controller: textControllersMap[entry]
                         ?[ZodiacConstants.serviceDescriptionIndex],
                     focusNode: focusNodesMap[entry]![
@@ -72,6 +75,7 @@ class TitleDescriptionPartWidget extends StatelessWidget {
 
                     ///TODO - Replace with backend value
                     maxLength: ZodiacConstants.serviceDescriptionMaxLength,
+                    minLength: 1,
                     showCounter: true,
                     footerHint: SZodiac.of(context)
                         .explainIn3to5StepsWhatTheCustomersWillGetZodiac,

@@ -21,13 +21,8 @@ import 'package:zodiac/zodiac_constants.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class AddServiceBodyWidget extends StatelessWidget {
-  final List<ImageSampleModel> images;
-  final List<String> languagesList;
-
   const AddServiceBodyWidget({
     Key? key,
-    required this.images,
-    required this.languagesList,
   }) : super(key: key);
 
   @override
@@ -56,10 +51,10 @@ class AddServiceBodyWidget extends StatelessWidget {
 
                         final bool hasOfflineService = context.select(
                             (AddServiceCubit cubit) =>
-                                cubit.state.hasOfflineService);
+                                cubit.state.hasOfflineService == true);
                         final bool hasOnlineService = context.select(
                             (AddServiceCubit cubit) =>
-                                cubit.state.hasOnlineService);
+                                cubit.state.hasOnlineService == true);
 
                         if ((serviceType == ServiceType.offline &&
                                 !hasOfflineService) ||
@@ -107,9 +102,18 @@ class AddServiceBodyWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                LanguagesPartWidget(
-                  languagesList: languagesList,
-                ),
+                Builder(builder: (context) {
+                  final List<String>? languagesList = context.select(
+                      (AddServiceCubit cubit) => cubit.state.languagesList);
+
+                  if (languagesList != null) {
+                    return LanguagesPartWidget(
+                      languagesList: languagesList,
+                    );
+                  }
+
+                  return const SizedBox.shrink();
+                }),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppConstants.horizontalScreenPadding,
@@ -131,13 +135,20 @@ class AddServiceBodyWidget extends StatelessWidget {
                             (AddServiceCubit cubit) =>
                                 cubit.state.showAllImages);
 
-                        return ChooseImageWidget(
-                          images: images,
-                          selectImage: addServiceCubit.selectImage,
-                          selectedImageIndex: selectedImageIndex,
-                          showAllImages: showAllImages,
-                          setShowAllImages: addServiceCubit.setShowAllImages,
-                        );
+                        final List<ImageSampleModel>? images = context.select(
+                            (AddServiceCubit cubit) => cubit.state.images);
+
+                        if (images != null) {
+                          return ChooseImageWidget(
+                            images: images,
+                            selectImage: addServiceCubit.selectImage,
+                            selectedImageIndex: selectedImageIndex,
+                            showAllImages: showAllImages,
+                            setShowAllImages: addServiceCubit.setShowAllImages,
+                          );
+                        }
+
+                        return const SizedBox.shrink();
                       }),
                     ],
                   ),
@@ -156,7 +167,7 @@ class AddServiceBodyWidget extends StatelessWidget {
                     final AddServiceState state = cubit.state;
 
                     return (
-                      selectedImage: images[state.selectedImageIndex],
+                      selectedImage: state.images?[state.selectedImageIndex],
                       titleController: addServiceCubit.textControllersMap[
                               state.languagesList?[state.selectedLanguageIndex]]
                           ?[ZodiacConstants.serviceTitleIndex],

@@ -8,7 +8,7 @@ import 'package:zodiac/presentation/common_widgets/blackout_widget.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
 
 class ServicePreviewImageWidget extends StatelessWidget {
-  final ImageSampleModel selectedImage;
+  final ImageSampleModel? selectedImage;
   final TextEditingController? titleController;
   final ServiceType serviceType;
   final double deliveryTime;
@@ -31,7 +31,7 @@ class ServicePreviewImageWidget extends StatelessWidget {
       children: [
         BlackoutWidget(
           child: AppImageWidget(
-            uri: Uri.parse(selectedImage.image ?? ''),
+            uri: Uri.parse(selectedImage?.image ?? ''),
             height: 108.0,
             width: 260,
           ),
