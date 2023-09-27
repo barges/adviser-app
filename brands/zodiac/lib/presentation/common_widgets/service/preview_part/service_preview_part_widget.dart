@@ -8,8 +8,8 @@ import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/del
 
 typedef ServicePreviewDto = ({
   ImageSampleModel selectedImage,
-  TextEditingController titleController,
-  TextEditingController descriptionController,
+  TextEditingController? titleController,
+  TextEditingController? descriptionController,
   double price,
   double discount,
   bool discountEnabled,
