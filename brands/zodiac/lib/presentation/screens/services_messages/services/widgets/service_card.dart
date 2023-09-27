@@ -74,9 +74,7 @@ class ServiceCard extends StatelessWidget {
                                   child: _LabelWidget(
                                     text: status.getTitle(context),
                                     textColor: theme.backgroundColor,
-                                    color: isRejected
-                                        ? AppColors.error
-                                        : AppColors.online,
+                                    color: status.labelBackgroundColor,
                                   ),
                                 ),
                                 if (isRejected)
