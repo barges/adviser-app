@@ -7,6 +7,7 @@ import 'package:zodiac/zodiac_constants.dart';
 
 class TitleDescriptionPartWidget extends StatelessWidget {
   final int selectedLanguageIndex;
+  final List<String> languagesList;
   final Map<String, List<TextEditingController>> textControllersMap;
   final Map<String, List<ValueNotifier>> hasFocusNotifiersMap;
   final Map<String, List<ValidationErrorType>> errorTextsMap;
@@ -16,6 +17,7 @@ class TitleDescriptionPartWidget extends StatelessWidget {
   const TitleDescriptionPartWidget({
     Key? key,
     required this.selectedLanguageIndex,
+    required this.languagesList,
     required this.textControllersMap,
     required this.hasFocusNotifiersMap,
     required this.errorTextsMap,
@@ -27,24 +29,29 @@ class TitleDescriptionPartWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return IndexedStack(
       index: selectedLanguageIndex,
-      children: textControllersMap.entries.map((entry) {
+      children: languagesList.map((entry) {
         return Column(
           children: [
             ValueListenableBuilder(
-                valueListenable: hasFocusNotifiersMap[entry.key]![
+                valueListenable: hasFocusNotifiersMap[entry]![
                     ZodiacConstants.serviceTitleIndex],
                 builder: (context, value, child) {
                   return AppTextField(
-                    controller: entry.value[ZodiacConstants.serviceTitleIndex],
-                    focusNode: focusNodesMap[entry.key]![
+                    key: ValueKey('$entry${ZodiacConstants.serviceTitleIndex}'),
+                    controller: textControllersMap[entry]
+                        ?[ZodiacConstants.serviceTitleIndex],
+                    focusNode: focusNodesMap[entry]![
                         ZodiacConstants.serviceTitleIndex],
                     label: SZodiac.of(context).titleZodiac,
                     hintText: SZodiac.of(context).egAstrologyReadingZodiac,
+
+                    ///TODO - Replace with backend value
                     maxLength: 40,
-                    errorType: errorTextsMap[entry.key]
+                    cutMaxLength: true,
+                    errorType: errorTextsMap[entry]
                             ?[ZodiacConstants.serviceTitleIndex] ??
                         ValidationErrorType.empty,
-                    approvalStatus: approvalStatusMap?[entry.key]
+                    approvalStatus: approvalStatusMap?[entry]
                         ?[ZodiacConstants.serviceTitleIndex],
                   );
                 }),
@@ -52,25 +59,30 @@ class TitleDescriptionPartWidget extends StatelessWidget {
               height: 24.0,
             ),
             ValueListenableBuilder(
-                valueListenable: hasFocusNotifiersMap[entry.key]![
+                valueListenable: hasFocusNotifiersMap[entry]![
                     ZodiacConstants.serviceDescriptionIndex],
                 builder: (context, value, child) {
                   return AppTextField(
-                    controller:
-                        entry.value[ZodiacConstants.serviceDescriptionIndex],
-                    focusNode: focusNodesMap[entry.key]![
+                    key: ValueKey(
+                        '$entry${ZodiacConstants.serviceDescriptionIndex}'),
+                    controller: textControllersMap[entry]
+                        ?[ZodiacConstants.serviceDescriptionIndex],
+                    focusNode: focusNodesMap[entry]![
                         ZodiacConstants.serviceDescriptionIndex],
                     isBig: true,
                     label: SZodiac.of(context).descriptionZodiac,
                     hintText: SZodiac.of(context).serviceDescriptionHintZodiac,
-                    maxLength: 280,
+
+                    ///TODO - Replace with backend value
+                    maxLength: ZodiacConstants.serviceDescriptionMaxLength,
+                    minLength: 1,
                     showCounter: true,
                     footerHint: SZodiac.of(context)
                         .explainIn3to5StepsWhatTheCustomersWillGetZodiac,
-                    errorType: errorTextsMap[entry.key]
+                    errorType: errorTextsMap[entry]
                             ?[ZodiacConstants.serviceDescriptionIndex] ??
                         ValidationErrorType.empty,
-                    approvalStatus: approvalStatusMap?[entry.key]
+                    approvalStatus: approvalStatusMap?[entry]
                         ?[ZodiacConstants.serviceDescriptionIndex],
                   );
                 }),

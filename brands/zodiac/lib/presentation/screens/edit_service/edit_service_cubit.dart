@@ -143,9 +143,22 @@ class EditServiceCubit extends Cubit<EditServiceState> {
           state.copyWith(languagesList: _newLanguagesList);
 
       if (serviceInfo?.mainLocale != null) {
-        final int mainLanguageIndex =
-            _newLanguagesList.indexOf(serviceInfo!.mainLocale!);
-        newState = newState.copyWith(mainLanguageIndex: mainLanguageIndex);
+        String mainLocale = serviceInfo!.mainLocale!;
+
+        final int mainLanguageIndex = _newLanguagesList.indexOf(mainLocale);
+
+        if (mainLanguageIndex != 0) {
+          _newLanguagesList.remove(mainLocale);
+          _newLanguagesList.insert(0, mainLocale);
+
+          GlobalKey key = languagesGlobalKeys[mainLanguageIndex];
+          languagesGlobalKeys.removeAt(mainLanguageIndex);
+          languagesGlobalKeys.insert(0, key);
+          newState = newState.copyWith(
+              languagesList: _newLanguagesList, mainLanguageIndex: 0);
+        } else {
+          newState = newState.copyWith(mainLanguageIndex: mainLanguageIndex);
+        }
       }
 
       if (serviceInfo?.imageAlias != null) {
@@ -280,7 +293,7 @@ class EditServiceCubit extends Cubit<EditServiceState> {
     emit(state.copyWith(selectedImageIndex: index));
   }
 
-  Future<void> sendForApproval(BuildContext context) async {
+  Future<bool> sendForApproval(BuildContext context) async {
     final bool isChecked = _checkTextFields();
 
     final List<ImageSampleModel>? images = state.images;
@@ -311,10 +324,12 @@ class EditServiceCubit extends Cubit<EditServiceState> {
       if (response.status == true) {
         // ignore: use_build_context_synchronously
         context.pop();
+        return true;
       }
     } else {
       _updateTextsFlag();
     }
+    return false;
   }
 
   bool _checkTextFields() {
@@ -350,9 +365,17 @@ class EditServiceCubit extends Cubit<EditServiceState> {
     final String text =
         textControllersMap[localeCode]?[index].text.trim() ?? '';
     if (text.isEmpty) {
-      isValid = false;
-
       errorTextsMap[localeCode]?[index] = ValidationErrorType.requiredField;
+    } else if (index == ZodiacConstants.serviceDescriptionIndex &&
+
+        ///TODO - Replace with backend value
+        text.length > ZodiacConstants.serviceDescriptionMaxLength) {
+      errorTextsMap[localeCode]?[index] =
+          ValidationErrorType.characterLimitExceeded;
+    }
+
+    if (errorTextsMap[localeCode]?[index] != ValidationErrorType.empty) {
+      isValid = false;
 
       if (!_wasFocusRequest) {
         focusNodesMap[localeCode]?[index].requestFocus();

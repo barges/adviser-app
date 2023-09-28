@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/global.dart';
 
 class InformationExpansionPanel extends StatefulWidget {
   final String title;
@@ -18,7 +19,7 @@ class InformationExpansionPanel extends StatefulWidget {
 }
 
 class _InformationExpansionPanelState extends State<InformationExpansionPanel> {
-  bool isExpanded = false;
+  bool isExpanded = true;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,8 @@ class _InformationExpansionPanelState extends State<InformationExpansionPanel> {
       padding: const EdgeInsets.all(16.0),
       child: ExpansionPanelList(
         expansionCallback: (panelIndex, isExpanded) => setState(() {
-          this.isExpanded = !isExpanded;
+          logger.d(isExpanded);
+          this.isExpanded = !this.isExpanded;
         }),
         expandedHeaderPadding: EdgeInsets.zero,
         expandIconColor: theme.shadowColor,
@@ -55,10 +57,12 @@ class _InformationExpansionPanelState extends State<InformationExpansionPanel> {
                 const SizedBox(
                   width: 8.0,
                 ),
-                Text(
-                  widget.title,
-                  style: theme.textTheme.displaySmall?.copyWith(
-                    fontSize: 14.0,
+                Expanded(
+                  child: Text(
+                    widget.title,
+                    style: theme.textTheme.displaySmall?.copyWith(
+                      fontSize: 14.0,
+                    ),
                   ),
                 )
               ],

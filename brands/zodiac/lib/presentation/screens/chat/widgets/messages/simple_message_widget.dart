@@ -104,7 +104,7 @@ class _MessageContainer extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(
-                          width: 8.0,
+                          width: 12.0,
                         ),
                         Expanded(
                           child: RepliedMessageContentWidget(

@@ -33,6 +33,8 @@ class AppConstants {
       'd12aa110be36d01bafda6508291db614';
   static const String mixpanelTokenZodiac = 'd12aa110be36d01bafda6508291db614';
 
+  static const int androidSdkVersion33 = 33;
+
   ///STAGE
   ///TODO: Needs to be commented out for release!!!
   static const bool needPrintLogs = true;

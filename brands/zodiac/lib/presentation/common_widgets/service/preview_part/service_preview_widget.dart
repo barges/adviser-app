@@ -39,18 +39,19 @@ class ServicePreviewWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ValueListenableBuilder(
-                  valueListenable: dto.descriptionController,
-                  builder: (context, value, child) => Text(
-                    dto.descriptionController.text,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontSize: 14.0,
-                      color: theme.shadowColor,
+                if (dto.descriptionController != null)
+                  ValueListenableBuilder(
+                    valueListenable: dto.descriptionController!,
+                    builder: (context, value, child) => Text(
+                      dto.descriptionController!.text,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontSize: 14.0,
+                        color: theme.shadowColor,
+                      ),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
                 const SizedBox(
                   height: 8.0,
                 ),
@@ -70,7 +71,7 @@ class ServicePreviewWidget extends StatelessWidget {
                         height: AppConstants.iconSize,
                         width: AppConstants.iconSize,
                         colorFilter: ColorFilter.mode(
-                          theme.canvasColor,
+                          theme.backgroundColor,
                           BlendMode.srcIn,
                         ),
                       ),
@@ -82,7 +83,7 @@ class ServicePreviewWidget extends StatelessWidget {
                         ' \$${(dto.price * (dto.discountEnabled ? (1 - dto.discount / 100) : 1)).toStringAsFixed(2)}',
                         style: theme.textTheme.labelMedium?.copyWith(
                           fontSize: 17.0,
-                          color: theme.canvasColor,
+                          color: theme.backgroundColor,
                         ),
                       )
                     ],

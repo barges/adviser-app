@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/simple_app_bar.dart';
@@ -27,16 +26,11 @@ class AddServiceScreen extends StatelessWidget {
             title: SZodiac.of(context).addServiceZodiac,
           ),
           body: Builder(builder: (context) {
-            final List<ImageSampleModel>? images =
-                context.select((AddServiceCubit cubit) => cubit.state.images);
-            final List<String>? languagesList = context
-                .select((AddServiceCubit cubit) => cubit.state.languagesList);
+            final bool dataFetched = context
+                .select((AddServiceCubit cubit) => cubit.state.dataFetched);
 
-            if (images != null && languagesList != null) {
-              return AddServiceBodyWidget(
-                images: images,
-                languagesList: languagesList,
-              );
+            if (dataFetched) {
+              return const AddServiceBodyWidget();
             } else {
               final bool internetConnectionIsAvailable = context.select(
                   (MainCubit cubit) =>
