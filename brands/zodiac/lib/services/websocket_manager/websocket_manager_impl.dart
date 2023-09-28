@@ -6,10 +6,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_advisor_interface/analytics/analytics_event.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/canned_message_socket/canned_message_socket_category.dart';
@@ -354,6 +356,7 @@ class WebSocketManagerImpl implements WebSocketManager {
       _channel = IOWebSocketChannel.connect(url);
       _webSocketStateStream.add(WebSocketState.connected);
       _currentState = WebSocketState.connected;
+      ZodiacBrand().analytics.trackEvent(AnalyticsEvent.socketConnected());
       _socketSubscription = _channel!.stream.listen((event) {
         final message = SocketMessage.fromJson(json.decode(event));
         if (kDebugMode) {
@@ -369,11 +372,22 @@ class WebSocketManagerImpl implements WebSocketManager {
         logger.d("Socket is closed...");
         _webSocketStateStream.add(WebSocketState.closed);
         _currentState = WebSocketState.closed;
+        ZodiacBrand().analytics.trackEvent(AnalyticsEvent.socketDisconnect(
+              reason:
+                  ConnectivityService.hasConnection ? '' : 'lost connection',
+              closedByServer: ConnectivityService.hasConnection ? true : false,
+              socketLiveTime: 0,
+            ));
         // _authCheckOnBackend();
       }, onError: (error) {
         logger.d("Socket error: $error");
         _webSocketStateStream.add(WebSocketState.closed);
         _currentState = WebSocketState.closed;
+        ZodiacBrand().analytics.trackEvent(AnalyticsEvent.socketDisconnect(
+              reason: error,
+              closedByServer: ConnectivityService.hasConnection ? true : false,
+              socketLiveTime: 0,
+            ));
         connect();
       });
       _onStart(advisorId);
@@ -598,6 +612,12 @@ class WebSocketManagerImpl implements WebSocketManager {
     final SocketMessage message = (event.eventData as SocketMessage);
     final CallData startCallData = CallData.fromJson(message.params ?? {});
     logger.d(message.params);
+    ZodiacBrand().analytics.trackEvent(AnalyticsEvent.chatRing(
+          advisorId: startCallData.expertData?.id.toString() ?? '',
+          orderId: 'orderId',
+          buyerId: 'buyerId',
+          ringType: 'push notification',
+        ));
     if (ZodiacBrand().context != null) {
       showStartingChat(ZodiacBrand().context!, startCallData);
     }

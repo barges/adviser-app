@@ -2,11 +2,13 @@ library fortunica;
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fortunica/analytics/analytics_fortunica_impl.dart';
 import 'package:fortunica/data/cache/fortunica_caching_manager.dart';
 import 'package:fortunica/data/models/enums/fortunica_user_status.dart';
 import 'package:fortunica/data/models/user_info/user_status.dart';
 import 'package:fortunica/infrastructure/di/app_initializer.dart';
 import 'package:fortunica/infrastructure/di/inject_config.dart';
+import 'package:shared_advisor_interface/analytics/analytics.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
@@ -27,6 +29,8 @@ class FortunicaBrand implements BaseBrand {
   bool _isCurrent = false;
   BuildContext? _context;
 
+  final AnalyticsFortunicaImpl _analytics = AnalyticsFortunicaImpl();
+
   @override
   String get brandAlias => alias;
 
@@ -46,6 +50,7 @@ class FortunicaBrand implements BaseBrand {
   @override
   init(Flavor flavor) async {
     await FortunicaAppInitializer.setupPrerequisites(Flavor.production);
+    await _analytics.init();
   }
 
   @override
@@ -80,6 +85,9 @@ class FortunicaBrand implements BaseBrand {
 
   @override
   PageRouteInfo get initRoute => const Fortunica();
+
+  @override
+  Analytics get analytics => _analytics;
 
   @override
   Color userStatusNameColor(BuildContext context) {

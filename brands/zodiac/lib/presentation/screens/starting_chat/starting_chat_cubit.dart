@@ -4,6 +4,7 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:audible_mode/audible_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/analytics/analytics_event.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
@@ -116,7 +117,8 @@ class StartingChatCubit extends Cubit<StartingChatState> {
     _webSocketManager.sendDeclineCall(opponentId: opponentId);
   }
 
-  void startChat(BuildContext context, UserData userData) {
+  void startChat(
+      BuildContext context, UserData userData, UserData? expertData) {
     if (_brandManager.getCurrentBrand() is! ZodiacBrand) {
       _brandManager.setCurrentBrand(ZodiacBrand());
     }
@@ -141,5 +143,11 @@ class StartingChatCubit extends Cubit<StartingChatState> {
     _webSocketManager.sendCreateRoom(
         clientId: _startCallData.userData?.id,
         expertFee: _startCallData.expertData?.fee);
+
+    ZodiacBrand().analytics.trackEvent(AnalyticsEvent.chatAnswered(
+          advisorId: expertData?.id.toString() ?? '',
+          orderId: 'orderId',
+          buyerId: 'buyerId',
+        ));
   }
 }

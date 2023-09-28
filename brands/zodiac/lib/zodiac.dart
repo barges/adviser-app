@@ -3,11 +3,14 @@ library zodiac;
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:shared_advisor_interface/analytics/analytics.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
+import 'package:zodiac/analytics/analytics_zodiac_impl.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
 import 'package:zodiac/infrastructure/di/app_initializer.dart';
@@ -30,6 +33,8 @@ class ZodiacBrand implements BaseBrand {
   bool _isCurrent = false;
   BuildContext? _context;
 
+  final AnalyticsZodiacImpl _analytics = AnalyticsZodiacImpl();
+
   @override
   String get brandAlias => alias;
 
@@ -50,6 +55,7 @@ class ZodiacBrand implements BaseBrand {
   @override
   init(Flavor flavor) async {
     await ZodiacAppInitializer.setupPrerequisites(Flavor.production);
+    await _analytics.init();
   }
 
   @override
@@ -82,6 +88,9 @@ class ZodiacBrand implements BaseBrand {
 
   @override
   PageRouteInfo get initRoute => const Zodiac();
+
+  @override
+  Analytics get analytics => _analytics;
 
   @override
   Color userStatusNameColor(BuildContext context) {

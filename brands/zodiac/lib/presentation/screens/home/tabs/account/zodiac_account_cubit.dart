@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/analytics/analytics_event.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
@@ -284,6 +285,26 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
           await _userRepository.setPriceSettings(request);
       if (response.errorCode == 0) {
         emit(state.copyWith(chatsEnabled: value));
+        _cacheManager.saveDetailedUserInfo(_cacheManager
+            .getDetailedUserInfo()
+            ?.copyWith(
+                details: _cacheManager
+                    .getDetailedUserInfo()
+                    ?.details
+                    ?.copyWith(chatEnabled: value ? 1 : 0)));
+
+        final advisorId = _cacheManager.getUid()?.toString() ?? '';
+        if (value) {
+          ZodiacBrand().analytics.trackEvent(AnalyticsEvent.chatBecameAvailable(
+                advisorId: advisorId,
+              ));
+        } else {
+          ZodiacBrand()
+              .analytics
+              .trackEvent(AnalyticsEvent.chatBecameUnavailable(
+                advisorId: advisorId,
+              ));
+        }
       } else {
         _updateErrorMessage(response.getErrorMessage());
       }
@@ -305,6 +326,28 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
 
       if (response.errorCode == 0) {
         emit(state.copyWith(callsEnabled: value));
+        _cacheManager.saveDetailedUserInfo(_cacheManager
+            .getDetailedUserInfo()
+            ?.copyWith(
+                details: _cacheManager
+                    .getDetailedUserInfo()
+                    ?.details
+                    ?.copyWith(callEnabled: value ? 1 : 0)));
+
+        final advisorId = _cacheManager.getUid()?.toString() ?? '';
+        if (value) {
+          ZodiacBrand()
+              .analytics
+              .trackEvent(AnalyticsEvent.voiceBecameAvailable(
+                advisorId: advisorId,
+              ));
+        } else {
+          ZodiacBrand()
+              .analytics
+              .trackEvent(AnalyticsEvent.voiceBecameUnavailable(
+                advisorId: advisorId,
+              ));
+        }
       } else {
         _updateErrorMessage(response.getErrorMessage());
       }
@@ -383,6 +426,17 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
         _cacheManager.saveUserStatus(
             value ? ZodiacUserStatus.online : ZodiacUserStatus.offline);
         emit(state.copyWith(userStatusOnline: value));
+
+        final advisorId = _cacheManager.getUid()?.toString() ?? '';
+        if (value) {
+          ZodiacBrand().analytics.trackEvent(AnalyticsEvent.becameAvailable(
+                advisorId: advisorId,
+              ));
+        } else {
+          ZodiacBrand().analytics.trackEvent(AnalyticsEvent.becameUnavailable(
+                advisorId: advisorId,
+              ));
+        }
       } else {
         _updateErrorMessage(response.getErrorMessage());
       }

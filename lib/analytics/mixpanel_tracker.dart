@@ -1,5 +1,6 @@
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:shared_advisor_interface/analytics/analytics.dart';
+import 'package:shared_advisor_interface/analytics/analytics_event.dart';
 import 'package:shared_advisor_interface/global.dart';
 
 class MixpanelTracker extends AbstractTracker<AnalyticsEvent> {
@@ -9,13 +10,22 @@ class MixpanelTracker extends AbstractTracker<AnalyticsEvent> {
   Future<bool> init() async {
     try {
       _mixpanel =
-          await Mixpanel.init(mixpanelToken, trackAutomaticEvents: false);
+          await Mixpanel.init(mixpanelToken, trackAutomaticEvents: true);
+      await _registerSuperProperties();
+
       return true;
     } catch (e) {
       logger.d(e);
     }
 
     return false;
+  }
+
+  Future<void> _registerSuperProperties() async {
+    _mixpanel?.registerSuperProperties({
+      'platform': 'app',
+      'install date': '',
+    });
   }
 
   @override

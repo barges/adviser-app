@@ -117,7 +117,8 @@ class StartingChatScreen extends StatelessWidget {
                             onPressed: () {
                               final UserData? userData = callData.userData;
                               if (userData != null) {
-                                startingChatCubit.startChat(context, userData);
+                                startingChatCubit.startChat(
+                                    context, userData, callData.expertData);
                               }
                             },
                           ),

@@ -1,9 +1,4 @@
-class AnalyticsEvent {
-  final String name;
-  final Map<String, dynamic>? params;
-
-  AnalyticsEvent({required this.name, this.params});
-}
+import 'package:shared_advisor_interface/analytics/analytics_event.dart';
 
 abstract class AbstractTracker<E> {
   Future<bool> init();
