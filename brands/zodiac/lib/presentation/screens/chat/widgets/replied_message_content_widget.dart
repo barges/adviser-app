@@ -23,9 +23,22 @@ class RepliedMessageContentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final String? thumbnail = repliedMessage?.context?.thumbnail;
+
     String authorName = chatMessageModel != null
         ? '${chatMessageModel?.authorName ?? ''}${chatMessageModel?.isOutgoing == true ? ' (${SZodiac.of(context).youZodiac})' : ''}'
         : repliedMessage?.repliedUserName ?? '';
+
+    String text = '';
+    if (repliedMessage != null) {
+      text = repliedMessage!.type == ChatMessageType.simple
+          ? repliedMessage!.text ?? ''
+          : repliedMessage!.type.getTitle(context);
+    } else if (chatMessageModel != null) {
+      text = chatMessageModel!.type == ChatMessageType.simple
+          ? chatMessageModel!.message ?? ''
+          : chatMessageModel!.type.getTitle(context);
+    }
+
     return Row(
       children: [
         if (thumbnail != null)
@@ -40,30 +53,30 @@ class RepliedMessageContentWidget extends StatelessWidget {
               memCacheHeight: 36,
             ),
           ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              authorName,
-              style: theme.textTheme.displaySmall?.copyWith(
-                fontSize: 14.0,
-                color: authorNameColor,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                authorName,
+                style: theme.textTheme.displaySmall?.copyWith(
+                  fontSize: 14.0,
+                  color: authorNameColor,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            Text(
-              repliedMessage?.type == ChatMessageType.simple
-                  ? repliedMessage?.text ?? ''
-                  : repliedMessage?.type.getTitle(context) ?? '',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: messageColor,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              softWrap: true,
-            )
-          ],
+              Text(
+                text,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: messageColor,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                softWrap: true,
+              )
+            ],
+          ),
         ),
       ],
     );
