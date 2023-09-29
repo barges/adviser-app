@@ -37,9 +37,6 @@ void main() async {
         Flavor.production,
       );
 
-      await AnalyticsFortunicaImpl().init();
-      await AnalyticsZodiacImpl().init();
-
       await SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,

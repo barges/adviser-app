@@ -135,7 +135,7 @@ class AppInterceptor extends Interceptor {
     BaseResponse baseResponse = BaseResponse.fromJson(response.data);
 
     if (baseResponse.errorCode == 5) {
-      _webSocketManager.close();
+      _webSocketManager.close('USER_AUTH');
       await _cachingManager.logout();
       context?.replaceAll([const ZodiacAuth()]);
     } else if (response.realUri.path.contains('login') &&

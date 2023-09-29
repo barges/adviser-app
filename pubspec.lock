@@ -33,6 +33,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.8"
+  app_install_date:
+    dependency: "direct main"
+    description:
+      name: app_install_date
+      sha256: acb293668f52b90c8d6e9809af5a530fb9f188f542f6d17898235ae81aa8dfa8
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.2"
   app_tracking_transparency:
     dependency: "direct main"
     description:

@@ -66,7 +66,7 @@ abstract class WebSocketManager {
 
   Future connect();
 
-  void close();
+  void close(String reason);
 
   void sendStatus();
 

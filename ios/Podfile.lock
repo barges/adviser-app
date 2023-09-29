@@ -1,4 +1,6 @@
 PODS:
+  - app_install_date (0.0.1):
+    - Flutter
   - app_tracking_transparency (0.0.1):
     - Flutter
   - assets_audio_player (0.0.1):
@@ -243,6 +245,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - app_install_date (from `.symlinks/plugins/app_install_date/ios`)
   - app_tracking_transparency (from `.symlinks/plugins/app_tracking_transparency/ios`)
   - assets_audio_player (from `.symlinks/plugins/assets_audio_player/ios`)
   - assets_audio_player_web (from `.symlinks/plugins/assets_audio_player_web/ios`)
@@ -311,6 +314,8 @@ SPEC REPOS:
     - RecaptchaEnterprise
 
 EXTERNAL SOURCES:
+  app_install_date:
+    :path: ".symlinks/plugins/app_install_date/ios"
   app_tracking_transparency:
     :path: ".symlinks/plugins/app_tracking_transparency/ios"
   assets_audio_player:
@@ -389,6 +394,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
+  app_install_date: 8d9e98cd5329ec376d38012a1cb82f37810de359
   app_tracking_transparency: 5b1745ef9ade815f7455cb6a0848349589afb7c5
   assets_audio_player: edee322b9cb625571b830b35872ead1a295fd917
   assets_audio_player_web: 19826380c44375761aa0b9053665c1e3fbc3b86b

@@ -7,8 +7,6 @@ class MixpanelTrackerFortunica extends MixpanelTracker {
 }
 
 class AnalyticsFortunicaImpl extends AnalyticsBrand {
-  AnalyticsFortunicaImpl() : super();
-
   @override
   void setTrackers() {
     trackers = [

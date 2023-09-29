@@ -145,9 +145,8 @@ class StartingChatCubit extends Cubit<StartingChatState> {
         expertFee: _startCallData.expertData?.fee);
 
     ZodiacBrand().analytics.trackEvent(AnalyticsEvent.chatAnswered(
-          advisorId: expertData?.id.toString() ?? '',
-          orderId: 'orderId',
-          buyerId: 'buyerId',
+          advisorId: expertData?.id?.toString() ?? '',
+          buyerId: userData.id?.toString() ?? '',
         ));
   }
 }

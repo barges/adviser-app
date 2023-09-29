@@ -107,7 +107,7 @@ class HomeCubit extends Cubit<HomeState> {
             _webSocketManager.connect();
           }
         } else {
-          _webSocketManager.close();
+          _webSocketManager.close('app in background');
         }
       },
     );
@@ -119,8 +119,9 @@ class HomeCubit extends Cubit<HomeState> {
           _webSocketManager.currentState == WebSocketState.closed) {
         _webSocketManager.connect();
       }
-      if (!event) {
-        _webSocketManager.close();
+      if (!event &&
+          _webSocketManager.currentState == WebSocketState.connected) {
+        _webSocketManager.close('lost connection');
       }
     });
 

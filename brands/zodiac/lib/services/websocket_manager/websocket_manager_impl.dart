@@ -63,6 +63,8 @@ class WebSocketManagerImpl implements WebSocketManager {
 
   WebSocketState _currentState = WebSocketState.closed;
 
+  DateTime? _startTimeSocketConnected;
+
   final PublishSubject<List<ChatMessageModel>> _entitiesStream =
       PublishSubject();
 
@@ -342,7 +344,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
     if (authToken != null && advisorId != null) {
       if (_channel != null) {
-        close();
+        close('reconnect');
       }
       const host = ZodiacConstants.socketUrlZodiac;
 
@@ -356,6 +358,7 @@ class WebSocketManagerImpl implements WebSocketManager {
       _channel = IOWebSocketChannel.connect(url);
       _webSocketStateStream.add(WebSocketState.connected);
       _currentState = WebSocketState.connected;
+      _startTimeSocketConnected = DateTime.now();
       ZodiacBrand().analytics.trackEvent(AnalyticsEvent.socketConnected());
       _socketSubscription = _channel!.stream.listen((event) {
         final message = SocketMessage.fromJson(json.decode(event));
@@ -372,26 +375,39 @@ class WebSocketManagerImpl implements WebSocketManager {
         logger.d("Socket is closed...");
         _webSocketStateStream.add(WebSocketState.closed);
         _currentState = WebSocketState.closed;
-        ZodiacBrand().analytics.trackEvent(AnalyticsEvent.socketDisconnect(
-              reason:
-                  ConnectivityService.hasConnection ? '' : 'lost connection',
-              closedByServer: ConnectivityService.hasConnection ? true : false,
-              socketLiveTime: 0,
-            ));
+        ZodiacBrand().analytics.trackEvent(
+              AnalyticsEvent.socketDisconnect(
+                reason:
+                    ConnectivityService.hasConnection ? '' : 'lost connection',
+                closedByServer:
+                    ConnectivityService.hasConnection ? true : false,
+                socketLiveTime: getSocketLiveTime(),
+              ),
+            );
         // _authCheckOnBackend();
       }, onError: (error) {
         logger.d("Socket error: $error");
         _webSocketStateStream.add(WebSocketState.closed);
         _currentState = WebSocketState.closed;
         ZodiacBrand().analytics.trackEvent(AnalyticsEvent.socketDisconnect(
-              reason: error,
+              reason: error.toString(),
               closedByServer: ConnectivityService.hasConnection ? true : false,
-              socketLiveTime: 0,
+              socketLiveTime: getSocketLiveTime(),
             ));
         connect();
       });
       _onStart(advisorId);
     }
+  }
+
+  int getSocketLiveTime() {
+    if (_startTimeSocketConnected != null) {
+      final socketLiveTime =
+          DateTime.now().difference(_startTimeSocketConnected!).inSeconds;
+      _startTimeSocketConnected = null;
+      return socketLiveTime;
+    }
+    return 0;
   }
 
   @override
@@ -547,10 +563,18 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   @override
-  void close() {
+  void close(String reason) {
     _currentState = WebSocketState.closed;
     _socketSubscription?.cancel();
     _channel?.sink.close();
+
+    if (reason != 'reconnect') {
+      ZodiacBrand().analytics.trackEvent(AnalyticsEvent.socketDisconnect(
+            reason: reason,
+            closedByServer: false,
+            socketLiveTime: getSocketLiveTime(),
+          ));
+    }
   }
 
   void endChat() {
@@ -613,10 +637,8 @@ class WebSocketManagerImpl implements WebSocketManager {
     final CallData startCallData = CallData.fromJson(message.params ?? {});
     logger.d(message.params);
     ZodiacBrand().analytics.trackEvent(AnalyticsEvent.chatRing(
-          advisorId: startCallData.expertData?.id.toString() ?? '',
-          orderId: 'orderId',
-          buyerId: 'buyerId',
-          ringType: 'push notification',
+          advisorId: startCallData.expertData?.id?.toString() ?? '',
+          buyerId: startCallData.userData?.id?.toString() ?? '',
         ));
     if (ZodiacBrand().context != null) {
       showStartingChat(ZodiacBrand().context!, startCallData);
