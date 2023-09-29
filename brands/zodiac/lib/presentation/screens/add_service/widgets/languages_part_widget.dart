@@ -35,10 +35,11 @@ class LanguagesPartWidget extends StatelessWidget {
                 height: 24.0,
               ),
               Builder(builder: (context) {
-                context.select((AddServiceCubit cubit) =>
+                final bool update = context.select((AddServiceCubit cubit) =>
                     cubit.state.updateAfterDuplicate);
 
                 return TitleDescriptionPartWidget(
+                  key: ValueKey('UpdateTitleDescription$update'),
                   languagesList: languagesList,
                   selectedLanguageIndex: selectedLanguageIndex,
                   textControllersMap: addServiceCubit.textControllersMap,
