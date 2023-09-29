@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_advisor_interface/analytics/analytics_values.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -135,7 +136,7 @@ class AppInterceptor extends Interceptor {
     BaseResponse baseResponse = BaseResponse.fromJson(response.data);
 
     if (baseResponse.errorCode == 5) {
-      _webSocketManager.close('USER_AUTH');
+      _webSocketManager.close(AnalyticsValues.userAuth);
       await _cachingManager.logout();
       context?.replaceAll([const ZodiacAuth()]);
     } else if (response.realUri.path.contains('login') &&

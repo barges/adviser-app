@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/analytics/analytics_values.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -35,7 +36,7 @@ class ZodiacDrawerItemCubit extends Cubit<ZodiacDrawerItemState> {
     final BaseResponse? response =
         await _authRepository.logout(request: AuthorizedRequest());
     if (response?.status == true) {
-      _webSocketManager.close('logout');
+      _webSocketManager.close(AnalyticsValues.logout);
       await _zodiacCachingManager.logout();
       context.replaceAll([const ZodiacAuth()]);
     }

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_advisor_interface/analytics/analytics_event.dart';
+import 'package:shared_advisor_interface/analytics/analytics_values.dart';
 import 'package:shared_advisor_interface/extensions.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
@@ -344,7 +345,7 @@ class WebSocketManagerImpl implements WebSocketManager {
 
     if (authToken != null && advisorId != null) {
       if (_channel != null) {
-        close('reconnect');
+        close(AnalyticsValues.reconnect);
       }
       const host = ZodiacConstants.socketUrlZodiac;
 
@@ -377,8 +378,9 @@ class WebSocketManagerImpl implements WebSocketManager {
         _currentState = WebSocketState.closed;
         ZodiacBrand().analytics.trackEvent(
               AnalyticsEvent.socketDisconnect(
-                reason:
-                    ConnectivityService.hasConnection ? '' : 'lost connection',
+                reason: ConnectivityService.hasConnection
+                    ? ''
+                    : AnalyticsValues.lostConnection,
                 closedByServer:
                     ConnectivityService.hasConnection ? true : false,
                 socketLiveTime: getSocketLiveTime(),
@@ -568,7 +570,7 @@ class WebSocketManagerImpl implements WebSocketManager {
     _socketSubscription?.cancel();
     _channel?.sink.close();
 
-    if (reason != 'reconnect') {
+    if (reason != AnalyticsValues.reconnect) {
       ZodiacBrand().analytics.trackEvent(AnalyticsEvent.socketDisconnect(
             reason: reason,
             closedByServer: false,

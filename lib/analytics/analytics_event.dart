@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:shared_advisor_interface/analytics/analytics_params.dart';
+import 'package:shared_advisor_interface/analytics/analytics_values.dart';
 import 'package:shared_advisor_interface/infrastructure/brands/base_brand.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/zodiac_user_status.dart';
@@ -10,6 +12,17 @@ class AnalyticsEvent {
   late final String name;
   late final Map<String, String>? params;
 
+  static const String chatRingName = 'chat ring';
+  static const String chatAnsweredName = 'chat answered';
+  static const String becameAvailableName = 'became available';
+  static const String becameUnavailableName = 'became unavailable';
+  static const String chatBecameAvailableName = 'chat became available';
+  static const String chatBecameUnavailableName = 'chat became unavailable';
+  static const String voiceBecameAvailableName = 'voice became available';
+  static const String voiceBecameUnavailableName = 'voice became unavailable';
+  static const String socketConnectedName = 'socket connected';
+  static const String socketDisconnectName = 'socket disconnect';
+
   AnalyticsEvent({required this.name, this.params});
 
   void setParams(
@@ -19,26 +32,26 @@ class AnalyticsEvent {
   ) {
     final DateTime dateTimeNow = DateTime.now();
 
-    params['day'] = dateTimeNow.day.toString();
-    params['day of week'] = dateTimeNow.weekday.toString();
-    params['hour of day'] = dateTimeNow.hour.toString();
-    params['month'] = dateTimeNow.month.toString();
-    params['year'] = dateTimeNow.year.toString();
-    params['year-month'] =
-        '${params['year']}-${dateTimeNow.month < 10 ? '0${params['month']}' : params['month']}';
-    params['language'] = brand.languageCode ?? '';
+    params[AnalyticsParams.day] = dateTimeNow.day.toString();
+    params[AnalyticsParams.dayOfWeek] = dateTimeNow.weekday.toString();
+    params[AnalyticsParams.hourOfDay] = dateTimeNow.hour.toString();
+    params[AnalyticsParams.month] = dateTimeNow.month.toString();
+    params[AnalyticsParams.year] = dateTimeNow.year.toString();
+    params[AnalyticsParams.yearMonth] =
+        '${params[AnalyticsParams.year]}-${dateTimeNow.month < 10 ? '0${params[AnalyticsParams.month]}' : params[AnalyticsParams.month]}';
+    params[AnalyticsParams.language] = brand.languageCode ?? '';
 
     final advisorModes = [];
     if (zodiacCachingManager.getUserStatus() == ZodiacUserStatus.online) {
-      advisorModes.add('available');
+      advisorModes.add(AnalyticsValues.available);
     }
     if (zodiacCachingManager.getDetailedUserInfo()?.details?.chatEnabled == 1) {
-      advisorModes.add('chat');
+      advisorModes.add(AnalyticsValues.chat);
     }
     if (zodiacCachingManager.getDetailedUserInfo()?.details?.callEnabled == 1) {
-      advisorModes.add('voice');
+      advisorModes.add(AnalyticsValues.voice);
     }
-    params['advisor modes'] = advisorModes.toString();
+    params[AnalyticsParams.advisorModes] = advisorModes.toString();
   }
 
   static AnalyticsEvent chatRing({
@@ -49,20 +62,20 @@ class AnalyticsEvent {
         zodiacGetIt.get<WebSocketManager>();
     String ringType = '';
     if (webSocketManager.currentState == WebSocketState.connected) {
-      ringType = 'socket';
+      ringType = AnalyticsValues.socket;
     } else if (Platform.isAndroid) {
-      ringType = 'push notification';
+      ringType = AnalyticsValues.pushNotification;
     } else if (Platform.isIOS) {
-      ringType = 'voip';
+      ringType = AnalyticsValues.voip;
     }
 
     var params = {
-      'advisor id': advisorId,
-      'buyer id': buyerId,
-      'ring type': ringType,
+      AnalyticsParams.advisorId: advisorId,
+      AnalyticsParams.buyerId: buyerId,
+      AnalyticsParams.ringType: ringType,
     };
 
-    return AnalyticsEvent(name: "chat ring", params: params);
+    return AnalyticsEvent(name: chatRingName, params: params);
   }
 
   static AnalyticsEvent chatAnswered({
@@ -70,79 +83,79 @@ class AnalyticsEvent {
     required String buyerId,
   }) {
     var params = {
-      'advisor id': advisorId,
-      'buyer id': buyerId,
+      AnalyticsParams.advisorId: advisorId,
+      AnalyticsParams.buyerId: buyerId,
     };
 
-    return AnalyticsEvent(name: "chat answered", params: params);
-  }
-
-  static AnalyticsEvent becameUnavailable({
-    required String advisorId,
-  }) {
-    var params = {
-      'advisor id': advisorId,
-    };
-
-    return AnalyticsEvent(name: "became unavailable", params: params);
+    return AnalyticsEvent(name: chatAnsweredName, params: params);
   }
 
   static AnalyticsEvent becameAvailable({
     required String advisorId,
   }) {
     var params = {
-      'advisor id': advisorId,
+      AnalyticsParams.advisorId: advisorId,
     };
 
-    return AnalyticsEvent(name: "became available", params: params);
+    return AnalyticsEvent(name: becameAvailableName, params: params);
+  }
+
+  static AnalyticsEvent becameUnavailable({
+    required String advisorId,
+  }) {
+    var params = {
+      AnalyticsParams.advisorId: advisorId,
+    };
+
+    return AnalyticsEvent(name: becameUnavailableName, params: params);
   }
 
   static AnalyticsEvent chatBecameAvailable({
     required String advisorId,
   }) {
     var params = {
-      'advisor id': advisorId,
+      AnalyticsParams.advisorId: advisorId,
     };
 
-    return AnalyticsEvent(name: "chat became available", params: params);
+    return AnalyticsEvent(name: chatBecameAvailableName, params: params);
   }
 
   static AnalyticsEvent chatBecameUnavailable({
     required String advisorId,
   }) {
     var params = {
-      'advisor id': advisorId,
+      AnalyticsParams.advisorId: advisorId,
     };
 
-    return AnalyticsEvent(name: "chat became unavailable", params: params);
+    return AnalyticsEvent(name: chatBecameUnavailableName, params: params);
   }
 
   static AnalyticsEvent voiceBecameAvailable({
     required String advisorId,
   }) {
     var params = {
-      'advisor id': advisorId,
+      AnalyticsParams.advisorId: advisorId,
     };
 
-    return AnalyticsEvent(name: "voice became available", params: params);
+    return AnalyticsEvent(name: voiceBecameAvailableName, params: params);
   }
 
   static AnalyticsEvent voiceBecameUnavailable({
     required String advisorId,
   }) {
     var params = {
-      'advisor id': advisorId,
+      AnalyticsParams.advisorId: advisorId,
     };
 
-    return AnalyticsEvent(name: "voice became unavailable", params: params);
+    return AnalyticsEvent(name: voiceBecameUnavailableName, params: params);
   }
 
   static AnalyticsEvent socketConnected() {
     var params = {
-      'socket type': 'php',
+      AnalyticsParams.socketType: AnalyticsValues.php,
     };
 
-    return AnalyticsEvent(name: "socket connected", params: params);
+    return AnalyticsEvent(name: socketConnectedName, params: params);
   }
 
   static AnalyticsEvent socketDisconnect({
@@ -151,12 +164,12 @@ class AnalyticsEvent {
     required int socketLiveTime,
   }) {
     var params = {
-      'reason': reason,
-      'socket type': 'php',
-      'closed by server': closedByServer.toString(),
-      'socket live time': socketLiveTime.toString(),
+      AnalyticsParams.reason: reason,
+      AnalyticsParams.socketType: AnalyticsValues.php,
+      AnalyticsParams.closedByServer: closedByServer.toString(),
+      AnalyticsParams.socketLiveTime: socketLiveTime.toString(),
     };
 
-    return AnalyticsEvent(name: "socket disconnect", params: params);
+    return AnalyticsEvent(name: socketDisconnectName, params: params);
   }
 }

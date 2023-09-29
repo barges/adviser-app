@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/analytics/analytics_values.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -107,7 +108,7 @@ class HomeCubit extends Cubit<HomeState> {
             _webSocketManager.connect();
           }
         } else {
-          _webSocketManager.close('app in background');
+          _webSocketManager.close(AnalyticsValues.appInBackground);
         }
       },
     );
@@ -121,7 +122,7 @@ class HomeCubit extends Cubit<HomeState> {
       }
       if (!event &&
           _webSocketManager.currentState == WebSocketState.connected) {
-        _webSocketManager.close('lost connection');
+        _webSocketManager.close(AnalyticsValues.lostConnection);
       }
     });
 
