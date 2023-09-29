@@ -43,7 +43,7 @@ class AppInfo {
 
     ///TODO: Need change on backend
     package = packageInfo.packageName;
-    version = '5.9';
+    version = '5.8';
     locale = Intl.getCurrentLocale();
     appsflyerId = '1469200336473-6162102739781632588';
 

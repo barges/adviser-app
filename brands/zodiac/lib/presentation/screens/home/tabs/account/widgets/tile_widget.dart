@@ -47,9 +47,10 @@ class TileWidget extends StatelessWidget {
         child: Container(
           height: 44.0,
           color: Colors.transparent,
-          child: Row(children: [
-            Expanded(
-              child: Row(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
                 children: [
                   Opacity(
                     opacity: needTimer ? 0.4 : 1.0,
@@ -90,57 +91,61 @@ class TileWidget extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-            if (initSwitcherValue != null)
-              Row(
-                children: [
-                  widget ?? const SizedBox(),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 5.0,
-                      right: AppConstants.horizontalScreenPadding,
-                    ),
-                    child: Opacity(
-                      opacity: needTimer ? 0.4 : 1.0,
-                      child: CupertinoSwitch(
-                        value: !isDisable ? initSwitcherValue! : false,
-                        onChanged: (bool value) {
-                          if (!isDisable && !needTimer && onChanged != null) {
-                            onChanged!(value);
-                          }
-                        },
-                        activeColor: Theme.of(context).primaryColor,
-                        trackColor: Theme.of(context).hintColor,
+              if (initSwitcherValue != null)
+                Row(
+                  children: [
+                    widget ?? const SizedBox(),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 5.0,
+                        right: AppConstants.horizontalScreenPadding,
+                      ),
+                      child: Opacity(
+                        opacity: needTimer ? 0.4 : 1.0,
+                        child: CupertinoSwitch(
+                          value: !isDisable ? initSwitcherValue! : false,
+                          onChanged: (bool value) {
+                            if (!isDisable && !needTimer && onChanged != null) {
+                              onChanged!(value);
+                            }
+                          },
+                          activeColor: Theme.of(context).primaryColor,
+                          trackColor: Theme.of(context).hintColor,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            if (onTap != null)
-              Row(
-                children: [
-                  widget ?? const SizedBox(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppConstants.horizontalScreenPadding,
-                    ),
-                    child: Stack(
-                      children: [
-                        Assets.vectors.arrowRight.svg(
-                          key: const Key('arrow_right_button'),
-                          color: Theme.of(context).primaryColor,
+                  ],
+                ),
+              if (onTap != null)
+                Flexible(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      if (widget != null) const SizedBox(width: 2.0),
+                      widget ?? const SizedBox(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppConstants.horizontalScreenPadding,
                         ),
-                        if (withError)
-                          const Positioned(
-                            right: 0.0,
-                            child: ErrorBadge(),
-                          ),
-                      ],
-                    ),
+                        child: Stack(
+                          children: [
+                            Assets.vectors.arrowRight.svg(
+                              key: const Key('arrow_right_button'),
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            if (withError)
+                              const Positioned(
+                                right: 0.0,
+                                child: ErrorBadge(),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              )
-          ]),
+                )
+            ],
+          ),
         ),
       ),
     );

@@ -1,6 +1,8 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:zodiac/data/models/enums/service_status.dart';
+import 'package:zodiac/data/models/enums/service_type.dart';
 
 part 'service_item.g.dart';
 part 'service_item.freezed.dart';
@@ -9,20 +11,17 @@ part 'service_item.freezed.dart';
 class ServiceItem with _$ServiceItem {
   const ServiceItem._();
 
-  @JsonSerializable(includeIfNull: false)
+  @JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)
   const factory ServiceItem({
-    int? id,
+    @JsonKey(name: 'service_id') int? id,
+    @JsonKey(fromJson: ServiceStatus.fromInt) ServiceStatus? status,
+    double? price,
+    String? durationView,
+    @JsonKey(fromJson: ServiceType.fromInt) ServiceType? type,
+    String? image,
     String? name,
-    @JsonKey(name: 'date_create') int? dateCreate,
-
-    ///0 - New, 1 - Approved, 2 - Rejected, 3 - Temp
-    int? status,
-
-    ///0 - allowed, 1 - not allowed, 2 - Only services allowed
-    @JsonKey(name: 'reject_status') int? rejectStatus,
-    String? ext,
-    @JsonKey(name: 'img') String? image,
-    @JsonKey(name: 'reject_text') String? rejectText,
+    String? description,
+    @Default(false) bool isActive,
   }) = _ServiceItem;
 
   factory ServiceItem.fromJson(Map<String, dynamic> json) =>

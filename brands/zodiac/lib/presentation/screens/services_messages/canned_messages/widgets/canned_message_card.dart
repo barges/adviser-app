@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
+import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:zodiac/data/models/canned_messages/canned_category.dart';
 import 'package:zodiac/data/models/canned_messages/canned_message.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -89,16 +89,10 @@ class CannedMessageCard extends StatelessWidget {
               GestureDetector(
                 onTap: () async {
                   FocusScope.of(context).unfocus();
-                  if (await showOkCancelAlert(
-                        context: context,
-                        title:
-                            SZodiac.of(context).doYouWantDeleteTemplateZodiac,
-                        description: SZodiac.of(context)
-                            .itWillBeRemovedFromTemplatesZodiac,
-                        okText: SZodiac.of(context).deleteZodiac,
-                        allowBarrierClick: false,
-                        isCancelEnabled: true,
-                      ) ==
+                  if (await showDeleteAlert(context,
+                          SZodiac.of(context).doYouWantDeleteTemplateZodiac,
+                          description: SZodiac.of(context)
+                              .itWillBeRemovedFromTemplatesZodiac) ==
                       true) {
                     cannedMessagesCubit.deleteCannedMessage(cannedMessage.id);
                   }

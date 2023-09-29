@@ -89,7 +89,8 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   final FocusNode textInputFocusNode = FocusNode();
   final GlobalKey textInputKey = GlobalKey();
-  final GlobalKey repliedMessageGlobalKey = GlobalKey();
+
+  GlobalKey? repliedMessageGlobalKey = GlobalKey();
   final GlobalKey reactedMessageGlobalKey = GlobalKey();
 
   final PublishSubject<double> _showDownButtonStream = PublishSubject();
@@ -116,6 +117,8 @@ class ChatCubit extends BaseCubit<ChatState> {
   int? _chatId;
 
   int? _recordAudioDuration;
+
+  bool _isAppFromForeground = false;
 
   ChatCubit(
     @factoryParam ChatCubitParams chatCubitParams,
@@ -281,6 +284,7 @@ class ChatCubit extends BaseCubit<ChatState> {
 
     addListener(_mainCubit.changeAppLifecycleStream.listen(
       (value) async {
+        _isAppFromForeground = value;
         if (!value) {
           if (_audioRecorder.isRecording) {
             stopRecordingAudio();
@@ -319,9 +323,11 @@ class ChatCubit extends BaseCubit<ChatState> {
         textInputFocusNode.unfocus();
         emit(state.copyWith(
           isTextInputCollapsed: true,
-          keyboardOpened: !state.keyboardOpened,
         ));
       }
+      emit(state.copyWith(
+        keyboardOpened: !state.keyboardOpened,
+      ));
     }));
 
     textInputFocusNode.addListener(() {
@@ -386,10 +392,12 @@ class ChatCubit extends BaseCubit<ChatState> {
           } else if (!state.chatIsActive) {
             _webSocketManager.chatLogin(opponentId: clientData.id ?? 0);
             emit(state.copyWith(isChatReconnecting: false));
-          } else {
+          } else if (!_isAppFromForeground) {
             _isRefresh = true;
             emit(state.copyWith(chatIsActive: false, chatTimerValue: null));
             _chatTimer?.cancel();
+          } else {
+            _isAppFromForeground = false;
           }
         }
         if (event == WebSocketState.closed) {
@@ -527,6 +535,8 @@ class ChatCubit extends BaseCubit<ChatState> {
       message: text,
       repliedMessage: repliedMessage,
       repliedMessageId: state.repliedMessage?.id,
+      supportsReply: true,
+      authorName: enterRoomData?.expertData?.name,
     );
     if (state.needShowDownButton) {
       animateToStartChat();
@@ -539,6 +549,10 @@ class ChatCubit extends BaseCubit<ChatState> {
       roomId: enterRoomData?.roomData?.id ?? '',
       opponentId: clientData.id ?? 0,
     );
+
+    if (!state.isTextInputCollapsed) {
+      updateTextFieldIsCollapse(true);
+    }
   }
 
   void sendWriteStatus() {

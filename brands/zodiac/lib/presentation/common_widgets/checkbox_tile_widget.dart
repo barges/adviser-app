@@ -6,6 +6,7 @@ class CheckboxTileWidget extends StatelessWidget {
   final bool isSelected;
   final String title;
   final VoidCallback onTap;
+  final bool isLanguage;
 
   const CheckboxTileWidget({
     Key? key,
@@ -13,11 +14,13 @@ class CheckboxTileWidget extends StatelessWidget {
     required this.isSelected,
     required this.title,
     required this.onTap,
+    this.isLanguage = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -79,14 +82,28 @@ class CheckboxTileWidget extends StatelessWidget {
                 title,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
-                style: isSelected
-                    ? theme.textTheme.bodyMedium?.copyWith(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500,
-                      )
-                    : theme.textTheme.bodySmall?.copyWith(
-                        fontSize: 16.0,
-                      ),
+                style: isLanguage
+                    ? isSelected
+                        ? TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w500,
+                            color: theme.hoverColor,
+                          )
+                        : TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w400,
+                            color: theme.hoverColor,
+                          )
+                    : isSelected
+                        ? theme.textTheme.bodyMedium?.copyWith(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w500,
+                          )
+                        : theme.textTheme.bodySmall?.copyWith(
+                            fontSize: 16.0,
+                          ),
               ),
             ),
           ],

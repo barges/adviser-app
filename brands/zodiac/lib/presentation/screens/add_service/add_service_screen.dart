@@ -1,0 +1,81 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_advisor_interface/main_cubit.dart';
+import 'package:zodiac/generated/l10n.dart';
+import 'package:zodiac/infrastructure/di/inject_config.dart';
+import 'package:zodiac/presentation/common_widgets/appbar/simple_app_bar.dart';
+import 'package:zodiac/presentation/common_widgets/no_connection_widget.dart';
+import 'package:zodiac/presentation/common_widgets/something_went_wrong_widget.dart';
+import 'package:zodiac/presentation/screens/add_service/add_service_cubit.dart';
+import 'package:zodiac/presentation/screens/add_service/widgets/add_service_body_widget.dart';
+
+class AddServiceScreen extends StatelessWidget {
+  const AddServiceScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return BlocProvider(
+      create: (context) => zodiacGetIt.get<AddServiceCubit>(),
+      child: GestureDetector(
+        onTap: FocusScope.of(context).unfocus,
+        child: Scaffold(
+          backgroundColor: theme.scaffoldBackgroundColor,
+          appBar: SimpleAppBar(
+            title: SZodiac.of(context).addServiceZodiac,
+          ),
+          body: Builder(builder: (context) {
+            final bool dataFetched = context
+                .select((AddServiceCubit cubit) => cubit.state.dataFetched);
+
+            if (dataFetched) {
+              return const AddServiceBodyWidget();
+            } else {
+              final bool internetConnectionIsAvailable = context.select(
+                  (MainCubit cubit) =>
+                      cubit.state.internetConnectionIsAvailable);
+              if (internetConnectionIsAvailable) {
+                final bool alreadyTriedToGetImages = context.select(
+                    (AddServiceCubit cubit) =>
+                        cubit.state.alreadyTriedToGetImages);
+                if (alreadyTriedToGetImages) {
+                  return RefreshIndicator(
+                    onRefresh: context.read<AddServiceCubit>().initializeScreen,
+                    child: CustomScrollView(
+                      physics: const AlwaysScrollableScrollPhysics()
+                          .applyTo(const ClampingScrollPhysics()),
+                      slivers: const [
+                        SliverFillRemaining(
+                          hasScrollBody: false,
+                          child: SomethingWentWrongWidget(),
+                        )
+                      ],
+                    ),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              } else {
+                return const CustomScrollView(
+                  physics: ClampingScrollPhysics(),
+                  slivers: [
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          NoConnectionWidget(),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }
+            }
+          }),
+        ),
+      ),
+    );
+  }
+}

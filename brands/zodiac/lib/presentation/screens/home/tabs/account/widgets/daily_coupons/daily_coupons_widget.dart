@@ -22,26 +22,31 @@ class DailyCouponsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double couponHeight = 96 /
+    const viewportFraction = 0.8;
+    const spacing = 12.0;
+    final couponHeight = 96 /
         264 *
         (MediaQuery.of(context).size.width -
             AppConstants.horizontalScreenPadding * 2) *
-        0.8;
+        viewportFraction;
     return SizedBox(
-      height: couponHeight * 3 + 12 * 2,
+      height: couponHeight * 3 + spacing * 2,
       child: PageView.builder(
-        controller: PageController(viewportFraction: 0.8),
+        controller: PageController(viewportFraction: viewportFraction),
         itemCount: 3,
+        padEnds: false,
         itemBuilder: (context, rowIndex) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6.0),
+          padding: const EdgeInsets.symmetric(horizontal: spacing / 2),
           child: ListView.separated(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemBuilder: (context, columnIndex) => _DailyCouponWidget(
               dailyCoupon: dailyCoupons[columnIndex + rowIndex * 3],
               limitReached: limitReached,
+              height: couponHeight,
             ),
-            separatorBuilder: (context, index) => const SizedBox(height: 12.0),
+            separatorBuilder: (context, index) =>
+                const SizedBox(height: spacing),
             itemCount: 3,
           ),
         ),
@@ -53,11 +58,13 @@ class DailyCouponsWidget extends StatelessWidget {
 class _DailyCouponWidget extends StatelessWidget {
   final CouponInfo dailyCoupon;
   final bool limitReached;
+  final double height;
 
   const _DailyCouponWidget({
     Key? key,
     required this.dailyCoupon,
     required this.limitReached,
+    required this.height,
   }) : super(key: key);
 
   @override
@@ -70,14 +77,17 @@ class _DailyCouponWidget extends StatelessWidget {
     return Opacity(
       opacity: limitReached && !showCounter ? 0.6 : 1.0,
       child: ClipRRect(
+        borderRadius: BorderRadius.circular(8.0),
         child: Stack(
           children: [
             AppImageWidget(
               uri: Uri.parse(
                 dailyCoupon.image ?? '',
               ),
+              height: height,
               imageColor: showCounter ? Utils.getOverlayColor(context) : null,
               colorBlendMode: BlendMode.srcATop,
+              fit: BoxFit.fill,
             ),
             if (showCounter)
               const Positioned.fill(
@@ -133,7 +143,7 @@ class _BlurWidget extends StatelessWidget {
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
       child: Container(
-        color: Colors.black.withOpacity(0),
+        color: Colors.transparent,
       ),
     );
   }

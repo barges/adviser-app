@@ -53,8 +53,9 @@ dependencies:
   flutter_slidable: ^3.0.0
   visibility_detector: ^0.4.0+2
   scrollview_observer: ^1.16.1
+  scrollview_observer: ^1.16.1
   snapping_sheet_2: ^3.1.5
-  flutter_keyboard_visibility: ^5.4.0
+  flutter_keyboard_visibility: ^5.4.1
   flutter_keyboard_size: ^1.0.1
   disk_space: ^0.2.1
   permission_handler: ^10.2.0
@@ -64,6 +65,9 @@ dependencies:
   focused_menu: ^1.0.5
   emoji_picker_flutter: ^1.6.1
   blurrycontainer: ^1.0.2
+  syncfusion_flutter_sliders: ^22.1.39
+  syncfusion_flutter_core: ^22.1.39
+  dotted_border: ^2.0.0+3
   
   audible_mode: ^1.0.1
 

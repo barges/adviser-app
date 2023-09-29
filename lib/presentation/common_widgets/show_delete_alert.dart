@@ -5,11 +5,13 @@ import 'package:shared_advisor_interface/generated/l10n.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_advisor_interface/utils/utils.dart';
 
 Future<bool?> showDeleteAlert(
   BuildContext context,
   String title, {
   String? deleteText,
+  String? description,
   bool swapButtonColorsForAndroid = false,
 }) {
   final ThemeData theme = Theme.of(context);
@@ -17,6 +19,7 @@ Future<bool?> showDeleteAlert(
 
   return showDialog<bool>(
     context: context,
+    barrierColor: Utils.getOverlayColor(context),
     builder: (context) => Platform.isIOS
         ? CupertinoAlertDialog(
             title: Text(
@@ -26,6 +29,14 @@ Future<bool?> showDeleteAlert(
                 fontSize: 17.0,
               ),
             ),
+            content: description != null
+                ? Text(
+                    description,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontSize: 13.0,
+                    ),
+                  )
+                : null,
             actions: [
               CupertinoDialogAction(
                 isDefaultAction: true,
@@ -72,6 +83,18 @@ Future<bool?> showDeleteAlert(
                       style:
                           theme.textTheme.labelLarge?.copyWith(fontSize: 17.0),
                     ),
+                    if (description != null)
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 12.0,
+                        ),
+                        child: Text(
+                          description,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontSize: 13.0,
+                          ),
+                        ),
+                      ),
                     const SizedBox(
                       height: 24.0,
                     ),

@@ -352,6 +352,46 @@ class SZodiac {
     );
   }
 
+  /// `Pending`
+  String get pendingZodiac {
+    return Intl.message(
+      'Pending',
+      name: 'pendingZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Approved`
+  String get approvedZodiac {
+    return Intl.message(
+      'Approved',
+      name: 'approvedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rejected`
+  String get rejectedZodiac {
+    return Intl.message(
+      'Rejected',
+      name: 'rejectedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Temp`
+  String get tempZodiac {
+    return Intl.message(
+      'Temp',
+      name: 'tempZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `You can change price once per 24 h`
   String get youCanChangePriceOncePer24HZodiac {
     return Intl.message(
@@ -1455,6 +1495,16 @@ class SZodiac {
     );
   }
 
+  /// `Photo`
+  String get photoZodiac {
+    return Intl.message(
+      'Photo',
+      name: 'photoZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Cancel sending`
   String get cancelSendingZodiac {
     return Intl.message(
@@ -1776,11 +1826,31 @@ class SZodiac {
     );
   }
 
+  /// `Do you really want to delete "{title}" service?`
+  String doYouWantDeleteServicesZodiac(Object title) {
+    return Intl.message(
+      'Do you really want to delete "$title" service?',
+      name: 'doYouWantDeleteServicesZodiac',
+      desc: '',
+      args: [title],
+    );
+  }
+
   /// `It will be removed from the templates and you won't be able to use it from the chat anymore`
   String get itWillBeRemovedFromTemplatesZodiac {
     return Intl.message(
       'It will be removed from the templates and you won\'t be able to use it from the chat anymore',
       name: 'itWillBeRemovedFromTemplatesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It will be removed from the services page and from your profile if it’s shown there. You wouldn’t be able to sell it anymore`
+  String get itWillBeRemovedFromServicesZodiac {
+    return Intl.message(
+      'It will be removed from the services page and from your profile if it’s shown there. You wouldn’t be able to sell it anymore',
+      name: 'itWillBeRemovedFromServicesZodiac',
       desc: '',
       args: [],
     );
@@ -1993,6 +2063,396 @@ class SZodiac {
       name: 'youCanSendNCouponsPerDayZodiac',
       desc: '',
       args: [limit],
+    );
+  }
+
+  /// `Add Service`
+  String get addServiceZodiac {
+    return Intl.message(
+      'Add Service',
+      name: 'addServiceZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Online service`
+  String get onlineServiceTabZodiac {
+    return Intl.message(
+      'Online service',
+      name: 'onlineServiceTabZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Offline service`
+  String get offlineServiceTabZodiac {
+    return Intl.message(
+      'Offline service',
+      name: 'offlineServiceTabZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `More about offline services`
+  String get moreAboutOfflineServicesZodiac {
+    return Intl.message(
+      'More about offline services',
+      name: 'moreAboutOfflineServicesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This type of services are not time sensitive. Also user can buy it from your profile page and from the services page. You will need to complete it during certain period and provide feedback to the customer`
+  String get thisTypeOfServicesAreNotTimeSensitiveZodiac {
+    return Intl.message(
+      'This type of services are not time sensitive. Also user can buy it from your profile page and from the services page. You will need to complete it during certain period and provide feedback to the customer',
+      name: 'thisTypeOfServicesAreNotTimeSensitiveZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Duplicate an existing service`
+  String get duplicateAnExistingServiceZodiac {
+    return Intl.message(
+      'Duplicate an existing service',
+      name: 'duplicateAnExistingServiceZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not selected`
+  String get notSelectedZodiac {
+    return Intl.message(
+      'Not selected',
+      name: 'notSelectedZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Main`
+  String get mainZodiac {
+    return Intl.message(
+      'Main',
+      name: 'mainZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set as main language`
+  String get setAsMainLanguageZodiac {
+    return Intl.message(
+      'Set as main language',
+      name: 'setAsMainLanguageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Service language`
+  String get serviceLanguageZodiac {
+    return Intl.message(
+      'Service language',
+      name: 'serviceLanguageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Title`
+  String get titleZodiac {
+    return Intl.message(
+      'Title',
+      name: 'titleZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `e.g. Astrology Reading`
+  String get egAstrologyReadingZodiac {
+    return Intl.message(
+      'e.g. Astrology Reading',
+      name: 'egAstrologyReadingZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description`
+  String get descriptionZodiac {
+    return Intl.message(
+      'Description',
+      name: 'descriptionZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `I will draw 3 cards\nI will contact my angel\nTogether we will read the conclusions\nEventually I will share with you, in a next session, the analysis we have done`
+  String get serviceDescriptionHintZodiac {
+    return Intl.message(
+      'I will draw 3 cards\nI will contact my angel\nTogether we will read the conclusions\nEventually I will share with you, in a next session, the analysis we have done',
+      name: 'serviceDescriptionHintZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Explain in 3-5 steps what the customers will get.`
+  String get explainIn3to5StepsWhatTheCustomersWillGetZodiac {
+    return Intl.message(
+      'Explain in 3-5 steps what the customers will get.',
+      name: 'explainIn3to5StepsWhatTheCustomersWillGetZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price`
+  String get priceZodiac {
+    return Intl.message(
+      'Price',
+      name: 'priceZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivery time`
+  String get deliveryTimeZodiac {
+    return Intl.message(
+      'Delivery time',
+      name: 'deliveryTimeZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Minutes`
+  String get minutesFullZodiac {
+    return Intl.message(
+      'Minutes',
+      name: 'minutesFullZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Discount for reorder`
+  String get discountForReorderZodiac {
+    return Intl.message(
+      'Discount for reorder',
+      name: 'discountForReorderZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose an image`
+  String get chooseAnImageZodiac {
+    return Intl.message(
+      'Choose an image',
+      name: 'chooseAnImageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show more`
+  String get showMoreZodiac {
+    return Intl.message(
+      'Show more',
+      name: 'showMoreZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Service preview`
+  String get servicePreviewZodiac {
+    return Intl.message(
+      'Service preview',
+      name: 'servicePreviewZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Buy`
+  String get buyZodiac {
+    return Intl.message(
+      'Buy',
+      name: 'buyZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send for approval`
+  String get sendForApprovalZodiac {
+    return Intl.message(
+      'Send for approval',
+      name: 'sendForApprovalZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit service`
+  String get editServiceZodiac {
+    return Intl.message(
+      'Edit service',
+      name: 'editServiceZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Waiting for approval`
+  String get waitingForApprovalZodiac {
+    return Intl.message(
+      'Waiting for approval',
+      name: 'waitingForApprovalZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your service has been rejected because of:`
+  String get yourServiceHasBeenRejectedBecauseOfZodiac {
+    return Intl.message(
+      'Your service has been rejected because of:',
+      name: 'yourServiceHasBeenRejectedBecauseOfZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Comment from support team:`
+  String get commentFromSupportTeamZodiac {
+    return Intl.message(
+      'Comment from support team:',
+      name: 'commentFromSupportTeamZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Let’s create your first service`
+  String get letsCreateYourFirstServiceZodiac {
+    return Intl.message(
+      'Let’s create your first service',
+      name: 'letsCreateYourFirstServiceZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First you need to fill up all required information about the service then send it for approval and as it would be ready you will be able to sell it`
+  String get firstYouNeedFillInformationAboutServiceZodiac {
+    return Intl.message(
+      'First you need to fill up all required information about the service then send it for approval and as it would be ready you will be able to sell it',
+      name: 'firstYouNeedFillInformationAboutServiceZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `sold`
+  String get soldZodiac {
+    return Intl.message(
+      'sold',
+      name: 'soldZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Complete the service`
+  String get completeTheServiceZodiac {
+    return Intl.message(
+      'Complete the service',
+      name: 'completeTheServiceZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The service {name} has been successfully completed.`
+  String theServiceSsuccessfullyCompletedZodiac(Object name) {
+    return Intl.message(
+      'The service $name has been successfully completed.',
+      name: 'theServiceSsuccessfullyCompletedZodiac',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `You can provide feedback to`
+  String get youCanProvideFeedbackToZodiac {
+    return Intl.message(
+      'You can provide feedback to',
+      name: 'youCanProvideFeedbackToZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Write your message`
+  String get writeYourMessageZodiac {
+    return Intl.message(
+      'Write your message',
+      name: 'writeYourMessageZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Need at least 20 symbols to send the message`
+  String get needAtLeast20SymbolsZodiac {
+    return Intl.message(
+      'Need at least 20 symbols to send the message',
+      name: 'needAtLeast20SymbolsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Complete`
+  String get completeZodiac {
+    return Intl.message(
+      'Complete',
+      name: 'completeZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Activate`
+  String get activateZodiac {
+    return Intl.message(
+      'Activate',
+      name: 'activateZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show less`
+  String get showLessZodiac {
+    return Intl.message(
+      'Show less',
+      name: 'showLessZodiac',
+      desc: '',
+      args: [],
     );
   }
 

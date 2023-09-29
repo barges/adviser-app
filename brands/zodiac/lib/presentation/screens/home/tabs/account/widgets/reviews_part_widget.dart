@@ -123,8 +123,7 @@ class ReviewsPartWidget extends StatelessWidget {
                 iconSVGPath: Assets.zodiac.vectors.call.path,
                 isDisable: !zodiacAccountCubit.isSiteKey(),
                 onTap: () => zodiacAccountCubit.goToPhoneNumber(context),
-                widget: SizedBox(
-                  width: 100.0,
+                widget: Flexible(
                   child: Text(
                     text,
                     overflow: TextOverflow.ellipsis,
@@ -141,7 +140,7 @@ class ReviewsPartWidget extends StatelessWidget {
             ),
             TileWidget(
               title: SZodiac.of(context).servicesMessagesZodiac,
-              iconSVGPath: Assets.zodiac.vectors.servicesIcon.path,
+              iconSVGPath: Assets.zodiac.vectors.serviceMessages.path,
               onTap: () => context.push(
                 route: ZodiacServicesMessages(),
               ),

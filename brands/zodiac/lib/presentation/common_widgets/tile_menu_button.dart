@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:zodiac/generated/l10n.dart';
 
 class TileMenuButton extends StatelessWidget {
   final String label;
-  final String title;
+  final String? title;
   final VoidCallback? onTap;
   final bool isError;
-  final Color? labelColor;
-  final Color? titleColor;
-  final Color? backgroundColor;
+  final Color? color;
 
   const TileMenuButton({
     Key? key,
     required this.label,
-    required this.title,
+    this.title,
     this.onTap,
-    this.labelColor,
-    this.titleColor,
-    this.backgroundColor,
+    this.color,
     this.isError = false,
   }) : super(key: key);
 
@@ -35,9 +32,7 @@ class TileMenuButton extends StatelessWidget {
           ),
           child: Text(
             label,
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: labelColor ?? theme.hoverColor,
-            ),
+            style: theme.textTheme.labelMedium,
           ),
         ),
         const SizedBox(
@@ -56,7 +51,7 @@ class TileMenuButton extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius:
                     BorderRadius.circular(AppConstants.buttonRadius - 1),
-                color: backgroundColor ?? theme.canvasColor,
+                color: theme.canvasColor,
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -66,12 +61,13 @@ class TileMenuButton extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        title,
+                        title ?? SZodiac.of(context).notSelectedZodiac,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: titleColor ?? theme.hoverColor,
-                        ),
+                            color: title != null
+                                ? theme.hoverColor
+                                : theme.shadowColor),
                       ),
                     ),
                     if (onTap != null)

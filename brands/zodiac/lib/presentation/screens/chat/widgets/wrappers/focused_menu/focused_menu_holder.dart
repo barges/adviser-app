@@ -89,7 +89,6 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        key: containerKey,
         onTap: () async {
           widget.onPressed();
           if (widget.openWithTap) {
@@ -104,7 +103,10 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
             await openMenu(context);
           }
         },
-        child: widget.child);
+        child: SizedBox(
+          key: containerKey,
+          child: widget.child,
+        ));
   }
 
   Future openMenu(BuildContext context) async {
@@ -209,40 +211,30 @@ class _FocusedMenuDetailsState extends State<FocusedMenuDetails> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    // final maxMenuHeight = size.height * 0.45;
     final menuHeight = widget.menuItems.length * (widget.itemExtent ?? 50.0) +
         (widget.menuSeparator != null
             ? widget.menuItems.length - 1 * 8.0
             : 0.0);
 
     final maxMenuWidth = widget.menuWidth ?? (size.width * 0.70);
-    //  final menuHeight = listHeight < maxMenuHeight ? listHeight : maxMenuHeight;
-    // final leftOffset = (childOffset.dx + maxMenuWidth) < size.width
-    //     ? childOffset.dx
-    //     : (childOffset.dx - maxMenuWidth + childSize!.width);
 
-    final noVerticalOverflow =
-        (widget.childOffset.dy + menuHeight + widget.childSize!.height) <
-            size.height -
-                widget.bottomOffsetHeight! -
-                MediaQuery.of(context).padding.bottom -
-                MediaQuery.of(context).padding.top;
-
-    final childPositionDy = noVerticalOverflow
-        ? widget.childOffset.dy
-        : widget.childOffset.dy - menuHeight - widget.bottomOffsetHeight!;
-
-    //final topOffset = childPositionDy + childSize!.height + menuOffset!;
-
-    final bottomOffset =
-        size.height - childPositionDy + (widget.menuOffset ?? 0.0);
-
-    final bool messageOverflows = ((widget.childSize?.height ?? 0.0) +
+    final bool messageBiggerThanScreen = (widget.childSize?.height ?? 0.0) +
             menuHeight +
-            (widget.topMenuWidgetHeight ?? 0.0) +
-            MediaQuery.of(context).padding.top +
-            MediaQuery.of(context).padding.bottom >
-        size.height + (widget.childOffset.dy < 0 ? widget.childOffset.dy : 0));
+            (widget.topMenuWidgetHeight ?? 0) >
+        size.height - MediaQuery.of(context).padding.top;
+
+    final bool topOverflows = messageBiggerThanScreen ||
+        (widget.childOffset.dy -
+                (widget.topMenuWidgetHeight ?? 0) -
+                (widget.menuOffset ?? 0) <
+            MediaQuery.of(context).padding.top);
+
+    final bool bottomOverflows = !messageBiggerThanScreen &&
+        (widget.childOffset.dy +
+                (widget.childSize?.height ?? 0) +
+                MediaQuery.of(context).padding.top +
+                MediaQuery.of(context).padding.bottom >
+            size.height);
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -262,19 +254,22 @@ class _FocusedMenuDetailsState extends State<FocusedMenuDetails> {
                 ),
               )),
           Positioned(
-            // top: topOffset,
-            // left: leftOffset,
-            top: messageOverflows ? 0.0 : childPositionDy,
+            top: topOverflows
+                ? 0.0
+                : bottomOverflows
+                    ? null
+                    : widget.childOffset.dy,
             left: widget.childOffset.dx,
-            bottom: messageOverflows ? widget.bottomOffsetHeight : null,
-
+            bottom: topOverflows || bottomOverflows
+                ? widget.bottomOffsetHeight
+                : null,
             child: SingleChildScrollView(
               controller: controller,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: messageOverflows
+                    height: topOverflows
                         ? 50 +
                             (widget.topMenuWidgetHeight ?? 0) +
                             (widget.menuOffset ?? 0)
@@ -379,23 +374,25 @@ class _FocusedMenuDetailsState extends State<FocusedMenuDetails> {
               ),
             ),
           ),
-          // Positioned(
-          //     top: childPositionDy,
-          //     left: childOffset.dx,
-          //     child: AbsorbPointer(
-          //         absorbing: false,
-          //         child: SizedBox(
-          //             width: childSize!.width,
-          //             height: childSize!.height,
-          //             child: child))),
           if (widget.topMenuWidget != null &&
               widget.topMenuWidgetHeight != null)
             Positioned(
-                top: messageOverflows ? 50.0 : null,
-                bottom: messageOverflows ? null : bottomOffset,
+                top: topOverflows
+                    ? 50.0
+                    : !bottomOverflows
+                        ? widget.childOffset.dy -
+                            (widget.menuOffset ?? 0) -
+                            (widget.topMenuWidgetHeight ?? 0)
+                        : null,
+                bottom: bottomOverflows
+                    ? menuHeight +
+                        (widget.childSize?.height ?? 0) +
+                        (widget.topMenuWidgetHeight ?? 0) / 2 +
+                        (widget.menuOffset ?? 0)
+                    : null,
                 left: widget.childOffset.dx,
                 child: TweenAnimationBuilder(
-                  duration: Duration(milliseconds: 200),
+                  duration: const Duration(milliseconds: 200),
                   builder:
                       (BuildContext context, dynamic value, Widget? child) {
                     return Transform.scale(
