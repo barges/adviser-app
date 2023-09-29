@@ -61,7 +61,7 @@ extension DateTimeExt on DateTime {
     }
     if (localTime.year != now.year) {
       return DateFormat(
-        'MMM dd yy, ${BrandManager.timeFormat}',
+        'MMM dd, yyyy',
       ).format(localTime);
     }
     return DateFormat(
