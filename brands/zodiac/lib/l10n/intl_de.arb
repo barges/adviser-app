@@ -236,9 +236,7 @@
   "needAtLeast20SymbolsZodiac":"Letzte mindestens 20 Symbole zum Senden der Nachricht",
   "completeZodiac": "Vollständig",
   "activateZodiac": "Aktivieren Sie",
-  "showLessZodiac": "Zeige weniger"
-  "youCanSendNCouponsPerDayZodiac": "Sie können {limit} Gutscheine pro Tag versenden.",
-  "mainZodiac": "Hauptsächlich",
+  "showLessZodiac": "Zeige weniger",
   "categoriesZodiac": "Kategorien",
   "selectCategoriesZodiac": "Wählen Sie Kategorien aus",
   "youCanChooseUpTo3CategoriesZodiac": "Sie können bis zu 3 Kategorien auswählen, mit denen Sie am liebsten arbeiten möchten, und darunter die Hauptkategorie",

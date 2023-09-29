@@ -238,9 +238,7 @@
   "needAtLeast20SymbolsZodiac":"Precisa de pelo menos 20 símbolos para enviar a mensagem",
   "completeZodiac": "Completo",
   "activateZodiac": "Ativar",
-  "showLessZodiac": "Mostre menos"
-  "youCanSendNCouponsPerDayZodiac": "Você pode enviar {limit} cupons por dia.",
-  "mainZodiac": "Principal",
+  "showLessZodiac": "Mostre menos",
   "categoriesZodiac": "Categorias",
   "selectCategoriesZodiac": "Selecione as categorias",
   "youCanChooseUpTo3CategoriesZodiac": "Você pode escolher até 3 categorias com as quais prefere trabalhar e a categoria principal entre elas",

@@ -2056,16 +2056,6 @@ class SZodiac {
     );
   }
 
-  /// `You can send {limit} coupons per day.`
-  String youCanSendNCouponsPerDayZodiac(Object limit) {
-    return Intl.message(
-      'You can send $limit coupons per day.',
-      name: 'youCanSendNCouponsPerDayZodiac',
-      desc: '',
-      args: [limit],
-    );
-  }
-
   /// `Add Service`
   String get addServiceZodiac {
     return Intl.message(
@@ -2131,16 +2121,6 @@ class SZodiac {
     return Intl.message(
       'Not selected',
       name: 'notSelectedZodiac',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Main`
-  String get mainZodiac {
-    return Intl.message(
-      'Main',
-      name: 'mainZodiac',
       desc: '',
       args: [],
     );
@@ -2453,6 +2433,16 @@ class SZodiac {
       name: 'showLessZodiac',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `You can send {limit} coupons per day.`
+  String youCanSendNCouponsPerDayZodiac(Object limit) {
+    return Intl.message(
+      'You can send $limit coupons per day.',
+      name: 'youCanSendNCouponsPerDayZodiac',
+      desc: '',
+      args: [limit],
     );
   }
 

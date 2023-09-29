@@ -182,11 +182,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "explainIn3to5StepsWhatTheCustomersWillGetZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Explain in 3-5 steps what the customers will get."),
+        "firstSelectTheCategoriesZodiac":
+            MessageLookupByLibrary.simpleMessage("First select the categories"),
         "firstYouNeedFillInformationAboutServiceZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "First you need to fill up all required information about the service then send it for approval and as it would be ready you will be able to sell it"),
-        "firstSelectTheCategoriesZodiac":
-            MessageLookupByLibrary.simpleMessage("First select the categories"),
         "flagsZodiac": MessageLookupByLibrary.simpleMessage("Flags"),
         "foodAndDrinkZodiac":
             MessageLookupByLibrary.simpleMessage("Food & Drink"),
@@ -226,8 +226,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "mainZodiac": MessageLookupByLibrary.simpleMessage("Main"),
         "manageMessagesZodiac":
             MessageLookupByLibrary.simpleMessage("Manage messages"),
-        "minutesFullZodiac": MessageLookupByLibrary.simpleMessage("Minutes"),
         "methodsZodiac": MessageLookupByLibrary.simpleMessage("Methods"),
+        "minutesFullZodiac": MessageLookupByLibrary.simpleMessage("Minutes"),
         "minutesZodiac": MessageLookupByLibrary.simpleMessage("min"),
         "moreAboutOfflineServicesZodiac":
             MessageLookupByLibrary.simpleMessage("More about offline services"),

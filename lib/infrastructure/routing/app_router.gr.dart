@@ -11,10 +11,10 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:io' as _i58;
+import 'dart:io' as _i61;
 
-import 'package:auto_route/auto_route.dart' as _i50;
-import 'package:flutter/material.dart' as _i51;
+import 'package:auto_route/auto_route.dart' as _i53;
+import 'package:flutter/material.dart' as _i54;
 import 'package:fortunica/presentation/screens/add_gallery_pictures/add_gallery_pictures_screen.dart'
     as _i7;
 import 'package:fortunica/presentation/screens/add_note/add_note_screen.dart'
@@ -43,7 +43,7 @@ import 'package:fortunica/presentation/screens/home/tabs/dashboard_v1/dashboard_
     as _i19;
 import 'package:fortunica/presentation/screens/home/tabs/sessions/sessions_screen.dart'
     as _i20;
-import 'package:fortunica/presentation/screens/home/tabs_types.dart' as _i48;
+import 'package:fortunica/presentation/screens/home/tabs_types.dart' as _i55;
 import 'package:fortunica/presentation/screens/login/login_screen.dart' as _i18;
 import 'package:fortunica/presentation/screens/support/support_screen.dart'
     as _i17;
@@ -53,10 +53,13 @@ import 'package:shared_advisor_interface/presentation/screens/force_update/force
     as _i2;
 import 'package:shared_advisor_interface/presentation/screens/home_screen/main_home_screen.dart'
     as _i1;
-import 'package:zodiac/data/models/chat/user_data.dart' as _i53;
-import 'package:zodiac/data/models/settings/phone.dart' as _i51;
-import 'package:zodiac/data/models/user_info/category_info.dart' as _i52;
-import 'package:zodiac/data/models/user_info/user_balance.dart' as _i50;
+import 'package:zodiac/data/models/chat/user_data.dart' as _i60;
+import 'package:zodiac/data/models/services/service_item.dart' as _i62;
+import 'package:zodiac/data/models/settings/phone.dart' as _i58;
+import 'package:zodiac/data/models/user_info/category_info.dart' as _i59;
+import 'package:zodiac/data/models/user_info/user_balance.dart' as _i57;
+import 'package:zodiac/presentation/screens/add_service/add_service_screen.dart'
+    as _i41;
 import 'package:zodiac/presentation/screens/article_details_screen/article_details_screen.dart'
     as _i24;
 import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart'
@@ -64,9 +67,9 @@ import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart'
     as _i4;
 import 'package:zodiac/presentation/screens/categories_list/categories_list_screen.dart'
-    as _i41;
+    as _i45;
 import 'package:zodiac/presentation/screens/categories_methods_list/categories_methods_list_screen.dart'
-    as _i42;
+    as _i46;
 import 'package:zodiac/presentation/screens/chat/chat_screen.dart' as _i39;
 import 'package:zodiac/presentation/screens/complete_service/complete_service_screen.dart'
     as _i44;
@@ -82,17 +85,17 @@ import 'package:zodiac/presentation/screens/gallery/gallery_pictures_screen.dart
     as _i26;
 import 'package:zodiac/presentation/screens/home/home_screen.dart' as _i23;
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_screen.dart'
-    as _i44;
+    as _i51;
 import 'package:zodiac/presentation/screens/home/tabs/articles/articles_screen.dart'
-    as _i45;
+    as _i52;
 import 'package:zodiac/presentation/screens/home/tabs/dashboard/dashboard_screen.dart'
-    as _i42;
+    as _i49;
 import 'package:zodiac/presentation/screens/home/tabs/sessions/sessions_screen.dart'
-    as _i43;
-import 'package:zodiac/presentation/screens/home/tabs_types.dart' as _i49;
+    as _i50;
+import 'package:zodiac/presentation/screens/home/tabs_types.dart' as _i56;
 import 'package:zodiac/presentation/screens/locales_list/locales_list_screen.dart'
     as _i37;
-import 'package:zodiac/presentation/screens/login/login_screen.dart' as _i41;
+import 'package:zodiac/presentation/screens/login/login_screen.dart' as _i48;
 import 'package:zodiac/presentation/screens/notification_details/notification_details_screen.dart'
     as _i38;
 import 'package:zodiac/presentation/screens/notifications/notifications_screen.dart'
@@ -102,7 +105,7 @@ import 'package:zodiac/presentation/screens/phone_number/phone_number_screen.dar
 import 'package:zodiac/presentation/screens/reviews/reviews_screen.dart'
     as _i29;
 import 'package:zodiac/presentation/screens/select_methods/select_methods_screen.dart'
-    as _i43;
+    as _i47;
 import 'package:zodiac/presentation/screens/send_image/send_image_screen.dart'
     as _i40;
 import 'package:zodiac/presentation/screens/services_messages/services_messages_screen.dart'
@@ -118,21 +121,21 @@ import 'package:zodiac/presentation/screens/support/support_screen.dart'
 import 'package:zodiac/presentation/wrappers/auth_wrapper/zodiac_auth_wrapper.dart'
     as _i22;
 
-class MainAppRouter extends _i46.RootStackRouter {
-  MainAppRouter([_i47.GlobalKey<_i47.NavigatorState>? navigatorKey])
+class MainAppRouter extends _i53.RootStackRouter {
+  MainAppRouter([_i54.GlobalKey<_i54.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i46.PageFactory> pagesMap = {
+  final Map<String, _i53.PageFactory> pagesMap = {
     MainHomeScreen.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i1.MainHomeScreen(),
       );
     },
     ForceUpdate.name: (routeData) {
       final args = routeData.argsAs<ForceUpdateArgs>();
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i2.ForceUpdateScreen(
           key: args.key,
@@ -141,13 +144,13 @@ class MainAppRouter extends _i46.RootStackRouter {
       );
     },
     Fortunica.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i3.FortunicaBrandScreen(),
       );
     },
     Zodiac.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i4.ZodiacBrandScreen(),
       );
@@ -155,7 +158,7 @@ class MainAppRouter extends _i46.RootStackRouter {
     FortunicaAuth.name: (routeData) {
       final args = routeData.argsAs<FortunicaAuthArgs>(
           orElse: () => const FortunicaAuthArgs());
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i5.FortunicaAuthWrapper(
           key: args.key,
@@ -166,7 +169,7 @@ class MainAppRouter extends _i46.RootStackRouter {
     FortunicaHome.name: (routeData) {
       final args = routeData.argsAs<FortunicaHomeArgs>(
           orElse: () => const FortunicaHomeArgs());
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i6.HomeScreen(
           key: args.key,
@@ -175,14 +178,14 @@ class MainAppRouter extends _i46.RootStackRouter {
       );
     },
     FortunicaAddGalleryPictures.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i7.AddGalleryPicturesScreen(),
       );
     },
     FortunicaAddNote.name: (routeData) {
       final args = routeData.argsAs<FortunicaAddNoteArgs>();
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i8.AddNoteScreen(
           key: args.key,
@@ -192,7 +195,7 @@ class MainAppRouter extends _i46.RootStackRouter {
     },
     FortunicaAdvisorPreview.name: (routeData) {
       final args = routeData.argsAs<FortunicaAdvisorPreviewArgs>();
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i9.AdvisorPreviewScreen(
           key: args.key,
@@ -201,14 +204,14 @@ class MainAppRouter extends _i46.RootStackRouter {
       );
     },
     FortunicaBalanceAndTransactions.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i10.BalanceAndTransactionsScreen(),
       );
     },
     FortunicaChat.name: (routeData) {
       final args = routeData.argsAs<FortunicaChatArgs>();
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i11.ChatScreen(
           key: args.key,
@@ -218,7 +221,7 @@ class MainAppRouter extends _i46.RootStackRouter {
     },
     FortunicaCustomerProfile.name: (routeData) {
       final args = routeData.argsAs<FortunicaCustomerProfileArgs>();
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i12.CustomerProfileScreen(
           key: args.key,
@@ -228,7 +231,7 @@ class MainAppRouter extends _i46.RootStackRouter {
     },
     FortunicaCustomerSessions.name: (routeData) {
       final args = routeData.argsAs<FortunicaCustomerSessionsArgs>();
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i13.CustomerSessionsScreen(
           key: args.key,
@@ -238,7 +241,7 @@ class MainAppRouter extends _i46.RootStackRouter {
     },
     FortunicaEditProfile.name: (routeData) {
       final args = routeData.argsAs<FortunicaEditProfileArgs>();
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i14.EditProfileScreen(
           key: args.key,
@@ -249,7 +252,7 @@ class MainAppRouter extends _i46.RootStackRouter {
     FortunicaForgotPassword.name: (routeData) {
       final args = routeData.argsAs<FortunicaForgotPasswordArgs>(
           orElse: () => const FortunicaForgotPasswordArgs());
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i15.ForgotPasswordScreen(
           key: args.key,
@@ -259,7 +262,7 @@ class MainAppRouter extends _i46.RootStackRouter {
     },
     FortunicaGalleryPictures.name: (routeData) {
       final args = routeData.argsAs<FortunicaGalleryPicturesArgs>();
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i16.GalleryPicturesScreen(
           key: args.key,
@@ -268,37 +271,37 @@ class MainAppRouter extends _i46.RootStackRouter {
       );
     },
     FortunicaSupport.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i17.SupportScreen(),
       );
     },
     FortunicaLogin.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i18.LoginScreen(),
       );
     },
     FortunicaDashboard.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i19.DashboardV1Screen(),
       );
     },
     FortunicaChats.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i20.SessionsScreen(),
       );
     },
     FortunicaAccount.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i21.AccountScreen(),
       );
     },
     ZodiacAuth.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i22.ZodiacAuthWrapper(),
       );
@@ -306,7 +309,7 @@ class MainAppRouter extends _i46.RootStackRouter {
     ZodiacHome.name: (routeData) {
       final args = routeData.argsAs<ZodiacHomeArgs>(
           orElse: () => const ZodiacHomeArgs());
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i23.HomeScreen(
           key: args.key,
@@ -316,7 +319,7 @@ class MainAppRouter extends _i46.RootStackRouter {
     },
     ZodiacArticleDetails.name: (routeData) {
       final args = routeData.argsAs<ZodiacArticleDetailsArgs>();
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i24.ArticleDetailsScreen(
           key: args.key,
@@ -325,14 +328,14 @@ class MainAppRouter extends _i46.RootStackRouter {
       );
     },
     ZodiacEditProfile.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i25.EditProfileScreen(),
       );
     },
     ZodiacGalleryPictures.name: (routeData) {
       final args = routeData.argsAs<ZodiacGalleryPicturesArgs>();
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i26.GalleryPicturesScreen(
           key: args.key,
@@ -341,26 +344,26 @@ class MainAppRouter extends _i46.RootStackRouter {
       );
     },
     ZodiacForgotPassword.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i27.ForgotPasswordScreen(),
       );
     },
     ZodiacNotifications.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i28.NotificationsScreen(),
       );
     },
     ZodiacReviews.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i29.ReviewsScreen(),
       );
     },
     ZodiacBalanceAndTransactions.name: (routeData) {
       final args = routeData.argsAs<ZodiacBalanceAndTransactionsArgs>();
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i30.BalanceAndTransactionsScreen(
           key: args.key,
@@ -370,7 +373,7 @@ class MainAppRouter extends _i46.RootStackRouter {
     },
     ZodiacPhoneNumber.name: (routeData) {
       final args = routeData.argsAs<ZodiacPhoneNumberArgs>();
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i31.PhoneNumberScreen(
           key: args.key,
@@ -382,7 +385,7 @@ class MainAppRouter extends _i46.RootStackRouter {
     ZodiacServicesMessages.name: (routeData) {
       final args = routeData.argsAs<ZodiacServicesMessagesArgs>(
           orElse: () => const ZodiacServicesMessagesArgs());
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i32.ServicesMessagesScreen(key: args.key),
       );
@@ -390,7 +393,7 @@ class MainAppRouter extends _i46.RootStackRouter {
     ZodiacSMSVerification.name: (routeData) {
       final args = routeData.argsAs<ZodiacSMSVerificationArgs>(
           orElse: () => const ZodiacSMSVerificationArgs());
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i33.SMSVerificationScreen(
           key: args.key,
@@ -399,20 +402,20 @@ class MainAppRouter extends _i46.RootStackRouter {
       );
     },
     ZodiacPhoneNumberVerified.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i34.PhoneNumberVerifiedScreen(),
       );
     },
     ZodiacSupport.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i35.SupportScreen(),
       );
     },
     ZodiacSpecialitiesList.name: (routeData) {
       final args = routeData.argsAs<ZodiacSpecialitiesListArgs>();
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i36.SpecialitiesListScreen(
           key: args.key,
@@ -425,7 +428,7 @@ class MainAppRouter extends _i46.RootStackRouter {
     },
     ZodiacLocalesList.name: (routeData) {
       final args = routeData.argsAs<ZodiacLocalesListArgs>();
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i37.LocalesListScreen(
           key: args.key,
@@ -438,7 +441,7 @@ class MainAppRouter extends _i46.RootStackRouter {
     },
     ZodiacNotificationDetails.name: (routeData) {
       final args = routeData.argsAs<ZodiacNotificationDetailsArgs>();
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i38.NotificationDetailsScreen(
           key: args.key,
@@ -449,7 +452,7 @@ class MainAppRouter extends _i46.RootStackRouter {
     },
     ZodiacChat.name: (routeData) {
       final args = routeData.argsAs<ZodiacChatArgs>();
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i39.ChatScreen(
           key: args.key,
@@ -460,7 +463,7 @@ class MainAppRouter extends _i46.RootStackRouter {
     },
     ZodiacSendImage.name: (routeData) {
       final args = routeData.argsAs<ZodiacSendImageArgs>();
-      return _i46.AdaptivePage<bool?>(
+      return _i53.AdaptivePage<bool?>(
         routeData: routeData,
         child: _i40.SendImageScreen(
           key: args.key,
@@ -468,308 +471,414 @@ class MainAppRouter extends _i46.RootStackRouter {
         ),
       );
     },
-    ZodiacLogin.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+    ZodiacAddService.name: (routeData) {
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i41.LoginScreen(),
+        child: const _i41.AddServiceScreen(),
+      );
+    },
+    ZodiacDuplicateService.name: (routeData) {
+      final args = routeData.argsAs<ZodiacDuplicateServiceArgs>();
+      return _i53.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: _i42.DuplicateServiceScreen(
+          key: args.key,
+          returnCallback: args.returnCallback,
+          approvedServices: args.approvedServices,
+          oldDuplicatedServiceId: args.oldDuplicatedServiceId,
+        ),
+      );
+    },
+    ZodiacEditService.name: (routeData) {
+      final args = routeData.argsAs<ZodiacEditServiceArgs>();
+      return _i53.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: _i43.EditServiceScreen(
+          key: args.key,
+          serviceId: args.serviceId,
+        ),
+      );
+    },
+    ZodiacCompleteService.name: (routeData) {
+      return _i53.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const _i44.CompleteServiceScreen(),
+      );
+    },
+    ZodiacCategoriesList.name: (routeData) {
+      final args = routeData.argsAs<ZodiacCategoriesListArgs>();
+      return _i53.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: _i45.CategoriesListScreen(
+          key: args.key,
+          selectedCategoryIds: args.selectedCategoryIds,
+          returnCallback: args.returnCallback,
+          mainCategoryId: args.mainCategoryId,
+        ),
+      );
+    },
+    ZodiacCategoriesMethodsList.name: (routeData) {
+      final args = routeData.argsAs<ZodiacCategoriesMethodsListArgs>();
+      return _i53.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: _i46.CategoriesMethodsListScreen(
+          key: args.key,
+          title: args.title,
+          items: args.items,
+          returnCallback: args.returnCallback,
+          initialSelectedId: args.initialSelectedId,
+        ),
+      );
+    },
+    ZodiacSelectMethods.name: (routeData) {
+      final args = routeData.argsAs<ZodiacSelectMethodsArgs>();
+      return _i53.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: _i47.SelectMethodsScreen(
+          key: args.key,
+          selectedMethodIds: args.selectedMethodIds,
+          returnCallback: args.returnCallback,
+          mainMethodId: args.mainMethodId,
+        ),
+      );
+    },
+    ZodiacLogin.name: (routeData) {
+      return _i53.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const _i48.LoginScreen(),
       );
     },
     ZodiacDashboard.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i42.DashboardScreen(),
+        child: const _i49.DashboardScreen(),
       );
     },
     ZodiacChats.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i43.SessionsScreen(),
+        child: const _i50.SessionsScreen(),
       );
     },
     ZodiacAccount.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i44.AccountScreen(),
+        child: const _i51.AccountScreen(),
       );
     },
     ZodiacArticles.name: (routeData) {
-      return _i46.AdaptivePage<dynamic>(
+      return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i45.ArticlesScreen(),
+        child: const _i52.ArticlesScreen(),
       );
     },
   };
 
   @override
-  List<_i46.RouteConfig> get routes => [
-        _i46.RouteConfig(
+  List<_i53.RouteConfig> get routes => [
+        _i53.RouteConfig(
           '/#redirect',
           path: '/',
           redirectTo: '/home',
           fullMatch: true,
         ),
-        _i46.RouteConfig(
+        _i53.RouteConfig(
           MainHomeScreen.name,
           path: '/home',
           children: [
-            _i46.RouteConfig(
+            _i53.RouteConfig(
               Fortunica.name,
               path: 'fortunica',
               parent: MainHomeScreen.name,
               children: [
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   '#redirect',
                   path: '',
                   parent: Fortunica.name,
                   redirectTo: 'fortunicaAuth',
                   fullMatch: true,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   FortunicaAuth.name,
                   path: 'fortunicaAuth',
                   parent: Fortunica.name,
                   children: [
-                    _i46.RouteConfig(
+                    _i53.RouteConfig(
                       '#redirect',
                       path: '',
                       parent: FortunicaAuth.name,
                       redirectTo: 'fortunicaLogin',
                       fullMatch: true,
                     ),
-                    _i46.RouteConfig(
+                    _i53.RouteConfig(
                       FortunicaLogin.name,
                       path: 'fortunicaLogin',
                       parent: FortunicaAuth.name,
                     ),
                   ],
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   FortunicaHome.name,
                   path: 'fortunicaHome',
                   parent: Fortunica.name,
                   children: [
-                    _i46.RouteConfig(
+                    _i53.RouteConfig(
                       FortunicaDashboard.name,
                       path: 'fortunicaDashboard',
                       parent: FortunicaHome.name,
                     ),
-                    _i46.RouteConfig(
+                    _i53.RouteConfig(
                       FortunicaChats.name,
                       path: 'fortunicaChats',
                       parent: FortunicaHome.name,
                     ),
-                    _i46.RouteConfig(
+                    _i53.RouteConfig(
                       FortunicaAccount.name,
                       path: 'fortunicaAccount',
                       parent: FortunicaHome.name,
                     ),
                   ],
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   FortunicaAddGalleryPictures.name,
                   path: 'fortunicaAddGalleryPictures',
                   parent: Fortunica.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   FortunicaAddNote.name,
                   path: 'fortunicaAddNote',
                   parent: Fortunica.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   FortunicaAdvisorPreview.name,
                   path: 'fortunicaAdvisorPreview',
                   parent: Fortunica.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   FortunicaBalanceAndTransactions.name,
                   path: 'fortunicaBalanceAndTransactions',
                   parent: Fortunica.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   FortunicaChat.name,
                   path: 'fortunicaChat',
                   parent: Fortunica.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   FortunicaCustomerProfile.name,
                   path: 'fortunicaCustomerProfile',
                   parent: Fortunica.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   FortunicaCustomerSessions.name,
                   path: 'fortunicaCustomerSessions',
                   parent: Fortunica.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   FortunicaEditProfile.name,
                   path: 'fortunicaEditProfile',
                   parent: Fortunica.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   FortunicaForgotPassword.name,
                   path: 'fortunicaForgotPassword',
                   parent: Fortunica.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   FortunicaGalleryPictures.name,
                   path: 'fortunicaGalleryPictures',
                   parent: Fortunica.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   FortunicaSupport.name,
                   path: 'fortunicaSupport',
                   parent: Fortunica.name,
                 ),
               ],
             ),
-            _i46.RouteConfig(
+            _i53.RouteConfig(
               Zodiac.name,
               path: 'zodiac',
               parent: MainHomeScreen.name,
               children: [
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   '#redirect',
                   path: '',
                   parent: Zodiac.name,
                   redirectTo: 'zodiacAuth',
                   fullMatch: true,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacAuth.name,
                   path: 'zodiacAuth',
                   parent: Zodiac.name,
                   children: [
-                    _i46.RouteConfig(
+                    _i53.RouteConfig(
                       '#redirect',
                       path: '',
                       parent: ZodiacAuth.name,
                       redirectTo: 'zodiacLogin',
                       fullMatch: true,
                     ),
-                    _i46.RouteConfig(
+                    _i53.RouteConfig(
                       ZodiacLogin.name,
                       path: 'zodiacLogin',
                       parent: ZodiacAuth.name,
                     ),
                   ],
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacHome.name,
                   path: 'zodiacHome',
                   parent: Zodiac.name,
                   children: [
-                    _i46.RouteConfig(
+                    _i53.RouteConfig(
                       ZodiacDashboard.name,
                       path: 'zodiacDashboard',
                       parent: ZodiacHome.name,
                     ),
-                    _i46.RouteConfig(
+                    _i53.RouteConfig(
                       ZodiacChats.name,
                       path: 'zodiacChats',
                       parent: ZodiacHome.name,
                     ),
-                    _i46.RouteConfig(
+                    _i53.RouteConfig(
                       ZodiacAccount.name,
                       path: 'zodiacAccount',
                       parent: ZodiacHome.name,
                     ),
-                    _i46.RouteConfig(
+                    _i53.RouteConfig(
                       ZodiacArticles.name,
                       path: 'zodiacArticles',
                       parent: ZodiacHome.name,
                     ),
                   ],
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacArticleDetails.name,
                   path: 'zodiacArticleDetails',
                   parent: Zodiac.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacEditProfile.name,
                   path: 'zodiacEditProfile',
                   parent: Zodiac.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacGalleryPictures.name,
                   path: 'zodiacGalleryPictures',
                   parent: Zodiac.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacForgotPassword.name,
                   path: 'zodiacForgotPassword',
                   parent: Zodiac.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacNotifications.name,
                   path: 'zodiacNotifications',
                   parent: Zodiac.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacReviews.name,
                   path: 'zodiacReviews',
                   parent: Zodiac.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacBalanceAndTransactions.name,
                   path: 'zodiacBalanceAndTransactions',
                   parent: Zodiac.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacPhoneNumber.name,
                   path: 'zodiacPhoneNumber',
                   parent: Zodiac.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacServicesMessages.name,
                   path: 'zodiacServicesMessages',
                   parent: Zodiac.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacSMSVerification.name,
                   path: 'zodiacSMSVerification',
                   parent: Zodiac.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacPhoneNumberVerified.name,
                   path: 'zodiacPhoneNumberVerified',
                   parent: Zodiac.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacSupport.name,
                   path: 'zodiacSupport',
                   parent: Zodiac.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacSpecialitiesList.name,
                   path: 'zodiacSpecialitiesList',
                   parent: Zodiac.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacLocalesList.name,
                   path: 'zodiacLocalesList',
                   parent: Zodiac.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacNotificationDetails.name,
                   path: 'zodiacNotificationDetails',
                   parent: Zodiac.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacChat.name,
                   path: 'zodiacChat',
                   parent: Zodiac.name,
                 ),
-                _i46.RouteConfig(
+                _i53.RouteConfig(
                   ZodiacSendImage.name,
                   path: 'zodiacSendImage',
+                  parent: Zodiac.name,
+                ),
+                _i53.RouteConfig(
+                  ZodiacAddService.name,
+                  path: 'zodiacAddService',
+                  parent: Zodiac.name,
+                ),
+                _i53.RouteConfig(
+                  ZodiacDuplicateService.name,
+                  path: 'zodiacDuplicateService',
+                  parent: Zodiac.name,
+                ),
+                _i53.RouteConfig(
+                  ZodiacEditService.name,
+                  path: 'zodiacEditService',
+                  parent: Zodiac.name,
+                ),
+                _i53.RouteConfig(
+                  ZodiacCompleteService.name,
+                  path: 'zodiacCompleteService',
+                  parent: Zodiac.name,
+                ),
+                _i53.RouteConfig(
+                  ZodiacCategoriesList.name,
+                  path: 'zodiacCategoriesList',
+                  parent: Zodiac.name,
+                ),
+                _i53.RouteConfig(
+                  ZodiacCategoriesMethodsList.name,
+                  path: 'zodiacCategoriesMethodsList',
+                  parent: Zodiac.name,
+                ),
+                _i53.RouteConfig(
+                  ZodiacSelectMethods.name,
+                  path: 'zodiacSelectMethods',
                   parent: Zodiac.name,
                 ),
               ],
             ),
           ],
         ),
-        _i46.RouteConfig(
+        _i53.RouteConfig(
           ForceUpdate.name,
           path: 'ForceUpdate',
         ),
@@ -778,8 +887,8 @@ class MainAppRouter extends _i46.RootStackRouter {
 
 /// generated route for
 /// [_i1.MainHomeScreen]
-class MainHomeScreen extends _i46.PageRouteInfo<void> {
-  const MainHomeScreen({List<_i46.PageRouteInfo>? children})
+class MainHomeScreen extends _i53.PageRouteInfo<void> {
+  const MainHomeScreen({List<_i53.PageRouteInfo>? children})
       : super(
           MainHomeScreen.name,
           path: '/home',
@@ -791,9 +900,9 @@ class MainHomeScreen extends _i46.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.ForceUpdateScreen]
-class ForceUpdate extends _i46.PageRouteInfo<ForceUpdateArgs> {
+class ForceUpdate extends _i53.PageRouteInfo<ForceUpdateArgs> {
   ForceUpdate({
-    _i47.Key? key,
+    _i54.Key? key,
     required _i2.ForceUpdateScreenArguments forceUpdateScreenArguments,
   }) : super(
           ForceUpdate.name,
@@ -813,7 +922,7 @@ class ForceUpdateArgs {
     required this.forceUpdateScreenArguments,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
   final _i2.ForceUpdateScreenArguments forceUpdateScreenArguments;
 
@@ -825,8 +934,8 @@ class ForceUpdateArgs {
 
 /// generated route for
 /// [_i3.FortunicaBrandScreen]
-class Fortunica extends _i46.PageRouteInfo<void> {
-  const Fortunica({List<_i46.PageRouteInfo>? children})
+class Fortunica extends _i53.PageRouteInfo<void> {
+  const Fortunica({List<_i53.PageRouteInfo>? children})
       : super(
           Fortunica.name,
           path: 'fortunica',
@@ -838,8 +947,8 @@ class Fortunica extends _i46.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i4.ZodiacBrandScreen]
-class Zodiac extends _i46.PageRouteInfo<void> {
-  const Zodiac({List<_i46.PageRouteInfo>? children})
+class Zodiac extends _i53.PageRouteInfo<void> {
+  const Zodiac({List<_i53.PageRouteInfo>? children})
       : super(
           Zodiac.name,
           path: 'zodiac',
@@ -851,11 +960,11 @@ class Zodiac extends _i46.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.FortunicaAuthWrapper]
-class FortunicaAuth extends _i46.PageRouteInfo<FortunicaAuthArgs> {
+class FortunicaAuth extends _i53.PageRouteInfo<FortunicaAuthArgs> {
   FortunicaAuth({
-    _i47.Key? key,
-    _i48.TabsTypes? initTab,
-    List<_i46.PageRouteInfo>? children,
+    _i54.Key? key,
+    _i55.TabsTypes? initTab,
+    List<_i53.PageRouteInfo>? children,
   }) : super(
           FortunicaAuth.name,
           path: 'fortunicaAuth',
@@ -875,9 +984,9 @@ class FortunicaAuthArgs {
     this.initTab,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
-  final _i48.TabsTypes? initTab;
+  final _i55.TabsTypes? initTab;
 
   @override
   String toString() {
@@ -887,11 +996,11 @@ class FortunicaAuthArgs {
 
 /// generated route for
 /// [_i6.HomeScreen]
-class FortunicaHome extends _i46.PageRouteInfo<FortunicaHomeArgs> {
+class FortunicaHome extends _i53.PageRouteInfo<FortunicaHomeArgs> {
   FortunicaHome({
-    _i47.Key? key,
-    _i48.TabsTypes? initTab,
-    List<_i46.PageRouteInfo>? children,
+    _i54.Key? key,
+    _i55.TabsTypes? initTab,
+    List<_i53.PageRouteInfo>? children,
   }) : super(
           FortunicaHome.name,
           path: 'fortunicaHome',
@@ -911,9 +1020,9 @@ class FortunicaHomeArgs {
     this.initTab,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
-  final _i48.TabsTypes? initTab;
+  final _i55.TabsTypes? initTab;
 
   @override
   String toString() {
@@ -923,7 +1032,7 @@ class FortunicaHomeArgs {
 
 /// generated route for
 /// [_i7.AddGalleryPicturesScreen]
-class FortunicaAddGalleryPictures extends _i46.PageRouteInfo<void> {
+class FortunicaAddGalleryPictures extends _i53.PageRouteInfo<void> {
   const FortunicaAddGalleryPictures()
       : super(
           FortunicaAddGalleryPictures.name,
@@ -935,9 +1044,9 @@ class FortunicaAddGalleryPictures extends _i46.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i8.AddNoteScreen]
-class FortunicaAddNote extends _i46.PageRouteInfo<FortunicaAddNoteArgs> {
+class FortunicaAddNote extends _i53.PageRouteInfo<FortunicaAddNoteArgs> {
   FortunicaAddNote({
-    _i47.Key? key,
+    _i54.Key? key,
     required _i8.AddNoteScreenArguments addNoteScreenArguments,
   }) : super(
           FortunicaAddNote.name,
@@ -957,7 +1066,7 @@ class FortunicaAddNoteArgs {
     required this.addNoteScreenArguments,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
   final _i8.AddNoteScreenArguments addNoteScreenArguments;
 
@@ -970,9 +1079,9 @@ class FortunicaAddNoteArgs {
 /// generated route for
 /// [_i9.AdvisorPreviewScreen]
 class FortunicaAdvisorPreview
-    extends _i46.PageRouteInfo<FortunicaAdvisorPreviewArgs> {
+    extends _i53.PageRouteInfo<FortunicaAdvisorPreviewArgs> {
   FortunicaAdvisorPreview({
-    _i47.Key? key,
+    _i54.Key? key,
     required bool isAccountTimeout,
   }) : super(
           FortunicaAdvisorPreview.name,
@@ -992,7 +1101,7 @@ class FortunicaAdvisorPreviewArgs {
     required this.isAccountTimeout,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
   final bool isAccountTimeout;
 
@@ -1004,7 +1113,7 @@ class FortunicaAdvisorPreviewArgs {
 
 /// generated route for
 /// [_i10.BalanceAndTransactionsScreen]
-class FortunicaBalanceAndTransactions extends _i46.PageRouteInfo<void> {
+class FortunicaBalanceAndTransactions extends _i53.PageRouteInfo<void> {
   const FortunicaBalanceAndTransactions()
       : super(
           FortunicaBalanceAndTransactions.name,
@@ -1016,9 +1125,9 @@ class FortunicaBalanceAndTransactions extends _i46.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i11.ChatScreen]
-class FortunicaChat extends _i46.PageRouteInfo<FortunicaChatArgs> {
+class FortunicaChat extends _i53.PageRouteInfo<FortunicaChatArgs> {
   FortunicaChat({
-    _i47.Key? key,
+    _i54.Key? key,
     required _i11.ChatScreenArguments chatScreenArguments,
   }) : super(
           FortunicaChat.name,
@@ -1038,7 +1147,7 @@ class FortunicaChatArgs {
     required this.chatScreenArguments,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
   final _i11.ChatScreenArguments chatScreenArguments;
 
@@ -1051,9 +1160,9 @@ class FortunicaChatArgs {
 /// generated route for
 /// [_i12.CustomerProfileScreen]
 class FortunicaCustomerProfile
-    extends _i46.PageRouteInfo<FortunicaCustomerProfileArgs> {
+    extends _i53.PageRouteInfo<FortunicaCustomerProfileArgs> {
   FortunicaCustomerProfile({
-    _i47.Key? key,
+    _i54.Key? key,
     required _i12.CustomerProfileScreenArguments customerProfileScreenArguments,
   }) : super(
           FortunicaCustomerProfile.name,
@@ -1073,7 +1182,7 @@ class FortunicaCustomerProfileArgs {
     required this.customerProfileScreenArguments,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
   final _i12.CustomerProfileScreenArguments customerProfileScreenArguments;
 
@@ -1086,9 +1195,9 @@ class FortunicaCustomerProfileArgs {
 /// generated route for
 /// [_i13.CustomerSessionsScreen]
 class FortunicaCustomerSessions
-    extends _i46.PageRouteInfo<FortunicaCustomerSessionsArgs> {
+    extends _i53.PageRouteInfo<FortunicaCustomerSessionsArgs> {
   FortunicaCustomerSessions({
-    _i47.Key? key,
+    _i54.Key? key,
     required _i13.CustomerSessionsScreenArguments
         customerSessionsScreenArguments,
   }) : super(
@@ -1109,7 +1218,7 @@ class FortunicaCustomerSessionsArgs {
     required this.customerSessionsScreenArguments,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
   final _i13.CustomerSessionsScreenArguments customerSessionsScreenArguments;
 
@@ -1122,9 +1231,9 @@ class FortunicaCustomerSessionsArgs {
 /// generated route for
 /// [_i14.EditProfileScreen]
 class FortunicaEditProfile
-    extends _i46.PageRouteInfo<FortunicaEditProfileArgs> {
+    extends _i53.PageRouteInfo<FortunicaEditProfileArgs> {
   FortunicaEditProfile({
-    _i47.Key? key,
+    _i54.Key? key,
     required bool isAccountTimeout,
   }) : super(
           FortunicaEditProfile.name,
@@ -1144,7 +1253,7 @@ class FortunicaEditProfileArgs {
     required this.isAccountTimeout,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
   final bool isAccountTimeout;
 
@@ -1157,9 +1266,9 @@ class FortunicaEditProfileArgs {
 /// generated route for
 /// [_i15.ForgotPasswordScreen]
 class FortunicaForgotPassword
-    extends _i46.PageRouteInfo<FortunicaForgotPasswordArgs> {
+    extends _i53.PageRouteInfo<FortunicaForgotPasswordArgs> {
   FortunicaForgotPassword({
-    _i47.Key? key,
+    _i54.Key? key,
     String? resetToken,
   }) : super(
           FortunicaForgotPassword.name,
@@ -1179,7 +1288,7 @@ class FortunicaForgotPasswordArgs {
     this.resetToken,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
   final String? resetToken;
 
@@ -1192,9 +1301,9 @@ class FortunicaForgotPasswordArgs {
 /// generated route for
 /// [_i16.GalleryPicturesScreen]
 class FortunicaGalleryPictures
-    extends _i46.PageRouteInfo<FortunicaGalleryPicturesArgs> {
+    extends _i53.PageRouteInfo<FortunicaGalleryPicturesArgs> {
   FortunicaGalleryPictures({
-    _i47.Key? key,
+    _i54.Key? key,
     required _i16.GalleryPicturesScreenArguments galleryPicturesScreenArguments,
   }) : super(
           FortunicaGalleryPictures.name,
@@ -1214,7 +1323,7 @@ class FortunicaGalleryPicturesArgs {
     required this.galleryPicturesScreenArguments,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
   final _i16.GalleryPicturesScreenArguments galleryPicturesScreenArguments;
 
@@ -1226,7 +1335,7 @@ class FortunicaGalleryPicturesArgs {
 
 /// generated route for
 /// [_i17.SupportScreen]
-class FortunicaSupport extends _i46.PageRouteInfo<void> {
+class FortunicaSupport extends _i53.PageRouteInfo<void> {
   const FortunicaSupport()
       : super(
           FortunicaSupport.name,
@@ -1238,7 +1347,7 @@ class FortunicaSupport extends _i46.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i18.LoginScreen]
-class FortunicaLogin extends _i46.PageRouteInfo<void> {
+class FortunicaLogin extends _i53.PageRouteInfo<void> {
   const FortunicaLogin()
       : super(
           FortunicaLogin.name,
@@ -1250,7 +1359,7 @@ class FortunicaLogin extends _i46.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i19.DashboardV1Screen]
-class FortunicaDashboard extends _i46.PageRouteInfo<void> {
+class FortunicaDashboard extends _i53.PageRouteInfo<void> {
   const FortunicaDashboard()
       : super(
           FortunicaDashboard.name,
@@ -1262,7 +1371,7 @@ class FortunicaDashboard extends _i46.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i20.SessionsScreen]
-class FortunicaChats extends _i46.PageRouteInfo<void> {
+class FortunicaChats extends _i53.PageRouteInfo<void> {
   const FortunicaChats()
       : super(
           FortunicaChats.name,
@@ -1274,7 +1383,7 @@ class FortunicaChats extends _i46.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i21.AccountScreen]
-class FortunicaAccount extends _i46.PageRouteInfo<void> {
+class FortunicaAccount extends _i53.PageRouteInfo<void> {
   const FortunicaAccount()
       : super(
           FortunicaAccount.name,
@@ -1286,8 +1395,8 @@ class FortunicaAccount extends _i46.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i22.ZodiacAuthWrapper]
-class ZodiacAuth extends _i46.PageRouteInfo<void> {
-  const ZodiacAuth({List<_i46.PageRouteInfo>? children})
+class ZodiacAuth extends _i53.PageRouteInfo<void> {
+  const ZodiacAuth({List<_i53.PageRouteInfo>? children})
       : super(
           ZodiacAuth.name,
           path: 'zodiacAuth',
@@ -1299,11 +1408,11 @@ class ZodiacAuth extends _i46.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i23.HomeScreen]
-class ZodiacHome extends _i46.PageRouteInfo<ZodiacHomeArgs> {
+class ZodiacHome extends _i53.PageRouteInfo<ZodiacHomeArgs> {
   ZodiacHome({
-    _i47.Key? key,
-    _i49.TabsTypes? initTab,
-    List<_i46.PageRouteInfo>? children,
+    _i54.Key? key,
+    _i56.TabsTypes? initTab,
+    List<_i53.PageRouteInfo>? children,
   }) : super(
           ZodiacHome.name,
           path: 'zodiacHome',
@@ -1323,9 +1432,9 @@ class ZodiacHomeArgs {
     this.initTab,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
-  final _i49.TabsTypes? initTab;
+  final _i56.TabsTypes? initTab;
 
   @override
   String toString() {
@@ -1336,9 +1445,9 @@ class ZodiacHomeArgs {
 /// generated route for
 /// [_i24.ArticleDetailsScreen]
 class ZodiacArticleDetails
-    extends _i46.PageRouteInfo<ZodiacArticleDetailsArgs> {
+    extends _i53.PageRouteInfo<ZodiacArticleDetailsArgs> {
   ZodiacArticleDetails({
-    _i47.Key? key,
+    _i54.Key? key,
     required int articleId,
   }) : super(
           ZodiacArticleDetails.name,
@@ -1358,7 +1467,7 @@ class ZodiacArticleDetailsArgs {
     required this.articleId,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
   final int articleId;
 
@@ -1370,7 +1479,7 @@ class ZodiacArticleDetailsArgs {
 
 /// generated route for
 /// [_i25.EditProfileScreen]
-class ZodiacEditProfile extends _i46.PageRouteInfo<void> {
+class ZodiacEditProfile extends _i53.PageRouteInfo<void> {
   const ZodiacEditProfile()
       : super(
           ZodiacEditProfile.name,
@@ -1383,9 +1492,9 @@ class ZodiacEditProfile extends _i46.PageRouteInfo<void> {
 /// generated route for
 /// [_i26.GalleryPicturesScreen]
 class ZodiacGalleryPictures
-    extends _i46.PageRouteInfo<ZodiacGalleryPicturesArgs> {
+    extends _i53.PageRouteInfo<ZodiacGalleryPicturesArgs> {
   ZodiacGalleryPictures({
-    _i47.Key? key,
+    _i54.Key? key,
     required _i26.GalleryPicturesScreenArguments galleryPicturesScreenArguments,
   }) : super(
           ZodiacGalleryPictures.name,
@@ -1405,7 +1514,7 @@ class ZodiacGalleryPicturesArgs {
     required this.galleryPicturesScreenArguments,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
   final _i26.GalleryPicturesScreenArguments galleryPicturesScreenArguments;
 
@@ -1417,7 +1526,7 @@ class ZodiacGalleryPicturesArgs {
 
 /// generated route for
 /// [_i27.ForgotPasswordScreen]
-class ZodiacForgotPassword extends _i46.PageRouteInfo<void> {
+class ZodiacForgotPassword extends _i53.PageRouteInfo<void> {
   const ZodiacForgotPassword()
       : super(
           ZodiacForgotPassword.name,
@@ -1429,7 +1538,7 @@ class ZodiacForgotPassword extends _i46.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i28.NotificationsScreen]
-class ZodiacNotifications extends _i46.PageRouteInfo<void> {
+class ZodiacNotifications extends _i53.PageRouteInfo<void> {
   const ZodiacNotifications()
       : super(
           ZodiacNotifications.name,
@@ -1441,7 +1550,7 @@ class ZodiacNotifications extends _i46.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i29.ReviewsScreen]
-class ZodiacReviews extends _i46.PageRouteInfo<void> {
+class ZodiacReviews extends _i53.PageRouteInfo<void> {
   const ZodiacReviews()
       : super(
           ZodiacReviews.name,
@@ -1454,10 +1563,10 @@ class ZodiacReviews extends _i46.PageRouteInfo<void> {
 /// generated route for
 /// [_i30.BalanceAndTransactionsScreen]
 class ZodiacBalanceAndTransactions
-    extends _i46.PageRouteInfo<ZodiacBalanceAndTransactionsArgs> {
+    extends _i53.PageRouteInfo<ZodiacBalanceAndTransactionsArgs> {
   ZodiacBalanceAndTransactions({
-    _i47.Key? key,
-    required _i50.UserBalance userBalance,
+    _i54.Key? key,
+    required _i57.UserBalance userBalance,
   }) : super(
           ZodiacBalanceAndTransactions.name,
           path: 'zodiacBalanceAndTransactions',
@@ -1476,9 +1585,9 @@ class ZodiacBalanceAndTransactionsArgs {
     required this.userBalance,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
-  final _i50.UserBalance userBalance;
+  final _i57.UserBalance userBalance;
 
   @override
   String toString() {
@@ -1488,11 +1597,11 @@ class ZodiacBalanceAndTransactionsArgs {
 
 /// generated route for
 /// [_i31.PhoneNumberScreen]
-class ZodiacPhoneNumber extends _i46.PageRouteInfo<ZodiacPhoneNumberArgs> {
+class ZodiacPhoneNumber extends _i53.PageRouteInfo<ZodiacPhoneNumberArgs> {
   ZodiacPhoneNumber({
-    _i47.Key? key,
+    _i54.Key? key,
     required String? siteKey,
-    required _i51.Phone phone,
+    required _i58.Phone phone,
   }) : super(
           ZodiacPhoneNumber.name,
           path: 'zodiacPhoneNumber',
@@ -1513,11 +1622,11 @@ class ZodiacPhoneNumberArgs {
     required this.phone,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
   final String? siteKey;
 
-  final _i51.Phone phone;
+  final _i58.Phone phone;
 
   @override
   String toString() {
@@ -1528,8 +1637,8 @@ class ZodiacPhoneNumberArgs {
 /// generated route for
 /// [_i32.ServicesMessagesScreen]
 class ZodiacServicesMessages
-    extends _i46.PageRouteInfo<ZodiacServicesMessagesArgs> {
-  ZodiacServicesMessages({_i47.Key? key})
+    extends _i53.PageRouteInfo<ZodiacServicesMessagesArgs> {
+  ZodiacServicesMessages({_i54.Key? key})
       : super(
           ZodiacServicesMessages.name,
           path: 'zodiacServicesMessages',
@@ -1542,7 +1651,7 @@ class ZodiacServicesMessages
 class ZodiacServicesMessagesArgs {
   const ZodiacServicesMessagesArgs({this.key});
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
   @override
   String toString() {
@@ -1553,10 +1662,10 @@ class ZodiacServicesMessagesArgs {
 /// generated route for
 /// [_i33.SMSVerificationScreen]
 class ZodiacSMSVerification
-    extends _i46.PageRouteInfo<ZodiacSMSVerificationArgs> {
+    extends _i53.PageRouteInfo<ZodiacSMSVerificationArgs> {
   ZodiacSMSVerification({
-    _i47.Key? key,
-    _i51.Phone? phoneNumber,
+    _i54.Key? key,
+    _i58.Phone? phoneNumber,
   }) : super(
           ZodiacSMSVerification.name,
           path: 'zodiacSMSVerification',
@@ -1575,9 +1684,9 @@ class ZodiacSMSVerificationArgs {
     this.phoneNumber,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
-  final _i51.Phone? phoneNumber;
+  final _i58.Phone? phoneNumber;
 
   @override
   String toString() {
@@ -1587,7 +1696,7 @@ class ZodiacSMSVerificationArgs {
 
 /// generated route for
 /// [_i34.PhoneNumberVerifiedScreen]
-class ZodiacPhoneNumberVerified extends _i46.PageRouteInfo<void> {
+class ZodiacPhoneNumberVerified extends _i53.PageRouteInfo<void> {
   const ZodiacPhoneNumberVerified()
       : super(
           ZodiacPhoneNumberVerified.name,
@@ -1599,7 +1708,7 @@ class ZodiacPhoneNumberVerified extends _i46.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i35.SupportScreen]
-class ZodiacSupport extends _i46.PageRouteInfo<void> {
+class ZodiacSupport extends _i53.PageRouteInfo<void> {
   const ZodiacSupport()
       : super(
           ZodiacSupport.name,
@@ -1612,12 +1721,12 @@ class ZodiacSupport extends _i46.PageRouteInfo<void> {
 /// generated route for
 /// [_i36.SpecialitiesListScreen]
 class ZodiacSpecialitiesList
-    extends _i46.PageRouteInfo<ZodiacSpecialitiesListArgs> {
+    extends _i53.PageRouteInfo<ZodiacSpecialitiesListArgs> {
   ZodiacSpecialitiesList({
-    _i47.Key? key,
-    required List<_i52.CategoryInfo> oldSelectedCategories,
-    required void Function(List<_i52.CategoryInfo>) returnCallback,
-    List<_i52.CategoryInfo>? allCategories,
+    _i54.Key? key,
+    required List<_i59.CategoryInfo> oldSelectedCategories,
+    required void Function(List<_i59.CategoryInfo>) returnCallback,
+    List<_i59.CategoryInfo>? allCategories,
     bool isMultiselect = true,
   }) : super(
           ZodiacSpecialitiesList.name,
@@ -1643,13 +1752,13 @@ class ZodiacSpecialitiesListArgs {
     this.isMultiselect = true,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
-  final List<_i52.CategoryInfo> oldSelectedCategories;
+  final List<_i59.CategoryInfo> oldSelectedCategories;
 
-  final void Function(List<_i52.CategoryInfo>) returnCallback;
+  final void Function(List<_i59.CategoryInfo>) returnCallback;
 
-  final List<_i52.CategoryInfo>? allCategories;
+  final List<_i59.CategoryInfo>? allCategories;
 
   final bool isMultiselect;
 
@@ -1661,9 +1770,9 @@ class ZodiacSpecialitiesListArgs {
 
 /// generated route for
 /// [_i37.LocalesListScreen]
-class ZodiacLocalesList extends _i46.PageRouteInfo<ZodiacLocalesListArgs> {
+class ZodiacLocalesList extends _i53.PageRouteInfo<ZodiacLocalesListArgs> {
   ZodiacLocalesList({
-    _i47.Key? key,
+    _i54.Key? key,
     required void Function(String) returnCallback,
     required String title,
     String? oldSelectedLocaleCode,
@@ -1692,7 +1801,7 @@ class ZodiacLocalesListArgs {
     this.unnecessaryLocalesCodes,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
   final void Function(String) returnCallback;
 
@@ -1711,9 +1820,9 @@ class ZodiacLocalesListArgs {
 /// generated route for
 /// [_i38.NotificationDetailsScreen]
 class ZodiacNotificationDetails
-    extends _i46.PageRouteInfo<ZodiacNotificationDetailsArgs> {
+    extends _i53.PageRouteInfo<ZodiacNotificationDetailsArgs> {
   ZodiacNotificationDetails({
-    _i47.Key? key,
+    _i54.Key? key,
     required int pushId,
     required bool needRefreshList,
   }) : super(
@@ -1736,7 +1845,7 @@ class ZodiacNotificationDetailsArgs {
     required this.needRefreshList,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
   final int pushId;
 
@@ -1750,10 +1859,10 @@ class ZodiacNotificationDetailsArgs {
 
 /// generated route for
 /// [_i39.ChatScreen]
-class ZodiacChat extends _i46.PageRouteInfo<ZodiacChatArgs> {
+class ZodiacChat extends _i53.PageRouteInfo<ZodiacChatArgs> {
   ZodiacChat({
-    _i47.Key? key,
-    required _i53.UserData userData,
+    _i54.Key? key,
+    required _i60.UserData userData,
     bool fromStartingChat = false,
   }) : super(
           ZodiacChat.name,
@@ -1775,9 +1884,9 @@ class ZodiacChatArgs {
     this.fromStartingChat = false,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
-  final _i53.UserData userData;
+  final _i60.UserData userData;
 
   final bool fromStartingChat;
 
@@ -1789,10 +1898,10 @@ class ZodiacChatArgs {
 
 /// generated route for
 /// [_i40.SendImageScreen]
-class ZodiacSendImage extends _i46.PageRouteInfo<ZodiacSendImageArgs> {
+class ZodiacSendImage extends _i53.PageRouteInfo<ZodiacSendImageArgs> {
   ZodiacSendImage({
-    _i47.Key? key,
-    required _i54.File image,
+    _i54.Key? key,
+    required _i61.File image,
   }) : super(
           ZodiacSendImage.name,
           path: 'zodiacSendImage',
@@ -1811,9 +1920,9 @@ class ZodiacSendImageArgs {
     required this.image,
   });
 
-  final _i47.Key? key;
+  final _i54.Key? key;
 
-  final _i54.File image;
+  final _i61.File image;
 
   @override
   String toString() {
@@ -1822,8 +1931,262 @@ class ZodiacSendImageArgs {
 }
 
 /// generated route for
-/// [_i41.LoginScreen]
-class ZodiacLogin extends _i46.PageRouteInfo<void> {
+/// [_i41.AddServiceScreen]
+class ZodiacAddService extends _i53.PageRouteInfo<void> {
+  const ZodiacAddService()
+      : super(
+          ZodiacAddService.name,
+          path: 'zodiacAddService',
+        );
+
+  static const String name = 'ZodiacAddService';
+}
+
+/// generated route for
+/// [_i42.DuplicateServiceScreen]
+class ZodiacDuplicateService
+    extends _i53.PageRouteInfo<ZodiacDuplicateServiceArgs> {
+  ZodiacDuplicateService({
+    _i54.Key? key,
+    required void Function(Map<String, dynamic>) returnCallback,
+    required List<_i62.ServiceItem> approvedServices,
+    int? oldDuplicatedServiceId,
+  }) : super(
+          ZodiacDuplicateService.name,
+          path: 'zodiacDuplicateService',
+          args: ZodiacDuplicateServiceArgs(
+            key: key,
+            returnCallback: returnCallback,
+            approvedServices: approvedServices,
+            oldDuplicatedServiceId: oldDuplicatedServiceId,
+          ),
+        );
+
+  static const String name = 'ZodiacDuplicateService';
+}
+
+class ZodiacDuplicateServiceArgs {
+  const ZodiacDuplicateServiceArgs({
+    this.key,
+    required this.returnCallback,
+    required this.approvedServices,
+    this.oldDuplicatedServiceId,
+  });
+
+  final _i54.Key? key;
+
+  final void Function(Map<String, dynamic>) returnCallback;
+
+  final List<_i62.ServiceItem> approvedServices;
+
+  final int? oldDuplicatedServiceId;
+
+  @override
+  String toString() {
+    return 'ZodiacDuplicateServiceArgs{key: $key, returnCallback: $returnCallback, approvedServices: $approvedServices, oldDuplicatedServiceId: $oldDuplicatedServiceId}';
+  }
+}
+
+/// generated route for
+/// [_i43.EditServiceScreen]
+class ZodiacEditService extends _i53.PageRouteInfo<ZodiacEditServiceArgs> {
+  ZodiacEditService({
+    _i54.Key? key,
+    required int serviceId,
+  }) : super(
+          ZodiacEditService.name,
+          path: 'zodiacEditService',
+          args: ZodiacEditServiceArgs(
+            key: key,
+            serviceId: serviceId,
+          ),
+        );
+
+  static const String name = 'ZodiacEditService';
+}
+
+class ZodiacEditServiceArgs {
+  const ZodiacEditServiceArgs({
+    this.key,
+    required this.serviceId,
+  });
+
+  final _i54.Key? key;
+
+  final int serviceId;
+
+  @override
+  String toString() {
+    return 'ZodiacEditServiceArgs{key: $key, serviceId: $serviceId}';
+  }
+}
+
+/// generated route for
+/// [_i44.CompleteServiceScreen]
+class ZodiacCompleteService extends _i53.PageRouteInfo<void> {
+  const ZodiacCompleteService()
+      : super(
+          ZodiacCompleteService.name,
+          path: 'zodiacCompleteService',
+        );
+
+  static const String name = 'ZodiacCompleteService';
+}
+
+/// generated route for
+/// [_i45.CategoriesListScreen]
+class ZodiacCategoriesList
+    extends _i53.PageRouteInfo<ZodiacCategoriesListArgs> {
+  ZodiacCategoriesList({
+    _i54.Key? key,
+    required List<int> selectedCategoryIds,
+    required dynamic Function(
+      List<_i59.CategoryInfo>,
+      int,
+    ) returnCallback,
+    int? mainCategoryId,
+  }) : super(
+          ZodiacCategoriesList.name,
+          path: 'zodiacCategoriesList',
+          args: ZodiacCategoriesListArgs(
+            key: key,
+            selectedCategoryIds: selectedCategoryIds,
+            returnCallback: returnCallback,
+            mainCategoryId: mainCategoryId,
+          ),
+        );
+
+  static const String name = 'ZodiacCategoriesList';
+}
+
+class ZodiacCategoriesListArgs {
+  const ZodiacCategoriesListArgs({
+    this.key,
+    required this.selectedCategoryIds,
+    required this.returnCallback,
+    this.mainCategoryId,
+  });
+
+  final _i54.Key? key;
+
+  final List<int> selectedCategoryIds;
+
+  final dynamic Function(
+    List<_i59.CategoryInfo>,
+    int,
+  ) returnCallback;
+
+  final int? mainCategoryId;
+
+  @override
+  String toString() {
+    return 'ZodiacCategoriesListArgs{key: $key, selectedCategoryIds: $selectedCategoryIds, returnCallback: $returnCallback, mainCategoryId: $mainCategoryId}';
+  }
+}
+
+/// generated route for
+/// [_i46.CategoriesMethodsListScreen]
+class ZodiacCategoriesMethodsList
+    extends _i53.PageRouteInfo<ZodiacCategoriesMethodsListArgs> {
+  ZodiacCategoriesMethodsList({
+    _i54.Key? key,
+    required String title,
+    required List<_i46.CategoriesMethodsListItem> items,
+    required void Function(int) returnCallback,
+    int? initialSelectedId,
+  }) : super(
+          ZodiacCategoriesMethodsList.name,
+          path: 'zodiacCategoriesMethodsList',
+          args: ZodiacCategoriesMethodsListArgs(
+            key: key,
+            title: title,
+            items: items,
+            returnCallback: returnCallback,
+            initialSelectedId: initialSelectedId,
+          ),
+        );
+
+  static const String name = 'ZodiacCategoriesMethodsList';
+}
+
+class ZodiacCategoriesMethodsListArgs {
+  const ZodiacCategoriesMethodsListArgs({
+    this.key,
+    required this.title,
+    required this.items,
+    required this.returnCallback,
+    this.initialSelectedId,
+  });
+
+  final _i54.Key? key;
+
+  final String title;
+
+  final List<_i46.CategoriesMethodsListItem> items;
+
+  final void Function(int) returnCallback;
+
+  final int? initialSelectedId;
+
+  @override
+  String toString() {
+    return 'ZodiacCategoriesMethodsListArgs{key: $key, title: $title, items: $items, returnCallback: $returnCallback, initialSelectedId: $initialSelectedId}';
+  }
+}
+
+/// generated route for
+/// [_i47.SelectMethodsScreen]
+class ZodiacSelectMethods extends _i53.PageRouteInfo<ZodiacSelectMethodsArgs> {
+  ZodiacSelectMethods({
+    _i54.Key? key,
+    required List<int> selectedMethodIds,
+    required dynamic Function(
+      List<_i59.CategoryInfo>,
+      int,
+    ) returnCallback,
+    int? mainMethodId,
+  }) : super(
+          ZodiacSelectMethods.name,
+          path: 'zodiacSelectMethods',
+          args: ZodiacSelectMethodsArgs(
+            key: key,
+            selectedMethodIds: selectedMethodIds,
+            returnCallback: returnCallback,
+            mainMethodId: mainMethodId,
+          ),
+        );
+
+  static const String name = 'ZodiacSelectMethods';
+}
+
+class ZodiacSelectMethodsArgs {
+  const ZodiacSelectMethodsArgs({
+    this.key,
+    required this.selectedMethodIds,
+    required this.returnCallback,
+    this.mainMethodId,
+  });
+
+  final _i54.Key? key;
+
+  final List<int> selectedMethodIds;
+
+  final dynamic Function(
+    List<_i59.CategoryInfo>,
+    int,
+  ) returnCallback;
+
+  final int? mainMethodId;
+
+  @override
+  String toString() {
+    return 'ZodiacSelectMethodsArgs{key: $key, selectedMethodIds: $selectedMethodIds, returnCallback: $returnCallback, mainMethodId: $mainMethodId}';
+  }
+}
+
+/// generated route for
+/// [_i48.LoginScreen]
+class ZodiacLogin extends _i53.PageRouteInfo<void> {
   const ZodiacLogin()
       : super(
           ZodiacLogin.name,
@@ -1834,8 +2197,8 @@ class ZodiacLogin extends _i46.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i42.DashboardScreen]
-class ZodiacDashboard extends _i46.PageRouteInfo<void> {
+/// [_i49.DashboardScreen]
+class ZodiacDashboard extends _i53.PageRouteInfo<void> {
   const ZodiacDashboard()
       : super(
           ZodiacDashboard.name,
@@ -1846,8 +2209,8 @@ class ZodiacDashboard extends _i46.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i43.SessionsScreen]
-class ZodiacChats extends _i46.PageRouteInfo<void> {
+/// [_i50.SessionsScreen]
+class ZodiacChats extends _i53.PageRouteInfo<void> {
   const ZodiacChats()
       : super(
           ZodiacChats.name,
@@ -1858,8 +2221,8 @@ class ZodiacChats extends _i46.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i44.AccountScreen]
-class ZodiacAccount extends _i46.PageRouteInfo<void> {
+/// [_i51.AccountScreen]
+class ZodiacAccount extends _i53.PageRouteInfo<void> {
   const ZodiacAccount()
       : super(
           ZodiacAccount.name,
@@ -1870,8 +2233,8 @@ class ZodiacAccount extends _i46.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i45.ArticlesScreen]
-class ZodiacArticles extends _i46.PageRouteInfo<void> {
+/// [_i52.ArticlesScreen]
+class ZodiacArticles extends _i53.PageRouteInfo<void> {
   const ZodiacArticles()
       : super(
           ZodiacArticles.name,

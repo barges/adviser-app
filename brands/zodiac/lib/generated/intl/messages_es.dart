@@ -186,11 +186,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "explainIn3to5StepsWhatTheCustomersWillGetZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Explique en 3-5 pasos lo que obtendrán los clientes."),
+        "firstSelectTheCategoriesZodiac": MessageLookupByLibrary.simpleMessage(
+            "Primero seleccione las categorías"),
         "firstYouNeedFillInformationAboutServiceZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Primero debe completar toda la información requerida sobre el servicio, luego enviarlo para su aprobación y, cuando esté listo, podrá venderlo"),
-        "firstSelectTheCategoriesZodiac": MessageLookupByLibrary.simpleMessage(
-            "Primero seleccione las categorías"),
         "flagsZodiac": MessageLookupByLibrary.simpleMessage("Banderas"),
         "foodAndDrinkZodiac":
             MessageLookupByLibrary.simpleMessage("Comida y bebida"),
@@ -231,8 +231,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "mainZodiac": MessageLookupByLibrary.simpleMessage("Principal"),
         "manageMessagesZodiac":
             MessageLookupByLibrary.simpleMessage("Administrar mensajes"),
-        "minutesFullZodiac": MessageLookupByLibrary.simpleMessage("Minutos"),
         "methodsZodiac": MessageLookupByLibrary.simpleMessage("Métodos"),
+        "minutesFullZodiac": MessageLookupByLibrary.simpleMessage("Minutos"),
         "minutesZodiac": MessageLookupByLibrary.simpleMessage("min"),
         "moreAboutOfflineServicesZodiac": MessageLookupByLibrary.simpleMessage(
             "Más sobre servicios fuera de línea"),
