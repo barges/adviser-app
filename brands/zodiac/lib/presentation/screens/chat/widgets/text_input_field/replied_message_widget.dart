@@ -55,11 +55,12 @@ class RepliedMessageWidget extends StatelessWidget {
               color: theme.primaryColor,
             ),
             Expanded(
-                child: RepliedMessageContentWidget(
-              chatMessageModel: repliedMessage,
-              authorNameColor: theme.primaryColor,
-              messageColor: theme.shadowColor,
-            )),
+              child: RepliedMessageContentWidget(
+                chatMessageModel: repliedMessage,
+                authorNameColor: theme.primaryColor,
+                messageColor: theme.shadowColor,
+              ),
+            ),
             const SizedBox(
               width: 8.0,
             ),
