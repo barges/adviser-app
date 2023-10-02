@@ -7,6 +7,7 @@ import 'package:zodiac/domain/repositories/zodiac_edit_profile_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/screens/select_methods/select_methods_cubit.dart';
+import 'package:zodiac/presentation/screens/select_methods/widgets/main_method_button.dart';
 import 'package:zodiac/presentation/screens/select_methods/widgets/methods_list_widget.dart';
 
 class SelectMethodsScreen extends StatelessWidget {
@@ -46,6 +47,10 @@ class SelectMethodsScreen extends StatelessWidget {
               child: Column(
                 children: [
                   MethodsListWidget(methods: methods),
+                  const SizedBox(
+                    height: 24.0,
+                  ),
+                  MainMethodButton(methods: methods),
                 ],
               ),
             ));
